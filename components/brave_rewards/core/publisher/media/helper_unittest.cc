@@ -9,13 +9,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=MediaHelperTest.*
+// npm run test -- brave_unit_tests --filter=RewardsMediaHelperTest.*
 
 namespace brave_rewards::internal {
 
-class MediaHelperTest : public testing::Test {};
+class RewardsMediaHelperTest : public testing::Test {};
 
-TEST(MediaHelperTest, GetMediaKey) {
+TEST(RewardsMediaHelperTest, GetMediaKey) {
   // provider is missing
   std::string result = GetMediaKey("key", "");
   ASSERT_EQ(result, "");
@@ -29,7 +29,7 @@ TEST(MediaHelperTest, GetMediaKey) {
   ASSERT_EQ(result, "youtube_key");
 }
 
-TEST(MediaHelperTest, ExtractData) {
+TEST(RewardsMediaHelperTest, ExtractData) {
   //  // string empty
   std::string result = ExtractData("", "/", "!");
   ASSERT_EQ(result, "");

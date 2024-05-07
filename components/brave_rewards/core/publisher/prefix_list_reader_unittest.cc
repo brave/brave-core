@@ -11,12 +11,10 @@
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter='PrefixListReaderTest.*'
-
 namespace brave_rewards::internal {
 namespace publisher {
 
-class PrefixListReaderTest : public testing::Test {
+class RewardsPrefixListReaderTest : public testing::Test {
  protected:
   template <typename F>
   PrefixListReader::ParseError TestParse(F init) {
@@ -32,7 +30,7 @@ class PrefixListReaderTest : public testing::Test {
   }
 };
 
-TEST_F(PrefixListReaderTest, ValidInput) {
+TEST_F(RewardsPrefixListReaderTest, ValidInput) {
   size_t prefix_size = 4;
 
   // A sorted list of prefixes. Note that actual prefixes
@@ -83,7 +81,7 @@ TEST_F(PrefixListReaderTest, ValidInput) {
   EXPECT_EQ(reader3.size(), size_t(4));
 }
 
-TEST_F(PrefixListReaderTest, InvalidInput) {
+TEST_F(RewardsPrefixListReaderTest, InvalidInput) {
   PrefixListReader reader;
   ASSERT_EQ(reader.Parse("invalid input"),
             PrefixListReader::ParseError::kInvalidProtobufMessage);
@@ -123,7 +121,7 @@ TEST_F(PrefixListReaderTest, InvalidInput) {
             PrefixListReader::ParseError::kPrefixesNotSorted);
 }
 
-TEST_F(PrefixListReaderTest, BrotliCompression) {
+TEST_F(RewardsPrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(TestParse([](auto* list) {
               list->set_uncompressed_size(16);
               list->set_compression_type(

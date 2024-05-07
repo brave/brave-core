@@ -3,133 +3,103 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/gemini/post_account/post_account_gemini.h"
+
 #include <string>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/post_account/post_account_gemini.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-// npm run test -- brave_unit_tests --filter=GeminiPostAccountTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
 
-class GeminiPostAccountTest : public testing::Test {
+class RewardsGeminiPostAccountTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  PostAccount post_account_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url =
+        engine().Get<EnvironmentConfig>().gemini_api_url().Resolve(
+            "/v1/account");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::POST, std::move(response));
+
+    endpoint::gemini::PostAccount endpoint(engine());
+
+    return WaitForValues<mojom::Result, std::string&&, std::string&&,
+                         std::string&&>([&](auto callback) {
+      endpoint.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                       std::move(callback));
+    });
+  }
 };
 
-TEST_F(GeminiPostAccountTest, ServerOK) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->url = request->url;
-        response->body = R"({
-              "account": {
-                "accountName": "Primary",
-                "shortName": "primary",
-                "type": "exchange",
-                "created": "1619040615242",
-                "verificationToken": "mocktoken"
-              },
-              "users": [{
-                "name": "Test",
-                "lastSignIn": "2021-04-30T18:46:03.017Z",
-                "status": "Active",
-                "countryCode": "US",
-                "isVerified": true
-              }],
-              "memo_reference_code": "GEMAPLLV"
-            })";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostAccountTest, ServerOK) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = R"({
+        "account": {
+          "accountName": "Primary",
+          "shortName": "primary",
+          "type": "exchange",
+          "created": "1619040615242",
+          "verificationToken": "mocktoken"
+        },
+        "users": [{
+          "name": "Test",
+          "lastSignIn": "2021-04-30T18:46:03.017Z",
+          "status": "Active",
+          "countryCode": "US",
+          "isVerified": true
+        }],
+        "memo_reference_code": "GEMAPLLV"
+      })";
 
-  base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::OK, std::string("mocktoken"),
-                            std::string("Test"), std::string("US")))
-      .Times(1);
-  post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                        callback.Get());
+  auto [result, linking_info, user_name, country_id] =
+      Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::OK);
+  EXPECT_EQ(linking_info, "mocktoken");
+  EXPECT_EQ(user_name, "Test");
+  EXPECT_EQ(country_id, "US");
 }
 
-TEST_F(GeminiPostAccountTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_UNAUTHORIZED;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostAccountTest, ServerError401) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 401;
 
-  base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string(),
-                            std::string(), std::string()))
-      .Times(1);
-  post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                        callback.Get());
+  auto [result, linking_info, user_name, country_id] =
+      Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(linking_info, "");
+  EXPECT_EQ(user_name, "");
+  EXPECT_EQ(country_id, "");
 }
 
-TEST_F(GeminiPostAccountTest, ServerError403) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_FORBIDDEN;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostAccountTest, ServerError403) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 403;
 
-  base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string(),
-                            std::string(), std::string()))
-      .Times(1);
-  post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                        callback.Get());
+  auto [result, linking_info, user_name, country_id] =
+      Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(linking_info, "");
+  EXPECT_EQ(user_name, "");
+  EXPECT_EQ(country_id, "");
 }
 
-TEST_F(GeminiPostAccountTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 418;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostAccountTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 418;
 
-  base::MockCallback<PostAccountCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, std::string(), std::string(),
-                            std::string()))
-      .Times(1);
-  post_account_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                        callback.Get());
+  auto [result, linking_info, user_name, country_id] =
+      Request(std::move(response));
 
-  task_environment_.RunUntilIdle();
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(linking_info, "");
+  EXPECT_EQ(user_name, "");
+  EXPECT_EQ(country_id, "");
 }
 
-}  // namespace gemini
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

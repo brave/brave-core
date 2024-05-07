@@ -39,13 +39,13 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
   void OnGetUser(ConnectExternalWalletCallback,
                  const std::string& access_token,
                  mojom::Result,
-                 const User&) const;
+                 User) const;
 
   void OnGetCapabilities(ConnectExternalWalletCallback,
                          const std::string& access_token,
                          const std::string& country_id,
                          mojom::Result,
-                         internal::uphold::Capabilities) const;
+                         Capabilities) const;
 
   void OnCreateCard(ConnectExternalWalletCallback,
                     const std::string& access_token,
@@ -53,9 +53,9 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
                     mojom::Result,
                     std::string&& id) const;
 
-  void OnGetUser(mojom::Result, const User&) const;
+  void OnGetUserForEligibilityCheck(mojom::Result, User) const;
 
-  void OnGetCapabilities(mojom::Result, Capabilities) const;
+  void OnGetCapabilitiesForEligibilityCheck(mojom::Result, Capabilities) const;
 
   UpholdCard card_;
   endpoint::UpholdServer server_;

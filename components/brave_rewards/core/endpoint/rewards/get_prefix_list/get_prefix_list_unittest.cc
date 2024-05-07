@@ -3,87 +3,58 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
+
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-// npm run test -- brave_unit_tests --filter=GetPrefixListTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace rewards {
 
-class GetPrefixListTest : public testing::Test {
+class RewardsGetPrefixListTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  GetPrefixList list_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url = engine().Get<EnvironmentConfig>().rewards_url().Resolve(
+        "/publishers/prefix-list");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::GET, std::move(response));
+
+    endpoint::rewards::GetPrefixList endpoint(engine());
+
+    return WaitForValues<mojom::Result, std::string>(
+        [&](auto callback) { endpoint.Request(std::move(callback)); });
+  }
 };
 
-TEST_F(GetPrefixListTest, ServerOK) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 200;
-        response->url = request->url;
-        response->body = "blob";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetPrefixListTest, ServerOK) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = "blob";
 
-  base::MockCallback<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::OK, "blob")).Times(1);
-  list_.Request(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, body] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::OK);
+  EXPECT_EQ(body, "blob");
 }
 
-TEST_F(GetPrefixListTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 453;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetPrefixListTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 453;
 
-  base::MockCallback<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
-  list_.Request(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, body] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(body, "");
 }
 
-TEST_F(GetPrefixListTest, ServerBodyEmpty) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 200;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetPrefixListTest, ServerBodyEmpty) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
 
-  base::MockCallback<GetPrefixListCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, "")).Times(1);
-  list_.Request(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, body] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(body, "");
 }
 
-}  // namespace rewards
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=MediaYouTubeTest.*
+// npm run test -- brave_unit_tests --filter=RewardsMediaYouTubeTest.*
 
 namespace brave_rewards::internal {
 
-class MediaYouTubeTest : public testing::Test {};
+class RewardsMediaYouTubeTest : public testing::Test {};
 
-TEST(MediaYouTubeTest, GetMediaIdFromUrl) {
+TEST(RewardsMediaYouTubeTest, GetMediaIdFromUrl) {
   // missing video id
   mojom::VisitData data;
   data.url = "https://www.youtube.com/watch";
@@ -51,7 +51,7 @@ TEST(MediaYouTubeTest, GetMediaIdFromUrl) {
   ASSERT_EQ(media, "44444444");
 }
 
-TEST(MediaYouTubeTest, GetPublisherKeyFromUrl) {
+TEST(RewardsMediaYouTubeTest, GetPublisherKeyFromUrl) {
   // path is empty
   std::string path = "";
   std::string key;
@@ -104,7 +104,7 @@ TEST(MediaYouTubeTest, GetPublisherKeyFromUrl) {
   ASSERT_EQ(key, "UCRkcacarvLbUfygxUAAAAAA");
 }
 
-TEST(MediaYouTubeTest, GetUserFromUrl) {
+TEST(RewardsMediaYouTubeTest, GetUserFromUrl) {
   // path is empty
   std::string path = "/";
 
@@ -155,7 +155,7 @@ TEST(MediaYouTubeTest, GetUserFromUrl) {
   ASSERT_EQ(user, "brave");
 }
 
-TEST(MediaYouTubeTest, GetBasicPath) {
+TEST(RewardsMediaYouTubeTest, GetBasicPath) {
   std::string path = "/gaming";
   std::string realPath = YouTube::GetBasicPath(path);
   ASSERT_EQ(realPath, "/gaming");
@@ -217,7 +217,7 @@ TEST(MediaYouTubeTest, GetBasicPath) {
   ASSERT_EQ(realPath, "/");
 }
 
-TEST(MediaYouTubeTest, GetNameFromChannel) {
+TEST(RewardsMediaYouTubeTest, GetNameFromChannel) {
   const std::string json_envelope_open(
       "channelMetadataRenderer\":{\"title\":\"");
   const std::string json_envelope_close("\"}");
@@ -271,7 +271,7 @@ TEST(MediaYouTubeTest, GetNameFromChannel) {
   ASSERT_EQ(resolve, "A'B");
 }
 
-TEST(MediaYouTubeTest, GetPublisherName) {
+TEST(RewardsMediaYouTubeTest, GetPublisherName) {
   const std::string json_envelope("\"author\":\"");
 
   // empty string
@@ -307,7 +307,7 @@ TEST(MediaYouTubeTest, GetPublisherName) {
   ASSERT_EQ(publisher_name, "A&B");
 }
 
-TEST(MediaYouTubeTest, GetLinkType) {
+TEST(RewardsMediaYouTubeTest, GetLinkType) {
   std::string url("https://www.youtube.com/api/stats/watchtime?v=IwFp93_32u");
   std::string link_type(YouTube::GetLinkType(url));
   EXPECT_EQ(link_type, YOUTUBE_MEDIA_TYPE);
@@ -346,7 +346,7 @@ TEST(MediaYouTubeTest, GetLinkType) {
   EXPECT_TRUE(link_type.empty());
 }
 
-TEST(MediaYouTubeTest, GetMediaIdFromParts) {
+TEST(RewardsMediaYouTubeTest, GetMediaIdFromParts) {
   base::flat_map<std::string, std::string> parts;
 
   std::string docid("FsC15IBOpxw");
@@ -380,7 +380,7 @@ TEST(MediaYouTubeTest, GetMediaIdFromParts) {
   EXPECT_EQ(id, docid);
 }
 
-TEST(MediaYouTubeTest, GetMediaDurationFromParts) {
+TEST(RewardsMediaYouTubeTest, GetMediaDurationFromParts) {
   base::flat_map<std::string, std::string> parts;
 
   // straight play
@@ -420,7 +420,7 @@ TEST(MediaYouTubeTest, GetMediaDurationFromParts) {
   EXPECT_EQ(duration, (uint64_t)30);
 }
 
-TEST(MediaYouTubeTest, GetVideoUrl) {
+TEST(RewardsMediaYouTubeTest, GetVideoUrl) {
   std::string media_url("https://www.youtube.com/watch?v=");
   // null case
   std::string media_id;
@@ -456,7 +456,7 @@ TEST(MediaYouTubeTest, GetVideoUrl) {
   EXPECT_EQ(url, media_url + media_id);
 }
 
-TEST(MediaYouTubeTest, GetChannelUrl) {
+TEST(RewardsMediaYouTubeTest, GetChannelUrl) {
   std::string channel_url("https://www.youtube.com/channel/");
   // null case
   std::string channel_id;
@@ -484,7 +484,7 @@ TEST(MediaYouTubeTest, GetChannelUrl) {
   EXPECT_EQ(url, channel_url + channel_id);
 }
 
-TEST(MediaYouTubeTest, GetFavIconUrl) {
+TEST(RewardsMediaYouTubeTest, GetFavIconUrl) {
   // null case
   std::string data;
   std::string favicon_url(YouTube::GetFavIconUrl(data));
@@ -507,7 +507,7 @@ TEST(MediaYouTubeTest, GetFavIconUrl) {
   EXPECT_EQ(favicon_url, expected_favicon_url);
 }
 
-TEST(MediaYouTubeTest, GetChannelId) {
+TEST(RewardsMediaYouTubeTest, GetChannelId) {
   // null case
   std::string data;
   std::string channel_id(YouTube::GetChannelId(data));
@@ -525,7 +525,7 @@ TEST(MediaYouTubeTest, GetChannelId) {
   EXPECT_EQ(channel_id, expected_channel_id);
 }
 
-TEST(MediaYouTubeTest, GetChannelIdFromCustomPathPage) {
+TEST(RewardsMediaYouTubeTest, GetChannelIdFromCustomPathPage) {
   // null case
   std::string data;
   std::string channel_id(YouTube::GetChannelIdFromCustomPathPage(data));
@@ -544,7 +544,7 @@ TEST(MediaYouTubeTest, GetChannelIdFromCustomPathPage) {
   EXPECT_EQ(channel_id, expected_channel_id);
 }
 
-TEST(MediaYouTubeTest, IsPredefinedPath) {
+TEST(RewardsMediaYouTubeTest, IsPredefinedPath) {
   // null case
   std::string path;
   EXPECT_FALSE(YouTube::IsPredefinedPath(path));
@@ -574,7 +574,7 @@ TEST(MediaYouTubeTest, IsPredefinedPath) {
   EXPECT_TRUE(YouTube::IsPredefinedPath(path));
 }
 
-TEST(MediaYouTubeTest, GetPublisherKey) {
+TEST(RewardsMediaYouTubeTest, GetPublisherKey) {
   std::string publisher_key_prefix((std::string)YOUTUBE_MEDIA_TYPE +
                                    "#channel:");
 

@@ -11,16 +11,16 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=MediaGitHubTest.*
+// npm run test -- brave_unit_tests --filter=RewardsMediaGitHubTest.*
 
 namespace brave_rewards::internal {
 
-class MediaGitHubTest : public testing::Test {
+class RewardsMediaGitHubTest : public testing::Test {
  public:
   static std::string CreateTestJSONString();
 };
 
-std::string MediaGitHubTest::CreateTestJSONString() {
+std::string RewardsMediaGitHubTest::CreateTestJSONString() {
   return R"({
     "login": "jdkuki",
     "id": 8422122,
@@ -31,7 +31,7 @@ std::string MediaGitHubTest::CreateTestJSONString() {
   })";
 }
 
-TEST(MediaGitHubTest, GetLinkType) {
+TEST(RewardsMediaGitHubTest, GetLinkType) {
   // empty
   std::string result = GitHub::GetLinkType("");
   ASSERT_TRUE(result.empty());
@@ -53,7 +53,7 @@ TEST(MediaGitHubTest, GetLinkType) {
   ASSERT_EQ(result, GITHUB_MEDIA_TYPE);
 }
 
-TEST(MediaGitHubTest, GetProfileURL) {
+TEST(RewardsMediaGitHubTest, GetProfileURL) {
   // empty
   std::string result = GitHub::GetProfileURL("");
   ASSERT_TRUE(result.empty());
@@ -62,7 +62,7 @@ TEST(MediaGitHubTest, GetProfileURL) {
   ASSERT_EQ(result, "https://github.com/jdkuki");
 }
 
-TEST(MediaGitHubTest, GetProfileAPIURL) {
+TEST(RewardsMediaGitHubTest, GetProfileAPIURL) {
   // empty
   std::string result = GitHub::GetProfileURL("");
   ASSERT_TRUE(result.empty());
@@ -71,18 +71,18 @@ TEST(MediaGitHubTest, GetProfileAPIURL) {
   ASSERT_EQ(result, "https://api.github.com/users/jdkuki");
 }
 
-TEST(MediaGitHubTest, GetProfileImageURL) {
+TEST(RewardsMediaGitHubTest, GetProfileImageURL) {
   // empty
   std::string result = GitHub::GetProfileImageURL("");
   ASSERT_TRUE(result.empty());
 
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
 
   result = GitHub::GetProfileImageURL(test_response);
   ASSERT_EQ(result, "https://avatars0.githubusercontent.com/u/8422122?v=4");
 }
 
-TEST(MediaGitHubTest, GetPublisherKey) {
+TEST(RewardsMediaGitHubTest, GetPublisherKey) {
   // empty
   std::string result = GitHub::GetPublisherKey("");
   ASSERT_TRUE(result.empty());
@@ -91,7 +91,7 @@ TEST(MediaGitHubTest, GetPublisherKey) {
   ASSERT_EQ(result, "github#channel:test_publisher_key");
 }
 
-TEST(MediaGitHubTest, GetUserNameFromURL) {
+TEST(RewardsMediaGitHubTest, GetUserNameFromURL) {
   // empty
   std::string result = GitHub::GetUserNameFromURL("");
   ASSERT_TRUE(result.empty());
@@ -109,8 +109,8 @@ TEST(MediaGitHubTest, GetUserNameFromURL) {
   ASSERT_EQ(result, "jdkuki");
 }
 
-TEST(MediaGitHubTest, GetUserName) {
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+TEST(RewardsMediaGitHubTest, GetUserName) {
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
 
   // empty response
   std::string result = GitHub::GetUserName("");
@@ -121,8 +121,8 @@ TEST(MediaGitHubTest, GetUserName) {
   ASSERT_EQ(result, "jdkuki");
 }
 
-TEST(MediaGitHubTest, GetUserId) {
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+TEST(RewardsMediaGitHubTest, GetUserId) {
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
 
   // empty
   std::string result = GitHub::GetUserId("");
@@ -137,8 +137,8 @@ TEST(MediaGitHubTest, GetUserId) {
   ASSERT_EQ(result, "8422122");
 }
 
-TEST(MediaGitHubTest, GetPublisherName) {
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+TEST(RewardsMediaGitHubTest, GetPublisherName) {
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
 
   // empty
   std::string result = GitHub::GetPublisherName("");
@@ -153,8 +153,8 @@ TEST(MediaGitHubTest, GetPublisherName) {
   ASSERT_EQ(result, "Jakob Kuki");
 }
 
-TEST(MediaGitHubTest, GetJSONStringValue) {
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+TEST(RewardsMediaGitHubTest, GetJSONStringValue) {
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
   std::string result;
 
   // empty
@@ -168,8 +168,8 @@ TEST(MediaGitHubTest, GetJSONStringValue) {
   ASSERT_EQ(result, "jdkuki");
 }
 
-TEST(MediaGitHubTest, GetJSONIntValue) {
-  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+TEST(RewardsMediaGitHubTest, GetJSONIntValue) {
+  std::string test_response = RewardsMediaGitHubTest::CreateTestJSONString();
   int64_t result;
 
   // empty

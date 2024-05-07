@@ -44,7 +44,7 @@ class RewardsLinkageChecker : public RewardsEngineTest {
     response->status_code = net::HTTP_OK;
     response->body = body;
 
-    AddNetworkResultForTesting(
+    client().AddNetworkResultForTesting(
         engine()
             .Get<EnvironmentConfig>()
             .rewards_grant_url()
@@ -68,7 +68,7 @@ TEST_F(RewardsLinkageChecker, ServerLinked) {
   InitializeEngine();
   task_environment().RunUntilIdle();
 
-  auto [external_wallet] =
+  auto external_wallet =
       WaitFor<mojom::ExternalWalletPtr>([this](auto callback) {
         engine().GetExternalWallet(std::move(callback));
       });
@@ -92,7 +92,7 @@ TEST_F(RewardsLinkageChecker, ServerUnlinked) {
   InitializeEngine();
   task_environment().RunUntilIdle();
 
-  auto [external_wallet] =
+  auto external_wallet =
       WaitFor<mojom::ExternalWalletPtr>([this](auto callback) {
         engine().GetExternalWallet(std::move(callback));
       });

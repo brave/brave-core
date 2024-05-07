@@ -5,27 +5,45 @@
 
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-
-// npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace database {
 
-class DatabasePublisherPrefixListTest : public ::testing::Test {
+namespace {
+
+class Client : public TestRewardsEngineClient {
+ public:
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback) override {
+    transactions_.push_back(transaction->Clone());
+    auto response = mojom::DBCommandResponse::New();
+    response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
+    std::move(callback).Run(std::move(response));
+  }
+
+  std::vector<mojom::DBTransactionPtr>& transactions() { return transactions_; }
+
+ private:
+  std::vector<mojom::DBTransactionPtr> transactions_;
+};
+
+}  // namespace
+
+class RewardsDatabasePublisherPrefixListTest : public RewardsEngineTest {
  protected:
+  RewardsDatabasePublisherPrefixListTest()
+      : RewardsEngineTest(std::make_unique<Client>()) {}
+
+  Client& client() { return static_cast<Client&>(RewardsEngineTest::client()); }
+
   publisher::PrefixListReader CreateReader(uint32_t prefix_count) {
     publisher::PrefixListReader reader;
     if (prefix_count == 0) {
@@ -51,45 +69,37 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
     reader.Parse(out);
     return reader;
   }
-
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  DatabasePublisherPrefixList database_prefix_list_{mock_engine_impl_};
 };
 
-TEST_F(DatabasePublisherPrefixListTest, Reset) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(2)
-      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
-        EXPECT_TRUE(transaction);
-        EXPECT_EQ(transaction->commands.size(), 2u);
-        EXPECT_EQ(transaction->commands[0]->command,
-                  "DELETE FROM publisher_prefix_list");
-        EXPECT_TRUE(base::StartsWith(
-            transaction->commands[1]->command,
-            "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
-            "VALUES (x'00000000'),(x'00000001'),(x'00000002'),"));
+TEST_F(RewardsDatabasePublisherPrefixListTest, Reset) {
+  database::DatabasePublisherPrefixList prefix_list(engine());
+  WaitFor<mojom::Result>([&](auto callback) {
+    prefix_list.Reset(CreateReader(100'001), std::move(callback));
+  });
 
-        auto response = mojom::DBCommandResponse::New();
-        response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
-        std::move(callback).Run(std::move(response));
-      })
-      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
-        EXPECT_TRUE(transaction);
-        EXPECT_EQ(transaction->commands.size(), 1u);
-        EXPECT_EQ(transaction->commands[0]->command,
-                  "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
-                  "VALUES (x'000186A0')");
+  auto& transactions = client().transactions();
+  ASSERT_EQ(transactions.size(), 2ul);
 
-        std::move(callback).Run(db_error_response->Clone());
-      });
+  {
+    auto& transaction = transactions[0];
+    EXPECT_TRUE(transaction);
+    EXPECT_EQ(transaction->commands.size(), 2u);
+    EXPECT_EQ(transaction->commands[0]->command,
+              "DELETE FROM publisher_prefix_list");
+    EXPECT_TRUE(base::StartsWith(
+        transaction->commands[1]->command,
+        "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
+        "VALUES (x'00000000'),(x'00000001'),(x'00000002'),"));
+  }
 
-  base::MockCallback<ResultCallback> callback;
-  EXPECT_CALL(callback, Run).Times(1);
-  database_prefix_list_.Reset(CreateReader(100'001), callback.Get());
-
-  task_environment_.RunUntilIdle();
+  {
+    auto& transaction = transactions[1];
+    EXPECT_TRUE(transaction);
+    EXPECT_EQ(transaction->commands.size(), 1u);
+    EXPECT_EQ(transaction->commands[0]->command,
+              "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
+              "VALUES (x'000186A0')");
+  }
 }
 
-}  // namespace database
 }  // namespace brave_rewards::internal

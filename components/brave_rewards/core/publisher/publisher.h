@@ -213,9 +213,9 @@ class Publisher {
   base::WeakPtrFactory<Publisher> weak_factory_{this};
 
   // For testing purposes
-  friend class PublisherTest;
-  FRIEND_TEST_ALL_PREFIXES(PublisherTest, concaveScore);
-  FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
+  friend class RewardsPublisherTest;
+  FRIEND_TEST_ALL_PREFIXES(RewardsPublisherTest, concaveScore);
+  FRIEND_TEST_ALL_PREFIXES(RewardsPublisherTest, synopsisNormalizerInternal);
 };
 
 }  // namespace publisher

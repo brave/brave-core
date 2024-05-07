@@ -3,30 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
+
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
-#include "brave/components/brave_rewards/core/database/database_contribution_info.h"
-#include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-
-// npm run test -- brave_unit_tests --filter=UnblindedTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace contribution {
 
-class UnblindedTest : public ::testing::Test {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  Unblinded unblinded_{mock_engine_impl_};
-};
+class RewardsUnblindedTest : public RewardsEngineTest {};
 
-TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
+TEST_F(RewardsUnblindedTest, GetStatisticalVotingWinner) {
   std::vector<mojom::ContributionPublisherPtr> publisher_list;
 
   auto publisher1 = mojom::ContributionPublisher::New();
@@ -64,15 +51,14 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
       {0.80, "publisher5"}, {0.90, "publisher5"},
   };
 
+  contribution::Unblinded unblinded(engine());
+
   for (auto& entry : cases) {
     const std::string publisher_key =
-        unblinded_.GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
-                                                        publisher_list);
+        unblinded.GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
+                                                       publisher_list);
     EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
-
-  task_environment_.RunUntilIdle();
 }
 
-}  // namespace contribution
 }  // namespace brave_rewards::internal

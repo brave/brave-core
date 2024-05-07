@@ -74,7 +74,8 @@ GetRecipientIDGemini::GetRecipientIDGemini(RewardsEngine& engine,
 GetRecipientIDGemini::~GetRecipientIDGemini() = default;
 
 std::optional<std::string> GetRecipientIDGemini::Url() const {
-  return GURL(engine_->Get<EnvironmentConfig>().gemini_api_url())
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_api_url()
       .Resolve("/v1/payments/recipientIds")
       .spec();
 }

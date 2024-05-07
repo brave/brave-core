@@ -117,8 +117,7 @@ namespace endpoint {
 namespace uphold {
 
 using GetMeCallback =
-    base::OnceCallback<void(mojom::Result result,
-                            const internal::uphold::User& user)>;
+    base::OnceCallback<void(mojom::Result result, internal::uphold::User user)>;
 
 class GetMe {
  public:

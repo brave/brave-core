@@ -150,22 +150,23 @@ class YouTube {
   base::WeakPtrFactory<YouTube> weak_factory_{this};
 
   // For testing purposes
-  friend class MediaYouTubeTest;
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaIdFromUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherKeyFromUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetUserFromUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetBasicPath);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetNameFromChannel);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherName);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaIdFromParts);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaDurationFromParts);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetVideoUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetFavIconUrl);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelId);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelIdFromCustomPathPage);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, IsPredefinedPath);
-  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherKey);
+  friend class RewardsMediaYouTubeTest;
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetMediaIdFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetPublisherKeyFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetUserFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetBasicPath);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetNameFromChannel);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetPublisherName);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetMediaIdFromParts);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetMediaDurationFromParts);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetVideoUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetChannelUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetFavIconUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetChannelId);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest,
+                           GetChannelIdFromCustomPathPage);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, IsPredefinedPath);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetPublisherKey);
 };
 
 }  // namespace brave_rewards::internal

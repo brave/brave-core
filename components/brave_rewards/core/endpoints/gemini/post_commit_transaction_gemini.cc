@@ -66,7 +66,8 @@ Result PostCommitTransactionGemini::ProcessResponse(
 }
 
 std::optional<std::string> PostCommitTransactionGemini::Url() const {
-  return GURL(engine_->Get<EnvironmentConfig>().gemini_api_url())
+  return engine_->Get<EnvironmentConfig>()
+      .gemini_api_url()
       .Resolve("/v1/payments/pay")
       .spec();
 }

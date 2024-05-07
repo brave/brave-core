@@ -42,7 +42,7 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
 
  protected:
   sql::Database* GetDB() {
-    return engine_client().database()->GetInternalDatabaseForTesting();
+    return client().database().GetInternalDatabaseForTesting();
   }
 
   std::string GetExpectedSchema() {
@@ -736,8 +736,8 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  mojom::RewardsEngineClientAsyncWaiter(&engine_client())
-      .SetStringState(state::kDeclaredGeo, "JP");
+  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
+      state::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -760,8 +760,8 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
 TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  mojom::RewardsEngineClientAsyncWaiter(&engine_client())
-      .SetStringState(state::kDeclaredGeo, "JP");
+  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
+      state::kDeclaredGeo, "JP");
   InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }

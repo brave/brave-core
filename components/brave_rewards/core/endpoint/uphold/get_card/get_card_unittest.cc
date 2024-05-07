@@ -3,150 +3,123 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <string>
-#include <utility>
-#include <vector>
-
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_card/get_card.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=GetCardTest.*
+#include <utility>
 
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
 
-class GetCardTest : public testing::Test {
+class RewardsGetCardTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  GetCard card_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url =
+        engine().Get<EnvironmentConfig>().uphold_api_url().Resolve(
+            "/v0/me/cards/193a77cf-02e8-4e10-8127-8a1b5a8bfece");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::GET, std::move(response));
+
+    endpoint::uphold::GetCard endpoint(engine());
+
+    return WaitForValues<mojom::Result, double>([&](auto callback) {
+      endpoint.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                       "4c2b665ca060d912fec5c735c734859a06118cc8",
+                       std::move(callback));
+    });
+  }
 };
 
-TEST_F(GetCardTest, ServerOK) {
-  int status_code = 0;
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .WillRepeatedly([&](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = status_code;
-        response->url = request->url;
-        response->body = R"({
-              "CreatedByApplicationId": "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+TEST_F(RewardsGetCardTest, ServerOK) {
+  auto make_response = [](int status_code) {
+    auto response = mojom::UrlResponse::New();
+    response->status_code = status_code;
+    response->body = R"(
+        {
+          "CreatedByApplicationId": "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+          "address": {
+            "wire": "XXXXXXXXXX"
+          },
+          "available": "4.00",
+          "balance": "4.00",
+          "currency": "BAT",
+          "id": "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
+          "label": "Brave Browser",
+          "lastTransactionAt": null,
+          "settings": {
+            "position": 1,
+            "protected": false,
+            "starred": true
+          },
+          "createdByApplicationClientId":
+            "4c2b665ca060d912fec5c735c734859a06118cc8",
+          "normalized": [
+            {
+              "available": "0.00",
+              "balance": "0.00",
+              "currency": "USD"
+            }
+          ],
+          "wire": [
+            {
+              "accountName": "Uphold Europe Limited",
               "address": {
-               "wire": "XXXXXXXXXX"
+                "line1": "Tartu mnt 2",
+                "line2": "10145 Tallinn, Estonia"
               },
-              "available": "4.00",
-              "balance": "4.00",
-              "currency": "BAT",
-              "id": "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
-              "label": "Brave Browser",
-              "lastTransactionAt": null,
-              "settings": {
-               "position": 1,
-               "protected": false,
-               "starred": true
+              "bic": "LHVBEE22",
+              "currency": "EUR",
+              "iban": "EE76 7700 7710 0159 0178",
+              "name": "AS LHV Pank"
+            },
+            {
+              "accountName": "Uphold HQ, Inc.",
+              "accountNumber": "XXXXXXXXXX",
+              "address": {
+                "line1": "1359 Broadway",
+                "line2": "New York, NY 10018"
               },
-              "createdByApplicationClientId": "4c2b665ca060d912fec5c735c734859a06118cc8",
-              "normalized": [
-               {
-                 "available": "0.00",
-                 "balance": "0.00",
-                 "currency": "USD"
-               }
-              ],
-              "wire": [
-               {
-                 "accountName": "Uphold Europe Limited",
-                 "address": {
-                   "line1": "Tartu mnt 2",
-                   "line2": "10145 Tallinn, Estonia"
-                 },
-                 "bic": "LHVBEE22",
-                 "currency": "EUR",
-                 "iban": "EE76 7700 7710 0159 0178",
-                 "name": "AS LHV Pank"
-               },
-               {
-                 "accountName": "Uphold HQ, Inc.",
-                 "accountNumber": "XXXXXXXXXX",
-                 "address": {
-                   "line1": "1359 Broadway",
-                   "line2": "New York, NY 10018"
-                 },
-                 "bic": "MCBEUS33",
-                 "currency": "USD",
-                 "name": "Metropolitan Bank",
-                 "routingNumber": "XXXXXXXXX"
-               }
-              ]
-            })";
-        std::move(callback).Run(std::move(response));
-      });
+              "bic": "MCBEUS33",
+              "currency": "USD",
+              "name": "Metropolitan Bank",
+              "routingNumber": "XXXXXXXXX"
+            }
+          ]
+        })";
+    return response;
+  };
 
   {
-    status_code = 200;
-    base::MockCallback<GetCardCallback> callback;
-    EXPECT_CALL(callback, Run(mojom::Result::OK, 4.0)).Times(1);
-    card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                  "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-    task_environment_.RunUntilIdle();
+    auto [result, available] = Request(make_response(200));
+    EXPECT_EQ(result, mojom::Result::OK);
+    EXPECT_EQ(available, 4.0);
   }
 
   {
-    status_code = 206;
-    base::MockCallback<GetCardCallback> callback;
-    EXPECT_CALL(callback, Run(mojom::Result::OK, 4.0)).Times(1);
-    card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                  "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-    task_environment_.RunUntilIdle();
+    auto [result, available] = Request(make_response(206));
+    EXPECT_EQ(result, mojom::Result::OK);
+    EXPECT_EQ(available, 4.0);
   }
 }
 
-TEST_F(GetCardTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 401;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetCardTest, ServerError401) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 401;
 
-  base::MockCallback<GetCardCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, 0.0)).Times(1);
-  card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, available] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(available, 0.0);
 }
 
-TEST_F(GetCardTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 453;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGetCardTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 453;
 
-  base::MockCallback<GetCardCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, 0.0)).Times(1);
-  card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                "4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, available] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(available, 0.0);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

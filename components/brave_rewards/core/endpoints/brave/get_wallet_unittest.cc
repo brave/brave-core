@@ -38,13 +38,12 @@ class GetWalletTest : public RewardsEngineTest {
             .Resolve("/v4/wallets/fa5dea51-6af4-44ca-801b-07b6df3dcfe4")
             .spec();
 
-    AddNetworkResultForTesting(url, mojom::UrlMethod::GET, std::move(response));
+    client().AddNetworkResultForTesting(url, mojom::UrlMethod::GET,
+                                        std::move(response));
 
-    auto [result] = WaitFor<GetWallet::Result&&>([this](auto callback) {
+    return WaitFor<GetWallet::Result&&>([this](auto callback) {
       RequestFor<GetWallet>(engine()).Send(std::move(callback));
     });
-
-    return std::move(result);
   }
 };
 

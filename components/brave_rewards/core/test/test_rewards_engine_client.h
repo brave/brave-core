@@ -210,17 +210,13 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
       const std::string& token_mint_address,
       mojom::SolanaAccountBalancePtr balance);
 
-  using LogCallback = base::RepeatingCallback<void(const std::string&)>;
-  void SetLogCallbackForTesting(LogCallback callback);
-
-  RewardsDatabase* database() { return &engine_database_; }
+  RewardsDatabase& database() { return engine_database_; }
 
  private:
   RewardsDatabase engine_database_;
   base::Value::Dict state_store_;
   std::list<TestNetworkResult> network_results_;
   std::list<TestSPLAccountBalanceResult> spl_balance_results_;
-  LogCallback log_callback_;
 };
 
 }  // namespace brave_rewards::internal
