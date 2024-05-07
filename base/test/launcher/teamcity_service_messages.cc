@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 
@@ -14,37 +15,48 @@ namespace base {
 namespace {
 
 // https://www.jetbrains.com/help/teamcity/service-messages.html#Escaped+Values
-std::string_view TeamcityValueEscape(std::string_view s, std::string& result) {
-  static constexpr char kSymbolsToEscape[] = "\n\r'|[]";
-  const char* s_char = ranges::find_first_of(s, kSymbolsToEscape);
-  if (s_char == s.end()) {
-    return s;
-  }
+class EscapedValue {
+ public:
+  explicit EscapedValue(std::string_view value) : value_(value) {}
 
-  result.reserve(s.length() + s.length() / 4);
-  result.assign(s.begin(), s_char);
+  friend std::ostream& operator<<(std::ostream& stream,
+                                  const EscapedValue& escaped_value) {
+    static constexpr char kSymbolsToEscape[] = "\n\r'|[]";
+    std::string_view s = escaped_value.value_;
 
-  for (; s_char != s.end(); ++s_char) {
-    switch (*s_char) {
-      case '\n':
-        result += "|n";
+    for (size_t pos = s.find_first_of(kSymbolsToEscape); !s.empty();
+         pos = s.find_first_of(kSymbolsToEscape)) {
+      stream << s.substr(0, pos);
+      if (pos == std::string_view::npos) {
         break;
-      case '\r':
-        result += "|r";
-        break;
-      case '\'':
-      case '|':
-      case '[':
-      case ']':
-        result += '|';
-        [[fallthrough]];
-      default:
-        result += *s_char;
+      }
+
+      const char symbol = s[pos];
+      switch (symbol) {
+        case '\n':
+          stream << "|n";
+          break;
+        case '\r':
+          stream << "|r";
+          break;
+        case '\'':
+        case '|':
+        case '[':
+        case ']':
+          stream << '|' << symbol;
+          break;
+        default:
+          NOTREACHED_NORETURN();
+      }
+      s.remove_prefix(pos + 1);
     }
+
+    return stream;
   }
 
-  return result;
-}
+ private:
+  std::string_view value_;
+};
 
 }  // namespace
 
@@ -62,9 +74,7 @@ TeamcityServiceMessages::Message&
 TeamcityServiceMessages::Message::WriteProperty(std::string_view name,
                                                 std::string_view value) {
   if (!value.empty()) {
-    std::string escaped_value;
-    (*ostream_) << " " << name << "='"
-                << TeamcityValueEscape(value, escaped_value) << "'";
+    (*ostream_) << " " << name << "='" << EscapedValue(value) << "'";
   }
   return *this;
 }

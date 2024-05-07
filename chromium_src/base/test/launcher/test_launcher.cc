@@ -26,10 +26,6 @@ TestLauncher::TestLauncher(TestLauncherDelegate* launcher_delegate,
 
 TestLauncher::~TestLauncher() = default;
 
-// Upstream implementation of this method does roughly this:
-// 1. Print the test output if it has failed.
-// 2. Add test results via `results_tracker_.AddTestResult()`.
-// 3. Call exit(1) if a lot of test have failed.
 void TestLauncher::OnTestFinished(const TestResult& result) {
   // The order of TC log calls is important here. First we want to let TC know a
   // test is starting, then we call the original `OnTestFinished` which may
@@ -40,6 +36,13 @@ void TestLauncher::OnTestFinished(const TestResult& result) {
     teamcity_reporter_->OnTestStarted(result);
   }
 
+  // Upstream implementation of this method does roughly this:
+  // 1. Print the test output if it has failed.
+  // 2. Add test results via `results_tracker_.AddTestResult()`.
+  // 3. Call exit(1) if a lot of test have failed.
+  //
+  // TestLauncher::OnTestResult() will be called from AddTestResult() override.
+  // TestLauncher::MaybeSaveSummaryAsJSON() will be called before exit(1).
   TestLauncher_ChromiumImpl::OnTestFinished(result);
 
   if (teamcity_reporter_) {
