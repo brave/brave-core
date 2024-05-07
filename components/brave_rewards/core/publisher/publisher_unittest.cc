@@ -9,8 +9,7 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal::publisher {
@@ -35,9 +34,9 @@ class RewardsPublisherTest : public RewardsEngineTest {
     }
   }
 
-  double GetA() { return engine().GetState<double>(state::kScoreA); }
+  double GetA() { return engine().Get<Prefs>().GetDouble(prefs::kScoreA); }
 
-  double GetB() { return engine().GetState<double>(state::kScoreB); }
+  double GetB() { return engine().Get<Prefs>().GetDouble(prefs::kScoreB); }
 
   Publisher publisher_{engine()};
 };

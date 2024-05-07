@@ -9,39 +9,37 @@
 #include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/functional/overloaded.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal::wallet {
 
 namespace {
 
-std::string WalletTypeToState(const std::string& wallet_type) {
+std::string GetWalletPref(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletBitflyer) {
-    return state::kWalletBitflyer;
+    return prefs::kWalletBitflyer;
   } else if (wallet_type == constant::kWalletGemini) {
-    return state::kWalletGemini;
+    return prefs::kWalletGemini;
   } else if (wallet_type == constant::kWalletUphold) {
-    return state::kWalletUphold;
+    return prefs::kWalletUphold;
   } else if (wallet_type == constant::kWalletZebPay) {
-    return state::kWalletZebPay;
+    return prefs::kWalletZebPay;
   } else if (wallet_type == constant::kWalletSolana) {
-    return state::kWalletSolana;
-  } else if (wallet_type == "test") {
-    return "wallets." + wallet_type;
+    return prefs::kWalletSolana;
   } else {
     NOTREACHED();
   }
@@ -129,12 +127,20 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
 
 mojom::ExternalWalletPtr GetWallet(RewardsEngine& engine,
                                    const std::string& wallet_type) {
-  const auto state = WalletTypeToState(wallet_type);
-  if (state.empty()) {
+  auto wallet_pref = GetWalletPref(wallet_type);
+  if (wallet_pref.empty()) {
     return nullptr;
   }
 
-  auto json = engine.state()->GetEncryptedString(state);
+  auto data = engine.Get<Prefs>().GetString(wallet_pref);
+
+  if (!base::Base64Decode(data, &data)) {
+    engine.LogError(FROM_HERE) << "Base64 decoding failed for " << wallet_pref;
+    return nullptr;
+  }
+
+  std::optional<std::string> json;
+  engine.client()->DecryptString(data, &json);
   if (!json || json->empty()) {
     return nullptr;
   }
@@ -195,8 +201,16 @@ bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr wallet) {
     return false;
   }
 
-  return engine.state()->SetEncryptedString(WalletTypeToState(wallet->type),
-                                            json);
+  std::optional<std::string> encrypted;
+  engine.client()->EncryptString(json, &encrypted);
+  if (!encrypted) {
+    return false;
+  }
+
+  engine.Get<Prefs>().SetString(GetWalletPref(wallet->type),
+                                base::Base64Encode(*encrypted));
+
+  return true;
 }
 
 // Valid transition:

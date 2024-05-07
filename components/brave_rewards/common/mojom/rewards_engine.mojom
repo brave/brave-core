@@ -12,7 +12,6 @@ import "mojo/public/mojom/base/values.mojom";
 struct RewardsEngineOptions {
   Environment environment = Environment.kProduction;
   bool is_testing = false;
-  int32 state_migration_target_version_for_testing = -1;
   int32 reconcile_interval = 0;
   int32 retry_interval = 0;
 };
@@ -135,10 +134,6 @@ interface RewardsEngine {
 };
 
 interface RewardsEngineClient {
-  LoadLegacyState() => (Result result, string data);
-
-  LoadPublisherState() => (Result result, string data);
-
   OnReconcileComplete(Result result, ContributionInfo contribution);
 
   OnPanelPublisherInfo(Result result,
@@ -161,66 +156,15 @@ interface RewardsEngineClient {
   OnPublisherUpdated(string publisher_id);
 
   [Sync]
-  GetBooleanState(string name) => (bool value);
+  SetUserPreferenceValue(string path, mojo_base.mojom.Value value) => ();
 
   [Sync]
-  SetBooleanState(string name, bool value) => ();
+  GetUserPreferenceValue(string path) => (mojo_base.mojom.Value value);
 
   [Sync]
-  GetIntegerState(string name) => (int32 value);
-
-  [Sync]
-  SetIntegerState(string name, int32 value) => ();
-
-  [Sync]
-  GetDoubleState(string name) => (double value);
-
-  [Sync]
-  SetDoubleState(string name, double value) => ();
-
-  [Sync]
-  GetStringState(string name) => (string value);
-
-  [Sync]
-  SetStringState(string name, string value) => ();
-
-  [Sync]
-  GetInt64State(string name) => (int64 value);
-
-  [Sync]
-  SetInt64State(string name, int64 value) => ();
-
-  [Sync]
-  GetUint64State(string name) => (uint64 value);
-
-  [Sync]
-  SetUint64State(string name, uint64 value) => ();
-
-  [Sync]
-  GetValueState(string name) => (mojo_base.mojom.Value value);
-
-  [Sync]
-  SetValueState(string name, mojo_base.mojom.Value value) => ();
-
-  [Sync]
-  GetTimeState(string name) => (mojo_base.mojom.Time value);
-
-  [Sync]
-  SetTimeState(string name, mojo_base.mojom.Time value) => ();
-
-  [Sync]
-  ClearState(string name) => ();
-
-  [Sync]
-  GetClientCountryCode() => (string country_code);
-
-  [Sync]
-  GetLegacyWallet() => (string wallet);
+  ClearUserPreferenceValue(string path) => ();
 
   ShowNotification(string type, array<string> args) => (Result result);
-
-  [Sync]
-  GetClientInfo() => (ClientInfo info);
 
   ReconcileStampReset();
 

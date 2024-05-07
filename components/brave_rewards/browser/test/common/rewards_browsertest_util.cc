@@ -248,16 +248,4 @@ std::optional<std::string> EncryptPrefString(const std::string& value) {
   return base::Base64Encode(encrypted);
 }
 
-std::optional<std::string> DecryptPrefString(const std::string& value) {
-  std::string decoded;
-  if (!base::Base64Decode(value, &decoded)) {
-    return {};
-  }
-  std::string decrypted;
-  if (!OSCrypt::DecryptString(decoded, &decrypted)) {
-    return {};
-  }
-  return decrypted;
-}
-
 }  // namespace brave_rewards::test_util

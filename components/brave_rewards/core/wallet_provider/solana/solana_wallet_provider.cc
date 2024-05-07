@@ -13,11 +13,11 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/common/signer.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
@@ -189,9 +189,11 @@ void SolanaWalletProvider::OnWalletLinked(const std::string& address) {
     return;
   }
 
-  engine().SetState(state::kExternalWalletType, std::string(WalletType()));
-  engine().SetState(state::kAutoContributeEnabled, false);
+  Get<Prefs>().SetString(prefs::kExternalWalletType, WalletType());
+  Get<Prefs>().SetBoolean(prefs::kAutoContributeEnabled, false);
+
   client().ExternalWalletConnected();
+
   engine().database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + address.substr(0, 5));

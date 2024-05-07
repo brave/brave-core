@@ -13,9 +13,9 @@
 #include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal::database {
 
@@ -155,7 +155,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
       "UPDATE %s SET next_contribution_at = ? "
       "WHERE next_contribution_at IS NULL",
       kTableName);
-  BindInt64(command.get(), 0, engine_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 0, engine_->contribution()->GetReconcileStamp());
   transaction->commands.push_back(std::move(command));
 
   command = mojom::DBCommand::New();
@@ -255,7 +255,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
     // If a monthly contribution record does not have a valid "next contribution
     // date", then use the next auto-contribution date instead.
     if (!info->reconcile_stamp) {
-      info->reconcile_stamp = engine_->state()->GetReconcileStamp();
+      info->reconcile_stamp = engine_->contribution()->GetReconcileStamp();
     }
 
     list.push_back(std::move(info));

@@ -804,7 +804,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/browser/test/rewards_notification_browsertest.cc",
     "//brave/components/brave_rewards/browser/test/rewards_p3a_browsertest.cc",
     "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
-    "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
     "//brave/components/webcompat/content/test/webcompat_exceptions_browsertest.cc",

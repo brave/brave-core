@@ -17,17 +17,17 @@
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/media/media.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
 
@@ -104,15 +104,18 @@ void Publisher::CalcScoreConsts(const int min_duration_seconds) {
   const double a = (1.0 / (d * 2.0)) - min_duration_big;
   const double b = min_duration_big - a;
 
-  engine_->state()->SetScoreValues(a, b);
+  auto& user_prefs = engine_->Get<Prefs>();
+  user_prefs.SetDouble(prefs::kScoreA, a);
+  user_prefs.SetDouble(prefs::kScoreB, b);
 }
 
 // courtesy of @dimitry-xyz:
 // https://github.com/brave/engine/issues/2#issuecomment-221752002
 double Publisher::concaveScore(const uint64_t& duration_seconds) {
+  auto& user_prefs = engine_->Get<Prefs>();
   uint64_t duration_big = duration_seconds * 100;
-  double a, b;
-  engine_->state()->GetScoreValues(&a, &b);
+  double a = user_prefs.GetDouble(prefs::kScoreA);
+  double b = user_prefs.GetDouble(prefs::kScoreB);
   return (-b + std::sqrt((b * b) + (a * 4 * duration_big))) / (a * 2);
 }
 
@@ -171,15 +174,17 @@ mojom::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
     const uint64_t& current_reconcile_stamp,
     bool non_verified,
     bool min_visits) {
+  auto& user_prefs = engine_->Get<Prefs>();
+
   auto filter = mojom::ActivityInfoFilter::New();
   filter->id = publisher_id;
   filter->excluded = excluded;
   filter->min_duration =
-      min_duration ? engine_->state()->GetPublisherMinVisitTime() : 0;
+      min_duration ? user_prefs.GetInteger(prefs::kMinVisitTime) : 0;
   filter->reconcile_stamp = current_reconcile_stamp;
   filter->non_verified = non_verified;
   filter->min_visits =
-      min_visits ? engine_->state()->GetPublisherMinVisits() : 0;
+      min_visits ? user_prefs.GetInteger(prefs::kMinVisits) : 0;
 
   return filter;
 }
@@ -194,7 +199,7 @@ void Publisher::OnSaveVisitServerPublisher(
     mojom::ServerPublisherInfoPtr server_info) {
   auto filter = CreateActivityFilter(
       publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
-      engine_->state()->GetReconcileStamp(), true, false);
+      engine_->contribution()->GetReconcileStamp(), true, false);
 
   // we need to do this as I can't move server publisher into final function
   auto status = mojom::PublisherStatus::NOT_VERIFIED;
@@ -291,7 +296,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
   mojom::PublisherInfoPtr panel_info = nullptr;
 
   uint64_t min_visit_time =
-      static_cast<uint64_t>(engine_->state()->GetPublisherMinVisitTime());
+      engine_->Get<Prefs>().GetInteger(prefs::kMinVisitTime);
 
   bool min_duration_ok = duration > min_visit_time || ignore_time;
 
@@ -308,7 +313,8 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
     }
     publisher_info->duration += duration;
     publisher_info->score += concaveScore(duration);
-    publisher_info->reconcile_stamp = engine_->state()->GetReconcileStamp();
+    publisher_info->reconcile_stamp =
+        engine_->contribution()->GetReconcileStamp();
 
     // Activity queries expect the publisher to exist in the `publisher_info`
     // table. Save the publisher info if it does not already exist.
@@ -519,10 +525,10 @@ void Publisher::synopsisNormalizerInternal(
 }
 
 void Publisher::SynopsisNormalizer() {
-  auto filter =
-      CreateActivityFilter("", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
-                           true, engine_->state()->GetReconcileStamp(), false,
-                           engine_->state()->GetPublisherMinVisits());
+  int min_visits = engine_->Get<Prefs>().GetInteger(prefs::kMinVisits);
+  auto filter = CreateActivityFilter(
+      "", mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED, true,
+      engine_->contribution()->GetReconcileStamp(), false, min_visits);
   engine_->database()->GetActivityInfoList(
       0, 0, std::move(filter),
       base::BindOnce(&Publisher::SynopsisNormalizerCallback,
@@ -573,7 +579,7 @@ void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,
 
   auto filter = CreateActivityFilter(
       visit_data->domain, mojom::ExcludeFilter::FILTER_ALL, false,
-      engine_->state()->GetReconcileStamp(), true, false);
+      engine_->contribution()->GetReconcileStamp(), true, false);
 
   visit_data->favicon_url = "";
 
@@ -729,7 +735,7 @@ void Publisher::GetPublisherPanelInfo(const std::string& publisher_key,
                                       GetPublisherPanelInfoCallback callback) {
   auto filter = CreateActivityFilter(
       publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
-      engine_->state()->GetReconcileStamp(), true, false);
+      engine_->contribution()->GetReconcileStamp(), true, false);
 
   engine_->database()->GetPanelPublisherInfo(
       std::move(filter),

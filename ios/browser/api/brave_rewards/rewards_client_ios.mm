@@ -33,12 +33,6 @@ void RewardsClientIOS::FetchFavIcon(const std::string& url,
                callback:std::move(callback)];
   ;
 }
-void RewardsClientIOS::LoadLegacyState(LoadLegacyStateCallback callback) {
-  [bridge_ loadLegacyState:std::move(callback)];
-}
-void RewardsClientIOS::LoadPublisherState(LoadPublisherStateCallback callback) {
-  [bridge_ loadPublisherState:std::move(callback)];
-}
 void RewardsClientIOS::LoadURL(brave_rewards::mojom::UrlRequestPtr request,
                                LoadURLCallback callback) {
   [bridge_ loadUrl:std::move(request) callback:std::move(callback)];
@@ -78,98 +72,31 @@ void RewardsClientIOS::PublisherListNormalized(
     std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-void RewardsClientIOS::SetBooleanState(const std::string& name,
-                                       bool value,
-                                       SetBooleanStateCallback callback) {
-  [bridge_ setBooleanState:name value:value callback:std::move(callback)];
+void RewardsClientIOS::SetUserPreferenceValue(
+    const std::string& path,
+    base::Value value,
+    SetUserPreferenceValueCallback callback) {
+  [bridge_ setUserPreferenceValue:path
+                            value:std::move(value)
+                         callback:std::move(callback)];
 }
-void RewardsClientIOS::GetBooleanState(const std::string& name,
-                                       GetBooleanStateCallback callback) {
-  [bridge_ booleanState:name callback:std::move(callback)];
+
+void RewardsClientIOS::GetUserPreferenceValue(
+    const std::string& path,
+    GetUserPreferenceValueCallback callback) {
+  [bridge_ userPreferenceValue:path callback:std::move(callback)];
 }
-void RewardsClientIOS::SetIntegerState(const std::string& name,
-                                       int32_t value,
-                                       SetIntegerStateCallback callback) {
-  [bridge_ setIntegerState:name value:value callback:std::move(callback)];
+
+void RewardsClientIOS::ClearUserPreferenceValue(
+    const std::string& path,
+    ClearUserPreferenceValueCallback callback) {
+  [bridge_ clearUserPreferenceValue:path callback:std::move(callback)];
 }
-void RewardsClientIOS::GetIntegerState(const std::string& name,
-                                       GetIntegerStateCallback callback) {
-  [bridge_ integerState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetDoubleState(const std::string& name,
-                                      double value,
-                                      SetDoubleStateCallback callback) {
-  [bridge_ setDoubleState:name value:value callback:std::move(callback)];
-}
-void RewardsClientIOS::GetDoubleState(const std::string& name,
-                                      GetDoubleStateCallback callback) {
-  [bridge_ doubleState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetStringState(const std::string& name,
-                                      const std::string& value,
-                                      SetStringStateCallback callback) {
-  [bridge_ setStringState:name value:value callback:std::move(callback)];
-}
-void RewardsClientIOS::GetStringState(const std::string& name,
-                                      GetStringStateCallback callback) {
-  [bridge_ stringState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetInt64State(const std::string& name,
-                                     int64_t value,
-                                     SetInt64StateCallback callback) {
-  [bridge_ setInt64State:name value:value callback:std::move(callback)];
-}
-void RewardsClientIOS::GetInt64State(const std::string& name,
-                                     GetInt64StateCallback callback) {
-  [bridge_ int64State:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetUint64State(const std::string& name,
-                                      uint64_t value,
-                                      SetUint64StateCallback callback) {
-  [bridge_ setUint64State:name value:value callback:std::move(callback)];
-}
-void RewardsClientIOS::GetUint64State(const std::string& name,
-                                      GetUint64StateCallback callback) {
-  [bridge_ uint64State:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetValueState(const std::string& name,
-                                     base::Value value,
-                                     SetValueStateCallback callback) {
-  [bridge_ setValueState:name
-                   value:std::move(value)
-                callback:std::move(callback)];
-}
-void RewardsClientIOS::GetValueState(const std::string& name,
-                                     GetValueStateCallback callback) {
-  [bridge_ valueState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::SetTimeState(const std::string& name,
-                                    base::Time value,
-                                    SetTimeStateCallback callback) {
-  [bridge_ setTimeState:name value:value callback:std::move(callback)];
-}
-void RewardsClientIOS::GetTimeState(const std::string& name,
-                                    GetTimeStateCallback callback) {
-  [bridge_ timeState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::ClearState(const std::string& name,
-                                  ClearStateCallback callback) {
-  [bridge_ clearState:name callback:std::move(callback)];
-}
-void RewardsClientIOS::GetLegacyWallet(GetLegacyWalletCallback callback) {
-  [bridge_ legacyWallet:std::move(callback)];
-}
+
 void RewardsClientIOS::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
                                         ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:std::move(callback)];
-}
-void RewardsClientIOS::GetClientCountryCode(
-    GetClientCountryCodeCallback callback) {
-  [bridge_ getClientCountryCode:std::move(callback)];
-}
-void RewardsClientIOS::GetClientInfo(GetClientInfoCallback callback) {
-  [bridge_ clientInfo:std::move(callback)];
 }
 void RewardsClientIOS::ReconcileStampReset() {
   [bridge_ reconcileStampReset];

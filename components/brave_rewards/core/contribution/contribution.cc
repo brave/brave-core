@@ -16,17 +16,21 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
@@ -156,9 +160,28 @@ void Contribution::NotCompletedContributions(
   }
 }
 
+uint64_t Contribution::GetReconcileStamp() {
+  auto& user_prefs = engine_->Get<Prefs>();
+  if (user_prefs.GetUint64(prefs::kNextReconcileStamp) == 0) {
+    ResetReconcileStamp();
+  }
+  return user_prefs.GetUint64(prefs::kNextReconcileStamp);
+}
+
 void Contribution::ResetReconcileStamp() {
-  engine_->state()->ResetReconcileStamp();
-  SetReconcileStampTimer();
+  uint64_t reconcile_stamp = util::GetCurrentTimeStamp();
+
+  int reconcile_interval = engine_->options().reconcile_interval;
+  if (reconcile_interval > 0) {
+    reconcile_stamp += reconcile_interval * 60;
+  } else {
+    reconcile_stamp += constant::kReconcileInterval;
+  }
+
+  engine_->database()->SaveEventLog(prefs::kNextReconcileStamp,
+                                    base::NumberToString(reconcile_stamp));
+  engine_->Get<Prefs>().SetUint64(prefs::kNextReconcileStamp, reconcile_stamp);
+  engine_->client()->ReconcileStampReset();
 }
 
 void Contribution::StartContributionsForTesting() {
@@ -239,7 +262,7 @@ void Contribution::SetReconcileStampTimer() {
   }
 
   uint64_t now = std::time(nullptr);
-  uint64_t next_reconcile_stamp = engine_->state()->GetReconcileStamp();
+  uint64_t next_reconcile_stamp = GetReconcileStamp();
 
   base::TimeDelta delay;
   if (next_reconcile_stamp > now) {

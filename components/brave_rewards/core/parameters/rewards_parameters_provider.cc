@@ -9,9 +9,9 @@
 
 #include "base/json/values_util.h"
 #include "brave/components/brave_rewards/core/common/callback_helpers.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 
@@ -60,11 +60,7 @@ void RewardsParametersProvider::StartAutoUpdate() {
 }
 
 mojom::RewardsParametersPtr RewardsParametersProvider::GetCachedParameters() {
-  auto value = engine().GetState<base::Value>(state::kParameters);
-  if (!value.is_dict()) {
-    return nullptr;
-  }
-  return DictToParameters(value.GetDict());
+  return DictToParameters(Get<Prefs>().GetDict(prefs::kParameters));
 }
 
 void RewardsParametersProvider::GetParameters(GetParametersCallback callback) {
@@ -222,7 +218,7 @@ void RewardsParametersProvider::StoreParameters(
   dict.Set(kVBatExpiredKey, parameters.vbat_expired);
   dict.Set(kTosVersion, parameters.tos_version);
 
-  engine().SetState(state::kParameters, base::Value(std::move(dict)));
+  Get<Prefs>().SetDict(prefs::kParameters, std::move(dict));
 }
 
 }  // namespace brave_rewards::internal

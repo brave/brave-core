@@ -10,9 +10,9 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
@@ -54,7 +54,7 @@ bool LinkageChecker::ShouldPerformCheck() {
 }
 
 mojom::ExternalWalletPtr LinkageChecker::GetExternalWallet() {
-  auto wallet_type = engine().GetState<std::string>(state::kExternalWalletType);
+  auto wallet_type = Get<Prefs>().GetString(prefs::kExternalWalletType);
   if (wallet_type.empty()) {
     return nullptr;
   }
@@ -108,11 +108,8 @@ void LinkageChecker::UpdateSelfCustodyAvailableDict(
 
   // Returns true if the supplied Dict has a true value for some supported
   // wallet provider key.
-  auto has_available_provider = [&](const base::Value::Dict* dict) {
-    if (!dict) {
-      return false;
-    }
-    for (auto&& [key, entry_value] : *dict) {
+  auto has_available_provider = [&](const base::Value::Dict& dict) {
+    for (auto [key, entry_value] : dict) {
       if (auto bool_value = entry_value.GetIfBool()) {
         if (*bool_value && engine().GetExternalWalletProvider(key)) {
           return true;
@@ -123,21 +120,21 @@ void LinkageChecker::UpdateSelfCustodyAvailableDict(
   };
 
   bool previously_available = has_available_provider(
-      engine().GetState<base::Value>(state::kSelfCustodyAvailable).GetIfDict());
+      Get<Prefs>().GetDict(prefs::kSelfCustodyAvailable));
 
   bool currently_available =
-      has_available_provider(&value.self_custody_available);
+      has_available_provider(value.self_custody_available);
 
   // Save the available self-custody providers for this user.
-  engine().SetState(state::kSelfCustodyAvailable,
-                    base::Value(std::move(value.self_custody_available)));
+  Get<Prefs>().SetDict(prefs::kSelfCustodyAvailable,
+                       std::move(value.self_custody_available));
 
   // If the user is transitioning from having no self-custody providers
   // available to having at least one supported provider available, and they
   // have not dismissed the invite, then notify the user that self-custody
   // providers are available.
   if (!previously_available && currently_available) {
-    if (!engine().GetState<bool>(state::kSelfCustodyInviteDismissed)) {
+    if (!Get<Prefs>().GetBoolean(prefs::kSelfCustodyInviteDismissed)) {
       engine().client()->ShowNotification(notifications::kSelfCustodyAvailable,
                                           {}, base::DoNothing());
     }

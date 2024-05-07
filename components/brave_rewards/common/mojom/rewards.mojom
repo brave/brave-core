@@ -252,24 +252,6 @@ enum PublisherExclude {
   INCLUDED = 2   // user manually changed it to include and is overriding server
 };
 
-enum Platform {
-  DESKTOP = 0,
-  ANDROID_R = 1,
-  IOS = 2
-};
-
-enum OperatingSystem {
-  WINDOWS = 0,
-  MACOS = 1,
-  LINUX = 2,
-  UNDEFINED = 3
-};
-
-struct ClientInfo {
-  Platform platform;
-  OperatingSystem os;
-};
-
 struct RecurringTip {
   string publisher_key;
   double amount;

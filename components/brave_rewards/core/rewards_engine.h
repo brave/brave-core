@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/supports_user_data.h"
-#include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/rewards_log_stream.h"
@@ -41,10 +40,6 @@ class Wallet;
 
 namespace database {
 class Database;
-}
-
-namespace state {
-class State;
 }
 
 namespace bitflyer {
@@ -217,72 +212,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
   // mojom::RewardsEngine implementation end
 
-  // mojom::RewardsEngineClient helpers begin (in the order of appearance in
-  // Mojom)
-
-  template <typename T>
-  T GetState(const std::string& name) {
-    bool ok = false;
-    T value{};
-
-    if constexpr (std::is_same_v<T, bool>) {
-      ok = client_->GetBooleanState(name, &value);
-    } else if constexpr (std::is_same_v<T, int32_t>) {
-      ok = client_->GetIntegerState(name, &value);
-    } else if constexpr (std::is_same_v<T, double>) {
-      ok = client_->GetDoubleState(name, &value);
-    } else if constexpr (std::is_same_v<T, std::string>) {
-      ok = client_->GetStringState(name, &value);
-    } else if constexpr (std::is_same_v<T, int64_t>) {
-      ok = client_->GetInt64State(name, &value);
-    } else if constexpr (std::is_same_v<T, uint64_t>) {
-      ok = client_->GetUint64State(name, &value);
-    } else if constexpr (std::is_same_v<T, base::Value>) {
-      ok = client_->GetValueState(name, &value);
-    } else if constexpr (std::is_same_v<T, base::Time>) {
-      ok = client_->GetTimeState(name, &value);
-    } else {
-      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
-    }
-
-    // Occasionally during shutdown the engine can fail to read preferences from
-    // the client, likely due to the complexities of sync mojo calls.
-    // TODO(https://github.com/brave/brave-browser/issues/37816): User pref
-    // access should be refactored to handle these errors gracefully.
-    DCHECK(ok) << "Unable to read state from Rewards engine client";
-
-    return value;
-  }
-
-  template <typename T>
-  void SetState(const std::string& name, T value) {
-    if constexpr (std::is_same_v<T, bool>) {
-      client_->SetBooleanState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, int32_t>) {
-      client_->SetIntegerState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, double>) {
-      client_->SetDoubleState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, std::string>) {
-      client_->SetStringState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, int64_t>) {
-      client_->SetInt64State(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, uint64_t>) {
-      client_->SetUint64State(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, base::Value>) {
-      client_->SetValueState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, base::Time>) {
-      client_->SetTimeState(name, std::move(value));
-    } else {
-      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
-    }
-  }
-
-  std::string GetClientCountryCode();
-
-  std::string GetLegacyWallet();
-
-  mojom::ClientInfoPtr GetClientInfo();
-
   // Performs logging to the Rewards logging file as implemented by the client.
   //
   //   Log(FROM_HERE) << "This will appear in the log file when verbose logging"
@@ -295,11 +224,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   // result in sensitive data being written to the Rewards log file.
   RewardsLogStream Log(base::Location location);
   RewardsLogStream LogError(base::Location location);
-
-  std::optional<std::string> EncryptString(const std::string& value);
-
-  std::optional<std::string> DecryptString(const std::string& value);
-  // mojom::RewardsEngineClient helpers end
 
   base::WeakPtr<RewardsEngine> GetWeakPtr();
   base::WeakPtr<const RewardsEngine> GetWeakPtr() const;
@@ -330,8 +254,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   contribution::Contribution* contribution() { return contribution_.get(); }
 
   wallet::Wallet* wallet() { return wallet_.get(); }
-
-  state::State* state() { return state_.get(); }
 
   bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
 
@@ -372,7 +294,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   std::unique_ptr<contribution::Contribution> contribution_;
   std::unique_ptr<wallet::Wallet> wallet_;
   std::unique_ptr<database::Database> database_;
-  std::unique_ptr<state::State> state_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;

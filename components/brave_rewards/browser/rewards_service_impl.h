@@ -234,8 +234,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  void GetLegacyWallet(GetLegacyWalletCallback callback) override;
-
   void GetExternalWallet(GetExternalWalletCallback callback) override;
 
   std::string GetExternalWalletType() const override;
@@ -273,7 +271,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   // Testing methods
   void SetEngineEnvForTesting();
-  void SetEngineStateTargetVersionForTesting(int version);
   void PrepareEngineEnvForTesting(mojom::RewardsEngineOptions& options);
   void StartContributionsForTesting();
   void ForTestingSetTestResponseCallback(
@@ -304,11 +301,6 @@ class RewardsServiceImpl final : public RewardsService,
   void Reset();
 
   void OnEngineCreated();
-
-  void OnLegacyStateLoaded(LoadLegacyStateCallback callback,
-                           std::pair<std::string, base::Value> data);
-  void OnPublisherStateLoaded(LoadPublisherStateCallback callback,
-                              const std::string& data);
 
   void OnRestorePublishers(const mojom::Result result);
 
@@ -344,8 +336,6 @@ class RewardsServiceImpl final : public RewardsService,
   // mojom::RewardsEngineClient
   void OnReconcileComplete(mojom::Result result,
                            mojom::ContributionInfoPtr contribution) override;
-  void LoadLegacyState(LoadLegacyStateCallback callback) override;
-  void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
   void GetSPLTokenAccountBalance(
       const std::string& solana_address,
@@ -389,50 +379,16 @@ class RewardsServiceImpl final : public RewardsService,
            int32_t verbose_level,
            const std::string& message) override;
 
-  void SetBooleanState(const std::string& name,
-                       bool value,
-                       SetBooleanStateCallback callback) override;
-  void GetBooleanState(const std::string& name,
-                       GetBooleanStateCallback callback) override;
-  void SetIntegerState(const std::string& name,
-                       int32_t value,
-                       SetIntegerStateCallback callback) override;
-  void GetIntegerState(const std::string& name,
-                       GetIntegerStateCallback callback) override;
-  void SetDoubleState(const std::string& name,
-                      double value,
-                      SetDoubleStateCallback callback) override;
-  void GetDoubleState(const std::string& name,
-                      GetDoubleStateCallback callback) override;
-  void SetStringState(const std::string& name,
-                      const std::string& value,
-                      SetStringStateCallback callback) override;
-  void GetStringState(const std::string& name,
-                      GetStringStateCallback callback) override;
-  void SetInt64State(const std::string& name,
-                     int64_t value,
-                     SetInt64StateCallback callback) override;
-  void GetInt64State(const std::string& name,
-                     GetInt64StateCallback callback) override;
-  void SetUint64State(const std::string& name,
-                      uint64_t value,
-                      SetUint64StateCallback callback) override;
-  void GetUint64State(const std::string& name,
-                      GetUint64StateCallback callback) override;
-  void SetValueState(const std::string& name,
-                     base::Value value,
-                     SetValueStateCallback callback) override;
-  void GetValueState(const std::string& name,
-                     GetValueStateCallback callback) override;
-  void SetTimeState(const std::string& name,
-                    base::Time value,
-                    SetTimeStateCallback callback) override;
-  void GetTimeState(const std::string& name,
-                    GetTimeStateCallback callback) override;
-  void ClearState(const std::string& name,
-                  ClearStateCallback callback) override;
+  void GetUserPreferenceValue(const std::string& path,
+                              GetUserPreferenceValueCallback callback) override;
 
-  void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
+  void SetUserPreferenceValue(const std::string& path,
+                              base::Value value,
+                              SetUserPreferenceValueCallback callback) override;
+
+  void ClearUserPreferenceValue(
+      const std::string& path,
+      ClearUserPreferenceValueCallback callback) override;
 
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;
@@ -443,8 +399,6 @@ class RewardsServiceImpl final : public RewardsService,
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
                         ShowNotificationCallback callback) override;
-
-  void GetClientInfo(GetClientInfoCallback callback) override;
 
   void ReconcileStampReset() override;
 
@@ -537,7 +491,6 @@ class RewardsServiceImpl final : public RewardsService,
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   bool engine_for_testing_ = false;
-  int engine_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
   base::WallClockTimer p3a_daily_timer_;

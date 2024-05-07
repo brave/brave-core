@@ -8,8 +8,6 @@ import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
   sources = [
-    "android_util.cc",
-    "android_util.h",
     "diagnostic_log.cc",
     "diagnostic_log.h",
     "logging.h",

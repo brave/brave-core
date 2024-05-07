@@ -56,7 +56,13 @@ class Contribution {
   void ContributionCompleted(mojom::Result result,
                              mojom::ContributionInfoPtr contribution);
 
+  uint64_t GetReconcileStamp();
+
   void ResetReconcileStamp();
+
+  bool GetAutoContributeEnabled();
+
+  double GetAutoContributeAmount();
 
   void OneTimeTip(const std::string& publisher_key,
                   double amount,

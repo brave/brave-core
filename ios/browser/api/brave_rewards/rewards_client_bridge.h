@@ -16,12 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol RewardsClientBridge
 @required
 
-- (void)loadLegacyState:
-    (brave_rewards::mojom::RewardsEngineClient::LoadLegacyStateCallback)
-        callback;
-- (void)loadPublisherState:
-    (brave_rewards::mojom::RewardsEngineClient::LoadPublisherStateCallback)
-        callback;
 - (void)onReconcileComplete:(brave_rewards::mojom::Result)result
                contribution:
                    (brave_rewards::mojom::ContributionInfoPtr)contribution;
@@ -42,97 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
     (std::vector<brave_rewards::mojom::PublisherInfoPtr>)list;
 - (void)onPublisherRegistryUpdated;
 - (void)onPublisherUpdated:(const std::string&)publisherId;
-- (void)
-    booleanState:(const std::string&)name
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::GetBooleanStateCallback)
-                callback;
-- (void)setBooleanState:(const std::string&)name
-                  value:(bool)value
-               callback:(brave_rewards::mojom::RewardsEngineClient::
-                             SetBooleanStateCallback)callback;
-- (void)
-    integerState:(const std::string&)name
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::GetIntegerStateCallback)
-                callback;
-- (void)setIntegerState:(const std::string&)name
-                  value:(int32_t)value
-               callback:(brave_rewards::mojom::RewardsEngineClient::
-                             SetIntegerStateCallback)callback;
-- (void)
-    doubleState:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetDoubleStateCallback)
-               callback;
-- (void)setDoubleState:(const std::string&)name
-                 value:(double)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetDoubleStateCallback)callback;
-- (void)
-    stringState:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetStringStateCallback)
-               callback;
-- (void)setStringState:(const std::string&)name
-                 value:(const std::string&)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetStringStateCallback)callback;
-- (void)int64State:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::GetInt64StateCallback)
-                  callback;
-- (void)
-    setInt64State:(const std::string&)name
-            value:(int64_t)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::SetInt64StateCallback)
-                 callback;
-- (void)
-    uint64State:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetUint64StateCallback)
-               callback;
-- (void)setUint64State:(const std::string&)name
-                 value:(uint64_t)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetUint64StateCallback)callback;
-- (void)valueState:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::GetValueStateCallback)
-                  callback;
-- (void)
-    setValueState:(const std::string&)name
-            value:(base::Value)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::SetValueStateCallback)
-                 callback;
-- (void)timeState:(const std::string&)name
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::GetTimeStateCallback)
-                 callback;
-- (void)
-    setTimeState:(const std::string&)name
-           value:(base::Time)value
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::SetTimeStateCallback)
-                callback;
-- (void)clearState:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::ClearStateCallback)
-                  callback;
-- (void)getClientCountryCode:
-    (brave_rewards::mojom::RewardsEngineClient::GetClientCountryCodeCallback)
-        callback;
-- (void)legacyWallet:
-    (brave_rewards::mojom::RewardsEngineClient::GetLegacyWalletCallback)
-        callback;
+- (void)userPreferenceValue:(const std::string&)path
+                   callback:(brave_rewards::mojom::RewardsEngineClient::
+                                 GetUserPreferenceValueCallback)callback;
+- (void)setUserPreferenceValue:(const std::string&)path
+                         value:(base::Value)value
+                      callback:(brave_rewards::mojom::RewardsEngineClient::
+                                    SetUserPreferenceValueCallback)callback;
+- (void)clearUserPreferenceValue:(const std::string&)path
+                        callback:(brave_rewards::mojom::RewardsEngineClient::
+                                      ClearUserPreferenceValueCallback)callback;
 - (void)showNotification:(const std::string&)type
                     args:(std::vector<std::string>)args
                 callback:(brave_rewards::mojom::RewardsEngineClient::
                               ShowNotificationCallback)callback;
-- (void)clientInfo:
-    (brave_rewards::mojom::RewardsEngineClient::GetClientInfoCallback)callback;
 - (void)reconcileStampReset;
 - (void)runDbTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
                 callback:(brave_rewards::mojom::RewardsEngineClient::

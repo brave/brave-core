@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/common/prefs.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,7 +31,7 @@ class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
   ~ConnectTestWallet() override = default;
 
  private:
-  const char* WalletType() const override { return "test"; }
+  const char* WalletType() const override { return "uphold"; }
 
   std::string GetOAuthLoginURL() const override {
     return "https://test.com?" + oauth_info_.one_time_string;
@@ -65,7 +66,7 @@ TEST_P(RewardsConnectExternalWalletTest, Paths) {
       R"({ "status": )" +
       base::NumberToString(static_cast<int>(wallet_status)) + "}");
 
-  engine().SetState("wallets.test", test_wallet);
+  engine().Get<Prefs>().SetString(prefs::kWalletUphold, test_wallet);
 
   ConnectTestWallet connect_wallet(engine(), post_connect_result);
 
