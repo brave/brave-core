@@ -138,32 +138,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
   return result;
 }
 
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
-    ArticleInfos& articles,
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get()) {
-  PickArticles pick_hero = base::BindRepeating([](const ArticleInfos& infos) {
-    return PickRouletteWithWeighting(
-        infos,
-        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                               const ArticleWeight& weight) {
-          auto image_url = metadata->image->is_padded_image_url()
-                               ? metadata->image->get_padded_image_url()
-                               : metadata->image->get_image_url();
-          return image_url.is_valid() && weight.subscribed ? weight.weighting
-                                                           : 0;
-        }));
-  });
-
-  return GenerateBlock(articles, std::move(pick_hero),
-                       base::BindRepeating(&PickRoulette),
-                       inline_discovery_ratio);
-}
-
 // Generates a block from sampled content groups:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
@@ -263,42 +237,10 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     FeedGenerationInfo& info,
     const std::string& channel) {
   DVLOG(1) << __FUNCTION__;
-  // First, create a set of all publishers in this channel.
-  base::flat_set<std::string> allowed_publishers;
-  for (const auto& [id, publisher] : info.publishers) {
-    for (const auto& locale_info : publisher->locales) {
-      if (info.locale != locale_info->locale) {
-        continue;
-      }
 
-      if (base::ranges::any_of(locale_info->channels,
-                               [&channel](const auto& publisher_channel) {
-                                 return publisher_channel == channel;
-                               })) {
-        allowed_publishers.insert(id);
-      }
-    }
-  }
-
-  // now, filter articles to only include articles in the channel.
-  ArticleInfos allowed_articles;
-  for (auto i = 0u; i < info.GetArticleInfos().size(); ++i) {
-    auto& article_info = info.GetArticleInfos()[i];
-    if (!base::Contains(allowed_publishers,
-                        std::get<0>(article_info)->publisher_id)) {
-      continue;
-    }
-
-    allowed_articles.push_back(std::move(article_info));
-    info.GetArticleInfos().erase(info.GetArticleInfos().begin() + i);
-    --i;
-  }
-
-  auto block = GenerateBlock(allowed_articles, /*inline_discovery_ratio=*/0);
-
-  // Put the unused articles back in the original list.
-  base::ranges::move(allowed_articles,
-                     std::back_inserter(info.GetArticleInfos()));
+  auto channel_picker = base::BindRepeating(&PickChannelRoulette, channel);
+  auto block =
+      GenerateBlock(info.GetArticleInfos(), channel_picker, channel_picker, 0);
 
   // If we didn't manage to generate a block, don't return any elements.
   if (block.empty()) {
