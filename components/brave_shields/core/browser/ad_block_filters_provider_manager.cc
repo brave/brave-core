@@ -68,47 +68,26 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) {
+    base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) {
   NOTREACHED();
 }
 
-void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
+void AdBlockFiltersProviderManager::GetFiltersForEngine(
     bool is_for_default_engine,
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+    base::OnceCallback<void(std::vector<std::pair<uint8_t, DATFileDataBuffer>>)>
+        cb) {
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
-  const auto collect_and_merge = base::BarrierCallback<
-      base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>(
-      filters_providers.size(),
-      base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
+  const auto collect_and_merge =
+      base::BarrierCallback<std::pair<uint8_t, DATFileDataBuffer>>(
+          filters_providers.size(), std::move(cb));
   for (auto* const provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
                        provider->AsWeakPtr(), std::move(collect_and_merge)));
   }
-}
-
-// static
-void RunAllResults(
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results,
-    rust::Box<adblock::FilterSet>* filter_set) {
-  for (auto& cb : results) {
-    std::move(cb).Run(filter_set);
-  }
-}
-
-void AdBlockFiltersProviderManager::FinishCombinating(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results) {
-  std::move(cb).Run(base::BindOnce(&RunAllResults, std::move(results)));
 }
 
 }  // namespace brave_shields

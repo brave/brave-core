@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 
 #include <string>
+#include <utility>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -37,15 +38,13 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
   ~AdBlockSubscriptionFiltersProvider() override;
 
   void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) override;
 
   void OnListAvailable();
 
  private:
   void OnDATFileDataReady(
-      base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)> cb,
       const DATFileDataBuffer& dat_buf);
 
   std::string GetNameForDebugging() override;

@@ -11,6 +11,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -19,6 +20,7 @@
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -69,9 +71,11 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnFilterSetCallbackLoaded(
-        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
     void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnNewFiltersLoaded(
+        std::vector<std::pair<uint8_t, DATFileDataBuffer>> new_filters);
+    void OnNewFilterListLoaded(
+        std::pair<uint8_t, DATFileDataBuffer> new_filter_list);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;

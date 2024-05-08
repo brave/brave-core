@@ -8,13 +8,13 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -24,23 +24,12 @@ namespace brave_shields {
 
 namespace {
 
-void AddNothingToFilterSet(rust::Box<adblock::FilterSet>*) {}
-
-// static
-void AddDATBufferToFilterSet(uint8_t permission_mask,
-                             DATFileDataBuffer buffer,
-                             rust::Box<adblock::FilterSet>* filter_set) {
-  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
-}
-
 // static
 void OnReadDATFileData(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)> cb,
     uint8_t permission_mask,
     DATFileDataBuffer buffer) {
-  std::move(cb).Run(
-      base::BindOnce(&AddDATBufferToFilterSet, permission_mask, buffer));
+  std::move(cb).Run({permission_mask, buffer});
 }
 
 }  // namespace
@@ -108,12 +97,11 @@ bool AdBlockComponentFiltersProvider::IsInitialized() const {
 }
 
 void AdBlockComponentFiltersProvider::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+    base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, provide a no-op callback immediately. An
     // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
+    std::move(cb).Run({0, std::vector<unsigned char>()});
     return;
   }
 

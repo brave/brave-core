@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_FILTERS_PROVIDER_H_
 
 #include <string>
+#include <utility>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
@@ -54,8 +55,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   const std::string& component_id() const { return component_id_; }
 
   void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+      base::OnceCallback<void(std::pair<uint8_t, DATFileDataBuffer>)>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.
