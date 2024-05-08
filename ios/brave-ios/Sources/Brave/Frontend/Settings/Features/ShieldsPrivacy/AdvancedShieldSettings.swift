@@ -77,6 +77,11 @@ import os
       }
     }
   }
+  @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
+    didSet {
+      ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+    }
+  }
 
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
@@ -105,6 +110,7 @@ import os
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.clearDataCallback = clearDataCallback
     self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
+    self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
 

@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveWallet
 import CertificateUtilities
 import Data
@@ -305,6 +306,10 @@ class Tab: NSObject {
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
+  /// This is the request that was upgraded to HTTPS
+  /// This allows us to rollback the upgrade when we encounter a 4xx+
+  var upgradedHTTPSRequest: URLRequest?
+
   /// The tabs new tab page controller.
   ///
   /// Should be setup in BVC then assigned here for future use.
@@ -462,7 +467,7 @@ class Tab: NSObject {
       configuration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration!.ignoresViewportScaleLimits = true
-      configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
+      configuration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
       configuration!.enablePageTopColorSampling()
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {

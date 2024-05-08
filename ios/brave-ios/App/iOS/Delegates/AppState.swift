@@ -206,6 +206,7 @@ public class AppState {
       (IPFSSchemeHandler.path, IPFSSchemeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
+      (HTTPBlockedHandler.path, HTTPBlockedHandler()),
     ]
 
     responders.forEach { (path, responder) in

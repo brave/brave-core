@@ -49,11 +49,15 @@ class URLExtensionTests: XCTestCase {
 
     XCTAssertEqual(
       embeddedURL.encodeEmbeddedInternalURL(for: .readermode)?.strippedInternalURL,
-      URL(string: "https://en.m.wikipedia.org/wiki/Main_Page?somequery=abc-123")
+      embeddedURL
     )
     XCTAssertEqual(
       embeddedURL.encodeEmbeddedInternalURL(for: .blocked)?.strippedInternalURL,
-      URL(string: "https://en.m.wikipedia.org/wiki/Main_Page?somequery=abc-123")
+      embeddedURL
+    )
+    XCTAssertEqual(
+      embeddedURL.encodeEmbeddedInternalURL(for: .httpBlocked)?.strippedInternalURL,
+      embeddedURL
     )
     XCTAssertNil(embeddedURL.strippedInternalURL)
   }
@@ -116,15 +120,19 @@ class URLExtensionTests: XCTestCase {
 
     XCTAssertEqual(
       embeddedURL.encodeEmbeddedInternalURL(for: .readermode)?.displayURL,
-      URL(string: "https://en.m.wikipedia.org/wiki/Main_Page?somequery=abc-123")
+      embeddedURL
     )
     XCTAssertEqual(
       embeddedURL.encodeEmbeddedInternalURL(for: .blocked)?.displayURL,
-      URL(string: "https://en.m.wikipedia.org/wiki/Main_Page?somequery=abc-123")
+      embeddedURL
+    )
+    XCTAssertEqual(
+      embeddedURL.encodeEmbeddedInternalURL(for: .httpBlocked)?.displayURL,
+      embeddedURL
     )
     XCTAssertEqual(
       embeddedURL.displayURL,
-      URL(string: "https://en.m.wikipedia.org/wiki/Main_Page?somequery=abc-123")
+      embeddedURL
     )
   }
 }
