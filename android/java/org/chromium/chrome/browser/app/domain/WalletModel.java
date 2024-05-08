@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -31,6 +33,7 @@ public class WalletModel {
     private AssetRatioService mAssetRatioService;
     private SwapService mSwapService;
     private final CryptoModel mCryptoModel;
+    @NonNull
     private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
     private Context mContext;
@@ -140,6 +143,7 @@ public class WalletModel {
         return mCryptoModel.getNetworkModel();
     }
 
+    @NonNull
     public DappsModel getDappsModel() {
         return mDappsModel;
     }
