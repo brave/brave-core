@@ -3,14 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Unfortunately, Chromium is midway through migrating from iron-icon to cr-icon
+// which means we need to support both. The overrides here and in cr-icon are
+// extremely similar, but subtly different (the chromium ==> Nala icon mapping
+// is shared). Hopefully in the not too distant future we'll be able to remove
+// this, when the settings page is 100% cr-icon.
+
 import { RegisterStyleOverride, RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import 'chrome://resources/brave/leo.bundle.js'
 
-const leoIcons = (window as any)['leoIcons'] as Set<string>
+export const leoIcons = (window as any)['leoIcons'] as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
-const iconMap: { [key: string]: string } = {
+export const iconMap: { [key: string]: string } = {
   'cr:security': 'lock',
   'cr:search': 'search',
   'settings:palette': 'appearance',
