@@ -219,14 +219,6 @@
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
-          "enable-nft-pinning",                                               \
-          "Enable NFT pinning",                                               \
-          "Enable NFT pinning for Brave Wallet",                              \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletNftPinningFeature),         \
-      },                                                                      \
-      {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
           "Native cryptocurrency wallet support without the use of "          \

@@ -194,8 +194,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
-  registry->RegisterDictionaryPref(kPinnedNFTAssets);
-  registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
   registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
   registry->RegisterBooleanPref(kBraveWalletPrivateWindowsEnabled, false);

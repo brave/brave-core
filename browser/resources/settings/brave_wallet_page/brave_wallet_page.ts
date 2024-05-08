@@ -66,12 +66,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     }
   }
 
-  static get observers(){
-    return [
-      'onShowOptionChanged_(prefs.brave.wallet.auto_pin_enabled.value)'
-    ]
-  }
-
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
 
   ready() {

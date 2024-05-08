@@ -55,14 +55,6 @@
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
-          "enable-nft-pinning",                                               \
-          "Enable NFT pinning",                                               \
-          "Enable NFT pinning for Brave Wallet",                              \
-          flags_ui::kOsIos,                                                   \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletNftPinningFeature),         \
-      },                                                                      \
-      {                                                                       \
           "brave-wallet-zcash",                                               \
           "Enable BraveWallet ZCash support",                                 \
           "Zcash support for native Brave Wallet",                            \

@@ -808,10 +808,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
-  auto clear_pinned_nft_confirmation = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION, confirmation_phrase);
-  html_source->AddString("walletClearPinnedNftConfirmation",
-                         clear_pinned_nft_confirmation);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif

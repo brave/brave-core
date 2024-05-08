@@ -1146,9 +1146,6 @@
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
     Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
-  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION" desc="Clear pinned NFTs confirmation message text">
-    Are you sure you want to clear your pinned NFTs? Some of NFTs may be lost forever if there is no other hosters in the IPFS network. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
-  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet was reset.
   </message>

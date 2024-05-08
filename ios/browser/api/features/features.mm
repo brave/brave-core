@@ -221,11 +221,6 @@
       initWithFeature:&brave_wallet::features::kBraveWalletBitcoinFeature];
 }
 
-+ (Feature*)kBraveWalletNftPinningFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletNftPinningFeature];
-}
-
 + (Feature*)kBraveWalletZCashFeature {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];

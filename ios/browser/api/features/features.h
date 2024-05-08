@@ -56,7 +56,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveSync;
 @property(class, nonatomic, readonly) Feature* kBraveWalletAnkrBalancesFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletBitcoinFeature;
-@property(class, nonatomic, readonly) Feature* kBraveWalletNftPinningFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletZCashFeature;
 @property(class, nonatomic, readonly) Feature* kConstellation;
 @property(class, nonatomic, readonly) Feature* kConstellationEnclaveAttestation;

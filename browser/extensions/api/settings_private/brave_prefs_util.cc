@@ -324,9 +324,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::kBoolean;
 
-  // NFT pinning pref
-  (*s_brave_allowlist)[kAutoPinEnabled] = settings_api::PrefType::kBoolean;
-
 #if defined(TOOLKIT_VIEWS)
   // Vertical tab strip prefs
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsEnabled] =
