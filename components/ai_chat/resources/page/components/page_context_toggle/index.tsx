@@ -48,8 +48,10 @@ function PageContextToggle() {
               </div>
             </div>
             <Button
+              fab
               kind='plain-faint'
               className={styles.tooltipButton}
+              onClick={(e: any) => e.preventDefault()}
             >
               <Icon name='info-outline' />
             </Button>
