@@ -534,8 +534,8 @@ extension BraveWalletJsonRpcService {
     }
   }
 
-  /// Add multiple networks based on its chainId and coin type.
-  @MainActor func addHiddenNetworks(
+  /// Remove multiple networks based on its chainId and coin type.
+  @MainActor func removeHiddenNetworks(
     for networks: [BraveWallet.CoinType: [String]]
   ) async {
     await withTaskGroup(of: Void.self) {
@@ -544,7 +544,7 @@ extension BraveWalletJsonRpcService {
       for (coin, chainIds) in networks {
         for chainId in chainIds {
           group.addTask { @MainActor in
-            await self.addHiddenNetwork(coin: coin, chainId: chainId)
+            await self.removeHiddenNetwork(coin: coin, chainId: chainId)
           }
         }
       }

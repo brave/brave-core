@@ -63,8 +63,11 @@ struct PortfolioView: View {
           EditUserAssetsView(
             networkStore: networkStore,
             keyringStore: keyringStore,
-            userAssetsStore: portfolioStore.userAssetsStore
+            userAssetsStore: cryptoStore.openUserAssetsStore()
           )
+          .onDisappear {
+            cryptoStore.closeUserAssetsStore()
+          }
         }
     )
     .background(
@@ -98,9 +101,12 @@ struct PortfolioView: View {
             networkStore: networkStore,
             networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
             keyringStore: keyringStore,
-            userAssetStore: cryptoStore.nftStore.userAssetsStore,
+            userAssetStore: cryptoStore.openUserAssetsStore(),
             supportedTokenTypes: [.nft]
           )
+          .onDisappear {
+            cryptoStore.closeUserAssetsStore()
+          }
         }
     )
     .background(

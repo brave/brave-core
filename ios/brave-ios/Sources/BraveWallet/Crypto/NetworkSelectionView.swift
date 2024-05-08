@@ -48,7 +48,7 @@ struct NetworkSelectionView: View {
     NetworkSelectionRootView(
       navigationTitle: navigationTitle,
       selectedNetworks: [selectedNetwork],
-      allNetworks: networkStore.nonHiddenChains,
+      allNetworks: networkStore.visibleChains,
       selectNetwork: { network in
         selectNetwork(network)
       }

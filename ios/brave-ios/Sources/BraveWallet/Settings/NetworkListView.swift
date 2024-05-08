@@ -11,7 +11,7 @@ import SwiftUI
 
 struct NetworkListView: View {
   @ObservedObject var networkStore: NetworkStore
-  @State private var isPresentingNetworkDetails: CustomNetworkModel?
+  @State private var isPresentingNetworkDetails: NetworkModel?
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
 
@@ -40,109 +40,112 @@ struct NetworkListView: View {
     }
   }
 
+  @ViewBuilder func networkRow(_ network: BraveWallet.NetworkInfo) -> some View {
+    Button {
+      isPresentingNetworkDetails = .init(from: network)
+    } label: {
+      HStack {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(network.chainName)
+            .foregroundColor(Color(.braveLabel))
+            .font(.callout.weight(isDefaultNetwork(network) ? .bold : .regular))
+          Group {
+            Text(network.chainId)
+            if let rpcEndpoint = network.rpcEndpoints[
+              safe: Int(network.activeRpcEndpointIndex)
+            ]?.absoluteString {
+              Text(rpcEndpoint)
+            }
+          }
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .font(.footnote)
+        }
+        Spacer()
+        HStack {
+          Button {
+            if networkStore.isHiddenChain(network) {
+              Task { @MainActor in
+                await networkStore.removeHiddenNetwork(
+                  coin: network.coin,
+                  for: network.chainId
+                )
+              }
+            } else {
+              Task { @MainActor in
+                await networkStore.addHiddenNetwork(
+                  coin: network.coin,
+                  for: network.chainId
+                )
+              }
+            }
+          } label: {
+            Image(
+              braveSystemName: networkStore.isHiddenChain(network)
+                ? "leo.eye.off" : "leo.eye.on"
+            )
+            .font(.callout.weight(.semibold))
+            .foregroundColor(
+              isDefaultNetwork(network)
+                ? Color(.braveDisabled) : Color(.braveLabel)
+            )
+          }
+          .disabled(isDefaultNetwork(network))
+          Rectangle()
+            .fill(
+              Color(uiColor: WalletV2Design.dividerSubtle)
+            )
+            .frame(width: 1)
+            .padding(.vertical, 16)
+          Menu {
+            VStack {
+              Button {
+                isPresentingNetworkDetails = .init(from: network)
+              } label: {
+                Text(Strings.Wallet.editButtonTitle)
+              }
+              if networkStore.isCustomChain(network)
+                && !isDefaultNetwork(network)
+              {
+                Button {
+                  removeNetwork(network)
+                } label: {
+                  Text(Strings.Wallet.delete)
+                }
+              }
+              if !isDefaultNetwork(network) {
+                Button {
+                  Task { @MainActor in
+                    await networkStore.updateDefaultNetwork(network)
+                  }
+                } label: {
+                  Text(Strings.Wallet.setDefaultNetwork)
+                }
+              }
+            }
+            .foregroundColor(Color(.braveLabel))
+          } label: {
+            Image(
+              braveSystemName: "leo.more.vertical"
+            )
+            .font(.callout.weight(.semibold))
+            .foregroundColor(Color(.braveLabel))
+          }
+        }
+      }
+    }
+  }
+
   var body: some View {
     List {
       ForEach(WalletConstants.supportedCoinTypes()) { coin in
         Section {
           let networks = allNetworks.filter { $0.coin == coin }
           ForEach(networks) { network in
-            HStack {
-              VStack(alignment: .leading, spacing: 2) {
-                Text(network.chainName)
-                  .foregroundColor(Color(.braveLabel))
-                  .font(.callout.weight(isDefaultNetwork(network) ? .bold : .regular))
-                Group {
-                  if sizeCategory.isAccessibilityCategory {
-                    VStack(alignment: .leading) {
-                      Text(network.chainId)
-                      if let rpcEndpoint = network.rpcEndpoints[
-                        safe: Int(network.activeRpcEndpointIndex)
-                      ]?.absoluteString {
-                        Text(rpcEndpoint)
-                      }
-                    }
-                  } else {
-                    HStack {
-                      Text(network.chainId)
-                      if let rpcEndpoint = network.rpcEndpoints[
-                        safe: Int(network.activeRpcEndpointIndex)
-                      ]?.absoluteString {
-                        Text(rpcEndpoint)
-                      }
-                    }
-                  }
-                }
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .font(.footnote)
-              }
-              Spacer()
-              HStack {
-                Button {
-                  if networkStore.isHiddenChain(network) {
-                    networkStore.removeHiddenNetwork(
-                      coin: network.coin,
-                      for: network.chainId
-                    )
-                  } else {
-                    networkStore.addHiddenNetwork(
-                      coin: network.coin,
-                      for: network.chainId
-                    )
-                  }
-                } label: {
-                  Image(
-                    braveSystemName: networkStore.isHiddenChain(network)
-                      ? "leo.eye.off" : "leo.eye.on"
-                  )
-                  .font(.callout.weight(.semibold))
-                  .foregroundColor(
-                    isDefaultNetwork(network)
-                      ? Color(.braveDisabled) : Color(.braveLabel)
-                  )
-                }
-                .disabled(isDefaultNetwork(network))
-                Rectangle()
-                  .fill(
-                    Color(uiColor: WalletV2Design.dividerSubtle)
-                  )
-                  .frame(width: 1)
-                  .padding(.vertical, 16)
-                Menu {
-                  VStack {
-                    Button {
-                      isPresentingNetworkDetails = .init(from: network)
-                    } label: {
-                      Text(Strings.Wallet.editButtonTitle)
-                    }
-                    if networkStore.isCustomChain(network)
-                      && !isDefaultNetwork(network)
-                    {
-                      Button {
-                        removeNetwork(network)
-                      } label: {
-                        Text(Strings.Wallet.delete)
-                      }
-                    }
-                    if !isDefaultNetwork(network) {
-                      Button {
-                        networkStore.updateDefaultNetwork(network)
-                      } label: {
-                        Text(Strings.Wallet.setDefaultNetwork)
-                      }
-                    }
-                  }
-                  .foregroundColor(Color(.braveLabel))
-                } label: {
-                  Image(
-                    braveSystemName: "leo.more.vertical"
-                  )
-                  .font(.callout.weight(.semibold))
-                  .foregroundColor(Color(.braveLabel))
-                }
-              }
-            }
-            .padding(.vertical, 6)
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            networkRow(network)
+              .padding(.vertical, 6)
+              .listRowBackground(
+                Color(.secondaryBraveGroupedBackground)
+              )
           }
         } header: {
           Text(coin.localizedTitle)
@@ -165,7 +168,7 @@ struct NetworkListView: View {
     }
     .sheet(item: $isPresentingNetworkDetails) { detailsModel in
       NavigationView {
-        CustomNetworkDetailsView(
+        NetworkDetailsView(
           networkStore: networkStore,
           model: detailsModel
         )

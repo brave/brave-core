@@ -175,8 +175,11 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
           AssetSearchView(
             keyringStore: keyringStore,
             cryptoStore: cryptoStore,
-            userAssetsStore: cryptoStore.portfolioStore.userAssetsStore
+            userAssetsStore: cryptoStore.openUserAssetsStore()
           )
+          .onDisappear {
+            cryptoStore.closeUserAssetsStore()
+          }
         }
     )
     .sheet(isPresented: $isShowingMainMenu) {

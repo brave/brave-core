@@ -76,7 +76,7 @@ struct NetworkPicker: View {
       Color.clear
         .sheet(isPresented: $isPresentingAddNetwork) {
           NavigationView {
-            CustomNetworkDetailsView(networkStore: networkStore, model: .init())
+            NetworkDetailsView(networkStore: networkStore, model: .init())
           }
         }
     )

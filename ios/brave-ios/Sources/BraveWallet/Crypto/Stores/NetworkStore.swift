@@ -52,7 +52,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   /// The default network for a specific coin type
   @Published var defaultNetworks: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [:]
 
-  var nonHiddenChains: [BraveWallet.NetworkInfo] {
+  var visibleChains: [BraveWallet.NetworkInfo] {
     allChains.filter { chain in
       !hiddenChains.contains { $0.chainId == chain.chainId }
     }
@@ -90,8 +90,11 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     self.setupObservers()
     Task { @MainActor in
       if !Preferences.Wallet.migrateShowTestNetworksCompleted.value {
-        if !Preferences.Wallet.showTestNetworks.value {
-          await self.hideAllSupportedTestnets()
+        // since test networks are default hidden in core,
+        // if user previously set preference to show test networks
+        // we will need to remove them from hidden list in core
+        if Preferences.Wallet.showTestNetworks.value {
+          await self.unhideAllSupportedTestnets()
           await self.updateChainList()
         }
         Preferences.Wallet.migrateShowTestNetworksCompleted.value = true
@@ -195,7 +198,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     self.isSwapSupported = await swapService.isSwapSupported(chainId: chain.chainId)
   }
 
-  private func hideAllSupportedTestnets() async {
+  private func unhideAllSupportedTestnets() async {
     var networks: [BraveWallet.CoinType: [String]] = [:]
     for chainId in WalletConstants.supportedTestNetworkChainIds {
       var coin: BraveWallet.CoinType = .eth
@@ -218,7 +221,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       ids.append(chainId)
       networks[coin] = ids
     }
-    await rpcService.addHiddenNetworks(for: networks)
+    await rpcService.removeHiddenNetworks(for: networks)
   }
 
   @MainActor func updateChainList() async {
@@ -347,53 +350,51 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     networkSelectionStore = nil
   }
 
-  func addHiddenNetwork(
+  @MainActor @discardableResult func addHiddenNetwork(
     coin: BraveWallet.CoinType,
     for chainId: String
-  ) {
-    Task { @MainActor in
-      let success = await rpcService.addHiddenNetwork(
-        coin: coin,
-        chainId: chainId
-      )
-      guard success else { return }
+  ) async -> Bool {
+    let success = await rpcService.addHiddenNetwork(
+      coin: coin,
+      chainId: chainId
+    )
+    if success {
       await updateHiddenChains()
     }
+    return success
   }
 
-  func removeHiddenNetwork(
+  @MainActor @discardableResult func removeHiddenNetwork(
     coin: BraveWallet.CoinType,
     for chainId: String
-  ) {
-    Task { @MainActor in
-      let success = await rpcService.removeHiddenNetwork(
-        coin: coin,
-        chainId: chainId
-      )
-      guard success else { return }
+  ) async -> Bool {
+    let success = await rpcService.removeHiddenNetwork(
+      coin: coin,
+      chainId: chainId
+    )
+    if success {
       await updateHiddenChains()
     }
+    return success
   }
 
-  func updateDefaultNetwork(
+  @MainActor func updateDefaultNetwork(
     _ network: BraveWallet.NetworkInfo
-  ) {
-    Task { @MainActor in
-      let isHidden = hiddenChains.contains(where: {
-        $0.chainId == network.chainId
-      })
-      if isHidden {
-        // network is currently hidden, need to unhide it first
-        removeHiddenNetwork(coin: network.coin, for: network.chainId)
-      }
-      let success = await rpcService.setNetwork(
-        chainId: network.chainId,
-        coin: network.coin,
-        origin: nil
-      )
-      guard success else { return }
-      await updateDefaultNetworks()
+  ) async {
+    let isHidden = hiddenChains.contains(where: {
+      $0.chainId == network.chainId
+    })
+    if isHidden {
+      // network is currently hidden, need to unhide it first
+      await removeHiddenNetwork(coin: network.coin, for: network.chainId)
     }
+    let success = await rpcService.setNetwork(
+      chainId: network.chainId,
+      coin: network.coin,
+      origin: nil
+    )
+    guard success else { return }
+    await updateDefaultNetworks()
   }
 
   // MARK: - Custom Networks
@@ -501,6 +502,7 @@ extension NetworkStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
     // only observe `Preferences.Wallet.isBitcoinTestnetEnabled`
     Task { @MainActor in
+      guard key == Preferences.Wallet.isBitcoinTestnetEnabled.key else { return }
       let btcDefaultNetwork = await rpcService.network(coin: .btc, origin: nil)
       let isBitcoinTestnetEnabled = Preferences.Wallet.isBitcoinTestnetEnabled.value
       if !isBitcoinTestnetEnabled, btcDefaultNetwork.chainId == BraveWallet.BitcoinTestnet {
