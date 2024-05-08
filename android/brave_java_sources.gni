@@ -170,7 +170,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/presenters/Amount.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/presenters/SolanaInstructionPresenter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AccountsPermissionsHelper.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AddressUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AndroidUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetsPricesHelper.java",
