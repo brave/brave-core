@@ -27,7 +27,7 @@ import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import styled, { css } from 'styled-components'
-import { spacing } from '@brave/leo/tokens/css'
+import { spacing } from '@brave/leo/tokens/css/variables'
 
 const StyledButton = styled(Button) <{ float: boolean }>`
   margin-top: ${spacing.xl};
