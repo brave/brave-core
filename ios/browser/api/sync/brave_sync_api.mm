@@ -253,6 +253,13 @@ BraveSyncAPIWordsValidationStatus const
       _worker->GetTimeLimitedWordsFromWords(base::SysNSStringToUTF8(words)));
 }
 
+- (NSDate*)getExpirationFromTimeLimitedWords:(NSString*)timeLimitedWords {
+  base::Time not_after = brave_sync::TimeLimitedWords::GetNotAfter(
+      base::SysNSStringToUTF8(timeLimitedWords));
+
+  return not_after.ToNSDate();
+}
+
 - (NSString*)getHexSeedFromQrCodeJson:(NSString*)json {
   return base::SysUTF8ToNSString(
       _worker->GetHexSeedFromQrCodeJson(base::SysNSStringToUTF8(json)));

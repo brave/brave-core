@@ -73,9 +73,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
     super.init()
 
-    if let expiryDate = fetchExpirationDate(syncAPI: syncAPI) {
-      codeExpirationStackView.resetExpiration(expirationTime: expiryDate)
-    }
+    resetExpirationDate()
 
     pageTitle = title
     deviceType = type
@@ -171,25 +169,36 @@ class SyncAddDeviceViewController: SyncViewController {
 
   // MARK: Private
 
-  private func fetchExpirationDate(syncAPI: BraveSyncAPI) -> Date? {
-    let json = syncAPI.qrCodeJson(fromHexSeed: syncAPI.hexSeed(fromSyncCode: syncAPI.getSyncCode()))
+  private func fetchExpirationDate(for type: SyncDeviceType, using syncAPI: BraveSyncAPI) -> Date? {
+    if type == .mobile, modeControl.selectedSegmentIndex == 0 {
+      let json = syncAPI.qrCodeJson(
+        fromHexSeed: syncAPI.hexSeed(fromSyncCode: syncAPI.getSyncCode())
+      )
 
-    guard let syncCodeData = json.data(using: .utf8), !syncCodeData.isEmpty,
-      let syncCodeJsonObject = try? JSONSerialization.jsonObject(with: syncCodeData, options: [])
-        as? [String: Any]
-    else {
-      return nil
+      guard let syncCodeData = json.data(using: .utf8), !syncCodeData.isEmpty,
+        let syncCodeJsonObject = try? JSONSerialization.jsonObject(with: syncCodeData, options: [])
+          as? [String: Any]
+      else {
+        return nil
+      }
+
+      guard let expiration = syncCodeJsonObject["not_after"] as? String,
+        let expirationSeconds = Double(expiration)
+      else {
+        return nil
+      }
+
+      return Date(timeIntervalSince1970: expirationSeconds)
+    } else {
+      let timeLimitedWords = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
+      return syncAPI.getExpirationFromTimeLimitedWords(timeLimitedWords)
     }
+  }
 
-    guard let expiration = syncCodeJsonObject["not_after"] as? String,
-      let expirationSeconds = Double(expiration)
-    else {
-      return nil
+  private func resetExpirationDate() {
+    if let expiryDate = fetchExpirationDate(for: deviceType, using: syncAPI) {
+      codeExpirationStackView.resetExpiration(expirationTime: expiryDate)
     }
-
-    let expirationDate = Date(timeIntervalSince1970: expirationSeconds)
-
-    return expirationDate
   }
 
   private func showInitializationError() {
@@ -203,6 +212,8 @@ class SyncAddDeviceViewController: SyncViewController {
   }
 
   private func changeCodeDisplayStatus() {
+    resetExpirationDate()
+
     if isSyncCodeExpired {
       codeDetailsStackView.isHidden = true
       actionButtonStackView.swapCodeViewType(true)
@@ -251,7 +262,7 @@ extension SyncAddDeviceViewController: SyncAddDeviceActionView.ActionDelegate {
   func generateNewCode() {
     codeDetailsStackView.refreshSyncCodeViews()
     // Refresh with proper API
-    if let expiryDate = fetchExpirationDate(syncAPI: syncAPI) {
+    if let expiryDate = fetchExpirationDate(for: deviceType, using: syncAPI) {
       codeExpirationStackView.resetExpiration(expirationTime: expiryDate)
     }
 
