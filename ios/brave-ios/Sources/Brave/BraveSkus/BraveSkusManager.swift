@@ -27,19 +27,10 @@ public class BraveSkusManager {
   }
 
   @MainActor
-  public func refreshCredentials() async {
-    if Preferences.VPN.skusCredential.value != nil,
-      let domain = Preferences.VPN.skusCredentialDomain.value,
-      let expirationDate = Preferences.VPN.expirationDate.value
-    {
-
-      if expirationDate >= Date() {
-        _ = await credentialSummary(for: domain)
-      } else {
-        Logger.module.debug(
-          "[SkusManager] - VPN Skus Credentials has not expired yet, no need to refresh it."
-        )
-      }
+  public func refreshVPNCredentials() async {
+    if let domain = Preferences.VPN.skusCredentialDomain.value {
+      // Always refresh credentials and trust the credentials from Brave-Core rather than cached credentials
+      _ = await credentialSummary(for: domain)
     }
   }
 
@@ -120,10 +111,8 @@ public class BraveSkusManager {
         let credentialType = CredentialType.from(domain: domain)
         switch credentialType {
         case .vpn:
-          if Preferences.VPN.skusCredential.value == nil {
-            Logger.module.debug("[SkusManager] - Preparing VPN Credentials")
-            _ = await prepareCredentialsPresentation(for: domain, path: "*")
-          }
+          Logger.module.debug("[SkusManager] - Preparing VPN Credentials")
+          _ = await prepareCredentialsPresentation(for: domain, path: "*")
         case .leo:
           if Preferences.AIChat.subscriptionOrderId.value != nil {
             Logger.module.debug("[SkusManager] - Preparing Leo Credentials")
