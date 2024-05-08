@@ -61,12 +61,6 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "어떤 내용의 피드백인가요?";
 
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "답변이 도움이 되지 않음";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "제대로 작동하지 않음";
-
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "기타";
 
@@ -202,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "제한 없이 창의성 발휘";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "여러 스킬을 갖춘 강력한 모델에 우선 액세스.";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "다른 AI 모델 둘러보기";
 
@@ -282,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "연간 구독";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "채팅";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "언어 모델";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "기본 모델";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "제한됨";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "고급 설정";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "프리미엄 가입";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "구독 관리";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "새 채팅";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "재설정";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "무제한";
 

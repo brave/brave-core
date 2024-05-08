@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "Radnja za ispunjavanje programa 1Password za preglednik";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "Aplikaciji je potreban pristup čitanju NFC-a za komuniciranje s vašim tokenom Yubikey.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Omogućava vam snimanje i prenošenje fotografija.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Brave";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Na mrežnim mjestima koja posjećujete može se zahtijevati vaša lokacija.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "Ovim se omogućava upotreba vašeg mikrofona pri upotrebi preglednika Brave.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Omogućava vam spremanje fotografija.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Ovo se dopuštenje upotrebljava za omogućivanje Appleova naprednog prepoznavanja govora. Ako nije dopušteno, upotrebljava se prepoznavanje na uređaju i pretraživanja su potpuno privatna. U pregledniku Brave ne pohranjuju se ili dijele vaša glasovna pretraživanja.";
+
+/* (No Comment) */
+"OPML File" = "Datoteka OPML";
+

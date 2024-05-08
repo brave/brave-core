@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continuer";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Ces réponses privées permettent à Brave d'estimer l'utilisation globale de certaines fonctionnalités et de les améliorer.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Autoriser l'analyse de produits respectueuse de la vie privée (P3A)";
 
@@ -2099,10 +2102,10 @@
 "ReaderModeErrorConvertDisplayText" = "Une erreur s'est produite lors de la conversion de la page";
 
 /* Font type setting in the reading view settings */
-"ReaderModeFontButtonSansSerifTitle" = "Sans sérif";
+"ReaderModeFontButtonSansSerifTitle" = "Linéale";
 
 /* Font type setting in the reading view settings */
-"ReaderModeFontButtonSerifTitle" = "Sérif";
+"ReaderModeFontButtonSerifTitle" = "Empattement";
 
 /* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
 "ReaderModeFontSizeLabelText" = "Aa";
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Paramètres de qualité";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ce signal privé permet à Brave d'estimer le nombre d'utilisateurs actifs.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envoyer automatiquement un signal d'utilisation quotidienne à Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Supprimer le compte Synchronisation";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera la fonction Synchronisation sur tous vous appareils connectés. Les données stockées localement sur ces appareils ne seront toutefois pas supprimées.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Cette suppression est définitive et il n'est pas possible de récupérer les données. Si vous décidez de recommencer à utiliser la fonction Synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil un par un.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Une erreur est survenue lors de la récupération des appareils dans la chaîne de synchronisation.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Supprimer le compte Synchronisation";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Ce code de synchronisation a été généré par une ancienne version de Brave sur un autre appareil. Mettez à jour Brave sur tous les appareils synchronisés, puis réessayez.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Appareils et paramètres";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "La connexion n'est pas stable";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Veuillez choisir la catégorie qui décrit le problème.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Aucun accès à Internet une fois connecté";

@@ -553,6 +553,12 @@
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Suprimeix";
 
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "Diposita";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Copia";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Desselecciona-ho tot";
 
@@ -695,7 +701,7 @@
 "wallet.enterTokenSymbol" = "Introdueix el símbol del token";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
-"wallet.ethAccountDescription" = "Ethereum + EVM Chains";
+"wallet.ethAccountDescription" = "Cadenes Ethereum + EVM";
 
 /* A button title displayed in a menu to export an account's private key. */
 "wallet.exportButtonTitle" = "Exportar";
@@ -1568,7 +1574,7 @@
 "wallet.snsDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom de Solana (SNS) a Brave?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
-"wallet.solAccountDescription" = "Solana + SVM Chains";
+"wallet.solAccountDescription" = "Cadenes Solana + SVM";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Compte nonce avançat";

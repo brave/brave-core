@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "계속";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "이 비공개 답변은 Brave가 특정 기능의 총 사용량을 산정하고 기능을 개선하는 용도로 사용됩니다.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "프라이버시 보호 제품 분석(P3A) 허용";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "품질 설정";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "이 비공개 Ping으로 Brave가 활성 사용자 수를 추산합니다.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "동기화 계정 삭제";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 단, 기기 로컬 공간에 저장된 데이터는 삭제되지 않습니다.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "동기화 체인 내 기기를 불러오는 중에 문제가 발생했습니다.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "동기화 계정 삭제";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "이 동기화 코드는 다른 기기에서 구버전 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "기기 및 설정";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "연결 안정성 문제";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "문제를 설명하는 카테고리를 선택하세요.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "인터넷에 연결되지 않음";

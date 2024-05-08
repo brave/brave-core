@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "继续";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允许保护隐私的产品分析 (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "质量设置";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "这种私人 ping 可以让 Brave 估算活跃用户数量。";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "删除 Sync 帐户";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "一旦您删除帐户，您的加密资料就会从 Brave 伺服器移除，而您所有已连线的设备也会停用 Sync。不过，储存于这些设备上的资料不会删除。";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "摘取同步链中的装置时发生错误。";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "删除 Sync 帐户";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "连接可靠性问题";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "请选择描述问题的类别。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "连接后没有互联网";

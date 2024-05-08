@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Continua";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Aquestes respostes privades ajuden Brave a fer una estimació de l'ús total de determinades funcions i a millorar-les.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permet l'anàlisi de productes per preservar la privacitat (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Configuració de qualitat";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Aquest ping privat permet que Brave faci una estimació dels usuaris actius.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envia automàticament el ping d'ús diari a Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Suprimeix el compte de sincronització";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Si suprimeixes el teu compte, s'eliminaran les teves dades xifrades dels servidors de Brave i es desactivarà la sincronització a tots els teus dispositius connectats. Tanmateix, no suprimirà les dades que s'emmagatzemen localment en aquests dispositius.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Suprimeix el compte de sincronització";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Aquest codi de sincronització l'ha generat una versió obsoleta de Brave en un altre dispositiu. Actualitza Brave a tots els dispositius sincronitzats i torna-ho a provar.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositius i configuració";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problema de fiabilitat de la connexió";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Si us plau, tria la categoria que descriu el problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "No hi ha internet quan està connectat";

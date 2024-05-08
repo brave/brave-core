@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Продолжить";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Эти анонимные сведения помогают Brave оценивать, как используются определенные функции, и улучшать работу браузера.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Разрешить выполнение аналитики продукта без нарушения конфиденциальности (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Настройки качества";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Конфиденциальные уведомления помогают Brave оценивать количество активных пользователей.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматически отправлять ежедневные данные PING в Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Удалить аккаунт Синхронизации";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Если вы удалите аккаунт, то ваши зашифрованные данные будут удалены с серверов Brave, а Синхронизация отключится на всех подключенных устройствах. При этом данные, которые хранятся на этих устройствах локально, не удалятся.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Удаление необратимо — вы не сможете восстановить данные. Если вы захотите опять использовать Brave Синхронизацию, создайте новый аккаунт и повторно добавьте устройства.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Не удалось обнаружить устройства в цепи синхронизации.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Удалить аккаунт Синхронизации";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Код синхронизации сгенерирован на устройстве с устаревшей версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Выберите наиболее подходящую категорию проблемы.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Отсутствует соединение с Интернетом";

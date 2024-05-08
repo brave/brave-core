@@ -30,7 +30,7 @@ struct LanguageMapping {
     LanguageMapping(source: "fr"),
     LanguageMapping(source: "pl"),
     LanguageMapping(source: "ru"),
-    LanguageMapping(source: "de"),
+    LanguageMapping(source: "de", additionalTargets: ["gsw"]),
     LanguageMapping(source: "zh"),
     LanguageMapping(source: "zh_TW"),
     LanguageMapping(source: "id_ID"),
@@ -39,6 +39,8 @@ struct LanguageMapping {
     LanguageMapping(source: "ko_KR"),
     LanguageMapping(source: "ms"),
     LanguageMapping(source: "pt_BR"),
+    LanguageMapping(source: "pt_PT"),
+    LanguageMapping(source: "pt"),
     LanguageMapping(source: "es"),
     LanguageMapping(source: "uk"),
     LanguageMapping(source: "nb"),
@@ -46,6 +48,14 @@ struct LanguageMapping {
     LanguageMapping(source: "tr"),
     LanguageMapping(source: "ca"),
     LanguageMapping(source: "nl"),
+    LanguageMapping(source: "cs"),
+    LanguageMapping(source: "da"),
+    LanguageMapping(source: "el"),
+    LanguageMapping(source: "fi"),
+    LanguageMapping(source: "hr", additionalTargets: ["bs"]),
+    LanguageMapping(source: "hu"),
+    LanguageMapping(source: "sk"),
+    LanguageMapping(source: "ro"),
   ]
 }
 

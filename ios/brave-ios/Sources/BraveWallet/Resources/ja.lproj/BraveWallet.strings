@@ -181,6 +181,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "この手順はスキップできますが、アカウントの安全を保つためにリカバリーフレーズを必ずバックアップしてください。";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "今すぐバックアップ";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "ウォレットをバックアップする";
 
@@ -552,6 +555,18 @@
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "削除する";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "振込";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "コピー";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "アセットを預金";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "これは、イーサリアムネットワークと%@などのレベル2ネットワークをサポートするイーサリアムウォレットです。";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "すべて選択解除";

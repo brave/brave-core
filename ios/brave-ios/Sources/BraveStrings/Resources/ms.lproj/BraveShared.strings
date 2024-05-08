@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Teruskan";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Respons peribadi ini membantu Brave menganggar keseluruhan penggunaan ciri tertentu dan menjadikan ciri ini lebih baik untuk anda.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Benarkan Analitis Produk Pengekalan Privasi (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Tetapan Kualiti";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ping peribadi ini membolehkan Brave menganggarkan pengguna aktif.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Brave";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Padam Penyegerakan Akaun";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Tindakan memadamkan akaun anda akan menyebabkan pengalihan keluar data yang disulitkan daripada pelayan Brave dan menyahdayakan Segerak pada semua peranti tersambung anda. Bagaimanapun, langkah ini tidak akan memadamkan data yang disimpan setempat pada peranti tersebut.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Pemadaman ini kekal dan tiada cara lain untuk memulihkan data. Jika anda memutuskan untuk mula menggunakan Segerak sekali lagi, anda akan perlu mencipta akaun baharu dan menambahkan semula setiap peranti satu persatu.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Kesilapan telah berlaku semasa mendapatkan peranti dalam rantaian penyegerakan.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Padam Penyegerakan Akaun";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Kod segerak ini dijana oleh versi Brave yang sudah lapuk pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Peranti & Tetapan";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Masalah keutuhan sambungan";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Sila pilih kategori yang menghuraikan isu tersebut.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Tidak ada internet apabila disambungkan";

@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Fortsätt";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Dessa privata svar hjälper Brave att uppskatta den totala användningen av vissa funktioner och göra dem bättre för dig.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillåt integritetsbevarande produktanalys (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kvalitetsinställningar";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Den här privata pingen låter Brave uppskatta antalet aktiva användare";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Skicka daglig användningsping till Brave automatiskt";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Ta bort Sync-konto";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Om du tar bort ditt konto tas dina krypterade data bort från Brave-servrar och Sync inaktiveras på alla dina anslutna enheter. Det kommer dock inte att radera data som lagrats lokalt på dessa enheter.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Något gick fel när enheter hämtades i synkroniseringskedjan.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Ta bort Sync-konto";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Den här synkroniseringskoden genererades av en föråldrad version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem med anslutningstillförlitlighet";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Välj den kategori som beskriver problemet.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Inget internet när jag är ansluten";

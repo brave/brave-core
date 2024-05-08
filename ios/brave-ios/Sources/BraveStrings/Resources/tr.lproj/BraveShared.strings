@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Devam et";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Bu gizli yanıtlar, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
 
@@ -2665,6 +2668,9 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kalite Ayarları";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Bu özel ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Günlük kullanım ping'ini Brave'e otomatik olarak gönder";
 
@@ -3007,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Senkronizasyon Hesabını Sil";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır. Ancak bu cihazlarda yerel olarak depolanan verileri silmez.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
 
@@ -3075,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Senkronizasyon Hesabını Sil";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Bu senkronizasyon kodu, başka bir cihazda Brave'in eski bir sürümü tarafından oluşturuldu. Lütfen Brave'i tüm senkronize edilmiş cihazlarda güncelleyin ve tekrar deneyin.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Aygıtlar ve Ayarlar";
@@ -3612,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Bağlantı güvenilirliği sorunu";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Lütfen sorunu tarif eden kategoriyi seçin.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Bağlandığında internet yok";
