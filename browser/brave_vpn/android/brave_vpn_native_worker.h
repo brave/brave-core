@@ -90,7 +90,10 @@ class BraveVpnNativeWorker {
       const base::android::JavaParamRef<jstring>& product_type,
       const base::android::JavaParamRef<jstring>& bundle_id);
 
-  void OnVerifyPurchaseToken(const std::string& json_response, bool success);
+  void OnVerifyPurchaseToken(const std::string& purchase_token,
+                             const std::string& product_id,
+                             const std::string& json_response,
+                             bool success);
 
   void ReloadPurchasedState(JNIEnv* env);
 

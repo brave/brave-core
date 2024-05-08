@@ -276,8 +276,6 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
-    private String mPurchaseToken = "";
-    private String mProductId = "";
     private boolean mIsVerification;
     private boolean mIsDefaultCheckOnResume;
     private boolean mIsSetDefaultBrowserNotification;
@@ -706,13 +704,15 @@ public abstract class BraveActivity extends ChromeActivity
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
         LiveDataUtil.observeOnce(
-                activePurchases, activePurchaseModel -> {
+                activePurchases,
+                activePurchaseModel -> {
                     if (activePurchaseModel != null) {
-                        mPurchaseToken = activePurchaseModel.getPurchaseToken();
-                        mProductId = activePurchaseModel.getProductId();
-                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
-                                mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
-                                getPackageName());
+                        BraveVpnNativeWorker.getInstance()
+                                .verifyPurchaseToken(
+                                        activePurchaseModel.getPurchaseToken(),
+                                        activePurchaseModel.getProductId(),
+                                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
+                                        getPackageName());
                     } else {
                         BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
                         if (!mIsVerification) {
@@ -740,13 +740,14 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+    public void onVerifyPurchaseToken(
+            String jsonResponse, String purchaseToken, String productId, boolean isSuccess) {
         if (isSuccess) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
-                BraveVpnPrefUtils.setProductId(mProductId);
+                BraveVpnPrefUtils.setPurchaseToken(purchaseToken);
+                BraveVpnPrefUtils.setProductId(productId);
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 BraveVpnPrefUtils.setPaymentState(paymentState);
@@ -780,8 +781,6 @@ public abstract class BraveActivity extends ChromeActivity
                 }
                 mIsVerification = false;
             }
-            mPurchaseToken = "";
-            mProductId = "";
         } else {
             BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
             if (!mIsVerification) {

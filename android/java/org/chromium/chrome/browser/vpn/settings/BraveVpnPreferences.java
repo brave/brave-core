@@ -413,13 +413,14 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     @Override
-    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+    public void onVerifyPurchaseToken(
+            String jsonResponse, String purchaseToken, String productId, boolean isSuccess) {
         if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setPurchaseToken(mBraveVpnPrefModel.getPurchaseToken());
-                BraveVpnPrefUtils.setProductId(mBraveVpnPrefModel.getProductId());
+                BraveVpnPrefUtils.setPurchaseToken(purchaseToken);
+                BraveVpnPrefUtils.setProductId(productId);
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 BraveVpnPrefUtils.setPaymentState(paymentState);
