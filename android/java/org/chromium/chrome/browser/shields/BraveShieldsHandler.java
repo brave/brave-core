@@ -160,47 +160,6 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
     }
 
-    public void loadDisconnectEntityList(Context context) {
-        if (context == null) return;
-        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-            try {
-                String jsonString = loadDisconnectEntityJSONFromAsset(context);
-                if (jsonString == null) return;
-                JSONObject obj = new JSONObject(jsonString);
-                JSONObject entities = obj.getJSONObject("entities");
-                Iterator<String> keysItr = entities.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    Object value = entities.get(key);
-                    JSONArray jsonProperties = ((JSONObject) value).getJSONArray("properties");
-                    JSONArray jsonResources = ((JSONObject) value).getJSONArray("resources");
-
-                    for (int i = 0; i < jsonResources.length(); i++) {
-                        mResourceToCompanyNameList.add(new Pair(jsonResources.getString(i), key));
-                    }
-                }
-                isDisconnectEntityLoaded = true;
-            } catch (JSONException exception) {
-                exception.printStackTrace();
-            }
-        });
-    }
-
-    private String loadDisconnectEntityJSONFromAsset(Context context) {
-        if (context == null) return null;
-        String json = null;
-        try (InputStream inputStream = context.getAssets().open("disconnect_entitylist.json")) {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
-
     public void addStat(int tabId, String blockType, String subResource) {
         if (!mTabsStat.containsKey(tabId)) {
             mTabsStat.put(tabId, new BlockersInfo());
