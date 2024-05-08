@@ -797,6 +797,10 @@
         You're viewing a WebTorrent page
       </message>
 
+      <message name="IDS_TEST_STRING_FOR_PLACEHOLDERS" desc="Only for test purpose. Don't need to translate">
+        Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+      </message>
+
       <if expr="not is_ios">
         <part file="decentralized_dns_strings.grdp" />
       </if>

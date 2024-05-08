@@ -220,6 +220,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
@@ -563,6 +564,18 @@ void BraveContentBrowserClient::
       },
       &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
+
+#if !BUILDFLAG(IS_ANDROID)
+  associated_registry.AddInterface<
+      geolocation::mojom::BraveGeolocationPermission>(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<
+             geolocation::mojom::BraveGeolocationPermission> receiver) {
+        BraveGeolocationPermissionTabHelper::BindBraveGeolocationPermission(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   associated_registry.AddInterface<
       brave_shields::mojom::BraveShieldsHost>(base::BindRepeating(

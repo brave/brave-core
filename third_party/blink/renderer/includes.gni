@@ -37,6 +37,10 @@ brave_blink_renderer_core_sources = [
 brave_blink_renderer_core_deps =
     [ "//brave/components/brave_shields/core/common/" ]
 
+if (!is_android && !is_ios) {
+  brave_blink_renderer_core_deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission_blink" ]
+}
+
 brave_blink_renderer_core_public_deps += brave_page_graph_core_public_deps
 brave_blink_renderer_core_sources += brave_page_graph_core_sources
 brave_blink_renderer_core_deps += brave_page_graph_core_deps
