@@ -77,6 +77,7 @@ function ConversationList(props: ConversationListProps) {
   }, [conversationHistory.length, lastEntryElementRef.current?.clientHeight])
 
   const lastAssistantId = React.useMemo(() => {
+    // Get the last entry that is an assistant entry
     for (let i = conversationHistory.length - 1; i >= 0; i--) {
       if (conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT) {
         return i
