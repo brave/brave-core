@@ -109,15 +109,6 @@ std::optional<size_t> PickRoulette(const ArticleInfos& articles);
 std::optional<size_t> PickChannelRoulette(const std::string& channel,
                                           const ArticleInfos& articles);
 
-mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
-                                         PickArticles picker);
-
-// Picks an article with a probability article_weight/sum(article_weights).
-mojom::FeedItemMetadataPtr PickRouletteAndRemove(ArticleInfos& articles);
-
-mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
-    ArticleInfos& articles);
-
 ArticleInfos GetArticleInfos(const std::string& locale,
                              const FeedItems& feed_items,
                              const Publishers& publishers,

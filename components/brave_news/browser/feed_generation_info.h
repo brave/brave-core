@@ -19,6 +19,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 
 namespace brave_news {
 
@@ -44,16 +45,33 @@ struct FeedGenerationInfo {
   FeedGenerationInfo& operator=(FeedGenerationInfo&&);
   ~FeedGenerationInfo();
 
-  ArticleInfos& GetArticleInfos();
-  mojom::FeedItemMetadataPtr PickAndRemove(PickArticles picker);
-  size_t GetArticleCount(const std::string& channel_or_publisher_id);
+  const ArticleInfos& GetArticleInfos();
+
+  // Gets a list of content groups that:
+  // 1. The user is subscribed to
+  // 2. Contain at least one article.
+  const std::vector<ContentGroup>& GetEligibleContentGroups();
+
+  // Get a list of subscribed channels containing at least one article.
+  std::vector<std::string> EligibleChannels();
+
+  // Picks an article and decreases publisher/channel counts appropriately to
+  // maintain the list of content groups.
+  mojom::FeedItemMetadataPtr PickAndConsume(PickArticles picker);
 
   base::span<TopicAndArticles>& topics() { return topics_span_; }
 
  private:
+  void GenerateAvailableCounts();
+  void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
+                    const ArticleWeight& weight);
+  std::vector<ContentGroup> GenerateContentGroups();
+
   base::span<TopicAndArticles> topics_span_;
   TopicsResult topics_;
+
   std::optional<ArticleInfos> article_infos_;
+  std::optional<std::vector<ContentGroup>> content_groups_;
   base::flat_map<std::string, size_t> available_counts_;
 };
 

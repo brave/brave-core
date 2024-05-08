@@ -210,53 +210,6 @@ std::optional<size_t> PickChannelRoulette(const std::string& channel,
                     channel));
 }
 
-// Picking a discovery article works the same way as as a normal roulette
-// selection, but we only consider articles that:
-// 1. The user hasn't subscribed to.
-// 2. **AND** The user hasn't visited.
-mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
-    ArticleInfos& articles) {
-  PickArticles pick = base::BindRepeating([](const ArticleInfos& articles) {
-    return PickRouletteWithWeighting(
-        articles,
-        base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                               const ArticleWeight& weight) {
-          if (!weight.discoverable) {
-            return 0.0;
-          }
-
-          if (weight.subscribed) {
-            return 0.0;
-          }
-          return weight.pop_recency;
-        }));
-  });
-  return PickAndRemove(articles, pick);
-}
-
-mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
-                                         PickArticles picker) {
-  auto maybe_index = picker.Run(articles);
-
-  // There won't be an index if there were no eligible articles.
-  if (!maybe_index.has_value()) {
-    return nullptr;
-  }
-
-  auto index = maybe_index.value();
-  if (index >= articles.size()) {
-    DCHECK(false) << "|index| should never be outside the bounds of |articles| "
-                     "(index: "
-                  << index << ", articles.size(): " << articles.size();
-    return nullptr;
-  }
-
-  auto [article, weight] = std::move(articles[index]);
-  articles.erase(articles.begin() + index);
-
-  return std::move(article);
-}
-
 ArticleInfos GetArticleInfos(const std::string& locale,
                              const FeedItems& feed_items,
                              const Publishers& publishers,

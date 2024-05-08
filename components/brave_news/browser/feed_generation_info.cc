@@ -6,10 +6,14 @@
 #include "brave/components/brave_news/browser/feed_generation_info.h"
 
 #include <cstddef>
+#include <iterator>
+#include <optional>
 #include <string>
+#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -62,7 +66,7 @@ FeedGenerationInfo& FeedGenerationInfo::operator=(FeedGenerationInfo&&) =
     default;
 FeedGenerationInfo::~FeedGenerationInfo() = default;
 
-ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
+const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   if (!article_infos_) {
     article_infos_ =
         brave_news::GetArticleInfos(locale, feed_items, publishers, signals);
@@ -70,17 +74,35 @@ ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   return article_infos_.value();
 }
 
-mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndRemove(
-    PickArticles picker) {
-  auto maybe_index = picker.Run(GetArticleInfos());
+const std::vector<ContentGroup>&
+FeedGenerationInfo::GetEligibleContentGroups() {
+  if (!content_groups_) {
+    content_groups_ = GenerateContentGroups();
+  }
+  return content_groups_.value();
+}
 
+std::vector<std::string> FeedGenerationInfo::EligibleChannels() {
+  std::vector<std::string> eligible_channels;
+  for (auto& [group, is_channel] : GetEligibleContentGroups()) {
+    if (!is_channel) {
+      continue;
+    }
+    eligible_channels.push_back(group);
+  }
+  return eligible_channels;
+}
+
+mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndConsume(
+    PickArticles picker) {
+  CHECK(article_infos_.has_value());
+  auto& articles = article_infos_.value();
+
+  auto maybe_index = picker.Run(article_infos_.value());
   // There won't be an index if there were no eligible articles.
   if (!maybe_index.has_value()) {
     return nullptr;
   }
-
-  CHECK(article_infos_.has_value());
-  auto& articles = article_infos_.value();
 
   auto index = maybe_index.value();
   if (index >= articles.size()) {
@@ -96,35 +118,84 @@ mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndRemove(
   return std::move(article);
 }
 
-size_t FeedGenerationInfo::GetArticleCount(
-    const std::string& channel_or_publisher_id) {
-  auto existing_it = available_counts_.find(channel_or_publisher_id);
+void FeedGenerationInfo::GenerateAvailableCounts() {
+  CHECK(available_counts_.empty());
+  for (auto& [article, weight] : GetArticleInfos()) {
+    available_counts_[article->publisher_id]++;
+    for (const auto& channel : weight.channels) {
+      available_counts_[channel]++;
+    }
+  }
+}
 
-  // If we've cached the value for this channel or publisher, return that.
-  if (existing_it != available_counts_.end()) {
-    return existing_it->second;
+std::vector<ContentGroup> FeedGenerationInfo::GenerateContentGroups() {
+  GenerateAvailableCounts();
+
+  std::vector<ContentGroup> eligible_content_groups;
+  for (const auto& channel_id : channels) {
+    if (base::Contains(available_counts_, channel_id)) {
+      eligible_content_groups.emplace_back(channel_id, true);
+      DVLOG(1) << "Subscribed to channel: " << channel_id;
+    } else {
+      DVLOG(1) << "Subscribed to channel: " << channel_id
+               << " which contains no articles (and thus, is not eligible as a "
+                  "group to pick content from)";
+    }
   }
 
-  // Otherwise, calculate it:
-  bool is_publisher = base::Contains(publishers, channel_or_publisher_id);
-  size_t available = 0;
-  for (const auto& [item, weight] : GetArticleInfos()) {
-    if (is_publisher) {
-      if (item->publisher_id == channel_or_publisher_id) {
-        available++;
+  for (const auto& [publisher_id, publisher] : publishers) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+      if (base::Contains(available_counts_, publisher_id)) {
+        eligible_content_groups.emplace_back(publisher_id, false);
+        DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
+      } else {
+        DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name
+                 << " which has not articles available (and thus, isn't an "
+                    "eligible content group)";
       }
-      continue;
-    }
-
-    auto article_channels =
-        GetChannelsForPublisher(locale, publishers.at(item->publisher_id));
-    if (base::Contains(article_channels, channel_or_publisher_id)) {
-      available++;
     }
   }
 
-  available_counts_[channel_or_publisher_id] = available;
-  return available;
+  return eligible_content_groups;
+}
+
+void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
+                                      const ArticleWeight& weight) {
+  // If we're not tracking content groups, we don't need to do this.
+  if (!content_groups_.has_value()) {
+    return;
+  }
+
+  // Decrease the publisher count for this article.
+  std::vector<std::string> remove_content_groups;
+  auto publisher_it = available_counts_.find(article->publisher_id);
+  if (publisher_it != available_counts_.end()) {
+    if (publisher_it->second <= 1) {
+      available_counts_.erase(publisher_it);
+      remove_content_groups.emplace_back(article->publisher_id);
+    } else {
+      publisher_it->second--;
+    }
+  }
+
+  // Decrease the channel counts for this article.
+  for (const auto& channel : weight.channels) {
+    auto channel_it = available_counts_.find(channel);
+    if (channel_it != available_counts_.end()) {
+      remove_content_groups.emplace_back(channel);
+      available_counts_.erase(channel_it);
+    } else {
+      channel_it->second--;
+    }
+  }
+
+  // Remove all the content groups that we've consumed all the articles from.
+  for (const auto& to_remove : remove_content_groups) {
+    content_groups_.value().erase(base::ranges::find_if(
+        content_groups_.value(),
+        [&to_remove](const auto& group) { return group.first == to_remove; }));
+  }
 }
 
 }  // namespace brave_news

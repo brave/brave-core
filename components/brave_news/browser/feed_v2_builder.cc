@@ -15,7 +15,6 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -94,17 +93,17 @@ std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
                                                 PickArticles hero_picker,
                                                 PickArticles article_picker,
                                                 double inline_discovery_ratio) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
-  if (articles.empty()) {
+  if (info.GetArticleInfos().empty()) {
     return result;
   }
 
-  auto hero_article = PickAndRemove(articles, hero_picker);
+  auto hero_article = info.PickAndConsume(hero_picker);
 
   // We might not be able to generate a hero card, if none of the articles in
   // this feed have an image.
@@ -121,9 +120,28 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
     mojom::FeedItemMetadataPtr generated;
 
     if (is_discover) {
-      generated = PickDiscoveryArticleAndRemove(articles);
+      // Picking a discovery article works the same way as as a normal roulette
+      // selection, but we only consider articles that:
+      // 1. The user hasn't subscribed to.
+      // 2. **AND** The user hasn't visited.
+      generated = info.PickAndConsume(
+          base::BindRepeating([](const ArticleInfos& articles) {
+            return PickRouletteWithWeighting(
+                articles, base::BindRepeating(
+                              [](const mojom::FeedItemMetadataPtr& metadata,
+                                 const ArticleWeight& weight) {
+                                if (!weight.discoverable) {
+                                  return 0.0;
+                                }
+
+                                if (weight.subscribed) {
+                                  return 0.0;
+                                }
+                                return weight.pop_recency;
+                              }));
+          }));
     } else {
-      generated = PickAndRemove(articles, article_picker);
+      generated = info.PickAndConsume(article_picker);
     }
 
     if (!generated) {
@@ -142,10 +160,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
-    ArticleInfos& articles,
-    const std::string& locale,
-    const Publishers& publishers,
-    const std::vector<ContentGroup>& eligible_content_groups,
+    FeedGenerationInfo& info,
     // Ratio of inline articles to discovery articles.
     // discover ratio % of the time, we should do a discover card here instead
     // of a roulette card.
@@ -153,16 +168,19 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     double inline_discovery_ratio =
         features::kBraveNewsInlineDiscoveryRatio.Get()) {
   DVLOG(1) << __FUNCTION__;
+  auto eligible_content_groups = info.GetEligibleContentGroups();
   std::vector<mojom::FeedItemV2Ptr> result;
-  if (articles.empty() || eligible_content_groups.empty()) {
+  if (info.GetArticleInfos().empty() || eligible_content_groups.empty()) {
+    LOG(ERROR) << "Finished feed generation (no eligible content groups or no "
+                  "articles)";
     return result;
   }
 
   base::flat_map<std::string, std::vector<std::string>>
       publisher_id_to_channels;
-  for (const auto& [publisher_id, publisher] : publishers) {
+  for (const auto& [publisher_id, publisher] : info.publishers) {
     publisher_id_to_channels[publisher_id] =
-        GetChannelsForPublisher(locale, publisher);
+        GetChannelsForPublisher(info.locale, publisher);
   }
 
   // Generates a GetWeighting function tied to a specific content group. Each
@@ -207,7 +225,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
             is_hero, SampleContentGroup(eligible_content_groups),
             publisher_id_to_channels, locale);
       },
-      locale, std::move(eligible_content_groups),
+      info.locale, std::move(eligible_content_groups),
       std::move(publisher_id_to_channels));
 
   PickArticles pick_hero = base::BindRepeating(
@@ -223,8 +241,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
       },
       std::move(get_weighting));
 
-  return GenerateBlock(articles, pick_hero, pick_article,
-                       inline_discovery_ratio);
+  return GenerateBlock(info, pick_hero, pick_article, inline_discovery_ratio);
 }
 
 // Generates a Channel Block
@@ -239,8 +256,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   DVLOG(1) << __FUNCTION__;
 
   auto channel_picker = base::BindRepeating(&PickChannelRoulette, channel);
-  auto block =
-      GenerateBlock(info.GetArticleInfos(), channel_picker, channel_picker, 0);
+  auto block = GenerateBlock(info, channel_picker, channel_picker, 0);
 
   // If we didn't manage to generate a block, don't return any elements.
   if (block.empty()) {
@@ -358,7 +374,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.agyx2d7gifd9
 std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     FeedGenerationInfo& feed_generation_info) {
-  const auto& channels = feed_generation_info.channels;
+  const auto channels = feed_generation_info.EligibleChannels();
   // If we have no channels, and no topics there's nothing we can do here.
   if (channels.empty() && feed_generation_info.topics().empty()) {
     DVLOG(1) << "Nothing (no subscribed channels or unshown topics)";
@@ -473,7 +489,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!articles.empty()) {
-    auto items = GenerateBlock(articles, pick_hero, pick_article,
+    auto items = GenerateBlock(info, pick_hero, pick_article,
                                /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
@@ -504,37 +520,23 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
 mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
-  // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  auto& articles = info.GetArticleInfos();
   auto feed = mojom::FeedV2::New();
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
   };
 
-  std::vector<ContentGroup> eligible_content_groups;
-  for (const auto& channel_id : info.channels) {
-    eligible_content_groups.push_back(std::make_pair(channel_id, true));
-  }
-  for (const auto& [publisher_id, publisher] : info.publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-      eligible_content_groups.push_back(std::make_pair(publisher_id, false));
-      DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
-    }
-  }
-
   // If we aren't subscribed to anything, or we failed to fetch any articles
   // from the internet, don't try and generate a feed.
-  if (eligible_content_groups.size() == 0 || info.feed_items.size() == 0) {
+  if (info.GetEligibleContentGroups().size() == 0 ||
+      info.feed_items.size() == 0) {
     return feed;
   }
 
   // Step 1: Generate a block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   std::vector<mojom::FeedItemV2Ptr> initial_block =
-      GenerateBlockFromContentGroups(articles, info.locale, info.publishers,
-                                     eligible_content_groups);
+      GenerateBlockFromContentGroups(info);
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
@@ -569,16 +571,14 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
       DVLOG(1) << "Step 4: Standard Block";
-      items = GenerateBlockFromContentGroups(
-          articles, info.locale, info.publishers, eligible_content_groups);
+      items = GenerateBlockFromContentGroups(info);
     } else if (iteration_type == 1) {
       // Step 5: Block or Cluster Generation
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
         DVLOG(1) << "Step 5: Standard Block";
-        items = GenerateBlockFromContentGroups(
-            articles, info.locale, info.publishers, eligible_content_groups);
+        items = GenerateBlockFromContentGroups(info);
       } else {
         items = GenerateClusterBlock(info);
       }
