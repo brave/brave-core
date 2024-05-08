@@ -137,29 +137,21 @@ final class PlayerModel: ObservableObject {
   private let seekInterval: TimeInterval = 15.0
 
   func seekBackwards() async {
-    guard let currentItem = player.currentItem else {
+    guard let currentItem = player.currentItem, currentItem.status == .readyToPlay else {
       return
     }
     await seek(to: currentItem.currentTime().seconds - seekInterval)
   }
 
   func seekForwards() async {
-    guard let currentItem = player.currentItem else {
+    guard let currentItem = player.currentItem, currentItem.status == .readyToPlay else {
       return
     }
     await seek(to: currentItem.currentTime().seconds + seekInterval)
   }
 
   func seek(to time: TimeInterval, accurately: Bool = false) async {
-    guard let currentItem = player.currentItem else {
-      return
-    }
-    let seekTime = CMTimeMakeWithSeconds(
-      // Only clamp if the current duration is numeric
-      // FIXME: Do we even need to clamp?
-      currentItem.duration.isNumeric ? max(0.0, min(currentItem.duration.seconds, time)) : time,
-      preferredTimescale: currentItem.currentTime().timescale
-    )
+    let seekTime = CMTime(seconds: time, preferredTimescale: 1000)
     await player.seek(
       to: seekTime,
       toleranceBefore: accurately ? .zero : .positiveInfinity,

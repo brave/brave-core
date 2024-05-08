@@ -276,6 +276,10 @@ struct PlaylistSidebarListHeader: View {
         // FIXME: Show edit UI
       }
       .foregroundStyle(Color(braveSystemName: .textPrimary))
+      .disabled(
+        selectedFolder.uuid == PlaylistFolder.savedFolderUUID
+          && selectedFolder.playlistItems?.isEmpty == true
+      )
     }
     .padding()
     .task {

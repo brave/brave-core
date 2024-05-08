@@ -243,7 +243,7 @@ extension MediaContentView {
             )
             Spacer()
             Button {
-              withAnimation(.snappy(duration: 0.3)) {
+              withAnimation(.snappy(duration: 0.3, extraBounce: 0.1)) {
                 toggleFullScreen()
               }
             } label: {

@@ -18,6 +18,7 @@ struct PlayerView: View {
   @State private var dragOffset: CGSize = .zero
   @GestureState private var isTouchingInlineControls: Bool = false
 
+  @Environment(\.interfaceOrientation) private var orientation
   @Environment(\.isFullScreen) private var isFullScreen
   @Environment(\.toggleFullScreen) private var toggleFullScreen
 
@@ -44,6 +45,7 @@ struct PlayerView: View {
     .background {
       if !isFullScreen, playerModel.isPlaying {
         VideoAmbianceBackground(playerModel: playerModel)
+          .transition(.opacity.animation(.snappy))
       }
     }
     // For some reason this is required or the status bar breaks when touching anything on the
@@ -56,7 +58,10 @@ struct PlayerView: View {
       anchor: .center
     )
     .frame(maxWidth: .infinity, maxHeight: isFullScreen ? .infinity : nil)
-    .ignoresSafeArea(isFullScreen ? .all : [], edges: .vertical)
+    .ignoresSafeArea(
+      isFullScreen && (orientation.isLandscape || !playerModel.isPortraitVideo) ? .all : [],
+      edges: .vertical
+    )
     // FIXME: Better accessibility copy
     .accessibilityLabel(isFullScreen ? "Tap to toggle controls" : "Media player")
     .accessibilityAddTraits(isFullScreen ? .isButton : [])
