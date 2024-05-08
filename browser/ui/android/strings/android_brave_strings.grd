@@ -2305,7 +2305,7 @@ Are you sure you want to do this?
       One Year
     </message>
     <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renew annually save 16%
+      Renew annually save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
