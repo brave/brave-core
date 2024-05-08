@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
-#include "brave/components/brave_ads/core/internal/deprecated/user_engagement/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -34,9 +33,6 @@ namespace {
 
 void Create(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
-
-  table::ConversionQueue conversion_queue_database_table;
-  conversion_queue_database_table.Create(transaction);
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Create(transaction);
