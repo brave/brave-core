@@ -3,14 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled, { css } from 'styled-components'
 
 export const TileTitle = styled('p')<{}>`
   margin: 0;
-  font-family: Poppins;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 17px;
+  font: ${leo.font.small.semibold};
+  text-shadow: ${leo.effect.elevation['02']};
   max-width: 100%;
   height: 17px;
   color: var(--override-readability-color, white);
@@ -20,19 +19,37 @@ export const TileTitle = styled('p')<{}>`
   text-overflow: ellipsis;
 `
 
-export const AddSiteTileImage = styled('div')<{}>`
-  background: rgba(255, 255, 255, 0.2);
+export const TileImageContainer = styled('div')<{}>`
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #FFFFFF40;
   backdrop-filter: blur(8px);
-  border-radius: 8px;
-  width: 70px;
-  height: 70px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(
+      156.52deg,
+      rgba(0, 0, 0, 0.05) 2.12%,
+      rgba(0, 0, 0, 0) 39%,
+      rgba(0, 0, 0, 0) 54.33%,
+      rgba(0, 0, 0, 0.15) 93.02%);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, .35);
   }
 `
 
@@ -42,8 +59,8 @@ export interface AddSiteTileProps {
 
 export const AddSiteTile = styled('button')<AddSiteTileProps>`
   background: transparent;
-  width: 78px;
-  height: 110px;
+  width: 72px;
+  height: 107px;
   cursor: pointer;
   border: none;
   margin: 0;
@@ -55,19 +72,16 @@ export const AddSiteTile = styled('button')<AddSiteTileProps>`
   align-items: center;
   gap: 8px;
 
+  --leo-icon-size: 32px;
+  --leo-icon-color: rgba(255, 255, 255, .7);
+
   ${p => p.isDragging && css`
     visibility: hidden;
   `}
 
-  &:focus-visible, :focus {
-    gap: 4px;
-
-    ${AddSiteTileImage} {
-      margin-top: -4px;
-      width: 78px;
-      height: 78px;
-      background-clip: padding-box;
-      border: 4px solid white;
+  &:focus-visible, &:focus {
+    ${TileImageContainer} {
+      outline: 4px solid rgba(255, 255, 255, 0.6);
     }
   }
 `
@@ -78,7 +92,7 @@ export const List = styled('div')`
 
   // Add right padding of one column, so there's a nice gap between pages.
   padding-right: var(--grid-column-width);
-  
+
   display: grid;
   justify-content: var(--ntp-item-justify, start);
   grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
@@ -96,7 +110,7 @@ export const PagesContainer = styled('div')`
   margin-bottom: 24px;
 
   --grid-columns: 6;
-  --grid-column-width: 86px;
+  --grid-column-width: 72px;
 
   @media screen and (max-width: 700px) {
     --grid-columns: 4;
@@ -134,23 +148,21 @@ export const TileActionsContainer = styled('nav')<{}>`
   visibility: hidden;
   transition: 0.15s opacity linear;
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   z-index: 1;
-  top: -12px;
-  right: -12px;
+  top: -4px;
+  right: 2px;
   display: flex;
 `
 
 export const TileMenu = styled('div')<{}>`
   position: absolute;
 
-  // Here we apply a negative 12px offset so the menu has a 12px overlap with
-  // the button.
-  margin-left: -12px;
-  margin-top: -12px;
+  margin-left: 4px;
+  margin-top: -4px;
 
-  min-width: 185px;
+  min-width: 150px;
   height: 72px;
   padding: 8px 0;
   display: flex;
@@ -158,6 +170,8 @@ export const TileMenu = styled('div')<{}>`
   border-radius: 4px;
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3);
   z-index: 10;
+
+  --leo-icon-size: 14px;
 
   background: white;
   @media (prefers-color-scheme: dark) {
@@ -168,12 +182,7 @@ export const TileMenu = styled('div')<{}>`
 export const TileMenuItem = styled('button')<{}>`
   width: 100%;
   height: 30px;
-  font-family: Poppins;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0.01em;
+  font: ${leo.font.small.regular};
   text-align: left;
   margin: 0;
   border: none;
@@ -193,11 +202,11 @@ export const TileMenuItem = styled('button')<{}>`
   }
 `
 
-export const TileAction = styled('button')<{}>`
+export const TileAction = styled('button').attrs({ 'data-theme': 'light' })`
   -webkit-appearance: none;
   box-sizing: border-box;
   transition: color 0.1s linear;
-  background: #DADCEB;
+  background: #fff;
   width: 100%;
   border-radius: 50%;
   margin: 0;
@@ -207,32 +216,25 @@ export const TileAction = styled('button')<{}>`
   justify-content: center;
   outline: unset;
   background-clip: padding-box;
-  border: 4px solid transparent;
+  border: none;
+
+  --leo-icon-size: 14px;
+  --leo-icon-color: ${leo.color.icon.interactive};
 
   &:focus-visible {
-    border: 4px solid rgba(255, 255, 255, 0.6);
+    outline: 4px rgba(255, 255, 255, 0.6);
   }
 
   &:active {
-    background: #AEB1C2;
-    border: 4px solid transparent;
     background-clip: padding-box;
   }
 `
 
 export const TileFavicon = styled('img')<{}>`
-  display: block;
-  padding: 16px;
-  width: 70px;
-  height: 70px;
-  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
-
-  background: ${p => p.theme.palette.white};
-  @media (prefers-color-scheme: dark) {
-    background: ${p => p.theme.palette.black};
-  }
+  border-radius: 8px;
 `
 
 interface TileProps {
@@ -247,8 +249,8 @@ export const Tile = styled('a')<TileProps>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 78px;
-  height: 110px;
+  width: 72px;
+  height: 107px;
   cursor: pointer;
   // Menu goes behind in other Tiles when tils has z-index.
   // Give z-index while dragging to make dragging tile moves over other tiles.
@@ -257,29 +259,16 @@ export const Tile = styled('a')<TileProps>`
   gap: 8px;
 
   ${p => !p.isMenuShowing && css`
-    &:active {
-      gap: 4px;
-
-      ${TileFavicon} {
-        margin-top: -4px;
-        width: 78px;
-        height: 78px;
-        background-clip: padding-box;
-        border: 4px solid rgba(255, 255, 255, 0.6);
-      }
+    &:active ${TileImageContainer} {
+      outline: 4px solid rgba(255, 255, 255, 0.6);
     }
   `}
 
   &:focus-visible {
-    gap: 4px;
     outline: none;
 
-    ${TileFavicon} {
-      margin-top: -4px;
-      width: 78px;
-      height: 78px;
-      background-clip: padding-box;
-      border: 4px solid rgba(255, 255, 255, 0.6);
+    ${TileImageContainer} {
+      outline: 4px solid rgba(255, 255, 255, 0.6);
     }
   }
 

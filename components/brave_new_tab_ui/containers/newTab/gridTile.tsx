@@ -9,6 +9,7 @@ import { getScrollableParents, useParentScrolled } from '../../helpers/scrolling
 import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as ReactDOM from 'react-dom'
+import Icon from '@brave/leo/react/icon'
 import { getLocale } from '../../../common/locale'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 // Types
@@ -16,14 +17,11 @@ import * as newTabActions from '../../actions/new_tab_actions'
 // Feature-specific components
 import {
   Tile, TileAction, TileActionsContainer, TileFavicon,
+  TileImageContainer,
   TileMenu,
   TileMenuItem,
   TileTitle
 } from '../../components/default'
-// Icons
-import EditIcon from '../../components/default/gridSites/assets/edit'
-import EditMenuIcon from '../../components/default/gridSites/assets/edit-menu'
-import TrashIcon from '../../components/default/gridSites/assets/trash'
 
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
@@ -55,7 +53,9 @@ export function SiteTile (props: { site: NewTab.Site, isMenuShowing?: boolean, c
     href={site.url}
     style={style}>
     {children}
-    <TileFavicon src={generateGridSiteFavicon(site)} />
+    <TileImageContainer>
+      <TileFavicon src={generateGridSiteFavicon(site)} />
+    </TileImageContainer>
     <TileTitle>{site.title}</TileTitle>
   </Tile>
 }
@@ -112,7 +112,7 @@ function TopSite (props: Props) {
           e.preventDefault()
           setShowMenu(true)
         }}>
-          <EditIcon />
+          <Icon name='edit-pencil' />
         </TileAction>
       </TileActionsContainer>
       : null}
@@ -122,7 +122,7 @@ function TopSite (props: Props) {
         setShowMenu(false)
         props.onShowEditTopSite(siteData)
       }}>
-        <EditMenuIcon />
+        <Icon name='edit-pencil' />
         {getLocale('editSiteTileMenuItem')}
       </TileMenuItem>
       <TileMenuItem onClick={e => {
@@ -130,7 +130,7 @@ function TopSite (props: Props) {
         setShowMenu(false)
         props.actions.tileRemoved(siteData.url)
       }}>
-        <TrashIcon />
+        <Icon name='trash' />
         {getLocale('removeTileMenuItem')}
       </TileMenuItem>
     </TileMenu>, scrollableParent)}

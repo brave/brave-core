@@ -4,10 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 import { getLocale } from '../../../common/locale'
-import { AddSiteTile, AddSiteTileImage, TileTitle } from '../../components/default'
-// Icons
-import AddSiteTileIcon from '../../components/default/gridSites/assets/add-site-tile'
+import { AddSiteTile, TileImageContainer, TileTitle } from '../../components/default'
 
 interface Props {
   showEditTopSite: () => void
@@ -16,9 +15,9 @@ interface Props {
 
 export default function AddSite ({ showEditTopSite, isDragging }: Props) {
   return <AddSiteTile onClick={showEditTopSite} isDragging={isDragging}>
-      <AddSiteTileImage>
-        <AddSiteTileIcon />
-      </AddSiteTileImage>
+      <TileImageContainer>
+        <Icon name='plus-add' />
+      </TileImageContainer>
       <TileTitle>
         {getLocale('addTopSiteDialogTitle')}
       </TileTitle>
