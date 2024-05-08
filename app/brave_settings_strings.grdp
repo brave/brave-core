@@ -232,6 +232,9 @@
       <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for pin to taskbar button">
         Pin
       </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT_SUBLABEL" desc="The sub label for pin to taskbar button">
+        Click Pin and confirm in the following Windows notification
+      </message>
       <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
         Brave is already pinned
       </message>
