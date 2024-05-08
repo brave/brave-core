@@ -266,11 +266,11 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   }
 
   func isCustomChain(_ network: BraveWallet.NetworkInfo) -> Bool {
-    customChains.contains(where: { $0.coin == network.coin && $0.chainId == network.chainId })
+    customChains.contains(where: { $0.chainId == network.chainId })
   }
 
   func isHiddenChain(_ network: BraveWallet.NetworkInfo) -> Bool {
-    hiddenChains.contains(where: { $0.coin == network.coin && $0.chainId == network.chainId })
+    hiddenChains.contains(where: { $0.chainId == network.chainId })
   }
 
   @MainActor @discardableResult func setSelectedChain(
