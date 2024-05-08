@@ -45,7 +45,6 @@ import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
-import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -176,7 +175,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
         TwoLineItemRecyclerViewAdapter.TwoLineItemText account =
                 new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                        accountInfo.name, AddressUtils.getTruncatedAddress(accountInfo.address));
+                        accountInfo.name, Utils.getTruncatedAddress(accountInfo.address));
         account.imageType = TwoLineItemRecyclerViewAdapter.ImageType.BLOCKIE;
         account.imgData = accountId.address;
         items.add(account);
