@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
@@ -76,15 +77,14 @@ class ConversationDriver {
   void SetDefaultModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
-  const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
-  void AddToConversationHistory(mojom::ConversationTurn turn);
-  void UpdateOrCreateLastAssistantEntry(std::string text);
-  void SubmitHumanConversationEntry(mojom::ConversationTurn turn);
+  void AddToConversationHistory(mojom::ConversationTurnPtr turn);
+  void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -183,6 +183,14 @@ class ConversationDriver {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_Delta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_DeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDelta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
 
   void InitEngine();
   void OnUserOptedIn();
@@ -191,8 +199,6 @@ class ConversationDriver {
 
   void PerformAssistantGeneration(
       const std::string& input,
-      std::optional<std::string> selected_text,
-      const std::vector<mojom::ConversationTurn>& history,
       int64_t current_navigation_id,
       std::string page_content = "",
       bool is_video = false,
@@ -207,7 +213,7 @@ class ConversationDriver {
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback);
 
   void OnEngineCompletionDataReceived(int64_t navigation_id,
-                                      std::string result);
+                                      mojom::ConversationEntryEventPtr result);
   void OnEngineCompletionComplete(int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
@@ -219,7 +225,7 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
-
+  void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
   void SetAPIError(const mojom::APIError& error);
   bool IsContentAssociationPossible();
 
@@ -237,8 +243,7 @@ class ConversationDriver {
 
   // TODO(nullhook): Abstract the data model
   std::string model_key_;
-  // TODO(nullhook): Change this to mojo::StructPtr
-  std::vector<mojom::ConversationTurn> chat_history_;
+  std::vector<mojom::ConversationTurnPtr> chat_history_;
   bool is_conversation_active_ = false;
 
   // Page content
@@ -267,7 +272,7 @@ class ConversationDriver {
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
-  std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
+  mojom::ConversationTurnPtr pending_conversation_entry_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

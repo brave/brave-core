@@ -27,7 +27,8 @@ namespace ai_chat {
 class ConversationAPIClient {
  public:
   using GenerationResult = base::expected<std::string, mojom::APIError>;
-  using GenerationDataCallback = base::RepeatingCallback<void(std::string)>;
+  using GenerationDataCallback =
+      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
 

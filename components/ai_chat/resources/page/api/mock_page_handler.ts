@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 // Implementing from the raw class (mojom.PageHandlerRemote) gives an error: "Types have separate declarations of a private property 'proxy'".
 // General guidance is to use the public interface only as the underlying type hides private fields: https://github.com/microsoft/TypeScript/issues/7755
@@ -110,6 +111,10 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
     return Promise.resolve({ actionList: ACTIONS_LIST })
   }
 
+  openURL(url: Url) {
+    window.open(url.url, '_blank')
+  }
+
   onConnectionError() {}
   setClientPage() {}
   changeModel() {}
@@ -120,7 +125,6 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
   submitSummarizationRequest() {}
   markAgreementAccepted() {}
   openBraveLeoSettings() {}
-  openURL() {}
   generateQuestions() {}
   setShouldSendPageContents() {}
   goPremium() {}

@@ -133,9 +133,9 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  mojom::ConversationTurn turn = {
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      ConversationTurnVisibility::VISIBLE, input, std::nullopt};
+      ConversationTurnVisibility::VISIBLE, input, std::nullopt, std::nullopt);
   active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
 }
 

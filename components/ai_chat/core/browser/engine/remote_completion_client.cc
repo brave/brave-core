@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_status_code.h"
@@ -215,9 +216,12 @@ void RemoteCompletionClient::OnQueryDataReceived(
     return;
   }
 
+  // This client only supports completion events
   const std::string* completion = result->GetDict().FindString("completion");
   if (completion) {
-    callback.Run(std::move(*completion));
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(*completion));
+    callback.Run(std::move(event));
   }
 }
 

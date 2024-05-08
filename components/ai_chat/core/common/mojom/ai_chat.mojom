@@ -104,6 +104,25 @@ enum ActionType {
   EXPAND,
 };
 
+struct SearchQueriesEvent {
+  array<string> search_queries;
+};
+
+struct SearchStatusEvent {
+  bool is_searching = true;
+};
+
+struct CompletionEvent {
+  string completion;
+};
+
+// Events that occur during a conversation turn (only assistant for now)
+union ConversationEntryEvent {
+  CompletionEvent completion_event;
+  SearchQueriesEvent search_queries_event;
+  SearchStatusEvent search_status_event;
+};
+
 // Represents a single turn in a conversation.
 // The character type defines which party initiated the turn in the
 // conversation.
@@ -115,8 +134,18 @@ struct ConversationTurn {
   CharacterType character_type;
   ActionType action_type;
   ConversationTurnVisibility visibility;
+  // The text that is displayed to the user. This might be different than
+  // the text sent to the AI engine to represent this turn, which might be more
+  // verbose.
+  // TODO(petemill): Store the text sent to the AI engine to aid in regeneration
+  // and error retries.
   string text;
   string? selected_text;
+  // Ordered list of events that occurred during this turn
+  // TODO(petemill): ConversationTurn's |text| and |selected_text| might move
+  // to be an event - as the events become richer, the order around text could
+  // be important.
+  array<ConversationEntryEvent>? events;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a

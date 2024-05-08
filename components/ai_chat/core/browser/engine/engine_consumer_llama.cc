@@ -24,6 +24,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -33,7 +34,7 @@
 
 namespace {
 
-using ai_chat::mojom::ConversationTurn;
+using ai_chat::mojom::ConversationTurnPtr;
 
 constexpr char kLlama2Bos[] = "<s>";
 constexpr char kLlama2Eos[] = "</s>";
@@ -195,7 +196,7 @@ std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
 }
 
 std::string BuildLlamaPrompt(
-    const std::vector<ConversationTurn>& conversation_history,
+    const ai_chat::EngineConsumer::ConversationHistory& conversation_history,
     std::string page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
@@ -212,13 +213,13 @@ std::string BuildLlamaPrompt(
   // Get the raw first user message, which is in the chat history if this is
   // the first sequence.
   std::string raw_first_user_message;
-  if (conversation_history.size() > 0) {
+  if (conversation_history.size() > 1) {
     raw_first_user_message =
-        conversation_history[0].selected_text
-            ? base::StrCat({conversation_history[0].text,
+        conversation_history[0]->selected_text
+            ? base::StrCat({conversation_history[0]->text,
                             kSelectedTextPromptPlaceholder,
-                            *conversation_history[0].selected_text})
-            : conversation_history[0].text;
+                            *conversation_history[0]->selected_text})
+            : conversation_history[0]->text;
   } else {
     raw_first_user_message =
         selected_text
@@ -254,7 +255,7 @@ std::string BuildLlamaPrompt(
 
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
-  if (conversation_history.empty() || conversation_history.size() <= 1) {
+  if (conversation_history.empty() || conversation_history.size() <= 2) {
     return BuildLlamaFirstSequence(
         today_system_message, first_user_message, std::nullopt,
         (is_mixtral) ? std::optional(kMixtralAssistantTag)
@@ -266,19 +267,19 @@ std::string BuildLlamaPrompt(
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
   std::string prompt = BuildLlamaFirstSequence(
-      today_system_message, first_user_message, conversation_history[1].text,
+      today_system_message, first_user_message, conversation_history[1]->text,
       std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
-  // sequences.
-  for (size_t i = 2; i + 1 < conversation_history.size(); i += 2) {
+  // sequences. Ignore the last item since that's the current entry.
+  for (size_t i = 2; i + 1 < conversation_history.size() - 1; i += 2) {
     std::string prev_user_message =
-        conversation_history[i].selected_text
-            ? base::StrCat({conversation_history[i].text,
+        conversation_history[i]->selected_text
+            ? base::StrCat({conversation_history[i]->text,
                             kSelectedTextPromptPlaceholder,
-                            *conversation_history[i].selected_text})
-            : conversation_history[i].text;
-    const std::string& assistant_message = conversation_history[i + 1].text;
+                            *conversation_history[i]->selected_text})
+            : conversation_history[i]->text;
+    const std::string& assistant_message = conversation_history[i + 1]->text;
     prompt += BuildLlamaSubsequentSequence(
         prev_user_message, assistant_message,
         (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,
@@ -422,13 +423,23 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
-    std::optional<std::string> selected_text,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (selected_text) {
-    selected_text = selected_text->substr(0, max_page_content_length_);
+  if (conversation_history.empty()) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
+  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+  std::optional<std::string> selected_text = std::nullopt;
+  if (last_turn->selected_text.has_value()) {
+    selected_text =
+        last_turn->selected_text->substr(0, max_page_content_length_);
   }
   const std::string& truncated_page_content = page_content.substr(
       0, selected_text ? max_page_content_length_ - selected_text->size()
