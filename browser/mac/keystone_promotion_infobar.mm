@@ -3,21 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/cocoa/keystone_infobar_delegate.h"
-
 #include "brave/browser/mac/keystone_glue.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/mac/dock.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/cocoa/keystone_infobar_delegate.h"
 #include "chrome/browser/updater/browser_updater_client_util.h"
-
-#define PromotionInfoBar PromotionInfoBar_Unused
-#define SetupSystemUpdater                            \
-  [[KeystoneGlue defaultKeystoneGlue] promoteTicket]; \
-  dock::ChromeIsInTheDock
-
-#include "src/chrome/browser/ui/cocoa/keystone_infobar_delegate.mm"
-
-#undef SetupSystemUpdater
-#undef PromotionInfoBar
+#include "chrome/common/chrome_switches.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 // KeystonePromotionInfoBar ---------------------------------------------------
 
@@ -105,11 +101,3 @@ KeystonePromotionInfoBar* g_currentPromotionInfoBar;
 }
 
 @end  // @implementation KeystonePromotionInfoBar
-
-// static
-void KeystoneInfoBar::PromotionInfoBar(Profile* profile) {
-  KeystonePromotionInfoBar* promotionInfoBar =
-      [[KeystonePromotionInfoBar alloc] init];
-
-  [promotionInfoBar checkAndShowInfoBarForProfile:profile];
-}
