@@ -192,6 +192,8 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
 
   // Remove all the content groups that we've consumed all the articles from.
   for (const auto& to_remove : remove_content_groups) {
+    DVLOG(1) << "Consumed the last article from " << to_remove
+             << ". Removing it from the list of eligible content groups.";
     content_groups_.value().erase(base::ranges::find_if(
         content_groups_.value(),
         [&to_remove](const auto& group) { return group.first == to_remove; }));
