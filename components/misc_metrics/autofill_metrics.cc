@@ -6,6 +6,7 @@
 #include "brave/components/misc_metrics/autofill_metrics.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "components/autofill/core/browser/payments_data_manager.h"
 #include "components/autofill/core/browser/personal_data_manager.h"
 
 namespace misc_metrics {
@@ -25,7 +26,10 @@ void AutofillMetrics::OnPersonalDataChanged() {
 }
 
 void AutofillMetrics::ReportMetric() {
-  auto cards = personal_data_manager_->GetCreditCards();
+  if (!personal_data_manager_->IsDataLoaded()) {
+    return;
+  }
+  auto cards = personal_data_manager_->payments_data_manager().GetCreditCards();
   UMA_HISTOGRAM_BOOLEAN(kPaymentMethodPresentHistogramName, !cards.empty());
 }
 
