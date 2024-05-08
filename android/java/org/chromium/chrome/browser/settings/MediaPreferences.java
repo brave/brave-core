@@ -156,6 +156,7 @@ public class MediaPreferences extends BravePreferenceFragment
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(
                         FilterListConstants.HIDE_YOUTUBE_SHORTS_UUID, (boolean) newValue);
+                shouldRelaunch = true;
             }
         }
 
