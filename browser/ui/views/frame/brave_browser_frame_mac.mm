@@ -62,12 +62,16 @@ bool BraveBrowserFrameMac::ExecuteCommand(
     int32_t command,
     WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
-  // Ignoring the ctrl+w command when the active tab is pinned
+  /* is_before_first_responder tells whether or not the app/window was in focus
+     while the keyboard command was fired. In current method, it helps in
+     distinguishing the 'file -> close tab' (false, as toolbar was in focus)
+     command from 'ctrl + w' (true, as tab was in focus) command.*/
   Browser* browser = browser_view_->browser();
   int active_tab_index = browser->tab_strip_model()->active_index();
   if (command == IDC_CLOSE_TAB && is_before_first_responder &&
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
       browser->tab_strip_model()->IsTabPinned(active_tab_index)) {
+    // Ignoring the ctrl+w command when the active tab is shared pinned
     return true;
   }
 
