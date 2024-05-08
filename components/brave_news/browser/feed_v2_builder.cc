@@ -178,9 +178,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
   base::flat_map<std::string, std::vector<std::string>>
       publisher_id_to_channels;
-  for (const auto& [publisher_id, publisher] : info.publishers) {
+  for (const auto& [publisher_id, publisher] : info.publishers()) {
     publisher_id_to_channels[publisher_id] =
-        GetChannelsForPublisher(info.locale, publisher);
+        GetChannelsForPublisher(info.locale(), publisher);
   }
 
   // Generates a GetWeighting function tied to a specific content group. Each
@@ -225,7 +225,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
             is_hero, SampleContentGroup(eligible_content_groups),
             publisher_id_to_channels, locale);
       },
-      info.locale, std::move(eligible_content_groups),
+      info.locale(), std::move(eligible_content_groups),
       std::move(publisher_id_to_channels));
 
   PickArticles pick_hero = base::BindRepeating(
@@ -317,7 +317,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
       continue;
     }
 
-    auto item = FromTopicArticle(info.publishers, articles.at(0));
+    auto item = FromTopicArticle(info.publishers(), articles.at(0));
     items.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
     if (items.size() >= max_block_size) {
@@ -346,7 +346,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
 
   uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
   for (const auto& article : articles) {
-    auto item = FromTopicArticle(feed_generation_info.publishers, article);
+    auto item = FromTopicArticle(feed_generation_info.publishers(), article);
     result->articles.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
 
@@ -410,7 +410,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
 // subscribe to.
 // 3. Nothing.
 std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
-    std::vector<std::string>& suggested_publisher_ids) {
+    FeedGenerationInfo& info) {
   DVLOG(1) << __FUNCTION__;
   // Note: This step is not implemented properly yet. It should
   // 1. Display an advert, if we have one
@@ -422,6 +422,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
     return GenerateAd();
   }
 
+  auto& suggested_publisher_ids = info.suggested_publisher_ids();
   std::vector<mojom::FeedItemV2Ptr> result;
   if (!suggested_publisher_ids.empty()) {
     size_t preferred_count = 3;
@@ -430,9 +431,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
         suggested_publisher_ids.begin(),
         suggested_publisher_ids.begin() + count);
 
-    // Remove the suggested publisher ids, so we don't suggest them again.
-    suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
-                                  suggested_publisher_ids.begin() + count);
+    info.suggested_publisher_ids() =
+        base::make_span(std::next(suggested_publisher_ids.begin(), count),
+                        suggested_publisher_ids.end());
 
     DVLOG(1) << "Generating publisher suggestions (discover)";
     result.push_back(mojom::FeedItemV2::NewDiscover(
@@ -494,8 +495,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
 
     // After the first block, every second block should be an ad.
     if (blocks % kIterationsPerAd == 0 && blocks != 0) {
-      std::ranges::move(GenerateSpecialBlock(info.suggested_publisher_ids),
-                        std::back_inserter(items));
+      std::ranges::move(GenerateSpecialBlock(info), std::back_inserter(items));
     }
 
     std::ranges::move(items, std::back_inserter(feed->items));
@@ -526,7 +526,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   // If we aren't subscribed to anything, or we failed to fetch any articles
   // from the internet, don't try and generate a feed.
   if (info.GetEligibleContentGroups().size() == 0 ||
-      info.feed_items.size() == 0) {
+      info.raw_feed_items().size() == 0) {
     return feed;
   }
 
@@ -584,7 +584,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
         DVLOG(1) << "Step 6: Special Block";
-        items = GenerateSpecialBlock(info.suggested_publisher_ids);
+        items = GenerateSpecialBlock(info);
       } else {
         DVLOG(1) << "Step 6: None (approximately half the time)";
       }
@@ -664,18 +664,18 @@ void FeedV2Builder::BuildChannelFeed(
       base::BindOnce(
           [](std::string channel, FeedGenerationInfo info) {
             FeedItems feed_items;
-            for (const auto& item : info.feed_items) {
+            for (const auto& item : info.raw_feed_items()) {
               if (!item->is_article()) {
                 continue;
               }
 
-              auto publisher_it =
-                  info.publishers.find(item->get_article()->data->publisher_id);
-              if (publisher_it == info.publishers.end()) {
+              auto publisher_it = info.publishers().find(
+                  item->get_article()->data->publisher_id);
+              if (publisher_it == info.publishers().end()) {
                 continue;
               }
 
-              const auto& locale = info.locale;
+              const auto& locale = info.locale();
 
               auto locale_info_it =
                   base::ranges::find_if(publisher_it->second->locales,
@@ -693,7 +693,7 @@ void FeedV2Builder::BuildChannelFeed(
               feed_items.push_back(item->Clone());
             }
 
-            info.feed_items = std::move(feed_items);
+            info.raw_feed_items() = std::move(feed_items);
 
             return GenerateBasicFeed(std::move(info),
                                      base::BindRepeating(&PickRoulette),
@@ -715,7 +715,7 @@ void FeedV2Builder::BuildPublisherFeed(
           [](const std::string& publisher_id, FeedGenerationInfo info) {
             FeedItems items;
 
-            for (const auto& item : info.feed_items) {
+            for (const auto& item : info.raw_feed_items()) {
               if (!item->is_article()) {
                 continue;
               }
@@ -732,7 +732,8 @@ void FeedV2Builder::BuildPublisherFeed(
                      b->get_article()->data->publish_time;
             });
 
-            info.feed_items = std::move(items);
+            // Override the raw feed items.
+            info.raw_feed_items() = std::move(items);
 
             return GenerateBasicFeed(std::move(info),
                                      base::BindRepeating(&PickFirstIndex),

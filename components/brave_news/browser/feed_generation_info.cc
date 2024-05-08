@@ -27,17 +27,18 @@ FeedGenerationInfo::FeedGenerationInfo(
     const Signals& signals,
     const std::vector<std::string>& suggested_publisher_ids,
     const TopicsResult& topics)
-    : locale(locale),
-      channels(std::move(channels)),
-      suggested_publisher_ids(suggested_publisher_ids) {
-  this->feed_items.reserve(feed_items.size());
+    : locale_(locale),
+      channels_(std::move(channels)),
+      suggested_publisher_ids_(suggested_publisher_ids),
+      suggested_publisher_ids_span_(base::make_span(suggested_publisher_ids_)) {
+  this->feed_items_.reserve(feed_items.size());
   for (const auto& item : feed_items) {
-    this->feed_items.push_back(item->Clone());
+    this->feed_items_.push_back(item->Clone());
   }
 
-  this->publishers.reserve(publishers.size());
+  this->publishers_.reserve(publishers.size());
   for (const auto& [id, publisher] : publishers) {
-    this->publishers[id] = publisher.Clone();
+    this->publishers_[id] = publisher.Clone();
   }
 
   this->signals_.reserve(signals.size());
@@ -64,8 +65,8 @@ FeedGenerationInfo::~FeedGenerationInfo() = default;
 
 const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   if (!article_infos_) {
-    article_infos_ =
-        brave_news::GetArticleInfos(locale, feed_items, publishers, signals_);
+    article_infos_ = brave_news::GetArticleInfos(locale_, feed_items_,
+                                                 publishers_, signals_);
   }
   return article_infos_.value();
 }
@@ -76,7 +77,7 @@ FeedGenerationInfo::GetEligibleContentGroups() {
     GenerateAvailableCounts();
 
     std::vector<ContentGroup> content_groups;
-    for (const auto& channel_id : channels) {
+    for (const auto& channel_id : channels_) {
       if (base::Contains(available_counts_, channel_id)) {
         content_groups.emplace_back(channel_id, true);
         DVLOG(1) << "Subscribed to channel: " << channel_id;
@@ -88,7 +89,7 @@ FeedGenerationInfo::GetEligibleContentGroups() {
       }
     }
 
-    for (const auto& [publisher_id, publisher] : publishers) {
+    for (const auto& [publisher_id, publisher] : publishers_) {
       if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
           publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
         if (base::Contains(available_counts_, publisher_id)) {

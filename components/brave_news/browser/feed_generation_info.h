@@ -24,12 +24,6 @@
 namespace brave_news {
 
 struct FeedGenerationInfo {
-  std::string locale;
-  FeedItems feed_items;
-  Publishers publishers;
-  std::vector<std::string> channels;
-  std::vector<std::string> suggested_publisher_ids;
-
   FeedGenerationInfo(const std::string& locale,
                      const FeedItems& feed_items,
                      const Publishers& publishers,
@@ -58,13 +52,34 @@ struct FeedGenerationInfo {
   // maintain the list of content groups.
   mojom::FeedItemMetadataPtr PickAndConsume(PickArticles picker);
 
+  const std::string locale() { return locale_; }
+  const Publishers& publishers() { return publishers_; }
+
+  // Returns a pointer to the set of raw feed_items
+  FeedItems& raw_feed_items() { return feed_items_; }
+
+  // A modifiable span of the available topics.
   base::span<TopicAndArticles>& topics() { return topics_span_; }
+
+  // A modifiable span
+  base::span<std::string>& suggested_publisher_ids() {
+    return suggested_publisher_ids_span_;
+  }
 
  private:
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
                     const ArticleWeight& weight);
-  
+
+  std::string locale_;
+  std::vector<std::string> channels_;
+  Publishers publishers_;
+
+  FeedItems feed_items_;
+
+  std::vector<std::string> suggested_publisher_ids_;
+  base::span<std::string> suggested_publisher_ids_span_;
+
   Signals signals_;
 
   base::span<TopicAndArticles> topics_span_;
