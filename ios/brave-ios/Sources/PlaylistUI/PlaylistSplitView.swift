@@ -22,7 +22,6 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
   @Environment(\.isFullScreen) private var isFullScreen
   @Environment(\.dismiss) private var dismiss
 
-  // FIXME: Currently setting this after first appearance does nothing
   @Binding var selectedDetent: PlaylistSheetDetent
   var sidebar: Sidebar
   var sidebarHeader: SidebarHeader

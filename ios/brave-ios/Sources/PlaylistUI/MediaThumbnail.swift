@@ -61,7 +61,7 @@ struct MediaThumbnail: View {
           FaviconImage(url: pageURL.absoluteString, isPrivateBrowsing: false)
         }
       }
-      .task(id: assetURL) {
+      .task(id: pageURL) {
         do {
           try await thumbnailLoader.loadThumbnail(
             assetURL: assetURL,

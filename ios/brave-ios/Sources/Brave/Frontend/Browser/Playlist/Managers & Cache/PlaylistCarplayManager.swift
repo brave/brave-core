@@ -133,6 +133,7 @@ public class PlaylistCarplayManager: NSObject {
       return PlaylistHostingController(
         delegate: .init(
           openTabURL: { [weak browserController] url, isPrivate in
+            browserController?.dismiss(animated: true)
             browserController?.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
           },
           webLoaderFactory: {
@@ -143,7 +144,7 @@ public class PlaylistCarplayManager: NSObject {
           }
         ),
         initialPlaybackInfo: initialItem.map { item in
-          .init(itemID: item.id, timestamp: initialItemPlaybackOffset)
+          .init(itemUUID: item.id, timestamp: initialItemPlaybackOffset)
         }
       )
     }

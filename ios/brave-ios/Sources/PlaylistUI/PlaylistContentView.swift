@@ -40,12 +40,11 @@ struct PlaylistContentView: View {
   }
 
   private var selectedItem: PlaylistItem? {
-    // FIXME: When PlaylistItem.ID is no longer the uuid, this will have to change
-    selectedItemID.flatMap { PlaylistItem.getItem(uuid: $0) }
+    selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
   }
 
   // FIXME: Move all selected folder/item queue logic into a testable ObservableObject
-  private func makeItemQueue(selectedItemID: String?) {
+  private func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
     var queue: [PlaylistItem.ID] = []
     var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
     if playerModel.isShuffleEnabled {
@@ -92,9 +91,20 @@ struct PlaylistContentView: View {
       // This should be safe as we've already checked if the selected item is the last in the queue
       selectedItemID = itemQueue[currentItemIndex + 1]
     }
+
+    Task {
+      await self.prepareToPlaySelectedItem(
+        initialOffset: seekToInitialTimestamp,
+        playImmediately: true
+      )
+    }
   }
 
-  @MainActor private func playItem(_ item: PlaylistItem) async {
+  @MainActor private func prepareToPlaySelectedItem(
+    initialOffset: TimeInterval?,
+    playImmediately: Bool
+  ) async {
+    guard let item = selectedItem else { return }
     // Shrink it down?
     withAnimation(.snappy) {
       selectedDetent = .small
@@ -123,10 +133,14 @@ struct PlaylistContentView: View {
     }()
     if let playerItem = playerItemToReplace {
       playerModel.item = playerItem
-      if resumeFromLastTimePlayed.value {
+      if let initialOffset {
+        await playerModel.seek(to: initialOffset, accurately: true)
+      } else if resumeFromLastTimePlayed.value {
         await playerModel.seek(to: item.lastPlayedOffset, accurately: true)
       }
-      playerModel.play()
+      if playImmediately {
+        playerModel.play()
+      }
     }
   }
 
@@ -152,8 +166,10 @@ struct PlaylistContentView: View {
                 await playerModel.seek(to: 0, accurately: true)
                 playerModel.play()
               }
+              return
             }
             selectedItemID = newValue
+            Task { await prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true) }
           }
         ),
         isPlaying: playerModel.isPlaying
@@ -214,10 +230,12 @@ struct PlaylistContentView: View {
       // Possibly update the selected folder based on the last item played
       let lastPlayedItem: PlaylistItem? = lastPlayedItemURL.value
         .map { PlaylistItem.getItems(pageSrc: $0) }?.first
-      if let initialPlaybackInfo {
+      if let initialPlaybackInfo,
+        let item = PlaylistItem.getItem(uuid: initialPlaybackInfo.itemUUID)
+      {
         // If we're coming from a tab with some initial video data update the folder & item
         seekToInitialTimestamp = initialPlaybackInfo.timestamp
-        selectedItemID = initialPlaybackInfo.itemID
+        selectedItemID = item.id
         if let folderID = selectedItem?.playlistFolder?.id {
           selectedFolderID = folderID
         }
@@ -231,13 +249,23 @@ struct PlaylistContentView: View {
             selectedFolderID = lastPlayedItemParentFolder.id
           }
           selectedItemID = lastPlayedItem.id
-        } else if firstLoadAutoPlay.value {
+        } else {
           // Start the first video in the queue if auto-play is enabled
           if resumeFromLastTimePlayed.value, let selectedItem {
             seekToInitialTimestamp = selectedItem.lastPlayedOffset
           }
           selectedItemID = itemQueue.first
         }
+      }
+      Task { @MainActor in
+        // If we need to stream the item we need to wait until `loadMediaStreamingAsset` is valid
+        if selectedItem?.cachedData == nil, !loadMediaStreamingAsset.isPrepared {
+          try await Task.sleep(for: .seconds(0.5))
+        }
+        await self.prepareToPlaySelectedItem(
+          initialOffset: seekToInitialTimestamp,
+          playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay.value
+        )
       }
       if selectedItem != nil {
         selectedDetent = .small
@@ -292,28 +320,21 @@ struct PlaylistContentView: View {
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
     }
-    .onChange(of: selectedItemID) { [selectedItem] newValue in
+    .onChange(of: selectedItemID) {
+      [selectedItem, currentTime = playerModel.currentTime, duration = playerModel.duration]
+      newValue in
       if let priorSelectedItem = selectedItem {
-        let currentTime = playerModel.currentTime
         PlaylistManager.shared.updateLastPlayed(
           item: .init(item: priorSelectedItem),
-          playTime: currentTime == playerModel.duration ? 0.0 : currentTime
+          playTime: currentTime == duration ? 0.0 : currentTime
         )
       }
-      guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {
+      if newValue == nil {
         withAnimation(.snappy) {
           selectedDetent = .anchor(.emptyPlaylistContent)
         }
         playerModel.stop()
         return
-      }
-      Task {
-        await playItem(item)
-
-        if let timestamp = seekToInitialTimestamp {
-          await playerModel.seek(to: timestamp, accurately: true)
-          self.seekToInitialTimestamp = nil
-        }
       }
     }
     .onChange(of: playerModel.isShuffleEnabled) { _ in

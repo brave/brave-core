@@ -39,6 +39,11 @@ struct LoadMediaStreamingAssetAction {
   // FIXME: WeakBox?
   fileprivate var mediaStreamer: PlaylistMediaStreamer?
 
+  /// Whether or not the action is prepared to load a streaming URL
+  var isPrepared: Bool {
+    mediaStreamer != nil
+  }
+
   /// Attempts to fetch an up to date streaming URL for the given `PlaylistInfo` if no cache exists
   /// for said item.
   ///
@@ -83,9 +88,23 @@ private struct LoadMediaStreamingAssetModifier: ViewModifier {
   var webLoaderFactory: any PlaylistWebLoaderFactory
   @State private var mediaStreamer: PlaylistMediaStreamer?
 
+  private var fallbackPlayerView: UIView? {
+    UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first?.windows.first
+  }
+
+  private var validMediaStreamer: PlaylistMediaStreamer? {
+    if let mediaStreamer {
+      return mediaStreamer
+    }
+    if let fallbackPlayerView {
+      return .init(playerView: fallbackPlayerView, webLoaderFactory: webLoaderFactory)
+    }
+    return nil
+  }
+
   func body(content: Content) -> some View {
     content
-      .environment(\._loadMediaStreamingAsset, .init(mediaStreamer: mediaStreamer))
+      .environment(\._loadMediaStreamingAsset, .init(mediaStreamer: validMediaStreamer))
       .background {
         _RepresentableView(webLoaderFactory: webLoaderFactory, mediaStreamer: $mediaStreamer)
           // Can't use the `hidden` modifier or the view isn't added at all
@@ -105,7 +124,7 @@ private struct LoadMediaStreamingAssetModifier: ViewModifier {
     func updateUIView(_ uiView: UIView, context: Context) {
       // Avoid infinite update loop by ensuring we haven't already set this
       if mediaStreamer == nil {
-        // Dispatch off main to avoid updating state during body computation
+        // Dispatch off main to avoid updating state during body computatdion
         DispatchQueue.main.async {
           mediaStreamer = .init(playerView: uiView, webLoaderFactory: webLoaderFactory)
         }

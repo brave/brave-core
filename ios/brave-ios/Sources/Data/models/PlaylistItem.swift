@@ -63,8 +63,8 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     self.uuid = UUID().uuidString
   }
 
-  public var id: String {
-    uuid ?? UUID().uuidString
+  public var id: NSManagedObjectID {
+    objectID
   }
 
   public class func frc() -> NSFetchedResultsController<PlaylistItem> {
@@ -256,6 +256,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
 
   public static func getItems(pageSrc: String) -> [PlaylistItem] {
     return PlaylistItem.all(where: NSPredicate(format: "pageSrc == %@", pageSrc)) ?? []
+  }
+
+  public static func getItem(id: PlaylistItem.ID) -> PlaylistItem? {
+    return PlaylistItem.first(where: NSPredicate(format: "self == %@", id))
   }
 
   public static func getItem(uuid: String) -> PlaylistItem? {

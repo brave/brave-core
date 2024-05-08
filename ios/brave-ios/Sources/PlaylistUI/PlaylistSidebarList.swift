@@ -46,14 +46,7 @@ struct PlaylistSidebarList: View {
         // FIXME: Would be better as an overaly on the ScrollView itself, so it could grow to the height of the drawer but would have to get the PlaylistDrawerScrollView out of PlaylistSplitView somehow
         PlaylistSidebarContentUnavailableView()
       } else {
-        // SwiftUI needs to be able to access the ID keypath off main for animation purposes, so
-        // we must identify CoreData objects by `objectID` in `ForEach` containers which are not
-        // context/thread bound.
-        //
-        // FIXME: Remove custom implementations of Identifable on PlaylistFolder & PlaylistItem
-        // PlaylistFolder.ID is used on old playlist design so will have to refactor that or wait
-        // until after its removed.
-        ForEach(items, id: \.objectID) { item in
+        ForEach(items) { item in
           Button {
             selectedItemID = item.id
           } label: {
@@ -91,7 +84,9 @@ struct PlaylistSidebarList: View {
             if let cachedData = item.cachedData, !cachedData.isEmpty {
               Button {
                 PlaylistManager.shared.deleteCache(item: .init(item: item))
-                downloadStates.removeValue(forKey: item.id)
+                if let uuid = item.uuid {
+                  downloadStates.removeValue(forKey: uuid)
+                }
               } label: {
                 Label("Remove Offline Data", braveSystemImage: "leo.cloud.off")
               }

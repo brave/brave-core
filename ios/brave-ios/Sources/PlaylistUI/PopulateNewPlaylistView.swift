@@ -27,8 +27,7 @@ struct PopulateNewPlaylistView: View {
   )
   private var items: FetchedResults<PlaylistItem>
 
-  // FIXME: Change to PlaylistItem.ID when custom Identifiable implementations are removed
-  @State private var selectedItems: Set<NSManagedObjectID> = []
+  @State private var selectedItems: Set<PlaylistItem.ID> = []
 
   var body: some View {
     ScrollView(.vertical) {
@@ -47,16 +46,16 @@ struct PopulateNewPlaylistView: View {
           columns: [.init(), .init(), .init()],
           spacing: 8
         ) {
-          ForEach(items, id: \.objectID) { item in
+          ForEach(items) { item in
             ItemToggle(
               item: item,
               isSelected: Binding(
-                get: { selectedItems.contains(item.objectID) },
+                get: { selectedItems.contains(item.id) },
                 set: { isOn in
                   if isOn {
-                    selectedItems.insert(item.objectID)
+                    selectedItems.insert(item.id)
                   } else {
-                    selectedItems.remove(item.objectID)
+                    selectedItems.remove(item.id)
                   }
                 }
               )

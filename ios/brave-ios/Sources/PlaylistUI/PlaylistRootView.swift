@@ -61,11 +61,11 @@ public struct PlaylistRootView: View {
   }
 
   public struct InitialPlaybackInfo {
-    public var itemID: PlaylistItem.ID
+    public var itemUUID: String
     public var timestamp: TimeInterval
 
-    public init(itemID: PlaylistItem.ID, timestamp: TimeInterval) {
-      self.itemID = itemID
+    public init(itemUUID: String, timestamp: TimeInterval) {
+      self.itemUUID = itemUUID
       self.timestamp = timestamp
     }
   }
