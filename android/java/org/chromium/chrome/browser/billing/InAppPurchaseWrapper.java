@@ -544,9 +544,9 @@ public class InAppPurchaseWrapper {
             if (yearlyPrice == 0) {
                 return 0;
             }
-            double percentage = (100 - (yearlyActualPrice * 100) / yearlyPrice);
-            Log.e("barve_vpn", (int) Math.round(percentage) + "");
-            return (int) Math.round(percentage);
+            double discountPrice = yearlyPrice - yearlyActualPrice;
+            double discountPercentage = (discountPrice / yearlyPrice) * 100;
+            return (int) Math.round(discountPercentage);
         }
         return 0;
     }
