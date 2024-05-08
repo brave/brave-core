@@ -32,87 +32,87 @@ mojom::BlowfishWarningSeverity ParseWarningSeverity(
   }
 }
 
-mojom::BlowfishWarningKind ParseWarningKind(
-    const simulation_responses::WarningKind& kind) {
-  switch (kind) {
-    case simulation_responses::WarningKind::kApprovalToEoa:
-      return mojom::BlowfishWarningKind::kApprovalToEOA;
-    case simulation_responses::WarningKind::kBlocklistedDomainCrossOrigin:
-      return mojom::BlowfishWarningKind::kBlocklistedDomainCrossOrigin;
-    case simulation_responses::WarningKind::kBlurBulkOrderNotOnBlur:
-      return mojom::BlowfishWarningKind::kBlurBulkOrderNotOnBlur;
-    case simulation_responses::WarningKind::kBlurV2OrderNotOnBlur:
-      return mojom::BlowfishWarningKind::kBlurV2OrderNotOnBlur;
-    case simulation_responses::WarningKind::kBulkApprovalsRequest:
-      return mojom::BlowfishWarningKind::kBulkApprovalsRequest;
-    case simulation_responses::WarningKind::kCompromisedAuthorityUpgrade:
-      return mojom::BlowfishWarningKind::kCompromisedAuthorityUpgrade;
-    case simulation_responses::WarningKind::kCopyCatDomain:
-      return mojom::BlowfishWarningKind::kCopyCatDomain;
-    case simulation_responses::WarningKind::kCopyCatImageUnresponsiveDomain:
-      return mojom::BlowfishWarningKind::kCopyCatImageUnresponsiveDomain;
-    case simulation_responses::WarningKind::kDanglingApproval:
-      return mojom::BlowfishWarningKind::kDanglingApproval;
-    case simulation_responses::WarningKind::kDebuggerPaused:
-      return mojom::BlowfishWarningKind::kDebuggerPaused;
-    case simulation_responses::WarningKind::kDurableNonce:
-      return mojom::BlowfishWarningKind::kDurableNonce;
-    case simulation_responses::WarningKind::kEthSignTxHash:
-      return mojom::BlowfishWarningKind::kEthSignTxHash;
-    case simulation_responses::WarningKind::kForta:
-      return mojom::BlowfishWarningKind::kForta;
-    case simulation_responses::WarningKind::kImbalancedDollarValue:
-      return mojom::BlowfishWarningKind::kImbalancedDollarValue;
-    case simulation_responses::WarningKind::kKnownMalicious:
-      return mojom::BlowfishWarningKind::kKnownMalicious;
-    case simulation_responses::WarningKind::kMaliciousPackages:
-      return mojom::BlowfishWarningKind::kMaliciousPackages;
-    case simulation_responses::WarningKind::kMultiCopyCatDomain:
-      return mojom::BlowfishWarningKind::kMultiCopyCatDomain;
-    case simulation_responses::WarningKind::kNewDomain:
-      return mojom::BlowfishWarningKind::kNewDomain;
-    case simulation_responses::WarningKind::kPermitNoExpiration:
-      return mojom::BlowfishWarningKind::kPermitNoExpiration;
-    case simulation_responses::WarningKind::kPermitUnlimitedAllowance:
-      return mojom::BlowfishWarningKind::kPermitUnlimitedAllowance;
-    case simulation_responses::WarningKind::kPoisonedAddress:
-      return mojom::BlowfishWarningKind::kPoisonedAddress;
-    case simulation_responses::WarningKind::kReferencedOfacAddress:
-      return mojom::BlowfishWarningKind::kReferencedOfacAddress;
-    case simulation_responses::WarningKind::kSemiTrustedBlocklistDomain:
-      return mojom::BlowfishWarningKind::kSemiTrustedBlocklistDomain;
-    case simulation_responses::WarningKind::kSetOwnerAuthority:
-      return mojom::BlowfishWarningKind::kSetOwnerAuthority;
-    case simulation_responses::WarningKind::kSuspectedMalicious:
-      return mojom::BlowfishWarningKind::kSuspectedMalicious;
-    case simulation_responses::WarningKind::kTooManyTransactions:
-      return mojom::BlowfishWarningKind::kTooManyTransactions;
-    case simulation_responses::WarningKind::kTradeForNothing:
-      return mojom::BlowfishWarningKind::kTradeForNothing;
-    case simulation_responses::WarningKind::kTransferringErc20ToOwnContract:
-      return mojom::BlowfishWarningKind::kTransferringErc20ToOwnContract;
-    case simulation_responses::WarningKind::kTransferringTooMuchSol:
-      return mojom::BlowfishWarningKind::kTransferringTooMuchSol;
-    case simulation_responses::WarningKind::kTransfersMajorityOfYourSol:
-      return mojom::BlowfishWarningKind::kTransfersMajorityOfYourSol;
-    case simulation_responses::WarningKind::kTrustedBlocklistDomain:
-      return mojom::BlowfishWarningKind::kTrustedBlocklistDomain;
-    case simulation_responses::WarningKind::kUnlimitedAllowanceToNfts:
-      return mojom::BlowfishWarningKind::kUnlimitedAllowanceToNfts;
-    case simulation_responses::WarningKind::kUnusualGasConsumption:
-      return mojom::BlowfishWarningKind::kUnusualGasConsumption;
-    case simulation_responses::WarningKind::kUserAccountOwnerChange:
-      return mojom::BlowfishWarningKind::kUserAccountOwnerChange;
-    case simulation_responses::WarningKind::kTransferToMintAccount:
-      return mojom::BlowfishWarningKind::kTransferToMintAccount;
-    case simulation_responses::WarningKind::kWhitelistedDomainCrossOrigin:
-      return mojom::BlowfishWarningKind::kWhitelistedDomainCrossOrigin;
-    case simulation_responses::WarningKind::kYakoaNftIpInfringement:
-      return mojom::BlowfishWarningKind::kYakoaNftIpInfringement;
-    case simulation_responses::WarningKind::kReliableSimulationNotPossible:
-      return mojom::BlowfishWarningKind::kReliableSimulationNotPossible;
-    default:
-      return mojom::BlowfishWarningKind::kUnknown;
+mojom::BlowfishWarningKind ParseWarningKind(const std::string& kind) {
+  if (kind == "APPROVAL_TO_EOA") {
+    return mojom::BlowfishWarningKind::kApprovalToEOA;
+  } else if (kind == "BLOCKLISTED_DOMAIN_CROSS_ORIGIN") {
+    return mojom::BlowfishWarningKind::kBlocklistedDomainCrossOrigin;
+  } else if (kind == "BLUR_BULK_ORDER_NOT_ON_BLUR") {
+    return mojom::BlowfishWarningKind::kBlurBulkOrderNotOnBlur;
+  } else if (kind == "BLUR_V2_ORDER_NOT_ON_BLUR") {
+    return mojom::BlowfishWarningKind::kBlurV2OrderNotOnBlur;
+  } else if (kind == "BULK_APPROVALS_REQUEST") {
+    return mojom::BlowfishWarningKind::kBulkApprovalsRequest;
+  } else if (kind == "COMPROMISED_AUTHORITY_UPGRADE") {
+    return mojom::BlowfishWarningKind::kCompromisedAuthorityUpgrade;
+  } else if (kind == "COPY_CAT_DOMAIN") {
+    return mojom::BlowfishWarningKind::kCopyCatDomain;
+  } else if (kind == "COPY_CAT_IMAGE_UNRESPONSIVE_DOMAIN") {
+    return mojom::BlowfishWarningKind::kCopyCatImageUnresponsiveDomain;
+  } else if (kind == "DANGLING_APPROVAL") {
+    return mojom::BlowfishWarningKind::kDanglingApproval;
+  } else if (kind == "DEBUGGER_PAUSED") {
+    return mojom::BlowfishWarningKind::kDebuggerPaused;
+  } else if (kind == "DURABLE_NONCE") {
+    return mojom::BlowfishWarningKind::kDurableNonce;
+  } else if (kind == "ETH_SIGN_TX_HASH") {
+    return mojom::BlowfishWarningKind::kEthSignTxHash;
+  } else if (kind == "FORTA") {
+    return mojom::BlowfishWarningKind::kForta;
+  } else if (kind == "IMBALANCED_DOLLAR_VALUE") {
+    return mojom::BlowfishWarningKind::kImbalancedDollarValue;
+  } else if (kind == "KNOWN_MALICIOUS") {
+    return mojom::BlowfishWarningKind::kKnownMalicious;
+  } else if (kind == "MALICIOUS_PACKAGES") {
+    return mojom::BlowfishWarningKind::kMaliciousPackages;
+  } else if (kind == "MULTI_COPY_CAT_DOMAIN") {
+    return mojom::BlowfishWarningKind::kMultiCopyCatDomain;
+  } else if (kind == "NEW_DOMAIN") {
+    return mojom::BlowfishWarningKind::kNewDomain;
+  } else if (kind == "PERMIT_NO_EXPIRATION") {
+    return mojom::BlowfishWarningKind::kPermitNoExpiration;
+  } else if (kind == "PERMIT_UNLIMITED_ALLOWANCE") {
+    return mojom::BlowfishWarningKind::kPermitUnlimitedAllowance;
+  } else if (kind == "POISONED_ADDRESS") {
+    return mojom::BlowfishWarningKind::kPoisonedAddress;
+  } else if (kind == "REFERENCED_OFAC_ADDRESS") {
+    return mojom::BlowfishWarningKind::kReferencedOfacAddress;
+  } else if (kind == "SEMI_TRUSTED_BLOCKLIST_DOMAIN") {
+    return mojom::BlowfishWarningKind::kSemiTrustedBlocklistDomain;
+  } else if (kind == "SET_OWNER_AUTHORITY") {
+    return mojom::BlowfishWarningKind::kSetOwnerAuthority;
+  } else if (kind == "SUSPECTED_MALICIOUS") {
+    return mojom::BlowfishWarningKind::kSuspectedMalicious;
+  } else if (kind == "TOO_MANY_TRANSACTIONS") {
+    return mojom::BlowfishWarningKind::kTooManyTransactions;
+  } else if (kind == "TRADE_FOR_NOTHING") {
+    return mojom::BlowfishWarningKind::kTradeForNothing;
+  } else if (kind == "TRANSFERRING_ERC20_TO_OWN_CONTRACT") {
+    return mojom::BlowfishWarningKind::kTransferringErc20ToOwnContract;
+  } else if (kind == "TRANSFERRING_TOO_MUCH_SOL") {
+    return mojom::BlowfishWarningKind::kTransferringTooMuchSol;
+  } else if (kind == "TRANSFERS_MAJORITY_OF_YOUR_SOL") {
+    return mojom::BlowfishWarningKind::kTransfersMajorityOfYourSol;
+  } else if (kind == "TRUSTED_BLOCKLIST_DOMAIN") {
+    return mojom::BlowfishWarningKind::kTrustedBlocklistDomain;
+  } else if (kind == "UNLIMITED_ALLOWANCE_TO_NFTS") {
+    return mojom::BlowfishWarningKind::kUnlimitedAllowanceToNfts;
+  } else if (kind == "UNUSUAL_GAS_CONSUMPTION") {
+    return mojom::BlowfishWarningKind::kUnusualGasConsumption;
+  } else if (kind == "USER_ACCOUNT_OWNER_CHANGE") {
+    return mojom::BlowfishWarningKind::kUserAccountOwnerChange;
+  } else if (kind == "TRANSFER_TO_MINT_ACCOUNT") {
+    return mojom::BlowfishWarningKind::kTransferToMintAccount;
+  } else if (kind == "WHITELISTED_DOMAIN_CROSS_ORIGIN") {
+    return mojom::BlowfishWarningKind::kWhitelistedDomainCrossOrigin;
+  } else if (kind == "YAKOA_NFT_IP_INFRINGEMENT") {
+    return mojom::BlowfishWarningKind::kYakoaNftIpInfringement;
+  } else if (kind == "RELIABLE_SIMULATION_NOT_POSSIBLE") {
+    return mojom::BlowfishWarningKind::kReliableSimulationNotPossible;
+  } else if (kind == "INTERACTING_WITH_ACCOUNT_WITHOUT_ACTIVITY") {
+    return mojom::BlowfishWarningKind::kInteractingWithAccountWithoutActivity;
+  } else {
+    return mojom::BlowfishWarningKind::kUnknown;
   }
 }
 

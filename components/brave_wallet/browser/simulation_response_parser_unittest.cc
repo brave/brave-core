@@ -1145,6 +1145,62 @@ TEST(SimulationResponseParserUnitTest, ParseEvmUnknownError) {
   EXPECT_EQ(simulation_response->expected_state_changes.size(), 0ULL);
 }
 
+TEST(SimulationResponseParserUnitTest, ParseEvmUnknownWarnings) {
+  std::string json(R"(
+    {
+      "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
+      "action":"BLOCK",
+      "warnings": [
+        {
+          "severity": "CRITICAL",
+          "kind": "THIS_IS_AN_UNKNOWN_CRITICAL_ERROR",
+          "message": "There's something wrong with this transaction, but we don't know what it is."
+        },
+        {
+          "severity": "WARNING",
+          "kind": "SUSPECTED_MALICIOUS",
+          "message": "We suspect this transaction is malicious. Approving may lead to loss of funds."
+        }
+      ],
+      "simulationResults":{
+        "aggregated":{
+          "error":null,
+          "userAccount":"0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+          "expectedStateChanges":{
+            "0xd8da6bf26964af9d7eed9e03e53415d37aa96045": []
+          }
+        }
+      }
+    }
+  )");
+  auto simulation_response = evm::ParseSimulationResponse(
+      ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
+  ASSERT_TRUE(simulation_response);
+
+  EXPECT_EQ(simulation_response->action,
+            mojom::BlowfishSuggestedAction::kBlock);
+  ASSERT_EQ(simulation_response->warnings.size(), 2ULL);
+
+  EXPECT_EQ(simulation_response->warnings.at(0)->severity,
+            mojom::BlowfishWarningSeverity::kCritical);
+  EXPECT_EQ(simulation_response->warnings.at(0)->kind,
+            mojom::BlowfishWarningKind::kUnknown);
+  EXPECT_EQ(simulation_response->warnings.at(0)->message,
+            "There's something wrong with this transaction, but we don't know "
+            "what it is.");
+
+  EXPECT_EQ(simulation_response->warnings.at(1)->severity,
+            mojom::BlowfishWarningSeverity::kWarning);
+  EXPECT_EQ(simulation_response->warnings.at(1)->kind,
+            mojom::BlowfishWarningKind::kSuspectedMalicious);
+  EXPECT_EQ(simulation_response->warnings.at(1)->message,
+            "We suspect this transaction is malicious. Approving may lead to "
+            "loss of funds.");
+
+  EXPECT_FALSE(simulation_response->error);
+  EXPECT_EQ(simulation_response->expected_state_changes.size(), 0ULL);
+}
+
 TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   std::string json_fmt(R"(
     {
