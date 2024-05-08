@@ -294,9 +294,10 @@ struct PlaylistContentView: View {
     }
     .onChange(of: selectedItemID) { [selectedItem] newValue in
       if let priorSelectedItem = selectedItem {
+        let currentTime = playerModel.currentTime
         PlaylistManager.shared.updateLastPlayed(
           item: .init(item: priorSelectedItem),
-          playTime: playerModel.currentTime
+          playTime: currentTime == playerModel.duration ? 0.0 : currentTime
         )
       }
       guard let id = newValue, let item = PlaylistItem.getItem(uuid: id) else {
