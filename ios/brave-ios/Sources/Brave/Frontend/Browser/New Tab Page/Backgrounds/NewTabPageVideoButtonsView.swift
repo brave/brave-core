@@ -85,6 +85,8 @@ class NewTabPageVideoButtonsView: UIView {
     imageView.alpha = 0
     UIView.animate(
       withDuration: 0.1,
+      delay: 0,
+      options: .allowUserInteraction,
       animations: {
         imageView.alpha = 1
       },
@@ -92,6 +94,7 @@ class NewTabPageVideoButtonsView: UIView {
         UIView.animate(
           withDuration: 0.3,
           delay: 0.5,
+          options: .allowUserInteraction,
           animations: {
             imageView.alpha = 0
           }

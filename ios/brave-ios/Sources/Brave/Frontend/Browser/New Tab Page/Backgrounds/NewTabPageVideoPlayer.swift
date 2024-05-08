@@ -108,6 +108,7 @@ class NewTabPageVideoPlayer {
     if !didFinishAutoplay {
       autoplayFinished()
       player?.pause()
+      seekToStopFrame()
     } else if didStartPlayback {
       player?.pause()
       if let timeObserver = timeObserver {
@@ -219,6 +220,7 @@ class NewTabPageVideoPlayer {
       guard let self = self else { return }
       if player.timeControlStatus == .paused && !self.didFinishAutoplay {
         self.autoplayFinished()
+        self.seekToStopFrame()
       }
     }
 
