@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/preloading/preview/preview_browsertest.cc b/chrome/browser/preloading/preview/preview_browsertest.cc
+index 1de79f018b967c25380a81c7ce953336c0380f1c..7e50888a04d6897245ad75d28a42de4d88c2bbea 100644
+--- a/chrome/browser/preloading/preview/preview_browsertest.cc
++++ b/chrome/browser/preloading/preview/preview_browsertest.cc
+@@ -55,6 +55,7 @@ class PreviewBrowserTest : public PlatformBrowserTest {
+         net::test_server::EmbeddedTestServer::CERT_TEST_NAMES);
+     https_server_->AddDefaultHandlers(GetChromeTestDataDir());
+     ASSERT_TRUE(https_server_->Start());
++    base::RunLoop().Run();
+   }
+ 
+   void TearDownOnMainThread() override {

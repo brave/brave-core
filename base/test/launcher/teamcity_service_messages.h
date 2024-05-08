@@ -7,6 +7,7 @@
 #define BRAVE_BASE_TEST_LAUNCHER_TEAMCITY_SERVICE_MESSAGES_H_
 
 #include <ostream>
+#include <sstream>
 #include <string_view>
 
 #include "base/memory/raw_ref.h"
@@ -48,6 +49,7 @@ class TeamcityServiceMessages {
 
    private:
     raw_ref<std::ostream> ostream_;
+    std::ostringstream sstream_;
   };
 
   raw_ref<std::ostream> ostream_;

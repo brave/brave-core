@@ -1,0 +1,13 @@
+diff --git a/base/test/launcher/test_launcher.cc b/base/test/launcher/test_launcher.cc
+index 9fcc6a8f4d93c5e02ca247879961aa43735e4735..4a231f0fa8cef0626345ddd7812af63d25031a6a 100644
+--- a/base/test/launcher/test_launcher.cc
++++ b/base/test/launcher/test_launcher.cc
+@@ -2136,7 +2136,7 @@ void TestLauncher::RunTests() {
+                       original_test_names.end());
+   }
+ 
+-  broken_threshold_ = std::max(static_cast<size_t>(20), tests_.size() / 10);
++  broken_threshold_ = 5; // std::max(static_cast<size_t>(20), tests_.size() / 10);
+ 
+   test_started_count_ = test_names.size();
+ 

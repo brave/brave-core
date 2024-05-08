@@ -53,18 +53,21 @@ class EscapedValue {
 TeamcityServiceMessages::Message::Message(std::ostream& ostream,
                                           std::string_view name)
     : ostream_(ostream) {
-  (*ostream_) << "##teamcity[" << name;
+  // Use a stringstream to format the message before writing it to the stream.
+  sstream_ << "##teamcity[" << name;
 }
 
 TeamcityServiceMessages::Message::~Message() {
-  (*ostream_) << "]" << std::endl;
+  sstream_ << "]" << std::endl;
+  // Output the message atomically to not mix messages from different threads.
+  (*ostream_) << sstream_.str() << std::flush;
 }
 
 TeamcityServiceMessages::Message&
 TeamcityServiceMessages::Message::WriteProperty(std::string_view name,
                                                 std::string_view value) {
   if (!value.empty()) {
-    (*ostream_) << " " << name << "='" << EscapedValue(value) << "'";
+    sstream_ << " " << name << "='" << EscapedValue(value) << "'";
   }
   return *this;
 }

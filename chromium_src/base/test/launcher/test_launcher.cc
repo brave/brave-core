@@ -54,7 +54,7 @@ void TestLauncher::CreateAndStartThreadPool(size_t num_parallel_jobs) {
   // `retry_limit_` can be overridden by command line. Read its value when all
   // command line flags are parsed.
   if (teamcity_reporter_) {
-    teamcity_reporter_->EnableRetrySupport(retry_limit_ != 0);
+    teamcity_reporter_->SetRetryLimit(retry_limit_);
   }
 
   TestLauncher_ChromiumImpl::CreateAndStartThreadPool(num_parallel_jobs);
