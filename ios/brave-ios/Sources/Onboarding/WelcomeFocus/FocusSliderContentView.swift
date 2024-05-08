@@ -161,8 +161,8 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     .onChange(of: hapticsLevel) { newValue in
       createContinousHapticFeedback(intensity: newValue)
     }
-    .onChange(of: scenePhase) { newPhase in
-      switch scenePhase {
+    .onChange(of: scenePhase) { newValue in
+      switch newValue {
       case .active:
         prepareSliderHaptics()
         prepareRandomHaptics()
