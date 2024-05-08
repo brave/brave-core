@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-index 43505baafe8f8038fa9967de58b2abbb50e9528f..a1aab5d48a0c173b6b7b4ee2f8881533fff8df73 100644
+index c62150a0bf26e9dfe38099da0d4df220aebfe3dd..3b7d8de9e05cee4f54612ff9efa7097467caddd3 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-@@ -157,6 +157,7 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
+@@ -162,6 +162,7 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
        SetButtonStyle(ui::DIALOG_BUTTON_CANCEL, ui::ButtonStyle::kTonal);
      }
    }
