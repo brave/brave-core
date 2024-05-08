@@ -164,6 +164,10 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
             `--avd-config tools/android/avd/proto/generic_android${options.android_test_emulator_version}.textpb`)
       }
       let runOptions = config.defaultOptions
+      if (config.isTeamcity) {
+        // Stdout and stderr must be separate for a test launcher.
+        runOptions.stdio = 'inherit'
+      }
       if (options.output)
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
