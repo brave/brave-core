@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Șterge contul de sincronizare";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Brave și va dezactiva sincronizarea pe toate dispozitivele conectate. Totuși, acest lucru nu va șterge datele stocate local pe acele dispozitive.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Această ștergere este permanentă și nu există nicio modalitate de a recupera date. În cazul în care te decizi să utilizezi din nou sincronizarea, va trebui să creezi un cont nou și să adaugi fiecare dispozitiv, unul câte unul.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Șterge contul de sincronizare";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Acest cod de sincronizare a fost generat de o versiune învechită de Brave pe un alt dispozitiv. Te rog să actualizezi Brave pe toate dispozitivele sincronizate și să încerci din nou.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispozitive și setări";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problemă de stabilitate a conexiunii";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Te rog să alegi categoria care descrie problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Fără internet în momentul conectării";

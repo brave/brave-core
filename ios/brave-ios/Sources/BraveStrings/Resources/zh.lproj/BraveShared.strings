@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "删除 Sync 帐户";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "一旦您删除帐户，您的加密资料就会从 Brave 伺服器移除，而您所有已连线的设备也会停用 Sync。不过，储存于这些设备上的资料不会删除。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "摘取同步链中的装置时发生错误。";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "删除 Sync 帐户";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "连接可靠性问题";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "请选择描述问题的类别。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "连接后没有互联网";

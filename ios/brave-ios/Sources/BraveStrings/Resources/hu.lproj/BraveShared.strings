@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Szinkronizálási fiók törlése";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "A fiók törlésével eltávolítja titkosított adatait a Brave szervereiről, és letiltja a szinkronizálást az összes csatlakoztatott eszközön. Az ezen eszközökön helyileg tárolt adatok azonban nem lesznek törölve.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Ez a törlés végleges, és nincs mód az adatok helyreállítására. Ha úgy dönt, hogy újra elkezdi használni a Szinkronizálást, létre kell hoznia egy új fiókot, és egyenként újra hozzá kell adnia az egyes eszközöket.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Hiba történt a szinkronizálási láncban szereplő eszközök lekérése közben.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Szinkronizálási fiók törlése";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Ezt a szinkronizálási kódot a Brave egy elavult verziója hozta létre egy másik eszközön. Kérjük, frissítse a Brave alkalmazást az összes szinkronizált eszközön, és próbálja újra.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Eszközök és beállítások";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Kapcsolat-folytonossági probléma";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Válassza ki a problémát leíró kategóriát.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "A kapcsolódás után nincs internet";

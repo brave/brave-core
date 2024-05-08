@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Odstranit synchronizační účet";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Odstraněním vašeho účtu odstraníte zašifrovaná data ze serverů Brave a vypnete synchronizaci na všech vašich připojených zařízeních. Neodstraníte tím však data, která jsou lokálně uložena na těchto zařízeních.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Toto vymazání je trvalé a neexistuje žádný způsob, jak data obnovit. Pokud se rozhodnete znovu začít používat synchronizaci, budete si muset vytvořit nový účet a každé zařízení znovu postupně přidat.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Při načítání zařízení v synchronizačním řetězci se něco pokazilo.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Odstranit synchronizační účet";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Tento synchronizační kód byl na jiném zařízení vygenerován zastaralou verzí Brave. Aktualizujte prosím Brave na všech synchronizovaných zařízeních a zkuste to znovu.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Zařízení a nastavení";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problém se spolehlivostí připojení";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Vyberte prosím kategorii, která problém popisuje.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Po připojení není k dispozici internet";

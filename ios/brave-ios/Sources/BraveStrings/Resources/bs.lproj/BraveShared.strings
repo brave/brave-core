@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Brisanje računa za sinkronizaciju";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Brisanjem svog računa uklanjate šifrirane podatke s poslužitelja Brave i onemogućavate sinkronizaciju na svim povezanim uređajima. Međutim, ne brišu se podatci lokalno pohranjeni na tim uređajima.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Takvo je brisanje trajno i ne postoji način za oporavljanje podataka. Ako odlučite ponovno početi upotrebljavati značajku Sinkronizacija, morate stvoriti novi račun i ponovno dodati svaki uređaj jedan po jedan.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Izbriši račun za sinkronizaciju";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Ovaj kôd za sinkronizaciju generiran je zastarjelom inačicom preglednika Brave na drugom uređaju. Ažurirajte preglednik Brave na svim sinkroniziranim uređajima i pokušajte ponovno.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Uređaji i postavke";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem s pouzdanošću veze";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Odaberite kategoriju kojom se opisuje problem.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Nema Interneta nakon povezivanja";

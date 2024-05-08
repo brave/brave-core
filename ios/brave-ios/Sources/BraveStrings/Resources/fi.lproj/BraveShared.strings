@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Poista synkronointitili";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Tilisi poistaminen poistaa salatut tietosi Brave-palvelimilta ja poistaa synkronoinnin käytöstä kaikilla yhdistetyillä laitteillasi. Se ei kuitenkaan poista tietoja, jotka on tallennettu paikallisesti kyseisille laitteille.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Tämä poisto on pysyvä, eikä tietoja voi palauttaa. Jos päätät, että aloitat synkronoinnin käytön uudelleen, sinun täytyy luoda uusi tili ja lisätä jokainen laite uudelleen yksitellen.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Jokin meni vikaan haettaessa laitteita synkronointiketjussa.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Poista synkronointitili";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Tämän synkronointikoodin loi Braven vanhentunut versio toisella laitteella. Päivitä Brave kaikilla synkronoiduilla laitteilla ja yritä uudelleen.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Laitteet ja asetukset";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Yhteyden luotettavuusongelma";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Valitse ongelmaa kuvaava luokka.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Ei Internet-yhteyttä yhdistämisen jälkeen";

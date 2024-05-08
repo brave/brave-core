@@ -3013,6 +3013,12 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Διαγραφή λογαριασμού συγχρονισμού";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Η διαγραφή του λογαριασμού σας θα καταργήσει τα κρυπτογραφημένα δεδομένα σας από τους διακομιστές Brave και θα απενεργοποιήσει τον Συγχρονισμό σε όλες τις συνδεδεμένες συσκευές σας. Ωστόσο, δεν θα διαγράψει τα δεδομένα που είναι αποθηκευμένα τοπικά σε αυτές τις συσκευές.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Αυτή η διαγραφή είναι οριστική και δεν υπάρχει τρόπος ανάκτησης των δεδομένων. Εάν αποφασίσετε να αρχίσετε να χρησιμοποιείτε ξανά τον Συγχρονισμό, θα πρέπει να δημιουργήσετε έναν νέο λογαριασμό και να προσθέσετε ξανά κάθε συσκευή μία-μία.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Παρουσιάστηκε πρόβλημα κατά την ανάκτηση των συσκευών στην αλυσίδα συγχρονισμού.";
 
@@ -3075,6 +3081,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Διαγραφή λογαριασμού συγχρονισμού";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Αυτός ο κωδικός συγχρονισμού δημιουργήθηκε από μια παλιά έκδοση του Brave σε άλλη συσκευή. Ενημερώστε το Brave σε όλες τις συγχρονισμένες συσκευές και δοκιμάστε ξανά.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Συσκευές και ρυθμίσεις";
@@ -3609,6 +3618,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Πρόβλημα αξιοπιστίας σύνδεσης";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Επιλέξτε την κατηγορία που περιγράφει το πρόβλημα.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Δεν υπάρχει σύνδεση στο διαδίκτυο κατά τη σύνδεση";
