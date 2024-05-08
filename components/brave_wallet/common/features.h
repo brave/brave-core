@@ -17,6 +17,8 @@ BASE_DECLARE_FEATURE(kBraveWalletNftPinningFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;
 extern const base::FeatureParam<bool> kBitcoinTestnetDiscovery;
+BASE_DECLARE_FEATURE(kBraveWalletBitcoinOrdinalsFeature);
+extern const base::FeatureParam<int> kBitcoinOrdinalsRpcThrottle;
 BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
 // Adds shielded operations support for Z Cash
 extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;

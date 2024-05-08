@@ -722,6 +722,7 @@ export const transactionEndpoints = ({
             amount: BigInt(payload.value),
             sendingMaxAmount: payload.sendingMaxValue,
             fee: BigInt(0),
+            bitcoinOrdinalsUsage: BraveWallet.BitcoinOrdinalsUsage.kUnknown,
             inputs: [],
             outputs: []
           }

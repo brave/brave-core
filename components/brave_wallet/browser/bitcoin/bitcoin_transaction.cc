@@ -103,58 +103,6 @@ bool BitcoinTransaction::operator!=(const BitcoinTransaction& other) const {
   return !(*this == other);
 }
 
-BitcoinTransaction::Outpoint::Outpoint() = default;
-BitcoinTransaction::Outpoint::~Outpoint() = default;
-BitcoinTransaction::Outpoint::Outpoint(const Outpoint& other) = default;
-BitcoinTransaction::Outpoint& BitcoinTransaction::Outpoint::operator=(
-    const Outpoint& other) = default;
-BitcoinTransaction::Outpoint::Outpoint(Outpoint&& other) = default;
-BitcoinTransaction::Outpoint& BitcoinTransaction::Outpoint::operator=(
-    Outpoint&& other) = default;
-bool BitcoinTransaction::Outpoint::operator==(
-    const BitcoinTransaction::Outpoint& other) const {
-  return std::tie(this->txid, this->index) == std::tie(other.txid, other.index);
-}
-bool BitcoinTransaction::Outpoint::operator!=(
-    const BitcoinTransaction::Outpoint& other) const {
-  return !(*this == other);
-}
-bool BitcoinTransaction::Outpoint::operator<(
-    const BitcoinTransaction::Outpoint& other) const {
-  return std::tie(this->txid, this->index) < std::tie(other.txid, other.index);
-}
-
-base::Value::Dict BitcoinTransaction::Outpoint::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("txid", base::HexEncode(txid));
-  dict.Set("index", static_cast<int>(index));
-
-  return dict;
-}
-
-// static
-std::optional<BitcoinTransaction::Outpoint>
-BitcoinTransaction::Outpoint::FromValue(const base::Value::Dict& value) {
-  Outpoint result;
-
-  auto* txid_hex = value.FindString("txid");
-  if (!txid_hex) {
-    return std::nullopt;
-  }
-  if (!base::HexStringToSpan(*txid_hex, result.txid)) {
-    return std::nullopt;
-  }
-
-  auto index_value = value.FindInt("index");
-  if (!index_value) {
-    return std::nullopt;
-  }
-  result.index = *index_value;
-
-  return result;
-}
-
 BitcoinTransaction::TxInput::TxInput() = default;
 BitcoinTransaction::TxInput::~TxInput() = default;
 BitcoinTransaction::TxInput::TxInput(const BitcoinTransaction::TxInput& other) =
@@ -168,9 +116,9 @@ BitcoinTransaction::TxInput& BitcoinTransaction::TxInput::operator=(
 bool BitcoinTransaction::TxInput::operator==(
     const BitcoinTransaction::TxInput& other) const {
   return std::tie(this->utxo_address, this->utxo_outpoint, this->utxo_value,
-                  this->script_sig, this->witness) ==
+                  this->ordinals_usage, this->script_sig, this->witness) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
-                  other.script_sig, other.witness);
+                  other.ordinals_usage, other.script_sig, other.witness);
 }
 bool BitcoinTransaction::TxInput::operator!=(
     const BitcoinTransaction::TxInput& other) const {
@@ -183,6 +131,8 @@ base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
   dict.Set("utxo_address", utxo_address);
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
   dict.Set("utxo_value", base::NumberToString(utxo_value));
+  dict.Set("ordinals_usage",
+           base::NumberToString(static_cast<uint32_t>(ordinals_usage)));
 
   dict.Set("script_sig", base::HexEncode(script_sig));
   dict.Set("witness", base::HexEncode(witness));
@@ -207,6 +157,13 @@ BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
     return std::nullopt;
   }
 
+  result.ordinals_usage = mojom::BitcoinOrdinalsUsage::kUnknown;
+  uint32_t ordinals_usage_int = 0;
+  if (ReadUint32StringTo(value, "ordinals_usage", ordinals_usage_int)) {
+    result.ordinals_usage =
+        static_cast<mojom::BitcoinOrdinalsUsage>(ordinals_usage_int);
+  }
+
   if (!ReadHexByteArrayTo(value, "script_sig", result.script_sig)) {
     return std::nullopt;
   }
@@ -226,12 +183,12 @@ BitcoinTransaction::TxInput::FromRpcUtxo(
   BitcoinTransaction::TxInput result;
   result.utxo_address = address;
 
-  if (!base::HexStringToSpan(utxo.txid, result.utxo_outpoint.txid)) {
+  if (auto outpoint = BitcoinOutpoint::FromRpc(utxo.txid, utxo.vout)) {
+    result.utxo_outpoint = std::move(*outpoint);
+  } else {
     return std::nullopt;
   }
-  if (!base::StringToUint(utxo.vout, &result.utxo_outpoint.index)) {
-    return std::nullopt;
-  }
+
   if (!base::StringToUint64(utxo.value, &result.utxo_value)) {
     return std::nullopt;
   }
@@ -530,6 +487,25 @@ uint64_t BitcoinTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
   }
 
   return 0;
+}
+
+mojom::BitcoinOrdinalsUsage BitcoinTransaction::GetOrdinalsUsage() const {
+  // One of inputs spends ordinals -> transaction spends ordinals.
+  if (base::ranges::any_of(inputs_, [](auto& input) {
+        return input.ordinals_usage == mojom::BitcoinOrdinalsUsage::kUsed;
+      })) {
+    return mojom::BitcoinOrdinalsUsage::kUsed;
+  }
+
+  // Each input doesn't spend ordinals -> transaction doesn't spend ordinals.
+  if (base::ranges::all_of(inputs_, [](auto& input) {
+        return input.ordinals_usage == mojom::BitcoinOrdinalsUsage::kNotUsed;
+      })) {
+    return mojom::BitcoinOrdinalsUsage::kNotUsed;
+  }
+
+  // Otherwise we just don't know if transaction spends ordinals.
+  return mojom::BitcoinOrdinalsUsage::kUnknown;
 }
 
 uint8_t BitcoinTransaction::sighash_type() const {

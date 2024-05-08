@@ -337,7 +337,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
         keyring_service_.get(), GetPrefs());
     bitcoin_wallet_service_ =
         BitcoinWalletServiceFactory::GetServiceForContext(profile_.get());
-    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
+    bitcoin_wallet_service_->bitcoin_rpc().SetUrlLoaderFactoryForTesting(
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,

@@ -1547,6 +1547,12 @@ interface JsonRpcService {
         string error_message);
 };
 
+enum BitcoinOrdinalsUsage{
+  kUnknown,
+  kUsed,
+  kNotUsed,
+};
+
 struct BitcoinKeyId {
   uint32 change;
   uint32 index;
@@ -1686,6 +1692,7 @@ struct BtcTxData {
   uint64 amount;
   bool sending_max_amount;
   uint64 fee;
+  BitcoinOrdinalsUsage bitcoin_ordinals_usage;
   array<BtcTxInput> inputs;
   array<BtcTxOutput> outputs;
 };

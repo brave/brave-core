@@ -12,12 +12,14 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import { Row } from '../../shared.styles'
+import { Row } from '../style'
 
 export const StyledRow = styled(Row)`
   width: 100%;
   padding: ${leo.spacing.m};
   gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
   background-color: ${leo.color.systemfeedback.warningBackground};
   border-radius: ${leo.radius.m};
   margin-top: ${leo.spacing.xl};
@@ -34,5 +36,5 @@ export const WarningIcon = styled(Icon).attrs({
 export const CheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: -8px;
+  margin-left: -2px;
 `

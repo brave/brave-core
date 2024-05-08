@@ -57,7 +57,7 @@ export function PendingTransactionActionsFooter({
 }: Props) {
   // state
   const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
-  const [transactionConfirmed, setTranactionConfirmed] = React.useState(false)
+  const [transactionConfirmed, setTransactionConfirmed] = React.useState(false)
   const [queueLength, setQueueLength] = React.useState<number | undefined>(
     undefined
   )
@@ -71,7 +71,7 @@ export function PendingTransactionActionsFooter({
     }
     // Sets transactionConfirmed state to disable the send button to prevent
     // being clicked again and submitting the same transaction.
-    setTranactionConfirmed(true)
+    setTransactionConfirmed(true)
     await onConfirm()
   }, [transactionsQueueLength, onConfirm])
 
@@ -148,7 +148,7 @@ export function PendingTransactionActionsFooter({
     // This will update the transactionConfirmed state back to false
     // if there are more than 1 transactions in the queue.
     if (queueLength !== transactionsQueueLength || queueLength === undefined) {
-      setTranactionConfirmed(false)
+      setTransactionConfirmed(false)
     }
   }, [queueLength, transactionsQueueLength])
 

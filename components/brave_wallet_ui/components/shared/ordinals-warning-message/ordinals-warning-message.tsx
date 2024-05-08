@@ -6,13 +6,13 @@
 import * as React from 'react'
 
 // Utils
-import { getLocale } from '../../../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Components
 import Checkbox from '@brave/leo/react/checkbox'
 
 // Shared Styles
-import { Column, Text } from '../../shared.styles'
+import { Column, Text } from '../style'
 
 // Styles
 import {
@@ -28,12 +28,9 @@ interface Props {
 
 export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
   return (
-    <StyledRow
-      verticalAlign='flex-start'
-      horizontalAlign='flex-start'
-    >
+    <StyledRow>
       <WarningIcon />
-      <Column horizontalAlign='flex-start'>
+      <Column alignItems='flex-start'>
         <Text
           textSize='12px'
           textColor='warning'

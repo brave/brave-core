@@ -11,9 +11,11 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -72,15 +74,23 @@ std::optional<std::string> IsAddressUtxoRequest(
   return std::nullopt;
 }
 
+std::optional<std::string> IsOrdinalsOutpointRequest(
+    const network::ResourceRequest& request) {
+  auto parts =
+      base::SplitStringPiece(request.url.path_piece(), "/",
+                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() == 2 && parts[0] == "output") {
+    return std::string(parts[1]);
+  }
+
+  return std::nullopt;
+}
+
 }  // namespace
 
 BitcoinTestRpcServer::BitcoinTestRpcServer(KeyringService* keyring_service,
                                            PrefService* prefs)
     : keyring_service_(keyring_service), prefs_(prefs) {
-  shared_url_loader_factory_ =
-      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-          &url_loader_factory_);
-
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
@@ -88,7 +98,7 @@ BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;
 
 scoped_refptr<network::SharedURLLoaderFactory>
 BitcoinTestRpcServer::GetURLLoaderFactory() {
-  return shared_url_loader_factory_;
+  return url_loader_factory_.GetSafeWeakWrapper().get();
 }
 
 bitcoin_rpc::AddressStats BitcoinTestRpcServer::EmptyAddressStats(
@@ -335,6 +345,49 @@ void BitcoinTestRpcServer::ConfirmAllTransactions() {
   for (auto& tx : broadcasted_transactions_) {
     tx.status.confirmed = true;
   }
+}
+
+BitcoinOrdinalsTestRpcServer::BitcoinOrdinalsTestRpcServer() {
+  url_loader_factory_.SetInterceptor(
+      base::BindRepeating(&BitcoinOrdinalsTestRpcServer::RequestInterceptor,
+                          base::Unretained(this)));
+
+  command_line_.GetProcessCommandLine()->AppendSwitchASCII(
+      switches::kBitcoinOrdinalsMainnetRpcUrl, mainnet_rpc_url_);
+  command_line_.GetProcessCommandLine()->AppendSwitchASCII(
+      switches::kBitcoinOrdinalsTestnetRpcUrl, testnet_rpc_url_);
+}
+
+BitcoinOrdinalsTestRpcServer::~BitcoinOrdinalsTestRpcServer() = default;
+
+scoped_refptr<network::SharedURLLoaderFactory>
+BitcoinOrdinalsTestRpcServer::GetURLLoaderFactory() {
+  return url_loader_factory_.GetSafeWeakWrapper().get();
+}
+
+void BitcoinOrdinalsTestRpcServer::SetOutpointInfo(
+    const BitcoinOutpoint& outpoint,
+    bitcoin_ordinals_rpc::OutpointInfo info) {
+  outpoints_map_[base::ToLowerASCII(outpoint.ToString())] = std::move(info);
+}
+
+void BitcoinOrdinalsTestRpcServer::RequestInterceptor(
+    const network::ResourceRequest& request) {
+  url_loader_factory_.ClearResponses();
+
+  if (auto outpoint = IsOrdinalsOutpointRequest(request)) {
+    if (outpoints_map_.contains(base::ToLowerASCII(*outpoint))) {
+      url_loader_factory_.AddResponse(
+          request.url.spec(),
+          base::ToString(outpoints_map_.at(*outpoint).ToValue()));
+    } else {
+      url_loader_factory_.AddResponse(request.url.spec(), "not found",
+                                      net::HTTP_NOT_FOUND);
+    }
+    return;
+  }
+
+  NOTREACHED() << request.url.spec();
 }
 
 }  // namespace brave_wallet

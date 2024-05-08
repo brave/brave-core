@@ -9,16 +9,18 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 namespace {
-mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
+mojom::BtcTxDataPtr ToBtcTxData(const BitcoinTransaction& tx) {
   std::vector<mojom::BtcTxInputPtr> mojom_inputs;
   for (auto& input : tx.inputs()) {
     mojom_inputs.push_back(mojom::BtcTxInput::New(
-        input.utxo_address, base::HexEncode(input.utxo_outpoint.txid),
+        input.utxo_address,
+        base::ToLowerASCII(base::HexEncode(input.utxo_outpoint.txid)),
         input.utxo_outpoint.index, input.utxo_value));
   }
   std::vector<mojom::BtcTxOutputPtr> mojom_outputs;
@@ -26,9 +28,9 @@ mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
     mojom_outputs.push_back(
         mojom::BtcTxOutput::New(output.address, output.amount));
   }
-  return mojom::BtcTxData::New(tx.to(), tx.amount(), tx.sending_max_amount(),
-                               tx.EffectiveFeeAmount(), std::move(mojom_inputs),
-                               std::move(mojom_outputs));
+  return mojom::BtcTxData::New(
+      tx.to(), tx.amount(), tx.sending_max_amount(), tx.EffectiveFeeAmount(),
+      tx.GetOrdinalsUsage(), std::move(mojom_inputs), std::move(mojom_outputs));
 }
 }  // namespace
 

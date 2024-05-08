@@ -703,6 +703,7 @@ TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_from());
 
   auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
+                                       mojom::BitcoinOrdinalsUsage::kUnknown,
                                        std::vector<mojom::BtcTxInputPtr>(),
                                        std::vector<mojom::BtcTxOutputPtr>());
   std::string tx_meta_id;
@@ -722,10 +723,6 @@ TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
   histogram_tester_->ExpectTotalCount(kZecTransactionSentHistogramName, 0);
 
   keyring_service_->CreateWallet("testing123", base::DoNothing());
-
-  auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
-                                       std::vector<mojom::BtcTxInputPtr>(),
-                                       std::vector<mojom::BtcTxOutputPtr>());
 
   ZCashTransaction zcash_transaction;
   zcash_transaction.set_locktime(2286687);
