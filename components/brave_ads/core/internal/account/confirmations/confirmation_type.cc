@@ -68,7 +68,7 @@ constexpr auto kConfirmationTypeToStringMap =
 }  // namespace
 
 ConfirmationType ToConfirmationType(const std::string_view value) {
-  const auto* iter = kToConfirmationTypeMap.find(value);
+  const auto iter = kToConfirmationTypeMap.find(value);
   if (iter != kToConfirmationTypeMap.cend()) {
     return iter->second;
   }
@@ -79,7 +79,7 @@ ConfirmationType ToConfirmationType(const std::string_view value) {
 }
 
 const char* ToString(const ConfirmationType type) {
-  const auto* iter = kConfirmationTypeToStringMap.find(type);
+  const auto iter = kConfirmationTypeToStringMap.find(type);
   if (iter != kConfirmationTypeToStringMap.cend()) {
     return iter->second.data();
   }

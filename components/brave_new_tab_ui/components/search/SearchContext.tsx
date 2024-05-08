@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/components/omnibox/browser/omnibox.mojom.m';
+import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
@@ -72,6 +72,9 @@ class SearchPage implements PageInterface {
   updateSelection(selection: OmniboxPopupSelection) {
     for (const listener of this.selectionListeners) listener(selection)
   }
+
+  setInputText(inputText: string) {}
+  setThumbnail(thumbnailUrl: string) {}
 }
 
 export const search = new SearchPage()

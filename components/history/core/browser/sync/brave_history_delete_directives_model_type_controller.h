@@ -8,7 +8,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "components/history/core/browser/sync/history_delete_directives_model_type_controller.h"
-#include "components/sync/service/data_type_controller.h"
 
 class PrefService;
 
@@ -36,7 +35,7 @@ class BraveHistoryDeleteDirectivesModelTypeController
 
   ~BraveHistoryDeleteDirectivesModelTypeController() override;
 
-  // DataTypeController overrides.
+  // ModelTypeController overrides.
   PreconditionState GetPreconditionState() const override;
 };
 

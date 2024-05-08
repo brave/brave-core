@@ -16,7 +16,7 @@
 namespace brave_wallet::solana_ins_data_decoder {
 
 std::optional<SolanaInstructionDecodedData> Decode(
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     const std::string& program_id);
 
 std::vector<InsParamPair> GetAccountParamsForTesting(

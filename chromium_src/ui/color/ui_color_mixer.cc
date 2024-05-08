@@ -58,6 +58,11 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   mixer[kColorLinkForegroundPressed] = {kColorLinkForeground};
 
   // --------------------------------------------------------------------------
+  // Checkbox colors
+  // --------------------------------------------------------------------------
+  mixer[kColorCheckboxForegroundChecked] = {kColorLinkForeground};
+
+  // --------------------------------------------------------------------------
   // Table colors (e.g. Task Manager)
   // --------------------------------------------------------------------------
   // For deprecated kColorId_TableSelectionBackgroundFocused and

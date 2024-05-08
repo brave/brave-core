@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index ff0f2773227f9ad7fbaf8bac9b9dcf55602836b1..80dd55a75c9107c3150418311cdaf2f2e228fb39 100644
+index 164c034142dfa4f0ad5dc757c1013ab5eb9018dc..e2165e1b8decf28d23e2577604e5db0d316764b3 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -101,6 +101,7 @@ source_set("channel_info") {
+@@ -104,6 +104,7 @@ source_set("channel_info") {
    } else if (is_fuchsia) {
      sources += [ "channel_info_fuchsia.cc" ]
    }
@@ -18,7 +18,7 @@ index ff0f2773227f9ad7fbaf8bac9b9dcf55602836b1..80dd55a75c9107c3150418311cdaf2f2
  
    if (enable_extensions) {
      sources += [
-@@ -545,6 +547,7 @@ static_library("non_code_constants") {
+@@ -544,6 +546,7 @@ static_library("non_code_constants") {
    if (is_win) {
      sources += [ "chrome_icon_resources_win.h" ]
    }

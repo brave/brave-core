@@ -274,7 +274,8 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, MAYBE_CrashURLTest) {
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
                              WindowOpenDisposition::CURRENT_TAB,
-                             ui::PAGE_TRANSITION_TYPED, false));
+                             ui::PAGE_TRANSITION_TYPED, false),
+      /*navigation_handle_callback=*/{});
   crash_observer.Wait();
 }
 

@@ -1,8 +1,8 @@
 diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
-index 9943d7a03dd1f5cd52a2b4e3684451e33205424a..a7be832067566bacc09542f2ad56ea207d5f8629 100644
+index fc77d384b66ff5bcbc3dcdb5a7d0df1cf6575734..aa049b50b8a81ea3c2e84c7440fdb9c53f97d44e 100644
 --- a/content/browser/gpu/gpu_internals_ui.cc
 +++ b/content/browser/gpu/gpu_internals_ui.cc
-@@ -805,6 +805,7 @@ base::Value::Dict GpuMessageHandler::GetClientInfo() {
+@@ -809,6 +809,7 @@ base::Value::Dict GpuMessageHandler::GetClientInfo() {
             std::string("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH));
    dict.Set("revision_identifier", GPU_LISTS_VERSION);
  

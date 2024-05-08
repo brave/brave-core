@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_TOOLBAR_BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
 
-#include "chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
+#include "chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h"
 
 class Browser;
 

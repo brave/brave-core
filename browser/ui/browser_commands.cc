@@ -696,7 +696,9 @@ void BringAllTabs(Browser* browser) {
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
-      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
+      auto tab_model = tab_strip_model->DetachTabAtForInsertion(i);
+      auto contents =
+          tabs::TabModel::DestroyAndTakeWebContents(std::move(tab_model));
       const bool is_pinned = i < pinned_tab_count;
       if (is_pinned) {
         detached_pinned_tabs.push(std::move(contents));

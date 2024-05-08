@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ipfs/brave_ipfs_client_updater.h"
+
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/extensions/extension_browsertest.h"

@@ -14,6 +14,8 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -134,7 +136,7 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
 
 void SharedPinnedTabService::CacheWebContentsIfNeeded(
     Browser* browser,
-    const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents) {
+    std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs) {
   DVLOG(2) << __FUNCTION__;
   DCHECK(!profile_will_be_destroyed_);
 
@@ -149,21 +151,18 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
     return;
   }
 
-  for (auto& detached_web_contents : web_contents) {
-    if (!detached_web_contents->tab ||
-        !detached_web_contents->tab->contents()) {
+  for (auto& pinned_tab : pinned_tabs) {
+    if (!pinned_tab->contents()) {
       // Could be already cached by another component.
       continue;
     }
 
-    if (!SharedContentsData::FromWebContents(detached_web_contents->contents)) {
+    if (!SharedContentsData::FromWebContents(pinned_tab->contents())) {
       continue;
     }
 
     cached_shared_contentses_from_closing_browser_.insert(
-        detached_web_contents->tab->ReplaceContents(nullptr));
-    detached_web_contents->remove_reason =
-        TabStripModelChange::RemoveReason::kCached;
+        tabs::TabModel::DestroyAndTakeWebContents(std::move(pinned_tab)));
   }
 }
 
@@ -254,6 +253,14 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
       }
     }
   } else {
+    // Try caching shared contents from the closing browser.
+    auto* tab_strip_model = browser->tab_strip_model();
+    std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs;
+    for (int i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0; --i) {
+      pinned_tabs.push_back(tab_strip_model->DetachTabAtForInsertion(i));
+    }
+    CacheWebContentsIfNeeded(browser, std::move(pinned_tabs));
+
     for (auto& pinned_tab_data : pinned_tab_data_) {
       if (pinned_tab_data.contents_owner_model == browser->tab_strip_model()) {
         pinned_tab_data.contents_owner_model = nullptr;
@@ -725,14 +732,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     DCHECK(dummy_contents_data);
     dummy_contents_data->stop_propagation();
 
-    // Unfortunately, We can't replace existing tab contents with cached web
-    // contents. We should use restore method.
-    chrome::AddRestoredTabFromCache(
-        std::move(unique_shared_contents), browser, index,
-        /* group= */ {},
-        /* select */ !is_last_closing_browser, /* pin= */ true,
-        /* user_agent_override= */ {},
-        /* extra_data= */ {});
+    const int add_type =
+        ADD_PINNED | (is_last_closing_browser ? ADD_ACTIVE : 0);
+    tab_strip_model->InsertWebContentsAt(
+        index, std::move(unique_shared_contents), add_type);
 
     // In order to prevent browser from being closed, we should close the dummy
     // contents after we restore the tab.

@@ -54,7 +54,7 @@ std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
            BrowsingDataType::BRAVE_AI_CHAT},
       });
 
-  auto* iter = kPreferenceToDataType.find(pref_name);
+  const auto iter = kPreferenceToDataType.find(pref_name);
   if (iter != kPreferenceToDataType.end()) {
     return iter->second;
   }

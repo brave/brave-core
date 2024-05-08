@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
-#include "base/sys_byteorder.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {
 
@@ -15,21 +16,18 @@ void BtcLikeSerializerStream::Push8AsLE(uint8_t i) {
 }
 
 void BtcLikeSerializerStream::Push16AsLE(uint16_t i) {
-  i = base::ByteSwapToLE16(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  PushBytes(data_to_insert);
+  PushBytes(base::byte_span_from_ref(
+      base::numerics::U16FromLittleEndian(base::byte_span_from_ref(i))));
 }
 
 void BtcLikeSerializerStream::Push32AsLE(uint32_t i) {
-  i = base::ByteSwapToLE32(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  PushBytes(data_to_insert);
+  PushBytes(base::byte_span_from_ref(
+      base::numerics::U32FromLittleEndian(base::byte_span_from_ref(i))));
 }
 
 void BtcLikeSerializerStream::Push64AsLE(uint64_t i) {
-  i = base::ByteSwapToLE64(i);
-  base::span<uint8_t> data_to_insert(reinterpret_cast<uint8_t*>(&i), sizeof(i));
-  PushBytes(data_to_insert);
+  PushBytes(base::byte_span_from_ref(
+      base::numerics::U64FromLittleEndian(base::byte_span_from_ref(i))));
 }
 
 // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers

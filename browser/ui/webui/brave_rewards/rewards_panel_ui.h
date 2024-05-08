@@ -11,16 +11,16 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 namespace brave_rewards {
 
 class RewardsPanelCoordinator;
 
-class RewardsPanelUI : public ui::MojoBubbleWebUIController,
+class RewardsPanelUI : public TopChromeWebUIController,
                        public mojom::PanelHandlerFactory {
  public:
   explicit RewardsPanelUI(content::WebUI* web_ui);

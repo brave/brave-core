@@ -26,15 +26,15 @@ const cookieBlockModeOptions = [
 ]
 
 const fingerprintModeOptions = [
-  { value: FingerprintMode.STRICT, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
-  { value: FingerprintMode.STANDARD, text: getLocale('braveShieldsFingerprintingBlockedStd') },
-  { value: FingerprintMode.ALLOW, text: getLocale('braveShieldsFingerprintingAllowAll') }
+  { value: FingerprintMode.STRICT_MODE, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
+  { value: FingerprintMode.STANDARD_MODE, text: getLocale('braveShieldsFingerprintingBlockedStd') },
+  { value: FingerprintMode.ALLOW_MODE, text: getLocale('braveShieldsFingerprintingAllowAll') }
 ]
 
 const httpsUpgradeModeOptions = [
-  { value: HttpsUpgradeMode.STRICT, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
-  { value: HttpsUpgradeMode.STANDARD, text: getLocale('braveShieldsHttpsUpgradeModeStandard') },
-  { value: HttpsUpgradeMode.DISABLED, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
+  { value: HttpsUpgradeMode.STRICT_MODE, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
+  { value: HttpsUpgradeMode.STANDARD_MODE, text: getLocale('braveShieldsHttpsUpgradeModeStandard') },
+  { value: HttpsUpgradeMode.DISABLED_MODE, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
 function GlobalSettings () {
@@ -83,7 +83,7 @@ function AdvancedControlsContent () {
   }
 
   const handleFingerprintModeToggleChange = (isEnabled: boolean) => {
-    getPanelBrowserAPI().dataHandler.setFingerprintMode(isEnabled ? FingerprintMode.STANDARD : FingerprintMode.ALLOW)
+    getPanelBrowserAPI().dataHandler.setFingerprintMode(isEnabled ? FingerprintMode.STANDARD_MODE : FingerprintMode.ALLOW_MODE)
     if (getSiteSettings) getSiteSettings()
   }
 
@@ -203,7 +203,7 @@ function AdvancedControlsContent () {
             <span>{getLocale('braveShieldsFingerprintingBlockedStd')}</span>
             <Toggle
               onChange={handleFingerprintModeToggleChange}
-              isOn={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW}
+              isOn={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW_MODE}
               size='sm'
               accessibleLabel={getLocale('braveShieldsFingerprintingBlockedStd')}
               disabled={siteBlockInfo?.isBraveShieldsManaged}

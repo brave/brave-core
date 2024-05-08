@@ -28,8 +28,8 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
 
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
-  const paperRippleChild = document.createElement('paper-ripple')
-  menuEl.appendChild(paperRippleChild)
+  const crRippleChild = document.createElement('cr-ripple')
+  menuEl.appendChild(crRippleChild)
   return menuEl
 }
 
@@ -91,7 +91,7 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
-      .cr-nav-menu-item paper-ripple {
+      .cr-nav-menu-item cr-ripple {
         display: none !important;
       }
 

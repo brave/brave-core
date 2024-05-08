@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index af8734fe073031ecc3cdca95c04405f1ddace522..011719567598f61ba61e18fbd87dad036b17e00f 100644
+index 5e50ce5b6cfbffa9fd3fe92eaaa09083ed9b1b82..ac602f6fd1e6fb317f1ea091f2d08b361761feb4 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -88,7 +88,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -91,7 +91,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index af8734fe073031ecc3cdca95c04405f1ddace522..011719567598f61ba61e18fbd87dad03
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -131,7 +131,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -145,7 +145,7 @@ export class SettingsPersonalizationOptionsElement extends
    focusConfig: FocusConfig;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index af8734fe073031ecc3cdca95c04405f1ddace522..011719567598f61ba61e18fbd87dad03
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -181,16 +181,18 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -200,7 +200,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -29,7 +29,8 @@ index af8734fe073031ecc3cdca95c04405f1ddace522..011719567598f61ba61e18fbd87dad03
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
-     this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
+@@ -215,9 +215,11 @@ export class SettingsPersonalizationOptionsElement extends
+         this.setChromeSigninUserChoiceInfo_.bind(this));
      // </if>
  
 +    // <if expr="_google_chrome">
@@ -40,7 +41,7 @@ index af8734fe073031ecc3cdca95c04405f1ddace522..011719567598f61ba61e18fbd87dad03
    }
  
    // <if expr="chromeos_ash">
-@@ -219,7 +221,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -246,7 +248,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index bf979c82a96f37a3e593c27d281cb0624d60c346..58ffdb4b3ae7454eec96a24d12512b562d180628 100644
+index 5e508b913974f7dfd7d1556c968f0fb7e5c7e117..b55586957531bdd0e151edee0f9c634e79591b0a 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
 @@ -19,6 +19,7 @@ if (is_ios) {
@@ -15,6 +15,6 @@ index bf979c82a96f37a3e593c27d281cb0624d60c346..58ffdb4b3ae7454eec96a24d12512b56
    # current_os="linux" and target_os="android". Using target_os is necessary as
    # we need to compile in the same way as would happen when current_os="android".
 +  sub_modules += brave_blink_sub_modules
-   if (target_os == "android") {
+   if (target_os_is_android) {
      sub_modules += [ "//third_party/blink/renderer/modules/remote_objects" ]
    } else {

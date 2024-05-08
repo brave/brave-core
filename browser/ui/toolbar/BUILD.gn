@@ -16,9 +16,9 @@ source_set("brave_app_menu_unit_test") {
   ]
 
   sources = [
-    "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.cc",
-    "//chrome/browser/ui/toolbar/recent_tabs_builder_test_helper.h",
-    "//chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc",
+    "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.cc",
+    "//chrome/browser/ui/tabs/recent_tabs_builder_test_helper.h",
+    "//chrome/browser/ui/tabs/recent_tabs_sub_menu_model_unittest.cc",
     "//chrome/test/base/browser_with_test_window_test.cc",
     "//chrome/test/base/browser_with_test_window_test.h",
     "//chrome/test/base/menu_model_test.cc",

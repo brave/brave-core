@@ -1,0 +1,7 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# We need add this source as a patch as we have to patch `org/chromium/chrome/browser/tab_ui` itself as well.
+brave_tab_ui_sources = [ "//brave/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/BraveTabUiThemeUtils.java" ]

@@ -188,5 +188,13 @@ RegisterPolymerTemplateModifications({
     } else {
       hoverCardImagesTemplateShow.remove()
     }
+    const colorSchemeModeRow = templateContent.getElementById(
+      'colorSchemeModeRow')
+    if (!colorSchemeModeRow) {
+      console.error(
+          `[Brave Settings Overrides] Couldn't find colorSchemeModeRow`)
+    } else {
+      colorSchemeModeRow.remove()
+    }
   },
 })

@@ -1,5 +1,5 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index 205d12a97caac1db4e30af59c9c06e1acb0e0d2e..3f703528c49eae3195f40fd715c8ace5f0f355a8 100644
+index 1a388cf3b3c0b6817c6c8ced0a05c3d591ed10fd..e4cb27f1553830fbd0f064ac65ad4abbbe52135f 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
 @@ -190,6 +190,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(

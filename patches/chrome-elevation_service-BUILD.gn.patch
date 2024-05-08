@@ -1,8 +1,8 @@
 diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
-index 6ae8694531550df2835f3afbe5a699403f7495fb..fc1e83132d6a1bc880bdc8ca55c0f73da1574e30 100644
+index 88ed423e737ea90ba93f97da86ec6b55552bf52e..16222646243e034810a17f83faa158bd7602e92f 100644
 --- a/chrome/elevation_service/BUILD.gn
 +++ b/chrome/elevation_service/BUILD.gn
-@@ -10,6 +10,7 @@ import("//testing/test.gni")
+@@ -11,6 +11,7 @@ import("//testing/test.gni")
  
  midl("elevation_service_idl") {
    sources = [ "elevation_service_idl.idl" ]
@@ -10,7 +10,7 @@ index 6ae8694531550df2835f3afbe5a699403f7495fb..fc1e83132d6a1bc880bdc8ca55c0f73d
  
    writes_tlb = true
  }
-@@ -97,6 +98,7 @@ source_set("lib") {
+@@ -105,6 +106,7 @@ source_set("lib") {
      "crypt32.lib",
      "rpcrt4.lib",
    ]

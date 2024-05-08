@@ -179,7 +179,7 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto message_without_blockhash =
       SolanaMessage::CreateLegacyMessage("", 0, kFromAccount, {instruction});
   ASSERT_TRUE(message_without_blockhash);

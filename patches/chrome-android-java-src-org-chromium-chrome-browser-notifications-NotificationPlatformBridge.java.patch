@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index 3cad8d266abf42a10e6de1fc42b6d10e202f899f..dd48ad0aea49e1e8ea5f5cef3f87cc7fa78ae41d 100644
+index fb0ab433103679bc21e7de4e28d84bf531db34bb..0d4263c56aadffbcb9f1f973484bd651592f8fde 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -97,7 +97,7 @@ public class NotificationPlatformBridge {
@@ -9,7 +9,7 @@ index 3cad8d266abf42a10e6de1fc42b6d10e202f899f..dd48ad0aea49e1e8ea5f5cef3f87cc7f
 -    private static NotificationPlatformBridge sInstance;
 +    protected static NotificationPlatformBridge sInstance;
  
-     private static NotificationManagerProxy sNotificationManagerOverride;
+     private static BaseNotificationManagerProxy sNotificationManagerOverride;
  
 @@ -120,7 +120,7 @@ public class NotificationPlatformBridge {
      private TrustedWebActivityClient mTwaClient;

@@ -32,8 +32,8 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
+import org.chromium.chrome.browser.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -177,7 +178,8 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable BackPressManager backPressManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
-            ObservableSupplier<ReadAloudController> readAloudControllerSupplier) {
+            ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
+            OneshotSupplier<AppHeaderCoordinator> appHeaderCoordinatorSupplier) {
         super(
                 activity,
                 controlsSizer,
@@ -225,7 +227,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 backPressManager,
                 overviewColorSupplier,
                 baseChromeLayout,
-                readAloudControllerSupplier);
+                readAloudControllerSupplier,
+                appHeaderCoordinatorSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

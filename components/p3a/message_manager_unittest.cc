@@ -188,8 +188,8 @@ class P3AMessageManagerTest : public testing::Test,
   std::vector<std::string> GetTestHistogramNames(MetricLogType log_type,
                                                  size_t p3a_count,
                                                  size_t p2a_count) {
-    const std::string_view* histogram_names_begin;
-    const std::string_view* histogram_names_end;
+    auto histogram_names_begin = kCollectedExpressHistograms.cbegin();
+    auto histogram_names_end = kCollectedExpressHistograms.cend();
     std::vector<std::string> result;
     size_t p3a_i = 0;
     size_t p2a_i = 0;
@@ -209,7 +209,7 @@ class P3AMessageManagerTest : public testing::Test,
       default:
         NOTREACHED();
     }
-    for (auto* histogram_name_i = histogram_names_begin;
+    for (auto histogram_name_i = histogram_names_begin;
          histogram_name_i != histogram_names_end; histogram_name_i++) {
       if (histogram_name_i->rfind(kP2APrefix, 0) == 0) {
         if (p2a_i < p2a_count) {

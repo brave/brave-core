@@ -16,22 +16,6 @@
   <if expr="not _google_chrome">
     </if>
 
-  <if expr="is_android">
-    </if>
-  <if expr="not is_android">
-    </if>
-
-  <if expr="is_android">
-    </if>
-  <if expr="is_macosx">
-    </if>
-  <if expr="not is_android and not is_macosx">
-    </if>
-  <if expr="is_android">
-    </if>
-  <if expr="not is_android">
-    </if>
-
   <message name="IDS_CONNECTION_HELP_CONNECTION_NOT_PRIVATE_DETAILS" desc="Details for your connection is not private section in chrome://connection-help. Matches the fourth section in https://support.google.com/chrome/answer/6098869">
     &lt;h4&gt;Step 1: Sign in to the portal&lt;/h4&gt;
     &lt;p&gt;Wi-Fi networks at places like cafes or airports need you to sign in. To see the sign-in page, visit a page that uses &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;

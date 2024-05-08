@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
-index 1e25bac62e4eb1bd1df8c1d5c16d5ec55daeca2a..e985489f8c8bbdef38dacdc5d3b0c28b285dedd6 100644
+index 15df37215a2d533787e3e668779bfb0c98697096..a7de5c5102f8edc07679152787fadbab9afa0c4e 100644
 --- a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
 +++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
-@@ -287,6 +287,7 @@ void DynamicModuleResolver::ResolveDynamically(
+@@ -286,6 +286,7 @@ void DynamicModuleResolver::ResolveDynamically(
        referrer_info.ParserState(), referrer_info.CredentialsMode(),
        referrer_info.GetReferrerPolicy(), mojom::blink::FetchPriorityHint::kAuto,
        RenderBlockingBehavior::kNonBlocking);
