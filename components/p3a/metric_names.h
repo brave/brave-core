@@ -271,7 +271,7 @@ inline constexpr auto kCollectedExpressHistograms =
     "Brave.Search.DefaultEngine.4",
     "Brave.Today.IsEnabled",
     "Brave.Today.UsageDaily",
-    "Brave.Uptime.BrowserOpenTime",
+    "Brave.Uptime.BrowserOpenTime.2",
     "Brave.Wallet.UsageDaily",
     "creativeInstanceId.total.count",
 });
@@ -322,6 +322,7 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Today.UsageDaily",
     "Brave.Today.UsageMonthly",
     "Brave.Today.WeeklyTotalCardClicks",
+    "Brave.Uptime.BrowserOpenTime.2",
     "Brave.VerticalTabs.GroupTabs",
     "Brave.VerticalTabs.OpenTabs",
     "Brave.VerticalTabs.PinnedTabs",

@@ -54,14 +54,14 @@ PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
   return privacy_hub_metrics_.get();
 }
 
-UptimeMonitor* ProcessMiscMetrics::uptime_monitor() {
-  return uptime_monitor_.get();
-}
-
 TabMetrics* ProcessMiscMetrics::tab_metrics() {
   return tab_metrics_.get();
 }
 #endif
+
+UptimeMonitor* ProcessMiscMetrics::uptime_monitor() {
+  return uptime_monitor_.get();
+}
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 ai_chat::AIChatMetrics* ProcessMiscMetrics::ai_chat_metrics() {

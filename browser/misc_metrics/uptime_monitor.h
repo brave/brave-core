@@ -6,20 +6,24 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_UPTIME_MONITOR_H_
 #define BRAVE_BROWSER_MISC_METRICS_UPTIME_MONITOR_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/resource_coordinator/usage_clock.h"
-#endif
 
 class PrefService;
 class PrefRegistrySimple;
 
+#if !BUILDFLAG(IS_ANDROID)
+namespace resource_coordinator {
+class UsageClock;
+}  // namespace resource_coordinator
+#endif
+
 namespace misc_metrics {
 
 inline constexpr char kBrowserOpenTimeHistogramName[] =
-    "Brave.Uptime.BrowserOpenTime";
+    "Brave.Uptime.BrowserOpenTime.2";
 
 class UptimeMonitor {
  public:
@@ -32,8 +36,11 @@ class UptimeMonitor {
   static void RegisterPrefsForMigration(PrefRegistrySimple* registry);
   static void MigrateObsoletePrefs(PrefService* local_state);
 
-  // Used on Android only.
+  void Init();
+
+#if BUILDFLAG(IS_ANDROID)
   void ReportUsageDuration(base::TimeDelta duration);
+#endif
 
  private:
   void RecordP3A();
@@ -47,7 +54,7 @@ class UptimeMonitor {
   raw_ptr<PrefService> local_state_;
 
 #if !BUILDFLAG(IS_ANDROID)
-  resource_coordinator::UsageClock usage_clock_;
+  std::unique_ptr<resource_coordinator::UsageClock> usage_clock_;
 
   base::TimeDelta current_total_usage_;
   base::RepeatingTimer timer_;
