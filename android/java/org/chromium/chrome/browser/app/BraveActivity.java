@@ -287,8 +287,7 @@ public abstract class BraveActivity extends ChromeActivity
     private JsonRpcService mJsonRpcService;
     private MiscAndroidMetrics mMiscAndroidMetrics;
     private SwapService mSwapService;
-    @Nullable
-    private WalletModel mWalletModel;
+    @Nullable private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
     private EthTxManagerProxy mEthTxManagerProxy;
@@ -483,8 +482,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /**
-     * Gets Wallet model for Brave activity. It may be {@code null} if
-     * native initialization has not completed yet.
+     * Gets Wallet model for Brave activity. It may be {@code null} if native initialization has not
+     * completed yet.
      */
     @Nullable
     public WalletModel getWalletModel() {

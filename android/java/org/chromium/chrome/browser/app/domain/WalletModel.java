@@ -33,8 +33,7 @@ public class WalletModel {
     private AssetRatioService mAssetRatioService;
     private SwapService mSwapService;
     private final CryptoModel mCryptoModel;
-    @NonNull
-    private final DappsModel mDappsModel;
+    @NonNull private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
     private Context mContext;
     private CryptoActions mCryptoActions;
