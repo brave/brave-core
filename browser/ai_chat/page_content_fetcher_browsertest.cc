@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -10,9 +12,9 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -99,11 +101,14 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
   void FetchPageContent(const base::Location& location,
                         const std::string& expected_text,
                         bool expected_is_video,
-                        bool trim_whitespace = true) {
+                        bool trim_whitespace = true,
+                        content::WebContents* web_contents = nullptr) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(), "",
+        web_contents ? web_contents
+                     : browser()->tab_strip_model()->GetActiveWebContents(),
+        "",
         base::BindLambdaForTesting([&run_loop, &expected_text,
                                     &expected_is_video, &trim_whitespace](
                                        std::string text, bool is_video,
@@ -170,15 +175,15 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContent) {
 }
 
 IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
+  constexpr char kExpectedText[] = "This is the way\nI have spoken";
   auto* chat_tab_helper =
       ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
   ASSERT_TRUE(chat_tab_helper);
   chat_tab_helper->SetUserOptedIn(true);
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
-      base::BindLambdaForTesting([this, &run_loop]() {
-        FetchPageContent(FROM_HERE, "This is the way\nI have spoken", false,
-                         false);
+      base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {
+        FetchPageContent(FROM_HERE, kExpectedText, false, false);
         run_loop->Quit();
       }));
   NavigateURL(https_server_.GetURL("a.com", "/dummy.pdf"));
@@ -191,5 +196,30 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
         run_loop->Quit();
       }));
   NavigateURL(https_server_.GetURL("a.com", "/empty_pdf.pdf"));
+  run_loop->Run();
+
+  // Test pdf tab loaded in background.
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), https_server_.GetURL("a.com", "/dummy.pdf"),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  run_loop = std::make_unique<base::RunLoop>();
+  chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
+      browser()->tab_strip_model()->GetWebContentsAt(1));
+  chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
+      base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {
+        FetchPageContent(FROM_HERE, kExpectedText, false, false,
+                         browser()->tab_strip_model()->GetWebContentsAt(1));
+        run_loop->Quit();
+      }));
+  // Tab load stop doesn't mean pdf a11y info is loaded and we have to activate
+  // the tab after the info is loaded to test the pulling scenario.
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, base::BindLambdaForTesting([this]() {
+        browser()->tab_strip_model()->ActivateTabAt(1);
+        EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+      }),
+      base::Seconds(5));
   run_loop->Run();
 }

@@ -15,8 +15,8 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
+#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -34,8 +34,6 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "ui/accessibility/ax_node.h"
-#include "ui/accessibility/ax_tree_manager.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -348,40 +346,6 @@ void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
-ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
-  if (!start_node) {
-    return nullptr;
-  }
-  for (const auto& node : start_node->GetAllChildren()) {
-    if (node->GetRole() == ax::mojom::Role::kPdfRoot) {
-      return node;
-    }
-    ui::AXNode* result = FindPdfRoot(node);
-    if (result) {
-      return result;
-    }
-  }
-  return nullptr;
-}
-
-std::string ExtractPdfContent(const ui::AXNode* pdf_root) {
-  // Skip status subtree and get text from region siblings
-  if (!pdf_root || pdf_root->GetChildCount() < 2 ||
-      pdf_root->GetChildAtIndex(0)->GetRole() != ax::mojom::Role::kBanner) {
-    return std::string();
-  }
-  std::string pdf_content;
-  const auto& children = pdf_root->GetAllChildren();
-  for (auto it = children.cbegin() + 1; it != children.cend(); ++it) {
-    const ui::AXNode* node = *it;
-    if (node->GetRole() == ax::mojom::Role::kRegion) {
-      base::StrAppend(&pdf_content, {node->GetTextContentUTF8(),
-                                     it == children.cend() - 1 ? "" : "\n"});
-    }
-  }
-  return pdf_content;
-}
-
 // Obtains a patch URL from a pull request URL
 std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
   if (!url.is_valid() || url.scheme() != "https" ||
@@ -421,23 +385,11 @@ void FetchPageContent(content::WebContents* web_contents,
     return;
   }
 
-  if (web_contents->GetContentsMimeType() == "application/pdf") {
-    ui::AXTreeManager* ax_tree_manager = nullptr;
-    // FindPdfChildFrame
-    primary_rfh->ForEachRenderFrameHost(
-        [&ax_tree_manager](content::RenderFrameHost* rfh) {
-          if (!rfh->GetProcess()->IsPdf()) {
-            return;
-          }
-          ui::AXTreeID ax_tree_id = rfh->GetAXTreeID();
-          if (ax_tree_id.type() == ax::mojom::AXTreeIDType::kUnknown) {
-            return;
-          }
-          ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
-        });
+  if (IsPdf(web_contents)) {
     std::string pdf_content;
-    if (ax_tree_manager) {
-      pdf_content = ExtractPdfContent(FindPdfRoot(ax_tree_manager->GetRoot()));
+    auto* pdf_root = GetPdfRoot(primary_rfh);
+    if (pdf_root) {
+      pdf_content = ExtractPdfContent(pdf_root);
     }
 
     // No need to proceed renderer content fetching because we won't get any.
