@@ -103,6 +103,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
       {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
+      {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
+      {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
       {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
       {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
       {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},

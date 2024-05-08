@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
@@ -83,7 +84,6 @@ class ConversationDriver {
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
-  void UpdateOrCreateLastAssistantEntry(std::string text);
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
@@ -183,6 +183,14 @@ class ConversationDriver {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_Delta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_DeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDelta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
 
   void InitEngine();
   void OnUserOptedIn();
@@ -191,7 +199,6 @@ class ConversationDriver {
 
   void PerformAssistantGeneration(
       const std::string& input,
-      std::optional<std::string> selected_text,
       int64_t current_navigation_id,
       std::string page_content = "",
       bool is_video = false,
@@ -206,7 +213,7 @@ class ConversationDriver {
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback);
 
   void OnEngineCompletionDataReceived(int64_t navigation_id,
-                                      std::string result);
+                                      mojom::ConversationEntryEventPtr result);
   void OnEngineCompletionComplete(int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
@@ -218,7 +225,7 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
-
+  void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
   void SetAPIError(const mojom::APIError& error);
   bool IsContentAssociationPossible();
 

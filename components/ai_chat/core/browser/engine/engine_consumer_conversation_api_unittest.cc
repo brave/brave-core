@@ -22,6 +22,8 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -125,8 +127,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
                      FormatComparableEventsJson(expected_events).c_str());
         std::move(callback).Run("");
       });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Which show is this about?";
+  history.push_back(std::move(turn));
+
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", std::nullopt, {},
+      false, "This is a page about The Mandalorian.", history,
       "Which show is this about?", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -158,8 +167,16 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
                      FormatComparableEventsJson(expected_events).c_str());
         std::move(callback).Run("");
       });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Which show is this about?";
+  turn->selected_text = "The Mandalorian";
+  history.push_back(std::move(turn));
+
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", "The Mandalorian", {},
+      false, "This is a page about The Mandalorian.", history,
       "Is this related to a broader series?", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -175,11 +192,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
-      "Which show is this catchphrase from?", "I have spoken."));
+      "Which show is this catchphrase from?", "I have spoken.", std::nullopt));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt));
+      std::nullopt, std::nullopt));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Is it related to a broader series?", std::nullopt, std::nullopt));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},
@@ -207,7 +228,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         std::move(callback).Run("");
       });
   engine_->GenerateAssistantResponse(
-      false, "This is my page. I have spoken.", std::nullopt, history,
+      false, "This is my page. I have spoken.", history,
       "Is it related to a broader series?", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));

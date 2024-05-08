@@ -258,10 +258,16 @@ GetActionTypeAndP3A(int command) {
 
 void OnRewriteSuggestionDataReceived(
     base::WeakPtr<content::WebContents> web_contents,
-    std::string suggestion) {
+    ai_chat::mojom::ConversationEntryEventPtr rewrite_event) {
   if (!web_contents) {
     return;
   }
+
+  if (!rewrite_event->is_completion_event()) {
+    return;
+  }
+
+  std::string suggestion = rewrite_event->get_completion_event()->completion;
 
   base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
   if (suggestion.empty()) {

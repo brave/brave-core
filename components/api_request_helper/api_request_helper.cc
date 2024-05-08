@@ -406,11 +406,11 @@ void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     std::string_view string_piece,
     base::OnceClosure resume) {
-  DVLOG(2) << "\n[[" << __func__ << "]]"
-           << " Chunk received";
+  DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
     ParseSSE(string_piece);
   } else {
+    DVLOG(4) << "Chunk content: \n" << string_piece;
     TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
     ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
     data_received_callback_.Run(base::Value(string_piece));

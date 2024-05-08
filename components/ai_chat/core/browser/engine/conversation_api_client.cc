@@ -66,6 +66,42 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+mojom::ConversationEntryEventPtr ParseResponseEvent(
+    base::Value::Dict& response_event) {
+  const std::string* type = response_event.FindString("type");
+  if (!type) {
+    return nullptr;
+  }
+  // Vary response parsing based on type
+  if (*type == "completion") {
+    const std::string* completion = response_event.FindString("completion");
+    if (!completion) {
+      return nullptr;
+    }
+    return mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(*completion));
+  } else if (*type == "isSearching") {
+    return mojom::ConversationEntryEvent::NewSearchStatusEvent(
+        mojom::SearchStatusEvent::New());
+  } else if (*type == "searchQueries") {
+    const base::Value::List* queries = response_event.FindList("queries");
+    if (!queries) {
+      return nullptr;
+    }
+    auto event = mojom::SearchQueriesEvent::New();
+    for (auto& item : *queries) {
+      if (item.is_string()) {
+        event->search_queries.push_back(item.GetString());
+      }
+    }
+    return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+        std::move(event));
+  }
+  // Server will provide different types of events. From time to time, new
+  // types of events will be introduced and we should ignore unknown ones.
+  return nullptr;
+}
+
 base::Value::List ConversationEventsToList(
     const std::vector<ConversationEvent>& conversation) {
   static const base::NoDestructor<std::map<mojom::CharacterType, std::string>>
@@ -251,7 +287,8 @@ void ConversationAPIClient::OnQueryCompleted(
   if (success) {
     std::string completion = "";
     // We're checking for a value body in case for non-streaming API results.
-    // TODO(petemill): server should provide parseable history events?
+    // TODO(petemill): server should provide parseable history events even for
+    // non-streaming requests?
     if (result.value_body().is_dict()) {
       const std::string* value =
           result.value_body().GetDict().FindString("completion");
@@ -290,10 +327,9 @@ void ConversationAPIClient::OnQueryDataReceived(
   if (!result.has_value() || !result->is_dict()) {
     return;
   }
-  // TODO(petemill): server should provide parseable history events?
-  const std::string* completion = result->GetDict().FindString("completion");
-  if (completion) {
-    callback.Run(std::move(*completion));
+  auto event = ParseResponseEvent(result->GetDict());
+  if (event) {
+    callback.Run(std::move(event));
   }
 }
 

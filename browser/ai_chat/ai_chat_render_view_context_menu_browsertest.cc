@@ -54,7 +54,6 @@ class MockEngineConsumer : public EngineConsumer {
               GenerateAssistantResponse,
               (const bool&,
                const std::string&,
-               std::optional<std::string>,
                const ConversationHistory&,
                const std::string&,
                GenerationDataCallback,
@@ -127,7 +126,9 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
           ASSERT_TRUE(callback);
           ASSERT_TRUE(data_callback);
           for (const auto& data : received_data) {
-            data_callback.Run(data);
+            auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(data));
+            data_callback.Run(std::move(event));
           }
           std::move(callback).Run(completed_result);
           run_loop.Quit();

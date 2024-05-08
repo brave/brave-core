@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -26,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/http/http_status_code.h"
@@ -64,6 +66,10 @@ std::string GetConversationHistoryString(
     const EngineConsumer::ConversationHistory& conversation_history) {
   std::vector<std::string> turn_strings;
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
+    // Ignore the last entry since it's the current human entry
+    if (turn == conversation_history.back()) {
+      continue;
+    }
     turn_strings.push_back((turn->character_type == CharacterType::HUMAN
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
@@ -107,7 +113,8 @@ std::string BuildClaudePrompt(
                  "\n\n"});
 
   auto prompt_segment_history =
-      (conversation_history.empty())
+      // Ignore the last entry since it's the current human entry
+      (conversation_history.empty() || conversation_history.size() == 1)
           ? ""
           : base::ReplaceStringPlaceholders(
                 l10n_util::GetStringUTF8(
@@ -239,13 +246,25 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
-    std::optional<std::string> selected_text,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (selected_text) {
-    selected_text = selected_text->substr(0, max_page_content_length_);
+  if (conversation_history.empty()) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
+  if (last_turn->character_type != CharacterType::HUMAN) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  std::optional<std::string> selected_text = std::nullopt;
+  if (last_turn->selected_text.has_value()) {
+    selected_text =
+        last_turn->selected_text->substr(0, max_page_content_length_);
   }
   const std::string& truncated_page_content = page_content.substr(
       0, selected_text ? max_page_content_length_ - selected_text->size()

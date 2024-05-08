@@ -353,33 +353,61 @@ void ConversationDriver::AddToConversationHistory(
   }
 
   chat_history_.push_back(std::move(turn));
+
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
 }
 
 void ConversationDriver::UpdateOrCreateLastAssistantEntry(
-    std::string updated_text) {
+    mojom::ConversationEntryEventPtr event) {
   if (chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
-    updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
-    // OnHistoryUpdate will be called by AddToConversationHistory.
-    AddToConversationHistory(mojom::ConversationTurn::New(
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        ConversationTurnVisibility::VISIBLE, updated_text, std::nullopt));
-  } else {
-    if (engine_->SupportsDeltaTextResponses()) {
-      auto existing = chat_history_.back()->text;
-      chat_history_.back()->text = base::StrCat({existing, updated_text});
-    } else {
-      updated_text =
-          base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
-      chat_history_.back()->text = updated_text;
+        ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+        std::vector<mojom::ConversationEntryEventPtr>{});
+    chat_history_.push_back(std::move(entry));
+  }
+
+  auto& entry = chat_history_.back();
+
+  if (event->is_completion_event()) {
+    if (!engine_->SupportsDeltaTextResponses() || entry->events->size() == 0 ||
+        !entry->events->back()->is_completion_event()) {
+      // The start of completion responses needs whitespace trim
+      // TODO(petemill): This should happen server-side?
+      event->get_completion_event()->completion = base::TrimWhitespaceASCII(
+          event->get_completion_event()->completion, base::TRIM_LEADING);
     }
-    // Trigger an observer update to refresh the UI.
-    for (auto& obs : observers_) {
-      obs.OnHistoryUpdate();
+
+    // Optimize by merging with previous completion events if delta updates
+    // are supported or otherwise replacing the previous event.
+    if (entry->events->size() > 0) {
+      auto& last_event = entry->events->back();
+      if (last_event->is_completion_event()) {
+        // Merge completion events
+        if (engine_->SupportsDeltaTextResponses()) {
+          event->get_completion_event()->completion =
+              base::StrCat({last_event->get_completion_event()->completion,
+                            event->get_completion_event()->completion});
+        }
+        // Remove the last event because we'll replace in both delta and
+        // non-delta cases
+        entry->events->pop_back();
+      }
     }
+
+    // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
+    // all UI is updated to instead use ConversationEntryEvent items.
+    entry->text = event->get_completion_event()->completion;
+  }
+
+  entry->events->push_back(std::move(event));
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
   }
 }
 
@@ -753,7 +781,7 @@ void ConversationDriver::AddSubmitSelectedTextError(
   const std::string& question = GetActionTypeQuestion(action_type);
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-      question, selected_text);
+      question, selected_text, std::nullopt);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -774,7 +802,7 @@ void ConversationDriver::SubmitSelectedText(
     // Use sidebar.
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
         CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-        question, selected_text);
+        question, selected_text, std::nullopt);
 
     SubmitHumanConversationEntry(std::move(turn));
   } else {
@@ -831,7 +859,6 @@ void ConversationDriver::SubmitHumanConversationEntry(
   if (turn->selected_text) {
     engine_->SanitizeInput(*turn->selected_text);
   }
-  auto selected_text = turn->selected_text;
 
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
@@ -854,8 +881,6 @@ void ConversationDriver::SubmitHumanConversationEntry(
     }
   }
 
-  // auto history = chat_history_;
-
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
@@ -864,10 +889,9 @@ void ConversationDriver::SubmitHumanConversationEntry(
 
   if (is_page_associated) {
     // Fetch updated page content before performing generation
-    GeneratePageContent(
-        base::BindOnce(&ConversationDriver::PerformAssistantGeneration,
-                       weak_ptr_factory_.GetWeakPtr(), question_part,
-                       std::move(selected_text), current_navigation_id_));
+    GeneratePageContent(base::BindOnce(
+        &ConversationDriver::PerformAssistantGeneration,
+        weak_ptr_factory_.GetWeakPtr(), question_part, current_navigation_id_));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -875,14 +899,12 @@ void ConversationDriver::SubmitHumanConversationEntry(
     suggestions_.clear();
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration(question_part, std::move(selected_text),
-                               current_navigation_id_);
+    PerformAssistantGeneration(question_part, current_navigation_id_);
   }
 }
 
 void ConversationDriver::PerformAssistantGeneration(
     const std::string& input,
-    std::optional<std::string> selected_text,
     int64_t current_navigation_id,
     std::string page_content,
     bool is_video,
@@ -894,9 +916,9 @@ void ConversationDriver::PerformAssistantGeneration(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
-  engine_->GenerateAssistantResponse(
-      is_video, page_content, std::move(selected_text), chat_history_, input,
-      std::move(data_received_callback), std::move(data_completed_callback));
+  engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
+                                     input, std::move(data_received_callback),
+                                     std::move(data_completed_callback));
 }
 
 void ConversationDriver::RetryAPIRequest() {
@@ -921,14 +943,15 @@ bool ConversationDriver::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
-                                                        std::string result) {
+void ConversationDriver::OnEngineCompletionDataReceived(
+    int64_t navigation_id,
+    mojom::ConversationEntryEventPtr result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
 
-  UpdateOrCreateLastAssistantEntry(result);
+  UpdateOrCreateLastAssistantEntry(std::move(result));
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -950,7 +973,9 @@ void ConversationDriver::OnEngineCompletionComplete(
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
     if (!result->empty()) {
-      UpdateOrCreateLastAssistantEntry(*result);
+      UpdateOrCreateLastAssistantEntry(
+          mojom::ConversationEntryEvent::NewCompletionEvent(
+              mojom::CompletionEvent::New(*result)));
     }
   } else {
     // handle failure
@@ -1011,7 +1036,8 @@ void ConversationDriver::SubmitSummarizationRequest() {
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
       ConversationTurnVisibility::VISIBLE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt);
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt,
+      std::nullopt);
   SubmitHumanConversationEntry(std::move(turn));
 }
 

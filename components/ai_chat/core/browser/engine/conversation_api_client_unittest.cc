@@ -24,6 +24,7 @@
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/prefs/testing_pref_service.h"
@@ -37,6 +38,7 @@
 
 using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;
+using ::testing::Sequence;
 using DataReceivedCallback =
     api_request_helper::APIRequestHelper::DataReceivedCallback;
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
@@ -48,7 +50,7 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 
 class MockCallbacks {
  public:
-  MOCK_METHOD(void, OnDataReceived, (std::string));
+  MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
   MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
 };
 
@@ -199,11 +201,28 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_STREQ(GetEventsJson(body).c_str(),
                      FormatComparableEventsJson(expected_events_body).c_str());
 
-        // Send a simple completion response so that we can verify it is passed
+        // Send some event responses so that we can verify it is passed
         // through to the PerformRequest callbacks.
-        base::Value result(base::Value::Type::DICT);
-        result.GetDict().Set("completion", expected_completion_response);
-        data_received_callback.Run(base::ok(std::move(result)));
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "isSearching");
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "searchQueries");
+          base::Value queries(base::Value::Type::LIST);
+          queries.GetList().Append("Star Wars");
+          queries.GetList().Append("Star Trek");
+          result.GetDict().Set("queries", std::move(queries));
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "completion");
+          result.GetDict().Set("completion", expected_completion_response);
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
         std::move(result_callback)
             .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
                                                       GURL()));
@@ -213,7 +232,29 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
 
   // Callbacks should be passed through and translated from APIRequestHelper
   // format.
-  EXPECT_CALL(mock_callbacks, OnDataReceived(expected_completion_response));
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_search_status_event());
+        EXPECT_TRUE(event->get_search_status_event()->is_searching);
+      });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_search_queries_event());
+        auto queries = event->get_search_queries_event()->search_queries;
+        EXPECT_EQ(queries.size(), 2u);
+        EXPECT_EQ(queries[0], "Star Wars");
+        EXPECT_EQ(queries[1], "Star Trek");
+      });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_completion_event());
+        EXPECT_EQ(event->get_completion_event()->completion,
+                  expected_completion_response);
+      });
   EXPECT_CALL(mock_callbacks,
               OnCompleted(EngineConsumer::GenerationResult("")));
 
@@ -281,7 +322,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         // Send a simple completion response so that we can verify it is passed
         // through to the PerformRequest callbacks.
         base::Value result(base::Value::Type::DICT);
-        result.GetDict().Set("completion", expected_completion_response);
+        base::Value::Dict& result_dict = result.GetDict();
+        result_dict.Set("type", "completion");
+        result_dict.Set("completion", expected_completion_response);
         data_received_callback.Run(base::ok(std::move(result)));
         std::move(result_callback)
             .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
@@ -292,7 +335,12 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 
   // Callbacks should be passed through and translated from APIRequestHelper
   // format.
-  EXPECT_CALL(mock_callbacks, OnDataReceived(expected_completion_response));
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_completion_event());
+        EXPECT_EQ(event->get_completion_event()->completion,
+                  expected_completion_response);
+      });
   EXPECT_CALL(mock_callbacks,
               OnCompleted(EngineConsumer::GenerationResult("")));
 

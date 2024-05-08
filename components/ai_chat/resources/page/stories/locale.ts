@@ -74,6 +74,8 @@ provideStrings({
   braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
   pageContentTooLongWarning: 'The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read $1 of the page\'s contents.',
   errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
+  searchInProgress: 'Improving your answer with Brave Search…',
+  searchQueries: 'Improved answer searching for $1.',
   leoSettingsTooltipLabel: 'Leo settings',
   summarizePageButtonLabel: 'Summarize this page',
   welcomeGuideTitle: 'Hi, I\'m Leo!',

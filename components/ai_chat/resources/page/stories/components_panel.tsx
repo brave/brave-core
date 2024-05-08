@@ -22,90 +22,142 @@ import { MockPageHandlerAPI } from '../api/mock_page_handler'
 const mockAPIHandler = new MockPageHandlerAPI()
 setPageHandlerAPIForTesting(mockAPIHandler as any)
 
+function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
+  return {
+    completionEvent: { completion:  text },
+    searchQueriesEvent: undefined,
+    searchStatusEvent: undefined
+  }
+}
+
+function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
+  return {
+    completionEvent: undefined,
+    searchQueriesEvent: { searchQueries: queries },
+    searchStatusEvent: undefined
+  }
+}
+
+function getSearchStatusEvent(): mojom.ConversationEntryEvent {
+  return {
+    completionEvent: undefined,
+    searchQueriesEvent: undefined,
+    searchStatusEvent: { isSearching: true }
+  }
+}
+
 const HISTORY: mojom.ConversationTurn[] = [
   {
     text: 'Summarize this page',
     characterType: mojom.CharacterType.HUMAN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.SUMMARIZE_PAGE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: []
   },
   {
-    text: 'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.UNSPECIFIED,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')]
   },
   {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: []
   },
   {
-    text: `## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`,
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)]
   },
   {
     text: 'What is taylor series?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: []
   },
   {
-    text: 'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')]
   },
   {
     text: 'Write a hello world program in c++',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: []
   },
   {
-    text: "Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!",
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")]
   },
   {
     text: 'Summarize this excerpt',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.'
+    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
+    events: []
   },
   {
-    text: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')]
   },
   {
     text: 'Shorten this selected text',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.SHORTEN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'
+    selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
+    events: []
   },
   {
-    text: 'Pointer compression is a memory optimization technique.',
+    text: '',
     characterType: mojom.CharacterType.ASSISTANT,
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: undefined
+    selectedText: undefined,
+    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.')]
+  },
+  {
+    text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.SHORTEN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: '',
+    events: []
+  },
+  {
+    text: '',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined,
+    events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])]
   }
 ]
 
@@ -218,6 +270,7 @@ export default {
         allModels: MODELS,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         isPremiumStatusFetching: false,
+        isGenerating: true,
         suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isPremiumUser: options.args.isPremiumUser,

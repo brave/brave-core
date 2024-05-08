@@ -135,7 +135,7 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      ConversationTurnVisibility::VISIBLE, input, std::nullopt);
+      ConversationTurnVisibility::VISIBLE, input, std::nullopt, std::nullopt);
   active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
 }
 

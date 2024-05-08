@@ -104,11 +104,21 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
-    std::optional<std::string> selected_text,
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
+  if (conversation_history.empty()) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
+  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
   std::vector<ConversationEvent> conversation;
   // associated content
   if (!page_content.empty()) {
@@ -125,20 +135,12 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     }
     ConversationEvent event;
     event.role = message->character_type;
-    event.content = message->text;
+    event.content = (message == last_turn) ? human_input : message->text;
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts? (e.g. SUMMARIZE_PAGE, PARAPHRASE, etc.)
     event.type = ConversationEventType::ChatMessage;
     conversation.push_back(std::move(event));
   }
-  // current query
-  if (selected_text.has_value()) {
-    conversation.push_back({mojom::CharacterType::HUMAN,
-                            ConversationEventType::PageExcerpt,
-                            selected_text.value()});
-  }
-  conversation.push_back({mojom::CharacterType::HUMAN,
-                          ConversationEventType::ChatMessage, human_input});
 
   api_->PerformRequest(std::move(conversation),
                        std::move(data_received_callback),
