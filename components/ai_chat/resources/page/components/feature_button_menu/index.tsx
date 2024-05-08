@@ -28,9 +28,10 @@ export default function FeatureMenu() {
   return (
     <ButtonMenu>
       <Button
+        className={styles.settingsButton}
         slot='anchor-content'
         title={getLocale('leoSettingsTooltipLabel')}
-        size="small"
+        fab
         kind="plain-faint"
       >
         <Icon name='settings' />

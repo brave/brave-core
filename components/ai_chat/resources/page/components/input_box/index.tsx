@@ -93,6 +93,7 @@ function InputBox() {
       <div className={styles.toolsContainer}>
         <div className={styles.tools}>
           <Button
+            fab
             kind='plain-faint'
             onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
           >
@@ -105,6 +106,7 @@ function InputBox() {
           </Button>
           {context.isMobile && (
             <Button
+              fab
               kind='plain-faint'
               onClick={handleMic}
               disabled={context.shouldDisableUserInput}
@@ -115,6 +117,7 @@ function InputBox() {
         </div>
         <div>
           <Button
+            fab
             kind='plain-faint'
             onClick={handleSubmit}
             disabled={context.shouldDisableUserInput}

@@ -77,6 +77,7 @@ export default function ModelIntro() {
               })}
             </div>
             <Button
+              fab
               kind='plain-faint'
               className={styles.tooltipButton}
             >
