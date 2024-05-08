@@ -10,7 +10,7 @@ import Data
 import Foundation
 
 /// An actor that handles the downloading of custom filter lists which are sourced via a URL
-actor FilterListCustomURLDownloader: ObservableObject {
+@MainActor class FilterListCustomURLDownloader: ObservableObject {
   /// An object representing a downloadable custom filter list.
   struct DownloadResource: Hashable, DownloadResourceInterface {
     let uuid: String
@@ -29,15 +29,6 @@ actor FilterListCustomURLDownloader: ObservableObject {
     }
   }
 
-  /// A formatter that is used to format a version number
-  private let fileVersionDateFormatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    dateFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss"
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    return dateFormatter
-  }()
-
   static let shared = FilterListCustomURLDownloader()
 
   /// The resource downloader that downloads our resources
@@ -53,13 +44,13 @@ actor FilterListCustomURLDownloader: ObservableObject {
   }
 
   /// Load any custom filter lists from cache so they are ready to use and start fetching updates.
-  func startIfNeeded() async {
+  func startIfNeeded() {
     guard !startedService else { return }
     self.startedService = true
-    await CustomFilterListStorage.shared.loadCachedFilterLists()
+    CustomFilterListStorage.shared.loadCachedFilterLists()
 
-    for customURL in await CustomFilterListStorage.shared.filterListsURLs {
-      await startFetching(filterListCustomURL: customURL)
+    for customURL in CustomFilterListStorage.shared.filterListsURLs {
+      startFetching(filterListCustomURL: customURL)
     }
   }
 
@@ -67,26 +58,23 @@ actor FilterListCustomURLDownloader: ObservableObject {
   private func handle(
     downloadResult: ResourceDownloader<DownloadResource>.DownloadResult,
     for filterListCustomURL: FilterListCustomURL
-  ) async {
-    let source = await filterListCustomURL.setting.engineSource
-    let version = fileVersionDateFormatter.string(from: downloadResult.date)
+  ) {
+    let source = filterListCustomURL.setting.engineSource
+    let version = downloadResult.version
 
     let fileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
       localFileURL: downloadResult.fileURL
     )
 
-    await AdBlockGroupsManager.shared.update(
-      fileInfo: fileInfo,
-      engineType: .aggressive,
-      compileDelayed: true
-    )
+    AdBlockGroupsManager.shared.update(fileInfo: fileInfo)
+    AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
   }
 
   /// Start fetching the resource for the given filter list. Once a new version is downloaded, the file will be processed using the `handle` method
-  func startFetching(filterListCustomURL: FilterListCustomURL) async {
+  func startFetching(filterListCustomURL: FilterListCustomURL) {
     guard startedService else { return }
-    let resource = await filterListCustomURL.setting.resource
+    let resource = filterListCustomURL.setting.resource
 
     guard fetchTasks[resource] == nil else {
       // We're already fetching for this filter list
@@ -99,13 +87,13 @@ actor FilterListCustomURLDownloader: ObservableObject {
           switch result {
           case .success(let downloadResult):
             // Update the data for UI purposes
-            await CustomFilterListStorage.shared.update(
+            CustomFilterListStorage.shared.update(
               filterListId: filterListCustomURL.id,
               with: .success(downloadResult.date)
             )
 
             // Handle the successful result so we parse the content blockers
-            await self.handle(
+            self.handle(
               downloadResult: downloadResult,
               for: filterListCustomURL
             )
@@ -119,7 +107,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
               throw urlError
             }
 
-            await CustomFilterListStorage.shared.update(
+            CustomFilterListStorage.shared.update(
               filterListId: filterListCustomURL.id,
               with: .failure(error)
             )
@@ -130,7 +118,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
       } catch {
         self.fetchTasks.removeValue(forKey: resource)
 
-        await CustomFilterListStorage.shared.update(
+        CustomFilterListStorage.shared.update(
           filterListId: filterListCustomURL.id,
           with: .failure(error)
         )
@@ -139,15 +127,15 @@ actor FilterListCustomURLDownloader: ObservableObject {
   }
 
   /// Cancel all fetching tasks for the given filter list
-  func stopFetching(filterListCustomURL: FilterListCustomURL) async {
-    let resource = await filterListCustomURL.setting.resource
+  func stopFetching(filterListCustomURL: FilterListCustomURL) {
+    let resource = filterListCustomURL.setting.resource
     fetchTasks[resource]?.cancel()
     fetchTasks.removeValue(forKey: resource)
 
-    await AdBlockGroupsManager.shared.removeFileInfo(
-      for: filterListCustomURL.setting.engineSource,
-      engineType: .aggressive
+    AdBlockGroupsManager.shared.removeFileInfo(
+      for: filterListCustomURL.setting.engineSource
     )
+    AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
   }
 }
 

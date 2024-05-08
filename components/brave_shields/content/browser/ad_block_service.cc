@@ -14,18 +14,16 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/rand_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_localhost_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
@@ -35,14 +33,6 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
-
-using brave_component_updater::BraveOnDemandUpdater;
-
-namespace {
-
-const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
-
-}  // namespace
 
 namespace brave_shields {
 
@@ -453,15 +443,6 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       base::BindOnce(&AdBlockEngine::TagExists,
                      base::Unretained(default_engine_.get()), tag),
       std::move(cb));
-}
-
-void CheckAdBlockExceptionComponentsUpdate() {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, base::BindOnce([]() {
-        BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
-            kAdBlockExceptionComponentId);
-      }),
-      base::Seconds(base::RandInt(0, 10)));
 }
 
 }  // namespace brave_shields

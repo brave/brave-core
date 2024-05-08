@@ -42,13 +42,14 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       ContentBlockerManager.log.debug("Loading blocking launch data")
       let state = Self.signpost.beginInterval("blockingLaunchTask", id: signpostID)
+      await FilterListStorage.shared.start(with: adBlockService)
+
       // We only want to compile the necessary content blockers during launch
       // We will compile other ones after launch
       let launchBlockModes = self.getFirstLaunchBlocklistModes()
 
       // Load cached data
       // This is done first because compileResources need their results
-      await FilterListStorage.shared.loadFilterListSettings()
       await AdBlockGroupsManager.shared.loadResourcesFromCache()
       async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared

@@ -13,12 +13,6 @@ import Preferences
 @MainActor class FilterListStorage: ObservableObject {
   static let shared = FilterListStorage(persistChanges: true)
 
-  /// A list of loaded versions for the filter lists with the componentId as the key and version as the value
-  var loadedRuleListVersions = Preferences.Option<[String: String]>(
-    key: "filter_list_resource_downloader.loaded-adblock-versions",
-    default: [:]
-  )
-
   /// Wether or not these settings are stored in memory or persisted
   let persistChanges: Bool
 
@@ -29,6 +23,10 @@ import Preferences
   private var pendingDefaults: [String: Bool] = [:]
   /// The filter list subscription
   private var subscriptions: [AnyCancellable] = []
+  /// Wether or not we loaded the catalog
+  private var loadedCatalog = false
+  /// We need this service to update settings
+  private weak var adBlockService: AdblockService?
 
   /// The filter lists wrapped up so we can contain
   @Published var filterLists: [FilterList] = []
@@ -41,41 +39,56 @@ import Preferences
   init(persistChanges: Bool) {
     self.persistChanges = persistChanges
     allFilterListSettings = []
-    recordP3ACookieListEnabled()
+  }
+
+  /// Will start listening to catalog changes
+  func start(with adBlockService: AdblockService) {
+    self.adBlockService = adBlockService
+    loadFilterListSettings()
+
+    Task { @MainActor in
+      for await entries in adBlockService.filterListCatalogComponentStream() {
+        loadFilterLists(from: entries, adBlockService: adBlockService)
+        loadedCatalog = true
+      }
+    }
   }
 
   /// Load the filter list settings
-  func loadFilterListSettings() {
+  private func loadFilterListSettings() {
     allFilterListSettings = FilterListSetting.loadAllSettings(fromMemory: !persistChanges)
   }
 
   /// Load filter lists from the ad block service and subscribe to any filter list changes
   /// - Warning: You should always call `loadFilterListSettings` before calling this
-  func loadFilterLists(from regionalFilterLists: [AdblockFilterListCatalogEntry]) {
-    let filterLists = regionalFilterLists.enumerated().compactMap {
+  private func loadFilterLists(
+    from regionalFilterLists: [AdblockFilterListCatalogEntry],
+    adBlockService: AdblockService
+  ) {
+    var filterLists = regionalFilterLists.enumerated().compactMap {
       index,
-      adBlockFilterList -> FilterList? in
+      entry -> FilterList? in
       // Certain filter lists are disabled if they are currently incompatible with iOS
       guard
         !AdblockFilterListCatalogEntry.disabledFilterListComponentIDs.contains(
-          adBlockFilterList.componentId
+          entry.componentId
         )
       else {
         return nil
       }
       let setting = allFilterListSettings.first(where: {
-        $0.componentId == adBlockFilterList.componentId
+        $0.componentId == entry.componentId
       })
       // Some special filter lists don't have specific UI to disable it
       // (except for disabling all of ad-blocking)
       // For example the "default" and "first-party" list is controlled using our general Ad-block and TP toggle.
       let isEnabled =
-        adBlockFilterList.hidden
-        ? adBlockFilterList.defaultEnabled
-        : pendingDefaults[adBlockFilterList.componentId] ?? setting?.isEnabled
+        entry.hidden
+        ? entry.defaultEnabled
+        : setting?.isEnabled
 
       return FilterList(
-        from: adBlockFilterList,
+        from: entry,
         order: index,
         isEnabled: isEnabled
       )
@@ -88,12 +101,19 @@ import Preferences
       setting.delete(inMemory: !persistChanges)
     }
 
+    // Set any pending defaults
+    for (componentId, isEnabled) in pendingDefaults {
+      guard let index = filterLists.firstIndex(where: { $0.entry.componentId == componentId })
+      else { continue }
+      filterLists[index].isEnabled = isEnabled
+    }
+    pendingDefaults.removeAll()
+
     // Create missing filter lists
     for filterList in filterLists {
       upsert(filterList: filterList)
     }
 
-    pendingDefaults.removeAll()
     FilterListSetting.save(inMemory: !persistChanges)
     self.filterLists = filterLists
 
@@ -107,8 +127,6 @@ import Preferences
   ///   - componentId: The component id of the filter list to update
   ///   - isEnabled: A boolean indicating if the filter list is enabled or not
   public func ensureFilterList(for componentId: String, isEnabled: Bool) {
-    defer { self.recordP3ACookieListEnabled() }
-
     // Enable the setting
     if let index = filterLists.firstIndex(where: { $0.entry.componentId == componentId }) {
       // Only update the value if it has changed
@@ -145,7 +163,14 @@ import Preferences
       .receive(on: DispatchQueue.main)
       .sink { filterLists in
         for filterList in filterLists {
+          // Ensure the storage is up to date
           self.upsert(filterList: filterList)
+
+          // Ensure the service is fetching the files
+          self.adBlockService?.enableFilterList(
+            forUUID: filterList.entry.uuid,
+            isEnabled: filterList.isEnabled
+          )
         }
       }
       .store(in: &subscriptions)
@@ -200,19 +225,6 @@ import Preferences
         isDefaultEnabled: isDefaultEnabled
       )
     }
-  }
-
-  /// Set the folder url of the
-  ///
-  /// - Warning: Do not call this before we load core data
-  public func set(folderURL: URL, forUUID uuid: String) {
-    guard let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) else {
-      return
-    }
-
-    guard allFilterListSettings[index].folderURL != folderURL else { return }
-    allFilterListSettings[index].folderURL = folderURL
-    FilterListSetting.save(inMemory: !persistChanges)
   }
 
   /// Update the filter list settings with the given `componentId` and `isEnabled` status
@@ -274,18 +286,6 @@ import Preferences
     )
     allFilterListSettings.append(setting)
   }
-
-  // MARK: - P3A
-
-  private func recordP3ACookieListEnabled() {
-    // Q69 Do you have cookie consent notice blocking enabled?
-    Task { @MainActor in
-      UmaHistogramBoolean(
-        "Brave.Shields.CookieListEnabled",
-        isEnabled(for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID)
-      )
-    }
-  }
 }
 
 // MARK: - FilterListLanguageProvider - A way to share `defaultToggle` logic between multiple structs/classes
@@ -312,26 +312,43 @@ extension FilterListStorage {
         .map(\.engineSource)
   }
 
-  /// Return all engabled sources for the given engine type
-  func enabledSources(
+  func sources(
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
-        .filter(\.isEnabled)
         .filter({ $0.engineType == engineType })
         .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
-        .filter(\.isEnabled)
         .filter({ $0.engineType == engineType })
         .map(\.engineSource)
   }
 }
 
+extension AdblockService {
+  @MainActor fileprivate func filterListCatalogComponentStream() -> AsyncStream<
+    [AdblockFilterListCatalogEntry]
+  > {
+    return AsyncStream { continuation in
+      registerCatalogChanges {
+        continuation.yield(self.filterListCatalogEntries)
+      }
+    }
+  }
+
+  @MainActor fileprivate func filterListChangesStream() -> AsyncStream<
+    GroupedAdBlockEngine.EngineType
+  > {
+    return AsyncStream { continuation in
+      registerFilterListChanges({ isDefaultFilterList in
+        continuation.yield(isDefaultFilterList ? .standard : .aggressive)
+      })
+    }
+  }
+}
+
 extension FilterListSetting {
-  /// Lets us know if this filter list is always aggressive.
-  /// This value comes from `list_catalog.json` in brave core
   @MainActor var engineType: GroupedAdBlockEngine.EngineType {
     return isAlwaysAggressive ? .aggressive : .standard
   }

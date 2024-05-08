@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
@@ -187,6 +188,19 @@ bool AdBlockComponentServiceManager::IsFilterListAvailable(
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
   return catalog_entry != filter_list_catalog_.end();
+}
+
+base::FilePath AdBlockComponentServiceManager::GetFilterSetPath(
+    const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!uuid.empty());
+  auto it = component_filters_providers_.find(uuid);
+
+  if (it == component_filters_providers_.end()) {
+    return base::FilePath();
+  }
+
+  return it->second->GetFilterSetPath();
 }
 
 bool AdBlockComponentServiceManager::IsFilterListEnabled(

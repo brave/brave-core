@@ -85,10 +85,7 @@ import os
 
   /// Add the info to the available list
   func add(fileInfo: FileInfo) {
-    availableFiles.removeAll { existingFileInfo in
-      return existingFileInfo.filterListInfo == fileInfo.filterListInfo
-    }
-
+    removeInfo(for: fileInfo.filterListInfo.source)
     availableFiles.append(fileInfo)
   }
 
@@ -159,10 +156,7 @@ import os
 
     // Restart the task
     delayTask = Task {
-      if !checkHasAllInfo(for: enabledSources) {
-        try await Task.sleep(seconds: 60)
-      }
-
+      try await Task.sleep(seconds: 60)
       await compileAvailableIfNeeded(
         for: enabledSources,
         resourcesInfo: resourcesInfo
@@ -192,22 +186,6 @@ import os
         "Failed to update engine resources for `\(self.cacheFolderName)`: \(String(describing: error))"
       )
     }
-  }
-
-  func needsCompile(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) -> Bool {
-    var infos = availableFiles.map(\.filterListInfo)
-    if let engineInfos = engine?.group.infos {
-      // This is an optimization because during launch we don't have file infos.
-      // But we will have an engine loaded from cache.
-      // So we also check the engine infos as well
-      infos.append(contentsOf: engineInfos)
-    }
-
-    guard let info = infos.first(where: { $0.source == filterListInfo.source }) else {
-      return true
-    }
-
-    return filterListInfo.version < info.version
   }
 
   func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
@@ -274,7 +252,7 @@ import os
     ContentBlockerManager.log.debug(
       """
       Set `\(self.cacheFolderName)` (\(group.fileType.debugDescription)) engine from \(group.infos.count) sources:
-      \(group.debugDescription)"
+      \(group.debugDescription)
       """
     )
     self.engine = engine

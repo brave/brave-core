@@ -52,6 +52,9 @@ class AdBlockComponentServiceManager
   void SetFilterListCatalog(std::vector<FilterListCatalogEntry> catalog);
   const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
+  // Get the filter set path for a given filter list.
+  // If the filter list is not available, an empty path is returned.
+  base::FilePath GetFilterSetPath(const std::string& uuid);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
