@@ -16,9 +16,14 @@ import DataContext from '../../state/context'
 
 function PageContextToggle() {
   const context = React.useContext(DataContext)
+  const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
 
   const handleToggleChange = ({ checked }: { checked: boolean }) => {
     context.updateShouldSendPageContents(checked)
+  }
+
+  const toggleTooltipVisibility = () => {
+    setIsTooltipVisible(state => !state)
   }
 
   return (
@@ -33,12 +38,22 @@ function PageContextToggle() {
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
           <Tooltip
+            visible={isTooltipVisible}
             mode="default"
             className={styles.tooltip}
+            onVisibilityChange={(detail) => {
+              setTimeout(() => {
+                setIsTooltipVisible(detail.visible)
+              })
+            }}
           >
             <div
               slot='content'
               className={styles.tooltipContent}
+              onClick={(e: any) => {
+                // inner content click/tap shouldn't change parent's toggle
+                e.preventDefault()
+              }}
             >
               <div className={styles.tooltipInfo}>
                 {getLocale('contextToggleTooltipInfo')}
@@ -51,7 +66,7 @@ function PageContextToggle() {
               fab
               kind='plain-faint'
               className={styles.tooltipButton}
-              onClick={(e: any) => e.preventDefault()}
+              onClick={toggleTooltipVisibility}
             >
               <Icon name='info-outline' />
             </Button>
