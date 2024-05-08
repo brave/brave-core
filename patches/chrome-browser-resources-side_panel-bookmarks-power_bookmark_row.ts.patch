@@ -1,0 +1,45 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.ts
+index 6f996c82af0ecf2306538eb703afdc3a8a18c9f6..9264057c5e0ee9c98f0afa43687e85d6bf23e42e 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.ts
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.ts
+@@ -98,6 +98,11 @@ export class PowerBookmarkRowElement extends PolymerElement {
+         type: String,
+         value: '',
+       },
++      listItemSize_: {
++        type: String,
++        computed: 'computeListItemSize_(compact)',
++        observer: 'onListItemSizeChanged_',
++      },
+     };
+   }
+ 
+@@ -118,6 +123,8 @@ export class PowerBookmarkRowElement extends PolymerElement {
+   trailingIconTooltip: string;
+   imageUrls: string[];
+ 
++  private listItemSize_: CrUrlListItemSize;
++
+   override connectedCallback() {
+     super.connectedCallback();
+     this.onInputDisplayChange_();
+@@ -158,10 +165,18 @@ export class PowerBookmarkRowElement extends PolymerElement {
+     }
+   }
+ 
+-  private getItemSize_() {
++  private computeListItemSize_(): CrUrlListItemSize {
+     return this.compact ? CrUrlListItemSize.COMPACT : CrUrlListItemSize.LARGE;
+   }
+ 
++  private async onListItemSizeChanged_() {
++    await this.$.crUrlListItem.updateComplete;
++    if (this.parentNode &&
++        (this.parentNode as HTMLElement).tagName === 'IRON-LIST') {
++      this.parentNode.dispatchEvent(new CustomEvent('iron-resize'));
++    }
++  }
++
+   private isBookmarksBar_(): boolean {
+     return this.bookmark.id === loadTimeData.getString('bookmarksBarId');
+   }
