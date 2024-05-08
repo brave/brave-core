@@ -178,7 +178,7 @@ class SyncAddDeviceCodeView: UIStackView {
     codeWordsContainerView.addSubview(codewordsView)
 
     codewordsView.snp.makeConstraints {
-      $0.edges.equalToSuperview().inset(12)
+      $0.edges.equalToSuperview().inset(16)
     }
   }
 
@@ -321,7 +321,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
   private let timeRemainingStackView = UIStackView().then {
     $0.axis = .horizontal
     $0.spacing = 20
-    $0.alignment = .center
+    $0.alignment = .firstBaseline
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
@@ -336,6 +336,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   private let timeRemainingIconImageView = UIImageView().then {
     $0.image = UIImage(braveSystemNamed: "leo.timer")
+    $0.tintColor = UIColor(braveSystemName: .systemfeedbackInfoIcon)
     $0.snp.makeConstraints {
       $0.size.equalTo(20)
     }
@@ -352,7 +353,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
   private let codeExpirationStackView = UIStackView().then {
     $0.axis = .horizontal
     $0.spacing = 20
-    $0.alignment = .center
+    $0.alignment = .firstBaseline
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
