@@ -21,6 +21,7 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
+#include "brave/components/brave_news/browser/initialization_promise.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -195,7 +196,7 @@ class BraveNewsController
   // channels might only be available after this event has fired. If News is
   // already enabled and this event has already signalled, then they are already
   // available.
-  base::OneShotEvent on_initializing_prefs_complete_;
+  InitializationPromise initialization_promise_;
   base::CancelableTaskTracker task_tracker_;
 
   base::ScopedObservation<BraveNewsPrefManager,
