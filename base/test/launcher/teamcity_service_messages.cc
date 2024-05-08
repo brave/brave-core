@@ -5,10 +5,6 @@
 
 #include "brave/base/test/launcher/teamcity_service_messages.h"
 
-#include <string>
-
-#include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace base {
@@ -39,14 +35,8 @@ class EscapedValue {
         case '\r':
           stream << "|r";
           break;
-        case '\'':
-        case '|':
-        case '[':
-        case ']':
-          stream << '|' << symbol;
-          break;
         default:
-          NOTREACHED_NORETURN();
+          stream << '|' << symbol;
       }
       s.remove_prefix(pos + 1);
     }

@@ -55,6 +55,7 @@ TEST_F(TeamcityServiceMessagesTest, WritePropertyWithSpecialCharacters) {
   } test_cases[] = {
       {"property_value\n\r'|[]", "property_value|n|r|'|||[|]"},
       {"\na\rbcde'test| [ ] ", "|na|rbcde|'test|| |[ |] "},
+      {"a'b\n]| '\rc", "a|'b|n|]|| |'|rc"},
       {"property_value", "property_value"},
       {"", ""},
   };
