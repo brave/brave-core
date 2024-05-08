@@ -22,7 +22,8 @@ function PageContextToggle() {
     context.updateShouldSendPageContents(checked)
   }
 
-  const toggleTooltipVisibility = () => {
+  const toggleTooltipVisibility = (e: any) => {
+    e.preventDefault()
     setIsTooltipVisible(state => !state)
   }
 
