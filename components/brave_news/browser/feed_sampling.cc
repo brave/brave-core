@@ -83,10 +83,10 @@ std::vector<mojom::Signal*> GetSignals(
   return result;
 }
 
-ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                               const std::vector<mojom::Signal*>& signals,
-                               std::vector<std::string> publisher_channels,
-                               const bool& discoverable) {
+ArticleMetaData GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
+                                 const std::vector<mojom::Signal*>& signals,
+                                 std::vector<std::string> publisher_channels,
+                                 const bool& discoverable) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
 
@@ -96,7 +96,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
       source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
   const auto pop_recency = GetPopRecency(article);
 
-  ArticleWeight weight;
+  ArticleMetaData weight;
   weight.pop_recency = pop_recency;
   weight.weighting =
       (source_visits_projected + subscribed_weight) * pop_recency;
@@ -109,10 +109,10 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
 
 }  // namespace
 
-ArticleWeight::ArticleWeight() = default;
-ArticleWeight::~ArticleWeight() = default;
-ArticleWeight::ArticleWeight(ArticleWeight&&) = default;
-ArticleWeight& ArticleWeight::operator=(ArticleWeight&&) = default;
+ArticleMetaData::ArticleMetaData() = default;
+ArticleMetaData::~ArticleMetaData() = default;
+ArticleMetaData::ArticleMetaData(ArticleMetaData&&) = default;
+ArticleMetaData& ArticleMetaData::operator=(ArticleMetaData&&) = default;
 
 ContentGroup SampleContentGroup(
     const std::vector<ContentGroup>& eligible_content_groups) {
@@ -189,10 +189,9 @@ std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
 
 std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
   return PickRouletteWithWeighting(
-      articles,
-      base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
-                             const ArticleWeight& weight) {
-        return weight.subscribed ? weight.weighting : 0;
+      articles, base::BindRepeating([](const mojom::FeedItemMetadataPtr& data,
+                                       const ArticleMetaData& meta) {
+        return meta.subscribed ? meta.weighting : 0;
       }));
 }
 
@@ -202,7 +201,7 @@ std::optional<size_t> PickChannelRoulette(const std::string& channel,
       articles, base::BindRepeating(
                     [](const std::string& channel,
                        const mojom::FeedItemMetadataPtr& metadata,
-                       const ArticleWeight& weight) {
+                       const ArticleMetaData& weight) {
                       return base::Contains(weight.channels, channel)
                                  ? weight.weighting
                                  : 0.0;

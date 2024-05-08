@@ -22,7 +22,7 @@
 namespace brave_news {
 
 // An ArticleWeight has a few different components
-struct ArticleWeight {
+struct ArticleMetaData {
   // The pop_recency of the article. This is used for discover cards, where we
   // don't consider the subscription status or visit_weighting.
   double pop_recency = 0;
@@ -47,22 +47,22 @@ struct ArticleWeight {
   // All the channels this Article belongs to.
   base::flat_set<std::string> channels;
 
-  ArticleWeight();
-  ArticleWeight(const ArticleWeight&) = delete;
-  ArticleWeight& operator=(const ArticleWeight&) = delete;
-  ArticleWeight& operator=(ArticleWeight&&);
-  ArticleWeight(ArticleWeight&&);
-  ~ArticleWeight();
+  ArticleMetaData();
+  ArticleMetaData(const ArticleMetaData&) = delete;
+  ArticleMetaData& operator=(const ArticleMetaData&) = delete;
+  ArticleMetaData& operator=(ArticleMetaData&&);
+  ArticleMetaData(ArticleMetaData&&);
+  ~ArticleMetaData();
 };
 
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleMetaData>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
 // Gets a weighting for a specific article. This determines how likely an
 // article is to be chosen.
 using GetWeighting =
-    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& metadata,
-                                   const ArticleWeight& weight)>;
+    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& data,
+                                   const ArticleMetaData& meta)>;
 
 // PickArticles is a strategy used to pick articles (for example, taking the
 // first article). Different feeds use different strategies for picking

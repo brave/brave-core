@@ -127,18 +127,18 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
       generated = info.PickAndConsume(
           base::BindRepeating([](const ArticleInfos& articles) {
             return PickRouletteWithWeighting(
-                articles, base::BindRepeating(
-                              [](const mojom::FeedItemMetadataPtr& metadata,
-                                 const ArticleWeight& weight) {
-                                if (!weight.discoverable) {
-                                  return 0.0;
-                                }
+                articles,
+                base::BindRepeating([](const mojom::FeedItemMetadataPtr& data,
+                                       const ArticleMetaData& meta) {
+                  if (!meta.discoverable) {
+                    return 0.0;
+                  }
 
-                                if (weight.subscribed) {
-                                  return 0.0;
-                                }
-                                return weight.pop_recency;
-                              }));
+                  if (meta.subscribed) {
+                    return 0.0;
+                  }
+                  return meta.pop_recency;
+                }));
           }));
     } else {
       generated = info.PickAndConsume(article_picker);
@@ -197,12 +197,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                const base::flat_map<std::string, std::vector<std::string>>&
                    publisher_id_to_channels,
                const std::string& locale,
-               const mojom::FeedItemMetadataPtr& metadata,
-               const ArticleWeight& weight) {
+               const mojom::FeedItemMetadataPtr& article,
+               const ArticleMetaData& meta) {
               if (is_hero) {
-                auto image_url = metadata->image->is_padded_image_url()
-                                     ? metadata->image->get_padded_image_url()
-                                     : metadata->image->get_image_url();
+                auto image_url = article->image->is_padded_image_url()
+                                     ? article->image->get_padded_image_url()
+                                     : article->image->get_image_url();
                 if (!image_url.is_valid()) {
                   return 0.0;
                 }
@@ -210,16 +210,16 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
               if (/*is_channel*/ content_group.second) {
                 auto channels =
-                    publisher_id_to_channels.find(metadata->publisher_id);
+                    publisher_id_to_channels.find(article->publisher_id);
                 if (base::Contains(channels->second, content_group.first)) {
-                  return weight.weighting;
+                  return meta.weighting;
                 }
 
                 return 0.0;
               }
 
-              return metadata->publisher_id == content_group.first
-                         ? weight.weighting
+              return article->publisher_id == content_group.first
+                         ? meta.weighting
                          : 0.0;
             },
             is_hero, SampleContentGroup(eligible_content_groups),

@@ -69,7 +69,7 @@ struct FeedGenerationInfo {
  private:
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
-                    const ArticleWeight& weight);
+                    const ArticleMetaData& meta);
 
   std::string locale_;
   std::vector<std::string> channels_;

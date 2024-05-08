@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -154,7 +155,7 @@ void FeedGenerationInfo::GenerateAvailableCounts() {
 }
 
 void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
-                                      const ArticleWeight& weight) {
+                                      const ArticleMetaData& meta) {
   // If we're not tracking content groups, we don't need to do this.
   if (!content_groups_.has_value()) {
     return;
@@ -173,7 +174,7 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   }
 
   // Decrease the channel counts for this article.
-  for (const auto& channel : weight.channels) {
+  for (const auto& channel : meta.channels) {
     auto channel_it = available_counts_.find(channel);
     if (channel_it != available_counts_.end()) {
       remove_content_groups.emplace_back(channel);
