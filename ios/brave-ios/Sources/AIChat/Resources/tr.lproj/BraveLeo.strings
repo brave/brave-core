@@ -61,12 +61,6 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Geri bildiriminiz neyle alakalı?";
 
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "Yanıt yardımcı olmadı";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "Bir şey çalışmıyor";
-
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Diğer";
 
@@ -202,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Yaratıcılığınızı serbest bırakın";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Farklı yeteneklere sahip güçlü modellere öncelikli erişim.";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Farklı Yapay Zeka modellerini keşfedin";
 
@@ -282,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Yıllık Abonelik";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "Sohbet";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "DİL MODELLERİ";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "Varsayılan Model";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "Sınırlı";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "Gelişmiş Ayarlar";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "Premium'a Geçin";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "Abonelikleri Yönetin";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "Yeni Sohbet";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "Sıfırla";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "Sınırsız";
 

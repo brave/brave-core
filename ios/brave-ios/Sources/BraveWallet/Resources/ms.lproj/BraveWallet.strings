@@ -181,6 +181,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Anda boleh melangkau langkah ini sekarang tetapi anda masih perlu membuat sandaran frasa pemulihan anda demi memastikan keselamatan akaun.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Sandar Sekarang";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Sandarkan Dompet";
 
@@ -552,6 +555,18 @@
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Padam";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "Deposit";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Salin";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Deposit aset";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Ini ialah dompet Ethereum yang menyokong Rangkaian Ethereum dan rangkaian tahap 2 seperti %@";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Nyahpilih Semua";

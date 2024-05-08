@@ -1,0 +1,291 @@
+/* (No Comment) */
+"0W40Cl" = "Neuer Tab";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Es gibt ${count} Optionen, die mit „Geschätzte Zeitersparnis“ übereinstimmen.";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Es gibt ${count} Optionen, die mit „Geschätzte Datenersparnis“ übereinstimmen.";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Es gibt ${count} Optionen, die mit „Blockierte Anzeigen“ übereinstimmen.";
+
+/* (No Comment) */
+"7Ds8rk" = "Sperrbildschirm Konfigurationsfavorit";
+
+/* (No Comment) */
+"7JYzOv" = "Typ";
+
+/* (No Comment) */
+"7MuqiB" = "Verknüpfung";
+
+/* (No Comment) */
+"8pcZ6L" = "Sperrbildschirm Widget-Favorit";
+
+/* (No Comment) */
+"8vyYRy" = "Nr. 3";
+
+/* (No Comment) */
+"9E2oRR" = "Nr. 1";
+
+/* (No Comment) */
+"AGMpus" = "Verknüpfungskonfiguration";
+
+/* (No Comment) */
+"bUXzTx" = "Statistikart";
+
+/* (No Comment) */
+"crhbMy" = "Lesezeichen";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Nur, um sicherzugehen, Sie suchten nach „Neuer Tab“?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Nur, um sicherzugehen, Sie suchten nach „QR-Code scannen“?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Nur, um sicherzugehen, Sie suchten nach „Verlauf“?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
+
+/* (No Comment) */
+"EUS9FL" = "Widget-Verknüpfung";
+
+/* (No Comment) */
+"FGO5qW" = "Brave-Playlist";
+
+/* (No Comment) */
+"gpCwrM" = "Statistikkonfiguration";
+
+/* (No Comment) */
+"hssb67" = "Verknüpfungswidget-Konfiguration";
+
+/* (No Comment) */
+"iB2TOM" = "Eintragsfavorit";
+
+/* (No Comment) */
+"joEZJM" = "Nr. 2";
+
+/* (No Comment) */
+"jXiFQY" = "Brave-Wallet";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Es gibt ${count} Optionen, die mit „QR-Code scannen“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
+
+/* (No Comment) */
+"nthxSL" = "Downloads";
+
+/* (No Comment) */
+"nXONef" = "Favorit";
+
+/* (No Comment) */
+"qKrzyX" = "QR-Code scannen";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Nur, um sicherzugehen, Sie suchten nach „Neuer Tab“?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Nur, um sicherzugehen, Sie suchten nach „QR-Code scannen“?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Nur, um sicherzugehen, Sie suchten nach „Verlauf“?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Nur, um sicherzugehen, Sie suchten nach „Geschätzte Zeitersparnis“?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Nur, um sicherzugehen, Sie suchten nach „Geschätzte Datenersparnis“?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Nur, um sicherzugehen, Sie suchten nach „Blockierte Anzeigen“?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Es gibt ${count} Optionen, die mit „QR-Code scannen“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
+
+/* (No Comment) */
+"tVvJ9c" = "Statistikkonfigurations-Widget";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Es gibt ${count} Optionen, die mit „Brave-Playlist“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Es gibt ${count} Optionen, die mit „Brave-Wallet“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Es gibt ${count} Optionen, die mit „Downloads“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Es gibt ${count} Optionen, die mit „QR-Code scannen“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Es gibt ${count} Optionen, die mit „Verlauf“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Es gibt ${count} Optionen, die mit „Neuer privater Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Es gibt ${count} Optionen, die mit „Brave-Nachrichten“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Es gibt ${count} Optionen, die mit „Suche“ übereinstimmen.";
+
+/* (No Comment) */
+"tYwiRd" = "Geschätzte Zeitersparnis";
+
+/* (No Comment) */
+"VBH4G6" = "Verlauf";
+
+/* (No Comment) */
+"vjA5pZ" = "Geschätzte Datenersparnis";
+
+/* (No Comment) */
+"vs094F" = "Neuer privater Tab";
+
+/* (No Comment) */
+"xcI3h9" = "Blockierte Anzeigen";
+
+/* (No Comment) */
+"XCyA8c" = "Brave-Nachrichten";
+
+/* (No Comment) */
+"XkwBGY" = "Sperrbildschirm Verknüpfungskonfiguration";
+
+/* (No Comment) */
+"Y7TWy8" = "Suche";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Nur, um sicherzugehen, Sie suchten nach „Neuer Tab“?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Nur, um sicherzugehen, Sie suchten nach „Lesezeichen“?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Playlist“?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Wallet“?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Nur, um sicherzugehen, Sie suchten nach „Downloads“?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Nur, um sicherzugehen, Sie suchten nach „QR-Code scannen“?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Nur, um sicherzugehen, Sie suchten nach „Verlauf“?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Nur, um sicherzugehen, Sie suchten nach „Neuer privater Tab“?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Nur, um sicherzugehen, Sie suchten nach „Brave-Nachrichten“?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Nur, um sicherzugehen, Sie suchten nach „Suche“?";
+
+/* (No Comment) */
+"ziTvSZ" = "Verknüpfungswidget-Konfiguration";
+

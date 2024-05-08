@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "继续";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允许保护隐私的产品分析 (P3A)";
 
@@ -2664,6 +2667,9 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "质量设置";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "这种私人 ping 可以让 Brave 估算活跃用户数量。";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";

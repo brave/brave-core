@@ -1,0 +1,2100 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Zálohovat";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Zadejte název účtu";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Account Name";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Detaily účtu";
+
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "Název účtu musí mít maximálně 30 znaků";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Privátní klíč";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Upozornění: Nikdy nesdílejte svůj soukromý klíč. Kdokoli s tímto klíčem si může navždy vzít vaše aktiva.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "Odstranit tento účet?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Odstranit účet";
+
+/* The description used below Security title in the row opening DApp settings in Account Details. */
+"wallet.accountSecurityDescription" = "Připojené stránky a povolenky";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Účty";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "Aktivovat %@ token";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "Jakmile provedete transakci, budete si ji moci prohlédnout zde.";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "Zatím nejsou k zobrazení žádné transakce";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "Aktivita";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Přidat";
+
+/* The title of the add account screen. */
+"wallet.addAccountTitle" = "Přidat účet";
+
+/* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
+"wallet.addAccountWithCoinTypeTitle" = "Přidat %@ účet";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Přidejte vlastní prostředky";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Add Network";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Přidat síť...";
+
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "Advanced";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "Coingecko ID";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Nepodařilo se přidat vlastní žeton, zkuste to znovu.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "Nelze přidat vlastní token";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "URL ikony";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "ID tokenu (pouze u ERC721)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "Token";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "Díky tomu budete moci tuto síť používat v rámci peněženky Brave Wallet.";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "Chcete tomuto webu povolit přidání sítě?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "Add Network";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "Přejete si importovat tyto tokeny?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "Přidat navrhovaný token";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Pokročilá nastavení";
+
+/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allAccountsLabel" = "Všechny účty";
+
+/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allNetworksLabel" = "Všechny sítě";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "Částka + poplatek";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Částka + palivo";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "Částka v %@";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "Schválit";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@ cena (%2$@)";
+
+/* The description of the assets row in Account Details when user has zero or multiple Assets. */
+"wallet.assetsDescription" = "%d aktiva/aktiv";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "Nebyla nalezena žádná aktiva";
+
+/* The description of the assets row in Account Details when user has 1 Asset. */
+"wallet.assetsSingularDescription" = "%d aktivum";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Aktiva";
+
+/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
+"wallet.aToZSortOption" = "Od A po Z";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge je nezávislá služba, která vám pomáhá překlenout aktiva napříč sítěmi a používat vaše kryptoměny v jiných sítích a ekosystémech DApp. Překlenování aktiv do jiných sítí má určitá rizika.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Otevřít aplikaci Rainbow Bridge?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Most k Auroře";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "Zjistěte více o používání Rainbow Bridge";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Zjistit, jak snížit riziko na Rainbow Bridge";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "Znovu neukazovat";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Počet minut, po kterých se peněženka Brave automaticky uzamkne.";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Automaticky zamknout po";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Fráze pro obnovení";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "Vaše fráze pro obnovení je klíčem k přístupu k vaší peněžence v případě, že zapomenete heslo nebo ztratíte své zařízení.\n\nUchovávejte ji na bezpečném místě, které není přístupné ostatním, a nikomu ji nesdělujte.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Uložit frázi pro obnovení";
+
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "Vrátím se později";
+
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "Pro zajištění bezpečnosti svého účtu si nezapomeňte zálohovat svou frázi pro obnovení.";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "Tento krok můžete nyní přeskočit, ale stále musíte zálohovat frázi pro obnovení, abyste zajistili bezpečnost účtu.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Záložní peněženka";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Chápu, že pokud ztratím svoji obnovovací frázi, ztratím přístup ke své kryptopeněžence.";
+
+/* The placeholder for the password entry field when a user tries to backup their wallet. */
+"wallet.backupWalletPasswordPlaceholder" = "Zadejte heslo do záložní peněženky";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "V dalším kroku se zobrazí fráze pro obnovení o 12 slovech, kterou můžete použít k obnovení primárních krypto účtů. Uložte si ji na bezpečné místo. Vaše fráze pro obnovení je jediným způsobem, jak znovu získat přístup k účtu v případě zapomenutého hesla, ztráty nebo krádeže zařízení nebo v případě, že chcete změnit peněženku.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Zálohujte si kryptopeněženku";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Zálohujte si peněženku, abyste ochránili svá kryptoaktiva a zajistili, že k nim nikdy neztratíte přístup.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "Zůstatky";
+
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "Použít %@";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Při pokusu o povolení odemknutí pomocí biometrie došlo k chybě. Zkuste to prosím znovu později.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Nepodařilo se povolit odemknutí pomocí biometrie.";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "Chcete k odemknutí peněženky Brave použít %@ ?";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "Odemkněte peněženku Brave pomocí %@";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
+
+/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Poplatek Brave: %@";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "Nabídka zahrnuje poplatek Brave ve výši %@.";
+
+/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+"wallet.braveSwapFree" = "Zdarma";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Koupit";
+
+/* The description of a buy button on the buy/send/swap/deposit modal */
+"wallet.buyDescription" = "Nakupujte kryptoměny pomocí Apple Pay, kreditní nebo debetní karty.";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Datum ";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Cena";
+
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "Nakupujte s nejdůvěryhodnějším jménem v oblasti kryptoměn.";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Údaje o cenách poskytované službou CoinGecko";
+
+/* The title of the 24h volume of this coin from market. */
+"wallet.coinMarket24HVolume" = "Objem za 24 h";
+
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "Zatím nejsou k dispozici žádné informace o trhu";
+
+/* The header title of the section that display coin market information. */
+"wallet.coinMarketInformation" = "Informace";
+
+/* The title of the market cap of this coin from market. */
+"wallet.coinMarketMarketCap" = "Tržní kapitalizace";
+
+/* The title of the rank of this coin from market. */
+"wallet.coinMarketRank" = "Pořadí";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "Podporuje aktiva kompatibilní s EVM na blockchainu Etherea (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "Uložit aktivum FIL";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "Vyberte jeden z následujících typů účtů";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Podporuje aktiva kompatibilní s SLP na blockchainu Solana";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "Unknown";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "Potvrdit";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "Udělením tohoto oprávnění povolujete této aplikaci, aby využila vaše %@ a automatizovala za vás transakce.";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "Povolit této aplikaci, aby využila vaše %@?";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "Současný příspěvek";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "Oprávnění k úpravám";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Detaily";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "Transakce";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "Přidružený účet tokenu zatím neexistuje. Na jeho vytvoření a financování bude vynaložena malá částka SOL.";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "Zažádáno o neomezené schválení";
+
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "Zavřít";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "Transakce byla úspěšně zařazena do bloku. Abyste se vyhnuli riziku dvojího utrácení, doporučujeme vám počkat na potvrzení bloku.";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "Stvrzenka";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "Transakce dokončena";
+
+/* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
+"wallet.confirmPasswordTitle" = "Potvrdit heslo";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "Potvrzení transakcí";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "Confirm Transaction";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Continue";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "Adresa kontraktu";
+
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "Zkopírováno";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Kopírovat adresu";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Klepnutím zkopírujte";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "Vytvořit jeden ihned?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "Nemáte účet %@";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Create Password";
+
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "Toto heslo budete používat při přístupu do vaší peněženky.";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Vytvořit heslo";
+
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "Probíhá vytváření peněženky…";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Peněženka Brave";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Přizpůsobit bránu IPFS pro NFT";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "Přizpůsobit bránu IPFS";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Blokování URL adres průzkumníka";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Neplatný formát — ID řetězce musí být kladné číslo.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Zadejte ID řetězce";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "ID řetězce";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Zadejte název řetězce";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "Název řetězce";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Neplatný formát — desetinná místa měny musí být kladné číslo.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Zadejte desetinná místa měny";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "Desetinná čísla měny řetězce";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Přidat novou síť";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Toto pole nesmí být prázdné.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "URL adresy ikon";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Neplatná adresa.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "Adresy URL protokolu RPC";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Vlastní sítě";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Zadejte název měny";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "Název měny řetězce";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Zadejte symbol měny";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "Symbol měny řetězce";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "Zadejte adresu URL (adresy URL)";
+
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "Zvolte síť";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "Zvolte síť";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Přidat vlastní aktivum";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ chce komunikovat s peněženkou Brave";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "Tato stránka chce interagovat s peněženkou Brave";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Zobrazí se zde DApps, které připojujete k peněžence Brave";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "Připojené DApps";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "General";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "Nastavení %@";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "Tímto se pro %1$d %2$@ odstraní všechna oprávnění k připojení peněženky";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "webové stránky";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "webová stránka";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Vše";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1D";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 den";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1H";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 hodina";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1M";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 měsíc";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3M";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 měsíce";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1W";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 týden";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1Y";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 rok";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "Přesnost na desetinná místa";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Upozornění: Snímek obrazovky vaší zprávy může být zálohován do služby cloudových souborů a může být čitelný jakoukoli aplikací s přístupem k fotografiím. Brave doporučuje, abyste tento snímek obrazovky neukládali a co nejdříve jej smazali.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Povolit";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Odhalit";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Tato decentralizovaná aplikace (DApp) chce přečíst tuto zprávu, aby dokončila vaši žádost";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Dešifrovat požadavek";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "%lld účet Ethereum";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "%lld účet Filecoin";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "%lld sekundární účet Ethereum";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "%lld sekundární účet Filecoin";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "%lld sekundární účet Solana";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "%lld účet Solana";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Smazat";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "Vklad ";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Copy";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.deselectAllButtonTitle" = "Zrušit výběr všech";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Detaily";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
+"wallet.editButtonTitle" = "Edit";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Edit Network";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Upravit plyn";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "Transakce se nemusí šířit do sítě, pokud není vlastní hodnota nonce postupná nebo obsahuje jiné chyby";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Jednou";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Zadejte vlastní hodnotu nonce";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
+"wallet.editPermissionsAllowanceHeader" = "Oprávnění k omezení výdajů umožňuje %@ vybírat a utratit až:";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "Bez omezení";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "Nastavit vlastní částku";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "Navrhovaný příspěvek";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\". */
+"wallet.editPermissionsSetUnlimited" = "Nastavit na neomezený";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "Upravit oprávnění";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Propojit";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Odpojit";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "Zrušit";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Přepnout";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "Důvěra";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "účtů";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "účet";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ připojen/připojeny/připojeno";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Připojení";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "Zkontrolujte prosím své zadávané vstupy a zkuste to znovu.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Zpět ";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Úprava viditelných aktiv";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "Pokračovat prostřednictvím serveru Infura";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave bude používat Infura k vyřešení názvů domén .eth, které jsou ve službě Ethereum Name Service (ENS). Brave skryje vaši IP adresu. Pokud to povolíte, Infura uvidí, že se někdo pokouší navštívit tyto domény .eth, ale nic jiného. Viz <a href=%1$@>%2$ @</a> a <a href=%3$@>%4$ @</a> od Infura.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Povolit podporu služby Ethereum Name Service (ENS) v Brave?";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Pokračujte ve vyhledávání mimo řetězec";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "Tento název domény .eth je uložen mimo řetězec a bude vyřešen bránou třetí strany. Pokud povolíte vyhledání mimo řetězec ENS, brána třetí strany uvidí, že se pokoušíte navštívit doménu .eth. <a href=%1$@>%2$ @</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Povolit vyhledávání podpory služby Ethereum Name Service (ENS) mimo řetězec v Brave?";
+
+/* Button title when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayButton" = "Použít doménu ENS";
+
+/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayDesc" = "Vypadá to, že jste zadali adresu ENS. K vyřešení tohoto požadavku budeme muset použít řešitele třetí strany. Toto pomáhá zajistit, aby ve vaší doméně .eth nedošlo k úniku a že vaše transakce je bezpečná.";
+
+/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayTitle" = "Brave podporuje použití bran mimo řetězec k vyřešení domén .eth.";
+
+/* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
+"wallet.ensOffchainResolveMethodDescription" = "[Zjistit více](%@) o aspektech ochrany soukromí při vyhledávání mimo řetězec ENS.";
+
+/* The title for the options to allow Ethereum Name service domain names offchain. */
+"wallet.ensOffchainResolveMethodTitle" = "Povolit vyhledávání mimo řetězec ENS";
+
+/* The title for the options to resolve Ethereum Name service domain names. */
+"wallet.ensResolveMethodTitle" = "Vyřešte názvy domén služby Ethereum Name Service (ENS)";
+
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "Zadat adresu";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Zadejte částku";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "Povolit biometrii";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "Zadat heslo své peněženky, abyste povolili biometrii pro peněženku (budete o to požádáni pouze jednou)";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "Zadat ID tokenu Coingecko";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "Zadat adresu URL ikony tokenu";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "Zadat ID tokenu";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Zadat název tokenu";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Zadat symbol tokenu";
+
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "Ethereum + řetězce EVM";
+
+/* A button title displayed in a menu to export an account's private key. */
+"wallet.exportButtonTitle" = "Export";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Přidání této sítě se nezdařilo.";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Opakujte pokus.";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Import účtu se nezdařil.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Nepodařilo se odebrat síť.\nZkuste to prosím znovu.";
+
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "Transakce se nezdařila kvůli velkému pohybu ceny. Zvyšte toleranci skluzu, abyste uspěli při větším pohybu ceny.";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "Uložte si chybové hlášení pro budoucí použití.";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "Chybová zpráva";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "Transakce se nezdařila";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "Zobrazit chybu";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "Filecoin";
+
+/* The title of the modal for filtering Portfolio and NFT views. */
+"wallet.filtersAndDisplaySettings" = "Filtry a nastavení zobrazení";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Limit množství plynu";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Aktuální základní poplatek";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Poplatek za palivo";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Vlastní";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "I když to není záruka, těžaři pravděpodobně upřednostňují vaši transakci dříve, pokud zaplatíte vyšší poplatek.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Vysoký";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Nízko";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Optimální";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Poskytnout";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "požaduje veřejný šifrovací klíč vaší peněženky. Pokud s poskytnutím tohoto klíče souhlasíte, bude vám stránka moci posílat šifrované zprávy.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "Váš veřejný šifrovací klíč je vyžadován ze strany DApp";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Žádost o veřejný šifrovací klíč";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "Graf";
+
+/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByAccountsOptionTitle" = "Účty";
+
+/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByDescription" = "Seskupit aktiva podle";
+
+/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNetworksOptionTitle" = "Sítě";
+
+/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNoneOptionTitle" = "Žádné";
+
+/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByTitle" = "Seskupit podle";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "Centrum nápovědy";
+
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "Skrýt podrobnosti";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Skrýt soukromý klíč";
+
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "Aktiva s hodnotou nižší než 0,05 USD";
+
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesTitle" = "Skrýt malé zůstatky";
+
+/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsDescription" = "Skrýt NFT, které nemají žádný zůstatek";
+
+/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsTitle" = "Skrýt, co není vaše";
+
+/* The title of a button that updates the filter to hide tokens with zero balances. */
+"wallet.hideZeroBalances" = "Skrýt tokeny s nulovým zůstatkem";
+
+/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.highToLowSortOption" = "Od nejvyšší k nejnižší hodnotě";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Heslo původu";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Zadejte, vložte nebo naimportujte soubor s řetězcem soukromého klíče nebo JSON.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Sekundární účet můžete vytvořit importováním vašeho soukromého klíče.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "Importovat...";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.importedCryptoAccountsTitle" = "Importované účty";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "Zadejte nebo vložte svůj soukromý klíč.";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Nesprávné heslo";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Info";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "Chybí údaje.";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "Typ funkce: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Nedostatek prostředků";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "Nedostatek prostředků";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "Nedostatek finančních prostředků na plyn";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Nedostatečná likvidita";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "Došlo k vnitřní chybě";
+
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "Nelze navázat spojení s touto stránkou";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "Adresa veřejné brány IPFS pro NFT";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "Adresa veřejné brány IPFS";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "[Zjistit více](%@) o aspektech soukromí brány IPFS.";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "Vyřešit zdroje IPFS";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "Zjistit více ";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "Požadujeme, abyste vzali na vědomí níže uvedené položky";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "Přečetl/a jsem a souhlasím s [podmínkami používání](%@)";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "Než začneme";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "Beru na vědomí, že se jedná o peněženku s vlastní úschovou a že jsem zodpovědný/á za veškeré související finanční prostředky, aktiva nebo účty a za přijetí vhodných opatření k zabezpečení, ochraně a zálohování mé peněženky. Chápu, že Brave nemůže získat přístup k mé peněžence nebo zvrátit transakce mým jménem a že moje obnovovací fráze je JEDINÝ způsob, jak znovu získat přístup v případě ztráty hesla, odcizení zařízení nebo podobných okolností.";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Uzamknout";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "Uzamknout peněženku";
+
+/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.lowToHighSortOption" = "Od nejnižší k nejvyšší hodnotě";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "účtů";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "účet";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Tímto se odstraní veškerá oprávnění k připojení k peněžence pro všechny webové stránky.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Remove";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Odstranit veškerá oprávnění?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Tímto se odstraní veškerá oprávnění k připojení k peněžence pro tuto webovou stránku.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "Připojené účty %@";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Filtrovat připojené DApps";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Odstranit vše";
+
+/* The page title that will display the top 250 tokens from the market via CoinGecko */
+"wallet.marketPageTitle" = "Trh";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Maximální poplatek";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Maximální poplatek za prioritu";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Peněženka Brave";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "Více";
+
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "Vybrat sítě";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Přizpůsobení sítí peněženek";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "ID řetězce již existuje";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "Network Name";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+"wallet.networkNotSupportedForBuyToken" = "Koupě není podporována pro vybranou síť";
+
+/* The title of the section for primary networks in the network selection view. */
+"wallet.networkSelectionPrimaryNetworks" = "Primární sítě";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "Sekundární sítě";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "Zobrazit testovací sítě %@";
+
+/* The title of the section for test networks in the network selection view. */
+"wallet.networkSelectionTestNetworks" = "Testovací sítě";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "Zvolit síť";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "Síťová adresa URL";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "Zadejte nové heslo";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "Zobrazit adresy vašich povolených účtů (povinné)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "Spojujte se pouze s weby, kterým důvěřujete.";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Připojit se k peněžence Brave";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "Propojit";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "Next";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "Shromážděno";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "Blockchain";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "Popis";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "Obrázek není k dispozici";
+
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Přehled";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Vlastněno";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Vlastnosti";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "Odeslat";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "Výše vykreslený obrázek nemusí přesně odpovídat NFT";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "ID tokenu";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "Standard tokenu";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Peněženka Brave může k automatickému zobrazení vašich NFT použít službu třetí strany. Brave bude k poskytnutí této služby sdílet adresy vaší peněženky se společností SimpleHash. Zjistit více.";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Zjistěte více.";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "Ne, děkuji, udělám to ručně";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "Ano, pokračovat";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "Přejete si, aby se vaše tokeny NFT zobrazovaly automaticky?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "Importovat NFT";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "Měla by být poskytnuta platná brána IPFS. Poskytnutá brána bude zkontrolována na schopnost načíst prostředky IPFS.";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "Skryté";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "Zatím zde nejsou žádné skryté NFT.";
+
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "Jste připraveni přidat nějaké? Stačí klepnout na tlačítko níže pro import.";
+
+/* The title of the empty state inside NFT tab. */
+"wallet.nftPageEmptyTitle" = "Zatím tady nejsou žádná NFT.";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
+
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "Nezobrazovat v peněžence";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT bude odebrán z peněženky Brave, ale zůstane v blockchainu. Pokud ho odeberete a pak změníte názor, budete ho muset znovu ručně importovat.";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "Odebrat z peněženky Brave?";
+
+/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
+"wallet.nftsDescription" = "%d NFT";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "Nevyžádané";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "%d NFT";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "Karta NFT";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFT";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "Odkrýt";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "Označit jako vyžádané";
+
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "Zde se budou zobrazovat účty se zůstatkem.";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "Žádné účty";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "Žádná aktiva";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "Nebyly přidány žádné sítě";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "Žádné sekundární účty.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "Žádné transakce";
+
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "Přejít do mého portfolia";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "Vaše peněženka Brave je připravena k použití.";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "Vše je připraveno!";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Další akce peněženky";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "Hesla musí mít alespoň 8 znaků.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Enter password";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "Ověřené heslo se neshoduje";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "Střední";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "Silný";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "Malá";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Vložit";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Limit ceny za plyn (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Cena za plyn (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Limit spropitného na plyn (Gwei)";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "Začněte vkladem nebo nákupem tokenů. Pokud nevidíte tokeny z importovaného účtu, zkontrolujte filtry a nastavení zobrazení. Neznámé tokeny může být nutné přidat jako vlastní prostředky.";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "Nejsou k dispozici žádná aktiva";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portfolio";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Varování: Snímek obrazovky vašeho soukromého klíče se může zálohovat na službu cloudových souborů a může být možné ho přečíst jakoukoli aplikací s přístupem k fotografiím. Brave doporučuje, abyste tento snímek obrazovky neukládali a co nejdříve jej smazali.";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "Poplatek za protokol: %@";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "Koupit pomocí %@";
+
+/* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
+"wallet.providerSelectionScreenTitle" = "Zvolit způsob nákupu";
+
+/* The section header for the list of available purchse methods. */
+"wallet.providerSelectionSectionHeader" = "Vyberte jednu z následujících možností";
+
+/* The title of the button for users to click to select a purchase method. */
+"wallet.purchaseMethodButtonTitle" = "Zvolit způsob nákupu";
+
+/* The description of one of the 'Ramp.Network' provider. */
+"wallet.rampNetworkProviderDescription" = "Nakupujte kryptoměny prostřednictvím karet Visa nebo Mastercard.";
+
+/* The name of one of the on ramp provider. */
+"wallet.rampNetworkProviderName" = "Ramp.Network";
+
+/* The short name of one of the on ramp provider. */
+"wallet.rampNetworkProviderShortName" = "Ramp";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Varování: Snímek obrazovky vaší fráze pro obnovení se může zálohovat na službu cloudových souborů a může být možné ho přečíst jakoukoli aplikací s přístupem k fotografiím. Brave doporučuje, abyste tento snímek obrazovky neukládali a co nejdříve jej smazali.";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Obnovit tržní cenu";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "Odmítnout %d transakce/transakcí";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Odmítnout";
+
+/* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
+"wallet.removeAccountConfirmationMessage" = "Opravdu chcete odstranit „%@“?";
+
+/* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
+"wallet.removeAccountErrorMessage" = "Neplatné heslo";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Ověřte prosím, že se jedná o nové vlastní aktivum, zkontrolujte vaše připojení k internetu a zkuste to znovu.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "Nelze odebrat vlastní token";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Přejmenovat";
+
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "Shoda!";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Zadejte heslo znovu";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Obnovit peněženku";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Obnovit ";
+
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "Mám frázi pro obnovení v délce 24 slov";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "Mám frázi pro obnovení v délce 12 slov";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Nové heslo";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Neplatná fráze pro obnovení";
+
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "Slovo #%d";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Zobrazit frázi pro obnovení";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "Celou frázi pro obnovení můžete vložit do libovolného pole.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Import existující peněženky";
+
+/* The description of one of the 'Sardine' provider. */
+"wallet.sardineProviderDescription" = "Okamžitý nákup s vaším bankovním účtem. Nižší poplatky.";
+
+/* The name of one of the on ramp provider. */
+"wallet.sardineProviderName" = "Sardine";
+
+/* The short name of one of the on ramp provider. */
+"wallet.sardineProviderShortName" = "Sardine";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Uložit";
+
+/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
+"wallet.saveChangesButtonTitle" = "Uložit změny";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "Naskenovat QR kód";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Snímek obrazovky byl detekován";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Search";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Vyhledávání aktiv";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Importujte svůj účet externí peněženky pomocí samostatné fráze seed.";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "Zjištěno bezpečnostní riziko";
+
+/* The title used in the row opening DApp settings in Account Details. */
+"wallet.securityTitle" = "Zabezpečení";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "Zobrazit podrobné informace";
+
+/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsDescription" = "Vyberte účty, podle kterých chcete filtrovat";
+
+/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsTitle" = "Vybrat účty";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Zvolit účet";
+
+/* The title of a button that Selects all visible options. */
+"wallet.selectAllButtonTitle" = "Vybrat vše";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Vybraný účet";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Vybraná síť";
+
+/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksDescription" = "Vyberte sítě, podle kterých chcete filtrovat";
+
+/* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksTitle" = "Vybrat sítě";
+
+/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
+"wallet.selectTokenToSendNoTokens" = "Nejsou k dispozici žádné tokeny";
+
+/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
+"wallet.selectTokenToSendTitle" = "Vyberte token, který chcete odeslat";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Odeslat";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Zadejte množství %@, které chcete odeslat";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "From";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Odeslat";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "V současné době nemůžeme pokračovat ve vaší transakci";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "To";
+
+/* The description of a send button on the buy/send/swap/deposit modal */
+"wallet.sendDescription" = "Posílejte kryptoměny nebo je převádějte z jednoho účtu na druhý.";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
+"wallet.sendErrorDomainNotRegistered" = "Doména nemá propojenou adresu %@";
+
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "Neplatná adresa příjemce";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "Zadat adresu";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "Adresa neprošla ověřením (neplatný kontrolní součet). Prosím, zkuste to znovu a nahraďte malá písmena vělkými.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "Příjmová adresa je smluvní adresa tokenu";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "Příjmová adresa je vaše vlastní adresa";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "Tuto adresu nelze ověřit (chybí kontrolní součet). Chcete pokračovat?";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Neplatná adresa ETH";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "Neplatná adresa SOL";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "Odesláno";
+
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "Nastavit";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Nastavení ";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "Výchozí základní měna";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "Zapněte, pokud chcete odemknout svou peněženku pomocí biometrie (Face ID/Touch ID)";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "Povolit odemknutí pomocí biometrie";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Sítě";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "Resetujte a vymažte data peněženky";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Reset";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Tuto možnost většinou používají vývojáři provozující místní testovací server";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Opravdu chcete resetovat transakci a informace nonce?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Vymazat transakci a informace nonce";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Obnovit peněženku";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Tuto akci nelze vrátit. Vaše fráze pro obnovení je jediný způsob, jak znovu získat přístup k účtu se svými kryptoaktivy.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "Opravdu chcete resetovat peněženku Brave?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Vítejte";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Get Started";
+
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "Začněte s peněženkou Brave během několika minut.";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "Potřebujete novou peněženku?";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave a logo Brave jsou registrované ochranné známky společnosti Brave. Ostatní názvy produktů a loga mohou být ochrannými známkami příslušných společností. Všechna práva vyhrazena.";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "Importujte svou stávající peněženku.";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "Už máte peněženku?";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Převezměte kontrolu nad svými kryptoměnami a NFT. Peněženka Brave podporuje Ethereum, řetězce EVM, Solana a další.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Nativní prohlížeč.\nVlastní úschova.\nA více řetězců.";
+
+/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoDescription" = "Zobrazit logo sítě na NFT";
+
+/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoTitle" = "Logo sítě";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Zobrazit soukromý klíč";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "Zobrazit testovací sítě";
+
+/* The title of a button that updates the filter to show tokens with zero balances. */
+"wallet.showZeroBalances" = "Zobrazit nulové zůstatky";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "Podepsat";
+
+/* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
+"wallet.signAllTransactionsTitle" = "Podepsat všechny transakce";
+
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "Doména:";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "Zpráva:";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "Je vyžadován váš podpis";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "Požádáno o podpis";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "Transakce byla podepsána a bude odeslána do sítě pomocí dapps. Čeká na potvrzení.";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "Transakce podepsána";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Přihlásit se peněženkou Brave Wallet";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "Přihlašujete se do %1$@. Peněženka Brave bude sdílet adresu vaší peněženky s %2$@.";
+
+/* A warning message to tell users that the sign request message contains consecutive new-line characters. */
+"wallet.signMessageConsecutiveNewlineWarning" = "Byly zjištěny po sobě jdoucí znaky nového řádku!";
+
+/* A warning message to tell users that the sign request message contains non-ascii characters. */
+"wallet.signMessageRequestUnknownUnicodeWarning" = "Zjištěny jiné znaky než ASCII!";
+
+/* The title of the button that users can click to display the sign request message as its original content. */
+"wallet.signMessageShowOriginalMessage" = "Zobrazit původní zprávu";
+
+/* The title of the button that users can click to display the sign request message in ASCII encoding. */
+"wallet.signMessageShowUnknownUnicode" = "Zobrazit zakódovanou zprávu";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "Podepisujete na vlastní nebezpečí";
+
+/* The title of the view shown over a dapps website that requests the user sign a transaction. */
+"wallet.signTransactionTitle" = "Podepsat transakci";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "Adresa";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "Chain ID";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "Detaily";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "Čas vypršení platnosti";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "Vydáno dne";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "Zpráva";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "Jednou";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "Původ";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "Zdroje";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "Přihlásit se";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "Výpis";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "Verze";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Přeskočit";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "Pokračovat s použitím serveru SNS";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Brave použije k vyřešení názvů domén .sol třetí strany. Brave skryje vaši IP adresu. Pokud to povolíte, třetí strana uvidí, že se někdo pokouší navštívit tyto domény .sol, ale nic jiného. Další informace o tom, které třetí strany používáme, a o jejich zásadách ochrany osobních údajů naleznete na naší <a href=%@>stránce nápovědy</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Povolit podporu služby Solana Name Service (SNS) v Brave?";
+
+/* A description of an Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "Solana + řetězce SVM";
+
+/* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAdvanceNonceAccountInstructionName" = "Přejít na účet Nonce";
+
+/* The title displayed above the System Program Allocate instruction type for Solana Instruction details. */
+"wallet.solanaAllocateInstructionName" = "Přidělit";
+
+/* The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAllocateWithSeedInstructionName" = "Přidělit se Seedem";
+
+/* The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\" */
+"wallet.solanaAmount" = "Částka ";
+
+/* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
+"wallet.solanaApproveCheckedInstructionName" = "Schválení zkontrolováno";
+
+/* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
+"wallet.solanaApproveInstructionName" = "Schválit";
+
+/* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
+"wallet.solanaAssignInstructionName" = "Přidělit";
+
+/* The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAssignWithSeedInstructionName" = "Přiřadit se Seedem";
+
+/* The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAuthorizeNonceAccountInstructionName" = "Autorizovat účet Nonce";
+
+/* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
+"wallet.solanaBurnCheckedInstructionName" = "Vypálení zkontrolováno";
+
+/* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
+"wallet.solanaBurnInstructionName" = "Vypálit";
+
+/* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
+"wallet.solanaCloseAccountInstructionName" = "Zavřít účet";
+
+/* The title displayed above the System Program CreateAccount instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountInstructionName" = "Vytvořit účet";
+
+/* The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountWithSeedInstructionName" = "Vytvořit účet se Seedem";
+
+/* The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaDappTransactionTitle" = "Schválit transakci";
+
+/* The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details. */
+"wallet.solanaFreezeAccountInstructionName" = "Zmrazit účet";
+
+/* The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount2InstructionName" = "Inicializace účtu 2";
+
+/* The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount3InstructionName" = "Inicializace účtu 3";
+
+/* The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccountInstructionName" = "Inicializace účtu";
+
+/* The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMint2InstructionName" = "Inicializace Mint 2";
+
+/* The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMintInstructionName" = "Inicializace Mint";
+
+/* The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisig2InstructionName" = "Inicializace Multisig 2";
+
+/* The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisigInstructionName" = "Inicializace Multisig";
+
+/* The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeNonceAccountInstructionName" = "Inicializace účtu Nonce";
+
+/* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
+"wallet.solanaInstructionAccounts" = "Účty";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "Účet tabulky pro vyhledávání adres";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "Index tabulky pro vyhledávání adres";
+
+/* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
+"wallet.solanaInstructionData" = "Data";
+
+/* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\" */
+"wallet.solanaInstructionProgramId" = "ID programu";
+
+/* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
+"wallet.solanaMintToCheckedInstructionName" = "Mint ke zkontrolování";
+
+/* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
+"wallet.solanaMintToInstructionName" = "Mint na";
+
+/* The title displayed above the Token Program Revoke instruction type for Solana Instruction details. */
+"wallet.solanaRevokeInstructionName" = "Zrušit";
+
+/* The title displayed above the Token Program Set Authority instruction type for Solana Instruction details. */
+"wallet.solanaSetAuthorityInstructionName" = "Nastavit autoritu";
+
+/* The title on top of a separater, and the transaction details will be displayed below the separater. */
+"wallet.solanaSignTransactionDetails" = "Detaily";
+
+/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "Upozorňujeme, že služba Brave nemůže ověřit, co se stane, pokud z vaší strany dojde k podpisu. Podpis může autorizovat téměř jakoukoli operaci na vašem účtu nebo vaším jménem, (mimo jiné) včetně předání úplné kontroly nad vaším účtem a kryptoaktivy tomu, kdo o to žádá. Podepište se tedy pouze tehdy, pokud jste si jisti, že tuto akci chcete provést, a pokud důvěřujete webu, který o to žádá.";
+
+/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaSwapTransactionTitle" = "Transakce výměny";
+
+/* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
+"wallet.solanaSyncNativeInstructionName" = "Nativní synchronizace";
+
+/* The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\" */
+"wallet.solanaSystemProgramName" = "Systémový program – %@";
+
+/* The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details. */
+"wallet.solanaThawAccountInstructionName" = "Rozmrazit účet";
+
+/* The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\" */
+"wallet.solanaTokenProgramName" = "Program tokenu –⁠⁠⁠⁠⁠⁠ %@";
+
+/* The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details. */
+"wallet.solanaTransferCheckedInstructionName" = "Převod zkontrolován";
+
+/* The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details. */
+"wallet.solanaTransferInstructionName" = "Transfer";
+
+/* The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaTransferWithSeedInstructionName" = "Přenos se Seedem";
+
+/* The title displayed above an unknown instruction type for Solana Instruction details. */
+"wallet.solanaUnknownInstructionName" = "Neznámý typ instrukce";
+
+/* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaUpgradeNonceAccountInstructionName" = "Upgradovat účet Nonce";
+
+/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsDescription" = "Třídění podle hodnoty nebo názvu";
+
+/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsTitle" = "Seřadit aktiva";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "Platba kreditní kartou, debetní kartou, bankovním účtem.";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ od %2$@";
+
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "Transakce byla úspěšně odeslána do sítě a čeká na potvrzení.";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "Transakce odeslána";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Vyměnit";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "na %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "Poplatek sítě";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "Potvrdit objednávku";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "Dostanete";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "Utrácíte";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "Příjem částky v %@ (odhad)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Zadejte částku v %@, kterou chcete vyměnit";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "From";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "Tržní cena v %@";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Tolerance skluzu";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Vyměnit";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "To";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "Brave momentálně nepodporuje výměnu na %@. Přepněte prosím na podporovaný řetězec.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Nepodporovaný řetěz";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.swapDescription" = "Výměna tokenů a aktiv.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@ zpracuje adresu %2$@ a IP adresu pro splnění transakce (včetně získání nabídek). %3$@ použije tyto údaje POUZE pro účely zpracování transakcí.";
+
+/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave používá %@ jako agregátor DEX.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "Limit";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Trh";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Typ objednávky";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Vyměňte vybrané tokeny";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "Přepnout";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "Tímto se síť přepne na dříve již přidanou síť";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "Chcete této stránce povolit přepínání sítě?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "Přepnout síť";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "Dnes";
+
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "Adresa tokenu";
+
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "Adresa mincovny (Mint)";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Název žetonu";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Symbol žetonu";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Celkem ";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "Celkový zůstatek";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Approved";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "Schváleno %1$@ %2$@";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "Vymazat a nahradit nedokončenou/nedokončené transakci/transakce";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "Prozatím není nutná žádná dodatečná akce. Jen počkejte, až se nepotvrzené transakce vymažou.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Pokoušíte se zahájit novou transakci, zatímco jste již dříve odeslali transakce, které nebyly potvrzeny. Toto zablokuje odeslání nových.";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "Nevyřízená transakce";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld z %2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "Datum ";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "Tržní cena";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "Síť";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "Status";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "Podrobnosti o transakci";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "Hash transakce";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "Poplatek za transakci";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "Transaction Fee";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "Odesílatel: %1$@. Příjemce: %2$@";
+
+/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
+"wallet.transactionsDescription" = "%d transakce/transakcí";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "Odesláno %1$@ %2$@ (%3$@)";
+
+/* The description of the transactions row in Account Details when user has 1 Transaction. */
+"wallet.transactionsSingularDescription" = "%d transakce";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Approved";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Potvrzeno";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Dropped";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Chyba";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Rejected";
+
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "Signed";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Submitted";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Unapproved";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Unknown";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "Transakce ";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Poplatek: %1$@ %2$@ (%3$@)";
+
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ od";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Výměna kryptoměny Solana";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Vyměnit";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "%1$@ %2$@ vyměněno na %3$@ %4$@";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Schválit";
+
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "Odeslat %@";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "Okamžitý nákup s vaším bankovním účtem. Nižší poplatky.";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
+
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave bude používat Infura k vyřešení názvů domén .crypto (a také %1$@), které jsou na Unstoppable Domains. Brave skryje vaši IP adresu. Pokud to povolíte, Infura uvidí, že se někdo pokouší navštívit tyto domény, ale nic jiného. Viz <a href=%2$@>%3$@</a> a <a href=%4$@>%5$@</a> platformy Infura.";
+
+/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Chcete povolit podporu služby Unstoppable Domains v prohlížeči Brave?";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "[Zjistit více](%@) o aspektech ochrany soukromí Unstoppable Domains.";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Vyřešit názvy domén Unstoppable Domains";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Neznámá chyba";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Odemknout peněženku";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Odemknout";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "Zadejte heslo pro odemknutí peněženky";
+
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%1$@ na %2$@";
+
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "Fráze pro obnovení se neshoduje.";
+
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "Zadejte slovo do **umístění %d** z vaší fráze pro obnovení.";
+
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "Pojďme to zkontrolovat";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "Zobrazit podrobnosti ";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "Podrobnosti o síti";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Zobrazení v průzkumníku bloků ";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "Zobrazit moji frázi pro obnovení";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Peněženka";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Otevřete peněženku na celé obrazovce";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "Zablokováno";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Propojit";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Připojeno";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "Odpojeno";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "Pomocí tohoto panelu můžete bezpečně přistupovat k webu3 a všem svým krypto aktivům.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "Nastavení peněženky";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+"wallet.walletTypeNone" = "Žádné";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "Jste si jistí?";
+
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "Deaktivovat";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "zásady ochrany osobních údajů";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "podmínky použití";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionAsk" = "Zeptat se";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionDisabled" = "Zakázáno";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionEnabled" = "Aktivní";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Domény web3";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "Vyřešit názvy domén služby Solana Name Service (SNS)";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) je veřejná síť pro ukládání a předávání dat formou peer-to-peer. Tento protokol má odlišné aspekty soukromí než HTTP(S). <a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Chrání vaši IP adresu a obsah, o který žádáte, před potenciálními pozorovateli z třetích stran, nikoli však před operátorem veřejné brány. Provozovatel brány je odpovědný za zajištění toho, že obsah, který vám bude poskytován prostřednictvím brány, je obsah, který jste požadovali. Váš počítač také nepřispívá do veřejné sítě IPFS.";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "Nastavte svou preferenci IPFS";
+
+/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "Použít veřejnou bránu";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "Stránky mohou požádat o přístup k vaší peněžence Ethereum";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "Stránky mohou požádat o přístup k vaší peněžence Solana";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Výchozí peněženka Ethereum";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Výchozí peněženka Solana";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Zobrazit oznámení Web3";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Správa připojení ke stránkám";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Předvolby Web3";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "Povolit zjišťování NFT";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Automaticky přidávat NFT, které vlastníte, do peněženky pomocí API třetích stran. [Zjistit více](%@)";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "Byla zadána neplatná adresa URL. Brána by měla být schopna vyřešit prostředky IPFS.";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "Nepodařilo se nastavit bránu";
+
+/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
+"wallet.zToASortOption" = "Od Z po A";
+

@@ -181,6 +181,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "이 단계를 지금 건너뛰어도 되지만 계정을 안전하게 보호하려면 꼭 복구 문구를 백업하세요.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "지금 백업";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "월렛 백업";
 
@@ -552,6 +555,18 @@
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "삭제";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "입금";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "복사";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "자산 입금";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "이더리움 네트워크 및 %@ 등의 레벨 2 네트워크를 지원하는 이더리움 월렛임";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "모두 선택 취소";

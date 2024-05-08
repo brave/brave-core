@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Σελιδοδείκτες";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Λήψεις";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Αποκτήστε γρήγορα πρόσβαση στους αγαπημένους σας ιστότοπους.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Αγαπημένα";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Ιστορικό";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Δοκιμάστε ξανά αργότερα";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Διαβάστε περισσότερα";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Λήψη των τελευταίων ειδήσεων";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Κορυφαίες ειδήσεις";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Ανοίξτε το Brave για να δείτε τα αγαπημένα σας εδώ";
+
+/* QR Code section title */
+"widgets.QRCode" = "Κωδικός QR";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Αναζήτηση";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Μια σύνοψη του τρόπου με τον οποίο η Brave σάς εξοικονομεί χρόνο και σας προστατεύει online.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Στατιστικά απορρήτου";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Στατιστικά απορρήτου";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Αναζήτηση ή πληκτρολόγηση διεύθυνσης URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Νέα καρτέλα";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Λίστα αναπαραγωγής";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Ιδιωτική καρτέλα";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Αποκτήστε γρήγορα πρόσβαση για αναζήτηση στον ιστό ή άνοιγμα ιστοσελίδων στο Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Συντομεύσεις";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Μια σύνοψη του τρόπου με τον οποίο η Brave σάς προστάτευσε online.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Στατιστικό απορρήτου";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Πορτοφόλι Brave";
+

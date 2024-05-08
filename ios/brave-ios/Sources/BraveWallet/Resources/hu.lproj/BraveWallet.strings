@@ -1,0 +1,2100 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "Biztonsági mentés";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "Adja meg a fiók nevét";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "Fióknév";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "Fiókadatok";
+
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "A fióknév legfeljebb 30 karakter hosszú lehet";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "Privát kulcs";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "Figyelmeztetés: Senkivel ne ossza meg a privát kulcsot. A privát kulcs birtokában bárki örökre eltulajdoníthatja az eszközeit.";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "Eltávolítja ezt a fiókot?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "Fiók eltávolítása";
+
+/* The description used below Security title in the row opening DApp settings in Account Details. */
+"wallet.accountSecurityDescription" = "Kapcsolt webhelyek és juttatások";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "Fiókok";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "Token aktiválása %@";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "Amint megtörténik a tranzakció, itt tudja megtekinteni.";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "Még nincsenek megtekinthető tranzakciók";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "Tevékenység";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "Hozzáadás";
+
+/* The title of the add account screen. */
+"wallet.addAccountTitle" = "Számla hozzáadása";
+
+/* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
+"wallet.addAccountWithCoinTypeTitle" = "%@-fiók hozzáadása";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "Egyéni eszköz hozzáadása";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Hálózat hozzáadása";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Hálózat hozzáadása…";
+
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "Speciális";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "Coingecko-azonosító";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "Sikertelen az egyéni token hozzáadása, próbálja újra.";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "Nem lehet hozzáadni az egyéni tokent";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "Ikon URL-je";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "Tokenazonosító (csak az ERC721-hez)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "Token";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "Ez engedélyezi, hogy ezt a hálózatot használni lehessen a Brave pénztárcán belül.";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "Engedélyezi, hogy ez az oldal hálózatot adjon hozzá?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "Hálózat hozzáadása";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "Szeretné importálni ezt a tokent?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "Javasolt token hozzáadása";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Speciális beállítások";
+
+/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allAccountsLabel" = "Összes fiók";
+
+/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allNetworksLabel" = "Minden hálózat";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "Összeg + díj";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "Összeg + gáz";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "Összeg %@ pénznemben";
+
+/* The title of the button to approve adding a new network on a add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "Jóváhagyás";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "Ár %1$@ pénznemben (%2$@)";
+
+/* The description of the assets row in Account Details when user has zero or multiple Assets. */
+"wallet.assetsDescription" = "%d eszköz";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "Nem találhatók eszközök";
+
+/* The description of the assets row in Account Details when user has 1 Asset. */
+"wallet.assetsSingularDescription" = "%d eszköz";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "Eszközök";
+
+/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
+"wallet.aToZSortOption" = "A-tól Z-ig";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "A Rainbow Bridge egy független szolgáltatás, amely segít az eszközök hálózatok közötti áthidalásában, valamint a kriptovaluták más hálózatokon és DApp-ökoszisztémákban történő használatában. Az eszközök más hálózatokhoz való áthidalása bizonyos kockázatokkal jár.";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "Megnyitja a Rainbow Bridge alkalmazást?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "Áthidalás Aurorához";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "További tudnivalók a Rainbow Bridge használatáról";
+
+/* A text link for user to click inside the custom alert, It will redirect user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "Ismerje meg, hogyan csökkentheti a kockázatot a Rainbow Bridge-en";
+
+/* A text button for user to click so this pop up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "Ne mutassa többé";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "Ennyi percbe telik, amíg a Brave Wallet automatikusan zárolva lesz.";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "Automatikus zárolási idő: ";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "Helyreállítási kifejezés";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "A helyreállítási kifejezés a kulcs a pénztárcájához való hozzáféréshez, ha elfelejti jelszavát vagy elveszíti eszközét.\n\nTartsa biztonságos helyen, amelyhez mások nem férhetnek hozzá, és ne ossza meg másokkal.";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "Helyreállítási kifejezés mentése";
+
+/* The title of the button that user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "Később végzem el a biztonsági mentést";
+
+/* The sub-title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "Fiókja biztonságának megőrzése érdekében mindenképpen készítsen biztonsági másolatot a helyreállítási kifejezésről.";
+
+/* The title on the pop up when user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "Ezt a lépést most kihagyhatja, de a fiók biztonsága érdekében továbbra is biztonsági másolatot kell készítenie a helyreállítási kifejezésről.";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "Pénztárca biztonsági mentése";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "Megértettem, hogy ha elvesztem a helyreállítási kifejezést, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.";
+
+/* The placeholder for the password entry field when a user tries to backup their wallet. */
+"wallet.backupWalletPasswordPlaceholder" = "Adja meg a jelszót a pénztárca biztonsági mentéséhez";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "A következő lépésben egy 12 szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a fiókjaihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "Végezzen biztonsági mentést a kriptotárcájáról";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "Készítsen biztonsági mentést a tárcájáról, hogy megvédje a kriptoeszközeit, és biztosítsa, hogy ne veszítse el azokhoz a hozzáférést.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "Egyenlegek";
+
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "%@ használata";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "Hiba történt a biometrikus feloldás engedélyezése közben. Kérjük, próbálja újra később.";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "Nem sikerült engedélyezni a biometrikus feloldást.";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "Face ID";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "Szeretné használni a(z) %@ szolgáltatást a Brave-pénztárca feloldásához?";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "A Brave-pénztárca feloldása a(z) %@ segítségével";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "Touch ID";
+
+/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Brave-díj: %@";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+"wallet.braveSwapFeeDisclaimer" = "Az árajánlat tartalmazza a Brave %@ -os díját.";
+
+/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+"wallet.braveSwapFree" = "Ingyenes";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "Vétel";
+
+/* The description of a buy button on the buy/send/swap/deposit modal */
+"wallet.buyDescription" = "Várásolj kriptót az Apple Pay-jel, hitel- vagy betéti kártyával.";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "Dátum";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "Ár";
+
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "Vásároljon a kriptopiac legmegbízhatóbb szolgáltatójával.";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "Az áradatokat a CoinGecko biztosítja";
+
+/* The title of the 24h volume of this coin from market. */
+"wallet.coinMarket24HVolume" = "24 órás forgalom";
+
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "Még nem állnak rendelkezésre piaci információk";
+
+/* The header title of the section that display coin market information. */
+"wallet.coinMarketInformation" = "Információ";
+
+/* The title of the market cap of this coin from market. */
+"wallet.coinMarketMarketCap" = "Piaci tőkeérték";
+
+/* The title of the rank of this coin from market. */
+"wallet.coinMarketRank" = "Rang";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "Támogatja az Ethereum blokklánc EVM-kompatibilis eszközeit (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "FIL-eszköz tárolása";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "Válasszon az alábbi fióktípusok közül";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "Támogatja a Solana blokklánc SPL-kompatibilis eszközeit";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "Ismeretlen";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "Megerősítés ";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "Az engedély megadásával lehetővé teszi, hogy az alkalmazás %@-t vonjon le, és automatizálja a tranzakciókat.";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "Engedélyezi ennek az alkalmazásnak, hogy %@-t költsön?";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "Jelenlegi keret";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "Engedélyek szerkesztése";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "Részletek";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "Tranzakció";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL összeg lesz felhasználva.";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "Korlátlan jóváhagyás igényelve";
+
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "Bezárás";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "A tranzakció sikeresen bekerült egy blokkba. A dupla költés kockázatának elkerülése érdekében javasoljuk, hogy várja meg a blokk megerősítését.";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "Elismervény";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "A tranzakció befejeződött";
+
+/* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
+"wallet.confirmPasswordTitle" = "Jelszó megerősítése";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "Tranzakciók megerősítése";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "Tranzakció megerősítése";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "Folytatás";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "Szerződés címe";
+
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "Másolt";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "Cím másolása";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "Koppintson a másoláshoz";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "Létrehoz egyet most?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "Nincs %@-fiókja";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "Jelszó létrehozása";
+
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "Ezzel a jelszóval férhet hozzá a pénztárcájához.";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "Jelszó létrehozása";
+
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "Pénztárca létrehozása...";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Brave Wallet";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Az IPFS-átjáró testreszabása NFT-khez";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "Az IPFS-átjáró testreszabása";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Block explorer URL-ek";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Érvénytelen formátum – a láncazonosítónak pozitív számnak kell lennie.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Írja be a lánc azonosítóját";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "A lánc azonosítója";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Írja be a láncolat nevét";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "A lánc neve";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Érvénytelen formátum – a pénznem tizedesjegyének pozitív számnak kell lennie.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Adja meg a pénznem tizedesjegyeit";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "A láncolat pénznemének tizedesjegyei";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Új hálózat hozzáadása";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Ez a mező nem lehet üres.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "Ikon URL-ek";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Érvénytelen cím.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC URL-ek";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Egyéni hálózatok";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Írja be a pénznem nevét";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "A láncolat pénznemének neve";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Adja meg a pénznem jelét";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "A láncolat pénznemének jele";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "URL-cím(ek) megadása";
+
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "Hálózat kiválasztása";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "Hálózat kiválasztása";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "Egyéni eszköz hozzáadása";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "A(z) %@ kapcsolatba szeretne lépni a Brave-pénztárcával";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "Az oldal szeretne kapcsolatba lépni a Brave pénztárcával";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "A Brave-pénztárcához csatlakoztatott DApp-ek itt jelennek meg";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "Csatlakoztatott DApp-ek";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "Általános";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "%@-beállítások";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "Ezzel eltávolítja az összes Pénztárca-kapcsolati engedélyt a következőtől: %1$d %2$@";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "webhelyek";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "webhely";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "Mind";
+
+/* An abbreivated form of \"1 Day\" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1N";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 nap";
+
+/* An abbreivated form of \"1 Hour\" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1H";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 óra";
+
+/* An abbreivated form of \"1 Month\" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1HÓ";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 hónap";
+
+/* An abbreivated form of \"3 Months\" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3HÓ";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 hónap";
+
+/* An abbreivated form of \"1 Week\" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1H";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 hét";
+
+/* An abbreivated form of \"1 Year\" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1É";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 év";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "A pontosság tizedesjegyei";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "Figyelmeztetés: Előfordulhat, hogy az üzenet képernyőképéről biztonsági másolat készül egy felhőalapú fájlszolgáltatásba, és bármely, fényképekhez hozzáféréssel rendelkező alkalmazás számára olvasható lesz. A Brave azt javasolja, hogy ne mentse el ezt a képernyőképet, és törölje a lehető leghamarabb.";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "Engedélyezés";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "Felfedés";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "Ez a DApp el szeretné olvasni az üzenetet a kérelem befejezéséhez";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "Kérés visszafejtése";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
+"wallet.defaultEthAccountName" = "Ethereum-fiók %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
+"wallet.defaultFilAccountName" = "Filecoin-számla %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
+"wallet.defaultSecondaryEthAccountName" = "Másodlagos Ethereum-fiók %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
+"wallet.defaultSecondaryFilAccountName" = "Másodlagos Filecoin-számla %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
+"wallet.defaultSecondarySolAccountName" = "Másodlagos Solana-fiók %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
+"wallet.defaultSolAccountName" = "Solana-fiók %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Törlés";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "Befizetés";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Másolás";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.deselectAllButtonTitle" = "Összes kiválasztás megszüntetése";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "Részletek";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
+"wallet.editButtonTitle" = "Szerkesztés";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Hálózat szerkesztése";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "Üzemanyag szerkesztése";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "A tranzakció nem terjeszthető a hálózatra, ha az egyéni nonce érték nem szekvenciális, vagy egyéb hibákat tartalmaz";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Nonce";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Egyéni nonce-érték megadása";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: \"Spend limit permission allows Account 1 to withdraw and spend up to the following amount:\" */
+"wallet.editPermissionsAllowanceHeader" = "A költési korlát engedélye lehetővé teszi a(z) %@ számára, hogy kivonja és elköltse a következő összeget:";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "Korlátlan";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "Egyéni keret beállítása";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "Javasolt keret";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value \"Unlimited\". */
+"wallet.editPermissionsSetUnlimited" = "Korlátlan mennyiség beállítása";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "Engedélyek szerkesztése";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "Csatlakozás";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "Kapcsolat bontása";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "Visszavonás";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "Kapcsoló";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "Megbízható";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "fiókok";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "fiók";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ csatlakoztatva";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "Kapcsolatok";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "Ellenőrizze a bevitt adatokat, és próbálja újra.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Menj vissza";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "Látható eszközök szerkesztése";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "Folytatás Infura-szerver használatával";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "A Brave az Infurát fogja használni az Ethereum Name Service-en (ENS) található .eth doménnevek feloldására. A Brave elrejti az Ön IP-címét. Ha engedélyezi ezt, az Infura látni fogja, hogy valaki megpróbálja felkeresni ezeket az .eth doméneket, de semmi mást. Lásd: Infura <a href=%1$@>%2$@</a> és <a href=%3$@>%4$@</a> .";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Engedélyezi az Ethereum Name Service (ENS) támogatását a Brave-ben?";
+
+/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Folytatás láncon kívüli kereséssel";
+
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "Ez az .eth doménnév a blokkláncon kívüli tárolóban található, és harmadik féltől származó átjárón keresztül lesz feloldva. Ha engedélyezi az ENS blokkláncon kívüli keresést, a harmadik féltől származó átjáró látni fogja, hogy Ön az .eth domént próbálja felkeresni. <a href=%1$@>%2$@</a> .";
+
+/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Engedélyezi az Ethereum-névszolgáltatások (ENS) láncon kívül keresését a Brave-ben?";
+
+/* Button title when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayButton" = "ENS-domén használata";
+
+/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayDesc" = "Úgy tűnik, ENS-címet adott meg. A kérés feloldásához harmadik féltől származó feloldót kell használnunk. Ez segít biztosítani, hogy az .eth doménje ne szivárogjon ki, és a tranzakció biztonságos legyen.";
+
+/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayTitle" = "A Brave támogatja a blokkláncon kívüli átjárók használatát az .eth domének feloldásához.";
+
+/* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
+"wallet.ensOffchainResolveMethodDescription" = "[További tudnivalók](%@) az ENS láncon kívüli keresés adatvédelmi szempontjairól.";
+
+/* The title for the options to allow Ethereum Name service domain names offchain. */
+"wallet.ensOffchainResolveMethodTitle" = "ENS láncon kívüli keresés engedélyezése";
+
+/* The title for the options to resolve Ethereum Name service domain names. */
+"wallet.ensResolveMethodTitle" = "Az Ethereum Name Service (ENS) doménneveinek feloldása";
+
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "Adja meg a címet";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "Adja meg az összeget";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "Biometria engedélyezése";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "Adja meg a pénztárca jelszavát a pénztárcához használt biometria engedélyezéséhez (ezt csak egyszer kell megadnia)";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "Adja meg a token Coingecko-azonosítóját";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "Adja meg a tokenikon URL-jét";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "Adja meg a tokenazonosítót";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "Adja meg a token nevét";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "Adja meg a tokenszimbólumot";
+
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "Ethereum + EVM-láncok";
+
+/* A button title displayed in a menu to export an account's private key. */
+"wallet.exportButtonTitle" = "Exportálás";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Nem sikerült hozzáadni ezt a hálózatot.";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "Kérjük, próbálja újra!";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "Nem sikerült importálni a fiókot.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Nem sikerült eltávolítani a hálózatot.\nKérjük, próbálja újra.";
+
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "A tranzakció nagy mértékű ármozgás miatt meghiúsult. A nagyobb ármozgás esetén végzett tranzakciók sikere érdekében állítson be nagyobb csúszási toleranciát.";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "Jövőbeni hivatkozás céljából őrizze meg a hibaüzenetet.";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "Hibaüzenet";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "Sikertelen tranzakció";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "Hiba megtekintése";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "Filecoin";
+
+/* The title of the modal for filtering Portfolio and NFT views. */
+"wallet.filtersAndDisplaySettings" = "Szűrők és megjelenítési beállítások";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "Gas mennyiségi korlátja";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "Jelenlegi alapdíj";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "Gáz ára";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "Egyéni";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "Magas";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "Alacsony";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "Optimális";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "Megadás";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "pénztárcája nyilvános titkosítási kulcsát kéri. Ha hozzájárul a kulcs megadásához, a webhely titkosított üzeneteket fog tudni írni Önnek.";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "Egy DApp az Ön nyilvános titkosítási kulcsát kéri";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "Nyilvános titkosítási kulcs kérése";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "Grafikon";
+
+/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByAccountsOptionTitle" = "Fiókok";
+
+/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByDescription" = "Eszközök csoportosítási szempontja";
+
+/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNetworksOptionTitle" = "Hálózatok";
+
+/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNoneOptionTitle" = "Nincs";
+
+/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByTitle" = "Csoportosítási szempont";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "Súgó";
+
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "Részletek elrejtése";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "Privát kulcs elrejtése";
+
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "0,05 USD-nél kisebb értékű eszközök";
+
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesTitle" = "Alacsony egyenlegek elrejtése";
+
+/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsDescription" = "Az egyenleg nélküli NFT-k elrejtése";
+
+/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsTitle" = "Nem birtokoltak elrejtése";
+
+/* The title of a button that updates the filter to hide tokens with zero balances. */
+"wallet.hideZeroBalances" = "Nulla egyenlegek elrejtése";
+
+/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.highToLowSortOption" = "Magastól alacsonyig";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "Origin-jelszó";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "Adja meg, másolja be, vagy importálja a privát kulcsfájlját vagy JSON-ját.";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "Létrehozhat egy másodlagos számlát privát kulcsának importálásával.";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "Importálás…";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.importedCryptoAccountsTitle" = "Importált fiókok";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "Írja be vagy illessze be privát kulcsát.";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "Helytelen jelszó";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "Információ";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "Nincs adat.";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "Függvénytípus: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "Nincs fedezet";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "Nincs fedezet";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "Nincs elegendő fedezet a gashez";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "Elégtelen likviditás";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "Belső hiba lépett fel";
+
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "Ez a webhely nem érhető el";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "IPFS nyilvános átjáró címe NFT-hez";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "IPFS nyilvános átjáró címe";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "[További tudnivalók](%@) az IPFS-átjárók adatvédelmi szempontjairól.";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "IPFS-erőforrások feloldása";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "További információ";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "Szükségünk van rá, hogy elfogadja a lenti elemeket";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "Elolvastam és elfogadom a [Használati feltételeket] (%@)";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "Mielőtt belevágunk";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "Zárolás";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "Pénztárca zárolása";
+
+/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.lowToHighSortOption" = "Alacsonytól magasig";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account\" or \"2 accounts\") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will beused in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "fiókok";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "fiók";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Ezzel eltávolítja a Pénztárcához való összes csatlakozási engedélyt az összes webhely esetében.";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Eltávolítás";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "Eltávolítja az összes engedélyt?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Ezzel eltávolítja a Pénztárcához való összes csatlakozási engedélyt az adott webhely esetében.";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "Csatlakoztatott %@-fiókok";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "Csatlakoztatott DApp-ek szűrése";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "Összes eltávolítása";
+
+/* The page title that will display the top 250 tokens from the market via CoinGecko */
+"wallet.marketPageTitle" = "Piac";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "Maximum díj";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "Maximum prioritási díj";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+"wallet.module" = "Brave Wallet";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "Továbbiak";
+
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "Hálózatok kiválasztása";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Pénztárca-hálózatok testreszabása";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "A láncazonosító már létezik";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "Hálózat neve";
+
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+"wallet.networkNotSupportedForBuyToken" = "A vásárlás nem támogatott a kiválasztott hálózatnál";
+
+/* The title of the section for primary networks in the network selection view. */
+"wallet.networkSelectionPrimaryNetworks" = "Elsődleges hálózatok";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "Másodlagos hálózatok";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. \"%@\" will be replaced with the network name such as \"Solana\" or \"Ethereum\" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "%@-teszthálózatok megtekintése";
+
+/* The title of the section for test networks in the network selection view. */
+"wallet.networkSelectionTestNetworks" = "Teszthálózatok";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "Hálózat kiválasztása";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "Hálózat URL-je";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "Adja meg az új jelszót";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "Az engedélyezett fiókok címeinek megtekintése (kötelező)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "Csak olyan webhelyekhez csatlakozzon, amelyekben megbízik.";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "Csatlakoztatás a Brave-pénztárcához";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "Csatlakozás";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "Tovább";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "Összegyűjtött";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "Blokklánc";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "Description";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "A kép nem érhető el";
+
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "Áttekintés";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "Tulajdonos";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "Tulajdonságok";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "Küldés";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "Előfordulhat, hogy a fenti renderelt kép nem egyezik pontosan az NFT-vel";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "Tokenazonosító";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "Tokenszabvány";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "A Brave-pénztárca harmadik féltől származó szolgáltatást is használhat az NFT-k automatikus megjelenítéséhez. A Brave megosztja az Ön pénztárca-címeit a SimpleHash-sel a szolgáltatást nyújtása céljából. Tudjon meg többet.";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Tudj meg többet";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "Köszönöm, nem, manuálisan szeretném csinálni";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "Igen, folytatom";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "Szeretné automatikusan megjeleníteni NFT-it?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFT importálása";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "Érvényes IPFS-átjárót kell megadni. A megadott átjáró IPFS-erőforrásbetöltési képessége ellenőrizve lesz.";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "Rejtett";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "Itt még nincsenek rejtett NFT-k.";
+
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "Készen áll hozzáadni néhányat? Egyszerűen koppintson az alábbi gombra az importáláshoz.";
+
+/* The title of the empty state inside NFT tab. */
+"wallet.nftPageEmptyTitle" = "Itt még nincsenek NFT-k.";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
+
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "Ne jelenjen meg a Pénztárcában";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "Az NFT el lesz távolítva a Brave pénztárcából, de a blokkláncban megmarad. Ha eltávolítja, de később meggondolja magát, ismét manuálisan kell importálnia azt.";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "Eltávolítja a Brave pénztárcából?";
+
+/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
+"wallet.nftsDescription" = "%d NFT";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "Szemét";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "%d NFT";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "NFT-k lap";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFT-k";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "Felfedés";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "Megjelölés nem szemétként";
+
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "Az egyenleggel rendelkező számlák itt fognak megjelenni.";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "Nincsenek számlák";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "Nincsenek eszközök";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "Nincsenek hozzáadva hálózatok";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "Nincsenek másodlagos számlák.";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "Nincsenek tranzakciók";
+
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "Ugrás a saját portfólióra";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "Az ön Brave-pénztárcája használatra kész.";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "Minden készen áll!";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "Egyéb pénztárcaműveletek";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "A jelszónak legalább 8 karakterből kell állnia.";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "Adja meg a jelszót";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "Az ellenőrzött jelszó nem egyezik";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "Közepes";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "Erős";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "Gyenge";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "Beillesztés";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "Gas egységenkénti hatérérték (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "Gázankénti ár (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "Gázankénti határérték (Gwei)";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "A kezdéshez vásároljon vagy helyezzen letétbe tokeneket. Ha egy importált számlán nem jelennek meg a tokenek, ellenőrizze a szűrőket és a megjelenítési beállításokat. Lehet, hogy az ismeretlen tokeneket egyéni eszközökként kell hozzáadni.";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "Nincsenek elérhető eszközök";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "Portfolió";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "Figyelmeztetés: Előfordulhat, hogy a privát kulcs képernyőképéről biztonsági másolat készül egy felhőalapú fájlszolgáltatásba, és bármely, fényképekhez hozzáféréssel rendelkező alkalmazás számára olvasható lesz. A Brave azt javasolja, hogy ne mentse el ezt a képernyőképet, és törölje a lehető leghamarabb.";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "Protokoll díja: %@";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "Vásárlás a következővel: %@";
+
+/* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
+"wallet.providerSelectionScreenTitle" = "Vásárlási mód kiválasztása";
+
+/* The section header for the list of available purchse methods. */
+"wallet.providerSelectionSectionHeader" = "Válasszon az alábbi lehetőségek közül";
+
+/* The title of the button for users to click to select a purchase method. */
+"wallet.purchaseMethodButtonTitle" = "Vásárlási mód kiválasztása";
+
+/* The description of one of the 'Ramp.Network' provider. */
+"wallet.rampNetworkProviderDescription" = "Vásároljon kriptót Visával vagy Mastercarddal.";
+
+/* The name of one of the on ramp provider. */
+"wallet.rampNetworkProviderName" = "Ramp.Network";
+
+/* The short name of one of the on ramp provider. */
+"wallet.rampNetworkProviderShortName" = "Ramp";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Figyelmeztetés: Előfordulhat, hogy a helyreállítási kifejezés képernyőképéről biztonsági másolat készül egy felhőalapú fájlszolgáltatásba, és bármely, fényképekhez hozzáféréssel rendelkező alkalmazás számára olvasható lesz. A Brave azt javasolja, hogy ne mentse el ezt a képernyőképet, és törölje a lehető leghamarabb.";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "Piaci ár frissítése";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "%d tranzakció elutasítása";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "Elutasítás";
+
+/* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
+"wallet.removeAccountConfirmationMessage" = "Biztosan eltávolítja a következőt: „%@”?";
+
+/* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
+"wallet.removeAccountErrorMessage" = "Érvénytelen jelszó";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "Győződjön meg arról, hogy ez egy új egyéni eszköz, ellenőrizze az internetkapcsolatot, és próbálja újra.";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "Az egyéni token nem távolítható el";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "Átnevezés";
+
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "Egyezés!";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "Add meg a jelszót újból";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "Pénztárca visszaállítása";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+"wallet.restoreWalletButtonTitle" = "Helyreállítás";
+
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "24 szavas helyreállítási kifejezésem van";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "12 szavas helyreállítási kifejezésem van";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "Új jelszó";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "Érvénytelen helyreállítási kifejezés";
+
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "%d. szó";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "Helyreállítási kifejezés megjelenítése";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "A teljes helyreállítási kifejezést bármely mezőbe beillesztheti.";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "Meglévő pénztárca importálása";
+
+/* The description of one of the 'Sardine' provider. */
+"wallet.sardineProviderDescription" = "Azonnali vásárlás a bankszámlájáról, alacsonyabb díjakkal.";
+
+/* The name of one of the on ramp provider. */
+"wallet.sardineProviderName" = "Sardine";
+
+/* The short name of one of the on ramp provider. */
+"wallet.sardineProviderShortName" = "Sardine";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Mentés";
+
+/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
+"wallet.saveChangesButtonTitle" = "Módosítások mentése";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "QR-kód beolvasása";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "Képernyőkép észlelve";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "Keresés ";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "Eszközök keresése";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "Importálhatja külső pénztárca-fiókját egy külön kulcsszólánccal.";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "Biztonsági kockázat észlelve";
+
+/* The title used in the row opening DApp settings in Account Details. */
+"wallet.securityTitle" = "Biztonság";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "Részletek megtekintése";
+
+/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsDescription" = "Számlák kiválasztása szűréshez";
+
+/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsTitle" = "Számlák kiválasztása";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "Számla kiválasztása";
+
+/* The title of a button that Selects all visible options. */
+"wallet.selectAllButtonTitle" = "Összes kiválasztása";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "Kiválasztott számla";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "Kiválasztott hálózat";
+
+/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksDescription" = "Hálózatok kiválasztása szűréshez";
+
+/* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksTitle" = "Hálózatok kiválasztása";
+
+/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
+"wallet.selectTokenToSendNoTokens" = "Nincsenek elérhető tokenek";
+
+/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
+"wallet.selectTokenToSendTitle" = "Küldendő token kiválasztása";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "Küldés";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "Adja meg a küldendő %@-mennyiséget";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "Feladó";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "Küldés";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "Jelenleg nem tudjuk folytatni a tranzakciót";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "Erre:";
+
+/* The description of a send button on the buy/send/swap/deposit modal */
+"wallet.sendDescription" = "Küldj kriptót vagy indíts utalást egyik számláról a másikra.";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
+"wallet.sendErrorDomainNotRegistered" = "A doménhez nem kapcsolódik %@-cím";
+
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "Érvénytelen címzett";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "Adja meg a címet";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "A cím nem felelt meg az ellenőrzésen (érvénytelen ellenőrző összeg). A kisbetűket nagybetűkre cserélve próbálja újra.";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "A fogadó cím egy token szerződési címe";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "A fogadó cím az Ön saját címe";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "Ez a cím nem ellenőrizhető (hiányzó ellenőrző összeg). Folytatja?";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "Érvénytelen ETH cím";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "Érvénytelen SOL-cím";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "Elküldve";
+
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "Beállít";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "Beállítások";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "Alapértelmezett alapvaluta";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "Kapcsolja be, ha biometrikus adatokat (Face ID/Touch ID) szeretne használni a pénztárca feloldásához";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "Biometrikus feloldás engedélyezése";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Hálózatok";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "A pénztárcaadatok visszaállítása és törlése";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Visszaállítás";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Ezt a lehetőséget leginkább helyi tesztszervert futtató fejlesztők használják";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Biztosan visszaállítja a tranzakciós és nonce-információkat?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Tranzakciós és nonce-adatok törlése";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "Pénztárca visszaállítása";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "Ez a művelet nem vonható vissza. A helyreállítási kifejezés az egyetlen módja annak, hogy visszaszerezze a fiókhozzáférést a kriptoeszközeihez.";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "Biztosan visszaállítja a Brave-pénztárcát?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "Üdvözöljük";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "Első lépések";
+
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "Kezdje meg a Brave-pénztárca használatát perceken belül.";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "Új pénztárcára van szüksége?";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. A Brave és a Brave embléma a Brave bejegyzett védjegyei. Más terméknevek és emblémák a megfelelő vállalatok védjegyei lehetnek. Minden jog fenntartva.";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "Importálhatja meglévő pénztárcáját.";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "Már rendelkezik pénztárcával?";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "Vegye kezébe az irányítást kriptovalutái és NFT-i felett. A Brave-pénztárca támogatja az Ethereumot, az EVM-láncokat, a Solanát és még sok mást.";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "Böngészőnatív.\nÖnálló letétkezelés.\nTöbbláncos.";
+
+/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoDescription" = "Hálózati logó megjelenítése az NFT-ken";
+
+/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoTitle" = "Hálózati logó";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "Privát kulcs mutatása";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "Teszthálózatok megjelenítése";
+
+/* The title of a button that updates the filter to show tokens with zero balances. */
+"wallet.showZeroBalances" = "Nulla egyenlegek megjelenítése";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "Aláír";
+
+/* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
+"wallet.signAllTransactionsTitle" = "Minden tranzakció aláírása";
+
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "Domén:";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "Üzenet:";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "Szükség van az aláírására";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "Aláírás szükséges";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "A tranzakció aláírása megtörtént. A DApp el fogja küldeni a hálózatra, és megerősítésre vár.";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "Tranzakció aláírva";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Bejelentkezés a Brave pénztárcával";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "A következőbe készül bejelentkezni: %1$@. A Brave-pénztárca meg fogja osztani a pénztárcája címét a következővel: %2$@.";
+
+/* A warning message to tell users that the sign request message contains consecutive new-line characters. */
+"wallet.signMessageConsecutiveNewlineWarning" = "Egymást követő új sor karakterek észlelve!";
+
+/* A warning message to tell users that the sign request message contains non-ascii characters. */
+"wallet.signMessageRequestUnknownUnicodeWarning" = "Nem ASCII-karaktereket észleltünk!";
+
+/* The title of the button that users can click to display the sign request message as its original content. */
+"wallet.signMessageShowOriginalMessage" = "Eredeti üzenet megtekintése";
+
+/* The title of the button that users can click to display the sign request message in ASCII encoding. */
+"wallet.signMessageShowUnknownUnicode" = "Kódolt üzenet megjelenítése";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "Csak a saját felelősségére írjon alá";
+
+/* The title of the view shown over a dapps website that requests the user sign a transaction. */
+"wallet.signTransactionTitle" = "Tranzakció aláírása";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "Cím";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "Lánc azonosítója";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "Részletek";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "Lejárat időpontja";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "Kiállítva:";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "Üzenet";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "Nonce";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "Eredet";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "Erőforrások";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "Bejelentkezés";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "Kimutatás";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "Verzió";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "Kihagyás";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "Folytatás SNS-szerver használatával";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "A Brave külső szolgáltató segítségével fogja feloldani a .sol doménneveket. A Brave elrejti az Ön IP-címét. Ha ezt engedélyezi, a külső fél látni fogja, hogy valaki megpróbálja felkeresni ezeket a .sol doméneket, de mást nem. Az általunk alkalmazott külső szolgáltatókkal, valamint adatvédelmi irányelveikkel kapcsolatos további tudnivalókért látogasson el a <a href=%@>súgóoldalunkra</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Engedélyezi a Solana Name Service (SNS) támogatását a Brave-ben?";
+
+/* A description of an Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "Solana + SVM-láncok";
+
+/* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAdvanceNonceAccountInstructionName" = "Előzetes nonce-számla";
+
+/* The title displayed above the System Program Allocate instruction type for Solana Instruction details. */
+"wallet.solanaAllocateInstructionName" = "Kiosztás";
+
+/* The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAllocateWithSeedInstructionName" = "Kiosztás kulcsszólánccal";
+
+/* The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\" */
+"wallet.solanaAmount" = "Összeg";
+
+/* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
+"wallet.solanaApproveCheckedInstructionName" = "Az ellenőrzöttek jóváhagyása";
+
+/* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
+"wallet.solanaApproveInstructionName" = "Jóváhagyás";
+
+/* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
+"wallet.solanaAssignInstructionName" = "Hozzárendelés";
+
+/* The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAssignWithSeedInstructionName" = "Hozzárendelés kulcsszólánccal";
+
+/* The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAuthorizeNonceAccountInstructionName" = "Nonce-számla engedélyezése";
+
+/* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
+"wallet.solanaBurnCheckedInstructionName" = "Az ellenőrzöttek megsemmisítése";
+
+/* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
+"wallet.solanaBurnInstructionName" = "Égetés";
+
+/* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
+"wallet.solanaCloseAccountInstructionName" = "Számla zárolása";
+
+/* The title displayed above the System Program CreateAccount instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountInstructionName" = "Fiók létrehozása";
+
+/* The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountWithSeedInstructionName" = "Számla létrehozása kulcsszólánccal";
+
+/* The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaDappTransactionTitle" = "Tranzakció jóváhagyása";
+
+/* The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details. */
+"wallet.solanaFreezeAccountInstructionName" = "Számla befagyasztása";
+
+/* The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount2InstructionName" = "2. számla inicializálása";
+
+/* The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount3InstructionName" = "3. számla inicializálása";
+
+/* The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccountInstructionName" = "Számla inicializálása";
+
+/* The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMint2InstructionName" = "2. kiadás inicializálása";
+
+/* The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMintInstructionName" = "Kiadás inicializálása";
+
+/* The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisig2InstructionName" = "2. többaláírós tárca inicializálása";
+
+/* The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisigInstructionName" = "Többaláírós tárca inicializálása";
+
+/* The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeNonceAccountInstructionName" = "Nonce-számla inicializálása";
+
+/* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
+"wallet.solanaInstructionAccounts" = "Fiókok";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Account: B1A2...\" */
+"wallet.solanaInstructionAddressLookupAcc" = "Címkeresési tábla – fiók";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. \"Address Lookup Table Index: 1\" */
+"wallet.solanaInstructionAddressLookupIndex" = "Címkeresési tábla – index";
+
+/* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
+"wallet.solanaInstructionData" = "Adatok";
+
+/* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. \"Program Id: 1111223344aabbccd\" */
+"wallet.solanaInstructionProgramId" = "Programazonosító";
+
+/* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
+"wallet.solanaMintToCheckedInstructionName" = "Ellenőrzöttek kiadása célszámlára";
+
+/* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
+"wallet.solanaMintToInstructionName" = "Kiadás célszámlára";
+
+/* The title displayed above the Token Program Revoke instruction type for Solana Instruction details. */
+"wallet.solanaRevokeInstructionName" = "Visszavonás";
+
+/* The title displayed above the Token Program Set Authority instruction type for Solana Instruction details. */
+"wallet.solanaSetAuthorityInstructionName" = "Hatóság beállítása";
+
+/* The title on top of a separater, and the transaction details will be displayed below the separater. */
+"wallet.solanaSignTransactionDetails" = "Részletek";
+
+/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.";
+
+/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaSwapTransactionTitle" = "Cseretranzakció";
+
+/* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
+"wallet.solanaSyncNativeInstructionName" = "Natív szinkronizálás";
+
+/* The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. \"System Program - Transfer\" */
+"wallet.solanaSystemProgramName" = "Rendszerprogram – %@";
+
+/* The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details. */
+"wallet.solanaThawAccountInstructionName" = "Számla feloldása";
+
+/* The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. \"Token Program - Initialize Mint\" */
+"wallet.solanaTokenProgramName" = "Tokenprogram – %@";
+
+/* The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details. */
+"wallet.solanaTransferCheckedInstructionName" = "Az ellenőrzöttek átutalása";
+
+/* The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details. */
+"wallet.solanaTransferInstructionName" = "Átutalás";
+
+/* The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaTransferWithSeedInstructionName" = "Átutalás kulcsszólánccal";
+
+/* The title displayed above an unknown instruction type for Solana Instruction details. */
+"wallet.solanaUnknownInstructionName" = "Ismeretlen utasítástípus";
+
+/* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaUpgradeNonceAccountInstructionName" = "Nonce-számla fejlesztése";
+
+/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsDescription" = "Rendezés fiat érték vagy név szerint";
+
+/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsTitle" = "Eszközök rendezése";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "Fizethet hitel-vagy bankkártyával, vagy bankszámláról.";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ by %2$@";
+
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "A tranzakció sikeresen el lett küldve a hálózatra, és megerősítésre vár.";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "Tranzakció elküldve";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Swap";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "itt: %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "Hálózati díj";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "Rendelés megerősítése";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "Kapott mennyiség";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "Fizetett mennyiség";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "Beérkezett összeg %@ pénznemben (becsült)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "Adja meg a cserélni kívánt %@-mennyiséget";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "Feladó";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "Piaci ár %@ pénznemben";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "Csúszási tolerancia";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Swap";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "Erre:";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "A Brave jelenleg nem támogatja a cserét a következőn: %@. Kérjük, váltson támogatott láncra.";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "Nem támogatott lánc";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.swapDescription" = "Tokenek és eszközök cseréje.";
+
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "A(z) %1$@ feldolgozza a(z) %2$@-címet és az IP-címet a tranzakciók teljesítéséhez (beleértve az árajánlatok lehívását). A(z) %3$@ KIZÁRÓLAG a tranzakciók feldolgozása céljából használja fel ezeket az adatokat.";
+
+/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "A Brave a(z) %@-t használja DEX-gyűjtőként.";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "Korlátozás";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "Piac";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "Rendelés típusa";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Kiválasztott tokenek cseréje";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "Kapcsoló";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "Ez egy korábban hozzáadott hálózatra fog váltani";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "Engedélyezi, hogy ez az oldal hálózatot váltson?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "Hálózatváltás";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "Ma";
+
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "Token címe";
+
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "Kiadási cím";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "Token neve";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "Tokenszimbólum";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "Összesen";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "Teljes egyenleg";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "Jóváhagyva";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ jóváhagyva";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "A befejezetlen tranzakció(k) törlése és cseréje";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "Egyelőre nincs további teendője. Várjon, amíg a meg nem erősített tranzakciók törlődnek.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Új tranzakciót próbál indítani, miközben korábban olyan tranzakciókat küldött be, amelyek nem lettek megerősítve. Emiatt nem lehetséges újakat beküldeni.";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "Tranzakciós hátralék";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld/%2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "Dátum";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "Piaci ár";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "Hálózat";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "Állapot";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "Tranzakció részletei";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "Tranzakciós hash";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "Tranzakciós összeg";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "Tranzakciós költség";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "A következőtől: %1$@, a következőnek: %2$@";
+
+/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
+"wallet.transactionsDescription" = "%d tranzakció";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "%1$@ %2$@ (%3$@) elküldve";
+
+/* The description of the transactions row in Account Details when user has 1 Transaction. */
+"wallet.transactionsSingularDescription" = "%d tranzakció";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "Jóváhagyva";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "Megerősítve";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "Ejtve";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "Hiba";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "Elutasítva";
+
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "Aláírva";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "Elküldve";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "Jóvá nem hagyott";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "Ismeretlen";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "Tranzakciók";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "Díj: %1$@ %2$@ (%3$@)";
+
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ a következő által:";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solana Swap";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "Csere:";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "%1$@ %2$@ cserélve a következőre: %3$@ %4$@";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "Jóváhagyás";
+
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "%@ elküldve";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "Azonnali vásárlás a bankszámlájáról, alacsonyabb díjakkal.";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
+
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "A Brave az Infurát fogja használni az Unstoppable Domainsen található .crypto (valamint %1$@) doménnevek feloldására. A Brave elrejti az Ön IP-címét. Ha engedélyezi ezt, az Infura látni fogja, hogy valaki megpróbálja felkeresni ezeket az .eth doméneket, de semmi mást. Lásd: Infura <a href=%2$@>%3$@</a> és <a href=%4$@>%5$@</a>.";
+
+/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Engedélyezed az Unstoppable Domains támogatását a Brave-ben?";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "[További tudnivalók](%@) az Unstoppable Domains adatvédelmi szempontjairól.";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Az Unstoppable Domains doménnevek feloldása";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "Ismeretlen hiba";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "Pénztárca zárolásának feloldása";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "Feloldás";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "A tárca feloldásához adja meg a jelszavát";
+
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%1$@ itt: %2$@";
+
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "A helyreállítási kifejezés nem egyezik.";
+
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "Írja be a szót a helyreállítási kifejezés **%d. pozíciójába**.";
+
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "Ellenőrizzük";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "Részletek megtekintése";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "Hálózat részletei";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "Megtekintés block explorerben";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "Saját helyreállítási kifejezés megtekintése";
+
+/* The title shown on the menu to access Brave Wallet */
+"wallet.wallet" = "Pénztárca";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "Pénztárca megnyitása teljes képernyőn";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "Letiltva";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "Csatlakozás";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "Kapcsolódva";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "Nincs kapcsolat";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "A panel segítségével biztonságosan hozzáférhet a web3-hoz és összes kriptoeszközéhez.";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "Pénztárca beállításai";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+"wallet.walletTypeNone" = "Nincs";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "Biztos benne?";
+
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "Kikapcsolás";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "adatvédelmi szabályzat";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "használati feltételek";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionAsk" = "Kérés";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionDisabled" = "Kikapcsolva";
+
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionEnabled" = "Engedélyezve";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Web3-domének";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "A Solana Name Service (SNS) doménneveinek feloldása";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "Az IPFS (InterPlanetary File System) egy társközi adattárolási és -kézbesítési hálózat. Erre a protokollra a HTTP(S)-től eltérő adatvédelmi szempontok vonatkoznak. <a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Megvédi az Ön IP-címét és az Ön által kért tartalmat a potenciális külső megfigyelőktől, de nem a nyilvános átjáró üzemeltetőjétől. Az átjáró üzemeltetője felelős azért, hogy az átjárón keresztül Önnek szolgáltatott tartalom megegyezzen az Ön által kért tartalommal. Az Ön eszköze emellett nem járul hozzá a nyilvános IPFS-hálózathoz.";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "Állítsd be IPFS preferenciádat";
+
+/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "Nyilvános átjáró használata";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "A weboldalak hozzáférést kérhetnek Ethereum pénztárcájához";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "A weboldalak hozzáférést kérhetnek Solana pénztárcájához";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "Alapértelmezett Ethereum pénztárca";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "Alapértelmezett Solana pénztárca";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Web3 értesítések megjelenítése";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "Oldalkapcsolatok kezelése";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Web3-beállítások";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFT-felderítés engedélyezése";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Az Ön által birtokolt NFT-k automatikus hozzáadása a Pénztárcához, harmadik féltől származó API-k segítségével. [További tudnivalók](%@)";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "Érvénytelen URL lett megadva. Az átjárónak képesnek kell lennie az IPFS-erőforrások feloldására.";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "Nem sikerült beállítani az átjárót";
+
+/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
+"wallet.zToASortOption" = "Z-től A-ig";
+

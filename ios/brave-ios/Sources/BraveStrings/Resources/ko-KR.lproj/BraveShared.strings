@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "계속";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "이 비공개 답변은 Brave가 특정 기능의 총 사용량을 산정하고 기능을 개선하는 용도로 사용됩니다.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "프라이버시 보호 제품 분석(P3A) 허용";
 
@@ -2664,6 +2667,9 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "품질 설정";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "이 비공개 Ping으로 Brave가 활성 사용자 수를 추산합니다.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";

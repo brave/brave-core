@@ -1,0 +1,57 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Otkrij kako";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Isprobajte!";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Odvedi me na popis za reprodukciju";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Sada, pogledajmo vaš popis za reprodukciju.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Sadržaj dodan u mapu %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Dobar posao";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Odbaci";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Možda kasnije";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Zatvori";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Predstavljanje značajke Popis za reprodukciju preglednika Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Stvorite popis za reprodukciju omiljenog sadržaja. Spremite podatke s mobilnog telefona. Tijekom reprodukcije ne prikazuju se oglasi.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Slika u slici. Reprodukcija u pozadini. Upravljanje putem zaključanog zaslona. I više…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Ne prekidajte ono što radite: dodajte videozapise dok upotrebljavate preglednik i pogledajte ih kasnije.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Dodajte videozapise na popis za reprodukciju preglednika Brave. Reproducirajte bilo kada, čak izvan mreže";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Reprodukcija s popisa je bolja";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Samo dodirnite tipku za dodavanje videozapisa na popis";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Izradite popise za reprodukciju sa sadržajem koji volite. Dodajte medije s bilo koje stranice.\nReproducirajte bilo kada. Čak izvan mreže!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Dodirnite %@ za dodavanje prve stavke";
+
+/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+"userActionPromptFill" = "Dodaj na popis za reprodukciju";
+

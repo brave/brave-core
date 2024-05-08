@@ -61,12 +61,6 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "¿De qué tratan tus comentarios?";
 
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "La respuesta no es útil";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "Algo no funciona";
-
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Otro";
 
@@ -202,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Potencia tu creatividad";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Disfruta de acceso prioritario a modelos potentes con diferentes habilidades.";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Prueba diferentes modelos de IA";
 
@@ -282,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Suscripción anual";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "Chat";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "MODELOS LINGÜÍSTICOS";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "Modelo predeterminado";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "Limitado";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "Configuración avanzada";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "Hazte Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "Gestionar las suscripciones";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "Nuevo chat";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "Restablecer";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "Ilimitada";
 

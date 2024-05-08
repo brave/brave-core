@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password-täyttötoiminto selaimessa";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "Sovellus tarvitsee NFC-lukemisen käyttöoikeuden voidakseen viestiä Yubikeyn kanssa.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Tämän avulla voit ottaa ja lähettää valokuvia.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Tämä todentaa Braven käyttöoikeutesi";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Verkkosivustot, joilla käyt, voivat pyytää sijaintiasi.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "Tämä mahdollistaa mikrofonin käytön, kun käytät Bravea.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Tämän avulla voit tallentaa valokuvia.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Tätä lupaa käytetään Apple Advanced Speech Recognition -toiminnon käyttöön ottamiseen. Jos se ei ole sallittua, tunnistusta käytetään laitteessa ja haut ovat täysin yksityisiä. Brave ei tallenna tai jaa äänihakujasi.";
+
+/* (No Comment) */
+"OPML File" = "OPML-tiedosto";
+
