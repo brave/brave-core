@@ -19,12 +19,13 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
  * wallet opening to when the app is unlocked or when the panel is re-opened
  */
 export function isPersistableSessionRoute(
-  route?: string
+  route?: string,
+  isPanel?: boolean
 ): route is WalletRoutes {
   if (!route) {
     return false
   }
-  return (
+  const isPersistableInPanel =
     route.includes(WalletRoutes.Accounts) ||
     route.includes(WalletRoutes.Activity) ||
     route.includes(WalletRoutes.Backup) ||
@@ -34,17 +35,24 @@ export function isPersistableSessionRoute(
     route.includes(WalletRoutes.PortfolioNFTs) ||
     route.includes(WalletRoutes.PortfolioNFTAsset) ||
     route.includes(WalletRoutes.Market) ||
-    route.includes(WalletRoutes.Swap) ||
-    route.includes(WalletRoutes.Send) ||
     route.includes(WalletRoutes.LocalIpfsNode) ||
     route.includes(WalletRoutes.InspectNfts)
+  if (isPanel) {
+    return isPersistableInPanel
+  }
+  return (
+    isPersistableInPanel ||
+    route.includes(WalletRoutes.Swap) ||
+    route.includes(WalletRoutes.Send)
   )
 }
 
-export function getInitialSessionRoute(): WalletRoutes | undefined {
+export function getInitialSessionRoute(
+  isPanel?: boolean
+): WalletRoutes | undefined {
   const route =
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
-  return isPersistableSessionRoute(route) ? route : undefined
+  return isPersistableSessionRoute(route, isPanel) ? route : undefined
 }
 
 export function getOnboardingTypeFromPath(
