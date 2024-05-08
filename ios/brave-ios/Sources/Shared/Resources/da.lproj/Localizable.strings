@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL kopieret til udklipsholder";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Anmod om skrivebordswebsted";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Anmod om mobilwebsted";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Vis sidst besøgte bogmærker";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Annuller";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Er du sikker på, at du vil annullere denne download?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Genoptag";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Annuller download";
+
+/* Cancel button */
+"CancelString" = "Annuller";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Skift";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Ny fane åbnet";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Download annulleret";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Download fejlede";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 af %d filer";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Downloads";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Vil du åbne dette link i App Store-appen?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Gå";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Gem ikke";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Opdater ikke";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Gem login";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Opdater";
+
+/* OK button */
+"OKString" = "OK ";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Læsertilstand tilgængelig";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Nulstil tekststørrelse";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Vil du gemme adgangskoden til %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Gem login %1$@ til %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK ";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Juster QR-koden inden for rammen for at scanne";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Dataene er ugyldige";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Giv Brave adgang til din enheds kamera i \"Indstillinger\" -> \"Privatliv\" -> \"Kamera\".";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Scan QR-kode";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Generelt";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Udfør";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Fortryd";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d fane(r) lukket";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK ";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Der opstod en fejl under tilføjelse af passet til Wallet. Prøv igen senere.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Kunne ikke tilføje Pass";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave kan ikke åbne siden, fordi den har en ugyldig adresse.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Kan ikke åbne siden";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Opdater login %1$@ til %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Opdater login %1$@ til %2$@?";
+

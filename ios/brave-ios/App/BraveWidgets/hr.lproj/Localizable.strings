@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Knjižne oznake";
+
+/* The name of the feature */
+"widgets.braveNews" = "Novosti Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Preuzimanje";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Brzo pristupite svojim omiljenim mrežnim mjestima.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Omiljeni";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Povijest";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Pokušajte ponovno poslije";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Pročitajte više";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Doznajte najnovije vijesti";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Najvažnije vijesti";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Otvorite preglednik Brave kako biste ovdje vidjeli svoje omiljene stavke";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR kȏd";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Pretraži";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Sažetak o tome kako upotrebom preglednika Brave štedite vrijeme i dobivate zaštitu na mreži.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Statistika privatnosti";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Statistika privatnosti";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Pretraži ili upiši URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Nova kartica";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Popis za reprodukciju";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Kartica Privatno";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Prečice";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Sažetak pružene zaštite preglednikom Brave na mreži.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Statistika privatnosti";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Novčanik Brave";
+

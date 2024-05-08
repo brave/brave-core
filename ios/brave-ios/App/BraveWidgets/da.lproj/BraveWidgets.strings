@@ -1,0 +1,291 @@
+/* (No Comment) */
+"0W40Cl" = "Ny fane";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Der er ${count} muligheder, der matcher \"Est. tid sparet\".";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Der er ${count} muligheder, der matcher \"Est. data gemt\".";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Der er ${count} indstillinger, der matcher \"Annoncer blokeret\".";
+
+/* (No Comment) */
+"7Ds8rk" = "Låseskærmens favoritkonfiguration";
+
+/* (No Comment) */
+"7JYzOv" = "Type";
+
+/* (No Comment) */
+"7MuqiB" = "Genvej";
+
+/* (No Comment) */
+"8pcZ6L" = "Låseskærmens favorit-widget";
+
+/* (No Comment) */
+"8vyYRy" = "Nr. 3";
+
+/* (No Comment) */
+"9E2oRR" = "Nr. 1";
+
+/* (No Comment) */
+"AGMpus" = "Genvejskonfiguration";
+
+/* (No Comment) */
+"bUXzTx" = "Type statistik";
+
+/* (No Comment) */
+"crhbMy" = "Bogmærker";
+
+/* (No Comment) */
+"D5r3nt" = "Webadresse";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Lige for at bekræfte, du ville have \"Scan QR-kode\"?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Lige for at bekræfte, du ville have \"Historik\"?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";
+
+/* (No Comment) */
+"EUS9FL" = "Widgetgenvej";
+
+/* (No Comment) */
+"FGO5qW" = "Brave-spilleliste";
+
+/* (No Comment) */
+"gpCwrM" = "Statistikkonfiguration";
+
+/* (No Comment) */
+"hssb67" = "Konfiguration af genvejswidget";
+
+/* (No Comment) */
+"iB2TOM" = "Favoritindlæg";
+
+/* (No Comment) */
+"joEZJM" = "Nr. 2";
+
+/* (No Comment) */
+"jXiFQY" = "Brave-wallet";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Der er ${count} indstillinger, der matcher \"Scan QR-kode\".";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Der er ${count} indstillinger, der matcher \"Historik\".";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
+
+/* (No Comment) */
+"nthxSL" = "Downloads";
+
+/* (No Comment) */
+"nXONef" = "Favorit";
+
+/* (No Comment) */
+"qKrzyX" = "Scan QR-kode";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Lige for at bekræfte, du ville have \"Scan QR-kode\"?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Lige for at bekræfte, du ville have \"Historik\"?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Lige for at bekræfte, du ville have \"Est. tid sparet\"?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Lige for at bekræfte, du ville have \"Est. data gemt\"?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Lige for at bekræfte, du ville have \"Annoncer blokeret\"?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Der er ${count} indstillinger, der matcher \"Scan QR-kode\".";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Der er ${count} indstillinger, der matcher \"Historik\".";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
+
+/* (No Comment) */
+"tVvJ9c" = "Statistikkonfigurationswidget";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Der er ${count} indstillinger, der matcher \"Scan QR-kode\".";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Der er ${count} indstillinger, der matcher \"Historik\".";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
+
+/* (No Comment) */
+"tYwiRd" = "Estimeret Sparet Tid";
+
+/* (No Comment) */
+"VBH4G6" = "Historik";
+
+/* (No Comment) */
+"vjA5pZ" = "Est. data gemt";
+
+/* (No Comment) */
+"vs094F" = "Ny privat fane";
+
+/* (No Comment) */
+"xcI3h9" = "Annoncer blokeret";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
+
+/* (No Comment) */
+"XkwBGY" = "Låseskærmens genvejskonfiguration";
+
+/* (No Comment) */
+"Y7TWy8" = "Søg";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Lige for at bekræfte, du ville have \"Scan QR-kode\"?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Lige for at bekræfte, du ville have \"Historik\"?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";
+
+/* (No Comment) */
+"ziTvSZ" = "Konfiguration af genvejswidget";
+

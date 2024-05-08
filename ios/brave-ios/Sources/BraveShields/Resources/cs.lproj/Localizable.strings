@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Blokované sledovací prvky a reklamy";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Reklamy \nblokované";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Odhad. uložená\ndata";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Odhad. ušetřený\nčas";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "dny/dní";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "hod";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Trackery \nblokovány";
+

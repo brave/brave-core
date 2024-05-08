@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Záložky ";
+
+/* The name of the feature */
+"widgets.braveNews" = "Zprávy Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Stažené soubory";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Rychlý přístup ke svým oblíbeným webovým stránkám.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Oblíbené";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "History";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Zkuste to znovu později";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Zjistěte více";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Získat nejaktuálnější novinky";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Horké novinky";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Otevřít Brave a zobrazit tam své oblíbené";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR kód";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Search";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Shrnutí toho, jak vám Brave šetří čas a chrání vás online.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Statistiky soukromí";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Statistiky soukromí";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Vyhledat nebo zadat adresu URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Nová karta";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Seznam stop";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Soukromá karta";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Rychlý přístup k vyhledávání na webu nebo otevírání webových stránek v Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Zástupci";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Shrnutí toho, jak vás Brave chránil online.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Statistiky soukromí";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Peněženka Brave";
+

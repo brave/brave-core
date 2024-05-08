@@ -553,6 +553,12 @@
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Eliminar";
 
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "Deposit";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Copiar";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Desmarcar todo";
 
@@ -1943,7 +1949,7 @@
 "wallet.udDomainInterstitialPageDescription" = "Brave utilizará Infura para resolver los nombres de dominio .crypto (así como %1$@) que están en Unstoppable Domains. Brave oculta tu dirección IP. Si lo activas, Infura verá que alguien está intentando visitar estos dominios, pero nada más. Consulta las <a href=%2$@>%3$@</a> y <a href=%4$@>%5$@</a> de Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "¿Habilitar la compatibilidad con los dominios imparables en Brave?";
+"wallet.udDomainInterstitialPageTitle" = "¿Habilitar la compatibilidad con Unstoppable Domains en Brave?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[Obtén más información](%@) acerca de las consideraciones de privacidad de los Unstoppable Domains.";

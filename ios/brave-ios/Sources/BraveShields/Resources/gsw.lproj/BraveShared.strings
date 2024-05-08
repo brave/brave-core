@@ -1,0 +1,75 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "Der **Brave-Player** ist Ihr Ticket zu einem werbe- und unterbrechungsfreien Videoerlebnis.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Schutz für mich anpassen";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Diese Website hat damit begonnen, einige Werbeblocker zu blockieren. Das bedeutet, dass die Website möglicherweise nicht wie erwartet funktioniert.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Um dieses Problem zu beheben, kann Brave Ihre Schutzeinstellungen für Sie anpassen. Nach der Anpassung können Sie versuchen, diese Inhalte stattdessen im Brave-Player anzuschauen.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Aktuelle Einstellungen beibehalten";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Passen Sie die Werbeblocker-Einstellungen für diese Website an";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Aggressiv";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Verhindert das Laden von Anzeigen, Popups und Trackern.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Deaktiviert";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave-Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Videos dieser Website immer mit dem Brave-Player öffnen";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Ausprobieren";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Jetzt nicht";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Mit dem Brave-Player können Sie Videos unterbrechungsfrei anschauen.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Stattdessen im Brave-Player anschauen";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Zurück";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Weil Sie darum gebeten haben, Tracker und Anzeigen aggressiv zu blockieren, blockt Brave diese Site, bevor die erste Netzwerkverbindung hergestellt wird.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave hat das Laden der folgenden Site verhindert:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Diese Website versucht möglicherweise, Sie über andere Websites hinweg zu verfolgen";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Fortfahren";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domain blockiert";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "JS-API für die Global Privacy Control aktivieren";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Global Privacy Control aktivieren";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blockierung von Trackern und Anzeigen";
+

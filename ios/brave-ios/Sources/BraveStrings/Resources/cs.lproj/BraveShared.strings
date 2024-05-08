@@ -1,0 +1,4014 @@
+/* About settings section title */
+"About" = "Informace";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "O Štítech Brave";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Webové stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí zjistit, kdo jste, a sledovat vás po celém webu –⁠⁠⁠⁠⁠⁠ chtějí sledovat, co děláte na každé webové stránce.\n\nBrave blokuje tyto věci, takže můžete prohlížet webové stránky, aniž byste byli sledováni.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "To vám umožní uložit obrázek do vašeho fotoaparátu.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave by chtěl získat přístup k vašim fotografiím";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Přidat záložku";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "Přidat záložku";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Přidat vlastní seznam filtrů";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Přidá další seznamy vytvořené a spravované komunitou, které věříte.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Přihlaste se pouze k odběru seznamů od subjektů, kterým důvěřuje**. Váš prohlížeč bude pravidelně kontrolovat aktualizace seznamu z adresy URL, kterou zadáte.";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "Přidat k oblíbeným";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Nová složka";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Přidat do oblíbených";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Přidat záložku";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Reklamy a trackery";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Vždy požádejte o klasické zobrazení webové stránky";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Vždy odeslat";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Zapnuto";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Tímto se ověří váš přístup k Brave";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Zrušit ";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ vyžaduje uživatelské jméno a heslo. Webová stránka říká: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Přihlásit se";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ vyžaduje uživatelské jméno a heslo.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Password";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Je vyžadováno ověření";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Uživatelské jméno";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Automatické přesměrování stránek AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Vždy navštěvujte původní adresy URL stránek (bez AMP) namísto zrychlených mobilních verzí stránek Google.";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Adresy URL pro sledování automatického přesměrování";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Povolit podporu pro obcházení adres URL sledování přesměrování nejvyšší úrovně";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Blokovat soubory cookies třetích stran";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Blokovat všechny soubory cookie";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Blokovat vše";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Blokování všech souborů cookie zabrání tomu, aby některé webové stránky fungovaly správně.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Zablokovat všechny soubory cookie?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Nastavení předvoleb se nezdařilo. Zkuste to prosím znovu.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "Blokovat oznámení o souhlasu se soubory cookie";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Zabraňuje webovým stránkám ukládat informace o vašich předchozích návštěvách.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Blokování monitoru";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Oznámení bloku „Přepnout na aplikaci";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Blokování vyskakovacích oken";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blokovat skripty ";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blokuje JavaScript (může poškodit stránky).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Přidat záložku pro %lld karty/karet";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Složka záložek";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Informace o záložce";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Záložky ";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Záložky ";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Exportovat záložky";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Importovat záložky";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Záložky ";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Název";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Adresa";
+
+/* Button to show the brave panel */
+"BravePanel" = "Panel Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Otevřít";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Odměny";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Brave Rewards";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Search nesleduje vás, vaše dotazy ani kliknutí.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možná později";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Podpora nezávislého vyhledávání s lepší ochranou soukromí";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Vyzkoušejte vyhledávání Brave";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Možná později";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Pokročilé nastavení";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Štíty Brave a soukromí";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Štíty a soukromí";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Reklamy a další otravnosti jsou zablokovány";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Zjistěte více.";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Změnit výchozí globální štíty";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globální ovládací prvky";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Pokud se tato stránka jeví jako nefunkční, zkuste štíty deaktivovat";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Štíty Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Dolů";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Nahoru ";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dvojitým klepnutím přepnete štíty Brave";
+
+/* Sync page title */
+"BraveSync" = "Synchronizace";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Synchronizace vnitřních vlastností";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Pro zahájení je potřeba mít Brave instalovaný na všech zařízeních, které máte v úmyslu synchronizovat. Pro jejich propojení spusťte synchronizační řetězec, který využijete k zabezpečenému vzájemnému propojení všech vašich zařízení.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "Zámek prohlížeče";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "Odemkněte Brave pomocí Touch ID, Face ID nebo systémového přístupového hesla.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Historie procházení";
+
+/* Settings item for clearing the cache */
+"Cache" = "Mezipaměť";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Přesunout lištu s kartami";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Přesunout lištu s adresou, karty, záložky a další nástroje na spodní část prohlížeče.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Přizpůsobit lištu karet Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Nastavit Brave jako výchozí prohlížeč?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Pokud je Brave nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Nastavit výchozí";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Již je výchozí?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Tohle přeskočit";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Soukromí. Zjednodušeně.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "To nám pomáhá zjistit, jaké funkce Brave se používají nejčastěji. Změňte kdykoli v Nastavení Brave v části Štíty Brave a další nastavení ochrany osobních údajů.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Další informace o naší analýze produktů pro zachování soukromí (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Pomozte vylepšit Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Sdílejte zcela soukromé a anonymní informace o produktu.";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Získejte ochranu soukromí Brave na svém počítači nebo tabletu a synchronizujte záložky a rozšíření mezi zařízeními.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Synchronizovat nyní";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Soukromí. Všude.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Karta Přijato";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Zrušit ";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "Algoritmus";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "Jakýkoliv";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "bity";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "bajty";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "Tento certifikát je platný";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "Společné informace";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "Běžný název";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "Země nebo region";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "Získat";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "Komponent domény";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "Šifrování";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "Šifrovat";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "Exponent";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "Digitální otisky";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "Název emitenta";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "Velikost klíče";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "Použití klíče";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "Lokalita";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "Žádné";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "Není platný po";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "Neplatí před";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "Organizační jednotka";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "Organizace";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "Parameters";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "Informace o veřejném klíči";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "Veřejný klíč";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "Sériové číslo";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ s %2$@ šifrováním";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "Podpis %1$@ s %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "Algoritmus podpisu";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "Podpis";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "Stát/Provincie";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "Adresa ulice";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Název předmětu";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "ID uživatele ";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "Termíny platnosti";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "Ověřit";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "Verze";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "Zabalit";
+
+/* No comment provided by engineer. */
+"ClearData" = "Vymazání dat";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "Vymazat soukromá data";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Zrušit ";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Jste si jistí?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "OK ";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Vymazat data ";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Ano, smazat";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Vymazat data nyní";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Zrušit ";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Tato akce vymaže všechna vaše soukromá data, včetně historie z vašich synchronizovaných zařízení.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "OK ";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Chyba klienta";
+
+/* Button title to close a menu. */
+"Close" = "Zavřít";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Opravdu chcete zavřít všechny otevřené karty?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Zavřít všechny/všech %i karty/karet";
+
+/* Code words input help */
+"CodeWordInputHelp" = "Napište slova poskytnutého synchronizačního řetězového kódu do kolonky níže. ";
+
+/* Code words section title */
+"CodeWords" = "Kódová slova";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Stáhnout";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Sdílet";
+
+/* No comment provided by engineer. */
+"Confirm" = "Potvrdit";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrování obsahu";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivuje vlastní filtry, které blokují regionální a jazykově specifické trackery a jiné nepříjemnosti";
+
+/* Cookie settings option title */
+"CookieControl" = "Kontrola souborů cookie ";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Soubory cookie a data webových stránek";
+
+/* Copied action complete title */
+"Copied" = "Zkopírováno!";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Zkopírováno do schránky!";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Zkopírujte informace o aplikaci do schránky.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Zkopírujte informace o velikosti aplikace do schránky.";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Kopírovat očištěný odkaz";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Kopírovat obrázek";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Kopírovat odkaz";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Zkopírovat do schránky";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Kopírovat informace o podpoře";
+
+/* Create PDF share action. */
+"CreatePDF" = "Vytvořit soubor PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Aktuálně používané vyhledávače";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Vlastní seznam filtrů";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Vlastní seznamy filtrů";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Adresa URL vlastního seznamu filtrů";
+
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Přidat";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Napište vyhledávací adresu URL a nahraďte dotaz %1$s.\nNapříklad: https://youtube.com/search?q=%2$s \n(Pokud stránka podporuje OpenSearch, bude při úpravě tohoto pole poskytnuta možnost automatického přidání.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Automatické přidání";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Chyba při přidávání vlastního vyhledávače";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "Odstraněním vlastního vyhledávače, který je ve výchozím nastavení, automaticky přepnete výchozí vyhledávač.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "Jste si jistí, že chcete smazat %@?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Vyhledávač se stejným názvem již existuje.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nezabezpečená šablona vlastního vyhledávání pro";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Nezabezpečená šablona vlastního návrhu pro";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Přidat vyhledávač";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Šablona vyhledávání:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Šablona návrhu:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Nový vyhledávač se zobrazí v liště rychlého vyhledávání.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Přidat poskytovatele vyhledávání?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Vlastní vyhledávač nemohl být přidán. Zkuste to prosím znovu později.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Chyba při přidání vlastního vyhledávače";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Vyhledávač s tímto názvem nebo adresou URL již byl přidán.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Napište vyhledávací adresu URL a nahraďte dotaz %s. ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Chyba dotazu adresy URL při vyhledávání ";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Zkopírovaný text by měl být platnou bezpečnou adresou URL, která začíná „https://“";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Vyplňte prosím pole Název a URL.";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Vlastní vyhledávače";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Přidán vyhledávač!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Teď ne";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Otevřít nastavení";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Otvírejte všechny odkazy pomocí Brave a chraňte tak svoje soukromí";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Štíty Brave blokují trackery a reklamy, ukládají data a šetří vám čas na každé vámi navštívené stránce";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Otevřete Nastavení, klepněte na Výchozí aplikace prohlížeče a vyberte Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Nastavte si Brave jako výchozí prohlížeč";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Získejte ochranu Brave na každém odkazu";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Zavřít výchozí popisek prohlížeče";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Výchozí seznamy filtrů";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Výchozí nastavení Brave";
+
+/* No comment provided by engineer. */
+"Delete" = "Smazat";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Tím se odstraní všechny složky a záložky uvnitř. Jste si jistý, že chcete pokračovat?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Odstranit složku?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Zrušit ";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Přihlašovací údaje budou trvale odstraněny.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Přihlašovací údaje budou odstraněny ze všech připojených zařízení.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Jste si jistí?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Smazat";
+
+/* Sync device settings page title. */
+"Devices" = "Zařízení v synchronizačním řetězci";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Zařízení %1$ @ (%2$@)";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Bezpečnostní certifikát";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Displej";
+
+/* No comment provided by engineer. */
+"Done" = "Done";
+
+/* cookie settings option */
+"DontBlockCookies" = "Neblokujte soubory cookie";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Neodesílat";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Stažené soubory";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Stažené soubory";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Zde se zobrazí stažené soubory.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Duplikovat aktivní kartu";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Dříve";
+
+/* No comment provided by engineer. */
+"Edit" = "Edit";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Upravit záložku";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Poloha";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Upravit záložku";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Upravit oblíbené";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Upravit oblíbené";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Upravit složku";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Povolit funkci Pro obnovení potáhněte";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Zadejte kódová slova";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Zadejte kódová slova níže";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Zadejte název složky";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Zkuste znovu zadat adresu URL nebo otevřít vyhledávač a vyhledat novou adresu URL.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Otevřít v Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Načíst znovu";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obvykle používá šifrování k ochraně vašich informací. Když se Brave tentokrát pokusil připojit k %2$@, web poslal zpět neobvyklé a nesprávné přihlašovací údaje. K tomu může dojít, když se útočník snaží předstírat, že je %3$@, nebo když přihlašovací obrazovka pro Wi-Fi přerušila připojení. Vaše informace jsou stále zabezpečené, protože Brave ukončil připojení před výměnou jakýchkoli dat. <br />Právě teď nemůžete navštívit %4$@, protože webová stránka používá připnutí certifikátů. Síťové chyby a útoky jsou obvykle dočasné, takže tato stránka bude pravděpodobně fungovat později.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "Tento server nemohl prokázat, že je %@. Jeho bezpečnostní certifikát není důvěryhodným operačním systémem vašeho zařízení. Může to být způsobeno nesprávnou konfigurací nebo útočníkem, který se pokouší podchytit vaše připojení.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Útočníci se mohou pokoušet ukrást vaše informace z %@ (například hesla, zprávy nebo kreditní karty).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Zpět na bezpečnost";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Tato stránka nemůže poskytnout zabezpečené připojení";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Vaše připojení není soukromé";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Skrýt podrobnosti";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Zjistěte více.";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Více podrobností";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Žádný přístup k internetu";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Zdá se, že nejste online. Chcete-li to opravit, zkuste";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Kontrola kabelů sítě, modemu a routeru";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Probíhá opětovné připojení k Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "Pokračovat na %@ (nezabezpečené)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ spustí externí aplikaci";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Povolit odkaz na přepínání aplikací?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Povolit";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Nepovolit";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Oblíbené jsou umístěny na vaší domovské obrazovce. Tyto záložky nejsou synchronizovány s ostatními zařízeními.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Oblíbené";
+
+/* No comment provided by engineer. */
+"Features" = "Funkce";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Zadaná adresa URL je neplatná";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Pro vlastní seznamy filtrů jsou povoleny pouze zabezpečené adresy URL (https)";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Přidat";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Další oblíbené komunitní seznamy. Zapnutí příliš mnoha filtrů sníží rychlost procházení.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Stažení se nezdařilo";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Čeká na stažení";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Zadejte odkaz na seznam filtrů";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Naposledy aktualizováno %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Zde zadejte adresu URL seznamu filtrů ";
+
+/* Share action title */
+"FindInPage" = "Najít na stránce";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Done";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "Najít „%@“";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Další výsledek na stránce";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Předchozí výsledek na stránce";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "Najít na stránce";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "Najít další";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Na této stránce";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "Najít předchozí";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Metody snímání otisků prstů";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blokovat otisky prstů";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Ztěžuje stránkám rozpoznání charakteristických vlastností vašeho zařízení. ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Povolit otevření univerzálních odkazů v externích aplikacích";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Vynucené vložení";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "Jejda! Něco se pokazilo. Zkuste to prosím znovu.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Chyba";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Blokovat nebezpečné webové stránky";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Bezpečné prohlížení stránek chrání před webovými stránkami, o nichž je známo, že jsou nebezpečné. [Zjistit více](%@)";
+
+/* Grand camera access */
+"GrantCameraAccess" = "Povolit fotoaparát";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Skrýt náhledy odkazů";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Skrýt ikonu odměn Brave";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Pokud nejsou odměny Brave povoleny, tak skryje ikonu odměny Brave";
+
+/* Title for history menu item */
+"HistortMenuItem" = "History";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Vymazat historii";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Toto vymaže veškerou historii procházení stránek.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Vymazat historii procházení stránek";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Historie se zobrazí zde.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Historie není dostupná v režimu Pouze anonymního procházení stránek.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Prohledávat historii";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "History";
+
+/* No comment provided by engineer. */
+"Home" = "Domovská stránka";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "Upgradujte připojení na HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Pokud je to možné, tak otevírá weby pomocí zabezpečeného HTTPS namísto HTTP.";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "Aktualizace HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Individuální kontroly";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Neplatné detaily v žádosti o platbu";
+
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Nesprávný synchronizační kód, prosím zkontrolujte správnost a zkuste synchronizaci znovu.";
+
+/* History tableview section header */
+"LastMonth" = "Minulý měsíc";
+
+/* History tableview section header */
+"LastWeek" = "Minulý týden";
+
+/* No comment provided by engineer. */
+"learnMore" = "Zjistit více ";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Uložené přihlášení bude trvale odstraněno.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Vytvořeno %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Přihlašovací údaje";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Password";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Uživatelské jméno";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Web";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Chcete-li zobrazit hesla, musíte nejprve ve vašem zařízení nastavit přístupový kód.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Nastavit přístupový kód";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Nebyly nalezeny žádné přihlašovací údaje";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Přihlašovací údaje a hesla";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Neuloženo";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Uložené přihlašovací údaje";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Filtrovat";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Naposledy upraveno %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "heslo";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "uživatelské jméno";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "webová stránka";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Zrušit výběr všech";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Nebyly nalezeny žádné přihlašovací údaje";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Přihlášení";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Vybrat vše";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Povolit zvuk na pozadí";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Copy";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Skrýt";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Otevřít webovou stránku";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Odhalit";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "měsíc";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Klikněte sem, abyste se dozvěděli více.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Toto je vaše první reklama Brave";
+
+/* Bookmark title / Device name */
+"Name" = "Název";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "Vypnuto ";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nová záložka";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nová záložka";
+
+/* Title for new folder popup */
+"NewFolder" = "Nová složka";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Nová složka";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Nová složka";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Nové anonymní okno";
+
+/* New sync code button title */
+"NewSyncCode" = "Spustit nový synchronizační řetězec";
+
+/* New Tab title */
+"NewTab" = "Nová karta";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Nové okno";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Režim";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Noční režim ovlivní vzhled webových stránek a současně celkový vzhled systému.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Zapnutí/vypnutí nočního režimu";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Noční režim";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Ne";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Nebyly nalezeny žádné výsledky hledání.";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"NotEnoughWordsDescription" = "Zadejte prosím všechna slova a zkuste to znovu.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"NotEnoughWordsTitle" = "Není dostatek slov";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Automaticky přesměruje odkazy NPR na jejich textovou verzi (na text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Podpora Brave";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Převzít Tokeny";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Procházením s Brave jste získali %@.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Výborně!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Skrýt sponzorované obrázky";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Brave.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Další informace o odměnách Brave";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Zjistit více o sponzorovaných obrázcích";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Automatické otevření klávesnice";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Obrázky na pozadí";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Typ obrázku";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Výchozí obrázky";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Sponzorováno";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Stránka nové karty";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Zobrazit více";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "Prohlížením tohoto sponzorovaného obrázku podporujete tvůrce a vydavatele obsahu.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Zapnutím Odměny souhlasíte s %@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Získejte tokeny a při prohlížení stránek odměňujte tvůrce za skvělý obsah.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Získejte body a při prohlížení stránek odměňujte tvůrce za skvělý obsah.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Reklamy Brave jsou tady!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave zobrazí vaši první reklamu v";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Nyní jste připraveni.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Neviděl/a jsem žádnou reklamu";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Při vytváření peněženky se něco pokazilo. Zkuste to prosím znovu";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Dobrá";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Omlouváme se";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Začít prohlížet";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Přidat se";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Povolte Brave zkontrolovat v mé schránce odpovídající referenční kód";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Pravděpodobně jste si stáhli Brave na podporu svého referera. Aby Brave mohl detekovat vašeho referera, provede jednorázovou kontrolu ve vaší schránce, zda neobsahuje odpovídající referenční kód. Tato kontrola je omezena pouze na kód a nedojde k předání žádných dalších osobních údajů. Pokud se odhlásíte, váš referer neobdrží odměny od Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Nepovolit tuto kontrolu";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Anonymní kontrola referenčního kódu";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Povolit jednorázovou kontrolu schránky";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Klepnutím na Ano souhlasíte s";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Smluvní podmínky";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "a";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Přihlášení k soukromým reklamám Brave podporuje vydavatele a tvůrce obsahu při každé zobrazené reklamě.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Získejte tokeny a při prohlížení stránek odměňujte tvůrce za skvělý obsah.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Zásady ochrany osobních údajů";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Uložit";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Vyberte výchozí vyhledávač";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Vítejte v prohlížeči Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Blokujte trackery narušující soukromí, abyste mohli prohlížet stránky, aniž byste byli sledováni po webu";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Štíty Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Ukázat";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Spustit";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ a dalších %2$ lld reklam a trackerů bylo zablokováno";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Podívejte se na nekalosti, které prohlížeč Brave s pomocí štítů zablokoval na všech navštívených stránkách.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Klepnutím zobrazíte štíty Brave";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reklam a trackerů bylo zablokováno";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Propojit předplatné VPN";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Vaše předplatné Brave VPN může chránit až 5 zařízení na Androidu, iOS a stolním počítači. Stačí propojit vaše předplatné App Store s vaším účtem Brave.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Rozšiřte ochranu Brave Firewall + VPN";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Vyhledejte „Výchozí aplikaci prohlížeče“";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Přecházíme do Nastavení...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Blokováním trackerů a reklam využívají webové stránky méně dat a načítají se mnohem rychleji.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Podívejte se na rozdíl Brave:\nŽádné reklamy. Žádné trackery. Mnohem rychlejší načítání stránky.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Napište název nebo adresu URL webové stránky.";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Vítá vás Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Continue";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Přeskočit";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "na %@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Otevřít vše (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Otevřít nastavení odměn Brave";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "Při otevírání složky Stažené soubory v aplikaci Soubory došlo k neznámé chybě.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ říká:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Povolit %@ přepínat aplikace?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Otevřít obrázek na nové kartě";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Otevřít v novém soukromém okně";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Otevřít v novém okně";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Otevřít v nové anonymní záložce";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Otevřít v nové záložce";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Otevřít nastavení";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Aktivní před %ld dny";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Aktivní minulý měsíc";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Aktivní minulý týden";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Aktivní dnes";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Aktivní včera";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Povolte synchronizaci karet, abyste viděli karty z vašich dalších zařízení.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Chcete-li zobrazit svá zařízení a povolené typy synchronizace, připojte se k synchronizačnímu řetězci";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "V tomto synchronizačním řetězci nejsou žádná zařízení";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Začněte nastavením synchronizačního řetězce a přepněte „Otevřít karty“ v Nastavení synchronizace.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Spravujte, co Brave synchronizuje v Nastavení.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Neexistují žádné aktivní relace, které by se zobrazovaly z vašich ostatních zařízení.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Tento prostor zobrazuje karty Brave otevřené v jiných zařízeních";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Prozatím skrýt";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Otevřít vše";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Minulý týden v %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Dnes v %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Včera v %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Zařízení";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Odeslat do vašeho zařízení";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Odesláno!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Odesílání...";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Odeslat webovou stránku";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Odeslat do vašich zařízení";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Zobrazit nastavení synchronizace";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Spusťte synchronizační řetězec";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Povolit synchronizaci karet";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Vyhledávání karet z jiných zařízení";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Otevřené karty";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "Otevřít webovou stránku";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo je chytrý asistent využívající technologie umělé inteligence a je zabudovaný přímo v prohlížeči.";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Dnešní hlavní příběhy v soukromém zpravodajském kanálu";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Zprávy";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Mějte seznam skladeb libovolného videa/streamu offline";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Seznam stop";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Soukromé videohovory přímo ve vašem prohlížeči";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Mluvit";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Chraňte své celé zařízení online";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Bezpečná krypto peněženka. Není nutné žádné rozšíření";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Funkce Brave";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Další nastavení ochrany osobních údajů";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Další nastavení";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Continue";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Tyto soukromé odpovědi pomáhají Brave odhadnout celkové využití určitých funkcí a vylepšit je pro vás.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Povolit analýzu produktů se zachováním soukromí (P3A)";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Vaše připojení k této stránce není plně zabezpečené.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Na této stránce byste neměli zadávat žádné citlivé informace (například hesla nebo kreditní karty), jelikož by mohly být útočníky zcizeny.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Vaše připojení k této stránce není bezpečné.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Zobrazit certifikát";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Výchozí úroveň přiblížení webové stránky";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Pokud se úroveň přiblížení webové stránky změnila, webová stránka se zobrazí na seznamu zde. Aktuálně nejsou žádné webové stránky přiblížené nebo oddálené.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Nejsou přidány žádné webové stránky";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Všechny ostatní webové stránky";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Resetovat vše";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Resetovat úrovně přiblížení webové stránky";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Konkrétní nastavení stránky";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Přiblížení stránky";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Přiblížení stránky";
+
+/* Sync pair device settings section title */
+"Pair" = "Spárovat";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Hesla";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Trvalé soukromé prohlížení stránek";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Umožňuje Brave obnovit karty soukromého prohlížení, i když aplikaci zavřete nebo znovu otevřete";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Obnovit soukromé karty";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Autor fotografie: %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Přidáno do %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Chcete přidat toto video do svého seznamu skladeb?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Přidat do seznamu skladeb Brave";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Možnosti přehrávání";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Zakázáno. Klepnutím povolíte restartování přehrávání.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Povoleno. Klepnutím zakážete restartování přehrávání.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Rozhodněte se, zda výběr již přehrávané položky restartuje přehrávání, nebo pokračujte v přehrávání tam, kde bylo naposledy zastaveno";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Restartovat přehrávání";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Nastavení ";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Seznam stop Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Změnit seznam skladeb";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Odstranit offline mezipaměť";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Toto video bylo živým přenosem nebo bylo dosaženo časového limitu. Chcete-li jej obnovit, znovu otevřete odkaz.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Platnost videa vypršela";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Platnost vypršela";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d položky/položek";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d položka";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Došlo k problému při načítání zdroje!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Při povolení se na ikoně hlavní nabídky zobrazí symbol, který označuje, že média na stránce mohou být přidána do seznamu skladeb Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Zobrazit symbol oznámení nabídky";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Přesunout...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Položky můžete přidávat do svého seznamu skladeb Brave v prohlížeči";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "Nejsou k dispozici žádné položky";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Oznámení";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Dobrá";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Otevřít v seznamu skladeb";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Omlouváme se, ale při pokusu o zobrazení obrazu v obraze došlo k chybě.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Seznam skladeb je již aktivní v jiném okně";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Omlouváme se";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Tato možnost povolí/zakáže automatické přehrávání při otevření seznamu skladeb. Tato možnost však neovlivní automatické přehrávání při načítání dalšího videa v seznamu.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Automatické přehrávání";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Vypnuto ";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Zapnuto";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Pouze Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Přidání video a zvukových souborů pro offline použití může spotřebovat velké množství úložiště v zařízení a také využívat vaše mobilní data";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Tato možnost automaticky ponechá položky vašeho seznamu skladeb ve vašem zařízení, abyste je mohli přehrávat i bez připojení k internetu.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Automatické ukládání pro přehrávání offline";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Přidání video a zvukových souborů pro offline použití může ve vašem zařízení využít velké množství úložiště. Odstraňte prosím některé soubory, abyste uvolnili úložný prostor.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Úložiště je téměř plné";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Živý přenos";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Pokud je tato možnost povolena, můžete pomocí dlouhého stisknutí většinu video/audio souborů přidat do svého seznamu skladeb.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Povolit dlouhé stisknutí";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Seznam skladeb média a offline data";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Offline data seznamu skladeb";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Změnit";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Reset";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Tato možnost odstraní všechna videa ze seznamu skladeb a úložiště v režimu offline.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Omlouváme se, ale tuto položku nelze v tuto chvíli uložit do režimu offline.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Omlouváme se, ale něco se pokazilo";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Seznamy stop";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Seznam stop";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Tato složka již existuje ve vašem seznamu skladeb Brave";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Omlouváme se";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Sdíleno s vámi";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Sdíleno s vámi";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Toto nastavení změní umístění seznamu videí mezi levou stranou/pravou stranou.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Doleva";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Doprava";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Umístění postranního panelu";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "U jednotlivých souborů pokračujte v přehrávání od okamžiku poslední pauzy.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Zapamatovat si pozici přehrávání souboru";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Zakáže API WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Kompatibilita s webovou stránkou";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Remove";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Odstraněno z %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Tímto se odstraní médium z offline úložiště. Jste si jistí, že chcete v činnosti pokračovat?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Odstranit offline data";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Tímto se odstraní položka média ze seznamu. Jste si jistý, že chcete pokračovat?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Odstranit položku médií ze seznamu skladeb?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Znovu otevřít";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Přidáno do offline";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Uložit pro offline";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Ukládání pro offline...";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Automaticky synchronizuje všechny vaše složky seznamu skladeb";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Automatická synchronizace složek seznamu skladeb";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Aktuální položku můžete otevřít na nové kartě nebo ji sdílet prostřednictvím nabídky sdílení systému";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Nabídka seznamu skladeb Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Otevřít v soukromé kartě";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Otevřít na nové kartě";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Sdílet...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Omlouváme se";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Přidáno do seznamu skladeb Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Otevřít";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Přidat do seznamu skladeb Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Zobrazit v seznamu skladeb Brave";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Zpět ";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Přidá tlačítko seznamu skladeb (vypadá jako 4 řádky se symbolem +) vedle lišty adres v prohlížeči Brave. Toto tlačítko vám umožňuje rychlý přístup k otevření seznamu skladeb nebo přidání/odebrání médií.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Povolit tlačítko rychlého přístupu";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Přesunout na";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Název seznamu skladeb";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Zadejte váš název seznamu skladeb";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Vytvořit";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Edit";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Upravit složku";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Upravit seznam skladeb";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Omlouváme se, ale nepodařilo se nám uložit změny, které jste provedli v této složce";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Přesunout";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Aktuální seznam skladeb";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Přesunout";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ a 1 další položka";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld položky/položek";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 položka";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ a %2$lld další/dalších položky/položek";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Nový seznam stop";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Nový seznam stop";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Klepnutím vyberte videa";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Přidat videa do tohoto seznamu skladeb";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Vyberte seznam skladeb, do kterého chcete přesunout %lld položky/položek";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Vyberte seznam skladeb, do kterého chcete přesunout 1 položku";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld položky/položek";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 položku";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Seznam skladeb bez názvu";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Tlačítko Přidat do seznamu skladeb Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Uložit";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Odstranit offline data";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Odstranit seznam skladeb";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Edit";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Tlačítko Nabídka seznamu skladeb";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Nyní přidat seznam skladeb";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Automatické ukládání pro použití offline je zapnuto, což znamená, že nové přírůstky do seznamů skladeb, včetně sdílených seznamů skladeb, jsou ukládány do vašeho zařízení pro prohlížení offline a mohou používat vaše mobilní data.\n\nAutomatické ukládání pro použití offline lze spravovat v nastavení seznamu skladeb.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Nastavení ";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Správa vašich dat seznamu skladeb";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Přejmenovat";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Uložit offline data";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Synchronizovat nyní";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Zavřít nabídku štíty";
+
+/* Settings privacy section title */
+"Privacy" = "Ochrana soukromí";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Chcete-li přepnout režim soukromého prohlížení, musíte nejprve ve vašem zařízení nastavit přístupový kód.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "Seznam všeho zablokovaného";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Od počátku věků";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "Trackery a reklamy";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "Webové stránky";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "Nejčastější trackery a reklamy na stránkách, které navštěvujete";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Webové stránky s největším počtem trackerů a reklam";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld stránky/stránek";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld trackery/trackerů a reklamy/reklam";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "Tracker a reklama";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "Web";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "Všechny výstrahy";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "Blokováno";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "Zablokováno";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Vymazat data Centra soukromí";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Vymazat všechna data Štítů?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Skrýt";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Skrýt statistiky soukromí";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Klepnutím na Skrýt odeberete widget Statistiky soukromí. Vždy jej můžete znovu povolit v Nastavení, na stránce Nová karta";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "Minulý týden";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** byl zablokován štíty Brave na **%2$lld** stránkách";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Nejčastější tracker a reklama";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "Navštivte některé webové stránky a prohlídněte si jejich data.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "Zatím nejsou k zobrazení žádná data.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "Získejte týdenní aktualizace o blokování trackerů a reklam.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "Zapnout oznámení";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Rekapitulace toho, jak vás tento týden Brave chránil online.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "Týdenní zpráva o soukromí";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Otevřít Centrum soukromí";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Otevřít Centrum soukromí";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Data Centra soukromí jsou uložena lokálně a nikdy nejsou nikam odesílána.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Centrum soukromí";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "**%1$@** měl v průměru na každou návštěvu zablokované/zablokovaných **%2$lld** trackery/trackerů a reklamy/reklam";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "Stránka s největším počtem trackerů";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "Centrum soukromí zobrazuje počet toho, co štíty zablokovaly. Nastavení nebude mít na stránce nové karty vliv na počítadlo štítů. Data štítů se v soukromých oknech nezapočítávají.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Zobrazit data štítů";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "Nastavení platí pouze v případě, že jste si zakoupili předplatné VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "Zobrazit výstrahy VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Obnoví počet všeho, co štíty zablokovaly.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Vymazat data štítů";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Štíty ";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Pro zdejší zobrazení dat povolit „%@“";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Trackery e-mailů";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Tracker e-mailů";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Trackery Ping ptající se na vaší polohu";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Tracker Ping ptající se na vaší polohu";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trackery a reklamy";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Tracker nebo reklama";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Upozornění na Firewall + VPN od Brave";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "Firewall + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "Celkový počet";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Zásady ochrany osobních údajů";
+
+/* Private button title */
+"Private" = "Anonymní režim";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Soukromé prohlížení";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Pouze anonymní prohlížení";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Režim pouze anonymního prohlížení zavře všechny vaše aktuální karty a odhlásí vás ze všech stránek.";
+
+/* Private tab details */
+"PrivateTabBody" = "Soukromé karty se v Brave neukládají, ale nejste s nimi online anonymní. Stránky, které navštívíte v soukromé kartě, se nezobrazí ve vaší historii a jejich soubory cookie vždy zmizí, když je zavřete — žádná jejich stopa v Brave nezůstane. Stažené soubory se však uloží.\nVáš mobilní operátor (nebo vlastník sítě Wi-Fi nebo VPN, ke které jste připojeni) vidí, které stránky navštěvujete, a tyto stránky zjistí vaši veřejnou IP adresu, a to i na soukromých kartách.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "Používání soukromých karet mění pouze to, co Brave dělá na vašem zařízení, nemění chování kohokoli jiného.\n\nStránky vždy zjistí vaši IP adresu, když je navštívíte. Z toho často mohou zhruba odhadnout, kde jste — typicky vaše město. Někdy může být tento odhad polohy mnohem konkrétnější. Stránky také ví všechno, co jim konkrétně řeknete, jako vyhledávané pojmy. Pokud se přihlásíte na stránku, budou vědět, že jste vlastníky tohoto účtu. Když soukromé karty zavřete, budete stále odhlášeni, protože Brave zahodí cookie, které vás udržuje přihlášené. \n\nKdokoli vás připojí k internetu (váš poskytovatel internetových služeb), vidí veškerou vaši aktivitu na síti. Často je to váš mobilní operátor. Pokud jste připojeni k síti Wi-Fi, je to vlastník této sítě, a pokud používáte VPN, pak je to kdokoli, kdo tu VPN provozuje. Váš poskytovatel internetových služeb vidí, které stránky navštěvujete, když je navštěvujete. Pokud tyto stránky používají HTTPS, nemůže provést o moc víc než kvalifikovaný odhad toho, co na těchto stránkách děláte. Ale pokud stránka používá pouze HTTP, váš poskytovatel internetových služeb vidí vše: vaše vyhledávané pojmy, jaké stránky čtete a na jaké odkazy klikáte.\n\nPokud zaměstnavatel spravuje vaše zařízení, může také sledovat, co s ním děláte. Používání soukromých karet mu pravděpodobně nezabrání v tom, aby viděl, jaké stránky jste navštívili. Někdo jiný s přístupem k vašemu zařízení mohl také instalovat software, který monitoruje vaši aktivitu, a ani soukromé karty vás před tím neochrání.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Více informací o soukromých kartách.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Soukromá karta";
+
+/* QR Code section title */
+"QRCode" = "QR kód";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Rychlé vyhledávače";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Ohodnotit Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Zvětšit velikost textu";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Jas";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Nastavení zobrazení";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Při převádění stránky došlo k chybě";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Bezpatkové písmo";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Patková";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Změní typ písma.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Načítám obsah...";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Načíst původní stránku";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Stránka nemohla být zobrazena v zobrazení čtečky.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Režim čtečky";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Zmenšit velikost textu";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Změní barevný motiv.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Vymazat";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Vymazat všechny nedávno zavřené karty?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Žádné nedávno zavřené karty.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Otevřít";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Znovu otevřít poslední zavřenou kartu";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Chcete otevřít poslední zavřenou kartu?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Nedávno zavřené karty";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Zobrazit nedávno zavřené karty";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Vymazat";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Vymazat nedávné";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Nedávná data o vyhledávání";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Deaktivovat";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Aktivovat";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Oblíbené";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Skrýt";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Vložit a přejít";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "zapnuto ";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Naskenováno";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "Chcete-li vyhledávat podle QR kódu, zarovnejte QR kód do středu rámečku.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "Instrukce";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "Scan QR Code";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Nedávná vyhledávání vám umožní soukromý přístup k minulým vyhledáváním. Chcete povolit nedávná vyhledávání?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Nedávná vyhledávání";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Zobrazit";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Zobrazit více";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Návrhy vyhledávání";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Automaticky přesměruje odkazy Reddit na starší rozhraní (na old.reddit.com). Chcete-li vynutit nové rozhraní Reddit, použijte místo toho new.reddit.com.";
+
+/* Action button for removing sync device. */
+"RemoveDevice" = "Remove";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Odstranit oblíbené";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Nahlásit porouchanou stránku";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Nahlásit chybu";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Další informace (nepovinné)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Kontaktujte mě na adrese: (nepovinné)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Email, Twitter atd.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Poznámka: Zpráva odeslaná na servery Brave bude zahrnovat adresu stránky, číslo verze prohlížeče Brave, nastavení štítů, stav VPN a nastavení jazyka.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Submit";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "„%@“ chce získat přístup k fotoaparátu a mikrofonu";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "„%@“ chce získat přístup k fotoaparátu";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Povolit";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "„%@“ chce získat přístup k zařízení pro zachycení médií";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "„%@“ chce získat přístup k mikrofonu";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Obnovené záložky";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Obnovené oblíbené";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Ano";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Ne";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Brave bohužel přestal fungovat nebo se nezavřel správně.\nPřejete si obnovit vaše karty?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Brave se nečekaně zavřel.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "S odměnami Brave si můžete zobrazit reklamy chránící soukromí ze sítě Reklamy Brave. Žádné trackery. Žádné zpomalení. A vaše data zůstávají naprosto v bezpečí.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Zapnout Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknutím kdekoli na obrazovce můžete pokračovat v Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Nyní můžete zahájit bezplatný hovor";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Chcete-li zahájit bezplatný hovor, zapněte funkci Brave Rewards.";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Zapnutím podpoříte autory obsahu";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Používání odměn Brave vám pomáhá při prohlížení stránek podporovat tvůrce obsahu.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Pomáháte podporovat autory obsahu";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Děkujeme, že při prohlížení stránek pomáháte podporovat tvůrce obsahu!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Kliknutím souhlasíte s %1$@ a %2$@. Můžete je kdykoliv zakázat v Nastavení.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Podporujte automaticky tvůrce obsahu a vydavatele povolením soukromých reklam Brave. Soukromé reklamy Brave jsou reklamy respektující soukromí, které se vracejí tvůrcům obsahu.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Povolit Brave Rewards";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Pomáháte podporovat tvůrce obsahu, jako je tento.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Počet tvůrců obsahu, které tento měsíc pomáháte podporovat.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Tento tvůrce nebyl ověřen a nebude zahrnut do podpory tvůrců";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Částka ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Anonymní";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Informace o zůstatku";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Opravdu chcete vymazat všechny protokoly o odměnách?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Vymazat protokoly";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Částka příspěvku";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Tokeny Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Žádné";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Potvrdit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Uživatelské fondy";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Vypnout automatické příspěvky";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Přehled automatických příspěvků je prázdný";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Hotovo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Přihlašovací údaje";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Externí transakce";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Failed";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Nedostatek financí";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Připravit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Rezervovat";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Odměny jsou vypnuté";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Spustit";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Příspěvky";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Vytvořeno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Informace o zařízení";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Zapsáno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Stav zápisu";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Platnost vyprší";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Neplatné";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Klíčové informace Seed";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "Zobrazeny/zobrazeno %d protokoly/protokolů";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Výpisy";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Nezapsáno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Není podporováno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Procesor";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Vydavatel";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Vydavatelé";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Počet opakovaných pokusů";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Automatický příspěvek ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Jednorázové spropitné";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Opakovaný dar ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Profil odměn, informace o zařízení a zůstatku (vždy sdíleno)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Základní informace";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Jakékoli příspěvky vydavatelům prostřednictvím spropitného nebo automatického přispění";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Interní úložiště dat";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Databáze odměn";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Protokolování zvláštních odměn";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Sdílet";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Sdílet vnitřní odměny";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Údaje na těchto stránkách mohou být citlivé. Dávejte si pozor, s kým je sdílíte.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Warning";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Status";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Krok";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Podporováno";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Vnitřní odměny";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Celková částka";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Celkový zůstatek";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Typ ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Platné";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Verze";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Datum vytvoření profilu odměn";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Informace o profilu odměn";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID platby odměn";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Panel odměn";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Uložit";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Uložené přihlašovací údaje";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Uložené karty";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Uložit obrázek";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Uložit přihlašovací údaje";
+
+/* Scan sync code title */
+"Scan" = "Vyhledat";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "Mám synchronizační kód";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Skripty blokovány";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Hledat v záložkách";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "Vyhledat pomocí %@";
+
+/* Search engines section of settings */
+"SearchEngines" = "Vyhledávače";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Vyhledává návrh";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Otevřít karty a záložky a historii";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Vymazat vyhledávání";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Vstupte do režimu vyhledávání";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Vyhledat vstupní pole";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Search";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Přidat vlastní vyhledávač";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Zapněte tuto možnost, chcete-li při vyhledávání zahrnout výsledky z historie a záložek";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Zobrazit návrhy prohlížeče";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Search";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Zobrazit poslední vyhledávání";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Nastavení vyhledávání";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Zobrazit návrhy vyhledávání";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Návrhy vyhledávání od %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Přepnout na tuto kartu";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "Vyhledat pomocí %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Search";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Návrhy vyhledávání";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Hledat vyhledávací službou Brave";
+
+/* Settings security section title */
+"Security" = "Zabezpečení";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Odeslat";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Odeslat zprávu o selhání, aby Brave mohl problém vyřešit?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Jejda! Brave přestal fungovat";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Odeslat zprávu";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave lze nyní nastavit jako váš výchozí prohlížeč v iOS. Klepnutím sem otevřete nastavení.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Nastavit jako výchozí prohlížeč";
+
+/* No comment provided by engineer. */
+"Settings" = "Nastavení ";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Ručně";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Po jednom dni";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Po jednom měsíci";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Po jednom týdnu";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Zavřít karty";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Povolit Brave automaticky zavírat karty, které nebyly v poslední době zobrazeny.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Přehrávání nejvyšší kvality";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Umožňuje vysoce kvalitní rozlišení";
+
+/* Header for the general settings section */
+"settings.media.general" = "General";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Média";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Otevírat odkazy na YouTube v prohlížeči Brave";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Povolit čas na obrazovce";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Podívejte se, na kterých webových stránkách trávíte nejvíce času, a nastavte limity prohlížení. [Zjistit více](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Nastavení kvality";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Tento soukromý ping umožňuje Brave odhadnout počet aktivních uživatelů.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Automatické odesílání denního pingu do služby Brave";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Nelze načíst stránku.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "Licence";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "Nastavení ";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Spodní lišta";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Horní lišta";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Karty";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Sdílet odkaz";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Sdílet s...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "Sdílet s...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Gratulujeme k dosažení tohoto milníku soukromí.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Gratulujeme. Jste součástí exkluzivního klubu.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Gratulujeme. Jste velmistr(yně)!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Gratulujeme. Jste legendární.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Gratulujeme. Jste mistr(yně)!";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Gratulujeme. Patříte mezi profesionály.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Gratulujeme. Jste poměrně unikátní.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Průměrně uložených dat\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Znovu nezobrazovat";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Sdílejte, co je nového";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Štíty Brave právě ochránily vaše online soukromí.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Gratulujeme. Jste poměrně unikátní.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld trackerů a reklam zablokováno!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Videa bez reklam spotřebovávají méně dat";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Při sledování videí na tomto webu jsou reklamy blokovány.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Výchozí globální štíty Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Toto jsou výchozí nastavení štítů pro nové stránky. Jejich změna neovlivní vaše stávající nastavení pro jednotlivé stránky.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Tuto stránku prohlížíte bez ochrany soukromí od Brave. Se zapnutými Štíty nefunguje?";
+
+/* shields overview message */
+"ShieldsOverview" = "Štíty stránky vám umožňují kontrolovat, kdy jsou reklamy a trackery blokovány pro každou stránku, kterou navštívíte. Pokud chcete vidět reklamy na konkrétní stránce, můžete je povolit zde.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Poznámka: Některé stránky mohou kvůli správné funkčnosti vyžadovat skripty, takže je tento štít ve výchozím nastavení vypnut.";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Nová soukromá karta";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Nová karta";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Scan QR Code";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Otevřít Novinky Brave a podívat se na dnešní hlavní příběhy";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Otevřít prohlížeč na nové kartě a odstranit všechna data historie soukromého prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Vymazat historii prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Vymazat historii prohlížení stránek Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Otevřít prohlížeč na nové kartě a povolit VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Povolit VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Otevřít prohlížeč Brave a povolit VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Otevřít novou soukromou kartu";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Otevřít novou kartu soukromého prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Otevřít novou kartu";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Otevřít novou kartu prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Otevřít obrazovku záložek prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Otevřít záložky";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Otevřít záložky prohlížeče Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Otevřít Novinky Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otevřít Novinky Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Otevřít obrazovku historie prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Otevřít historii prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Otevřít historii prohlížeče Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Začít přehrávat vaše videa v seznamu skladeb";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Otevřít seznam stop";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Otevřít seznam stop";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otevřít karty Brave otevřené v jiných zařízeních";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Otevřít karty z jiných zařízení";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Otevřít karty z jiných zařízení";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Začít pomocí Brave bezpečně prohledávat webové stránky";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Otevřít webové stránky záložek";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Otevřít historii webové stránky";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otevřít webovou stránku";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Tato možnost otevře nastavení Brave. Chcete-li změnit různé možnosti Siri, vyberte prosím položku nabídky „Siri a vyhledávání“ a přizpůsobte své volby.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Otevřít nastavení";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Pomocí klávesových zkratek otevřete novou kartu a vymažte historii prohlížeče prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Vymazat historii prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Pomocí klávesových zkratek povolte VPN Brave prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Povolit VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Pomocí klávesových zkratek otevřete obrazovku záložek prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Otevřít záložky";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Pomocí klávesových zkratek otevřete novou kartu a zobrazte kanál Novinky Brave prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otevřít Novinky Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Pomocí klávesových zkratek otevřete obrazovku historie prohlížeče prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Otevřít historii prohlížeče";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Pomocí klávesových zkratek otevřete novou soukromou kartu prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Otevřít novou soukromou kartu";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Pomocí klávesových zkratek otevřete novou kartu prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Otevřít novou kartu";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Pomocí klávesových zkratek otevřete seznam skladeb prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Otevřít seznam stop";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Pomocí klávesových zkratek otevřete karty z jiných zařízení prostřednictvím Siri – hlasového asistenta";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Otevřít karty z jiných zařízení";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Klávesové zkratky Siri";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Zobrazit klávesovou zkratku k záložce";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Zobrazit záložky";
+
+/* Show code words instead */
+"ShowCodeWords" = "Místo toho zobrazit kódová slova";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "Zobrazit stahování";
+
+/* Button to show the history list */
+"ShowHistory" = "Zobrazit historii";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "Zobrazit historii";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Pouze orientace na šířku";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Zobrazit náhledy odkazů";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Zobrazit karty";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Panel karet";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Děkuji";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Štíty ";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Standardní karta";
+
+/* Support section title */
+"Support" = "Podpora";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Zabraňte této stránce ve vytváření dalších upozornění";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Potlačit výstrahy";
+
+/* Sync settings section title */
+"Sync" = "Synchronizace";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Úspěšně exportované záložky";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Export záložek se nezdařil";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Záložky ";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Import záložek se nezdařil";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Úspěšně importované záložky";
+
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Synchronizace zařízení";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Synchronizace zařízení";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Nelze se připojit k tomuto řetězci. Účet byl smazán.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Synchronizace zařízení";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Spravujte informace, které chcete synchronizovat mezi zařízeními. Tato nastavení se týkají pouze tohoto zařízení.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Odstranit synchronizační účet";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Při načítání zařízení v synchronizačním řetězci se něco pokazilo.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Zařízení v synchronizačním řetězci";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Poznámka: Měli byste ověřit, zda ve výše uvedeném seznamu poznáváte každé zařízení. Zařízení v synchronizačním řetězci mohou přijímat osobní údaje, jako jsou hesla a historie prohlížení stránek.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Potvrzení zařízení";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Dosáhli jste maximálního počtu zařízení (10) povolených v synchronizačním řetězci. Chcete-li pokračovat, odeberte zařízení.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Limit zařízení";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Chcete-li přidat zařízení do synchronizačního řetězce nebo přepnout synchronizaci hesel, musíte nejprve nastavit přístupový kód ve vašem zařízení.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Nastavit přístupový kód";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Nastavení synchronizace";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Přidat nové zařízení";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Přidat počítač";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Synchronizovat řetězcový QR kód";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Na vašem druhém mobilním zařízení přejděte na Synchronizovat v panelu Nastavení a klepněte na tlačítko „Skenovat synchronizační kód“. Pomocí fotoaparátu naskenujte níže uvedený QR kód.\n\nZacházejte s tímto kódem jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Zadejte synchronizační kód";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Na svém zařízení přejděte na Synchronizovat na panelu Nastavení a klepněte na tlačítko „%@“. Zadejte níže uvedená kódová slova synchronizačního řetězce.\n\n Zacházejte s tímto kódem jako s heslem. Pokud se ho někdo zmocní, může číst a upravovat vaše synchronizovaná data.";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Zadejte kódová slova";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Přidat tablet nebo telefon";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Zvolte typ zařízení";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Zvolte typ zařízení, se kterým se chcete synchronizovat.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Počítač";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Odstranit synchronizační účet";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Zařízení a nastavení";
+
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Platnost tohoto synchronizačního kódu vypršela, vygenerujte prosím nový synchronizační kód a zkuste to znovu.";
+
+/* Generic Sync Error Description */
+"syncGenericError" = "Omlouváme se, ale něco se pokazilo";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importované záložky";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Synchronizační agent je aktuálně offline nebo není dostupný. Zkuste ho prosím znovu kontaktovat později.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Chyba komunikace synchronizace";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Zkontrolujte vaše připojení k internetu a zkuste to znovu.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Nelze se připojit k synchronizaci";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Data místního zařízení zůstanou na všech zařízeních nedotčena. Ostatní zařízení v tomto synchronizačním řetězci zůstanou synchronizovaná. ";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Odstranit %@ ze synchronizačního řetězce?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Odstranit zařízení";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Zařízení";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Aktuálně synchronizovaná data zůstanou zachována, ale všechna data v mezipaměti synchronizace Brave budou smazána. Chcete-li znovu synchronizovat data zařízení, budete muset spustit nový synchronizační řetězec.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Odstranit synchronizační řetězec";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Odstraněním %@ dojde k odstranění synchronizačního řetězce.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Odstraněním zařízení ze synchronizačního řetězce nevymažete dříve synchronizovaná data ze zařízení.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Odstranit %@ ze synchronizačního řetězce?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Odstranit z tohoto zařízení";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Odstranit toto zařízení?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Toto zařízení bude odpojeno od synchronizační skupiny a již nebude přijímat ani odesílat synchronizační data. Všechna existující data zůstanou v zařízení.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "Níže uvedený seznam obsahuje veškerá zařízení ve vašem synchronizačním řetězci. Každé zařízení může být spravováno z jakéhokoliv jiného zařízení.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Použiji svůj fotoaparát...";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Tablet nebo telefon";
+
+/* This device cell */
+"SyncThisDevice" = "Toto zařízení";
+
+/* Sync to existing device */
+"SyncToDevice" = "Synchronizace se zařízením";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Pomocí stávajícího synchronizovaného zařízení otevřete Nastavení Brave a přejděte na Nastavení -> Synchronizovat. Zvolte „Přidat zařízení“ a naskenujte kód zobrazený na obrazovce.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Toto zařízení nelze synchronizovat";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Neúspěšné";
+
+/* Sync Error Description */
+"syncValidForTooLongError" = "Tento kód je neplatný. Zkontrolujte, je na vašem zařízení správně nastaven čas a časové pásmo.";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Zavřít";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Zapne nebo vypne soukromý režim";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Soukromý režim";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Vypnuto ";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Zapnuto";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Po zavření aplikace ponechte karty soukromého prohlížení otevřené a zajistěte, aby relace soukromého prohlížení pokračovaly hladce.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Ponechat soukromé karty";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Vyžaduje Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Vyžaduje PIN kód";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Vyžaduje Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Soukromé karty";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Navigační panel nástrojů";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Přidat kartu";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Přidat do seznamu stop";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Back";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Vpřed";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Zabezpečené připojení";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Menu";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Nezabezpečené";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Seznam stop";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Zobrazení čtečky";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Přidat do seznamu čtení";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Načíst znovu";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Vyhledat nebo zadat adresu";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Sdílet";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Zastavit";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Hlasové vyhledávání";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Nezabezpečené připojení";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Zásobník karet";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Přidat kartu";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Přejetím pomocí tří prstů doprava nebo doleva zavře kartu.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Karta se zavírá";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Žádné karty";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Karty %1$@ až %2$@ z %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Nová karta";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "Vyhledávat v kartách";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Karta %1$@ z %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Smluvní podmínky";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Terms of Use";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Sdílet...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Sdílejte Brave se svými přáteli!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automaticky";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Tmavé";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Vzhled";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Tato nastavení se nepoužívají v režimu soukromého prohlížení.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Světlé";
+
+/* Name for app theme settings */
+"themesSettings" = "Motivy";
+
+/* No comment provided by engineer. */
+"Title" = "Název";
+
+/* History tableview section header */
+"Today" = "Dnes";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Přidat";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Nepodařilo se přidat zdroj";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Omlouváme se, ale tuto adresu kanálu jsme nemohli rozpoznat.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Omlouváme se, ale adresu kanálu jsme nenašli.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Omlouváme se, ale tato adresa kanálu nemá žádný obsah.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Přidat zdroj do Novinek Brave";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Dostupné kanály RSS";
+
+/* The name of the feature */
+"today.braveToday" = "Zprávy Brave";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "Zprávy";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Sledujte témata, která vás zajímají";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kanály";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kanály";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kanály";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Je dostupný nový obsah";
+
+/* No comment provided by engineer. */
+"today.deals" = "Dohody";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Novinky Brave přestanou zobrazovat obsah od %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Zakázáno";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Skrýt obsah od %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Zkuste zapnout některé nové zdroje";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Žádné články k zobrazení";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Povolit obsah od %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Novinky Brave se potýkají s některými problémy. Zkuste to znovu.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "No tě pic…";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Spravovat zdroje pro váš kanál";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Sleduje";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Sleduje";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Sledovat";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Získat kanály od";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Importovat OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Nezabezpečené zdroje – přidávejte na vlastní nebezpečí";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Sledujte v rámci jednoho kanálu své oblíbené zdroje. Stačí otevřít kartu v Brave, posunout dolů a... tadá!\nNovinky Brave jsou podporovány soukromými a anonymizovanými reklamami.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Zapněte si zprávy Brave a nenechte si ujít žádný příběh";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Zobrazit zprávy Brave";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Více informací o vašich datech";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Další nabídky Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Bez internetu";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Zkuste zkontrolovat své připojení nebo se znovu připojit k Wi-Fi.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Nebyly nalezeny žádné výsledky";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Seřazený seznam zdrojů";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Populární";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Populární zdroje";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Propagované";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Skrýt";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Ohodnotit Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Řekněte nám, co si myslíte!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Líbí se vám Brave?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Obnovit";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Vyhledejte stránku, téma nebo kanál RSS";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Podobné jako %@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Zdroje a nastavení";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Zdroje";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Některé zdroje, které by se vám mohly líbit";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Navrhované";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Navrhované";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Zapnout zprávy Brave";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Nesledovat";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Zdroje uživatelů";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Přepnout režim čtečky";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Zapnout návrhy vyhledávání?";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Nelze se připojit k synchronizační skupině. Zkontrolujte prosím zadaná slova a zkuste to znovu.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Nelze se připojit";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Odemknout";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Nepodporované platební nástroje";
+
+/* Bookmark URL */
+"URL" = "Adresa URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Adresa a vyhledávání";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Přesměrování webových stránek";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Zrušeno uživatelem";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Použijte regionální adblock";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Zavřít";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Při přihlášení k vašemu účtu Uphold došlo k problému. Zkuste to prosím znovu";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Omlouváme se, ale něco se pokazilo";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Verze %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Zobrazit na %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Povolte prosím přístup k mikrofonu v nastavení systému iOS, aby Brave mohl používat anonymní hlasové vyhledávání.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Vyžaduje se přístup k mikrofonu";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave neukládá ani nesdílí vaše hlasové vyhledávání.";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "zapnout";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Chcete zůstat chráněni? Před ukončením předplatného stačí obnovit. Jako poděkování za obnovení vám dokonce dáme 20% slevu na další 3 měsíce.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Povolit automatické obnovení";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Automaticky ihned obnovte vaše předplatné VPN Brave a získejte 20% slevu na 3 měsíce!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Automaticky obnovte předplatné VPN Brave a získejte 1 měsíc zdarma!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "To znamená, že ztratíte extra ochranu Brave pro každou aplikaci v telefonu.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Ale ne! Vaše předplatné VPN Brave brzy vyprší.";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Koupit";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Na 1 předplatné ochrana až 5 zařízení";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Zvolte zeměpisnou polohu/zemi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave nikdy nezaznamenává vaši aktivitu";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Chraňte každou aplikaci a vaše zaříz.";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Bezpečnější na domácí i veřejné Wi-Fi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Blesková rychlost až 100 Mb/s";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Verze aplikace";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobilní operátor";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Nelze odeslat e-mail. Zkontrolujte prosím vaši konfiguraci e-mailu.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Vyberte prosím informace, které jste ochotni s námi sdílet.\n\nČím více informací s námi zpočátku sdílíte, tím snazší bude pro naše pracovníky podpory vám pomoci vyřešit váš problém.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Podpora poskytovaná s pomocí týmu Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Název hostitele sítě VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Problém";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Problém se spolehlivostí připojení";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Po připojení není k dispozici internet";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Ostatní";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Nelze se připojit k síti VPN (jiná chyba)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Pomalé připojení";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Webové stránky nefungují";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Chybové protokoly";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Typ sítě";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platforma";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Pokračovat na e-mail";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Typ předplatného";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Časové pásmo iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + problém VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Aktivovat";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Nelze se připojit k App Store, zkuste to prosím za několik minut znovu.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Chyba App Store";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Všechny plány obsahují %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "bezplatná 7denní zkušební verze";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "vyzkoušejte 7 dní zdarma";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Všechna předplatná jsou automaticky obnovena, ale lze je před obnovením zrušit.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Tento profil umožňuje VPN se kdykoliv automaticky připojovat a zabezpečovat provoz napříč vaším zařízením. Toto připojení VPN bude šifrováno a směrováno přes inteligentní firewall Brave, aby blokovalo potenciálně škodlivá a invazivní připojení.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Nainstalovat profil VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave nyní nainstaluje profil VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "Síť VPN je nyní povolena";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Instalace sítě VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Vyzkoušejte ZDARMA";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Obnovuje se každý měsíc";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Měsíční předplatné";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Platnost vypršela";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Blokuje nežádoucí síťová připojení";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Blokování reklam a trackerů ve všech vašich aplikacích ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Podporuje rychlost až 100 Mb/s";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Rychle a neomezeně až do 100 Mb/s";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Nepřetržitá podpora";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Zabezpečuje všechna připojení";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Zajišťuje";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Vyberte prosím váš preferovaný transportní protokol. Po přepnutí budou vaše stávající přihlašovací údaje VPN vymazány a budete znovu připojeni, pokud je momentálně navázáno připojení VPN.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Přepnutí protokolu tunelu se nezdařilo, zkuste to prosím znovu později.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Chyba serveru";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Transportní protokol";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Protokol tunelu VPN byl změněn.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Oblast serveru, která je vám nejblíže, bude automaticky vybrána, na základě časového pásma vašeho systému. Tohle se doporučuje, aby byla zajištěna vysoká rychlost internetu.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automaticky";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Přepnout servery se nezdařilo, zkuste to prosím znovu později.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Chyba serveru";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Oblast serveru";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Oblast VPN se změnila.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Nelze resetovat konfiguraci VPN. Zkuste to prosím znovu. Pokud problém přetrvává, kontaktujte podporu o pomoc.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Zkusit znovu";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Resetování se nezdařilo";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Konfigurace VPN byla úspěšně resetována.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Resetování bylo úspěšné";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Obnovit ";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Brave.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Dismiss";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Přihlásit";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Relace vypršela.";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Upgradujte na síť VPN, chraňte své připojení a blokujte všude invazivní sledovací programy.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Kontaktujte technickou podporu";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Nepodařilo se načíst seznam serverů. Zkuste to prosím znovu později.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Podpora sítě VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Brave a používejte tak VPN Brave na jiných zařízeních.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Správa předplatného";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Uplatnit kód nabídky";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Obnovení konfigurace";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Hostitel";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Poloha";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Server";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Konec platnosti";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Předplatné";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Transportní protokol";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Zakázáno";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Aktivní";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Platnost vypršela";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Přihlásit se nyní k odběru";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Přesně tak. Vaše předplatné VPN Brave je nyní vhodné až pro 5 zařízení. Můžete se tedy přihlásit k odběru na iOS a používat jej zdarma na vašich zařízeních Mac, Windows a Android.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Používejte nyní VPN Brave na všech svých zařízeních za stejnou cenu!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Vyzkoušejte VPN Brave ještě jednou a získejte 20% slevu na 3 měsíce!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Jste připraveni zabezpečit každou aplikaci ve vašem telefonu? Vraťte se k VPN Brave a získejte 20% slevu na další 3 měsíce.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Brave vás chrání i mimo prohlížeč Brave?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Aktualizovat";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Nemějte strach. Během vaší aktualizace platebních údajů ponecháme VPN aktivní několik dní.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Aktualizovat své platební údaje, abyste zůstali chráněni pomocí VPN Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Chcete i nadále chránit každou aplikaci ve vašem telefonu? Stačí aktualizovat své platební údaje.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Na vašem účtu je problém s fakturací, což znamená, že vaše předplatné VPN Brave brzy vyprší.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Aktualizovat platbu";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovat způsob platby";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Brave bude i nadále chránit.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN jsou ZAPNUTY";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Při inicializaci VPN došlo k problému. Zkuste to prosím znovu nebo zkuste resetovat konfiguraci na stránce nastavení VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Chyba";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Brave vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Povolení zamítnuto";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Nelze uplatnit kód nabídky. Zkuste to prosím znovu, nebo zkontrolujte podrobnosti o kódu nabídky a pak to zkuste znovu.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Nelze dokončit nákup. Zkuste to prosím znovu, nebo zkontrolujte své platební údaje na Apple a následně to zkuste znovu.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Chyba";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Brave souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Uplatnit kód";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Aktuální nastavení: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Oblast VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Brave a opravíte všechny chyby. Tento proces může trvat minutu.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Obnovit konfiguraci";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Reset";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Měsíční předplatné";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Roční předplatné";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Aktualizujte prosím váš způsob platby";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Obnovovat ročně, abyste ušetřili %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Nejlepší cena";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Jeden rok";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Datum vytvoření peněženky";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Webový obsah";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "Mezipaměť";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "Soubory cookie ";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "Databáze";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "Místní úložiště";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "Načítání dat webových stránek...";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "Správa dat webových stránek";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "Nebyla uložena žádná data webových stránek";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "Odstranit vše";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "Remove";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "Odstranit %ld položky/položek";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Oblíbené";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Widgety";
+
+/* Word count title */
+"WordCount" = "Počet slov: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "rok";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Ano";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Ano, smazat";
+
+/* History tableview section header */
+"Yesterday" = "Včera";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Povolení této experimentální funkce přehraje video v maximální dostupné kvalitě a použije další data.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Vypnuto ";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Zapnuto";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Povolit přes Wi-Fi";
+

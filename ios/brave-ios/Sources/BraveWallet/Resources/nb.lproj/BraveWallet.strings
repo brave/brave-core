@@ -553,6 +553,9 @@
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Slett";
 
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "Kopier";
+
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Velg bort alle";
 

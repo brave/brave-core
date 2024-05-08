@@ -1,0 +1,4014 @@
+/* About settings section title */
+"About" = "O opcijama";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "O značajci Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj. Njima se želi doznati tko ste i pratiti što radite na svakom mrežnom mjestu.\n\nU pregledniku Brave blokiraju se navedene stavke kako biste mogli pregledavati mrežu bez praćenja.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Ovim se omogućava spremanje slike u album kamere.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave želi pristupiti vašim fotografijama";
+
+/* Button to add a bookmark */
+"AddBookmark" = "Dodaj oznaku";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "Dodaj oznaku";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddCustomFilterList" = "Dodaj popis prilagođenog filtra";
+
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Dodaj dodatne popise koje stvara i održava pouzdana zajednica.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Pretplatite se samo na pouzdane popise subjekata**. Vašim preglednikom povremeno se provjeravaju ažuriranja popisa s upisanog URL-a.";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "Dodaj u omiljene stavke";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Nova mapa";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Dodaj u omiljene stavke";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Dodaj oznaku";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Oglasi i elementi za praćenje";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Uvijek zahtijevaj inačicu mrežnog mjesta za stolno računalo";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Uvijek pošalji";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Uključi";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Brave";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Otkaži";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "Korisničko ime i lozinku zahtijeva: %1$@. Na mrežnom mjestu navodi se: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Prijavi se";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ traži korisničko ime i lozinku.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Lozinka";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Potrebna je autentifikacija";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Korisničko ime";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Automatsko preusmjeravanje stranica AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Automatsko preusmjeravanje URL-ova za praćenje";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Omogućite podršku za zaobilaženje preusmjeravanja URL-ova za praćenje najviše razine";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Blokiraj kolačiće trećih strana";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Blokiraj sve kolačiće";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Blokiraj sve";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Blokiranjem svih kolačića sprečava se pravilan rad nekih mrežnih mjesta.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Blokirati sve kolačiće?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Postavljanje preferencije nije uspjelo. Pokušajte ponovno.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "Blokiranje obavijesti o davanju privole za kolačiće";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Sprječava mrežnim mjestima pohranjivanje informacija o vašim prijašnjim posjetima.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Nadzornik blokiranja";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blokiraj obavijesti „Prebaci se na aplikaciju”";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Blokiraj skočne prozore";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Blokiraj skripte";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Blokira jezik JavaScript (mogu se rušiti mrežna mjesta).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Dodaj knjižnu oznaku za sljedeći broj: %lld";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Mapa knjižnih oznaka";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Informacije knjižne oznake";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Knjižne oznake";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Knjižne oznake";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Izvezi knjižne oznake";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Uvezi knjižne oznake";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Knjižne oznake";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Naziv";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Adresa";
+
+/* Button to show the brave panel */
+"BravePanel" = "Ploča Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Nagrade Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Otvori";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Rewards";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Nagrade Brave";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Pretraživanjem preglednika Brave ne prati se vas, vaše upite ili klikove.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možda kasnije";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Podržite neovisno pretraživanje uz bolju privatnost. ";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Isprobajte pretraživanje preglednika Brave";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Možda kasnije";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Odbaci";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Napredne kontrole";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Štitovi Brave i privatnost";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Štitovi i privatnost";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Blokirani oglasi i druge čudne stavke";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Saznaj više";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Promijeni globalne zadane postavke Štitova";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Globalni upravljački elementi";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Ako se čini da je mrežno mjesto neispravno, pokušajte isključiti štitove";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Štitnici Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Dolje";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Podignuti";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Dvaput dodirnite za uključivanje/isključivanje Štitova Brave";
+
+/* Sync page title */
+"BraveSync" = "Sinkroniziraj";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Unutarnja sinkronizacija";
+
+/* Sync settings welcome */
+"BraveSyncWelcome" = "Za početak preglednik Brave treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Usluga Razgovor Brave";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "Zaključavanje preglednika";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "Otključajte preglednik Brave identifikacijom s pomoću dodira, identifikacijom s pomoću očitavanja lica ili šifrom sustava.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Povijest pregledavanja";
+
+/* Settings item for clearing the cache */
+"Cache" = "Predmemorija";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Pomakni traku s karticama";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Pomaknite adresnu traku, kartice, knjižne oznake i druge alate na dno preglednika.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Prilagođavanje trake kartica preglednika Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Postaviti preglednik Brave kao zadani preglednik?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Postavi kao zadano";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Već je zadan?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Preskoči ovo";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Pojednostavljena zaštita privatnosti.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Na taj način doznajemo koje se značajke preglednika Brave najčešće upotrebljavaju. Promijenite u bilo kojem trenutku u postavkama preglednika Brave pod stavkom Štitovi Brave i druge postavke privatnosti.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Doznajte više o našoj analitici proizvoda kojom se čuva privatnost (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Pomognite poboljšati Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Podijelite potpuno privatne i anonimne uvide u proizvode.";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Dobijte privatnost preglednika Brave na svom računalu ili tabletnom uređaju te sinkronizirajte knjižne oznake i proširenja između uređaja.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Sinkroniziraj sada";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Privatnost. Svugdje.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Kartica primljena";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Otkaži";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "Algoritam";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "Bilo što";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "bitovi";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "bajtovi";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "Ovaj certifikat valjan je";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "Uobičajene informacije";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "Uobičajen naziv";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "Država ili regija";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "Derivacija";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "Komponenta domene";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "Enkripcija";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "Šifriranje";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "Eksponent";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "Otisci prstiju";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "Ime izdavača";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "Veličina ključa";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "Upotreba ključa";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "Mjesto";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "Nema";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "Ne vrijedi nakon:";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "Ne vrijedi prije:";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "Organizacijska jedinica";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "Organizacija";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "Parametri";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "Informacije o javnom ključu";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "Javni ključ";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "Serijski broj";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ sa šifriranjem %2$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "Potpis %1$@ uz %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "Algoritam potpisa";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "Potpis";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "Država/pokrajina";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "Adresa ulice";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Naziv subjekta";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "Identifikacijska oznaka korisnika";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "Datumi valjanosti";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "Potvrdi";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "Inačica";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "Zamatanje";
+
+/* No comment provided by engineer. */
+"ClearData" = "Čišćenje podataka";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "Čišćenje privatnih podataka";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Otkaži";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Jeste li sigurni?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "U redu";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Izbriši podatke";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Da, izbriši";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Očisti podatke sada";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Otkaži";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Ovom radnjom čiste se svi vaši privatni podatci uključujući povijest sa sinkroniziranih uređaja.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "U redu";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Pogreška klijenta";
+
+/* Button title to close a menu. */
+"Close" = "Zatvori";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Jeste li sigurni da želite zatvoriti sve otvorene kartice?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Zatvori sve kartice (%i)";
+
+/* Code words input help */
+"CodeWordInputHelp" = "Upišite svoju isporučenu šifru lanca sinkronizacije u obrazac koji se nalazi u nastavku.";
+
+/* Code words section title */
+"CodeWords" = "Kôdna riječ";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Preuzmi";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Podijeli";
+
+/* No comment provided by engineer. */
+"Confirm" = "Potvrdi";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtriranje sadržaja";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Omogućite prilagođene filtre kojima se blokiraju sustavi za praćenje prema regiji i jeziku, kao i smetnje.";
+
+/* Cookie settings option title */
+"CookieControl" = "Upravljanje kolačićima";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Kolačići i podaci web-lokacije";
+
+/* Copied action complete title */
+"Copied" = "Kopirano!";
+
+/* Copied codewords title */
+"CopiedToClipboard" = "Kopirano u međuspremnik!";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Kopirajte informacije o aplikaciji u međuspremnik.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Kopirajte informacije o veličini aplikacije u međuspremnik.";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Kopiraj čistu poveznicu";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Kopiraj sliku";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Kopiraj poveznicu";
+
+/* Copy codewords title */
+"CopyToClipboard" = "Kopiraj u međuspremnik";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Kopiraj informacije za podršku";
+
+/* Create PDF share action. */
+"CreatePDF" = "Izradi PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Trenutačno upotrebljavane tražilice";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Popis prilagođenih filtara";
+
+/* A title for a section that contains all custom filter lists */
+"CustomFilterLists" = "Popisi prilagođenih filtara";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL popisa prilagođenog filtra";
+
+/* Button title for Adding Engine in navigation Bar */
+"customSearchEngine.addButtonTitle" = "Dodaj";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Upišite URL za pretraživanje i zamijenite upit sljedećim: %1$s.\nPrimjerice: https://youtube.com/search?q=%2$s\n(Ako se mrežnim mjestom podržava OpenSearch, tijekom uređivanja ovog polja dostupna je mogućnost za automatsko dodavanje.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Automatski dodaj";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Pogreška pri dodavanju prilagođene tražilice";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "Brisanjem prilagođene tražilice dok je ona zadana automatski se mijenja zadana tražilica.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "Jeste li sigurni da želite izbrisati %@?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Tražilica s jednakim imenom već postoji.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nesiguran predložak prilagođenog pretraživanja za:";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Nesiguran predložak prilagođenog prijedloga za:";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Dodavanje tražilice";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Predložak za pretraživanje:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Predložak prijedloga:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Nova tražilica pojavljuje se u traci za brzo pretraživanje.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Dodati pružatelja usluge pretraživanja?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Nije moguće dodati prilagođenu tražilicu. Pokušajte ponovno poslije.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Pogreška prilagođene tražilice";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Tražilica s ovim naslovom ili URL-om već je dodana.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Napišite URL za pretraživanje i zamijenite upit sljedećim: %s. ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Pogreška upita URL-a pretraživanja ";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Kopirani tekst trebao bi biti valjani siguran URL koji počinje s izrazom „https://”";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Ispunite polja Naslov i URL.";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Prilagođene tražilice";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Dodana tražilica!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Ne sada";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Otvorite Postavke";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Otvori sve poveznice preglednikom Brave radi zaštite privatnosti";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Značajkom Štitovi Brave blokiraju se elementi za praćenje i oglasi te štede podatci i vrijeme na svakom mrežnom mjestu koje posjetite.";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Otvorite Postavke, dodirnite Zadana aplikacija preglednika i odaberite Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Postavite Brave kao zadani preglednik";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Dobijte zaštitu preglednika Brave na svakoj poveznici";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Zatvori zadani element za privlačenje pažnje preglednika";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Zadani popisi filtara";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Zadani Brave";
+
+/* No comment provided by engineer. */
+"Delete" = "Izbriši";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Ovim se brišu sve mape i knjižne oznake u njima. Jeste li sigurni da želite nastaviti?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Izbrisati mapu?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Otkaži";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Prijave se trajno uklanjanju.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Prijave se uklanjaju sa svih povezanih uređaja.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Jeste li sigurni?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Izbriši";
+
+/* Sync device settings page title. */
+"Devices" = "Uređaji u lancu sinkronizacije";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Uređaj %1$@ (%2$@)";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Sigurnosni certifikat";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Zaslon";
+
+/* No comment provided by engineer. */
+"Done" = "Završeno";
+
+/* cookie settings option */
+"DontBlockCookies" = "Ne blokiraj kolačiće";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Ne šalji";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Preuzete datoteke";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Preuzimanje";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Ovdje se prikazuju preuzete datoteke.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Udvostruči aktivnu karticu";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Ranije";
+
+/* No comment provided by engineer. */
+"Edit" = "Uredi";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Uredi oznaku";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Lokacija";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Uredi oznaku";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Uredi omiljenu stavku";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Uređivanje omiljene stavke";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Uredi mapu";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Omogući povlačenje za osvježavanje";
+
+/* Sync enter code words */
+"EnterCodeWords" = "Upiši kôdne riječi";
+
+/* Enter sync code words below */
+"EnterCodeWordsBelow" = "Upišite šifre u nastavku";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Upišite naziv mape";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Pokušajte ponovno upisati URL ili otvoriti tražilicu i tražiti novi URL.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Otvori u pregledniku Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Ponovno učitaj";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obično upotrebljava šifriranje za zaštitu vaših informacija. Kada se u pregledniku Brave pokušavate povezati sa sljedećim: %2$@, mrežnim mjestom vraćaju se neobične i netočne vjerodajnice. To se može dogoditi kada se napadač pretvara da je %3$@ ili kad se zaslonom za prijavu mreže Wi-Fi prekine veza. Vaše informacije i dalje su sigurne jer se preglednikom Brave zaustavila veza prije razmjene podataka.<br />Trenutačno ne možete posjetiti %4$@ jer se na mrežnom mjestu upotrebljava prikvačivanje certifikata. Mrežne pogreške i napadi obično su privremeni, pa će stranica vjerojatno raditi poslije.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "Ovaj poslužitelj nije dokazao da je %@. Operativni sustav vašeg uređaja odbacuje njegov sigurnosni certifikat. To se možda događa zbog pogrešne konfiguracije ili zato što napadač pokušava prekinuti vašu vezu.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Napadači mogu pokušati ukrasti vaše informacije od %@ (primjerice, lozinke, poruke ili kreditne kartice).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Natrag u sigurnost";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Na ovom mrežnom mjestu ne može se omogućiti sigurna veza";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Vaša veza nije privatna";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Sakrij detalje";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Saznaj više";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Više pojedinosti";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Nema pristupa internetu";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Čini se da niste na mreži. Kako biste to ispravili, pokušajte";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Provjeravanje mrežnih kabela, modema i usmjerivača";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Ponovno povezivanje s mrežom Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "Nastavi na: %@ (nesigurno)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ pokreće vanjsku aplikaciju";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Dopustiti poveznici mijenjanje aplikacije?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Dopusti";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Ne dopusti";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Omiljene stavke nalaze se na vašem početnom zaslonu. Ove knjižne oznake nisu sinkronizirane s drugim uređajima.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Omiljeni";
+
+/* No comment provided by engineer. */
+"Features" = "Značajke";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Upisani URL nevaljan je";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Samo sigurni (https) URL-ovi dopušteni su za popise prilagođenog filtra";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Dodaj";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Dodatni popisi popularnih zajednica. Imajte na umu da omogućavanje previše filtra smanjuje brzine pregledavanja.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Preuzimanje nije uspjelo";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Preuzimanje na čekanju";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Uredi";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Dodaj URL popisa filtra";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Posljednje ažuriranje: %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Ovdje upišite URL popisa filtra";
+
+/* Share action title */
+"FindInPage" = "Pronađite na stranici";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Završeno";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "Pronađi „%@”";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Sljedeći rezultat na stranici";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Prethodni rezultat na stranici";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "Pronađite na stranici";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "Pronađi sljedeće";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Na ovoj stranici";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "Pronađi prethodno";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Metode posebnog označivanja";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Blokiraj izrade digitalnog otiska";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Otežava mrežnim mjestima prepoznavanje karakterističnih obilježja vašeg uređaja. ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Dopusti otvaranje univerzalnih poveznica u vanjskim aplikacijama";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Prisilno lijepljenje";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "Ups! Nešto nije u redu. Pokušajte ponovno.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Pogreška";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Blokiraj opasna mrežna mjesta";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Sigurnim pregledavanjem dobivate zaštitu od mrežnih mjesta za koje se zna da su opasna. [Doznaj više] (%@)";
+
+/* Grand camera access */
+"GrantCameraAccess" = "Omogući kameru";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Sakrij pretpregled veza";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Sakrij ikonu nagrada Brave";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Skriva se ikona Nagrade Brave kada značajka Nagrade Brave nije omogućena";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Povijest";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Očisti povijest";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Ovim se čisti sva povijest pregledavanja.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Čišćenje povijesti pregledavanja";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Ovdje se pojavljuje povijest.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Povijest nije dostupna u načinu Samo privatno pregledavanje.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Povijest pretraživanja";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Povijest";
+
+/* No comment provided by engineer. */
+"Home" = "Početna stranica";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "Nadogradi veze na HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Otvaraju se mrežna mjesta upotrebom sigurnog HTTPS-a umjesto HTTP-a kada je to moguće.";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "Nadogradnje HTTPS-a";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Pojedinačne kontrole";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Nevaljane pojedinosti zahtjeva za plaćanjem";
+
+/* Generic error message for when the sync code is invalid */
+"InvalidSyncCodeDescription" = "Nevaljani kôd za sinkronizaciju. Provjerite i pokušajte ponovno.";
+
+/* History tableview section header */
+"LastMonth" = "Prošli mjesec";
+
+/* History tableview section header */
+"LastWeek" = "Prošli tjedan";
+
+/* No comment provided by engineer. */
+"learnMore" = "Saznaj više";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Spremljena prijava uklanja se trajno.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Stvoreno: %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Pojedinosti o prijavi";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Lozinka";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Korisničko ime";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Web-lokacija";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Kako biste vidjeli lozinke, prvo morate postaviti šifru na svom uređaju.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Postavljanje šifre";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Nema pronađenih prijava";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Prijave i lozinke";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Nikad spremljeno";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Spremljene prijave";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Filtrirajte";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Posljednja promjena %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "lozinka";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "korisničko ime";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "mrežno mjesto";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Poništi odabir za sve";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Nema pronađenih prijava";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Prijave";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Odaberi sve";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Omogućiti pozadinski zvuk";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Kopiraj";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Sakrij";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Otvori mrežno mjesto";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Otkrij";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "mj.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Dodirnite ovdje za više informacija.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Ovo je vaš prvi oglas Brave";
+
+/* Bookmark title / Device name */
+"Name" = "Naziv";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "isključeno";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nova knjižna oznaka";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nova knjižna oznaka";
+
+/* Title for new folder popup */
+"NewFolder" = "Nova mapa";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Nova mapa";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Nova mapa";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Novi privatni prozor";
+
+/* New sync code button title */
+"NewSyncCode" = "Započni novi lanac sinkronizacije";
+
+/* New Tab title */
+"NewTab" = "Nova kartica";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Novi prozor";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Način rada";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Noćnim načinom rada utječe se na izgled mrežnog mjesta i istodobno opći izgled sustava.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Uključivanje/isključivanje noćnog načina rada";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Noćni način rada";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "Ne";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Nisu pronađeni rezultati pretraživanja.";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"NotEnoughWordsDescription" = "Upišite sve riječi i pokušajte ponovno.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"NotEnoughWordsTitle" = "Nema dovoljno riječi";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Automatski preusmjerava poveznice NPR na njihovu tekstnu inačicu (na text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Podrška preglednika Brave";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Zatraži tokene";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Pregledavajući preglednikom Brave zaradili ste %@.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Tako treba!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Sakrij sponzorirane slike";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "„Sponzorirano” označava dodatne markirane pozadine koje može zaraditi kada su omogućene Nagrade Brave.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Doznajte više o značajki Nagrade Brave";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Saznajte više o sponzoriranim slikama";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Automatski otvaraj tipkovnicu";
+
+/* A setting to enable or disable background images on the main screen. */
+"ntp.settingsBackgroundImages" = "Pozadinske slike";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Vrsta slike";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Zadane slike";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Sponzorirana";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Stranica Nova kartica";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Prikaži više";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "Gledanjem ove sponzorirane slike podržavate stvaratelje sadržaja i izdavače.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Uključivanjem značajke Nagrade pristajete na sljedeće: %@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Zaradite tokene i nagradite stvaratelje za odličan sadržaj tijekom pregledavanja.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Zaradite bodove i nagradite stvaratelje za odličan sadržaj tijekom pregledavanja.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Stigli su Oglasi Brave!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "U pregledniku se Brave prvi vaš oglas prikazuje za";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Sada ste spremni za polazak.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Ne vidim oglas";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Nešto nije bilo u redu pri stvaranju vašeg novčanika. Pokušajte ponovno";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "U redu";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Žao nam je";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Započni pretraživanje";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Pridruži se";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Dopusti pregledniku Brave provjeravanje međuspremnika za otkrivanje podudarajuće šifre preporuke";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Možda ste preuzeli preglednik Brave za davanje podrške svom preporučitelju. Kako bi se otkrio vaš preporučitelj, preglednikom Brave jednokratno se provjerava vaš međuspremnik za odgovarajuću šifru preporuke. Provjera je ograničena samo na šifru i ne prenose se nikakvi drugi osobni podatci. Ako povučete svoju privolu, vaš preporučitelj ne prima nagrade preglednika Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Ne dopusti ovu provjeru";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Provjera anonimne šifre preporuke";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Dopusti jednokratnu provjeru međuspremnika";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Dodirivanjem Da pristajete na sljedeće";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Odredbe pružanja usluge";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "i";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Nagrade Brave";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Uključivanjem u Privatne oglase Brave podržavate izdavače i stvaratelje sadržaja svakim prikazanim oglasom.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Zaradite tokene i nagradite stvaratelje za odličan sadržaj tijekom pregledavanja.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Pravilnik o privatnosti";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Nagrade Brave";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Spremi";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Odaberite svoju zadanu tražilicu";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Dobro došli u preglednik Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Blokirajte elemente za praćenje kojima se narušava privatnost kako biste mogli pregledavati mrežu bez praćenja ";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Štitnici Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Pokaži mi";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Početak";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "Blokirani su %1$@ i sljedeći broj: %2$lld drugih oglasa i elemenata za praćenje";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Pogledajte sve loše stvari koje je Brave blokirao štitovima na svakoj stranici.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Dodirnite za prikaz štitova Brave";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Blokirani su oglasi i elementi za praćenje";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Povežite svoju pretplatu na VPN";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Vašom pretplatom na mrežu VPN preglednika Brave može se zaštititi do pet (5) uređaja diljem sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu iz trgovine App Store s računom Brave.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Proširite svoj vatrozid Brave + zaštitu mreže VPN";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Tražite „Zadana aplikacija preglednika”";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Prebacivanje na Postavke...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Kada se blokiraju elementi za praćenje i oglasi, na mrežnim mjestima upotrebljava se manje podataka i ona se učitavaju mnogo brže.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Pogledajte kako se preglednik Brave razlikuje: \nNema oglasa. Nema elemenata za praćenje. Mnogo brže učitavanje stranice.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Upišite naziv ili URL mrežnog mjesta";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Dobro došli u preglednik Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Nastavi";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Preskoči";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "na: %@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Otvori sve (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Otvori postavke za Nagrade Brave";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "Nastala je nepoznata pogreška pri otvaranju mape Preuzimanja u aplikaciji Datoteke.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ kaže:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Dopustiti da %@ mijenja aplikacije?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Otvori sliku u novoj kartici";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Otvori u novom privatnom prozoru";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Otvori u novom prozoru";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Otvori u novoj privatnoj kartici";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Otvori u novoj kartici";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Otvorite Postavke";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Aktivan prije sljedećeg broja dana: %ld";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Aktivan prošli mjesec";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Aktivan prošli tjedan";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Aktivan danas";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Aktivan jučer";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Omogućite sinkronizaciju kartica kako biste vidjeli kartice s drugih uređaja.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Kako biste vidjeli svoje uređaje i omogućene vrste sinkronizacije, pridružite se lancu sinkronizacije";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Nema uređaja u ovom lancu sinkronizacije";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Za početak postavite lanac sinkronizacije i uključite/isključite „Otvori kartice” u postavkama sinkronizacije.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Upravljajte onime što se sinkronizira preglednikom Brave u Postavkama.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Nema aktivnih sesija za pokazivanje s vaših drugih uređaja.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "U ovom prostoru prikazuju se kartice preglednika Brave otvorene na drugim uređajima";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Sakrij za sad";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Otvori sve";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Prošli tjedan %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Danas %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Jučer %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Uređaji";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Pošalji na svoj uređaj";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Poslano!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Slanje...";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Slanje mrežne stranice";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Pošalji na svoje uređaje";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Pokaži postavke sinkronizacije";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Pokreni lanac sinkronizacije";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Omogući sinkronizaciju kartica";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Pretražujte kartice s drugih uređaja";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Otvorene kartice";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "Otvori mrežno mjesto";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) ugrađen izravno u preglednik";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Današnje najvažnije novosti u privatnom sažetku sadržaja vijesti";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Vijesti";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Držite izvanmrežni popis za reprodukciju bilo kojeg videozapisa/strujanja";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Popis za reprodukciju";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Privatni videopozivi, izravno u vašem pregledniku";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Razgovor";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Zaštitite cijeli uređaj na mreži";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Siguran kriptonovčanik, ne trebaju vam proširenja";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Značajke preglednika Brave";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Druge postavke privatnosti";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Druge postavke";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Nastavi";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Ovim privatnim odgovorima omogućava se u pregledniku Brave procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Vaša veza s ovim mrežnim mjestom nije potpuno sigurna.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Ne biste smjeli upisivati osjetljive informacije na ovom mrežnom mjestu (primjerice, lozinke ili brojeve kreditnih kartica) jer ih mogu ukrasti napadači.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Vaša veza s ovim mrežnim mjestom nije sigurna.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Prikaži certifikat";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Zadana razina zumiranja mrežne stranice";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Kada se promijeni razina zumiranja mrežnog mjesta, mrežno mjesto pokazuje se na popisu ovdje. Trenutačno nema povećanih ili smanjenih mrežnih mjesta.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Nema dodanih mrežnih mjesta";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Sva druga mrežna mjesta";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Ponovno postavljanje svega";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Ponovno postavi razine zumiranja mrežnog mjesta";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Specifične postavke stranice";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Zumiranje stranice";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Zumiranje stranice";
+
+/* Sync pair device settings section title */
+"Pair" = "Upari";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Zaporke";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Stalno privatno pregledavanje";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Omogućava pregledniku Brave vraćanje kartica privatnog pregledavanja čak kada zatvorite / ponovno otvorite aplikaciju";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Vrati privatne kartice";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Fotografija autora: %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Dodano mapi %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Želite li dodati ovaj videozapis svom popisu za reprodukciju?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Dodavanje na popis za reprodukciju preglednika Brave";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Mogućnosti reprodukcije";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Onemogućeno. Dodirnite za ponovno pokretanje reprodukcije.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Omogućeno. Dodirnite za onemogućivanje ponovnog pokretanja reprodukcije.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Odlučite hoće li se odabiranjem stavke koja se već reproducira ponovno pokrenuti reprodukcija ili nastaviti reprodukcija od posljednjeg mjesta";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Ponovno pokretanje reprodukcije";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Postavke";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Popis za reprodukciju Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Promjena popisa za reprodukciju";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Izbriši izvanmrežnu predmemoriju";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Ovaj je videozapis bio prijenos uživo ili je dosegnuto vremensko ograničenje. Ponovno otvorite poveznicu za osvježavanje.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Videozapis istekao";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Istekao";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "Broj stavki: %d";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d stavka";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Nastao je problem pri učitavanju resursa!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Kad je omogućeno, značka se prikazuje na ikoni glavnog izbornika, a time se pokazuje da se mediji na stranici mogu dodati popisu za reprodukciju preglednika Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Prikaz značke obavijesti izbornika";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Pomakni...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Možete dodati stavke na svoj popis za reprodukciju preglednika Brave u pregledniku";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "Nema dostupnih stavki";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Obavijest";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "U redu";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Otvaranje u popisu za reprodukciju";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Žao nam je, ali nastala je pogreška pri pokušavanju prikazivanja slike u slici.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Popis za reprodukciju već je aktivan u drugom prozoru";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Žao nam je";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Ovom se mogućnosti omogućava/onemogućava automatska reprodukcija kada se otvori popis za reprodukciju. Međutim, ovom se mogućnosti ne utječe na automatsku reprodukciju pri učitavanju sljedećeg videozapisa na popisu.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Automatska reprodukcija";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "isključeno";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Uključi";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Samo mreža Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Dodavanjem videozapisa i zvučnih datoteka za izvanmrežnu upotrebu može se zauzeti mnogo prostora za pohranu na vašem uređaju, a i mogu se potrošiti mobilni podatci";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Ovom se mogućnosti automatski spremaju stavke popisa za reprodukciju na vaš uređaj kako biste ih mogli reproducirati bez internetske veze.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Automatsko spremanje za upotrebu izvan mreže";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Dodavanjem videozapisa i zvučnih datoteka za izvanmrežnu upotrebu može se zauzeti mnogo prostora za pohranu na vašem uređaju. Uklonite neke datoteke radi oslobađanja prostora za pohranu.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Pohrana je skoro puna";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Prijenos strujanjem uživo";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Ako je omogućeno, možete duljim pritiskom većine videozapisa / zvučnih datoteka dodati ih svom popisu za reprodukciju.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Omogućivanje duljeg pritiska";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Mediji i izvanmrežni podatci popisa za reprodukciju";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Izvanmrežni podatci popisa za reprodukciju";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Promijeni";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Ponovo postavi";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Ovom se mogućnosti uklanjaju svi videozapisi s popisa za reprodukciju i iz pohrane izvanmrežnog načina rada.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Žao nam je, ovu stavku trenutačno nije moguće spremiti za izvanmrežni način rada.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Žao nam je, ali nešto nije u redu";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Popisi za reprodukciju";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Popis za reprodukciju";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Ova mapa već postoji na vašem popisu za reprodukciju preglednika Brave";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Žao nam je";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Podijeljeno s vama";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Podijeljeno s vama";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Ovom se postavkom mijenja mjesto popisa videozapisa između lijeve i desne strane.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Ulijevo";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Udesno";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Mjesto bočne trake";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Za pojedinačne datoteke nastavite s reprodukcijom od posljednjeg pauziranja.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Zapamti položaj reprodukcije datoteke";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Onemogućava API WebKit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Mrežna kompatibilnost";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Ukloni";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Uklonjeno iz mape %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Ovim se brišu mediji iz izvanmrežne pohrane. Jeste li sigurni da želite nastaviti?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Ukloni izvanmrežne podatke";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Ovim se uklanja medijska stavka s popisa. Jeste li sigurni da želite nastaviti?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Ukloniti medijsku stavku s popisa za reprodukciju?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Ponovno otvori";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Dodano u izvanmrežno";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Spremi za izvanmrežno";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Spremanje za izvanmrežno…";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Automatski sinkronizira sve vaše mape popisa za reprodukciju";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Automatska sinkronizacija mapa popisa za reprodukciju";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Trenutačnu stavku možete otvoriti u novoj kartici ili je podijeliti putem izbornika za dijeljenje sustava";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Izbornik popisa za reprodukciju preglednika Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Otvori u privatnoj kartici";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Otvori u novoj kartici";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Podijeli...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Žao nam je";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Dodano na popis za reprodukciju preglednika Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Otvori";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Dodavanje na popis za reprodukciju preglednika Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Prikaz na popisu za reprodukciju preglednika Brave";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Poništi";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Dodaje se gumb popisa za reprodukciju (izgleda kao 4 retka sa simbolom +) pokraj adresne trake u pregledniku Brave. Gumbom se omogućava brz pristup otvaranju popisa za reprodukciju ili dodavanje ili uklanjanje medijskog sadržaja.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Omogući gumb za brzi pristup";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Premještanje u mapu";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Naziv popisa za reprodukciju";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Upiši naziv popisa za reprodukciju";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Stvori";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Uredi";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Uređivanje mape";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Uređivanje popisa za reprodukciju";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Žao nam je, ali nismo uspjeli spremiti obavljene promjene mape";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Pomakni";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Trenutačni popis za reprodukciju";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Pomakni";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ i još 1 stavka";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "Stavke %lld";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 stavka";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ i još sljedeći broj stavki: %2$lld";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Novi popis za reprodukciju";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Novi popis za reprodukciju";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Dodirivanje za odabiranje videozapisa";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Dodajte videozapise na ovaj popis za reprodukciju";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Odaberite popis za reprodukciju na koji želite premjestiti sljedeći broj stavki: %lld";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Odaberite popis za reprodukciju na koji želite premjestiti 1 stavku";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "Broj stavki: %lld";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 stavka";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Popis za reprodukciju bez naslova";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Gumb Dodaj na popis za reprodukciju preglednika Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Spremi";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Uklanjanje izvanmrežnih podataka";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Brisanje popisa za reprodukciju";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Uredi";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Gumb izbornika popisa za reprodukciju";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Dodaj popis za reprodukciju sada";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Automatsko spremanje za izvanmrežnu upotrebu uključeno je, a to znači da se novi dodatci popisa za reprodukciju uključujući dijeljene popise za reprodukciju spremaju na vaš uređaj za gledanje izvan mreže i da se mogu upotrebljavati vaši mobilni podatci.\n\nAutomatskim spremanjem za izvanmrežnu upotrebu možete upravljati u postavkama popisa za reprodukciju.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Postavke";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Upravljanje podatcima popisa za reprodukciju";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Preimenuj";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Spremanje izvanmrežnih podataka";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Sinkronizacija sada";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Zatvorite izbornik Štitova Brave";
+
+/* Settings privacy section title */
+"Privacy" = "Privatnost";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Kako biste se prebacili na način privatnog pregledavanja, prvo morate postaviti šifru na svom uređaju.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "Popisi svih blokiranih sadržaja";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Cijelo vrijeme";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "Elementi za praćenje i oglasi";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "Mrežna mjesta";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "Najčešći elementi za praćenje i oglasi na mrežnim mjestima koja posjećujete";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Mrežna mjesta s najviše elemenata za praćenje i oglasa";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "Broj mrežnih mjesta: %lld";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "Broj elemenata za praćenje i oglasa: %lld";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "Element za praćenje i oglas";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "Web-lokacija";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "Sva upozorenja";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "Blokira:";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "Blokirano";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Očisti podatke čvorišta za privatnost";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Očistiti sve podatke značajke Štitovi?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Sakrij";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Sakrij statistiku privatnosti";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Dodirnite Sakrij za uklanjanje miniaplikacije Statistika privatnosti. Uvijek možete ponovo omogućiti u Postavkama na stranici Nova kartica";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "Prošli tjedan";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Element **%1$@** za praćenje blokiran je značajkom Štitovi Brave na sljedećem broju mrežnih mjesta: **%2$lld**";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Najčešći element za praćenje i oglas";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "Posjetite neka mrežna mjesta da biste ovdje vidjeli podatke.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "Još nema podataka za prikaz.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "Dobivajte tjedna ažuriranja o privatnosti za elemente za praćenje i blokiranje oglasa.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "Uključi obavijesti";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Rekapitulacija pružene zaštite preglednikom Brave na mreži ovog tjedna.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "Tjedno izvješće o privatnosti";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Otvori čvorište za privatnost";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Otvori čvorište za privatnost";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Podatci čvorišta za privatnost pohranjuju se lokalno i nikada se nigdje ne šalju.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Čvorište za privatnost";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "Mrežno mjesto **%1$@** imalo je u prosjeku sljedeći broj: **%2$lld** elemenata za praćenje i oglasa po posjetu";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "Mrežno mjesto s najviše elemenata za praćenje";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "Čvorište za privatnost prikazuje broj stavki blokiranih značajkom Štitovi. Postavkom se ne utječe na brojač značajke Štitovi na stranici nove kartice. Podatci značajke Štitovi ne broje se u privatnim prozorima.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Pokaži podatke značajke Štitovi";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "Postavka se primjenjuje samo ako ste kupili pretplatu za mrežu VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "Pokaži upozorenja mreže VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Ponovno se postavlja broj svega blokiranog značajkom Štitovi.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Očisti podatke značajke Štitovi";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Štitovi";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Omogućite „%@” za prikazivanje podataka ovdje";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Elementi za praćenje e-pošte";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Element za praćenje e-pošte";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Lokacijski pingovi";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Lokacijski ping";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Elementi za praćenje i oglasi";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Element za praćenje ili oglas";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Vatrozid preglednika Brave + upozorenja mreže VPN";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "Vatrozid + mreža VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "Ukupan broj";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Pravilnik o privatnosti";
+
+/* Private button title */
+"Private" = "Privatno";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Privatno pregledavanje";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Samo privatno pregledavanje";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "U načinu „Samo privatno pregledavanje” zatvaraju se sve vaše trenutačne kartice i odjavljujete se iz svih mrežnih mjesta.";
+
+/* Private tab details */
+"PrivateTabBody" = "Privatne kartice ne spremaju se u pregledniku Brave, ali njihovom upotrebom niste anonimni na mreži. Mrežna mjesta koja posjećujete u privatnoj kartici ne pojavljuju se u vašoj povijesti i njihovi kolačići uvijek nestaju kada ih zatvorite – u pregledniku Brave ne ostaje nikakav njihov trag. Međutim, preuzimanja se spremaju.\nVaš mobilni operater (ili vlasnik mreže Wi-Fi mreže ili mreže VPN s kojom ste povezani) može vidjeti koja mrežna mjesta posjećujete i ta mrežna mjesta znaju vašu javnu adresu IP čak u privatnim karticama.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "Upotrebom privatnih kartica mijenja se samo ono što preglednik Brave radi na vašem uređaju, a ne mijenja se ponašanje drugih.\n\nMrežna mjesta uvijek znaju vašu adresu IP kada ih posjetite. Na osnovi toga često mogu približno pogoditi gdje se nalazite – obično vaš grad. Ponekad ta pretpostavka o lokaciji može biti mnogo preciznija. Mrežna mjesta također znaju sve što im izravno navedete kao što su pojmovi za pretraživanje. Ako se prijavite u mrežno mjesto, ono zna da ste vlasnik tog računa. No, i dalje ste odjavljeni kada zatvorite privatne kartice jer se preglednikom Brave odbacuje kolačić kojim se održava prijava.\n\nSvatko putem koga se povezujete s internetom (vaš pružatelj internetskih usluga (ISP)) može vidjeti sve vaše mrežne aktivnosti. Često je to vaš mobilni operater. Ako ste povezani s mrežom Wi-Fi, to je vlasnik te mreže, a ako upotrebljavate mrežu VPN, onda je to pružatelj te mreže VPN. Vaš ISP može vidjeti koja mrežna mjesta posjećujete dok ih posjećujete. Ako se na tim mrežnim mjestima upotrebljava HTTPS, ne može napraviti ništa više od pretpostavljanja onoga što radite na tim mrežnim mjestima. No, ako se na mrežnom mjestu upotrebljava samo HTTP, vaš ISP može vidjeti sve: pojmove za pretraživanje, stranice koje čitate i poveznice na koje ste kliknuli.\n\nAko poslodavac upravlja vašim uređajem, mogao bi pratiti i što radite na njemu. Korištenjem privatnih kartica vjerojatno ga ne možete spriječiti da dozna koja ste mrežna mjesta posjetili. Netko drugi s pristupom vašem uređaju također može instalirati softver kojim se prati vaša aktivnost, a u privatnim karticama nemate zaštitu ni od toga.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Doznajte više o privatnim karticama.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Kartica Privatno";
+
+/* QR Code section title */
+"QRCode" = "QR kȏd";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Brze tražilice";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Ocijenite preglednik Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Povećaj veličinu teksta";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Svjetlina";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Postavke zaslona";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Nastala je pogreška pri pretvaranju stranice";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Mijenja se vrsta fonta.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Učitavanje sadržaja…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Učitaj originalnu stranicu";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Stranica se ne može prikazati u prikazu čitača.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Način čitača";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Smanji veličinu teksta";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Mijenja se tema boje.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Izbriši";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Očistiti sve nedavno zatvorene kartice?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Nema nedavno zatvorenih kartica.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Otvori";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Ponovno otvori posljednje zatvorenu karticu";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Želite li otvoriti posljednje zatvorenu karticu?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Nedavno zatvorene kartice";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Prikaži nedavno zatvorene kartice";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Izbriši";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Očisti nedavno";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Nedavni podatci pretraživanja";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Onemogući";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Omogući";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Omiljeni";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Sakrij";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Zalijepi i idi";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "uključeno";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Očitano";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "Za pretraživanje prema kodu QR postavite kôd QR u središte okvira.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "Upute";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "Skeniraj kôd QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Nedavnim pretraživanjima omogućava se privatan pristup prošlim pretraživanjima. Želite li omogućiti Nedavna pretraživanja?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Nedavna pretraživanja";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Prikaži";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Prikaži više";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Prijedlozi za pretraživanje";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Automatski preusmjerava poveznice usluge Reddit na starije sučelje (na old.reddit.com). Za prisilno pokretanje novog sučelja usluge Reddit umjesto toga upotrijebite new.reddit.com.";
+
+/* Action button for removing sync device. */
+"RemoveDevice" = "Ukloni";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Ukloni omiljenu stavku";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Prijavi neispravno mrežno mjesto";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Prijavi programsku pogrešku";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Dodatne pojedinosti (mogućnosti)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Kontakt: (dodatno)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "E-pošta, Twitter itd.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Napomena: izvješćem koje se šalje poslužiteljima Brave uključuje se: adresa mrežnog mjesta, broj inačice preglednika Brave, postavke štitova, status mreže VPN i postavke jezika.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Pošalji";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "„%@”, želite li pristupiti kameri i mikrofonu";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "„%@”, želite li pristupiti kameri";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Dopusti";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "„%@”, želite li pristupiti uređaju za snimanje multimedijskog sadržaja";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "„%@”, želite li pristupiti mikrofonu";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Vraćene knjižne oznake";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Vraćene omiljene stavke";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Da";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Ne";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Nažalost, preglednik Brave srušio se ili se nije dobro zatvorio.\nŽelite li vratiti svoje kartice?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Preglednik Brave neočekivano se zatvorio.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Upotrebom značajke Nagrade Brave možete vidjeti oglase kojima se čuva privatnost iz mreže značajke Oglasi Brave. Nema elemenata za praćenje. Nema usporavanja, a vaši podatci ostaju potpuno sigurni.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Uključi Nagrade";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknite bilo gdje na zaslonu za nastavak do usluge Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Sada možeš obaviti besplatan poziv";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Za besplatan poziv uključite uslugu Nagrade Brave";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Uključite kako biste podržavali stvaratelje sadržaja";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Upotrebom značajke Nagrade Brave podržavaju se stvaratelji sadržaja tijekom pregledavanja.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Pomažete u podržavanju stvaratelja sadržaja";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Hvala vam što podržavate stvaratelje sadržaja tijekom pregledavanja!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Klikom pristajete na dokumente %1$@ i %2$@. Onemogućite u bilo kojem trenutku u postavkama.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Automatski podržite stvaratelje sadržaja i izdavače omogućivanjem značajke Privatni oglasi Brave. Privatni oglasi Brave oglasi su kojima se čuva privatnost i daje doprinos stvarateljima sadržaja.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Omogući uslugu Nagrade Brave";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Podržavate stvaratelje sadržaja kao što je ovaj.";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Broj stvaratelja sadržaja kojima pomažete ovog mjeseca.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Ovaj stvaratelj sadržaja nije potvrđen i ne uključuje se u podršku stvarateljima sadržaja";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Iznos";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Anonimno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Informacije o stanju";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Jeste li sigurni da želite izbrisati sve zapise o nagradama?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Obriši zapise";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Iznos doprinosa";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Tokeni preglednika Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Nema";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Zadrži";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Sredstva korisnika";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Automatski doprinos isključen";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Tablica automatskog doprinosa prazna je";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Završeno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Vjerodajnice";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Vanjska transakcija";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Neuspješno";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Nema dovoljno sredstava";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Pripremanje";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Zakaži";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Nagrade isključene";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Početak";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Doprinosi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Stvoreno:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Informacije o uređaju";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Upisan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Stanje upisa";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Istječe:";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Nevaljano";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Informacijska sjemenska fraza ključa";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "Prikazano zapisa: %d";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Dnevnici";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Nije upisan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Nije podržan";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Obrađivač";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Izdavač";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Izdavači";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Broj ponovnih pokušaja";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Automatski doprinesi";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Jednokratna napojnica";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Ponavljajuća napojnica";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Informacije o profilu nagrada, uređaju i stanju (uvijek se dijele)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Osnovne informacije";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Svi doprinosi dani izdavačima putem napojnica ili automatskih doprinosa";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Unutarnja pohrana podataka";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Baza podataka nagrada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Nagrađuje specifično zapisivanje";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Podijeli";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Podijeli unutarnje nagrade";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Podatci na ovim stranicama mogu biti osjetljivi. Pazite s kim ih dijelite.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Upozorenje";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Status";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Korak";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Podržan";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Unutarnje nagrade";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Ukupan iznos";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Ukupno stanje";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Vrsta";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Valjano";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Inačica";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Datum stvaranja profila nagrada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Informacije o profilu nagrada";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID isplate nagrada";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Ploča nagrada";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Spremi";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Spremljene prijave";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Spremljene kartice";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Spremi sliku";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Spremi prijave";
+
+/* Scan sync code title */
+"Scan" = "Traži";
+
+/* Scan sync code button title */
+"ScanSyncCode" = "Imam šifru za sinkronizaciju";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Blokirane skripte";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Pretražite knjižne oznake";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "Pretraživanje %@";
+
+/* Search engines section of settings */
+"SearchEngines" = "Tražilice";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Pretraživanja za prijedlog";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Otvaranje kartica, knjižnih oznaka i povijesti";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Čišćenje pretraživanja";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Pristupi načinu pretraživanja";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Polje za upisivanje pretraživanja";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Pretraži";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Dodavanje prilagođene tražilice";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Uključite kako biste uključili rezultate iz svoje povijesti i knjižnih oznaka pri pretraživanju";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Pokaži prijedloge preglednika";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Pretraži";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Pokaži nedavna pretraživanja";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Postavke pretraživanja";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Pokaži prijedloge za pretraživanje";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Prijedlozi pretraživanja tražilice %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Prebaci se na ovu karticu";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "Pretraživanje %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Pretraži";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Prijedlozi za pretraživanje";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Pretražujte preglednikom Brave";
+
+/* Settings security section title */
+"Security" = "Sigurnost";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Pošalji";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Poslati izvještaj o padu kako bi se mogao riješiti problem u pregledniku Brave?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Ups! Preglednik Brave srušio se";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Pošalji izvještaj";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Preglednik Brave sada možete postaviti kao zadani preglednik u sustavu iOS. Dodirnite ovdje za otvaranje postavki.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Postavi kao zadani preglednik";
+
+/* No comment provided by engineer. */
+"Settings" = "Postavke";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Ručno";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Nakon jednog dana";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Nakon mjesec dana";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Nakon tjedan dana";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Zatvori kartice";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Dopustite pregledniku Brave automatsko zatvaranje kartica koje se nisu nedavno prikazivale.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Reprodukcija najviše kvalitete";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Omogućava visokokvalitetnu rezoluciju";
+
+/* Header for the general settings section */
+"settings.media.general" = "Općenito";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Mediji";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Otvorite poveznice YouTube u pregledniku Brave";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Omogući vrijeme upotrebe zaslona";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Pogledajte na kojim mrežnim mjestima provodite najviše vremena i postavite ograničenja pregledavanja. [Doznaj više](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Postavke kvalitete";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ovim privatnim pingom u pregledniku Brave omogućava se procjenjivanje broja aktivnih korisnika.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Automatski šalji ping dnevne uporabe Braveu";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Nije moguće učitati stranicu.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "Licence";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "Postavke";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Donja traka";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Gornja traka";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Kartice";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Podijeli vezu";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Podijeli s korisnikom...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "Podijeli s korisnikom...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Čestitamo na ostvarivanju ove prekretnice na polju privatnosti.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Čestitamo. Dio ste ekskluzivnog kluba.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Čestitamo. Postali ste velemajstor.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Čestitamo. Legendarni ste.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Čestitamo. Postali ste majstor.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Čestitamo. Pridružili ste se profesionalcima.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Čestitamo. Veoma ste posebni.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Prosječni podatci spremljeni\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Ne pokazuj ovo više";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Podijeli vijest";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Značajkom Štitovi Brave upravo se zaštitila vaša privatnost na mreži.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Čestitamo. Veoma ste posebni.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "Blokiran je sljedeći broj: %ld elemenata za praćenje i oglasa!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Videozapisima bez oglasa troši se manje podataka.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Oglasi su blokirani tijekom gledanja videozapisa na ovom mrežnom mjestu.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Globalne zadane postavke Štitova Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Ovo su zadane postavke značajke Brave Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?";
+
+/* shields overview message */
+"ShieldsOverview" = "Štitovima mrežnog mjesta omogućava se upravljanje time kada se blokiraju oglasi i elementi za praćenje za svako mrežno mjesto koje posjetite. Ako želite vidjeti oglase na određenom mrežnom mjestu, možete ih omogućiti ovdje.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Napomena: za neka mrežna mjesta mogu trebati skripte za pravilan rad, pa je ovaj štit prema zadanim postavkama isključen.";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Nova privatna kartica";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Nova kartica";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Skeniraj kôd QR";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Otvorite Novosti Brave i pogledajte najvažnije današnje vijesti";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Otvorite preglednik u novoj kartici i izbrišite sve podatke o povijesti privatnog preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Čišćenje povijesti preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Čišćenje povijesti pregledavanja preglednika Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Otvorite preglednik u novoj kartici i omogućite mrežu VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Omogućivanje mreže VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Otvorite preglednik Brave i omogućite mrežu VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Otvaranje nove privatne kartice";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Otvaranje nove privatne kartice preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Otvaranje nove kartice";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Otvaranje nove kartice preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Otvaranje zaslona s knjižnim oznakama preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Otvaranje knjižnih oznaka";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Otvaranje knjižnih oznaka preglednika Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Otvaranje značajke Novosti Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otvaranje značajke Novosti Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Otvaranje zaslona povijesti preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Otvaranje povijesti preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Otvaranje povijesti preglednika Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Pokretanje reprodukcije videozapisa na popisu za reprodukciju";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Otvori popis za reporukciju";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Otvori popis za reporukciju";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otvaranje kartica preglednika Brave na drugim uređajima";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Otvaranje kartica s drugih uređaja";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Otvaranje kartica s drugih uređaja";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Počnite sigurno pretraživati ​​mrežu upotrebom preglednika Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Otvaranje mrežnog mjesta knjižne oznake";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Otvaranje mrežnog mjesta povijesti";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otvaranje mrežnog mjesta";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Ovom se mogućnosti otvaraju postavke preglednika Brave. Kako biste promijenili razne mogućnosti pomoćnika Siri, odaberite stavku „Siri i pretraživanje” u izborniku te prilagodite svoje odabire.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Otvorite Postavke";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Upotrijebite prečace za otvaranje nove kartice i čišćenje povijesti preglednika putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Čišćenje povijesti preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Upotrijebite prečace za omogućivanje mreže VPN preglednika Brave putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Omogućivanje mreže VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Upotrijebite prečace za otvaranje zaslona s knjižnim oznakama putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Otvaranje knjižnih oznaka";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Upotrijebite prečace za otvaranje nove kartice i pokazivanje sažetka sadržaja značajke Novosti Brave putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otvaranje značajke Novosti Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Upotrijebite prečace za otvaranje zaslona s povijest preglednika putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Otvaranje povijesti preglednika";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Upotrijebite prečace za otvaranje nove privatne kartice putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Otvaranje nove privatne kartice";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Upotrijebite prečace za otvaranje nove kartice putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Otvaranje nove kartice";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Upotrijebite prečace za otvaranje popisa za reprodukciju putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Otvori popis za reporukciju";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Upotrijebite prečace za otvaranje kartica s drugih uređaja putem glasovnog pomoćnika – Siri";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Otvaranje kartica s drugih uređaja";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Prečaci glasovnog pomoćnika Siri";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Pokaži prečac knjižnih oznaka";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Pokaži knjižne oznake";
+
+/* Show code words instead */
+"ShowCodeWords" = "Umjesto toga pokaži šifre";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "Pokaži preuzimanja";
+
+/* Button to show the history list */
+"ShowHistory" = "Pokaži povijest";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "Pokaži povijest";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Samo pejzaž";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Pokaži pretpreglede veza";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Pokaži kartice";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Traka s karticama";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Hvala vam";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Štitovi";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Standardna kartica";
+
+/* Support section title */
+"Support" = "Podrška";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Spriječite da se ovom stranicom stvaraju dodatna upozorenja";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Potisni upozorenja";
+
+/* Sync settings section title */
+"Sync" = "Sinkroniziraj";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Knjižne oznake uspješno su izvezene";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Izvoz knjižne oznake nije uspio";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Knjižne oznake";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Uvoz knjižne oznake nije uspio";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Knjižne oznake uspješno su uvezene";
+
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Sinkronizacija uređaja";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Sinkronizacija uređaja";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Nije moguće pridružiti se ovom lancu. Račun je izbrisan.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Sinkronizacija uređaja";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.syncConfigurationInformationText" = "Odlučite koje informacije želite sinkronizirati među uređajima. Ove postavke se odnose samo na trenutni uređaj.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Brisanje računa za sinkronizaciju";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Uređaji u lancu sinkronizacije";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Napomena: trebali biste provjeriti prepoznajete li svaki uređaj na popisu poviše. Uređaji u lancu sinkronizacije mogu primati osobne podatke kao što su lozinke i povijest pregledavanja.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Potvrda uređaja";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Dosegli ste najveći dopušteni broj uređaja (10) u lancu sinkronizacije. Uklonite uređaj za nastavak.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Ograničenje uređaja";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Kako biste dodali uređaj lancu sinkronizacije ili uključili/isključili sinkronizaciju lozinke, prvo morate postaviti šifru na svom uređaju.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.syncSetPasscodeAlertTitle" = "Postavljanje šifre";
+
+/* Title for Sync Settings Toggle Header */
+"sync.syncSettingsTitle" = "Postavke sinkronizacije";
+
+/* Add New Device cell button. */
+"SyncAddAnotherDevice" = "Dodaj novi uređaj";
+
+/* Add a Computer title */
+"SyncAddComputerTitle" = "Dodaj računalo";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Kȏd QR lanca sinkronizacije";
+
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Na svom drugom mobilnom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „Očitaj kôd za sinkronizaciju”. Upotrijebite kameru za očitavanje koda QR u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
+
+/* Add device to sync with code words */
+"SyncAddDeviceWords" = "Upis koda za sinkronizaciju";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Na svom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „%@”. Upišite šifru lanca sinkronizacije prikazane u nastavku.\n\nSmatrajte šifru lozinkom. Ako joj tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Upis šifre";
+
+/* Add Tablet or phone title */
+"SyncAddTabletOrPhoneTitle" = "Dodavanje tabletnog uređaja ili telefona";
+
+/* Choose device type for sync */
+"SyncChooseDevice" = "Odabrati tip uređaja";
+
+/* Header for device choosing screen. */
+"SyncChooseDeviceHeader" = "Odabrati tip uređaja s kojim biste se htjeli sinkronizirati.";
+
+/* Computer device button title */
+"SyncComputerDevice" = "Računalo";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Izbriši račun za sinkronizaciju";
+
+/* Sync you browser settings across devices. */
+"SyncDevices" = "Uređaji i postavke";
+
+/* Sync Error message for when the sync code is expired */
+"syncExpiredError" = "Ovaj je kôd za sinkronizaciju istekao. Generirajte novi kôd za sinkronizaciju i pokušajte ponovno.";
+
+/* Generic Sync Error Description */
+"syncGenericError" = "Žao nam je, ali nešto nije u redu";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Uvezene knjižne oznake";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Agent za sinkronizaciju trenutačno je izvan mreže ili nije dostupan. Pokušajte ponovno poslije.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Pogreška sinkronizacije komunikacije";
+
+/* No internet connection alert body. */
+"SyncNoConnectionBody" = "Provjerite internetsku vezu i pokušajte ponovno.";
+
+/* No internet connection alert title. */
+"SyncNoConnectionTitle" = "Nije moguće povezivanje za sinkronizaciju";
+
+/* Message for removing the current device from Sync */
+"SyncRemoveCurrentDeviceMessage" = "Lokalni podatci uređaja ostaju netaknuti na svim uređajima. Ostali uređaji u ovom lancu sinkronizacije i dalje su sinkronizirani.";
+
+/* Title for removing the current device from Sync */
+"SyncRemoveCurrentDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
+
+/* Remove device button for action sheet. */
+"SyncRemoveDeviceAction" = "Ukloni uređaj";
+
+/* Default name for a device */
+"SyncRemoveDeviceDefaultName" = "Uređaj";
+
+/* Message for removing last device from Sync */
+"SyncRemoveLastDeviceMessage" = "Trenutačno sinkronizirani podatci zadržavaju se, ali se svi podatci u predmemoriji sinkronizacije preglednika Brave brišu. Morate pokrenuti novi lanac sinkronizacije za ponovno sinkroniziranje podataka uređaja.";
+
+/* Button name for removing last device from Sync */
+"SyncRemoveLastDeviceRemoveButtonName" = "Izbriši lanac sinkronizacije";
+
+/* Title for removing last device from Sync */
+"SyncRemoveLastDeviceTitle" = "Ako se ukloni %@, briše se lanac sinkronizacije.";
+
+/* Message for removing other device from Sync */
+"SyncRemoveOtherDeviceMessage" = "Uklanjanjem uređaja iz lanca sinkronizacije ne čiste se prethodno sinkronizirani podatci s uređaja.";
+
+/* Title for removing other device from Sync */
+"SyncRemoveOtherDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
+
+/* Sync remove device. */
+"SyncRemoveThisDevice" = "Ukloni ovaj uređaj";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestion" = "Ukloniti ovaj uređaj?";
+
+/* Sync remove device? */
+"SyncRemoveThisDeviceQuestionDesc" = "Prekida se veza ovog uređaja s grupom sinkronizacije i više se ne primaju ili šalju podatci o sinkronizaciji. Svi postojeći podatci ostaju na uređaju.";
+
+/* Header title for Sync settings */
+"SyncSettingsHeader" = "Popis uređaja u nastavku uključuje sve uređaje u vašem lancu sinkronizacije. Svakim uređajem moguće je upravljati s bilo kojeg drugog uređaja.";
+
+/* Switch back to camera button */
+"SyncSwitchBackToCameraButton" = "Koristim se mojom kamerom...";
+
+/* Tablet or phone button title */
+"SyncTabletOrMobileDevice" = "Tabletni uređaj ili telefon";
+
+/* This device cell */
+"SyncThisDevice" = "Ovaj uređaj";
+
+/* Sync to existing device */
+"SyncToDevice" = "Sinkroniziraj s uređajem";
+
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Upotrebom postojećeg sinkroniziranog uređaja otvorite postavke preglednika Brave i idite na Postavke -> Sinkronizacija. Odaberite „Dodaj uređaj ” i očitajte kôd prikazan na zaslonu.";
+
+/* Description on popup when setting up a sync group fails */
+"SyncUnableCreateGroup" = "Nije moguće sinkronizirati ovaj uređaj";
+
+/* No comment provided by engineer. */
+"SyncUnsuccessful" = "Neuspješno";
+
+/* Sync Error Description */
+"syncValidForTooLongError" = "Ovaj kôd nije valjan. Provjerite jesu li na uređaju vrijeme i vremenska zona ispravno postavljeni.";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Zatvori";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Uključuje ili isključuje privatni način rada";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Privatni način rada";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "isključeno";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Uključi";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Držite kartice privatnog pregledavanja otvorenima kada zatvorite aplikaciju kako biste zajamčili nesmetan nastavak sesija privatnog pregledavanja.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Zadrži privatne kartice";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Zahtijevaj identifikaciju licem";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Zahtijevaj kôd PIN";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Zahtijevaj identifikaciju dodirom";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Kartice Privatno";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Navigacijska alatna traka";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Dodaj karticu";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Dodaj na popis za reprodukciju";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Natrag";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Naprijed";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Sigurna veza";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Izbornik";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Nije sigurno";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Popis za reprodukciju";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Prikaz čitača";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Dodaj na popis za čitanje";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Ponovno učitaj";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Tražite ili upišite adresu";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Podijeli";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Zaustavi";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Glasovno pretraživanje";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Nesigurna veza";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Područje kartica";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Dodaj karticu";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Prijeđite prstom udesno ili ulijevo trima prstima za zatvaranje kartice.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Zatvaranje kartice";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Nema kartica";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Od %1$@. od %2$@. kartice od %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Nova kartica";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "Pretraživanje kartica";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "%1$@. kartica od %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Odredbe pružanja usluge";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Odredbe uporabe";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Podijeli...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Podijelite Brave sa svojim prijateljima!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automatski";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Tama";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Izgled";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Ove se postavke ne primjenjuju u načinu privatnog pregledavanja.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Svijetlo";
+
+/* Name for app theme settings */
+"themesSettings" = "Teme";
+
+/* No comment provided by engineer. */
+"Title" = "Naslov";
+
+/* History tableview section header */
+"Today" = "Danas";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Dodaj";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Dodavanje izvora nije uspjelo";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Žao nam je, ali nismo mogli prepoznati tu adresu sažetka sadržaja.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Žao nam je, ali nismo mogli pronaći tu adresu sažetka sadržaja.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Žao nam je, ali ta adresa sažetka sadržaja nema nikakav sadržaj.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Dodavanje izvora značajki Novosti Brave";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Dostupni sažetci sadržaja RSS";
+
+/* The name of the feature */
+"today.braveToday" = "Novosti Brave";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "Vijesti";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Pratite teme koje vas zanimaju";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kanali";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kanali";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kanali";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Dostupan je novi sadržaj";
+
+/* No comment provided by engineer. */
+"today.deals" = "Ponude";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Značajkom Novosti Brave prestaje se prikazivati sadržaj izdavača %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Onemogućeno";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Sakrij sadržaj od izdavača %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Pokušajte uključiti neke izvore vijesti";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Nema članaka za prikaz";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Dopusti sadržaj izdavača %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Postoje poteškoće sa značajkom Novosti Brave. Pokušajte ponovno.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Ups...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Upravljajte izvorima za svoj sažetak sadržaja";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Pratim";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Pratim";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Prati";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Dohvatite sažetke sadržaja od mrežnog mjesta";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Uvezi OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Nesigurni izvori – dodavanje na vlastitu odgovornost";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Pratite svoje omiljene izvore u jednom sažetku sadržaja. Jednostavno otvorite karticu u pregledniku Brave, pomaknite prema dolje i... voila!\nZnačajka Novosti Brave podržana je privatnim anonimiziranim oglasima.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Uključi značajku Novosti Brave i nikada ne propusti priču";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Prikaži uslugu Brave News";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Doznaj više o svojim podatcima";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Više ponuda Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Nema interneta";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Pokušajte provjeriti vezu ili se ponovno povezati s mrežom Wi-Fi.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Nema rezultata";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Razvrstani popis izvora";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Popularno";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Popularni izvori";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Promovirano";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Sakrij";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Ocijenite preglednik Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Recite nam svoje mišljenje!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Sviđa vam se preglednik Brave?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Osvježi";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Tražite mrežna mjesta, teme ili sažetke sadržaja RSS";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Slično izvoru %@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Izvori i postavke";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Izvori";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Izvori koji bi vam se mogli svidjeti";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Predloženo";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Predloženo";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Uključi Novosti Brave";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Prestani pratiti";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Korisnički izvori";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Uključi/isključi način čitača";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Uključiti prijedloge za pretraživanje?";
+
+/* Sync Alert */
+"UnableToConnectDescription" = "Nije moguće pridružiti se grupi za sinkronizaciju. Provjerite upisane riječi i pokušajte ponovno.";
+
+/* Sync Alert */
+"UnableToConnectTitle" = "Nije moguće povezivanje";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Otključaj";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Nepodržani instrumenti plaćanja";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Adresa i pretraživanje";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Preusmjeravanja mrežnog mjesta";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Korisnik otkazan";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Upotrijebi regionalni element za blokiranje oglasa";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Zatvori";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Nastao je problem pri prijavljivanju u vaš račun za uslugu Uphold. Pokušajte ponovno";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Žao nam je, ali nešto nije u redu";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Inačica %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Prikaži putem usluge %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Omogućite pristup mikrofonu u postavkama sustava iOS kako bi se putem preglednika Brave upotrebljavalo anonimno glasovno pretraživanje.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Potreban je pristup mikrofonu";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "U pregledniku Brave ne pohranjuju se niti dijele vaša glasovna pretraživanja.";
+
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktiviraj";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Želite li ostati zaštićeni? Samo obnovite prije isteka pretplate. Kako bismo vam zahvalili za obnavljanje, smanjujemo cijenu za čak 20 % za sljedeća 3 mjeseca.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Omogući automatsko obnavljanje";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Brave sada i dobijte 20 % na 3 mjeseca!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Brave sada i dobijte 1 mjesec besplatno!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "To znači da gubite dodatne zaštite preglednika Brave za svaku aplikaciju na svom telefonu.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "O, ne! Vaša pretplata na mrežu VPN preglednika Brave uskoro istječe.";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Kupi";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Vatrozid preglednika Brave + mreža VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Zaštitite 5 uređaja uz 1 pretplatu";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Odaberi svoju geolokaciju/državu";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave nikada ne bilježi Vašu aktivnost";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Zaštitite aplikacije i cijeli uređaj";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Sigurnije za kućni ili javni Wi-Fi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Munjevito brzo, do 100 Mbps";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Inačica aplikacije";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobilni operater";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Društvo Brave vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Nije moguće poslati poruku e-pošte. Provjerite konfiguraciju svoje e-pošte.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Odaberite informacije koje želite podijeliti s nama.\n\nŠto više informacija podijelite s nama na početku, to vam naše osoblje za podršku može jednostavnije pomoći u rješavanju vašeg problema.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Podrška pružena uz pomoć tima Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Naziv glavnog računala mreže VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Problem";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Problem s pouzdanošću veze";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Nema Interneta nakon povezivanja";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Ostalo";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Nemogućnost povezivanja s mrežom VPN (druga pogreška)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Spora veza";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Mrežno mjesto ne radi";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Zapisnici pogrešaka";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Vrsta mreže";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platforma";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Nastavi do elektroničke pošte";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Vrsta pretplate";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Vremenska zona sustava iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Vatrozid preglednika Brave + problem mreže VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Omogući";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Nije moguće povezati se s trgovinom App Store. Pokušajte ponovno za nekoliko minuta.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Pogreška trgovine App Store";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Svi planovi uključuju %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "besplatno 7-dnevno probno razdoblje";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "isprobajte 7 dana besplatno";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Sve se pretplate automatski obnavljaju, ali se mogu otkazati prije obnove.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Ovim profilom omogućava se mreži VPN da se cijelo vrijeme automatski povezuje i jamči sigurnost prometa na vašem uređaju. Ova se veza VPN šifrira i usmjerava putem Braveova pametnog vatrozida kako bi se blokirale potencijalno štetne i invazivne veze.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Instaliraj profil za mrežu VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Preglednikom Brave sada se instalira profil za mrežu VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "Mreža VPN sada omogućena";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Instaliraj mrežu VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Isprobaj BESPLATNO";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Mjesečno obnavljanje";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Mjesečna pretplata";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Istekao";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Blokiraju se neželjene mrežne veze";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Blokiraj oglase i elemente za praćenje u svim aplikacijama ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Podržavaju se brzine do 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Brzo i neograničeno do 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Podrška 24/7 ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Štite se sve veze";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Omogućuje";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Odaberite željeni transportni protokol. Nakon prebacivanja vaše postojeće vjerodajnice za mrežu VPN brišu se i ponovno se povezujete ako je veza s mrežom VPN trenutačno uspostavljena.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Prebacivanje protokola tunela nije uspjelo. Pokušajte ponovno poslije.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Pogreška poslužitelja";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Transportni protokol";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Protokol tunela mreže VPN promijenjen.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Vama najbliža regija poslužitelja automatski se odabire na osnovi vremenske zone vašeg sustava. Preporučuje se radi jamčenja brze internetske mreže.";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatski";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Promjena poslužitelja nije uspjela. Pokušajte ponovno poslije.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Pogreška poslužitelja";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Regija poslužitelja";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Promijenjena je regija mreže VPN.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Nije moguće ponovno postaviti konfiguraciju mreže VPN. Pokušajte ponovno. Ako se problem nastavi pojavljivati, obratite se korisničkoj službi za pomoć.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Pokušaj ponovo";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Ponovno postavljanje nije uspjelo";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Konfiguracija mreže VPN uspješno je ponovno postavljena.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Uspješno ponovno postavljanje";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Vrati";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Prijavite se u svoj račun preglednika Brave kako biste osvježili sesiju mreže VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Odbaci";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Prijava";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Sesija istekla";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Nadogradite na mrežu VPN radi zaštite svoje veze i blokiranja invazivnih elemenata za praćenje svugdje.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Obrati se tehničkoj podršci";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Dohvaćanje popisa poslužitelja nije uspjelo. Pokušajte ponovno poslije.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Podrška za mrežu VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Povežite kupnju sa svojim računom Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Povežite svoju kupnju iz trgovine App Store sa svojim računom Brave kako biste upotrijebili mrežu VPN preglednika Brave na drugim uređajima.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Upravljaj pretplatom";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Iskoristi kôd ponude";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Ponovno postavi konfiguraciju";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Domaćin";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Lokacija";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Poslužitelj";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Istječe";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Pretplata";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Transportni protokol";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Onemogućeno";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Omogućeno";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Istekao";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Pretplati se sada";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tako je. Vaša pretplata na mrežu VPN preglednika Brave sada vrijedi na do 5 uređaja. Dakle, možete se pretplatiti u sustavu iOS i besplatno ga upotrebljavati na svojim uređajima Mac, Windows i Android.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Sada upotrebljavate mrežu VPN preglednika Brave na svim svojim uređajima za istu cijenu!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Vratite se na mrežu VPN preglednika Brave i dobijte 20 % na 3 mjeseca!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Jeste li spremni zaštititi svaku aplikaciju na svom telefonu? Vratite se mreži VPN preglednika Brave i ostvarite 20 % popusta tijekom sljedeća 3 mjeseca.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Mrežom VPN preglednika Brave uvijek su se blokirali elementi za praćenje u svakoj aplikaciji, čak izvan preglednika Brave. Sada možete vidjeti tko vas je pokušao pratiti uz čvorište privatnosti preglednika Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Jeste li znali da imate zaštitu mreže VPN preglednika Brave i izvan samog preglednika Brave?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Ažuriraj";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Ne brinite se. Držimo mrežu VPN aktivnom nekoliko dana dok ažurirate pojedinosti o plaćanju.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Ažurirajte informacije o plaćanju kako biste ostali zaštićeni mrežom VPN preglednika Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Želite li nastaviti štititi svaku aplikaciju na svom telefonu? Samo ažurirajte pojedinosti o plaćanju.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Postoji problem s plaćanjem za vaš račun, a to znači da vaša pretplata na mrežu VPN preglednika Brave uskoro istječe.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Ažuriraj plaćanje";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ažurirajte način plaćanja";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Preglednikom Brave pruža se zaštita čak u pozadini.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "UKLJUČENI su vatrozid preglednika Brave + mreža VPN";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Nastao je problem pri inicijaliziranju mreže VPN. Pokušajte ponovno ili pokušajte ponovno postaviti konfiguraciju na stranici postavki mreže VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Pogreška";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Za vatrozid preglednika Brave + mrežu VPN treba instalirati profil mreže VPN na uređaj kako bi radili. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Dopuštenje odbijeno";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Nije moguće iskoristiti kôd ponude. Pokušajte ponovno ili provjerite pojedinosti koda ponude i pokušajte ponovno.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Nije moguće dovršiti kupnju. Pokušajte ponovno ili provjerite pojedinosti o plaćanju na Appleu i pokušajte ponovno.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Pogreška";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Brave slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Iskoristi kôd";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Trenutačna postavka: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Regija mreže VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Brave Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Ponovno postavljanje konfiguracije";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Ponovo postavi";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Mjesečna pretplata";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Godišnja pretplata";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Ažurirajte svoj način plaćanja";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Godišnjim obnavljanjem ušteda od %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Najbolja vrijednost";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Jedna godina";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Datum stvaranja novčanika";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Web-sadržaj";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "Predmemorija";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "Kolačići";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "Baze podataka";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "Lokalna pohrana";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "Učitavanje podataka mrežnog mjesta…";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "Upravljaj podatcima mrežnog mjesta";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "Nema spremljenih podataka mrežnog mjesta";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "Ukloni sve";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "Ukloni";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "Ukloni stavke %ld";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Omiljeni";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Mali programi (widgeti)";
+
+/* Word count title */
+"WordCount" = "Broj riječi: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "god.";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Da";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Da, izbriši";
+
+/* History tableview section header */
+"Yesterday" = "Danas";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Omogućivanjem ove eksperimentalne značajke videozapis se reproducira pri maksimalnoj dostupnoj kvaliteti i upotrebljavaju se dodatni podatci.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "isključeno";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Uključi";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Dopusti putem mreže Wi-Fi";
+

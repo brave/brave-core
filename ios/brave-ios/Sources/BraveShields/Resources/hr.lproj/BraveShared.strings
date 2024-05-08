@@ -1,0 +1,75 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Reproduktor Brave** vaša je ulaznica za iskustvo prikazivanja videozapisa bez oglasa i prekida.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Namjesti štitove za mene";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Ovim su se mrežnim mjestom počeli blokirati neki programi za blokiranje oglasa, a to znači da mrežno mjesto možda neće raditi prema očekivanome.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Brave mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Zadrži trenutačne postavke";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Namještanje postavki blokiranja oglasa za ovo mrežno mjesto";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresivno";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Sprječava se učitavanje oglasa, skočnih prozora i elemenata za praćenje.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Onemogućeno";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standardno";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Reproduktor Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Uvijek otvarajte videozapise s ovog mrežnog mjesta Reproduktorom Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Isprobaj";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Ne sada";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Uz Reproduktor Brave možete gledati videozapise bez prekida.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Umjesto toga gledajte u Reproduktoru Brave";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Idi natrag";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Budući da ste zahtijevali strogo blokiranje sustava za praćenje i oglasa, preglednik Brave blokira to mrežno mjesto prije prvog povezivanja na mrežu.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Preglednikom Brave spriječilo se učitavanje sljedećeg mrežnog mjesta:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Ovo mrežno mjesto može vas pratiti na drugim mrežnim mjestima";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Nastavi";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Blokirana domena";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Omogućite globalnu kontrolu privatnosti JS API";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Omogući globalnu kontrolu privatnosti";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blokiranje elemenata za praćenje i oglasa";
+
