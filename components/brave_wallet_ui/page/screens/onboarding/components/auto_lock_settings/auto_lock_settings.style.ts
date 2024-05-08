@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import Dropdown from '@brave/leo/react/dropdown'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const LockIconContainer = styled.div`
   display: flex;

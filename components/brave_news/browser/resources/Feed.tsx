@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { spacing } from "@brave/leo/tokens/css";
+import { spacing } from "@brave/leo/tokens/css/variables";
 import { FeedItemV2, FeedV2, FeedV2Error } from "gen/brave/components/brave_news/common/brave_news.mojom.m";
 import * as React from 'react';
 import styled from "styled-components";

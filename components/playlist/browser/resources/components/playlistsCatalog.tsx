@@ -20,7 +20,7 @@ import {
 } from '@dnd-kit/sortable'
 
 import Icon from '@brave/leo/react/icon'
-import { color, spacing } from '@brave/leo/tokens/css'
+import { color, spacing } from '@brave/leo/tokens/css/variables'
 
 import { Playlist } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 

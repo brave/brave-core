@@ -4,13 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import { WalletButton, Text } from '../../../../components/shared/style'
 
-export const Button = styled(WalletButton)<{
+export const Button = styled(WalletButton) <{
   isPlaceholder: boolean
 }>`
   cursor: pointer;
@@ -42,7 +42,7 @@ export const ButtonIcon = styled(Icon).attrs({
   margin-left: 8px;
 `
 
-export const ButtonText = styled(Text)<{
+export const ButtonText = styled(Text) <{
   isPlaceholder: boolean
 }>`
   overflow: hidden;

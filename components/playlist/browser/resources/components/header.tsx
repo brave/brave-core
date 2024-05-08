@@ -16,7 +16,7 @@ import {
   spacing,
   icon,
   elevation
-} from '@brave/leo/tokens/css'
+} from '@brave/leo/tokens/css/variables'
 import LeoButton from '@brave/leo/react/button'
 
 import PlaylistInfo from './playlistInfo'

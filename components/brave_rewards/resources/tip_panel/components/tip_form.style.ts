@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import formBackgroundURL from '../assets/form_background.svg'
 import formBackgroundDarkURL from '../assets/form_background_dark.svg'

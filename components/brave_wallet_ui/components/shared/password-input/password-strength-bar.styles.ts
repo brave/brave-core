@@ -5,7 +5,7 @@
 
 import styled, { DefaultTheme, ThemedStyledProps } from 'styled-components'
 import LeoProgressBar from '@brave/leo/react/progressBar'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const BarAndMessageContainer = styled.div`
   width: 100%;

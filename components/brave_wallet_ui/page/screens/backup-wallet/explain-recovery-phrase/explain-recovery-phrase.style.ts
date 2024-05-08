@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Dialog from '@brave/leo/react/dialog'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
 import ExamplePhraseLight from './images/example_recovery_phrase_light.png'

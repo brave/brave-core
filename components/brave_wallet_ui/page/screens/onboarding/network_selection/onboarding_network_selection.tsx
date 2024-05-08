@@ -9,7 +9,7 @@ import { EntityId } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
 import Checkbox from '@brave/leo/react/checkbox'
 import ProgressRing from '@brave/leo/react/progressRing'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // context
 import {

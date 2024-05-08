@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const root = styled.div`
   max-width: 550px;

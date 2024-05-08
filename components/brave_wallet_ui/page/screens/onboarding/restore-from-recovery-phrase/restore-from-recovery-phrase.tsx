@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
 import { getLocale } from '../../../../../common/locale'

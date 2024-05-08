@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { radius } from '@brave/leo/tokens/css'
+import { radius } from '@brave/leo/tokens/css/variables'
 
 export const Box = styled.div`
   display: flex;

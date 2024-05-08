@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import { buttonReset } from '../../shared/lib/css_mixins'
 import selfCustodyImage from '../../shared/assets/self_custody_invitation.svg'
