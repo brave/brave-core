@@ -145,7 +145,6 @@ struct FocusSystemSettingsView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
         .overlay(
           RoundedRectangle(cornerRadius: 12.0)
-            .inset(by: 0.5)
             .strokeBorder(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1.0)
         )
       }
