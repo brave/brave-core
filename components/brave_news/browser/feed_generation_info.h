@@ -28,7 +28,6 @@ struct FeedGenerationInfo {
   FeedItems feed_items;
   Publishers publishers;
   std::vector<std::string> channels;
-  Signals signals;
   std::vector<std::string> suggested_publisher_ids;
 
   FeedGenerationInfo(const std::string& locale,
@@ -65,7 +64,8 @@ struct FeedGenerationInfo {
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
                     const ArticleWeight& weight);
-  std::vector<ContentGroup> GenerateContentGroups();
+  
+  Signals signals_;
 
   base::span<TopicAndArticles> topics_span_;
   TopicsResult topics_;

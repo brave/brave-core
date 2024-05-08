@@ -481,14 +481,11 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
 
-  auto articles = GetArticleInfos(info.locale, info.feed_items, info.publishers,
-                                  info.signals);
-
   auto feed = mojom::FeedV2::New();
 
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
-  while (!articles.empty()) {
+  while (!info.GetArticleInfos().empty()) {
     auto items = GenerateBlock(info, pick_hero, pick_article,
                                /*inline_discovery_ratio=*/0);
     if (items.empty()) {

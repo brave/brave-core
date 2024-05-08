@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_news/browser/feed_generation_info.h"
 
-#include <cstddef>
-#include <iterator>
 #include <optional>
 #include <string>
 #include <vector>
@@ -14,11 +12,9 @@
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
@@ -44,9 +40,9 @@ FeedGenerationInfo::FeedGenerationInfo(
     this->publishers[id] = publisher.Clone();
   }
 
-  this->signals.reserve(signals.size());
+  this->signals_.reserve(signals.size());
   for (const auto& [id, signal] : signals) {
-    this->signals[id] = signal->Clone();
+    this->signals_[id] = signal->Clone();
   }
 
   this->topics_.reserve(topics.size());
@@ -69,7 +65,7 @@ FeedGenerationInfo::~FeedGenerationInfo() = default;
 const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   if (!article_infos_) {
     article_infos_ =
-        brave_news::GetArticleInfos(locale, feed_items, publishers, signals);
+        brave_news::GetArticleInfos(locale, feed_items, publishers, signals_);
   }
   return article_infos_.value();
 }
@@ -77,7 +73,35 @@ const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
 const std::vector<ContentGroup>&
 FeedGenerationInfo::GetEligibleContentGroups() {
   if (!content_groups_) {
-    content_groups_ = GenerateContentGroups();
+    GenerateAvailableCounts();
+
+    std::vector<ContentGroup> content_groups;
+    for (const auto& channel_id : channels) {
+      if (base::Contains(available_counts_, channel_id)) {
+        content_groups.emplace_back(channel_id, true);
+        DVLOG(1) << "Subscribed to channel: " << channel_id;
+      } else {
+        DVLOG(1)
+            << "Subscribed to channel: " << channel_id
+            << " which contains no articles (and thus, is not eligible as a "
+               "group to pick content from)";
+      }
+    }
+
+    for (const auto& [publisher_id, publisher] : publishers) {
+      if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+          publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
+        if (base::Contains(available_counts_, publisher_id)) {
+          content_groups.emplace_back(publisher_id, false);
+          DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
+        } else {
+          DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name
+                   << " which has not articles available (and thus, isn't an "
+                      "eligible content group)";
+        }
+      }
+    }
+    content_groups_ = std::move(content_groups);
   }
   return content_groups_.value();
 }
@@ -126,38 +150,6 @@ void FeedGenerationInfo::GenerateAvailableCounts() {
       available_counts_[channel]++;
     }
   }
-}
-
-std::vector<ContentGroup> FeedGenerationInfo::GenerateContentGroups() {
-  GenerateAvailableCounts();
-
-  std::vector<ContentGroup> eligible_content_groups;
-  for (const auto& channel_id : channels) {
-    if (base::Contains(available_counts_, channel_id)) {
-      eligible_content_groups.emplace_back(channel_id, true);
-      DVLOG(1) << "Subscribed to channel: " << channel_id;
-    } else {
-      DVLOG(1) << "Subscribed to channel: " << channel_id
-               << " which contains no articles (and thus, is not eligible as a "
-                  "group to pick content from)";
-    }
-  }
-
-  for (const auto& [publisher_id, publisher] : publishers) {
-    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
-        publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-      if (base::Contains(available_counts_, publisher_id)) {
-        eligible_content_groups.emplace_back(publisher_id, false);
-        DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
-      } else {
-        DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name
-                 << " which has not articles available (and thus, isn't an "
-                    "eligible content group)";
-      }
-    }
-  }
-
-  return eligible_content_groups;
 }
 
 void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
