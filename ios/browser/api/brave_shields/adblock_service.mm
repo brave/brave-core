@@ -172,7 +172,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   if (file_path.empty()) {
     return nil;
   }
-  return [NSURL fileURLWithPath:base::SysUTF8ToNSString(file_path.value())];
+  return base::apple::FilePathToNSURL(file_path);
 }
 
 - (NSURL*)installPathForFilterListUUID:(NSString*)uuid {
