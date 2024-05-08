@@ -9,10 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_page_graph/common/buildflags.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-isolate.h"
-
-#include "brave/components/brave_page_graph/common/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 namespace v8::page_graph {
