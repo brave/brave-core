@@ -300,6 +300,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     tab?.currentRequestURL = requestURL
+    tab?.navigationType = navigationAction.navigationType
 
     // Website redirection logic
     if requestURL.isWebPage(includeDataURIs: false),
@@ -981,7 +982,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if tab.shouldNotifyAdsServiceTabDidChange, tab.navigationType != WKNavigationType.backForward
+      if tab.shouldNotifyAdsServiceTabDidChange,
+        tab.navigationType != WKNavigationType.backForward,
+        tab.navigationType != WKNavigationType.reload
       {
         rewards.reportTabUpdated(
           tab: tab,
