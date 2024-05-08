@@ -297,14 +297,13 @@ struct CompactMediaScrubberLabel: View {
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
-    return Text("-\(value)")
+    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
   }
 
   var body: some View {
     HStack {
       currentValueLabel
-      Text("/")
+      Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
       remainingTimeLabel
     }
     .font(.caption2)

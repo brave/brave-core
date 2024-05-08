@@ -37,8 +37,7 @@ struct MediaScrubber<Label: View>: View {
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
-    return Text("-\(value)")
+    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
   }
 
   private var durationLabel: Text {
@@ -165,8 +164,7 @@ struct DefaultMediaScrubberLabel: View {
   }
 
   private var remainingTimeLabel: Text {
-    let value = Text(.seconds(duration - currentTime), format: .time(pattern: .minuteSecond))
-    return Text("-\(value)")
+    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
   }
 
   private var durationLabel: Text {
@@ -235,7 +233,7 @@ private struct MediaScrubberPreview: View {
         currentTime = 500
         //        }
       } label: {
-        Text("Go to 50%")
+        Text(verbatim: "Go to 50%")
       }
     }
   }

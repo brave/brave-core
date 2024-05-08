@@ -22,7 +22,7 @@ struct DebugSizeModifier: ViewModifier {
               }()
               let width = numberFormatter.string(from: NSNumber(value: proxy.size.width))!
               let height = numberFormatter.string(from: NSNumber(value: proxy.size.height))!
-              Text("\(width) × \(height)")
+              Text(verbatim: "\(width) × \(height)")
                 .font(.footnote)
                 .foregroundStyle(.white)
                 .background(Color.red)

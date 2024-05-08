@@ -59,9 +59,9 @@ extension GaugeStyle where Self == CircularCapacityGaugeStyle {
 @available(iOS 16.0, *)
 #Preview {
   HStack {
-    Gauge(value: 0) { Text("0%") }
-    Gauge(value: 0.5) { Text("50%") }
-    Gauge(value: 1) { Text("100%") }
+    Gauge(value: 0) { Text(verbatim: "0%") }
+    Gauge(value: 0.5) { Text(verbatim: "50%") }
+    Gauge(value: 1) { Text(verbatim: "100%") }
   }
   .gaugeStyle(.circularCapacity(lineWidth: 10))
   .padding()
