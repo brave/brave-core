@@ -439,55 +439,6 @@ void IpfsService::NotifyIpnsKeysLoaded(bool result) {
   }
 }
 
-// Local pinning
-void IpfsService::AddPin(const std::vector<std::string>& cids,
-                         bool recursive,
-                         AddPinCallback callback) {
-  if (!IsDaemonLaunched()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  if (cids.empty()) {
-    AddPinResult result;
-    result.recursive = recursive;
-    std::move(callback).Run(result);
-    return;
-  }
-
-  GURL gurl = server_endpoint_.Resolve(kAddPinPath);
-  for (const auto& cid : cids) {
-    gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
-  }
-  gurl = net::AppendQueryParameter(gurl, "recursive",
-                                   recursive ? "true" : "false");
-  api_request_helper_->Request(
-      "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnPinAddResult, weak_factory_.GetWeakPtr(),
-                     cids.size(), recursive, std::move(callback)),
-      GetHeaders(gurl),
-      api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)});
-}
-
-void IpfsService::RemovePin(const std::vector<std::string>& cids,
-                            RemovePinCallback callback) {
-  if (!IsDaemonLaunched()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  GURL gurl = server_endpoint_.Resolve(kRemovePinPath);
-  for (const auto& cid : cids) {
-    gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
-  }
-
-  api_request_helper_->Request(
-      "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnPinRemoveResult,
-                     weak_factory_.GetWeakPtr(), std::move(callback)),
-      GetHeaders(gurl));
-}
-
 void IpfsService::RemovePinCli(std::set<std::string> cids,
                                BoolCallback callback) {
   if (cids.empty()) {
@@ -552,31 +503,6 @@ void IpfsService::OnRemovePinCli(BoolCallback callback,
   } else {
     RemovePinCli(cids, std::move(callback));
   }
-}
-
-void IpfsService::GetPins(const std::optional<std::vector<std::string>>& cids,
-                          const std::string& type,
-                          bool quiet,
-                          GetPinsCallback callback) {
-  if (!IsDaemonLaunched()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  GURL gurl = server_endpoint_.Resolve(kGetPinsPath);
-  if (cids) {
-    for (const auto& cid : cids.value()) {
-      gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
-    }
-  }
-  gurl = net::AppendQueryParameter(gurl, "type", type);
-  gurl = net::AppendQueryParameter(gurl, "quiet", quiet ? "true" : "false");
-
-  api_request_helper_->Request(
-      "POST", gurl, std::string(), std::string(),
-      base::BindOnce(&IpfsService::OnGetPinsResult, weak_factory_.GetWeakPtr(),
-                     std::move(callback)),
-      GetHeaders(gurl));
 }
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
@@ -1043,100 +969,6 @@ void IpfsService::OnPreWarmComplete(
     std::move(prewarm_callback_for_testing_).Run();
 }
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-//{
-//  "PinLsList": {
-//    "Keys": {
-//      "<string>": {
-//        "Type": "<string>"
-//      }
-//    }
-//  },
-//  "PinLsObject": {
-//    "Cid": "<string>",
-//    "Type": "<string>"
-//  }
-//}
-void IpfsService::OnGetPinsResult(
-    GetPinsCallback callback,
-    api_request_helper::APIRequestResult response) {
-  int response_code = response.response_code();
-
-  if (!response.Is2XXResponseCode()) {
-    VLOG(1) << "Fail to get pins, response_code = " << response_code;
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto parse_result =
-      IPFSJSONParser::GetGetPinsResultFromJSON(response.value_body());
-  if (!parse_result) {
-    VLOG(1) << "Fail to get pins, wrong format";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::move(callback).Run(std::move(parse_result));
-}
-
-void IpfsService::OnPinAddResult(
-    size_t cids_count_in_request,
-    bool recursive,
-    AddPinCallback callback,
-    api_request_helper::APIRequestResult response) {
-  int response_code = response.response_code();
-
-  if (!response.Is2XXResponseCode()) {
-    VLOG(1) << "Fail to add pin, response_code = " << response_code;
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto parse_result =
-      IPFSJSONParser::GetAddPinsResultFromJSON(response.value_body());
-  if (!parse_result) {
-    VLOG(1) << "Fail to add pin service, wrong format";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  if (parse_result->pins.size() != cids_count_in_request) {
-    VLOG(1) << "Not all CIDs were added";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  parse_result->recursive = recursive;
-
-  if (ipfs_service_delegate_) {
-    ipfs_service_delegate_->OnImportToIpfsFinished(this);
-  }
-
-  std::move(callback).Run(std::move(parse_result));
-}
-
-void IpfsService::OnPinRemoveResult(
-    RemovePinCallback callback,
-    api_request_helper::APIRequestResult response) {
-  int response_code = response.response_code();
-
-  if (!response.Is2XXResponseCode()) {
-    VLOG(1) << "Fail to remove pin, response_code = " << response_code;
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto parse_result =
-      IPFSJSONParser::GetRemovePinsResultFromJSON(response.value_body());
-  if (!parse_result) {
-    VLOG(1) << "Fail to remove pin, wrong response format";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::move(callback).Run(std::move(parse_result));
-}
-#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
 void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   GURL::Replacements replacements;

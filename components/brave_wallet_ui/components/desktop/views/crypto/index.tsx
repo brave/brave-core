@@ -7,7 +7,6 @@ import * as React from 'react'
 import {
   Route,
   useHistory,
-  useLocation,
   Switch,
   Redirect
 } from 'react-router-dom'
@@ -17,10 +16,9 @@ import { useSelector } from 'react-redux'
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import {
-  useSafeWalletSelector,
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors, UISelectors } from '../../../../common/selectors'
+import { UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
   useGetDefaultEthereumWalletQuery,
@@ -57,8 +55,6 @@ import {
 } from '../../popup-modals/confirm-password-modal/remove-account-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
-import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
-import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -75,10 +71,6 @@ export interface Props {
 export const CryptoView = ({ sessionRoute }: Props) => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
-  // redux
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
@@ -109,7 +101,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // routing
   const history = useHistory()
-  const location = useLocation()
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -151,18 +142,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     () => onShowVisibleAssetsModal(false),
     [onShowVisibleAssetsModal]
   )
-
-  const onClose = React.useCallback(() => {
-    history.push(WalletRoutes.PortfolioNFTs)
-  }, [history])
-
-  const onBack = React.useCallback(() => {
-    if (location.key) {
-      history.goBack()
-    } else {
-      history.push(WalletRoutes.PortfolioNFTs)
-    }
-  }, [history, location.key])
 
   // computed
   const isCheckingWallets =
@@ -357,47 +336,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.LocalIpfsNode}
           exact={true}
           render={(props) =>
-            isNftPinningFeatureEnabled ? (
-              <WalletPageWrapper
-                noPadding={true}
-                hideNav={true}
-                hideHeader={true}
-              >
-                <StyledWrapper>
-                  <LocalIpfsNodeScreen
-                    onClose={onClose}
-                    {...props}
-                  />
-                </StyledWrapper>
-              </WalletPageWrapper>
-            ) : (
-              <Redirect to={WalletRoutes.PortfolioAssets} />
-            )
-          }
-        />
-
-        {/* NFT Pinning inspect pinnable page */}
-        <Route
-          path={WalletRoutes.InspectNfts}
-          exact={true}
-          render={(props) =>
-            isNftPinningFeatureEnabled ? (
-              <WalletPageWrapper
-                noPadding={true}
-                hideNav={true}
-                hideHeader={true}
-              >
-                <StyledWrapper>
-                  <InspectNftsScreen
-                    onClose={onClose}
-                    onBack={onBack}
-                    {...props}
-                  />
-                </StyledWrapper>
-              </WalletPageWrapper>
-            ) : (
-              <Redirect to={WalletRoutes.PortfolioAssets} />
-            )
+            <Redirect to={WalletRoutes.PortfolioAssets} />
           }
         />
 

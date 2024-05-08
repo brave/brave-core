@@ -4,16 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
-
-// api
-import {
-  useGetAutopinEnabledQuery,
-  useSetAutopinEnabledMutation
-} from '../../../common/slices/api.slice'
-
-// types
-import { WalletRoutes } from '../../../constants/types'
 
 // components
 import { Row } from '../../shared/style'
@@ -32,8 +22,6 @@ import {
   Section,
   SectionText,
   Description,
-  ActionButton,
-  CheckNftsButton,
   LeftWrapper,
   RightWrapper,
   NftIllustration
@@ -47,31 +35,12 @@ interface Props {
 export const LocalIpfsNodeScreen = (props: Props) => {
   const { onClose } = props
 
-  // routing
-  const history = useHistory()
 
   // redux
   const { beforeTag, afterTag } = splitStringForTag(
     getLocale('braveWalletNftPinningRunNodeDescription')
   )
 
-  // queries
-  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
-
-  // mutations
-  const [setAutoPinStatus] = useSetAutopinEnabledMutation()
-
-  // methods
-  const onClickCheckNfts = React.useCallback(() => {
-    history.push(WalletRoutes.InspectNfts)
-  }, [history])
-
-  const onClickRunNode = React.useCallback(() => {
-    if (!isAutoPinEnabled) {
-      setAutoPinStatus(true)
-    }
-    history.push(WalletRoutes.PortfolioNFTs)
-  }, [history, isAutoPinEnabled, setAutoPinStatus])
 
   return (
     <RunNodeWrapper>
@@ -109,13 +78,7 @@ export const LocalIpfsNodeScreen = (props: Props) => {
               justifyContent='flex-start'
               margin='0 0 0 8px'
             >
-              <ActionButton onClick={onClickRunNode}>
-                {getLocale('braveWalletNftPinningPinNftsButton')}
-              </ActionButton>
             </Row>
-            <CheckNftsButton onClick={onClickCheckNfts}>
-              {getLocale('braveWalletNftPinningCheckNftsButton')}
-            </CheckNftsButton>
           </LeftWrapper>
         </Section>
       </MainContent>

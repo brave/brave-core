@@ -1137,22 +1137,8 @@
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
   </message>
-  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING" desc="Enable NFT pinning">
-    Automatically pin NFTs
-  </message>
-  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
-    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
-    Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
-  </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset and clear wallet data
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT" desc="Clear pinned NFTs item text">
-    Clear pinned NFTs
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT_DESC" desc="CL item text">
-    Pinned NFTs are hosted to the IPFS network when local IPFS node is launched.
-    You have <ph name="NFT_COUNT">$1<ex>2</ex></ph> pinned NFTs at the moment.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
     Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
@@ -1168,9 +1154,6 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet transaction information was reset.
-  </message>
-  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED" desc="Clear pinned NFTs confirmed message text">
-    Your pinned NFTs were reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes

@@ -36,10 +36,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
-#endif
-
 namespace base {
 class CommandLine;
 class Process;
@@ -84,14 +80,6 @@ class IpfsService : public KeyedService {
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
   using NodeCallback = base::OnceCallback<void(std::optional<std::string>)>;
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  // Local pins
-  using AddPinCallback = base::OnceCallback<void(std::optional<AddPinResult>)>;
-  using RemovePinCallback =
-      base::OnceCallback<void(std::optional<RemovePinResult>)>;
-  using GetPinsCallback =
-      base::OnceCallback<void(std::optional<GetPinsResult>)>;
-#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
@@ -122,16 +110,6 @@ class IpfsService : public KeyedService {
   virtual void PreWarmShareableLink(const GURL& url);
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  // Local pins
-  virtual void AddPin(const std::vector<std::string>& cids,
-                      bool recursive,
-                      AddPinCallback callback);
-  virtual void RemovePin(const std::vector<std::string>& cid,
-                         RemovePinCallback callback);
-  virtual void GetPins(const std::optional<std::vector<std::string>>& cid,
-                       const std::string& type,
-                       bool quiet,
-                       GetPinsCallback callback);
   // Removes pins using client mode withoud launching the IPFS daemon
   virtual void RemovePinCli(std::set<std::string> cid, BoolCallback callback);
   virtual void LsPinCli(NodeCallback callback);
@@ -208,15 +186,6 @@ class IpfsService : public KeyedService {
                           const base::FilePath& data,
                           NodeCallback callback);
 
-  // Local pins
-  void OnGetPinsResult(GetPinsCallback callback,
-                       api_request_helper::APIRequestResult response);
-  void OnPinAddResult(size_t cids_count_in_request,
-                      bool recursive,
-                      AddPinCallback callback,
-                      api_request_helper::APIRequestResult response);
-  void OnPinRemoveResult(RemovePinCallback callback,
-                         api_request_helper::APIRequestResult response);
   void OnRemovePinCli(BoolCallback callback,
                       std::set<std::string> cids,
                       std::optional<std::string> result);

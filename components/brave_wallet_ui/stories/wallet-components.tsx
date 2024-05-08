@@ -13,13 +13,10 @@ import { TopNavOptions } from '../options/top-nav-options'
 import './locale'
 import { LoadingSkeleton } from '../components/shared/loading-skeleton/index'
 import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
-import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-banner'
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
-import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { mockNetwork } from '../common/constants/mocks'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
-import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 import { EnableNftDiscoveryModal } from '../components/desktop/popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { NftScreen } from '../nft/components/nft-details/nft-screen'
@@ -118,25 +115,6 @@ _BuySendSwapDeposit.story = {
   name: 'Buy/Send/Swap/Deposit'
 }
 
-export const _NftIpfsBanner = () => {
-  const [showBanner, setShowBanner] = React.useState(true)
-
-  const onDismiss = React.useCallback(() => {
-    setShowBanner(false)
-  }, [])
-
-  return (
-    <WalletPageStory>
-      <div style={{ width: '855px' }}>
-        {showBanner && <NftIpfsBanner onDismiss={onDismiss} />}
-      </div>
-    </WalletPageStory>
-  )
-}
-
-_NftIpfsBanner.story = {
-  name: 'NFT IPFS Banner'
-}
 
 export const _LocalIpfsScreen = () => {
   const onClose = () => {
@@ -152,46 +130,6 @@ export const _LocalIpfsScreen = () => {
 
 _LocalIpfsScreen.story = {
   name: 'Run Local IPFS Node'
-}
-
-export const _InspectNftsScreen = () => {
-  const onClose = () => {
-    console.log('on close')
-  }
-  const onBack = () => {
-    console.log('on back')
-  }
-  return (
-    <WalletPageStory>
-      <InspectNftsScreen
-        onClose={onClose}
-        onBack={onBack}
-      />
-    </WalletPageStory>
-  )
-}
-
-_InspectNftsScreen.story = {
-  name: 'Inspect NFTs Screen'
-}
-
-export const _NftPinningStatus = () => {
-  return (
-    <div style={{ display: 'grid', gap: 10 }}>
-      {/* uploading */}
-      <NftPinningStatus pinningStatusCode={3} />
-
-      {/* success */}
-      <NftPinningStatus pinningStatusCode={2} />
-
-      {/* failed */}
-      <NftPinningStatus pinningStatusCode={4} />
-    </div>
-  )
-}
-
-_NftPinningStatus.story = {
-  title: 'NFT Pinning Status'
 }
 
 export const _NftsEmptyState = () => {

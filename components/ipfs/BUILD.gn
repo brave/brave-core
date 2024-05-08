@@ -79,12 +79,6 @@ static_library("ipfs") {
       "ipfs_onboarding_page.h",
       "keys/ipns_keys_manager.cc",
       "keys/ipns_keys_manager.h",
-      "pin/ipfs_base_pin_service.cc",
-      "pin/ipfs_base_pin_service.h",
-      "pin/ipfs_local_pin_service.cc",
-      "pin/ipfs_local_pin_service.h",
-      "pin/ipfs_pin_rpc_types.cc",
-      "pin/ipfs_pin_rpc_types.h",
     ]
     deps += [
       "//brave/components/l10n/common",

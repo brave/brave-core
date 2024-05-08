@@ -563,9 +563,6 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image URL</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_IN_PROGRESS" desc="NFT detail pinning in progress">In progress</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_SUCCESSFUL" desc="NFT detail pinning successful">Pinned</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_FAILED" desc="NFT detail pinning failed">Failed</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OVERVIEW" desc="NFT detail overview">Overview</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OWNED_BY" desc="NFT detail owned by">Owned by</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_VIEW_ACCOUNT" desc="NFT detail view account">View account</message>

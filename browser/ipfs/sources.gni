@@ -55,13 +55,6 @@ if (enable_ipfs) {
     "//ui/shell_dialogs",
   ]
 
-  if (enable_ipfs_local_node) {
-    brave_browser_ipfs_sources += [
-      "//brave/browser/ipfs/ipfs_local_pin_service_factory.cc",
-      "//brave/browser/ipfs/ipfs_local_pin_service_factory.h",
-    ]
-  }
-
   if (enable_extensions) {
     brave_browser_ipfs_deps += [
       "//extensions/browser",

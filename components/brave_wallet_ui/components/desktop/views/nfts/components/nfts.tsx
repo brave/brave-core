@@ -17,7 +17,6 @@ import {
 } from '../../../../../common/slices/entities/token-balance.entity'
 
 // hooks
-import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -69,7 +68,6 @@ import {
   makePortfolioNftsRoute
 } from '../../../../../utils/routes-utils'
 import {
-  selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
 import {
@@ -82,7 +80,6 @@ import SearchBar from '../../../../shared/search-bar'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
-import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 import {
   NftGridViewItemSkeleton //
 } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
@@ -96,7 +93,7 @@ import {
 } from '../../portfolio/components/nft-grid-view/nft-collection-grid-view-item'
 
 // styles
-import { BannerWrapper, NFTListWrapper, NftGrid } from './nfts.styles'
+import { NFTListWrapper, NftGrid } from './nfts.styles'
 import { Column, Row } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
@@ -140,9 +137,7 @@ export const Nfts = ({
 
   // redux
   const dispatch = useDispatch()
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
+
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
@@ -174,7 +169,6 @@ export const Nfts = ({
 
   // custom hooks
   const { braveWalletP3A } = useApiProxy()
-  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } =
@@ -184,11 +178,10 @@ export const Nfts = ({
       selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
   const { accounts: allAccounts } = useAccountsQuery()
-  const { userTokensRegistry, hiddenNfts, visibleNfts } =
+  const { userTokensRegistry, hiddenNfts } =
     useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
         userTokensRegistry: result.data,
-        visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
     })
@@ -453,10 +446,6 @@ export const Nfts = ({
     [assetIdsByCollectionNameRegistry, collectionNames, history]
   )
 
-  const onClickIpfsButton = React.useCallback(() => {
-    onToggleShowIpfsBanner()
-  }, [onToggleShowIpfsBanner])
-
   const toggleShowAddNftModal = React.useCallback(() => {
     setShowAddNftModal((value) => !value)
   }, [])
@@ -513,18 +502,6 @@ export const Nfts = ({
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {isNftPinningFeatureEnabled &&
-      isIpfsBannerVisible &&
-      visibleNfts.length > 0 ? (
-        <BannerWrapper
-          justifyContent='center'
-          alignItems='center'
-          marginBottom={16}
-        >
-          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-        </BannerWrapper>
-      ) : null}
-
       <ControlBarWrapper
         justifyContent='space-between'
         alignItems='center'
@@ -565,11 +542,6 @@ export const Nfts = ({
               <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
               </PortfolioActionButton>
-              {isNftPinningFeatureEnabled && visibleNfts.length > 0 ? (
-                <PortfolioActionButton onClick={onClickIpfsButton}>
-                  <ButtonIcon name='product-ipfs-outline' />
-                </PortfolioActionButton>
-              ) : null}
               <PortfolioActionButton onClick={toggleShowAddNftModal}>
                 <ButtonIcon name='plus-add' />
               </PortfolioActionButton>

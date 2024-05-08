@@ -10,8 +10,6 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
@@ -50,24 +48,18 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void SetDefaultNetwork(const base::Value::List& args);
   void AddHiddenNetwork(const base::Value::List& args);
   void RemoveHiddenNetwork(const base::Value::List& args);
-  void IsNftPinningEnabled(const base::Value::List& args);
   void IsBitcoinEnabled(const base::Value::List& args);
   void IsZCashEnabled(const base::Value::List& args);
   void IsTransactionSimulationsEnabled(const base::Value::List& args);
-  void GetPinnedNftCount(const base::Value::List& args);
-  void ClearPinnedNft(const base::Value::List& args);
   void SetWalletInPrivateWindowsEnabled(const base::Value::List& args);
   void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
 
   PrefService* GetPrefs();
-  brave_wallet::BraveWalletPinService* GetBraveWalletPinService();
-
+  
   void OnAddChain(base::Value javascript_callback,
                   const std::string& chain_id,
                   brave_wallet::mojom::ProviderError error,
                   const std::string& error_message);
-  void OnBraveWalletPinServiceReset(base::Value javascript_callback,
-                                    bool result);
 
   base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};

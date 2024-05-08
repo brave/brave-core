@@ -239,14 +239,6 @@ static_library("browser") {
     "zcash/zcash_wallet_service_tasks.cc",
     "zcash/zcash_wallet_service_tasks.h",
   ]
-  if (enable_ipfs_local_node) {
-    sources += [
-      "brave_wallet_auto_pin_service.cc",
-      "brave_wallet_auto_pin_service.h",
-      "brave_wallet_pin_service.cc",
-      "brave_wallet_pin_service.h",
-    ]
-  }
   deps = [
     ":constants",
     ":generated_bitcoin_rpc_responses",

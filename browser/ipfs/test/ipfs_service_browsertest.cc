@@ -75,14 +75,12 @@ class FakeIpfsService : public ipfs::IpfsService {
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       ipfs::BlobContextGetterFactoryPtr blob_getter_factory,
-      ipfs::BraveIpfsClientUpdater* updater,
       const base::FilePath& user_dir,
       version_info::Channel channel)
       : ipfs::IpfsService(
             prefs,
             url_loader_factory,
             std::move(blob_getter_factory),
-            updater,
             user_dir,
             channel,
             std::make_unique<ipfs::IpfsDnsResolverImpl>(),
@@ -142,7 +140,7 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     auto context_getter =
         std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
     fake_service_ = std::make_unique<FakeIpfsService>(
-        nullptr, nullptr, std::move(context_getter), nullptr, user_dir,
+        nullptr, nullptr, std::move(context_getter), user_dir,
         chrome::GetChannel());
   }
 
