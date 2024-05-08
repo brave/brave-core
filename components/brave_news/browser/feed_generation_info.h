@@ -7,11 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_GENERATION_INFO_H_
 
 #include <glob.h>
+
 #include <cstddef>
 #include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -27,7 +29,6 @@ struct FeedGenerationInfo {
   std::vector<std::string> channels;
   Signals signals;
   std::vector<std::string> suggested_publisher_ids;
-  TopicsResult topics;
 
   FeedGenerationInfo(const std::string& locale,
                      const FeedItems& feed_items,
@@ -43,11 +44,15 @@ struct FeedGenerationInfo {
   FeedGenerationInfo& operator=(FeedGenerationInfo&&);
   ~FeedGenerationInfo();
 
-  const ArticleInfos& GetArticleInfos();
+  ArticleInfos& GetArticleInfos();
   mojom::FeedItemMetadataPtr PickAndRemove(PickArticles picker);
   size_t GetArticleCount(const std::string& channel_or_publisher_id);
 
+  base::span<TopicAndArticles>& topics() { return topics_span_; }
+
  private:
+  base::span<TopicAndArticles> topics_span_;
+  TopicsResult topics_;
   std::optional<ArticleInfos> article_infos_;
   base::flat_map<std::string, size_t> available_counts_;
 };

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -44,15 +45,16 @@ FeedGenerationInfo::FeedGenerationInfo(
     this->signals[id] = signal->Clone();
   }
 
-  this->topics.reserve(topics.size());
+  this->topics_.reserve(topics.size());
   for (const auto& topic : topics) {
     std::vector<api::topics::TopicArticle> articles;
     articles.reserve(topic.second.size());
     for (const auto& article : topic.second) {
       articles.push_back(article.Clone());
     }
-    this->topics.emplace_back(topic.first.Clone(), std::move(articles));
+    this->topics_.emplace_back(topic.first.Clone(), std::move(articles));
   }
+  this->topics_span_ = base::make_span(this->topics_);
 }
 
 FeedGenerationInfo::FeedGenerationInfo(FeedGenerationInfo&&) = default;
@@ -60,7 +62,7 @@ FeedGenerationInfo& FeedGenerationInfo::operator=(FeedGenerationInfo&&) =
     default;
 FeedGenerationInfo::~FeedGenerationInfo() = default;
 
-const ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
+ArticleInfos& FeedGenerationInfo::GetArticleInfos() {
   if (!article_infos_) {
     article_infos_ =
         brave_news::GetArticleInfos(locale, feed_items, publishers, signals);
@@ -122,6 +124,7 @@ size_t FeedGenerationInfo::GetArticleCount(
   }
 
   available_counts_[channel_or_publisher_id] = available;
+  return available;
 }
 
 }  // namespace brave_news

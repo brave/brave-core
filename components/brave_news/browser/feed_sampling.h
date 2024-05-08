@@ -43,6 +43,16 @@ struct ArticleWeight {
   // selection of articles outside the user's explicit interests. Sensitive
   // content should not be used for discovery.
   bool discoverable = false;
+
+  // All the channels this Article belongs to.
+  base::flat_set<std::string> channels;
+
+  ArticleWeight();
+  ArticleWeight(const ArticleWeight&) = delete;
+  ArticleWeight& operator=(const ArticleWeight&) = delete;
+  ArticleWeight& operator=(ArticleWeight&&);
+  ArticleWeight(ArticleWeight&&);
+  ~ArticleWeight();
 };
 
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
@@ -96,6 +106,8 @@ std::optional<size_t> PickFirstIndex(const ArticleInfos& articles);
 std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting);
 std::optional<size_t> PickRoulette(const ArticleInfos& articles);
+std::optional<size_t> PickChannelRoulette(const std::string& channel,
+                                          const ArticleInfos& articles);
 
 mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
                                          PickArticles picker);

@@ -34,6 +34,7 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
+#include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
@@ -289,14 +290,15 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     }
 
     allowed_articles.push_back(std::move(article_info));
-    articles.erase(articles.begin() + i);
+    info.GetArticleInfos().erase(info.GetArticleInfos().begin() + i);
     --i;
   }
 
   auto block = GenerateBlock(allowed_articles, /*inline_discovery_ratio=*/0);
 
   // Put the unused articles back in the original list.
-  base::ranges::move(allowed_articles, std::back_inserter(articles));
+  base::ranges::move(allowed_articles,
+                     std::back_inserter(info.GetArticleInfos()));
 
   // If we didn't manage to generate a block, don't return any elements.
   if (block.empty()) {
@@ -343,8 +345,8 @@ mojom::FeedItemMetadataPtr FromTopicArticle(
 // We use this for the Top News cluster, at the start of the feed, to match
 // (more or less) what Brave Search does.
 std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
-    const Publishers& publishers,
-    const base::span<const TopicAndArticles>& topics) {
+    FeedGenerationInfo& info) {
+  auto& topics = info.topics();
   if (topics.empty()) {
     return {};
   }
@@ -357,7 +359,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
       continue;
     }
 
-    auto item = FromTopicArticle(publishers, articles.at(0));
+    auto item = FromTopicArticle(info.publishers, articles.at(0));
     items.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
     if (items.size() >= max_block_size) {
@@ -373,21 +375,20 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
 // Generate a Topic Cluster block
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
 std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
-    const Publishers& publishers,
-    base::span<const TopicAndArticles>& topics) {
-  if (topics.empty()) {
+    FeedGenerationInfo& feed_generation_info) {
+  if (feed_generation_info.topics().empty()) {
     return {};
   }
   DVLOG(1) << __FUNCTION__;
   auto result = mojom::Cluster::New();
   result->type = mojom::ClusterType::TOPIC;
 
-  auto& [topic, articles] = topics.front();
+  auto& [topic, articles] = feed_generation_info.topics().front();
   result->id = topic.claude_title_short;
 
   uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
   for (const auto& article : articles) {
-    auto item = FromTopicArticle(publishers, article);
+    auto item = FromTopicArticle(feed_generation_info.publishers, article);
     result->articles.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
 
@@ -399,7 +400,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   }
 
   // Make sure we don't reuse the topic by excluding it from our span.
-  topics = base::make_span(std::next(topics.begin()), topics.end());
+  feed_generation_info.topics() =
+      base::make_span(std::next(feed_generation_info.topics().begin()),
+                      feed_generation_info.topics().end());
 
   std::vector<mojom::FeedItemV2Ptr> items;
   items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
@@ -412,13 +415,10 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
 // configured through the |kBraveNewsCategoryTopicRatio| FeatureParam.
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.agyx2d7gifd9
 std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
-    const std::string& locale,
-    const Publishers& publishers,
-    const std::vector<std::string>& channels,
-    base::span<const TopicAndArticles>& topics,
-    ArticleInfos& articles) {
+    FeedGenerationInfo& feed_generation_info) {
+  const auto& channels = feed_generation_info.channels;
   // If we have no channels, and no topics there's nothing we can do here.
-  if (channels.empty() && topics.empty()) {
+  if (channels.empty() && feed_generation_info.topics().empty()) {
     DVLOG(1) << "Nothing (no subscribed channels or unshown topics)";
     return {};
   }
@@ -427,16 +427,15 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
   auto generate_channel =
       (!channels.empty() &&
        base::RandDouble() < features::kBraveNewsCategoryTopicRatio.Get()) ||
-      topics.empty();
+      feed_generation_info.topics().empty();
 
   if (generate_channel) {
     auto channel = PickRandom(channels);
     DVLOG(1) << "Cluster Block (channel: " << channel << ")";
-    return GenerateChannelBlock(locale, publishers, PickRandom(channels),
-                                articles);
+    return GenerateChannelBlock(feed_generation_info, PickRandom(channels));
   } else {
     DVLOG(1) << "Cluster Block (topic)";
-    return GenerateTopicBlock(publishers, topics);
+    return GenerateTopicBlock(feed_generation_info);
   }
 }
 
@@ -564,10 +563,8 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
   DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
-  const auto& articles = info.GetArticleInfos();
+  auto& articles = info.GetArticleInfos();
   auto feed = mojom::FeedV2::New();
-
-  base::span<const TopicAndArticles> topics_span = base::make_span(info.topics);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
@@ -611,10 +608,9 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   // This block is a bit special - we take the top articles from the top few
   // topics and display them in a cluster. If there are no topics, we try and do
   // the same thing, but with the Top News channel.
-  auto top_news_block = GenerateTopTopicsBlock(info.publishers, topics_span);
+  auto top_news_block = GenerateTopTopicsBlock(info);
   if (top_news_block.empty()) {
-    top_news_block = GenerateChannelBlock(info.locale, info.publishers,
-                                          kTopNewsChannel, articles);
+    top_news_block = GenerateChannelBlock(info, kTopNewsChannel);
   }
   DVLOG(1) << "Step 3: Top News Block";
   add_items(top_news_block);
@@ -642,8 +638,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
         items = GenerateBlockFromContentGroups(
             articles, info.locale, info.publishers, eligible_content_groups);
       } else {
-        items = GenerateClusterBlock(info.locale, info.publishers,
-                                     info.channels, topics_span, articles);
+        items = GenerateClusterBlock(info);
       }
     } else if (iteration_type == 2) {
       // Step 6: Optional special card

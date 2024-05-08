@@ -8,13 +8,16 @@
 #include <algorithm>
 #include <numeric>
 #include <optional>
+#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 
@@ -82,6 +85,7 @@ std::vector<mojom::Signal*> GetSignals(
 
 ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
                                const std::vector<mojom::Signal*>& signals,
+                               std::vector<std::string> publisher_channels,
                                const bool& discoverable) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
@@ -92,17 +96,23 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
       source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
   const auto pop_recency = GetPopRecency(article);
 
-  return {
-      .pop_recency = pop_recency,
-      .weighting = (source_visits_projected + subscribed_weight) * pop_recency,
-      // Note: GetArticleWeight returns the Signal for the Publisher first, and
-      // we use that to determine whether this Publisher has ever been visited.
-      .visited = signals.at(0)->visit_weight != 0,
-      .subscribed = subscribed_weight != 0,
-      .discoverable = discoverable};
+  ArticleWeight weight;
+  weight.pop_recency = pop_recency;
+  weight.weighting =
+      (source_visits_projected + subscribed_weight) * pop_recency;
+  weight.visited = signals.at(0)->visit_weight != 0;
+  weight.subscribed = subscribed_weight != 0,
+  weight.discoverable = discoverable;
+  weight.channels = base::flat_set<std::string>(std::move(publisher_channels));
+  return weight;
 }
 
 }  // namespace
+
+ArticleWeight::ArticleWeight() = default;
+ArticleWeight::~ArticleWeight() = default;
+ArticleWeight::ArticleWeight(ArticleWeight&&) = default;
+ArticleWeight& ArticleWeight::operator=(ArticleWeight&&) = default;
 
 ContentGroup SampleContentGroup(
     const std::vector<ContentGroup>& eligible_content_groups) {
@@ -186,6 +196,20 @@ std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
       }));
 }
 
+std::optional<size_t> PickChannelRoulette(const std::string& channel,
+                                          const ArticleInfos& articles) {
+  return PickRouletteWithWeighting(
+      articles, base::BindRepeating(
+                    [](const std::string& channel,
+                       const mojom::FeedItemMetadataPtr& metadata,
+                       const ArticleWeight& weight) {
+                      return base::Contains(weight.channels, channel)
+                                 ? weight.weighting
+                                 : 0.0;
+                    },
+                    channel));
+}
+
 // Picking a discovery article works the same way as as a normal roulette
 // selection, but we only consider articles that:
 // 1. The user hasn't subscribed to.
@@ -208,6 +232,29 @@ mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
         }));
   });
   return PickAndRemove(articles, pick);
+}
+
+mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
+                                         PickArticles picker) {
+  auto maybe_index = picker.Run(articles);
+
+  // There won't be an index if there were no eligible articles.
+  if (!maybe_index.has_value()) {
+    return nullptr;
+  }
+
+  auto index = maybe_index.value();
+  if (index >= articles.size()) {
+    DCHECK(false) << "|index| should never be outside the bounds of |articles| "
+                     "(index: "
+                  << index << ", articles.size(): " << articles.size();
+    return nullptr;
+  }
+
+  auto [article, weight] = std::move(articles[index]);
+  articles.erase(articles.begin() + index);
+
+  return std::move(article);
 }
 
 ArticleInfos GetArticleInfos(const std::string& locale,
@@ -257,9 +304,12 @@ ArticleInfos GetArticleInfos(const std::string& locale,
       const bool discoverable = !base::Contains(non_discoverable_publishers,
                                                 article->data->publisher_id);
 
-      ArticleInfo pair = std::tuple(
-          article->data->Clone(),
-          GetArticleWeight(article->data, article_signals, discoverable));
+      auto channels = GetChannelsForPublisher(
+          locale, publishers.at(article->data->publisher_id));
+      ArticleInfo pair =
+          std::tuple(article->data->Clone(),
+                     GetArticleWeight(article->data, article_signals,
+                                      std::move(channels), discoverable));
 
       articles.push_back(std::move(pair));
     }
