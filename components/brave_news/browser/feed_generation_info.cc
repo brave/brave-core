@@ -141,6 +141,8 @@ mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndConsume(
   auto [article, weight] = std::move(articles[index]);
   articles.erase(articles.begin() + index);
 
+  ReduceCounts(article, weight);
+
   return std::move(article);
 }
 
@@ -177,10 +179,12 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   for (const auto& channel : meta.channels) {
     auto channel_it = available_counts_.find(channel);
     if (channel_it != available_counts_.end()) {
-      remove_content_groups.emplace_back(channel);
-      available_counts_.erase(channel_it);
-    } else {
-      channel_it->second--;
+      if (channel_it->second <= 1) {
+        remove_content_groups.emplace_back(channel);
+        available_counts_.erase(channel_it);
+      } else {
+        channel_it->second--;
+      }
     }
   }
 

@@ -67,6 +67,8 @@ struct FeedGenerationInfo {
   }
 
  private:
+  friend class BraveNewsFeedGenerationInfoTest;
+
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
                     const ArticleMetaData& meta);
