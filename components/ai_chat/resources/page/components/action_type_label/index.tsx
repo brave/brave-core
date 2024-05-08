@@ -97,7 +97,9 @@ function ActionTypeLabel (props: ActionTypeLabelProps) {
   if (props.removable) {
     removeButtonElement = (
       <Button
-        className={styles.removeButton} kind="plain-faint"
+        className={styles.removeButton}
+        fab
+        kind="plain-faint"
         title="remove action"
         onClick={props.onCloseClick}
       >

@@ -31,6 +31,7 @@ export default function FeatureMenu() {
         slot='anchor-content'
         title={getLocale('leoSettingsTooltipLabel')}
         size="small"
+        fab
         kind="plain-faint"
       >
         <Icon name='settings' />

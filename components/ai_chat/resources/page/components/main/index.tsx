@@ -118,6 +118,7 @@ function Main() {
             <>
             {shouldDisplayEraseAction && (
               <Button
+                fab
                 kind='plain-faint'
                 aria-label='Erase conversation history'
                 title='Erase conversation history'
@@ -128,6 +129,7 @@ function Main() {
             )}
             <FeatureButtonMenu />
             <Button
+              fab
               kind='plain-faint'
               aria-label='Close'
               title='Close'
