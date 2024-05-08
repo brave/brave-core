@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.html b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.html
+index 2af05236c1de5295852c9dedfb5b784b48e067dc..80605d42cb9489e65c89a9fb275da27d24d1c210 100644
+--- a/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.html
++++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmark_row.html
+@@ -37,7 +37,7 @@
+ 
+ <cr-url-list-item id="crUrlListItem"
+     role="listitem"
+-    size="[[getItemSize_(compact)]]"
++    size="[[listItemSize_]]"
+     url="[[bookmark.url]]"
+     image-urls="[[imageUrls]]"
+     count="[[bookmark.children.length]]"
