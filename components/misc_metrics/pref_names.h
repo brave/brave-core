@@ -43,6 +43,8 @@ inline constexpr char kMiscMetricsTotalDnsRequestStorage[] =
     "brave.misc_metrics.total_dns_requests";
 inline constexpr char kMiscMetricsUpgradedDnsRequestStorage[] =
     "brave.misc_metrics.upgraded_dns_requests";
+inline constexpr char kMiscMetricsLastDohFallback[] =
+    "brave.misc_metrics.last_doh_fallback";
 
 inline constexpr char kDailyUptimesListPrefName[] =
     "daily_uptimes";  // DEPRECATED
