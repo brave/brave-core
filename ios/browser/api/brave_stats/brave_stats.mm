@@ -9,6 +9,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
@@ -18,6 +19,8 @@
 #endif
 
 NSString* const kBraveStatsAPIKey = @BUILDFLAG(BRAVE_STATS_API_KEY);
+NSString* const kWebcompatReportEndpoint =
+    @BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT);
 
 @implementation BraveStats {
   PrefService* _localPrefs;
