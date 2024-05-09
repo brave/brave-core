@@ -656,7 +656,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )
-
+    userAssetsStore = store
     return store
   }
 
