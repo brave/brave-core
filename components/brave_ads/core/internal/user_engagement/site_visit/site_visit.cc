@@ -84,6 +84,8 @@ void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
 }
 
 void SiteVisit::MaybeLandOnPageAfterCallback(const TabInfo& tab) {
+  CHECK(IsPageLanding(tab.id));
+
   const AdInfo ad = page_lands_[tab.id].ad;
   DidLandOnPage(tab.id, ad.target_url) ? LandedOnPage(tab, ad)
                                        : DidNotLandOnPage(tab, ad);
@@ -116,6 +118,19 @@ void SiteVisit::LandedOnPageCallback(const TabInfo& tab,
 
 void SiteVisit::DidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const {
   NotifyDidNotLandOnPage(tab, ad);
+}
+
+void SiteVisit::MaybeCancelPageLand(const TabInfo& tab) {
+  if (!IsPageLanding(tab.id)) {
+    // The tab isn't a landing page.
+    return;
+  }
+
+  const AdInfo ad = page_lands_[tab.id].ad;
+  if (!DidLandOnPage(tab.id, ad.target_url)) {
+    // The user navigated away from the landing page post ad click.
+    CancelPageLand(tab.id);
+  }
 }
 
 void SiteVisit::CancelPageLand(const int32_t tab_id) {
@@ -280,12 +295,11 @@ void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {
 }
 
 void SiteVisit::OnTabDidChange(const TabInfo& tab) {
-  // Maybe land when an ad is opened in the same tab.
+  MaybeCancelPageLand(tab);
   MaybeLandOnPage(tab);
 }
 
 void SiteVisit::OnDidOpenNewTab(const TabInfo& tab) {
-  // Maybe land when an ad is opened in a new tab.
   MaybeLandOnPage(tab);
 }
 

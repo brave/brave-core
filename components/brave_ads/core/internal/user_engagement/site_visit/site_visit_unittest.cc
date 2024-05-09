@@ -523,6 +523,25 @@ TEST_F(
   FastForwardClockBy(kPageLandAfter.Get());
 }
 
+TEST_F(BraveAdsSiteVisitTest,
+       CancelPageLandIfTheRedirectChainNoLongerMatchesTheAdTargetUrl) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
+  site_visit_->SetLastClickedAd(ad);
+
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_error_page=*/false, /*is_visible=*/true);
+
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnCanceledPageLand(/*tab_id=*/1, ad));
+  NotifyTabDidChange(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      /*is_error_page=*/false, /*is_visible=*/true);
+}
+
 TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,

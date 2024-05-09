@@ -62,6 +62,7 @@ class SiteVisit final : public BrowserManagerObserver,
                             const AdInfo& ad,
                             bool success) const;
   void DidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
+  void MaybeCancelPageLand(const TabInfo& tab);
   void CancelPageLand(int32_t tab_id);
   void StopPageLand(int32_t tab_id);
 
