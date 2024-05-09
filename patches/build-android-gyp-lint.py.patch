@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/lint.py b/build/android/gyp/lint.py
-index 9b2845e4c8ffe04aa9eb208262df5ef20bfb55d2..9cc7c557a1804092b7cfea7244aae5f393b05cf4 100755
+index 691a0e38ebc2816496d478a3f59621767b526366..80b2f9b4a622d712708731fb0b403330a8853fca 100755
 --- a/build/android/gyp/lint.py
 +++ b/build/android/gyp/lint.py
-@@ -549,5 +549,6 @@ def main():
+@@ -550,5 +550,6 @@ def main():
      action_helpers.write_depfile(args.depfile, args.stamp, depfile_deps)
  
  
