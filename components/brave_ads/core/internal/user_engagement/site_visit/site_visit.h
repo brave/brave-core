@@ -13,6 +13,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
@@ -31,7 +32,8 @@ namespace brave_ads {
 struct PageLandInfo;
 struct TabInfo;
 
-class SiteVisit final : public TabManagerObserver {
+class SiteVisit final : public BrowserManagerObserver,
+                        public TabManagerObserver {
  public:
   SiteVisit();
 
@@ -65,6 +67,7 @@ class SiteVisit final : public TabManagerObserver {
   void CancelPageLand(int32_t tab_id);
   void StopPageLand(int32_t tab_id);
 
+  void MaybeSuspendOrResumePageLandForVisibleTabId();
   void MaybeSuspendOrResumePageLand(int32_t tab_id);
   base::TimeDelta CalculateRemainingTimeToLandOnPage(int32_t tab_id);
   void SuspendPageLand(const TabInfo& tab);
@@ -78,6 +81,12 @@ class SiteVisit final : public TabManagerObserver {
   void NotifyDidLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
   void NotifyDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
   void NotifyCanceledPageLand(int32_t tab_id, const AdInfo& ad) const;
+
+  // BrowserManagerObserver:
+  void OnBrowserDidBecomeActive() override;
+  void OnBrowserDidResignActive() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   // TabManagerObserver:
   void OnTabDidChangeFocus(int32_t tab_id) override;

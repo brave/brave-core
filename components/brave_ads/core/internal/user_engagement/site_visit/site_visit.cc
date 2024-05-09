@@ -11,6 +11,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
@@ -24,10 +25,12 @@
 namespace brave_ads {
 
 SiteVisit::SiteVisit() {
+  BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 SiteVisit::~SiteVisit() {
+  BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
 
@@ -135,6 +138,13 @@ void SiteVisit::StopPageLand(const int32_t tab_id) {
   page_lands_.erase(tab_id);
 }
 
+void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTabId() {
+  if (const std::optional<int32_t> tab_id =
+          TabManager::GetInstance().MaybeGetVisibleTabId()) {
+    MaybeSuspendOrResumePageLand(*tab_id);
+  }
+}
+
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
   if (!IsPageLanding(tab_id)) {
     // The tab isn't a landing page.
@@ -147,7 +157,11 @@ void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
     return BLOG(0, "Failed to get tab info for id: " << tab_id);
   }
 
-  tab->is_visible ? ResumePageLand(*tab) : SuspendPageLand(*tab);
+  const bool should_resume = tab->is_visible &&
+                             BrowserManager::GetInstance().IsActive() &&
+                             BrowserManager::GetInstance().IsInForeground();
+
+  should_resume ? ResumePageLand(*tab) : SuspendPageLand(*tab);
 }
 
 base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
@@ -244,6 +258,22 @@ void SiteVisit::NotifyCanceledPageLand(const int32_t tab_id,
   for (SiteVisitObserver& observer : observers_) {
     observer.OnCanceledPageLand(tab_id, ad);
   }
+}
+
+void SiteVisit::OnBrowserDidBecomeActive() {
+  MaybeSuspendOrResumePageLandForVisibleTabId();
+}
+
+void SiteVisit::OnBrowserDidResignActive() {
+  MaybeSuspendOrResumePageLandForVisibleTabId();
+}
+
+void SiteVisit::OnBrowserDidEnterForeground() {
+  MaybeSuspendOrResumePageLandForVisibleTabId();
+}
+
+void SiteVisit::OnBrowserDidEnterBackground() {
+  MaybeSuspendOrResumePageLandForVisibleTabId();
 }
 
 void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {

@@ -26,6 +26,9 @@ class BraveAdsSiteVisitTest : public UnitTestBase {
 
     site_visit_ = std::make_unique<SiteVisit>();
     site_visit_->AddObserver(&observer_mock_);
+
+    NotifyBrowserDidEnterForeground();
+    NotifyBrowserDidBecomeActive();
   }
 
   void TearDown() override {
@@ -210,6 +213,118 @@ TEST_F(
                               /*is_error_page=*/false,
                               /*is_playing_media=*/false},
                       ad_2));
+  FastForwardClockToNextPendingTask();
+  EXPECT_FALSE(HasPendingTasks());
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    SuspendPageLandWhenBrowserEntersBackgroundThenResumePageLandWhenBrowserEntersForeground) {
+  // Tab (Start page landing)
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
+  site_visit_->SetLastClickedAd(ad);
+
+  EXPECT_CALL(observer_mock_,
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_error_page=*/false, /*is_visible=*/true);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  // Browser (Entered background/Suspend page landing)
+  AdvanceClockBy(kPageLandAfter.Get() - base::Seconds(3));
+
+  EXPECT_CALL(observer_mock_,
+              OnDidSuspendPageLand(
+                  TabInfo{/*id=*/1,
+                          /*is_visible=*/true,
+                          /*redirect_chain=*/{GURL("https://brave.com")},
+                          /*is_error_page=*/false,
+                          /*is_playing_media=*/false},
+                  /*remaining_time=*/base::Seconds(3)));
+
+  NotifyBrowserDidEnterBackground();
+  ASSERT_FALSE(HasPendingTasks());
+
+  // Tab 1 (Visible/Resume page landing)
+  EXPECT_CALL(observer_mock_,
+              OnDidResumePageLand(
+                  TabInfo{/*id=*/1,
+                          /*is_visible=*/true,
+                          /*redirect_chain=*/{GURL("https://brave.com")},
+                          /*is_error_page=*/false,
+                          /*is_playing_media=*/false},
+                  /*remaining_time=*/base::Seconds(3)));
+
+  NotifyBrowserDidEnterForeground();
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  // Act & Assert
+  EXPECT_CALL(
+      observer_mock_,
+      OnDidLandOnPage(TabInfo{/*id=*/1,
+                              /*is_visible=*/true,
+                              /*redirect_chain=*/{GURL("https://brave.com")},
+                              /*is_error_page=*/false,
+                              /*is_playing_media=*/false},
+                      ad));
+  FastForwardClockToNextPendingTask();
+  EXPECT_FALSE(HasPendingTasks());
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    SuspendPageLandWhenBrowserResignsActiveThenResumePageLandWhenBrowserBecomesActive) {
+  // Tab (Start page landing)
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
+  site_visit_->SetLastClickedAd(ad);
+
+  EXPECT_CALL(observer_mock_,
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_error_page=*/false, /*is_visible=*/true);
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  // Browser (Entered background/Suspend page landing)
+  AdvanceClockBy(kPageLandAfter.Get() - base::Seconds(3));
+
+  EXPECT_CALL(observer_mock_,
+              OnDidSuspendPageLand(
+                  TabInfo{/*id=*/1,
+                          /*is_visible=*/true,
+                          /*redirect_chain=*/{GURL("https://brave.com")},
+                          /*is_error_page=*/false,
+                          /*is_playing_media=*/false},
+                  /*remaining_time=*/base::Seconds(3)));
+
+  NotifyBrowserDidResignActive();
+  ASSERT_FALSE(HasPendingTasks());
+
+  // Tab 1 (Visible/Resume page landing)
+  EXPECT_CALL(observer_mock_,
+              OnDidResumePageLand(
+                  TabInfo{/*id=*/1,
+                          /*is_visible=*/true,
+                          /*redirect_chain=*/{GURL("https://brave.com")},
+                          /*is_error_page=*/false,
+                          /*is_playing_media=*/false},
+                  /*remaining_time=*/base::Seconds(3)));
+
+  NotifyBrowserDidBecomeActive();
+  ASSERT_EQ(1U, GetPendingTaskCount());
+
+  // Act & Assert
+  EXPECT_CALL(
+      observer_mock_,
+      OnDidLandOnPage(TabInfo{/*id=*/1,
+                              /*is_visible=*/true,
+                              /*redirect_chain=*/{GURL("https://brave.com")},
+                              /*is_error_page=*/false,
+                              /*is_playing_media=*/false},
+                      ad));
   FastForwardClockToNextPendingTask();
   EXPECT_FALSE(HasPendingTasks());
 }
