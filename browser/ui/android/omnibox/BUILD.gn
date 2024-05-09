@@ -9,6 +9,7 @@ import("//chrome/browser/buildflags.gni")
 
 android_library("java") {
   sources = [
+    "java/src/org/chromium/chrome/browser/omnibox/BraveAutocompleteEditText.java",
     "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
