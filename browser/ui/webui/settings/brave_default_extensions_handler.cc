@@ -173,11 +173,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setIPFSCompanionEnabled",
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
-          base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -404,39 +399,6 @@ void BraveDefaultExtensionsHandler::ExportIPNSKey(
       ui::SelectFileDialog::SELECT_SAVEAS_FILE, base::UTF8ToUTF16(key_name),
       suggested_directory, &file_types, 0, FILE_PATH_LITERAL("key"),
       parent_window, nullptr);
-}
-
-void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  bool enabled = args[0].GetBool();
-
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  if (enabled) {
-    if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
-      // Using FindLastActiveWithProfile() here will be fine. Of course, it can
-      // return NULL but only return NULL when there was no activated window
-      // with |profile_| so far. But, it's impossible at here because user can't
-      // request ipfs install request w/o activating browser.
-      scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
-          new extensions::WebstoreInstallWithPrompt(
-              ipfs_companion_extension_id, profile_,
-              chrome::FindLastActiveWithProfile(profile_)
-                  ->window()
-                  ->GetNativeWindow(),
-              base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             kIPFSCompanionEnabled));
-      installer->BeginInstall();
-    }
-    service->EnableExtension(ipfs_companion_extension_id);
-  } else {
-    service->DisableExtension(
-        ipfs_companion_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
-  }
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

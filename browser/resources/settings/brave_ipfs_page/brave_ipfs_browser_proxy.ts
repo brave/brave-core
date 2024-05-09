@@ -6,10 +6,6 @@
 // @ts-nocheck TODO(petemill): Define types
 
 export class BraveIPFSBrowserProxyImpl {
-  setIPFSCompanionEnabled (value) {
-    chrome.send('setIPFSCompanionEnabled', [value])
-  }
-
   setIPFSStorageMax (value) {
     chrome.send('setIPFSStorageMax', [value])
   }

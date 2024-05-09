@@ -49,7 +49,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void GetRestartNeeded(const base::Value::List& args);
   void SetWebTorrentEnabled(const base::Value::List& args);
   void SetHangoutsEnabled(const base::Value::List& args);
-  void SetIPFSCompanionEnabled(const base::Value::List& args);
   void SetMediaRouterEnabled(const base::Value::List& args);
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void SetBraveWalletEnabled(const base::Value::List& args);

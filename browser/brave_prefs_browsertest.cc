@@ -115,8 +115,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kIPFSAutoRedirectToConfiguredGateway));
 #endif
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kIPFSCompanionEnabled));
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kERCOptedIntoCryptoWallets));

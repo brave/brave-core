@@ -244,9 +244,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   // Hangouts pref
   (*s_brave_allowlist)[kHangoutsEnabled] = settings_api::PrefType::kBoolean;
-  // IPFS Companion pref
-  (*s_brave_allowlist)[kIPFSCompanionEnabled] =
-      settings_api::PrefType::kBoolean;
 
   // Brave Wallet pref
   (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =

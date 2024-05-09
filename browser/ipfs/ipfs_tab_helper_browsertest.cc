@@ -980,18 +980,6 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
     return nullptr;
   };
 
-  //  Disable IPFS Companion
-  prefs->SetBoolean(kIPFSCompanionEnabled, false);
-  {
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
-    WaitForLoadStopWithoutSuccessCheck(active_contents());
-    ASSERT_TRUE(WaitForLoadStop(active_contents()));
-    // Get last shown infobar
-    auto* infobar = find_infobar(
-        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
-    //  IPFS Fallback Infobar should not be shown
-    ASSERT_FALSE(infobar);
-  }
 
   SetHttpStatusCode(net::HTTP_INTERNAL_SERVER_ERROR);
 
@@ -1037,19 +1025,6 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
     //  IPFS Fallback Infobar should not be shown
     ASSERT_FALSE(infobar);
     EXPECT_EQ(active_contents()->GetVisibleURL(), test_non_ipfs_url);
-  }
-
-  //  Enable the IPFS companion
-  prefs->SetBoolean(kIPFSCompanionEnabled, true);
-  {
-    ui_test_utils::UrlLoadObserver url_observer(expected_gateway_url);
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
-    url_observer.Wait();
-    // Get last shown infobar
-    auto* infobar = find_infobar(
-        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
-    //  IPFS Fallback infobar should not be shown
-    ASSERT_FALSE(infobar);
   }
 }
 

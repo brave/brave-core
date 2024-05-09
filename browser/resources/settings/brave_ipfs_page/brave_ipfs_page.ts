@@ -153,11 +153,6 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     this.browserProxy_.setIPFSStorageMax(Number(this.$.ipfsStorageMax.value))
   }
 
-  /** @private **/
-  onIPFSCompanionEnabledChange_() {
-    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked)
-  }
-
   /** @private */
   onIPFSAlwaysStartModeChange_() {
     if(!this.$.ipfsAlwaysStartModeEnabled.checked)

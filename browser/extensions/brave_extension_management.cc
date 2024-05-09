@@ -73,21 +73,6 @@ BraveExtensionManagement::~BraveExtensionManagement() {
   local_state_pref_change_registrar_.RemoveAll();
 }
 
-void BraveExtensionManagement::OnExtensionLoaded(
-    content::BrowserContext* browser_context,
-    const Extension* extension) {
-  if (extension->id() == ipfs_companion_extension_id)
-    pref_service_->SetBoolean(kIPFSCompanionEnabled, true);
-}
-
-void BraveExtensionManagement::OnExtensionUnloaded(
-    content::BrowserContext* browser_context,
-    const Extension* extension,
-    UnloadedExtensionReason reason) {
-  if (extension->id() == ipfs_companion_extension_id)
-    pref_service_->SetBoolean(kIPFSCompanionEnabled, false);
-}
-
 void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
   if (TorProfileServiceFactory::IsTorDisabled(profile_)) {

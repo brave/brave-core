@@ -37,20 +37,6 @@
 #include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #endif
 
-namespace {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-// IPFS companion installed?
-// i) No, ii) Yes
-void RecordIPFSCompanionInstalled(extensions::ExtensionRegistry* registry) {
-  const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
-  DCHECK(registry);
-  bool installed =
-      registry->enabled_extensions().Contains(ipfs_companion_extension_id);
-  UMA_HISTOGRAM_BOOLEAN("Brave.IPFS.IPFSCompanionInstalled", installed);
-}
-#endif
-}  // namespace
-
 namespace ipfs {
 
 // static
@@ -90,9 +76,6 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
                         ->GetURLLoaderFactoryForBrowserProcess();
   auto context_getter = std::make_unique<IpfsBlobContextGetterFactory>(context);
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  RecordIPFSCompanionInstalled(extensions::ExtensionRegistry::Get(context));
-#endif
   return new IpfsService(
       user_prefs::UserPrefs::Get(context), std::move(url_loader),
       std::move(context_getter), user_data_dir,

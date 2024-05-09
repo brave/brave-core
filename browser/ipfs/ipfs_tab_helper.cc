@@ -74,10 +74,6 @@ struct IpfsFallbackBlockRedirectData : public base::SupportsUserData::Data {
   bool enable_redirect_block;
 };
 
-bool IsClientOrServerHttpError(content::NavigationHandle* handle) {
-  auto const* headers = handle->GetResponseHeaders();
-  return headers && headers->response_code() >= net::HTTP_BAD_REQUEST;
-}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 // Sets current executable as default protocol handler in a system.
@@ -497,20 +493,6 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
       handle->IsSameDocument()) {
     return;
   }
-
-#if !BUILDFLAG(IS_ANDROID)
-  auto is_ipfs_companion_enabled(
-      pref_service_->GetBoolean(kIPFSCompanionEnabled));
-  if (!is_ipfs_companion_enabled &&
-      (handle->IsErrorPage() || IsClientOrServerHttpError(handle))) {
-    auto* orig_url_nav_data = static_cast<IpfsFallbackOriginalUrlData*>(
-        handle->GetUserData(kIpfsFallbackOriginalUrlKey));
-    if (orig_url_nav_data && !orig_url_nav_data->original_url.is_empty()) {
-      ShowBraveIPFSFallbackInfoBar(orig_url_nav_data->original_url);
-      return;
-    }
-  }
-#endif  // !BUILDFLAG(IS_ANDROID)
 
   if (handle->GetResponseHeaders() &&
       handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
