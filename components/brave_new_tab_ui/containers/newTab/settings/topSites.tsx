@@ -10,14 +10,13 @@ import {
   SettingsText,
   StyledTopSitesCustomizationSettings,
   StyledTopSitesCustomizationSettingsOption,
-  StyledTopSitesCustomizationImageBorder,
   StyledTopSitesCustomizationImage,
   StyledTopSitesCustomizationOptionTitle,
   StyledTopSitesCustomizationOptionDesc
 } from '../../../components/default'
 import Toggle from '@brave/leo/react/toggle'
 
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 interface Props {
   toggleShowTopSites: () => void
@@ -35,7 +34,7 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
     this.props.setMostVisitedSettings(true, false)
   }
 
-  render () {
+  render() {
     const {
       toggleShowTopSites,
       showTopSites,
@@ -58,14 +57,10 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
           <StyledTopSitesCustomizationSettingsOption
             onClick={this.onClickFavorites}
           >
-            <StyledTopSitesCustomizationImageBorder
+            <StyledTopSitesCustomizationImage
+              isFavorites={true}
               selected={favoritesSelected}
-            >
-              <StyledTopSitesCustomizationImage
-                isFavorites={true}
-                selected={favoritesSelected}
-              />
-            </StyledTopSitesCustomizationImageBorder>
+            />
             <StyledTopSitesCustomizationOptionTitle>
               {getLocale('showFavoritesLabel')}
             </StyledTopSitesCustomizationOptionTitle>
@@ -76,14 +71,10 @@ class TopSitesSettings extends React.PureComponent<Props, {}> {
           <StyledTopSitesCustomizationSettingsOption
             onClick={this.onClickFrecency}
           >
-            <StyledTopSitesCustomizationImageBorder
+            <StyledTopSitesCustomizationImage
+              isFavorites={false}
               selected={frecencySelected}
-            >
-              <StyledTopSitesCustomizationImage
-                isFavorites={false}
-                selected={frecencySelected}
-              />
-            </StyledTopSitesCustomizationImageBorder>
+            />
             <StyledTopSitesCustomizationOptionTitle>
               {getLocale('showFrecencyLabel')}
             </StyledTopSitesCustomizationOptionTitle>
