@@ -97,11 +97,11 @@ bool ConfigureConfigPermissions(const base::FilePath& config_path) {
       config_path,
       {// Let only windows services to read the config.
        {base::win::WellKnownSid::kLocalSystem,
-        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
+        GENERIC_READ | GENERIC_WRITE | DELETE,
         base::win::SecurityAccessMode::kGrant},
        // Let windows administrators only to remove the config.
        {base::win::WellKnownSid::kBuiltinAdministrators,
-        GENERIC_EXECUTE | DELETE, base::win::SecurityAccessMode::kGrant}},
+        DELETE, base::win::SecurityAccessMode::kGrant}},
       0, /*recursive=*/false);
 }
 
