@@ -12,17 +12,7 @@
 #include "url/gurl.h"
 #include "url/url_util.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-
 #define BRAVE_ENABLE_STATIC_PINS enable_static_pins_ = true;
-
-#else
-
-// Leave static pins disabled on Android and iOS, like upstream.
-#define BRAVE_ENABLE_STATIC_PINS \
-  {}
-
-#endif
 
 #define TransportSecurityState TransportSecurityState_ChromiumImpl
 
