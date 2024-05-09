@@ -10,10 +10,10 @@
 #include <string>
 #include <vector>
 
-
 namespace brave_wallet {
 
 class SolanaInstruction;
+struct SolCompressedNftProofData;
 
 namespace solana {
 
@@ -58,6 +58,16 @@ SolanaInstruction SetComputeUnitLimit(uint32_t units);
 SolanaInstruction SetComputeUnitPrice(uint64_t price);
 
 }  // namespace compute_budget_program
+
+namespace bubblegum_program {
+
+std::optional<SolanaInstruction> Transfer(
+    uint32_t canopy_depth,
+    const std::string& tree_authority,
+    const std::string& new_leaf_owner,
+    const SolCompressedNftProofData& proof);
+
+}  // namespace bubblegum_program
 
 }  // namespace solana
 

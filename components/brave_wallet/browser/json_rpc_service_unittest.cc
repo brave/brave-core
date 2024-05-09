@@ -1237,6 +1237,18 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetInterceptors(std::map<GURL, std::string> responses) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, responses](const network::ResourceRequest& request) {
+          auto it = responses.find(request.url);
+          if (it != responses.end()) {
+            std::string response = it->second;
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+          }
+        }));
+  }
+
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
                   const std::optional<::url::Origin>& origin) {
@@ -1898,6 +1910,41 @@ class JsonRpcServiceUnitTest : public testing::Test {
           loop.Quit();
         }));
     loop.Run();
+  }
+
+  void TestGetNftMetadatas(
+      mojom::CoinType coin,
+      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+      std::vector<mojom::NftMetadataPtr> expected_metadatas,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetNftMetadatas(
+        coin, std::move(nft_identifiers),
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::NftMetadataPtr> metadatas,
+                const std::string& error_message) {
+              EXPECT_EQ(metadatas, expected_metadatas);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetNftBalances(const std::string& wallet_address,
+                          std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                          mojom::CoinType coin,
+                          const std::vector<uint64_t>& expected_balances,
+                          const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetNftBalances(
+        wallet_address, std::move(nft_identifiers), coin,
+        base::BindLambdaForTesting([&](const std::vector<uint64_t>& balances,
+                                       const std::string& error_message) {
+          EXPECT_EQ(balances, expected_balances);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   template <class T>
@@ -7448,8 +7495,8 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenInfo) {
 
   auto bat_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token", "",
-      false, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-      "BAT", 18, true, "", "basic-attention-token", "0x1",
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, false,
+      false, "BAT", 18, true, "", "basic-attention-token", "0x1",
       mojom::CoinType::ETH);
 
   TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
@@ -7747,15 +7794,16 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
 
   // Setup two user assets.
   auto asset = mojom::BlockchainToken::New(
-      tsla_mint_addr, "Tesla", "tsla.png", false, false, false,
+      tsla_mint_addr, "Tesla", "tsla.png", false, false, false, false,
       mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true, "", "",
       mojom::kSolanaMainnet, mojom::CoinType::SOL);
   ASSERT_TRUE(AddUserAsset(prefs(), asset.Clone()));
 
   auto asset2 = mojom::BlockchainToken::New(
       "So11111111111111111111111111111111111111112", "Wrapped SOL", "sol.png",
-      false, false, false, mojom::SPLTokenProgram::kUnknown, false, false,
-      "WSOL", 8, true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+      false, false, false, false, mojom::SPLTokenProgram::kUnknown, false,
+      false, "WSOL", 8, true, "", "", mojom::kSolanaMainnet,
+      mojom::CoinType::SOL);
   ASSERT_TRUE(AddUserAsset(prefs(), asset2.Clone()));
 
   // Test record in registry, the value should be used.
@@ -7978,6 +8026,285 @@ TEST_F(JsonRpcServiceUnitTest, GetRecentSolanaPrioritizationFees) {
   TestGetRecentSolanaPrioritizationFees(
       mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
+  // If there are no NFTs it returns invalid params.
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers;
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // If there are over 50 NFTs it returns invalid params.
+  for (int i = 0; i < 51; i++) {
+    auto nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = mojom::kSolanaMainnet;
+    nft_identifier->contract_address =
+        "BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG";
+    nft_identifier->token_id = "";
+    nft_identifiers.push_back(std::move(nft_identifier));
+  }
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // Add two metadata responses
+  std::string json = R"({
+    "nfts": [
+      {
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "external_url": null,
+        "background_color": null,
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "rarity",
+              "value": "Common"
+            },
+            {
+              "trait_type": "dragonType",
+              "value": "Water"
+            },
+            {
+              "trait_type": "dragonClass",
+              "value": "Warrior"
+            }
+          ]
+        }
+      },
+      {
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "name": "Sneaker #432819057",
+        "description": "NFT Sneaker, use it in STEPN to move2earn",
+        "image_url": "https://cdn.simplehash.com/assets/8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png",
+        "external_url": "https://stepn.com",
+        "background_color": null,
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "Sneaker type",
+              "value": "Jogger"
+            },
+            {
+              "trait_type": "Sneaker quality",
+              "value": "Common"
+            },
+            {
+              "trait_type": "Level",
+              "value": "6"
+            },
+            {
+              "trait_type": "Optimal Speed",
+              "value": "4.0-10.0km/h"
+            }
+          ]
+        }
+      }
+    ]
+  })";
+
+  // Add the chain_id, contract, and token_id from simple hash response
+  auto nft_identifier3 = mojom::NftIdentifier::New();
+  nft_identifier3->chain_id = mojom::kSolanaMainnet;
+  nft_identifier3->contract_address =
+      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+  nft_identifier3->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier3));
+
+  auto nft_identifier4 = mojom::NftIdentifier::New();
+  nft_identifier4->chain_id = mojom::kSolanaMainnet;
+  nft_identifier4->contract_address =
+      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+  nft_identifier4->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier4));
+
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr%"
+      "2Csolana.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8")] = json;
+
+  // Add the expected metadata
+  std::vector<mojom::NftMetadataPtr> expected_metadata;
+  mojom::NftMetadataPtr metadata1 = mojom::NftMetadata::New();
+  metadata1->name = "Common Water Warrior #19";
+  metadata1->description =
+      "A true gladiator standing with his two back legs, big wings that make "
+      "him move and attack quickly, and his tail like a big sword that can "
+      "easily cut-off enemies into slices.";
+  metadata1->image =
+      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
+  metadata1->external_url = "";
+  metadata1->background_color = "";
+  mojom::NftAttributePtr attribute1 = mojom::NftAttribute::New();
+  attribute1->trait_type = "rarity";
+  attribute1->value = "Common";
+  metadata1->attributes.push_back(std::move(attribute1));
+  mojom::NftAttributePtr attribute2 = mojom::NftAttribute::New();
+  attribute2->trait_type = "dragonType";
+  attribute2->value = "Water";
+  metadata1->attributes.push_back(std::move(attribute2));
+  mojom::NftAttributePtr attribute3 = mojom::NftAttribute::New();
+  attribute3->trait_type = "dragonClass";
+  attribute3->value = "Warrior";
+  metadata1->attributes.push_back(std::move(attribute3));
+  metadata1->background_color = "";
+  metadata1->animation_url = "";
+  metadata1->youtube_url = "";
+
+  expected_metadata.push_back(std::move(metadata1));
+
+  mojom::NftMetadataPtr metadata2 = mojom::NftMetadata::New();
+  metadata2->name = "Sneaker #432819057";
+  metadata2->description = "NFT Sneaker, use it in STEPN to move2earn";
+  metadata2->image =
+      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
+  metadata2->external_url = "https://stepn.com";
+  metadata2->background_color = "";
+  mojom::NftAttributePtr attribute4 = mojom::NftAttribute::New();
+  attribute4->trait_type = "Sneaker type";
+  attribute4->value = "Jogger";
+  metadata2->attributes.push_back(std::move(attribute4));
+  mojom::NftAttributePtr attribute5 = mojom::NftAttribute::New();
+  attribute5->trait_type = "Sneaker quality";
+  attribute5->value = "Common";
+  metadata2->attributes.push_back(std::move(attribute5));
+  mojom::NftAttributePtr attribute6 = mojom::NftAttribute::New();
+  attribute6->trait_type = "Level";
+  attribute6->value = "6";
+  metadata2->attributes.push_back(std::move(attribute6));
+  mojom::NftAttributePtr attribute7 = mojom::NftAttribute::New();
+  attribute7->trait_type = "Optimal Speed";
+  attribute7->value = "4.0-10.0km/h";
+  metadata2->attributes.push_back(std::move(attribute7));
+  metadata2->background_color = "";
+  metadata2->animation_url = "";
+  metadata2->youtube_url = "";
+  expected_metadata.push_back(std::move(metadata2));
+
+  // First try with timeout response interceptor
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Then try with the expected metadata
+  SetInterceptors(responses);
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers2;
+  auto nft_identifier5 = mojom::NftIdentifier::New();
+  nft_identifier5->chain_id = mojom::kSolanaMainnet;
+  nft_identifier5->contract_address =
+      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+  nft_identifier5->token_id = "";
+  nft_identifiers2.push_back(std::move(nft_identifier5));
+
+  auto nft_identifier6 = mojom::NftIdentifier::New();
+  nft_identifier6->chain_id = mojom::kSolanaMainnet;
+  nft_identifier6->contract_address =
+      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+  nft_identifier6->token_id = "";
+  nft_identifiers2.push_back(std::move(nft_identifier6));
+
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers2),
+                      std::move(expected_metadata), "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
+  std::string wallet_address = "0x123";
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers;
+  mojom::CoinType coin = mojom::CoinType::SOL;
+  std::vector<uint64_t> expected_balances;
+
+  // Empty parameters yields invalid params
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // More than 50 NFTs yields invalid params
+  for (size_t i = 0; i < kSimpleHashMaxBatchSize + 1; i++) {
+    auto nft_id = mojom::NftIdentifier::New();
+    nft_id->chain_id = mojom::kMainnetChainId;
+    nft_id->contract_address = "0x" + base::NumberToString(i);
+    nft_id->token_id = "0x" + base::NumberToString(i);
+    nft_identifiers.push_back(std::move(nft_id));
+  }
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // Response includes two NFTs, wallet address is included in only one of them
+  std::string json = R"({
+    "nfts": [
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "name": "Sneaker #432819057",
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 999
+          },
+          {
+            "owner_address": "0x456",
+            "quantity": 2
+          }
+        ]
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "owners": [
+          {
+            "owner_address": "0x456",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  // Add the chain_id, contract, and token_id from simple hash response
+  auto nft_identifier1 = mojom::NftIdentifier::New();
+  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->contract_address =
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+  nft_identifier1->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier1));
+
+  auto nft_identifier2 = mojom::NftIdentifier::New();
+  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->contract_address =
+      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+  nft_identifier2->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier2));
+
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8%"
+      "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
+
+  // Add the expected balances
+  expected_balances.push_back(999);
+  expected_balances.push_back(0);
+  SetInterceptors(responses);
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances, "");
 }
 
 }  // namespace brave_wallet

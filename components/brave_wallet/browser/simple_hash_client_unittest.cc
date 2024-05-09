@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "content/public/test/browser_task_environment.h"
@@ -105,6 +106,53 @@ class SimpleHashClientUnitTest : public testing::Test {
               EXPECT_EQ(nfts, expected_nfts);
               run_loop.Quit();
             }));
+    run_loop.Run();
+  }
+
+  void TestGetNfts(
+      mojom::CoinType coin,
+      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
+    base::RunLoop run_loop;
+    simple_hash_client_->GetNfts(
+        coin, std::move(nft_identifiers),
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
+              ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(nfts, expected_nfts);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetNftMetadatas(
+      mojom::CoinType coin,
+      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+      const std::vector<mojom::NftMetadataPtr>& expected_metadatas) {
+    base::RunLoop run_loop;
+    simple_hash_client_->GetNftMetadatas(
+        coin, std::move(nft_identifiers),
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::NftMetadataPtr> metadatas) {
+              ASSERT_EQ(metadatas.size(), expected_metadatas.size());
+              EXPECT_EQ(metadatas, expected_metadatas);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetNftBalances(const std::string& wallet_address,
+                          std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                          mojom::CoinType coin,
+                          const std::vector<uint64_t>& expected_balances) {
+    base::RunLoop run_loop;
+    simple_hash_client_->GetNftBalances(
+        wallet_address, std::move(nft_identifiers), coin,
+        base::BindLambdaForTesting([&](std::vector<uint64_t> balances) {
+          ASSERT_EQ(balances.size(), expected_balances.size());
+          EXPECT_EQ(balances, expected_balances);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -303,6 +351,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->token_id, "0x1");
   EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(result->second[0]->is_compressed, false);
 
   // Valid, 2 ETH NFTs
   json = R"({
@@ -362,6 +411,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->token_id, "0x1");
   EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(result->second[0]->is_compressed, false);
 
   EXPECT_EQ(result->second[1]->contract_address,
             "0x2222222222222222222222222222222222222222");
@@ -379,6 +429,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[1]->token_id, "0x2");
   EXPECT_EQ(result->second[1]->chain_id, mojom::kMainnetChainId);
   EXPECT_EQ(result->second[1]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(result->second[1]->is_compressed, false);
 
   // 6 ETH nfts, but only 1 has all necessary keys yields 1 NFT
   //
@@ -519,6 +570,7 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->coingecko_id, "");
   EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(result->second[0]->is_compressed, false);
 
   // 1 SOL NFT (NonFungibleEdition)
   json = R"({
@@ -705,6 +757,165 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[1]->contract_address,
             "BHWBJ7XtBqJJbg9SrAUH4moeF8VpJo3WXyDh6vc1qqLG");
   EXPECT_FALSE(result->second[1]->is_spam);
+
+  // Compressed SOL NFT
+  json = R"({
+    "next_cursor": null,
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "solana",
+        "contract_address": "6FoSmkL9Z6yoFtTrhsC8Zq4w4PDpsMfGRXSgiR3ri66n",
+        "token_id": null,
+        "name": "2.0 Jupiter AirDrop",
+        "description": "Visit the domain shown in the picture and claim your exclusive voucher jupdrop66.com",
+        "image_url": "https://cdn.simplehash.com/assets/663f4be09316c554b420bf869baa82f3081d44abf95f6687f58a4dd99fe8e23e.png",
+        "contract": {
+          "type": "NonFungible",
+          "name": "🎁2.0 Jupiter AirDrop",
+          "symbol": "Jup2.0"
+        },
+        "collection": {
+          "spam_score": 100
+        },
+        "last_sale": null,
+        "first_created": {
+          "minted_to": "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv",
+          "quantity": 1,
+          "quantity_string": "1",
+          "timestamp": "2024-02-18T16:34:36",
+          "block_number": 248974309,
+          "transaction": "4n1vvPwnMP7Hrjqek3yqXcVVd4LPtyvum5278x95QkWkrGUxm8SVhH3idtLHeDZndoGg4cpWNq1AmTGTQXhWcaKD",
+          "transaction_initiator": "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH"
+        },
+        "rarity": {
+          "rank": 2343,
+          "score": 1.053,
+          "unique_attributes": 0
+        },
+        "royalty": [
+          {
+            "source": "metaplex",
+            "total_creator_fee_basis_points": 0,
+            "recipients": []
+          }
+        ],
+        "extra_metadata": {
+          "compression": {
+            "compressed": true,
+            "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
+            "leaf_index": 1316261
+          },
+          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL, false, false);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "6FoSmkL9Z6yoFtTrhsC8Zq4w4PDpsMfGRXSgiR3ri66n");
+  EXPECT_EQ(result->second[0]->is_compressed, true);
+}
+
+TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
+  std::string json;
+  std::optional<base::Value> json_value;
+
+  // Valid JSON data
+  json = R"({
+  "root": "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR",
+  "proof": [
+    "ANs5srcJ9fSZpbGmJGXy8M6G3NeNABzK8SshSb9JCwAz",
+    "7Kd9DCCFMFrezFznsWAqwA6jtmRRVVHjon5oKVJFffDf",
+    "BvSxmwtVL5bx41gnKhpx2hTdYnXdJ1XfetwwHxQPC8Mn",
+    "GEtJJVAYjv5mknVVVSjvLmy7BJeQWSdKhbTWdfqLHhpK",
+    "VbqjLNCgxCE6Mm9WMTtBxNmthVHqs557AXRRTMhTr4t",
+    "3obQ6KPFsC9QfM6g3ZtYC2RbHPfUKn4iBnDecfZoBhbG",
+    "DTLQKdFQj8ywDktN1BqR6oe48XGyoSGzAzQgX9QWfnBk",
+    "6zZokt6UsXMNEcXPYn3T2LfSaZN6DmZoDwqc3rM16ohu",
+    "4aPfGxhmkgrh6Lz82dsi4mdcNC3vZyE1AXiYbJQta4Gw",
+    "2AG8n5BwPATab9wWJ2g9XuqXS4xBiQvLVHhn1zX715Ub",
+    "JAN9FwHcwqi79Um4MxzrBkTPYEtLHFkUFP8FbnPAFCzc",
+    "Ha6247eWxRgGyFCN2NfLbkKMEpLwU1zmkx1QwwRxQ5Ne",
+    "6Rt4B2UPizK2gdvmsd8KahazFtc8S5johvGZCUXmHGyV",
+    "25wz52GHDo7vX9QSYbUwMd1gi82MUm8sdmAj5jFX8MAH",
+    "5W1NH3cKSBdrKeXbd2t8QdwdTU4qTFpSrr1FZyVgHeS8",
+    "2XTZ9pTcLXFxGw1hBGrzXMGJrMnvo47sGyLUQwF88SUb",
+    "Sia7ffUkzN8xqRHLX4xRdFXzUbVv7LtzRzKDBz8hgDK",
+    "4XjrBbzyUWXxXECf173MukGdjHDWQMJ7rs2ojny445my",
+    "DqbTjtfiRPHZf2wwmMJ38acyJNTHeiYBsrySSjbMYNiE",
+    "2msvGdBzYX2sHifvvr8kJ6YYYvCK2gjjbRZH2tAQ93d5",
+    "2XvcBPNUGQSWmyjqYYk9WDFsKLF9oMrnAYxKBJGsPXtw",
+    "HSURhkbUwDFSy464A5vNPuPaqe1vWb51YeAf689oprx8",
+    "76hjrsKb9iKgHhiY2Np3NYPZaEwnzGcsr6mwyzj4Grj8",
+    "6FMzwZu6MxNiBkrE9e6w5fwh925YJEJoRNyQQ9JnrJs3"
+  ],
+  "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
+  "data_hash": "4yfgTevXs3x93pS8tfaqh92y22gAqcRS6Ptt8s6uR3u2",
+  "creator_hash": "BSao3oE3zsHmciedhR95HTFyASwrMrwPkcA3xZH9iyzL",
+  "leaf_index": 1316261,
+  "owner": "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv",
+  "delegate": "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH",
+  "canopy_depth": 0
+})";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  auto result =
+      simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  ASSERT_TRUE(result);
+
+  EXPECT_EQ(result->root, "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR");
+  EXPECT_EQ(result->data_hash, "4yfgTevXs3x93pS8tfaqh92y22gAqcRS6Ptt8s6uR3u2");
+  EXPECT_EQ(result->creator_hash,
+            "BSao3oE3zsHmciedhR95HTFyASwrMrwPkcA3xZH9iyzL");
+  EXPECT_EQ(result->leaf_index, 1316261u);
+  EXPECT_EQ(result->owner, "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv");
+  ASSERT_EQ(result->proof.size(), 24u);
+  EXPECT_EQ(result->proof.front(),
+            "ANs5srcJ9fSZpbGmJGXy8M6G3NeNABzK8SshSb9JCwAz");
+  EXPECT_EQ(result->proof.back(),
+            "6FMzwZu6MxNiBkrE9e6w5fwh925YJEJoRNyQQ9JnrJs3");
+  EXPECT_EQ(result->merkle_tree,
+            "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd");
+  EXPECT_EQ(result->canopy_depth, 0u);  // Correct canopy depth
+
+  // JSON with missing required fields yields std::nullopt
+  json = R"({
+    "data_hash": "79vyLbMksGJdhR8MBRCi73QhxtUxhSdLPQCCkwNpv5MH"
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  ASSERT_FALSE(result);
+
+  // Non-dictionary JSON response yields std::nullopt
+  json = R"([])";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  ASSERT_FALSE(result);
+
+  // Incorrect data type for `canopy_depth` yields std::nullopt
+  json = R"({
+    "data_hash": "79vyLbMksGJdhR8MBRCi73QhxtUxhSdLPQCCkwNpv5MH",
+    "creator_hash": "55QLBBtrSxGk3VbBwG3RZKSz4cWHxRkTK1BZnDDKXfNv",
+    "proof": [
+      "6DQNDJuUQjetFLwr9jejENdkMsJEoJz1FFoNehdQYiE4",
+      "5GjkHXXejqyJcX1jMnG4sPRf55TuaFzPYAgvwh86buXd"
+    ],
+    "merkle_tree": "D7kub8uwwptGUyiuRFpHUBPmYc446ocpoWDoopcDhW42",
+    "canopy_depth": "twelve"
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  ASSERT_FALSE(result);
 }
 
 TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
@@ -1005,6 +1216,954 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
                               {mojom::kMainnetChainId}, mojom::CoinType::ETH,
                               std::nullopt, false, true,
                               expected_nfts_only_spam, std::nullopt);
+}
+
+TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
+  // Empty yields empty URL
+  GURL url = SimpleHashClient::GetNftsUrl(mojom::CoinType::SOL, {});
+  EXPECT_EQ(url, GURL());
+
+  // Single Solana NFT
+  auto nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = mojom::kSolanaMainnet;
+  nft_id->contract_address = "BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG";
+  nft_id->token_id = "";
+
+  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  nft_ids.push_back(std::move(nft_id));
+  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::SOL, nft_ids);
+  EXPECT_EQ(
+      url,
+      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
+           "?nft_ids=solana.BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG"));
+  nft_ids.clear();
+
+  // Single Ethereum NFT.
+  nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = mojom::kMainnetChainId;
+  nft_id->contract_address = "0x0";
+  nft_id->token_id = "0x1";
+  nft_ids.push_back(std::move(nft_id));
+  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
+                      "?nft_ids=ethereum.0x0.0x1"));
+  nft_ids.clear();
+
+  // 75 NFTs takes two calls, 50 and 25.
+  for (int i = 0; i < 75; i++) {
+    nft_id = mojom::NftIdentifier::New();
+    nft_id->chain_id = mojom::kMainnetChainId;
+    nft_id->contract_address = "0x" + base::NumberToString(i);
+    nft_id->token_id = "0x" + base::NumberToString(i);
+    nft_ids.push_back(std::move(nft_id));
+  }
+  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  EXPECT_EQ(
+      url,
+      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
+           "?nft_ids=ethereum.0x0.0x0%2Cethereum.0x1.0x1%2Cethereum.0x2.0x2%"
+           "2Cethereum.0x3.0x3%2Cethereum.0x4.0x4%2Cethereum.0x5.0x5%"
+           "2Cethereum.0x6.0x6%2Cethereum.0x7.0x7%2Cethereum.0x8.0x8%"
+           "2Cethereum.0x9.0x9%2Cethereum.0x10.0x10%2Cethereum.0x11.0x11%"
+           "2Cethereum.0x12.0x12%2Cethereum.0x13.0x13%2Cethereum.0x14.0x14%"
+           "2Cethereum.0x15.0x15%2Cethereum.0x16.0x16%2Cethereum.0x17.0x17%"
+           "2Cethereum.0x18.0x18%2Cethereum.0x19.0x19%2Cethereum.0x20.0x20%"
+           "2Cethereum.0x21.0x21%2Cethereum.0x22.0x22%2Cethereum.0x23.0x23%"
+           "2Cethereum.0x24.0x24%2Cethereum.0x25.0x25%2Cethereum.0x26.0x26%"
+           "2Cethereum.0x27.0x27%2Cethereum.0x28.0x28%2Cethereum.0x29.0x29%"
+           "2Cethereum.0x30.0x30%2Cethereum.0x31.0x31%2Cethereum.0x32.0x32%"
+           "2Cethereum.0x33.0x33%2Cethereum.0x34.0x34%2Cethereum.0x35.0x35%"
+           "2Cethereum.0x36.0x36%2Cethereum.0x37.0x37%2Cethereum.0x38.0x38%"
+           "2Cethereum.0x39.0x39%2Cethereum.0x40.0x40%2Cethereum.0x41.0x41%"
+           "2Cethereum.0x42.0x42%2Cethereum.0x43.0x43%2Cethereum.0x44.0x44%"
+           "2Cethereum.0x45.0x45%2Cethereum.0x46.0x46%2Cethereum.0x47.0x47%"
+           "2Cethereum.0x48.0x48%2Cethereum.0x49.0x49"));
+}
+
+TEST_F(SimpleHashClientUnitTest, GetNfts) {
+  // Empty inputs yields no tokens
+  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
+  TestGetNfts(mojom::CoinType::ETH, {}, expected_nfts);
+
+  // Add the chain_id, contract, and token_id from this URL
+  auto nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = mojom::kSolanaMainnet;
+  nft_id->contract_address = "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  nft_id->token_id = "";
+  nft_ids.push_back(std::move(nft_id));
+
+  auto nft_id2 = mojom::NftIdentifier::New();
+  nft_id2->chain_id = mojom::kSolanaMainnet;
+  nft_id2->contract_address = "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+  nft_id2->token_id = "";
+  nft_ids.push_back(std::move(nft_id2));
+
+  std::map<GURL, std::string> responses;
+  std::string json = R"({
+    "nfts": [
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        },
+        "last_sale": null,
+        "first_created": {},
+        "rarity": {
+          "rank": null,
+          "score": null,
+          "unique_attributes": null
+        },
+        "royalty": [],
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      },
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "name": "Sneaker #432819057",
+        "description": "NFT Sneaker, use it in STEPN to move2earn",
+        "previews": {},
+        "image_url": "https://cdn.simplehash.com/assets/8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png",
+        "owners": [],
+        "contract": {
+          "type": "NonFungible",
+          "name": "Sneaker #432819057",
+          "symbol": null,
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "34ca10e43844ca82cb9e7ce41b280fba",
+          "name": "STEPN",
+          "description": "[FYI] We're working with StepN to resolve an issue of being rate limited when fetching NFT metadata from their API, and before we have a resolution, the item-details page for some stepn NFTs won't open.\n---\nSTEPN is the world’s first move2earn NFT mobile game. In STEPN, your steps are worth more than you think – exercising and moving outdoors can now earn anyone tokens anytime, anywhere. STEPN aims to nudge millions into healthier lifestyles and bring them to the Web 3.0 world.",
+          "image_url": "https://lh3.googleusercontent.com/2MyUd3epc1SAGOJChg3Pu6GXH-Ip4Q0AcVSUyKCSGMTw6wvPTpOAjntzt6FVg8866LRP2_F5rK4lrNyNDEmg2PwTAtEdZ5j6mB8"
+        },
+        "extra_metadata": {
+          "attributes": [],
+          "collection": {
+            "name": "Sneaker",
+            "family": "STEPN"
+          }
+        }
+      }
+    ]
+  })";
+  GURL url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
+      "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8");
+  responses[url] = json;
+  SetInterceptors(responses);
+
+  // Add the expected NFTs
+  auto nft1 = mojom::BlockchainToken::New();
+  nft1->chain_id = mojom::kSolanaMainnet;
+  nft1->contract_address = "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  nft1->token_id = "";
+  nft1->is_erc721 = false;
+  nft1->is_erc1155 = false;
+  nft1->is_nft = true;
+  nft1->symbol = "DRAGON";
+  nft1->coin = mojom::CoinType::SOL;
+  nft1->name = "Common Water Warrior #19";
+  nft1->logo =
+      "https://cdn.simplehash.com/assets/"
+      "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
+  nft1->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  expected_nfts.push_back(std::move(nft1));
+
+  auto nft2 = mojom::BlockchainToken::New();
+  nft2->chain_id = mojom::kSolanaMainnet;
+  nft2->contract_address = "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+  nft2->token_id = "";
+  nft2->is_erc721 = false;
+  nft2->is_erc1155 = false;
+  nft2->is_nft = true;
+  nft2->symbol =
+      "";  // Since there's no symbol in the expected, we keep this empty.
+  nft2->coin = mojom::CoinType::SOL;
+  nft2->name = "Sneaker #432819057";
+  nft2->logo =
+      "https://cdn.simplehash.com/assets/"
+      "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
+  nft2->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  expected_nfts.push_back(std::move(nft2));
+  TestGetNfts(mojom::CoinType::SOL, std::move(nft_ids), expected_nfts);
+
+  // Test two requests are made if > 50 NFTs are supplied
+  nft_ids.clear();
+  responses.clear();
+  for (int i = 0; i < 75; i++) {
+    auto nft_id_0 = mojom::NftIdentifier::New();
+    nft_id_0->chain_id = mojom::kMainnetChainId;
+    nft_id_0->contract_address = "0x" + base::NumberToString(i);
+    nft_id_0->token_id = "0x" + base::NumberToString(i);
+    nft_ids.push_back(std::move(nft_id_0));
+  }
+
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=ethereum.0x0%2Cethereum.0x1%2Cethereum.0x2%2Cethereum."
+      "0x3%2Cethereum.0x4%2Cethereum.0x5%2Cethereum.0x6%2Cethereum.0x7%"
+      "2Cethereum.0x8%2Cethereum.0x9%2Cethereum.0x10%2Cethereum.0x11%"
+      "2Cethereum.0x12%2Cethereum.0x13%2Cethereum.0x14%2Cethereum.0x15%"
+      "2Cethereum.0x16%2Cethereum.0x17%2Cethereum.0x18%2Cethereum.0x19%"
+      "2Cethereum.0x20%2Cethereum.0x21%2Cethereum.0x22%2Cethereum.0x23%"
+      "2Cethereum.0x24%2Cethereum.0x25%2Cethereum.0x26%2Cethereum.0x27%"
+      "2Cethereum.0x28%2Cethereum.0x29%2Cethereum.0x30%2Cethereum.0x31%"
+      "2Cethereum.0x32%2Cethereum.0x33%2Cethereum.0x34%2Cethereum.0x35%"
+      "2Cethereum.0x36%2Cethereum.0x37%2Cethereum.0x38%2Cethereum.0x39%"
+      "2Cethereum.0x40%2Cethereum.0x41%2Cethereum.0x42%2Cethereum.0x43%"
+      "2Cethereum.0x44%2Cethereum.0x45%2Cethereum.0x46%2Cethereum.0x47%"
+      "2Cethereum.0x48%2Cethereum.0x49")] = "{}";
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=ethereum.0x50%2Cethereum.0x51%2Cethereum.0x52%2Cethereum."
+      "0x53%2Cethereum.0x54%2Cethereum.0x55%2Cethereum.0x56%2Cethereum.0x57%"
+      "2Cethereum.0x58%2Cethereum.0x59%2Cethereum.0x60%2Cethereum.0x61%"
+      "2Cethereum.0x62%2Cethereum.0x63%2Cethereum.0x64%2Cethereum.0x65%"
+      "2Cethereum.0x66%2Cethereum.0x67%2Cethereum.0x68%2Cethereum.0x69%"
+      "2Cethereum.0x70%2Cethereum.0x71%2Cethereum.0x72%2Cethereum.0x73%"
+      "2Cethereum.0x74")] = json;
+  SetInterceptors(responses);
+  TestGetNfts(mojom::CoinType::SOL, std::move(nft_ids), expected_nfts);
+}
+
+TEST_F(SimpleHashClientUnitTest, ParseTokenUrls) {
+  std::string json;
+  std::optional<base::Value> json_value;
+
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767"
+        }
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      },
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "extra_metadata": {
+          "metadata_original_url": "https://api.stepn.io/run/nftjson/103/118372688129"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  std::optional<base::flat_map<std::string, std::string>> result =
+      simple_hash_client_->ParseTokenUrls(*json_value);
+  ASSERT_TRUE(result);
+
+  // Verify there are three entries.
+  EXPECT_EQ(result->size(), 3u);
+
+  auto it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second,
+            "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767");
+
+  it = result->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second,
+            "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json");
+
+  it = result->find("0x65.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second, "https://api.stepn.io/run/nftjson/103/118372688129");
+
+  // Missing nfts key should return nullopt.
+  json = R"({"foo": "bar"})";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseTokenUrls(*json_value);
+  EXPECT_FALSE(result);
+
+  // NFT missing extra_metadata key should be skipped, but the rest should be
+  // added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767"
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseTokenUrls(*json_value);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->size(), 1u);
+  it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_EQ(it, result->end());
+  it = result->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second,
+            "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json");
+
+  // NFT missing chain or contract_address should be skipped. The rest should be
+  // added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767"
+        }
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      },
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "extra_metadata": {
+          "metadata_original_url": "https://api.stepn.io/run/nftjson/103/118372688129"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseTokenUrls(*json_value);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->size(), 1u);
+  it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second,
+            "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767");
+}
+
+TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
+  std::string json;
+  std::optional<base::Value> json_value;
+
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "description": "Azuki is a cute little bean",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767",
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Red"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        },
+        "background_color": "#000000"
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      },
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "extra_metadata": {
+          "metadata_original_url": "https://api.stepn.io/run/nftjson/103/118372688129"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>> result =
+      simple_hash_client_->ParseMetadatas(*json_value);
+  ASSERT_TRUE(result);
+
+  // Verify there are three entries.
+  EXPECT_EQ(result->size(), 3u);
+
+  auto it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second->name, "Azuki #2767");
+  EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
+  EXPECT_EQ(it->second->image,
+            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
+            "png");
+  EXPECT_EQ(it->second->image_data, "");
+  EXPECT_EQ(it->second->external_url, "");
+  ASSERT_EQ(it->second->attributes.size(), 2u);
+  EXPECT_EQ(it->second->attributes[0]->trait_type, "Color");
+  EXPECT_EQ(it->second->attributes[0]->value, "Red");
+  EXPECT_EQ(it->second->attributes[1]->trait_type, "Size");
+  EXPECT_EQ(it->second->attributes[1]->value, "Small");
+  EXPECT_EQ(it->second->background_color, "#000000");
+  EXPECT_EQ(it->second->animation_url, "");
+  EXPECT_EQ(it->second->youtube_url, "");
+
+  it = result->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second->name, "Common Water Warrior #19");
+  EXPECT_EQ(
+      it->second->description,
+      "A true gladiator standing with his two back legs, big wings that make "
+      "him move and attack quickly, and his tail like a big sword that can "
+      "easily cut-off enemies into slices.");
+  EXPECT_EQ(it->second->image,
+            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
+            "png");
+  EXPECT_EQ(it->second->image_data, "");
+  EXPECT_EQ(it->second->external_url, "");
+  EXPECT_EQ(it->second->attributes.size(), 0u);
+  EXPECT_EQ(it->second->background_color, "");
+  EXPECT_EQ(it->second->animation_url, "");
+  EXPECT_EQ(it->second->youtube_url, "");
+
+  it = result->find("0x65.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second->name, "");
+  EXPECT_EQ(it->second->description, "");
+  EXPECT_EQ(it->second->image, "");
+  EXPECT_EQ(it->second->image_data, "");
+  EXPECT_EQ(it->second->external_url, "");
+  EXPECT_EQ(it->second->attributes.size(), 0u);
+  EXPECT_EQ(it->second->background_color, "");
+  EXPECT_EQ(it->second->animation_url, "");
+  EXPECT_EQ(it->second->youtube_url, "");
+
+  // Missing nfts key should return nullopt.
+  json = R"({"foo": "bar"})";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseMetadatas(*json_value);
+  EXPECT_FALSE(result);
+
+  // NFT missing chain or contract_address should be skipped. The rest should be
+  // added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "description": "Azuki is a cute little bean",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767",
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Red"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        }
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = simple_hash_client_->ParseMetadatas(*json_value);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->size(), 1u);
+  it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, result->end());
+  EXPECT_EQ(it->second->name, "Azuki #2767");
+  EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
+  EXPECT_EQ(it->second->image,
+            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
+            "png");
+  EXPECT_EQ(it->second->image_data, "");
+  EXPECT_EQ(it->second->external_url, "");
+  ASSERT_EQ(it->second->attributes.size(), 2u);
+  EXPECT_EQ(it->second->attributes[0]->trait_type, "Color");
+  EXPECT_EQ(it->second->attributes[0]->value, "Red");
+  EXPECT_EQ(it->second->attributes[1]->trait_type, "Size");
+  EXPECT_EQ(it->second->attributes[1]->value, "Small");
+  EXPECT_EQ(it->second->background_color, "");
+  EXPECT_EQ(it->second->animation_url, "");
+  EXPECT_EQ(it->second->youtube_url, "");
+}
+
+TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
+  // If there are no NFTs, an empty vector is returned.
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers;
+  std::vector<mojom::NftMetadataPtr> expected_metadatas;
+  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
+                      expected_metadatas);
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // If there are > 50 NFTs, an empty vector is returned.
+  for (int i = 0; i < 75; i++) {
+    auto nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = mojom::kMainnetChainId;
+    nft_identifier->contract_address = "0x" + base::NumberToString(i);
+    nft_identifier->token_id = "0x" + base::NumberToString(i);
+    nft_identifiers.push_back(std::move(nft_identifier));
+  }
+  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
+                      expected_metadatas);
+
+  std::string json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "description": "Azuki is a cute little bean",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "ipfs://QmZcH4YvBVVRJtdn4RdbaqgspFU8gH6P9vomDpBVpAL3u4/2767",
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Red"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        }
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        }
+      },
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "name": "Sneaker #432819057",
+        "description": "A sneaker",
+        "image_url": "https://cdn.simplehash.com/assets/3.png",
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Blue"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        },
+        "external_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json",
+        "background_color": "#000000",
+        "animation_url": null
+      }
+    ]
+  })";
+
+  // Add the chain_id, contract, and token_id from simple hash response
+  auto nft_identifier1 = mojom::NftIdentifier::New();
+  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->contract_address =
+      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+  nft_identifier1->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier1));
+
+  auto nft_identifier2 = mojom::NftIdentifier::New();
+  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->contract_address =
+      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+  nft_identifier2->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier2));
+
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr%"
+      "2Csolana.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8")] = json;
+
+  // Add the expected metadatas
+  mojom::NftMetadataPtr metadata1 = mojom::NftMetadata::New();
+  metadata1->name = "Common Water Warrior #19";
+  metadata1->description = "A true gladiator";
+  metadata1->image =
+      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
+  metadata1->image_data = "";
+  metadata1->external_url = "";
+  metadata1->background_color = "";
+  metadata1->animation_url = "";
+  metadata1->youtube_url = "";
+
+  mojom::NftMetadataPtr metadata2 = mojom::NftMetadata::New();
+  metadata2->name = "Sneaker #432819057";
+  metadata2->description = "A sneaker";
+  metadata2->image = "https://cdn.simplehash.wallet.brave.com/assets/3.png";
+  metadata2->image_data = "";
+  metadata2->external_url =
+      "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json";
+  metadata2->background_color = "#000000";
+  metadata2->animation_url = "";
+  metadata2->youtube_url = "";
+  mojom::NftAttributePtr attribute1 = mojom::NftAttribute::New();
+  attribute1->trait_type = "Color";
+  attribute1->value = "Blue";
+  metadata2->attributes.push_back(std::move(attribute1));
+  mojom::NftAttributePtr attribute2 = mojom::NftAttribute::New();
+  attribute2->trait_type = "Size";
+  attribute2->value = "Small";
+  metadata2->attributes.push_back(std::move(attribute2));
+
+  expected_metadatas.push_back(std::move(metadata1));
+  expected_metadatas.push_back(std::move(metadata2));
+  SetInterceptors(responses);
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
+                      expected_metadatas);
+}
+
+TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
+  std::string wallet_address = "0x123";
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers;
+  mojom::CoinType coin = mojom::CoinType::SOL;
+  std::vector<uint64_t> expected_balances;
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances);
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // More than 50 NFTs yields no balances
+  for (int i = 0; i < 75; i++) {
+    auto nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = mojom::kMainnetChainId;
+    nft_identifier->contract_address = "0x" + base::NumberToString(i);
+    nft_identifier->token_id = "0x" + base::NumberToString(i);
+    nft_identifiers.push_back(std::move(nft_identifier));
+  }
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances);
+  nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
+
+  // Response includes two NFTs, wallet address is included in only one of them
+  std::string json = R"({
+    "nfts": [
+      {
+        "nft_id": "solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "chain": "solana",
+        "contract_address": "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8",
+        "token_id": null,
+        "name": "Sneaker #432819057",
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 999
+          },
+          {
+            "owner_address": "0x456",
+            "quantity": 2
+          }
+        ]
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "owners": [
+          {
+            "owner_address": "0x456",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  // Add the chain_id, contract, and token_id from simple hash response
+  auto nft_identifier1 = mojom::NftIdentifier::New();
+  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->contract_address =
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+  nft_identifier1->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier1));
+
+  auto nft_identifier2 = mojom::NftIdentifier::New();
+  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->contract_address =
+      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+  nft_identifier2->token_id = "";
+  nft_identifiers.push_back(std::move(nft_identifier2));
+
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8%"
+      "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
+
+  // Add the expected balances
+  expected_balances.push_back(999);
+  expected_balances.push_back(0);
+  SetInterceptors(responses);
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+                     expected_balances);
+}
+
+TEST_F(SimpleHashClientUnitTest, ParseBalances) {
+  std::string json;
+
+  // JSON missing NFT key should return nullopt.
+  json = R"({"foo": "bar"})";
+  std::optional<base::Value> json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  std::optional<
+      base::flat_map<std::string, base::flat_map<std::string, uint64_t>>>
+      result = simple_hash_client_->ParseBalances(*json_value);
+  EXPECT_FALSE(result);
+
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 1
+          },
+          {
+            "owner_address": "0x456",
+            "quantity": 2
+          }
+        ]
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        },
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  std::optional<
+      base::flat_map<std::string, base::flat_map<std::string, uint64_t>>>
+      owners = simple_hash_client_->ParseBalances(*json_value);
+  ASSERT_TRUE(owners);
+
+  // Verify there are two entries.
+  EXPECT_EQ(owners->size(), 2u);
+
+  auto it = owners->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 2u);
+  EXPECT_EQ(it->second["0x123"], 1u);
+  EXPECT_EQ(it->second["0x456"], 2u);
+
+  it = owners->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
+  EXPECT_EQ(it->second["0x123"], 3u);
+
+  // NFT missing owners key should be skipped, but the rest should be added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767"
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+
+  owners = simple_hash_client_->ParseBalances(*json_value);
+  ASSERT_TRUE(owners);
+  EXPECT_EQ(owners->size(), 1u);
+  it = owners->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
+
+  // NFT missing owner_address key should be skipped, but the rest should be
+  // added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "owners": [
+          {
+            "quantity": 1
+          },
+          {
+            "owner_address": "0x456",
+            "quantity": 2
+          }
+        ]
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        },
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+
+  owners = simple_hash_client_->ParseBalances(*json_value);
+  ASSERT_TRUE(owners);
+  EXPECT_EQ(owners->size(), 2u);
+  it = owners->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
 }
 
 }  // namespace brave_wallet

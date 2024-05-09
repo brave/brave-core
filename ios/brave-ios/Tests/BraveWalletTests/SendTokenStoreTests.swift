@@ -372,6 +372,7 @@ class SendTokenStoreTests: XCTestCase {
       contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       name: "Basic Attention Token",
       logo: "",
+      isCompressed: false,
       isErc20: true,
       isErc721: false,
       isErc1155: false,

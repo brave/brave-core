@@ -27,6 +27,9 @@ namespace base {
 class FilePath;
 class SequencedTaskRunner;
 }  // namespace base
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
 namespace value_store {
 class ValueStoreFactory;
@@ -54,7 +57,8 @@ class TxService : public KeyedService,
                   public mojom::SolanaTxManagerProxy,
                   public mojom::FilTxManagerProxy {
  public:
-  TxService(JsonRpcService* json_rpc_service,
+  TxService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+            JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
@@ -231,6 +235,13 @@ class TxService : public KeyedService,
       const std::string& chain_id,
       const std::string& tx_meta_id,
       GetSolanaTxFeeEstimationCallback callback) override;
+  void MakeBubbleGumProgramTransferTxData(
+      const std::string& chain_id,
+      const std::string& token_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      MakeBubbleGumProgramTransferTxDataCallback callback) override;
+
   void ProcessSolanaHardwareSignature(
       const std::string& chain_id,
       const std::string& tx_meta_id,

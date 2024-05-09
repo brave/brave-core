@@ -152,6 +152,7 @@ export const AddCustomTokenForm = (props: Props) => {
         coingeckoId,
         logo: iconURL,
         tokenId: '',
+        isCompressed: false,
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
         isErc1155: false,

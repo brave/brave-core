@@ -154,6 +154,23 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
       completion(nil, .resourceNotFound, "Token not found.")
     }
   }
+
+  func nftMetadatas(
+    coin: BraveWallet.CoinType,
+    nftIdentifiers: [BraveWallet.NftIdentifier],
+    completion: @escaping ([BraveWallet.NftMetadata], String) -> Void
+  ) {
+    completion([], "Error Message")
+  }
+
+  func nftBalances(
+    walletAddress: String,
+    nftIdentifiers: [BraveWallet.NftIdentifier],
+    coin: BraveWallet.CoinType,
+    completion: @escaping ([NSNumber], String) -> Void
+  ) {
+    completion([], "Error Message")
+  }
 }
 
 extension BraveWallet.NetworkInfo {

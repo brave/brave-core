@@ -54,6 +54,11 @@ class NftMetadataFetcher {
   void GetSolTokenMetadata(const std::string& chain_id,
                            const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback);
+  using GetTokenMetadataIntermediateCallback =
+      base::OnceCallback<void(const std::string& response,
+                              int error,
+                              const std::string& error_message)>;
+  void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
 
  private:
   void OnGetSupportsInterface(const std::string& contract_address,
@@ -72,11 +77,6 @@ class NftMetadataFetcher {
                         const std::string& error_message);
   // GetTokenMetadataIntermediateCallbacks convert the int error to a
   // mojom::ProviderError or mojom::SolanaProviderError
-  using GetTokenMetadataIntermediateCallback =
-      base::OnceCallback<void(const std::string& response,
-                              int error,
-                              const std::string& error_message)>;
-  void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
                                api_request_helper::ValueOrError result);
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,

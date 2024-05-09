@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/value_store/value_store_factory_impl.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -75,13 +76,15 @@ size_t CalculatePendingTxCount(
 
 }  // namespace
 
-TxService::TxService(JsonRpcService* json_rpc_service,
-                     BitcoinWalletService* bitcoin_wallet_service,
-                     ZCashWalletService* zcash_wallet_service,
-                     KeyringService* keyring_service,
-                     PrefService* prefs,
-                     const base::FilePath& context_path,
-                     scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
+TxService::TxService(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    JsonRpcService* json_rpc_service,
+    BitcoinWalletService* bitcoin_wallet_service,
+    ZCashWalletService* zcash_wallet_service,
+    KeyringService* keyring_service,
+    PrefService* prefs,
+    const base::FilePath& context_path,
+    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   store_factory_ = base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(
       context_path.AppendASCII(kWalletBaseDirectory));
@@ -93,9 +96,10 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
       new EthTxManager(this, json_rpc_service, keyring_service, prefs,
                        delegate_.get(), account_resolver_delegate_.get()));
-  tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
-      new SolanaTxManager(this, json_rpc_service, keyring_service, prefs,
-                          delegate_.get(), account_resolver_delegate_.get()));
+  tx_manager_map_[mojom::CoinType::SOL] =
+      std::unique_ptr<TxManager>(new SolanaTxManager(
+          this, url_loader_factory, json_rpc_service, keyring_service, prefs,
+          delegate_.get(), account_resolver_delegate_.get()));
   tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
       new FilTxManager(this, json_rpc_service, keyring_service, prefs,
                        delegate_.get(), account_resolver_delegate_.get()));
@@ -515,6 +519,17 @@ void TxService::GetSolanaTxFeeEstimation(
     GetSolanaTxFeeEstimationCallback callback) {
   GetSolanaTxManager()->GetSolanaTxFeeEstimation(chain_id, tx_meta_id,
                                                  std::move(callback));
+}
+
+void TxService::MakeBubbleGumProgramTransferTxData(
+    const std::string& chain_id,
+    const std::string& token_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    MakeBubbleGumProgramTransferTxDataCallback callback) {
+  GetSolanaTxManager()->MakeBubbleGumProgramTransferTxData(
+      chain_id, token_address, from_wallet_address, to_wallet_address,
+      std::move(callback));
 }
 
 void TxService::ProcessSolanaHardwareSignature(

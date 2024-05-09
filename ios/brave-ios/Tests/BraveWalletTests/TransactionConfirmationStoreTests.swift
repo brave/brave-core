@@ -667,6 +667,7 @@ extension BraveWallet.BlockchainToken {
     contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
     name: "DAI",
     logo: "",
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,

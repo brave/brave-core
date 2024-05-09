@@ -168,6 +168,8 @@ bool SetAssetSpamStatus(PrefService* prefs,
 bool SetAssetSPLTokenProgram(PrefService* prefs,
                              const mojom::BlockchainTokenPtr& token,
                              mojom::SPLTokenProgram program);
+bool SetAssetCompressed(PrefService* prefs,
+                        const mojom::BlockchainTokenPtr& token);
 base::Value::List GetDefaultUserAssets();
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);

@@ -121,5 +121,8 @@ inline constexpr char kBraveWalletUserAssetsDeprecated[] =
 // 06/2024 migrated to kBraveWalletEip1559CustomChains.
 inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
+// 06/2024 to mark existing compressed Solana NFTs as compressed.
+inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
+    "brave.wallet.is_compressed_nft_migrated";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

@@ -753,7 +753,8 @@ export class MockedWalletApiProxy {
               contractAddress: contract,
               isErc721: false,
               tokenId: '',
-              isNft: false
+              isNft: false,
+              isCompressed: false
             })
           ] || '0',
         error: 0,
@@ -775,7 +776,8 @@ export class MockedWalletApiProxy {
               contractAddress: contractAddress,
               isErc721: true,
               tokenId,
-              isNft: false
+              isNft: false,
+              isCompressed: false
             })
           ] || '0',
         error: 0,
@@ -797,7 +799,8 @@ export class MockedWalletApiProxy {
               contractAddress: contractAddress,
               isErc721: true,
               tokenId,
-              isNft: false
+              isNft: false,
+              isCompressed: false
             })
           ] || '0',
         error: 0,
@@ -818,7 +821,8 @@ export class MockedWalletApiProxy {
               contractAddress: tokenMintAddress,
               isErc721: false,
               tokenId: '',
-              isNft: true
+              isNft: true,
+              isCompressed: false
             })
           ] || '0',
         decimals: 9,
@@ -984,6 +988,7 @@ export class MockedWalletApiProxy {
           isErc1155: false,
           splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
           isNft: false,
+          isCompressed: false,
           tokenId: '',
           logo: '',
           isSpam: false,

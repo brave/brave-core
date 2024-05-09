@@ -271,6 +271,8 @@ void RegisterProfilePrefsForMigration(
   // Added 06/2024
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChainDeprecated,
                                 false);
+  // Added 06/2024
+  registry->RegisterBooleanPref(kBraveWalletIsCompressedNftMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {

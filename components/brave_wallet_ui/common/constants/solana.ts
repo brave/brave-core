@@ -18,5 +18,6 @@ export const SolanaTransactionTypes = [
     .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
   BraveWallet.TransactionType.SolanaDappSignTransaction,
   BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
-  BraveWallet.TransactionType.SolanaSwap
+  BraveWallet.TransactionType.SolanaSwap,
+  BraveWallet.TransactionType.SolanaCompressedNftTransfer
 ]

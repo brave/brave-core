@@ -93,6 +93,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
   static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
+  void MaybeMigrateCompressedNfts();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
@@ -107,11 +108,6 @@ class BraveWalletService : public KeyedService,
   void GetAllUserAssets(GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
                     AddUserAssetCallback callback) override;
-  void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
-                           AddUserAssetCallback callback,
-                           const std::optional<std::string>& standard,
-                           mojom::ProviderError error,
-                           const std::string& error_message);
   void RemoveUserAsset(mojom::BlockchainTokenPtr token,
                        RemoveUserAssetCallback callback) override;
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
@@ -349,7 +345,14 @@ class BraveWalletService : public KeyedService,
       bool result,
       ImportInfo info,
       ImportError error);
+  void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
+                           AddUserAssetCallback callback,
+                           const std::optional<std::string>& standard,
+                           mojom::ProviderError error,
+                           const std::string& error_message);
 
+  void OnGetNfts(AddUserAssetCallback callback,
+                 std::vector<mojom::BlockchainTokenPtr> nfts);
   bool AddUserAssetInternal(mojom::BlockchainTokenPtr token);
   bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
@@ -361,6 +364,8 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
+  void OnGetNftsForCompressedMigration(
+      std::vector<mojom::BlockchainTokenPtr> nfts);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;

@@ -13,8 +13,11 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
 
@@ -30,12 +33,14 @@ struct SolanaAccountInfo;
 
 class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
-  SolanaTxManager(TxService* tx_service,
-                  JsonRpcService* json_rpc_service,
-                  KeyringService* keyring_service,
-                  PrefService* prefs,
-                  TxStorageDelegate* delegate,
-                  AccountResolverDelegate* account_resolver_delegate);
+  SolanaTxManager(
+      TxService* tx_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      JsonRpcService* json_rpc_service,
+      KeyringService* keyring_service,
+      PrefService* prefs,
+      TxStorageDelegate* delegate,
+      AccountResolverDelegate* account_resolver_delegate);
   ~SolanaTxManager() override;
 
   using ProcessSolanaHardwareSignatureCallback =
@@ -74,6 +79,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                               mojom::SolanaFeeEstimationPtr fee_estimation,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
+  using MakeBubbleGumProgramTransferTxDataCallback =
+      mojom::SolanaTxManagerProxy::MakeBubbleGumProgramTransferTxDataCallback;
   void MakeSystemProgramTransferTxData(
       const std::string& from,
       const std::string& to,
@@ -98,6 +105,12 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   void GetSolanaTxFeeEstimationForMeta(
       std::unique_ptr<SolanaTxMeta> meta,
       GetSolanaTxFeeEstimationForMetaCallback callback);
+  void MakeBubbleGumProgramTransferTxData(
+      const std::string& chain_id,
+      const std::string& token_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      MakeBubbleGumProgramTransferTxDataCallback callback);
   void ProcessSolanaHardwareSignature(
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& signature_bytes,
@@ -119,6 +132,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, RetryTransaction);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, GetEstimatedTxFee);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, GetSolanaTxFeeEstimation);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           DecodeMerkleTreeAuthorityAndDepth);
   friend class SolanaTxManagerUnitTest;
 
   mojom::CoinType GetCoinType() const override;
@@ -203,6 +218,22 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       mojom::SolanaFeeEstimationPtr estimation,
       mojom::SolanaProviderError error,
       const std::string& error_message);
+  void OnFetchCompressedNftProof(
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      MakeBubbleGumProgramTransferTxDataCallback callback,
+      std::optional<SolCompressedNftProofData> proof);
+
+  void OnGetMerkleTreeAccountInfo(
+      const std::string& to_wallet_address,
+      const SolCompressedNftProofData& proof,
+      MakeBubbleGumProgramTransferTxDataCallback callback,
+      std::optional<SolanaAccountInfo> account_info,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
+
+  std::optional<std::pair<uint32_t, SolanaAddress>>
+  DecodeMerkleTreeAuthorityAndDepth(const std::vector<uint8_t>& account_data);
 
   void GetSolanaTxFeeEstimationWithBlockhash(
       std::unique_ptr<SolanaTxMeta> meta,
@@ -220,6 +251,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
 
   SolanaTxStateManager* GetSolanaTxStateManager();
   SolanaBlockTracker* GetSolanaBlockTracker();
+  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<SolanaTxManager> weak_ptr_factory_;
 };

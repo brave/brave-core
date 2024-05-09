@@ -106,7 +106,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
         shared_url_loader_factory_, &prefs_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(),
+        shared_url_loader_factory_, json_rpc_service_.get(),
         nullptr,  // BitcoinWalletService
         nullptr,  // ZCashWalletService
         keyring_service_.get(), &prefs_, temp_dir_.GetPath(),

@@ -173,7 +173,7 @@ export const sortNativeAndAndBatAssetsToTop = (
 
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
-  'coin' | 'chainId' | 'contractAddress' | 'isErc721' | 'tokenId' | 'isNft'
+  'coin' | 'chainId' | 'contractAddress' | 'isErc721' | 'tokenId' | 'isNft' | 'isCompressed'
 >
 
 /**

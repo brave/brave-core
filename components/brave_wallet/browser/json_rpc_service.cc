@@ -324,6 +324,7 @@ JsonRpcService::JsonRpcService(
 
   nft_metadata_fetcher_ =
       std::make_unique<NftMetadataFetcher>(url_loader_factory, this, prefs_);
+  simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
 }
 
 JsonRpcService::JsonRpcService(
@@ -2869,6 +2870,73 @@ void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
                                              std::move(callback));
 }
 
+void JsonRpcService::GetNftMetadatas(
+    mojom::CoinType coin,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftMetadatasCallback callback) {
+  if (nft_identifiers.empty()) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetNftMetadatas,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  simple_hash_client_->GetNftMetadatas(coin, std::move(nft_identifiers),
+                                       std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetNftMetadatas(
+    GetNftMetadatasCallback callback,
+    std::vector<mojom::NftMetadataPtr> metadatas) {
+  // If there are no metadatas, then there was an error
+  if (metadatas.empty()) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(std::move(metadatas), "");
+}
+
+void JsonRpcService::GetNftBalances(
+    const std::string& wallet_address,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    mojom::CoinType coin,
+    GetNftBalancesCallback callback) {
+  if (nft_identifiers.empty()) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetNftBalances,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  simple_hash_client_->GetNftBalances(wallet_address,
+                                      std::move(nft_identifiers), coin,
+                                      std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetNftBalances(GetNftBalancesCallback callback,
+                                      std::vector<uint64_t> balances) {
+  std::move(callback).Run(balances, "");
+}
+
 void JsonRpcService::IsSolanaBlockhashValid(
     const std::string& chain_id,
     const std::string& blockhash,
@@ -2969,8 +3037,11 @@ void JsonRpcService::SendSolanaTransaction(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::sendTransaction(signed_tx, std::move(send_options)),
-                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
+
+  auto request = solana::sendTransaction(signed_tx, std::move(send_options));
+
+  RequestInternal(request, true,
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
                   std::move(internal_callback));
 }
 
