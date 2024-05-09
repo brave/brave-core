@@ -38,9 +38,10 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
   mixer[ui::kColorComboboxInkDropRipple] = {
       ui::kColorSysStateRippleNeutralOnSubtle};
-  mixer[ui::kColorToastBackground] = {ui::kColorSysInverseSurface};
+  mixer[ui::kColorToastBackground] = {is_dark ? gfx::kGoogleGrey800
+                                              : gfx::kGoogleGrey100};
   mixer[ui::kColorToastButton] = {ui::kColorSysInversePrimary};
-  mixer[ui::kColorToastForeground] = {ui::kColorSysInverseOnSurface};
+  mixer[ui::kColorToastForeground] = {ui::kColorSysOnSurfaceSubtle};
   mixer[ui::kColorToggleButtonHover] = {ui::kColorSysStateHover};
   mixer[ui::kColorToggleButtonPressed] = {ui::kColorSysStatePressed};
   mixer[ui::kColorToggleButtonShadow] = {ui::kColorSysOutline};
