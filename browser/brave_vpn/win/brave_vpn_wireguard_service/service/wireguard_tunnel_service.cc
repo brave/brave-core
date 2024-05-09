@@ -96,7 +96,7 @@ bool ConfigureConfigPermissions(const base::FilePath& config_path) {
   return AddACEToPath(
       config_path,
       {// Let only windows services to read the config.
-       {base::win::WellKnownSid::kService,
+       {base::win::WellKnownSid::kLocalSystem,
         GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
         base::win::SecurityAccessMode::kGrant},
        // Let windows administrators only to remove the config.
