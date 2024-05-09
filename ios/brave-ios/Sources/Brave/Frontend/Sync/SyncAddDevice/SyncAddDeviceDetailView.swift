@@ -12,14 +12,14 @@ class SyncAddDeviceInformationView: UIStackView {
 
   private var titleLabel = UILabel().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.semibold)
+    $0.font = .preferredFont(for: .title2, weight: .semibold)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
 
   private var descriptionLabel = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+    $0.font = .preferredFont(forTextStyle: .subheadline)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
     $0.lineBreakMode = .byTruncatingTail
@@ -55,7 +55,7 @@ class SyncAddDeviceInformationView: UIStackView {
       if let lastSentenceRange = lastSentenceRange(text: description) {
         attributedDescription.addAttributes(
           [
-            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
+            .font: UIFont.preferredFont(for: .footnote, weight: .semibold),
             .foregroundColor: UIColor.braveErrorLabel,
           ],
           range: lastSentenceRange
@@ -80,7 +80,7 @@ class SyncAddDeviceInformationView: UIStackView {
       if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
         description.addAttributes(
           [
-            .font: UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.semibold),
+            .font: UIFont.preferredFont(for: .footnote, weight: .semibold),
             .foregroundColor: UIColor.braveErrorLabel,
           ],
           range: lastSentenceRange
@@ -215,7 +215,7 @@ class SyncAddDeviceActionView: UIStackView {
 
   private lazy var doneButton = UIButton().then {
     $0.setTitle(Strings.done, for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
@@ -225,7 +225,7 @@ class SyncAddDeviceActionView: UIStackView {
 
   private lazy var copyPasteButton = UIButton().then {
     $0.setTitle(Strings.copyToClipboard, for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
     $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
     $0.isHidden = true
@@ -233,7 +233,7 @@ class SyncAddDeviceActionView: UIStackView {
 
   private lazy var generateNewCodeButton = UIButton().then {
     $0.setTitle("Generate New Code", for: .normal)
-    $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
+    $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.addTarget(self, action: #selector(generateNewCode), for: .touchUpInside)
     $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
     $0.backgroundColor = .clear
@@ -326,8 +326,8 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
   }
 
   private let timeRemainingTitleLabel = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
-    $0.lineBreakMode = NSLineBreakMode.byWordWrapping
+    $0.font = .preferredFont(forTextStyle: .subheadline)
+    $0.lineBreakMode = .byWordWrapping
     $0.textColor = UIColor(braveSystemName: .systemfeedbackInfoText)
     $0.textAlignment = .left
     $0.numberOfLines = 0
@@ -358,9 +358,9 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
   }
 
   private let codeExpirationTitleLabel = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.regular)
+    $0.font = .preferredFont(forTextStyle: .subheadline)
     $0.text = Strings.syncCodeExpirationTitleLabel
-    $0.lineBreakMode = NSLineBreakMode.byWordWrapping
+    $0.lineBreakMode = .byWordWrapping
     $0.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
     $0.textAlignment = .left
     $0.numberOfLines = 0

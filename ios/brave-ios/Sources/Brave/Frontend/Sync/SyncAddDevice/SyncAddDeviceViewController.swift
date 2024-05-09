@@ -23,7 +23,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private var contentStackView = UIStackView().then {
     $0.axis = .vertical
-    $0.spacing = 20
+    $0.spacing = 18
   }
 
   private var modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.codeWords]).then {
@@ -77,6 +77,8 @@ class SyncAddDeviceViewController: SyncViewController {
 
     pageTitle = title
     deviceType = type
+
+    view.maximumContentSizeCategory = .extraLarge
   }
 
   @available(*, unavailable)
@@ -106,10 +108,7 @@ class SyncAddDeviceViewController: SyncViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    scrollViewContainer.contentSize = CGSize(
-      width: contentStackView.frame.width,
-      height: contentStackView.frame.height
-    )
+    scrollViewContainer.contentSize = contentStackView.frame.size
 
     titleDescriptionStackView.updateLabels(isFirstIndex: modeControl.selectedSegmentIndex == 0)
   }
