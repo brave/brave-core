@@ -104,7 +104,8 @@ export const SignSimulatedTransactionPanel = ({
   selectedQueueData,
   signingAccount,
   signMode,
-  txSimulation
+  txSimulation,
+  isSigningDisabled
 }: Props) => {
   // custom hooks
   const { cancelSign: onCancelSign, sign: onSign } =
@@ -297,7 +298,7 @@ export const SignSimulatedTransactionPanel = ({
             <PendingTransactionActionsFooter
               onConfirm={onSign}
               onReject={onCancelSign}
-              isConfirmButtonDisabled={false}
+              isConfirmButtonDisabled={isSigningDisabled}
               transactionDetails={undefined}
               transactionsQueueLength={0}
               blowfishWarnings={txSimulation.warnings}
