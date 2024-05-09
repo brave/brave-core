@@ -248,12 +248,12 @@ void MessageMetainfo::MaybeStripCountry() {
   constexpr char kCountryOther[] = "other";
 
   static base::flat_set<std::string> const kLinuxCountries(
-      {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA", "IT", "AU",
-       "MX", "CH", "RU", "ZA", "SE", "BE", "JP"});
+      {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA",
+       "IT", "AU", "MX", "CH", "RU", "ZA", "SE", "BE", "JP", "AT"});
 
   static base::flat_set<std::string> const kNotableCountries(
-      {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX",
-       "AU", "RU", "JP", "PL", "ID", "KR", "AR"});
+      {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES",
+       "NL", "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT"});
 
   if (platform == "linux-bc") {
     // If we have more than 3/0.05 = 60 users in a country for
