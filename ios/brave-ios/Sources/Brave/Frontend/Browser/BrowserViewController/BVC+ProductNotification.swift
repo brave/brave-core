@@ -24,64 +24,7 @@ extension BrowserViewController {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
       guard let self = self else { return }
 
-      self.presentOnboardingAdblockNotifications()
       self.presentEducationalProductNotifications()
-    }
-  }
-
-  private func presentOnboardingAdblockNotifications() {
-    if Preferences.DebugFlag.skipEduPopups == true { return }
-
-    var isAboutHomeUrl = false
-    if let selectedTab = tabManager.selectedTab,
-      let url = selectedTab.url,
-      let internalURL = InternalURL(url)
-    {
-      isAboutHomeUrl = internalURL.isAboutHomeURL
-    }
-
-    guard let selectedTab = tabManager.selectedTab,
-      !Preferences.General.onboardingAdblockPopoverShown.value,
-      !benchmarkNotificationPresented,
-      !Preferences.AppState.backgroundedCleanly.value,
-      Preferences.Onboarding.isNewRetentionUser.value == true,
-      !topToolbar.inOverlayMode,
-      !isTabTrayActive,
-      selectedTab.webView?.scrollView.isDragging == false,
-      isAboutHomeUrl == false
-    else {
-      return
-    }
-
-    let blockedRequestURLs = selectedTab.contentBlocker.blockedRequests
-
-    if !blockedRequestURLs.isEmpty, let url = selectedTab.url {
-
-      let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
-
-      guard currentBenchmarkWebsite != domain else {
-        return
-      }
-
-      currentBenchmarkWebsite = domain
-
-      guard
-        let trackersDetail = BlockedTrackerParser.parse(
-          blockedRequestURLs: blockedRequestURLs,
-          selectedTabURL: url
-        )
-      else {
-        return
-      }
-
-      notifyTrackersBlocked(
-        domain: domain,
-        displayTrackers: trackersDetail.displayTrackers,
-        trackerCount: trackersDetail.trackerCount
-      )
-
-      Preferences.General.onboardingAdblockPopoverShown.value = true
-
     }
   }
 

@@ -292,7 +292,6 @@ var package = Package(
         .copy("LottieAssets/onboarding-rewards.json"),
         .copy("LottieAssets/onboarding-shields.json"),
         .copy("LottieAssets/playlist-confetti.json"),
-        .copy("Welcome/Resources/disconnect-entitylist.json"),
         .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],
       plugins: ["LoggerPlugin"]

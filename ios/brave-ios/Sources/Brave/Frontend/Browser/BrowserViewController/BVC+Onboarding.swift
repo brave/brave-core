@@ -283,37 +283,6 @@ extension BrowserViewController {
     }
   }
 
-  func notifyTrackersBlocked(
-    domain: String,
-    displayTrackers: [AdBlockTrackerType],
-    trackerCount: Int
-  ) {
-    let controller = WelcomeBraveBlockedAdsController().then {
-      $0.setData(displayTrackers: displayTrackers.map(\.rawValue), trackerCount: trackerCount)
-    }
-
-    let popover = PopoverController(contentController: controller)
-    popover.previewForOrigin = .init(
-      view: topToolbar.shieldsButton,
-      action: { [weak self] popover in
-        popover.dismissPopover {
-          self?.presentBraveShieldsViewController()
-        }
-      }
-    )
-    popover.present(from: topToolbar.shieldsButton, on: self)
-
-    popover.popoverDidDismiss = { [weak self] _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        guard let self = self else { return }
-
-        if self.shouldShowPlaylistOnboardingThisSession {
-          self.showPlaylistOnboarding(tab: self.tabManager.selectedTab)
-        }
-      }
-    }
-  }
-
   /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
   /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
   func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
