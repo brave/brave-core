@@ -293,10 +293,6 @@ export const transactionSimulationEndpoints = ({
             throw new Error('empty Solana simulation response')
           }
 
-          // if (!response.expectedStateChanges.length) {
-          //   throw new Error('Solana simulation did not detect any changes')
-          // }
-
           return {
             data: response
           }

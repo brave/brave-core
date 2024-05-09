@@ -95,7 +95,7 @@ const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 export const ConfirmTransactionPanel = ({
   retrySimulation
 }: {
-  retrySimulation?: () => void
+  readonly retrySimulation?: () => void
 }) => {
   // queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =

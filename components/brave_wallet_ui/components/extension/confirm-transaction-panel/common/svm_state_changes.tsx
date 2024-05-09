@@ -157,8 +157,7 @@ export const SPLTokenTransfer = ({
     chainId: network.chainId
   })
 
-  const { data: combinedTokensRegistry } =
-    useGetCombinedTokensRegistryQuery(undefined)
+  const { data: combinedTokensRegistry } = useGetCombinedTokensRegistryQuery()
 
   // memos
   const asset: IconAsset = React.useMemo(() => {

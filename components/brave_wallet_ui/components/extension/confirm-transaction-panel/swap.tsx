@@ -34,7 +34,7 @@ import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-pars
 import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 interface Props {
-  retrySimulation?: () => void
+  readonly retrySimulation?: () => void
 }
 
 export function ConfirmSwapTransaction({ retrySimulation }: Props) {
