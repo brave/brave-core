@@ -13,7 +13,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 26;
+const int kBraveCurrentDataVersion = 27;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -213,7 +213,7 @@ const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
 
 const PrepopulatedEngine brave_bing = ModifyEngineParams(
     bing,
-    nullptr,
+    u"Bing",
     nullptr,
     "https://www.bing.com/search?q={searchTerms}",
     "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
