@@ -49,6 +49,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -1191,22 +1192,35 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void permanentlyDeleteAccountImpl() {
-        getBraveSyncWorker().permanentlyDeleteAccount((String result) -> {
-            if (result == null || result.isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(),
-                             getResources().getString(
-                                     R.string.brave_sync_delete_account_succeeded_toast),
-                             Toast.LENGTH_LONG)
-                        .show();
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(),
-                             getResources().getString(
-                                     R.string.brave_sync_delete_account_failed_toast)
-                                     + " " + result,
-                             Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
+        getBraveSyncWorker()
+                .permanentlyDeleteAccount(
+                        (String result) -> {
+                            permanentlyDeletedAccount(result);
+                        });
+    }
+
+    private void permanentlyDeletedAccount(String result) {
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        if (result == null || result.isEmpty()) {
+            showToast(
+                    activity,
+                    getResources().getString(R.string.brave_sync_delete_account_succeeded_toast)
+                            + " "
+                            + result);
+        } else {
+            showToast(
+                    activity,
+                    getResources().getString(R.string.brave_sync_delete_account_failed_toast)
+                            + " "
+                            + result);
+        }
+    }
+
+    private void showToast(FragmentActivity activity, String text) {
+        Toast.makeText(activity.getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
     private boolean mLeaveSyncChainInProgress;
