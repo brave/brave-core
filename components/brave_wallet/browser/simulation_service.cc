@@ -174,9 +174,16 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& language) {
   DCHECK(coin == mojom::CoinType::SOL || coin == mojom::CoinType::ETH);
-  std::string spec = base::StringPrintf(
-      "%s/%s/%s", kBlowfishBaseAPIURL,
-      GetRelativeScanPath(chain_id, coin).value_or("").c_str(), "transactions");
+
+  auto scan_path = GetRelativeScanPath(chain_id, coin);
+
+  if (!scan_path.has_value()) {
+    return GURL();
+  }
+
+  std::string spec =
+      base::StringPrintf("%s/%s/%s", kBlowfishBaseAPIURL,
+                         scan_path.value().c_str(), "transactions");
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
