@@ -10,7 +10,6 @@
 #include <map>
 #include <optional>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
@@ -54,11 +53,10 @@ class SiteVisit final : public BrowserManagerObserver,
   bool IsPageLanding(int32_t tab_id) const;
 
   void MaybeLandOnPage(const TabInfo& tab);
-  void CheckIfLandedOnPage(const TabInfo& tab, const AdInfo& ad);
-  void CheckIfLandedOnPageCallback(const TabInfo& tab);
-  void StartPageLand(int32_t tab_id,
-                     const AdInfo& ad,
-                     base::RepeatingClosure user_task);
+  void MaybeLandOnPageAfter(const TabInfo& tab,
+                            const AdInfo& ad,
+                            base::TimeDelta page_land_after);
+  void MaybeLandOnPageAfterCallback(const TabInfo& tab);
   void LandedOnPage(const TabInfo& tab, const AdInfo& ad);
   void LandedOnPageCallback(const TabInfo& tab,
                             const AdInfo& ad,

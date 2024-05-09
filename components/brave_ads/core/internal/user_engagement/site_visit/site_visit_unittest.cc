@@ -43,8 +43,7 @@ class BraveAdsSiteVisitTest : public UnitTestBase {
   ::testing::InSequence s_;
 };
 
-TEST_F(BraveAdsSiteVisitTest,
-       DoNotCheckIfLandedOnPageIfTheLastClickedAdIsInvalid) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheLastClickedAdIsInvalid) {
   // Arrange
   const AdInfo ad;
   site_visit_->SetLastClickedAd(ad);
@@ -59,7 +58,7 @@ TEST_F(BraveAdsSiteVisitTest,
 }
 
 TEST_F(BraveAdsSiteVisitTest,
-       DoNotCheckIfLandedOnPageIfTheRedirectChainDoesNotMatchTheLastClickedAd) {
+       DoNotLandOnPageIfTheRedirectChainDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -75,8 +74,7 @@ TEST_F(BraveAdsSiteVisitTest,
   FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(BraveAdsSiteVisitTest,
-       DoNotCheckIfLandedOnPageIfTheSameTabIsAlreadyLanding) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameTabIsAlreadyLanding) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -509,7 +507,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
 
 TEST_F(
     BraveAdsSiteVisitTest,
-    DoNotCheckIfLandedOnPageIfTheVisibleTabRedirectChainDoesNotMatchTheLastClickedAd) {
+    DoNotLandOnPageIfTheVisibleTabRedirectChainDoesNotMatchTheLastClickedAd) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
