@@ -1550,7 +1550,8 @@ inline constexpr char kBitcoinMainnetRpcEndpoint[] =
 inline constexpr char kBitcoinTestnetRpcEndpoint[] =
     "https://blockstream.info/testnet/api/";
 
-inline constexpr char kMeldRpcEndpoint[] = "https://api.meld.io";
+inline constexpr char kMeldRpcEndpoint[] =
+    "https://api-meld.wallet.brave.software";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
 
@@ -1563,7 +1564,6 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
-const std::string GetMeldAssetRatioBaseURL();
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

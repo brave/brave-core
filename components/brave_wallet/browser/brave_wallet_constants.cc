@@ -130,16 +130,4 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 
   return *blockchains;
 }
-
-const std::string GetMeldAssetRatioBaseURL() {
-  std::string ratios_url =
-      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kMeldAssetRatioDevUrl);
-  if (ratios_url.empty()) {
-    ratios_url = kMeldRpcEndpoint;
-  }
-
-  return ratios_url;
-}
-
 }  // namespace brave_wallet

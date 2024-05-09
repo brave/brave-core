@@ -56,13 +56,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 base::flat_map<std::string, std::string> MakeMeldApiHeaders() {
-  base::flat_map<std::string, std::string> request_headers;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers["Authorization"] = base::StrCat({"BASIC", " ", brave_key});
+  base::flat_map<std::string, std::string> request_headers(
+      brave_wallet::MakeBraveServicesKeyHeaders());
   request_headers["accept"] = "application/json";
   request_headers[brave_wallet::kMeldRpcVersionHeader] =
       brave_wallet::kMeldRpcVersion;
@@ -156,9 +151,7 @@ void MeldIntegrationService::Bind(
 GURL MeldIntegrationService::GetServiceProviderURL(
     const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
-      GURL(base::StringPrintf("%s/service-providers",
-                              GetMeldAssetRatioBaseURL().c_str())),
-      filter,
+      GURL(kMeldRpcEndpoint).Resolve("/service-providers"), filter,
       base::flat_map<std::string, std::string>{{"accountFilter", "false"}});
 }
 
@@ -233,8 +226,7 @@ void MeldIntegrationService::GetCryptoQuotes(
 
   const std::string json_payload = GetJSON(payload);
 
-  auto url = GURL(base::StringPrintf("%s/payments/crypto/quote",
-                                     GetMeldAssetRatioBaseURL().c_str()));
+  auto url = GURL(kMeldRpcEndpoint).Resolve("/payments/crypto/quote");
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetCryptoQuotes,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -294,8 +286,8 @@ void MeldIntegrationService::OnParseCryptoQuotes(
 GURL MeldIntegrationService::GetPaymentMethodsURL(
     const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
-      GURL(base::StringPrintf("%s/service-providers/properties/payment-methods",
-                              GetMeldAssetRatioBaseURL().c_str())),
+      GURL(kMeldRpcEndpoint)
+          .Resolve("/service-providers/properties/payment-methods"),
       filter,
       base::flat_map<std::string, std::string>{
           {"includeServiceProviderDetails", "false"},
@@ -357,8 +349,8 @@ void MeldIntegrationService::OnParsePaymentMethods(
 GURL MeldIntegrationService::GetFiatCurrenciesURL(
     const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
-      GURL(base::StringPrintf("%s/service-providers/properties/fiat-currencies",
-                              GetMeldAssetRatioBaseURL().c_str())),
+      GURL(kMeldRpcEndpoint)
+          .Resolve("/service-providers/properties/fiat-currencies"),
       filter,
       base::flat_map<std::string, std::string>{
           {"includeServiceProviderDetails", "false"},
@@ -420,9 +412,8 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 GURL MeldIntegrationService::GetCryptoCurrenciesURL(
     const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
-      GURL(base::StringPrintf(
-          "%s/service-providers/properties/crypto-currencies",
-          GetMeldAssetRatioBaseURL().c_str())),
+      GURL(kMeldRpcEndpoint)
+          .Resolve("/service-providers/properties/crypto-currencies"),
       filter,
       base::flat_map<std::string, std::string>{
           {"includeServiceProviderDetails", "false"},
@@ -484,8 +475,7 @@ void MeldIntegrationService::OnParseCryptoCurrencies(
 GURL MeldIntegrationService::GetCountriesURL(
     const mojom::MeldFilterPtr& filter) {
   return AppendFilterParams(
-      GURL(base::StringPrintf("%s/service-providers/properties/countries",
-                              GetMeldAssetRatioBaseURL().c_str())),
+      GURL(kMeldRpcEndpoint).Resolve("/service-providers/properties/countries"),
       filter,
       base::flat_map<std::string, std::string>{
           {"includeServiceProviderDetails", "false"},

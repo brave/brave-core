@@ -12,6 +12,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -45,8 +46,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         [&, content, http_status](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           std::string header;
-          request.headers.GetHeader("Authorization", &header);
-          EXPECT_TRUE(header.starts_with("BASIC"));
+          EXPECT_TRUE(request.headers.GetHeader(
+              brave_wallet::kMeldRpcVersionHeader, &header));
+          EXPECT_FALSE(header.empty());
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           http_status);
         }));
