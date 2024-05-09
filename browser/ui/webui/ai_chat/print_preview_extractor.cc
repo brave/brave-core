@@ -352,7 +352,8 @@ void PrintPreviewExtractor::DidGetDefaultPageLayout(
 void PrintPreviewExtractor::DidStartPreview(
     printing::mojom::DidStartPreviewParamsPtr params,
     int32_t request_id) {
-  DVLOG(3) << __func__ << ": id=" << request_id;
+  DVLOG(3) << __func__ << ": id=" << request_id
+           << " , page count: " << params->page_count;
 }
 
 void PrintPreviewExtractor::OnPrepareForDocumentToPdfDone(
@@ -395,6 +396,9 @@ void PrintPreviewExtractor::PreviewCleanup() {
     return;
   }
   PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
+  if (!is_pdf_) {
+    print_render_frame_->OnPrintPreviewDialogClosed();
+  }
   DisconnectPrintPrieviewUI();
 }
 
