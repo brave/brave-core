@@ -174,6 +174,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_component_updater::BraveComponent::Delegate*
   brave_component_updater_delegate();
 
+  // Sequence checker must stay on top to avoid UaF issues when data members use
+  // `g_browser_process->profile_manager()`.
+  SEQUENCE_CHECKER(sequence_checker_);
+
   // local_data_files_service_ should always be first because it needs
   // to be destroyed last
   std::unique_ptr<brave_component_updater::LocalDataFilesService>
@@ -226,8 +230,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
-
-  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
