@@ -292,7 +292,11 @@ void AdBlockComponentServiceManager::UpdateFilterLists(
     return;
   }
 
-  std::vector<std::string> component_ids;
+  std::vector<std::string> component_ids = {
+      kAdBlockResourceComponentId,
+      kAdBlockFilterListCatalogComponentId,
+  };
+
   for (const auto& [key, provider] : component_filters_providers_) {
     component_ids.push_back(provider->component_id());
   }
