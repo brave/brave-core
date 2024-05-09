@@ -110,6 +110,7 @@
                             app:drawableEndCompat="@drawable/ic_discount" />
 
                         <TextView
+                            android:id="@+id/yearly_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/renew_monthly_save"

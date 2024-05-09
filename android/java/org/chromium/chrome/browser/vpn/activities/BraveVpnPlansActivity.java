@@ -45,6 +45,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
     private TextView mRemovedValueText;
+    private TextView mYearlyText;
 
     private Button mBtnVpnPlanAction;
 
@@ -122,6 +123,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        mYearlyText = findViewById(R.id.yearly_text);
 
         mBtnVpnPlanAction = findViewById(R.id.vpn_plan_action_button);
         mBtnVpnPlanAction.setOnClickListener(
@@ -142,6 +144,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mIsVerification = true;
         verifySubscription();
 
+        getMonthlyProductDetails();
+        updateSelectedPlanView();
+    }
+
+    private void getMonthlyProductDetails() {
         // Set up monthly subscription
         mMonthlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
@@ -182,11 +189,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                         }
                                     }
                                 });
-                        mProductDetails = monthlyProductDetails;
+                        getYearlyProductDetails(monthlyProductDetails);
                     }
                 });
+    }
 
-        // Set up yearly subscription
+    private void getYearlyProductDetails(ProductDetails monthlyProductDetails) {
         mYearlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
                 InAppPurchaseWrapper.getInstance().getYearlyProductDetails(),
@@ -220,9 +228,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                 });
                         mProductDetails = yearlyProductDetails;
                         mBtnVpnPlanAction.setEnabled(true);
+                        if (monthlyProductDetails != null) {
+                            mYearlyText.setText(
+                                    getString(
+                                            R.string.renew_monthly_save,
+                                            InAppPurchaseWrapper.getInstance()
+                                                    .getYearlyDiscountPercentage(
+                                                            monthlyProductDetails,
+                                                            yearlyProductDetails)));
+                        }
                     }
                 });
-        updateSelectedPlanView();
     }
 
     private void updateSelectedPlanView() {
