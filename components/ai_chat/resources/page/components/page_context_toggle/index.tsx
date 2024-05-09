@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 
@@ -14,21 +15,16 @@ import SiteTitle from '../site_title'
 import DataContext from '../../state/context'
 
 function PageContextToggle() {
-  const [showTooltip, setShowTooltip] = React.useState(false)
   const context = React.useContext(DataContext)
+  const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
 
   const handleToggleChange = ({ checked }: { checked: boolean }) => {
     context.updateShouldSendPageContents(checked)
   }
 
-  const handleInfoIconTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const toggleTooltipVisibility = (e: any) => {
     e.preventDefault()
-    setShowTooltip(true)
-  }
-
-  const handleInfoIconTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setShowTooltip(false)
+    setIsTooltipVisible(state => !state)
   }
 
   return (
@@ -42,10 +38,23 @@ function PageContextToggle() {
         <span slot="on-icon" />
         <div className={styles.label}>
           <span>{getLocale('contextToggleLabel')}</span>
-          <Tooltip visible={showTooltip}>
+          <Tooltip
+            visible={isTooltipVisible}
+            mode="default"
+            className={styles.tooltip}
+            onVisibilityChange={(detail) => {
+              setTimeout(() => {
+                setIsTooltipVisible(detail.visible)
+              })
+            }}
+          >
             <div
               slot='content'
-              className={styles.tooltipContainer}
+              className={styles.tooltipContent}
+              onClick={(e: any) => {
+                // inner content click/tap shouldn't change parent's toggle
+                e.preventDefault()
+              }}
             >
               <div className={styles.tooltipInfo}>
                 {getLocale('contextToggleTooltipInfo')}
@@ -54,16 +63,14 @@ function PageContextToggle() {
                 <SiteTitle size='small' />
               </div>
             </div>
-            <div
-              onMouseOver={() => setShowTooltip(true)}
-              onMouseOut={() => setShowTooltip(false)}
-              onTouchStart={handleInfoIconTouchStart}
-              onTouchEnd={handleInfoIconTouchEnd}
-              onFocus={() => setShowTooltip(true)}
-              onBlur={() => setShowTooltip(false)}
+            <Button
+              fab
+              kind='plain-faint'
+              className={styles.tooltipButton}
+              onClick={toggleTooltipVisibility}
             >
               <Icon name='info-outline' />
-            </div>
+            </Button>
           </Tooltip>
         </div>
       </Toggle>

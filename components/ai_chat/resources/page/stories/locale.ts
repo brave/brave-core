@@ -86,7 +86,7 @@ provideStrings({
   welcomeGuideShatCardTitle: 'Just want to chat?',
   welcomeGuideShatCardDesc: 'Ask me anything! We can talk about any topic you want. I\'m always learning and improving to provide better answers.',
   privacyTitle: 'Privacy agreement',
-  contextToggleLabel: 'Use page context for response',
+  contextToggleLabel: 'Shape answers based on the page\'s contents',
   contextToggleTooltipInfo: 'Toggle on to ask about this page. It\'s content will be sent to Brave Leo along with your messages.',
   subscriptionPolicyInfo: 'All subscriptions are auto-renewed but can be cancelled at any time before renewal.',
   summarizeLabel: 'Summarize',

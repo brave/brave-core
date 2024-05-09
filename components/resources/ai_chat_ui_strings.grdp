@@ -271,7 +271,7 @@
     Chat Privately with Brave Leo
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
-    Use page context for response
+    Shape answers based on the page's contents
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
     Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
