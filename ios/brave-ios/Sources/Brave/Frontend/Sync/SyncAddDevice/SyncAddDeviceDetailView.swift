@@ -68,12 +68,11 @@ class SyncAddDeviceInformationView: UIStackView {
       let buttonName = Strings.scanSyncCode
       let addDeviceWords = String(format: Strings.syncAddDeviceWordsDescription, buttonName)
       let description = NSMutableAttributedString(string: addDeviceWords)
-      let fontSize = descriptionLabel.font.pointSize
 
       let boldRange = (addDeviceWords as NSString).range(of: buttonName)
       description.addAttribute(
         .font,
-        value: UIFont.boldSystemFont(ofSize: fontSize),
+        value: UIFont.preferredFont(for: .subheadline, weight: .bold),
         range: boldRange
       )
 
