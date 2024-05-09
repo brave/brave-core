@@ -19,7 +19,6 @@ import android.os.Build;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
-import android.util.Pair;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -36,16 +35,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -59,14 +52,10 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.url.GURL;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -99,8 +88,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private BraveShieldsMenuObserver mMenuObserver;
     private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
-        Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
-    private ArrayList<Pair<String, String>> mResourceToCompanyNameList = new ArrayList<>();
+            Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
     private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
     private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
@@ -167,40 +155,14 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
         if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
             blockersInfo.mAdsBlocked++;
-            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subResource);
-            }
         } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
             blockersInfo.mTrackersBlocked++;
-            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subResource);
-            }
         } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             blockersInfo.mScriptsBlocked++;
         } else if (blockType.equals(
                            BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             blockersInfo.mFingerprintsBlocked++;
         }
-    }
-
-    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subResource) {
-        GURL gurl = new GURL(subResource);
-        if (!GURL.isEmptyOrInvalid(gurl)) {
-            String companyName = getBlockerCompanyName(gurl);
-            if (!blockersInfo.mBlockerNames.contains(companyName)) {
-                blockersInfo.mBlockerNames.add(companyName);
-            }
-        }
-        return blockersInfo;
-    }
-
-    private String getBlockerCompanyName(GURL gurl) {
-        for (Pair<String, String> resourceToCompanyName : mResourceToCompanyNameList) {
-            if (gurl.domainIs(resourceToCompanyName.first)) {
-                return resourceToCompanyName.second;
-            }
-        }
-        return gurl.getHost();
     }
 
     public void removeStat(int tabId) {
