@@ -20,6 +20,8 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler;
+import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler.VoiceResult;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -32,12 +34,17 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 
+import java.util.List;
+import java.util.Locale;
+
 class BraveAutocompleteMediator extends AutocompleteMediator
         implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
+    private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
     private Context mContext;
     private AutocompleteDelegate mDelegate;
+    private Supplier<Tab> mActivityTabSupplier;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     private boolean mNativeInitialized;
@@ -85,6 +92,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
         mContext = context;
         mDelegate = delegate;
+        mActivityTabSupplier = activityTabSupplier;
     }
 
     @Override
@@ -136,5 +144,32 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     public void openLeoQuery(WebContents webContents, String query) {
         mDelegate.clearOmniboxFocus();
         BraveLeoUtils.openLeoQuery(webContents, query, true);
+    }
+
+    @Override
+    void onVoiceResults(@Nullable List<VoiceRecognitionHandler.VoiceResult> voiceResults) {
+        Tab tab = mActivityTabSupplier.get();
+        if (tab != null) {
+            VoiceResult topResult =
+                    (voiceResults != null && voiceResults.size() > 0) ? voiceResults.get(0) : null;
+            if (topResult != null) {
+                String topResultQuery = topResult.getMatch();
+                // Check if the query starts with the start word for Leo.
+                if (topResultQuery
+                        .toUpperCase(Locale.ENGLISH)
+                        .startsWith(LEO_START_WORD_UPPER_CASE)) {
+                    // Remove the start word from the query and process it.
+                    topResultQuery =
+                            topResultQuery.substring(LEO_START_WORD_UPPER_CASE.length()).trim();
+                    openLeoQuery(tab.getWebContents(), topResultQuery);
+
+                    // Clear the voice results to prevent the query from being processed by Chromium
+                    // since it's already handled by Leo.
+                    voiceResults.clear();
+                }
+            }
+        }
+
+        super.onVoiceResults(voiceResults);
     }
 }
