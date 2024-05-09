@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Menyekat unsur seterusnya dan kad akhir di youtube.com.</translation>
 <translation id="5152595963250646670">Sekat unsur YouTube yang mengganggu</translation>
 <translation id="2998960761270772157">Menyekat unsur maklumat log masuk, menu, komen dan video di youtube.com.</translation>
+<translation id="8531835121131500698">Sekat YouTube Shorts</translation>
+<translation id="2167271714269158912">Menyekat Shorts daripada halaman utama, halaman sohor kini dan hasil carian di youtube.com.</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Pencipta Disahkan</translation>
 <translation id="2369994359029526515">Pencipta Tidak Disahkan</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
-<translation id="7861645265922445992">Tuntut Rewards</translation>
 <translation id="1848737374354350807">Baki</translation>
 <translation id="4781696154289395607">Anda telah menyumbang <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Terdapat beberapa masalah memproses sumbangan anda.</translation>
-<translation id="2221902203895354376">Geran token sudah tersedia!</translation>
-<translation id="2377929997600454162">Ganjaran Iklan <ph name="MONTH_VALUE"/> anda telah tiba!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Ganjaran: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Tinggal <ph name="TOKEN"/> hari lagi untuk anda membuat tuntutan</translation>
 <translation id="683765328936486920">di YouTube</translation>
 <translation id="8969049974285901797">di Twitch</translation>
 <translation id="8038539967102225446">Iklan Brave ada di sini!</translation>
@@ -458,7 +455,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3763681089644577874">Sekat Kuki</translation>
 <translation id="614747795780742163">Mengelakkan laman web daripada menyimpan maklumat tentang kunjungan-kunjungan anda sebelum ini</translation>
 <translation id="6883611015375728278">Sekat semua kuki</translation>
-<translation id="4941539331405513605">Sekat kuki merentas laman</translation>
+<translation id="6196640612572343990">Sekat kuki pihak ketiga</translation>
 <translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="1553643198679271031">Minta mod Tanpa Siar</translation>
 <translation id="4891600875049212418">Layari dalam mod Luar Rekod apabila melawati laman sensitif</translation>
@@ -604,6 +601,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5488357322146334497">Mesej</translation>
 <translation id="1904000155026201268">Saya faham bahawa jika saya kehilangan frasa pemulihan saya, saya tidak akan dapat mengakses dompet kripto saya.</translation>
 <translation id="5333225216561354793">Kami memerlukan anda mengakui item berikut</translation>
+<translation id="6937275455070754004">Pilih rantaian blok yang hendak digunakan dalam dompet anda.</translation>
 <translation id="1645800479814134195">Saya faham ini ialah dompet penjagaan sendiri, dan saya seorang sahaja yang bertanggungjawab ke atas sebarang dana, aset atau akaun yang berkaitan, dan untuk mengambil tindakan yang sewajarnya untuk menjamin, melindungi dan membuat sandaran dompet saya. Saya faham bahawa Brave tidak boleh mengakses dompet saya atau membalikkan transaksi bagi pihak saya, dan frasa pemulihan saya ialah SATU-SATUNYA cara untuk mendapatkan semula akses sekiranya kata laluan hilang, peranti dicuri atau keadaan yang serupa.</translation>
 <translation id="4565891212173086999">Saya telah membaca dan bersetuju dengan  <ph name="CLICK_START"/>Terma Penggunaan<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Frasa pemulihan anda</translation>
@@ -611,12 +609,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2708402071160162126">AMARAN: Jangan sekali-kali berkongsi frasa pemulihan anda. Sesiapa yang mempunyai frasa ini boleh mengambil aset anda selama-lamanya.</translation>
 <translation id="111912712268284159">Saya telah menyandarkan frasa saya di tempat yang selamat.</translation>
 <translation id="6896758677409633944">Salin</translation>
-<translation id="1783600039044302171">Lindungi keselamatan kripto anda dengan kata laluan</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
 <translation id="3038243139480464605">Sahkan kata laluan</translation>
 <translation id="3043677904160378840">Kata laluan mestilah sekurang-kurangnya 8 aksara.</translation>
 <translation id="7396672979287122068">Kata laluan yang disahkan tidak sepadan</translation>
-<translation id="7084181009966710506">Mencipta Dompet...</translation>
+<translation id="1566412704591731844">Mencipta dompet anda…</translation>
+<translation id="7779823116893018906">Mungkin mengambil masa beberapa saat…</translation>
 <translation id="1577948178257477049">Akaun <ph name="ACCOUNT_NAME"/>  <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tambah akaun</translation>
 <translation id="3448492834076427715">Kemas kini akaun</translation>
@@ -639,6 +637,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="5844138175312846408">Sudah memiliki dompet?</translation>
 <translation id="2502258949541727762">Sebelum kami bermula</translation>
+<translation id="4303748097351941030">Rangkaian yang disokong</translation>
+<translation id="4204268048253692928">Anda boleh menambah rangkaian pada bila-bila masa dalam Tetapan.</translation>
+<translation id="2523174693142405417">Cari rangkaian</translation>
+<translation id="1164748583090434571">Tunjukkan rangkaian ujian</translation>
+<translation id="935220650946301698">Teruskan dengan <ph name="NUMBER"/> rangkaian</translation>
 <translation id="8248460961680233459">Cipta kata laluan</translation>
 <translation id="2789310860394340571">Anda perlu menggunakan kata laluan ini untuk mengakses dompet anda.</translation>
 <translation id="2136372518715274136">Masukkan kata laluan baharu</translation>
@@ -845,7 +848,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Serah</translation>
-<translation id="4945690646623486292">Pilih Rangkaian</translation>
+<translation id="4556601961751528347">Tukar Akaun Bersambung</translation>
 <translation id="5233638681132016545">Tab baharu</translation>
 <translation id="8006088103295786154">Akses Dompet Brave</translation>
 <translation id="8030169304546394654">Sambungan Terputus</translation>
@@ -871,6 +874,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4255623233927788178">Lihat pada sekatan penjelajah</translation>
 <translation id="8274201358637112807">Halaman ini ingin berinteraksi dengan Dompet Brave</translation>
 <translation id="3355936511340229503">Ralat sambungan</translation>
+<translation id="1531836666020185856">Ditampilkan</translation>
 <translation id="4891604214809245310">Tidak boleh menetapkan rangkaian kepada <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Nampaknya anda mempunyai VPN lain yang ditetapkan kepada “Sentiasa hidup” pada peranti ini. Untuk mendayakan Brave Firewall + VPN, nyahdayakan dahulu tetapan “Sentiasa hidup” ini bagi VPN lain sebelum menyambung semula. Jika masalah berterusan, cuba nyahpasang VPN lain.</translation>
 <translation id="85136472535634474">Buka Tetapan VPN</translation>
@@ -1038,7 +1042,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1677961202754619328">Menurut Uphold, terdapat beberapa had pada akaun Uphold anda buat masa ini. Sila log masuk ke akaun Uphold anda dan semak sama ada terdapat sebarang notis atau masih ada keperluan akaun untuk dilengkapkan, kemudian cuba lagi.</translation>
 <translation id="5425006356459378415">Ganjaran Brave tidak tersedia</translation>
 <translation id="833643743158564518">Pendaftaran baharu untuk Ganjaran Brave dinyahdayakan di rantau anda buat masa ini. Walau bagaimanapun, anda boleh mencuba sekali lagi kemudian. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Semua Rangkaian</translation>
 <translation id="7748944510530490017">Rangkaian Utama</translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
 <translation id="282560918037172384">Rangkaian Ujian</translation>
@@ -1178,4 +1181,11 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="3251885322612056119">Syarat Perkhidmatan yang dikemaskinikan</translation>
 <translation id="4049035689681585146">Kami telah mengemaskinikan Syarat Perkhidmatan untuk Ganjaran Brave. Kami membuat kemaskinian ini untuk menjelaskan syarat kami dan memastikan ia meliputi ciri baharu. Jika anda meneruskan penggunaan Ganjaran Brave, maksudnya anda bersetuju menerima Syarat Perkhidmatan yang dikemaskinikan. Jika anda tidak bersetuju, anda boleh <ph name="RESET_START"/>menetapkan semula<ph name="RESET_END"/> Ganjaran Brave, dan tindakan ini akan menyahdayakan ciri tersebut.</translation>
 <translation id="2165953574528546737">Lihat <ph name="TOS_START"/>Syarat Perkhidmatan Ganjaran Brave<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Dayakan berbilang tetingkap</translation>
+<translation id="6167344249617630304">Buka hingga 5 tetingkap pada satu masa dan alihkan tab dari satu tetingkap ke tetingkap yang lain</translation>
+<translation id="1063948063403254568">Berbilang tetingkap dikesan</translation>
+<translation id="4661882208707630158">Sila gabungkan tab ke tetingkap Brave lain, atau tutup tetingkap Brave lain, sebelum menyahdayakan ciri berbilang tetingkap.</translation>
+<translation id="6891382640886173702">Gabungkan tetingkap</translation>
+<translation id="2912247081180973411">Tutup tetingkap</translation>
+<translation id="4010699428656610296">Sila gabungkan tab lain ke tetingkap Brave yang lain.</translation>
 </translationbundle>

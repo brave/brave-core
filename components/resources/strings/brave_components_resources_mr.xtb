@@ -15,6 +15,7 @@
 <translation id="5327248766486351172">नाव</translation>
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
+<translation id="1383876407941801731">शोधा</translation>
 <translation id="385051799172605136">मागील</translation>
 <translation id="370665806235115550">लोड करीत आहे...</translation>
 <translation id="8890516388109605451">स्रोत</translation>
@@ -33,17 +34,10 @@
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="7375125077091615385">प्रकार:</translation>
 <translation id="1992397118740194946">सेट नाही</translation>
-<translation id="1919345977826869612">जाहिराती</translation>
-<translation id="3970114302595058915">आयडी</translation>
-<translation id="4250680216510889253">नाही</translation>
-<translation id="1426410128494586442">होय</translation>
-<translation id="7805768142964895445">स्थिती</translation>
-<translation id="5565735124758917034">सक्रिय</translation>
-<translation id="2448312741937722512">प्रकार</translation>
-<translation id="3798449238516105146">आवृत्ती</translation>
 <translation id="7180611975245234373">रिफ्रेश करा</translation>
 <translation id="4309915981827077375">सामान्य माहिती</translation>
 <translation id="3368922792935385530">कनेक्ट केले</translation>
+<translation id="1919345977826869612">जाहिराती</translation>
 <translation id="3587482841069643663">सर्व</translation>
 <translation id="2631006050119455616">सेव्ह केले</translation>
 <translation id="3866249974567520381">वर्णन</translation>
@@ -51,6 +45,7 @@
 <translation id="2799223571221894425">पुन्हा लाँच करा</translation>
 <translation id="5939518447894949180">रीसेट करा</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
+<translation id="2448312741937722512">प्रकार</translation>
 <translation id="923467487918828349">सर्व दर्शवा</translation>
 <translation id="2356070529366658676">विचारा</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
@@ -60,6 +55,7 @@
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="8028993641010258682">आकार</translation>
 <translation id="3202131003361292969">पथ</translation>
+<translation id="3798449238516105146">आवृत्ती</translation>
 <translation id="1272079795634619415">थांबा</translation>
 <translation id="5895138241574237353">रीस्टार्ट करा</translation>
 <translation id="8725066075913043281">पुन्हा प्रयत्न करा</translation>
@@ -74,10 +70,12 @@
 <translation id="3479552764303398839">सध्या नाही</translation>
 <translation id="1483493594462132177">पाठवा</translation>
 <translation id="1177863135347784049">सानुकूल</translation>
-<translation id="1383876407941801731">शोधा</translation>
 <translation id="1987317783729300807">खाती</translation>
 <translation id="6979737339423435258">पूर्णवेळ</translation>
 <translation id="629730747756840877">खाते</translation>
+<translation id="5292796745632149097">यांना पाठवा</translation>
+<translation id="1426410128494586442">होय</translation>
+<translation id="4250680216510889253">नाही</translation>
 <translation id="1201402288615127009">पुढील</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="6896758677409633944">कॉपी करा</translation>
@@ -103,6 +101,7 @@
 <translation id="7982789257301363584">नेटवर्क</translation>
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="2391762656119864333">मागे घ्या</translation>
+<translation id="5565735124758917034">सक्रिय</translation>
 <translation id="8874184842967597500">कनेक्ट केलेले नाही</translation>
 <translation id="5677928146339483299">अवरोधित</translation>
 <translation id="1165039591588034296">एरर</translation>
@@ -144,8 +143,10 @@
 <translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="7053983685419859001">अवरोधित करा</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
+<translation id="6196640612572343990">तृतीय-पक्ष कुकीज अवरोधित करा</translation>
 <translation id="5657156137487675418">सर्व कुकीजना परवानगी द्या</translation>
 <translation id="2453860139492968684">समाप्त</translation>
+<translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
 <translation id="1116694919640316211">बद्दल</translation>
 <translation id="2740531572673183784">ठीक आहे</translation>

@@ -138,6 +138,7 @@
 <translation id="4304059894777924102">Brave tidak dapat menyemak kata laluan anda. Cuba periksa sambungan Internet anda.</translation>
 <translation id="2100587595569959771">Ketahui lebih lanjut tentang pemeribadian iklan dalam Brave</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
+<translation id="387105482057676379">Pautkan Brave dengan perkhidmatan Brave lain untuk pemeribadian dan tujuan lain</translation>
 <translation id="3867175562099983425">Urus Profil Brave</translation>
 <translation id="2106568569080763501">Brave membolehkan anda mengklik nombor telefon pada web dan menghubunginya dengan Skype!</translation>
 <translation id="308146532933302843">Ketahui sebab Brave menghalang sesetengah muat turun</translation>
@@ -162,6 +163,7 @@
 <translation id="4055805654398742145">Password Manager</translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama 1 minit. Data semakan imbas dipadamkan. Pemadaman ini termasuk sejarah, autolengkap dan muat turun.}other{Organisasi anda akan menutup Brave secara automatik apabila Brave tidak digunakan selama # minit. Data semakan imbas dipadamkan. Pemadaman ini termasuk sejarah, autolengkap dan muat turun.}}</translation>
 <translation id="4148957013307229264">Memasang...</translation>
+<translation id="5506080358066715848">Organisasi anda dapat melihat dan mengurus data penyemakan imbas dalam profil kerja anda, seperti penanda halaman, sejarah dan kata laluan anda. Organisasi anda tidak dapat melihat data semakan imbas dalam profil Brave peribadi.</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Log Masuk Rangkaian - Brave</translation>
 <translation id="2871190378186459992">Temui apl, permainan, sambungan dan tema yang hebat untuk Brave.</translation>
 <translation id="5757460455745382269">Bahasa ini digunakan untuk memaparkan UI Brave</translation>
@@ -215,6 +217,7 @@
 <translation id="8174413867995118050">Profil Brave Lain</translation>
 <translation id="7708394612738038097">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Brave sync chain, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Kod tambahan: <ph name="EXTRA_CODE"/>.</translation>
+<translation id="2487133103111559902">Untuk mendapatkan pemeribadian, sertakan Brave dalam Aktiviti Web &amp; Apl</translation>
 <translation id="5154625106151193600">Ketahui sebab Brave menyekat sesetengah fail</translation>
 <translation id="1786715389543715322">Mengemas kini Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Benarkan log masuk Brave</translation>
@@ -223,6 +226,7 @@
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="894936507076470937">Brave mungkin tidak akan berfungsi dengan betul kerana tidak disokong pada edaran Linux ini lagi</translation>
+<translation id="2596557398669145729">Brave menyekat muat turun ini kerana fail tersebut boleh membahayakan akaun peribadi dan rangkaian sosial anda</translation>
 <translation id="696826782632239602">Brave memerlukan akses kepada lokasi anda untuk berkongsi lokasi dengan tapak ini</translation>
 <translation id="3809116188788099368">Untuk melindungi privasi anda, kami memadamkan minat anda yang disimpan melebihi 4 minggu secara automatik. Semasa anda terus menyemak imbas, minat itu mungkin muncul semula dalam senarai. Jika Brave tersilap atau anda tidak mahu melihat iklan tertentu, anda boleh mengalih keluar minat itu.</translation>
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
@@ -234,6 +238,7 @@
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Paparkan Brave dalam bahasa ini</translation>
 <translation id="569897634095159764">Tidak dapat disambungkan kepada Internet. Pelayan proksi memerlukan pengesahan.</translation>
+<translation id="82926023981336111">Sesuaikan dan kawal Brave. Tetapkan Brave sebagai lalai anda.</translation>
 <translation id="5809516625706423866">Tidak dapat disambungkan kepada Internet. HTTP 401 Tidak Dibenarkan. Sila semak konfigurasi proksi anda.</translation>
 <translation id="7207456302801184289">Selamat datang ke Brave</translation>
 <translation id="8054200348483755053">Brave mendapati bahawa item ini mengandungi perisian hasad:</translation>
@@ -256,6 +261,7 @@
 <translation id="608006075545470555">Tambahkan Profil Kerja pada penyemak imbas ini</translation>
 <translation id="5849446944780602366">Sesuaikan dan kawal Brave. Kemas kini tersedia.</translation>
 <translation id="5505258595603236622">Apabila dihidupkan, Brave menjimatkan kuasa bateri dengan mengehadkan aktiviti latar dan kesan visual, seperti tatal lancar dan kadar bingkai video.</translation>
+<translation id="5711722515923392428">Hidupkan • Brave tidak dapat mengesahkan tempat asal sambungan ini</translation>
 <translation id="7433698744896946664">Benarkan sambungan menunjukkan permintaan akses pada bar alat Brave</translation>
 <translation id="492209281555538239">Brave akan menyimpan kata laluan ini dalam Brave sync chain anda. Anda tidak perlu mengingati kata laluan tersebut.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
@@ -290,6 +296,7 @@
 <translation id="6373767849825830651">Brave merupakan penyemak imbas yang mengendalikan laman web dan aplikasi dengan kelajuan sepantas kilat. Brave cepat, stabil dan mudah digunakan. Semak imbas web lebih selamat dengan perlindungan perisian hasad dan pancingan data terbina dalam Brave.</translation>
 <translation id="2139300032719313227">Mulakan semula Chrome OS</translation>
 <translation id="638302211119176182">Brave mempramuat lebih banyak halaman yang mungkin anda lawati supaya halaman tersebut dimuatkan dengan lebih pantas apabila dilawati</translation>
+<translation id="890319829408077946">Matikan • Brave tidak dapat mengesahkan tempat asal sambungan ini</translation>
 <translation id="1684121725014454063">Selamat datang ke profil Brave</translation>
 <translation id="2675662665675552980">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave.</translation>
 <translation id="648319183876919572">Penyemakan Imbas Selamat Dipertingkatkan melakukan lebih banyak lagi untuk melindungi anda daripada laman web dan muat turun berbahaya</translation>
@@ -312,6 +319,7 @@
 <translation id="1489465648257900784">Profil anda tidak boleh digunakan kerana profil anda dihasilkan dari versi Brave yang lebih baharu.
 
 Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbeza atau gunakan versi Brave yang lebih baharu.</translation>
+<translation id="1505112054322049777">Untuk mendapatkan pemeribadian dan ciri lain, sertakan Brave dalam Aktiviti Web &amp; Apl dan perkhidmatan Brave terpaut</translation>
 <translation id="6666624454809779082">Brave telah dipasang untuk semua pengguna pada komputer anda.</translation>
 <translation id="5360050006043219962">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk, kemudian hidupkan penyegerakan.</translation>
 <translation id="3136039682492230890">Brave mengesyorkan pengimbasan fail ini kerana fail ini mungkin berbahaya.</translation>
@@ -339,9 +347,11 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="1008530050039597147">Brave memerlukan kebenaran kamera untuk laman ini</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat menyemak kata laluan anda. Cuba lagi selepas 24 jam.</translation>
+<translation id="3074679259444363247">Brave memerlukan pemahaman latar dan kebenaran penjejakan tangan untuk memulakan sesi yang mengasyikkan</translation>
 <translation id="5755581833598928580">Gunakan Brave pada bila-bila masa anda mengklik pautan dalam mesej, dokumen dan apl lain</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="713191641919118540">Minat anda seperti yang dianggarkan oleh Brave</translation>
+<translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave mengesyorkan supaya anda mengalih keluar sambungan tersebut}other{Brave mengesyorkan supaya anda mengalih keluar sambungan tersebut}}</translation>
 <translation id="9068395155143628872">Pengukuran iklan membolehkan laman yang anda lawati meminta maklumat daripada Brave yang membantu laman tersebut mengukur prestasi iklan mereka. Pengukuran iklan mengehadkan penjejakan rentas laman dengan memindahkan maklumat antara laman sedikit yang mungkin.</translation>
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
 <translation id="3403365884036456766">Fail pilihan anda rosak atau tidak sah.
@@ -350,6 +360,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7339898014177206373">Tetingkap baharu</translation>
 <translation id="3511996232906761537">Web, penanda halaman dan barangan Brave anda yang lain tinggal di sini.</translation>
 <translation id="5380963249588143069">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka <ph name="ALTERNATIVE_BROWSER_NAME"/> untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="8580803879249090057">Brave menyekat muat turun ini kerana fail tersebut boleh membahayakan akaun peribadi dan rangkaian sosial anda termasuk <ph name="USER_EMAIL"/></translation>
 <translation id="38294420683216447">Dengan profil Brave anda dapat mengasingkan semua bahan Brave anda. Ini akan lebih memudahkan pengasingan antara bahan kerja dengan bahan untuk keseronokan.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave memerlukan kebenaran untuk mengakses kamera anda bagi tapak ini</translation>
@@ -376,6 +387,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7963515534397191222">Brave tidak dapat mengemas kini kepada versi terkini, maka anda terlepas ciri baharu dan penyelesaian keselamatan.</translation>
 <translation id="7872446069773932638">Memuat turun... <ph name="SECONDS"/> saat lagi</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Cara anda boleh mengurus data anda:<ph name="END_BOLD"/> Untuk melindungi privasi anda, kami memadamkan minat anda yang disimpan melebihi 4 minggu secara automatik. Semasa anda terus menyemak imbas, minat itu mungkin muncul semula dalam senarai. Anda juga boleh mengalih keluar minat yang anda tidak mahu dipertimbangkan Brave.</translation>
+<translation id="5687542525349822727">Tetapkan Brave sebagai lalai anda</translation>
 <translation id="2925193881330501265">Anda telah log masuk ke Brave sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sila gunakan akaun yang sama untuk log masuk lagi.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
 <translation id="7685904775439037072">Sebaik sahaja Brave mendapat akses, laman web akan dapat meminta akses daripada anda.</translation>
@@ -387,6 +399,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="813913629614996137">Memulakan...</translation>
 <translation id="7550680632761245819">Hidupkan perlindungan tambahan dalam JavaScript Brave dan enjin WebAssembly</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
+<translation id="1755067029031059271">Brave tidak dapat mengesahkan tempat asal sambungan ini, maka tindakan ini mungkin tidak selamat. Alih keluar sambungan ini daripada Brave supaya sambungan ini tidak dapat melihat dan mengubah data anda pada laman yang anda lawati lagi, termasuk maklumat peribadi.</translation>
 <translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="8622246347342688645">Brave tidak dapat menyemak kata laluan anda kerana anda tidak log masuk</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave memberi anda amaran<ph name="END_LINK"/> tentang laman dan muat turun tidak selamat</translation>
@@ -431,6 +444,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8986207147630327271">Anda menambahkan profil kerja pada penyemak imbas ini dan memberi pentadbir anda kawalan terhadap profil kerja sahaja.</translation>
 <translation id="3424657754843264466">Urus profil Brave</translation>
 <translation id="82609232232243542">Log masuk ke Brave</translation>
+<translation id="7055223246119657449">Brave menyekat muat turun ini kerana fail arkib termasuk fail lain yang mungkin menyembunyikan perisian hasad</translation>
 <translation id="3273774796888928550">Log Masuk ke Brave. Jika anda mahu log masuk akaun satu kali sahaja, anda boleh <ph name="GUEST_LINK_BEGIN"/>menggunakan peranti sebagai tetamu<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave telah ditutup secara automatik</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
