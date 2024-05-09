@@ -36,8 +36,8 @@ extension BraveWallet.TransactionInfo {
       .ethFilForwarderTransfer:
       return true
     case .other:
-      // Filecoin send
-      return txDataUnion.filTxData != nil
+      // Filecoin or Bitcoin send
+      return txDataUnion.filTxData != nil || txDataUnion.btcTxData != nil
     case .erc20Approve,
       .ethSwap,
       .solanaSwap:
@@ -145,6 +145,10 @@ extension BraveWallet.AccountId {
     guard let object = object as? BraveWallet.AccountId else { return false }
     return self.uniqueKey == object.uniqueKey
   }
+
+  var blockieSeed: String {
+    address.isEmpty ? uniqueKey.sha256 : address
+  }
 }
 
 extension BraveWallet.AccountInfo {
@@ -167,7 +171,7 @@ extension BraveWallet.AccountInfo {
   }
 
   var blockieSeed: String {
-    address.isEmpty ? accountId.uniqueKey.sha256 : address
+    accountId.blockieSeed
   }
 
   /// Displays as `Account Name (truncated address)`, ex `Ethereum Account 1 (0x1234...5678)`
@@ -645,6 +649,31 @@ extension BraveWallet.KeyringId {
       return chainId == BraveWallet.ZCashMainnet ? .zCashMainnet : .zCashTestnet
     @unknown default:
       return .default
+    }
+  }
+}
+
+extension BraveWallet.TransactionStatus {
+  var localizedDescription: String {
+    switch self {
+    case .confirmed:
+      return Strings.Wallet.transactionStatusConfirmed
+    case .approved:
+      return Strings.Wallet.transactionStatusApproved
+    case .rejected:
+      return Strings.Wallet.transactionStatusRejected
+    case .unapproved:
+      return Strings.Wallet.transactionStatusUnapproved
+    case .submitted:
+      return Strings.Wallet.transactionStatusSubmitted
+    case .error:
+      return Strings.Wallet.transactionStatusError
+    case .dropped:
+      return Strings.Wallet.transactionStatusDropped
+    case .signed:
+      return Strings.Wallet.transactionStatusSigned
+    @unknown default:
+      return Strings.Wallet.transactionStatusUnknown
     }
   }
 }

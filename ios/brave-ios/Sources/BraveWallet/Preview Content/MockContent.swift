@@ -494,27 +494,6 @@ extension BraveWallet.SignMessageRequest {
   }
 }
 
-extension TransactionSummary {
-
-  static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
-  static var previewConfirmedSwap = previewSummary(from: .previewConfirmedSwap)
-  static var previewConfirmedERC20Approve = previewSummary(from: .previewConfirmedERC20Approve)
-
-  static func previewSummary(from txInfo: BraveWallet.TransactionInfo) -> Self {
-    TransactionParser.transactionSummary(
-      from: txInfo,
-      network: .mockMainnet,
-      accountInfos: [.previewAccount],
-      userAssets: [.previewToken, .previewDaiToken],
-      allTokens: [],
-      assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
-      nftMetadata: [:],
-      solEstimatedTxFee: nil,
-      currencyFormatter: .usdCurrencyFormatter
-    )
-  }
-}
-
 extension ParsedTransaction {
 
   static var previewConfirmedSend = previewParsedTransaction(from: .previewConfirmedSend)

@@ -15,7 +15,8 @@ struct TransactionSummaryViewContainer: View {
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       SendTransactionSummaryView(
         sentFromAccountName: parsedTransaction.namedFromAddress,
         token: details.fromToken,

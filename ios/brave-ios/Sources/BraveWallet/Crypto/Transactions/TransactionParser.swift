@@ -85,7 +85,24 @@ enum TransactionParser {
           gasFee = .init(fee: gasFeeString, fiat: "$0.00")
         }
       }
-    case .btc, .zec:
+    case .btc:
+      guard let btcTxData = transaction.txDataUnion.btcTxData,
+        case let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8)),
+        let gasFeeString = formatter.decimalString(
+          for: "\(btcTxData.fee)",
+          radix: .decimal,
+          decimals: 8
+        )
+      else { return nil }
+      if let doubleValue = Double(gasFeeString),
+        let assetRatio = assetRatios[network.symbol.lowercased()],
+        let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
+      {
+        gasFee = .init(fee: gasFeeString, fiat: fiat)
+      } else {
+        gasFee = .init(fee: gasFeeString, fiat: "$0.00")
+      }
+    case .zec:
       break
     @unknown default:
       break
@@ -175,7 +192,7 @@ enum TransactionParser {
             for: transaction.fromAccountId.address,
             accounts: accountInfos
           ),
-          fromAddress: transaction.fromAccountId.address,
+          fromAccountId: transaction.fromAccountId,
           namedToAddress: NamedAddresses.name(for: filTxData.to, accounts: accountInfos),
           toAddress: filTxData.to,
           network: network,
@@ -188,6 +205,56 @@ enum TransactionParser {
               gasPremium: gasPremiumValueFormatted,
               gasLimit: gasLimitValueFormatted,
               gasFeeCap: gasFeeCapValueFormatted,
+              gasFee: gasFee(
+                from: transaction,
+                network: network,
+                assetRatios: assetRatios,
+                currencyFormatter: currencyFormatter
+              )
+            )
+          )
+        )
+      } else if let btcTxData = transaction.txDataUnion.btcTxData {  // BTC send tx
+        // Require 8 decimals precision for BTC parsing
+        let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+        let fromAccount = accountInfos.first(where: { $0.accountId == transaction.fromAccountId })
+        let namedFromAccount = fromAccount?.name ?? ""
+        let fromValue = "\(btcTxData.amount)"
+        let fromValueFormatted =
+          formatter.decimalString(
+            for: fromValue,
+            radix: .decimal,
+            decimals: Int(network.decimals)
+          )?.trimmingTrailingZeros ?? ""
+        let fromFiat =
+          currencyFormatter.string(
+            from: NSNumber(
+              value: assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+                * (Double(fromValueFormatted) ?? 0)
+            )
+          ) ?? "$0.00"
+        let fromToken = (allTokens + userAssets).first(where: {
+          $0.coin == transaction.coin && $0.chainId == transaction.chainId
+        })
+        // Example:
+        // Send 0.00001 BTC
+        //
+        // fromValue="1000"
+        // fromValueFormatted="0.00001"
+        return .init(
+          transaction: transaction,
+          namedFromAddress: namedFromAccount,
+          fromAccountId: transaction.fromAccountId,
+          namedToAddress: "",
+          toAddress: btcTxData.to,
+          network: network,
+          details: .btcSend(
+            .init(
+              fromToken: fromToken,
+              fromValue: fromValue,
+              fromAmount: fromValueFormatted,
+              fromFiat: fromFiat,
+              fromTokenMetadata: nil,
               gasFee: gasFee(
                 from: transaction,
                 network: network,
@@ -224,7 +291,7 @@ enum TransactionParser {
             for: transaction.fromAccountId.address,
             accounts: accountInfos
           ),
-          fromAddress: transaction.fromAccountId.address,
+          fromAccountId: transaction.fromAccountId,
           namedToAddress: NamedAddresses.name(
             for: transaction.ethTxToAddress,
             accounts: accountInfos
@@ -289,7 +356,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -376,7 +443,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(
           for: transaction.ethTxToAddress,
           accounts: accountInfos
@@ -450,7 +517,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(
           for: transaction.ethTxToAddress,
           accounts: accountInfos
@@ -502,7 +569,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,  // The caller, which may not be the owner
+        fromAccountId: transaction.fromAccountId,  // The caller, which may not be the owner
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -552,7 +619,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -624,7 +691,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -761,7 +828,7 @@ enum TransactionParser {
           for: transaction.fromAccountId.address,
           accounts: accountInfos
         ),
-        fromAddress: transaction.fromAccountId.address,
+        fromAccountId: transaction.fromAccountId,
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
         network: network,
@@ -874,6 +941,7 @@ struct ParsedTransaction: Equatable {
     case solDappTransaction(SolanaTxDetails)
     case solSwapTransaction(SolanaTxDetails)
     case filSend(FilSendDetails)
+    case btcSend(SendDetails)
     case other
   }
 
@@ -882,8 +950,8 @@ struct ParsedTransaction: Equatable {
 
   /// Account name for the from address of the transaction
   let namedFromAddress: String
-  /// Address sending from
-  let fromAddress: String
+  /// `AccountId` sending from
+  let fromAccountId: BraveWallet.AccountId
 
   /// Account name for the to address of the transaction
   let namedToAddress: String
@@ -915,17 +983,19 @@ struct ParsedTransaction: Equatable {
       return details.gasFee
     case .erc721Transfer(let details):
       return details.gasFee
-    case .other:
-      return nil
     case .filSend(let details):
       return details.gasFee
+    case .btcSend(let details):
+      return details.gasFee
+    case .other:
+      return nil
     }
   }
 
   init() {
     self.transaction = .init()
     self.namedFromAddress = ""
-    self.fromAddress = ""
+    self.fromAccountId = .init()
     self.namedToAddress = ""
     self.toAddress = ""
     self.network = .init()
@@ -935,7 +1005,7 @@ struct ParsedTransaction: Equatable {
   init(
     transaction: BraveWallet.TransactionInfo,
     namedFromAddress: String,
-    fromAddress: String,
+    fromAccountId: BraveWallet.AccountId,
     namedToAddress: String,
     toAddress: String,
     network: BraveWallet.NetworkInfo,
@@ -943,7 +1013,7 @@ struct ParsedTransaction: Equatable {
   ) {
     self.transaction = transaction
     self.namedFromAddress = namedFromAddress
-    self.fromAddress = fromAddress
+    self.fromAccountId = fromAccountId
     self.namedToAddress = namedToAddress
     self.toAddress = toAddress
     self.network = network
@@ -953,10 +1023,11 @@ struct ParsedTransaction: Equatable {
   /// Determines if the given query matches the `ParsedTransaction`.
   func matches(_ query: String) -> Bool {
     if namedFromAddress.localizedCaseInsensitiveContains(query)
-      || fromAddress.localizedCaseInsensitiveContains(query)
       || namedToAddress.localizedCaseInsensitiveContains(query)
       || toAddress.localizedCaseInsensitiveContains(query)
       || transaction.txHash.localizedCaseInsensitiveContains(query)
+      || (!fromAccountId.address.isEmpty
+        && fromAccountId.address.localizedCaseInsensitiveContains(query))
     {
       return true
     }
@@ -964,7 +1035,8 @@ struct ParsedTransaction: Equatable {
     case .ethSend(let sendDetails),
       .erc20Transfer(let sendDetails),
       .solSystemTransfer(let sendDetails),
-      .solSplTokenTransfer(let sendDetails):
+      .solSplTokenTransfer(let sendDetails),
+      .btcSend(let sendDetails):
       return sendDetails.fromToken?.matches(query) == true
     case .ethSwap(let ethSwapDetails):
       return ethSwapDetails.fromToken?.matches(query) == true
@@ -1181,6 +1253,10 @@ extension ParsedTransaction {
       }
     case .filSend(let details):
       if let token = details.sendToken {
+        return [token]
+      }
+    case .btcSend(let details):
+      if let token = details.fromToken {
         return [token]
       }
     case .solDappTransaction, .solSwapTransaction, .other:
