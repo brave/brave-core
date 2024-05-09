@@ -96,7 +96,7 @@ class Tab: NSObject {
 
   private(set) var type: TabType = .regular
 
-  var redirectURLs = [URL]()
+  var redirectChain = [URL]()
 
   var isPrivate: Bool {
     return type.isPrivate
@@ -240,6 +240,9 @@ class Tab: NSObject {
   var restoring: Bool = false
   var pendingScreenshot = false
 
+  /// The type of action triggering a navigation.
+  var navigationType: WKNavigationType?
+
   /// This object holds on to information regarding the current web page
   ///
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
@@ -297,7 +300,7 @@ class Tab: NSObject {
 
   var mimeType: String?
   var isEditing: Bool = false
-  var shouldClassifyLoadsForAds = true
+  var shouldNotifyAdsServiceTabDidChange = true
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
@@ -558,6 +561,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
+      shouldNotifyAdsServiceTabDidChange = false
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
