@@ -287,7 +287,7 @@ public abstract class BraveActivity extends ChromeActivity
     private JsonRpcService mJsonRpcService;
     private MiscAndroidMetrics mMiscAndroidMetrics;
     private SwapService mSwapService;
-    private WalletModel mWalletModel;
+    @Nullable private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
     private EthTxManagerProxy mEthTxManagerProxy;
@@ -481,6 +481,11 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpMiscAndroidMetrics();
     }
 
+    /**
+     * Gets Wallet model for Brave activity. It may be {@code null} if native initialization has not
+     * completed yet.
+     */
+    @Nullable
     public WalletModel getWalletModel() {
         return mWalletModel;
     }
@@ -509,9 +514,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void maybeShowPendingTransactions() {
-        assert mWalletModel != null;
-        // trigger to observer to refresh data to process the pending request
-        mWalletModel.getCryptoModel().refreshTransactions();
+        if (mWalletModel != null) {
+            // Trigger to observer to refresh data to process the pending request.
+            mWalletModel.getCryptoModel().refreshTransactions();
+        }
     }
 
     private void maybeShowSignTxRequestLayout() {
@@ -683,13 +689,15 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showAccountCreation(@CoinType.EnumType int coinType) {
-        assert mWalletModel != null : " mWalletModel is null ";
-        mWalletModel.getDappsModel().addAccountCreationRequest(coinType);
+        if (mWalletModel != null) {
+            mWalletModel.getDappsModel().addAccountCreationRequest(coinType);
+        }
     }
 
     private void updateWalletBadgeVisibility() {
-        assert mWalletModel != null;
-        mWalletModel.getDappsModel().updateWalletBadgeVisibility();
+        if (mWalletModel != null) {
+            mWalletModel.getDappsModel().updateWalletBadgeVisibility();
+        }
     }
 
     private void verifySubscription() {
