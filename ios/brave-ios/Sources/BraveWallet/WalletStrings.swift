@@ -923,7 +923,7 @@ extension Strings {
       value: "Word #%d",
       comment: "The placeholder on the mneomic/recovery phrase text field of each grid."
     )
-    public static let restoreWalletImportFromLegacyBraveWallet = NSLocalizedString(
+    public static let restoreWalletImportFromTwentyFourPhrases = NSLocalizedString(
       "wallet.restoreWalletImportFromLegacyBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
@@ -931,7 +931,7 @@ extension Strings {
       comment:
         "A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet."
     )
-    public static let restoreWalletImportFromRegularBraveWallet = NSLocalizedString(
+    public static let restoreWalletImportWithTwelvePhrases = NSLocalizedString(
       "wallet.restoreWalletImportFromRegularBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
@@ -953,6 +953,13 @@ extension Strings {
       bundle: .module,
       value: "New Password",
       comment: "A title displayed above 2 text fields for entering a new wallet password"
+    )
+    public static let restoreLegacyBraveWalletToggleLabel = NSLocalizedString(
+      "wallet.restoreLegacyBraveWalletToggleTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Import from legacy Brave crypto wallets?",
+      comment: "A label for toggle for user to use to indicate importing a legacy brave wallet or not"
     )
     public static let createWalletBackButtonTitle = NSLocalizedString(
       "wallet.createWalletBackButtonTitle",
