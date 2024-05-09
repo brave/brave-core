@@ -2544,13 +2544,6 @@ extension Strings {
       comment:
         "The message of an alert when the user attempted to remove custom network and it fails for some reason"
     )
-    public static let customNetworksTitle = NSLocalizedString(
-      "wallet.customNetworksTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Custom Networks",
-      comment: "The title of custom network list screen"
-    )
     public static let addCustomNetworkBarItemTitle = NSLocalizedString(
       "wallet.addCustomNetworkBarItemTitle",
       tableName: "BraveWallet",
@@ -2565,13 +2558,6 @@ extension Strings {
       value: "Add Network…",
       comment:
         "The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network."
-    )
-    public static let noNetworks = NSLocalizedString(
-      "wallet.noNetworks",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "No Networks Added",
-      comment: "The empty state displayed when the user has not yet added any custom networks."
     )
     public static let transactionBacklogTitle = NSLocalizedString(
       "wallet.transactionBacklogTitle",
@@ -2922,14 +2908,6 @@ extension Strings {
       value: "Default Base Currency",
       comment:
         "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
-    )
-    public static let showTestNetworksTitle = NSLocalizedString(
-      "wallet.showTestNetworksTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Show Test Networks",
-      comment:
-        "A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings"
     )
     public static let addSuggestedTokenTitle = NSLocalizedString(
       "wallet.addSuggestedTokenTitle",
@@ -5564,6 +5542,14 @@ extension Strings {
       bundle: .module,
       value: "Your available funds plus any not-yet-confirmed transactions.",
       comment: "Description displayed in row beside users total balance."
+    )
+    public static let setDefaultNetwork = NSLocalizedString(
+      "wallet.setDefaultNetwork",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Set as Default",
+      comment:
+        "One of the context menu option for user to tap to set a default network in wallet settings."
     )
   }
 }

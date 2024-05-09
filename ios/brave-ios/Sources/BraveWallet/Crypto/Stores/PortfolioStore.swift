@@ -309,16 +309,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
   private var isSavingFilters: Bool = false
 
-  public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
-    blockchainRegistry: self.blockchainRegistry,
-    rpcService: self.rpcService,
-    keyringService: self.keyringService,
-    assetRatioService: self.assetRatioService,
-    walletService: self.walletService,
-    ipfsApi: self.ipfsApi,
-    userAssetManager: self.assetManager
-  )
-
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   /// Cancellable for the last running `update()` Task.
@@ -379,7 +369,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.sortOrderFilter.observe(from: self)
     Preferences.Wallet.isHidingSmallBalancesFilter.observe(from: self)
     Preferences.Wallet.nonSelectedAccountsFilter.observe(from: self)
@@ -391,8 +380,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     rpcServiceObserver = nil
     keyringServiceObserver = nil
     walletServiceObserver = nil
-
-    userAssetsStore.tearDown()
   }
 
   func setupObservers() {
@@ -436,8 +423,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         // assets update will be called via `CryptoStore`
       }
     )
-
-    self.userAssetsStore.setupObservers()
   }
 
   func update() {

@@ -85,11 +85,14 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
 
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
+  private var walletServiceObserver: WalletServiceObserver?
 
   let dataObservers = NSHashTable<AnyObject>.weakObjects()
 
   var isObserving: Bool {
-    keyringServiceObserver != nil && txServiceObserver != nil
+    keyringServiceObserver != nil
+      && txServiceObserver != nil
+      && walletServiceObserver != nil
   }
 
   public init(
@@ -106,13 +109,12 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     self.bitcoinWalletService = bitcoinWalletService
 
     setupObservers()
-
-    Preferences.Wallet.showTestNetworks.observe(from: self)
   }
 
   public func tearDown() {
     keyringServiceObserver = nil
     txServiceObserver = nil
+    walletServiceObserver = nil
   }
 
   public func setupObservers() {
@@ -144,6 +146,16 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         if txInfo.txStatus == .confirmed || txInfo.txStatus == .error || txInfo.txStatus == .dropped
         {
           self?.refreshBalances()
+        }
+      }
+    )
+    self.walletServiceObserver = WalletServiceObserver(
+      walletService: walletService,
+      _onNetworkListChanged: { [weak self] in
+        self?.refreshBalances {
+          self?.retrieveAllDataObserver().forEach {
+            $0.cachedBalanceRefreshed()
+          }
         }
       }
     )
@@ -317,7 +329,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         )
       } else {
         let allNetworks = await rpcService.allNetworksForSupportedCoins(
-          respectTestnetPreference: false
+          respectHiddenNetworksPreference: false
         )
         DataController.performOnMainContext { context in
           let newCoins = self.allNewCoinsIntroduced(networks: allNetworks, context: context)
@@ -543,7 +555,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       var fetchedUserAssets: [String: [BraveWallet.BlockchainToken]] = [:]
       let networks: [BraveWallet.NetworkInfo] = await rpcService.allNetworks(
         for: coins,
-        respectTestnetPreference: false
+        respectHiddenNetworksPreference: false
       )
       let networkAssets = await walletService.allUserAssets(in: networks)
       for networkAsset in networkAssets {
@@ -588,16 +600,6 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     Preferences.Wallet.nonSelectedAccountsFilter.value = newAddresses
 
     Preferences.Wallet.migrateCacheKeyCompleted.value = true
-  }
-}
-
-extension WalletUserAssetManager: PreferencesObserver {
-  public func preferencesDidChange(for key: String) {
-    if key == Preferences.Wallet.showTestNetworks.key {
-      refreshBalances { [weak self] in
-        self?.retrieveAllDataObserver().forEach { $0.cachedBalanceRefreshed() }
-      }
-    }
   }
 }
 

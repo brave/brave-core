@@ -641,6 +641,30 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.signMessageRequestStore = nil
   }
 
+  private var userAssetsStore: UserAssetsStore?
+  func openUserAssetsStore() -> UserAssetsStore {
+    if let store = userAssetsStore {
+      return store
+    }
+
+    let store = UserAssetsStore(
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      keyringService: keyringService,
+      assetRatioService: assetRatioService,
+      walletService: walletService,
+      ipfsApi: ipfsApi,
+      userAssetManager: userAssetManager
+    )
+    userAssetsStore = store
+    return store
+  }
+
+  func closeUserAssetsStore() {
+    userAssetsStore?.tearDown()
+    userAssetsStore = nil
+  }
+
   public private(set) lazy var settingsStore = SettingsStore(
     keyringService: keyringService,
     walletService: walletService,

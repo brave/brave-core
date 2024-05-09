@@ -12,13 +12,6 @@ import XCTest
 
 class TransactionsActivityStoreTests: XCTestCase {
 
-  override func setUp() {
-    Preferences.Wallet.showTestNetworks.value = true
-  }
-  override func tearDown() {
-    Preferences.Wallet.showTestNetworks.reset()
-  }
-
   private var cancellables: Set<AnyCancellable> = .init()
 
   let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
@@ -78,6 +71,7 @@ class TransactionsActivityStoreTests: XCTestCase {
         completion([])
       }
     }
+    rpcService._hiddenNetworks = { $1([]) }
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
         {

@@ -149,6 +149,9 @@ class NFTStoreTests: XCTestCase {
       }
       completion("1", 0, "1", .success, "")
     }
+    rpcService._hiddenNetworks = {
+      $1([BraveWallet.FilecoinTestnet])
+    }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
     walletService._simpleHashSpamNfTs = { walletAddress, chainIds, coin, _, completion in
@@ -1043,6 +1046,9 @@ class NFTStoreTests: XCTestCase {
         }
         """
       completion("", metadata, .success, "")
+    }
+    rpcService._hiddenNetworks = {
+      $1([BraveWallet.FilecoinTestnet])
     }
 
     // setup store

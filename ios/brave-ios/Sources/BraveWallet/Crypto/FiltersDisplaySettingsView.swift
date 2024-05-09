@@ -130,11 +130,10 @@ struct FiltersDisplaySettingsView: View {
   /// Returns true if all visible networks are selected
   var allNetworksSelected: Bool {
     networks
-      .filter {
-        if !Preferences.Wallet.showTestNetworks.value {
-          return !WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
+      .filter { network in
+        !networkStore.hiddenChains.contains { hiddenChain in
+          hiddenChain.chainId == network.model.chainId
         }
-        return true
       }
       .allSatisfy(\.isSelected)
   }

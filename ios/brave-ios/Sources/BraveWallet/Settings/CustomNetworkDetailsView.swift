@@ -47,7 +47,7 @@ struct NetworkTextField: View {
   }
 }
 
-class CustomNetworkModel: ObservableObject, Identifiable {
+class NetworkModel: ObservableObject, Identifiable {
   enum Mode {
     case add
     case edit
@@ -268,9 +268,9 @@ enum CustomNetworkError: LocalizedError, Identifiable {
   }
 }
 
-struct CustomNetworkDetailsView: View {
+struct NetworkDetailsView: View {
   @ObservedObject var networkStore: NetworkStore
-  @ObservedObject var model: CustomNetworkModel
+  @ObservedObject var model: NetworkModel
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -278,7 +278,7 @@ struct CustomNetworkDetailsView: View {
 
   init(
     networkStore: NetworkStore,
-    model: CustomNetworkModel
+    model: NetworkModel
   ) {
     self.networkStore = networkStore
     self.model = model
@@ -588,10 +588,10 @@ struct NetworkRadioButton: View {
 }
 
 #if DEBUG
-struct CustomNetworkDetailsView_Previews: PreviewProvider {
+struct NetworkDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      CustomNetworkDetailsView(
+      NetworkDetailsView(
         networkStore: .previewStore,
         model: .init()
       )

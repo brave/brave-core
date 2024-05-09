@@ -38,6 +38,7 @@ class UserAssetsStoreTests: XCTestCase {
     rpcService._allNetworks = { coin, completion in
       completion(self.networks[coin] ?? [])
     }
+    rpcService._hiddenNetworks = { $1([]) }
     rpcService._erc721Metadata = { _, _, _, completion in
       completion("", "", .internalError, "")
     }

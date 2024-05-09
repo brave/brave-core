@@ -41,27 +41,6 @@ struct NetworkPicker: View {
     self.networkStore = networkStore
   }
 
-  private var availableChains: [BraveWallet.NetworkInfo] {
-    networkStore.allChains.filter { chain in
-      if !Preferences.Wallet.showTestNetworks.value {
-        var testNetworkChainIdsToRemove = WalletConstants.supportedTestNetworkChainIds
-        // Don't remove selected network (possible if selected then disabled showing test networks)
-        testNetworkChainIdsToRemove.removeAll(where: {
-          $0 == networkStore.defaultSelectedChain.chainId
-        })
-        if testNetworkChainIdsToRemove.contains(chain.chainId) {
-          return false
-        }
-      }
-      if let destination = walletActionDestination {
-        if destination.kind.id != WalletActionDestination.Kind.send.id {
-          return !networkStore.isCustomChain(chain)
-        }
-      }
-      return true
-    }
-  }
-
   private var chainName: String {
     if isForOrigin {
       return networkStore.selectedChainForOrigin.chainName
@@ -97,7 +76,7 @@ struct NetworkPicker: View {
       Color.clear
         .sheet(isPresented: $isPresentingAddNetwork) {
           NavigationView {
-            CustomNetworkDetailsView(networkStore: networkStore, model: .init())
+            NetworkDetailsView(networkStore: networkStore, model: .init())
           }
         }
     )

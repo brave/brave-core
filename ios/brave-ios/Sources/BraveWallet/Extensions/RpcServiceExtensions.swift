@@ -352,22 +352,22 @@ extension BraveWalletJsonRpcService {
     )
   }
 
-  /// Returns an array of all networks for the supported coin types. Result will exclude test networks if test networks is set to
+  /// Returns an array of all networks for the supported coin types. Result will exclude hidden networks if some networks are set to
   /// not shown in Wallet Settings
   @MainActor func allNetworksForSupportedCoins(
-    respectTestnetPreference: Bool = true
+    respectHiddenNetworksPreference: Bool = true
   ) async -> [BraveWallet.NetworkInfo] {
     await allNetworks(
       for: WalletConstants.supportedCoinTypes().elements,
-      respectTestnetPreference: respectTestnetPreference
+      respectHiddenNetworksPreference: respectHiddenNetworksPreference
     )
   }
 
-  /// Returns an array of all networks for givin coins. Result will exclude test networks if test networks is set to
+  /// Returns an array of all networks for givin coins. Result will exclude hidden networks if some networks are set to
   /// not shown in Wallet Settings
   @MainActor func allNetworks(
     for coins: [BraveWallet.CoinType],
-    respectTestnetPreference: Bool = true
+    respectHiddenNetworksPreference: Bool = true
   ) async -> [BraveWallet.NetworkInfo] {
     await withTaskGroup(of: [BraveWallet.NetworkInfo].self) {
       @MainActor [weak self] group -> [BraveWallet.NetworkInfo] in
@@ -375,26 +375,30 @@ extension BraveWalletJsonRpcService {
       for coinType in coins {
         group.addTask { @MainActor in
           let chains = await self.allNetworks(coin: coinType)
-          return chains.filter {  // localhost not supported
-            $0.chainId != BraveWallet.LocalhostChainId
+          let hiddenChains = await self.hiddenNetworks(coin: coinType)
+          return chains.filter {
+            if $0.chainId == BraveWallet.LocalhostChainId {
+              // localhost not supported
+              return false
+            }
+            if $0.chainId == BraveWallet.BitcoinTestnet {
+              if respectHiddenNetworksPreference {
+                // check bitcoin testnet is enabled and visibility
+                return Preferences.Wallet.isBitcoinTestnetEnabled.value
+                  && !hiddenChains.contains($0.chainId)
+              } else {
+                return Preferences.Wallet.isBitcoinTestnetEnabled.value
+              }
+            }
+            if respectHiddenNetworksPreference {
+              // filter out hidden networks
+              return !hiddenChains.contains($0.chainId)
+            }
+            return true
           }
         }
       }
-      let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 }).filter {
-        network in
-        // filter out test networks
-        if !Preferences.Wallet.showTestNetworks.value && respectTestnetPreference {
-          return !WalletConstants.supportedTestNetworkChainIds.contains(where: {
-            $0 == network.chainId
-          })
-        }
-        if Preferences.Wallet.showTestNetworks.value && respectTestnetPreference
-          && network.chainId == BraveWallet.BitcoinTestnet
-        {  // if testnets are enabled, we still need to check if bitcoin testnet is enabled
-          return Preferences.Wallet.isBitcoinTestnetEnabled.value
-        }
-        return true
-      }
+      let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 })
       return allChains.sorted { lhs, rhs in
         // sort solana chains to the front of the list
         lhs.coin == .sol && rhs.coin != .sol
@@ -509,6 +513,42 @@ extension BraveWalletJsonRpcService {
       }
       return await group.reduce([BraveWallet.BlockchainToken?](), { $0 + $1 })
     }.compactMap { $0 }
+  }
+
+  /// Returns an array of all hidden network's chainId for givin coins.
+  @MainActor func allHiddenNetworks(
+    for coins: [BraveWallet.CoinType]
+  ) async -> [String] {
+    await withTaskGroup(of: [String].self) {
+      @MainActor [weak self] group -> [String] in
+      guard let self = self else { return [] }
+      for coinType in coins {
+        group.addTask { @MainActor in
+          let chains = await self.hiddenNetworks(coin: coinType)
+          return chains.filter {  // localhost not supported
+            $0 != BraveWallet.LocalhostChainId
+          }
+        }
+      }
+      return await group.reduce([String](), { $0 + $1 })
+    }
+  }
+
+  /// Remove multiple networks based on its chainId and coin type.
+  @MainActor func removeHiddenNetworks(
+    for networks: [BraveWallet.CoinType: [String]]
+  ) async {
+    await withTaskGroup(of: Void.self) {
+      @MainActor [weak self] group -> Void in
+      guard let self = self else { return }
+      for (coin, chainIds) in networks {
+        for chainId in chainIds {
+          group.addTask { @MainActor in
+            await self.removeHiddenNetwork(coin: coin, chainId: chainId)
+          }
+        }
+      }
+    }
   }
 }
 

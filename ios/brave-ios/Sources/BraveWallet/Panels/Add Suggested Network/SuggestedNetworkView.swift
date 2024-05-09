@@ -29,7 +29,7 @@ struct SuggestedNetworkView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
-  @State private var isPresentingNetworkDetails: CustomNetworkModel?
+  @State private var isPresentingNetworkDetails: NetworkModel?
   @State private var customNetworkError: CustomNetworkError?
   @State private var isLoading: Bool = false
 
@@ -250,7 +250,7 @@ struct SuggestedNetworkView: View {
       Color.clear
         .sheet(item: $isPresentingNetworkDetails) { detailsModel in
           NavigationView {
-            CustomNetworkDetailsView(
+            NetworkDetailsView(
               networkStore: networkStore,
               model: detailsModel
             )

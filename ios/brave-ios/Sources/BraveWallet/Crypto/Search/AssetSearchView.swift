@@ -184,7 +184,7 @@ struct AssetSearchView: View {
         self.isLoadingMetadata = true
         self.allNFTMetadata = await userAssetsStore.allNFTMetadata()
         self.isLoadingMetadata = false
-        self.networkFilters = networkStore.allChains.map {
+        self.networkFilters = networkStore.visibleChains.map {
           .init(isSelected: true, model: $0)
         }
       }

@@ -85,16 +85,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private var isSavingFilters: Bool = false
   @Published var isLoadingDiscoverAssets: Bool = false
 
-  public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
-    blockchainRegistry: self.blockchainRegistry,
-    rpcService: self.rpcService,
-    keyringService: self.keyringService,
-    assetRatioService: self.assetRatioService,
-    walletService: self.walletService,
-    ipfsApi: self.ipfsApi,
-    userAssetManager: self.assetManager
-  )
-
   enum NFTDisplayType: Int, CaseIterable, Identifiable {
     case visible
     case hidden
@@ -224,7 +214,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         update()
       }
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.isHidingUnownedNFTsFilter.observe(from: self)
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.observe(from: self)
     Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)
@@ -236,8 +225,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     keyringServiceObserver = nil
     walletServiveObserver = nil
     txServiceObserver = nil
-
-    userAssetsStore.tearDown()
   }
 
   func setupObservers() {
@@ -282,8 +269,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         }
       }
     )
-
-    userAssetsStore.setupObservers()
   }
 
   /// Cache of NFT balances for each account tokenBalances: [token.contractAddress]

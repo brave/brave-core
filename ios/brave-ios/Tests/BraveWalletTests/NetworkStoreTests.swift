@@ -12,13 +12,6 @@ import XCTest
 
 @MainActor class NetworkStoreTests: XCTestCase {
 
-  override func setUp() {
-    Preferences.Wallet.showTestNetworks.value = true
-  }
-  override func tearDown() {
-    Preferences.Wallet.showTestNetworks.reset()
-  }
-
   private var cancellables: Set<AnyCancellable> = .init()
 
   private func setupServices() -> (
@@ -31,6 +24,7 @@ import XCTest
       .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
       .sol: [.mockSolana, .mockSolanaTestnet],
       .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
+      .btc: [.mockBitcoinMainnet],
     ]
 
     let keyringService = BraveWallet.TestKeyringService()
@@ -58,6 +52,9 @@ import XCTest
       completion(true)
     }
     rpcService._customNetworks = { $1([BraveWallet.NetworkInfo.mockCustomNetwork.chainId]) }
+    rpcService._hiddenNetworks = { $1([]) }
+    rpcService._addHiddenNetwork = { $2(true) }
+    rpcService._removeHiddenNetwork = { $2(true) }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -176,6 +173,35 @@ import XCTest
 
   func testUpdateChainList() async {
     let (keyringService, rpcService, walletService, swapService) = setupServices()
+    rpcService._hiddenNetworks = { coin, completion in
+      if coin == .eth {
+        completion(
+          [
+            BraveWallet.NetworkInfo.mockGoerli.chainId,
+            BraveWallet.NetworkInfo.mockSepolia.chainId,
+            BraveWallet.NetworkInfo.mockPolygon.chainId,
+          ]
+        )
+      } else {
+        completion([])
+      }
+    }
+    rpcService._network = { coin, _, completion in
+      switch coin {
+      case .eth:
+        completion(.mockMainnet)
+      case .sol:
+        completion(.mockSolana)
+      case .fil:
+        completion(.mockFilecoinMainnet)
+      case .btc:
+        completion(.mockBitcoinMainnet)
+      case .zec:
+        fallthrough
+      @unknown default:
+        completion(.mockMainnet)
+      }
+    }
 
     let store = NetworkStore(
       keyringService: keyringService,
@@ -195,10 +221,24 @@ import XCTest
       .mockCustomNetwork,
       .mockFilecoinMainnet,
       .mockFilecoinTestnet,
+      .mockBitcoinMainnet,
     ]
 
     let expectedCustomChains: [BraveWallet.NetworkInfo] = [
       .mockCustomNetwork
+    ]
+
+    let expectedHiddenChains: [BraveWallet.NetworkInfo] = [
+      .mockGoerli,
+      .mockSepolia,
+      .mockPolygon,
+    ]
+
+    let expectedDefaultNetworks: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
+      .eth: .mockMainnet,
+      .sol: .mockSolana,
+      .fil: .mockFilecoinMainnet,
+      .btc: .mockBitcoinMainnet,
     ]
 
     // wait for all chains to populate
@@ -222,9 +262,45 @@ import XCTest
       }
       .store(in: &cancellables)
 
-    await store.setup()
+    let defaultNetworksExpectation = expectation(description: "networkStore-defaultNetworks")
+    store.$defaultNetworks
+      .dropFirst()
+      .collect(4)
+      .sink { defaultNetworks in
+        defer { defaultNetworksExpectation.fulfill() }
+        guard let lastUpdatedDefaultNetworks = defaultNetworks.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedDefaultNetworks.count, expectedDefaultNetworks.count)
+        for coin in lastUpdatedDefaultNetworks.keys {
+          XCTAssertEqual(
+            lastUpdatedDefaultNetworks[coin]?.chainId,
+            expectedDefaultNetworks[coin]?.chainId
+          )
+        }
+      }
+      .store(in: &cancellables)
 
-    await fulfillment(of: [allChainsExpectation, customChainsExpectation], timeout: 1)
+    let hiddenChainsExpectation = expectation(description: "networkStore-hiddenChains")
+    store.$hiddenChains
+      .dropFirst()
+      .sink { hiddenChains in
+        defer { hiddenChainsExpectation.fulfill() }
+        XCTAssertEqual(hiddenChains.count, expectedHiddenChains.count)
+        XCTAssertTrue(expectedHiddenChains.allSatisfy(expectedHiddenChains.contains(_:)))
+      }
+      .store(in: &cancellables)
+
+    await store.updateChainList()
+
+    await fulfillment(
+      of: [
+        allChainsExpectation, customChainsExpectation,
+        hiddenChainsExpectation, defaultNetworksExpectation,
+      ],
+      timeout: 1
+    )
   }
 }
 
