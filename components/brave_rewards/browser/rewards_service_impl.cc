@@ -2245,6 +2245,8 @@ void RewardsServiceImpl::GetAllContributionsForP3A() {
 
   engine_->GetAllContributions(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsContributions, AsWeakPtr()));
+  GetRecurringTips(base::BindOnce(
+      &RewardsServiceImpl::OnRecordBackendP3AStatsRecurringTips, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
@@ -2266,6 +2268,11 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
 
   GetAutoContributeEnabled(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsAC, AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRecordBackendP3AStatsRecurringTips(
+    std::vector<mojom::PublisherInfoPtr> list) {
+  p3a::RecordRecurringTipConfigured(!list.empty());
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsAC(bool ac_enabled) {
