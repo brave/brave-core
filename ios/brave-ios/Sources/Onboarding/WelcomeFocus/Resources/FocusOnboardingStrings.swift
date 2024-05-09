@@ -112,11 +112,11 @@ extension Strings {
       comment: "The title of the button that triggers navigation link to settings"
     )
 
-    public static let laterActionButtonTitle = NSLocalizedString(
-      "focusOnboarding.laterActionButtonTitle",
+    public static let startBrowseActionButtonTitle = NSLocalizedString(
+      "focusOnboarding.startBrowseActionButtonTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "I'll Do This Later",
+      value: "Start Browsing",
       comment: "The title of the button that finishes the onboarding without setting default"
     )
 

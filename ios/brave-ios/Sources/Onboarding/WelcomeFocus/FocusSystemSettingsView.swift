@@ -99,7 +99,7 @@ struct FocusSystemSettingsView: View {
 
       Spacer()
 
-      VStack(spacing: 24) {
+      VStack(spacing: 12) {
         Button(
           action: {
             if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
@@ -110,15 +110,13 @@ struct FocusSystemSettingsView: View {
             shouldDismiss = true
           },
           label: {
-            Text(
-              "\(Strings.FocusOnboarding.systemSettingsButtonTitle) \(Image(systemName: "arrow.right"))"
-            )
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .dynamicTypeSize(dynamicTypeRange)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color(braveSystemName: .buttonBackground))
+            Text(Strings.FocusOnboarding.systemSettingsButtonTitle)
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .dynamicTypeSize(dynamicTypeRange)
+              .padding()
+              .frame(maxWidth: .infinity)
+              .background(Color(braveSystemName: .buttonBackground))
           }
         )
         .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
@@ -134,11 +132,20 @@ struct FocusSystemSettingsView: View {
             shouldDismiss = true
           },
           label: {
-            Text(Strings.FocusOnboarding.laterActionButtonTitle)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              .dynamicTypeSize(dynamicTypeRange)
+            Text(
+              "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
+            )
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
+            .dynamicTypeSize(dynamicTypeRange)
+            .padding()
+            .frame(maxWidth: .infinity)
           }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12.0)
+            .strokeBorder(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1.0)
         )
       }
     }
