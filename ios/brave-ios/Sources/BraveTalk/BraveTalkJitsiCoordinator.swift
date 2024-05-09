@@ -57,6 +57,7 @@ import Shared
 
   private var pipViewCoordinator: PiPViewCoordinator?
   private var jitsiMeetView: JitsiMeetView?
+  public private(set) var jitsiTranscriptProcessor: BraveTalkJitsiTranscriptProcessor?
   private var delegate: JitsiDelegate?
   private var isMuted: Bool = false
   public private(set) var isBraveTalkInPiPMode: Bool = false
@@ -116,15 +117,14 @@ import Shared
 
     // Only create the RN bridge when the user joins a call
     JitsiMeet.sharedInstance().instantiateReactNativeBridge()
-    
-    // Clearn transcripts, possibly from a previous call.
-    TranscriptManager.transcripts.removeAll()
 
     // Call this right away instead of waiting for the conference to join so that we can stop the page load
     // faster.
     onEnterCall()
     delegate = JitsiDelegate(
       conferenceWillJoin: { [weak self] in
+        self?.jitsiTranscriptProcessor = BraveTalkJitsiTranscriptProcessor()
+
         // Its possible for a permission prompt for mic to appear on the web page after joining but the
         // alert gets placed on top of the JitsiMeetView and eats touches. Weirdly it isn't actually visible
         // on top of the JitsiMeetView so the user can't even dismiss it.
@@ -138,7 +138,8 @@ import Shared
       },
       conferenceTerminated: { [weak self] in
         guard let self = self else { return }
-        self.dismissJitsiMeetView {
+        self.dismissJitsiMeetView { [weak self] in
+          self?.jitsiTranscriptProcessor = nil
           onExitCall()
         }
       },
@@ -156,16 +157,15 @@ import Shared
         guard let self = self else { return }
         if !self.isCallActive {
           // Trying to leave the join screen
-          self.dismissJitsiMeetView {
+          self.dismissJitsiMeetView { [weak self] in
+            self?.jitsiTranscriptProcessor = nil
             onExitCall()
           }
         }
       },
-      transcriptChunkReceived: { [weak self] data in
-        Task {
-          await TranscriptManager.processMessage(dictionary: data)
-          // TODO: Inject the generated transcript into DOM main class with id? css-1aetez4
-          //await TranscriptManager.generateTranscript()
+      transcriptChunkReceived: { data in
+        Task { [weak self] in
+          await self?.jitsiTranscriptProcessor?.processTranscript(dictionary: data)
         }
       }
     )

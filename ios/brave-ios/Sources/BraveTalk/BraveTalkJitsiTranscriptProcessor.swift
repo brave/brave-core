@@ -7,11 +7,11 @@ import Collections
 import Foundation
 import os.log
 
-actor TranscriptManager {
-  static var transcripts: OrderedDictionary<String, Transcript> = OrderedDictionary()
+public class BraveTalkJitsiTranscriptProcessor {
+  var transcripts: OrderedDictionary<String, Transcript> = OrderedDictionary()
 
   struct Participant: Codable {
-    var id: Int
+    var id: String
     var name: String
     var avatarUrl: String?
   }
@@ -33,7 +33,19 @@ actor TranscriptManager {
     }
   }
 
-  static func processMessage(dictionary: [AnyHashable: Any]) async {
+  @MainActor
+  public func getTranscript() async -> String? {
+    if transcripts.isEmpty {
+      return nil
+    }
+
+    return transcripts.map { "\($0.value.participant.name): \($0.value.text.bestText)" }.joined(
+      separator: "\n"
+    )
+  }
+
+  @MainActor
+  func processTranscript(dictionary: [AnyHashable: Any]) async {
     let decoder = JSONDecoder()
     do {
       let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
@@ -42,11 +54,11 @@ actor TranscriptManager {
       await updateTranscripts(newTranscript: newTranscript)
     } catch {
       Logger.module.error("Failed to decode or process the message: \(error)")
-
     }
   }
 
-  private static func updateTranscripts(newTranscript: Transcript) async {
+  @MainActor
+  private func updateTranscripts(newTranscript: Transcript) async {
     if var existingTranscript = transcripts[newTranscript.messageID] {
       existingTranscript.text.final = newTranscript.text.final ?? existingTranscript.text.final
       existingTranscript.text.stable = newTranscript.text.stable ?? existingTranscript.text.stable
@@ -56,9 +68,5 @@ actor TranscriptManager {
     } else {
       transcripts[newTranscript.messageID] = newTranscript
     }
-  }
-
-  static func generateTranscript() async -> [String] {
-    transcripts.map { "\($0.value.participant.name): \($0.value.text.bestText)" }
   }
 }

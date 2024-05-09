@@ -798,7 +798,8 @@ class SettingsViewController: TableViewController {
         let model = AIChatViewModel(
           braveCore: self.braveCore,
           webView: self.tabManager.selectedTab?.webView,
-          script: BraveLeoScriptHandler.self
+          script: BraveLeoScriptHandler.self,
+          braveTalkScript: nil
         )
 
         let controller = UIHostingController(
