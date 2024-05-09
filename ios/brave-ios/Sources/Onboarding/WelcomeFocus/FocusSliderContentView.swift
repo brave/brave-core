@@ -73,6 +73,7 @@ struct FocusVideoAdSliderContentView: View {
 
 struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   @Environment(\.layoutDirection) private var layoutDirection
+  @Environment(\.scenePhase) var scenePhase
 
   private enum HapticsLevel: Float {
     case none = 0
@@ -144,27 +145,32 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
         }
     }
     .onAppear {
-      prepareSliderHaptics()
-
-      Task.delayed(bySeconds: 2.5) { @MainActor in
-        hapticsTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
-          createRandomHapticEffect()
+      Task.delayed(bySeconds: 1.5) { @MainActor in
+        withAnimation(.easeInOut(duration: 1.0)) {
+          prepareSliderHaptics()
+          prepareRandomHaptics()
         }
-        hapticsTimer?.tolerance = 0.1
       }
     }
     .onDisappear(perform: {
-      hapticsTimer?.invalidate()
-
-      Task { @MainActor in
-        await stopAllHaptics()
-      }
+      stopAllHaptics()
     })
     .onChange(of: progress) { newValue in
       hapticsLevel = determineHapticIntensityLevel(from: newValue)
     }
     .onChange(of: hapticsLevel) { newValue in
       createContinousHapticFeedback(intensity: newValue)
+    }
+    .onChange(of: scenePhase) { newValue in
+      switch newValue {
+      case .active:
+        prepareSliderHaptics()
+        prepareRandomHaptics()
+      case .inactive, .background:
+        stopAllHaptics()
+      @unknown default:
+        stopAllHaptics()
+      }
     }
     .overlay {
       // Fake "grabber"/splitter
@@ -227,6 +233,16 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     }
   }
 
+  private func prepareRandomHaptics() {
+    if hapticsTimer == nil {
+      hapticsTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
+        createRandomHapticEffect()
+      }
+    }
+
+    hapticsTimer?.tolerance = 0.1
+  }
+
   private func createContinousHapticFeedback(intensity: HapticsLevel) {
     do {
       try hapticsPlayer?.cancel()
@@ -256,14 +272,19 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
     }
   }
 
-  private func stopAllHaptics() async {
-    do {
-      try hapticsPlayer?.cancel()
-      try await hapticsEngine?.stop()
-    } catch let error {
-      Logger.module.debug(
-        "[Focus Onboarding] - Error stopping haptic engine: \(error.localizedDescription)"
-      )
+  private func stopAllHaptics() {
+    hapticsTimer?.invalidate()
+    hapticsTimer = nil
+
+    Task { @MainActor in
+      do {
+        try hapticsPlayer?.cancel()
+        try await hapticsEngine?.stop()
+      } catch let error {
+        Logger.module.debug(
+          "[Focus Onboarding] - Error stopping haptic engine: \(error.localizedDescription)"
+        )
+      }
     }
   }
 

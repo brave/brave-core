@@ -93,8 +93,8 @@ struct FocusP3AScreenView: View {
       )
       .resizable()
       .frame(
-        width: shouldUseExtendedDesign ? 198 : 172,
-        height: shouldUseExtendedDesign ? 242 : 204
+        maxWidth: shouldUseExtendedDesign ? 198 : 172,
+        maxHeight: shouldUseExtendedDesign ? 242 : 204
       )
       .aspectRatio(contentMode: .fit)
       .padding(.bottom, 20)
