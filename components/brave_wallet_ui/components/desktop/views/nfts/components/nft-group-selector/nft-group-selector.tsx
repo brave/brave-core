@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// types
+import { NftDropdownOptionId } from '../../../../../../constants/types'
+
 // styles
 import {
   DropdownButton,
@@ -15,8 +18,6 @@ import {
   DropDownItem,
   DropdownContainer
 } from './nft-group-selector.styles'
-
-export type NftDropdownOptionId = 'collected' | 'hidden'
 
 export interface NftDropdownOption {
   id: NftDropdownOptionId

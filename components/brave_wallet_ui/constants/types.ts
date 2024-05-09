@@ -17,6 +17,8 @@ import {
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export type NftDropdownOptionId = 'collected' | 'hidden'
+
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 

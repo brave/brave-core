@@ -176,6 +176,8 @@ leo_icons = [
   "browser-extensions.svg",
   "browser-ntp-widget.svg",
   "carat-down.svg",
+  "carat-first.svg",
+  "carat-last.svg",
   "carat-left.svg",
   "carat-right.svg",
   "check-circle-filled.svg",

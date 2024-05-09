@@ -675,11 +675,10 @@ export const PortfolioOverview = () => {
           exact
         >
           <Nfts
-            networks={networks}
             nftList={userVisibleNfts}
-            accounts={usersFilteredAccounts}
+            // accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
-            tokenBalancesRegistry={tokenBalancesRegistry}
+            // tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 

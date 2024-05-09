@@ -56,7 +56,7 @@ interface Props {
   token: BraveWallet.BlockchainToken
   isTokenHidden: boolean
   isTokenSpam: boolean
-  onSelectAsset: () => void
+  onSelectAsset: (token: BraveWallet.BlockchainToken) => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
@@ -165,7 +165,7 @@ export const NFTGridViewItem = (props: Props) => {
           }}
           onClose={() => setShowMore(false)}
         />
-        <DIVForClickableArea onClick={onSelectAsset} />
+        <DIVForClickableArea onClick={() => onSelectAsset(token)} />
         {isTokenSpam && (
           <JunkMarker>
             {getLocale('braveWalletNftJunk')}
