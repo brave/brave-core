@@ -24,7 +24,7 @@ export const TokenListItemSkeleton = (props: Props) => {
   const { isNFT } = props
   return (
     <Row
-      padding='8px 12px'
+      padding='8px 16px'
       justifyContent='space-between'
     >
       <Row width='unset'>

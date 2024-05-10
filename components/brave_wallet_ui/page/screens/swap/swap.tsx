@@ -230,12 +230,12 @@ export const Swap = () => {
           onSelectAsset={
             selectingFromOrTo === 'from' ? onSelectFromToken : onSelectToToken
           }
+          selectingFromOrTo={selectingFromOrTo}
           selectedFromToken={fromToken}
           selectedToToken={toToken}
-          selectedSendOption='#token'
           selectedNetwork={selectingFromOrTo === 'to' ? fromNetwork : undefined}
-          showFullFlatTokenList={selectingFromOrTo === 'to'}
           modalType='swap'
+          selectedSendOption='#token'
         />
       )}
       {showPrivacyModal && (
