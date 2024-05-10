@@ -1883,10 +1883,6 @@ public class BrowserViewController: UIViewController {
     return false
   }
 
-  // This variable is used to keep track of current page. It is used to detect internal site navigation
-  // to report internal page load to Rewards lib
-  var rewardsXHRLoadURL: URL?
-
   override public func observeValue(
     forKeyPath keyPath: String?,
     of object: Any?,
@@ -1970,14 +1966,15 @@ public class BrowserViewController: UIViewController {
 
       // Rewards reporting
       if let url = change?[.newKey] as? URL, !url.isLocal {
-        // Notify Rewards of new page load.
-        if let rewardsURL = rewardsXHRLoadURL,
+        // Notify Rewards of the same document page navigation.
+        if let tab = tabManager.selectedTab,
+          let rewardsURL = tab.rewardsXHRLoadURL,
           url.host == rewardsURL.host,
-          tabManager.selectedTab?.goingBackForward == false
+          tab.pageTransitionForwardBack == false
         {
-          tabManager.selectedTab?.reportPageNavigation(to: rewards)
+          tab.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
-          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectChain: [])
+          tab.reportPageLoad(to: rewards, redirectChain: [])
         }
       }
 

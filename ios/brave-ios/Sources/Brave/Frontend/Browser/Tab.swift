@@ -239,11 +239,15 @@ class Tab: NSObject {
   var sessionData: (title: String, interactionState: Data)?
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
-  var goingBackForward: Bool = false
+  var pageTransitionForwardBack: Bool = false
   var pendingScreenshot = false
 
   /// The type of action triggering a navigation.
   var navigationType: WKNavigationType?
+
+  // This variable is used to keep track of current page. It is used to detect internal site navigation
+  // to report internal page load to Rewards lib
+  var rewardsXHRLoadURL: URL?
 
   /// This object holds on to information regarding the current web page
   ///
@@ -756,21 +760,21 @@ class Tab: NSObject {
   }
 
   func goBack() {
-    goingBackForward = true
+    pageTransitionForwardBack = true
     _ = webView?.goBack()
-    goingBackForward = false
+    pageTransitionForwardBack = false
   }
 
   func goForward() {
-    goingBackForward = true
+    pageTransitionForwardBack = true
     _ = webView?.goForward()
-    goingBackForward = false
+    pageTransitionForwardBack = false
   }
 
   func goToBackForwardListItem(_ item: WKBackForwardListItem) {
-    goingBackForward = true
+    pageTransitionForwardBack = true
     _ = webView?.go(to: item)
-    goingBackForward = false
+    pageTransitionForwardBack = false
   }
 
   @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
