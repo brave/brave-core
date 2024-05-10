@@ -76,7 +76,7 @@
         <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
-        <attribute name="shield_forgetMe" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shield_forgetMe" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="shield_fpProtection" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="shield_httpse" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
         <attribute name="shield_noScript" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>

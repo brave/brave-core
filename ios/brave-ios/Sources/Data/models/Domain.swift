@@ -46,7 +46,7 @@ public final class Domain: NSManagedObject, CRUD {
 
   /// Option that allows the website to be forgotten when all tabs are closed
   // swift-format-ignore
-  @NSManaged public var shield_forgetMe: Bool
+  @NSManaged public var shield_forgetMe: NSNumber?
 
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
@@ -180,7 +180,7 @@ public final class Domain: NSManagedObject, CRUD {
       case .noScript:
         return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
       case .forgetMe:
-        return self.shield_forgetMe
+        return self.shield_forgetMe?.boolValue ?? shield.globalPreference
       }
     }()
 
@@ -478,7 +478,7 @@ extension Domain {
     case .adblockAndTp: shield_adblockAndTp = setting
     case .fpProtection: shield_fpProtection = setting
     case .noScript: shield_noScript = setting
-    case .forgetMe: shield_forgetMe = setting?.boolValue ?? false
+    case .forgetMe: shield_forgetMe = setting
     }
   }
 

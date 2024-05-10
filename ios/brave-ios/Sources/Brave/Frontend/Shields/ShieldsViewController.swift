@@ -86,7 +86,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         case .noScript:
           view.toggleSwitch.isOn = Preferences.Shields.blockScripts.value
         case .forgetMe:
-          view.toggleSwitch.isOn = BraveShield.forgetMe.globalPreference
+          view.toggleSwitch.isOn = shield.globalPreference
         }
       }
     }

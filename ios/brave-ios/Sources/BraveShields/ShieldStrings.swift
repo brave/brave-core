@@ -257,6 +257,28 @@ extension Strings.Shields {
   )
 }
 
+// MARK: - Forget Me
+
+extension Strings.Shields {
+  /// A toggle option that deletes website content when the site is closed
+  public static let forgetMeLabel = NSLocalizedString(
+    "ForgetMeLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Forget Me When I Close This Site",
+    comment: "A toggle option that deletes website content when the site is closed"
+  )
+
+  /// A description of what the Enable GPC toggle does
+  public static let forgetMeDescription = NSLocalizedString(
+    "ForgetMeDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Clears cookies and other site data when you close a site",
+    comment: "A description of what the forget me toggle does"
+  )
+}
+
 // MARK: - Blocked Page
 
 extension Strings.Shields {

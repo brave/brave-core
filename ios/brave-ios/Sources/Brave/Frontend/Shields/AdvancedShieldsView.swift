@@ -13,7 +13,7 @@ class AdvancedShieldsView: UIStackView {
   let adsTrackersControl = ToggleView(title: Strings.Shields.trackersAndAdsBlocking)
   let blockScriptsControl = ToggleView(title: Strings.blockScripts)
   let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtection)
-  let forgetMeControl = ToggleView(title: Strings.forgetMeWhenICloseThisSite)
+  let forgetMeControl = ToggleView(title: Strings.Shields.forgetMeLabel)
   let globalControlsTitleView = HeaderTitleView().then {
     $0.titleLabel.text = Strings.Shields.globalControls.uppercased()
   }

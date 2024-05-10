@@ -24,7 +24,7 @@ public enum BraveShield {
     case .noScript:
       return Preferences.Shields.blockScripts.value
     case .forgetMe:
-      return false
+      return ShieldPreferences.forgetMe.value
     }
   }
 }

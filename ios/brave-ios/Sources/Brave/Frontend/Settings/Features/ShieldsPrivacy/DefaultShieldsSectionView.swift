@@ -124,6 +124,12 @@ struct DefaultShieldsViewView: View {
         toggle: $settings.cookieConsentBlocking
       )
 
+      OptionToggleView(
+        title: Strings.Shields.forgetMeLabel,
+        subtitle: Strings.Shields.forgetMeDescription,
+        option: ShieldPreferences.forgetMe
+      )
+
       NavigationLink {
         FilterListsView()
       } label: {

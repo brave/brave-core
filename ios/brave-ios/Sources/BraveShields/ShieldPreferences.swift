@@ -46,4 +46,10 @@ public class ShieldPreferences {
     key: "shields.enable-gpc",
     default: true
   )
+
+  /// A boolean value inidicating if GPC is enabled
+  public static var forgetMe = Preferences.Option<Bool>(
+    key: "shields.forget-me",
+    default: false
+  )
 }
