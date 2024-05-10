@@ -84,7 +84,7 @@ class InitialSearchEngines {
   }
 
   static let braveSearchDefaultRegions = [
-    "US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN",
+    "US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN", "IT",
   ]
   static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
   static let ecosiaEnabledRegions = [
