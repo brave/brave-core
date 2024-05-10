@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">عناصر کارت پایان و قسمت بعدی را در youtube.com مسدود می‌کند.</translation>
 <translation id="5152595963250646670">مسدود کردن عناصر مزاحم YouTube</translation>
 <translation id="2998960761270772157">عناصر ورود به سیستم، منو، نظرات و اطلاعات ویدیو را در youtube.com مسدود می‌کند.</translation>
+<translation id="8531835121131500698">مسدود کردن YouTube Shorts</translation>
+<translation id="2167271714269158912">Shorts را در صفحه اصلی، صفحه پرطرفدارها و نتایج جستجوی youtube.com مسدود می‌کند.</translation>
 <translation id="6052725679982758334">مسدود کردن رسانه اجتماعی</translation>
 <translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
@@ -298,14 +300,9 @@
 <translation id="6020176662032623904">پدیدآورنده تأییدشده</translation>
 <translation id="2369994359029526515">پدیدآورنده تأییدنشده</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
-<translation id="7861645265922445992">مطالبه پاداش‌ها</translation>
 <translation id="1848737374354350807">صورت‌حساب</translation>
 <translation id="4781696154289395607">شما <ph name="BAT_VALUE"/> BAT کمک کرده‌اید.</translation>
 <translation id="2429828319207652823">مشکلی در پردازش کمکتان وجود داشت.</translation>
-<translation id="2221902203895354376">امتیار توکن موجود است!</translation>
-<translation id="2377929997600454162">جوایز آگهی‌های <ph name="MONTH_VALUE"/> شما اینجا هستند!</translation>
-<translation id="2716238748894345194">جوایز <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">شما <ph name="TOKEN"/> روز فرصت دارید تا مطالبه کنید</translation>
 <translation id="683765328936486920">در YouTube</translation>
 <translation id="8969049974285901797">در Twitch</translation>
 <translation id="8038539967102225446">آگهی‌های Brave اینجاست!</translation>
@@ -460,7 +457,7 @@
 <translation id="3763681089644577874">مسدود کردن کوکی‌ها</translation>
 <translation id="614747795780742163">مانع از این می‌شود که وب‌سایت‌ها اطلاعات مربوط به بازدیدهای قبلی شما را ذخیره کنند</translation>
 <translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
-<translation id="4941539331405513605">مسدود کردن کوکی‌های بین سایتی</translation>
+<translation id="6196640612572343990">مسدود کردن کوکی‌های شخص ثالث</translation>
 <translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
 <translation id="1553643198679271031">درخواست به صورت خصوصی و محرمانه</translation>
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
@@ -606,6 +603,7 @@
 <translation id="5488357322146334497">پیام</translation>
 <translation id="1904000155026201268">متوجه هستم که اگر عبارت بازیابی خود را گم کنم، دیگر به کیف پول رمزارز خود دسترسی نخواهم داشت.</translation>
 <translation id="5333225216561354793">از شما می‌خواهیم که موارد زیر را تأیید کنید</translation>
+<translation id="6937275455070754004">انتخاب کنید که کدام زنجیره‌های بلوکی در کیف پول شما استفاده شوند.</translation>
 <translation id="1645800479814134195">تصدیق می‌کنم که این یک کیف پول شخصی است و مسئولیت هر گونه وجوه، دارایی یا حساب‌های مرتبط با آن و همچنین ایمن‌سازی، محافظت و پشتیبان‌گیری از کیف پولم بر عهده من است. می‌دانم که Brave نمی‌تواند به کیف پول من دسترسی داشته باشد یا تراکنش‌ها را از طرف من لغو کند. می‌دانم که عبارت بازیابی من تنها ابزاری است که در صورت گم شدن رمز عبور، دستگاه به سرقت رفته یا موقعیت‌های مشابه می‌توان دوباره به آن دسترسی پیدا کرد.</translation>
 <translation id="4565891212173086999"><ph name="CLICK_START"/>شرایط استفاده<ph name="CLICK_END"/> را خوانده‌ام و با آن موافقت می‌کنم.</translation>
 <translation id="3933122286596948824">عبارت بازیابی شما</translation>
@@ -613,12 +611,12 @@
 <translation id="2708402071160162126">هشدار: هرگز عبارت بازیابی را با کسی به اشتراک نگذارید. هر کسی با داشتن این عبارت می‌تواند دارایی‌های شما را به‌صورت همیشگی تصاحب کند.</translation>
 <translation id="111912712268284159">از عبارت بازیابی‌ام در جای امنی پشتیبان گرفته‌ام.</translation>
 <translation id="6896758677409633944">کپی</translation>
-<translation id="1783600039044302171">از رمزارزتان با گذرواژه حفاظت کنید</translation>
 <translation id="3726490322412361740">گذرواژه را وارد کنید</translation>
 <translation id="3038243139480464605">تأیید گذرواژه</translation>
 <translation id="3043677904160378840">رمزهای عبور باید حداقل 8 کاراکتر باشد.</translation>
 <translation id="7396672979287122068">گذرواژه‌ی تأییدشده مطابقت ندارد</translation>
-<translation id="7084181009966710506">ایجاد کیف پول...</translation>
+<translation id="1566412704591731844">در حال ایجاد کیف پول...</translation>
+<translation id="7779823116893018906">ممکن است چند ثانیه طول بکشد...</translation>
 <translation id="1577948178257477049">حساب <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">افزودن حساب</translation>
 <translation id="3448492834076427715">به‌روز‌رسانی حساب</translation>
@@ -641,11 +639,16 @@
 <translation id="3157931365184549694">بازیابی</translation>
 <translation id="5844138175312846408">از قبل کیف پول دارید؟</translation>
 <translation id="2502258949541727762">قبل از شروع</translation>
+<translation id="4303748097351941030">شبکه‌های پشتیبانی‌شده</translation>
+<translation id="4204268048253692928">هرزمان خواستید می‌توانید شبکه‌ها را در تنظیمات اضافه کنید.</translation>
+<translation id="2523174693142405417">جستجوی شبکه‌ها</translation>
+<translation id="1164748583090434571">نمایش شبکه‌های آزمایشی</translation>
+<translation id="935220650946301698">ادامه دادن با شبکه‌های <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">ایجاد رمز عبور</translation>
 <translation id="2789310860394340571">از این رمز عبور برای دسترسی به کیف پول خود استفاده خواهید کرد.</translation>
 <translation id="2136372518715274136">رمز عبور جدید را وارد کنید</translation>
 <translation id="4450951602553063001">گذرواژه را مجدداً وارد کنید</translation>
-<translation id="8532036315398875940">رمز عبور باید حداقل ۸ نویسه باشد.</translation>
+<translation id="8532036315398875940">رمز عبور باید حداقل 8 نویسه باشد.</translation>
 <translation id="5098216864434824711">رمز عبور مطابقت ندارد.</translation>
 <translation id="4917385247580444890">قوی</translation>
 <translation id="8297006494302853456">ضعیف</translation>
@@ -693,7 +696,7 @@
 <translation id="7695158478627528928">Brave هرگز فعالیت شما را ثبت نمی‌کند</translation>
 <translation id="4575683170451975058">از 5 دستگاه در 1 اشتراک محافظت کنید</translation>
 <translation id="4882693590083943563">تمامی طرح‌ها شامل یک <ph name="TRIAL_DAYS"/> هستند</translation>
-<translation id="487741927046441232">نسخه آزمایشی رایگان ۷ روزه!</translation>
+<translation id="487741927046441232">نسخه آزمایشی رایگان 7 روزه!</translation>
 <translation id="1532536259167115948">اشتراک ماهانه <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">اشتراک سالانه <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">ماهانه تمدید می‌شود</translation>
@@ -703,7 +706,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / سال.</translation>
 <translation id="2655185358771731232">7 روز رایگان استفاده کنید. بعد از 7 روز، قیمت طرح از شما دریافت خواهد شد. همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند اما ممکن است قبل از تمدید لغو شوند.</translation>
 <translation id="6053992191006521518">به‌صورت رایگان امتحان کنید</translation>
-<translation id="5903391101107992067">۷ روز رایگان را امتحان کنید</translation>
+<translation id="5903391101107992067">به مدت 7 روز به‌صورت رایگان امتحان کنید</translation>
 <translation id="721747358270435486">نصب VPN</translation>
 <translation id="836074276610740314">نصب نمایه VPN</translation>
 <translation id="8021842065465097929">Brave اکنون نمایه VPN را نصب خواهد کرد.</translation>
@@ -847,7 +850,7 @@
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
 <translation id="2653659639078652383">ارسال</translation>
-<translation id="4945690646623486292">انتخاب شبکه</translation>
+<translation id="4556601961751528347">تغییر حساب متصل</translation>
 <translation id="5233638681132016545">برگه جدید</translation>
 <translation id="8006088103295786154">دسترسی به کیف پول Brave</translation>
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
@@ -873,6 +876,7 @@
 <translation id="4255623233927788178">مشاهده در کاوشگر بلوک</translation>
 <translation id="8274201358637112807">این صفحه می‌خواهد با کیف پول Brave تعامل داشته باشد</translation>
 <translation id="3355936511340229503">خطای اتصال</translation>
+<translation id="1531836666020185856">ویژه</translation>
 <translation id="4891604214809245310">تنظیم شبکه روی <ph name="NETWORK_NAME"/> امکان‌پذیر نیست</translation>
 <translation id="685345388423515592">به نظر می‌رسد که VPNهای دیگری روی این دستگاه دارید که روی «همیشه روشن» تنظیم شده‌اند. برای فعال کردن Brave Firewall + VPN، پیش از اتصال مجدد، ابتدا این تنظیم «همیشه روشن» را برای دیگر VPNها غیرفعال کنید. اگر مشکل حل نشد، سایر VPNها را لغو نصب کنید.</translation>
 <translation id="85136472535634474">باز کردن تنظیمات VPN</translation>
@@ -1040,7 +1044,6 @@
 <translation id="1677961202754619328">بر اساس Uphold، در حال حاضر محدودیت‌هایی در حساب Uphold شما وجود دارد. لطفاً وارد حساب Uphold خود شوید و وجود اعلان یا الزامات حساب تکمیل‌نشده را بررسی کنید، سپس دوباره امتحان کنید.</translation>
 <translation id="5425006356459378415">Brave Rewards در دسترس نمی‌باشد</translation>
 <translation id="833643743158564518">ثبت‌نام‌های جدید برای پاداش‌های Brave در حال حاضر در منطقه شما غیرفعال است. با این حال، همیشه می‌توانید بعداً دوباره امتحان کنید. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">تمام شبکه‌ها</translation>
 <translation id="7748944510530490017">شبکه‌های اصلی</translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
 <translation id="282560918037172384">آزمایش شبکه‌ها</translation>
@@ -1162,7 +1165,7 @@
 <translation id="5982110855572850497">برچسب</translation>
 <translation id="6848689413353508904">محفظه</translation>
 <translation id="1496514951988037011">نام کاربری</translation>
-<translation id="6155129418108337061">ورود</translation>
+<translation id="6155129418108337061">ورود به سیستم</translation>
 <translation id="4038523199754403233">شناسه</translation>
 <translation id="901834265349196618">ایمیل</translation>
 <translation id="3488199663160411179">نام</translation>
@@ -1177,7 +1180,14 @@
 <translation id="5233247193491045452">کد پستی</translation>
 <translation id="3300502432153878901">کد</translation>
 <translation id="4130750466177569591">موافقم</translation>
-<translation id="3251885322612056119">شرایط خدمات به‌روز شده</translation>
-<translation id="4049035689681585146">ما شرایط سرویس را برای Brave Rewards به‌روزرسانی کرده‌ایم. ما این به‌روزرسانی‌ها را برای شفاف‌سازی شرایط خود و اطمینان از پوشش ویژگی‌های جدید ایجاد کرده‌ایم. اگر همچنان به استفاده از Brave Rewards ادامه دهید، با شرایط خدمات به‌روز‌شده موافقت می‌کنید. اگر موافق نیستید، می‌توانید Brave Rewards را <ph name="RESET_START"/>بازنشانی کنید<ph name="RESET_END"/> که این ویژگی را غیرفعال می‌کند.</translation>
-<translation id="2165953574528546737">به <ph name="TOS_START"/>شرایط سرویس Brave Rewards<ph name="TOS_END"/> مراجعه کنید</translation>
+<translation id="3251885322612056119">شرایط خدمات به‌روزشده</translation>
+<translation id="4049035689681585146">ما شرایط خدمات برای Brave Rewards را به‌روزرسانی کرده‌ایم. این به‌روزرسانی‌ها را برای شفاف‌سازی شرایط خود و اطمینان از پوشش ویژگی‌های جدید انجام داده‌ایم. ادامه استفاده از Brace Rewards به منزله موافقت با شرایط خدمات به‌روزشده است. اگر موافق نیستید، می‌توانید Brave Rewards را <ph name="RESET_START"/>بازنشانی کنید<ph name="RESET_END"/> که این ویژگی را غیرفعال می‌کند.</translation>
+<translation id="2165953574528546737">به <ph name="TOS_START"/>شرایط خدمات Brave Rewards<ph name="TOS_END"/> مراجعه کنید</translation>
+<translation id="1381108437654541567">فعال کردن پنجره‌های چندگانه</translation>
+<translation id="6167344249617630304">هم‌زمان تا 5 پنجره را باز کنید و زبانه‌ها به از پنجره‌ای به پنجره دیگر جابه‌جا کنید</translation>
+<translation id="1063948063403254568">پنجره‌های چندگانه شناسایی شدند</translation>
+<translation id="4661882208707630158">قبل از غیرفعال کردن ویژگی پنجره‌های چندگانه، لطفاً زبانه‌ها به در یک پنجره دیگر Brave ادغام کنید یا پنجره‌های دیگر Brave را ببندید.</translation>
+<translation id="6891382640886173702">ادغام پنجره‌ها</translation>
+<translation id="2912247081180973411">بستن پنجره‌ها</translation>
+<translation id="4010699428656610296">لطفاً زبانه‌های دیگر را در یک پنجره دیگر Brave ادغام کنید.</translation>
 </translationbundle>

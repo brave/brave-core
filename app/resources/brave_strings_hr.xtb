@@ -138,6 +138,7 @@
 <translation id="4304059894777924102">Brave ne može provjeriti vaše zaporke. Provjerite internetsku vezu.</translation>
 <translation id="2100587595569959771">Saznajte više o prilagodbi oglasa u Braveu</translation>
 <translation id="1807774211756215222">Otvori vezu na novoj &amp;kartici Bravea</translation>
+<translation id="387105482057676379">Povezivanje Bravea i drugih Braveovih usluga radi personalizacije i u druge svrhe</translation>
 <translation id="3867175562099983425">Upravljajte profilima na Braveu</translation>
 <translation id="2106568569080763501">Brave omogućuje da kliknete telefonski broj na webu i nazovete ga koristeći se Skypeom!</translation>
 <translation id="308146532933302843">Saznajte zašto Brave blokira neka preuzimanja</translation>
@@ -162,6 +163,7 @@
 <translation id="4055805654398742145">Upravitelj zaporki</translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Kad se Brave ne koristi jednu minutu, vaša ga organizacija automatski zatvara. Podaci o pregledavanju se brišu. To može uključivati povijest, automatsko popunjavanje i preuzimanja.}one{Kad se Brave ne koristi # minutu, vaša ga organizacija automatski zatvara. Podaci o pregledavanju se brišu. To može uključivati povijest, automatsko popunjavanje i preuzimanja.}few{Kad se Brave ne koristi # minute, vaša ga organizacija automatski zatvara. Podaci o pregledavanju se brišu. To može uključivati povijest, automatsko popunjavanje i preuzimanja.}other{Kad se Brave ne koristi # minuta, vaša ga organizacija automatski zatvara. Podaci o pregledavanju se brišu. To može uključivati povijest, automatsko popunjavanje i preuzimanja.}}</translation>
 <translation id="4148957013307229264">Instaliranje...</translation>
+<translation id="5506080358066715848">Vaša organizacija može vidjeti podatke o pregledavanju na vašem poslovnom profilu, kao što su oznake, povijest i zaporke, te upravljati njima. Ne može vidjeti podatke o pregledavanju na osobnim profilima na Braveu.</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Prijava na mrežu – Brave</translation>
 <translation id="2871190378186459992">Otkrijte sjajne aplikacije, igre, proširenja i teme za Brave.</translation>
 <translation id="5757460455745382269">Taj se jezik koristi za prikaz korisničkog sučelja Bravea</translation>
@@ -215,6 +217,7 @@
 <translation id="8174413867995118050">Ostali profili na Braveu</translation>
 <translation id="7708394612738038097">Prijavljujete se upravljanim računom i dajete administratoru kontrolu nad svojim profilom u sustavu Brave. Vaši podaci u sustavu Brave, primjerice, aplikacije, oznake, povijest, zaporke i ostale postavke, trajno će se povezati s korisnikom <ph name="USER_NAME"/>. Moći ćete izbrisati te podatke putem Nadzorne ploče Brave računa, ali ih nećete moći povezati s nekim drugim računom. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Dodatni kôd: <ph name="EXTRA_CODE"/>.</translation>
+<translation id="2487133103111559902">Da biste dobili personalizaciju, uključite Brave u aktivnost na webu i u aplikacijama</translation>
 <translation id="5154625106151193600">Saznajte zašto Brave blokira neke datoteke</translation>
 <translation id="1786715389543715322">Ažuriranje Bravea (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Dopusti prijavu u Brave</translation>
@@ -223,6 +226,7 @@
 <translation id="239760341987199724">Postavite Brave kao zadani preglednik</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave možda neće ispravno raditi jer više nije podržan na toj distribuciji Linuxa</translation>
+<translation id="2596557398669145729">Brave je blokirao ovo preuzimanje jer ta datoteka može naštetiti vašim osobnim računima i računima na društvenim mrežama</translation>
 <translation id="696826782632239602">Brave treba dopuštenje za pristup vašoj lokaciji da bi je podijelio s ovom web-lokacijom</translation>
 <translation id="3809116188788099368">Da bismo zaštitili vašu privatnost, automatski brišemo vaše interese starije od četiri tjedna. Tijekom vašeg daljnjeg pregledavanja neki se interes može ponovo pojaviti na popisu. A ako Brave pogriješi ili ne želite vidjeti određene oglase, možete ukloniti interes.</translation>
 <translation id="1744365871163268756">Pričekajte da Brave instalira najnovija ažuriranja sustava.</translation>
@@ -234,6 +238,7 @@
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Prikaži Brave na tom jeziku</translation>
 <translation id="569897634095159764">Povezivanje s internetom nije moguće. Proxy poslužitelj zahtijeva autentifikaciju.</translation>
+<translation id="82926023981336111">Prilagodite Brave i upravljajte njime. Postavite Brave kao zadani preglednik.</translation>
 <translation id="5809516625706423866">Povezivanje s internetom nije moguće. HTTP 401 Nije ovlašteno. Provjerite konfiguraciju proxyja.</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="8054200348483755053">Brave je otkrio da ove stavke sadrže zlonamjerni softver:</translation>
@@ -256,6 +261,7 @@
 <translation id="608006075545470555">Dodavanje poslovnog profila u ovaj preglednik</translation>
 <translation id="5849446944780602366">Prilagodite i kontrolirajte Brave. Dostupno je ažuriranje.</translation>
 <translation id="5505258595603236622">Kad je to uključeno, Brave štedi bateriju ograničavajući pozadinsku aktivnost i vizualne efekte, kao što je glatko pomicanje i broj sličica u sekundi videozapisa.</translation>
+<translation id="5711722515923392428">Uključeno • Brave ne može provjeriti odakle dolazi ovo proširenje</translation>
 <translation id="7433698744896946664">Omogućuje proširenju da prikazuje zahtjeve za pristup na alatnoj traci Bravea</translation>
 <translation id="492209281555538239">Brave će spremiti tu zaporku na vaš Brave račun. Ne morate je pamtiti.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> opasna je, pa ju je Brave blokirao.</translation>
@@ -290,6 +296,7 @@
 <translation id="6373767849825830651">Brave je web-preglednik koji munjevitom brzinom prikazuje web-stranice i aplikacije. Brz je, stabilan i jednostavan za upotrebu. Pregledavajte web sigurnije jer je zaštita od zlonamjernog softvera i krađe identiteta ugrađena u Brave.</translation>
 <translation id="2139300032719313227">Ponovo pokrenite Chrome OS</translation>
 <translation id="638302211119176182">Brave predučitava još više stranica koje ćete vjerojatno posjetiti kako bi se brže učitale kad ih posjetite.</translation>
+<translation id="890319829408077946">Isključeno • Brave ne može provjeriti odakle dolazi ovo proširenje</translation>
 <translation id="1684121725014454063">Dobro došli u Braveove profile</translation>
 <translation id="2675662665675552980">Upravlja i time koja se stranica prikazuje prilikom pokretanja Bravea.</translation>
 <translation id="648319183876919572">Poboljšano sigurno pregledavanje pruža vam više zaštite od opasnih web-lokacija i preuzimanja</translation>
@@ -312,6 +319,7 @@
 <translation id="1489465648257900784">Vaš se profil ne može upotrebljavati jer je iz novije verzije Bravea.
 
 Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili upotrijebite noviju verziju Bravea.</translation>
+<translation id="1505112054322049777">Da biste dobili personalizaciju i druge značajke, uključite Brave u aktivnost na webu i u aplikacijama te povezane Braveove usluge</translation>
 <translation id="6666624454809779082">Brave je već instaliran za sve korisnike na računalu.</translation>
 <translation id="5360050006043219962">Da biste mogli pristupiti svojim sadržajima u Braveu na svim svojim uređajima, prijavite se i zatim uključite sinkronizaciju.</translation>
 <translation id="3136039682492230890">Brave preporučuje skeniranje datoteke jer je možda opasna.</translation>
@@ -339,9 +347,11 @@ Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili 
 <translation id="1008530050039597147">Brave treba dopuštenje za fotoaparat za ovu web-lokaciju</translation>
 <translation id="1197672524850678392">Pokretanje Bravea nije uspjelo. Pokušajte ponovo.</translation>
 <translation id="3405035915691517126">Brave ne može provjeriti vaše zaporke. Pokušajte ponovno nakon 24 sata.</translation>
+<translation id="3074679259444363247">Brave treba dopuštenje za razumijevanje scene i praćenje ruku kako bi pokrenuo interaktivnu sesiju</translation>
 <translation id="5755581833598928580">Upotrijebite Brave svaki put kada kliknete veze u porukama, dokumentima i drugim aplikacijama</translation>
 <translation id="5516268345616100622">Upravitelj zadataka – Brave</translation>
 <translation id="713191641919118540">Vaši interesi prema Braveovoj procjeni</translation>
+<translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Brave preporučuje da ga uklonite}one{Brave preporučuje da ih uklonite}few{Brave preporučuje da ih uklonite}other{Brave preporučuje da ih uklonite}}</translation>
 <translation id="9068395155143628872">Ad measurement API omogućuje web-lokacijama koje posjećujete da od Bravea traže podatke koji im pomažu mjeriti izvedbu svojih oglasa. Ad measurement API ograničava praćenje na različitim web-lokacijama tako što se između web-lokacija prenosi što je manje moguće podataka.</translation>
 <translation id="1864557848095568223">Ažuriranje Bravea</translation>
 <translation id="3403365884036456766">Datoteka vaših postavki oštećena je ili nevažeća.
@@ -350,6 +360,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="7339898014177206373">Novi prozor</translation>
 <translation id="3511996232906761537">Ovdje se nalaze vaš web, oznake i ostali sadržaji u Braveu.</translation>
 <translation id="5380963249588143069">Vaš administrator sustava konfigurirao je Brave da otvara <ph name="ALTERNATIVE_BROWSER_NAME"/> za pristup URL-u <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="8580803879249090057">Brave je blokirao ovo preuzimanje jer ta datoteka može naštetiti vašim osobnim računima i računima na društvenim mrežama, uključujući <ph name="USER_EMAIL"/></translation>
 <translation id="38294420683216447">Pomoću Braveovih profila možete razdvojiti sve svoje sadržaje u Braveu. To olakšava odvajanje posla i zabave.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave treba dopuštenje za pristup kameri za ovu web-lokaciju</translation>
@@ -376,6 +387,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="7963515534397191222">Brave se nije mogao ažurirati na najnoviju verziju, tako da nemate nove značajke i sigurnosne popravke.</translation>
 <translation id="7872446069773932638">Preuzimanje... Još <ph name="SECONDS"/> s</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Kako možete upravljati svojim podacima<ph name="END_BOLD"/>: da bismo zaštitili vašu privatnost, automatski brišemo vaše interese starije od četiri tjedna. Tijekom vašeg daljnjeg pregledavanja neki se interes može ponovo pojaviti na popisu. Možete i ukloniti interese za koje ne želite da ih Brave razmatra.</translation>
+<translation id="5687542525349822727">Postavite Brave kao zadani preglednik</translation>
 <translation id="2925193881330501265">Bili ste prijavljeni na Brave kao <ph name="USER_EMAIL_ADDRESS"/>. Prijavite se ponovo istim računom.</translation>
 <translation id="6915252145142862992">Ovo je sekundarna instalacija Bravea, pa on ne može biti vaš zadani preglednik.</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, web-lokacije će vas moći tražiti pristup.</translation>
@@ -387,6 +399,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="813913629614996137">Pokretanje...</translation>
 <translation id="7550680632761245819">Uključite dodatnu zaštitu u Braveovom alatu za JavaScript i WebAssembly</translation>
 <translation id="9067428552314418522">Datoteka je opasna i Brave ju je blokirao.</translation>
+<translation id="1755067029031059271">Brave ne može provjeriti odakle dolazi ovo proširenje, pa bi moglo biti nesigurno. Uklonite ga iz Bravea kako više ne bi moglo vidjeti i mijenjati vaše podatke na web-lokacijama koje posjećujete, uključujući osobne podatke.</translation>
 <translation id="8207657266087451193">Ako slika nema koristan opis, Brave će ga pokušati pružiti. Da bi se izradili opisi, slike se šalju Braveu. To možete isključiti u bilo kojem trenutku u postavkama.</translation>
 <translation id="8622246347342688645">Brave ne može provjeriti vaše zaporke jer niste prijavljeni</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave vas upozorava<ph name="END_LINK"/> na nesigurne web-lokacije i preuzimanja</translation>
@@ -431,6 +444,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8986207147630327271">Dodat ćete poslovni profil u ovaj preglednik i dati administratoru kontrolu samo nad poslovnim profilom.</translation>
 <translation id="3424657754843264466">Upravljajte profilima na Braveu</translation>
 <translation id="82609232232243542">Prijava na Brave</translation>
+<translation id="7055223246119657449">Brave je blokirao ovo preuzimanje jer ta arhivska datoteka uključuje druge datoteke koje mogu skrivati zlonamjerni softver</translation>
 <translation id="3273774796888928550">Prijavite se na Brave. Ako se želite prijaviti samo jednom, možete <ph name="GUEST_LINK_BEGIN"/>upotrebljavati uređaj kao gost<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave je automatski zatvoren</translation>
 <translation id="5173820533850252773">Brave je zastario</translation>

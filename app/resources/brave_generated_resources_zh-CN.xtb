@@ -9,7 +9,7 @@
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="7973394300052703468">打开新的无痕窗口(&amp;I)</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
-<translation id="8097438084542431276">拷贝清除链接</translation>
+<translation id="8097438084542431276">复制干净的链接</translation>
 <translation id="4678672101289648246">只在新标签页</translation>
 <translation id="6516243500644829484">打开新的无痕窗口(&amp;I)</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
@@ -109,14 +109,10 @@
 <translation id="7551864359422178684">在此浏览器窗口中还有 <ph name="NUMBER_OF_TABS"/> 个标签页处于开启状态。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 个标签页</translation>
 <translation id="1307431692088049276">不要再问我了</translation>
-<translation id="2272117088509540883">- Brave 搜索</translation>
-<translation id="2701279958223202597">支持隐私性更好的独立搜索。Brave 的搜索功能不会追踪您、您的查询或您的点击行为。</translation>
-<translation id="6438467592401259882">支持隐私性更好的独立搜索。</translation>
-<translation id="5167182095453855816">是时候抛弃大科技了。</translation>
-<translation id="45040495135337202">Brave 不会跟踪您、您的查询或点击。它 100% 独立于大型科技公司。</translation>
 <translation id="6919364924256365253">不要谷歌。不能必应。只是使用 Brave。</translation>
 <translation id="3313148036097793884">Brave 不会跟踪您、您的查询或点击。它是 100% 独立的。</translation>
 <translation id="7295094278358921487">您会在搜索里找到，搜索记录是无痕的。</translation>
+<translation id="45040495135337202">Brave 不会跟踪您、您的查询或点击。它 100% 独立于大科技。</translation>
 <translation id="42032117189492785">人工智能搜索，独一无二的索引。</translation>
 <translation id="8606416238399082160">完全无痕、100% 独立，并具有强大的人工智能功能。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
@@ -194,27 +190,28 @@
 <translation id="3435896845095436175">启用</translation>
 <translation id="5046066249040287308">Brave 钱包实用程序服务</translation>
 <translation id="4552520379838695057">抱歉，该页面缺失。</translation>
+<translation id="7299769530898469069">无法载入已保存的版本</translation>
 <translation id="2609895996619941644">想要检查 Wayback Machine 上是否有保存的版本？</translation>
-<translation id="8053093028263274061">抱歉，没有可用的已保存版本。</translation>
-<translation id="8517321676372639828">查看保存的版本</translation>
+<translation id="8010675257566903381">Wayback Machine 未找到此网站已保存的版本。</translation>
+<translation id="1207694258341311738">查看已保存的版本</translation>
 <translation id="191143826155037518">根据 <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL)，您可以使用 Brave（这里有 <ph name="BEGIN_LINK_OSS"/>根据各种其他许可获得的开源软件）<ph name="END_LINK_OSS"/>。
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS"/>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>源代码的说明<ph name="END_LINK_SOURCE_CODE"/>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="3987546108749866209">使用垂直标签</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{将这个标签页取消静音}other{将这些标签页取消静音}}</translation>
-<translation id="2289567621059034186">以下新标签页</translation>
+<translation id="2289567621059034186">在下方新增标签页</translation>
 <translation id="3228962656492373217">关闭以下标签页</translation>
-<translation id="8030501904366631501">将所有选项卡引入此窗口</translation>
-<translation id="253980346046488815">关闭重复选项卡</translation>
+<translation id="8030501904366631501">将所有标签页引入此窗口</translation>
+<translation id="253980346046488815">关闭重复的标签页</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
 <translation id="2523967823495420116">使用垂直标签</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{将这个标签页取消静音}other{将这些标签页取消静音}}</translation>
-<translation id="4405580203042711503">下列新标签页</translation>
+<translation id="4405580203042711503">在下方新增标签页</translation>
 <translation id="5611474372949142946">关闭下列标签页</translation>
-<translation id="573844928911967687">将所有选项卡带入此窗口</translation>
-<translation id="2703180365855369896">关闭重复选项卡</translation>
+<translation id="573844928911967687">将所有标签页带入此窗口</translation>
+<translation id="2703180365855369896">关闭重复的标签页</translation>
 <translation id="3704707436873245822">从图像中复制文本</translation>
 <translation id="5268098808165185458">从图像中复制文本……</translation>
 <translation id="4046485130884276245">文本已从图像中复制成功</translation>
@@ -341,7 +338,7 @@
 <translation id="916373084491701212">显示滚动条</translation>
 <translation id="515949045075831661">在右侧显示</translation>
 <translation id="3725395376319291415">在左侧显示</translation>
-<translation id="2113977810652731515">信用卡</translation>
+<translation id="2113977810652731515">卡片</translation>
 <translation id="4096343215397759358">带预览的卡片</translation>
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
@@ -350,6 +347,7 @@
 <translation id="2858138569776157458">热门网站</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="8820817407110198400">书签栏</translation>
+<translation id="4144468798716165316">快捷指令</translation>
 <translation id="7310387888625228830">Leo 人工智能助手</translation>
 <translation id="5222974844674487962">显示 Brave 新闻按钮</translation>
 <translation id="383007806262310953">显示书签栏</translation>
@@ -358,9 +356,9 @@
 <translation id="7158817046543187970">书签栏已在所有页面上隐藏</translation>
 <translation id="3416468988018290825">始终显示完整的URL</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
-<translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">文章自动以读者模式加载，节省您的时间</translation>
+<translation id="7984721311211272523">禁用标签页扬声器图标中的静音功能</translation>
 <translation id="2422927186524098759">侧边栏</translation>
 <translation id="832432428796481785">显示侧边栏按钮</translation>
 <translation id="5581036754486769849">允许在无痕式窗口中自动填充</translation>
@@ -393,7 +391,7 @@
 <translation id="7607166182943595829">防止网站根据我的语言偏好对我进行指纹识别</translation>
 <translation id="3497934980362703405">启用此设置会减少网站对您的语言首选项的了解。</translation>
 <translation id="2133317862976486547">跟踪器和和广告拦截</translation>
-<translation id="4078738236287221428">攻击性</translation>
+<translation id="4078738236287221428">积极地</translation>
 <translation id="7740996059027112821">标准</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
 <translation id="6531019308847917584">阻止指纹识别</translation>
@@ -401,8 +399,9 @@
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="3357319404342882895">严格</translation>
 <translation id="8823559166155093873">阻止 cookies</translation>
-<translation id="5770288601196774623">仅限跨站点</translation>
-<translation id="3587482841069643663">全部</translation>
+<translation id="6196640612572343990">阻止第三方 Cookie</translation>
+<translation id="5657156137487675418">允许所有 cookies</translation>
+<translation id="6883611015375728278">拦截所有 cookies</translation>
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
@@ -434,8 +433,8 @@
 <translation id="1051600834033686945">打开完整的 Brave 奖励设置</translation>
 <translation id="8826461509529116322">显示 Brave 奖励按钮</translation>
 <translation id="9185018653595759199">阻止社交媒体</translation>
-<translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
-<translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
+<translation id="863171915776379000">允许Facebook登陆和嵌入帖子</translation>
+<translation id="7791141927430186653">允许 X（原为 Twitter）嵌入的推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="8792121506918889955">WebRTC IP 处理政策</translation>
 <translation id="6165508094623778733">了解更多</translation>
@@ -446,6 +445,7 @@
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="4891600875049212418">访问敏感网站时不记录在案</translation>
+<translation id="1968895725257436430">资料合集</translation>
 <translation id="4846154056248462491">退出时</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
@@ -599,8 +599,6 @@
 <translation id="811745063252080651">解决验证码问题即可请求提供网桥。</translation>
 <translation id="6936835573742749135">无法请求验证码。请稍后再试。</translation>
 <translation id="2653659639078652383">提交</translation>
-<translation id="1369311132025451972">自动重定向 .onion 网站</translation>
-<translation id="6214393847480015759">在 Tor 窗口中，Brave 会自动切换到网站的 .onion 版本。</translation>
 <translation id="1294350054292274934">仅在 Tor 窗口解析 .onion 地址</translation>
 <translation id="1258903596167452221">在 Tor 窗口之外将无法使用 Onion 服务。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
@@ -617,7 +615,7 @@
 <translation id="188228077840632890">AdGuard 是 Manifest V2 的扩展，提供广告拦截、家长控制选项以及与其他 AdGuard 服务产品的整合。</translation>
 <translation id="8137559199583651773">管理扩展程序</translation>
 <translation id="7013485839273047434">获取更多扩展程序</translation>
-<translation id="5840822070878669614">打开 Brave 网上应用店</translation>
+<translation id="5840822070878669614">打开 应用商店</translation>
 <translation id="4954512758656527938">默认以太坊钱包</translation>
 <translation id="7701023802820268122">默认 Solana 钱包</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
@@ -731,11 +729,10 @@
 <translation id="8571837315037233299">网关地址</translation>
 <translation id="7703184801853248830">网关地址无效</translation>
 <translation id="7690058578502751948">仅启用了 Origin 隔离的有效 IPFS 网关可用于 Brave</translation>
-<translation id="3411013544209536575">支助赏金</translation>
+<translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
 <translation id="2775956301559569472">显示 404 页上的 Wayback Machine 提示</translation>
 <translation id="3095201688102519917">关闭已开启多个标签页的视窗前显示警告消息</translation>
-<translation id="7120553802660696133">关闭最后一个选项卡时关闭窗口</translation>
-<translation id="7984721311211272523">禁用选项卡扬声器图标中的静音功能</translation>
+<translation id="7120553802660696133">关闭最后一个标签页时关闭窗口</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在侧边栏中显示 Leo 图标</translation>
 <translation id="8055509865174199683">在网站的右键菜单中显示 Leo</translation>
@@ -749,6 +746,7 @@ Leo 的所有对话。此操作无法撤销。</translation>
 <translation id="5574059574002819179">调整自动完成建议</translation>
 <translation id="8157373421434119674">数据和聊天记录</translation>
 <translation id="614530507403667291">新对话的默认模型</translation>
+<translation id="8826914609353373601">管理高级订阅</translation>
 <translation id="349846214503465941">启用播放列表</translation>
 <translation id="7903608716704052878">自动添加文件，以便离线查看</translation>
 <translation id="4193768184502613558">该选项会自动缓存媒体文件，这样您就可以在没有互联网连接的情况下播放这些文件。</translation>

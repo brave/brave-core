@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">這個瀏覽器視窗中還有 <ph name="NUMBER_OF_TABS"/> 個分頁維持於開啟狀態。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
 <translation id="1307431692088049276">不要再問了</translation>
-<translation id="2272117088509540883">- Brave 搜尋</translation>
-<translation id="2701279958223202597">支援隱私權更佳的獨立搜尋。Brave 搜尋不會追蹤您、您的查詢或您的點選行為。</translation>
-<translation id="6438467592401259882">支援隱私權更佳的獨立搜尋。</translation>
-<translation id="5167182095453855816">向科技大廠說再見。</translation>
-<translation id="45040495135337202">Brave 不會追蹤你、你的查詢內容或點擊紀錄，而且 100% 獨立於大型科技公司。</translation>
 <translation id="6919364924256365253">別再 Google。不用 Bing。選 Brave 就對了。</translation>
 <translation id="3313148036097793884">Brave 不會追蹤你、你的查詢內容或點擊紀錄。100% 獨立。</translation>
 <translation id="7295094278358921487">搜了就有，隱密無痕。</translation>
+<translation id="45040495135337202">Brave 不會追蹤你、你的查詢內容或點擊紀錄，而且 100% 獨立於大型科技公司。</translation>
 <translation id="42032117189492785">AI 智慧搜尋，搭配獨一無二的索引方式。</translation>
 <translation id="8606416238399082160">完全隱私、100% 獨立，還具有強大的 AI 功能。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">啟用</translation>
 <translation id="5046066249040287308">Brave 錢包公用程式服務</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
+<translation id="7299769530898469069">無法載入已儲存的版本</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
-<translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>
-<translation id="8517321676372639828">檢查已儲存的版本</translation>
+<translation id="8010675257566903381">Wayback Machine 找不到此網站已儲存的版本。</translation>
+<translation id="1207694258341311738">檢查已儲存的版本</translation>
 <translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL"/>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL"/> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS"/>開放原始碼軟體<ph name="END_LINK_OSS"/>。
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">熱門網站</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
+<translation id="4144468798716165316">快速指令</translation>
 <translation id="7310387888625228830">Leo 人工智慧助理</translation>
 <translation id="5222974844674487962">顯示 Brave News 按鈕</translation>
 <translation id="383007806262310953">顯示書籤列</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">書籤在所有頁面上都為隱藏</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
-<translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
+<translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
 <translation id="2422927186524098759">側邊欄</translation>
 <translation id="832432428796481785">顯示側邊欄按鈕</translation>
 <translation id="5581036754486769849">在無痕式視窗中允許自動填入</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="3357319404342882895">嚴格</translation>
 <translation id="8823559166155093873">封鎖 Cookie</translation>
-<translation id="5770288601196774623">僅跨站</translation>
-<translation id="3587482841069643663">全部</translation>
+<translation id="6196640612572343990">封鎖第三方 Cookie</translation>
+<translation id="5657156137487675418">允許所有 cookie</translation>
+<translation id="6883611015375728278">阻擋所有 cookies</translation>
 <translation id="7390783310074170337">預設瀏覽</translation>
 <translation id="130615081792797568">簡式瀏覽</translation>
 <translation id="2360360976480535628">進階瀏覽</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
-<translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
+<translation id="7791141927430186653">允許 X (原為 Twitter) 嵌入的推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">深入瞭解</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
 <translation id="933652931229970927">自動傳送診斷報告</translation>
 <translation id="4891600875049212418">造訪敏感網站時停止記錄</translation>
+<translation id="1968895725257436430">資料集合</translation>
 <translation id="4846154056248462491">離開</translation>
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
@@ -601,8 +601,6 @@
 <translation id="811745063252080651">解決 CAPTCHA 以申請橋接器。</translation>
 <translation id="6936835573742749135">無法申請 CAPTCHA，請稍後再試。</translation>
 <translation id="2653659639078652383">提交</translation>
-<translation id="1369311132025451972">自動重新導向 .onion 網站</translation>
-<translation id="6214393847480015759">在 Tor 視窗中，Brave 會自動切換到可用的 .onion 版本網站。</translation>
 <translation id="1294350054292274934">只在 Tor 視窗中解析 .onion 位址</translation>
 <translation id="1258903596167452221">Onion 服務在 Tor 視窗外將不可用。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
@@ -733,11 +731,10 @@
 <translation id="8571837315037233299">閘道器位址</translation>
 <translation id="7703184801853248830">無效的閘道器位址</translation>
 <translation id="7690058578502751948">僅啟用了 Origin 隔離的有效 IPFS 閘道可用於 Brave</translation>
-<translation id="3411013544209536575">協助小費</translation>
+<translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="2775956301559569472">在 404 頁面上顯示 Wayback Machine 提示</translation>
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
-<translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8055509865174199683">在網站的內容選單中顯示 Leo</translation>
@@ -751,6 +748,7 @@
 <translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="8157373421434119674">資料和聊天歷史記錄</translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
+<translation id="8826914609353373601">管理 Premium 訂閱</translation>
 <translation id="349846214503465941">啟用播放清單</translation>
 <translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
 <translation id="4193768184502613558">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>

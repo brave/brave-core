@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blockiert die Elemente für die nächsten Inhalte und den Abspann auf youtube.com.</translation>
 <translation id="5152595963250646670">Ablenkende YouTube-Elemente blockieren</translation>
 <translation id="2998960761270772157">Blockiert die Elemente für die Anmeldung, das Menü, Kommentare und Videoinformationen auf youtube.com.</translation>
+<translation id="8531835121131500698">YouTube Shorts blocken</translation>
+<translation id="2167271714269158912">Blocken Sie Shorts auf der Startseite, der Trends-Seite und den Suchergebnissen auf youtube.com.</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
 <translation id="7498695072878479744">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Verifizierter Urheber</translation>
 <translation id="2369994359029526515">Unverifizierter Urheber</translation>
 <translation id="6112368337882254910">Automatische Spenden</translation>
-<translation id="7861645265922445992">Belohnungen in Anspruch nehmen</translation>
 <translation id="1848737374354350807">Guthaben:</translation>
 <translation id="4781696154289395607">Sie haben <ph name="BAT_VALUE"/> BAT gegeben.</translation>
 <translation id="2429828319207652823">Bei der Verarbeitung Ihres Beitrags ist ein Fehler aufgetreten.</translation>
-<translation id="2221902203895354376">Kostenlose Token sind verfügbar!</translation>
-<translation id="2377929997600454162">Ihre Belohnungen für Anzeigen im <ph name="MONTH_VALUE"/> sind da!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>-Belohnungen: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Sie haben noch <ph name="TOKEN"/> Tage Zeit, dies in Anspruch zu nehmen.</translation>
 <translation id="683765328936486920">auf YouTube</translation>
 <translation id="8969049974285901797">auf Twitch</translation>
 <translation id="8038539967102225446">Brave Ads sind da!</translation>
@@ -458,7 +455,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3763681089644577874">Cookies blockieren</translation>
 <translation id="614747795780742163">Hindert Websites, Informationen über Ihre früheren Besuche zu speichern</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
-<translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
+<translation id="6196640612572343990">Drittanbieter-Cookies blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="1553643198679271031">Vertraulich anfordern</translation>
 <translation id="4891600875049212418">Nutzen Sie den Vertraulichen Modus, um vertrauliche Seiten anzusehen</translation>
@@ -604,6 +601,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5488357322146334497">Nachricht</translation>
 <translation id="1904000155026201268">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet mehr habe, wenn ich meine Formulierung zur Wiederherstellung zur Wiederherstellung verliere.</translation>
 <translation id="5333225216561354793">Wir setzen voraus, dass Sie die folgenden Punkte anerkennen</translation>
+<translation id="6937275455070754004">Wählen Sie aus, welche Blockchains in Ihrer Wallet verwendet werden sollen.</translation>
 <translation id="1645800479814134195">Ich verstehe, dass es sich um eine eigenverwahrte Wallet handelt und dass ich allein für alle damit verbundenen Gelder, Assets oder Konten verantwortlich bin und dass ich angemessene Maßnahmen ergreifen muss, um meine Wallet zu sichern und zu schützen. Ich verstehe, dass Brave nicht auf meine Wallet zugreifen oder Transaktionen in meinem Namen rückgängig machen kann und dass meine Wiederherstellungsphrase die einzige Möglichkeit ist, um im Falle eines verlorenen Passworts, eines gestohlenen Geräts oder ähnlicher Umstände wieder Zugriff zu erhalten.</translation>
 <translation id="4565891212173086999">Ich habe die <ph name="CLICK_START"/>Nutzungsbedingungen<ph name="CLICK_END"/> gelesen und stimme ihnen zu.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
@@ -611,12 +609,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2708402071160162126">WARNUNG: Teilen Sie niemals Ihre Wiederherstellungsphrase. Wer diese Phrase besitzt, kann sich Ihre Assets permanent aneignen.</translation>
 <translation id="111912712268284159">Ich habe meine Formulierung an einem sicheren Ort gespeichert.</translation>
 <translation id="6896758677409633944">Kopieren</translation>
-<translation id="1783600039044302171">Schütze deine Kryptowährung mit einem Passwort</translation>
 <translation id="3726490322412361740">Passwort eingeben</translation>
 <translation id="3038243139480464605">Passwort verifizieren</translation>
 <translation id="3043677904160378840">Passwörter müssen aus mindestens 8 Zeichen bestehen.</translation>
 <translation id="7396672979287122068">Das verifizierte Passwort stimmte nicht überein.</translation>
-<translation id="7084181009966710506">Wallet wird erstellt …</translation>
+<translation id="1566412704591731844">Ihre Wallet wird erstellt …</translation>
+<translation id="7779823116893018906">Das kann ein paar Sekunden dauern …</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Konto hinzufügen</translation>
 <translation id="3448492834076427715">Konto aktualisieren</translation>
@@ -639,6 +637,11 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3157931365184549694">Wiederherstellen</translation>
 <translation id="5844138175312846408">Haben Sie bereits eine Wallet?</translation>
 <translation id="2502258949541727762">Bevor es losgeht</translation>
+<translation id="4303748097351941030">Unterstützte Netzwerke</translation>
+<translation id="4204268048253692928">Sie können in den Einstellungen jederzeit Netzwerke hinzufügen.</translation>
+<translation id="2523174693142405417">Suchnetzwerke</translation>
+<translation id="1164748583090434571">Testnetze anzeigen</translation>
+<translation id="935220650946301698">Weiter mit <ph name="NUMBER"/> Netzwerken</translation>
 <translation id="8248460961680233459">Passwort erstellen</translation>
 <translation id="2789310860394340571">Sie verwenden dieses Passwort jedes Mal, wenn Sie auf Ihre Wallet zugreifen.</translation>
 <translation id="2136372518715274136">Neues Passwort eingeben</translation>
@@ -845,7 +848,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
-<translation id="4945690646623486292">Netzwerk auswählen</translation>
+<translation id="4556601961751528347">Verbundenes Konto wechseln</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="8006088103295786154">Zugriff auf Brave-Wallet</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
@@ -871,6 +874,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4255623233927788178">Im Block-Explorer anzeigen</translation>
 <translation id="8274201358637112807">Diese Seite möchte mit der Brave-Wallet interagieren</translation>
 <translation id="3355936511340229503">Verbindungsfehler</translation>
+<translation id="1531836666020185856">Vorgestellt</translation>
 <translation id="4891604214809245310"><ph name="NETWORK_NAME"/> kann nicht als Netzwerk festgelegt werden</translation>
 <translation id="685345388423515592">Anscheinend haben Sie für andere VPNs auf diesem Gerät „Immer an“ festgelegt. Um Brave Firewall + VPN zu aktivieren, müssen Sie zunächst die Einstellung „Immer an“ für andere VPNs deaktivieren, bevor Sie die Verbindung erneut herstellen können. Sollte das Problem weiterhin bestehen, deinstallieren Sie die anderen VPNs.</translation>
 <translation id="85136472535634474">VPN-Einstellungen öffnen</translation>
@@ -1038,7 +1042,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1677961202754619328">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut.</translation>
 <translation id="5425006356459378415">Brave-Belohnungen nicht verfügbar</translation>
 <translation id="833643743158564518">Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen.  <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Alle Netzwerke</translation>
 <translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
@@ -1178,4 +1181,11 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3251885322612056119">Aktualisierte Nutzungsbedingungen</translation>
 <translation id="4049035689681585146">Wir haben die Nutzungsbedingungen für Brave-Belohnungen geändert. Wir haben diese Änderungen vorgenommen, um die Bedingungen klarer auszudrücken und sicherzustellen, dass sie die neuen Funktionen abdecken. Wenn Sie Brave-Belohnungen weiter verwenden, stimmen Sie den aktualisierten Nutzungsbedingungen zu. Wenn Sie nicht zustimmen, können Sie Brave-Belohnungen <ph name="RESET_START"/>zurücksetzen<ph name="RESET_END"/>, sodass diese Funktion deaktiviert wird.</translation>
 <translation id="2165953574528546737">Siehe <ph name="TOS_START"/>Nutzungsbedingungen für Brave-Belohnungen<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">„Mehrere Fenster“ aktivieren</translation>
+<translation id="6167344249617630304">Sie können bis zu 5 Fenster gleichzeitig öffnen und Tabs aus einem Fenster in ein anderes ziehen</translation>
+<translation id="1063948063403254568">Mehrere Fenster erkannt</translation>
+<translation id="4661882208707630158">Bitte verschieben Sie Ihre Tabs in ein einziges Brave-Fenster oder schließen Sie andere Brave-Fenster, bevor Sie die „Mehrere Fenster“-Funktion deaktivieren.</translation>
+<translation id="6891382640886173702">In ein Fenster zusammenführen</translation>
+<translation id="2912247081180973411">Fenster schließen</translation>
+<translation id="4010699428656610296">Bitte führen Sie andere Tabs in einem anderen Brave-Fenster zusammen.</translation>
 </translationbundle>

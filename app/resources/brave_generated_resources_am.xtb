@@ -113,14 +113,10 @@
 <translation id="2571596981920752023">1 <ph name="NUMBER_OF_TABS"/> 
 ትሮች</translation>
 <translation id="1307431692088049276">በድጋሚ አትጠየቀኝ</translation>
-<translation id="2272117088509540883">- ብሬቭ ፍለጋ</translation>
-<translation id="2701279958223202597">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል። ብሬቭ ፍለጋ እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
-<translation id="6438467592401259882">ገለልተኛ ፍለጋን ከተሻለ ግላዊነት ጋር ይደግፋል።</translation>
-<translation id="5167182095453855816">big techን ለማስወገድ ጊዜው አሁን ነው።</translation>
-<translation id="45040495135337202">Brave እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም። እና ከBig Tech 100% ነፃ ነው።</translation>
 <translation id="6919364924256365253">Google አያድርጉት። Bing ማድረግ አይችሉም። ዝም ብለው Brave ያድርጉት።</translation>
 <translation id="3313148036097793884">Brave እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም። እና 100% ገለልተኛ ነው።</translation>
 <translation id="7295094278358921487">ይፈልጉ እና ያገኛሉ። በግላዊነት።</translation>
+<translation id="45040495135337202">Brave እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም። እና 100% ከBig Tech ነፃ ነው።</translation>
 <translation id="42032117189492785">በAI-የታገዘ ፍለጋ ከልዩ መረጃ ጠቋሚ ጋር።</translation>
 <translation id="8606416238399082160">ሙሉ በሙሉ ግላዊ፣ 100% ገለልተኛ እና ከምርጥ AI ባህሪያት ጋር።</translation>
 <translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
@@ -199,8 +195,6 @@
 <translation id="5046066249040287308">የ Brave Wallet መገልገያ አገልግሎት</translation>
 <translation id="4552520379838695057">ይቅርታ፣ ይህ ገጽ ይጎድላል።</translation>
 <translation id="2609895996619941644">የተቀመጠ ስሪት በ Wayback ማሽን ላይ መኖሩን ለማጣራት ይፈልጋሉ?</translation>
-<translation id="8053093028263274061">ይቅርታ፣ የተቀመጠ ስሪት የለም።</translation>
-<translation id="8517321676372639828">የተቀመጠ ስሪት መኖሩን አጣራ</translation>
 <translation id="191143826155037518">Brave ለእርስዎ ዝግጁ የተደረገው በ <ph name="BEGIN_LINK_MPL"/>Mozilla ሕዝባዊ ፈቃድ 2.0<ph name="END_LINK_MPL"/> (MPL) ሲሆን በውስጡም <ph name="BEGIN_LINK_OSS"/>ምንጫቸው ክፍት የሆኑ ሶፍትዌር<ph name="END_LINK_OSS"/> በሌሎች የተለያዩ ፈቃዶች ስር ያካትታል።
         <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS"/>  መነሻ ኮድን  <ph name="BEGIN_LINK_SOURCE_CODE"/> እንዴት ማውረድና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE"/>።</translation>
 <translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
@@ -218,6 +212,7 @@
 <translation id="4405580203042711503">የአዲስ ትር ከታች</translation>
 <translation id="5611474372949142946">ከታች ያሉትን ትሮች ይዝጉ</translation>
 <translation id="573844928911967687">ሁሉንም ትሮች ወደዚህ መስኮት ያምጡ</translation>
+<translation id="2703180365855369896">የተደጋገሙ ትሮችን ይዝጉ</translation>
 <translation id="3704707436873245822">ጽሑፍን ከምስል ቅዳ</translation>
 <translation id="5268098808165185458">ጽሑፍን ከምስል በመቅዳት ላይ...</translation>
 <translation id="4046485130884276245">ጽሑፍ ከምስል ተቀድቷል</translation>
@@ -353,6 +348,7 @@
 <translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
 <translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
+<translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
 <translation id="7310387888625228830">Leo AI ረዳት</translation>
 <translation id="5222974844674487962">የBrave ዜናዎች አዝራርን አሳይ</translation>
 <translation id="383007806262310953">የዕልባቶች አሞሌን አሳይ</translation>
@@ -361,9 +357,9 @@
 <translation id="7158817046543187970">የዕልባቶች አሞሌ በሁሉም ገጾች ላይ ተደብቋል</translation>
 <translation id="3416468988018290825">ሁልጊዜ ሙሉ URLs አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
-<translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
 <translation id="1013121820689882118">የፍጥነት አንባቢን</translation>
 <translation id="2025435450953474282">ጽሑፎች ጊዜዎን ለመቆጠብ በራስ-ሰር በአንባቢ ሁነታ ይጫናሉ</translation>
+<translation id="7984721311211272523">በትር ድምጽ ማጉያ አዶዎች ውስጥ ድምጸ-ከል ተግባርን ያሰናክሉ።</translation>
 <translation id="2422927186524098759">የጎን አሞሌ</translation>
 <translation id="832432428796481785">የጎን አሞሌን አሳይ</translation>
 <translation id="5581036754486769849">በግል መስኮቶች ውስጥ በራስሰር-መሙላት ፍቀድ</translation>
@@ -404,8 +400,9 @@
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳዳግ</translation>
 <translation id="3357319404342882895">ጥብቅ</translation>
 <translation id="8823559166155093873">ኩኪዎችን አግድ</translation>
-<translation id="5770288601196774623">ጣቢያ-ብቻ</translation>
-<translation id="3587482841069643663">ሁሉም</translation>
+<translation id="6196640612572343990">የሦስተኛ ወገን ኩኪዎችን አግድ</translation>
+<translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
+<translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
 <translation id="7390783310074170337">ነባሪ እይታ</translation>
 <translation id="130615081792797568">ቀላል እይታ</translation>
 <translation id="2360360976480535628">የላቀ እይታ</translation>
@@ -438,7 +435,6 @@
 <translation id="8826461509529116322">የBrave ሽልማቶችን ቁልፍ አሳይ</translation>
 <translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
-<translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
@@ -599,8 +595,6 @@
 <translation id="811745063252080651">ድልድይ ለመጠየቅ CAPTCHA ን ይፍቱ።</translation>
 <translation id="6936835573742749135">CAPTCHA መጠየቅ አልተቻለም። ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="2653659639078652383">አስገባ</translation>
-<translation id="1369311132025451972">.onion ጣቢያዎችን በራስ-ሰር አዛውር</translation>
-<translation id="6214393847480015759">በTor መስኮቶች ውስጥ፣ Brave ሲገኝ በራስ-ሰር ወደ .onion የድር ጣቢያ ስሪት ይቀየራል።</translation>
 <translation id="1294350054292274934">.onion አድራሻዎችን ብቻ በTor መስኮቶች ውስጥ ፍታ</translation>
 <translation id="1258903596167452221">የOnion አገልግሎቶች ከTor መስኮቶች ውጭ አይገኙም።</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
@@ -629,6 +623,8 @@
 <translation id="3044369626313583722">የBrave Wallet አዝራርን አሳይ</translation>
 <translation id="7568430944629653319">NFT discovery ያብሩ</translation>
 <translation id="970496996377628529">የሶስተኛ ወገን APIs ን በመጠቀም የያዙትን NFTs ወደ Wallet በራስ ሰር ያክሉ።</translation>
+<translation id="4898839076551703154">በግል መስኮቶች ውስጥ የBrave የገንዘብ መያዣን ያንቁ።</translation>
+<translation id="1550684990179058322">ማስጠንቀቂያ፦ በግላዊ መስኮት ክፍለጊዜ ውስጥ የገንዘብ ቦርሳ አድራሻን ዳግም መጠቀም አንድ ጣቢያን የግላዊ መስኮት ክፍለጊዜ ግላዊ ካልሆነ የመስኮት ክፍለጊዜ ጋር እንዲገናኝ ሊያስችል ይችላል።</translation>
 <translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="856371974127598760">የኪስ ቦርሳ አውታረ መረቦች</translation>
@@ -647,6 +643,7 @@
 <translation id="3752403403443723332">ዋሌትዎ ዳግም ተጀምሯል።</translation>
 <translation id="594766067816395072">የዋሌትዎ የግብይት መረጃ ዳግም ተጀምሯል።</translation>
 <translation id="1615009913945115836">የእርስዎ የተሰኩ NFTs ዳግም ተጀምረዋል።</translation>
+<translation id="57798285717509216">ከመፈረምዎ በፊት የግብይቶች ውጤቶችን ይመልከቱ።<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">የ Ethereum አውታረ መረቦች</translation>
 <translation id="3504157706952484145">የ Filecoin አውታረ መረቦች</translation>
 <translation id="1561541094377237745">የ Solana አውታረ መረቦች</translation>
@@ -728,11 +725,10 @@
 <translation id="8571837315037233299">አግባቢ ፍኖት አድራሻ</translation>
 <translation id="7703184801853248830">ልክ ያልሆነ የአግባቢ ፍኖት አድራሻ</translation>
 <translation id="7690058578502751948">በBrave ውስጥ ጥቅም ላይ መዋል የሚችለው ትክክለኛ IPFS መግቢያ ከመነሻ ማግለል ጋር ብቻ ነው።</translation>
-<translation id="3411013544209536575">የእገዛ ምክሮች</translation>
+<translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
 <translation id="2775956301559569472">የ Wayback ማሽን ስንዱን 404 ገጾች ላይ አሳይ</translation>
 <translation id="3095201688102519917">በርካታ ትሮች ያሉት መስኮት ከመዝጋቱ በፊት አስጠንቅቀኝ</translation>
 <translation id="7120553802660696133">የመጨረሻውን ትር ሲዘጋ መስኮቱን ይዝጉ</translation>
-<translation id="7984721311211272523">በትር ድምጽ ማጉያ አዶዎች ውስጥ ድምጸ-ከል ተግባርን ያሰናክሉ።</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">የLeo አዶን የጎን አሞሌ ውስጥ አሳይ</translation>
 <translation id="8055509865174199683">በድር ጣቢያዎች ላይ ባለው የአውድ ምናሌ/context menu ውስጥ Leo ን አሳይ</translation>

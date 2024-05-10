@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">이 브라우저 창에 탭 <ph name="NUMBER_OF_TABS"/>개가 열려 있습니다.</translation>
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
 <translation id="1307431692088049276">다시 묻지 않기</translation>
-<translation id="2272117088509540883">- Brave 검색</translation>
-<translation id="2701279958223202597">강화된 프라이버시로 독립적 검색을 지향합니다. Brave 검색은 귀하의 신원, 검색 내역, 클릭 활동을 추적하지 않습니다.</translation>
-<translation id="6438467592401259882">강화된 프라이버시로 독립적 검색을 지향합니다.</translation>
-<translation id="5167182095453855816">빅테크의 그늘에서 벗어날 시간.</translation>
-<translation id="45040495135337202">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
 <translation id="6919364924256365253">Google과 Bing은 저리 가고, Brave는 어서 오고.</translation>
 <translation id="3313148036097793884">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 100% 독립적입니다.</translation>
 <translation id="7295094278358921487">검색하고 찾는 걸 남들은 알 수 없도록.</translation>
+<translation id="45040495135337202">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
 <translation id="42032117189492785">고유한 색인을 갖춘 AI 기반 검색.</translation>
 <translation id="8606416238399082160">프라이버시 완벽 보호, 100% 독립적, 뛰어난 AI 기능.</translation>
 <translation id="5240031343741051161">Brave Search 이용하기</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">사용</translation>
 <translation id="5046066249040287308">Brave 월렛 유틸리티 서비스</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
+<translation id="7299769530898469069">저장된 버전을 로드할 수 없음</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
-<translation id="8053093028263274061">죄송합니다. 저장된 버전이 존재하지 않습니다.</translation>
-<translation id="8517321676372639828">저장된 버전 확인</translation>
+<translation id="8010675257566903381">이 사이트의 저장된 버전을 Wayback Machine이 찾을 수 없습니다.</translation>
+<translation id="1207694258341311738">저장된 버전 확인</translation>
 <translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL"/>모질라 공용 허가서 2.0<ph name="END_LINK_MPL"/> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS"/>오픈 소스 소프트웨어<ph name="END_LINK_OSS"/>를 포함합니다. 
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE"/>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE"/>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS"/>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">인기 사이트</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
+<translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7310387888625228830">레오 AI 어시스턴트</translation>
 <translation id="5222974844674487962">Brave News 버튼 표시</translation>
 <translation id="383007806262310953">북마크바 표시</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">모든 페이지에서 북마크 바 숨김</translation>
 <translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
-<translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
+<translation id="7984721311211272523">탭 스피커 아이콘에서 음소거 기능 비활성화</translation>
 <translation id="2422927186524098759">사이드바</translation>
 <translation id="832432428796481785">사이드바 버튼 표시</translation>
 <translation id="5581036754486769849">비공개 창 내 자동완성 허용</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="3357319404342882895">엄격</translation>
 <translation id="8823559166155093873">쿠키 차단</translation>
-<translation id="5770288601196774623">교차 사이트 한정</translation>
-<translation id="3587482841069643663">전체</translation>
+<translation id="6196640612572343990">타사 쿠키 차단</translation>
+<translation id="5657156137487675418">모든 쿠키 허용</translation>
+<translation id="6883611015375728278">모든 쿠키 차단</translation>
 <translation id="7390783310074170337">기본 보기</translation>
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Brave Rewards 버튼 표시</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
-<translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
+<translation id="7791141927430186653">X(구 Twitter) 임베디드 트윗 허용</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
 <translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
+<translation id="1968895725257436430">데이터 수집</translation>
 <translation id="4846154056248462491">나갈 때</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">브리지를 요청하려면 CAPTCHA를 푸세요.</translation>
 <translation id="6936835573742749135">CAPTCHA를 요청할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="2653659639078652383">제출</translation>
-<translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
-<translation id="6214393847480015759">Tor 창에서는 웹사이트의 .onion 버전이 사용 가능하다면 Brave가 자동으로 전환합니다.</translation>
 <translation id="1294350054292274934">Tor 창에서만 .onion 주소 해석</translation>
 <translation id="1258903596167452221">Onion 서비스는 Tor 창 외부에서 사용할 수 없습니다.</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">게이트웨이 주소</translation>
 <translation id="7703184801853248830">유효하지 않은 게이트웨이 주소</translation>
 <translation id="7690058578502751948">원본 격리가 활성화된 유효한 IPFS 게이트웨이만 Brave에서 사용 가능</translation>
-<translation id="3411013544209536575">도움말 팁</translation>
+<translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
-<translation id="7984721311211272523">탭 스피커 아이콘에서 음소거 기능 비활성화</translation>
 <translation id="6129027151000961048">레오</translation>
 <translation id="2751872555001636931">사이드바에 레오 아이콘 표시</translation>
 <translation id="8055509865174199683">웹사이트의 컨텍스트 메뉴에 레오 표시</translation>
@@ -750,6 +747,7 @@ Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 <translation id="5574059574002819179">자동 완성 제안 조정</translation>
 <translation id="8157373421434119674">데이터 및 채팅 기록</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
+<translation id="8826914609353373601">프리미엄 구독 관리</translation>
 <translation id="349846214503465941">재생목록 활성화</translation>
 <translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
 <translation id="4193768184502613558">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>

@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">חוסם את רכיבי הלשונית 'הבא' ו-'סיום' ב-youtube.com.</translation>
 <translation id="5152595963250646670">חסום אלמנטים מסיחים ב-YouTube</translation>
 <translation id="2998960761270772157">חוסם את הכניסה, התפריט, ההערות ופרטי הסרטון ב-youtube.com.</translation>
+<translation id="8531835121131500698">חסום YouTube Shorts</translation>
+<translation id="2167271714269158912">חוסם Shorts מדף הבית, דף המגמות ותוצאות החיפוש ב-youtube.com.</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">יוצר מאומת</translation>
 <translation id="2369994359029526515">יוצר בלתי מאומת</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="7861645265922445992">תבע תגמולים</translation>
 <translation id="1848737374354350807">יתרה</translation>
 <translation id="4781696154289395607">תרמת <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">אירעה תקלה בעיבוד התרומה שלכם.</translation>
-<translation id="2221902203895354376">מענק סמלי זמין!</translation>
-<translation id="2377929997600454162">התגמול שלכם עבור <ph name="MONTH_VALUE"/> כאן!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>תגמולים:<ph name="TOKEN"/>BAT</translation>
-<translation id="1649629664206601032">יש לכם <ph name="TOKEN"/>ימים נותרים לתביעה</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
 <translation id="8969049974285901797">ב-Twitch</translation>
 <translation id="8038539967102225446">Brave Ads כבר כאן!</translation>
@@ -459,7 +456,7 @@
 <translation id="3763681089644577874">חסום קבצי עוגייה</translation>
 <translation id="614747795780742163">מונע מאתרים לאחסן מידע אודות הביקורים הקודמים שלך</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
-<translation id="4941539331405513605">חסום קבצי עוגייה חוצי-אתרים</translation>
+<translation id="6196640612572343990">‏חסום קובצי Cookie של צד שלישי</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="1553643198679271031">בקש Off-The-Record</translation>
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
@@ -605,6 +602,7 @@
 <translation id="5488357322146334497">הודעה</translation>
 <translation id="1904000155026201268">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="5333225216561354793">אנו מבקשים שתאשר את הפריטים הבאים</translation>
+<translation id="6937275455070754004">בחרו באיזה בלוקצ'יין להשתמש בארנק שלכם.</translation>
 <translation id="1645800479814134195">אני מבין שמדובר בארנק במשמורת עצמית ושאני נושא באחריות הבלעדית על הכספים, הנכסים או החשבונות ונקיטה בפעולות ההולמות על מנת לאבטח ולהגן על הארנק שלי ולגבות אותו. אני מבין של-Brave אין גישה לארנק שלי ושאינו יכול להפוך עסקאות מטעמי, ושבמקרה של אובדן סיסמה, מכשיר שנגנב או נסיבות דומות, סיסמת השחזור שלי היא הדרך היחידה לקבל גישה מחדש.</translation>
 <translation id="4565891212173086999">קראתי את <ph name="CLICK_START"/>תנאי השימוש<ph name="CLICK_END"/> ואני מסכים להם.</translation>
 <translation id="3933122286596948824">ביטוי השחזור שלך</translation>
@@ -612,12 +610,12 @@
 <translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
 <translation id="111912712268284159">גיביתי את ביטוי השחזור שלי במקום בטוח</translation>
 <translation id="6896758677409633944">העתקה</translation>
-<translation id="1783600039044302171">אבטח את מטבע הקריפטו שלך עם סיסמה</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
 <translation id="3038243139480464605">אמת סיסמה</translation>
 <translation id="3043677904160378840">סיסמאות חייבות להיות באורך 8 תווים לפחות.</translation>
 <translation id="7396672979287122068">הסיסמה המאומתת אינה תואמת</translation>
-<translation id="7084181009966710506">יוצר ארנק...</translation>
+<translation id="1566412704591731844">יוצר את הארנק שלך...</translation>
+<translation id="7779823116893018906">זה יכול לקחת כמה שניות...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> חשבון <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">חשבון חדש</translation>
 <translation id="3448492834076427715">עדכן חשבון</translation>
@@ -640,6 +638,11 @@
 <translation id="3157931365184549694">שחזר</translation>
 <translation id="5844138175312846408">כבר יש ברשותך ארנק?</translation>
 <translation id="2502258949541727762">לפני שנתחיל</translation>
+<translation id="4303748097351941030">רשתות נתמכות</translation>
+<translation id="4204268048253692928">ניתן להוסיף רשתות בכל עת בהגדרות.</translation>
+<translation id="2523174693142405417">חפש ברשתות</translation>
+<translation id="1164748583090434571">הצג רשתות בדיקה</translation>
+<translation id="935220650946301698">המשך עם <ph name="NUMBER"/> רשתות</translation>
 <translation id="8248460961680233459">צור/י סיסמה</translation>
 <translation id="2789310860394340571">סיסמה זאת תשמש לצורך גישה לארנק שלכם.</translation>
 <translation id="2136372518715274136">הזן סיסמה חדשה</translation>
@@ -846,7 +849,7 @@
 <translation id="7791543448312431591">הוסף</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="2653659639078652383">שלח</translation>
-<translation id="4945690646623486292">בחירת רשת</translation>
+<translation id="4556601961751528347">שנה חשבון מחובר</translation>
 <translation id="5233638681132016545">כרטיסייה חדשה</translation>
 <translation id="8006088103295786154">כניסה לארנק Brave</translation>
 <translation id="8030169304546394654">מנותק</translation>
@@ -872,6 +875,7 @@
 <translation id="4255623233927788178">צפה בחסימת סייר</translation>
 <translation id="8274201358637112807">דף זה מבקש לבצע אינטראקציה עם ארנק Brave</translation>
 <translation id="3355936511340229503">שגיאת חיבור</translation>
+<translation id="1531836666020185856">תכונות</translation>
 <translation id="4891604214809245310">לא ניתן היה להגדיר את הרשת אל<ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">נראה שיש שירותי VPN אחרים במכשיר שלך המוגדרים כ"תמיד פועל". כדי להפעיל Brave Firewall + VPN, יש לכבות  תחילה את הגדרת "תמיד פועל" עבור שירותי VPN אחרים לפני ניסיון התחברות נוסף. אם הבעיה נמשכת, יש לנסות ולהסיר את ההתקנה של שירותי VPN אחרים.</translation>
 <translation id="85136472535634474">פתיחת הגדרות VPN</translation>
@@ -1039,7 +1043,6 @@
 <translation id="1677961202754619328">לפי Uphold, יש כרגע מגבלות מסוימות על החשבון שלכם ב-Uphold. התחברו לחשבון ה-Uphold שלכם ובדקו אם יש הודעות או דרישות חשבון שנותרו להשלים, ולאחר מכן נסו שוב.</translation>
 <translation id="5425006356459378415">Brave Rewards לא זמינים</translation>
 <translation id="833643743158564518">הרשמות חדשות ל-Brave Rewards מושבתות כעת באזורכם. עם זאת, תמיד אפשר לנסות שוב מאוחר יותר. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">כל הרשתות</translation>
 <translation id="7748944510530490017">רשתות ראשוניות</translation>
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="282560918037172384">בדיקת רשתות</translation>
@@ -1179,4 +1182,11 @@
 <translation id="3251885322612056119">תנאי שירות מעודכנים</translation>
 <translation id="4049035689681585146">עדכנו את תנאי השירות של Brave Rewards. יצרנו עדכונים אלה כדי להבהיר את התנאים שלנו ולוודא שהם מכסים את התכונות החדשות. אם תמשיכו להשתמש ב-Brave Rewards, אתם מסכימים בזאת לתנאי השירות המעודכנים. אם אינכם מסכימים, באפשרותכם <ph name="RESET_START"/>לאפס<ph name="RESET_END"/> את Brave Rewards, על מנת להשבית את התכונה.</translation>
 <translation id="2165953574528546737">יש לעיין <ph name="TOS_START"/>בתנאי השירות של Brave Rewards<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">אפשר חלונות מרובים</translation>
+<translation id="6167344249617630304">פתח עד 5 חלונות בו-זמנית והעבר לשוניות מחלון אחד לאחר</translation>
+<translation id="1063948063403254568">זוהו חלונות מרובים</translation>
+<translation id="4661882208707630158">אנא מזג לשוניות לחלון Brave אחר, או סגור חלונות Brave אחרים, לפני כיבוי התכונה של חלונות מרובים.</translation>
+<translation id="6891382640886173702">מזג חלונות</translation>
+<translation id="2912247081180973411">סגור חלונות</translation>
+<translation id="4010699428656610296">אנא מזג לשוניות אחרות לחלון Brave אחר.</translation>
 </translationbundle>

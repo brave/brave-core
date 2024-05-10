@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">لديك <ph name="NUMBER_OF_TABS"/> علامة تبويب مفتوحة في نافذة المتصفح هذه.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
 <translation id="1307431692088049276">لا تسألني مرةً أخرى</translation>
-<translation id="2272117088509540883">- البحث في Brave</translation>
-<translation id="2701279958223202597">دعم البحث المستقل بخصوصية أفضل. البحث في Brave لا يتتبعك أو يتتبع استفساراتك أو نقراتك.</translation>
-<translation id="6438467592401259882">دعم البحث المستقل بخصوصية أفضل.</translation>
-<translation id="5167182095453855816">حان الوقت للاستغناء عن شركات التكنولوجيا الكبيرة.</translation>
-<translation id="45040495135337202">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا عن شركات التكنولوجيا الكبيرة.</translation>
 <translation id="6919364924256365253">لا تستخدم Google في البحث. يتعذر استخدام Bing في البحث. لا يمكنك استخدام سوى Brave فحسب.</translation>
 <translation id="3313148036097793884">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا.</translation>
 <translation id="7295094278358921487">ابحث وستحصل على نتائج. على نحو يتسم بالسرية والطابع الشخصي.</translation>
+<translation id="45040495135337202">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا عن شركات التكنولوجيا الكبيرة.</translation>
 <translation id="42032117189492785">بحث مدعم بالذكاء الاصطناعي باستخدام فهرس فريد.</translation>
 <translation id="8606416238399082160">يتسم بخصوية كاملة، ومستقل تمامًا بنسبة 100%، ومزود بميزات الذكاء الاصطناعي الرائعة.</translation>
 <translation id="5240031343741051161">تجربة البحث في Brave</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">تمكين</translation>
 <translation id="5046066249040287308">خدمة الأداة المساعدة لمحفظة Brave</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
+<translation id="7299769530898469069">تعذر تحميل النسخة المحفوظة</translation>
 <translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
-<translation id="8053093028263274061">عذراً، لا توجد نسخة محفوظة متاحة.</translation>
-<translation id="8517321676372639828">تحقق من وجود نسخة محفوظة</translation>
+<translation id="8010675257566903381">لم يتمكن Wayback Machine من العثور على نسخة محفوظة من هذا الموقع.</translation>
+<translation id="1207694258341311738">تحقق من النسخة المحفوظة</translation>
 <translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL"/>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL"/> (MPL) ويشمل <ph name="BEGIN_LINK_OSS"/>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS"/> بموجب مختلف التراخيص الأخرى.
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
@@ -352,6 +349,7 @@
 <translation id="2858138569776157458">أهم المواقع</translation>
 <translation id="7859704718976024901">تاريخ التصفح</translation>
 <translation id="8820817407110198400">إشارات</translation>
+<translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="7310387888625228830">مساعد Leo الذي يعمل بالذكاء الاصطناعي</translation>
 <translation id="5222974844674487962">عرض زر Brave News</translation>
 <translation id="383007806262310953">عرض شريط الإشارات</translation>
@@ -360,9 +358,9 @@
 <translation id="7158817046543187970">شريط الإشارات مخفي في كل الصفحات</translation>
 <translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
-<translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
 <translation id="2025435450953474282">يتم تحميل المقالات تلقائيًا في وضع القارئ، مما يوفر لك الوقت</translation>
+<translation id="7984721311211272523">قم بتعطيل وظيفة كتم الصوت في أيقونات سماعات علامات التبويب</translation>
 <translation id="2422927186524098759">الشريط الجانبي</translation>
 <translation id="832432428796481785">إظهار زر الشريط الجانبي</translation>
 <translation id="5581036754486769849">السماح بالملء التلقائي في النوافذ الخاصة</translation>
@@ -403,8 +401,9 @@
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="3357319404342882895">صارم</translation>
 <translation id="8823559166155093873">حجب ملفات تعريف الارتباط</translation>
-<translation id="5770288601196774623">فقط عبر الموقع</translation>
-<translation id="3587482841069643663">الكل</translation>
+<translation id="6196640612572343990">حظر ملفات تعريف الارتباط للجهات الخارجية</translation>
+<translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
+<translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
 <translation id="2360360976480535628">عرض متقدم</translation>
@@ -437,7 +436,7 @@
 <translation id="8826461509529116322">إظهار زر مكافآت Brave</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
-<translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
+<translation id="7791141927430186653">السماح بتضمين X (Twitter سابقًا) للتغريدات المضمنة</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
@@ -448,6 +447,7 @@
 <translation id="3540231253392253941">استخدم خدمات Google لإرسال الرسائل</translation>
 <translation id="933652931229970927">إرسال تقارير التشخيص تلقائيًا</translation>
 <translation id="4891600875049212418">استمتع بالخصوصية عند زيارة المواقع التي تتضمن محتوى حساسًا</translation>
+<translation id="1968895725257436430">جمع البيانات</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
@@ -601,8 +601,6 @@
 <translation id="811745063252080651">قم بحلّ اختبار CAPTCHA لتتمكن من طلب جسر.</translation>
 <translation id="6936835573742749135">لا يمكن طلب اختبار CAPTCHA. حاول مرة أخرى لاحقًا.</translation>
 <translation id="2653659639078652383">إرسال</translation>
-<translation id="1369311132025451972">إعادة توجيه مواقع نطاق أنيون تلقائياً</translation>
-<translation id="6214393847480015759">في نوافذ متصفح Tor، سيقوم متصفح Brave تلقائيًا بالتبديل إلى إصدار ‎.onion لموقع الويب عند التوافر.</translation>
 <translation id="1294350054292274934">حل عناوين ‎.onion فقط في نوافذ متصفح Tor</translation>
 <translation id="1258903596167452221">لن تتاح خدمات Onion خارج نوافذ متصفح Tor.</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
@@ -734,11 +732,10 @@
 <translation id="8571837315037233299">عنوان البوابة</translation>
 <translation id="7703184801853248830">عنوان البوابة غير صالح</translation>
 <translation id="7690058578502751948">يمكن فقط استخدام بوابة IPFS صالحة مع تمكين عزل Origin في Brave</translation>
-<translation id="3411013544209536575">نصائح للمساعدة</translation>
+<translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
-<translation id="7984721311211272523">قم بتعطيل وظيفة كتم الصوت في أيقونات سماعات علامات التبويب</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">إظهار رمز Leo في الشريط الجانبي</translation>
 <translation id="8055509865174199683">إظهار مساعد Leo في قائمة السياقات على مواقع الويب</translation>
@@ -752,6 +749,7 @@ Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="5574059574002819179">ضبط اقتراحات الإكمال التلقائي</translation>
 <translation id="8157373421434119674">البيانات وتاريخ الدردشة</translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
+<translation id="8826914609353373601">إدارة الاشتراك المميز</translation>
 <translation id="349846214503465941">تمكين قائمة التشغيل</translation>
 <translation id="7903608716704052878">إضافة الملفات تلقائيًا للعرض من دون الاتصال بالإنترنت</translation>
 <translation id="4193768184502613558">سيقوم هذا الخيار تلقائيًا بتخزين ملفات الوسائط مؤقتًا حتى تتمكن من تشغيلها من دون اتصال بالإنترنت.</translation>
