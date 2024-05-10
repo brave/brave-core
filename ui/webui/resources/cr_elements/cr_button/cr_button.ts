@@ -55,8 +55,14 @@ export class CrButtonElement extends PolymerElement {
     }
 
     // Avatar buttons should not have a border
-    if (this.classList.contains('avatar') || this.classList.contains('plain')) {
+    const avatar = this.classList.contains('avatar')
+    if (avatar || this.classList.contains('plain')) {
       kind = 'plain'
+    }
+
+    // Avatar buttons should be round.
+    if (avatar) {
+      this.$.button.setAttribute('fab', '')
     }
 
     this.$.button.setAttribute('kind', kind)
