@@ -142,7 +142,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
       &features::kChromeStructuredMetrics,
-      &features::kChromeWebuiRefresh2023,
       &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
