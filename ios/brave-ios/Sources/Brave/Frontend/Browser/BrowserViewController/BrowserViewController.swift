@@ -1973,6 +1973,13 @@ public class BrowserViewController: UIViewController {
           tab.pageTransitionForwardBack == false
         {
           tab.reportPageNavigation(to: rewards)
+
+          rewards.reportTabUpdated(
+            tab: tab,
+            isSelected: true,
+            isPrivate: privateBrowsingManager.isPrivateBrowsing
+          )
+
           // Not passing redirection chain here, in page navigation should not use them.
           tab.reportPageLoad(to: rewards, redirectChain: [])
         }
