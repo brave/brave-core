@@ -5,7 +5,10 @@
 
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
+#include <memory>
+
 #include "base/feature_list.h"
+#include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
@@ -14,6 +15,11 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/components/ai_rewriter/common/features.h"
+#include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
 #endif
 
 namespace {
@@ -28,6 +34,12 @@ void RenderFrameWithBinderRegistryCreated(
     new ai_chat::PageContentExtractor(render_frame, registry,
                                       content::ISOLATED_WORLD_ID_GLOBAL,
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  if (ai_rewriter::features::IsAIRewriterEnabled()) {
+    new ai_rewriter::AIRewriterAgent(render_frame, registry);
   }
 #endif
 }

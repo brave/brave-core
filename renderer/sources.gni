@@ -62,6 +62,10 @@ if (enable_playlist) {
   brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
 
+if (enable_ai_chat) {
+  brave_chrome_renderer_deps += [ "//brave/components/ai_rewriter/renderer" ]
+}
+
 if (enable_brave_vpn) {
   brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
 }

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -27,6 +28,10 @@ source_set("renderer") {
     "//brave/renderer/brave_wallet/",
     "//v8",
   ]
+
+  if (enable_ai_rewriter) {
+    deps += [ "//brave/components/ai_rewriter/renderer" ]
+  }
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader/renderer" ]

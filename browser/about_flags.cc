@@ -15,6 +15,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -51,6 +52,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/components/ai_rewriter/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -451,6 +456,15 @@
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
 #define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
+#endif
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#define BRAVE_AI_REWRITER                                                  \
+  EXPAND_FEATURE_ENTRIES(                                                  \
+      {"brave-ai-rewriter", "Brave AI Rewriter",                           \
+       "Enables the Brave AI rewriter dialog", kOsWin | kOsMac | kOsLinux, \
+       FEATURE_VALUE_TYPE(ai_rewriter::features::kAIRewriter)})
+#else
+#define BRAVE_AI_REWRITER
 #endif
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1021,6 +1035,7 @@
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
+  BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

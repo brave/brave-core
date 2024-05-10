@@ -5,6 +5,7 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -108,6 +109,12 @@ repack("resources") {
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/resources/page:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak" ]
+  }
+
+  if (enable_ai_rewriter) {
+    deps +=
+        [ "//brave/components/ai_rewriter/resources/page:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/ai_rewriter/resources/page/ai_rewriter_ui_generated.pak" ]
   }
 
   if (enable_ipfs_internals_webui) {

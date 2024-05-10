@@ -1,0 +1,21 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("renderer") {
+  sources = [
+    "ai_rewriter_agent.cc",
+    "ai_rewriter_agent.h",
+  ]
+
+  public_deps = [ "//brave/components/ai_rewriter/common" ]
+
+  deps = [
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+}
