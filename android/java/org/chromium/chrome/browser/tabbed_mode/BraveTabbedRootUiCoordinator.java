@@ -110,8 +110,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable Bundle savedInstanceState,
             @Nullable MultiInstanceManager multiInstanceManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
-            @Nullable View baseChromeLayout,
-            @NonNull ObservableSupplierImpl<Boolean> desktopWindowModeSupplier) {
+            @Nullable View baseChromeLayout) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -161,8 +160,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 savedInstanceState,
                 multiInstanceManager,
                 overviewColorSupplier,
-                baseChromeLayout,
-                desktopWindowModeSupplier);
+                baseChromeLayout);
 
         mActivity = activity;
     }

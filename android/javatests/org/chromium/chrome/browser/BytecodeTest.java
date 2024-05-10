@@ -1483,8 +1483,7 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        View.class,
-                        ObservableSupplierImpl.class));
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
