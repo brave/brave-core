@@ -1491,6 +1491,12 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/components/signin/SystemAccountManagerDelegate",
                         "org/chromium/components/signin/BraveSystemAccountManagerDelegate"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/omnibox/AutocompleteEditText",
+                        "org/chromium/chrome/browser/omnibox/BraveAutocompleteEditText",
+                        Context.class,
+                        AttributeSet.class));
     }
 
     @Test
