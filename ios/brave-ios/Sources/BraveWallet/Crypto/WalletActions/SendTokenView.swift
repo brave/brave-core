@@ -20,6 +20,7 @@ struct SendTokenView: View {
   @State private var didAutoShowSelectAccountToken = false
   @State private var isShowingSelectAccountTokenView: Bool = false
   @State private var isBitcoinWarningUnderstood: Bool = false
+  @State private var bitcoinBalanceDetails: BitcoinBalanceDetails?
 
   @ScaledMetric private var length: CGFloat = 16.0
 
@@ -76,6 +77,13 @@ struct SendTokenView: View {
     }
   }
 
+  private var showUnavailableBTCBalanceBanner: Bool {
+    guard keyringStore.selectedAccount.coin == .btc,
+      let balancesForSelectedAccount = sendTokenStore.btcBalances[keyringStore.selectedAccount.id]
+    else { return false }
+    return balancesForSelectedAccount[.pending] ?? 0 != 0
+  }
+
   private var sendTokenBalanceDisplay: String {
     guard let selectedSendToken = sendTokenStore.selectedSendToken,
       let selectedSendTokenBalance = sendTokenStore.selectedSendTokenBalance
@@ -88,6 +96,44 @@ struct SendTokenView: View {
         .trimmingTrailingZeros,
       selectedSendToken.symbol
     )
+  }
+
+  private var sendTokenRow: some View {
+    Button {
+      self.isShowingSelectAccountTokenView = true
+    } label: {
+      HStack {
+        if let token = sendTokenStore.selectedSendToken {
+          if token.isErc721 || token.isNft {
+            NFTIconView(
+              token: token,
+              network: networkStore.defaultSelectedChain,
+              url: sendTokenStore.selectedSendNFTMetadata?.imageURL,
+              length: 26
+            )
+          } else {
+            AssetIconView(
+              token: token,
+              network: networkStore.defaultSelectedChain,
+              length: 26
+            )
+          }
+        }
+        VStack(alignment: .leading) {
+          Text(sendTokenStore.selectedSendToken?.symbol ?? "")
+            .font(.title3.weight(.semibold))
+            .foregroundColor(Color(.braveLabel))
+          Text(networkStore.defaultSelectedChain.chainName)
+            .font(.caption)
+            .foregroundColor(Color(.secondaryBraveLabel))
+        }
+        Spacer()
+        Text(sendTokenBalanceDisplay)
+          .font(.title3.weight(.semibold))
+          .foregroundColor(Color(.braveLabel))
+      }
+      .padding(.vertical, 8)
+    }
   }
 
   var body: some View {
@@ -105,42 +151,23 @@ struct SendTokenView: View {
             )
           }
         ) {
-          Button {
-            self.isShowingSelectAccountTokenView = true
-          } label: {
-            HStack {
-              if let token = sendTokenStore.selectedSendToken {
-                if token.isErc721 || token.isNft {
-                  NFTIconView(
-                    token: token,
-                    network: networkStore.defaultSelectedChain,
-                    url: sendTokenStore.selectedSendNFTMetadata?.imageURL,
-                    length: 26
-                  )
-                } else {
-                  AssetIconView(
-                    token: token,
-                    network: networkStore.defaultSelectedChain,
-                    length: 26
-                  )
-                }
-              }
-              VStack(alignment: .leading) {
-                Text(sendTokenStore.selectedSendToken?.symbol ?? "")
-                  .font(.title3.weight(.semibold))
-                  .foregroundColor(Color(.braveLabel))
-                Text(networkStore.defaultSelectedChain.chainName)
-                  .font(.caption)
-                  .foregroundColor(Color(.secondaryBraveLabel))
-              }
-              Spacer()
-              Text(sendTokenBalanceDisplay)
-                .font(.title3.weight(.semibold))
-                .foregroundColor(Color(.braveLabel))
+          Group {
+            sendTokenRow
+
+            if showUnavailableBTCBalanceBanner {
+              UnavailableBTCBalanceView(
+                btcBalances: sendTokenStore.btcBalances.filter({
+                  $0.key == keyringStore.selectedAccount.id
+                }),
+                btcPrice: sendTokenStore.btcPrice ?? 0,
+                bitcoinBalanceDetails: $bitcoinBalanceDetails
+              )
+              .listRowInsets(.init(top: 0, leading: 8, bottom: 8, trailing: 8))
             }
-            .padding(.vertical, 8)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          .listRowSpacing(0)
+          .listRowSeparator(.hidden)
         }
         if sendTokenStore.selectedSendToken?.isErc721 == false
           && sendTokenStore.selectedSendToken?.isNft == false
@@ -317,6 +344,23 @@ struct SendTokenView: View {
           )
           .navigationTitle(Strings.Wallet.selectTokenToSendTitle)
           .navigationBarTitleDisplayMode(.inline)
+        }
+      }
+      .sheet(
+        isPresented: Binding(
+          get: { bitcoinBalanceDetails != nil },
+          set: {
+            if !$0 {
+              bitcoinBalanceDetails = nil
+            }
+          }
+        )
+      ) {
+        if let bitcoinBalanceDetails {
+          BTCBalanceDetailsView(
+            details: bitcoinBalanceDetails,
+            currencyFormatter: .usdCurrencyFormatter
+          )
         }
       }
       .navigationTitle(Strings.Wallet.send)

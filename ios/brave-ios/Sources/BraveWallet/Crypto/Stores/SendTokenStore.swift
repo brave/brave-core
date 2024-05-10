@@ -70,6 +70,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   @Published private(set) var resolvedAddress: String?
   /// If the current `sendAddress` needs to be resolved offchain
   @Published private(set) var isOffchainResolveRequired: Bool = false
+  // The BTC balance types for the currently selected account. Key is `account.id`.
+  @Published private(set) var btcBalances: [String: [BTCBalanceType: Double]] = [:]
+  /// Price of BTC in the users selected currency.
+  @Published private(set) var btcPrice: Double?
 
   /// Indicates if user tapped `100%` button for current `sendAmount`
   private var sendingMaxValue: Bool = false
@@ -372,6 +376,18 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           accountId: selectedAccount.accountId
         )
         balance = BDouble(btcBalances[.available] ?? 0)
+        if self.btcPrice == nil,
+          btcBalances[.pending] != 0,  // price needed for details display
+          let btcPriceString = await assetRatioService.fetchPrices(
+            for: [selectedSendToken.assetRatioId],
+            toAssets: [selectTokenStore.currencyCode],
+            timeframe: .oneDay
+          )[selectedSendToken.assetRatioId],
+          let btcPriceDouble = Double(btcPriceString)
+        {
+          self.btcPrice = btcPriceDouble
+        }
+        self.btcBalances[selectedAccount.id] = btcBalances
       } else {
         balance = await self.rpcService.balance(
           for: selectedSendToken,
