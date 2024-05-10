@@ -157,6 +157,9 @@ extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
     guard let webView = webView, let url = webView.url else { return }
     if url.isLocal || self.isPrivate { return }
+    if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
+      return
+    }
 
     var htmlBlob: String?
     var classifierText: String?
