@@ -121,6 +121,8 @@ class BuyVPNView: UIView {
       yearlySubButton,
       monthlySubButton,
       iapDisclaimer,
+      UIView.spacer(.vertical, amount: 16),
+      refreshCredentialsStackView,
     ]
     .forEach(contentStackView.addArrangedSubview(_:))
 
@@ -130,6 +132,48 @@ class BuyVPNView: UIView {
       UIView.spacer(.horizontal, amount: 24),
       contentStackView,
       UIView.spacer(.horizontal, amount: 24),
+    ]
+    .forEach(stackView.addArrangedSubview(_:))
+  }
+
+  private lazy var refreshCredentialsStackView = UIStackView().then { stackView in
+    stackView.axis = .vertical
+    stackView.spacing = 12
+
+    let refreshTitle = UILabel().then {
+      $0.font = .systemFont(ofSize: 16, weight: .semibold)
+      $0.textAlignment = .center
+      $0.textColor = UIColor(braveSystemName: .primitivePrimary20)
+      $0.minimumScaleFactor = 0.5
+      $0.adjustsFontSizeToFitWidth = true
+      
+      $0.text = "Already Purchased on brave.com?"
+    }
+
+    let refreshButton = UIButton().then {
+      $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+      $0.titleLabel?.textAlignment = .center
+
+      $0.setTitle("Refresh your credentials", for: .normal)
+
+      $0.snp.makeConstraints {
+        $0.height.equalTo(50)
+      }
+
+      $0.layer.do {
+        $0.cornerRadius = 12
+        $0.cornerCurve = .continuous
+        $0.borderWidth = 1
+        $0.borderColor = UIColor(braveSystemName: .dividerInteractive).cgColor
+        $0.masksToBounds = true
+      }
+
+      $0.addTarget(self, action: #selector(refreshCredentialsAction), for: .touchUpInside)
+    }
+
+    [
+      refreshTitle,
+      refreshButton,
     ]
     .forEach(stackView.addArrangedSubview(_:))
   }
@@ -283,6 +327,10 @@ class BuyVPNView: UIView {
       CGPoint(x: self.featuresScrollView.frame.width * CGFloat(sender.currentPage), y: 0),
       animated: true
     )
+  }
+
+  @objc func refreshCredentialsAction() {
+    // TODO: Refresh Credentials
   }
 }
 
