@@ -84,6 +84,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private boolean mBookmarkButtonFilled;
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LocationBarModel mLocationBarModel;
+    private HomepageManager mHomepageManager;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -103,13 +104,21 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             openHomepageAction.run();
         };
 
-        final OnClickListener searchAcceleratorListener = v -> {
-            setUrlBarFocusAction.onResult(OmniboxFocusReason.ACCELERATOR_TAP);
-        };
+        final OnClickListener searchAcceleratorListener =
+                v -> {
+                    setUrlBarFocusAction.onResult(OmniboxFocusReason.ACCELERATOR_TAP);
+                };
 
-        mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
-                homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
-                tabsSwitcherLongClickListner);
+        mHomepageManager = HomepageManager.getInstance();
+
+        mBrowsingModeCoordinator =
+                new BrowsingModeBottomToolbarCoordinator(
+                        root,
+                        tabProvider,
+                        homeButtonListener,
+                        searchAcceleratorListener,
+                        mShareButtonListenerSupplier,
+                        tabsSwitcherLongClickListner);
 
         mTabSwitcherModeStub = root.findViewById(R.id.bottom_toolbar_tab_switcher_mode_stub);
 
@@ -269,7 +278,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
             final OnClickListener homeButtonListener =
                     v -> {
-                        if (HomepageManager.isHomepageEnabled()) {
+                        if (mHomepageManager.isHomepageEnabled()) {
                             try {
                                 BraveActivity.getBraveActivity().setComesFromNewTab(true);
                             } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -352,7 +361,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     public boolean onLongClick(View v) {
         if (v == mHomeButton) {
             // It is currently a new tab button when homepage is disabled.
-            if (!HomepageManager.isHomepageEnabled()) {
+            if (!mHomepageManager.isHomepageEnabled()) {
                 TabUtils.showTabPopupMenu(mContext, v);
                 return true;
             }
@@ -371,7 +380,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     public void updateHomeButtonState() {
         assert (mHomeButton != null);
-        if (!HomepageManager.isHomepageEnabled()) {
+        if (!mHomepageManager.isHomepageEnabled()) {
             mHomeButton.setImageDrawable(
                     ContextCompat.getDrawable(mContext, R.drawable.new_tab_icon));
             mHomeButton.setEnabled(true);
