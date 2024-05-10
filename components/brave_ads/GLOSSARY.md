@@ -28,12 +28,11 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Geographic  | Geographic advertising targets ads based on specific geographic locations to reach the desired audience.  |
 | Impression  | An impression is when an ad is served or viewed by a user.  |
 | Issuers  | Refers to public keys used to sign privacy-preserving Blinded Tokens. See [challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto) and [privacy pass cryptographic protocol](https://www.petsymposium.org/2018/files/papers/issue3/popets-2018-0026.pdf).  |
-| Multi-armed bandits  | Multi-armed bandits optimize the allocation of resources between different ad variations or strategies to maximize performance.  |
 | Non-Brave Rewards user  | Refers to a user who has not joined Brave Rewards and will not be rewarded BAT for viewing ads.  |
 | P2A  | Private Advertising Analytics. See [P2A](https://github.com/brave/brave-browser/wiki/Randomized-Response-for-Private-Advertising-Analytics).  |
 | P3A  | Privacy-Preserving Product Analytics. See [P3A](https://brave.com/privacy-preserving-product-analytics-p3a/).  |
 | Pacing  | Rate at which an ad campaign uses up its pre-set number of impressions.  |
-| Page land  | A user's arrival on the advertiser's website, i.e., the pages after the user clicks on an ad, also known as site visits.  |
+| Page land  | A user's arrival on the advertiser's website, i.e., the pages after the user clicks on an ad, also known as a site visit.  |
 | Placement  | The location at which an ad is displayed to the user. Also known as an ad unit.  |
 | Priority  | Priority at which an ad campaign uses up its impressions.  |
 | Privacy-preserving tokens  | See [challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto) and [privacy pass cryptographic protocol](https://www.petsymposium.org/2018/files/papers/issue3/popets-2018-0026.pdf).  |
@@ -46,10 +45,9 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Statement of accounts  | A statement of accounts outlines the transactions during a specific period, giving the user an overview of earned rewards.  |
 | Targeting  | Delivering an ad to the appropriate audience through behavioral, contextual, or geographic targeting.  |
 | Text classification  | Target audiences based on the analysis and understanding of textual data to deliver more relevant and personalized advertisements.  |
-| Text embedding  | Converts text-based information, such as user reviews or product descriptions, into numerical representations (embeddings), enabling more precise audience targeting based on the semantic meaning of the text.  |
 | Transactions  | Transactions occur when redeeming a confirmation token and are recorded in a ledger on local storage, providing a chronological and organized history of events.  |
 | User attention  | Measures user attention to choose the most opportune moment to serve an ad and drive performance.  |
-| User interaction  | Measures user interactions with an advertisement, such as a user viewing, clicking or converting an ad.  |
+| User engagement  | Measures user engagement with an advertisement, such as a user viewing, clicking or converting an ad.  |
 | Wallet  | Holds a Brave Rewards payment identifier and recovery seed to enable the refill of confirmation tokens and disbursement of earned rewards to the user.  |
 
 Please add to it!
