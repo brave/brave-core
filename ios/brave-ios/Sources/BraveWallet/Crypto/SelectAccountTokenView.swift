@@ -144,29 +144,11 @@ struct SelectAccountTokenView: View {
         },
         header: {
           WalletListHeaderView {
-            HStack {
-              Text(accountSection.account.accountNameDisplay)
-              Spacer()
-              Menu(
-                content: {
-                  // TODO: for BTC, this should display & copy nextReceiveAddress
-                  Text(accountSection.account.address.zwspOutput)
-                  Button {
-                    UIPasteboard.general.string = accountSection.account.address
-                  } label: {
-                    Label(
-                      Strings.Wallet.copyAddressButtonTitle,
-                      braveSystemImage: "leo.copy.plain-text"
-                    )
-                  }
-                },
-                label: {
-                  Image(braveSystemName: "leo.more.horizontal")
-                    .padding(6)
-                    .clipShape(Rectangle())
-                }
-              )
-            }
+            CopyAddressHeader(
+              displayText: accountSection.account.accountNameDisplay,
+              account: accountSection.account,
+              btcAccountInfo: accountSection.bitcoinAccountInfo
+            )
           }
         }
       )

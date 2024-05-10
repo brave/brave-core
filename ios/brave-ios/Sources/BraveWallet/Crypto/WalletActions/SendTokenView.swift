@@ -95,34 +95,14 @@ struct SendTokenView: View {
       Form {
         Section(
           header: WalletListHeaderView {
-            HStack {
-              Text(
-                "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.accountNameDisplay)"
-              )
-              Spacer()
+            CopyAddressHeader(
+              displayText:
+                "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.accountNameDisplay)",
+              account: keyringStore.selectedAccount,
               // User doesn't need from BTC account receive address in Send
               // Can either use Deposit or Select Token modal
-              if keyringStore.selectedAccount.coin != .btc {
-                Menu(
-                  content: {
-                    Text(keyringStore.selectedAccount.address.zwspOutput)
-                    Button {
-                      UIPasteboard.general.string = keyringStore.selectedAccount.address
-                    } label: {
-                      Label(
-                        Strings.Wallet.copyAddressButtonTitle,
-                        braveSystemImage: "leo.copy.plain-text"
-                      )
-                    }
-                  },
-                  label: {
-                    Image(braveSystemName: "leo.more.horizontal")
-                      .padding(6)
-                      .clipShape(Rectangle())
-                  }
-                )
-              }
-            }
+              btcAccountInfo: nil
+            )
           }
         ) {
           Button {

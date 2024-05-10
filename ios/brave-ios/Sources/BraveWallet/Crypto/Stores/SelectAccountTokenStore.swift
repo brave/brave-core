@@ -33,6 +33,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
     var id: String { account.id }
     let account: BraveWallet.AccountInfo
+    let bitcoinAccountInfo: BraveWallet.BitcoinAccountInfo?
     let tokenBalances: [TokenBalance]
   }
 
@@ -159,6 +160,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   // All user accounts.
   private var allAccounts: [BraveWallet.AccountInfo] = []
+  /// All` BitcoinAccountInfo` models for every Bitcoin account. Key is `accountId.uniqueKey` of the Account.
+  private var bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo] = [:]
   // All user visible assets, key is `Identifiable.id` of `BlockchainToken`.
   private var userVisibleAssets: [String: BraveWallet.BlockchainToken] = [:]
   // All user accounts.
@@ -172,6 +175,12 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.allNetworks = allNetworks
       self.networkFilters = allNetworks.map {
         .init(isSelected: true, model: $0)
+      }
+      let btcAccountInfos = allAccounts.filter({ $0.coin == .btc })
+      if !btcAccountInfos.isEmpty {
+        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
+          accounts: btcAccountInfos
+        )
       }
       let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
         networks: allNetworks,
@@ -188,6 +197,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.accountSections = await buildAccountSections(
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
+        bitcoinAccounts: bitcoinAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
         btcBalancesCache: accountsBTCBalances,
@@ -214,6 +224,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.accountSections = await buildAccountSections(
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
         allAccounts: allAccounts,
+        bitcoinAccounts: bitcoinAccounts,
         userVisibleAssets: Array(userVisibleAssets.values),
         balancesCache: balancesForAccountsCache,
         btcBalancesCache: accountsBTCBalances,
@@ -334,6 +345,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private func buildAccountSections(
     selectedNetworks: [BraveWallet.NetworkInfo],
     allAccounts: [BraveWallet.AccountInfo],
+    bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo],
     userVisibleAssets: [BraveWallet.BlockchainToken],
     balancesCache: TokenBalanceCache,
     btcBalancesCache: [String: [BTCBalanceType: Double]],
@@ -400,6 +412,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
       return AccountSection(
         account: account,
+        bitcoinAccountInfo: bitcoinAccounts[account.accountId.uniqueKey],
         tokenBalances:
           accountTokenBalances
           .sorted { lhs, rhs in
