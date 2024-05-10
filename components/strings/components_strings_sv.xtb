@@ -17,7 +17,6 @@
 <translation id="1035709686865413354">Vattenfilter och -renare</translation>
 <translation id="1036348656032585052">Inaktivera</translation>
 <translation id="1036881361735705143">C4-kuvert</translation>
-<translation id="1036982837258183574">Tryck på |<ph name="ACCELERATOR"/>| för att stänga helskärmen</translation>
 <translation id="1038106730571050514">Visa förslag</translation>
 <translation id="1038842779957582377">okänt namn</translation>
 <translation id="1041998700806130099">Meddelande på arbetsorder</translation>
@@ -65,6 +64,7 @@
 <translation id="1125573121925420732">Varningar kan förekomma medan en webbplats uppdaterar säkerheten. Detta förbättras inom kort.</translation>
 <translation id="112840717907525620">Cacheminnet för policyn är OK</translation>
 <translation id="1131264053432022307">Bilden som du kopierade</translation>
+<translation id="1138458427267715730">Få aviseringar när priset sänks på någon webbplats på webben</translation>
 <translation id="1142713751288681188">Papperstyp</translation>
 <translation id="1144136880160289237">Du har inga aktiva ämnen än</translation>
 <translation id="1149617035358809955">verifiera din identitet för att fylla i dina betalningsuppgifter</translation>
@@ -94,6 +94,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1178821169867863726">12 x 16 tum</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="3248691252569103537">Brave blockerar webbplatser från att spåra dig med hjälp av tredjepartscookies när du surfar. Öppna inställningarna för att <ph name="LINK"/>.</translation>
+<translation id="1185343831726846924">Det går inte att aktivera virtuella kort</translation>
 <translation id="1186201132766001848">Kontrollera lösenord</translation>
 <translation id="1187430513518041110">Bilar och fordon</translation>
 <translation id="1190491977647722791">Papper (tungvikt)</translation>
@@ -113,6 +114,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1219129156119358924">Systemsäkerhet</translation>
 <translation id="1222060260947439312">Höger fack</translation>
 <translation id="1224330468394120478">A3 x 6</translation>
+<translation id="1225240795350945817">Kortnummer:</translation>
 <translation id="1225570101506606926">Biljard</translation>
 <translation id="2735968720006267833">Brave letar efter rabatter åt dig</translation>
 <translation id="1227224963052638717">Okänd princip.</translation>
@@ -126,6 +128,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1243027604378859286">Författare:</translation>
 <translation id="1247030632403369975">Aluminium</translation>
 <translation id="1252209483516427155">Ytterkläder</translation>
+<translation id="1253096324252841344">Betala med <ph name="FINANCIAL_ACCOUNT_TYPES"/></translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (synkroniserade)</translation>
 <translation id="1255086252236620440">Matmixers</translation>
 <translation id="1256368399071562588">&lt;p&gt;Om det inte går att öppna en webbplats testar du först att åtgärda felet med hjälp av dessa felsökningssteg:&lt;/p&gt;
@@ -151,7 +154,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1282358575813748144">Båtar och fartyg</translation>
 <translation id="1283977499362032052">CV och portfolio</translation>
 <translation id="1285320974508926690">Översätt aldrig den här webbplatsen</translation>
-<translation id="1288548991597756084">Spara kortet säkert</translation>
 <translation id="1292571435393770077">Fack 16</translation>
 <translation id="1209478311331937175">Programvara på datorn förhindrar att Brave ansluter till internet på ett säkert sätt (endast Windows-datorer)</translation>
 <translation id="1293797321964802402">Kuvert, 9 x 11 tum</translation>
@@ -175,7 +177,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="132301787627749051">Sök efter bilden i Urklipp</translation>
 <translation id="1323433172918577554">Visa fler</translation>
 <translation id="132390688737681464">Spara och fyll i adresser</translation>
-<translation id="1325749054628832887">Annonsämnen är bara en av många saker som en webbplats kan använda för att anpassa annonser. Webbplatser kan visa annonser även utan annonsämnen, men de kanske är mindre intressanta. Läs mer om hur du <ph name="BEGIN_LINK"/>hanterar annonsintegritet<ph name="LINK_END"/>.</translation>
+<translation id="1325412080783393306">Sök efter fler köpalternativ</translation>
 <translation id="1329916999021038454">Skicka en rapport</translation>
 <translation id="1330449323196174374">Fönsterfalsning, vänster flik</translation>
 <translation id="4274264486214599895">Spela Brave Dino-spelet</translation>
@@ -190,7 +192,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1340482604681802745">Hämtningsadress</translation>
 <translation id="1343356790768851700">Den här webbplatsen avgör vad du gillar och föreslår sedan annonser till andra webbplatser</translation>
 <translation id="1346748346194534595">Höger</translation>
-<translation id="1348198688976932919">Det finns farliga appar på webbplatsen du är på väg till</translation>
 <translation id="1348779747280417563">Bekräfta namn</translation>
 <translation id="8447194907998385478">Brave begränsar de flesta webbplatser från att använda tredjepartscookies för att spåra dig när du surfar. Öppna inställningarna för att <ph name="LINK"/>.</translation>
 <translation id="1355158069018170842">Visa sänkta priser på flikar</translation>
@@ -232,7 +233,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1428729058023778569">Den här varningen visas därför att webbplatsen inte stöder HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1429080515485835353">Självhäftande film</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
-<translation id="1431021750861456539">Automatisk helskärm</translation>
 <translation id="1432187715652018471">Sidan vill installera en tjänsthanterare.</translation>
 <translation id="1432581352905426595">Hantera sökmotorer</translation>
 <translation id="1433225466058025572">Testa att flytta filerna igen</translation>
@@ -275,7 +275,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1507202001669085618">&lt;p&gt;Felmeddelandet visas om du använder en wifi-portal där du måste logga in innan du kommer ut på internet.&lt;/p&gt;
     &lt;p&gt;Åtgärda problemet genom att klicka på &lt;strong&gt;Anslut&lt;/strong&gt; på sidan du försöker öppna.&lt;/p&gt;</translation>
 <translation id="1513706915089223971">Lista över historikposter</translation>
-<translation id="1516097932025103760">Det krypteras och sparas säkert. CVC-koden lagras aldrig.</translation>
 <translation id="151720253492607760">Fortsätt att inte tillåta</translation>
 <translation id="1517433312004943670">Telefonnummer är obligatoriskt</translation>
 <translation id="1519264250979466059">Programversionsdatum</translation>
@@ -315,6 +314,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> tum</translation>
 <translation id="1574714699824202614">Verifierar betalningsmetod</translation>
 <translation id="1576277203042721907">Shopping Insights</translation>
+<translation id="1579189948231786790">Den här webbplatsen har blockerats av organisationen</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1581172376168798878">Löper inte ut</translation>
 <translation id="1583429793053364125">Ett fel uppstod när webbsidan skulle visas.</translation>
@@ -331,6 +331,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="8523167061098356223">Spela Dino Run-spelet i Brave</translation>
 <translation id="161042844686301425">Cyanblå</translation>
 <translation id="1611101756749861742">Andra rullen</translation>
+<translation id="1611854593425834707">Stäng enhetslistan för casting</translation>
 <translation id="1612199629998703524">Hantera ämnen</translation>
 <translation id="1615178538289490617">Återkalla åtkomst för <ph name="PORT_NAME"/></translation>
 <translation id="1615402009686901181">Skärmbilder inaktiveras av en administratörspolicy när konfidentiellt innehåll är synligt</translation>
@@ -369,6 +370,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="168693727862418163">Principen ignoreras eftersom den inte gick att validera mot schemat.</translation>
 <translation id="168841957122794586">Servercertifikatet innehåller en svag kryptografisk nyckel.</translation>
 <translation id="1689333818294560261">Kortnamn</translation>
+<translation id="1691425742011409472">pekarlås</translation>
 <translation id="1692622044604477956">Film- och teaterutbud</translation>
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Så här kan du hantera dina uppgifter:<ph name="END_BOLD"/> Brave raderar automatiskt ämnen som är äldre än fyra veckor. När du surfar kan ett ämne dyka upp på listan igen. Du kan även blockera ämnen som du inte vill att Brave ska dela med webbplatser och inaktivera annonsämnen när som helst i inställningarna för Brave.</translation>
 <translation id="1697532407822776718">Färdigt!</translation>
@@ -403,6 +405,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1734878702283171397">Kontakta systemadministratören.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>, löper ut <ph name="CARD_EXPIRATION"/></translation>
 <translation id="1736420071277903564">Dator</translation>
+<translation id="1739422091279046802">scrolla och zooma</translation>
 <translation id="1741613555002899862">Måste anges och vara en giltig sträng när DnsOverHttpsMode är <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="1743393865165844832">Sängutrustning och sängkläder</translation>
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Så här använder vi denna data:<ph name="END_BOLD"/> Brave registrerar ämnen som du är intresserad av när du surfar. Ämnesetiketter är fördefinierade och inkluderar bl.a. Konst och underhållning, Shopping och Sport. Senare kan en webbplats be Brave om några av dina ämnen (men inte din webbhistorik) för att anpassa vilka annonser som visas.</translation>
@@ -440,6 +443,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="1812527064848182527">liggande</translation>
 <translation id="1812975699435941848">Utbildning inom hälsa och medicin</translation>
 <translation id="1813414402673211292">Rensa webbinformation</translation>
+<translation id="1816436748874040213">Får begära åtkomst till att scrolla och zooma på delade flikar</translation>
 <translation id="1818522458013171885">Avblockera</translation>
 <translation id="1818585559878922121">Dokumentärer</translation>
 <translation id="182139138257690338">automatiska nedladdningar</translation>
@@ -654,7 +658,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2215539479425228550">Klättring och bergsbestigning</translation>
 <translation id="2215727959747642672">Filredigering</translation>
 <translation id="2215963164070968490">Hundar</translation>
-<translation id="2218879909401188352">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> skulle kunna installera farliga appar som skadar enheten, lägger till dolda avgifter på din mobilfaktura eller stjäl personliga uppgifter. <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2219658597883514593">Starta om guiden</translation>
 <translation id="2219735899272417925">Enheten måste återställas</translation>
 <translation id="2221227930294879156">Mat- och dryckfestivaler</translation>
@@ -683,6 +686,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2265192657948645752">Jobb inom detaljhandel</translation>
 <translation id="2265356434276802347">Principen får ha högst <ph name="MAX_ITEMS_LIMIT"/> utvalda poster.</translation>
 <translation id="2267047181501709434">Din identitet verifieras …</translation>
+<translation id="2268044343513325586">Finjustera</translation>
 <translation id="2270484714375784793">Telefonnummer</translation>
 <translation id="2276057643614339130">Utskriftsbas</translation>
 <translation id="2277103315734023688">Sök framåt</translation>
@@ -712,10 +716,10 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2337852623177822836">Inställningen styrs av administratören</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> vill kopplas</translation>
 <translation id="2346319942568447007">Bilden som du kopierade</translation>
+<translation id="2349056830177284083">Tangentbordslås</translation>
 <translation id="2350796302381711542">Vill du tillåta att <ph name="HANDLER_HOSTNAME"/> öppnar alla <ph name="PROTOCOL"/>-länkar i stället för <ph name="REPLACED_HANDLER_TITLE"/>?</translation>
 <translation id="2353297238722298836">Kamera och mikrofon är tillåtna</translation>
 <translation id="2354001756790975382">Övriga bokmärken</translation>
-<translation id="2354430244986887761">Brave Säker webbsökning <ph name="BEGIN_LINK"/>hittade skadliga appar<ph name="END_LINK"/> nyligen på <ph name="SITE"/>.</translation>
 <translation id="2355395290879513365">Det är möjligt att hackare kan se vilka bilder du visar på den här webbplatsen och att de försöker lura dig genom att modifiera dem.</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="2356926036049612643">V8-optimerare</translation>
@@ -760,7 +764,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2452098632681057184">Ekologi och miljö</translation>
 <translation id="2452837234288608067">Det gick inte att hjälpa till med det. Försök igen.</translation>
 <translation id="2456755709261364512">Batteriet måste vara laddat över <ph name="REQUIRED_BATTERY_PRECENT"/> %</translation>
-<translation id="2462599289530201834">Sök efter <ph name="KEYWORD_SHORT_NAME"/></translation>
+<translation id="2461822463642141190">Nuvarande</translation>
 <translation id="2462932596748424101">Sociala nätverk</translation>
 <translation id="2463739503403862330">Fyll i</translation>
 <translation id="2465688316154986572">Häftning</translation>
@@ -800,6 +804,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5151177152796946073">Du kan använda sparade adresser i Braves produkter. Den här adressen sparas i ditt Brave-konto, <ph name="ACCOUNT"/>.</translation>
 <translation id="2527451058878391043">CVC-koden finns på framsidan av kortet. Det är den fyrsiffriga koden uppe till höger ovanför kortnumret.</translation>
 <translation id="2529899080962247600">Fältet får ha högst <ph name="MAX_ITEMS_LIMIT"/> poster. Alla poster utöver det ignoreras.</translation>
+<translation id="2533649878691950253">Webbplatsen blockerades från att registrera din exakta plats eftersom du vanligtvis inte tillåter detta</translation>
 <translation id="253493526287553278">Visa information om kampanjkoden</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{och 1 till}other{och # till}}</translation>
 <translation id="2536110899380797252">Lägg till adress</translation>
@@ -840,7 +845,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2619052155095999743">Infoga</translation>
 <translation id="2625385379895617796">Klockan går före</translation>
 <translation id="262745152991669301">Får begära tillstånd att ansluta till USB-enheter</translation>
-<translation id="2915787201097107005"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Aktivera Förbättrat skydd<ph name="END_ENHANCED_PROTECTION_LINK"/> för att få Braves högsta säkerhetsnivå</translation>
 <translation id="2634124572758952069">Det gick inte att hitta IP-adressen till servern på <ph name="HOST_NAME"/>.</translation>
 <translation id="2639739919103226564">Status:</translation>
 <translation id="2647086987482648627">Tyg (halvblankt)</translation>
@@ -917,19 +921,17 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2784474685437057136">B5 Extra</translation>
 <translation id="2784949926578158345">Anslutningen  återställdes.</translation>
 <translation id="2786008859124691917">Cyklar och tillbehör</translation>
+<translation id="2791955793407772554">Pekarlås</translation>
 <translation id="2792012897584536778">Den här enhetens administratör har konfigurerat säkerhetscertifikat som kan tillåta den att se innehållet på webbplatser du besöker.</translation>
 <translation id="2794233252405721443">Webbplatsen har blockerats</translation>
 <translation id="2794629552137076216">Glas (ytbehandlat)</translation>
-<translation id="2799020568854403057">Det finns skadliga appar på webbplatsen du är på väg till</translation>
 <translation id="2799223571221894425">Starta om</translation>
 <translation id="2799758406651937857">Herrkläder</translation>
-<translation id="2803306138276472711">Brave Säker webbsökning upptäckte nyligen <ph name="BEGIN_LINK"/>skadlig programvara<ph name="END_LINK"/> på <ph name="SITE"/>. Ibland förekommer det skadlig programvara på webbplatser som vanligtvis är säkra.</translation>
 <translation id="2807052079800581569">Bild Y – position</translation>
 <translation id="2808278141522721006">Du kan aktivera eller inaktivera Windows Hello i <ph name="SETTINGS"/></translation>
 <translation id="2814184336982254349">Denna PDF är inte tillgänglig. Tryck på Sök + M för att öppna snabbmenyn och aktivera Extrahera text från PDF</translation>
 <translation id="2818338148457093657">Skönhetsvård och spa</translation>
 <translation id="2820957248982571256">Söker …</translation>
-<translation id="2824549017793319782">Välj för att skriva sökningen direkt i adressfältet</translation>
 <translation id="2824775600643448204">Adress- och sökfält</translation>
 <translation id="2826760142808435982">Anslutningen är krypterad och verifieras med <ph name="CIPHER"/> och använder <ph name="KX"/> som nyckelutbytesmekanism.</translation>
 <translation id="2833637280516285136">Pratradio</translation>
@@ -937,6 +939,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="2838682941130655229"><ph name="EMBEDDED_URL"/> vill använda uppgifter som de sparat om dig</translation>
 <translation id="2839032553903800133">Aviseringar har blockerats</translation>
 <translation id="2839501879576190149">Webbplatsen som öppnas är en bluff</translation>
+<translation id="2843623755398178332">Vill du scrolla och zooma på den delade fliken?</translation>
 <translation id="2851291081585704741">Du är offline</translation>
 <translation id="2856444702002559011">En angripare kan försöka stjäla dina uppgifter från <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (t.ex. lösenord, meddelanden eller kreditkortsuppgifter). <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2858134430383535011">200 x 300 mm</translation>
@@ -1022,6 +1025,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3023165109041533893">Föreslagna annonser på webbplatser bidrar till att skydda din webbhistorik och identitet samtidigt som webbplatser kan visa relevanta annonser. Utifrån din aktivitet kan en webbplats föreslå relaterade annonser när du fortsätter att surfa. I inställningarna kan du se en lista över dessa webbplatser och blockera dem som du inte vill ska ge förslag.</translation>
 <translation id="3024663005179499861">Felaktig policytyp</translation>
 <translation id="3030331669969285614">Dessa flaggor förhindrar eller återställer en icke-bakåtkompatibel ändring och är endast tillgängliga under en begränsad tid.</translation>
+<translation id="3034526003882782781">Scrollning och zoom tillåts</translation>
 <translation id="3036894576201005614">Rengöringsartiklar för hushåll</translation>
 <translation id="3037177537145227281">Bevakar pris</translation>
 <translation id="3037605927509011580">Oj, ett fel har uppstått!</translation>
@@ -1042,6 +1046,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3090667236485488075">Glas</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="3098513225387949945">Ignoreras, eftersom inaktiveringslistan innehåller ett mönster som är likvärdigt med * vilket är samma sak som att inaktivera principen.</translation>
+<translation id="3102312643185441063">Sparkonto</translation>
 <translation id="3103188521861412364">Aktier och obligationer</translation>
 <translation id="3105172416063519923">Tillgångs-id:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Kontrollera den säkra DNS-konfigurationen<ph name="END_LINK"/></translation>
@@ -1063,6 +1068,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3121994479408824897">Besök <ph name="DOMAIN"/></translation>
 <translation id="3126023634486644099">Etiketter (permanenta)</translation>
 <translation id="3133565499688974786"><ph name="SEARCH_ENGINE_NAME"/> är nu din standardsökmotor</translation>
+<translation id="3137283076021007034"><ph name="KEYWORD"/> – Sök i <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="3140646734028448730">Företagstjänster</translation>
 <translation id="3141093262818886744">Öppna ändå</translation>
 <translation id="3141641372357166056">Inget samtyckesbeslut</translation>
@@ -1074,6 +1080,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3154506275960390542">Den här sidan innehåller ett formulär som kanske inte kan skickas säkert. Data som skickas kan visas av andra vid överföringen eller modifieras av en obehörig innan den tas emot av servern.</translation>
 <translation id="3154987252551138431">Ett fel uppstod när Närdelning användes</translation>
 <translation id="315504272643575312">Kontot hanteras av <ph name="MANAGER"/>.</translation>
+<translation id="3156511682997763015">Spola framåt 10 sekunder</translation>
 <translation id="3157931365184549694">Återställ</translation>
 <translation id="3158539265159265653">Skiva</translation>
 <translation id="3162559335345991374">wifi-nätverket du använder kanske kräver att du besöker dess inloggningssida.</translation>
@@ -1143,6 +1150,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3286372614333682499">stående</translation>
 <translation id="3287510313208355388">Ladda ned när du är online</translation>
 <translation id="3288238092761586174"><ph name="URL"/> kan behöva vidta ytterligare steg för att verifiera din betalning</translation>
+<translation id="3289578402369490638">Från andra butiker på webben</translation>
 <translation id="3293642807462928945">Läs mer om principen <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Visa och hantera dina lösenord i inställningarna för Brave</translation>
 <translation id="3299098170013242198">Windows Hello är aktiverat för att fylla i lösenord</translation>
@@ -1172,6 +1180,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="334438173029876234">Skateboardutrustning</translation>
 <translation id="3347146863028219517">Skidor och snowboard</translation>
 <translation id="3349952286488694786">SRA2</translation>
+<translation id="3350450887151703713">Spola bakåt 10 sekunder</translation>
 <translation id="3352881017886802007">Sportspel</translation>
 <translation id="3355823806454867987">Ändra proxyinställningar...</translation>
 <translation id="335809815767823">Exporterade</translation>
@@ -1214,7 +1223,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3427342743765426898">&amp;Gör om Redigera</translation>
 <translation id="3428151540071562330">Minst en av URI:erna i servermallen för DnsOverHttpsTemplates är ogiltig och kommer inte att användas.</translation>
 <translation id="3428789896412418755">Grupperad historik</translation>
-<translation id="3431216045099978607">Tryck på |<ph name="ACCELERATOR"/>| för att avsluta helskärmsläget och se nedladdningen.</translation>
 <translation id="3432601291244612633">Stäng sidan</translation>
 <translation id="3433111389595862568">Programvara för samarbete och konferens</translation>
 <translation id="3433144818443565002">Röst- och videochatt</translation>
@@ -1251,6 +1259,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3493660662684070951">Lastbilar, skåpbilar och suvar</translation>
 <translation id="3495081129428749620">Hitta på sidan
     <ph name="PAGE_TITLE"/></translation>
+<translation id="3495818359064790343">Lön</translation>
 <translation id="3497627066518778351">Granska en lista över webbplatsdata på enheten i ett nytt fönster</translation>
 <translation id="3498215018399854026">Vi kunde inte nå din förälder just nu. Försök igen.</translation>
 <translation id="350069200438440499">Filnamn:</translation>
@@ -1291,6 +1300,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3567778190852720481">Det går inte att registrera sig med ett jobbkonto (jobbkonton är inte behöriga).</translation>
 <translation id="3567901620846335314">100 x 150 mm</translation>
 <translation id="3568886473829759308">Besök webbplatsen för att se information, resurser eller tjänster som tillhandahålls av företaget.</translation>
+<translation id="3570079787344939099">Scrolla och zooma</translation>
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">Tillåt för den här webbplatsen</translation>
 <translation id="3575168918110434329">A4 x 7</translation>
@@ -1377,19 +1387,20 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3711895659073496551">Stäng av</translation>
 <translation id="3712006010833051684">Kuvert nr 10</translation>
 <translation id="3712624925041724820">Licenserna har tagit slut</translation>
+<translation id="3713277100229669269">Nu kan du se kortförmåner innan du betalar</translation>
 <translation id="371420189621607696">E-sport</translation>
 <translation id="3714633008798122362">webbkalender</translation>
 <translation id="3714780639079136834">aktivera mobildata eller wifi</translation>
 <translation id="3715016660240337709">{0,plural, =1{Filen har blockerats från att laddas upp}other{<ph name="FILE_COUNT"/> filer har blockerats från att laddas upp}}</translation>
 <translation id="2241987852555440600">När säkerhetshändelser flaggas av Brave skickas relevant data om händelserna till administratören. Exempel på sådan data är webbadresser till sidor du besöker i Brave, filnamn eller metadata, webbläsar- eller flikkrascher och användarnamnet du loggar in med i webbaserade appar, på dina enheter och i Brave.</translation>
 <translation id="3715597595485130451">Anslut till wifi</translation>
+<translation id="3716622997181469465">tangentbordslås</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>kontrollera proxyn, brandväggen och DNS-konfigureringen<ph name="END_LINK"/></translation>
 <translation id="3723663469265383848">Det går inte att använda enheten i upp till tio minuter under uppdateringen.</translation>
 <translation id="372429172604983730">Det här problemet kan orsakas av bland annat antivirusprogram, brandväggar, webbfiltrerings- och proxyprogram.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du snabbt vill skapa en ny Brave-presentation i Presentationer</translation>
 <translation id="3727309136762649052">Namnrymd</translation>
 <translation id="8077319455765501118">Om du vill använda Brave Lösenordshantering med en macOS-nyckelring ska du starta om Brave och tillåta åtkomst till nyckelringen. Flikarna öppnas igen när du har startat om enheten.</translation>
-<translation id="3736520371357197498">Om du är medveten om säkerhetsriskerna kan du <ph name="BEGIN_LINK"/>besöka den här osäkra webbplatsen<ph name="END_LINK"/> innan de skadliga programmen har tagits bort.</translation>
 <translation id="3736739313435669994">Du blockerade webbplatser från att använda tredjepartscookies för att spåra dig när du surfar. Öppna inställningarna för att <ph name="LINK"/>.</translation>
 <translation id="3738166223076830879">Webbläsaren hanteras av administratören.</translation>
 <translation id="3739842843727261045">Gilla-markera för att visa att du gillar dessa resultat</translation>
@@ -1399,7 +1410,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3744212718085287312">Vill du öka säkerheten med ett virtuellt kort nästa gång?</translation>
 <translation id="8500803517201014627">Din text samt innehållet på och webbadressen till sidan du skriver på skickas till Brave, granskas av människor och används till att förbättra den här funktionen. Undvik att ange personliga uppgifter (t.ex. medicinska eller ekonomiska uppgifter) och använd inte verktyget på webbplatser som innehåller privata eller känsliga uppgifter.</translation>
 <translation id="3748009735914587286">Metall (högblank)</translation>
-<translation id="3748148204939282805">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> kan försöka lura dig att göra något riskfyllt, som att installera programvara eller avslöja personliga uppgifter (t.ex. lösenord, telefonnummer eller kreditkortsuppgifter). <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3752543821772132562">Ignoreras eftersom <ph name="POLICY_NAME"/> inte har angetts.</translation>
 <translation id="3754210790023674521">Avsluta bild-i-bild-läge</translation>
 <translation id="3759461132968374835">Inga krascher har rapporterats nyligen. Krascher som uppstod när kraschrapporteringen var inaktiverad visas inte här.</translation>
@@ -1427,6 +1437,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3807366285948165054">Bild X – byte</translation>
 <translation id="3807709094043295184">Klassisk rock och gamla godingar</translation>
 <translation id="3807873520724684969">Skadligt innehåll har blockerats.</translation>
+<translation id="380865868633614173">Sparar kortuppgifter</translation>
 <translation id="3810770279996899697">Lösenordshantering behöver åtkomst till MacOS-nyckelringen</translation>
 <translation id="3810973564298564668">Hantera</translation>
 <translation id="3812398568375898177">Det här är en viktig uppdatering som förbättrar Android-appars prestanda i ChromeOS.</translation>
@@ -1454,6 +1465,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="385489333361351399">Kamera- och fotoutrustning</translation>
 <translation id="3858027520442213535">Uppdatera datum och tid</translation>
 <translation id="3858860766373142691">Namn</translation>
+<translation id="3865339060090354361">Se villkoren för <ph name="CREDIT_CARD_NAME"/> här</translation>
 <translation id="3872834068356954457">Vetenskap</translation>
 <translation id="3875783148670536197">Visa hur man gör</translation>
 <translation id="3880456882942693779">Konst och underhållning</translation>
@@ -1527,6 +1539,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4030545038933060179">När funktionen är aktiverad visas en lista över ämnen utifrån din senaste webbhistorik</translation>
 <translation id="4031179711345676612">Mikrofon är tillåten</translation>
 <translation id="4036753017940930924">Tomter och mark</translation>
+<translation id="4039506337798853114">Visa markören genom att trycka på |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4047351652147966654">18 x 24 tum</translation>
 <translation id="404831776305217138">Uppdateringsadressen för tillägget med id:t <ph name="EXTENSION_ID"/> är ogiltig eller använder ett schema som inte stöds. Följande scheman stöds: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> och <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Du kan använda den i Braves produkter.</translation>
@@ -1539,6 +1552,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="406358100705415968">Skyddsutrustning för arbetsplatsen</translation>
 <translation id="4063924980214801036">Bekräfta kortet snabbare med enhetsupplåsning</translation>
 <translation id="4065659219963895623">Restauranger</translation>
+<translation id="4067774859633143413">Avsluta helskärmsläget och se nedladdningen genom att hålla nere |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4067947977115446013">Lägg till giltig adress</translation>
 <translation id="4072486802667267160">Det gick inte att behandla beställningen. Försök igen.</translation>
 <translation id="4073376909608563327">Det gick inte att använda enhetsupplåsning</translation>
@@ -1553,7 +1567,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4092349052316400070">Fyll i adress</translation>
 <translation id="4096237801206588987">11 x 15 tum</translation>
 <translation id="4098306082496067348">Tryck på de virtuella kortuppgifterna för att lägga till dem i kassan.</translation>
-<translation id="4098354747657067197">Webbplatsen som öppnas är bedräglig</translation>
 <translation id="4099048595830172239">Enligt administratörspolicyn är det inte rekommenderat att dela skärmen med <ph name="APPLICATION_TITLE"/> när konfidentiellt innehåll är synligt:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill anpassa teckenstorlekar och teckensnitt i Brave</translation>
 <translation id="4101413244023615925">Text och bild</translation>
@@ -1618,7 +1631,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4213500579045346575">Bodybuilding</translation>
 <translation id="4214357935346142455">profil på inloggningsskärmen</translation>
 <translation id="4220128509585149162">Kraschar</translation>
-<translation id="422022731706691852">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> kan försöka lura dig att installera program som stör dig när du surfar (t.ex. genom att ändra startsidan eller visa extra annonser på webbplatser du besöker). <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4223404254440398437">Mikrofon tillåts inte</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Testa att köra nätverksdiagnostik<ph name="END_LINK"/>.</translation>
 <translation id="422722221769396062">Hemkörning av mat från restauranger</translation>
@@ -1741,6 +1753,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="4456937135469235202">Äventyrsresor</translation>
 <translation id="4464826014807964867">Webbplatser med information från organisationen</translation>
 <translation id="4466576951214254884">Studielån och stipendier</translation>
+<translation id="4467821340016922962">Avsluta helskärmsläget och se nedladdningen genom att trycka på |<ph name="ACCELERATOR"/>|</translation>
 <translation id="8294153737034342992"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Aktivera utökat skydd<ph name="END_ENHANCED_PROTECTION_LINK"/> för att få Braves högsta säkerhet</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Det här formuläret är inte säkert. Autofyll har inaktiverats.</translation>
@@ -1832,7 +1845,9 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="468314109939257734">Visa ditt virtuella kortnummer</translation>
 <translation id="4687718960473379118">Föreslagna annonser på webbplatser</translation>
 <translation id="4691093235373904540">Takläggning</translation>
+<translation id="4692623383562244444">Sökmotorer</translation>
 <translation id="4698692901173737941">Kampsport</translation>
+<translation id="4701307090948589984">Casta till …</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Sida</translation>
 <translation id="4702656508969495934">Live Caption visas. Använd fönsterbyte för att ändra fokus</translation>
@@ -1909,7 +1924,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="483241715238664915">Aktivera varningar</translation>
 <translation id="4832961164064927107">Grillning</translation>
 <translation id="4834250788637067901">Betalningsmetoder, erbjudanden och adresser med Google Pay</translation>
-<translation id="1923748633297576468">Betala snabbare nästa gång och skydda kortet med Braves branschledande säkerhet.</translation>
 <translation id="246176083348620700">Visa Brave-historiken</translation>
 <translation id="484462545196658690">Auto</translation>
 <translation id="484671803914931257">Få rabatt på <ph name="MERCHANT_NAME"/> med mera</translation>
@@ -2021,6 +2035,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5040262127954254034">Integritet</translation>
 <translation id="5043480802608081735">Länk som du har kopierat</translation>
 <translation id="5045550434625856497">Felaktigt lösenord</translation>
+<translation id="5048293684454354469">Annonsämnen är bara en av många saker som en webbplats kan använda för att anpassa annonser. Webbplatser kan visa annonser även utan annonsämnen, men de kanske är mindre anpassade. Läs mer om hur du <ph name="BEGIN_LINK"/>hanterar annonsintegritet<ph name="LINK_END"/>.</translation>
 <translation id="5052517576853118371">Aktiva ämnen</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Om du vill skicka den här filen med Närdelning ska du frigöra utrymme (<ph name="DISK_SPACE_SIZE"/>) på enheten}other{Om du vill skicka de här filerna med Närdelning ska du frigöra utrymme (<ph name="DISK_SPACE_SIZE"/>) på enheten}}</translation>
 <translation id="505757197798929356">Ange anledning till att den öppnas (obligatoriskt)</translation>
@@ -2077,6 +2092,8 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5161334686036120870">Ämne:</translation>
 <translation id="5161506081086828129">Utmatningsfack 9</translation>
 <translation id="5164798890604758545">Text skrivs</translation>
+<translation id="5507530832404660443">Det här experimentella AI-verktyget kanske inte alltid har rätt. Ditt innehåll skickas till Brave för att förbättra det.
+    <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="2996889577833788807">Ange CVC-koden för <ph name="CREDIT_CARD"/>. När du bekräftar delas kortuppgifter från ditt Brave-konto med webbplatsen.</translation>
 <translation id="8515152881111950319">Du kan förlora åtkomsten till organisationens konto eller bli utsatt för identitetsstöld. Du rekommenderas att ändra lösenordet nu.</translation>
 <translation id="5171045022955879922">Sök eller ange webbadress</translation>
@@ -2107,6 +2124,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5238301240406177137">Spara i kontot</translation>
 <translation id="5239119062986868403">Normalt pris</translation>
 <translation id="5239623327352565343">Plats tillåts</translation>
+<translation id="5241048084654737238">Det går inte att spara kortuppgifterna</translation>
 <translation id="5242610955375133957">Torrfilm</translation>
 <translation id="8854897060240443467">Hantera Brave-kontot: aktivera om du vill hantera uppgifter, integritet och säkerhet i Brave-kontot</translation>
 <translation id="5244732203286792411">Läser in …
@@ -2122,6 +2140,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5266128565379329178">Bindning högst upp</translation>
 <translation id="5269225904387178860">Fyra hål längst ned</translation>
 <translation id="5269999699920406580">Funktioner som gäller hela systemet kan endast ställas in av ägaren: <ph name="OWNER_EMAIL"/></translation>
+<translation id="5271381225185906340"><ph name="DATA_CONTROLS_ATTRIBUTE"/> är inte ett villkor som stöds för <ph name="DATA_CONTROLS_RESTRICTION"/>.</translation>
 <translation id="5273658854610202413">Varning: Den här principen kombinerades inte enligt specifikationen i principen PolicyDictionaryMultipleSourceMergeList eftersom den inte ingår i de ordboksprinciper som kan kombineras.</translation>
 <translation id="5279286380302340275">Hantera nedladdningar</translation>
 <translation id="5283044957620376778">B1</translation>
@@ -2231,7 +2250,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
     <ph name="LINE_BREAK"/>
     Testa med att kontakta systemadministratören.</translation>
 <translation id="549333378215107354">Storlek 3</translation>
-<translation id="5501712702042287009">automatisk helskärm</translation>
+<translation id="5496804587179176046">Spara säkerhetskoder. Inga säkerhetskoder är sparade just nu.</translation>
 <translation id="550365051221576010">Fyll i allt</translation>
 <translation id="5508443345185481044">Kameror och videokameror</translation>
 <translation id="5509762909502811065">B0</translation>
@@ -2247,12 +2266,14 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5519696598216267194">Papper (perforerat)</translation>
 <translation id="5521782189689806907">Skåp</translation>
 <translation id="5523118979700054094">Policynamn</translation>
+<translation id="5523588073846127669">Säljaren accepterar inte det här virtuella kortet</translation>
 <translation id="5525755241743357906">Filen har kopierats eller flyttats</translation>
 <translation id="5526617258931667850"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill anpassa tillgänglighetsverktygen i inställningarna för ChromeOS.</translation>
 <translation id="55293785478302737">Kanthäftning</translation>
 <translation id="553377674408670169">Jobb inom utbildning</translation>
 <translation id="5536214594743852365">Visa avsnittet <ph name="SECTION"/></translation>
 <translation id="553782666181800029">Chou 2-kuvert</translation>
+<translation id="5538270463355278784">automatisk helskärm</translation>
 <translation id="5539243836947087108">Raft</translation>
 <translation id="5540224163453853">Det gick inte att hitta den önskade artikeln.</translation>
 <translation id="5540969246441091044">Ridsport</translation>
@@ -2305,7 +2326,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5629630648637658800">Det gick inte att läsa in policyinställningarna</translation>
 <translation id="5631439013527180824">Ogiltig enhetshanteringstoken</translation>
 <translation id="5632485077360054581">Visa hur man gör</translation>
-<translation id="5633066919399395251">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> kan försöka installera skadliga program som stjäl eller raderar information (t.ex. foton, lösenord, meddelanden och kreditkortsuppgifter) på datorn. <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="563324245173044180">Bedrägligt innehåll har blockerats.</translation>
 <translation id="563371367637259496">Mobilt</translation>
 <translation id="5634725266554983459">Vill du aktivera manuell verifiering?</translation>
@@ -2371,6 +2391,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5765072501007116331">Välj en adress för att visa leveranssätt och krav</translation>
 <translation id="57689295674415555">Har det virtuella kortnumret inte fyllts i?</translation>
 <translation id="5772086939108830423">Använd en nyckel på en annan enhet</translation>
+<translation id="5775734789739406956">Högerklicka för att lägga till sparade uppgifter i valfritt formulär</translation>
 <translation id="5776313857861697733">Prioritet</translation>
 <translation id="5776574724412881956">Är det virtuella kortet inte ifyllt? Klicka på virtuella kortuppgifter för att kopiera dem till urklipp. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Ett experiment har aktiverats</translation>
@@ -2387,6 +2408,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="580241730938216256">Starta uppdatering</translation>
 <translation id="5803412860119678065">Vill du att uppgifterna om <ph name="CARD_DETAIL"/> ska fyllas i?</translation>
 <translation id="5804241973901381774">Behörigheter</translation>
+<translation id="5806871454498484178">Scrollning och zoom har blockerats</translation>
 <translation id="5937482014241669139">Visa Brave-historiken</translation>
 <translation id="5810442152076338065">Anslutningen till <ph name="DOMAIN"/> är krypterad med en gammal krypteringssvit.</translation>
 <translation id="5813119285467412249">&amp;Gör om Lägg till</translation>
@@ -2409,6 +2431,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="5852909432155870672">RA4</translation>
 <translation id="5860491529813859533">Aktivera</translation>
 <translation id="5862579898803147654">Utmatningsfack 8</translation>
+<translation id="5863515189965725638">Redigera IBAN</translation>
 <translation id="5863847714970149516">Sidan du är på väg till kan försöka debitera dig</translation>
 <translation id="5866257070973731571">Ange telefonnummer</translation>
 <translation id="5866898949289125849">Du visar en sida för utvecklarverktyg</translation>
@@ -2490,7 +2513,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6014851866995737824">Ignoreras eftersom antingen aktiverings- eller inaktiveringslistan saknas.</translation>
 <translation id="6015796118275082299">År</translation>
 <translation id="6017514345406065928">Grön</translation>
-<translation id="6017850046339264347">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> skulle kunna installera bedrägliga appar som inte gör vad de påstås göra eller samla in data som används för att spåra dig. <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (synkroniserade)</translation>
 <translation id="6028591542479806248">Hantera telefon- och e-postaviseringar</translation>
 <translation id="6028833024483927901">Internationell mat</translation>
@@ -2507,9 +2529,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6042308850641462728">Mer</translation>
 <translation id="6044573915096792553">Storlek 12</translation>
 <translation id="6045164183059402045">Utskjutningsmall</translation>
-<translation id="6047233362582046994">Om du är medveten om säkerhetsriskerna kan du <ph name="BEGIN_LINK"/>besöka webbplatsen<ph name="END_LINK"/> innan de skadliga apparna har tagits bort.</translation>
 <translation id="6047927260846328439">Sidan kan ha till syfte att försöka lura dig att installera programvara eller avslöja personliga uppgifter. <ph name="BEGIN_LINK"/>Visa ändå<ph name="END_LINK"/></translation>
-<translation id="6049004884579590341">Avsluta helskärmsläget genom att trycka på |<ph name="ACCELERATOR"/>| och hålla kvar</translation>
 <translation id="6049056807983403918">B4-kuvert</translation>
 <translation id="6049488691372270142">Sidvisning</translation>
 <translation id="6049975101166779351">Barnavård</translation>
@@ -2586,7 +2606,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6195371403461054755">Geologi</translation>
 <translation id="6195418151868446719">Hemelektronik</translation>
 <translation id="6196640612572343990">Blockera tredjepartscookies</translation>
-<translation id="6197467523841310553">Högerklicka för att fylla i sparade uppgifter i valfritt onlineformulär utan att behöva skriva så mycket</translation>
 <translation id="6197648101609735209">89 x 89 mm</translation>
 <translation id="6198480336395236519">Helt avskurna flikar</translation>
 <translation id="6203231073485539293">Kontrollera internetanslutningen</translation>
@@ -2597,8 +2616,8 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6218305986815100395">Det går inte att aktivera det virtuella kortet</translation>
 <translation id="8385639954311581596">Vill du ta bort adressen från Brave?</translation>
 <translation id="622039917539443112">Parallellfalsning</translation>
+<translation id="6221286101741304627">Avsluta helskärmsläget genom att trycka på |<ph name="ACCELERATOR"/>|</translation>
 <translation id="5286511760116495417">Vill du spara det här kortet i Brave-kontot?</translation>
-<translation id="6221345481584921695">Brave Säker webbsökning upptäckte nyligen <ph name="BEGIN_LINK"/>skadlig programvara<ph name="END_LINK"/> på <ph name="SITE"/>. Webbplatser som vanligtvis är säkra utsätts ibland för skadlig programvara. Det skadliga innehållet kommer från <ph name="SUBRESOURCE_HOST"/>, som är en känd distributör av skadlig programvara.</translation>
 <translation id="6221892641068781024">Förenklad visning</translation>
 <translation id="6222527803348563979">Brevpapper</translation>
 <translation id="6224281071334553713">Ädelstenar och smycken</translation>
@@ -2617,6 +2636,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill hantera filer som laddats ned i Brave</translation>
 <translation id="6254436959401408446">Det finns inte tillräckligt med minne för att öppna den här sidan</translation>
 <translation id="625463612687472648">Dra tillbaka behörigheten</translation>
+<translation id="4171163883411218676">{FINANCIAL_ACCOUNT,plural, =1{Visa <ph name="FINANCIAL_ACCOUNT_TYPES"/> som alternativ när du gör köp i Brave}other{Visa <ph name="FINANCIAL_ACCOUNT_TYPES"/> som alternativ när du gör köp i Brave}}</translation>
 <translation id="6259156558325130047">&amp;Gör om Ändra ordning</translation>
 <translation id="6263376278284652872">Bokmärken för <ph name="DOMAIN"/></translation>
 <translation id="6264376385120300461">Ladda ned ändå</translation>
@@ -2627,7 +2647,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6270066318535733958">Båt</translation>
 <translation id="1300170712564922349">Återuppta sökningen för att se relevant aktivitet i Brave-historiken</translation>
 <translation id="9136010393039243713">Brave Update</translation>
-<translation id="6279183038361895380">Tryck på |<ph name="ACCELERATOR"/>| om du vill visa markören</translation>
 <translation id="6280223929691119688">Det går inte att leverera till den här adressen. Välj en annan adress.</translation>
 <translation id="6284292079994426700">26 x 38 tum</translation>
 <translation id="6284449872909111707">Sms och snabbmeddelanden</translation>
@@ -2810,7 +2829,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6629652037942826935">Lyxresor</translation>
 <translation id="6630043285902923878">Söker efter USB-enheter …</translation>
 <translation id="4945711024178085608">Knappen Hantera inställningar för Brave: aktivera om du vill öppna Brave-inställningarna</translation>
-<translation id="6630809736994426279">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> kan försöka installera skadliga program som stjäl eller raderar information (t.ex. foton, lösenord, meddelanden och kreditkortsuppgifter) på din Mac. <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6631133499533814479">Australisk fotboll</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6633405994164965230">Datorutbildning</translation>
@@ -2846,6 +2864,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill hitta enheten i Brave-kontot</translation>
 <translation id="6695428916538794739">Action- och äventyrsfilmer</translation>
 <translation id="6696424331653607346">Resehandböcker och reseskildringar</translation>
+<translation id="6698097747703777657">Fick du inte koden? <ph name="BEGIN_LINK"/>Få en ny kod<ph name="END_LINK"/></translation>
 <translation id="6698381487523150993">Skapad av:</translation>
 <translation id="67007264085648978">Tidsreglage</translation>
 <translation id="6702851555558236418">Ljud- och musikprogram</translation>
@@ -2960,6 +2979,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="6944557544071529399">Strategispel</translation>
 <translation id="6944692733090228304">Du har angett ditt lösenord på en webbplats som inte hanteras av <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. Skydda kontot genom att inte återanvända lösenordet i andra appar och webbplatser.</translation>
 <translation id="6945221475159498467">Välj</translation>
+<translation id="9000864348890316168">Söka på webben i Brave</translation>
 <translation id="6948051842255602737">Spelet är slut, du fick <ph name="SCORE"/> poäng.</translation>
 <translation id="6948701128805548767">Välj en adress för att visa alternativ för utlämning och krav</translation>
 <translation id="6948874830249067134">A1 x 3</translation>
@@ -3081,6 +3101,7 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="715996170234243096">{NUM_FILES,plural, =1{Om du vill skicka den här filen med <ph name="FEATURE_NAME"/> måste du frigöra utrymme (<ph name="DISK_SPACE_SIZE"/>) på enheten}other{Om du vill skicka de här filerna med <ph name="FEATURE_NAME"/> måste du frigöra utrymme (<ph name="DISK_SPACE_SIZE"/>) på enheten}}</translation>
 <translation id="7160999678034985039">Spara ditt arbete och starta uppdateringen när du är redo.</translation>
 <translation id="7163295244162773898">{0,plural, =1{Vill du kopiera en konfidentiell fil?}other{Vill du kopiera konfidentiella filer?}}</translation>
+<translation id="7168625890036931112"><ph name="DATA_CONTROLS_RESTRICTION"/> är inte en begränsning som stöds på den här plattformen</translation>
 <translation id="717330890047184534">Gaia-id:</translation>
 <translation id="7174545416324379297">Sammanslagen</translation>
 <translation id="7175097078723125014">Alternativet för att redigera adress har valts</translation>
@@ -3126,7 +3147,6 @@ Annars blockeras detta av integritetsinställningarna. Om du tillåter detta kan
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
 <translation id="7243771829620208687">RA0</translation>
 <translation id="7243898806468402921">Affärsverksamhet</translation>
-<translation id="724691107663265825">Det förekommer skadlig programvara på följande sida</translation>
 <translation id="7251437084390964440">Nätverkskonfigurationen uppfyller inte ONC-standarden. Det kan hända att delar av konfigurationen inte kan importeras.
 Mer information.
 <ph name="DEBUG_INFO"/></translation>
@@ -3150,6 +3170,7 @@ Mer information.
 <translation id="7308436126008021607">synkronisering i bakgrunden</translation>
 <translation id="7310392214323165548">Enheten startas om inom kort</translation>
 <translation id="7311244614769792472">Inga resultat hittades</translation>
+<translation id="7313107491291103073">Organisationen har flaggat den här webbplatsen eftersom den kan bryta mot en policy.</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Anslutningshjälp</translation>
 <translation id="7323804146520582233">Dölj avsnittet <ph name="SECTION"/></translation>
@@ -3191,6 +3212,7 @@ Mer information.
 <translation id="7392089738299859607">Uppdatera adressen</translation>
 <translation id="7393161616326137353">Äventyrsspel</translation>
 <translation id="739728382607845710">Ikonen Betalningshanterare</translation>
+<translation id="7399616692258236448">Platsbegäranden blockeras automatiskt på alla webbplatser utom sådana du tillåter</translation>
 <translation id="7399802613464275309">Säkerhetskontroll</translation>
 <translation id="7400418766976504921">Webbadress</translation>
 <translation id="7403392780200267761">Dela den här fliken genom att dela länken, skapa en QR-kod, casta med flera alternativ</translation>
@@ -3364,6 +3386,7 @@ Mer information.
 <translation id="7673278391011283842">Postfack 6</translation>
 <translation id="7675325315208090829">Hantera betalningsmetoder …</translation>
 <translation id="767550629621587224">Förskurna flikar</translation>
+<translation id="7675756033024037212">Scrollning och zoom tillåts inte</translation>
 <translation id="7676643023259824263">Sök efter texten i Urklipp, <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">Öppna och hantera webbhistoriken i Brave-inställningarna</translation>
 <translation id="7679947978757153706">Baseboll</translation>
@@ -3409,6 +3432,7 @@ Mer information.
 <translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">Anpassa teckenstorlekar och teckensnitt i Brave</translation>
 <translation id="7752995774971033316">Hanteras inte</translation>
+<translation id="7753769899818674547"><ph name="KEYWORD"/> – Chatta med <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="1771750053794015966">Dina flikar och appar i Brave stängs när uppdateringen startar</translation>
 <translation id="7755287808199759310">En förälder kan ta bort blockeringen</translation>
 <translation id="7755624218968747854">Primär rulle</translation>
@@ -3470,6 +3494,7 @@ Mer information.
 <translation id="7888575728750733395">Renderingsmetod för utskrifter</translation>
 <translation id="7894280532028510793">Om stavningen är rätt <ph name="BEGIN_LINK"/>testar du att köra nätverksdiagnostik<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">Kuvert, 7 x 9 tum</translation>
+<translation id="7908648876066812348">Aktiverar virtuella kort</translation>
 <translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur för att öppna sidan Säkerhetskontroll i Brave-inställningarna</translation>
 <translation id="791551905239004656">Rita och måla</translation>
 <translation id="7916162853251942238">Flexo-base</translation>
@@ -3604,9 +3629,9 @@ Mer information.
 <translation id="8150722005171944719">Det går inte att läsa filen på <ph name="URL"/>. Den kan ha tagits bort eller flyttats, eller så krävs behörighet för att få åtkomst till den.</translation>
 <translation id="8153865548451212769">{0,plural, =1{Enligt administratörspolicyn är det inte rekommenderat att ladda ned den här filen till <ph name="DESTINATION_NAME"/>}other{Enligt administratörspolicyn är det inte rekommenderat att ladda ned dessa filer till <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="81563721597823545">Hockeyutrustning</translation>
-<translation id="815788908807586564">Chatta med Gemini</translation>
 <translation id="8161095570253161196">Fortsätt surfa</translation>
 <translation id="8163866351304776260">Fyra hål till vänster</translation>
+<translation id="8163998196788647716">Transaktionskonto</translation>
 <translation id="8164078261547504572">Vill du få e-postmeddelanden när priserna sänks?</translation>
 <translation id="8169175551046720804">Tangenterna <ph name="DATA_CONTROLS_KEYS"/> kan inte anges i samma ordlista</translation>
 <translation id="4351627595884993315">Du erbjuds av Brave att spara dina kort i Brave-kontot eftersom du är inloggad. Du kan ändra detta i inställningarna.</translation>
@@ -3647,7 +3672,6 @@ Mer information.
 <translation id="8241707690549784388">Önskad sida använder information som du har angett. Om du återgår till sidan kan eventuella åtgärder på sidan upprepas. Vill du fortsätta?</translation>
 <translation id="8241712895048303527">Blockera på den här webbplatsen</translation>
 <translation id="8242426110754782860">Fortsätt</translation>
-<translation id="8245703462678310750">Håll |<ph name="ACCELERATOR"/>| nedtryckt för att avsluta helskärmsläget och se nedladdningen.</translation>
 <translation id="8246482227229072868">Ringar</translation>
 <translation id="8249296373107784235">Avbryt</translation>
 <translation id="824968735947741546">Översätter <ph name="SOURCE"/> (identifierades automatiskt) till <ph name="TARGET"/></translation>
@@ -3708,7 +3732,6 @@ Mer information.
 <translation id="833262891116910667">Markera</translation>
 <translation id="8339163506404995330">Sidor på <ph name="LANGUAGE"/> översätts inte</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
-<translation id="834457929814110454">Om du är medveten om säkerhetsriskerna kan du <ph name="BEGIN_LINK"/>besöka den här osäkra webbplatsen<ph name="END_LINK"/> innan de skadliga programmen har tagits bort.</translation>
 <translation id="8344776605855290140">Registreringen av virtuella kort har öppnats över hela skärmen</translation>
 <translation id="8350416046273606058">Genvägen får inte innehålla blanksteg: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="8351131234907093545">Skapa anteckning</translation>
@@ -3728,6 +3751,7 @@ Mer information.
 <translation id="8378714024927312812">Hanteras av organisationen</translation>
 <translation id="8380941800586852976">Farlig</translation>
 <translation id="8381674639488873545">Debiteringen kan göras en gång eller återkommande och det behöver inte framgå tydligt att detta händer. <ph name="BEGIN_LINK"/>Visa ändå<ph name="END_LINK"/></translation>
+<translation id="8382097126743287270">Automatisk helskärm</translation>
 <translation id="838307841291975086">Kombi</translation>
 <translation id="8389532092404711541">Brukar kosta <ph name="LOW_PRICE"/></translation>
 <translation id="8389940864052787379">Specialutrustade bilar och sportbilar</translation>
@@ -3816,7 +3840,6 @@ Mer information:
 <translation id="8541579497401304453">Kontakta ett företag genom att ringa dem.</translation>
 <translation id="8542014550340843547">Tre häftklamrar längst ned</translation>
 <translation id="8542617028204211143">SRA0</translation>
-<translation id="8543181531796978784">Du kan <ph name="BEGIN_ERROR_LINK"/>rapportera ett identifieringsproblem<ph name="END_ERROR_LINK"/> eller <ph name="BEGIN_LINK"/>besöka den här osäkra webbplatsen<ph name="END_LINK"/> om du är medveten om säkerhetsriskerna.</translation>
 <translation id="907470742420136113">Brave försöker ändra inställningarna för att fylla i betalningsmetoder.</translation>
 <translation id="8544303911974837265">Polyester</translation>
 <translation id="854548366864113872">Högprisalternativ</translation>
@@ -3855,7 +3878,6 @@ Mer information:
 <translation id="8612919051706159390">Onlinegrupper</translation>
 <translation id="8617269623452051934">enhetsanvändning</translation>
 <translation id="861775596732816396">Storlek 4</translation>
-<translation id="8618975513789458065">Annonsämnen är bara en av många saker som en webbplats kan använda för att anpassa annonser. Webbplatser kan visa annonser även utan annonsämnen, men de kanske är mindre intressanta.</translation>
 <translation id="8620276786115098679">Kaku 7-kuvert</translation>
 <translation id="8623885649813806493">Inga matchande lösenord. Visa alla sparade lösenord.</translation>
 <translation id="8624354461147303341">Få erbjudanden</translation>
@@ -3919,7 +3941,6 @@ Mer information:
 <translation id="8757526089434340176">Ett Google Pay-erbjudande är tillgängligt</translation>
 <translation id="8759274551635299824">Kortets giltighetstid har löpt ut</translation>
 <translation id="87601671197631245">Den här webbplatsens säkerhetskonfiguration är inaktuell. Det kan leda till att dina uppgifter (t.ex. lösenord, meddelanden eller kreditkort) exponeras när de skickas till den här webbplatsen.</translation>
-<translation id="8761567432415473239">Braves tjänst Säker webbsökning <ph name="BEGIN_LINK"/>hittade skadliga program<ph name="END_LINK"/> på <ph name="SITE"/> nyligen.</translation>
 <translation id="8763927697961133303">USB-enhet</translation>
 <translation id="8766943070169463815">Ett arbetsblad för autentisering av användaruppgifter för säker betalning har öppnats</translation>
 <translation id="8767765348545497220">Stäng hjälpbubblan</translation>
@@ -3945,6 +3966,7 @@ Mer information:
 <translation id="8807160976559152894">Beskär efter varje sida</translation>
 <translation id="8809203544698246977">Blockerade ämnen visas här</translation>
 <translation id="8811470563853401328">Vill du spara adressen i kontot?</translation>
+<translation id="8811725516933141693">Skriv @gemini om du vill chatta med Gemini</translation>
 <translation id="8813277370772331957">Påminn mig senare</translation>
 <translation id="8814707942599948500">C8-kuvert</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tryck på Tabb och sedan på Retur om du vill uppdatera Brave i inställningarna för Brave</translation>
@@ -3978,6 +4000,7 @@ Mer information:
 <translation id="8874790741333031443">Testa att tillfälligt tillåta tredjepartscookies, vilket innebär mindre skydd när du surfar men större sannolikhet att webbplatsfunktionerna fungerar som förväntat.</translation>
 <translation id="8874824191258364635">Ange ett giltigt kortnummer</translation>
 <translation id="8877780815363510165">Fiske</translation>
+<translation id="888117890813270681"><ph name="DATA_CONTROLS_LEVEL"/> kan inte anges för <ph name="DATA_CONTROLS_RESTRICTION"/></translation>
 <translation id="8884537526797090108">Det går inte att spela in konfidentiellt innehåll</translation>
 <translation id="8888187300091017436">Madrasser</translation>
 <translation id="8890048757975398817">styra <ph name="READERNAME"/> och få åtkomst till det smartkort som är tillgängligt för den.</translation>
@@ -4014,7 +4037,6 @@ Mer information:
 <translation id="8971063699422889582">Servercertifikatet har gått ut.</translation>
 <translation id="8975012916872825179">Gäller uppgifter som telefonnummer, e-postadresser och leveransadresser</translation>
 <translation id="8975263830901772334">Namn på filer du skriver ut</translation>
-<translation id="8978053250194585037"><ph name="BEGIN_LINK"/>Nätfiske<ph name="END_LINK"/> upptäcktes nyligen av Brave Säker webbsökning på <ph name="SITE"/>. Webbplatser som används för nätfiske imiterar andra webbplatser i syfte att lura dig.</translation>
 <translation id="8982884016487650216">PDF-filen har lästs in</translation>
 <translation id="8983369100812962543">Du kan nu ändra storleken på appen</translation>
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>: tryck på Tabb och sedan på Retur om du vill öppna webbhistoriken i Brave</translation>
@@ -4023,7 +4045,6 @@ Mer information:
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
 <translation id="8992061558343343009">Letar du efter information om systemversionen? Besök</translation>
 <translation id="899688752321268742"><ph name="URL"/> vill veta när du använder enheten aktivt</translation>
-<translation id="8996941253935762404">Webbplatsen som öppnas innehåller skadliga program</translation>
 <translation id="8997023839087525404">Servern visade ett certifikat som inte lämnats ut via principen Certifikattransparens. Detta är ett krav för vissa certifikat för att säkerställa att de är pålitliga och skyddar mot hackare.</translation>
 <translation id="9000145382638074673">Dina enheter</translation>
 <translation id="9001074447101275817">Proxyservern <ph name="DOMAIN"/> kräver användarnamn och lösenord.</translation>
@@ -4043,6 +4064,7 @@ Mer information:
 <translation id="9023536760430404133">Hjul och däck</translation>
 <translation id="9025348182339809926">(Ogiltigt)</translation>
 <translation id="902590795160480390">Läser in PDF</translation>
+<translation id="9027531288681624875">Avsluta helskärmsläget genom att hålla nere |<ph name="ACCELERATOR"/>|</translation>
 <translation id="9035022520814077154">Säkerhetsfel</translation>
 <translation id="9035824888276246493">Spara säkerhetskoder</translation>
 <translation id="9036306139374661733">Vill du tillåta mikrofon?</translation>

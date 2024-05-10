@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है.</translation>
 <translation id="5152595963250646670">YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें</translation>
 <translation id="2998960761270772157">YouTube पर साइन इन, मेन्यू, कमेंट और वीडियो की जानकारी ब्लॉक हो जाती है.</translation>
+<translation id="8531835121131500698">YouTube Shorts को ब्लॉक करें</translation>
+<translation id="2167271714269158912">Youtube.com पर होम पेज, ट्रेंडिंग पेज और सर्च रिज़ल्ट से Shorts को ब्लॉक करें.</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
 <translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="7861645265922445992">रिवार्ड्स क्लेम करें</translation>
 <translation id="1848737374354350807">शेष</translation>
 <translation id="4781696154289395607">आपने <ph name="BAT_VALUE"/> BAT का योगदान दिया है।</translation>
 <translation id="2429828319207652823">आपके योगदान को प्रोसैस करने में एक समस्या थी।</translation>
-<translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
-<translation id="2377929997600454162">यह रहे आपके <ph name="MONTH_VALUE"/> के विज्ञापन रिवॉर्ड!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> के रिवॉर्ड : <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">आपके पास क्लेम करने के लिए <ph name="TOKEN"/> दिन बचे हैं</translation>
 <translation id="683765328936486920">YouTube पर</translation>
 <translation id="8969049974285901797">ट्विच पर</translation>
 <translation id="8038539967102225446">Brave विज्ञापन यहाँ हैं!</translation>
@@ -457,7 +454,7 @@
 <translation id="3763681089644577874">कुकीज़ ब्लॉक करें</translation>
 <translation id="614747795780742163">वेबसाइटों को आपके पिछले आगमन के बारे में जानकारी संग्रहीत करने से रोकता है</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="4941539331405513605">क्रॉस-साइट कुकीज़ ब्लॉक करें</translation>
+<translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="1553643198679271031">अदृश्य मोड का अनुरोध करें</translation>
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
@@ -603,6 +600,7 @@
 <translation id="5488357322146334497">संदेश</translation>
 <translation id="1904000155026201268">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="5333225216561354793">हम चाहते हैं कि आप नीचे दिए गए आइटम के लिए हमें अपनी स्वीकृति दें</translation>
+<translation id="6937275455070754004">चुनें कि आपके वॉलेट में किस ब्लॉकचेन का उपयोग किया जाना चाहिए।</translation>
 <translation id="1645800479814134195">मुझे पता है कि यह एक सेल्फ़ कस्टडी वॉलेट है और इससे जुड़े किसी भी फ़ंड, एसेट या अकाउंट के लिए और अपने वॉलेट को सुरक्षित रखने तथा उसका बैकअप रखने के लिए ज़रूरी कार्रवाई करने की ज़िम्मेदारी सिर्फ़ मेरी है। मुझे पता है कि Brave मेरे वॉलेट को एक्सेस नहीं कर सकता या मेरी ओर से लेनदेन को रिवर्स नहीं कर सकता और यह कि अपना पासवर्ड भूल जाने, डिवाइस चोरी हो जाने या इस तरह की किसी भी अन्य परिस्थिति में मेरे पास इसकी एक्सेस वापस पाने के लिए सिर्फ़ रिकवरी फ़्रेज़ वाला तरीका होगा।</translation>
 <translation id="4565891212173086999">मैंने <ph name="CLICK_START"/>उपयोग की शर्तें<ph name="CLICK_END"/> पढ़ ली हैं और उनसे सहमत हूँ।</translation>
 <translation id="3933122286596948824">आपका रिकवरी वाक्यांश</translation>
@@ -610,12 +608,12 @@
 <translation id="2708402071160162126">चेतावनी: अपने रिकवरी फ़्रेज़ को कभी भी शेयर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपकी संपत्ति को हमेशा के लिए ले सकता है.</translation>
 <translation id="111912712268284159">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
 <translation id="6896758677409633944">कॉपी</translation>
-<translation id="1783600039044302171">पासवर्ड से अपना क्रिप्टो सुरक्षित करें</translation>
 <translation id="3726490322412361740">पासवर्ड एंटर करें</translation>
 <translation id="3038243139480464605">पासवर्ड वेरीफ़ाई करें</translation>
 <translation id="3043677904160378840">पासवर्ड में कम से कम 8 वर्ण होने चाहिए।</translation>
 <translation id="7396672979287122068">वेरीफ़ाई किया गया पासवर्ड मेल नहीं खाता</translation>
-<translation id="7084181009966710506">वॉलेट बनाया जा रहा है...</translation>
+<translation id="1566412704591731844">आपका वॉलेट बन रहा है</translation>
+<translation id="7779823116893018906">इसमें कुछ सेकंड लग सकते हैं...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> अकाउंट <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">खाता जोड़ें</translation>
 <translation id="3448492834076427715">अकाउंट अपडेट करें</translation>
@@ -638,6 +636,11 @@
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
 <translation id="5844138175312846408">आपके पास पहले से कोई वॉलेट है?</translation>
 <translation id="2502258949541727762">हमारे शुरू करने से पहले</translation>
+<translation id="4303748097351941030">सपोर्ट वाले नेटवर्क</translation>
+<translation id="4204268048253692928">आप सेटिंग में किसी भी समय नेटवर्क जोड़ सकते हैं।</translation>
+<translation id="2523174693142405417">नेटवर्क खोजें</translation>
+<translation id="1164748583090434571">Testnets दिखाएं</translation>
+<translation id="935220650946301698"><ph name="NUMBER"/>नेटवर्क के साथ जारी रखें</translation>
 <translation id="8248460961680233459">पासवर्ड बनाएँ</translation>
 <translation id="2789310860394340571">आप अपने वॉलेट को एक्सेस करने के लिए इस पासवर्ड का इस्तेमाल करेंगे.</translation>
 <translation id="2136372518715274136">नया पासवर्ड डालें</translation>
@@ -844,7 +847,7 @@
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
-<translation id="4945690646623486292">नेटवर्क चुनें</translation>
+<translation id="4556601961751528347">कनेक्ट किए गए अकाउंट को बदलें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
 <translation id="8006088103295786154">Brave वॉलेट को ऐक्सेस करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट हो गया है</translation>
@@ -870,6 +873,7 @@
 <translation id="4255623233927788178">ब्लॉक एक्सप्लोरर पर देखें</translation>
 <translation id="8274201358637112807">यह पेज Brave वॉलेट के साथ संपर्क करना चाहता है</translation>
 <translation id="3355936511340229503">कनेक्शन गड़बड़ी</translation>
+<translation id="1531836666020185856">फ़ीचर किया गया</translation>
 <translation id="4891604214809245310">नेटवर्क को <ph name="NETWORK_NAME"/> पर सेट नहीं किया जा सका</translation>
 <translation id="685345388423515592">ऐसा लगता है कि आपके इस डिवाइस पर अन्य VPN "हमेशा चालू" पर सेट हैं. Brave Firewall + VPN को चालू करने के लिए, फिर से कनेक्ट करने से पहले अन्य VPN के लिए "हमेशा चालू" सेटिंग को बंद करें. अगर समस्या बनी रहती है, तो अन्य VPN को अनइंस्टॉल करके देखें.</translation>
 <translation id="85136472535634474">VPN सेटिंग खोलें</translation>
@@ -1037,7 +1041,6 @@
 <translation id="1677961202754619328">Uphold के मुताबिक, इस समय आपके Uphold अकाउंट पर कुछ सीमाएँ हैं. कृपया अपने Uphold अकाउंट में लॉग इन करें और देखें कि क्या वहाँ कोई नोटिस है या अकाउंट से जुड़ी कोई ज़रूरी शर्तें पूरी करनी बाकी हैं, इसके बाद फिर से कोशिश करें.</translation>
 <translation id="5425006356459378415">Brave रिवॉर्ड उपलब्ध नहीं हैं</translation>
 <translation id="833643743158564518">अभी आपके क्षेत्र में Brave रिवॉर्ड के लिए नए साइन अप बंद हैं. हालाँकि आप बाद में फिर से कोशिश कर सकते हैं. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">सभी नेटवर्क</translation>
 <translation id="7748944510530490017">प्राइमरी नेटवर्क</translation>
 <translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
 <translation id="282560918037172384">टेस्ट नेटवर्क</translation>
@@ -1177,4 +1180,11 @@
 <translation id="3251885322612056119">सेवा की अपडेटेड शर्तें</translation>
 <translation id="4049035689681585146">हमने Brave Rewards के लिए सेवा की शर्तें अपडेट कर दी हैं. हमने अपनी शर्तों को स्पष्ट करने और यह सुनिश्चित करने के लिए ये अपडेट किए हैं कि उनमें नई सुविधाएँ शामिल हों. अगर आप Brave Rewards का इस्तेमाल करना जारी रखते हैं, तो आप अपडेटेड सेवा की शर्तों से सहमत हैं. अगर आप सहमत नहीं हैं, तो आप <ph name="RESET_START"/> Brave Rewards <ph name="RESET_END"/> को रीसेट कर सकते हैं, जिससे सुविधा डिसेबल कर दी जाएंगी.</translation>
 <translation id="2165953574528546737">Brave Rewards सेवा की शर्तों <ph name="TOS_END"/> के बारे में <ph name="TOS_START"/> देखें</translation>
+<translation id="1381108437654541567">कई Windows इनेबल करें</translation>
+<translation id="6167344249617630304">एक समय में ज़्यादा से ज़्यादा 5 windows खोलें और टैब को एक window से दूसरी window पर ले जाएँ</translation>
+<translation id="1063948063403254568">कई windows मिले</translation>
+<translation id="4661882208707630158">मल्टीपल-विंडो सुविधा को डिसेबल करने से पहले कृपया टैब को किसी अन्य Brave विंडो में मर्ज करें, या अन्य  Brave विंडो बंद करें.</translation>
+<translation id="6891382640886173702">Windows मर्ज करें</translation>
+<translation id="2912247081180973411">Windows बंद करें</translation>
+<translation id="4010699428656610296">कृपया अन्य टैब को किसी अन्य Brave विंडो में मर्ज करें.</translation>
 </translationbundle>
