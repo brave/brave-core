@@ -38,9 +38,6 @@ class TabManager final : public AdsClientNotifierObserver {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
-  std::optional<int32_t> MaybeGetVisibleTabId() const {
-    return visible_tab_id_;
-  }
   bool IsVisible(int32_t tab_id) const;
   std::optional<TabInfo> GetVisible() const;
 
