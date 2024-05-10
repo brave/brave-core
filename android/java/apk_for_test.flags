@@ -850,3 +850,11 @@
 -keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.omnibox.AutocompleteEditText {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveAutocompleteEditText {
+    public <init>(...);
+}
