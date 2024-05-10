@@ -60,6 +60,8 @@ public class BraveVpnUtils {
     public static BraveVpnServerRegion selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
+    public static String IS_KILL_SWITCH = "is_kill_switch";
+
     public static String getBraveAccountUrl() {
         return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
                                                                : BRAVE_ACCOUNT_PROD_PAGE_URL;
@@ -92,8 +94,9 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openAlwaysOnActivity(Activity activity) {
+    public static void openAlwaysOnActivity(Activity activity, boolean isKillSwitch) {
         Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
+        vpnAlwaysOnActivityIntent.putExtra(IS_KILL_SWITCH, isKillSwitch);
         activity.startActivity(vpnAlwaysOnActivityIntent);
     }
 
