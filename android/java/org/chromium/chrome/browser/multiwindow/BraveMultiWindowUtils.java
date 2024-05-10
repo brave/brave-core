@@ -25,6 +25,11 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
         super();
     }
 
+    public boolean shouldShowEnableWindow(Activity activity) {
+        return super.isOpenInOtherWindowSupported(activity)
+                || super.canEnterMultiWindowMode(activity);
+    }
+
     public static boolean shouldShowManageWindowsMenu() {
         return shouldEnableMultiWindows() && MultiWindowUtils.shouldShowManageWindowsMenu();
     }
