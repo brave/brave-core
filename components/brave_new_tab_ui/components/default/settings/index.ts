@@ -5,15 +5,15 @@
 
 import styled, { css } from 'styled-components'
 
-import favoritesSelectedLight from './assets/favorites-selected.png'
-import favoritesUnselectedLight from './assets/favorites-unselected.png'
-import frecencySelectedLight from './assets/frecency-selected.png'
-import frecencyUnselectedLight from './assets/frecency-unselected.png'
+import favoritesSelectedLight from './assets/favorites-selected.svg'
+import favoritesUnselectedLight from './assets/favorites-unselected.svg'
+import frecencySelectedLight from './assets/frecency-selected.svg'
+import frecencyUnselectedLight from './assets/frecency-unselected.svg'
 
-import favoritesSelectedDark from './assets/favorites-selected-dark.png'
-import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
-import frecencySelectedDark from './assets/frecency-selected-dark.png'
-import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
+import favoritesSelectedDark from './assets/favorites-selected-dark.svg'
+import favoritesUnselectedDark from './assets/favorites-unselected-dark.svg'
+import frecencySelectedDark from './assets/frecency-selected-dark.svg'
+import frecencyUnselectedDark from './assets/frecency-unselected-dark.svg'
 
 import CheckedCircle from './assets/checked-circle.svg'
 import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css'
@@ -340,32 +340,6 @@ export const StyledTopSitesCustomizationSettingsOption = styled('button') <{}>`
   }
 `
 
-interface CustomizationImageBorderProps {
-  selected?: boolean
-}
-
-export const StyledTopSitesCustomizationImageBorder = styled('div') <CustomizationImageBorderProps>`
-  margin-bottom: 8px;
-  border-radius: 11px;
-
-  ${p => p.selected && css`
-    background: ${p => isDarkTheme(p) ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
-    padding: 3px;
-  `}
-
-  ${p => !p.selected && css`
-    border: 2px solid ${p => isDarkTheme(p) ? '#3B3E4F' : '#F1F3F5'};
-    background: ${p => isDarkTheme(p) ? '#17171F' : '#FFF'};
-    padding: 1px;
-
-    &:hover {
-      border: 2px solid ${p => isDarkTheme(p) ? '#C2C4CF' : '#AEB1C2'};
-      background: ${p => isDarkTheme(p) ? '#2B2D3F' : '#FAFAFF'};
-      padding: 1px;
-    }
-  `}
-`
 
 interface CustomizationImageProps {
   isFavorites: boolean
@@ -374,9 +348,9 @@ interface CustomizationImageProps {
 
 export const StyledTopSitesCustomizationImage = styled('img') <CustomizationImageProps>`
   width: 100%;
-  height: 100%;
   cursor: pointer;
   content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected ?? false, p.isFavorites)});
+  margin-bottom: ${spacing.m};
 
   ${p => p.selected && css`
     background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};

@@ -10,14 +10,13 @@ import {
   SettingsText,
   StyledTopSitesCustomizationSettings,
   StyledTopSitesCustomizationSettingsOption,
-  StyledTopSitesCustomizationImageBorder,
   StyledTopSitesCustomizationImage,
   StyledTopSitesCustomizationOptionTitle,
   StyledTopSitesCustomizationOptionDesc
 } from '../../../components/default'
 import Toggle from '@brave/leo/react/toggle'
 
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 interface Props {
   toggleShowTopSites: () => void
@@ -26,75 +25,44 @@ interface Props {
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
 }
 
-class TopSitesSettings extends React.PureComponent<Props, {}> {
-  onClickFavorites = () => {
-    this.props.setMostVisitedSettings(true, true)
-  }
-
-  onClickFrecency = () => {
-    this.props.setMostVisitedSettings(true, false)
-  }
-
-  render () {
-    const {
-      toggleShowTopSites,
-      showTopSites,
-      customLinksEnabled
-    } = this.props
-
-    const favoritesSelected = showTopSites && customLinksEnabled
-    const frecencySelected = showTopSites && !customLinksEnabled
-    return (
-      <div>
-        <SettingsRow>
-          <SettingsText>{getLocale('showTopSites')}</SettingsText>
-          <Toggle
-            onChange={toggleShowTopSites}
-            checked={showTopSites}
-            size='small'
-          />
-        </SettingsRow>
-        <StyledTopSitesCustomizationSettings>
-          <StyledTopSitesCustomizationSettingsOption
-            onClick={this.onClickFavorites}
-          >
-            <StyledTopSitesCustomizationImageBorder
-              selected={favoritesSelected}
-            >
-              <StyledTopSitesCustomizationImage
-                isFavorites={true}
-                selected={favoritesSelected}
-              />
-            </StyledTopSitesCustomizationImageBorder>
-            <StyledTopSitesCustomizationOptionTitle>
-              {getLocale('showFavoritesLabel')}
-            </StyledTopSitesCustomizationOptionTitle>
-            <StyledTopSitesCustomizationOptionDesc>
-              {getLocale('showFavoritesDesc')}
-            </StyledTopSitesCustomizationOptionDesc>
-          </StyledTopSitesCustomizationSettingsOption>
-          <StyledTopSitesCustomizationSettingsOption
-            onClick={this.onClickFrecency}
-          >
-            <StyledTopSitesCustomizationImageBorder
-              selected={frecencySelected}
-            >
-              <StyledTopSitesCustomizationImage
-                isFavorites={false}
-                selected={frecencySelected}
-              />
-            </StyledTopSitesCustomizationImageBorder>
-            <StyledTopSitesCustomizationOptionTitle>
-              {getLocale('showFrecencyLabel')}
-            </StyledTopSitesCustomizationOptionTitle>
-            <StyledTopSitesCustomizationOptionDesc>
-              {getLocale('showFrecencyDesc')}
-            </StyledTopSitesCustomizationOptionDesc>
-          </StyledTopSitesCustomizationSettingsOption>
-        </StyledTopSitesCustomizationSettings>
-      </div>
-    )
-  }
+function TopSitesSettings({ toggleShowTopSites, showTopSites, customLinksEnabled, setMostVisitedSettings }: Props) {
+  const favoritesSelected = showTopSites && customLinksEnabled
+  const frecencySelected = showTopSites && !customLinksEnabled
+  return <div>
+    <SettingsRow>
+      <SettingsText>{getLocale('showTopSites')}</SettingsText>
+      <Toggle
+        onChange={toggleShowTopSites}
+        checked={showTopSites}
+        size='small' />
+    </SettingsRow>
+    <StyledTopSitesCustomizationSettings>
+      <StyledTopSitesCustomizationSettingsOption
+        onClick={() => setMostVisitedSettings(true, true)}>
+        <StyledTopSitesCustomizationImage
+          isFavorites={true}
+          selected={favoritesSelected} />
+        <StyledTopSitesCustomizationOptionTitle>
+          {getLocale('showFavoritesLabel')}
+        </StyledTopSitesCustomizationOptionTitle>
+        <StyledTopSitesCustomizationOptionDesc>
+          {getLocale('showFavoritesDesc')}
+        </StyledTopSitesCustomizationOptionDesc>
+      </StyledTopSitesCustomizationSettingsOption>
+      <StyledTopSitesCustomizationSettingsOption
+        onClick={() => setMostVisitedSettings(true, false)}>
+        <StyledTopSitesCustomizationImage
+          isFavorites={false}
+          selected={frecencySelected} />
+        <StyledTopSitesCustomizationOptionTitle>
+          {getLocale('showFrecencyLabel')}
+        </StyledTopSitesCustomizationOptionTitle>
+        <StyledTopSitesCustomizationOptionDesc>
+          {getLocale('showFrecencyDesc')}
+        </StyledTopSitesCustomizationOptionDesc>
+      </StyledTopSitesCustomizationSettingsOption>
+    </StyledTopSitesCustomizationSettings>
+  </div>
 }
 
-export default TopSitesSettings
+export default React.memo(TopSitesSettings)
