@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -179,6 +180,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     @Override
     public void initializeWithNative(
+            Profile profile,
             Runnable layoutUpdater,
             OnClickListener tabSwitcherClickHandler,
             OnClickListener newTabClickHandler,
@@ -190,6 +192,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             TopUiThemeColorProvider topUiThemeColorProvider) {
         super.initializeWithNative(
+                profile,
                 layoutUpdater,
                 tabSwitcherClickHandler,
                 newTabClickHandler,
