@@ -56,6 +56,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -107,12 +108,14 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
 import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -1566,12 +1569,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void initialize(ToolbarDataProvider toolbarDataProvider,
-            ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
-            OfflineDownloader offlineDownloader) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, historyDelegate,
-                partnerHomepageEnabledSupplier, offlineDownloader);
+    public void initialize(
+            ToolbarDataProvider toolbarDataProvider,
+            ToolbarTabController tabController,
+            MenuButtonCoordinator menuButtonCoordinator,
+            HistoryDelegate historyDelegate,
+            BooleanSupplier partnerHomepageEnabledSupplier,
+            OfflineDownloader offlineDownloader,
+            UserEducationHelper userEducationHelper,
+            ObservableSupplier<Tracker> trackerSupplier) {
+        super.initialize(
+                toolbarDataProvider,
+                tabController,
+                menuButtonCoordinator,
+                historyDelegate,
+                partnerHomepageEnabledSupplier,
+                offlineDownloader,
+                userEducationHelper,
+                trackerSupplier);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
