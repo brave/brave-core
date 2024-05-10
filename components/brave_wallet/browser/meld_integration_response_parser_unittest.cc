@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
+
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -12,7 +14,6 @@
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

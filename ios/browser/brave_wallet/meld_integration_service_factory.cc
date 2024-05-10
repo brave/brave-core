@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
+
 #include <memory>
 
 #include "base/no_destructor.h"
