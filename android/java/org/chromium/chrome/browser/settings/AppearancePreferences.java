@@ -14,7 +14,6 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.BuildInfo;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
@@ -50,17 +49,16 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private boolean mIsTablet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_appearance);
         SettingsUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
-        mIsTablet =
+        boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());
-        if (mIsTablet) {
+        if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         }
 
@@ -76,34 +74,8 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_SPEEDREADER);
         }
-
-        if (!shouldShowEnableWindow()) {
+        if (!new BraveMultiWindowUtils().shouldShowEnableWindow(getActivity())) {
             removePreferenceIfPresent(PREF_ENABLE_MULTI_WINDOWS);
-        }
-    }
-
-    // Copied from shouldShowNewWindow() method AppMenuPropertiesDelegateImpl.java
-    private boolean shouldShowEnableWindow() {
-        if (BuildInfo.getInstance().isAutomotive) return false;
-
-        if (MultiWindowUtils.shouldShowManageWindowsMenu()) return true;
-
-        if (MultiWindowUtils.instanceSwitcherEnabled()
-                && MultiWindowUtils.isMultiInstanceApi31Enabled()) {
-            return mIsTablet
-                    || (!MultiWindowUtils.getInstance()
-                                    .isChromeRunningInAdjacentWindow(getActivity())
-                            && (MultiWindowUtils.getInstance().isInMultiWindowMode(getActivity())
-                                    || MultiWindowUtils.getInstance()
-                                            .isInMultiDisplayMode(getActivity())));
-        } else {
-            if (MultiWindowUtils.getInstance().areMultipleChromeInstancesRunning(getActivity())) {
-                return false;
-            }
-            return (MultiWindowUtils.getInstance().canEnterMultiWindowMode(getActivity())
-                            && mIsTablet)
-                    || MultiWindowUtils.getInstance().isInMultiWindowMode(getActivity())
-                    || MultiWindowUtils.getInstance().isInMultiDisplayMode(getActivity());
         }
     }
 
