@@ -239,6 +239,7 @@ class Tab: NSObject {
   var sessionData: (title: String, interactionState: Data)?
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
+  var goingBackForward: Bool = false
   var pendingScreenshot = false
 
   /// The type of action triggering a navigation.
@@ -755,15 +756,21 @@ class Tab: NSObject {
   }
 
   func goBack() {
+    goingBackForward = true
     _ = webView?.goBack()
+    goingBackForward = false
   }
 
   func goForward() {
+    goingBackForward = true
     _ = webView?.goForward()
+    goingBackForward = false
   }
 
   func goToBackForwardListItem(_ item: WKBackForwardListItem) {
+    goingBackForward = true
     _ = webView?.go(to: item)
+    goingBackForward = false
   }
 
   @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {

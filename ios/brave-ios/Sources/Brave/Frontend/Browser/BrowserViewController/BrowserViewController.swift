@@ -1972,7 +1972,8 @@ public class BrowserViewController: UIViewController {
       if let url = change?[.newKey] as? URL, !url.isLocal {
         // Notify Rewards of new page load.
         if let rewardsURL = rewardsXHRLoadURL,
-          url.host == rewardsURL.host
+          url.host == rewardsURL.host,
+          tabManager.selectedTab?.goingBackForward == false
         {
           tabManager.selectedTab?.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
