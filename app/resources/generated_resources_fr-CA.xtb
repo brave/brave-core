@@ -41,6 +41,7 @@
 <translation id="102916930470544692">Clé d'accès</translation>
 <translation id="1029317248976101138">Zoom</translation>
 <translation id="1029526375103058355">Toucher pour cliquer</translation>
+<translation id="1029724557649700742">De nouvelles fonctionnalités seront incluses dès qu'elles seront accessibles et elles peuvent varier selon l'appareil.</translation>
 <translation id="1031362278801463162">Chargement de l'aperçu...</translation>
 <translation id="1032605640136438169">Veuillez consulter les nouvelles conditions</translation>
 <translation id="103279545524624934">Libérez de l'espace disque pour lancer les applications Android.</translation>
@@ -125,7 +126,6 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1084824384139382525">Copier l'adr&amp;esse du lien</translation>
 <translation id="1085064499066015002">Toujours sur tous les sites</translation>
 <translation id="1085697365578766383">Erreur lors du démarrage de la machine virtuelle. Veuillez réessayer.</translation>
-<translation id="1088659085457112967">Activer le mode Lecture</translation>
 <translation id="1090126737595388931">Aucune application ne fonctionne en arrière-plan</translation>
 <translation id="1090541560108055381">Avant de procéder à l'association, assurez-vous que ce code est le même sur les deux appareils</translation>
 <translation id="1091767800771861448">Appuyez sur ÉCHAP pour ne pas faire la mise à jour (versions non officielles uniquement).</translation>
@@ -162,6 +162,7 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1122068467107743258">Professionnel</translation>
 <translation id="1122198203221319518">Ou&amp;tils</translation>
 <translation id="1122242684574577509">L’authentification a échoué. Cliquez pour accéder à la page de connexion au réseau Wi-Fi que vous utilisez (<ph name="NETWORK_ID"/>).</translation>
+<translation id="1122587596907914265">Stylisez des fonds d'écran uniques</translation>
 <translation id="1122913801042512795">Les renseignements de connexion de votre compte sont obsolètes. Veuillez vous déconnecter, puis vous reconnecter.</translation>
 <translation id="1122960773616686544">Nom du favori</translation>
 <translation id="1124772482545689468">Utilisateur</translation>
@@ -216,6 +217,7 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1164891049599601209">Entré sur un site trompeur</translation>
 <translation id="1165039591588034296">Erreur</translation>
 <translation id="1166212789817575481">Fermer les onglets à la droite</translation>
+<translation id="7442743521469696229">Utilisez et enregistrez les mots de passe et les clés d'accès de votre compte Brave</translation>
 <translation id="1166583374608765787">Revoir la mise à jour du nom</translation>
 <translation id="1166596238782048887">Le tableau <ph name="TAB_TITLE"/> appartient au bureau <ph name="DESK_TITLE"/></translation>
 <translation id="1167262726334064738">Essayez un nouveau mot de passe</translation>
@@ -243,6 +245,7 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1178581264944972037">Interrompre</translation>
 <translation id="1178601482396475810">Gérer la synchronisation des appareils</translation>
 <translation id="117916940443676133">Votre clé de sécurité n'est pas protégée par un NIP. Pour gérer les données de connexion, commencez par créer un NIP.</translation>
+<translation id="1179902906564467236">Suivez les instructions sur votre téléphone ou utilisez l'appli Appareil photo</translation>
 <translation id="118057123461613219">Économies énormes</translation>
 <translation id="1181037720776840403">Supprimer</translation>
 <translation id="1181366777303791449">sur <ph name="MAIN_FRAME_ETLD_PLUS_ONE"/></translation>
@@ -347,7 +350,6 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="125220115284141797">Par défaut</translation>
 <translation id="1252219782845132919">Masquer le groupe</translation>
 <translation id="1252987234827889034">Une erreur liée au profil est survenue</translation>
-<translation id="1253664522045778676">Cliquez sur un résultat pour ouvrir la page dans votre onglet actuel</translation>
 <translation id="1254593899333212300">Connexion directe à Internet</translation>
 <translation id="1256588359404100567">Paramètre synchronisé à partir de votre ancien appareil.</translation>
 <translation id="1257336506558170607">Exporter le certificat sélectionné</translation>
@@ -416,6 +418,7 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1307559529304613120">Oups! Le système n'a pas réussi à stocker le jeton d'accès aux API à long terme pour cet appareil.</translation>
 <translation id="131112695174432497">Les données qui touchent la personnalisation des annonces sont supprimées</translation>
 <translation id="1311294419381837540">Vous diffusez un onglet. Vous pouvez mettre en pause ou arrêter la diffusion à tout moment.</translation>
+<translation id="1092870157695460112">Découvrez une protection renforcée pour bénéficier du plus haut niveau de sécurité de Brave pour les téléchargements</translation>
 <translation id="1312811472299082263">Créer à partir d'un guide Ansible ou d'un fichier de sauvegarde Crostini</translation>
 <translation id="13130607084115184">Les mots de passe enregistrés s'affichent ici. Pour importer des mots de passe dans <ph name="BRAND"/> sur cet appareil, <ph name="BEGIN_LINK"/> sélectionnez un fichier CSV.<ph name="END_LINK"/></translation>
 <translation id="1313264149528821971">Les autorisations pour <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> et <ph name="PERMISSION_3"/> ont été retirées</translation>
@@ -536,6 +539,7 @@ Vous pouvez vérifier vos mots de passe en tout temps dans le menu <ph name="GOO
 <translation id="1410797069449661718">Faire défiler l'écran vers le premier onglet</translation>
 <translation id="1410806973194718079">Impossible de vérifier les politiques</translation>
 <translation id="1411400282355634827">Réinitialiser toutes les autorisations des appareils Bluetooth?</translation>
+<translation id="141163372431617064">Ne pas autoriser les sites à verrouiller votre pointeur</translation>
 <translation id="1414315029670184034">Ne pas autoriser les sites à utiliser votre caméra</translation>
 <translation id="1414648216875402825">Vous passez à une version instable de <ph name="PRODUCT_NAME"/> qui contient des fonctionnalités en cours de développement. Des plantages et des bogues inattendus peuvent se produire. Nous vous recommandons d'agir avec précaution.</translation>
 <translation id="1415708812149920388">Accès en lecture au presse-papiers refusé</translation>
@@ -655,6 +659,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="6440894523770886280">En savoir plus sur les applications Brave non prises en charge</translation>
 <translation id="1501480321619201731">Supprimer le groupe</translation>
 <translation id="4632223202473558409">Envoie automatiquement des statistiques d'utilisation à Brave. Vous pouvez activer ou désactiver les rapports de plantage dans les paramètres de votre appareil.</translation>
+<translation id="1503556098270577657">Vous vous êtes connecté à <ph name="USER_EMAIL"/> à l'aide de votre téléphone Android</translation>
 <translation id="150411034776756821">Supprimer <ph name="SITE"/></translation>
 <translation id="1504551620756424144">Sous Windows, les dossiers partagés sont accessibles ici : <ph name="BASE_DIR"/>.</translation>
 <translation id="1505494256539862015">exporter les mots de passe</translation>
@@ -696,7 +701,6 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1531734061664070992"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/></translation>
 <translation id="1533948060140843887">Je comprends que ce téléchargement endommagera mon ordinateur</translation>
 <translation id="1535228823998016251">Fort</translation>
-<translation id="6823651909636163674">Ce guide vous aide à comprendre vos choix, afin que Brave fonctionne comme vous le souhaitez</translation>
 <translation id="1535753739390684432">Écoutez un texte précis lu de vive voix. Tout d'abord, sélectionnez l'icône Sélectionner pour énoncer dans la partie inférieure de votre écran, puis mettez du texte en surbrillance.</translation>
 <translation id="1536754031901697553">Déconnexion en cours…</translation>
 <translation id="1536883206862903762">Cela désactivera les extensions et réinitialisera vos paramètres à Sécurisé par défaut. Les onglets, fichiers et témoins seront conservés. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
@@ -760,6 +764,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1575741822946219011">Langues et méthodes d'entrée</translation>
 <translation id="1576594961618857597">Avatar blanc par défaut</translation>
 <translation id="1576729678809834061">Signaler ce résultat de recherche</translation>
+<translation id="1578488449637163638">Sombre</translation>
 <translation id="1578558981922970608">Forcer la fermeture</translation>
 <translation id="157931050206866263">En savoir plus sur les analyses de logiciels malveillants</translation>
 <translation id="1580772913177567930">Communiquez avec votre administrateur</translation>
@@ -966,6 +971,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1720318856472900922">Authentification du serveur WWW TLS</translation>
 <translation id="172123215662733643">Rechercher des images au moyen de <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1722460139690167654">Votre appareil <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="12216295917829487">Comment les données aident-elles Brave à mieux fonctionner pour vous?</translation>
 <translation id="1723824996674794290">&amp;Nouvelle fenêtre</translation>
 <translation id="1724801751621173132">Mode d'entrée</translation>
 <translation id="1725562816265788801">Défilement des onglets</translation>
@@ -989,6 +995,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1743970419083351269">Fermer la barre des téléchargements</translation>
 <translation id="1744108098763830590">page en arrière-plan</translation>
 <translation id="1745732479023874451">Gérer les contacts</translation>
+<translation id="1746797507422124818">Vos données pendant votre navigation</translation>
 <translation id="1748283190377208783">{0,plural, =1{forme plurielle non utilisée}one{Ouvrir et modifier # fichier dans cette application Web?}other{Ouvrir et modifier # fichiers dans cette application Web?}}</translation>
 <translation id="1748329107062243374">Utiliser une clé d'accès à partir de <ph name="DEVICE_NAME"/> pour vous connecter à <ph name="WEBSITE"/></translation>
 <translation id="1901235742643584247">Vous pouvez enregistrer ce mot de passe dans votre compte Brave ou seulement sur cet appareil</translation>
@@ -1055,8 +1062,10 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1794212650797661990">Masquer le mot de passe pour <ph name="DOMAIN"/></translation>
 <translation id="1794791083288629568">Envoyer des commentaires pour nous aider à résoudre ce problème.</translation>
 <translation id="1795214765651529549">Utiliser le thème classique</translation>
+<translation id="1795668164971917185">La prochaine fois que la Navigation sécurisée Brave détectera un téléchargement suspect, elle l'analysera automatiquement dans le cadre de la <ph name="LINK"/> que vous avez choisie.</translation>
 <translation id="1796588414813960292">Les fonctionnalités qui utilisent des sons ne fonctionneront pas</translation>
 <translation id="1797117170091578105">Jouez à l'aide de votre clavier Chromebook. Vous pouvez affecter des touches à des actions particulières.</translation>
+<translation id="1798335429200675510">Faites un clic droit dans une zone de texte pour créer un brouillon ou affiner un travail existant grâce à l'IA de Brave. Disponibilité actuellement limitée.</translation>
 <translation id="180203835522132923">Rechercher+O, puis W</translation>
 <translation id="1802624026913571222">Mettre en veille lorsque le couvercle est fermé</translation>
 <translation id="1802687198411089702">La page ne répond pas. Vous pouvez attendre qu'elle réponde ou la quitter.</translation>
@@ -1097,6 +1106,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1823768272150895732">Police</translation>
 <translation id="1823781806707127806">Ajouter des données de navigation existantes au profil géré</translation>
 <translation id="18245044880483936">Les données des sauvegardes ne sont pas prises en compte dans le quota de stockage Brave Disque de votre enfant.</translation>
+<translation id="6885068218209967824">Épingler le groupe à la barre de favoris</translation>
 <translation id="1825073796163165618">Activer les liens</translation>
 <translation id="1825565032302550710">Le numéro de port doit se trouver entre 1 024 et 65 535</translation>
 <translation id="182577151972096764">recettes récemment consultées</translation>
@@ -1119,6 +1129,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1834503245783133039">Échec du téléchargement : <ph name="FILE_NAME"/></translation>
 <translation id="1835261175655098052">Mise à niveau de Linux terminé</translation>
 <translation id="1835612721186505600">Permettez l'accès à l'appareil photo aux applications et aux sites Web en détenant l'autorisation</translation>
+<translation id="1837441256780906162">Microsoft OneDrive a rejeté la demande. Veuillez réessayer plus tard.</translation>
 <translation id="1838374766361614909">Effacer les termes de recherche</translation>
 <translation id="1839021455997460752">Votre adresse de courriel</translation>
 <translation id="1839540115464516994">Afficher dans <ph name="LOCATION"/></translation>
@@ -1185,12 +1196,12 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1884340228047885921">Le paramètre de visibilité actuelle est réglé à quelques contacts</translation>
 <translation id="1884705339276589024">Redimensionner le disque Linux</translation>
 <translation id="1885066963699478692">Fichiers XML qui sont utilisés pour définir les politiques.</translation>
+<translation id="298501707402407671">Brave Agenda</translation>
 <translation id="1885106732301550621">Espace disque</translation>
 <translation id="1886996562706621347">Permettre aux sites de demander l'autorisation de devenir gestionnaires par défaut des protocoles (recommandé)</translation>
 <translation id="1887210448491286312">Arrêter la diffusion de l'onglet sur <ph name="DEVICE_NAME"/></translation>
 <translation id="1887442540531652736">Erreur de connexion</translation>
 <translation id="1887597546629269384">Dites « Hey Brave » de nouveau</translation>
-<translation id="1889091146873278175">Cliquez sur le bouton « G » pour voir plus de résultats de recherche dans un panneau latéral</translation>
 <translation id="1890026367080681123">Accédez aux paramètres de contenu intégré</translation>
 <translation id="189035593835762169">Conditions d'utilisation</translation>
 <translation id="1891362123137972260">L'espace de stockage du disque est presque plein. Veuillez libérer de l'espace.</translation>
@@ -1220,6 +1231,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1915734383465415025">Numéro de magasin</translation>
 <translation id="1916260783734263714">Onglet actuel</translation>
 <translation id="1916502483199172559">Avatar rouge par défaut</translation>
+<translation id="1918127774159128277">Actualiser les capacités Wi-Fi direct</translation>
 <translation id="1918141783557917887">Plu&amp;s petit</translation>
 <translation id="1919872106782726755">Pour configurer l'empreinte digitale, demandez à votre enfant de toucher au capteur d'empreintes digitales dans le coin supérieur droit du clavier, à côté de l'interrupteur. Les données liées à l'empreinte digitale de votre enfant sont stockées de façon sécurisée et ne quittent jamais cet appareil : <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="192015196730532810">Vous pouvez créer votre propre groupe d'onglets.</translation>
@@ -1274,6 +1286,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="1951012854035635156">Assistant</translation>
 <translation id="1954597385941141174">Les sites peuvent demander à se connecter à des appareils USB</translation>
 <translation id="1954813140452229842">Erreur lors du partage. Veuillez vérifier vos authentifiants et réessayer.</translation>
+<translation id="1955749740583837857">Ignorer la recommandation</translation>
 <translation id="1956050014111002555">Le fichier contenait plusieurs certificats, mais aucun d'entre eux n'a pu être importé :</translation>
 <translation id="1956167375087861299">Sites n'ayant pas l'autorisation d'utiliser des identifiants pour faire jouer du contenu protégé</translation>
 <translation id="1956390763342388273">Cette opération téléversera tous les fichiers à partir de « <ph name="FOLDER_PATH"/> ». Effectuez cette opération uniquement si vous faites confiance au site.</translation>
@@ -1348,6 +1361,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="2010501376126504057">Appareils compatibles</translation>
 <translation id="201217432804812273">Activez « Enregistrer le groupe »</translation>
 <translation id="2012935757369720523">Supprimer le fichier</translation>
+<translation id="2013467735169740431">Les sites peuvent demander de verrouiller votre clavier</translation>
 <translation id="2013550551806600826">Essayez-le. Activez ou désactivez le paramètre, puis faites défiler avec deux doigts sur votre pavé tactile dans la zone de test. Vous pouvez également le trouver plus tard dans Paramètres &gt; Appareil &gt; Souris et Pavé tactile.</translation>
 <translation id="2015232545623037616">L'ordinateur et le Chromecast sont sur le même réseau Wi-Fi</translation>
 <translation id="2016473077102413275">Les fonctionnalités qui utilisent des images ne fonctionneront pas</translation>
@@ -1361,6 +1375,7 @@ Les autorisations que vous avez déjà accordées à des applications peuvent s'
 <translation id="2018189721942291407">Vous ne savez pas si vous devez vous inscrire?</translation>
 <translation id="2018352199541442911">Désolés, votre périphérique de stockage externe n'est pas compatible pour le moment.</translation>
 <translation id="2018615379714355980">L'ordinateur est connecté par câble et le Chromecast est connecté par Wi-Fi</translation>
+<translation id="1183027780634294975">Vous recevrez des suggestions de groupes d'onglets regroupant des onglets similaires. Vos onglets, vos titres et vos groupes sont envoyés à Brave et peuvent être examinés par des humains pour améliorer cette fonctionnalité.</translation>
 <translation id="2019718679933488176">&amp;Ouvrir le fichier audio dans un nouvel onglet</translation>
 <translation id="2020183425253392403">Afficher les paramètres d'adresses réseau</translation>
 <translation id="2020225359413970060">Analyser le fichier</translation>
@@ -1445,6 +1460,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2088092308059522196">L'inscription est uniquement prise en charge après l'installation de <ph name="DEVICE_OS"/>.</translation>
 <translation id="2088564884469682888">TrackPoint intégré</translation>
 <translation id="208928984520943006">Pour revenir à l'écran d'accueil en tout temps, balayez l'écran du bas vers le haut.</translation>
+<translation id="2089550919269323883">L'installation de <ph name="VM_NAME"/> est bloquée par la politique d'entreprise. Veuillez communiquer avec votre administrateur système pour obtenir de l'aide. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="2089925163047119068">OU</translation>
 <translation id="2090165459409185032">Pour récupérer les données de votre compte, accédez à l'adresse google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">Établit automatiquement la connexion lorsque vous vous connectez</translation>
@@ -1488,6 +1504,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="21133533946938348">Épingler l'onglet</translation>
 <translation id="2113479184312716848">Ouvrir un &amp;fichier...</translation>
 <translation id="2113921862428609753">Accès à l'information de l'autorité</translation>
+<translation id="2114145607116268663">Installation impossible, un redémarrage est requis. Veuillez redémarrer votre ordinateur et réessayer. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="2114326799768592691">Actualiser le &amp;cadre</translation>
 <translation id="2114413269775311385">Utilisez ce compte avec des applications Android. Vous pouvez définir les autorisations pour les applications Android dans <ph name="LINK_BEGIN"/>Paramètres des applications<ph name="LINK_END"/>.</translation>
 <translation id="2114820389966440614">Découvrez les « Sélections récentes » et d'autres souvenirs ici</translation>
@@ -1503,11 +1520,9 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2123766928840368256">Choisir un autre fichier</translation>
 <translation id="2124930039827422115">{1,plural, =1{Notée <ph name="AVERAGE_RATING"/> par un utilisateur.}one{Notée <ph name="AVERAGE_RATING"/> par # utilisateur.}other{Notée <ph name="AVERAGE_RATING"/> par # utilisateurs.}}</translation>
 <translation id="2126167708562367080">La synchronisation est désactivée par votre administrateur.</translation>
-<translation id="212633415503779955">Orca</translation>
 <translation id="2127372758936585790">Chargeur de faible puissance</translation>
 <translation id="212862741129535676">Pourcentage d'utilisation des valeurs de fréquence</translation>
 <translation id="212876957201860463">Préparation pour la configuration du service cellulaire en cours…</translation>
-<translation id="2130909682040406368">En savoir plus sur l'utilisation des outils d'IA</translation>
 <translation id="2131077480075264">Impossible d'installer « <ph name="APP_NAME"/> », car elle n'est pas autorisée par « <ph name="IMPORT_NAME"/> »</translation>
 <translation id="2133775869826239001">Choisir plus de fonctionnalités à configurer</translation>
 <translation id="2133857665503360653">Réessayer <ph name="FILE_NAME"/></translation>
@@ -1546,6 +1561,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2155473371917268529">Le paramètre de visibilité actuel est réglé à vos appareils</translation>
 <translation id="2155772377859296191">Semblable à <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="2156294658807918600">Service Worker : <ph name="SCRIPT_URL"/></translation>
+<translation id="2156707722163479690">Autorisé à faire défiler et à zoomer les onglets partagés</translation>
 <translation id="2156877321344104010">Relancer la vérification de sécurité</translation>
 <translation id="2157474325782140681">Pour obtenir des fonctionnalités supplémentaires, servez-vous d'une station d'accueil Dell conçue pour être utilisée avec ce Chromebook.</translation>
 <translation id="215753907730220065">Quitter le mode plein écran</translation>
@@ -1612,6 +1628,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2204387456724731099">Impossible de traduire cette sélection</translation>
 <translation id="2207116775853792104">Conserver cette extension</translation>
 <translation id="2210462644007531147">Impossible de terminer l'installation</translation>
+<translation id="2211043920024403606">Renseignements sur le profil</translation>
 <translation id="2211245494465528624">Gérer les options de synchronisation</translation>
 <translation id="2214018885812055163">Dossiers partagés</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 ligne non affichée&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> ligne non affichée&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> lignes non affichées&gt;}}</translation>
@@ -1666,7 +1683,6 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2252017960592955005">Protection de l'affichage (bêta)</translation>
 <translation id="2253318212986772520">Impossible de récupérer le PPD pour <ph name="PRINTER_NAME"/>.</translation>
 <translation id="2253927598983295051">Choisissez quoi partager avec <ph name="APP_NAME"/></translation>
-<translation id="8273543687691116438">Afficher les mots de passe et les clés d'accès de votre compte Brave</translation>
 <translation id="2255077166240162850">Cet appareil a été verrouillé dans un autre mode ou avec un autre domaine.</translation>
 <translation id="2255317897038918278">Enregistrement des informations de date Microsoft</translation>
 <translation id="2256115617011615191">Redémarrer maintenant</translation>
@@ -1961,6 +1977,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2459706890611560967">Reprendre l'onglet de diffusion sur <ph name="DEVICE_NAME"/></translation>
 <translation id="2460356425461033301">Sauvegarder vos données et les utiliser sur n'importe quel appareil</translation>
 <translation id="2460482211073772897">Dans d'autres dossiers</translation>
+<translation id="2461550163693930491">Ne pas autoriser les sites à faire défiler et à zoomer les onglets partagés</translation>
 <translation id="2461593638794842577">Vous pouvez désactiver ce paramètre pour enregistrer vos mots de passe uniquement sur cet appareil</translation>
 <translation id="2462332841984057083">Steam est déjà en cours de configuration. Attendez la fin de la configuration.</translation>
 <translation id="2462724976360937186">Identifiant de clé d'autorité de certification</translation>
@@ -1994,6 +2011,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="2482895651873876648">Onglet déplacé vers le groupe <ph name="GROUP_NAME"/> : <ph name="GROUP_CONTENTS"/></translation>
 <translation id="38202112821964345">Définir le moteur de recherche dans les paramètres du navigateur Brave</translation>
 <translation id="2483698983806594329">Fichier non vérifié téléchargé</translation>
+<translation id="2484574361686148760">Actualiser les Informations sur les clients Wi-Fi direct</translation>
 <translation id="2484743711056182585">Supprimer la subvention</translation>
 <translation id="2484909293434545162">Si un site utilise des témoins, cela apparaîtra ici</translation>
 <translation id="6819373476761661568">Pour effacer les données de navigation de tous vos appareils synchronisés et de votre compte Brave, <ph name="BEGIN_LINK"/>entrez votre phrase de passe<ph name="END_LINK"/>.</translation>
@@ -2046,6 +2064,7 @@ Vous pouvez gérer les paramètres de ce compte en installant l'application Fami
 <translation id="251722524540674480">Confirmer votre nom d'utilisateur</translation>
 <translation id="2517472476991765520">Rechercher</translation>
 <translation id="2518024842978892609">Utiliser vos certificats clients</translation>
+<translation id="2518620532958109495">Autorisé à passer automatiquement au mode Plein écran</translation>
 <translation id="2519250377986324805">Voir comment</translation>
 <translation id="2519517390894391510">Nom de profil du certificat</translation>
 <translation id="2520644704042891903">En attente d'une interface de connexion disponible…</translation>
@@ -2135,7 +2154,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2587922766792651800">Délai dépassé</translation>
 <translation id="2588636910004461974">Appareils appartenant à <ph name="VENDOR_NAME"/></translation>
 <translation id="2589658397149952302">Ne jamais afficher les fichiers Disque</translation>
-<translation id="25899519884572181">Désactiver le mode Lecture</translation>
 <translation id="2593499352046705383">Avant de commencer, assurez-vous d'avoir une sauvegarde de vos données. L'installation de <ph name="DEVICE_OS"/> écrasera les données présentes sur votre disque dur. Apprenez-en plus à la page g.co/flex/InstallGuide.</translation>
 <translation id="2594832159966169099">Gérer la sécurité V8</translation>
 <translation id="2129873093718581193">Effectuez une recherche sur Brave ou entrez une adresse URL</translation>
@@ -2168,6 +2186,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2613535083491958306"><ph name="ORIGIN"/> pourra modifier <ph name="FILENAME"/></translation>
 <translation id="2613747923081026172">Créer un groupe</translation>
 <translation id="2615159404909536465">{FILE_COUNT,plural, =1{Ouvrir et modifier le fichier <ph name="FILE1"/> dans cette extension}one{Ouvrir et modifier le fichier <ph name="FILE1"/> dans cette application}other{Ouvrir et modifier les fichiers <ph name="FILE1"/>, … dans cette application}}</translation>
+<translation id="2615927647449180540">Non autorisé à verrouiller votre pointeur</translation>
 <translation id="2616366145935564096">Accéder à vos données sur <ph name="WEBSITE_1"/> et les modifier</translation>
 <translation id="2618797463720777311">Configurer le partage à proximité</translation>
 <translation id="2619340799655338321">lecture/mise en pause</translation>
@@ -2187,6 +2206,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2629227353894235473">Concevoir des applications Android</translation>
 <translation id="2629437048544561682">Effacer le Canvas</translation>
 <translation id="2631498379019108537">Afficher les options d'entrée dans l'étagère</translation>
+<translation id="2632176111713971407">Les sites peuvent demander à faire défiler et à zoomer les onglets partagés</translation>
 <translation id="2633212996805280240">Désinstaller « <ph name="EXTENSION_NAME"/> »?</translation>
 <translation id="263325223718984101"><ph name="PRODUCT_NAME"/> n'a pas pu terminer l'installation, mais va poursuivre son exécution à partir de son image disque.</translation>
 <translation id="2633764681656412085">FIDO</translation>
@@ -2367,6 +2387,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2764920001292228569">Entrez un nom de profil</translation>
 <translation id="2765100602267695013">Veuillez communiquer avec votre fournisseur de services mobiles</translation>
 <translation id="2765217105034171413">Petit</translation>
+<translation id="2765820627968019645">Clair</translation>
 <translation id="2766006623206032690">Coller l'adre&amp;sse URL et y accéder</translation>
 <translation id="2766161002040448006">Demande à un parent</translation>
 <translation id="2767077837043621282">Impossible de mettre à jour votre Chromebook. Veuillez réessayer plus tard.</translation>
@@ -2429,7 +2450,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2806372837663997957">L'appareil avec lequel vous tentez de partager le fichier n'a pas accepté cette opération</translation>
 <translation id="2806891468525657116">Le raccourci existe déjà</translation>
 <translation id="2807517655263062534">Les fichiers que vous téléchargez apparaissent ici</translation>
-<translation id="2809586584051668049">et <ph name="NUMBER_ADDITIONAL_DISABLED"/> autres</translation>
 <translation id="2811205483104563968">Comptes</translation>
 <translation id="2812049959647166806">Les connexions Thunderbolt ne sont pas prises en charge</translation>
 <translation id="2812171980080389735">Réseaux et mots de passe enregistrés pour que vous puissiez vous connecter instantanément</translation>
@@ -2477,6 +2497,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="2844809857160214557">Consultez et gérez les tâches d'impression</translation>
 <translation id="2845751331501453107">Lorsque vous naviguez, la personnalisation d'une annonce que vous voyez dépend de ce paramètre, des <ph name="BEGIN_LINK1"/>annonces suggérées par le site<ph name="LINK_END1"/>, des <ph name="BEGIN_LINK2"/>paramètres des témoins<ph name="LINK_END2"/>, et du fait que le site que vous consultez personnalise les annonces</translation>
 <translation id="284581348330507117">Créer des mots de passe uniques</translation>
+<translation id="284884486564166077">Rechercher une image avec Lentille</translation>
 <translation id="2849035674501872372">Obtenir des réponses rapides</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="2849767214114481738">Votre NIP a été ajouté</translation>
@@ -2509,6 +2530,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="287286579981869940">Ajouter <ph name="PROVIDER_NAME"/>...</translation>
 <translation id="2872961005593481000">Arrêter</translation>
 <translation id="2873744479411987024">Avec une fréquence d'actualisation plus élevée, vous aurez un affichage plus fluide avec plus de détails. Une fréquence d'actualisation plus élevée peut avoir un impact sur la durée de vie de la batterie.</translation>
+<translation id="2873956234023215251">Impossible d'installer l'application. Un problème est survenu.</translation>
 <translation id="2874939134665556319">Chanson précédente</translation>
 <translation id="4156865452842056672">(pages d'erreur Brave)</translation>
 <translation id="2876336351874743617">Doigt 2</translation>
@@ -2518,6 +2540,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="2877467134191447552">Vous pouvez ajouter vos comptes supplémentaires pour accéder à des sites Web et à des applications.</translation>
 <translation id="2878782256107578644">Analyse en cours. Ouvrir maintenant?</translation>
 <translation id="2878889940310164513">Ajouter une connexion cellulaire…</translation>
+<translation id="2879594947768634665">NOUVEAUX ONGLETS</translation>
 <translation id="288042212351694283">Accès à vos appareils Universal 2nd Factor</translation>
 <translation id="2881076733170862447">Lorsque vous cliquez sur l'extension</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> va redémarrer et être réinitialisé dans un instant</translation>
@@ -2624,6 +2647,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="2960942820860729477">Fréquence d'actualisation</translation>
 <translation id="2961090598421146107"><ph name="CERTIFICATE_NAME"/> (extension fournie)</translation>
 <translation id="2961695502793809356">Cliquer pour avancer, maintenir enfoncé pour voir l'historique</translation>
+<translation id="29618148602069201">Sujet</translation>
 <translation id="2963151496262057773">Le plugiciel suivant ne répond pas : <ph name="PLUGIN_NAME"/>. Voulez-vous l'arrêter?</translation>
 <translation id="2964193600955408481">Désactiver le réseau Wi-Fi</translation>
 <translation id="2964245677645334031">Visibilité pour le partage à proximité</translation>
@@ -2641,6 +2665,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="2977480621796371840">Supprimer du groupe</translation>
 <translation id="2979639724566107830">Ouvrir dans une nouvelle fenêtre</translation>
 <translation id="2979893796619951531">Exclure le site</translation>
+<translation id="2981033191524548279">Malheureusement, un problème est survenu. Veuillez soumettre vos commentaires en indiquant #bruschetta dans la description. Le code d'erreur est <ph name="ERROR"/>. Ce problème peut être résolu en redémarrant l'appareil et en réessayant.</translation>
 <translation id="2981113813906970160">Afficher le grand curseur</translation>
 <translation id="2983102365694924129">En fonction de votre activité sur un site. Ce paramètre est désactivé.</translation>
 <translation id="2983373101216420412">Niveau de la pile de l'étui : <ph name="PERCENTAGE"/> %.</translation>
@@ -2737,6 +2762,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3039491566278747710">Échec de l'installation de la politique hors ligne sur l'appareil.</translation>
 <translation id="3040982432432547149">Aidez-nous à améliorer Steam sur Chromebook</translation>
 <translation id="3043016484125065343">Connectez-vous pour voir vos favoris</translation>
+<translation id="3043126717220766543">Effacer les suggestions de groupe</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> : <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">À partir de <ph name="ORIGIN"/></translation>
 <translation id="3045447014237878114">Ce site a automatiquement téléchargé plusieurs fichiers</translation>
@@ -2815,6 +2841,11 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="311394601889664316">Ne pas autoriser les sites à modifier les fichiers ni les dossiers sur votre appareil</translation>
 <translation id="3115147772012638511">En attente de l'affichage du cache…</translation>
 <translation id="3115580024857770654">Tout réduire</translation>
+<translation id="3115728370128632723">Améliorer le fonctionnement du Web pour vous signifie :
+&lt;ul&gt;
+&lt;li&gt;assurer votre sécurité lorsque vous naviguez;&lt;/li&gt;
+&lt;li&gt;soutenir un écosystème florissant qui maintient le Web sûr, ouvert, rapide et gratuit.&lt;/li&gt;
+&lt;/ul&gt;</translation>
 <translation id="8322945005389987780">Gérer la langue du compte Brave</translation>
 <translation id="3117362587799608430">La station d'accueil n'est pas totalement compatible</translation>
 <translation id="3117791853215125017">{COUNT,plural, =1{Échec de l'envoi de <ph name="ATTACHMENTS"/> à l'appareil <ph name="DEVICE_NAME"/>}one{Échec de l'envoi de <ph name="ATTACHMENTS"/> à l'appareil <ph name="DEVICE_NAME"/>}other{Échec de l'envoi de <ph name="ATTACHMENTS"/> à l'appareil <ph name="DEVICE_NAME"/>}}</translation>
@@ -3010,7 +3041,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3285465040399788513">L'espace de stockage est insuffisant pour terminer la configuration. Libérez de l'espace de stockage et réessayez.</translation>
 <translation id="3285500645985761267">Autoriser les sites connexes à voir votre activité dans le groupe</translation>
 <translation id="328571385944182268">Enregistrer vos mots de passe?</translation>
-<translation id="3288047731229977326">Les extensions exécutées en mode développeur peuvent nuire à votre ordinateur. Si vous n'êtes pas un développeur, nous vous recommandons de désactiver celles-ci afin d'assurer la sécurité de votre ordinateur.</translation>
 <translation id="3289668031376215426">Majuscules automatiques</translation>
 <translation id="3289856944988573801">Pour rechercher des mises à jour, veuillez utiliser une connexion Ethernet ou Wi-Fi.</translation>
 <translation id="5729822798455842061">Vous pouvez bloquer les sujets que vous ne souhaitez pas partager avec les sites. En outre, Brave supprime automatiquement vos sujets datant de plus de quatre semaines.</translation>
@@ -3019,6 +3049,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3293644607209440645">Envoyer cette page</translation>
 <translation id="32939749466444286">Le conteneur Linux n'a pas démarré. Veuillez réessayer.</translation>
 <translation id="3294437725009624529">Invité</translation>
+<translation id="3294484594253557399">Les sites utilisent le verrouillage du pointeur pour masquer le pointeur de la souris et l'empêcher de quitter la page.</translation>
 <translation id="3294686910656423119">Statistiques d'utilisation et rapports de plantage</translation>
 <translation id="3295241308788901889">Diffusion d'onglet</translation>
 <translation id="3297105622164376095">Autorisés à afficher des invites de connexion tierces</translation>
@@ -3049,7 +3080,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3313622045786997898">Valeur de la signature du certificat</translation>
 <translation id="3313950410573257029">Vérifier la connexion</translation>
 <translation id="3315158641124845231">Masquer <ph name="PRODUCT_NAME"/></translation>
-<translation id="3315442055907669208">Activer le mode Lecture</translation>
 <translation id="3317459757438853210">Recto verso</translation>
 <translation id="3317521105713541270">Créer des groupes</translation>
 <translation id="3317678681329786349">La caméra et le microphone sont bloqués</translation>
@@ -3123,7 +3153,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="338323348408199233">Bloquer le trafic sans RPV</translation>
 <translation id="3384362484379805487">Les fichiers de langue sont partagés entre les utilisateurs pour économiser de l'espace disque.</translation>
 <translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/> %</translation>
-<translation id="3385509471227300644">La Navigation sécurisée Brave analyse désormais les fichiers suspects que vous essayez de télécharger dans le cadre de la protection renforcée que vous avez choisie.</translation>
 <translation id="338583716107319301">Séparateur</translation>
 <translation id="3387023983419383865">,</translation>
 <translation id="3387588771342841525">Lorsque cette option est activée, les mots de passe sont enregistrés dans <ph name="EMAIL"/>. Lorsque cette option est désactivée, les mots de passe sont enregistrés uniquement sur cet appareil.</translation>
@@ -3171,6 +3200,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3421672904902642628"><ph name="BEGIN_BOLD"/>Remarque :<ph name="END_BOLD"/> Une personne ayant une voix semblable à la vôtre ou disposant d'un enregistrement de celle-ci pourrait aussi accéder à vos résultats personnalisés ou à votre Assistant.</translation>
 <translation id="3421835120203732951">Ajouter un nouveau profil</translation>
 <translation id="3423111258700187173">Résultats trouvés dans <ph name="FOLDER_TITLE"/></translation>
+<translation id="3423226218833787854">En savoir plus sur cette fonctionnalité d'IA</translation>
 <translation id="3423463006624419153">Sur votre « <ph name="PHONE_NAME_1"/> » et votre « <ph name="PHONE_NAME_2"/> » :</translation>
 <translation id="3423858849633684918">Veuillez relancer <ph name="PRODUCT_NAME"/></translation>
 <translation id="3424969259347320884">Décrivez ce que vous faisiez lorsque l'onglet a planté</translation>
@@ -3292,7 +3322,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3509379002674019679">Créez, enregistrez et gérez vos mots de passe pour pouvoir vous connecter facilement aux sites ainsi qu'aux applications.</translation>
 <translation id="3511200754045804813">Nouvelle recherche</translation>
 <translation id="3511307672085573050">Copier l'adr&amp;esse du lien</translation>
-<translation id="351152300840026870">Police de caractères à largeur fixe</translation>
+<translation id="351152300840026870">Police à largeur fixe</translation>
 <translation id="3511528412952710609">Court</translation>
 <translation id="3514335087372914653">Commandes de jeu</translation>
 <translation id="3514373592552233661">Si plusieurs réseaux sont disponibles, les réseaux préférés seront prioritaires par rapport aux autres réseaux connus</translation>
@@ -3368,10 +3398,12 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3569682580018832495"><ph name="ORIGIN"/> peut consulter les fichiers et les dossiers suivants</translation>
 <translation id="3571734092741541777">Configurer</translation>
 <translation id="3575121482199441727">Autoriser pour ce site</translation>
+<translation id="3575224072358507281">Collecter l'adresse IP et les résultats de mesure du réseau pour Measurement Lab conformément à sa politique de confidentialité (measurementlab.net/privacy)</translation>
 <translation id="3577473026931028326">Un problème est survenu. Réessayez.</translation>
 <translation id="3577487026101678864">La synchronisation des fichiers est activée</translation>
 <translation id="3577745545227000795">Collecte des données matérielles par <ph name="DEVICE_OS"/></translation>
 <translation id="3581605050355435601">Configurer automatiquement l'adresse IP</translation>
+<translation id="3581861561942370740">Rechercher dans l'historique des téléchargements</translation>
 <translation id="3582057310199111521">Entré sur un site trompeur et trouvé dans une violation de données</translation>
 <translation id="3582299299336701326">Assombrissez les écrans clairs et éclaircissez les écrans sombres. Appuyez sur Rechercher+Ctrl+H pour activer et désactiver l'inversion des couleurs.</translation>
 <translation id="3584169441612580296">Lire et modifier les photos, la musique et les autres médias stockés sur votre ordinateur</translation>
@@ -3447,7 +3479,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/> % - temps restant : <ph name="TIME"/></translation>
 <translation id="3636940436873918441">Langues préférées</translation>
 <translation id="3637203148990213388">Comptes supplémentaires</translation>
-<translation id="3639220004740062347">Désactiver le mode Lecture</translation>
 <translation id="3640214691812501263">Ajouter « <ph name="EXTENSION_NAME"/> » pour <ph name="USER_NAME"/>?</translation>
 <translation id="3640347231390550691">Protégez vos mots de passe contre l'hameçonnage</translation>
 <translation id="3640613767643722554">Apprenez à l'Assistant Brave à reconnaître votre voix</translation>
@@ -3475,8 +3506,10 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3659550105763988702">Utilisez votre clé d'accès pour <ph name="APP_NAME"/></translation>
 <translation id="3659929705630080526">Vous avez entré un trop grand nombre de codes d'accès incorrects. Réessayez plus tard</translation>
 <translation id="3660234220361471169">Non fiable</translation>
+<translation id="3661106764436337772">Écrire plus vite et avec plus de confiance</translation>
 <translation id="3661297433172569100">{NUM_PASSWORDS,plural, =1{un ancien mot de passe trouvé}one{{NUM_PASSWORDS} mots de passe existants trouvés}other{{NUM_PASSWORDS} mots de passe existants trouvés}}</translation>
 <translation id="3662207097851752847">Confirmez votre compte Brave sur votre téléphone</translation>
+<translation id="3663417513679360795">Plus de renseignements sur l'activation du préchargement standard</translation>
 <translation id="3664511988987167893">Icône de l'extension</translation>
 <translation id="3665100783276035932">La plupart des sites devraient fonctionner comme prévu</translation>
 <translation id="3665301845536101715">Ouvrir dans le panneau latéral</translation>
@@ -3548,6 +3581,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3708295717182051206">Sous-titres</translation>
 <translation id="3708684582558000260">Ne pas autoriser les sites fermés à terminer l'envoi ni la réception de données</translation>
 <translation id="3709244229496787112">Le navigateur s'est fermé avant la fin du téléchargement.</translation>
+<translation id="3710735707339428760">Impossible d'installer cette application</translation>
 <translation id="3711931198657368127">Coller et a&amp;ccéder à l'adresse <ph name="URL"/></translation>
 <translation id="3711945201266135623"><ph name="NUM_PRINTERS"/> imprimantes ont été trouvées sur le serveur d'impression</translation>
 <translation id="3712050472459130149">Une mise à jour du compte est requise</translation>
@@ -3566,6 +3600,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3720543739123045680">D'autres onglets partagent un processus avec cet onglet, ce qui peut entraîner une utilisation inattendue des outils pour les développeurs.</translation>
 <translation id="372062398998492895">Imprimantes CUPS</translation>
 <translation id="8397843425685839889">Vous et Brave</translation>
+<translation id="3721178866505920080">Plus de renseignements sur l'activation du préchargement étendu</translation>
 <translation id="3722108462506185496">Erreur lors du démarrage du service de machine virtuelle. Veuillez réessayer.</translation>
 <translation id="3722624153992426516">Instruction <ph name="IMPORT_CERTIFICATE__INSTRUCTION_NAME"/> reçue</translation>
 <translation id="3724897774652282549">Remplir le formulaire</translation>
@@ -3582,6 +3617,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3729506734996624908">Sites autorisés</translation>
 <translation id="3729957991398443677">Pour afficher votre mot de passe ou ajouter une note à ce sujet, sélectionner « gérer vos mots de passe » dans la barre de recherche et d'adresse</translation>
 <translation id="3730076362938942381">Application d'utilisation du stylet</translation>
+<translation id="3730298295914858769">Capacités Wi-Fi direct :</translation>
 <translation id="3732078975418297900">Erreur sur la ligne <ph name="ERROR_LINE"/></translation>
 <translation id="3732414796052961578">Continuer en tant que <ph name="ACCOUNT_NAME"/></translation>
 <translation id="3732530910372558017">La longueur maximale pour le NIP est de 63 caractères</translation>
@@ -3597,6 +3633,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3740396996321407665">Obtenir une aide contextuelle de certaines fonctionnalités</translation>
 <translation id="3740945083753997630">Réduire la taille de l'affichage et du texte</translation>
 <translation id="3741056951918180319">Vous pouvez toujours cliquer sur l'extension pour l'utiliser sur n'importe quel site</translation>
+<translation id="374124333420280219">Détails de l'application :</translation>
 <translation id="3741510433331996336">Redémarrez votre appareil pour terminer la mise à jour</translation>
 <translation id="3742235229730461951">Disposition du clavier coréen</translation>
 <translation id="3743842571276656710">Entrez le NIP pour effectuer l'association à <ph name="DEVICE_NAME"/></translation>
@@ -3624,6 +3661,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3759933321830434300">Bloquer des parties de pages Web</translation>
 <translation id="3760460896538743390">Inspecter la page d'&amp;arrière-plan</translation>
 <translation id="3761556954875533505">Autoriser le site à modifier les fichiers?</translation>
+<translation id="3761733456040768239">Plus d'actions pour la <ph name="CARD_DESCRIPTION"/>, code CVC enregistré</translation>
 <translation id="1768338058980345433">Vous pouvez bloquer les sites que vous ne voulez pas. En outre, Brave supprime automatiquement les sites de la liste datant de plus de 30 jours.</translation>
 <translation id="3763549179847864476">Bouton Précédent du Guide sur la confidentialité</translation>
 <translation id="3764314093345384080">Renseignements détaillés sur la version</translation>
@@ -3681,6 +3719,7 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="3798670284305777884">Haut-parleur (interne)</translation>
 <translation id="3799128412641261490">Paramètres de Switch Access</translation>
 <translation id="3800828618615365228">Conditions supplémentaires pour Brave et Brave OS</translation>
+<translation id="3800898876950197674">Entrez votre mot de passe pour autoriser cette extension.</translation>
 <translation id="3802486193901166966">Cette extension ne nécessite pas d'autorisation spéciale et n'a pas d'accès de site supplémentaire</translation>
 <translation id="380329542618494757">Nom</translation>
 <translation id="3803345858388753269">Qualité de la vidéo</translation>
@@ -3819,12 +3858,14 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="3900966090527141178">Exporter les mots de passe</translation>
 <translation id="3902789559055749153">Choisissez comment vous souhaitez créer une clé d'accès pour <ph name="APP_NAME"/></translation>
 <translation id="3903187154317825986">Clavier intégré</translation>
+<translation id="3903696968689283281">Informations sur les propriétaires Wi-Fi direct :</translation>
 <translation id="3904326018476041253">Services de localisation</translation>
 <translation id="3905761538810670789">Réparer l'application</translation>
 <translation id="3908501907586732282">Activer l'extension</translation>
 <translation id="3909701002594999354">Afficher toutes les &amp;commandes</translation>
 <translation id="3909791450649380159">Cou&amp;per</translation>
 <translation id="39103738135459590">Code d'activation</translation>
+<translation id="3910588685973519483">Créer des fonds d'écran avec l'IA</translation>
 <translation id="3911824782900911339">Page « Nouvel onglet »</translation>
 <translation id="3914173277599553213">Obligatoire</translation>
 <translation id="3914568430265141791">Ouvrir le dossier <ph name="FOLDER_TITLE"/></translation>
@@ -4073,9 +4114,9 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4094647278880271855">Vous utilisez une variable d'environnement incompatible : <ph name="BAD_VAR"/>. Cela aura un impact sur la stabilité et la sécurité.</translation>
 <translation id="4095264805865317199">Ouvrir l'IU d'activation cellulaire</translation>
 <translation id="4095425503313512126">La navigation et la recherche sont plus rapides</translation>
+<translation id="4095483462103784441">Créer un nouveau groupe d'onglets</translation>
 <translation id="4095507791297118304">Affichage principal</translation>
 <translation id="4096421352214844684">Vous connecter automatiquement au point d'accès sans fil de votre téléphone</translation>
-<translation id="4096508467498758490">Désactiver les extensions du mode développeur</translation>
 <translation id="4096797685681362305">Consulté la semaine dernière</translation>
 <translation id="4097406557126260163">Applications et extensions</translation>
 <translation id="1782552115775799922">Astuces pour Brave</translation>
@@ -4180,6 +4221,8 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4190828427319282529">Mettre en surbrillance la sélection avec le clavier</translation>
 <translation id="4191892134568599822">Recevoir des fichiers avec le <ph name="FEATURE_NAME"/>?</translation>
 <translation id="4192024474038595073">{NUM_SITES,plural, =1{Autorisations retirées pour 1 site inutilisé}one{Autorisations retirées pour {NUM_SITES} site inutilisé}other{Autorisations retirées pour {NUM_SITES} sites inutilisés}}</translation>
+<translation id="4192850928807059784"><ph name="BEGIN_PARAGRAPH1"/>Exclusif au <ph name="DEVICE_TYPE"/>.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>L'IA générative est expérimentale, en début de développement et sa disponibilité est actuellement limitée.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="4193251682249731404">Autorité de certification de confiance</translation>
 <translation id="4193575319002689239">Afficher les cartes</translation>
 <translation id="4193836101014293726">Impossible de supprimer ce profil</translation>
@@ -4229,6 +4272,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4231231258999726714">Configurer Steam pour Chromebook</translation>
 <translation id="4232375817808480934">Configurer Kerberos</translation>
 <translation id="4232484478444192782">Votre téléphone Android vous protège. Votre réseau Wi-Fi et votre mot de passe sont en cours de transfert.</translation>
+<translation id="423327101839111402">Retirer le groupe <ph name="NAME"/></translation>
 <translation id="4233739489690259993">Votre Chromebook ne reçoit plus les mises à jour de sécurité ni les mises à jour logicielles. Mettez à niveau votre appareil pour bénéficier des dernières fonctionnalités de sécurité et de nouvelles fonctionnalités. Des conditions s'appliquent à l'offre.</translation>
 <translation id="4235965441080806197">Annuler la connexion</translation>
 <translation id="4235976607074422892">Vitesse de défilement</translation>
@@ -4286,6 +4330,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4275397969489577657">Activer la journalisation de flux d'événements</translation>
 <translation id="4275788652681621337">Fermer le panneau latéral</translation>
 <translation id="4275830172053184480">Redémarrer l'appareil</translation>
+<translation id="4276856098224910511">Installation impossible, la mise à jour du système d'exploitation est en attente. Veuillez appliquer toutes les mises à jour du système d'exploitation en attente, redémarrer l'appareil et réessayer. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="4277434192562187284">Source de configuration XML</translation>
 <translation id="4278348589087554892">{NUM_SITES,plural, =1{Autorisations retirées pour 1 site}one{Autorisations retirées pour {NUM_SITES} site}other{Autorisations retirées pour {NUM_SITES} sites}}</translation>
 <translation id="4278390842282768270">Autorisé</translation>
@@ -4294,6 +4339,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4279129444466079448">Vous pouvez installer un maximum de <ph name="PROFILE_LIMIT"/> profils de carte eSIM sur cet appareil. Pour en ajouter un autre, commencez par supprimer un profil existant.</translation>
 <translation id="4280325816108262082">L'appareil se déconnecte automatiquement lorsqu'il est éteint ou qu'il n'est pas utilisé</translation>
 <translation id="4281637354026226955">Autorisez les applications ChromeOS et Android ainsi que les services disposant de l'autorisation de localisation à utiliser la position de votre appareil. Brave peut collecter des données de localisation périodiquement et les utiliser de manière anonyme pour aider à améliorer la précision de la localisation et les services basés sur l'emplacement.</translation>
+<translation id="4281789858103154731">Créer</translation>
 <translation id="4281844954008187215">Conditions d'utilisation</translation>
 <translation id="4281849573951338030">Personnaliser les boutons du stylet</translation>
 <translation id="4282196459431406533">Smart Lock est activé</translation>
@@ -4331,7 +4377,6 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4309165024397827958">Autoriser les applications et les services Android disposant de l'autorisation de localisation à utiliser la position de votre appareil. Brave peut collecter des données de localisation sur une base périodique et les utiliser de manière anonyme pour aider à améliorer la précision de la localisation et les services qui y font appel.</translation>
 <translation id="4309183709806093061">Partager aussi l'audio du système. Le son de cet appareil sera désactivé pour éviter l'effet Larsen.</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/> ko (<ph name="NUM_KILOBYTES_LIVE"/> ko actuellement)</translation>
-<translation id="4310132194679586591">Sélectionnez une application sur votre appareil pour ouvrir ce lien</translation>
 <translation id="4310139701823742692">Le format du fichier est incorrect. Vérifiez le fichier PPD et réessayez.</translation>
 <translation id="4310496734563057511">Si vous partagez cet appareil avec d'autres personnes, vous pouvez activer Windows Hello pour vérifier qu'il s'agit bien de vous lorsque vous utilisez un mot de passe enregistré</translation>
 <translation id="431076611119798497">&amp;Détails</translation>
@@ -4391,6 +4436,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4357583358198801992">Afficher les groupes d'onglets</translation>
 <translation id="4358361163731478742">Aucune application ne prend en charge la sélection de la langue pour l'application</translation>
 <translation id="4358643842961018282">Votre appareil est à jour</translation>
+<translation id="4358995225307748864">Sélectionnez une application à ouvrir</translation>
 <translation id="4359408040881008151">Cette extension a été installée en raison d'une dépendance avec une ou plusieurs autres extensions.</translation>
 <translation id="4359717112757026264">Paysage urbain</translation>
 <translation id="4359809482106103048">Aperçu de la sécurité</translation>
@@ -4437,7 +4483,6 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4388650384344483842">Utiliser au moins huit caractères</translation>
 <translation id="4389091756366370506">Utilisateur <ph name="VALUE"/></translation>
 <translation id="4390396490617716185"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> et <ph name="NUMBER_OF_OTHER_SWITCHES"/> autres commutateurs</translation>
-<translation id="4390569024397171409">Installer l'application sur votre <ph name="DEVICE_TYPE"/></translation>
 <translation id="439266289085815679">La configuration du Bluetooth est contrôlée par <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">Modifier le fichier de configuration</translation>
 <translation id="4393102500004843976">recherche+majuscule+<ph name="TOP_ROW_KEY"/></translation>
@@ -4454,7 +4499,6 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4403266582403435904">Restaurez des données ou changez d'appareil aisément en tout temps. Les sauvegardes sont téléversées dans les serveurs de Brave et sont chiffrées en utilisant le mot de passe du compte Brave de votre enfant.</translation>
 <translation id="4403775189117163360">Choisir un autre dossier</translation>
 <translation id="4404136731284211429">Analyser à nouveau</translation>
-<translation id="4404619268534288383">Groupes d'onglets Enregistrer et synchroniser</translation>
 <translation id="4404843640767531781">L'application <ph name="APP_NAME"/> est bloquée par ton parent. Pour l'utiliser, demande l'autorisation à ton parent.</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="4405224443901389797">Déplacer dans…</translation>
@@ -4467,6 +4511,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4409697491990005945">Marges</translation>
 <translation id="4409779593816003679">Mots de passe et &amp;remplissage automatique</translation>
 <translation id="4410545552906060960">Utilisez un numéro (NIP) au lieu d'un mot de passe pour déverrouiller votre appareil. Pour définir votre NIP plus tard, accédez aux paramètres.</translation>
+<translation id="4411344321892622527">Non autorisé à faire défiler et à zoomer les onglets partagés</translation>
 <translation id="4411578466613447185">Signataire de code</translation>
 <translation id="4914256659228865673">Ces clés d'accès sont enregistrées dans Windows Hello sur cet ordinateur. Elles ne sont pas enregistrées dans votre compte Brave.</translation>
 <translation id="4412544493002546580">Réessayez ou sélectionnez l'une des inspirations indiquées ci-dessous.</translation>
@@ -4492,6 +4537,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4426490308207168518">Partager des commentaires ou signaler un problème</translation>
 <translation id="4426508677408162512">Tous les favoris</translation>
 <translation id="4426513927906544654">Obtenir des recommandations de contenu</translation>
+<translation id="4426857487270413362">Impossible de télécharger les fichiers du programme d'installation. Veuillez vérifier votre connexion Internet et assurez-vous que vous disposez de suffisamment d'espace disque libre, puis réessayez. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="4427306783828095590">La protection renforcée en fait plus pour bloquer l'hameçonnage et les logiciels nuisibles</translation>
 <translation id="4427365070557649936">Vérification du code de confirmation en cours…</translation>
 <translation id="4429163740524851942">Disposition du clavier physique</translation>
@@ -4544,7 +4590,6 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4473996011558324141">Estimation du temps en cours…</translation>
 <translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="4475299370877036544">Cette action pourrait enfreindre les politiques de votre organisation</translation>
-<translation id="4475552974751346499">Rechercher dans les téléchargements</translation>
 <translation id="4476590490540813026">Athlète</translation>
 <translation id="4476659815936224889">Pour numériser ce code, vous pouvez utiliser une application de numérisation de code QR sur votre téléphone ou certaines applications d'appareil photo.</translation>
 <translation id="4477015793815781985">Incluez la touche Ctrl, Alt ou ⌘</translation>
@@ -4556,6 +4601,7 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4481448477173043917">Votre <ph name="DEVICE_TYPE"/> a redémarré de façon inattendue</translation>
 <translation id="4481467543947557978">service worker</translation>
 <translation id="4482990632723642375">Onglet récemment fermé</translation>
+<translation id="7799508326030156990">Brave améliore le fonctionnement du Web pour vous</translation>
 <translation id="4486333480498805415">Précision de la localisation</translation>
 <translation id="4487489714832036847">Les Chromebook utilisent des applications au lieu de logiciels traditionnels. Vous trouverez des applications pour la productivité, les divertissements et plus encore.</translation>
 <translation id="4488257340342212116">Autorisés à utiliser votre caméra</translation>
@@ -4853,7 +4899,6 @@ Cela peut inclure des renseignements sur les fichiers, les logiciels installés,
 <translation id="4716483597559580346">Powerwash pour une sécurité accrue</translation>
 <translation id="4716715661140829720">Espace de stockage insuffisant</translation>
 <translation id="471759229191973607">Changer de thème</translation>
-<translation id="4718046540206070045">Plus qu'un navigateur</translation>
 <translation id="4722735765955348426">Mot de passe pour <ph name="USERNAME"/></translation>
 <translation id="4722920479021006856"><ph name="APP_NAME"/> partage votre écran.</translation>
 <translation id="4722989931633062466">Non autorisés à afficher des invites de connexion tierces</translation>
@@ -4868,6 +4913,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="4730492586225682674">Afficher la dernière note prise au stylet sur l'écran de verrouillage</translation>
 <translation id="4730888769809690665">Les notifications sont autorisées pour <ph name="SITE"/></translation>
 <translation id="4731306954230393087">Autorisé à utiliser les renseignements enregistrés à votre sujet</translation>
+<translation id="4732643897849344524">Impossible de télécharger les données de l'application. Réessayez.</translation>
 <translation id="4733161265940833579"><ph name="BATTERY_PERCENTAGE"/> % (gauche)</translation>
 <translation id="4733793249294335256">Emplacement</translation>
 <translation id="473546211690256853">Ce compte est géré par <ph name="DOMAIN"/></translation>
@@ -4973,6 +5019,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="4819323978093861656">{0,plural, =0{Fermeture maintenant.}=1{Fermeture dans : 1 seconde}one{Fermeture dans : # seconde}other{Fermeture dans : # secondes}}</translation>
 <translation id="8655084398729487585">Notifications de l'Assistant Brave</translation>
 <translation id="4819818293886748542">Obtenir un lien vers l'outil d'assistance</translation>
+<translation id="4820082996741546682">Autorisé à verrouiller votre clavier</translation>
 <translation id="4820236583224459650">Enregistrer comme ticket actif</translation>
 <translation id="4820795723433418303">Utilisez les touches de fonction comme touches de la rangée supérieure</translation>
 <translation id="4821935166599369261">&amp;Profilage activé</translation>
@@ -5047,6 +5094,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="4872192066608821120">Pour importer des mots de passe, sélectionnez un fichier CSV</translation>
 <translation id="4872212987539553601">Configurer le chiffrement sur l'appareil</translation>
 <translation id="4873312501243535625">Vérificateur de fichier multimédia</translation>
+<translation id="4874705075711349931">Les sites utilisent le verrouillage du clavier pour capturer les entrées au clavier qui seraient autrement gérées par le navigateur ou le système d'exploitation.</translation>
 <translation id="4876273079589074638">Aidez nos ingénieurs à enquêter sur ce plantage et à le corriger. Indiquez les étapes exactes, si vous le pouvez. Tous les détails comptent!</translation>
 <translation id="4876305945144899064">Aucun nom d'utilisateur</translation>
 <translation id="4876327226315760474">Cela signifie que les fonctionnalités du site devraient fonctionner comme prévu, mais que le niveau de protection de la navigation est moins élevé.</translation>
@@ -5063,7 +5111,6 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="4881695831933465202">Ouvrir</translation>
 <translation id="488211015466188466">Suivre le site</translation>
 <translation id="4882312758060467256">A accès à ce site</translation>
-<translation id="2748008317031594354">Le mot de passe a été enregistré dans votre compte Brave, <ph name="USER_EMAIL"/></translation>
 <translation id="4882919381756638075">Les sites utilisent généralement votre micro pour proposer des fonctionnalités de communication, comme le clavardage vidéo</translation>
 <translation id="4883436287898674711">Tous les sites <ph name="WEBSITE_1"/></translation>
 <translation id="48838266408104654">Gestionnaire de &amp;tâches</translation>
@@ -5101,6 +5148,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="4907161631261076876">Ce fichier n'est pas souvent téléchargé et peut être dangereux.</translation>
 <translation id="4908811072292128752">Ouvrez un nouvel onglet pour naviguer sur deux sites en même temps</translation>
 <translation id="5186604830258964546">Comme ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et autres paramètres seront supprimés de cet appareil. Cependant, vos données resteront stockées dans votre compte Brave et peuvent être gérées sur <ph name="BEGIN_LINK"/>Brave Dashboard<ph name="END_LINK"/>.</translation>
+<translation id="4910241725741323970">L'application est déjà installée</translation>
 <translation id="4912643508233590958">Sorties de veille</translation>
 <translation id="4913209098186576320">Ce fichier peut être dangereux<ph name="LINE_BREAK"/>Cette vérification prend plus de temps que d'habitude…</translation>
 <translation id="4915961947098019832">Autorisés à afficher des images</translation>
@@ -5269,6 +5317,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5056950756634735043">Connexion au conteneur en cours…</translation>
 <translation id="5057110919553308744">Lorsque vous cliquez sur l'extension</translation>
 <translation id="5057127674016624293">L'analyse prend plus de temps que prévu</translation>
+<translation id="5057480703570202545">Historique des téléchargements</translation>
 <translation id="5059241099014281248">Restreindre les connexions</translation>
 <translation id="5059429103770496207">Style d'affichage</translation>
 <translation id="5059526285558225588">Choisir quoi partager</translation>
@@ -5386,7 +5435,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5146235736676876345">Choisir votre propre mot de passe</translation>
 <translation id="5146896637028965135">Voix du système</translation>
 <translation id="5147097165869384760">Vous recherchez la page système du système d'exploitation? Consultez <ph name="BEGIN_LINK"/><ph name="CHROME_ABOUT_SYS_LINK"/><ph name="END_LINK"/>.</translation>
-<translation id="5147516217412920887">Suivez les instructions sur votre téléphone pour vérifier le code.</translation>
+<translation id="5147113439721488265">Recommandation</translation>
 <translation id="5147992672778369947">Utiliser le mot de passe recommandé</translation>
 <translation id="5148285448107770349">Le mot de passe doit contenir au moins huit caractères</translation>
 <translation id="5149602533174716626">Cop&amp;amp;ier l'image vidéo</translation>
@@ -5409,7 +5458,6 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5162905305237671850">L'appareil <ph name="DEVICE_TYPE"/> a été bloqué</translation>
 <translation id="5163910114647549394">Onglet déplacé à la fin de la barre d'onglets</translation>
 <translation id="5164530241085602114">Les notifications ne sont pas autorisées pour <ph name="SITE"/></translation>
-<translation id="5165989352025966137">Autorisé à passer automatiquement au mode Plein écran</translation>
 <translation id="516747639689914043">Protocole HTTP</translation>
 <translation id="5170568018924773124">Afficher dans le dossier</translation>
 <translation id="5171045022955879922">Effectuez une recherche ou entrez une adresse URL</translation>
@@ -5490,6 +5538,10 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5235050375939235066">Désinstaller l'application?</translation>
 <translation id="523505283826916779">Paramètres d'accessibilité</translation>
 <translation id="5235750401727657667">Remplacer la page qui s'affiche lors de l'ouverture d'un nouvel onglet</translation>
+<translation id="5237124927415201087">Configurez facilement votre appareil <ph name="DEVICE_TYPE"/> avec votre téléphone. Vous pouvez ajouter votre compte Wi-Fi et Brave sans entrer manuellement vos mots de passe.
+    <ph name="BR"/>
+    <ph name="BR"/>
+    Visible en tant que <ph name="DEVICE_TYPE"/>...</translation>
 <translation id="523862956770478816">Autorisations du site</translation>
 <translation id="5240931875940563122">Se connecter avec un téléphone Android</translation>
 <translation id="5242724311594467048">Activer « <ph name="EXTENSION_NAME"/> »?</translation>
@@ -5521,6 +5573,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5263656105659419083">Pour revenir facilement au panneau latéral, cliquez sur Épingler en haut à droite</translation>
 <translation id="5264148714798105376">Cette opération peut prendre environ une minute.</translation>
 <translation id="5264252276333215551">Veuillez vous connecter à Internet pour lancer l'application en mode kiosque.</translation>
+<translation id="526539328530966548">protection renforcée</translation>
 <translation id="5265797726250773323">Erreur lors de l'installation</translation>
 <translation id="5266113311903163739">Erreur d'importation de l'autorité de certification</translation>
 <translation id="526622169288322445">Autres actions pour <ph name="ADDRESS_SUMMARY"/></translation>
@@ -5529,7 +5582,6 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5269977353971873915">Échec de l'impression</translation>
 <translation id="5271578170655641944">Retirer l'accès à Brave Disque?</translation>
 <translation id="5273806377963980154">Modifier l'URL du site</translation>
-<translation id="5273966423195882879">Couleur basée sur le thème</translation>
 <translation id="5275084684151588738">Dictionnaires personnels</translation>
 <translation id="5275100789567222478">Activer seulement lorsque ma pile est à <ph name="PERCENT"/> % ou moins</translation>
 <translation id="5275338516105640560">Bouton du groupe d'onglets enregistré</translation>
@@ -5622,6 +5674,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5344128444027639014"><ph name="BATTERY_PERCENTAGE"/> % (droite)</translation>
 <translation id="534449933710420173">Dossier sans nom</translation>
 <translation id="5345916423802287046">Démarrer l'application lorsque vous vous connectez</translation>
+<translation id="5296013226900466189">Brave soutient un Web gratuit</translation>
 <translation id="5305142070289640735">Désactiver l'Assistant Brave</translation>
 <translation id="535123479159372765">Texte copié à partir d'un autre appareil</translation>
 <translation id="5352033265844765294">Horodatage</translation>
@@ -5632,6 +5685,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5355498626146154079">Vous devez activer l'indicateur « Borealis Enabled »</translation>
 <translation id="5355501370336370394">Inscrire l'appareil d'entreprise</translation>
 <translation id="5356155057455921522">Cette mise à jour, publiée par votre administrateur, permettra aux applications de votre organisation de s'ouvrir plus rapidement. Cette opération peut prendre quelques minutes.</translation>
+<translation id="5357010010552553606">Non autorisé à passer automatiquement au mode Plein écran</translation>
 <translation id="5359910752122114278">1 résultat</translation>
 <translation id="5359944933953785675"><ph name="NUM"/> onglet</translation>
 <translation id="5360150013186312835">Afficher dans la barre d'outils</translation>
@@ -5671,6 +5725,7 @@ Appuyez sur Ctrl+Alt+diminuer la luminosité pour dézoomer.</translation>
 <translation id="5390677308841849479">Rouge foncé et orange</translation>
 <translation id="5392192690789334093">Autorisés à envoyer des notifications</translation>
 <translation id="5393761864111565424">{COUNT,plural, =1{Lien}one{# lien}other{# liens}}</translation>
+<translation id="5394529681046491727">Wi-Fi direct</translation>
 <translation id="5395498824851198390">Police par défaut</translation>
 <translation id="5397378439569041789">Inscrire l'appareil kiosk ou d'affichage</translation>
 <translation id="5397794290049113714">Vous</translation>
@@ -5696,6 +5751,7 @@ Vous pouvez attribuer plusieurs commutateurs à cette action.</translation>
 <translation id="5411856344659127989">Si vous souhaitez ajouter un compte pour quelqu'un d'autre, <ph name="LINK_BEGIN"/>ajoutez une nouvelle personne<ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
 
 Les autorisations que vous avez déjà accordées à des sites Web et à des applications peuvent s'appliquer à ce compte. Vous pouvez gérer vos comptes Brave dans les <ph name="SETTINGS_LINK_BEGIN"/>Paramètres<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="54118879136097217">Installer l'application sur votre <ph name="DEVICE_TYPE"/></translation>
 <translation id="5413640305322530561">En savoir plus sur les données de diagnostic et d'utilisation</translation>
 <translation id="5414198321558177633">Actualisation de la liste de profils en cours… Cette opération peut prendre quelques minutes.</translation>
 <translation id="5414566801737831689">Lire les icônes des sites que vous visitez</translation>
@@ -5706,7 +5762,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="541737483547792035">Agrandir l'écran</translation>
 <translation id="541822678830750798">L'extension demande de lire et de modifier ce site</translation>
 <translation id="5419405654816502573">Fonction Voice Match</translation>
-<translation id="5420061891386124792">Permet de sauvegarder et de rappeler des groupes d'onglets. Faites un clic droit sur un groupe d'onglets pour l'enregistrer. Rappelez les groupes à partir de la barre de favoris.</translation>
 <translation id="5420274697768050645">Demander un mot de passe pour déverrouiller l'appareil comme mesure de sécurité supplémentaire</translation>
 <translation id="5420438158931847627">Détermine la netteté du texte et des images</translation>
 <translation id="5420935737933866496">Copier le lien</translation>
@@ -5811,6 +5866,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5493792505296048976">écran activé</translation>
 <translation id="5494016731375030300">Onglets récemment fermés</translation>
 <translation id="5494362494988149300">Ouvrir une fois le téléchargement &amp;terminé</translation>
+<translation id="1355780416265200556">Brave vous donne le choix</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
 <translation id="5495466433285976480">Cette fonctionnalité a pour effet de supprimer tous les utilisateurs, les fichiers, les données et les autres paramètres locaux au prochain redémarrage. Tous les utilisateurs devront se reconnecter.</translation>
 <translation id="5495597166260341369">Maintenir l'écran activé</translation>
@@ -5861,12 +5917,19 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5529554942700688235">Résumé des économies de mémoire, <ph name="MEMORY_VALUE"/> libérés</translation>
 <translation id="5532223876348815659">Global</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> souhaite</translation>
+<translation id="5533343601674003130">Service PDF</translation>
 <translation id="5537725057119320332">Diffuser</translation>
 <translation id="5539070192556911367">Impossible de contacter Brave</translation>
 <translation id="5541694225089836610">Cette action est désactivée par votre administrateur</translation>
 <translation id="5542132724887566711">Profil</translation>
 <translation id="5542750926112347543">Les témoins de <ph name="DOMAIN"/> sont bloqués</translation>
 <translation id="5542949973455282971">Connexion à <ph name="CARRIER_NAME"/> en cours…</translation>
+<translation id="5518662007020013933">Les annonces sont essentielles pour de nombreuses entreprises en ligne. Elles contribuent à maintenir le contenu gratuit en ligne, ce qui aide à faire en sorte ce que tout le monde puisse y accéder. Brave développe des moyens permettant aux sites de vous montrer des annonces personnalisées tout en protégeant votre confidentialité.  Bien faites, les annonces profitent à tous les internautes, car lorsque vous voyez une annonce :
+&lt;ul&gt;
+&lt;li&gt;vous pourriez trouver quelque chose de nouveau ou d'intéressant;&lt;/li&gt;
+&lt;li&gt;l'annonceur pourrait trouver un nouveau client;&lt;/li&gt;
+&lt;li&gt;le site que vous visitez gagne de l'argent en hébergeant l'annonce.&lt;/li&gt;
+&lt;/ul&gt;</translation>
 <translation id="5543983818738093899">Vérification de l'état en cours...</translation>
 <translation id="5544482392629385159">Appareil <ph name="DEVICE_INDEX"/> sur <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/></translation>
 <translation id="554517701842997186">Processus de rendu</translation>
@@ -5885,7 +5948,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5554403733534868102">Après cette fois-ci, vous n'aurez plus à attendre que les mises à jour s'installent</translation>
 <translation id="5554489410841842733">Cette icône sera visible lorsque l'extension pourra agir sur la page en cours.</translation>
 <translation id="5554720593229208774">Autorité de certification de courrier électronique</translation>
-<translation id="5554866693883022680">Sélectionnez une application sur votre <ph name="DEVICE_TYPE"/> pour ouvrir ce lien</translation>
 <translation id="5555363196923735206">Changer d'appareil photo</translation>
 <translation id="5555525474779371165">Choisir votre mode de navigation sécurisée</translation>
 <translation id="5555639311269196631">Désactiver le point d'accès sans fil</translation>
@@ -5965,6 +6027,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5616571005307953937">Le plus ancien</translation>
 <translation id="5616726534702877126">Réserver l'espace</translation>
 <translation id="561698261642843490">Fermer Firefox</translation>
+<translation id="5601277298418241661">Épingler le groupe à la barre de favoris</translation>
 <translation id="5620163320393916465">Aucun mot de passe enregistré</translation>
 <translation id="5620540760831960151">Cette liste est soumise aux politiques <ph name="BEGIN_LINK1"/>{BrowserSwitcherUrlList}<ph name="END_LINK1"/>
           , <ph name="BEGIN_LINK2"/>{BrowserSwitcherExternalSitelistUrl}<ph name="END_LINK2"/>
@@ -6100,6 +6163,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5723508132121499792">Aucune application ne fonctionne en arrière-plan</translation>
 <translation id="5725112283692663422">Envoyez des commentaires sur Créer un thème avec l'IA</translation>
 <translation id="5727728807527375859">Les extensions, les applications et les thèmes peuvent endommager votre ordinateur. Voulez-vous vraiment continuer?</translation>
+<translation id="2628630689312565278">Services Brave associés</translation>
 <translation id="5728290366864286776">Cette extension peut lire et modifier les informations du site ou s'exécuter en arrière-plan</translation>
 <translation id="5728450728039149624">Options de verrouillage d'écran Smart Lock</translation>
 <translation id="572914206753951782">Assurez-vous que votre Chromebook est sur la dernière version. Puis, redémarrez votre Chromebook et réessayez.</translation>
@@ -6181,6 +6245,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5793339252089865437">Le téléchargement de la mise à jour par réseau cellulaire pourrait entraîner des frais supplémentaires.</translation>
 <translation id="5793420564274426163">Confirmation de l'association</translation>
 <translation id="5794034487966529952">Il y a <ph name="NUM_BROWSERS"/> fenêtres de navigateur ouvertes sur le bureau <ph name="DESK_TITLE"/></translation>
+<translation id="5794086402489402632">En quoi l'historique de navigation et l'historique de recherche sont-ils différents?</translation>
 <translation id="5794414402486823030">Toujours ouvrir avec System Viewer</translation>
 <translation id="5794700615121138172">Dossiers partagés Linux</translation>
 <translation id="7397305826909094212">Quitter toutes les applications Brave</translation>
@@ -6201,7 +6266,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5804241973901381774">Autorisations</translation>
 <translation id="5804259315582798390">Échec d'activation de la récupération des données locales</translation>
 <translation id="5805268472388605531">Maintenez le doigt sur les touches du clavier pour voir les accents et les caractères spéciaux</translation>
-<translation id="5805354171420804923">Comparer les résultats de recherche plus rapidement grâce au nouveau panneau latéral</translation>
 <translation id="5805697420284793859">Gestionnaire de fenêtres</translation>
 <translation id="5806447147478173900">Espace de stockage total utilisé par les sites affichés : <ph name="TOTAL_USAGE"/></translation>
 <translation id="5806773519584576205">0° (par défaut)</translation>
@@ -6235,6 +6299,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="583431638776747">Le site n'était pas accessible</translation>
 <translation id="5834581999798853053">Il reste environ <ph name="TIME"/> min</translation>
 <translation id="5835360478055379192">{NUM_EXTENSION,plural, =1{<ph name="EXTENSION1"/> accède aux appareils HID}=2{Extensions accédant aux appareils : <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/>}one{Extensions accédant aux appareils : <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/> + {3} autres}other{Extensions accédant aux appareils : <ph name="EXTENSION1"/>, <ph name="EXTENSION2"/> + {3} autres}}</translation>
+<translation id="5835714760577949748">Non autorisé à verrouiller votre clavier</translation>
 <translation id="583673505367439042">Les sites peuvent demander à modifier les fichiers et les dossiers de votre appareil</translation>
 <translation id="5836999627049108525">Langue à partir de laquelle traduire</translation>
 <translation id="583756221537636748">Cas</translation>
@@ -6367,6 +6432,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5935158534896975820">Préparation de la requête de signature du certificat (en attente du serveur)</translation>
 <translation id="5935656526031444304">Gérer la navigation sécurisée</translation>
 <translation id="5936065461722368675">Traduire la page entière</translation>
+<translation id="5937977334791924341">Logo de <ph name="APP"/></translation>
 <translation id="5938002010494270685">Mise à niveau de sécurité disponible</translation>
 <translation id="5939518447894949180">Recommencer</translation>
 <translation id="5939719276406088041">Impossible de créer le raccourci</translation>
@@ -6406,6 +6472,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="5969419185858894314"><ph name="ORIGIN"/> peut afficher les fichiers dans le dossier <ph name="FOLDERNAME"/></translation>
 <translation id="5969728632630673489">Message sur les raccourcis clavier fermé</translation>
 <translation id="5971037678316050792">Gérer l'état et l'association de l'adaptateur Bluetooth</translation>
+<translation id="5971400953982411053">Bulle de recherche Lentille Brave</translation>
 <translation id="597235323114979258">Voir d'autres destinations</translation>
 <translation id="5972543790327947908">Certains liens pris en charge continueront de s'ouvrir dans <ph name="APP_NAME"/>, <ph name="APP_NAME_2"/> ou <ph name="APP_NAME_3"/>.</translation>
 <translation id="5972559880616357748">Autres actions pour <ph name="SITE_GROUP"/></translation>
@@ -6482,7 +6549,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6030719887161080597">Gérer les informations utilisées par les sites pour mesurer les performances des annonces</translation>
 <translation id="6031600495088157824">Options d'entrée dans la barre d'outils</translation>
 <translation id="6032715498678347852">Pour autoriser une extension à accéder à ce site, cliquez dessus.</translation>
-<translation id="6035127750423896892"><ph name="FOOTNOTE_POINTER"/> Les fonctionnalités peuvent varier en fonction de l'appareil, et de nouvelles fonctionnalités peuvent être ajoutées au fur et à mesure de leur disponibilité</translation>
 <translation id="603539183851330738">Bouton d'annulation de la correction automatique. Revenir à <ph name="TYPED_WORD"/>.  Appuyez sur Entrée pour activer cette action, ou sur Échap pour l'ignorer.</translation>
 <translation id="6038929619733116134">Bloquer si le site diffuse des annonces intrusives ou trompeuses</translation>
 <translation id="6039651071822577588">Dictionnaire des propriétés du réseau non valide</translation>
@@ -6554,6 +6620,12 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6082877069782862752">Affectation des touches</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> : fait partie d'un groupe sans nom</translation>
 <translation id="6086004606538989567">Le compte que vous avez vérifié n'est pas autorisé à accéder à cet appareil.</translation>
+<translation id="4014020241846877285">Vous pouvez personnaliser Brave comme vous le souhaitez :
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Le meilleur de Brave&lt;/em&gt;, pour ceux qui le souhaitent. Par exemple, vous pouvez choisir Recherche Brave comme moteur de recherche par défaut de Brave et utiliser le gestionnaire de mots de passe Brave pour obtenir tous vos mots de passe sur n'importe quel appareil. &lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Choix judicieux :&lt;/em&gt; Brave vous offre le choix et le contrôle avec des paramètres et des renseignements pour vous aider à prendre des décisions judicieuses.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Extensions :&lt;/em&gt; vous pouvez étendre les fonctionnalités de Brave avec plus de 100 000 extensions offertes dans la boutique en ligne Brave Web Store.&lt;/li&gt;
+&lt;/ul&gt;</translation>
 <translation id="6086846494333236931">Élément installé par votre administrateur</translation>
 <translation id="6087746524533454243">Vous recherchez la page à propos du navigateur? Consultez</translation>
 <translation id="6087960857463881712">Superbe visage</translation>
@@ -6630,16 +6702,13 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6143186082490678276">Obtenir de l'aide</translation>
 <translation id="6143366292569327983">Choisissez la langue de la page à traduire</translation>
 <translation id="6144938890088808325">Aidez-nous à améliorer les Chromebook</translation>
-<translation id="6145480071052696715">Configurez facilement votre appareil <ph name="DEVICE_TYPE"/> avec votre téléphone. Vous pouvez ajouter votre compte Wi-Fi et Brave sans entrer manuellement vos mots de passe.
-    <ph name="BR"/>
-    <ph name="BR"/>
-    Visible en tant que <ph name="QUICK_START_DEVICE_DISPLAY_NAME"/>...</translation>
 <translation id="6146409560350811147">La synchronisation ne fonctionne pas. Essayez de vous connecter à nouveau.</translation>
 <translation id="6147020289383635445">Échec de création de l'aperçu avant impression.</translation>
 <translation id="6147253937684562370">Pour déverrouiller le profil, connectez-vous avec l'adresse de courriel de votre compte principal : <ph name="EMAIL"/></translation>
 <translation id="6148576794665275391">Ouvrir maintenant</translation>
 <translation id="614890671148262506">Toujours autoriser les notifications de ce site</translation>
 <translation id="6149015141270619212">Impossible de se connecter à Internet</translation>
+<translation id="6149061208933997199">Utilis. mot de passe</translation>
 <translation id="6149791593592044995">Utiliser un placement moderne des marques de tonalité</translation>
 <translation id="6150116777338468525">Qualité du son</translation>
 <translation id="6150278227694566734">Certains contacts</translation>
@@ -6651,6 +6720,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6154240335466762404">Supprimer tous les ports</translation>
 <translation id="615436196126345398">Protocole</translation>
 <translation id="6154739047827675957">Échec de la configuration de OneDrive</translation>
+<translation id="6154820449290823443">Gérez l'accès aux applications et bloquez-en certaines sur ce Chromebook.</translation>
 <translation id="6155141482566063812">L'onglet d'arrière-plan partage votre écran</translation>
 <translation id="6156863943908443225">Cache des scripts</translation>
 <translation id="6156944117133588106">Afficher les boutons de navigation en mode tablette</translation>
@@ -6739,12 +6809,14 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6226777517901268232">Fichier de clé privée (facultatif)</translation>
 <translation id="6227002569366039565">Appuyez sur |<ph name="ACCELERATOR"/>| pour sélectionner cette bulle. Faites-le une deuxième fois pour sélectionner l'élément qu'elle indique.</translation>
 <translation id="6227280783235722609">extension</translation>
+<translation id="1084605125924146514">Annuler l'épinglage du groupe de la barre de favoris</translation>
 <translation id="6229062790325126537">Réinitialiser ApnMigrator</translation>
 <translation id="6229849828796482487">Se déconnecter du réseau Wi-Fi</translation>
 <translation id="6231782223312638214">Suggéré</translation>
 <translation id="6231881193380278751">Ajouter un paramètre de demande dans l’URL pour actualiser la page : chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="6232017090690406397">Pile</translation>
 <translation id="6232116551750539448">La connexion à <ph name="NAME"/> a été perdue</translation>
+<translation id="623261264391834964">Faites un clic droit dans une zone de texte pour utiliser l'Aide à la rédaction</translation>
 <translation id="6233154960150021497">Utiliser la voix plutôt que le clavier par défaut</translation>
 <translation id="7946072537360476411">Les conditions d'utilisation de Brave changeront le 31 mars</translation>
 <translation id="6234474535228214774">Installation en attente…</translation>
@@ -6786,6 +6858,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6257602895346497974">Activer la synchronisation…</translation>
 <translation id="625827534921607067">Ce réseau sera préféré si plusieurs réseaux configurés ou auxquels vous vous êtes connectés précédemment sont accessibles</translation>
 <translation id="62586649943626337">Organisez vos onglets avec des groupes d'onglets</translation>
+<translation id="6259776178973198997">Actualiser les informations sur les propriétaires Wi-Fi direct</translation>
 <translation id="6262371516389954471">Vos sauvegardes sont téléversées vers les serveurs de Brave et sont chiffrées en utilisant le mot de passe de votre compte Brave.</translation>
 <translation id="6263082573641595914">Version de l'autorité de certification Microsoft</translation>
 <translation id="6263284346895336537">Non essentielle</translation>
@@ -6854,7 +6927,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6310141306111263820">Il n'a pas été possible d'installer votre profil eSIM. Pour obtenir de l'aide, veuillez communiquer avec votre fournisseur de services.</translation>
 <translation id="6500340165622970282">Impossible de démarrer Brave, car un problème est survenu lors de l'ouverture de votre profil. Veuillez redémarrer Brave.</translation>
 <translation id="6312567056350025599">{NUM_DAYS,plural, =1{La vérification de sécurité s'est exécutée il y a 1 jour}one{La vérification de sécurité s'est exécutée il y a {NUM_DAYS} jour}other{La vérification de sécurité s'est exécutée il y a {NUM_DAYS} jours}}</translation>
-<translation id="6312638141433622592">Offrir d'afficher les articles en mode Lecteur, lorsque cela est pris en charge</translation>
 <translation id="6313950457058510656">Désactiver le partage de connexion instantané</translation>
 <translation id="6314819609899340042">Vous avez activé les fonctionnalités de débogage sur cet appareil <ph name="IDS_SHORT_PRODUCT_NAME"/>.</translation>
 <translation id="6315170314923504164">Voix</translation>
@@ -6873,6 +6945,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6326855256003666642">Compte de conservation de connexion active</translation>
 <translation id="6327065839080961103">Utilisation de données du <ph name="FEATURE_NAME"/></translation>
 <translation id="6327785803543103246">Découverte automatique de mandataire Web</translation>
+<translation id="6329916384047371874">Vous utiliserez votre mot de passe <ph name="PASSWORD_DOMAIN"/> sur <ph name="DOMAIN"/>. N'utilisez votre mot de passe que si vous faites confiance à <ph name="DOMAIN"/>.</translation>
 <translation id="8329196515830093443">Le fichier sera envoyé à Brave pour débogage</translation>
 <translation id="6333170995003625229">Impossible de vérifier votre adresse de courriel ni votre mot de passe. Essayez de vous connecter à nouveau.</translation>
 <translation id="6334267141726449402">Copiez ce lien et envoyez-le à l'utilisateur pour collecter les journaux.</translation>
@@ -6986,11 +7059,11 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="642469772702851743">Cet appareil (numéro de série : <ph name="SERIAL_NUMBER"/>) a été verrouillé par son propriétaire.</translation>
 <translation id="6425556984042222041">Vitesse de la synthèse vocale</translation>
 <translation id="642729974267661262">Non autorisés à faire jouer des sons</translation>
-<translation id="6427608534767366138">L'authentification par mandataire est requise pour « <ph name="NETWORK_ID"/> »</translation>
 <translation id="6427938854876261655">{COUNT,plural, =0{Aucun mot de passe enregistré.}=1{Vérification de {COUNT} mot de passe…}one{Vérification de {COUNT} mots de passe...}other{Vérification de {COUNT} mots de passe...}}</translation>
 <translation id="6429384232893414837">Erreur de mise à jour</translation>
 <translation id="6430814529589430811">Certificat unique codé base64 ASCII</translation>
 <translation id="6431347207794742960"><ph name="PRODUCT_NAME"/> va configurer les mises à jour automatiques pour tous les utilisateurs de cet ordinateur.</translation>
+<translation id="6432072919019816301">Numérisez un PDF pour extraire du texte pour la technologie d'assistance</translation>
 <translation id="6434104957329207050">Vitesse de recherche de point</translation>
 <translation id="6434309073475700221">Supprimer</translation>
 <translation id="6434325376267409267">Votre appareil doit être mis à jour avant que vous puissiez utiliser <ph name="APP_NAME"/>.</translation>
@@ -7088,6 +7161,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6517227424170598783">Retirer le raccourci « <ph name="SHORTCUT_NAME"/> – <ph name="APP_NAME"/> »?</translation>
 <translation id="6517382055541687102">L'appareil sélectionné est maintenant <ph name="DEVICE_NAME"/></translation>
 <translation id="6517420300299531857">Vos fichiers dans Mon Disque sont automatiquement synchronisés avec votre Chromebook afin que vous puissiez y accéder sans connexion Internet. Cela nécessitera environ <ph name="REQUIRED_SPACE"/>. Vous disposez actuellement de <ph name="FREE_SPACE_AVAILABLE"/>.</translation>
+<translation id="651753338596587143">Malheureusement, un problème est survenu lors de l'installation des dépendances du CT. Veuillez essayer de redémarrer l'appareil et si le problème persiste, envoyez des commentaires en indiquant #bruschetta dans la description. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="6517709704288360414">Votre appareil pourrait ne plus fonctionner correctement, et vous pourriez rencontrer des problèmes de sécurité et de performance. La désactivation des mises à jour peut également avoir une incidence sur votre droit de faire des réclamations légales en cas de problème.</translation>
 <translation id="6518014396551869914">Cop&amp;ier l'image</translation>
 <translation id="6518133107902771759">Vérifier</translation>
@@ -7158,7 +7232,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="6562117348069327379">Stocker les journaux système dans le répertoire Téléchargements.</translation>
 <translation id="656293578423618167">Le chemin d'accès ou le nom du fichier est trop long. Veuillez raccourcir le nom ou enregistrer le fichier à un autre endroit.</translation>
 <translation id="6569931898053264308">Économies moyennes</translation>
-<translation id="6570622975915850879">Utiliser un autre appareil</translation>
 <translation id="65711204837946324">Le téléchargement exige une autorisation</translation>
 <translation id="6571533309669248172">Formatage du texte</translation>
 <translation id="6571772921213691236">Modifier les données de connexion</translation>
@@ -7338,7 +7411,6 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6709357832553498500">Se connecter à l'aide de <ph name="EXTENSIONNAME"/></translation>
 <translation id="6710213216561001401">Précédent</translation>
 <translation id="6710394144992407503">Vérifier les erreurs d'orthographe en cours de frappe sur des pages Web</translation>
-<translation id="671226373742585927">Cliquez sur le bouton « X » pour fermer le panneau latéral</translation>
 <translation id="6712943853047024245">Vous avez déjà enregistré un mot de passe avec ce nom d'utilisateur pour <ph name="WEBSITE"/></translation>
 <translation id="6713233729292711163">Ajouter un profil professionnel</translation>
 <translation id="6713441551032149301">Maintenez la touche de lancement enfoncée pour basculer entre les touches de fonction et les touches de la rangée supérieure du système</translation>
@@ -7392,6 +7464,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6758056191028427665">Donnez-nous votre avis sur nos services.</translation>
 <translation id="6759193508432371551">Rétablir les paramètres par défaut</translation>
 <translation id="6760354150216532978">Attention : Ce site peut voir les modifications que vous apportez</translation>
+<translation id="6761209758867628753">Outil : Aide à la rédaction</translation>
 <translation id="676158322851696513">« <ph name="EXTENSION_NAME"/> »</translation>
 <translation id="6761623907967804682">Données relatives aux sites sur l'appareil non autorisées</translation>
 <translation id="6762833852331690540">Activé</translation>
@@ -7407,6 +7480,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6770042910635026163">Sites que vous visitez et qui définissent vos centres d'intérêt</translation>
 <translation id="6770602306803890733">Il renforce votre sécurité et celle de tous les utilisateurs sur le Web</translation>
 <translation id="6771503742377376720">Est une autorité de certification</translation>
+<translation id="6772974422346500939">Ouvrir et modifier</translation>
 <translation id="6774710250118040929">Ajouter un nouveau mot de passe</translation>
 <translation id="6775163072363532304">Les appareils accessibles s'afficheront ici.</translation>
 <translation id="677646486571529447">Ajouter une note</translation>
@@ -7428,6 +7502,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6783036716881942511">Oublier cet appareil?</translation>
 <translation id="6783667414610055871">Paramètres Microsoft OneDrive</translation>
 <translation id="6784523122863989144">Le profil est pris en charge</translation>
+<translation id="6785594991951195537">Utiliser votre <ph name="PASSWORD_DOMAIN"/></translation>
 <translation id="6785739405821760313">Affichage des bureaux enregistrés. Appuyez sur l'onglet pour naviguer.</translation>
 <translation id="6785915470941880363">Défilement inversé <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="67862343314499040">Violet</translation>
@@ -7481,6 +7556,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> ne peut pas être exécuté en tant que « racine ».</translation>
 <translation id="6812841287760418429">Conserver les modifications</translation>
 <translation id="6813907279658683733">Plein écran</translation>
+<translation id="6814754908910736855">Informations sur les clients Wi-Fi direct :</translation>
 <translation id="6815376457351236663">Ouvrir quand même</translation>
 <translation id="6815787852028615386">Ce fichier est trompeur et peut apporter des modifications inattendues à votre appareil</translation>
 <translation id="6816097980753839617">Bleu-jaune (Tritanomalie)</translation>
@@ -7531,6 +7607,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6847125920277401289">Libérez de l'espace pour continuer</translation>
 <translation id="6848388270925200958">Pour le moment, certaines de vos cartes peuvent être utilisées uniquement sur cet appareil</translation>
 <translation id="6848716236260083778">Pour configurer une empreinte digitale, demandez à votre enfant de toucher le capteur d'empreintes digitales. Les données liées à l'empreinte digitale de votre enfant sont stockées de façon sécurisée et ne quittent jamais cet appareil : <ph name="DEVICE_TYPE"/>.</translation>
+<translation id="6849623577495734856">Icônes de la barre d'outils</translation>
 <translation id="6850286078059909152">Couleur du texte</translation>
 <translation id="6851181413209322061">Envoyer les données d'utilisation et de diagnostic. Actuellement, cet appareil envoie automatiquement à Brave des données de diagnostic, de l'appareil et d'utilisation des applications. L'envoi de ces données ne sera pas utilisé pour identifier votre enfant, mais pour assurer la stabilité du système et des applications, et pour apporter d'autres améliorations. Certaines données collectées contribueront également à améliorer les applications Brave et aideront nos partenaires, comme les développeurs Android. Ce paramètre est appliqué par le propriétaire du compte. Si le paramètre relatif aux autres activités sur le Web et dans les applications est activé pour votre enfant, ces données peuvent être enregistrées dans son compte Brave.</translation>
 <translation id="6851497530878285708">Application activée</translation>
@@ -7561,6 +7638,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="686831807558000905">Ne pas se connecter</translation>
 <translation id="686839242150793617">Autorisés à entrer automatiquement l'Incrustation d'image</translation>
 <translation id="6868934826811377550">Voir les renseignements</translation>
+<translation id="6869093950561306644">Pour veiller à ce que cet appareil puisse être utilisé en toute sécurité, votre organisation pourrait avoir besoin de consulter des renseignements sur son système d'exploitation, son navigateur et ses paramètres ainsi que sur les logiciels qui y sont installés.</translation>
 <translation id="6871644448911473373">Répondeur OCSP : <ph name="LOCATION"/></translation>
 <translation id="6873571253135628430">Modifier les autorisations du site</translation>
 <translation id="6876155724392614295">Vélo</translation>
@@ -7784,6 +7862,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7049293980323620022">Conserver le fichier?</translation>
 <translation id="7049524156282610342">Données de navigation : <ph name="DISPLAY_NAME"/></translation>
 <translation id="7050037487872780845">Configuration incorrecte du point d’accès</translation>
+<translation id="1419348090043109902">{COUNT,plural, =1{Mot de passe enregistré dans votre compte Brave, <ph name="USER_EMAIL"/>}one{Mot de passe enregistré dans votre compte Brave, <ph name="USER_EMAIL"/>}other{Mots de passe enregistrés dans votre compte Brave, <ph name="USER_EMAIL"/>}}</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="7055152154916055070">Redirection bloquée :</translation>
 <translation id="7055451306017383754">Impossible d'annuler le partage parce qu'une application utilise ce dossier. Le partage sera annulé au prochain arrêt de Parallels Desktop.</translation>
@@ -7805,6 +7884,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7067396782363924830">Couleurs de veille</translation>
 <translation id="7067725467529581407">Ne plus afficher ce message.</translation>
 <translation id="7068279399556423026">Connectez-vous pour voir les onglets d'autres appareils</translation>
+<translation id="706949303827219454">Ouvre la page des paramètres de sécurité dans un nouvel onglet</translation>
 <translation id="7069750557362084654">{NUM_PASSWORDS,plural, =1{Nouveau mot de passe pour ce site}one{Nouveau mot de passe pour ce site}other{Nouveaux mots de passe pour ce site}}</translation>
 <translation id="7070484045139057854">Cette extension peut lire et modifier les données du site</translation>
 <translation id="7072010813301522126">Nom du raccourci</translation>
@@ -7912,7 +7992,6 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7168109975831002660">Taille de police minimale</translation>
 <translation id="7169122689956315694">Activer les notifications lorsque des appareils se trouvent à proximité</translation>
 <translation id="7170236477717446850">Photo du profil</translation>
-<translation id="7170751905948784001">Renseignements sur le développeur :</translation>
 <translation id="7171259390164035663">Ne pas s'inscrire</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Ajouter un onglet au nouveau groupe}one{Ajouter un onglet au nouveau groupe}other{Ajouter des onglets au nouveau groupe}}</translation>
 <translation id="7173114856073700355">Ouvrir les paramètres</translation>
@@ -7921,11 +8000,14 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7175353351958621980">Chargé de :</translation>
 <translation id="7180611975245234373">Actualiser</translation>
 <translation id="7180865173735832675">Personnaliser</translation>
+<translation id="6219131628242399788">Pour autoriser <ph name="CHILD_NAME"/> à installer des extensions sans votre approbation à l'avenir, ouvrez l'application Family Link sur votre appareil, puis mettez à jour les paramètres Brave de <ph name="CHILD_NAME"/>.</translation>
+<translation id="7182051712900867547">Utiliser un compte différent</translation>
 <translation id="7182063559013288142">Point d'accès sans fil immédiat</translation>
 <translation id="7182791023900310535">Déplacer votre mot de passe</translation>
 <translation id="718427252411067142">Pour empêcher d'autres personnes d'utiliser votre mot de passe, ouvrez l'application pour le modifier</translation>
 <translation id="7186088072322679094">Garder dans la barre d'outils</translation>
 <translation id="7186303001964993981"><ph name="ORIGIN"/> ne peut pas ouvrir ce dossier parce qu'il contient des fichiers système</translation>
+<translation id="6475793992224120104">Contrôlez la manière dont l'historique de navigation est utilisé avec vos autres données dans les services Brave</translation>
 <translation id="7188508872042490670">Données relatives aux sites sur l’appareil</translation>
 <translation id="7189234443051076392">Assurez-vous qu'il y a suffisamment d'espace sur votre appareil</translation>
 <translation id="7189451821249468368">Vous n'avez pas suffisamment de mises à niveau pour inscrire cet appareil. Veuillez communiquer avec le service commercial pour en acheter d'autres. Si vous pensez que ce message s'affiche par erreur, veuillez communiquer avec l'assistance technique.</translation>
@@ -7942,6 +8024,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7196913789568937443">Sauvegarder sur Brave Disque. Restaurez vos données aisément ou changez d'appareil à tout moment. Votre sauvegarde comprend les données des applications. Vos sauvegardes sont téléversées dans les serveurs de Brave et sont chiffrées en utilisant le mot de passe de votre compte Brave. <ph name="BEGIN_LINK1"/>En savoir plus<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Obtenez la recherche Brave et les fonctionnalités intelligentes de Brave chaque fois que vous naviguez</translation>
 <translation id="719791532916917144">Raccourci-clavier</translation>
+<translation id="822137494909042639">Pourquoi Brave abandonne-t-il les témoins tiers?</translation>
 <translation id="7198503619164954386">Vous devez utiliser un appareil inscrit au sein de l'entreprise</translation>
 <translation id="7199158086730159431">Obtenir de l'aide</translation>
 <translation id="7199452998289813782">Suspendre la diffusion sur <ph name="DEVICE_NAME"/></translation>
@@ -8060,7 +8143,6 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7290242001003353852">Ce service de connexion, hébergé par <ph name="SAML_DOMAIN"/>, est en train d'accéder à votre caméra.</translation>
 <translation id="7292067737327289208">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par votre organisation et votre <ph name="BEGIN_LINK"/>profil est géré<ph name="END_LINK"/> par <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
-<translation id="7295305918366078219">Non autorisé à passer automatiquement au mode Plein écran</translation>
 <translation id="7295614427631867477">Notez qu'Android, Play et les applications connexes sont régis par leurs propres politiques de collection et d'utilisation des données.</translation>
 <translation id="7296503797589217366">Sélectionner le dossier <ph name="FOLDER_TITLE"/></translation>
 <translation id="7297726121602187087">Vert foncé</translation>
@@ -8269,7 +8351,6 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="6147816961713837040">Envoie une partie brouillée de l'URL à Brave à l'aide d'un serveur confidentiel qui masque votre adresse IP</translation>
 <translation id="7453008956351770337">En sélectionnant cette imprimante, vous permettez à l'extension suivante d'y accéder :</translation>
 <translation id="3699067418237091329">Vous déconnecte de la plupart des sites. Vous ne serez pas déconnecté de votre compte Brave.</translation>
-<translation id="2603903950487685810">{NUM_EXTENSIONS,plural, =1{Cette extension pourrait être dangereuse. Brave vous recommande de la retirer.}one{Cette extension pourrait être dangereuse. Brave vous recommande de la retirer.}other{Ces extensions pourraient être dangereuses. Brave vous recommande de les retirer.}}</translation>
 <translation id="7454548535253569100">Portail : <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7454744349230173024">Votre organisation a désactivé l'enregistrement des mots de passe</translation>
 <translation id="7455730275746867420">Gérer des conteneurs supplémentaires</translation>
@@ -8277,6 +8358,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7456142309650173560">développeur</translation>
 <translation id="7456774706094330779">Préchargement étendu</translation>
 <translation id="7456847797759667638">Ouvrir une adresse...</translation>
+<translation id="7457027286267861992">Espace disque insuffisant. Veuillez libérer de l'espace disque supplémentaire et réessayer. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="7457831169406914076">{COUNT,plural, =1{un lien}one{# lien}other{# liens}}</translation>
 <translation id="8944680893327873975">Utilise le même correcteur orthographique que celui utilisé dans la recherche Brave. Le texte que vous tapez dans le navigateur sera envoyé à Brave.</translation>
 <translation id="7458715171471938198">Restaurer les applications?</translation>
@@ -8338,6 +8420,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7501957181231305652">ou</translation>
 <translation id="7502220299952823578">Ajouter à la liste « Toujours garder ces sites actifs »</translation>
 <translation id="7502528909759062987">Suspendre l'onglet de diffusion sur <ph name="DEVICE_NAME"/></translation>
+<translation id="7502804472671406749">Il est possible de faire défiler et de zoomer les onglets partagés</translation>
 <translation id="7503191893372251637">Type de certificat Netscape</translation>
 <translation id="7503985202154027481">Une trace de votre visite sur ce site sera enregistrée sur votre clé de sécurité.</translation>
 <translation id="7504145862399276792">L'audio de cet onglet est désactivé</translation>
@@ -8380,7 +8463,6 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7531779363494549572">Accédez à Paramètres &gt; Applications et notifications &gt; Notifications.</translation>
 <translation id="7532009420053991888"><ph name="LINUX_APP_NAME"/> ne répond pas. Sélectionnez « Forcer la fermeture » pour fermer l'application.</translation>
 <translation id="7536815228183532290">Connecté en tant que <ph name="EMAIL"/></translation>
-<translation id="4050983783261908446">Vous recevrez des suggestions de groupes d'onglets regroupant des onglets similaires. Vos onglets et vos titres ouverts sont envoyés à Brave et peuvent être examinés par des humains pour améliorer cette fonctionnalité.</translation>
 <translation id="7538013435257102593">Ce type de fichier n'est pas souvent téléchargé et pourrait être dangereux</translation>
 <translation id="7540972813190816353">Une erreur s'est produite pendant la vérification des mises à jour : <ph name="ERROR"/></translation>
 <translation id="7541076351905098232"><ph name="MANAGER"/> a restauré une version antérieure de cet appareil. Veuillez enregistrer les fichiers importants, puis redémarrer l'appareil. Toutes les données qu'il contient seront supprimées.</translation>
@@ -8479,6 +8561,7 @@ Vous avez # autres mots de passe compromis. Le gestionnaire de mots de passe de
 <translation id="7617263010641145920">Activer le Play Store</translation>
 <translation id="7617648809369507487">Activer l'affichage discret</translation>
 <translation id="7619937211696316184">La maintenance est terminée</translation>
+<translation id="7620616707541471029">Sélectionnez un compte pour continuer</translation>
 <translation id="7621382409404463535">Le système n'a pas réussi à enregistrer la configuration de l'appareil.</translation>
 <translation id="7621480263311228380">Non autorisé à utiliser les renseignements enregistrés à votre sujet</translation>
 <translation id="7621595347123595643">Vous ne pourrez pas récupérer les données locales si vous oubliez votre mot de passe ou votre NIP.</translation>
@@ -8684,7 +8767,6 @@ Appuyez sur un commutateur attribué ou une touche du clavier pour retirer l'att
 <translation id="7758884017823246335">Ajouter une recherche de site</translation>
 <translation id="7759809451544302770">Facultatif</translation>
 <translation id="7762024824096060040">Impossible d'utiliser ce compte</translation>
-<translation id="7762243782113123335">Désolés, une erreur s'est produite. Veuillez soumettre vos commentaires en indiquant #bruschetta dans la description. Le code d'erreur est <ph name="ERROR"/>.</translation>
 <translation id="7764225426217299476">Ajouter une adresse</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> de <ph name="DOWNLOAD_DOMAIN"/></translation>
 <translation id="7764527477537408401">Ouvrir le groupe dans une nouvelle fenêtre</translation>
@@ -8738,7 +8820,9 @@ Appuyez sur un commutateur attribué ou une touche du clavier pour retirer l'att
 
 
 <ph name="EXTENSION_NAME"/></translation>
+<translation id="7788948939674438635">Ne pas autoriser les sites à verrouiller votre clavier</translation>
 <translation id="7789963078219276159">La catégorie d'image pour l'arrière-plan de la page d'accueil est maintenant <ph name="CATEGORY"/>.</translation>
+<translation id="7790689625219600437">ROC des PDF</translation>
 <translation id="7791269138074599214">Méthode d'entrée</translation>
 <translation id="5108489105791345153">Cette application sera installée sur le profil Brave que vous utilisez actuellement</translation>
 <translation id="7791436592012979144">Défilement inversé activé</translation>
@@ -8758,7 +8842,6 @@ Appuyez sur un commutateur attribué ou une touche du clavier pour retirer l'att
 <translation id="780301667611848630">Non merci</translation>
 <translation id="7803657407897251194">Pour poursuivre la configuration avec votre appareil Android, connectez votre <ph name="DEVICE_TYPE"/> à un réseau</translation>
 <translation id="7804072833593604762">Onglet fermé</translation>
-<translation id="4622496773411422523">Numérisez le fichier PDF afin d'extraire le texte pour le lecteur d'écran. Uniquement pris en charge sur le navigateur Brave</translation>
 <translation id="7805371082115476536">Léger</translation>
 <translation id="7805768142964895445">État</translation>
 <translation id="7805906048382884326">Fermer le conseil</translation>
@@ -9112,6 +9195,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1663358621471164569">Vous pouvez ouvrir les favoris, le mode Lecture et plus à partir du menu Brave en haut à droite</translation>
 <translation id="8064015586118426197">Brave OS Flex</translation>
 <translation id="8064279191081105977">Groupe <ph name="GROUP_NAME"/> : <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
+<translation id="8065144531309810062">Utiliser l'IA de Brave pour être plus créatif et productif</translation>
 <translation id="8066444921260601116">Boîte de dialogue de connexion</translation>
 <translation id="8070572887926783747">Autorisation de localisation pour <ph name="APP_NAME"/></translation>
 <translation id="8070662218171013510">Commentaires haptiques</translation>
@@ -9166,7 +9250,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="810185532889603849">Couleur personnalisée</translation>
 <translation id="8101987792947961127">Réinitialisation « Powerwash » nécessaire au prochain démarrage</translation>
 <translation id="8102139037507939978">Supprimer les renseignements personnels du fichier system_logs.txt.</translation>
-<translation id="8102344699913991108">Les sites utilisent ce paramètre pour offrir des expériences immersives en plein écran, quels que soient les gestes de l'utilisateur</translation>
 <translation id="810362914482827094">Rechercher des clés d'accès</translation>
 <translation id="8104088837833760645">Télécharger un profil eSIM</translation>
 <translation id="8105273883928376822">Veuillez vous connecter pour continuer.</translation>
@@ -9202,6 +9285,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8135557862853121765"><ph name="NUM_KILOBYTES"/> ko</translation>
 <translation id="8136269678443988272">Les NIP entrés ne correspondent pas</translation>
 <translation id="8137559199583651773">Gérer les extensions</translation>
+<translation id="8137711267692884979">{NUM_EXTENSIONS,plural, =1{Examiner une extension susceptible d'être dangereuse}one{Examiner {NUM_EXTENSIONS} extension susceptible d'être dangereuse}other{Examiner {NUM_EXTENSIONS} extensions susceptibles d'être dangereuses}}</translation>
 <translation id="8138217203226449454">Vouliez-vous remplacer votre moteur de recherche?</translation>
 <translation id="8138997515734480534">État de <ph name="VM_NAME"/></translation>
 <translation id="8139440916039659819">Accélération du curseur</translation>
@@ -9240,7 +9324,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8160775796528709999">Activez l'option de sous-titres instantanés dans les paramètres pour afficher les sous-titres de vos contenus vidéo et audio</translation>
 <translation id="816095449251911490"><ph name="SPEED"/> - <ph name="RECEIVED_AMOUNT"/>, <ph name="TIME_REMAINING"/></translation>
 <translation id="8161095570253161196">Reprendre la navigation</translation>
-<translation id="8161293209665121583">Mode Lecteur pour pages Web</translation>
 <translation id="8161604891089629425">Police de contour</translation>
 <translation id="8162984717805647492">{NUM_TABS,plural, =1{Déplacer l'onglet vers une nouvelle fenêtre}one{Déplacer l'onglet vers une nouvelle fenêtre}other{Déplacer les onglets vers une nouvelle fenêtre}}</translation>
 <translation id="8163152278172770963">Ne pas autoriser les sites à entrer automatiquement l'Incrustation d'image</translation>
@@ -9385,7 +9468,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8272443605911821513">Pour gérer les extensions, cliquer sur « Extensions » dans le menu « Autres outils ».</translation>
 <translation id="8272786333453048167">Autoriser de nouveau</translation>
 <translation id="8273905181216423293">Télécharger maintenant</translation>
-<translation id="8274495289680107339">Les sites utilisent ce paramètre pour accéder automatiquement à l'Incrustation d'image. Cela vous permet de continuer à regarder une vidéo tout en libérant votre écran pour d'autres tâches.</translation>
 <translation id="827488840488530039">La page à laquelle vous souhaitez accéder n'a pas pu vérifier vos tickets Kerberos</translation>
 <translation id="8274921654076766238">La loupe suit les actions au clavier</translation>
 <translation id="8274924778568117936">N'éteignez pas votre <ph name="DEVICE_TYPE"/> et ne le fermez pas tant que la mise à jour n'est pas terminée. Votre <ph name="DEVICE_TYPE"/> redémarrera une fois l'installation terminée.</translation>
@@ -9496,7 +9578,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="8356409598322585307">Vous avez déjà enregistré cet appareil. Vous n'avez pas à l'enregistrer de nouveau.</translation>
 <translation id="8357388086258943206">Erreur lors de l'installation de Linux</translation>
-<translation id="3293878794303371084">Ce guide vous aide à comprendre les choix importants que vous avez lorsque vous utilisez Brave. Et cela vous aide à faire ces choix, afin que Brave fonctionne comme vous le souhaitez.</translation>
 <translation id="8358685469073206162">Restaurer les pages qui étaient ouvertes?</translation>
 <translation id="8358912028636606457">La diffusion de l'audio de l'onglet n'est pas prise en charge sur cet appareil.</translation>
 <translation id="2921493528667739769">Enregistrer dans votre compte Brave</translation>
@@ -9559,7 +9640,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8399282673057829204">Afficher le mot de passe</translation>
 <translation id="839949601275221554">L'appareil a rencontré une erreur. Veuillez redémarrer votre appareil et réessayer.</translation>
 <translation id="8401432541486058167">Entrez le NIP associé à votre carte à puce.</translation>
-<translation id="1189449765746484728">Vos données dans Brave</translation>
 <translation id="8403807918453631441"><ph name="BRAND"/> ne peut vérifier vos mots de passe que si vous les enregistrez</translation>
 <translation id="8405046151008197676">Consultez les faits saillants de la dernière mise à jour</translation>
 <translation id="8405118833120731611">{0,plural, =1{Fermer ce profil}one{Fermer ce profil (# fenêtre)}other{Fermer ce profil (# fenêtres)}}</translation>
@@ -9597,7 +9677,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8428271547607112339">Ajouter un compte scolaire</translation>
 <translation id="84297032718407999">Vous serez déconnecté dans <ph name="LOGOUT_TIME_LEFT"/></translation>
 <translation id="8431190899827883166">Afficher les éléments sélectionnés</translation>
-<translation id="8432724317983466962">Par défaut, l'activation du mode Plein écran nécessite un geste de l'utilisateur</translation>
+<translation id="843173223122814223">Créer des arrière-plans avec l'IA</translation>
 <translation id="8433186206711564395">Paramètres réseau</translation>
 <translation id="8434480141477525001">Port de débogage de Native Client</translation>
 <translation id="3380551973126785727">Connectez-vous et activez la synchronisation pour permettre à Brave de suggérer des groupes d'onglets et de maintenir l'organisation de vos onglets</translation>
@@ -9712,6 +9792,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8524594273111932386">rechercher+flèche vers le bas</translation>
 <translation id="4483547786985740455">Enregistrez des cartes dans votre compte Brave</translation>
 <translation id="8524817717332153865">La caméra et le microphone sont désactivés dans les paramètres système du Mac</translation>
+<translation id="8524841856047224176">Personnalisez les arrière-plans de votre caméra pour les appels vidéo et bien plus encore</translation>
 <translation id="8525306231823319788">Plein écran</translation>
 <translation id="8525461909394569609">Cette application comporte du contenu Web provenant de</translation>
 <translation id="8526813720153458066">SSH</translation>
@@ -9761,6 +9842,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8561206103590473338">Éléphant</translation>
 <translation id="8561565784790166472">Soyez prudent</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
+<translation id="8562115322675481339">Créer un nouveau groupe d'onglets</translation>
 <translation id="8563043098557365232">Uniquement autorisé pour les services système</translation>
 <translation id="8564220755011656606">Impossible d'accéder au microphone</translation>
 <translation id="8565650234829130278">Tentative d'installation d'une version antérieure de l'application.</translation>
@@ -9890,10 +9972,12 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8669284339312441707">Plus chaud</translation>
 <translation id="8670537393737592796">Pour revenir ici rapidement, installez <ph name="APP_NAME"/> en cliquant sur le bouton d'installation</translation>
 <translation id="867085395664725367">Une erreur de serveur temporaire s'est produite.</translation>
+<translation id="86716700541305908">Personnalisez le fond d'écran, le thème sombre et bien plus encore</translation>
 <translation id="8673026256276578048">Rechercher sur Internet...</translation>
 <translation id="867329473311423817">Autorisé à gérer les fenêtres sur tous vos écrans</translation>
 <translation id="8673383193459449849">Problème de serveur</translation>
 <translation id="8674903726754070732">Malheureusement, votre ordinateur est configuré avec un identifiant de matériel malformé. Cela empêche l'installation des derniers correctifs de sécurité pour Brave OS. Votre ordinateur <ph name="BEGIN_BOLD"/>peut ainsi être vulnérable aux attaques malveillantes<ph name="END_BOLD"/>.</translation>
+<translation id="8675657007450883866">Les sites utilisent cette fonctionnalité pour entrer automatiquement en mode Plein écran. En règle générale, l'entrée en mode Plein écran nécessite une interaction de l'utilisateur.</translation>
 <translation id="8675704450909805533">Le programme d'installation n'a pas trouvé de destination valide pour l'installation de <ph name="DEVICE_OS"/>.</translation>
 <translation id="8676152597179121671">{COUNT,plural, =1{Vidéo}one{# vidéo}other{# vidéos}}</translation>
 <translation id="8676276370198826499">S'inscrire à <ph name="SITE_ETLD_PLUS_ONE"/> avec <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -10056,6 +10140,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1427237635463348414">Aidez-nous à améliorer Brave en nous indiquant pourquoi vous avez autorisé les témoins tiers</translation>
 <translation id="8791157330927639737">En savoir plus sur la mise à jour</translation>
 <translation id="8791534160414513928">Envoyer une demande « Do Not Track » avec votre trafic de navigation</translation>
+<translation id="8793390639824829328">Les sites utilisent cette fonctionnalité pour faire défiler et zoomer les onglets partagés</translation>
 <translation id="879413103056696865">Lors de l'utilisation du point d'accès, votre <ph name="PHONE_NAME"/> :</translation>
 <translation id="8795916974678578410">Nouvelle fenêtre</translation>
 <translation id="6596295505984504022">&amp;Personnaliser votre Brave</translation>
@@ -10091,6 +10176,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8820817407110198400">Favoris</translation>
 <translation id="8821045908425223359">Configurer automatiquement une adresse IP</translation>
 <translation id="8821268776955756404"><ph name="APP_NAME"/> est prête à l'utilisation.</translation>
+<translation id="8821647731831124007">Aucun point d'accès sans fil disponible</translation>
 <translation id="882204272221080310">Pour une sécurité accrue, mettez à jour le micrologiciel.</translation>
 <translation id="8823514049557262177">Copier le texte du lien</translation>
 <translation id="8823704566850948458">Suggérer un mot de passe…</translation>
@@ -10114,6 +10200,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8838601485495657486">Opaque</translation>
 <translation id="8838770651474809439">Hamburger</translation>
 <translation id="8838778928843281408">Gérer les téléphones</translation>
+<translation id="1084693218709052703">Annuler l'épinglage du groupe de la barre de favoris</translation>
 <translation id="883924185304953854">Recherche par image</translation>
 <translation id="3740206403750675781">Le mot de passe est enregistré sur cet appareil uniquement. Pour enregistrer de nouveaux mots de passe dans votre compte Brave, mettez à jour les services Google Play.</translation>
 <translation id="8841843049738266382">Consulter et modifier les utilisateurs ajoutés à la liste verte</translation>
@@ -10122,6 +10209,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8846132060409673887">Trouvez le fabricant et le modèle de cet ordinateur</translation>
 <translation id="8846163936679269230">Réinitialiser les profils eSIM</translation>
 <translation id="8846239054091760429">Son mono, démarrage, sous-titres instantanés et plus encore</translation>
+<translation id="1899218434110015565">Les revenus publicitaires soutiennent également de nombreux produits et services gratuits de Brave, comme Brave, Gmail, Maps et YouTube.</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">Caché</translation>
 <translation id="8849219423513870962">Annuler le retrait du profil eSIM nommé <ph name="PROFILE_NAME"/></translation>
@@ -10228,6 +10316,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8930622219860340959">Sans fil</translation>
 <translation id="8931076093143205651">Envoyer les données d'utilisation et de diagnostic. Aidez-nous à améliorer votre expérience Android en envoyant automatiquement à Brave des données de diagnostic, de l'appareil et d'utilisation des applications. Cela nous permettra d'assurer la stabilité du système et des applications, et d'apporter d'autres améliorations. Certaines données collectées contribueront également à améliorer les applications Brave et aideront nos partenaires, comme les développeurs Android. Ce paramètre est appliqué par le propriétaire du compte. C'est à lui de choisir d'envoyer ou non à Brave les données de diagnostic et d'utilisation de cet appareil. Si le paramètre relatif aux autres activités sur le Web et dans les applications est activé, ces données peuvent être enregistrées dans votre compte Brave.</translation>
 <translation id="8931475688782629595">Gérer les données que vous synchronisez</translation>
+<translation id="8931479761457920281">Autorisé à verrouiller votre pointeur</translation>
 <translation id="8931713990831679796">Ces imprimantes sont connectées et prêtes à être utilisées. Enregistrez-les à votre profil pour y accéder plus facilement.</translation>
 <translation id="8932654652795262306">Renseignements sur le partage de connexion instantané</translation>
 <translation id="893298445929867520">Paniers masqués. Ils s'afficheront de nouveau lorsque vous effectuerez des changements.</translation>
@@ -10514,6 +10603,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="9128335130883257666">Accéder à la page des paramètres pour <ph name="INPUT_METHOD_NAME"/></translation>
 <translation id="9128870381267983090">Connexion au réseau</translation>
 <translation id="9130015405878219958">Le mode indiqué est incorrect.</translation>
+<translation id="9130208109420587135">Modifier le nom du groupe <ph name="NAME"/></translation>
 <translation id="9130364135697530260">Le contenu intégré de ce site peut utiliser les informations qu'ils ont enregistrées à votre sujet</translation>
 <translation id="9131209053278896908">Les sites bloqués sont affichés ici</translation>
 <translation id="9131487537093447019">Envoyer et recevoir des messages sur les appareils Bluetooth.</translation>
@@ -10539,6 +10629,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="9150045010208374699">Utiliser votre caméra</translation>
 <translation id="9150079578948279438">Impossible de retirer le profil. Veuillez réessayer ou communiquer avec votre fournisseur de services pour obtenir de l'assistance technique.</translation>
 <translation id="9150860646299915960">Mettre à niveau votre conteneur Linux</translation>
+<translation id="915112772806845021">Les sites utilisent cette fonctionnalité pour accéder automatiquement à l'Incrustation d'image. Cela vous permet de continuer à regarder une vidéo tout en libérant votre écran pour d'autres tâches.</translation>
 <translation id="9151249085738989067">Changer automatiquement de voix ChromeVox en fonction de la langue</translation>
 <translation id="9151906066336345901">fin</translation>
 <translation id="9153274276370926498">Informations du système Lacros</translation>
@@ -10644,6 +10735,10 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="940212040923880623">et Rechercher et modifier</translation>
 <translation id="942296794412775122">Microphone activé/désactivé</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> partage un onglet Brave et le son.</translation>
+<translation id="943673863723789781">Configurez facilement votre appareil <ph name="DEVICE_TYPE"/> avec votre téléphone. Vous pouvez ajouter votre compte Brave sans entrer manuellement votre mot de passe.
+    <ph name="BR"/>
+    <ph name="BR"/>
+    Visible en tant que <ph name="DEVICE_TYPE"/>...</translation>
 <translation id="945522503751344254">Envoyer un commentaire à Brave</translation>
 <translation id="947329552760389097">&amp;Inspecter des éléments</translation>
 <translation id="947526284350604411">Votre réponse</translation>
@@ -10652,6 +10747,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="949807244219288032">Cet onglet est connecté à un appareil HID</translation>
 <translation id="950079950995628542">De « <ph name="PHONE_NAME"/> »</translation>
 <translation id="950307215746360464">Guide de configuration</translation>
+<translation id="951273949038779544"><ph name="SITE_ACCESS"/>. Installée par votre administrateur</translation>
 <translation id="951991426597076286">Refuser</translation>
 <translation id="952471655966876828">L'appareil se connecte automatiquement lorsqu'il est allumé et utilisé</translation>
 <translation id="953434574221655299">Autorisés à savoir quand vous utilisez activement votre appareil</translation>
@@ -10684,9 +10780,11 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="973558314812359997">Taille du curseur de souris</translation>
 <translation id="975893173032473675">Langue cible</translation>
 <translation id="976499800099896273">Boîte de dialogue d'annulation de la correction automatique affichée pour la correction de <ph name="TYPED_WORD"/> en <ph name="CORRECTED_WORD"/>.  Appuyez sur la flèche vers le haut pour y accéder, ou sur Échap pour l'ignorer.</translation>
+<translation id="976572010712028687">Confirmer que vous êtes un parent</translation>
 <translation id="978146274692397928">La largeur de ponctuation initiale est « Complète »</translation>
 <translation id="978978324795544535">Touchez deux fois sur un élément, maintenez le deuxième toucher enfoncé, puis faites glisser l'élément pour le déplacer</translation>
 <translation id="97905529126098460">Cette fenêtre sera automatiquement fermée une fois l'annulation terminée.</translation>
+<translation id="979345485590886759">Les sites peuvent demander de verrouiller le pointeur de votre souris</translation>
 <translation id="980731642137034229">Bouton du menu Action</translation>
 <translation id="981121421437150478">Hors ligne</translation>
 <translation id="983192555821071799">Fermer tous les onglets</translation>
@@ -10806,9 +10904,6 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="8648684608605749476">Bloquer les témoins tiers en navigation privée</translation>
 <translation id="3293179957233653243">Des fonctionnalités sur certains sites risquent de ne pas fonctionner en mode de navigation privée</translation>
 <translation id="6304377454418270508">Lorsque vous êtes en mode privé, les sites peuvent uniquement utiliser des cookies pour voir votre activité de navigation sur leur propre site. Les cookies sont supprimés à la fin de la session privée.</translation>
-<translation id="5750851931752628242">{NUM_EXTENSIONS, plural,
-     =1 {Examiner 1 extension qui a été retirée de la boutique en ligne}
-     other {Examiner {NUM_EXTENSIONS} extensions qui ont été retirées de la boutique en ligne}}</translation>
 <translation id="8057643629386457234">Fournit la meilleure sécurité de Brave relative au compte pour les profils à risque en matière d'attaque ciblée</translation>
 <translation id="3497049935870467874">Voir les avertissements avant d'accéder à des sites non sécurisés en mode privé</translation>
 <translation id="6105125042109106861">Les témoins tiers sont bloqués en mode de navigation privée</translation>

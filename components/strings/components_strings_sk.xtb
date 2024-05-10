@@ -17,7 +17,6 @@
 <translation id="1035709686865413354">Vodné filtre a čistiace zariadenia</translation>
 <translation id="1036348656032585052">Vypnúť</translation>
 <translation id="1036881361735705143">Obálka C4</translation>
-<translation id="1036982837258183574">Režim celej obrazovky ukončíte stlačením klávesa |<ph name="ACCELERATOR"/>|</translation>
 <translation id="1038106730571050514">Zobraziť návrhy</translation>
 <translation id="1038842779957582377">neznámy názov</translation>
 <translation id="1041998700806130099">Správa hárku úlohy</translation>
@@ -65,6 +64,7 @@
 <translation id="1125573121925420732">Kým weby aktualizujú svoje zabezpečenie, môžu sa často zobrazovať upozornenia. Čoskoro by sa to malo zlepšiť.</translation>
 <translation id="112840717907525620">Vyrovnávacia pamäť pravidla je v poriadku</translation>
 <translation id="1131264053432022307">Skopírovaný obrázok</translation>
+<translation id="1138458427267715730">Dostávajte upozornenia na pokles ceny na ľubovoľnom webe na internete</translation>
 <translation id="1142713751288681188">Typ papiera</translation>
 <translation id="1144136880160289237">Zatiaľ nemáte žiadne aktívne témy</translation>
 <translation id="1149617035358809955">overiť vašu totožnosť, aby mohol vypĺňať vaše platobné údaje</translation>
@@ -94,6 +94,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1178821169867863726">12 × 16 palcov</translation>
 <translation id="1181037720776840403">Odstrániť</translation>
 <translation id="3248691252569103537">Brave blokuje webom možnosť sledovať vás pri prehliadaní pomocou súborov cookie tretích strán. Prejdite do nastavení a <ph name="LINK"/>.</translation>
+<translation id="1185343831726846924">Potvrdenie virtuálnej karty sa nedá zapnúť</translation>
 <translation id="1186201132766001848">Skontrolovať heslá</translation>
 <translation id="1187430513518041110">Automobily a vozidlá</translation>
 <translation id="1190491977647722791">Papier (vysoká gramáž)</translation>
@@ -113,6 +114,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1219129156119358924">Zabezpečenie systému</translation>
 <translation id="1222060260947439312">Pravý zásobník</translation>
 <translation id="1224330468394120478">A3×6</translation>
+<translation id="1225240795350945817">Číslo karty:</translation>
 <translation id="1225570101506606926">Biliard</translation>
 <translation id="2735968720006267833">Brave vám nájde zľavy</translation>
 <translation id="1227224963052638717">Neznáme pravidlo.</translation>
@@ -126,6 +128,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1243027604378859286">Autor:</translation>
 <translation id="1247030632403369975">Hliník</translation>
 <translation id="1252209483516427155">Vrchné oblečenie</translation>
+<translation id="1253096324252841344">Platba cez <ph name="FINANCIAL_ACCOUNT_TYPES"/></translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (synchronizované)</translation>
 <translation id="1255086252236620440">Mixéry na potraviny</translation>
 <translation id="1256368399071562588">&lt;p&gt;Ak chcete navštíviť určitý web, ale neotvorí sa, najprv skúste opraviť chybu pomocou týchto krokov na riešenie problémov:&lt;/p&gt;
@@ -151,7 +154,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1282358575813748144">Lode a plavidlá</translation>
 <translation id="1283977499362032052">Životopisy a portfóliá</translation>
 <translation id="1285320974508926690">Nikdy neprekladať tieto webové stránky</translation>
-<translation id="1288548991597756084">Kartu bezpečne uložte</translation>
 <translation id="1292571435393770077">Zásobník č. 16</translation>
 <translation id="1209478311331937175">„Softvér vo vašom počítači bráni Chromu bezpečne sa pripojiť k internetu“ (iba počítače so systémom Windows)</translation>
 <translation id="1293797321964802402">Obálka 228,6 mm × 279,4 mm</translation>
@@ -175,7 +177,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="132301787627749051">Hľadať obrázok v schránke</translation>
 <translation id="1323433172918577554">Zobraziť viac</translation>
 <translation id="132390688737681464">Ukladať a dopĺňať adresy</translation>
-<translation id="1325749054628832887">Témy reklám sú len jednou z mnohých možností, pomocou ktorých môže web prispôsobovať reklamy. Aj keď nie sú témy reklám povolené, weby vám stále môžu zobrazovať reklamy, ktoré však môžu byť menej zaujímavé. Prečítajte si viac o <ph name="BEGIN_LINK"/>správe ochrany súkromia pri reklamách<ph name="LINK_END"/>.</translation>
+<translation id="1325412080783393306">Vyhľadajte ďalšie možnosti zakúpenia</translation>
 <translation id="1329916999021038454">Podať hlásenie</translation>
 <translation id="1330449323196174374">Obojstranná fazóna s otváraním doľava</translation>
 <translation id="4274264486214599895">Hrať hru Brave Dino</translation>
@@ -190,7 +192,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1340482604681802745">Adresa vyzdvihnutia</translation>
 <translation id="1343356790768851700">Tento web určuje, čo sa vám páči, a potom navrhuje reklamy iným webom</translation>
 <translation id="1346748346194534595">Doprava</translation>
-<translation id="1348198688976932919">Web s nebezpečnými aplikáciami</translation>
 <translation id="1348779747280417563">Potvrdenie mena</translation>
 <translation id="8447194907998385478">Brave obmedzuje väčšine webom možnosť sledovať vás pri prehliadaní pomocou súborov cookie tretích strán. Prejdite do nastavení a <ph name="LINK"/>.</translation>
 <translation id="1355158069018170842">Zobrazovať poklesy cien na kartách</translation>
@@ -232,7 +233,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1428729058023778569">Toto upozornenie sa vám zobrazuje, pretože tento web nepodporuje protokol HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1429080515485835353">Samolepiaci film</translation>
 <translation id="1430915738399379752">Tlačiť</translation>
-<translation id="1431021750861456539">Automaticky na celú obrazovku</translation>
 <translation id="1432187715652018471">stránka chce nainštalovať obslužný nástroj služby.</translation>
 <translation id="1432581352905426595">Spravovať vyhľadávače</translation>
 <translation id="1433225466058025572">Skúste súbory znova preniesť</translation>
@@ -275,7 +275,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1507202001669085618">&lt;p&gt;Táto chyba sa zobrazí, keď používate portál Wi-Fi, ktorý podmieňuje prístup k internetu prihlásením.&lt;/p&gt;
     &lt;p&gt;Ak ju chcete odstrániť, kliknite na možnosť &lt;strong&gt;Pripojiť&lt;/strong&gt; na stránke, ktorú sa pokúšate otvoriť.&lt;/p&gt;</translation>
 <translation id="1513706915089223971">Zoznam historických vstupov</translation>
-<translation id="1516097932025103760">Bude šifrovaná a bezpečne uložená. Overovací kód karty sa neukladá.</translation>
 <translation id="151720253492607760">Ďalej nepovoľovať</translation>
 <translation id="1517433312004943670">Vyžaduje sa telefónne číslo</translation>
 <translation id="1519264250979466059">Dátum zostavenia</translation>
@@ -315,6 +314,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1572765991610098222"><ph name="WIDTH"/> × <ph name="HEIGHT"/> palcov</translation>
 <translation id="1574714699824202614">Overuje sa spôsob platby</translation>
 <translation id="1576277203042721907">Štatistiky Nákupov</translation>
+<translation id="1579189948231786790">Tento web zablokovala vaša organizácia</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1581172376168798878">Neobmedzená platnosť</translation>
 <translation id="1583429793053364125">Pri zobrazovaní webovej stránky sa niečo pokazilo.</translation>
@@ -331,6 +331,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8523167061098356223">Hrať hru Dino Run v Brave</translation>
 <translation id="161042844686301425">Azúrová</translation>
 <translation id="1611101756749861742">Druhý kotúč</translation>
+<translation id="1611854593425834707">Zavrieť zoznam zariadení na prenos</translation>
 <translation id="1612199629998703524">Správa tém</translation>
 <translation id="1615178538289490617">Zrušiť prístup portu <ph name="PORT_NAME"/></translation>
 <translation id="1615402009686901181">Pravidlo správcu zakazuje snímanie obrazovky, keď je viditeľný dôverný obsah</translation>
@@ -369,6 +370,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="168693727862418163">Túto hodnotu pravidla sa nepodarilo v jeho schéme overiť a bude ignorovaná.</translation>
 <translation id="168841957122794586">Certifikát servera obsahuje slabý kryptografický kľúč.</translation>
 <translation id="1689333818294560261">Prezývka</translation>
+<translation id="1691425742011409472">uzamknutie kurzora</translation>
 <translation id="1692622044604477956">Zoznamy filmov a časy divadelných predstavení</translation>
 <translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Ako môžete spravovať svoje údaje:<ph name="END_BOLD"/> Brave automaticky odstraňuje témy staršie ako štyri týždne. Počas ďalšieho prehliadania sa určitá téma môže v zozname znova zobraziť. V nastaveniach Chromu môžete navyše zablokovať témy, ktoré Brave nemá zdieľať s webmi, a kedykoľvek témy reklám vypnúť.</translation>
 <translation id="1697532407822776718">Všetko je nastavené!</translation>
@@ -403,6 +405,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1734878702283171397">Skúste kontaktovať správcu systému.</translation>
 <translation id="1736163675982669961"><ph name="CARD_NICKNAME"/>, <ph name="CARD_NETWORK_NAME"/>, <ph name="CARD_LAST_FOUR_DIGITS"/>, vyprší <ph name="CARD_EXPIRATION"/></translation>
 <translation id="1736420071277903564">Počítač</translation>
+<translation id="1739422091279046802">posúvanie a priblíženie</translation>
 <translation id="1741613555002899862">Keď je pravidlo DnsOverHttpsMode <ph name="SECURE_DNS_MODE_SECURE"/>, musíte ho špecifikovať a uviesť platný reťazec.</translation>
 <translation id="1743393865165844832">Posteľná bielizeň</translation>
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Ako tieto údaje používame:<ph name="END_BOLD"/> Brave zaznamenáva pri prehliadaní témy záujmu. Štítky tém sú preddefinované a zahŕňajú veci, ako sú Umenie a zábava, Nákupy alebo Šport. Neskôr môže web, ktorý navštívite, požiadať Brave o niekoľko vašich tém (nie však o vašu históriu prehliadania), aby mohol prispôsobovať reklamy, ktoré sa vám zobrazujú.</translation>
@@ -440,6 +443,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="1812527064848182527">na šírku</translation>
 <translation id="1812975699435941848">Zdravotnícke vzdelávanie a lekárske školenia</translation>
 <translation id="1813414402673211292">Vymazať dáta prehliadania</translation>
+<translation id="1816436748874040213">Môže žiadať o povolenie posúvať a približovať zdieľané karty</translation>
 <translation id="1818522458013171885">Odblokovať</translation>
 <translation id="1818585559878922121">Dokumentárne filmy</translation>
 <translation id="182139138257690338">automatické sťahovania</translation>
@@ -602,7 +606,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2126374524350484896">Aplikácia, v ktorej bol tento súbor PDF vytvorený:</translation>
 <translation id="2130448033692577677">Špecifikované šablóny nemusia byť uplatnené, pretože nebolo nastavené pravidlo DnsOverHttpsMode.</translation>
 <translation id="2130699163006053678">A3×7</translation>
-<translation id="2132825047782982803">Zobrazujú sa v náhodnom poradí. Predvolený vyhľadávač môžete kedykoľvek zmeniť.</translation>
+<translation id="2132825047782982803">Zobrazujú sa v náhodnom poradí. Predvolenú možnosť môžete kedykoľvek zmeniť.</translation>
 <translation id="2137891579555018930">Čaká sa na povolenie…</translation>
 <translation id="213826338245044447">Mobilné záložky</translation>
 <translation id="2141000681034340397">Upraviť vstup</translation>
@@ -654,7 +658,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2215539479425228550">Lezenie a horolezectvo</translation>
 <translation id="2215727959747642672">Úprava súborov</translation>
 <translation id="2215963164070968490">Psy</translation>
-<translation id="2218879909401188352">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> by mohli nainštalovať nebezpečné aplikácie, ktoré poškodia vaše zariadenia, pridať skryté poplatky do vašej faktúry za mobilné služby alebo ukradnúť vaše osobné informácie. <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2219658597883514593">Reštartovať návod</translation>
 <translation id="2219735899272417925">Vyžaduje sa resetovanie zariadenia</translation>
 <translation id="2221227930294879156">Festivaly jedla a nápojov</translation>
@@ -683,6 +686,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2265192657948645752">Práca v maloobchode</translation>
 <translation id="2265356434276802347">Toto pravidlo by nemalo mať viac ako tento počet vstupov: <ph name="MAX_ITEMS_LIMIT"/>.</translation>
 <translation id="2267047181501709434">Prebieha overenie totožnosti…</translation>
+<translation id="2268044343513325586">Upraviť</translation>
 <translation id="2270484714375784793">Telefónne číslo</translation>
 <translation id="2276057643614339130">Tlačová základňa</translation>
 <translation id="2277103315734023688">Pretočiť dopredu</translation>
@@ -712,10 +716,10 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2337852623177822836">Nastavenie ovládané správcom</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> žiada o spárovanie</translation>
 <translation id="2346319942568447007">Skopírovaný obrázok</translation>
+<translation id="2349056830177284083">Zámka klávesnice</translation>
 <translation id="2350796302381711542">Chcete povoliť obslužnému nástroju <ph name="HANDLER_HOSTNAME"/> otvárať všetky odkazy s protokolom <ph name="PROTOCOL"/> (namiesto obslužného nástroja <ph name="REPLACED_HANDLER_TITLE"/>)?</translation>
 <translation id="2353297238722298836">Kamera a mikrofón sú povolené</translation>
 <translation id="2354001756790975382">Ostatné</translation>
-<translation id="2354430244986887761">Funkcia Bezpečné prehliadanie Brave nedávno <ph name="BEGIN_LINK"/>našla škodlivé aplikácie<ph name="END_LINK"/> na webe <ph name="SITE"/>.</translation>
 <translation id="2355395290879513365">Útočníci môžu vidieť obrázky, ktoré si prehliadate na tomto webe, a môžu vás napadnúť tým, že ich podvodným spôsobom upravia.</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="2356926036049612643">Optimalizátor V8</translation>
@@ -760,7 +764,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2452098632681057184">Ekológia a životné prostredie</translation>
 <translation id="2452837234288608067">S týmto nevieme pomôcť. Skúste to znova.</translation>
 <translation id="2456755709261364512">Batéria musí byť nabitá aspoň na <ph name="REQUIRED_BATTERY_PRECENT"/> %</translation>
-<translation id="2462599289530201834">Hľadať <ph name="KEYWORD_SHORT_NAME"/></translation>
+<translation id="2461822463642141190">Aktuálna</translation>
 <translation id="2462932596748424101">Sociálne siete</translation>
 <translation id="2463739503403862330">Vyplniť</translation>
 <translation id="2465688316154986572">Zošiť spinkou</translation>
@@ -800,6 +804,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5151177152796946073">V službách Googlu môžete používať uložené adresy. Táto adresa bude uložená do vášho účtu Brave <ph name="ACCOUNT"/>.</translation>
 <translation id="2527451058878391043">Overovací kód karty nájdete na jej prednej strane. Ide o štvormiestny kód vpravo hore nad číslom karty.</translation>
 <translation id="2529899080962247600">Toto pole by nemalo mať viac ako tento počet vstupov: <ph name="MAX_ITEMS_LIMIT"/>. Všetky ďalšie vstupy budú ignorované.</translation>
+<translation id="2533649878691950253">Vaša presná poloha je pre tento web blokovaná, pretože ju zvyčajne nepovoľujete</translation>
 <translation id="253493526287553278">Zobraziť podrobnosti promo kódov</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{a 1 ďalšia}few{a # ďalšie}many{and # more}other{a # ďalších}}</translation>
 <translation id="2536110899380797252">Pridať adresu</translation>
@@ -840,7 +845,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2619052155095999743">Vložiť</translation>
 <translation id="2625385379895617796">Vaše hodiny idú dopredu</translation>
 <translation id="262745152991669301">Môže žiadať o povolenie pripájať sa k zariadeniam s rozhraním USB</translation>
-<translation id="2915787201097107005">Ak chcete získať najvyšší stupeň zabezpečenia Chromu, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>zapnite rozšírenú ochranu<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
 <translation id="2634124572758952069">Adresu IP servera <ph name="HOST_NAME"/> sa nepodarilo nájsť.</translation>
 <translation id="2639739919103226564">Stav:</translation>
 <translation id="2647086987482648627">Látka (pololesklá)</translation>
@@ -917,19 +921,17 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2784474685437057136">B5 Extra</translation>
 <translation id="2784949926578158345">Spojenie bolo resetované.</translation>
 <translation id="2786008859124691917">Bicykle a príslušenstvo</translation>
+<translation id="2791955793407772554">Uzamknutie kurzora</translation>
 <translation id="2792012897584536778">Správcovia tohto zariadenia nastavili bezpečnostné certifikáty, ktoré im môžu umožniť zobraziť obsah vami navštívených webov.</translation>
 <translation id="2794233252405721443">Web je blokovaný</translation>
 <translation id="2794629552137076216">Sklo (povrchová úprava)</translation>
-<translation id="2799020568854403057">Web, ktorý chcete otvoriť, obsahuje škodlivé aplikácie</translation>
 <translation id="2799223571221894425">Znova spustiť</translation>
 <translation id="2799758406651937857">Pánska móda</translation>
-<translation id="2803306138276472711">Funkcia Bezpečné prehliadanie Brave nedávno <ph name="BEGIN_LINK"/>zistila malvér<ph name="END_LINK"/> na stránkach <ph name="SITE"/>. Webové stránky, ktoré sú zvyčajne bezpečné, môžu byť niekedy nakazené malvérom.</translation>
 <translation id="2807052079800581569">Poloha obrázka na osi Y</translation>
 <translation id="2808278141522721006">Windows Hello môžete zapnúť alebo vypnúť v sekcii <ph name="SETTINGS"/></translation>
 <translation id="2814184336982254349">Tento súbor PDF je nedostupný. Stlačením klávesa vyhľadávania a klávesa m otvorte kontextovú ponuku a zapnite možnosť Extrahovať text zo súboru PDF.</translation>
 <translation id="2818338148457093657">Salóny krásy a kúpele</translation>
 <translation id="2820957248982571256">Prebieha vyhľadávanie...</translation>
-<translation id="2824549017793319782">Výberom tejto možnosti zadajte vyhľadávanie priamo do panela s adresou</translation>
 <translation id="2824775600643448204">Panel s adresou a vyhľadávací panel</translation>
 <translation id="2826760142808435982">Pripojenie je šifrované pomocou štandardu <ph name="CIPHER"/> a používa mechanizmus výmeny kľúčov <ph name="KX"/>.</translation>
 <translation id="2833637280516285136">Rozhlasové diskusie</translation>
@@ -937,6 +939,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="2838682941130655229"><ph name="EMBEDDED_URL"/> chce používať uložené informácie o vás</translation>
 <translation id="2839032553903800133">Boli zablokované upozornenia</translation>
 <translation id="2839501879576190149">Falošný web</translation>
+<translation id="2843623755398178332">Chcete sa posunúť a priblížiť zdieľanú kartu?</translation>
 <translation id="2851291081585704741">Ste offline</translation>
 <translation id="2856444702002559011">Útočníci sa môžu pokúsiť ukradnúť vaše informácie z webu <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (napríklad heslá, správy alebo kreditné karty). <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2858134430383535011">200 × 300 mm</translation>
@@ -1022,6 +1025,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3023165109041533893">Reklamy navrhované webmi pomáhajú chrániť vašu históriu prehliadania a totožnosť a zároveň umožňujú webom zobrazovať vám relevantné reklamy. Na základe vašej aktivity môže web, ktorý ste navštívili, navrhovať počas ďalšieho prehliadania súvisiace reklamy. V nastaveniach si môžete pozrieť zoznam týchto webov a zablokovať tie, ktoré nechcete.</translation>
 <translation id="3024663005179499861">Chybný typ pravidla</translation>
 <translation id="3030331669969285614">Tieto experimentálne funkcie zabraňujú zmene spôsobujúcej chybu alebo ju vrátia späť a budú k dispozícii iba na obmedzený čas.</translation>
+<translation id="3034526003882782781">Posúvanie a priblíženie sú povolené</translation>
 <translation id="3036894576201005614">Upratovanie domácností</translation>
 <translation id="3037177537145227281">Cenu sledujete</translation>
 <translation id="3037605927509011580">Aj, chyba!</translation>
@@ -1042,6 +1046,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3090667236485488075">Sklo</translation>
 <translation id="3095940652251934233">Výpis</translation>
 <translation id="3098513225387949945">Ignorované, pretože zoznam Deaktivovať obsahuje vzor, ktorý sa rovná hodnote „*“. Ide o ekvivalent deaktivácie pravidiel.</translation>
+<translation id="3102312643185441063">Sporiaci účet</translation>
 <translation id="3103188521861412364">Akcie a dlhopisy</translation>
 <translation id="3105172416063519923">Identifikátor obsahu:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Skontrolovať konfiguráciu zabezpečeného servera DNS<ph name="END_LINK"/></translation>
@@ -1063,6 +1068,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3121994479408824897">Prejsť na <ph name="DOMAIN"/></translation>
 <translation id="3126023634486644099">Štítky (trvalé)</translation>
 <translation id="3133565499688974786"><ph name="SEARCH_ENGINE_NAME"/> je teraz vaším predvoleným vyhľadávačom</translation>
+<translation id="3137283076021007034"><ph name="KEYWORD"/> – Vyhľadávanie položiek (<ph name="KEYWORD_SHORT_NAME"/>)</translation>
 <translation id="3140646734028448730">Služby pre firmy</translation>
 <translation id="3141093262818886744">Otvoriť aj tak</translation>
 <translation id="3141641372357166056">Žiadne rozhodnutie o súhlase</translation>
@@ -1074,6 +1080,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3154506275960390542">Táto stránka obsahuje formulár, ktorý zrejme nebude možné bezpečne odoslať. Odoslané dáta si môžu pri prenose zobraziť iní používatelia a prípadný útočník ich môže zmeniť. Server preto môže prijať niečo iné, než ste odoslali.</translation>
 <translation id="3154987252551138431">Počas používania Zdieľania nablízku sa vyskytol problém</translation>
 <translation id="315504272643575312">Váš účet spravuje <ph name="MANAGER"/>.</translation>
+<translation id="3156511682997763015">O 10 sekúnd vpred</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="3158539265159265653">Disk</translation>
 <translation id="3162559335345991374">Sieť Wi‑Fi, ktorú používate, môže vyžadovať, aby ste navštívili jej prihlasovaciu stránku</translation>
@@ -1087,7 +1094,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3180358318770512945">Rodičovstvo</translation>
 <translation id="3182185041786697613">Chcete uložiť bezpečnostný kód?</translation>
 <translation id="3185635157430775689">Počítačové komponenty</translation>
-<translation id="3187472288455401631">Meranie reklamy</translation>
+<translation id="3187472288455401631">Meranie reklám</translation>
 <translation id="3190736958609431397">Prestať sledovať</translation>
 <translation id="3194737229810486521"><ph name="URL"/> chce natrvalo ukladať dáta vo vašom zariadení</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> na serveri <ph name="SERVER_NAME"/></translation>
@@ -1140,6 +1147,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3286372614333682499">na výšku</translation>
 <translation id="3287510313208355388">Stiahnuť po obnovení pripojenia</translation>
 <translation id="3288238092761586174"><ph name="URL"/> môže vykonať ďalšie kroky na overenie vašej platby</translation>
+<translation id="3289578402369490638">Z iných obchodov na internete</translation>
 <translation id="3293642807462928945">Ďalšie informácie o pravidle <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Čítanie a správa hesiel v nastaveniach Chromu</translation>
 <translation id="3299098170013242198">Funkcia Windows Hello je zapnutá na vypĺňanie hesiel</translation>
@@ -1169,6 +1177,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="334438173029876234">Vybavenie na skejtbord</translation>
 <translation id="3347146863028219517">Lyžovanie a snoubordovanie</translation>
 <translation id="3349952286488694786">SRA2</translation>
+<translation id="3350450887151703713">Znova prehrať 10 sekúnd</translation>
 <translation id="3352881017886802007">Športové hry</translation>
 <translation id="3355823806454867987">Zmeniť nastavenia proxy...</translation>
 <translation id="335809815767823">Exportované</translation>
@@ -1211,7 +1220,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3427342743765426898">&amp;Znova upraviť</translation>
 <translation id="3428151540071562330">Minimálne jeden identifikátor URI šablón servera DnsOverHttpsTemplates je neplatný a nebude použitý.</translation>
 <translation id="3428789896412418755">Zoskupená história</translation>
-<translation id="3431216045099978607">Stlačením tlačidla |<ph name="ACCELERATOR"/>| ukončíte režim celej obrazovky a zobrazíte stiahnutý obsah.</translation>
 <translation id="3432601291244612633">Zavrieť stránku</translation>
 <translation id="3433111389595862568">Softvér na spoluprácu a konferencie</translation>
 <translation id="3433144818443565002">Hlasové hovory a videohovory</translation>
@@ -1248,6 +1256,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3493660662684070951">Nákladné automobily, dodávky a SUV</translation>
 <translation id="3495081129428749620">Nájsť na stránke
     <ph name="PAGE_TITLE"/></translation>
+<translation id="3495818359064790343">Mzdový účet</translation>
 <translation id="3497627066518778351">Skontrolovať zoznam dát webov v zariadení v novom okne</translation>
 <translation id="3498215018399854026">V tejto chvíli sa nám nepodarilo spojiť s vaším rodičom. Skúste to neskôr.</translation>
 <translation id="350069200438440499">Názov súboru:</translation>
@@ -1288,6 +1297,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3567778190852720481">Nemôžete sa registrovať pracovným účtom (ten totiž nie je vhodný).</translation>
 <translation id="3567901620846335314">100 × 150 mm</translation>
 <translation id="3568886473829759308">Prejdite na web a pozrite si informácie, zdroje alebo služby poskytované danou firmou.</translation>
+<translation id="3570079787344939099">Posúvanie a priblíženie</translation>
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">Povoliť pre tento web</translation>
 <translation id="3575168918110434329">A4×7</translation>
@@ -1373,19 +1383,20 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3711895659073496551">Režim spánku</translation>
 <translation id="3712006010833051684">Obálka č. 10</translation>
 <translation id="3712624925041724820">Vyčerpané licencie</translation>
+<translation id="3713277100229669269">Teraz si môžete pozrieť výhody karty predtým, než zaplatíte</translation>
 <translation id="371420189621607696">Súťažné hranie videohier</translation>
 <translation id="3714633008798122362">webový kalendár</translation>
 <translation id="3714780639079136834">Zapnúť mobilné dáta alebo Wi‑Fi</translation>
 <translation id="3715016660240337709">{0,plural, =1{Nahranie súboru bolo zablokované}few{Nahranie <ph name="FILE_COUNT"/> súborov bolo zablokované}many{<ph name="FILE_COUNT"/> files blocked from uploading}other{Nahranie <ph name="FILE_COUNT"/> súborov bolo zablokované}}</translation>
 <translation id="2241987852555440600">Pri nahlásení bezpečnostných udalostí Chromom sa vášmu správcovi odošlú relevantné údaje o príslušných udalostiach. Môžu zahŕňať webové adresy navštívených stránok v Brave, názvy súborov alebo metadáta, pády prehliadača alebo kariet a používateľské meno, ktorým sa prihlasujete do internetových aplikácií, zariadenia aj Chromu.</translation>
 <translation id="3715597595485130451">Pripojenie k sieti Wi‑Fi</translation>
+<translation id="3716622997181469465">uzamknutie klávesnice</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Skontrolovať proxy server, bránu firewall a konfiguráciu DNS<ph name="END_LINK"/></translation>
 <translation id="3723663469265383848">Počas aktualizácie nebudete môcť zariadenie desať minút používať.</translation>
 <translation id="372429172604983730">Medzi aplikácie, ktoré môžu túto chybu spôsobiť, patria okrem iných antivírusové programy, brány firewall, softvér na filtrovanie webu alebo proxy softvér.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, postupným stlačením klávesov Tab a Enter vytvoríte rýchlym spôsobom novú prezentáciu Brave v Prezentáciách</translation>
 <translation id="3727309136762649052">Priestor názvov</translation>
 <translation id="8077319455765501118">Ak chcete používať Správcu hesiel Brave s Kľúčenkou systému macOS, znova spustite Brave a povoľte prístup ku Kľúčenke. Po opätovnom spustení sa karty znova otvoria.</translation>
-<translation id="3736520371357197498">Ak si uvedomujete bezpečnostné riziko, môžete <ph name="BEGIN_LINK"/>tieto nebezpečné stránky navštíviť<ph name="END_LINK"/> ešte skôr, ako budú nebezpečné programy odstránené.</translation>
 <translation id="3736739313435669994">Webom ste zablokovali možnosť sledovať vás pri prehliadaní pomocou súborov cookie tretích strán. Prejdite do nastavení a <ph name="LINK"/>.</translation>
 <translation id="3738166223076830879">Prehliadač je ovládaný vaším správcom.</translation>
 <translation id="3739842843727261045">Označením palcom hore odošlete spätnú väzbu, že sa vám tieto výsledky páčili</translation>
@@ -1395,7 +1406,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3744212718085287312">Chcete nabudúce zlepšiť zabezpečenie pomocou virtuálnej karty?</translation>
 <translation id="8500803517201014627">Váš text, obsah a webová adresa stránky, na ktorej píšete, budú odoslané Googlu, kde ich skontrolujú kontrolóri. Pomocou týchto údajov budeme túto funkciu zlepšovať. Nezadávajte osobné údaje (napríklad zdravotné alebo finančné) a nepoužívajte tento nástroj na weboch obsahujúcich súkromné či citlivé údaje.</translation>
 <translation id="3748009735914587286">Kov (vysoký lesk)</translation>
-<translation id="3748148204939282805">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> vás môžu oklamať, aby ste urobili niečo nebezpečné, napríklad nainštalovali softvér alebo odhalili svoje osobné informácie (napríklad heslá, telefónne čísla a kreditné karty). <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3752543821772132562">Ignorované, pretože nie sú nastavené pravidlá <ph name="POLICY_NAME"/>.</translation>
 <translation id="3754210790023674521">Ukončiť obraz v obraze</translation>
 <translation id="3759461132968374835">Nemáte žiadne nedávno nahlásené zlyhania. Na tejto stránke sa nezobrazujú zlyhania, ktoré nastali pri zakázanej možnosti hlásení zlyhaní.</translation>
@@ -1423,6 +1433,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3807366285948165054">Posun obrázka na osi X</translation>
 <translation id="3807709094043295184">Klasický rock a oldies</translation>
 <translation id="3807873520724684969">Škodlivý obsah bol zablokovaný.</translation>
+<translation id="380865868633614173">Ukladajú sa informácie o karte</translation>
 <translation id="3810770279996899697">Správca hesiel potrebuje prístup ku Kľúčenke systému MacOS</translation>
 <translation id="3810973564298564668">Spravovať</translation>
 <translation id="3812398568375898177">Ide o kľúčovú aktualizáciu, ktorá zlepší výkon aplikácií pre Android v systéme ChromeOS.</translation>
@@ -1450,6 +1461,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="385489333361351399">Kamerové a fotografické vybavenie</translation>
 <translation id="3858027520442213535">Aktualizovať dátum a čas</translation>
 <translation id="3858860766373142691">Názov</translation>
+<translation id="3865339060090354361">Pozrite si zmluvné podmienky kreditnej karty <ph name="CREDIT_CARD_NAME"/></translation>
 <translation id="3872834068356954457">Veda</translation>
 <translation id="3875783148670536197">Ukázať postup</translation>
 <translation id="3880456882942693779">Umenie a zábava</translation>
@@ -1523,6 +1535,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="4030545038933060179">Keď je toto nastavenie zapnuté, bude sa tu zobrazovať zoznam tém na základe vašej nedávnej histórie prehliadania</translation>
 <translation id="4031179711345676612">Mikrofón je povolený</translation>
 <translation id="4036753017940930924">Parcely a pozemky</translation>
+<translation id="4039506337798853114">Ak chcete zobraziť kurzor, stlačte |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4047351652147966654">18 × 24 palcov</translation>
 <translation id="404831776305217138">Aktualizácia webovej adresy rozšírenia s identifikátorom <ph name="EXTENSION_ID"/> je neplatná alebo používa nepodporovanú schému. Podporované sú tieto schémy: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> a <ph name="FILE_SCHEME"/>.</translation>
 <translation id="2635033286761217583">Budete ju môcť používať v rôznych službách Googlu</translation>
@@ -1535,6 +1548,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="406358100705415968">Pracovné ochranné vybavenie</translation>
 <translation id="4063924980214801036">Potvrdzujte karty rýchlejšie pomocou odomknutia zariadením</translation>
 <translation id="4065659219963895623">Reštaurácie</translation>
+<translation id="4067774859633143413">Ak chcete ukončiť režim celej obrazovky a zobraziť stiahnutý súbor, pridržte |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4067947977115446013">Pridanie platnej adresy</translation>
 <translation id="4072486802667267160">Pri spracovaní vašej objednávky sa vyskytla chyba. Skúste to znova.</translation>
 <translation id="4073376909608563327">Odomknutie zariadením sa nepodarilo použiť</translation>
@@ -1549,7 +1563,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="4092349052316400070">Vyplňte adresu</translation>
 <translation id="4096237801206588987">11 × 15 palcov</translation>
 <translation id="4098306082496067348">Klepnutím na údaje virtuálnej karty ich pridáte k platbe.</translation>
-<translation id="4098354747657067197">Podvodné webové stránky</translation>
 <translation id="4099048595830172239">Pravidlá správcu neodporúčajú zdieľanie obrazovky s aplikáciou <ph name="APPLICATION_TITLE"/>, keď je viditeľný dôverný obsah:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, po stlačení klávesov Tab a Enter môžete prispôsobiť veľkosť a typ písma v Brave</translation>
 <translation id="4101413244023615925">Text a grafika</translation>
@@ -1614,7 +1627,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="4213500579045346575">Kulturistika</translation>
 <translation id="4214357935346142455">profil prihlasovacej obrazovky</translation>
 <translation id="4220128509585149162">Zlyhania</translation>
-<translation id="422022731706691852">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> sa vás môžu pokúsiť oklamať, aby ste si nainštalovali programy, ktoré poškodia prehliadanie (napríklad zmenia domovskú stránku alebo budú zobrazovať ďalšie reklamy na navštívených weboch). <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="4223404254440398437">Mikrofón nie je povolený</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Skúste spustiť nástroj Diagnostika siete<ph name="END_LINK"/>.</translation>
 <translation id="422722221769396062">Donáška jedla z reštaurácií</translation>
@@ -1737,6 +1749,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="4456937135469235202">Dobrodružné cesty</translation>
 <translation id="4464826014807964867">Weby s informáciami od vašej organizácie</translation>
 <translation id="4466576951214254884">Študentské pôžičky a financovanie vyššieho vzdelania</translation>
+<translation id="4467821340016922962">Ak chcete ukončiť režim celej obrazovky a zobraziť stiahnutý súbor, stlačte |<ph name="ACCELERATOR"/>|</translation>
 <translation id="8294153737034342992"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Zapnite Rozšírenú ochranu<ph name="END_ENHANCED_PROTECTION_LINK"/> a získajte najvyššiu úroveň zabezpečenia Chromu</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Tento formulár nie je zabezpečený. Automatické dopĺňanie bolo vypnuté.</translation>
@@ -1828,7 +1841,9 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="468314109939257734">Zobraziť číslo virtuálnej karty</translation>
 <translation id="4687718960473379118">Reklamy navrhované webmi</translation>
 <translation id="4691093235373904540">Montáž striech</translation>
+<translation id="4692623383562244444">Vyhľadávače</translation>
 <translation id="4698692901173737941">Bojové športy</translation>
+<translation id="4701307090948589984">Prenos do zariadenia…</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Strana</translation>
 <translation id="4702656508969495934">Živý prepis je viditeľný, označíte prepínačom okien</translation>
@@ -1905,7 +1920,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="483241715238664915">Zapnúť upozornenia</translation>
 <translation id="4832961164064927107">Grilovanie</translation>
 <translation id="4834250788637067901">Spôsoby platby, ponuky a adresy používajúce Google Pay</translation>
-<translation id="1923748633297576468">Najlepšie zabezpečenie v odvetví od Googlu vám umožní nabudúce zaplatiť rýchlejšie a ochráni vašu kartu.</translation>
 <translation id="246176083348620700">Zobraziť históriu Chromu</translation>
 <translation id="484462545196658690">Automaticky</translation>
 <translation id="484671803914931257">Získajte zľavu u obchodníka <ph name="MERCHANT_NAME"/> a ďalších</translation>
@@ -2017,6 +2031,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5040262127954254034">Ochrana súkromia</translation>
 <translation id="5043480802608081735">Skopírovaný odkaz</translation>
 <translation id="5045550434625856497">Nesprávne heslo</translation>
+<translation id="5048293684454354469">Témy reklám sú len jednou z mnohých možností, pomocou ktorých môže web prispôsobovať reklamy. Aj keď nie sú témy reklám povolené, weby vám stále môžu zobrazovať reklamy, ktoré však môžu byť menej prispôsobené. Prečítajte si viac o <ph name="BEGIN_LINK"/>správe ochrany súkromia pri reklamách<ph name="LINK_END"/>.</translation>
 <translation id="5052517576853118371">Aktívne témy</translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Ak chcete tento súbor poslať pomocou Zdieľania nablízku, uvoľnite vo svojom zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}few{Ak chcete tieto súbory poslať pomocou Zdieľania nablízku, uvoľnite vo svojom zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}many{To send these files using Nearby Share, free up space (<ph name="DISK_SPACE_SIZE"/>) on your device}other{Ak chcete tieto súbory poslať pomocou Zdieľania nablízku, uvoľnite vo svojom zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}}</translation>
 <translation id="505757197798929356">Poskytnite dôvod otvorenia (povinné)</translation>
@@ -2073,6 +2088,8 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5161334686036120870">Predmet:</translation>
 <translation id="5161506081086828129">Odkladač č. 9</translation>
 <translation id="5164798890604758545">Zadanie textu</translation>
+<translation id="5507530832404660443">Tento experimentálny nástroj využívajúci umelú inteligenciu sa môže niekedy mýliť. Na účely jeho zlepšovania sa váš obsah odosiela Googlu.
+    <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="2996889577833788807">Zadajte kód CVC karty <ph name="CREDIT_CARD"/>. Po potvrdení sa budú údaje o karte z vášho účtu Brave zdieľať s týmto webom.</translation>
 <translation id="8515152881111950319">Môžete stratiť prístup do účtu svojej organizácie alebo vám niekto môže ukradnúť totožnosť. Brave odporúča, aby ste si ihneď zmenili heslo.</translation>
 <translation id="5171045022955879922">Vyhľadajte alebo zadajte webovú adresu</translation>
@@ -2103,6 +2120,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5238301240406177137">Uložiť do účtu</translation>
 <translation id="5239119062986868403">Bežná cena</translation>
 <translation id="5239623327352565343">Poloha je povolená</translation>
+<translation id="5241048084654737238">Potvrdzujúce informácie o karte sa nedajú uložiť</translation>
 <translation id="5242610955375133957">Suchý film</translation>
 <translation id="8854897060240443467">Tlačidlo Spravovať účet Brave, ktorého aktivovaním môžete spravovať svoje informácie, ochranu súkromia a zabezpečenie v účte Brave</translation>
 <translation id="5244732203286792411">Načítava sa…
@@ -2118,6 +2136,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5266128565379329178">Zviazať hore</translation>
 <translation id="5269225904387178860">Štyri dierky dole</translation>
 <translation id="5269999699920406580">Funkcie, ktoré platia v celom systéme, môže nastaviť iba vlastník: <ph name="OWNER_EMAIL"/>.</translation>
+<translation id="5271381225185906340"><ph name="DATA_CONTROLS_ATTRIBUTE"/> nie je podporovaná podmienka pre <ph name="DATA_CONTROLS_RESTRICTION"/></translation>
 <translation id="5273658854610202413">Upozornenie: Toto pravidlo nebolo zlúčené podľa špecifikácií pravidla PolicyDictionaryMultipleSourceMergeList, pretože nie je súčasťou pravidiel pre slovníky, ktoré sa dajú zlúčiť.</translation>
 <translation id="5279286380302340275">Spravovať sťahovanie</translation>
 <translation id="5283044957620376778">B1</translation>
@@ -2227,7 +2246,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
     <ph name="LINE_BREAK"/>
     Skúste kontaktovať správcu systému.</translation>
 <translation id="549333378215107354">Veľkosť 3</translation>
-<translation id="5501712702042287009">automaticky na celú obrazovku</translation>
+<translation id="5496804587179176046">Ukladať bezpečnostné kódy, momentálne nie sú uložené žiadne</translation>
 <translation id="550365051221576010">Vyplniť všetko</translation>
 <translation id="5508443345185481044">Fotoaparáty a kamery</translation>
 <translation id="5509762909502811065">B0</translation>
@@ -2243,12 +2262,14 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5519696598216267194">Papier (preddierkovaný)</translation>
 <translation id="5521782189689806907">Výroba skríň</translation>
 <translation id="5523118979700054094">Názov pravidla</translation>
+<translation id="5523588073846127669">Obchodník neakceptuje túto virtuálnu kartu</translation>
 <translation id="5525755241743357906">Súbor je skopírovaný alebo presunutý</translation>
 <translation id="5526617258931667850"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, postupným stlačením klávesov Tab a Enter si prispôsobíte nástroje dostupnosti v nastaveniach systému Brave OS</translation>
 <translation id="55293785478302737">Zošiť hrebeňovou väzbou</translation>
 <translation id="553377674408670169">Práca v oblasti vzdelávania</translation>
 <translation id="5536214594743852365">Zobraziť sekciu <ph name="SECTION"/></translation>
 <translation id="553782666181800029">Obálka Chou 2</translation>
+<translation id="5538270463355278784">automaticky na celú obrazovku</translation>
 <translation id="5539243836947087108">Raft</translation>
 <translation id="5540224163453853">Požadovaný článok sa nepodarilo nájsť.</translation>
 <translation id="5540969246441091044">Jazdectvo</translation>
@@ -2301,7 +2322,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5629630648637658800">Nastavenia pravidla sa nepodarilo načítať</translation>
 <translation id="5631439013527180824">Neplatný token správy zariadenia</translation>
 <translation id="5632485077360054581">Ukázať postup</translation>
-<translation id="5633066919399395251">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> sa môžu pokúsiť nainštalovať nebezpečné programy vo vašom počítači, pomocou ktorých ukradnú alebo odstránia informácie (napríklad fotky, heslá, správy a kreditné karty). <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="563324245173044180">Klamlivý obsah bol zablokovaný.</translation>
 <translation id="563371367637259496">Mobilná</translation>
 <translation id="5634725266554983459">Chcete zapnúť manuálne overenie?</translation>
@@ -2367,6 +2387,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5765072501007116331">Ak chcete zobraziť spôsoby a požiadavky doručenia, vyberte adresu</translation>
 <translation id="57689295674415555">Nebolo vyplnené číslo virtuálnej karty?</translation>
 <translation id="5772086939108830423">Použiť prístupový kľúč v inom zariadení</translation>
+<translation id="5775734789739406956">Kliknutím pravým tlačidlom pridáte uložené informácie do ľubovoľného formulára</translation>
 <translation id="5776313857861697733">Priorita</translation>
 <translation id="5776574724412881956">Virtuálna karta je nevyplnená? Kliknite na podrobnosti virtuálnej karty a skopírujte ich tak do schránky. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Experiment je povolený</translation>
@@ -2383,6 +2404,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="580241730938216256">Spustiť aktualizáciu</translation>
 <translation id="5803412860119678065">Chcete vyplniť informácie o karte <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Povolenia</translation>
+<translation id="5806871454498484178">Posúvanie a priblíženie sú blokované</translation>
 <translation id="5937482014241669139">Zobraziť históriu Chromu</translation>
 <translation id="5810442152076338065">Vaše pripojenie k doméne <ph name="DOMAIN"/> je šifrované pomocou zastaranej šifrovacej súpravy.</translation>
 <translation id="5813119285467412249">&amp;Znova pridať</translation>
@@ -2405,6 +2427,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="5852909432155870672">RA4</translation>
 <translation id="5860491529813859533">Zapnúť</translation>
 <translation id="5862579898803147654">Odkladač č. 8</translation>
+<translation id="5863515189965725638">Úprava čísla IBAN</translation>
 <translation id="5863847714970149516">Stránka, na ktorú sa chystáte prejsť, vám môže účtovať poplatky</translation>
 <translation id="5866257070973731571">Pridanie telefónneho čísla</translation>
 <translation id="5866898949289125849">Prezeráte si stránku s nástrojmi pre vývojárov</translation>
@@ -2486,7 +2509,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6014851866995737824">Ignorované, pretože zoznam Aktivovať alebo Deaktivovať chýba.</translation>
 <translation id="6015796118275082299">Rok</translation>
 <translation id="6017514345406065928">Zelená</translation>
-<translation id="6017850046339264347">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> by mohli nainštalovať klamlivé aplikácie vydávajúce sa za iné aplikácie alebo zhromažďujúce údaje, ktoré sa dajú použiť na sledovanie vašej osoby. <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (synchronizované)</translation>
 <translation id="6028591542479806248">Správa mobilných a e‑mailových upozornení</translation>
 <translation id="6028833024483927901">Svetová kuchyňa</translation>
@@ -2503,9 +2525,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6042308850641462728">Viac</translation>
 <translation id="6044573915096792553">Veľkosť 12</translation>
 <translation id="6045164183059402045">Šablóna zavedenia</translation>
-<translation id="6047233362582046994">Ak si uvedomujete bezpečnostné riziko, môžete <ph name="BEGIN_LINK"/>tento web navštíviť<ph name="END_LINK"/> ešte skôr, ako budú škodlivé aplikácie odstránené.</translation>
 <translation id="6047927260846328439">Tento obsah sa vás môže podvodom pokúsiť presvedčiť, aby ste si nainštalovali softvér alebo poskytli osobné informácie. <ph name="BEGIN_LINK"/>Napriek tomu zobraziť<ph name="END_LINK"/></translation>
-<translation id="6049004884579590341">Pridržaním klávesa |<ph name="ACCELERATOR"/>| ukončite režim celej obrazovky</translation>
 <translation id="6049056807983403918">Obálka B4</translation>
 <translation id="6049488691372270142">Doručenie strany</translation>
 <translation id="6049975101166779351">Starostlivosť o deti</translation>
@@ -2581,7 +2601,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6195371403461054755">Geológia</translation>
 <translation id="6195418151868446719">Spotrebná elektronika</translation>
 <translation id="6196640612572343990">Blokovať súbory cookie tretích strán</translation>
-<translation id="6197467523841310553">Ak chcete menej písať a vypĺňať uložené informácie v ľubovoľnom online formulári, kliknite pravým tlačidlom</translation>
 <translation id="6197648101609735209">89 × 89 mm</translation>
 <translation id="6198480336395236519">Orezané záložky po celej dĺžke</translation>
 <translation id="6203231073485539293">Skontrolujte internetové pripojenie</translation>
@@ -2592,8 +2611,8 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6218305986815100395">Virtuálna karta sa nedá zapnúť</translation>
 <translation id="8385639954311581596">Chcete adresu odstrániť z prehliadača Brave?</translation>
 <translation id="622039917539443112">Paralelný záhyb</translation>
+<translation id="6221286101741304627">Ak chcete ukončiť režim celej obrazovky, stlačte |<ph name="ACCELERATOR"/>|</translation>
 <translation id="5286511760116495417">Chcete si túto kartu uložiť do účtu Brave?</translation>
-<translation id="6221345481584921695">Funkcia Bezpečné prehliadanie Brave nedávno <ph name="BEGIN_LINK"/>zistila malvér<ph name="END_LINK"/> na stránkach <ph name="SITE"/>. Webové stránky, ktoré sú zvyčajne bezpečné, môžu byť niekedy nakazené malvérom. Škodlivý obsah pochádza od hostiteľa <ph name="SUBRESOURCE_HOST"/>, ktorý je známym distribútorom malvéru.</translation>
 <translation id="6221892641068781024">Zjednodušené zobrazenie</translation>
 <translation id="6222527803348563979">Listový papier</translation>
 <translation id="6224281071334553713">Drahokamy a šperky</translation>
@@ -2612,6 +2631,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, po stlačení klávesov Tab a Enter môžete spravovať súbory stiahnuté v Brave</translation>
 <translation id="6254436959401408446">Na otvorenie stránky nie je dostatok pamäte</translation>
 <translation id="625463612687472648">Prestať povoľovať</translation>
+<translation id="4171163883411218676">{FINANCIAL_ACCOUNT,plural, =1{Pri nákupoch v Brave uvidíte možnosť <ph name="FINANCIAL_ACCOUNT_TYPES"/>}few{Pri nákupoch v Brave uvidíte možnosti <ph name="FINANCIAL_ACCOUNT_TYPES"/>}many{When you make purchases on Brave, see <ph name="FINANCIAL_ACCOUNT_TYPES"/> as options}other{Pri nákupoch v Brave uvidíte možnosti <ph name="FINANCIAL_ACCOUNT_TYPES"/>}}</translation>
 <translation id="6259156558325130047">&amp;Znova zmeniť poradie</translation>
 <translation id="6263376278284652872">Záložky domény <ph name="DOMAIN"/></translation>
 <translation id="6264376385120300461">Napriek tomu stiahnuť</translation>
@@ -2622,7 +2642,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6270066318535733958">Plavba loďou</translation>
 <translation id="1300170712564922349">Pokračujte v ceste a zobrazte si relevantnú aktivitu v histórii Chromu</translation>
 <translation id="9136010393039243713">Aktualizácie Brave</translation>
-<translation id="6279183038361895380">Stlačením klávesa |<ph name="ACCELERATOR"/>| zobrazíte kurzor</translation>
 <translation id="6280223929691119688">Doručenie na túto adresu nie je možné. Vyberte inú adresu.</translation>
 <translation id="6284292079994426700">26 × 38 palcov</translation>
 <translation id="6284449872909111707">Textové a četové správy</translation>
@@ -2805,7 +2824,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6629652037942826935">Luxusné cestovanie</translation>
 <translation id="6630043285902923878">Hľadajú sa zariadenia USB…</translation>
 <translation id="4945711024178085608">Tlačidlo Spravovať nastavenia Chromu, ktorého aktivovaním prejdete do nastavení Chromu</translation>
-<translation id="6630809736994426279">Útočníci na webe <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> sa môžu pokúsiť vo vašom počítači Mac nainštalovať nebezpečné programy, pomocou ktorých ukradnú alebo odstránia informácie (napríklad fotky, heslá, správy a kreditné karty). <ph name="BEGIN_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6631133499533814479">Austrálsky futbal</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6633405994164965230">Počítačové vzdelávanie</translation>
@@ -2841,6 +2859,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, postupným stlačením klávesov Tab a Enter nájdite svoje zariadenie v účte Brave</translation>
 <translation id="6695428916538794739">Akčné a dobrodružné filmy</translation>
 <translation id="6696424331653607346">Turistickí sprievodcovia a cestopisy</translation>
+<translation id="6698097747703777657">Nedostali ste kód? <ph name="BEGIN_LINK"/>Získať nový kód<ph name="END_LINK"/></translation>
 <translation id="6698381487523150993">Vytvorené:</translation>
 <translation id="67007264085648978">Posúvač času</translation>
 <translation id="6702851555558236418">Zvukový a hudobný softvér</translation>
@@ -2955,6 +2974,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="6944557544071529399">Strategické hry</translation>
 <translation id="6944692733090228304">Zadali ste heslo na webe, ktorý nie je spravovaný organizáciou <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. Ak chcete, aby bol váš účet chránený, nepoužívajte jeho heslo pre iné aplikácie a weby.</translation>
 <translation id="6945221475159498467">Vybrať</translation>
+<translation id="9000864348890316168">Vyhľadávajte v Brave na internete</translation>
 <translation id="6948051842255602737">Hra sa skončila, vaše skóre je <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">Ak chcete zobraziť spôsoby a požiadavky vyzdvihnutia, vyberte adresu</translation>
 <translation id="6948874830249067134">A1×3</translation>
@@ -3076,6 +3096,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="715996170234243096">{NUM_FILES,plural, =1{Ak chcete tento súbor odoslať pomocou funkcie <ph name="FEATURE_NAME"/>, uvoľnite v zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}few{Ak chcete tieto súbory odoslať pomocou funkcie <ph name="FEATURE_NAME"/>, uvoľnite v zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}many{Ak chcete tieto súbory odoslať pomocou funkcie <ph name="FEATURE_NAME"/>, uvoľnite v zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}other{Ak chcete tieto súbory odoslať pomocou funkcie <ph name="FEATURE_NAME"/>, uvoľnite v zariadení priestor (<ph name="DISK_SPACE_SIZE"/>)}}</translation>
 <translation id="7160999678034985039">Uložte si prácu a keď budete chcieť, spustite aktualizáciu.</translation>
 <translation id="7163295244162773898">{0,plural, =1{Chcete skopírovať dôverný súbor?}few{Chcete skopírovať dôverné súbory?}many{Chcete skopírovať dôverné súbory?}other{Chcete skopírovať dôverné súbory?}}</translation>
+<translation id="7168625890036931112"><ph name="DATA_CONTROLS_RESTRICTION"/> nie je na tejto platforme podporované obmedzenie</translation>
 <translation id="717330890047184534">ID služby Gaia:</translation>
 <translation id="7174545416324379297">Zlúčené</translation>
 <translation id="7175097078723125014">Bola vybraná možnosť Upraviť adresu</translation>
@@ -3121,7 +3142,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
 <translation id="7243771829620208687">RA0</translation>
 <translation id="7243898806468402921">Obchodná činnosť</translation>
-<translation id="724691107663265825">Webové stránky, ktoré chcete otvoriť, obsahujú malvér</translation>
 <translation id="7251437084390964440">Konfigurácia siete nie je v súlade so štandardom ONC. Niektoré časti konfigurácie sa nemusia importovať.
 Ďalšie podrobnosti:
 <ph name="DEBUG_INFO"/></translation>
@@ -3145,6 +3165,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7308436126008021607">synchronizácia na pozadí</translation>
 <translation id="7310392214323165548">Zariadenie sa čoskoro reštartuje</translation>
 <translation id="7311244614769792472">Neboli nájdené žiadne výsledky</translation>
+<translation id="7313107491291103073">Vaša organizácia nahlásila tento web, pretože možno porušuje pravidlá.</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Pomocník s pripojením</translation>
 <translation id="7323804146520582233">Skryť sekciu <ph name="SECTION"/></translation>
@@ -3186,6 +3207,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7392089738299859607">Aktualizácia adresy</translation>
 <translation id="7393161616326137353">Dobrodružné hry</translation>
 <translation id="739728382607845710">Ikona obslužného nástroja platieb</translation>
+<translation id="7399616692258236448">Žiadosti o polohu sú automaticky blokované pre všetky weby okrem tých, ktoré povolíte</translation>
 <translation id="7399802613464275309">Kontrola bezpečnosti</translation>
 <translation id="7400418766976504921">Webová adresa</translation>
 <translation id="7403392780200267761">Zdieľajte túto kartu prostredníctvom odkazu, vytvorením QR kódu, prenosom a ďalšími spôsobmi</translation>
@@ -3212,7 +3234,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7422347648202898039">Štítky (bezpečnostné)</translation>
 <translation id="4814329941923406129">Tlačidlo Spravovať súbory cookie, ktorého aktivovaním môžete spravovať predvoľby súborov cookie v nastaveniach Chromu</translation>
 <translation id="7424421098814895617">Bola vybraná možnosť Odstrániť adresu</translation>
-<translation id="7425037327577270384">Asistent písania</translation>
+<translation id="7425037327577270384">Asistent pri písaní</translation>
 <translation id="7425878584435172632">Výtvarné umenie a dizajn</translation>
 <translation id="7427079287360774240">Štúdium cudzích jazykov</translation>
 <translation id="7429429656042611765">Executive</translation>
@@ -3359,6 +3381,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7673278391011283842">Poštová schránka č. 6</translation>
 <translation id="7675325315208090829">Spravujte spôsoby platby…</translation>
 <translation id="767550629621587224">Vopred vystrihnuté záložky</translation>
+<translation id="7675756033024037212">Posúvanie a priblíženie nie sú povolené</translation>
 <translation id="7676643023259824263">Vyhľadať v schránke text <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">Zobraziť a spravovať históriu prehliadania v nastaveniach Chromu</translation>
 <translation id="7679947978757153706">Bejzbal</translation>
@@ -3379,7 +3402,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7701486038694690341">Country hudba</translation>
 <translation id="7701544340847569275">Aktualizácia bola dokončená s chybami</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>Prejsť na stránky <ph name="SITE"/> (nebezpečné)<ph name="END_LINK"/></translation>
-<translation id="7705085181312584869">Asistent písania</translation>
+<translation id="7705085181312584869">Asistent pri písaní</translation>
 <translation id="7705992072972338699">Optický disk (vysoký lesk)</translation>
 <translation id="7706689436519265630">Súbory, ktoré skopírujete alebo presuniete, sa odošlú službe Google Cloud alebo tretím stranám na analýzu. V rámci toho môžu byť napríklad podrobené kontrole prítomnosti citlivých údajov alebo malvéru a podľa firemných pravidiel môžu byť uložené.</translation>
 <translation id="7709911732293795808">Poistenie</translation>
@@ -3404,6 +3427,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">Prispôsobiť veľkosť a typ písma v Brave</translation>
 <translation id="7752995774971033316">Nespravované</translation>
+<translation id="7753769899818674547"><ph name="KEYWORD"/> – Čet s <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="1771750053794015966">Po spustení aktualizácie sa karty a aplikácie Chromu zatvoria</translation>
 <translation id="7755287808199759310">Váš rodič ho môže pre vás odblokovať</translation>
 <translation id="7755624218968747854">Hlavný kotúč</translation>
@@ -3465,6 +3489,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="7888575728750733395">Vykresľovacia intencia tlače</translation>
 <translation id="7894280532028510793">Ak je pravopis správny, <ph name="BEGIN_LINK"/>skúste spustiť nástroj Network Diagnostics<ph name="END_LINK"/>.</translation>
 <translation id="7901831439558593470">Obálka 177,8 mm × 228,6 mm</translation>
+<translation id="7908648876066812348">Zapína sa virtuálna karta</translation>
 <translation id="3733419689526948053"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stlačením klávesov Tab a potom Enter prejdite na stránku kontroly bezpečnosti Chromu v nastaveniach</translation>
 <translation id="791551905239004656">Kreslenie a maľovanie</translation>
 <translation id="7916162853251942238">Základňa na gumotlač</translation>
@@ -3599,9 +3624,9 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8150722005171944719">Súbor na adrese <ph name="URL"/> nie je možné prečítať. Je možné, že bol odstránený, presunutý alebo môžu v prístupe brániť povolenia súboru.</translation>
 <translation id="8153865548451212769">{0,plural, =1{Pravidlá správcu stiahnutie tohto súboru do úložiska <ph name="DESTINATION_NAME"/> neodporúčajú}few{Pravidlá správcu stiahnutie týchto súborov do úložiska <ph name="DESTINATION_NAME"/> neodporúčajú}many{Administrator policy doesn’t recommend downloading these files to <ph name="DESTINATION_NAME"/>}other{Pravidlá správcu stiahnutie týchto súborov do úložiska <ph name="DESTINATION_NAME"/> neodporúčajú}}</translation>
 <translation id="81563721597823545">Hokejové vybavenie</translation>
-<translation id="815788908807586564">Čet s Gemini</translation>
 <translation id="8161095570253161196">Pokračovať v prehliadaní</translation>
 <translation id="8163866351304776260">Štyri dierky vľavo</translation>
+<translation id="8163998196788647716">Bežný účet</translation>
 <translation id="8164078261547504572">Chcete dostávať správy pri poklesoch cien?</translation>
 <translation id="8169175551046720804">Klávesy <ph name="DATA_CONTROLS_KEYS"/> nemôžu byť nastavené v rovnakom slovníku</translation>
 <translation id="4351627595884993315">Brave poskytuje možnosť uložiť karty v účte Brave, pretože ste sa prihlásili. Toto správanie môžete zmeniť v nastaveniach.</translation>
@@ -3642,7 +3667,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8241707690549784388">Vami hľadaná stránka použila informácie, ktoré ste zadali. Návrat na túto stránku môže spôsobiť zopakovanie akcie, ktorú ste vykonali. Chcete pokračovať?</translation>
 <translation id="8241712895048303527">Blokovať na tomto webe</translation>
 <translation id="8242426110754782860">Pokračovať</translation>
-<translation id="8245703462678310750">Pridržaním tlačidla |<ph name="ACCELERATOR"/>| ukončite režim celej obrazovky a zobrazte stiahnutý obsah.</translation>
 <translation id="8246482227229072868">Prstene</translation>
 <translation id="8249296373107784235">Prerušiť</translation>
 <translation id="824968735947741546">Jazyk <ph name="SOURCE"/> (rozpoznáva sa automaticky) sa prekladá do jazyka <ph name="TARGET"/></translation>
@@ -3703,7 +3727,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="833262891116910667">Zvýrazniť</translation>
 <translation id="8339163506404995330">Stránky v jazyku <ph name="LANGUAGE"/> nebudú prekladané</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
-<translation id="834457929814110454">Ak si uvedomujete bezpečnostné riziko, môžete <ph name="BEGIN_LINK"/>tieto stránky navštíviť<ph name="END_LINK"/> ešte skôr, ako budú škodlivé programy odstránené.</translation>
 <translation id="8344776605855290140">Registrácia virtuálnej karty je otvorená na úplnú výšku</translation>
 <translation id="8350416046273606058">Skratka nemôže obsahovať medzery: "<ph name="SHORTCUT_NAME"/>"</translation>
 <translation id="8351131234907093545">Vytvoriť poznámku</translation>
@@ -3723,6 +3746,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8378714024927312812">Spravované vašou organizáciou</translation>
 <translation id="8380941800586852976">Nebezpečná</translation>
 <translation id="8381674639488873545">Tieto poplatky môžu byť jednorazové alebo opakované a nemusia byť predvídateľné. <ph name="BEGIN_LINK"/>Napriek tomu zobraziť<ph name="END_LINK"/></translation>
+<translation id="8382097126743287270">Automaticky na celú obrazovku</translation>
 <translation id="838307841291975086">Autá kombi</translation>
 <translation id="8389532092404711541">Zvyčajne <ph name="LOW_PRICE"/></translation>
 <translation id="8389940864052787379">Upravené a výkonné vozidlá</translation>
@@ -3811,7 +3835,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8541579497401304453">Spojte sa s určitou firmou tak, že zavoláte na jej číslo.</translation>
 <translation id="8542014550340843547">Tri spinky dole</translation>
 <translation id="8542617028204211143">SRA0</translation>
-<translation id="8543181531796978784">Môžete buď <ph name="BEGIN_ERROR_LINK"/>nahlásiť problém s zisťovaním<ph name="END_ERROR_LINK"/>, alebo <ph name="BEGIN_LINK"/>tieto nebezpečné stránky navštíviť<ph name="END_LINK"/> (ak si uvedomujete bezpečnostné riziko).</translation>
 <translation id="907470742420136113">Brave sa pokúša upraviť nastavenia dopĺňania spôsobov platby.</translation>
 <translation id="8544303911974837265">Polyester</translation>
 <translation id="854548366864113872">Možnosť vysokej ceny</translation>
@@ -3850,7 +3873,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8612919051706159390">Online komunity</translation>
 <translation id="8617269623452051934">používanie vášho zariadenia</translation>
 <translation id="861775596732816396">Veľkosť 4</translation>
-<translation id="8618975513789458065">Témy reklám sú len jednou z mnohých možností, pomocou ktorých môže web prispôsobovať reklamy. Aj keď nie sú témy reklám povolené, weby vám stále môžu zobrazovať reklamy, ktoré však môžu byť menej zaujímavé.</translation>
 <translation id="8620276786115098679">Obálka Kaku 7</translation>
 <translation id="8623885649813806493">Žiadne zhodujúce sa heslá. Zobrazte si všetky uložené heslá.</translation>
 <translation id="8624354461147303341">Získať zľavy</translation>
@@ -3914,7 +3936,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8757526089434340176">K dispozícii je ponuka Google Pay</translation>
 <translation id="8759274551635299824">Platnosť tejto karty vypršala</translation>
 <translation id="87601671197631245">Tento web používa zastaranú konfiguráciu zabezpečenia, ktorá môže odhaliť vaše informácie (napríklad heslá, správy alebo kreditné karty), keď ich naň odošlete.</translation>
-<translation id="8761567432415473239">Bezpečné prehliadanie Brave nedávno <ph name="BEGIN_LINK"/>zistilo škodlivé programy<ph name="END_LINK"/> na webe <ph name="SITE"/>.</translation>
 <translation id="8763927697961133303">Zariadenie USB</translation>
 <translation id="8766943070169463815">Hárok overenia poverenia zabezpečenej platby je otvorený</translation>
 <translation id="8767765348545497220">Zavrieť bublinu pomocníka</translation>
@@ -3940,6 +3961,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8807160976559152894">Orezať po každej strane</translation>
 <translation id="8809203544698246977">Tu sa zobrazujú blokované témy</translation>
 <translation id="8811470563853401328">Chcete adresu uložiť v účte?</translation>
+<translation id="8811725516933141693">Ak chcete četovať s Gemini, napíšte @gemini</translation>
 <translation id="8813277370772331957">Pripomenúť neskôr</translation>
 <translation id="8814707942599948500">Obálka C8</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, postupným stlačením klávesov Tab a Enter aktualizujte Brave v jeho nastaveniach</translation>
@@ -3973,6 +3995,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8874790741333031443">Vyskúšajte dočasne povoliť súbory cookie tretích strán, čo znamená nižšiu ochranu pri prehliadaní, ale funkcie webu budú s väčšou pravdepodobnosťou fungovať podľa očakávaní.</translation>
 <translation id="8874824191258364635">Zadajte platné číslo karty</translation>
 <translation id="8877780815363510165">Rybolov</translation>
+<translation id="888117890813270681"><ph name="DATA_CONTROLS_RESTRICTION"/> sa nedá nastaviť na <ph name="DATA_CONTROLS_LEVEL"/></translation>
 <translation id="8884537526797090108">Nie je možné nahrať dôverný obsah</translation>
 <translation id="8888187300091017436">Matrace</translation>
 <translation id="8890048757975398817">Ovládajte zariadenie <ph name="READERNAME"/> a získajte prístup k inteligentnej karte, ktorú má k dispozícii.</translation>
@@ -4009,7 +4032,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8971063699422889582">Platnosť certifikátu servera vypršala.</translation>
 <translation id="8975012916872825179">Zahŕňa telefónne čísla, e‑mailové adresy a dodacie adresy</translation>
 <translation id="8975263830901772334">Názvy súborov, ktoré tlačíte</translation>
-<translation id="8978053250194585037">Funkcia Bezpečné prehliadanie Brave nedávno <ph name="BEGIN_LINK"/>zistila phishing<ph name="END_LINK"/> na webe <ph name="SITE"/>. Phishingové stránky sa vydávajú za iné weby, aby vás oklamali.</translation>
 <translation id="8982884016487650216">Načítavanie súboru PDF bolo dokončené</translation>
 <translation id="8983369100812962543">Teraz môžete zmeniť veľkosť aplikácie</translation>
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, postupným stlačením klávesov Tab a Enter si môžete zobraziť históriu prehliadania v Brave</translation>
@@ -4018,7 +4040,6 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
 <translation id="8992061558343343009">Hľadáte verziu systému? Prejdite na</translation>
 <translation id="899688752321268742"><ph name="URL"/> chce zistiť, či aktívne používate toto zariadenie</translation>
-<translation id="8996941253935762404">Webové stránky, ktoré sa chystáte navštíviť, obsahujú škodlivé programy</translation>
 <translation id="8997023839087525404">Server prezentoval certifikát, ktorý nebol zverejnený pomocou pravidla transparentnosti certifikátov. V prípade niektorých certifikátov sa táto podmienka vyžaduje s cieľom zaistiť ich dôveryhodnosť a ochranu proti útočníkom.</translation>
 <translation id="9000145382638074673">Vaše zariadenia</translation>
 <translation id="9001074447101275817">Proxy server <ph name="DOMAIN"/> vyžaduje používateľské meno a heslo.</translation>
@@ -4038,6 +4059,7 @@ Ich používanie by bolo inak blokované vašimi nastaveniami ochrany súkromia.
 <translation id="9023536760430404133">Pneumatiky a kolesá vozidiel</translation>
 <translation id="9025348182339809926">(Neplatný)</translation>
 <translation id="902590795160480390">Načítava sa PDF</translation>
+<translation id="9027531288681624875">Ak chcete ukončiť režim celej obrazovky, pridržte |<ph name="ACCELERATOR"/>|</translation>
 <translation id="9035022520814077154">Chyba zabezpečenia</translation>
 <translation id="9035824888276246493">Uložiť bezpečnostné kódy</translation>
 <translation id="9036306139374661733">Chcete povoliť prístup k mikrofónu?</translation>

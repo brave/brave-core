@@ -75,6 +75,7 @@
 <translation id="2875302873837723333">meilleurs sites</translation>
 <translation id="8173998484743827990">Statistiques de Brave</translation>
 <translation id="383680190590774040">horloge</translation>
+<translation id="1383876407941801731">Rechercher</translation>
 <translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="3159285901314605198">Image de fond</translation>
 <translation id="385051799172605136">Retour</translation>
@@ -321,24 +322,6 @@
 <translation id="7168491065836975228">Rewards interne</translation>
 <translation id="1992397118740194946">Non défini</translation>
 <translation id="758790787422117549">Identifiant</translation>
-<translation id="1919345977826869612">Annonces</translation>
-<translation id="3671566813999349838">Montant</translation>
-<translation id="751223241692981112">Réclamé à</translation>
-<translation id="3913089081619091801">Identification de la demande</translation>
-<translation id="972516647724462985">Expire à</translation>
-<translation id="3970114302595058915">ID</translation>
-<translation id="8511126279042126492">Promotion patrimoniale</translation>
-<translation id="4250680216510889253">Non</translation>
-<translation id="1426410128494586442">Oui</translation>
-<translation id="8102423594645796250">Promotions</translation>
-<translation id="7805768142964895445">Statut</translation>
-<translation id="5565735124758917034">Actif</translation>
-<translation id="2196753816869469810">Attesté</translation>
-<translation id="1098052486217676340">Terminé</translation>
-<translation id="8000774832235490222">Sur</translation>
-<translation id="2448312741937722512">Type</translation>
-<translation id="5334568292977026472">UGP</translation>
-<translation id="3798449238516105146">Version</translation>
 <translation id="7180611975245234373">Actualiser</translation>
 <translation id="1456696701804096710">Nombre de nouvelles tentatives :</translation>
 <translation id="8118649457152178086">Pays des récompenses :</translation>
@@ -364,18 +347,19 @@
 <translation id="5856438412804207598">Environnement actuel :</translation>
 <translation id="5916290544882167205">Brave Software. Brave est une marque commerciale de Brave Software. Les noms du site peuvent être des marques commerciales ou des marques déposées du propriétaire du site.</translation>
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
+<translation id="1919345977826869612">Publicités</translation>
 <translation id="3587482841069643663">Tous</translation>
 <translation id="4241224519481557898">Catégorie</translation>
 <translation id="3080423471207781945">Maximum de publicités reçues par heure :</translation>
 <translation id="7847825746023377505">Aucune annonce consultée au cours des <ph name="TOTAL_DAYS"/> derniers jours.</translation>
 <translation id="7902420836933072528">Publicités que vous avez reçues au cours des [[totalDays]] derniers jours</translation>
 <translation id="8863685593846905344">Historique des publicités</translation>
-<translation id="2777306694585938662">Récompenses d'annonces reçues</translation>
 <translation id="5212777575344695266">Marquer comme inapproprié</translation>
 <translation id="2111256234277361810">Marquer comme inapproprié ✓</translation>
 <translation id="8988332871810963281">Il n'y a actuellement aucune histoire de Brave Publicités</translation>
 <translation id="5345727496083327478">Vous ne recevrez plus de publicités de cette catégorie</translation>
 <translation id="2631006050119455616">Enregistré</translation>
+<translation id="3671566813999349838">Montant</translation>
 <translation id="6976444672879155794">Auto-contribuer les [[processor]]</translation>
 <translation id="8804164990146287819">Politique de confidentialité</translation>
 <translation id="7262285991915892790">Faites glisser l'icône BAT sur le</translation>
@@ -390,17 +374,8 @@
 <translation id="1418534671788496616">Afficher l'historique des dépôts</translation>
 <translation id="3412655388715513818">Exclure ce site</translation>
 <translation id="418343137736963579">Nombre total de sites que vous avez exclus de la Contribution Automatique :</translation>
-<translation id="8802504113265057166">Les [[currency]] qui n'ont pas été utilisés avant la date d'expiration seront automatiquement rendus à la User Growth Pool de Brave.</translation>
-<translation id="279567716178902927">Date d'expiration de l'allocation</translation>
 <translation id="1389143276807887637">importer</translation>
 <translation id="5737831580668469027">Contributions mensuelles !</translation>
-<translation id="2487641031722095938">C'est votre jour de chance !</translation>
-<translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
-<translation id="3453206261112715431">Allocation de jetons gratuits</translation>
-<translation id="4448429859987034344">Félicitations !</translation>
-<translation id="4677106999274433911">Vous avez réclamé avec succès des récompenses publicitaires.</translation>
-<translation id="8304661078305276044">Récompenses publicitaires</translation>
-<translation id="1770001816413426741">Période de récompenses</translation>
 <translation id="2280319752798785157">Contribution mensuelle</translation>
 <translation id="8307851765167460403">Pas encore d'activité</translation>
 <translation id="3630697955794050612">désactivé</translation>
@@ -440,11 +415,11 @@
 <translation id="8428213095426709021">Paramètres</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="6432779622695508363">Donner de l'argent quand vous aimez</translation>
-<translation id="6367285596431004439">Attribution de jetons reçue</translation>
 <translation id="2726674968268546964">jetons</translation>
 <translation id="5015443703424816075">Jeton</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transactions</translation>
+<translation id="2448312741937722512">Type</translation>
 <translation id="8772672608371898774">Éditeur authentifié par Brave</translation>
 <translation id="5050370287908180130">Pour plus de détails, voir le relevé mensuel</translation>
 <translation id="7853202427316060426">Activité</translation>
@@ -529,6 +504,7 @@
 <translation id="8028993641010258682">Taille</translation>
 <translation id="7870625241353817260">StockageMax</translation>
 <translation id="3202131003361292969">Chemin d'accès</translation>
+<translation id="3798449238516105146">Version</translation>
 <translation id="2892680660204660712">Identifiant de pair</translation>
 <translation id="7536543993364605970">Version d'agent</translation>
 <translation id="3693482323085649439">Nœud en cours d'exécution</translation>
@@ -620,21 +596,15 @@
       other {Ce mois-ci, vous avez visité # créateurs soutenus par Récompenses Brave}
     }</translation>
 <translation id="6067959437127691361">L'utilisation de Récompenses Brave aide à soutenir des créateurs de contenu et vous permet de gagner des BAT.</translation>
-<translation id="1187367336925051518">Récompenses de <ph name="MONTH"/> : <ph name="AMOUNT"/></translation>
-<translation id="3274366539954332481">Vos récompenses publicitaires de <ph name="MONTH"/> sont là !</translation>
-<translation id="7861645265922445992">Réclamer les récompenses</translation>
-<translation id="9013419433042554094">Réclamer des jetons</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="885805571521218129">Cette fourchette correspond à vos gains estimés pour les publicités Brave ce mois-ci.</translation>
 <translation id="3863981251715594911">Comment ça marche?</translation>
-<translation id="4782365133987903299">Il vous reste <ph name="DAYS"/> pour les réclamer</translation>
 <translation id="7931127789630755251">Gagnez des jetons en visualisant des publicités privées dans Brave</translation>
 <translation id="2278423362884506724">Soutenez les créateurs de contenu et utilisez vos jetons pour acheter des cartes-cadeaux, les échanger contre d'autres devises, et plus encore.</translation>
 <translation id="6278643716658443228">Paramètres de récompenses</translation>
 <translation id="2862978891748913252">Sélectionnez votre pays</translation>
 <translation id="3717922248131893262">Pour continuer à utiliser les récompenses Brave, sélectionnez votre pays pour que nous puissions vous montrer les bonnes options et publicités pour votre région. <ph name="LINK_BEGIN"/>Politique de confidentialité<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">Commencer à utiliser les Rewards</translation>
-<translation id="2221902203895354376">Un don de jeton est disponible !</translation>
 <translation id="2956070106555335453">Résumé</translation>
 <translation id="2369994359029526515">Créateur non vérifié</translation>
 <translation id="3984338085370091436">Ce créateur ne fait pas partie des créateurs Brave, car il n'a pas encore été validé. Une fois qu'il sera validé, vous pourrez lui envoyer des contributions.</translation>
@@ -650,15 +620,6 @@
 <translation id="654447476965480878">En savoir plus sur la manière de gagner des BAT</translation>
 <translation id="4105212447337987768">Le <ph name="DATE"/>, nous cesserons de prendre en charge les soldes BAT virtuels existants. Connectez un compte de dépôt avant cette date afin que nous puissions transférer votre solde gagné vers votre compte de dépôt, sinon votre solde sera perdu.</translation>
 <translation id="707569835145765061">Action requise : connecter un compte de dépôt ou vos BAT virtuels seront perdus</translation>
-<translation id="1258144146756156541">Confirmez que vous êtes un être humain</translation>
-<translation id="1555514580945108302">Hmm... pas vraiment. Essayez encore.</translation>
-<translation id="8078414184292711961">Faites glisser l'icône BAT vers le <ph name="HINT"/> cible.</translation>
-<translation id="2151535059686617995">C'est votre jour de chance !</translation>
-<translation id="4560448935659791043">Vous avez gagné une récompense Publicités !</translation>
-<translation id="6333727259565526314">Votre récompense est en route.</translation>
-<translation id="39734939514946950">Votre montant de récompenses</translation>
-<translation id="717952606991220586">Oups, quelque chose ne va pas. Veuillez réessayer plus tard.</translation>
-<translation id="7210234701206674260">Brave Récompenses a un problème. Veuillez réessayer plus tard.</translation>
 <translation id="3358400027937159351">Vous avez contribué avec <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Vous êtes déconnecté</translation>
 <translation id="3035648636451344428">Cela se produit de temps en temps pour assurer la sécurité de votre compte <ph name="PROVIDER"/>. Lors de votre déconnexion, vous continuez à recevoir des paiements, mais vous ne pouvez pas voir votre solde ni envoyer des contributions depuis votre compte <ph name="PROVIDER"/>.</translation>
@@ -773,7 +734,6 @@
 <translation id="5486744676117070166">La récupération de la valeur du prochain nonce a échoué</translation>
 <translation id="6180576227145734714">Les données de transaction 'to' doivent être une adresse valide lorsqu'elles sont indiquées</translation>
 <translation id="6688162556547723415">La méthode demandée et/ou le compte n'a pas été autorisé par l'utilisateur.</translation>
-<translation id="1383876407941801731">Rechercher</translation>
 <translation id="8767749833522980474">Crypto</translation>
 <translation id="944736176598169208">Récompenses</translation>
 <translation id="6122742277607781713">Portefeuille</translation>
@@ -818,6 +778,11 @@
 <translation id="5009335307032488349">Rechercher un NFT par nom, identifiant</translation>
 <translation id="8667560635828712526">Choisir un actif</translation>
 <translation id="4853960199138416955">Le portefeuille Brave ne prend pas actuellement en charge les NFT Bitcoin (ordinaux). L'envoi de BTC depuis une adresse qui contient des ordinaux peut entraîner le transfert involontaire de ces ordinaux.</translation>
+<translation id="29976300677902325">Choisir un destinataire</translation>
+<translation id="7231620608040154667">Mes adresses</translation>
+<translation id="4504682768625050939">Saisissez une adresse ou un domaine public.</translation>
+<translation id="5292796745632149097">Envoyer sur</translation>
+<translation id="7022684620581223496">Extension de domaine non valide.</translation>
 <translation id="9209024278910716955">Les achats ne sont pas pris en charge sur le réseau sélectionné</translation>
 <translation id="4982630604810554641">Recherche du domaine en cours…</translation>
 <translation id="5467044307473123584">Brave prend en charge l'utilisation de passerelles hors chaîne pour résoudre les domaines .eth.</translation>
@@ -836,6 +801,8 @@
 <translation id="712738518060477110">Le devis comprend des frais Brave à hauteur de <ph name="SWAP_FEE_PERCENTAGE"/></translation>
 <translation id="8368540604723748428">Trop de décimales</translation>
 <translation id="6575120282593094155">Vous n'avez pas encore de compte <ph name="ACCOUNT_TYPE"/>. Voulez-vous en créer un ?</translation>
+<translation id="1426410128494586442">Oui</translation>
+<translation id="4250680216510889253">Non</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="6896758677409633944">Copier</translation>
@@ -960,6 +927,7 @@
 <translation id="7657130382217527063">REMARQUE : une clé privée doit être fournie en tant fichier JSON codé en hexadécimal contenant la clé privée et des informations du protocole. <ph name="LINK_START"/> En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Exporter</translation>
 <translation id="1366855498335432549">Déposer</translation>
+<translation id="790104325876206743">Paramètres du compte</translation>
 <translation id="6322030314101903925">Aucun actif disponible</translation>
 <translation id="836614343069504000">Déposez ou achetez des jetons pour commencer. Si vous ne voyez pas les jetons d'un compte importé, vérifiez les filtres et les paramètres d'affichage. Il se peut que des jetons inconnus doivent être ajoutés en tant qu'actifs personnalisés.</translation>
 <translation id="2902856457593699108">Afficher la clé</translation>
@@ -1045,6 +1013,7 @@
 <translation id="2391762656119864333">Révoquer</translation>
 <translation id="9218424917282368512">Modifier le réseau</translation>
 <translation id="7526139040829362392">Changer de compte</translation>
+<translation id="5565735124758917034">Actif</translation>
 <translation id="8874184842967597500">Non connecté</translation>
 <translation id="4217695020908122747">Comptes connectés</translation>
 <translation id="8497650996740651467">Comptes disponibles</translation>
@@ -1125,10 +1094,10 @@
 <translation id="4512871563176965522">Allocation personnalisée</translation>
 <translation id="749944179568745958">Adresse ETH non valide</translation>
 <translation id="2832270987629018596">Adresse SOL non valide</translation>
-<translation id="882486206986535424">Adresse non valide</translation>
-<translation id="8684908590733515816">Le domaine ne dispose pas d'une adresse <ph name="COIN_TYPE_SYMBOL"/> associée</translation>
-<translation id="8971278306757462297">L'adresse de réception est votre propre adresse</translation>
-<translation id="3506416339268164412">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
+<translation id="2115100722958448834">Il ne s'agit pas d'une adresse <ph name="COIN_TYPE_SYMBOL"/> valide.</translation>
+<translation id="240219768078450165">Le domaine ne dispose pas d'une adresse <ph name="COIN_TYPE_SYMBOL"/> associée.</translation>
+<translation id="4932382283590063268">L'adresse de réception est votre propre adresse.</translation>
+<translation id="3124753063207986114">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
 <translation id="7029817408221097939">Adresse unifiée non valide</translation>
 <translation id="6370376419663123629">L'adresse semble incorrecte</translation>
 <translation id="3767148796886402380">Vérifiez votre adresse pour vous assurer qu'elle est correcte (par ex. lettres en minuscule ou minuscule).</translation>
@@ -1139,10 +1108,9 @@
 <translation id="4667144295226514387">Limite de Gas manquante</translation>
 <translation id="2021522108838444624">Le montant doit être supérieur à 0</translation>
 <translation id="8464365289405373974">L'adresse de destination est requise</translation>
-<translation id="4884792073752467460">Adresse du destinataire non valide</translation>
 <translation id="6326239384961270135">Partie transparente manquante</translation>
 <translation id="8585995109882455949">Comment trouver la bonne adresse ?</translation>
-<translation id="8395402412470376435">Brave valide l'adresse pour empêcher les utilisateurs d'envoyer des fonds à la mauvaise adresse en raison d'une mauvaise utilisation des majuscules. Il s'agit d'un processus de « somme de contrôle » pour vérifier qu'il s'agit d'une adresse Ethereum valide.</translation>
+<translation id="105524480632150318">Brave empêche les utilisateurs d'envoyer des fonds à une mauvaise adresse en raison d'un problème de majuscules ou de minuscules. Assurez-vous que l'adresse est correcte en suivant les instructions ci-dessous.</translation>
 <translation id="4583433813614292221">1. Visiter</translation>
 <translation id="8061317754447191238">Visitez etherscan et collez l'adresse du portefeuille où vous voulez envoyer des jetons. Appuyez ensuite sur Entrée.</translation>
 <translation id="5393164213211430081">2. Copier et entrer l'adresse ETH</translation>
@@ -1257,6 +1225,7 @@
 <translation id="4378208228955237306">Afficher le logo du réseau sur les NFT</translation>
 <translation id="5472199803712163015">NFT indésirables</translation>
 <translation id="5722321409991816187">Afficher les NFT indésirables</translation>
+<translation id="2588752742385122166">Paramètres du portefeuille</translation>
 <translation id="7662492121143629144">Tous les comptes</translation>
 <translation id="6954150712710630841">Transaction soumise</translation>
 <translation id="905855245798176174">La transaction a bien été envoyée au réseau et est en attente de confirmation.</translation>
@@ -1671,9 +1640,10 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="6261915643960475695">Affaires</translation>
 <translation id="8265589281845759879">Voitures</translation>
+<translation id="7726519849288907308">Célébrités</translation>
 <translation id="7577010593836079522">Culture</translation>
+<translation id="6807791860691150411">Éducation</translation>
 <translation id="3706423975342040244">Divertissement</translation>
-<translation id="3284069358246729581">Actualités liées au divertissement</translation>
 <translation id="1432147735538902155">Mode</translation>
 <translation id="3350377832708834609">Films et TV</translation>
 <translation id="736592699917579616">Alimentation</translation>
@@ -1681,6 +1651,7 @@
 <translation id="2228584369802328636">Jeux vidéo</translation>
 <translation id="6941852195052765076">Santé</translation>
 <translation id="932327136139879170">Accueil</translation>
+<translation id="2233040275795129413">Mode de vie</translation>
 <translation id="5178222043222938163">Musique</translation>
 <translation id="1322083935398004629">Politique</translation>
 <translation id="8739620487574841501">Actualités régionales</translation>
@@ -1688,10 +1659,9 @@
 <translation id="1264974993859112054">Sports</translation>
 <translation id="2283599456633275070">Voyages</translation>
 <translation id="7487067081878637334">Technologie</translation>
-<translation id="151743034625508713">Actualités technologiques</translation>
-<translation id="2388279876296929435">Évaluations technologiques</translation>
 <translation id="5030268312472358928">Actualités incontournables</translation>
 <translation id="5510475084662028636">Sources incontournables</translation>
+<translation id="1269093011552192762">Actualités au Royaume-Uni</translation>
 <translation id="1297570508541015874">Actualités concernant les États-Unis</translation>
 <translation id="1459693405370120464">Météo</translation>
 <translation id="8366057325711477500">Actualités mondiales</translation>
@@ -1748,7 +1718,7 @@
 <translation id="855081842937141170">Épingler l'onglet</translation>
 <translation id="2805351816064694332">Fermer les onglets non épinglés</translation>
 <translation id="8657641252283410630">Grouper l'onglet</translation>
-<translation id="8908724110993882115">Option Activer/Désactiver le groupe développée</translation>
+<translation id="8908724110993882115">Développer/Réduire le groupe</translation>
 <translation id="8813600493701436462">Retirer l'onglet du groupe actuel</translation>
 <translation id="3170171381379098900">Dissocier le groupe d'onglets actuel</translation>
 <translation id="8589082712469819302">Dissocier tous les onglets</translation>
@@ -1848,6 +1818,7 @@
 <translation id="9210143726807220086">Activer/Désactiver les onglets verticaux développés</translation>
 <translation id="684629111155788563">Ajouter tous les onglets au nouveau groupe</translation>
 <translation id="9106013521852824634">M'envoyer l'onglet</translation>
+<translation id="6973516366678963184">Afficher la bulle Wayback Machine</translation>
 <translation id="1926106318101432555">Ouvrir un favori…</translation>
 <translation id="6118819645013156507">Passer à une autre fenêtre…</translation>
 <translation id="1623204575967809688">Fusionner la fenêtre actuelle avec…</translation>
@@ -1861,6 +1832,14 @@
 <translation id="1344005710343072293">Cette combinaison est utilisée pour <ph name="COMMAND"/>. L'enregistrement écrasera ce raccourci.</translation>
 <translation id="831931573200952705">Cette combinaison est utilisée pour <ph name="COMMAND"/> et ne peut pas être modifiée.</translation>
 <translation id="3537006124004887164">Cette combinaison est utilisée pour <ph name="COMMAND"/> et ne peut pas être modifiée. Essayez de la modifier par le biais des Raccourcis d'applications dans les Paramètres du système.</translation>
+<translation id="712598284361781729">Nouvelle vue partagée</translation>
+<translation id="6655450014966273037">Fermer la vue partagée</translation>
+<translation id="1130188644637295274">Ouvrir en mode Vue partagée</translation>
+<translation id="7195519370590486580">Restaurer dans des onglets séparés</translation>
+<translation id="3617523374417810198">Nouvelle vue partagée</translation>
+<translation id="9053179124396567872">Fermer la vue partagée</translation>
+<translation id="8571323456914890254">Ouvrir en mode Vue partagée</translation>
+<translation id="2397258152713354053">Restaurer dans des onglets séparés</translation>
 <translation id="8591883849678260674">Voir l'original</translation>
 <translation id="1969654232209826429">min. de lecture</translation>
 <translation id="4101707289420716287">Désactiver Speedreader</translation>
@@ -1910,6 +1889,8 @@
 <translation id="2505565639170795978">Bonjour, je m'appelle Leo. Je suis un assistant IA entièrement hébergé proposé par Brave. Je suis optimisé par Llama 13B, un modèle créé par Meta pour être performant et applicable à de nombreux cas d'utilisation.</translation>
 <translation id="8030558642460377506">Bonjour, je m'appelle Leo. Je suis un assistant IA entièrement hébergé proposé par Brave. Je suis optimisé par Mixtral 8x7B, un modèle créé par Mistral AI pour gérer des tâches avancées.</translation>
 <translation id="2489317965865266353">Bonjour, je m'appelle Leo. Je suis mandaté par Brave et optimisé par Claude Instant, un modèle créé par Anthropic pour effectuer des tâches de conversation et de traitement de texte.</translation>
+<translation id="8583558415545871403">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude 3 Haiku, un modèle créé par Anthropic, et mes données sont rendues anonymes par Brave.</translation>
+<translation id="4147243042852964992">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude 3 Sonnet, un modèle créé par Anthropic, et mes données sont rendues anonymes par Brave.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> par <ph name="COMPANY_NAME"/></translation>
 <translation id="8944485226638699751">Limité</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -1952,11 +1933,13 @@
 <translation id="8742658901413346500">Cette conversation est longue et Leo risque d'oublier des choses bientôt. Vous pouvez bénéficier de conversations plus longues en passant à un modèle premium, ou vous pouvez effacer le chat pour le réinitialiser.</translation>
 <translation id="7550152963854770123">Effacer le chat</translation>
 <translation id="7494736170250048402">Envoyer un message à Leo</translation>
-<translation id="4110772752544684964">Cette page est trop longue pour Leo. Il est possible que la conversation manque un peu de contexte.</translation>
+<translation id="1093419424466417703">Cette page est trop longue pour Leo. Certaines informations contextuelles risquent de ne pas avoir été prises en compte. Leo est parvenu à lire <ph name="PERCENTAGE"/> du contenu de la page.</translation>
 <translation id="4370698775470316661">Cette conversation est trop longue et ne peut pas se poursuivre. Il est possible qu'il existe d'autres modèles avec lesquels Leo peut maintenir l'exactitude pendant des conversations plus longues.</translation>
 <translation id="6291843235651817590">Chat général</translation>
 <translation id="8193130769524604031">Tâches de chat avancées</translation>
 <translation id="3185367320601718531">Génération de conversations et de textes</translation>
+<translation id="7979673624064378842">Discussions ulra-rapides</translation>
+<translation id="2836330653441111204">L'équilibre parfait entre vitesse et intelligence</translation>
 <translation id="3965507912994218570">Paramètres de Leo</translation>
 <translation id="1037324977127422019">Bonjour, je m'appelle Leo !</translation>
 <translation id="8930348081963284873">Un assistant intelligent optimisé par l'IA, directement intégré à Brave.</translation>
@@ -1990,6 +1973,7 @@
 <translation id="42981349822642051">Développer</translation>
 <translation id="3130793786899299931">Modifier la longueur</translation>
 <translation id="6320643499534852464">Réseaux sociaux</translation>
+<translation id="2370739752330685659">Peut-être plus tard</translation>
 <translation id="6303294677342628402">Protections</translation>
 <translation id="8458987127502506209">Activer les boucliers Brave</translation>
 <translation id="7509914170164691086">Boucliers ACTIFS <ph name="LINK_BEFORE"/>pour<ph name="LINK_AFTER"/></translation>
@@ -2015,7 +1999,7 @@
 <translation id="4448697385961650078">Bloquer les balises &amp; pubs</translation>
 <translation id="8593054718053894081">Bloquer les traqueurs et les publicités (agressif)</translation>
 <translation id="7384778069178817075">Autoriser toutes les balises &amp; pubs</translation>
-<translation id="4941539331405513605">Bloquer les cookies inter-domaines</translation>
+<translation id="6196640612572343990">Bloquer les cookies tiers</translation>
 <translation id="693506469193748756">M'oublier quand je ferme ce site</translation>
 <translation id="5471580724041424345">Efface les cookies et autres données de site lorsque vous fermez un site.</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
@@ -2068,6 +2052,11 @@
 <translation id="546481172717459539">Utiliser les paramètres système</translation>
 <translation id="7799817062559422778">Mode clair</translation>
 <translation id="4117637339509843559">Mode sombre</translation>
+<translation id="6302485303316397682">Envie de résultats de recherche plus performants ?</translation>
+<translation id="7014699001826714920">Rejoignez le mouvement en contribuant à la recherche Brave.</translation>
+<translation id="6821108091726602352">Aidez-nous à améliorer le Web en participant au projet Web Discovery de Brave. En partageant des signaux de recherche entièrement anonymes, vous aidez Brave à optimiser l'index de son moteur de recherche.</translation>
+<translation id="6764845498618413165">En savoir plus.</translation>
+<translation id="7818938154803162778">Oui, je veux apporter mon aide</translation>
 <translation id="7821773512278295352">Pare-feu + VPN Brave : connecté</translation>
 <translation id="6019088868713395120">Pare-feu + VPN Brave : déconnecté</translation>
 <translation id="3541307549916475335">Interface du panneau VPN Brave</translation>
@@ -2081,6 +2070,7 @@
 <translation id="1024255913009642477">Vous avez déjà acheté un VPN ?</translation>
 <translation id="8814357473522731680">Proposé par</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
+<translation id="7805768142964895445">État</translation>
 <translation id="5747552184818312860">Date d'expiration</translation>
 <translation id="8421945428836418371">Reconnecter automatiquement</translation>
 <translation id="434523916398030617">Contacter l'assistance technique</translation>

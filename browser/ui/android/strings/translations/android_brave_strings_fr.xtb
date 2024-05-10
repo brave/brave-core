@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Bloque l'élément « à suivre » ainsi que les fiches de fin sur youtube.com.</translation>
 <translation id="5152595963250646670">Bloquer les éléments de YouTube qui empêchent de se concentrer</translation>
 <translation id="2998960761270772157">Bloque les éléments de connexion, le menu, les commentaires et les informations sur la vidéo sur youtube.com.</translation>
+<translation id="8531835121131500698">Bloquer les shorts YouTube</translation>
+<translation id="2167271714269158912">Bloquez les shorts sur la page d'accueil, la page des tendances et les résultats de recherche sur youtube.com.</translation>
 <translation id="6052725679982758334">Blocage des réseaux sociaux</translation>
 <translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Créateur vérifié</translation>
 <translation id="2369994359029526515">Créateur non vérifié</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
-<translation id="7861645265922445992">Réclamer mes récompenses</translation>
 <translation id="1848737374354350807">Balance:</translation>
 <translation id="4781696154289395607">Vous avez apporté une contribution de <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Un problème s'est produit lors du traitement de votre contribution.</translation>
-<translation id="2221902203895354376">Un don de jeton est disponible !</translation>
-<translation id="2377929997600454162">Vos récompenses publicitaires gagnées en <ph name="MONTH_VALUE"/> sont disponibles !</translation>
-<translation id="2716238748894345194">Récompenses gagnées en <ph name="MONTH_VALUE"/> : <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Il vous reste <ph name="TOKEN"/> jours pour les réclamer</translation>
 <translation id="683765328936486920">sur YouTube</translation>
 <translation id="8969049974285901797">sur Twitch</translation>
 <translation id="8038539967102225446">Les pubs Brave Ads sont là !</translation>
@@ -458,7 +455,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="3763681089644577874">Bloquer les cookies</translation>
 <translation id="614747795780742163">Empêche les sites web de stocker des informations sur vos précédentes visites</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
-<translation id="4941539331405513605">Bloquer les cookies inter-domaines</translation>
+<translation id="6196640612572343990">Bloquer les cookies tiers</translation>
 <translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="1553643198679271031">Requête en mode privé</translation>
 <translation id="4891600875049212418">Protégez votre vie privée lorsque vous consultez des sites sensibles</translation>
@@ -604,6 +601,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">Je comprends que si je perds ma phrase de récupération, je ne pourrai plus accéder à mon portefeuille crypto.</translation>
 <translation id="5333225216561354793">Nous vous demandons de prendre acte des éléments ci-dessous</translation>
+<translation id="6937275455070754004">Choisissez quelles chaînes de blocs utiliser dans votre portefeuille.</translation>
 <translation id="1645800479814134195">Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.</translation>
 <translation id="4565891212173086999">J'ai lu et j'accepte les <ph name="CLICK_START"/>conditions d'utilisation<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Votre phrase de récupération</translation>
@@ -611,12 +609,12 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="2708402071160162126">ATTENTION : Ne partagez jamais votre phrase de récupération. N'importe qui détenant cette phrase peut voler vos actifs sans aucun recours possible.</translation>
 <translation id="111912712268284159">J'ai sauvegardé ma phrase en lieu sûr.</translation>
 <translation id="6896758677409633944">Copier</translation>
-<translation id="1783600039044302171">Sécurisez vos cryptos avec un mot de passe</translation>
 <translation id="3726490322412361740">Entrez votre mot de passe</translation>
 <translation id="3038243139480464605">Confirmer le mot de passe</translation>
 <translation id="3043677904160378840">Le mot de passe doit contenir au moins 8 caractères.</translation>
 <translation id="7396672979287122068">La confirmation du mot de passe ne correspond pas</translation>
-<translation id="7084181009966710506">Création du portefeuille…</translation>
+<translation id="1566412704591731844">Création de votre portefeuille…</translation>
+<translation id="7779823116893018906">Cette opération peut prendre quelques secondes…</translation>
 <translation id="1577948178257477049">Compte <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Ajouter un compte</translation>
 <translation id="3448492834076427715">Mettre à jour le compte</translation>
@@ -639,6 +637,11 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="3157931365184549694">Restaurer</translation>
 <translation id="5844138175312846408">Vous avez déjà un portefeuille ?</translation>
 <translation id="2502258949541727762">Avant de commencer</translation>
+<translation id="4303748097351941030">Réseaux pris en charge</translation>
+<translation id="4204268048253692928">Vous pouvez ajouter des réseaux à tout moment dans Paramètres.</translation>
+<translation id="2523174693142405417">Rechercher des réseaux</translation>
+<translation id="1164748583090434571">Afficher les réseaux de test</translation>
+<translation id="935220650946301698">Poursuivre avec les réseaux <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Créer un mot de passe</translation>
 <translation id="2789310860394340571">Vous utiliserez ce mot de passe pour accéder à votre portefeuille.</translation>
 <translation id="2136372518715274136">Saisissez le nouveau mot de passe</translation>
@@ -845,7 +848,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7791543448312431591">Ajouter</translation>
 <translation id="6889920539620318793">Définir comme actif</translation>
 <translation id="2653659639078652383">Envoyer</translation>
-<translation id="4945690646623486292">Sélectionner le réseau</translation>
+<translation id="4556601961751528347">Connecter un autre compte</translation>
 <translation id="5233638681132016545">Nouvel onglet</translation>
 <translation id="8006088103295786154">Accéder au Portefeuille Brave</translation>
 <translation id="8030169304546394654">Déconnecté</translation>
@@ -871,6 +874,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4255623233927788178">Afficher sur l'explorateur de bloc</translation>
 <translation id="8274201358637112807">Cette page souhaite interagir avec le Portefeuille Brave</translation>
 <translation id="3355936511340229503">Erreur de connexion</translation>
+<translation id="1531836666020185856">En vedette</translation>
 <translation id="4891604214809245310">Impossible de définir le réseau sur <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">D'autres VPN semblent être configurés pour rester toujours activés sur cet appareil. Pour activer le Pare-feu + VPN Brave, commencez par désactiver le paramètre « Toujours activé » pour les autres VPN avant de vous reconnecter. Si le problème persiste, essayez de désinstaller les autres VPN.</translation>
 <translation id="85136472535634474">Ouvrir les paramètres VPN</translation>
@@ -1038,7 +1042,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1677961202754619328">Selon Uphold, votre compte fait actuellement l'objet de limitations. Veuillez vous connecter à votre compte Uphold pour vérifier que vous n'avez pas reçu d'avertissement ou que vous n'avez pas d'action à effectuer, puis réessayez.</translation>
 <translation id="5425006356459378415">Les récompenses Brave ne sont pas disponibles</translation>
 <translation id="833643743158564518">Les nouvelles inscriptions aux récompenses Brave ne sont pas activées dans votre région. Vous pourrez réessayer plus tard. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Tous les réseaux</translation>
 <translation id="7748944510530490017">Réseaux principaux</translation>
 <translation id="2781668117338732220">Réseaux secondaires</translation>
 <translation id="282560918037172384">Réseaux de test</translation>
@@ -1178,4 +1181,11 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3251885322612056119">Conditions d'utilisation mises à jour</translation>
 <translation id="4049035689681585146">Nous avons mis à jour les conditions d'utilisation des Récompenses Brave. Nous avons effectué ces mises à jour pour clarifier nos conditions et garantir qu'elles prennent en compte les nouvelles fonctionnalités. SI vous continuez à utiliser les Récompenses Brave, vous acceptez les nouvelles conditions d'utilisation. Si vous refusez, vous pouvez <ph name="RESET_START"/>réinitialiser<ph name="RESET_END"/> les Récompenses Brave, et donc désactiver la fonctionnalité.</translation>
 <translation id="2165953574528546737">Consultez les <ph name="TOS_START"/>conditions d'utilisation des Récompenses Brave<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Activer les fenêtres multiples</translation>
+<translation id="6167344249617630304">Ouvrez jusqu'à 5 fenêtres à la fois et déplacez vos onglets d'une fenêtre à l'autre</translation>
+<translation id="1063948063403254568">Fenêtres multiples détectées</translation>
+<translation id="4661882208707630158">Avant de désactiver la fonctionnalité Fenêtres multiples, assurez-vous de regrouper vos onglets dans une autre fenêtre Brave ou de fermer les autres fenêtres Brave.</translation>
+<translation id="6891382640886173702">Regrouper les fenêtres</translation>
+<translation id="2912247081180973411">Fermer les fenêtres</translation>
+<translation id="4010699428656610296">Assurez-vous de regrouper les autres onglets dans une autre fenêtre Brave.</translation>
 </translationbundle>

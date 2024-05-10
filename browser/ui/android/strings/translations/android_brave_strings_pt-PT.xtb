@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Bloqueia os elementos do cartão seguinte e final em youtube.com.</translation>
 <translation id="5152595963250646670">Bloquear elementos de distração do YouTube</translation>
 <translation id="2998960761270772157">Bloqueia os elementos de início de sessão, menu, comentários e informações de vídeo em youtube.com.</translation>
+<translation id="8531835121131500698">Bloquear YouTube Shorts</translation>
+<translation id="2167271714269158912">Bloqueia Shorts da página inicial, da página de tendências e dos resultados de pesquisa em youtube.com.</translation>
 <translation id="6052725679982758334">Bloqueio de Redes Sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Criador verificado</translation>
 <translation id="2369994359029526515">Criador não verificado</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
-<translation id="7861645265922445992">Reivindicar Recompensas</translation>
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="4781696154289395607">Contribuiu <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Houve um problema ao processar a sua contribuição.</translation>
-<translation id="2221902203895354376">Está disponível uma concessão de tokens.</translation>
-<translation id="2377929997600454162">Chegaram as Recompensas de Anúncios de <ph name="MONTH_VALUE"/>!</translation>
-<translation id="2716238748894345194">Recompensas de <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/>BAT</translation>
-<translation id="1649629664206601032">Tem <ph name="TOKEN"/> dias para reivindicar</translation>
 <translation id="683765328936486920">no YouTube</translation>
 <translation id="8969049974285901797">no Twitch</translation>
 <translation id="8038539967102225446">Chegaram os aAnúncios Brave!</translation>
@@ -458,7 +455,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="3763681089644577874">Bloquear Cookies</translation>
 <translation id="614747795780742163">Impede que os sites armazenem informações sobre as suas visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
-<translation id="4941539331405513605">Bloquear cookies entre sites</translation>
+<translation id="6196640612572343990">Bloquear cookies de terceiros</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="1553643198679271031">Solicitar modo incógnito</translation>
 <translation id="4891600875049212418">Viaje de forma segura e anónima quando visitar sites sensíveis</translation>
@@ -604,6 +601,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="5488357322146334497">Mensagem</translation>
 <translation id="1904000155026201268">Entendo que, se eu perder minha frase de recuperação, não conseguirei aceder à minha carteira de criptomoedas.</translation>
 <translation id="5333225216561354793">É necessário que tome conhecimento dos seguintes pontos</translation>
+<translation id="6937275455070754004">Escolha as blockchains a utilizar na sua carteira.</translation>
 <translation id="1645800479814134195">Compreendo que esta é uma carteira de autocustódia e que sou o único responsável por quaisquer fundos, ativos ou contas associados e por tomar as medidas adequadas para proteger e salvaguardar a minha carteira. Compreendo que a Brave não pode aceder à minha carteira nem reverter transações em meu nome, e que a minha frase de recuperação é a ÚNICA forma de recuperar o acesso em caso de perda da palavra-passe, roubo do dispositivo ou circunstâncias semelhantes.</translation>
 <translation id="4565891212173086999">Li e concordo com os <ph name="CLICK_START"/>Termos de Utilização<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">A sua frase de recuperação</translation>
@@ -611,12 +609,12 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="2708402071160162126">AVISO: Nunca divulgue a sua frase de recuperação. Qualquer pessoa na posse desta frase pode roubar os seus ativos permanentemente.</translation>
 <translation id="111912712268284159">Fiz a cópia de segurança da minha frase para um local seguro.</translation>
 <translation id="6896758677409633944">Copiar</translation>
-<translation id="1783600039044302171">Proteja as suas criptomoedas com uma palavra-passe</translation>
 <translation id="3726490322412361740">Introduzir palavra-passe</translation>
 <translation id="3038243139480464605">Verificar palavra-passe</translation>
 <translation id="3043677904160378840">As palavras-passe têm de ter, pelo menos, 8 carateres.</translation>
 <translation id="7396672979287122068">A palavra-passe verificada não corresponde</translation>
-<translation id="7084181009966710506">A criar carteira...</translation>
+<translation id="1566412704591731844">A criar a sua carteira...</translation>
+<translation id="7779823116893018906">Pode demorar alguns segundos...</translation>
 <translation id="1577948178257477049">Conta: <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Adicionar conta</translation>
 <translation id="3448492834076427715">Atualizar conta</translation>
@@ -639,6 +637,11 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="5844138175312846408">Já tem uma carteira?</translation>
 <translation id="2502258949541727762">Antes de começar</translation>
+<translation id="4303748097351941030">Redes compatíveis</translation>
+<translation id="4204268048253692928">Pode adicionar redes quando quiser nas Definições.</translation>
+<translation id="2523174693142405417">Pesquisar redes</translation>
+<translation id="1164748583090434571">Mostrar redes de teste</translation>
+<translation id="935220650946301698">Prosseguir com <ph name="NUMBER"/> redes</translation>
 <translation id="8248460961680233459">Criara uma palavra-passe</translation>
 <translation id="2789310860394340571">Irá usar esta palavra-passe para aceder à carteira.</translation>
 <translation id="2136372518715274136">Introduzir nova palavra-passe</translation>
@@ -845,7 +848,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="6889920539620318793">Definido como ativo</translation>
 <translation id="2653659639078652383">Submeter</translation>
-<translation id="4945690646623486292">Selecionar rede</translation>
+<translation id="4556601961751528347">Alterar conta associada</translation>
 <translation id="5233638681132016545">Novo separador</translation>
 <translation id="8006088103295786154">Aceder à Carteira Brave</translation>
 <translation id="8030169304546394654">Desconectada</translation>
@@ -871,6 +874,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="4255623233927788178">Ver no Block Explorer</translation>
 <translation id="8274201358637112807">Esta página pretende interagir com a Carteira Brave</translation>
 <translation id="3355936511340229503">Erro de ligação</translation>
+<translation id="1531836666020185856">Em destaque</translation>
 <translation id="4891604214809245310">Não foi possível definir a rede para <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Parece que tem outras VPN sempre ativas neste dispositivo. Para ativar a Firewall + VPN Brave, desative as outras VPN antes de tentar estabelecer a ligação outra vez. Se o problema persistir, desinstale as outras VPN.</translation>
 <translation id="85136472535634474">Abrir as definições de VPN</translation>
@@ -1038,7 +1042,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="1677961202754619328">De acordo com o Uphold, atualmente existem algumas limitações na sua conta Uphold. Inicie sessão na sua conta Uphold, verifique se existem avisos ou requisitos de conta restantes a serem preenchidos e tente novamente.</translation>
 <translation id="5425006356459378415">Recompensas Brave não disponíveis</translation>
 <translation id="833643743158564518">Os novos registos no Brave Rewards estão desativados na sua região de momento. Contudo, pode sempre tentar novamente mais tarde. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Todas as redes</translation>
 <translation id="7748944510530490017">Redes principais</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
 <translation id="282560918037172384">Redes de teste</translation>
@@ -1178,4 +1181,11 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="3251885322612056119">Termos de Serviço atualizados</translation>
 <translation id="4049035689681585146">Atualizámos os Termos de Serviço das Recompensas Brave. Implementámos estas atualizações para clarificar os termos e garantir que abrangem as novas funcionalidades. Ao continuar a utilizar as Recompensas Brave, está a concordar com os novos Termos de Serviço. Se não concordar, pode <ph name="RESET_START"/>repor<ph name="RESET_END"/> as Recompensas Brave, de modo a desativar a funcionalidade.</translation>
 <translation id="2165953574528546737">Consulte os <ph name="TOS_START"/>Termos de Serviço das Recompensas Brave<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Ativar várias janelas</translation>
+<translation id="6167344249617630304">Abrir até 5 janelas em simultâneo e mover separadores entre janelas</translation>
+<translation id="1063948063403254568">Várias janelas detetadas</translation>
+<translation id="4661882208707630158">Antes de desativar a funcionalidade de várias janelas, combine os separadores noutra janela Brave ou feche as outras janelas do Brave.</translation>
+<translation id="6891382640886173702">Combinar janelas</translation>
+<translation id="2912247081180973411">Fechar janelas</translation>
+<translation id="4010699428656610296">Combine outros separadores noutra janela do Brave.</translation>
 </translationbundle>

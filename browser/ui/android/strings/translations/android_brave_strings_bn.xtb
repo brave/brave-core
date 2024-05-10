@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">youtube.com-এ পরবর্তী এবং শেষ কার্ড উপাদানগুলিকে ব্লক করে।</translation>
 <translation id="5152595963250646670">YouTube-এর বিভ্রান্তিকর উপাদান ব্লক করুন</translation>
 <translation id="2998960761270772157">youtube.com-এ সাইন ইন, মেনু, কমেন্ট এবং ভিডিও তথ্য উপাদানগুলিকে ব্লক করে।</translation>
+<translation id="8531835121131500698">YouTube শর্টস ব্লক করুন</translation>
+<translation id="2167271714269158912">youtube.com-এ হোম পেজ, ট্রেন্ডিং পেজ এবং সার্চ ফলাফল থেকে শর্টস ব্লক করুন।</translation>
 <translation id="6052725679982758334">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">যাচাই করা স্রষ্টা</translation>
 <translation id="2369994359029526515">অযাচাইকৃত স্রষ্টা</translation>
 <translation id="6112368337882254910">স্বতঃ-প্রদান</translation>
-<translation id="7861645265922445992">রিওয়ার্ডগুলি দাবি করুন</translation>
 <translation id="1848737374354350807">ব্যালেন্স</translation>
 <translation id="4781696154289395607">আপনি <ph name="BAT_VALUE"/> BAT এ অবদান রেখেছেন।</translation>
 <translation id="2429828319207652823">আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।</translation>
-<translation id="2221902203895354376">একটি টোকেন গ্র্যান্ট উপলব্ধ রয়েছে!</translation>
-<translation id="2377929997600454162">আপনার <ph name="MONTH_VALUE"/> বিজ্ঞাপন পুরস্কার এখানে!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> -এর পুরস্কার: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">আপনার কাছে ক্লেম করার জন্য <ph name="TOKEN"/> দিন বাকি আছে</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
 <translation id="8038539967102225446">Brave বিজ্ঞাপনগুলি এখানে রয়েছে!</translation>
@@ -457,7 +454,7 @@
 <translation id="3763681089644577874">কুকি-গুলি অবরুদ্ধ করুন</translation>
 <translation id="614747795780742163">ওয়েবসাইটগুলি আপনার আগের সাক্ষাৎগুলি সম্পর্কে তথ্য সংরক্ষণ করে রাখা থেকে প্রতিরোধ করে</translation>
 <translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
-<translation id="4941539331405513605">ক্রস-সাইট কুকিগুলি অবরোধ করুন</translation>
+<translation id="6196640612572343990">তৃতীয় পক্ষের কুকিজ অবরুদ্ধ করুন</translation>
 <translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
 <translation id="1553643198679271031">অফ-দ্য-রেকর্ডের জন্য অনুরোধ পাঠান</translation>
 <translation id="4891600875049212418">সংবেদনশীল সাইট ভিজিট করার সময় অফ-দ্য-রেকর্ড হিসাবে যান</translation>
@@ -603,6 +600,7 @@
 <translation id="5488357322146334497">বার্তা</translation>
 <translation id="1904000155026201268">আমি বুঝি যে আমি আমার রিকভারি শব্দগুলি হারিয়ে ফেললে, আমি আমার ক্রিপ্টো ওয়ালেট অ্যাক্সেস করতে পারব না।</translation>
 <translation id="5333225216561354793">আমরা আপনাকে নিচের আইটেমগুলি স্বীকার করতে চাই</translation>
+<translation id="6937275455070754004">আপনার ওয়ালেটে কোন ব্লকচেন ব্যবহার করতে চান তা বেছে নিন।</translation>
 <translation id="1645800479814134195">আমি জানি এটি একটি স্ব-হেফাজত ওয়ালেট এবং যেকোনও সংশ্লিষ্ট তহবিল, সম্পদ বা অ্যাকাউন্টের জন্য এবং আমার ওয়ালেটকে সুরক্ষিত, সুরক্ষিত এবং ব্যাকআপ নেওয়ার জন্য যথাযথ পদক্ষেপ নেওয়ার জন্য আমি একাই দায়িত্বশীল। আমি বুঝি যে Brave আমার মানিব্যাগ অ্যাক্সেস করতে পারে না বা আমার পক্ষ থেকে লেনদেনগুলি বিপরীত করতে পারে না এবং আমার পুনরুদ্ধারের বাক্যাংশটি হারিয়ে যাওয়া পাসওয়ার্ড, চুরি হওয়া ডিভাইস বা অনুরূপ পরিস্থিতিতে অ্যাক্সেস পুনরুদ্ধার করার একমাত্র উপায়।</translation>
 <translation id="4565891212173086999">আমি <ph name="CLICK_START"/>ব্যবহারের শর্তাবলী<ph name="CLICK_END"/> পড়েছি এবং সম্মত।</translation>
 <translation id="3933122286596948824">আপনার রিকভারি বাক্যাংশ</translation>
@@ -610,12 +608,12 @@
 <translation id="2708402071160162126">সতর্কতা: আপনার পুনরুদ্ধারের বাক্যাংশটি কখনও শেয়ার করবেন না। এই বাক্যাংশের সাথে যে কেউ আপনার সম্পদ চিরতরে নিতে পারে।</translation>
 <translation id="111912712268284159">আমি আমার বাক্যাংশটিকে নিরাপদ কোথাও ব্যাকআপ করেছি।</translation>
 <translation id="6896758677409633944">অনুলিপি</translation>
-<translation id="1783600039044302171">আপনার ক্রিপ্টো একটি পাসওয়ার্ড দিয়ে নিরাপদ করুন</translation>
 <translation id="3726490322412361740">পাসওয়ার্ড লিখুন</translation>
 <translation id="3038243139480464605">পাসওয়ার্ড যাচাই করুন</translation>
 <translation id="3043677904160378840">পাসওয়ার্ড কমপক্ষে 8 অক্ষরের হতে হবে।</translation>
 <translation id="7396672979287122068">পুনরায়-টাইপ করা পাসওয়ার্ড মেলেনি</translation>
-<translation id="7084181009966710506">ওয়ালেট তৈরি করা হচ্ছে...</translation>
+<translation id="1566412704591731844">আপনার ওয়ালেট তৈরি করা হচ্ছে…</translation>
+<translation id="7779823116893018906">কয়েক সেকেন্ড সময় লাগতে পারে…</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> অ্যাকাউন্ট <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">অ্যাকাউন্ট যোগ করুন</translation>
 <translation id="3448492834076427715">অ্যাকাউন্ট আপডেট করুন</translation>
@@ -638,6 +636,11 @@
 <translation id="3157931365184549694">পুনরুদ্ধার করুন</translation>
 <translation id="5844138175312846408">ইতোমধ্যে একটি মানিব্যাগ আছে?</translation>
 <translation id="2502258949541727762">আমরা শুরু করার আগে</translation>
+<translation id="4303748097351941030">সমর্থিত নেটওয়ার্কগুলি</translation>
+<translation id="4204268048253692928">আপনি সেটিংয়ে যখন খুশি নেটওয়ার্ক যোগ করতে পারবেন।</translation>
+<translation id="2523174693142405417">নেটওয়ার্ক সার্চ করুন</translation>
+<translation id="1164748583090434571">Testnets দেখান</translation>
+<translation id="935220650946301698"><ph name="NUMBER"/> নেটওয়ার্ক দিয়ে অবিরত রাখুন</translation>
 <translation id="8248460961680233459">একটি পাসওয়ার্ড তৈরি করুন</translation>
 <translation id="2789310860394340571">আপনি ওয়ালেট অ্যাক্সেস করতে এই পাসওয়ার্ডটি ব্যবহার করবেন।</translation>
 <translation id="2136372518715274136">নতুন পাসওয়ার্ড দিন</translation>
@@ -844,7 +847,7 @@
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="6889920539620318793">অ্যাক্টিভ হিসেবে সেট করুন</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
-<translation id="4945690646623486292">নেটওয়ার্ক নির্বাচন করুন</translation>
+<translation id="4556601961751528347">সংযুক্ত অ্যাকাউন্ট পরিবর্তন করুন</translation>
 <translation id="5233638681132016545">নতুন ট্যাব</translation>
 <translation id="8006088103295786154">Brave ওয়ালেট অ্যাক্সেস করুন</translation>
 <translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
@@ -870,6 +873,7 @@
 <translation id="4255623233927788178">ব্লক এক্সপ্লোরারে দেখুন</translation>
 <translation id="8274201358637112807">এই পৃষ্ঠাটি Brave ওয়ালেটের সাথে ইন্ট্যার‍্যাক্ট করতে চায়</translation>
 <translation id="3355936511340229503">সংযোগ ত্রুটি</translation>
+<translation id="1531836666020185856">বিশেষ</translation>
 <translation id="4891604214809245310">নেটওয়ার্ককে <ph name="NETWORK_NAME"/>-তে সেট করতে ব্যর্থ হয়েছে</translation>
 <translation id="685345388423515592">মনে হচ্ছে এই ডিভাইসে অন্যান্য VPN “সর্বদা চালু” হিসাবে সেট করা আছে। আবার সংযোগ করার আগে Brave Firewall + VPN সক্রিয় করতে, প্রথমে এই “সর্বদা চালু” VPN নিষ্ক্রিয় করুন। যদি সমস্যাটি অব্যাহত থাকে, অন্যান্য VPN আনইনস্টল করার চেষ্টা করুন।</translation>
 <translation id="85136472535634474">VPN সেটিংস খুলুন</translation>
@@ -1037,7 +1041,6 @@
 <translation id="1677961202754619328">Uphold অনুসারে, আপনার Uphold অ্যাকাউন্টে বর্তমানে কিছু সীমাবদ্ধতা আছে। অনুগ্রহ করে আপনার Uphold অ্যাকাউন্টে লগ ইন করুন এবং কোনও নোটিস বা অবশিষ্ট অ্যাকাউন্টের প্রয়োজনীয়তা আছে কি না তা পরীক্ষা করে দেখুন, তারপর আবার চেষ্টা করুন।</translation>
 <translation id="5425006356459378415">Brave পুরস্কার উপলভ্য নয়</translation>
 <translation id="833643743158564518">Brave পুরস্কারের জন্য নতুন সাইন আপ বর্তমানে আপনার অঞ্চলে বন্ধ আছে। তবে, আপনি পরে আবার চেষ্টা করতে পারেন। <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">সকল নেটওয়ার্ক</translation>
 <translation id="7748944510530490017">প্রাথমিক নেটওয়ার্ক</translation>
 <translation id="2781668117338732220">গৌণ নেটওয়ার্কসমূহ</translation>
 <translation id="282560918037172384">নেটওয়ার্ক পরীক্ষা করুন</translation>
@@ -1177,4 +1180,11 @@
 <translation id="3251885322612056119">আপডেট করা পরিষেবার শর্তাবলী</translation>
 <translation id="4049035689681585146">আমরা Brave রিওয়ার্ড পরিষেবার শর্তাবলী আপডেট করেছি। আমরা আমাদের শর্তাদি স্পষ্ট করতে এবং তারা যাতে নতুন ফিচার কভার করে তা নিশ্চিত করতে এই আপডেটগুলি করেছি। আপনি Brave রিওয়ার্ডের ব্যবহার অবিরত রাখলে, ধরে নেওয়া হবে যে আপনি আপডেট করা পরিষেবার শর্তাবলী মেনে নিয়েছেন। আপনি মেনে না নিলে, Brave রিওয়ার্ড <ph name="RESET_START"/>রিসেট<ph name="RESET_END"/> করতে পারেন, যা ফিচারটিকে বন্ধ করে দেবে।</translation>
 <translation id="2165953574528546737"><ph name="TOS_START"/>Brave রিওয়ার্ড পরিষেবার শর্তাবলী<ph name="TOS_END"/> দেখুন</translation>
+<translation id="1381108437654541567">একাধিক উইন্ডো চালু করুন</translation>
+<translation id="6167344249617630304">একবারে 5টি পর্যন্ত উইন্ডো খুলুন এবং ট্যাব এক উইন্ডো থেকে অন্য উইন্ডোতে নিয়ে যান</translation>
+<translation id="1063948063403254568">একাধিক উইন্ডো শনাক্ত করা হয়েছে</translation>
+<translation id="4661882208707630158">একাধিক উইন্ডো ফিচারটি বন্ধ করার আগে অনুগ্রহ করে ট্যাবগুলিকে আর একটি Brave উইন্ডোতে মার্জ করুন অথবা অন্যান্য Brave উইন্ডো বন্ধ করুন।</translation>
+<translation id="6891382640886173702">উইন্ডো মার্জ করুন</translation>
+<translation id="2912247081180973411">উইন্ডো বন্ধ করুন</translation>
+<translation id="4010699428656610296">অনুগ্রহ করে অন্যান্য ট্যাবকে আর একটি Brave উইন্ডোতে মার্জ করুন।</translation>
 </translationbundle>
