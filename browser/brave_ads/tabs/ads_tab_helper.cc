@@ -327,12 +327,6 @@ void AdsTabHelper::MediaStoppedPlaying(
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   const bool last_is_web_contents_visible = is_web_contents_visible_;
   is_web_contents_visible_ = visibility == content::Visibility::VISIBLE;
-
-  if (redirect_chain_.empty()) {
-    // Don't notify changes for tabs which have not finished loading.
-    return;
-  }
-
   if (last_is_web_contents_visible != is_web_contents_visible_) {
     MaybeNotifyTabDidChange();
   }

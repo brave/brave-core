@@ -66,7 +66,7 @@ class SiteVisit final : public BrowserManagerObserver,
   void CancelPageLand(int32_t tab_id);
   void StopPageLand(int32_t tab_id);
 
-  void MaybeSuspendOrResumePageLandForVisibleTabId();
+  void MaybeSuspendOrResumePageLandForVisibleTab();
   void MaybeSuspendOrResumePageLand(int32_t tab_id);
   base::TimeDelta CalculateRemainingTimeToLandOnPage(int32_t tab_id);
   void SuspendPageLand(const TabInfo& tab);

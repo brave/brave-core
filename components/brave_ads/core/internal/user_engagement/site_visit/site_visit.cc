@@ -152,10 +152,10 @@ void SiteVisit::StopPageLand(const int32_t tab_id) {
   page_lands_.erase(tab_id);
 }
 
-void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTabId() {
-  if (const std::optional<int32_t> tab_id =
-          TabManager::GetInstance().MaybeGetVisibleTabId()) {
-    MaybeSuspendOrResumePageLand(*tab_id);
+void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
+  if (const std::optional<TabInfo> tab =
+          TabManager::GetInstance().GetVisible()) {
+    MaybeSuspendOrResumePageLand(tab->id);
   }
 }
 
@@ -271,19 +271,27 @@ void SiteVisit::NotifyCanceledPageLand(const int32_t tab_id,
 }
 
 void SiteVisit::OnBrowserDidBecomeActive() {
-  MaybeSuspendOrResumePageLandForVisibleTabId();
+  // Required to suspend or resume the page land because `OnTabDidChangeFocus`
+  // is not called when the browser becomes active on mobile.
+  MaybeSuspendOrResumePageLandForVisibleTab();
 }
 
 void SiteVisit::OnBrowserDidResignActive() {
-  MaybeSuspendOrResumePageLandForVisibleTabId();
+  // Required to suspend or resume the page land because `OnTabDidChangeFocus`
+  // is not called when the browser resigns active on mobile.
+  MaybeSuspendOrResumePageLandForVisibleTab();
 }
 
 void SiteVisit::OnBrowserDidEnterForeground() {
-  MaybeSuspendOrResumePageLandForVisibleTabId();
+  // Required to suspend or resume the page land because `OnTabDidChangeFocus`
+  // is not called when the browser enters the foreground on mobile.
+  MaybeSuspendOrResumePageLandForVisibleTab();
 }
 
 void SiteVisit::OnBrowserDidEnterBackground() {
-  MaybeSuspendOrResumePageLandForVisibleTabId();
+  // Required to suspend or resume the page land because `OnTabDidChangeFocus`
+  // is not called when the browser enters the background on mobile.
+  MaybeSuspendOrResumePageLandForVisibleTab();
 }
 
 void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {
