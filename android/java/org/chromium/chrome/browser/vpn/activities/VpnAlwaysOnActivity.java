@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.vpn.activities;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -57,6 +59,11 @@ public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
                 v -> {
                     BraveVpnUtils.openVpnSettings(VpnAlwaysOnActivity.this);
                 });
+
+        TextView killSwitchDescText = findViewById(R.id.kill_switch_desc_text);
+        if (mIsKillSwitch) {
+            killSwitchDescText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
