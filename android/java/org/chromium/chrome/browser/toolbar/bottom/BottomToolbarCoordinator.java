@@ -100,9 +100,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));
 
-        final OnClickListener homeButtonListener = v -> {
-            openHomepageAction.run();
-        };
+        final OnClickListener homeButtonListener =
+                v -> {
+                    openHomepageAction.run();
+                };
 
         final OnClickListener searchAcceleratorListener =
                 v -> {
