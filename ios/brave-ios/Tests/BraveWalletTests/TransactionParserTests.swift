@@ -66,10 +66,11 @@ class TransactionParserTests: XCTestCase {
       $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "fil_testnet_address_2"
     },
+    BraveWallet.AccountInfo.mockBtcAccount,
   ]
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken,
-    .mockSolanaNFTToken, .mockFilToken,
+    .mockSolanaNFTToken, .mockFilToken, .mockBTCToken,
   ]
   let assetRatios: [String: Double] = [
     "eth": 1,
@@ -78,6 +79,7 @@ class TransactionParserTests: XCTestCase {
     "sol": 20,
     BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15,
     "fil": 2,
+    BraveWallet.BlockchainToken.mockBTCToken.assetRatioId.lowercased(): 62_117,
   ]
 
   func testEthSendTransaction() {
@@ -129,7 +131,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       network: .mockMainnet,
@@ -164,7 +166,10 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse ethSend transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction.fromAddress, parsedTransaction.fromAddress)
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountId.uniqueKey,
+      parsedTransaction.fromAccountId.uniqueKey
+    )
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
@@ -231,7 +236,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       network: .mockMainnet,
@@ -323,7 +328,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
       network: .mockMainnet,
@@ -418,7 +423,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
       network: .mockMainnet,
@@ -508,7 +513,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       network: .mockMainnet,
@@ -598,7 +603,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       network: .mockMainnet,
@@ -691,7 +696,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[0].name,
-      fromAddress: accountInfos[0].address,
+      fromAccountId: accountInfos[0].accountId,
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
       network: .mockMainnet,
@@ -780,7 +785,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[2].name,
-      fromAddress: accountInfos[2].accountId.address,
+      fromAccountId: accountInfos[2].accountId,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
       network: .mockSolana,
@@ -816,7 +821,10 @@ class TransactionParserTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(expectedParsedTransaction.fromAddress, parsedTransaction.fromAddress)
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountId.uniqueKey,
+      parsedTransaction.fromAccountId.uniqueKey
+    )
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
@@ -883,7 +891,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[2].name,
-      fromAddress: accountInfos[2].accountId.address,
+      fromAccountId: accountInfos[2].accountId,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
       network: .mockSolana,
@@ -972,7 +980,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[2].name,
-      fromAddress: accountInfos[2].accountId.address,
+      fromAccountId: accountInfos[2].accountId,
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].accountId.address,
       network: .mockSolana,
@@ -1235,7 +1243,7 @@ class TransactionParserTests: XCTestCase {
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
       namedFromAddress: accountInfos[4].name,
-      fromAddress: accountInfos[4].address,
+      fromAccountId: accountInfos[4].accountId,
       namedToAddress: accountInfos[5].name,
       toAddress: accountInfos[5].address,
       network: .mockFilecoinTestnet,
@@ -1273,7 +1281,10 @@ class TransactionParserTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(expectedParsedTransaction.fromAddress, parsedTransaction.fromAddress)
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountId.uniqueKey,
+      parsedTransaction.fromAccountId.uniqueKey
+    )
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
@@ -1290,6 +1301,98 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedDetails.gasPremium, parsedDetails.gasPremium)
     XCTAssertEqual(expectedDetails.gasLimit, parsedDetails.gasLimit)
     XCTAssertEqual(expectedDetails.gasFeeCap, parsedDetails.gasFeeCap)
+    XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
+  }
+
+  @MainActor func testBitcoinSend() async {
+    let network = BraveWallet.NetworkInfo.mockBitcoinMainnet
+    let mockFromAccount = accountInfos[6]
+    let mockToAccountAddress = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
+
+    let transactionData: BraveWallet.BtcTxData = .init(
+      to: mockToAccountAddress,
+      amount: 5000,
+      sendingMaxAmount: false,
+      fee: 2544,
+      inputs: [],
+      outputs: []
+    )
+    let transaction = BraveWallet.TransactionInfo(
+      id: "9",
+      fromAddress: mockFromAccount.address,
+      from: mockFromAccount.accountId,
+      txHash: "cc0b6ef00effdd4e4a1f29cd4a5e9c1f74ea6a9c3ef2f1f5929d344eee86b71b",
+      txDataUnion: .init(btcTxData: transactionData),
+      txStatus: .unapproved,
+      txType: .other,
+      txParams: [],
+      txArgs: [],
+      createdTime: Date(),
+      submittedTime: Date(),
+      confirmedTime: Date(),
+      originInfo: nil,
+      chainId: network.chainId,
+      effectiveRecipient: mockToAccountAddress,
+      isRetriable: false
+    )
+
+    let expectedParsedTransaction = ParsedTransaction(
+      transaction: transaction,
+      namedFromAddress: mockFromAccount.name,
+      fromAccountId: mockFromAccount.accountId,
+      namedToAddress: "",
+      toAddress: mockToAccountAddress,
+      network: .mockBitcoinMainnet,
+      details: .btcSend(
+        .init(
+          fromToken: .mockBTCToken,
+          fromValue: "5000",
+          fromAmount: "0.00005",
+          fromFiat: "$3.11",
+          fromTokenMetadata: nil,
+          gasFee: GasFee(
+            fee: "0.00002544",
+            fiat: "$1.58"
+          )
+        )
+      )
+    )
+
+    guard
+      let parsedTransaction = TransactionParser.parseTransaction(
+        transaction: transaction,
+        network: network,
+        accountInfos: accountInfos,
+        userAssets: tokens,
+        allTokens: tokens,
+        assetRatios: assetRatios,
+        nftMetadata: [:],
+        solEstimatedTxFee: nil,
+        currencyFormatter: currencyFormatter
+      )
+    else {
+      XCTFail("Failed to parse btcSend transaction")
+      return
+    }
+
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountId.uniqueKey,
+      parsedTransaction.fromAccountId.uniqueKey
+    )
+    XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
+    XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
+    XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
+
+    guard case .btcSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .btcSend(let parsedDetails) = parsedTransaction.details
+    else {
+      XCTFail("Incorrectly parsed btcSend transaction")
+      return
+    }
+
+    XCTAssertEqual(expectedDetails.fromValue, parsedDetails.fromValue)
+    XCTAssertEqual(expectedDetails.fromAmount, parsedDetails.fromAmount)
+    XCTAssertEqual(expectedDetails.fromFiat, parsedDetails.fromFiat)
     XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
   }
 }

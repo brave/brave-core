@@ -649,6 +649,36 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
 
+  func testMakeSendBTCTransaction() {
+    let (
+      keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
+      bitcoinWalletService, mockAssetManager
+    ) = setupServices()
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      assetRatioService: MockAssetRatioService(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
+      prefilledToken: .mockBTCToken,
+      ipfsApi: TestIpfsAPI(),
+      userAssetManager: mockAssetManager
+    )
+    store.selectedSendToken = .mockBTCToken
+    let ex = expectation(description: "send-fil-transaction")
+    store.sendToken(amount: "1") { success, _ in
+      defer { ex.fulfill() }
+      XCTAssertTrue(success)
+    }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+
   /// Test Solana System Program transaction is created with correct lamports value for the `mockSolToken` (9 decimals)
   func testSendSolAmount() {
     let mockBalance: UInt64 = 47
