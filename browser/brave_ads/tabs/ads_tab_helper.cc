@@ -161,9 +161,9 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  if (is_restoring_ || !is_new_navigation_) {
-    // Don't notify content changes if the tab was restored or was a previously
-    // committed navigation.
+  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty()) {
+    // Don't notify content changes if the tab was restored, was a previously
+    // committed navigation or if the tab redirect chain is empty.
     return;
   }
 
@@ -301,12 +301,6 @@ void AdsTabHelper::MediaStoppedPlaying(
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   const bool last_is_web_contents_visible = is_web_contents_visible_;
   is_web_contents_visible_ = visibility == content::Visibility::VISIBLE;
-
-  if (redirect_chain_.empty()) {
-    // Don't notify changes for tabs which have not finished loading.
-    return;
-  }
-
   if (last_is_web_contents_visible != is_web_contents_visible_) {
     MaybeNotifyTabDidChange();
   }
@@ -323,18 +317,30 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   const bool last_is_browser_active = is_browser_active_;
   is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
                            web_contents()) != TabStripModel::kNoTab;
-  if (last_is_browser_active != is_browser_active_) {
-    MaybeNotifyBrowserDidBecomeActive();
+  if (last_is_browser_active == is_browser_active_) {
+    return;
   }
+
+  MaybeNotifyBrowserDidBecomeActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  MaybeNotifyTabDidChange();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   const bool last_is_browser_active = is_browser_active_;
   is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
                            web_contents()) == TabStripModel::kNoTab;
-  if (last_is_browser_active != is_browser_active_) {
-    MaybeNotifyBrowserDidResignActive();
+  if (last_is_browser_active == is_browser_active_) {
+    return;
   }
+
+  MaybeNotifyBrowserDidResignActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  MaybeNotifyTabDidChange();
 }
 #endif
 
