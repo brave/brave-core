@@ -194,9 +194,9 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
-        }
+        // if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+        //     removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
+        // }
         updateSearchEnginePreference();
 
         updateSummaries();
@@ -267,8 +267,8 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 
-        findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
-        findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
+        // findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
+        // findPreference(PREF_BRAVE_NEWS_V2).setOrder(++firstSectionOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
             findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);
@@ -276,18 +276,18 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
         }
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            findPreference(PREF_BRAVE_PLAYLIST).setOrder(++firstSectionOrder);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
-        }
+        // if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+        //     findPreference(PREF_BRAVE_PLAYLIST).setOrder(++firstSectionOrder);
+        // } else {
+        //     removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
+        // }
 
-        if (getActivity() != null && !getActivity().isFinishing()
-                && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
-            findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_VPN);
-        }
+        // if (getActivity() != null && !getActivity().isFinishing()
+        //         && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
+        //     findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
+        // } else {
+        //     removePreferenceIfPresent(PREF_BRAVE_VPN);
+        // }
 
         if (BraveLeoPrefUtils.isLeoEnabled()) {
             findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
@@ -349,15 +349,15 @@ public class BraveMainPreferencesBase
 
         int aboutSectionOrder = supportSectionOrder;
         // This preference doesn't exist by default in Release mode
-        if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
-            findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
-        }
+        // if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
+        //     findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
+        // }
         findPreference(PREF_ABOUT_SECTION).setOrder(++aboutSectionOrder);
 
         // This preference doesn't exist by default in Release mode
-        if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
-            findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
-        }
+        // if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
+        //     findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
+        // }
         findPreference(PREF_ABOUT_CHROME).setOrder(++aboutSectionOrder);
 
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
@@ -396,7 +396,7 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
         updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
-        updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
+        // updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
     }
 
@@ -421,7 +421,7 @@ public class BraveMainPreferencesBase
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
+        // findPreference(PREF_SHIELDS_AND_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         Preference preference = findPreference(MainSettings.PREF_HOMEPAGE);
         if (preference != null) {
             preference.setFragment(BraveHomepageSettings.class.getName());
