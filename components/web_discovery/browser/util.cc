@@ -20,7 +20,8 @@ std::string GetCollectorHost() {
   if (cmd_line->HasSwitch(kCollectorHostSwitch)) {
     return cmd_line->GetSwitchValueASCII(kCollectorHostSwitch);
   }
-  return brave_domains::GetServicesDomain(kCollectorHostPrefix);
+  return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                       brave_domains::GetServicesDomain(kCollectorHostPrefix)});
 }
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {

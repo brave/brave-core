@@ -17,29 +17,17 @@
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/webcrypto/algorithm_dispatch.h"
-#include "components/webcrypto/blink_key_handle.h"
-#include "components/webcrypto/generate_key_result.h"
-#include "components/webcrypto/status.h"
 #include "crypto/sha2.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/blink/public/platform/web_crypto_algorithm.h"
-#include "third_party/blink/public/platform/web_crypto_algorithm_params.h"
-#include "third_party/blink/public/platform/web_crypto_key.h"
-#include "third_party/boringssl/src/include/openssl/bytestring.h"
-#include "third_party/boringssl/src/include/openssl/evp.h"
-#include "third_party/boringssl/src/include/openssl/mem.h"
-#include "third_party/boringssl/src/include/openssl/rsa.h"
 
 namespace web_discovery {
 
 namespace {
 
-constexpr size_t kRsaKeySize = 2048;
-constexpr unsigned char kRsaPublicExponent[] = {0x01, 0x00, 0x01};
 constexpr char kJoinPath[] = "/join";
+constexpr char kJoinContentType[] = "application/json";
 
 constexpr char kJoinDateField[] = "ts";
 constexpr char kJoinMessageField[] = "joinMsg";
@@ -49,39 +37,6 @@ constexpr char kJoinResponseField[] = "joinResponse";
 
 constexpr char kGSKDictKey[] = "gsk";
 constexpr char kCredentialDictKey[] = "credential";
-
-blink::WebCryptoAlgorithm GetRSAAlgorithm() {
-  auto hash = blink::WebCryptoAlgorithm::AdoptParamsAndCreate(
-      blink::WebCryptoAlgorithmId::kWebCryptoAlgorithmIdSha256, nullptr);
-  return blink::WebCryptoAlgorithm::AdoptParamsAndCreate(
-      blink::WebCryptoAlgorithmId::kWebCryptoAlgorithmIdRsaSsaPkcs1v1_5,
-      new blink::WebCryptoRsaHashedKeyGenParams(
-          hash, kRsaKeySize,
-          blink::WebVector<unsigned char>(kRsaPublicExponent,
-                                          sizeof(kRsaPublicExponent))));
-}
-
-std::optional<std::string> EncodeRSAPublicKey(const blink::WebCryptoKey& key) {
-  auto* evp_pkey = webcrypto::GetEVP_PKEY(key);
-  if (!evp_pkey) {
-    return std::nullopt;
-  }
-  auto* rsa = EVP_PKEY_get0_RSA(evp_pkey);
-  if (!rsa) {
-    return std::nullopt;
-  }
-  CBB cbb;
-  uint8_t* out_bytes;
-  size_t out_len;
-  if (!CBB_init(&cbb, 0) || !RSA_marshal_public_key(&cbb, rsa) ||
-      !CBB_finish(&cbb, &out_bytes, &out_len)) {
-    CBB_cleanup(&cbb);
-    return std::nullopt;
-  }
-  auto key_b64 = base::Base64Encode(base::span(out_bytes, out_len));
-  OPENSSL_free(out_bytes);
-  return key_b64;
-}
 
 constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .num_errors_to_ignore = 0,
@@ -125,9 +80,7 @@ CredentialManager::CredentialManager(
       credentials_loaded_callback_(credentials_loaded_callback),
       anonymous_credential_manager_(
           anonymous_credentials::new_credential_manager()) {
-  join_url_ =
-      GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                         GetCollectorHost(), kJoinPath}));
+  join_url_ = GURL(GetCollectorHost() + kJoinPath);
 }
 
 CredentialManager::~CredentialManager() = default;
@@ -141,28 +94,10 @@ bool CredentialManager::LoadRSAKey() {
     return true;
   }
 
-  std::string private_key_data;
+  rsa_private_key_ = ImportRSAKeyPair(private_key_b64);
 
-  if (!base::Base64Decode(private_key_b64, &private_key_data)) {
-    VLOG(1) << "Failed to decode base64 of stored RSA keys";
-    return false;
-  }
-
-  auto algo = GetRSAAlgorithm();
-  base::span<uint8_t> private_key_data_span(
-      reinterpret_cast<uint8_t*>(private_key_data.data()),
-      private_key_data.size());
-
-  rsa_private_key_ = std::make_unique<blink::WebCryptoKey>();
-
-  auto status = webcrypto::ImportKey(
-      blink::WebCryptoKeyFormat::kWebCryptoKeyFormatPkcs8,
-      private_key_data_span, algo, true,
-      blink::WebCryptoKeyUsage::kWebCryptoKeyUsageSign, rsa_private_key_.get());
-
-  if (status.IsError()) {
-    VLOG(1) << "RSA private key import failed: " << status.error_details();
-    rsa_private_key_ = nullptr;
+  if (!rsa_private_key_) {
+    VLOG(1) << "Failed to decode stored RSA key";
     return false;
   }
 
@@ -170,37 +105,18 @@ bool CredentialManager::LoadRSAKey() {
 }
 
 bool CredentialManager::GenerateRSAKey() {
-  webcrypto::GenerateKeyResult result;
-  auto algo = GetRSAAlgorithm();
-  auto status = webcrypto::GenerateKey(
-      algo, true, blink::WebCryptoKeyUsage::kWebCryptoKeyUsageSign, &result);
-  if (status.IsError()) {
-    VLOG(1) << "RSA key generation failed: " << status.error_details();
+  auto key_info = GenerateRSAKeyPair();
+  if (!key_info) {
+    VLOG(1) << "RSA key generation failed";
     return false;
   }
 
-  rsa_private_key_ =
-      std::make_unique<blink::WebCryptoKey>(result.private_key());
-
-  std::vector<uint8_t> private_key_bytes;
-
-  status =
-      webcrypto::ExportKey(blink::WebCryptoKeyFormat::kWebCryptoKeyFormatPkcs8,
-                           *rsa_private_key_, &private_key_bytes);
-  if (status.IsError()) {
-    VLOG(1) << "RSA key private key export failed: " << status.error_details();
-    return false;
-  }
-
-  auto public_key_b64 = EncodeRSAPublicKey(result.public_key());
-  if (!public_key_b64) {
-    VLOG(1) << "RSA key public key export failed";
-    return false;
-  }
+  rsa_private_key_ = std::move(key_info->key_pair);
+  rsa_public_key_b64_ = key_info->public_key_b64;
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
-                            base::Base64Encode(private_key_bytes));
-  profile_prefs_->SetString(kCredentialRSAPublicKey, *public_key_b64);
+                            key_info->private_key_b64);
+  profile_prefs_->SetString(kCredentialRSAPublicKey, *rsa_public_key_b64_);
 
   return true;
 }
@@ -236,8 +152,6 @@ void CredentialManager::JoinGroups() {
 
 void CredentialManager::StartJoinGroup(const std::string& date,
                                        const std::string& group_pub_key_b64) {
-  auto algo = GetRSAAlgorithm();
-
   auto group_pub_key = base::Base64Decode(group_pub_key_b64);
   if (!group_pub_key) {
     VLOG(1) << "Failed to decode group public key for " << date;
@@ -259,11 +173,9 @@ void CredentialManager::StartJoinGroup(const std::string& date,
   auto gsk = std::vector<uint8_t>(start_join_result.gsk.begin(),
                                   start_join_result.gsk.end());
 
-  std::vector<uint8_t> signature;
-  auto status = webcrypto::Sign(algo, *rsa_private_key_,
-                                start_join_result.join_request, &signature);
-  if (status.IsError()) {
-    VLOG(1) << "RSA signature failed: " << status.error_details();
+  auto signature = RSASign(rsa_private_key_, start_join_result.join_request);
+  if (!signature) {
+    VLOG(1) << "RSA signature failed";
     return;
   }
 
@@ -273,7 +185,7 @@ void CredentialManager::StartJoinGroup(const std::string& date,
   body_fields.Set(kJoinMessageField,
                   base::Base64Encode(start_join_result.join_request));
   body_fields.Set(kJoinRSAPublicKeyField, *rsa_public_key_b64_);
-  body_fields.Set(kJoinRSASignatureField, base::Base64Encode(signature));
+  body_fields.Set(kJoinRSASignatureField, *signature);
 
   std::string json_body;
   if (!base::JSONWriter::Write(body_fields, &json_body)) {
@@ -282,12 +194,13 @@ void CredentialManager::StartJoinGroup(const std::string& date,
   }
 
   auto resource_request = CreateResourceRequest(join_url_);
+  resource_request->method = net::HttpRequestHeaders::kPostMethod;
 
   join_url_loaders_[date] = network::SimpleURLLoader::Create(
       std::move(resource_request), kJoinNetworkTrafficAnnotation);
   auto& url_loader = join_url_loaders_[date];
 
-  url_loader->AttachStringForUpload(json_body);
+  url_loader->AttachStringForUpload(json_body, kJoinContentType);
 
   url_loader->DownloadToString(
       shared_url_loader_factory_.get(),
@@ -302,12 +215,17 @@ void CredentialManager::OnJoinResponse(
     std::vector<uint8_t> gsk,
     std::optional<std::string> response_body) {
   bool result = ProcessJoinResponse(date, group_pub_key, gsk, response_body);
+  join_url_loaders_.erase(date);
 
-  backoff_entry_.InformOfRequest(result);
-  if (!result) {
-    retry_timer_.Start(
-        FROM_HERE, base::Time::Now() + backoff_entry_.GetTimeUntilRelease(),
-        base::BindOnce(&CredentialManager::JoinGroups, base::Unretained(this)));
+  if (join_url_loaders_.empty()) {
+    backoff_entry_.InformOfRequest(result);
+
+    if (!result) {
+      retry_timer_.Start(
+          FROM_HERE, base::Time::Now() + backoff_entry_.GetTimeUntilRelease(),
+          base::BindOnce(&CredentialManager::JoinGroups,
+                         base::Unretained(this)));
+    }
   }
 }
 

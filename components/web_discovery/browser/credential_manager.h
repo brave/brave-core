@@ -15,14 +15,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/rs/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
-
-namespace blink {
-class WebCryptoKey;
-}  // namespace blink
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -49,7 +46,6 @@ class CredentialManager {
       const std::vector<uint8_t>& basename);
 
  private:
-  // TODO(djandries): maybe split this into sign_encrypt.h
   bool LoadRSAKey();
   bool GenerateRSAKey();
 
@@ -80,7 +76,7 @@ class CredentialManager {
   rust::Box<anonymous_credentials::CredentialManager>
       anonymous_credential_manager_;
 
-  std::unique_ptr<blink::WebCryptoKey> rsa_private_key_;
+  EVPKey rsa_private_key_;
   std::optional<std::string> rsa_public_key_b64_;
 
   std::optional<std::string> loaded_credential_date_;
