@@ -86,9 +86,7 @@ ServerConfigLoader::ServerConfigLoader(
     : shared_url_loader_factory_(shared_url_loader_factory),
       config_callback_(config_callback),
       backoff_entry_(&kBackoffPolicy) {
-  config_url_ =
-      GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                         GetCollectorHost(), kConfigPathWithFields}));
+  config_url_ = GURL(GetCollectorHost() + kConfigPathWithFields);
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;
