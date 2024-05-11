@@ -278,16 +278,16 @@
   </message>
   <if expr="is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in." formatter_data="android_java">
-      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Ping and your Ping sync chain (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
   </if>
   <if expr="not is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in.">
-      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Ping and your Ping sync chain (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
   </if>
   <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_OUT" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is not signed in." formatter_data="android_java">
-    Cards and addresses are from Brave. You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+    Cards and addresses are from Ping. You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
   </message>
   <message name="IDS_SETTINGS_CAN_MAKE_PAYMENT_TOGGLE_LABEL" desc="Label of the toggle which disables canMakePayment and hasEnrolledInstrument" formatter_data="android_java">
     Allow sites to check if you have payment methods saved
@@ -402,13 +402,13 @@
 
   <!-- Payment Request section preview strings. They are slightly different on desktop and android because the pluralization and formatting code behaves differently. -->
   <if expr="not is_android">
-    <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved. Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Ping, plus an indication of the number of additional payment methods the user has saved. Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
     {PAYMENT_METHOD, plural,
        =0 {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph>}
        =1 {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS">{2}<ex>1</ex></ph> more}
        other {<ph name="PAYMENT_METHOD_PREVIEW">{1}<ex>VISA ....1234</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS">{2}<ex>2</ex></ph> more}}
     </message>
-    <message name="IDS_PAYMENT_REQUEST_SHIPPING_ADDRESSES_PREVIEW" desc="This is a snippet of a shipping address a user has saved to Brave, plus an indication of the number of additional shipping addresses the user has saved. Its function is to show the user has shipping addresses that can be used to complete a purchase, and thus doesn't have to type the entire address. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_SHIPPING_ADDRESSES_PREVIEW" desc="This is a snippet of a shipping address a user has saved to Ping, plus an indication of the number of additional shipping addresses the user has saved. Its function is to show the user has shipping addresses that can be used to complete a purchase, and thus doesn't have to type the entire address. [ICU Syntax]">
     {SHIPPING_ADDRESS, plural,
       =0 {<ph name="SHIPPING_ADDRESS_PREVIEW">{1}<ex>Jerry, 1253 Mcgill college</ex></ph>}
       =1 {<ph name="SHIPPING_ADDRESS_PREVIEW">{1}<ex>Jerry, 1253 Mcgill college</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES">{2}<ex>1</ex></ph> more}
@@ -420,7 +420,7 @@
        =1 {<ph name="SHIPPING_OPTION_PREVIEW">{1}<ex>standard shipping</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS">{2}<ex>1</ex></ph> more}
        other {<ph name="SHIPPING_OPTION_PREVIEW">{1}<ex>standard shipping</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS">{2}<ex>2</ex></ph> more}}
     </message>
-    <message name="IDS_PAYMENT_REQUEST_CONTACTS_PREVIEW" desc="This is a snippet of a contact a user has saved to Brave, plus an indication of the number of additional contacts the user has saved. Its function is to show the user has contacts that can be used to complete a purchase, and thus doesn't have to type the entire contact info. [ICU Syntax]">
+    <message name="IDS_PAYMENT_REQUEST_CONTACTS_PREVIEW" desc="This is a snippet of a contact a user has saved to Ping, plus an indication of the number of additional contacts the user has saved. Its function is to show the user has contacts that can be used to complete a purchase, and thus doesn't have to type the entire contact info. [ICU Syntax]">
      {CONTACT, plural,
        =0 {<ph name="CONTACT_PREVIEW">{1}<ex>Jerry, 438-123-1922</ex></ph>}
        =1 {<ph name="CONTACT_PREVIEW">{1}<ex>Jerry, 438-123-1922</ex></ph> and <ph name="NUMBER_OF_ADDITIONAL_CONTACTS">{2}<ex>1</ex></ph> more}

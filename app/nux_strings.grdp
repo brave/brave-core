@@ -9,7 +9,7 @@
     Choose your email service for quick access
   </message>
   <message name="IDS_NUX_EMAIL_WELCOME_TITLE" desc="Text shown to welcome the users to chrome.">
-    Make Brave your own
+    Make Ping your own
   </message>
   <message name="IDS_NUX_EMAIL_BOOKMARK_ADDED" desc="String read for accessibility to inform the user a bookmark was added.">
     Bookmark added
@@ -21,14 +21,14 @@
     Bookmark replaced
   </message>
 
-  <!-- NUX Brave apps selection module -->
+  <!-- NUX Ping apps selection module -->
   <message name="IDS_NUX_GOOGLE_APPS_GET_STARTED" desc="Message for a confirmation button that will add the selected apps from a list.">
     Get started
   </message>
   <message name="IDS_NUX_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section in the onboarding workflow does.">
-    Add bookmarks to your favorite Brave Apps
+    Add bookmarks to your favorite Ping Apps
   </message>
-  <message name="IDS_NUX_GOOGLE_APPS_DESCRIPTION_PROMO_BUBBLE" desc="Text shown when Brave Apps have been added to highlight where bookmarks have been placed.">
+  <message name="IDS_NUX_GOOGLE_APPS_DESCRIPTION_PROMO_BUBBLE" desc="Text shown when Ping Apps have been added to highlight where bookmarks have been placed.">
     Open apps easily with bookmarks
   </message>
 </grit-part>

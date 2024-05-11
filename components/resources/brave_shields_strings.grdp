@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_SHIELDS" translateable="false" desc="Title for Brave Shields">
-    Brave Shields
+  <message name="IDS_BRAVE_SHIELDS" translateable="false" desc="Title for Ping Shields">
+    Ping Shields
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_STANDALONE" desc="Label for back button on inner views of Shields panel">
     Shields
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ENABLE" desc="An accessible label for Brave Shields switch button.">
-    Enable Brave Shields
+  <message name="IDS_BRAVE_SHIELDS_ENABLE" desc="An accessible label for Ping Shields switch button.">
+    Enable Ping Shields
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_UP" desc="Status label for when Brave Shields is enabled.">
+  <message name="IDS_BRAVE_SHIELDS_UP" desc="Status label for when Ping Shields is enabled.">
     Shields are UP <ph name="LINK_BEFORE">$1</ph>for<ph name="LINK_AFTER">$2</ph>
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_DOWN" desc="Status label for when Brave Shields is disabled.">
+  <message name="IDS_BRAVE_SHIELDS_DOWN" desc="Status label for when Ping Shields is disabled.">
     Shields are DOWN <ph name="LINK_BEFORE">$1</ph>for<ph name="LINK_AFTER">$2</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
     If this site seems broken, try Shields down.
-    <ph name="LINK_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER">$2</ph>
+    <ph name="LINK_BEFORE">$1</ph>Note: this may reduce Ping's privacy protections.<ph name="LINK_AFTER">$2</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are being blocked.">
     Trackers, ads, and more blocked <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are not being blocked. Do not translate Brave SHields.">
-    Not protected by Brave Shields <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  <message name="IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are not being blocked. Do not translate Ping SHields.">
+    Not protected by Ping Shields <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
@@ -162,11 +162,11 @@
   </message>
 
    <message name="IDS_BRAVE_SHIELDS_DOWN_DESC" desc="Tell users the site's Shield is turned off">
-    You are viewing this site without Brave's privacy protections.
+    You are viewing this site without Ping's privacy protections.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ICON_TOOLTIP" desc="The message shown on hover of the shields lion icon">
-    Brave Shields
+    Ping Shields
 <ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
   </message>
 
@@ -187,7 +187,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TEXT" desc="Description text for CookieList opt-in bubble">
-    Brave already blocks third-party cookies. We can block cookie consent notices, too.
+    Ping already blocks third-party cookies. We can block cookie consent notices, too.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_BUTTON_TEXT" desc="Label for button to enable the CookieList filter">
@@ -199,25 +199,25 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS" desc="Label for link about invalid pattern for content setting page dialog to add a site">
-    Wildcards are not allowed for Brave Shields.
+    Wildcards are not allowed for Ping Shields.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking company-specific trackers on a website, along with the number of additional trackers blocked.">
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Ping Shields blocking company-specific trackers on a website, along with the number of additional trackers blocked.">
     {BLOCKED_COUNT, plural,
-      =0 {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> trackers on <ph name="SITE_URL">$2</ph>}
-      =1 {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and 1 other tracker on <ph name="SITE_URL">$2</ph>}
-      other {Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and {BLOCKED_COUNT} other trackers on <ph name="SITE_URL">$2</ph>}
+      =0 {Ping Shields blocked <ph name="COMPANY_LIST">$1</ph> trackers on <ph name="SITE_URL">$2</ph>}
+      =1 {Ping Shields blocked <ph name="COMPANY_LIST">$1</ph> and 1 other tracker on <ph name="SITE_URL">$2</ph>}
+      other {Ping Shields blocked <ph name="COMPANY_LIST">$1</ph> and {BLOCKED_COUNT} other trackers on <ph name="SITE_URL">$2</ph>}
     }
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking number of trackers only.">
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Ping Shields blocking number of trackers only.">
     {BLOCKED_COUNT, plural,
-      =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL">$1</ph>}
-      other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL">$1</ph>}
+      =1 {Ping Shields blocked 1 tracker on <ph name="SITE_URL">$1</ph>}
+      other {Ping Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL">$1</ph>}
     }
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ONBOARDING_CLICK_TO_VIEW_LABEL" desc="Label for the onboarding bubble to guide the user to the Shield icon">
-    Click the Brave icon to view Brave Shields.
+    Click the Ping icon to view Ping Shields.
   </message>
 </grit-part>

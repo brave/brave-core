@@ -4,10 +4,10 @@
     Unstoppable Domains
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING" desc="Heading of unstoppable domains opt-in interstitial opt-in page.">
-    Enable support of Unstoppable Domains in Brave?
+    Enable support of Unstoppable Domains in Ping?
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains opt-in interstitial page.">
-    Brave will be using <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> to resolve <ph name="DOMAIN_LIST">$2<ex>.crypto, .x, .nft</ex></ph> domain names that are on <ph name="DOMAIN_PROVIDER_NAME">$3<ex>Unstoppable Domains</ex></ph>. Brave hides your IP address. If you enable this, <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph>'s <ph name="BEGIN_PROVIDER_TOU_LINK">&lt;a target="_blank" href="$4"&gt;</ph>terms of use<ph name="END_PROVIDER_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK">&lt;a target="_blank" href="$5"&gt;</ph>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Ping will be using <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> to resolve <ph name="DOMAIN_LIST">$2<ex>.crypto, .x, .nft</ex></ph> domain names that are on <ph name="DOMAIN_PROVIDER_NAME">$3<ex>Unstoppable Domains</ex></ph>. Ping hides your IP address. If you enable this, <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph>'s <ph name="BEGIN_PROVIDER_TOU_LINK">&lt;a target="_blank" href="$4"&gt;</ph>terms of use<ph name="END_PROVIDER_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK">&lt;a target="_blank" href="$5"&gt;</ph>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_ENS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS.">
     Ethereum Name Service
@@ -16,13 +16,13 @@
     Ethereum Name Service (ENS)
   </message>
   <message name="IDS_ENS_OPT_IN_HEADING" desc="Heading of ENS opt-in interstitial opt-in page.">
-    Enable support of Ethereum Name Service (ENS) in Brave?
+    Enable support of Ethereum Name Service (ENS) in Ping?
   </message>
     <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS offchain lookup.">
     Ethereum Name Service Offchain Lookup
   </message>
   <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_HEADING" desc="Heading of ENS offchain lookup opt-in interstitial opt-in page.">
-    Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?
+    Enable support of Ethereum Name Service (ENS) offchain lookup in Ping?
   </message>
   <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of ENS offchain lookup opt-in interstitial page.">
     This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK">&lt;/a&gt;</ph>.
@@ -37,10 +37,10 @@
     Solana Name Service
   </message>
   <message name="IDS_SNS_OPT_IN_HEADING" desc="Heading of SNS opt-in interstitial opt-in page.">
-    Enable support of Solana Name Service (SNS) in Brave?
+    Enable support of Solana Name Service (SNS) in Ping?
   </message>
   <message name="IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of SNS opt-in interstitial page.">
-    Brave will be using a third-party to resolve <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domain names. Brave hides your IP address. If you enable this, the third-party will see that someone is trying to visit these <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domains but nothing else. For more information about which third-parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK">&lt;a target="_blank" href="$2"&gt;</ph>help page<ph name="END_SNS_WIKI_LINK">&lt;/a&gt;</ph>.
+    Ping will be using a third-party to resolve <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domain names. Ping hides your IP address. If you enable this, the third-party will see that someone is trying to visit these <ph name="DOMAIN_LIST">$1<ex>.sol</ex></ph> domains but nothing else. For more information about which third-parties we use and their privacy policies, please see our <ph name="BEGIN_SNS_WIKI_LINK">&lt;a target="_blank" href="$2"&gt;</ph>help page<ph name="END_SNS_WIKI_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_PROVIDER_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for a provider.">
     Proceed using <ph name="PROVIDER_NAME">$1<ex>Infura</ex></ph> server

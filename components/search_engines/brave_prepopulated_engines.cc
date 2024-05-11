@@ -37,7 +37,7 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
-        {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
+        {PREPOPULATED_ENGINE_ID_GOOGLE, &brave_search},
         {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
         {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
         {PREPOPULATED_ENGINE_ID_NAVER, &naver},
@@ -48,7 +48,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
         {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
-        {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
+        {PREPOPULATED_ENGINE_ID_BRAVE, &google}, //changed &brave_search to &google and brave is now replaced by google from all the places. TODO:permanent solution for it
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,

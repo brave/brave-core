@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
+  <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Ping AI product">
     Leo
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
@@ -16,10 +16,10 @@
     About Leo
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
-    Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE">$1</ph>Brave wiki<ph name="LINK_AFTER">$2</ph> for more details.
+    Ping Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Ping Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE">$1</ph>Ping wiki<ph name="LINK_AFTER">$2</ph> for more details.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)">
-    By default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.
+    By default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Ping Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Ping Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
     Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
@@ -49,19 +49,19 @@
      Retry
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_BASIC" desc="AI Chat intro message for the default model">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Ping. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
-    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Ping. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Hi, I'm Leo. I'm proxied by Ping and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.
+    Hi, I'm Leo. I'm proxied by Ping and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.
+    Hi, I'm Leo. I'm proxied by Ping and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.
   </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
@@ -111,7 +111,7 @@
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_4" desc="A premium feature">
     Chat for longer
   </message>
-  <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
+  <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Ping premium products">
      Leo Premium
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
@@ -139,7 +139,7 @@
     Get higher rate limits for longer conversations.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
-    Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
+    Your Ping account session has expired. Please visit your account page to refresh, then come back to use premium features.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION" desc="Action to take when AI Chat Premium authentication is expired">
     Refresh
@@ -166,7 +166,7 @@
     Dislike answer
   </message>
   <message name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
-    Provide Brave AI Feedback
+    Provide Ping AI Feedback
   </message>
   <message name="IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
     Select your feedback topic
@@ -222,8 +222,8 @@
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message name="IDS_CHAT_UI_SEARCH_IN_PROGRESS" desc="Status to indicate that AI response is being enhaced with Brave Search">
-    Improving your answer with Brave Search…
+  <message name="IDS_CHAT_UI_SEARCH_IN_PROGRESS" desc="Status to indicate that AI response is being enhaced with Ping Search">
+    Improving your answer with Ping Search…
   </message>
   <message name="IDS_CHAT_UI_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response">
     Improved answer searching for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
@@ -250,7 +250,7 @@
     Hi, I'm Leo!
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users">
-    An AI-powered intelligent assistant, built right into Brave.
+    An AI-powered intelligent assistant, built right into Ping.
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE" desc="This is the title for a user prompt card designed to offer assistance with website-related tasks.">
     Need help with a website?
@@ -268,13 +268,13 @@
     Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
   </message>
   <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal.">
-    Chat Privately with Brave Leo
+    Chat Privately with Ping Leo
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
     Shape answers based on the page's contents
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
-    Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
+    Toggle on to ask about this page. Its content will be sent to Ping Leo along with your messages.
   </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.

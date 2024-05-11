@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_BRAVE_NEWS_INTRO_TITLE" desc="Title for introduction to Brave News news feed section">
-    Turn on Brave News, and never miss a story
+  <message name="IDS_BRAVE_NEWS_INTRO_TITLE" desc="Title for introduction to Ping News news feed section">
+    Turn on Ping News, and never miss a story
   </message>
-  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Brave News news feed section. Do not translate the title Brave News.">
-    Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION" desc="Description for introduction to Ping News news feed section. Do not translate the title Ping News.">
+    Follow your favorite sources, in a single feed. Just open a tab in Ping, scroll down, and… voila!
   </message>
-  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Brave News news feed section. Do not translate the title Brave News.">
-    Brave News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1<ex>{</ex></ph>Learn more.<ph name="LINK_END">$2<ex>}</ex></ph>.
+  <message name="IDS_BRAVE_NEWS_INTRO_DESCRIPTION_TWO" desc="Description second paragraph for introduction to Ping News news feed section. Do not translate the title Ping News.">
+    Ping News is ad-supported with private, anonymized ads. <ph name="LINK_START">$1<ex>{</ex></ph>Learn more.<ph name="LINK_END">$2<ex>}</ex></ph>.
   </message>
-  <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Brave News">
-    Turn on Brave News
+  <message name="IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL" desc="Button text for opting in to Ping News">
+    Turn on Ping News
   </message>
-  <message name="IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Brave News">
+  <message name="IDS_BRAVE_NEWS_OPT_OUT_ACTION_LABEL" desc="Button text for opting out of Ping News">
     No thanks
   </message>
   <message name="IDS_BRAVE_NEWS_BACK_TO_DASHBOARD" desc="Label for the back to dashboard button">
@@ -75,27 +75,27 @@
   <message name="IDS_BRAVE_NEWS_SUGGESTIONS_SUBTITLE" desc="Subtitle of the suggested sources section">
     Some sources you might like. Suggestions are anonymous and matched only on your device.
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_HEADING" desc="Message heading for when there is a Brave News error">
+  <message name="IDS_BRAVE_NEWS_ERROR_HEADING" desc="Message heading for when there is a Ping News error">
     Oops…
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_MESSAGE" desc="Message body for when there is a Brave News error">
-    Brave News was unable to fetch content.
+  <message name="IDS_BRAVE_NEWS_ERROR_MESSAGE" desc="Message body for when there is a Ping News error">
+    Ping News was unable to fetch content.
   </message>
-  <message name="IDS_BRAVE_NEWS_ERROR_ACTION_LABEL" desc="Message action label for when there is a Brave News error">
+  <message name="IDS_BRAVE_NEWS_ERROR_ACTION_LABEL" desc="Message action label for when there is a Ping News error">
     Try again
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Brave News content">
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_HEADING" desc="Message heading for when there is no Ping News content">
     Your Feed is Empty
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Brave News content">
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_MESSAGE" desc="Message body for when there is no Ping News content">
     Follow publishers and channels to see them in your feed.
   </message>
-  <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Brave News content">
+  <message name="IDS_BRAVE_NEWS_NO_CONTENT_ACTION_LABEL" desc="Message action label for when there is no Ping News content">
     Add content sources
   </message>
 
-  <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Brave' channel">
-    Brave
+  <message name="IDS_BRAVE_NEWS_CHANNEL_BRAVE" desc="Translation of the 'Ping' channel">
+    Ping
   </message>
   <message name="IDS_BRAVE_NEWS_CHANNEL_BUSINESS" desc="Translation of the 'Business' channel">
     Business

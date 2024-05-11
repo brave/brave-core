@@ -62,19 +62,19 @@
     <!-- Browser managed status section -->
     <if expr="not chromeos_ash">
       <if expr="_google_chrome">
-        <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (Brave-branded) Brave browser is managed, it indicates what the administrator can do on the browser.">
-        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (Ping-branded) Ping browser is managed, it indicates what the administrator can do on the browser.">
+        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Ping. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
-        <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (Brave-branded) Brave browser is not managed">
-        This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (Ping-branded) Ping browser is not managed">
+        This browser is not managed by a company or other organization. Activity on this device may be managed outside of Ping. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
       </if>
       <if expr="not _google_chrome">
-        <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (non-Brave-branded) Brave browser is managed, it indicates what the administrator can do on the browser.">
-        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (non-Ping-branded) Ping browser is managed, it indicates what the administrator can do on the browser.">
+        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Ping. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
-        <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (non-Brave-branded) Brave browser is not managed">
-        This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (non-Ping-branded) Ping browser is not managed">
+        This browser is not managed by a company or other organization. Activity on this device may be managed outside of Ping. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
       </if>
       <message name="IDS_MANAGEMENT_LEARN_MORE_ACCCESSIBILITY_TEXT" desc="Accessibility text for a 'Learn more' link that links to a help article about how the browser is managed.">
@@ -169,8 +169,8 @@
     <message name="IDS_MANAGEMENT_REPORT_LOGIN_LOGOUT" desc="Message stating that administrators can see device Login and Logout events.">
       Device access actions such as logins (including failed login reasons), logouts, locks, and unlocks
     </message>
-    <message name="IDS_MANAGEMENT_REPORT_CRD_SESSIONS" desc="Message stating that administrators can see Brave Remote Desktop events.">
-      Brave Remote Desktop history, including timestamps, hosts and client session ids
+    <message name="IDS_MANAGEMENT_REPORT_CRD_SESSIONS" desc="Message stating that administrators can see Ping Remote Desktop events.">
+      Ping Remote Desktop history, including timestamps, hosts and client session ids
     </message>
     <message name="IDS_MANAGEMENT_REPORT_ALL_WEBSITE_INFO_AND_ACTIVITY" desc="Message stating that administrators can see what websites are visited and when.">
       Which websites are visited and when.
@@ -266,7 +266,7 @@
       Your device name and network address
     </message>
     <message name="IDS_MANAGEMENT_EXTENSION_REPORT_USERNAME" desc="Message explaining that an extension currently reports the user's username" formatter_data="android_java">
-      Your device username and Brave username
+      Your device username and Ping username
     </message>
     <message name="IDS_MANAGEMENT_EXTENSION_REPORT_VERSION" desc="Message explaining that an extension currently reports the user's browser and machine version" formatter_data="android_java">
       Version information about your device and browser
@@ -283,15 +283,15 @@
     <message name="IDS_MANAGEMENT_LEGACY_TECH_REPORT" desc="Message explaining that browser will upload a report when a legacy technology is used for a webpage" formatter_data="android_java">
       A limited list of URLs of pages you visit where <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chromestatus.com/features#browsers.chrome.status%3A%22Deprecated%22" &gt;</ph>legacy technology events<ph name="END_LINK">&lt;/a&gt;</ph> are occuring.
     </message>
-    <!-- Strings related to Brave Enterprise Connectors -->
-    <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Connectors section of the page">
-      Brave Enterprise Connectors
+    <!-- Strings related to Ping Enterprise Connectors -->
+    <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Ping Enterprise Connectors section of the page">
+      Ping Enterprise Connectors
     </message>
-    <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise Connectors section of the page">
-      Your administrator has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
+    <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Ping Enterprise Connectors section of the page">
+      Your administrator has turned on Ping Enterprise Connectors on your browser. These connectors have access to some of your data.
     </message>
-    <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise Connectors section of the page">
-      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has turned on Brave Enterprise Connectors on your browser. These connectors have access to some of your data.
+    <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Ping Enterprise Connectors section of the page">
+      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has turned on Ping Enterprise Connectors on your browser. These connectors have access to some of your data.
     </message>
     <message name="IDS_MANAGEMENT_CONNECTORS_EVENT" desc="Title of a column of the Connectors table showing the event that triggers a Connector">
       Event
@@ -342,14 +342,14 @@
       Applications authorized by your administrator can capture all screens attached to your device. This information can be processed locally or uploaded to your organization’s servers.
     </message>
     <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature">
-      When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Brave.
+      When security events are flagged by Ping, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Ping, file names or metadata, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Ping.
     </message>
     <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
       URLs of pages you visit are sent to Google Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.
     </message>
   </if>
 
-  <!-- Strings related to Brave Enterprise Device Signals Sharing -->
+  <!-- Strings related to Ping Enterprise Device Signals Sharing -->
   <if expr="is_win or is_linux or is_macosx">
     <message name="IDS_MANAGEMENT_DEVICE_SIGNALS_DISCLOSURE" desc="Disclosure message explaining that device signals can be shared.">
       Information about your browser, OS, device, installed software, and files

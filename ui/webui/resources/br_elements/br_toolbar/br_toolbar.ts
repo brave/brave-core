@@ -10,10 +10,10 @@ import '../br_shared_vars.css.js';
 import '../br_shared_style.css.js';
 import './br_toolbar_search_field.js';
 
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js';
+import { Polymer } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {getTemplate} from './br_toolbar.html.js'
+import { getTemplate } from './br_toolbar.html.js';
 
 const customCurrentWebUINameMap = {
   extensions: 'settings',
@@ -92,7 +92,7 @@ Polymer({
 
     shouldShowRewardsButton_: {
       type: Boolean,
-      value: true,
+      value: false,
     },
 
     isBraveWalletAllowed_: {
@@ -213,14 +213,14 @@ Polymer({
     this.settingsTitle = this.getLoadTimeDataString('brToolbarSettingsTitle')
     this.bookmarksTitle = this.getLoadTimeDataString('brToolbarBookmarksTitle')
     this.downloadsTitle = this.getLoadTimeDataString('brToolbarDownloadsTitle')
-    this.braveRewardsTitle = this.getLoadTimeDataString('brToolbarRewardsTitle')
+    // this.braveRewardsTitle = this.getLoadTimeDataString('brToolbarRewardsTitle')
     this.walletsTitle = this.getLoadTimeDataString('brToolbarWalletsTitle')
   },
 
   /** @override */
   attached: function () {
-    this.shouldShowRewardsButton_ =
-      this.getLoadTimeDataBoolean('brToolbarShowRewardsButton')
+    // this.shouldShowRewardsButton_ =
+    //   this.getLoadTimeDataBoolean('brToolbarShowRewardsButton')
     this.isBraveWalletAllowed_ =
       this.getLoadTimeDataBoolean('isBraveWalletAllowed')
     this.initSlotFilledDetection()

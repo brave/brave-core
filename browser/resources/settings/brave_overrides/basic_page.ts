@@ -441,7 +441,7 @@ RegisterPolymerTemplateModifications({
       // Insert Web3 Domains
       last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
-      last = last.insertAdjacentElement('afterend', sectionTor)
+      // last = last.insertAdjacentElement('afterend', sectionTor)
       // Insert Data collection
       last = last.insertAdjacentElement('afterend', sectionDataCollection)
       // Insert Leo Assistant

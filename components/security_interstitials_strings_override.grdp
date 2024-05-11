@@ -25,11 +25,11 @@
     &lt;/ol&gt;
     &lt;h4&gt;Step 2: Open the page in Private mode (computer only)&lt;/h4&gt;
     &lt;p&gt;Open the page you were visiting in a Private window.&lt;/p&gt;
-    &lt;p&gt;If the page opens, a Brave extension isn't working right. To fix the error, turn off the extension.&lt;/p&gt;
+    &lt;p&gt;If the page opens, a Ping extension isn't working right. To fix the error, turn off the extension.&lt;/p&gt;
     &lt;h4&gt;Step 3: Update your operating system&lt;/h4&gt;
     &lt;p&gt;Make sure your device is up-to-date.&lt;/p&gt;
     &lt;h4&gt;Step 4: Temporarily turn off your antivirus&lt;/h4&gt;
-    &lt;p&gt;You'll see this error if you have antivirus software that provides "HTTPS protection" or "HTTPS scanning." The antivirus is preventing Brave from providing security.&lt;/p&gt;
+    &lt;p&gt;You'll see this error if you have antivirus software that provides "HTTPS protection" or "HTTPS scanning." The antivirus is preventing Ping from providing security.&lt;/p&gt;
     &lt;p&gt;To fix the problem, turn off your antivirus software. If the page works after turning off the software, turn off this software when you use secure sites.&lt;/p&gt;
     &lt;p&gt;Remember to turn your antivirus program back on when you're done.&lt;/p&gt;
     &lt;h4&gt;Step 5: Get extra help&lt;/h4&gt;

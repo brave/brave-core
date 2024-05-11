@@ -64,7 +64,9 @@ function HelpImprove () {
     <S.MainBox>
       <div className="view-header-box">
         <div className="view-details">
-          <h1 className="view-title">{getLocale('braveWelcomeHelpImproveBraveTitle')}</h1>
+          <h1 className="view-title">
+          {getLocale('braveWelcomeHelpImproveBraveTitle')}
+          </h1>
         </div>
       </div>
       <S.Grid>
@@ -104,7 +106,7 @@ function HelpImprove () {
           </Button>
           <S.FootNote>
             {changeSettingsNote.beforeTag}
-            <a href="brave://settings/privacy" onClick={handleOpenSettingsPage}>
+            <a href="ping://settings/privacy" onClick={handleOpenSettingsPage}>
               {changeSettingsNote.duringTag}
             </a>
             {changeSettingsNote.afterTag}

@@ -123,8 +123,8 @@
   <message name="IDS_ARC_VM_DATA_MIGRATION_NOTIFICATION_ACCEPT_BUTTON_LABEL" desc="Label of a notification button to accept an important update to improve the performance of Android apps on ChromeOS.">
     Update now
   </message>
-  <message name="IDS_ARC_VM_DATA_MIGRATION_DIALOG_TITLE" desc="Text to inform that Brave tabs and apps will be closed when an update to improve the performance of Android apps on ChromeOS is started. The text is displayed as the title of a dialog.">
-    Your Brave tabs and apps will close when the update starts
+  <message name="IDS_ARC_VM_DATA_MIGRATION_DIALOG_TITLE" desc="Text to inform that Ping tabs and apps will be closed when an update to improve the performance of Android apps on ChromeOS is started. The text is displayed as the title of a dialog.">
+    Your Ping tabs and apps will close when the update starts
   </message>
   <message name="IDS_ARC_VM_DATA_MIGRATION_DIALOG_SAVE_WORK_MESSAGE" desc="Text to ask the user to save their work before starting an update to improve the performance of Android apps on ChromeOS.">
     Please save your work and start the update when you're ready.
@@ -150,7 +150,7 @@
   <message name="IDS_ARC_VM_DATA_MIGRATION_WELCOME_SCREEN_TITLE" desc="Title of the initial screen of the update flow to improve the performance of Android apps on ChromeOS.">
     Critical Android performance update
   </message>
-  <message name="IDS_ARC_VM_DATA_MIGRATION_WHAT_TO_EXPECT_TITLE" desc="Header of the description to explain what is expected by an update to improve the performance of Android apps on Brave.">
+  <message name="IDS_ARC_VM_DATA_MIGRATION_WHAT_TO_EXPECT_TITLE" desc="Header of the description to explain what is expected by an update to improve the performance of Android apps on Ping.">
     What to expect
   </message>
   <message name="IDS_ARC_VM_DATA_MIGRATION_UPDATE_DESCRIPTION" desc="Description to explain that it is an important update to improve the performance of Android apps on ChromeOS.">
@@ -159,7 +159,7 @@
   <message name="IDS_ARC_VM_DATA_MIGRATION_BLOCKING_BEHAVIOR_DESCRIPTION" desc="Description to explain that the device will be unusable during the update process to improve the performance of Android apps on ChromeOS.">
     During the update you will not be able to use your device for up to 10 minutes.
   </message>
-  <message name="IDS_ARC_VM_DATA_MIGRATION_CONNECT_TO_CHARGER_MESSAGE" desc="Message to ask to connect the device to a charger during the update process to improve the performance of Android apps on Brave.">
+  <message name="IDS_ARC_VM_DATA_MIGRATION_CONNECT_TO_CHARGER_MESSAGE" desc="Message to ask to connect the device to a charger during the update process to improve the performance of Android apps on Ping.">
     Please keep your device connected to a charger during the update.
   </message>
   <message name="IDS_ARC_VM_DATA_MIGRATION_NOT_ENOUGH_FREE_DISK_SPACE_MESSAGE" desc="Message to inform that there is not enough free disk space on the device for an update to improve the performance of Android apps on ChromeOS.">

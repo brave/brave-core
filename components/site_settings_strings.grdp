@@ -182,10 +182,10 @@
   <message name="IDS_SITE_SETTINGS_TYPE_VR_MID_SENTENCE" desc="The label used for the VR site settings controls when used mid-sentence.">
     virtual reality
   </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page.">
+  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS" desc="The name of a Ping setting. This string also appears as the title of a dialog box and as the title of a Ping settings page.">
     Embedded content
   </message>
-  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS_MID_SENTENCE" desc="The name of a Brave setting. This string also appears as the title of a dialog box and as the title of a Brave settings page. Used mid-sentence.">
+  <message name="IDS_SITE_SETTINGS_TYPE_STORAGE_ACCESS_MID_SENTENCE" desc="The name of a Ping setting. This string also appears as the title of a dialog box and as the title of a Ping settings page. Used mid-sentence.">
     embedded content
   </message>
 

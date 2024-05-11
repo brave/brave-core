@@ -38,7 +38,7 @@
 
   <!-- Internal page summary strings -->
   <!-- Note: IDS_PAGE_INFO_INTERNAL_PAGE would be here, but it is in components_{chromium,google_chrome}_strings.grd because it uses the browser name. -->
-  <message name="IDS_PAGE_INFO_EXTENSION_PAGE" desc="Message to display in the page info bubble when the page you are on is a chrome-extension:// page. This refers to Brave extensions.">
+  <message name="IDS_PAGE_INFO_EXTENSION_PAGE" desc="Message to display in the page info bubble when the page you are on is a chrome-extension:// page. This refers to Ping extensions.">
     You're viewing an extension page
   </message>
   <message name="IDS_PAGE_INFO_VIEW_SOURCE_PAGE" desc="Message to display in the page info bubble when you are viewing page sources by using |View page source| option from the right click menu.">
@@ -48,10 +48,10 @@
     You're viewing a developer tools page
   </message>
   <message name="IDS_PAGE_INFO_READER_MODE_PAGE_SECURE" desc="Message to display in the page info bubble when the page you are viewing is the reader mode version of an article which was retrieved over a secure connection.">
-    Brave simplified this page to make it easier to read. Brave retrieved the original page over a secure connection.
+    Ping simplified this page to make it easier to read. Ping retrieved the original page over a secure connection.
   </message>
   <message name="IDS_PAGE_INFO_READER_MODE_PAGE" desc="Message to display in the page info bubble when the page you are viewing is the reader mode version of an article which was retrieved over an insecure connection.">
-    Brave simplified this page to make it easier to read. Brave retrieved the original page over an insecure connection.
+    Ping simplified this page to make it easier to read. Ping retrieved the original page over an insecure connection.
   </message>
 
   <!-- Safety Tip summary strings -->
@@ -121,13 +121,13 @@
     Check your passwords
   </message>
   <if expr="_google_chrome">
-    <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
-      You just entered your password on a deceptive site. To secure your accounts, Brave recommends checking your saved passwords.
+    <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Ping user that they have reused their saved password on the current website.">
+      You just entered your password on a deceptive site. To secure your accounts, Ping recommends checking your saved passwords.
     </message>
   </if>
   <if expr="not _google_chrome">
-    <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
-      You just entered your password on a deceptive site. To secure your accounts, Brave recommends checking your saved passwords.
+    <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Ping user that they have reused their saved password on the current website.">
+      You just entered your password on a deceptive site. To secure your accounts, Ping recommends checking your saved passwords.
     </message>
   </if>
   <if expr="use_titlecase">
@@ -213,7 +213,7 @@
       <ph name="CITY">$1<ex>Mountain View</ex></ph>, <ph name="COUNTRY">$2<ex>US</ex></ph>
     </message>
     <message name="IDS_PAGE_INFO_SECURITY_TAB_SECURE_IDENTITY_EV_VERIFIED" desc="Describes the legal entity that the current page's HTTPS certificate was issued to. Shown in the certificate area in the Page Info bubble when a HTTPS site with a valid EV certificate is loaded.">
-      Issued to: <ph name="ORGANIZATION">$1<ex>Brave LLC</ex></ph> [<ph name="JURISDICTION">$2<ex>US</ex></ph>]
+      Issued to: <ph name="ORGANIZATION">$1<ex>Ping LLC</ex></ph> [<ph name="JURISDICTION">$2<ex>US</ex></ph>]
     </message>
 
     <!-- Certificate Viewer link -->
@@ -254,7 +254,7 @@
     <if expr="is_android">
     <!-- Only used in the dialog shown after tapping "Details" in page info -->
     <message name="IDS_PAGE_INFO_SECURE_IDENTITY_VERIFIED" desc="The text of the identity section when the page is secure and uses a valid certificate">
-      <ph name="BROWSER">$1<ex>Brave</ex></ph> verified that <ph name="ISSUER">$2<ex>VeriSign</ex></ph> issued this website's certificate.
+      <ph name="BROWSER">$1<ex>Ping</ex></ph> verified that <ph name="ISSUER">$2<ex>VeriSign</ex></ph> issued this website's certificate.
     </message>
     </if>
 
@@ -492,7 +492,7 @@
     </message>
 
     <!-- Site settings link -->
-    <message name="IDS_PAGE_INFO_SITE_SETTINGS_LINK" desc="This is the text of the link pointing to Brave's Site Settings page. This appears at the bottom of the Permissions pane of the Page Information Window.">
+    <message name="IDS_PAGE_INFO_SITE_SETTINGS_LINK" desc="This is the text of the link pointing to Ping's Site Settings page. This appears at the bottom of the Permissions pane of the Page Information Window.">
       Site settings
     </message>
     <message name="IDS_PAGE_INFO_SITE_SETTINGS_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_SITE_SETTINGS_LINK.">
@@ -509,10 +509,10 @@
       </message>
     </if>
     <message name="IDS_PAGE_INFO_CAMERA_SYSTEM_SETTINGS_DESCRIPTION" desc="The description for the camera permission with a link to system settings.">
-        To use your camera, give Brave access in <ph name="LINK">$1<ex>system settings</ex></ph>.
+        To use your camera, give Ping access in <ph name="LINK">$1<ex>system settings</ex></ph>.
     </message>
     <message name="IDS_PAGE_INFO_MICROPHONE_SYSTEM_SETTINGS_DESCRIPTION" desc="The description for the microphone permission with a link to system settings.">
-        To use your microphone, give Brave access in <ph name="LINK">$1<ex>system settings</ex></ph>.
+        To use your microphone, give Ping access in <ph name="LINK">$1<ex>system settings</ex></ph>.
     </message>
     <message name="IDS_PAGE_INFO_SETTINGS_OF_A_SYSTEM_LINK" desc="This is the text of the link pointing to settings of a system. This appears under a permission in the Page Info bubble if the permission is blocked on the system level.">
         system settings
@@ -537,7 +537,7 @@
     <message name="IDS_PAGE_INFO_PERMISSION_ASK_BY_EXTENSION" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly set to 'Ask' by one of the user's extensions.">
       Setting controlled by an extension
     </message>
-    <message name="IDS_PAGE_INFO_PERMISSION_AUTOMATICALLY_BLOCKED" desc="The label used underneath a permission listed in the Page Info bubble if the permission was blocked by Brave on behalf of the user.">
+    <message name="IDS_PAGE_INFO_PERMISSION_AUTOMATICALLY_BLOCKED" desc="The label used underneath a permission listed in the Page Info bubble if the permission was blocked by Ping on behalf of the user.">
       Automatically blocked
     </message>
     <message name="IDS_PAGE_INFO_PERMISSION_ADS_SUBTITLE" desc="A subtitle shown under the ‘Ads’ setting indicating that a site has, in the past, shown intrusive or misleading ads. Shown when user clicks/taps the lock/'Danger' icon in the address bar. Used on both desktop and Android platforms" formatter_data="android_java">
@@ -573,36 +573,36 @@
     <!-- Password Protection -->
     <if expr="_google_chrome">
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
-        You could lose access to your Brave sync chain. Brave recommends changing your password now. You'll be asked to sign in.
+        You could lose access to your Ping sync chain. Ping recommends changing your password now. You'll be asked to sign in.
       </message>
-      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
-        Brave can help you protect your Brave sync chain and change your password.
+      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Ping sync user that they have reused their Ping password on the current website.">
+        Ping can help you protect your Ping sync chain and change your password.
       </message>
-      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
-        You just entered your password on a deceptive site. Brave can help. To change your password and notify Brave that your account may be at risk, click Protect Account.
+      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Ping password on the current website.">
+        You just entered your password on a deceptive site. Ping can help. To change your password and notify Ping that your account may be at risk, click Protect Account.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
-        You could lose access to your organization's account or experience identity theft. Brave recommends changing your password now.
+        You could lose access to your organization's account or experience identity theft. Ping recommends changing your password now.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE_WITH_ORG_NAME" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
-        You could lose access to your <ph name="ORG_NAME">$1<ex>Brave</ex></ph> account or experience identity theft. Brave recommends changing your password now.
+        You could lose access to your <ph name="ORG_NAME">$1<ex>Ping</ex></ph> account or experience identity theft. Ping recommends changing your password now.
       </message>
     </if>
     <if expr="not _google_chrome">
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
-        You could lose access to your Brave sync chain. Brave recommends changing your password now. You'll be asked to sign in.
+        You could lose access to your Ping sync chain. Ping recommends changing your password now. You'll be asked to sign in.
       </message>
-      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
-        Brave can help you protect your Brave sync chain and change your password.
+      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Ping sync user that they have reused their Ping password on the current website.">
+        Ping can help you protect your Ping sync chain and change your password.
       </message>
-      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
-        You just entered your password on a deceptive site. Brave can help. To change your password and notify Brave that your account may be at risk, click Protect Account.
+      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Ping password on the current website.">
+        You just entered your password on a deceptive site. Ping can help. To change your password and notify Ping that your account may be at risk, click Protect Account.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
-        You could lose access to your organization's account or experience identity theft. Brave recommends changing your password now.
+        You could lose access to your organization's account or experience identity theft. Ping recommends changing your password now.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE_WITH_ORG_NAME" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
-        You could lose access to your <ph name="ORG_NAME">$1<ex>Brave</ex></ph> account or experience identity theft. Brave recommends changing your password now.
+        You could lose access to your <ph name="ORG_NAME">$1<ex>Ping</ex></ph> account or experience identity theft. Ping recommends changing your password now.
       </message>
     </if>
 
@@ -762,16 +762,16 @@
     Cookies and other site data are used to remember you, for example to sign you in or to personalize ads. To manage cookies for all sites, see <ph name="SETTINGS">$1<ex>Settings</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_SITE_GRANT_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble for when a site has a TPCD grant. Contains a link to the Tracking Protection settings page.">
-   Brave limits most sites from using third-party cookies. But third-party cookies are allowed on this site because it relies on them to provide basic services. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+   Ping limits most sites from using third-party cookies. But third-party cookies are allowed on this site because it relies on them to provide basic services. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble. Contains a link to the Tracking Protection settings page.">
-    Brave limits most sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+    Ping limits most sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble if all cookies are blocked. Contains a link to the Tracking Protection settings page.">
     You blocked sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_INCOGNITO_BLOCKED_COOKIES_DESCRIPTION" desc="Description text for the Tracking Protection subpage in the page info bubble in private mode when cookies are blocked. Contains a link to the Tracking Protection settings page.">
-    Brave blocks sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
+    Ping blocks sites from using third-party cookies to track you as you browse. Visit settings to <ph name="LINK">$1<ex>manage your tracking protections</ex></ph>.
   </message>
   <message name="IDS_PAGE_INFO_COOKIES_SETTINGS_LINK" desc="The text of the link to cookies settings.">
     Settings
@@ -854,14 +854,14 @@
   <message name="IDS_PAGE_INFO_AD_PRIVACY_TOOLTIP" desc="A tooltip label that appears when a user hovers over the 'Ad privacy' button label. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Hover over the 'Ad privacy' button label and this text will appear to help users understand why they might want to open 'Ad privacy'.">
     See info used to show you ads
   </message>
-  <message name="IDS_PAGE_INFO_AD_PRIVACY_TOPICS_DESCRIPTION" desc="1 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses the Ad topics setting. What's the Ad topics setting? When on, Brave will estimate the user's topics of interest based on their recent browsing history and then show up to 3 of those topics with a site so that the site can better personalize ads (a privacy-preserving way to replicate some of the functionality of third-party cookies). In this case, we're informing the user that this site uses the Ad topics API and we're showing the user the ad topics Brave has shared with the site. A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics.">
-    This site gets your ad topics from Brave to show you more relevant ads
+  <message name="IDS_PAGE_INFO_AD_PRIVACY_TOPICS_DESCRIPTION" desc="1 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses the Ad topics setting. What's the Ad topics setting? When on, Ping will estimate the user's topics of interest based on their recent browsing history and then show up to 3 of those topics with a site so that the site can better personalize ads (a privacy-preserving way to replicate some of the functionality of third-party cookies). In this case, we're informing the user that this site uses the Ad topics API and we're showing the user the ad topics Ping has shared with the site. A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics.">
+    This site gets your ad topics from Ping to show you more relevant ads
   </message>
-  <message name="IDS_PAGE_INFO_AD_PRIVACY_FLEDGE_DESCRIPTION" desc="2 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses the Site-suggested ads setting. What's the Site-suggested ads setting? When on, a site can determine a user's interests, save info with Brave relative to those interests. Later, as a user continues browsing, a site can ask Brave for a user's interests and the first site can (through Brave) suggest ads the user might like. In this case, we're informing the user that this site uses the Site-suggested ads API. A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics.">
+  <message name="IDS_PAGE_INFO_AD_PRIVACY_FLEDGE_DESCRIPTION" desc="2 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses the Site-suggested ads setting. What's the Site-suggested ads setting? When on, a site can determine a user's interests, save info with Ping relative to those interests. Later, as a user continues browsing, a site can ask Ping for a user's interests and the first site can (through Ping) suggest ads the user might like. In this case, we're informing the user that this site uses the Site-suggested ads API. A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics.">
     This site determines things you like and then suggests ads to other sites
   </message>
-  <message name="IDS_PAGE_INFO_AD_PRIVACY_TOPICS_AND_FLEDGE_DESCRIPTION" desc="3 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses both the Ad topics &amp; Site-suggested ads settings. AD TOPICS: When on, Brave will estimate the user's topics of interest based on their recent browsing history and then show up to 3 of those topics with a site so that the site can better personalize ads (a privacy-preserving way to replicate some of the functionality of third-party cookies). SITE-SUGGESTED ADS: When on, a site can determine a user's interests, save info with Brave relative to those interests. Later, as a user continues browsing, a site can ask Brave for a user's interests and the first site can (through Brave) suggest ads the user might like. In this case, we're informing the user that this site 1) has asked Brave for the user's interests (the Ad topics setting), and 2) uses the Site-suggested ads API (this site determines the user's interests and then can suggest ads to other sites as the user continues browsing). A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics or sites.">
-    This site determines things you like and then suggests ads to other sites. This site also gets your ad topics from Brave to show you more relevant ads.
+  <message name="IDS_PAGE_INFO_AD_PRIVACY_TOPICS_AND_FLEDGE_DESCRIPTION" desc="3 of 3 possible descriptions a user might see when they choose 'Ad privacy' from page info for a specific site. 1) Navigate to any site. 2) Click the icon (often a lock) to the left of the URL in the address bar. Information about the page you're viewing appears. The 'Ad privacy' label will appear above the 'Site settings' button. 3) Click on Ad privacy. This string describes the case that the site being viewed uses both the Ad topics &amp; Site-suggested ads settings. AD TOPICS: When on, Ping will estimate the user's topics of interest based on their recent browsing history and then show up to 3 of those topics with a site so that the site can better personalize ads (a privacy-preserving way to replicate some of the functionality of third-party cookies). SITE-SUGGESTED ADS: When on, a site can determine a user's interests, save info with Ping relative to those interests. Later, as a user continues browsing, a site can ask Ping for a user's interests and the first site can (through Ping) suggest ads the user might like. In this case, we're informing the user that this site 1) has asked Ping for the user's interests (the Ad topics setting), and 2) uses the Site-suggested ads API (this site determines the user's interests and then can suggest ads to other sites as the user continues browsing). A button 'Manage ad privacy' allows the user to turn 'Ad privacy' settings on/off or to block specific ad topics or sites.">
+    This site determines things you like and then suggests ads to other sites. This site also gets your ad topics from Ping to show you more relevant ads.
   </message>
   <message name="IDS_PAGE_INFO_AD_PRIVACY_SUBPAGE_MANAGE_BUTTON" desc="A button label that opens the Ad privacy page, allowing a user to turn on / off the ad privacy settings and to manage the topics and sites that influence ad personalization.">
     Manage ad privacy
@@ -879,9 +879,9 @@
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_COOKIES_LIMITED_RESTART_TITLE" desc="Subtitle shown on the page info bubble indicating how long until cookies are limited again.">
     {COUNT, plural,
-              =0 {Brave will limit cookies again today}
-              =1 {Brave will limit cookies again tomorrow}
-              other {# days until Brave limits cookies again}}
+              =0 {Ping will limit cookies again today}
+              =1 {Ping will limit cookies again tomorrow}
+              other {# days until Ping limits cookies again}}
   </message>
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_COOKIES_BLOCKED_RESTART_TITLE" desc="Subtitle shown on the page info bubble indicating how long until cookies are blocked again.">
     {COUNT, plural,

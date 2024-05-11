@@ -18,7 +18,7 @@
         <message name="IDS_SUPPORT_TOOL_DATA_EXPORTED_TEXT" desc="This text will inform the user that the diagnostic data that they wanted is exported to their selected location on their file storage.">
             Data has been exported into the selected location
         </message>
-        <message name="IDS_SUPPORT_TOOL_SUPPORT_CASE_ID" desc="The ID of the Brave Support issue (ticket) that the user has opened.">
+        <message name="IDS_SUPPORT_TOOL_SUPPORT_CASE_ID" desc="The ID of the Ping Support issue (ticket) that the user has opened.">
             Support Case ID
         </message>
         <message name="IDS_SUPPORT_TOOL_EMAIL" desc="Email address of the user.">
@@ -106,10 +106,10 @@
             Select none
         </message>
         <!-- DataCollector strings -->
-        <message name="IDS_SUPPORT_TOOL_CHROME_SYSTEM_INFO" desc="This is a data source name for internal Brave logs.">
-            Brave System Information
+        <message name="IDS_SUPPORT_TOOL_CHROME_SYSTEM_INFO" desc="This is a data source name for internal Ping logs.">
+            Ping System Information
         </message>
-        <message name="IDS_SUPPORT_TOOL_CRASH_IDS" desc="An identification number is given every time Brave crashes on the device. This data source collects those IDs.">
+        <message name="IDS_SUPPORT_TOOL_CRASH_IDS" desc="An identification number is given every time Ping crashes on the device. This data source collects those IDs.">
             Crash IDs
         </message>
         <message name="IDS_SUPPORT_TOOL_MEMORY_DETAILS" desc="This is the name of data source that gets memory usage details.">
@@ -130,10 +130,10 @@
         <message name="IDS_SUPPORT_TOOL_TOUCH_EVENTS" desc="The events that are related to touchscreen and touchpad.">
             Touch Events
         </message>
-        <message name="IDS_SUPPORT_TOOL_LACROS_SYSTEM_INFO" desc="Lacros system information. Lacros is an architecture project to decouple the Brave browser from the Chrome OS window manager and system UI. The name comes from Linux And ChRome OS.">
+        <message name="IDS_SUPPORT_TOOL_LACROS_SYSTEM_INFO" desc="Lacros system information. Lacros is an architecture project to decouple the Ping browser from the Chrome OS window manager and system UI. The name comes from Linux And ChRome OS.">
             Lacros System Information
         </message>
-        <message name="IDS_SUPPORT_TOOL_LACROS" desc="Lacros logs. Lacros is an architecture project to decouple the Brave browser from the Chrome OS window manager and system UI. The name comes from Linux And ChRome OS.">
+        <message name="IDS_SUPPORT_TOOL_LACROS" desc="Lacros logs. Lacros is an architecture project to decouple the Ping browser from the Chrome OS window manager and system UI. The name comes from Linux And ChRome OS.">
             Lacros
         </message>
         <message name="IDS_SUPPORT_TOOL_CHROMEOS_FLEX_LOGS" desc="ChromeOS Flex logs. ChromeOS Flex is ChromeOS version that can run on different hardwares.">
@@ -157,8 +157,8 @@
         <message name="IDS_SUPPORT_TOOL_CHROMEOS_SYSTEM_LOGS" desc="System logs on ChromeOS.">
             ChromeOS System Logs
         </message>
-        <message name="IDS_SUPPORT_TOOL_CHROMEOS_CHROME_USER_LOGS" desc="Brave logs from user's session on ChromeOS.">
-            ChromeOS Brave User Logs
+        <message name="IDS_SUPPORT_TOOL_CHROMEOS_CHROME_USER_LOGS" desc="Ping logs from user's session on ChromeOS.">
+            ChromeOS Ping User Logs
         </message>
         <message name="IDS_SUPPORT_TOOL_CHROMEOS_BLUETOOTH_FLOSS" desc="Bluetooth logs if Floss is enabled on the device. Floss is the project that works on converging on a single Bluetooth stack between Android and ChromeOS.">
             ChromeOS Bluetooth
@@ -197,8 +197,8 @@
         <message name="IDS_SUPPORT_TOOL_EMAIL_ADDRESS" desc="Email address">
             Email Address
         </message>
-        <message name="IDS_SUPPORT_TOOL_GAIA_ID" desc="GAIA (Brave sync chains and ID Administration). A system for providing a single universal login for all Brave services.A Gaia ID is a 64-bit integer assigned by the Gaia team.">
-            Brave sync chain ID
+        <message name="IDS_SUPPORT_TOOL_GAIA_ID" desc="GAIA (Ping sync chains and ID Administration). A system for providing a single universal login for all Ping services.A Gaia ID is a 64-bit integer assigned by the Gaia team.">
+            Ping sync chain ID
         </message>
         <message name="IDS_SUPPORT_TOOL_STABLE_IDENTIDIERS" desc="Stable identifiers such as hashes or UUIDs (A Universally Unique Identifier).">
             Other Stable Identifiers (e.g., Hashes or UUIDs)

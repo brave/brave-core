@@ -296,7 +296,7 @@
   <message name="IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE" desc="Label for button to go to the website the extension developer specified.">
     Open extension website
   </message>
-  <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Brave web store.">
+  <message name="IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE" desc="Label for button to visit the Ping web store.">
     View in Web Store
   </message>
   <message name="IDS_EXTENSIONS_ITEM_OPTIONS" desc="The label on the button to open an extension options page.">
@@ -494,11 +494,11 @@
   <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_LABEL" desc="The label for the dropdown menu that lets the user choose the scope of an extension command (within chrome or global).">
     Scope of <ph name="SHORTCUT">$1</ph> for <ph name="EXTENSION_NAME">$2</ph>
   </message>
-  <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_GLOBAL" desc="The label to indicate that a shortcut will be triggerable globally (including outside of the Brave application).">
+  <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_GLOBAL" desc="The label to indicate that a shortcut will be triggerable globally (including outside of the Ping application).">
     Global
   </message>
   <message name="IDS_EXTENSIONS_APPS_TITLE" desc="The text displayed in the sidebar to go to the apps section of the page.">
-    Brave Apps
+    Ping Apps
   </message>
   <message name="IDS_EXTENSIONS_REMOVE" desc="The generic label for a button to remove an entry.">
     Remove

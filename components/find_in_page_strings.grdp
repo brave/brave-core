@@ -3,7 +3,7 @@
 <grit-part>
   <message name="IDS_FIND_IN_PAGE_ACCESSIBLE_TITLE" desc="Accessible title of find bar/dialog, to be read aloud.">
     Find in page
-    <ph name="PAGE_TITLE">$1<ex>Brave Search</ex></ph>
+    <ph name="PAGE_TITLE">$1<ex>Ping Search</ex></ph>
   </message>
   <message name="IDS_FIND_IN_PAGE_COUNT" desc="How many matches found and what item we are showing">
     <ph name="ACTIVE_MATCH">$1</ph>/<ph name="TOTAL_MATCHCOUNT">$2</ph>

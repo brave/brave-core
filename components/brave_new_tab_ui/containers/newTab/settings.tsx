@@ -12,7 +12,7 @@ import {
   SettingsSidebarActiveButtonSlider,
   SettingsSidebarButton,
   SettingsSidebarButtonText,
-  SettingsTitle,
+  SettingsTitle
 } from '../../components/default'
 
 import { getLocale } from '$web-common/locale'
@@ -24,7 +24,9 @@ import Dialog from '@brave/leo/react/dialog'
 import styled from 'styled-components'
 
 // Tabs
-const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
+const BackgroundImageSettings = React.lazy(
+  () => import('./settings/backgroundImage')
+)
 const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
@@ -101,14 +103,25 @@ const tabTranslationKeys: TabMap<string> = {
   [TabType.Search]: 'searchTitle'
 }
 
-const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget')
+const featureFlagSearchWidget = loadTimeData.getBoolean(
+  'featureFlagSearchWidget'
+)
 export default function Settings(props: Props) {
-  const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
-    (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
-    (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
-  const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
-    ? TabType.BackgroundImage
-    : TabType.BraveStats)
+  const allowedTabTypes = React.useMemo(
+    () =>
+      tabTypes.filter(
+        (t) =>
+          (props.allowBackgroundCustomization ||
+            t !== TabType.BackgroundImage) &&
+          (featureFlagSearchWidget || t !== TabType.Search)
+      ),
+    [props.allowBackgroundCustomization]
+  )
+  const [activeTab, setActiveTab] = React.useState(
+    props.allowBackgroundCustomization
+      ? TabType.BackgroundImage
+      : TabType.BraveStats
+  )
   const { customizePage, setCustomizePage } = useBraveNews()
 
   const changeTab = React.useCallback((tab: TabType) => {
@@ -122,27 +135,32 @@ export default function Settings(props: Props) {
 
   // When the outside world tells us to update the active tab, do so.
   React.useEffect(() => {
-    if (!props.setActiveTab || !allowedTabTypes.includes(props.setActiveTab)) return
+    if (!props.setActiveTab || !allowedTabTypes.includes(props.setActiveTab))
+      return
     changeTab(props.setActiveTab)
   }, [props.setActiveTab])
 
-  return <SettingsDialog isOpen={props.showSettingsMenu} showClose onClose={() => {
-    if (customizePage) {
-      return
-    }
+  return true ? null : (
+    <SettingsDialog
+      isOpen={props.showSettingsMenu}
+      showClose
+      onClose={() => {
+        if (customizePage) {
+          return
+        }
 
-    props.onClose?.()
-  }}>
-    <SettingsTitle slot='title'>
-      {getLocale('dashboardSettingsTitle')}
-    </SettingsTitle>
-    <SettingsContent id='settingsBody'>
-      <SettingsSidebar id='sidebar'>
-        <SettingsSidebarActiveButtonSlider
-          translateTo={allowedTabTypes.indexOf(activeTab)}
-        />
-        {
-          allowedTabTypes.map((tabType) => {
+        props.onClose?.()
+      }}
+    >
+      <SettingsTitle slot='title'>
+        {getLocale('dashboardSettingsTitle')}
+      </SettingsTitle>
+      <SettingsContent id='settingsBody'>
+        <SettingsSidebar id='sidebar'>
+          <SettingsSidebarActiveButtonSlider
+            translateTo={allowedTabTypes.indexOf(activeTab)}
+          />
+          {allowedTabTypes.map((tabType) => {
             const titleKey = tabTranslationKeys[tabType]
             const isActive = activeTab === tabType
             return (
@@ -153,54 +171,63 @@ export default function Settings(props: Props) {
                 onClick={() => changeTab(tabType)}
               >
                 <Icon name={tabIcons[tabType]} />
-                <SettingsSidebarButtonText
-                  data-text={getLocale(titleKey)}>
+                <SettingsSidebarButtonText data-text={getLocale(titleKey)}>
                   {getLocale(titleKey)}
                 </SettingsSidebarButtonText>
               </SettingsSidebarButton>
             )
-          })
-        }
-      </SettingsSidebar>
-      <SettingsFeatureBody id='content'>
-        {/* Empty loading fallback is ok here since we are loading from local disk. */}
-        <React.Suspense fallback={(<div />)}>
-          {activeTab === TabType.BackgroundImage && <BackgroundImageSettings
-            newTabData={props.newTabData}
-            toggleBrandedWallpaperOptIn={props.toggleBrandedWallpaperOptIn}
-            toggleShowBackgroundImage={props.toggleShowBackgroundImage}
-            chooseNewCustomImageBackground={props.chooseNewCustomImageBackground}
-            setCustomImageBackground={props.setCustomImageBackground}
-            removeCustomImageBackground={props.removeCustomImageBackground}
-            setBraveBackground={props.setBraveBackground}
-            setColorBackground={props.setColorBackground}
-            brandedWallpaperOptIn={props.brandedWallpaperOptIn}
-            showBackgroundImage={props.showBackgroundImage}
-            featureCustomBackgroundEnabled={props.featureCustomBackgroundEnabled}
-            onEnableRewards={props.onEnableRewards}
-            braveRewardsSupported={props.braveRewardsSupported}
-          />}
-          {activeTab === TabType.BraveStats && <BraveStatsSettings />}
-          {activeTab === TabType.TopSites && <TopSitesSettings
-            toggleShowTopSites={props.toggleShowTopSites}
-            showTopSites={props.showTopSites}
-            customLinksEnabled={props.customLinksEnabled}
-            setMostVisitedSettings={props.setMostVisitedSettings}
-          />}
-          {activeTab === TabType.Clock && <ClockSettings />}
-          {activeTab === TabType.Cards && <CardsSettings
-            toggleCards={props.toggleCards}
-            cardsHidden={props.cardsHidden}
-            toggleShowBraveTalk={props.toggleShowBraveTalk}
-            showBraveTalk={props.showBraveTalk}
-            braveTalkSupported={props.braveTalkSupported}
-            toggleShowRewards={props.toggleShowRewards}
-            braveRewardsSupported={props.braveRewardsSupported}
-            showRewards={props.showRewards}
-          />}
-          {activeTab === TabType.Search && <SearchSettings />}
-        </React.Suspense>
-      </SettingsFeatureBody>
-    </SettingsContent>
-  </SettingsDialog>
+          })}
+        </SettingsSidebar>
+        <SettingsFeatureBody id='content'>
+          {/* Empty loading fallback is ok here since we are loading from local disk. */}
+          <React.Suspense fallback={<div />}>
+            {activeTab === TabType.BackgroundImage && (
+              <BackgroundImageSettings
+                newTabData={props.newTabData}
+                toggleBrandedWallpaperOptIn={props.toggleBrandedWallpaperOptIn}
+                toggleShowBackgroundImage={props.toggleShowBackgroundImage}
+                chooseNewCustomImageBackground={
+                  props.chooseNewCustomImageBackground
+                }
+                setCustomImageBackground={props.setCustomImageBackground}
+                removeCustomImageBackground={props.removeCustomImageBackground}
+                setBraveBackground={props.setBraveBackground}
+                setColorBackground={props.setColorBackground}
+                brandedWallpaperOptIn={props.brandedWallpaperOptIn}
+                showBackgroundImage={props.showBackgroundImage}
+                featureCustomBackgroundEnabled={
+                  props.featureCustomBackgroundEnabled
+                }
+                onEnableRewards={props.onEnableRewards}
+                braveRewardsSupported={props.braveRewardsSupported}
+              />
+            )}
+            {activeTab === TabType.BraveStats && <BraveStatsSettings />}
+            {activeTab === TabType.TopSites && (
+              <TopSitesSettings
+                toggleShowTopSites={props.toggleShowTopSites}
+                showTopSites={props.showTopSites}
+                customLinksEnabled={props.customLinksEnabled}
+                setMostVisitedSettings={props.setMostVisitedSettings}
+              />
+            )}
+            {activeTab === TabType.Clock && <ClockSettings />}
+            {activeTab === TabType.Cards && (
+              <CardsSettings
+                toggleCards={props.toggleCards}
+                cardsHidden={props.cardsHidden}
+                toggleShowBraveTalk={props.toggleShowBraveTalk}
+                showBraveTalk={props.showBraveTalk}
+                braveTalkSupported={props.braveTalkSupported}
+                toggleShowRewards={props.toggleShowRewards}
+                braveRewardsSupported={props.braveRewardsSupported}
+                showRewards={props.showRewards}
+              />
+            )}
+            {activeTab === TabType.Search && <SearchSettings />}
+          </React.Suspense>
+        </SettingsFeatureBody>
+      </SettingsContent>
+    </SettingsDialog>
+  )
 }

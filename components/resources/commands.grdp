@@ -254,7 +254,7 @@
     Dev tools inspect
   </message>
   <message name="IDS_IDC_UPGRADE_DIALOG">
-    Upgrade Brave
+    Upgrade Ping
   </message>
   <message name="IDS_IDC_SHOW_AVATAR_MENU">
     Show avatar menu
@@ -347,31 +347,31 @@
     Toggle live captions
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
-    Show Brave Wallet panel
+    Show Ping Wallet panel
   </message>
   <message name="IDS_IDC_CLOSE_BRAVE_WALLET_PANEL">
-    Close Brave Wallet panel
+    Close Ping Wallet panel
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
-    Show Brave VPN panel
+    Show Ping VPN panel
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
-    Toggle Brave VPN toolbar button
+    Toggle Ping VPN toolbar button
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TRAY_ICON">
-    Toggle Brave VPN tray icon
+    Toggle Ping VPN tray icon
   </message>
   <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
-    Send Brave VPN feedback
+    Send Ping VPN feedback
   </message>
   <message name="IDS_IDC_ABOUT_BRAVE_VPN">
-    About Brave VPN
+    About Ping VPN
   </message>
   <message name="IDS_IDC_MANAGE_BRAVE_VPN_PLAN">
-    Manage Brave VPN plan
+    Manage Ping VPN plan
   </message>
   <message name="IDS_IDC_TOGGLE_BRAVE_VPN">
-    Toggle Brave VPN
+    Toggle Ping VPN
   </message>
   <message name="IDS_IDC_TOGGLE_TAB_MUTE">
     Toggle tab mute
@@ -389,13 +389,13 @@
     Toggle vertical tabs window title
   </message>
   <message name="IDS_IDC_CONFIGURE_BRAVE_NEWS">
-    Configure Brave News
+    Configure Ping News
   </message>
   <message name="IDS_IDC_CONFIGURE_SHORTCUTS">
     Configure shortcuts
   </message>
   <message name="IDS_IDC_SHOW_BRAVE_TALK">
-    Show Brave Talk
+    Show Ping Talk
   </message>
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_ALWAYS">
     Always show bookmark bar

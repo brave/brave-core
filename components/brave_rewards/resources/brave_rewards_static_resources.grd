@@ -8,7 +8,7 @@
   </outputs>
   <release seq="1">
     <includes>
-      <!-- WebUI Brave Rewards Page resources -->
+      <!-- WebUI Ping Rewards Page resources -->
       <if expr="is_android">
         <then>
           <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page_android.html" type="BINDATA" />
@@ -21,7 +21,7 @@
         <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/assets/favicon.ico" type="BINDATA" />
       </if>
 
-      <!-- WebUI Brave Rewards Internals resources -->
+      <!-- WebUI Ping Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
 
       <if expr="not is_android">

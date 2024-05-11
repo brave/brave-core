@@ -12,12 +12,12 @@
   <if expr="not chromeos_ash">
     </if>
   <if expr="_google_chrome">
-    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_YOU_CAN_CUSTOMIZE" desc="A paragraph that includes 3 bullets.       * Bullet 1: Brave supports many Brave services, but it's the user's choice whether they want to use those services, so we include &quot;for those who want it&quot;.">
-      You can customize Brave the way you want:
+    <message name="IDS_SETTINGS_GET_THE_MOST_OUT_OF_CHROME_BETTER_WEB_YOU_CAN_CUSTOMIZE" desc="A paragraph that includes 3 bullets.       * Bullet 1: Ping supports many Ping services, but it's the user's choice whether they want to use those services, so we include &quot;for those who want it&quot;.">
+      You can customize Ping the way you want:
       &lt;ul&gt;
-        &lt;li&gt;&lt;em&gt;The best of Brave&lt;/em&gt;, for those who want it. For example, you can choose Brave Search as Brave’s default search engine and use Brave Password Manager to get all your passwords on any device. &lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Brave offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;The best of Ping&lt;/em&gt;, for those who want it. For example, you can choose Ping Search as Ping’s default search engine and use Ping Password Manager to get all your passwords on any device. &lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Ping offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Ping functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
       &lt;/ul&gt;
     </message>
     </if>
@@ -114,7 +114,7 @@
     Sites you visit can verify that you're a real profile and not a bot
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
-    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+    As you keep browsing, sites can check with Ping and verify with a previous site you've visited that you're likely a real profile
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
     Browsing is faster because a site is less likely to ask you to verify you're a real profile
@@ -133,8 +133,8 @@
 
   <if expr="_google_chrome">
     </if>
-  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
-    Provides Brave’s strongest account security for profiles at risk of targeted attacks
+  <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Ping     Advanced Protection Program">
+    Provides Ping’s strongest account security for profiles at risk of targeted attacks
   </message>
   <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_INCOGNITO_LABEL" desc="Label for radio button to enable HTTPS-First Mode in Private">
     See warnings before going to insecure sites in Private mode
@@ -153,7 +153,7 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED_INCOGNITO" desc="2 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
     Third-party cookies are blocked in Private mode
   </message>
-  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see Brave's Help Center.">
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see Ping's Help Center.">
     Block third-party cookies in Private mode
   </message>
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_EXPAND_A11Y_LABEL" desc="This text is read by screenreaders and helps users find more info about this choice.">

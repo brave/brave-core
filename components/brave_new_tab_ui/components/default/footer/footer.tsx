@@ -6,26 +6,26 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Label,
-  Link,
-  Navigation,
-  IconButton,
-  IconButtonContainer,
-  IconButtonSideText,
+  // IconButton,
+  // IconButtonContainer,
+  // IconButtonSideText,
   IconLink,
-  PhotoName
+  // Label,
+  // Link,
+  Navigation,
+  // PhotoName
 } from '..'
 import * as S from '../page'
 
 // Items
 import {
-  SettingsIcon,
-  SettingsAdvancedIcon,
   BookmarkBook,
-  HistoryIcon
+  HistoryIcon,
+  // SettingsIcon,
+  SettingsAdvancedIcon
 } from 'brave-ui/components/icons'
 
-import BraveTalkIcon from './braveTalkIcon'
+// import BraveTalkIcon from './braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
@@ -40,17 +40,17 @@ export interface Props {
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
-    const {
-      textDirection,
-      supportsBraveTalk,
-      backgroundImageInfo,
-      showPhotoInfo,
-      onClickSettings
-    } = this.props
+    // const {
+    //   // textDirection,
+    //   // supportsBraveTalk,
+    //   backgroundImageInfo,
+    //   showPhotoInfo,
+    //   // onClickSettings
+    // } = this.props
 
     return (
       <>
-        { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
+        {/* { showPhotoInfo && backgroundImageInfo?.type === 'brave' &&
           <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}
@@ -62,17 +62,17 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               }
             </PhotoName>
           </S.GridItemCredits>
-        }
+        } */}
         <S.GridItemNavigation>
           <Navigation>
-            <IconButtonContainer textDirection={textDirection}>
+            {/* <IconButtonContainer textDirection={textDirection}>
               <IconButtonSideText textDirection={textDirection}>
                 <IconButton onClick={onClickSettings}>
                   <SettingsIcon />
                 </IconButton>
                 {getLocale('customize')}
               </IconButtonSideText>
-            </IconButtonContainer>
+            </IconButtonContainer> */}
             <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
               <SettingsAdvancedIcon />
             </IconLink>
@@ -82,11 +82,11 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
               <HistoryIcon />
             </IconLink>
-            { supportsBraveTalk &&
+            {/* { supportsBraveTalk &&
               <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
                 <BraveTalkIcon />
               </IconLink>
-            }
+            } */}
           </Navigation>
         </S.GridItemNavigation>
       </>

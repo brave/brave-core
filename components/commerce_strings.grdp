@@ -9,7 +9,7 @@
       Get discount on <ph name="MERCHANT_NAME">$1</ph> and more
     </message>
     <message name="IDS_DISCOUNT_CONTEXTUAL_CONSENT_CONTENT" desc="Text shown on the consent bubble asking if users would like to give their consent to the feature.">
-      Let Brave use your carts to find personalized discounts when available
+      Let Ping use your carts to find personalized discounts when available
     </message>
     <message name="IDS_DISCOUNT_CONTEXTUAL_CONSENT_NO_THANKS" desc="Text shown on the reject button of the consent bubble. By clicking this button, users has chosen not to accept the consent.">
       No thanks
@@ -18,30 +18,30 @@
       Get discounts
     </message>
     <message name="IDS_DISCOUNT_CONTEXTUAL_CONSENT_ACCEPTED_CONFIRMATION_TITLE" desc="The title shown on the consent confirmation bubble after the user has accepted the consent.">
-      Brave will find discounts for you
+      Ping will find discounts for you
     </message>
     <message name="IDS_DISCOUNT_CONTEXTUAL_CONSENT_ACCEPTED_CONFIRMATION_CONTENT" desc="The text shown on the consent confirmation bubble telling user where to look for discounts.">
-      When Brave finds available discounts, they will show during checkout
+      When Ping finds available discounts, they will show during checkout
     </message>
     <message name="IDS_DISCOUNT_CONTEXTUAL_CONSENT_ACCEPTED_CONFIRMATION_DONE" desc="The text shown on the consent confirmation bubble bubble. User can click this button to close the bubble.">
       Done
     </message>
     <!-- Discount consent strings -->
-    <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_ACCEPT_BUTTON" desc="Text shown on the accept button of the consent dialog. By clicking this button, users has chosen to accept the consent to let Brave find discounts for your carts.">
+    <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_ACCEPT_BUTTON" desc="Text shown on the accept button of the consent dialog. By clicking this button, users has chosen to accept the consent to let Ping find discounts for your carts.">
       Yes, I'm in
     </message>
     <!-- This string can skip translation because the feature is targeted en-us locale. Only the
          en-us user can access the feature UI. -->
     <!-- TODO(crbug.com/40241740): Remove the special character and enable translation. -->
     <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_TITLE" translateable="false" desc="The title shown on the native consent dialog for getting discount.">
-      Let Brave help you find&#13;discounts for your carts
+      Let Ping help you find&#13;discounts for your carts
     </message>
     
     <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_BODY" desc="The actual consent descrition that shows in the native consent dialog.">
-      Let Brave use your carts to search for personalized discounts. When available, discounts will automatically show up on your carts.
+      Let Ping use your carts to search for personalized discounts. When available, discounts will automatically show up on your carts.
     </message>
     <message name="IDS_NTP_CART_DISCOUNT_STEP_ONE_CONTENT" desc="Text shown in the consent card within the cart module. This is the first step of the discount consent flow.">
-      Let Brave help you find discounts for your carts
+      Let Ping help you find discounts for your carts
     </message>
 
     <!-- For Desktop Price Tracking -->
@@ -67,7 +67,7 @@
       Try again
     </message>
     <message name="IDS_OMNIBOX_TRACK_PRICE_DIALOG_TITLE_FIRST_RUN" desc="The title text for the dialog that is shown at the first time a user tracks the product displayed on the current web page.">
-      Track prices with Brave
+      Track prices with Ping
     </message>
     <message name="IDS_OMNIBOX_TRACK_PRICE_DIALOG_DESCRIPTION_FIRST_RUN" desc="The description text for the dialog that is shown at the first time a user tracks the product displayed on the current web page. It describes what will happen when price tracking is initiated, and tells users which bookmarks folder this page will be saved.">
       You’ll get email alerts if the price drops on any site. This page will be saved to <ph name="LAST_BOOKMARKS_FOLDER">$1<ex>Other Bookmarks</ex></ph>.
@@ -384,40 +384,40 @@
   <!-- Android only -->
   <if expr="is_android">
     <!-- For Android Price Tracking -->
-    <message name="IDS_PRICE_ANNOTATIONS_SETTINGS_TITLE" desc="The title text for price annotations settings in Brave services. User can turn on or off the toggle next to this item to manage whether they want to see price drops on their open tabs.">
+    <message name="IDS_PRICE_ANNOTATIONS_SETTINGS_TITLE" desc="The title text for price annotations settings in Ping services. User can turn on or off the toggle next to this item to manage whether they want to see price drops on their open tabs.">
       Show price drops on tabs
     </message>
-    <message name="IDS_PRICE_ANNOTATIONS_SETTINGS_DESCRIPTION" desc="The description text for price annotations settings in Brave services. User can turn on or off the toggle next to this item to manage whether they want to see price drops on their open tabs.">
+    <message name="IDS_PRICE_ANNOTATIONS_SETTINGS_DESCRIPTION" desc="The description text for price annotations settings in Ping services. User can turn on or off the toggle next to this item to manage whether they want to see price drops on their open tabs.">
       Price drop alerts will show up on your open tabs
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_TITLE" desc="The title text for price notifications settings in Brave services. User can click into this item to view the detailed settings." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_TITLE" desc="The title text for price notifications settings in Ping services. User can click into this item to view the detailed settings." formatter_data="android_java">
       Get price tracking notifications
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DESCRIPTION" desc="The description text for price notifications settings in Brave services. User can click into this item to view the detailed settings." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DESCRIPTION" desc="The description text for price notifications settings in Ping services. User can click into this item to view the detailed settings." formatter_data="android_java">
       Manage mobile and email notifications
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DETAILED_PAGE_TITLE" desc="The title text for the detailed page settings of price notifications in Brave services." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DETAILED_PAGE_TITLE" desc="The title text for the detailed page settings of price notifications in Ping services." formatter_data="android_java">
       Price tracking notifications
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DETAILED_PAGE_DESCRIPTION" desc="The description text for the detailed page settings of price notifications in Brave services." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_DETAILED_PAGE_DESCRIPTION" desc="The description text for the detailed page settings of price notifications in Ping services." formatter_data="android_java">
       Manage how you receive price drop alerts for products you track
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_TITLE" desc="The title text for managing mobile price drop popup notifications shown on the detailed page settings in Brave services." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_TITLE" desc="The title text for managing mobile price drop popup notifications shown on the detailed page settings in Ping services." formatter_data="android_java">
       Mobile
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_DESCRIPTION_ON" desc="The description text for managing mobile price drop popup notifications when the notification is currently enabled. Shown on the detailed page settings in Brave services. It tells users that they can disable the popup notification in the Brave notification settings." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_DESCRIPTION_ON" desc="The description text for managing mobile price drop popup notifications when the notification is currently enabled. Shown on the detailed page settings in Ping services. It tells users that they can disable the popup notification in the Ping notification settings." formatter_data="android_java">
       Price drop alerts are on. You can change this in <ph name="BEGIN_LINK">&lt;link&gt;</ph><ph name="NOTIFICATION_SETTINGS">%1$s<ex>settings</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_DESCRIPTION_OFF" desc="The description text for managing mobile price drop popup notifications when the notification is currently disabled. Shown on the detailed page settings in Brave services. It tells users that they can enable the popup notification in the Brave notification settings." formatter_data="android_java">
-      Brave notifications must be on. You can turn them on in <ph name="BEGIN_LINK">&lt;link&gt;</ph><ph name="NOTIFICATION_SETTINGS">%1$s<ex>settings</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_MOBILE_DESCRIPTION_OFF" desc="The description text for managing mobile price drop popup notifications when the notification is currently disabled. Shown on the detailed page settings in Ping services. It tells users that they can enable the popup notification in the Ping notification settings." formatter_data="android_java">
+      Ping notifications must be on. You can turn them on in <ph name="BEGIN_LINK">&lt;link&gt;</ph><ph name="NOTIFICATION_SETTINGS">%1$s<ex>settings</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
     </message>
-    <message name="IDS_CHROME_NOTIFICATION_SETTINGS_FOR_PRICE_TRACKING" desc="The button text within the description for managing mobile price drop popup notifications. When user clicks this button, we send them to the Brave notification settings." formatter_data="android_java">
+    <message name="IDS_CHROME_NOTIFICATION_SETTINGS_FOR_PRICE_TRACKING" desc="The button text within the description for managing mobile price drop popup notifications. When user clicks this button, we send them to the Ping notification settings." formatter_data="android_java">
       settings
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_EMAIL_TITLE" desc="The title text for managing price drop email notifications shown on the detailed page settings in Brave services. User can turn on or off the toggle next to this item to manage whether they want to receive price drop emails." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_EMAIL_TITLE" desc="The title text for managing price drop email notifications shown on the detailed page settings in Ping services. User can turn on or off the toggle next to this item to manage whether they want to receive price drop emails." formatter_data="android_java">
       Email
     </message>
-    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_EMAIL_DESCRIPTION" desc="The description text for managing price drop email notifications shown on the detailed page settings in Brave services. User can turn on or off the toggle next to this item to manage whether they want to receive price drop emails." formatter_data="android_java">
+    <message name="IDS_PRICE_NOTIFICATIONS_SETTINGS_EMAIL_DESCRIPTION" desc="The description text for managing price drop email notifications shown on the detailed page settings in Ping services. User can turn on or off the toggle next to this item to manage whether they want to receive price drop emails." formatter_data="android_java">
       Send to <ph name="EMAIL_ADDRESS">%1$s<ex>example@google.com</ex></ph>
     </message>
   </if>

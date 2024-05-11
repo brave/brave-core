@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- android_chrome_strings.grd contains strings for tab ui DFM of Brave for Android. -->
+<!-- android_chrome_strings.grd contains strings for tab ui DFM of Ping for Android. -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
   <outputs>
@@ -174,7 +174,7 @@
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- In-Product Help strings -->
-      <message name="IDS_IPH_TAB_GROUPS_QUICKLY_COMPARE_PAGES_TEXT" desc="When Brave detects that the user is searching or comparing multiple pages (e.g. while comparison shopping), this in-product help text appears at the bottom of the screen. The text informs the user that they can longpress on a link to open it as a new tab within a tab group.">
+      <message name="IDS_IPH_TAB_GROUPS_QUICKLY_COMPARE_PAGES_TEXT" desc="When Ping detects that the user is searching or comparing multiple pages (e.g. while comparison shopping), this in-product help text appears at the bottom of the screen. The text informs the user that they can longpress on a link to open it as a new tab within a tab group.">
         Quickly compare pages by making a group. To start, touch &amp; hold a link.
       </message>
       <message name="IDS_IPH_TAB_GROUPS_TAP_TO_SEE_ANOTHER_TAB_TEXT" desc="This in-product help text points to the strip of favicons at the bottom of the page. The favicons indicate all the open tabs within the tab group. The text informs the user that they can tap on any favicon to switch to that tab.">
@@ -219,7 +219,7 @@
       </message>
 
       <!-- Tab Group Tab Switcher strings -->
-      <message name="IDS_TABSWITCHER_CREATE_GROUP" desc="This flat button is shown in the Tab Switcher, under an open tab. When the user taps the button, Brave creates a new group of tabs that includes the existing tab. It's okay to use any of the following verbs in order to keep the text under 45 characters: Create, Make, Add.">
+      <message name="IDS_TABSWITCHER_CREATE_GROUP" desc="This flat button is shown in the Tab Switcher, under an open tab. When the user taps the button, Ping creates a new group of tabs that includes the existing tab. It's okay to use any of the following verbs in order to keep the text under 45 characters: Create, Make, Add.">
         Create group
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER" desc="Accessibility string for Tab Switcher view. This string is announced when the Tab Switcher is shown to screen.">
@@ -249,13 +249,13 @@
         Multi-select mode
       </message>
       <!-- Tab Selection Editor V2 strings -->
-      <message name="IDS_TAB_SELECTION_EDITOR_SELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave selects all the tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_SELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping selects all the tabs shown in the editor. [CHAR_LIMIT=27]">
         Select all
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_DESELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave deselects all the tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_DESELECT_ALL" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping deselects all the tabs shown in the editor. [CHAR_LIMIT=27]">
         Deselect all
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_SHARE_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave shares all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_SHARE_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping shares all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Share tab}
           other {Share tabs}
@@ -269,14 +269,14 @@
       </message>
       <message name="IDS_TAB_SELECTION_EDITOR_SHARE_SHEET_PREVIEW_MESSAGE" desc="When users click the menu item 'Share tab(s)' in the Tab Selection Editor Toolbar, a share sheet will pop up and this text is the preview message of the share sheet. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
-          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> link from Brave}
-          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> links from Brave}
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> link from Ping}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> links from Ping}
         }
       </message>
       <message name="IDS_TAB_SELECTION_EDITOR_SHARE_SHEET_PREVIEW_THUMBNAIL" desc="When users click the menu item 'Share tab(s)' in the Tab SelectionEditor Toolbar, a share sheet will pop up and this text is the name for the thumbnail of the share sheet preview. [CHAR_LIMIT=27]">
         Thumbnail for share sheet preview.
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Brave bookmarks all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_BOOKMARK_TABS_ACTION_BUTTON" desc="This text button is shown in the Tab Selection Editor Toolbar. When the user taps the button, Ping bookmarks all currently selected tabs shown in the editor. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Bookmark tab}
           other {Bookmark tabs}
@@ -294,7 +294,7 @@
           other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_GROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Group' is a verb. When the user taps the menu item, Brave creates a new group that contains the selected tabs. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_GROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Group' is a verb. When the user taps the menu item, Ping creates a new group that contains the selected tabs. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Group tab}
           other {Group tabs}
@@ -306,7 +306,7 @@
           other {Group <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_UNGROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Ungroup' is a verb. When the user taps the menu item, Brave removes the selected tabs from the group. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_UNGROUP_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Ungroup' is a verb. When the user taps the menu item, Ping removes the selected tabs from the group. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Ungroup tab}
           other {Ungroup tabs}
@@ -318,7 +318,7 @@
           other {Ungroup <ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> selected tabs}
         }
       </message>
-      <message name="IDS_TAB_SELECTION_EDITOR_CLOSE_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Close' is a verb. When the user taps the menu item, Brave closes the selected tabs. [CHAR_LIMIT=27]">
+      <message name="IDS_TAB_SELECTION_EDITOR_CLOSE_TABS" desc="This text menu item is shown in the Tab Selection Editor menu. 'Close' is a verb. When the user taps the menu item, Ping closes the selected tabs. [CHAR_LIMIT=27]">
         {TABS_COUNT, plural,
           =1 {Close tab}
           other {Close tabs}
@@ -402,10 +402,10 @@
       <message name="IDS_TAB_SUGGESTION_REVIEW_BUTTON" desc="This text button shows next to the message 'X of your tabs haven't been used lately. Close them?', or 'X tabs seem related. Group them?'. When a user clicks this 'Review' text button, they will enter a selection mode where they can see the suggested tabs to close or to group, see the rest of their open tabs, and choose what tabs to close or to group.">
           Review
       </message>
-      <message name="IDS_TAB_SUGGESTION_CLOSE_STALE_MESSAGE" desc="On Brave mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically close some tabs that haven't been used lately. The placeholder denotes the number of suggested tabs to close, which will always be 2 or more (so 'tabs' should be plural).">
+      <message name="IDS_TAB_SUGGESTION_CLOSE_STALE_MESSAGE" desc="On Ping mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically close some tabs that haven't been used lately. The placeholder denotes the number of suggested tabs to close, which will always be 2 or more (so 'tabs' should be plural).">
           <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> of your tabs haven't been used lately. Close them?
       </message>
-      <message name="IDS_TAB_SUGGESTION_GROUP_TABS_MESSAGE" desc="On Brave mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically group some tabs that haven been detected as closely related to each other. The placeholder denotes the number of suggested tabs to group, which will always be 2 or more (so 'tabs' should be plural).">
+      <message name="IDS_TAB_SUGGESTION_GROUP_TABS_MESSAGE" desc="On Ping mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically group some tabs that haven been detected as closely related to each other. The placeholder denotes the number of suggested tabs to group, which will always be 2 or more (so 'tabs' should be plural).">
           <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs seem related. Group them?
       </message>
 
@@ -539,10 +539,10 @@
             =1 {(<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review)}
             other {(<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews)}}
       </message>
-      <message name="IDS_MERCHANT_VIEWER_MESSAGE_DESCRIPTION_REVIEWS_FROM_GOOGLE" desc="Alternative message description indicating that the reviews come from Brave.">
+      <message name="IDS_MERCHANT_VIEWER_MESSAGE_DESCRIPTION_REVIEWS_FROM_GOOGLE" desc="Alternative message description indicating that the reviews come from Ping.">
          {REVIEWS, plural,
-            =1 {<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review from Brave}
-            other {<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews from Brave}}
+            =1 {<ph name="REVIEWS_COUNT_ONE">%1$s<ex>1</ex></ph> review from Ping}
+            other {<ph name="REVIEWS_COUNT_MANY">%1$s<ex>8</ex></ph> reviews from Ping}}
       </message>
       <message name="IDS_MERCHANT_VIEWER_MESSAGE_RATING_NUMERICAL" desc="The rating of the merchant in numerical form.">
         <ph name="CURRENT_RATING">%1$.1f<ex>4.5</ex></ph>/<ph name="RATING_BASELINE">%2$d<ex>5</ex></ph>
@@ -559,7 +559,7 @@
         View store info, option available near top of the screen
       </message>
       <message name="IDS_MERCHANT_VIEWER_PREVIEW_SHEET_TITLE" desc="Bottom sheet title for the merchant viewer experience.">
-        Brave | About this store
+        Ping | About this store
       </message>
       <message name="IDS_MERCHANT_VIEWER_OMNIBOX_ICON_IPH" desc="IPH shown when merchant trust message is dismissed at the first time.">
         View store info
@@ -591,12 +591,12 @@
         Close all tabs?
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog.">
-        You can find your closed tabs in Recent tabs under the Brave main menu.
+        You can find your closed tabs in Recent tabs under the Ping main menu.
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
       {INCOGNITO_TABS_COUNT, plural,
-        =1 {You can find your closed tabs in Recent tabs under the Brave main menu. Your Private tab won't be available.}
-        other {You can find your closed tabs in Recent tabs under the Brave main menu. Your # Private tabs won't be available.}}
+        =1 {You can find your closed tabs in Recent tabs under the Ping main menu. Your Private tab won't be available.}
+        other {You can find your closed tabs in Recent tabs under the Ping main menu. Your # Private tabs won't be available.}}
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_TITLE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the title of the dialog.">
         Close all Private tabs?

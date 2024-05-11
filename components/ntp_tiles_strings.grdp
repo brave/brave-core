@@ -2,12 +2,12 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <if expr="not is_android">
-      <!-- The title for the Brave Search shortcut. -->
+      <!-- The title for the Ping Search shortcut. -->
       <message name="IDS_NTP_DEFAULT_SEARCH_TITLE" translateable="false" desc="The label for the default Search shortcut on the New Tab Page.">
-        Brave
+        Ping
       </message>
 
-      <!-- The URL for the Brave Search shortcut. -->
+      <!-- The URL for the Ping Search shortcut. -->
       <message name="IDS_NTP_DEFAULT_SEARCH_URL" translateable="false">
         https://www.google.com
       </message>

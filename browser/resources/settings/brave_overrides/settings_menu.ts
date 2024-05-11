@@ -85,7 +85,8 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--leo-color-icon-interactive);
+        // --iron-icon-fill-color: var(--leo-gradient-icons-active);
+        --iron-icon-fill-color: #27a348;
 
         color: var(--leo-color-text-interactive) !important;
         background: transparent !important;
@@ -126,7 +127,7 @@ RegisterStyleOverride(
       }
 
       a:hover, iron-icon:hover {
-        color: #444DD0 !important;
+        color: #47d789 !important;
       }
 
       iron-icon, leo-icon {
@@ -144,7 +145,7 @@ RegisterStyleOverride(
         display: block;
         height: 32px;
         width: 4px;
-        background: var(--leo-color-text-interactive);
+        background: linear-gradient(96.98deg, #27a348 0%, #27c5a1 78.13%);
         border-radius: 0px 2px 2px 0px;
       }
 
@@ -154,7 +155,7 @@ RegisterStyleOverride(
         }
 
         a:hover, iron-icon:hover {
-          color: #A6ABE9 !important;
+          color: #47d789 !important;
         }
       }
 
@@ -242,7 +243,7 @@ RegisterPolymerTemplateModifications({
       'content-big',
       'content',
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+    // appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
 
     // Add Shields item
     const shieldsEl = createMenuElement(
@@ -328,10 +329,10 @@ RegisterPolymerTemplateModifications({
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
     // Use per-channel logo image.
-    const icon = document.createElement('img')
-    icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
-    icon.setAttribute('width', '24px')
-    icon.setAttribute('height', '24px')
+    // const icon = document.createElement('img')
+    // icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+    // icon.setAttribute('width', '24px')
+    // icon.setAttribute('height', '24px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
@@ -346,7 +347,7 @@ RegisterPolymerTemplateModifications({
 
     parent.appendChild(newAboutEl)
     newAboutEl.appendChild(graphicsEl)
-    graphicsEl.appendChild(icon)
+    // graphicsEl.appendChild(icon)
     newAboutEl.appendChild(metaEl)
     metaEl.appendChild(menuLink)
     metaEl.appendChild(versionEl)

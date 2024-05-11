@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 import { PlatformContext } from '../lib/platform_context'
-import { LayoutManager } from './layout_manager'
 import { useActions, useRewardsData } from '../lib/redux_hooks'
-import { Settings } from './settings'
 import { AppErrorBoundary } from './app_error_boundary'
+import { LayoutManager } from './layout_manager'
+import { Settings } from './settings'
 
 import * as style from './app.style'
 

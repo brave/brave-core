@@ -6,7 +6,7 @@
   <part file="omnibox_pedal_ui_strings.grdp" />
 
   <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
-    <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
+    <ph name="ENGINE">$1<ex>Ping</ex></ph> Search
   </message>
   <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
     &lt;Type search term&gt;
@@ -65,7 +65,7 @@
   </if>
   <if expr="is_android">
     <message name="IDS_OMNIBOX_ON_CCT_EMPTY_HINT" desc="Hint text shown in the Omnibox on a Custom Tab." formatter_data="android_java">
-      Search the web in Brave
+      Search the web in Ping
     </message>
   </if>
   <message name="IDS_OMNIBOX_ADDITIONAL_TEXT_DASH_TEMPLATE" desc="The omnibox text when there is both traditional text (i.e., user text + inline autocompletion) and additional text (i.e. the default suggestion's URL when rich autocompleting a title) to display.">
@@ -87,13 +87,13 @@
     Google Docs
   </message>
   <message name="IDS_DRIVE_SUGGESTION_FORM" desc="Google Docs product name, for use in omnibox Form result descriptions.">
-    Brave Forms
+    Ping Forms
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_SPREADSHEET" desc="Brave Sheets product name, for use in omnibox Sheets result descriptions.">
-    Brave Sheets
+  <message name="IDS_DRIVE_SUGGESTION_SPREADSHEET" desc="Ping Sheets product name, for use in omnibox Sheets result descriptions.">
+    Ping Sheets
   </message>
-    <message name="IDS_DRIVE_SUGGESTION_PRESENTATION" desc="Brave Slides product name, for use in omnibox Slides result descriptions.">
-    Brave Slides
+    <message name="IDS_DRIVE_SUGGESTION_PRESENTATION" desc="Ping Slides product name, for use in omnibox Slides result descriptions.">
+    Ping Slides
   </message>
   <message name="IDS_DRIVE_SUGGESTION_GENERAL" desc="Google Drive product name, for use in general omnibox Drive file result descriptions.">
     Google Drive
@@ -109,12 +109,12 @@
   </message>
   <if expr="use_titlecase">
     <then>
-      <message name="IDS_ACCURACY_CHECK_VERBOSE_STATE" meaning="Text for feature that encourages the user to think about how accurate the content is" desc="This text appears in the address bar chip, which states the title of the feature shown in the page info bubble below (see screenshot). With this feature, the user will see a reminder on the page they're visiting that encourages the user to think about how accurate the content is. You may translate 'Accuracy' as 'Trustworthiness' or 'Reliability,' if those terms work better in your language. The 'Accuracy Check' is a noun; avoid translating this as an imperative command. Brave does not verify accuracy by providing this feature; avoid any translation that implies Brave or Brave verification.">
+      <message name="IDS_ACCURACY_CHECK_VERBOSE_STATE" meaning="Text for feature that encourages the user to think about how accurate the content is" desc="This text appears in the address bar chip, which states the title of the feature shown in the page info bubble below (see screenshot). With this feature, the user will see a reminder on the page they're visiting that encourages the user to think about how accurate the content is. You may translate 'Accuracy' as 'Trustworthiness' or 'Reliability,' if those terms work better in your language. The 'Accuracy Check' is a noun; avoid translating this as an imperative command. Ping does not verify accuracy by providing this feature; avoid any translation that implies Ping or Ping verification.">
         Accuracy Check
       </message>
     </then>
     <else>
-      <message name="IDS_ACCURACY_CHECK_VERBOSE_STATE" meaning="Text for feature that encourages the user to think about how accurate the content is" desc="This text appears in the  address bar chip, which states the title of the feature shown in the page info bubble below (see screenshot). With this feature, the user will see a reminder on the page they're visiting that encourages the user to think about how accurate the content is. You may translate 'Accuracy' as 'Trustworthiness' or 'Reliability,' if those terms work better in your language. The 'Accuracy Check' is a noun; avoid translating this as an imperative command. Brave does not verify accuracy by providing this feature; avoid any translation that implies Brave or Brave verification.">
+      <message name="IDS_ACCURACY_CHECK_VERBOSE_STATE" meaning="Text for feature that encourages the user to think about how accurate the content is" desc="This text appears in the  address bar chip, which states the title of the feature shown in the page info bubble below (see screenshot). With this feature, the user will see a reminder on the page they're visiting that encourages the user to think about how accurate the content is. You may translate 'Accuracy' as 'Trustworthiness' or 'Reliability,' if those terms work better in your language. The 'Accuracy Check' is a noun; avoid translating this as an imperative command. Ping does not verify accuracy by providing this feature; avoid any translation that implies Ping or Ping verification.">
         Accuracy check
       </message>
     </else>
@@ -129,13 +129,13 @@
     Resume your journey
   </message>
   <message name="IDS_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH_SUGGESTION_CONTENTS" desc="The button tooltip for the History Clusters omnibox action. Clicking this button takes users to a view of their browsing history related to the attached suggestion.">
-    Resume your journey to see relevant activity in your Brave history
+    Resume your journey to see relevant activity in your Ping history
   </message>
   <message name="IDS_ACC_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH_SUFFIX" desc="Suffix for spoken suggestion description with action button to explain keystroke used to Search History Clusters.">
-    <ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>dog food</ex></ph>, press Tab, then Enter to resume your journey and see relevant activity in your Brave history
+    <ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>dog food</ex></ph>, press Tab, then Enter to resume your journey and see relevant activity in your Ping history
   </message>
   <message name="IDS_ACC_OMNIBOX_ACTION_HISTORY_CLUSTERS_SEARCH" desc="Announcement when the Search History Clusters action button is focused.">
-    Resume your journey button, press Enter to resume your journey and see relevant activity in your Brave history
+    Resume your journey button, press Enter to resume your journey and see relevant activity in your Ping history
   </message>
 
   <!-- Omnibox Actions in Suggest. -->
@@ -277,7 +277,7 @@
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_HISTORY_KEYWORD" desc="The keyword required to trigger history search in keyword mode. This will be prepended with an '@'.">
     History
   </message>
-  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_TABS_NAME" desc="The name of the search engine to search through open Brave Tabs as it appears on chrome://settings/searchEngines.">
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_TABS_NAME" desc="The name of the search engine to search through open Ping Tabs as it appears on chrome://settings/searchEngines.">
     Tabs
   </message>
   <message name="IDS_SEARCH_ENGINES_STARTER_PACK_TABS_KEYWORD" desc="The keyword required to trigger tab search in keyword mode. This will be prepended with an '@'.">

@@ -3,7 +3,7 @@
 <grit-part>
   <if expr="not is_android">
     <message name="IDS_SYNC_BASIC_ENCRYPTION_DATA" desc="Text of the radio that when selected enables basic encryption.">
-      Encrypt synced passwords with your Brave sync chain
+      Encrypt synced passwords with your Ping sync chain
     </message>
     <message name="IDS_SYNC_DATATYPE_AUTOFILL" desc="Form Autofill items, one of the data types that we allow syncing.">
       Addresses and More

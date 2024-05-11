@@ -69,36 +69,36 @@
     <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect or create an account with one of our partners.
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
-    Send contributions with Brave Rewards
+    Send contributions with Ping Rewards
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
-    You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.
+    You'll be able to send on-demand contributions to your favorite creators with your Ping Rewards balance once you have a custodial account connected.
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
-      =1 {This month, you've visited # creator supported by Brave Rewards}
-      other {This month, you've visited # creators supported by Brave Rewards}
+      =1 {This month, you've visited # creator supported by Ping Rewards}
+      other {This month, you've visited # creators supported by Ping Rewards}
     }
   </message>
 
   <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
-    Using Brave Rewards helps support content creators, and lets you earn BAT.
+    Using Ping Rewards helps support content creators, and lets you earn BAT.
   </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
-    Brave Rewards
+    Ping Rewards
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
   </message>
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
-    This reflects your estimated earnings range for Brave Ads this month.
+    This reflects your estimated earnings range for Ping Ads this month.
   </message>
   <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
     How does it work?
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
-    Earn tokens for private ads you see in Brave
+    Earn tokens for private ads you see in Ping
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_TEXT" desc="">
     Support content creators and use your tokens to buy gift cards, exchange for other currencies, and more.
@@ -110,7 +110,7 @@
     Select your country
   </message>
   <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
-    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+    To continue using Ping Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards
@@ -130,7 +130,7 @@
     Unverified Creator
   </message>
   <message name="IDS_REWARDS_PANEL_UNVERIFIED_TEXT" desc="">
-    This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.
+    This creator is not yet verified with Ping Creators. You'll be able to send them contributions once they're verified.
   </message>
   <message name="IDS_REWARDS_PANEL_VERIFIED_CREATOR" desc="">
     Verified Creator
@@ -139,7 +139,7 @@
     Refresh creator verification status
   </message>
   <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
-    <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
+    <ph name="NAME">$1<ex>Ping</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
   </message>
   <message name="IDS_REWARDS_PANEL_ATTENTION" desc="">
     Attention
@@ -166,7 +166,7 @@
     Cancel
   </message>
   <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
-    Brave Rewards
+    Ping Rewards
   </message>
   <message name="IDS_REWARDS_PANEL_HEADER_TEXT" desc="">
     You are helping support content creators
@@ -229,7 +229,7 @@
 
   <!-- Adaptive captcha -->
   <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TEXT" desc="">
-    Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.
+    Looks like this is not working, Ping ads will remain paused. Contact us if you need help with the captcha.
   </message>
   <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TITLE" desc="">
     Max attempts exceeded
@@ -238,7 +238,7 @@
     Solved!
   </message>
   <message name="IDS_REWARDS_CAPTCHA_SOLVED_TEXT" desc="">
-    Ads and earnings will now resume. Thanks for helping us protect Brave Rewards and privacy-based ads.
+    Ads and earnings will now resume. Thanks for helping us protect Ping Rewards and privacy-based ads.
   </message>
   <message name="IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT" desc="">
     Contact support
@@ -258,7 +258,7 @@
     Continue
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">
-    Earn tokens for private ads you see in Brave
+    Earn tokens for private ads you see in Ping
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
     Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
@@ -270,16 +270,16 @@
     Something went wrong
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER_DISABLED" desc="">
-    Brave Rewards not available
+    Ping Rewards not available
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT" desc="">
-    Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
+    Unfortunately, there was an error while trying to set up Ping Rewards. Please try again.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY" desc="">
     Unfortunately, there was an error while trying to set your country. Please try again.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
-    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+    New signups for Ping Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
     Select your country
@@ -291,7 +291,7 @@
     Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_BRAVE_REWARDS_WORK" desc="">
-    How does Brave Rewards work?
+    How does Ping Rewards work?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
     Select your country so we can show you the right options and ads for your region.
@@ -311,10 +311,10 @@
 
   <!-- Rewards unsupported region notice -->
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
-    Sorry, Brave Rewards is not available
+    Sorry, Ping Rewards is not available
   </message>
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
-    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+    Unfortunately, it looks like you’re in a region where Ping Rewards is not available.
   </message>
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
     <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
@@ -353,10 +353,10 @@
     Updated Terms of Service
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
-    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Brave Rewards, which will disable the feature.
+    We’ve updated the Terms of Service for Ping Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Ping Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Ping Rewards, which will disable the feature.
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
-    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">$2</ph>
+    See <ph name="LINK_BEGIN">$1</ph>Ping Rewards Terms of Service<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
     I agree
@@ -370,7 +370,7 @@
     Set as monthly contribution
   </message>
   <message name="IDS_REWARDS_TIP_FEE_NOTICE" desc="">
-    Brave collects <ph name="FEE_PCT">$1</ph> of the sent amount as a processing fee.
+    Ping collects <ph name="FEE_PCT">$1</ph> of the sent amount as a processing fee.
   </message>
   <message name="IDS_REWARDS_TIP_SEND_FORM_TITLE" desc="">
     Support this creator
@@ -388,7 +388,7 @@
     Verified Creator
   </message>
   <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT" desc="">
-    This creator has registered with Brave and can receive contributions from Brave Rewards users.
+    This creator has registered with Ping and can receive contributions from Ping Rewards users.
   </message>
   <message name="IDS_REWARDS_TIP_MONTHLY_TOOLTIP_TEXT" desc="">
     Make this a monthly recurring contribution. You can cancel it at any time.
@@ -421,7 +421,7 @@
     Logged out of <ph name="PROVIDER">$1</ph>
   </message>
   <message name="IDS_REWARDS_TIP_RECONNECT_TEXT" desc="">
-    It looks like you're logged out of <ph name="PROVIDER">$1</ph> for Brave Rewards. Log in again to continue.
+    It looks like you're logged out of <ph name="PROVIDER">$1</ph> for Ping Rewards. Log in again to continue.
   </message>
   <message name="IDS_REWARDS_TIP_RECONNECT_WEB3_TEXT" desc="">
     You can also send crypto contributions to this creator by using your Web3 wallet.
@@ -433,7 +433,7 @@
     You don't have enough tokens
   </message>
   <message name="IDS_REWARDS_TIP_INSUFFICIENT_BALANCE_TEXT" desc="">
-    You can only send up to <ph name="AMOUNT">$1</ph> BAT using your Brave Rewards balance.
+    You can only send up to <ph name="AMOUNT">$1</ph> BAT using your Ping Rewards balance.
   </message>
   <message name="IDS_REWARDS_TIP_CONTRIBUTION_FAILED_TITLE" desc="">
     There was a problem sending your contribution
@@ -454,7 +454,7 @@
     Share your support
   </message>
   <message name="IDS_REWARDS_TIP_SHARE_TEXT" desc="">
-    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Brave Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
+    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Ping Browser! See how you can support your favorite creators and sites too: https://ping.com/rewards
   </message>
   <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE" desc="">
     An unexpected error has occurred
