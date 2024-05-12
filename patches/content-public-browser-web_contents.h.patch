@@ -1,0 +1,22 @@
+diff --git a/content/public/browser/web_contents.h b/content/public/browser/web_contents.h
+index 811fde7ff7d9eea62a368606bbfb646552e66793..48429906755fb1cd68714f16baa5183be0639db2 100644
+--- a/content/public/browser/web_contents.h
++++ b/content/public/browser/web_contents.h
+@@ -28,6 +28,7 @@
+ #include "cc/input/browser_controls_state.h"
+ #include "content/common/content_export.h"
+ #include "content/public/browser/invalidate_type.h"
++#include "content/public/browser/media_player_id.h"
+ #include "content/public/browser/mhtml_generation_result.h"
+ #include "content/public/browser/navigation_controller.h"
+ #include "content/public/browser/page.h"
+@@ -1532,6 +1533,9 @@ class WebContents : public PageNavigator,
+   virtual BackForwardTransitionAnimationManager*
+   GetBackForwardTransitionAnimationManager() = 0;
+ 
++  virtual base::flat_map<MediaPlayerId, std::pair<GURL, bool>>
++  GetLoadedUrlByMediaPlayer() = 0;
++
+  private:
+   // This interface should only be implemented inside content.
+   friend class WebContentsImpl;

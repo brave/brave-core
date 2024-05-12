@@ -1,0 +1,22 @@
+diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
+index faaa0345e58baadb8d94a11cf9e28bd11adc0536..bff00dd54f999572978e7840032ba0c35266860e 100644
+--- a/content/browser/web_contents/web_contents_impl.h
++++ b/content/browser/web_contents/web_contents_impl.h
+@@ -51,6 +51,7 @@
+ #include "content/common/content_export.h"
+ #include "content/public/browser/fullscreen_types.h"
+ #include "content/public/browser/global_routing_id.h"
++#include "content/public/browser/media_player_id.h"
+ #include "content/public/browser/media_stream_request.h"
+ #include "content/public/browser/mhtml_generation_result.h"
+ #include "content/public/browser/web_contents.h"
+@@ -938,6 +939,9 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+       blink::mojom::MediaStreamType type,
+       base::OnceCallback<void(std::vector<std::string>)> callback) override;
+ 
++  base::flat_map<MediaPlayerId, std::pair<GURL, bool>>
++  GetLoadedUrlByMediaPlayer() override;
++
+   // NavigatorDelegate ---------------------------------------------------------
+ 
+   void DidStartNavigation(NavigationHandle* navigation_handle) override;

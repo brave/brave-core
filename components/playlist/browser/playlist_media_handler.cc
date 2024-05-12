@@ -63,10 +63,10 @@ void PlaylistMediaHandler::OnMediaDetected(
   auto url = web_contents->GetLastCommittedURL();
   std::visit(
       base::Overloaded{[&](OnceCallback& on_media_detected_callback) {
-                         if (on_media_detected_callback) {
-                           std::move(on_media_detected_callback)
-                               .Run(std::move(url), std::move(items));
-                         }
+                        //  if (on_media_detected_callback) {
+                        //    std::move(on_media_detected_callback)
+                        //        .Run(std::move(url), std::move(items));
+                        //  }
                        },
                        [&](RepeatingCallback& on_media_detected_callback) {
                          on_media_detected_callback.Run(std::move(url),

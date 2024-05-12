@@ -1,0 +1,56 @@
+diff --git a/content/browser/media/media_web_contents_observer.cc b/content/browser/media/media_web_contents_observer.cc
+index 8800516e7f5c65be740445cb1d324b49b029c798..38efb960e9a394d5947e75b0b489d6a4ba099b8e 100644
+--- a/content/browser/media/media_web_contents_observer.cc
++++ b/content/browser/media/media_web_contents_observer.cc
+@@ -7,6 +7,7 @@
+ #include <memory>
+ #include <tuple>
+ 
++#include "base/containers/contains.h"
+ #include "base/debug/crash_logging.h"
+ #include "base/debug/dump_without_crashing.h"
+ #include "base/functional/bind.h"
+@@ -220,6 +221,20 @@ void MediaWebContentsObserver::RenderFrameDeleted(
+   per_frame_factory_.erase(render_frame_host);
+ }
+ 
++base::flat_map<MediaPlayerId, std::pair<GURL, bool>>
++MediaWebContentsObserver::GetLoadedUrlByMediaPlayer() const {
++  base::flat_map<MediaPlayerId, std::pair<GURL, bool>> urls;
++
++  for (auto& observer_host : media_player_observer_hosts_) {
++    urls.emplace(std::piecewise_construct,
++                 std::forward_as_tuple(observer_host.first),
++                 std::forward_as_tuple(observer_host.second->GetLoadedUrl(),
++                                       observer_host.second->IsMse()));
++  }
++
++  return urls;
++}
++
+ void MediaWebContentsObserver::MaybeUpdateAudibleState() {
+   AudioStreamMonitor* audio_stream_monitor =
+       web_contents_impl()->audio_stream_monitor();
+@@ -577,6 +592,22 @@ void MediaWebContentsObserver::MediaPlayerObserverHostImpl::
+       ->OnVideoVisibilityChanged(media_player_id_, meets_visibility_threshold);
+ }
+ 
++void MediaWebContentsObserver::MediaPlayerObserverHostImpl::OnMediaLoaded(
++    const GURL& url,
++    bool is_mse) {
++  url_ = url;
++  is_mse_ = is_mse;
++}
++
++const GURL&
++MediaWebContentsObserver::MediaPlayerObserverHostImpl::GetLoadedUrl() const {
++  return url_;
++}
++
++bool MediaWebContentsObserver::MediaPlayerObserverHostImpl::IsMse() const {
++  return is_mse_;
++}
++
+ bool MediaWebContentsObserver::IsMediaPlayerRemoteAvailable(
+     const MediaPlayerId& player_id) {
+   return media_player_remotes_.contains(player_id);
