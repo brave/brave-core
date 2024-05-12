@@ -16,7 +16,7 @@ import frecencySelectedDark from './assets/frecency-selected-dark.svg'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.svg'
 
 import CheckedCircle from './assets/checked-circle.svg'
-import { color, effect, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, gradient, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
@@ -328,15 +328,14 @@ export const StyledTopSitesCustomizationSettingsOption = styled('button') <{}>`
   width: calc(50% - var(--widget-gap) / 2);
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: ${spacing.xs};
   border: unset;
+  border-radius: ${radius.m};
   outline: unset;
   background: inherit;
 
   &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
+    box-shadow: ${effect.focusState};
   }
 `
 
