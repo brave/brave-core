@@ -82,6 +82,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   const CreativeSetConversionInfo creative_set_conversion =
       test::BuildCreativeSetConversion(
           ad_3.creative_set_id,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://www.brave.com/signup/*",
           /*observation_window=*/base::Days(30));
   creative_set_conversions.push_back(creative_set_conversion);

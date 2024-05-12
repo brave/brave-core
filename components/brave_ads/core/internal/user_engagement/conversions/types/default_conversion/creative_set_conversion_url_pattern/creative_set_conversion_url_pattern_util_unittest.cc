@@ -20,6 +20,7 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
 
@@ -34,6 +35,7 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
 

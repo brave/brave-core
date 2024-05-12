@@ -141,6 +141,9 @@
                       "observationWindow"
                     ],
                     "properties": {
+                      "urlPatternId": {
+                        "type": "string"
+                      },
                       "urlPattern": {
                         "type": "string"
                       },

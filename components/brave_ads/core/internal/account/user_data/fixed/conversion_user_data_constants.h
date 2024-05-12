@@ -12,6 +12,8 @@ inline constexpr char kConversionKey[] = "conversion";
 
 inline constexpr char kConversionActionTypeKey[] = "action";
 
+inline constexpr char kConversionUrlPatternIdKey[] = "urlPatternId";
+
 inline constexpr char kVerifiableConversionEnvelopeKey[] = "envelope";
 inline constexpr char kVerifiableConversionEnvelopeAlgorithmKey[] = "alg";
 inline constexpr char kVerifiableConversionEnvelopeCipherTextKey[] =

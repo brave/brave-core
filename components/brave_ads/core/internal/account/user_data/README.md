@@ -10,10 +10,10 @@ Included in the confirmation payload for non-Brave Rewards and Brave Rewards use
 
 | user data  | optional  | mutable  | description  |
 |---|---|---|---|
-| conversion  | yes  | no  | Conversion action and encrypted verifiable envelope.  |
+| conversion  | yes  | no  | Conversion url pattern name, action and verifiable envelope.  |
 | httpResponseStatus  | yes  | no  | Whether the navigation committed an error page.  |
 
-### Additional User Data Submitted for Brave Rewards Users
+### Additional User Data Submitted when Redeeming Anaonymous Confirmation for Brave Rewards Users
 
 Should only be included in the confirmation payload for users who have joined Brave Rewards.
 
@@ -23,7 +23,6 @@ Should only be included in the confirmation payload for users who have joined Br
 | catalog  | no  | no  |  Catalog identifier.  |
 | createdAtTimestamp  | no  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp.  |
 | diagnosticId  | yes  | yes  | Diagnostic id from [brave://rewards-internals](brave://rewards-internals) to help diagnose issues.  |
-| httpResponseStatus  | yes  | no  | Whether the navigation committed an error page.  |
 | locale  | yes  | no  | Privacy-preserving operating system locale  |
 | platform  | no  | no  | Operating system.  |
 | rotatingHash  | yes  | no  | Privacy-preserving time-based rotating hash.  |

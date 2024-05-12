@@ -33,19 +33,22 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
+      BuildConversion(ad_event, /*url_pattern_id=*/"xyzzy-thud",
+                      /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
-                    {
-                      "conversion": [
-                        {
-                          "action": "view"
-                        }
-                      ]
-                    })"),
-            BuildConversionUserData(conversion));
+      R"(
+          {
+            "conversion": [
+              {
+                "urlPatternId": "xyzzy-thud"
+              },
+              {
+                "action": "view"
+              }
+            ]
+          })"), BuildConversionUserData(conversion));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
@@ -53,10 +56,10 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   const AdInfo ad =
       test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
+      ad_event, /*url_pattern_id=*/"xyzzy-thud",
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
 
@@ -65,7 +68,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   ASSERT_TRUE(
       base::JSONWriter::Write(BuildConversionUserData(conversion), &json));
   const std::string pattern =
-      R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
+      R"({"conversion":\[{"urlPatternId":"xyzzy-thud"},{"action":"view"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
   EXPECT_TRUE(RE2::FullMatch(json, pattern));
 }
 
@@ -79,19 +82,22 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
+      BuildConversion(ad_event, /*url_pattern_id=*/"xyzzy-thud",
+                      /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
-                    {
-                      "conversion": [
-                        {
-                          "action": "view"
-                        }
-                      ]
-                    })"),
-            BuildConversionUserData(conversion));
+      R"(
+          {
+            "conversion": [
+              {
+                "urlPatternId": "xyzzy-thud"
+              },
+              {
+                "action": "view"
+              }
+            ]
+          })"), BuildConversionUserData(conversion));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
@@ -104,7 +110,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
+      ad_event, /*url_pattern_id=*/"xyzzy-thud",
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
 
@@ -113,7 +119,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   ASSERT_TRUE(
       base::JSONWriter::Write(BuildConversionUserData(conversion), &json));
   const std::string pattern =
-      R"({"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
+      R"({"conversion":\[{"urlPatternId":"xyzzy-thud"},{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}]})";
   EXPECT_TRUE(RE2::FullMatch(json, pattern));
 }
 

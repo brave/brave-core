@@ -29,6 +29,7 @@ constexpr const char* kRequiredConversionAttributes[] = {
     "data-conversion-observation-window-value"};
 
 constexpr const char* kOptionalConversionAttributes[] = {
+    "data-conversion-url-pattern-id-value",
     "data-conversion-advertiser-public-key-value"};
 
 void CheckRequiredAttributes(
@@ -46,10 +47,11 @@ void CheckRequiredAttributes(
 
 void CheckConversionAttributes(
     const mojom::SearchResultAdInfoPtr& search_result_ad) {
-  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value6");
+  EXPECT_EQ(search_result_ad->conversion->url_pattern_id, "value6");
+  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
   EXPECT_EQ(
       search_result_ad->conversion->verifiable_advertiser_public_key_base64,
-      "value7");
+      "value8");
   EXPECT_EQ(search_result_ad->conversion->observation_window, base::Days(1));
 }
 
@@ -95,7 +97,8 @@ TEST(SearchResultAdConvertingTest, EmptyConversionAdvertiserPublicKeyValue) {
 
   CheckRequiredAttributes(search_result_ad);
 
-  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value6");
+  EXPECT_EQ(search_result_ad->conversion->url_pattern_id, "value6");
+  EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
   EXPECT_FALSE(
       search_result_ad->conversion->verifiable_advertiser_public_key_base64);
   EXPECT_EQ(search_result_ad->conversion->observation_window, base::Days(1));

@@ -12,30 +12,34 @@ namespace brave_ads::test {
 
 CreativeSetConversionInfo BuildCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window) {
   return BuildVerifiableCreativeSetConversion(
-      creative_set_id, url_pattern, observation_window,
+      creative_set_id, url_pattern_id, url_pattern, observation_window,
       /*verifiable_advertiser_public_key_base64=*/std::nullopt);
 }
 
 void BuildAndSaveCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window) {
   BuildAndSaveVerifiableCreativeSetConversion(
-      creative_set_id, url_pattern, observation_window,
+      creative_set_id, url_pattern_id, url_pattern, observation_window,
       /*verifiable_advertiser_public_key_base64=*/std::nullopt);
 }
 
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
     const std::optional<std::string>& verifiable_advertiser_public_key_base64) {
   CreativeSetConversionInfo creative_set_conversion;
 
   creative_set_conversion.id = creative_set_id;
+  creative_set_conversion.url_pattern_id = url_pattern_id;
   creative_set_conversion.url_pattern = url_pattern;
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       verifiable_advertiser_public_key_base64;
@@ -48,6 +52,7 @@ CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
 
 void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     const base::TimeDelta observation_window,
     const std::optional<std::string>& verifiable_advertiser_public_key_base64) {
@@ -55,7 +60,7 @@ void BuildAndSaveVerifiableCreativeSetConversion(
 
   const CreativeSetConversionInfo creative_set_conversion =
       BuildVerifiableCreativeSetConversion(
-          creative_set_id, url_pattern, observation_window,
+          creative_set_id, url_pattern_id, url_pattern, observation_window,
           verifiable_advertiser_public_key_base64);
   creative_set_conversions.push_back(creative_set_conversion);
 

@@ -246,6 +246,8 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
     EXPECT_TRUE(search_result_ad->conversion);
+    EXPECT_EQ(search_result_ad->conversion->url_pattern_id,
+              base::StrCat({"data-conversion-url-pattern-id-value", index}));
     EXPECT_EQ(search_result_ad->conversion->url_pattern,
               base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {

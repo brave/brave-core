@@ -20,6 +20,7 @@ constexpr char kHeadlineText[] = "headline";
 constexpr char kDescription[] = "description";
 constexpr int kValue = 1.0;
 
+constexpr char kConversionUrlPatternId[] = "1";
 constexpr char kConversionUrlPattern[] = "https://brave.com/*";
 constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 
@@ -50,6 +51,7 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
   CHECK(ad);
 
   ad->conversion = mojom::ConversionInfo::New();
+  ad->conversion->url_pattern_id = kConversionUrlPatternId;
   ad->conversion->url_pattern = kConversionUrlPattern;
   ad->conversion->verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;

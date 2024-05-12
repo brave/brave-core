@@ -21,6 +21,8 @@ std::optional<CreativeSetConversionInfo> BuildCreativeSetConversion(
 
   creative_set_conversion.id = ad_mojom->creative_set_id;
 
+  creative_set_conversion.url_pattern_id = ad_mojom->conversion->url_pattern_id;
+
   creative_set_conversion.url_pattern = ad_mojom->conversion->url_pattern;
 
   creative_set_conversion.verifiable_advertiser_public_key_base64 =

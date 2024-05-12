@@ -37,6 +37,7 @@ struct ConversionInfo final {
   std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
+  std::string url_pattern_id;
   ConversionActionType action_type = ConversionActionType::kUndefined;
   std::optional<VerifiableConversionInfo> verifiable;
 };

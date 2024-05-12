@@ -166,6 +166,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
 
   CatalogConversionInfo catalog_conversion;
   catalog_conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
+  catalog_conversion.url_pattern_id = "xyzzy-thud";
   catalog_conversion.url_pattern = "https://www.brave.com/1/*";
   catalog_conversion.observation_window = base::Days(30);
   catalog_conversion.expire_at =
@@ -362,13 +363,23 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   // Conversions
   CatalogConversionList catalog_conversions;
 
-  CatalogConversionInfo catalog_conversion;
-  catalog_conversion.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
-  catalog_conversion.url_pattern = "https://www.brave.com/2/*";
-  catalog_conversion.observation_window = base::Days(7);
-  catalog_conversion.expire_at =
-      DistantFuture() + catalog_conversion.observation_window;
-  catalog_conversions.push_back(catalog_conversion);
+  CatalogConversionInfo catalog_conversion_1;
+  catalog_conversion_1.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
+  catalog_conversion_1.url_pattern_id = "1";
+  catalog_conversion_1.url_pattern = "https://www.brave.com/1/*";
+  catalog_conversion_1.observation_window = base::Days(7);
+  catalog_conversion_1.expire_at =
+      DistantFuture() + catalog_conversion_1.observation_window;
+  catalog_conversions.push_back(catalog_conversion_1);
+
+  CatalogConversionInfo catalog_conversion_2;
+  catalog_conversion_2.creative_set_id = "741cd2ba-3100-45f2-be1e-acedd24e0067";
+  catalog_conversion_2.url_pattern_id = "2";
+  catalog_conversion_2.url_pattern = "https://www.brave.com/2/*";
+  catalog_conversion_2.observation_window = base::Days(3);
+  catalog_conversion_2.expire_at =
+      DistantFuture() + catalog_conversion_2.observation_window;
+  catalog_conversions.push_back(catalog_conversion_2);
 
   // Creative Sets
   CatalogCreativeSetList catalog_creative_sets;

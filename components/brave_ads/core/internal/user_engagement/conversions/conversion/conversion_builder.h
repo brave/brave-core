@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_BUILDER_H_
 
 #include <optional>
+#include <string>
 
 namespace brave_ads {
 
@@ -16,6 +17,7 @@ struct VerifiableConversionInfo;
 
 ConversionInfo BuildConversion(
     const AdEventInfo& ad_event,
+    const std::string& url_pattern_id,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion);
 
 }  // namespace brave_ads
