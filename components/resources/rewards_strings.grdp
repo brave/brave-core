@@ -454,7 +454,7 @@
     Share your support
   </message>
   <message name="IDS_REWARDS_TIP_SHARE_TEXT" desc="">
-    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Ping Browser! See how you can support your favorite creators and sites too: https://ping.com/rewards
+    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Ping Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
   </message>
   <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE" desc="">
     An unexpected error has occurred

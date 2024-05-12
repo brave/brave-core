@@ -26,19 +26,19 @@
       <message name="IDS_IPFS_INSTALLING" desc="Text of installing state">Installing IPFS...</message>
       <message name="IDS_IPFS_RUN_GC_BUTTON" desc="Text of garbage collection button on state">Perform a garbage collection sweep</message>
       <message name="IDS_IPFS_GC_ERROR" desc="Text of garbage collection error">Garbage collection error</message>
-      <message name="IDS_IPFS_PEERS_DETAILS_LINK" desc="Link to open details about peers on ping://ipfs.">
+      <message name="IDS_IPFS_PEERS_DETAILS_LINK" desc="Link to open details about peers on brave://ipfs.">
         (details)
       </message>
-      <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of ping://ipfs install and launch button.">
+      <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of brave://ipfs install and launch button.">
         Install and start
       </message>
-      <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on ping://ipfs.">
+      <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
         Learn more about IPFS and privacy
       </message>
       <message name="IDS_IPFS_ROTATE_IDENTITY_TITLE" desc="The title for the link to rotate identity on ipfs diagnostic page.">
         Manage Peer ID and IPNS keys
       </message>
-      <message name="IDS_IPFS_OPEN_WEBUI" desc="Title of ping://ipfs webui button">My Node</message>
+      <message name="IDS_IPFS_OPEN_WEBUI" desc="Title of brave://ipfs webui button">My Node</message>
     </if>
     <message name="IDS_IPFS_NODE_LAUNCH_ERROR" desc="Text of node launch error">An error occurred, please try to launch again</message>
     <message name="IDS_IPFS_NODE_INSTALLATION_ERROR" desc="Text of node installation error">An error occurred, please try to install the node again</message>
@@ -162,7 +162,7 @@
       IPFS node internal error
     </message>
     <message name="IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY" desc="The title for ips import error notification.">
-      The data was successfully uploaded but not moved to the ping-import directory. You can do this manually on the import settings page.
+      The data was successfully uploaded but not moved to the brave-import directory. You can do this manually on the import settings page.
     </message>
   </if>
 </grit-part>

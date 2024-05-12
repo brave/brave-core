@@ -20,6 +20,6 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_AI_CHAT=$enable_ai_chat",
     "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
-    "ENABLE_AI_CHAT_FEATURE_FLAG=true",
+    "ENABLE_AI_CHAT_FEATURE_FLAG=false",
   ]
 }

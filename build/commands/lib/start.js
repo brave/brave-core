@@ -10,7 +10,7 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
   config.update(options)
 
   let braveArgs = [
-    '--enable-logging',
+    '--enable-logging=stderr',
     '--v=' + options.v,
   ]
   if (options.vmodule) {

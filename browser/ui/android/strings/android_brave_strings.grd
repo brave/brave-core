@@ -405,7 +405,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         exchange
       </message>
       <message name="IDS_BRAVE_REWARDS_TIP_SUCCESS_TWEET" desc="Text of a tweet after tipping a verified creator.">
-        I just contributed <ph name="AMOUNT">%1$s<ex>ContributionAmount</ex></ph> BAT using the Ping Browser. See how you can support your favorite creators and sites too: https://ping.com/rewards
+        I just contributed <ph name="AMOUNT">%1$s<ex>ContributionAmount</ex></ph> BAT using the Ping Browser. See how you can support your favorite creators and sites too: https://brave.com/rewards
       </message>
       <message name="IDS_DE_AMP_SWITCH" desc="Switch to activate De-AMP feature">
         Auto-redirect AMP pages
@@ -813,7 +813,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
         Allows audio to play when you switch to another tab in Ping or another app or your device screen is off.
       </message>
-      <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in ping">
+      <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in brave">
         Open YouTube links in Ping
       </message>
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
@@ -1344,10 +1344,10 @@ Are you sure you want to do this?
         To sync passwords, please enable biometrics/passcode authentication on your Android device. This extra security measure helps keep your passwords safe.
       </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Ping privacy notice" translateable="false">
-        https://ping.com/privacy_android
+        https://brave.com/privacy_android
       </message>
       <message name="IDS_BRAVE_TERMS_OF_SERVICE_URL" desc="URL for Ping Terms of Service" translateable="false">
-        https://ping.com/terms_of_use
+        https://brave.com/terms_of_use
       </message>
       <message name="IDS_BRAVE_LICENSE_TEXT" desc="Title for Ping License">
         Ping License
@@ -1383,7 +1383,7 @@ Are you sure you want to do this?
         Pending Contribution
       </message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER_NOTIFICATION" desc="Notification text that tells user which publisher just verified">
-        Creator <ph name="PUBLISHER_NAME">%1$s<ex>ping.com</ex></ph> recently verified
+        Creator <ph name="PUBLISHER_NAME">%1$s<ex>brave.com</ex></ph> recently verified
       </message>
       <message name="IDS_TOKEN" desc="Text for token">
         token
@@ -1641,7 +1641,7 @@ Are you sure you want to do this?
         Ping works everywhere
       </message>
       <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
-        Download Ping at ping.com on your laptop or tablet for a faster and more private web
+        Download Ping at brave.com on your laptop or tablet for a faster and more private web
       </message>
       <message name="IDS_PRIVACY_PROTECTION" desc="Title for onboading bottomsheet.">
         Privacy protection

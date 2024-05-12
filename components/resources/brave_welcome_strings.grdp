@@ -73,7 +73,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE" desc="A footnote with a link to change settings.">
-  Change these choices at any time in Ping at <ph name="LINK_BEFORE1">$1</ph>ping://settings/privacy<ph name="LINK_AFTER2">$2</ph>.
+  Change these choices at any time in Ping at <ph name="LINK_BEFORE1">$1</ph>brave://settings/privacy<ph name="LINK_AFTER2">$2</ph>.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE" desc="A footnote with a link to Ping's privacy polcy.">

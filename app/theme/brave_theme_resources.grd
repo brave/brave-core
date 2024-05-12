@@ -29,38 +29,38 @@
       </if>
 
       <if expr="enable_ai_chat">
-        <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="ping/product_brave_leo.png" />
+        <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="brave/product_brave_leo.png" />
       </if>
 
       <if expr="enable_playlist_webui">
-        <structure type="chrome_scaled_image" name="IDR_PLAYLIST_DEFAULT_THUMBNAIL" file="ping/playlist_default_thumbnail.png" />
+        <structure type="chrome_scaled_image" name="IDR_PLAYLIST_DEFAULT_THUMBNAIL" file="brave/playlist_default_thumbnail.png" />
       </if>
 
       <if expr="not is_linux and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="ping/product_logo_32_beta.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="ping/product_logo_32_nightly.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="ping/product_logo_32_dev.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="ping/product_logo_32_development.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/product_logo_32_development.png" />
       </if>
       <if expr="is_linux">
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="ping/linux/product_logo_32_beta.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="ping/linux/product_logo_32_nightly.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="ping/linux/product_logo_32_dev.png" />
-        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="ping/linux/product_logo_32_development.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/linux/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/linux/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/linux/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/linux/product_logo_32_development.png" />
       </if>
 
       <if expr="toolkit_views">
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BOOKMARKS_PANEL_HEADER" file="ping/sidebar_bookmarks_panel_header.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT" file="ping/sidebar_item_highlight.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="ping/sidebar_item_highlight_right.png" />
-        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_PANEL_HEADER" file="ping/sidebar_reading_list_panel_header.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_BOOKMARKS_PANEL_HEADER" file="brave/sidebar_bookmarks_panel_header.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT" file="brave/sidebar_item_highlight.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_PANEL_HEADER" file="brave/sidebar_reading_list_panel_header.png" />
       </if>
       <if expr="enable_ipfs and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="ping/ipfs_logo.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="brave/ipfs_logo.png" />
       </if>
 
       <if expr="not is_android">
-        <structure type="chrome_scaled_image" name="IDR_TOR_WINDOW_FRAME_GRAPHIC" file="ping/tor_window_frame_graphic.png" />
+        <structure type="chrome_scaled_image" name="IDR_TOR_WINDOW_FRAME_GRAPHIC" file="brave/tor_window_frame_graphic.png" />
         <!-- Avatar icons -->
         <!-- Generated via zsh :
           > declare -i a=56
@@ -101,16 +101,16 @@
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_88" file="common/avatars/avatar_bonbon_royal.png" />
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_89" file="common/avatars/avatar_bonbon_ninja.png" />
 
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC" file="ping/brave_web_discovery_infobar_bg_graphic.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC_DARK" file="ping/brave_web_discovery_infobar_bg_graphic_dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_ICON" file="ping/brave_web_discovery_infobar_icon.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC" file="ping/brave_search_conversion_banner_graphic.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="ping/brave_search_conversion_banner_graphic_dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="ping/brave_search_logo_in_search_promotion.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC" file="brave/brave_web_discovery_infobar_bg_graphic.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC_DARK" file="brave/brave_web_discovery_infobar_bg_graphic_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_ICON" file="brave/brave_web_discovery_infobar_icon.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC" file="brave/brave_search_conversion_banner_graphic.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="brave/brave_search_conversion_banner_graphic_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
       </if>
 
       <if expr="enable_brave_player and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="ping/brave_player_action_icon.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
       </if>
     </structures>
   </release>

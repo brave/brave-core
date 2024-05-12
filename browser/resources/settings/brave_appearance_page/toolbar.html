@@ -51,18 +51,18 @@
 </settings-toggle-button>
 <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
 </settings-brave-appearance-bookmark-bar>
-<settings-toggle-button
+<!-- <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.today.should_show_toolbar_button}}"
   label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
-</settings-toggle-button>
-<template is="dom-if" if="[[isBraveRewardsSupported_()]]">
+</settings-toggle-button> -->
+<!-- <template is="dom-if" if="[[isBraveRewardsSupported_()]]">
   <settings-toggle-button
     class="cr-row"
     label="$i18n{braveRewardsShowBraveRewardsButtonLabel}"
     pref="{{prefs.brave.rewards.show_brave_rewards_button_in_location_bar}}">
   </settings-toggle-button>
-</template>
+</template> -->
 <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
   <settings-toggle-button id="showBraveWalletIconOnToolbar"
     class="cr-row"
@@ -70,11 +70,11 @@
     label="$i18n{showBravewalletIconOnToolbar}">
   </settings-toggle-button>
 </template>
-<settings-toggle-button
+<!-- <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.show_side_panel_button}}"
   label="$i18n{appearanceSettingsShowSidebarButton}">
-</settings-toggle-button>
+</settings-toggle-button> -->
 <if expr="enable_brave_vpn_wireguard">
   <template is="dom-if" if="[[showBraveVPNOption_()]]">
     <settings-toggle-button

@@ -763,7 +763,7 @@
       <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Connecting Ping Rewards to a bitFlyer account will let you earn BAT and withdraw your BAT earnings from Ping Rewards.</message>
 
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Ping Creator!</message>
-      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.ping.com to sign up today and start earning BAT from your fans and followers.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Ping supports YouTube, Twitch, Vimeo and more!</message>
 
       <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
@@ -782,7 +782,7 @@
       <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
 
       <!-- WebUI Ping Toolbar resources -->
-      <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the ping://wallets page">Wallet</message>
+      <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Wallet</message>
       <!-- WebUI Crypto Wallets resources -->
       <message name="IDS_BRAVE_WALLET_WELCOME" desc="">Welcome to Ping Crypto Wallets</message>
       <message name="IDS_BRAVE_WALLET_DISCLOSURE_ONE" desc="">Crypto Wallets lets you work with cryptocurrency and related assets in Ping. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</message>
