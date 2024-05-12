@@ -11,17 +11,21 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
+#include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_frame.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/window_open_disposition.h"
 
 class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
  public:
@@ -328,4 +332,26 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
                 ->GetController()
                 .GetVisibleEntry()
                 ->GetVirtualURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       ClosingSharedPinnedTab) {
+  // Precondition
+  Browser* browser = CreateNewBrowser();
+  std::unique_ptr<Browser> unq_browser(browser);
+  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  BrowserView* browser_view = new BrowserView(std::move(unq_browser));
+  BrowserFrame* browser_frame = new BrowserFrame(browser_view);
+
+  // Test sets the default tab as pinned,
+  // runs ExecuteCommand for closing a shared pinned tab
+  // and verifies that the tab isn't closed
+  tab_strip_model->SetTabPinned(0, /* pinned= */ true);
+  BraveBrowserFrameMac* brave_browser_frame_mac =
+      new BraveBrowserFrameMac(browser_frame, browser_view);
+  brave_browser_frame_mac->ExecuteCommand(IDC_CLOSE_TAB,
+                                          WindowOpenDisposition::CURRENT_TAB,
+                                          /* is_before_first_responder=*/true);
+
+  EXPECT_TRUE(tab_strip_model->count() == 1);
 }
