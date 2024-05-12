@@ -1,5 +1,5 @@
 diff --git a/media/mojo/mojom/media_player.mojom b/media/mojo/mojom/media_player.mojom
-index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..da5ef105d1a7d6a83c2daa898c222b8c7e20f598 100644
+index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..1bf0b27b2bbeaf9bba9166c9f6e87372630589be 100644
 --- a/media/mojo/mojom/media_player.mojom
 +++ b/media/mojo/mojom/media_player.mojom
 @@ -8,6 +8,7 @@ import "media/mojo/mojom/media_types.mojom";
@@ -19,3 +19,13 @@ index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..da5ef105d1a7d6a83c2daa898c222b8c
  };
  
  // Implemented by the MediaWebContentsObserver. The remote lives in the renderer
+@@ -114,6 +117,9 @@ interface MediaPlayerObserver {
+ 
+   // Notifies that the video visibility has changed.
+   OnVideoVisibilityChanged(bool meets_visibility_threshold);
++
++  // Notifies that the video visibility has changed.
++  OnMediaLoaded(url.mojom.Url url, bool is_mse);
+ };
+ 
+ // Implemented by MediaWebContentsObserver::MediaPlayerHostImpl in the browser

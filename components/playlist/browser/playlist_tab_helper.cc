@@ -24,6 +24,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/media_session.h"
 #include "content/public/browser/media_session_service.h"
 #include "content/public/browser/navigation_handle.h"
@@ -89,10 +90,27 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   DCHECK(items.size());
   is_adding_items_ = true;
 
-  content::MediaSession::Get(web_contents())
-      ->GetLoadedUrl(base::BindOnce(&PlaylistTabHelper::OnGetLoadedUrl,
-                                    weak_ptr_factory_.GetWeakPtr(),
-                                    std::move(items)));
+  auto callback =
+      base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this));
+
+  auto player_id = content::MediaSession::Get(web_contents())->GetActivePlayerId();
+  if (!player_id) {
+    return std::move(callback).Run({});
+  }
+
+  auto urls = web_contents()->GetLoadedUrlByMediaPlayer();
+  if (!urls.contains(*player_id)) {
+    return std::move(callback).Run({});
+  }
+
+  auto& url = urls.at(*player_id);
+  CHECK(items.size() == 1);
+  items[0]->media_path = items[0]->media_source = url.first;
+  items[0]->is_blob_from_media_source = url.second;
+
+  CHECK(service_);
+  service_->AddMediaFiles(std::move(items), kDefaultPlaylistID,
+                          /* can_cache= */ true, std::move(callback));
 }
 
 void PlaylistTabHelper::RemoveItems(std::vector<mojom::PlaylistItemPtr> items) {
@@ -498,19 +516,6 @@ void PlaylistTabHelper::OnGetLoadedUrl(
     std::vector<mojom::PlaylistItemPtr> items,
     const GURL& url,
     bool is_media_source) {
-  auto callback =
-      base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this));
-  if (url.is_empty()) {
-    return std::move(callback).Run({});
-  }
-
-  CHECK(items.size() == 1);
-  items[0]->media_path = items[0]->media_source = url;
-  items[0]->is_blob_from_media_source = is_media_source;
-
-  CHECK(service_);
-  service_->AddMediaFiles(std::move(items), kDefaultPlaylistID,
-                          /* can_cache= */ true, std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);

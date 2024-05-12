@@ -52,6 +52,8 @@ class PlaylistBackgroundWebContentsHelper final
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   raw_ptr<PlaylistService> service_;
 

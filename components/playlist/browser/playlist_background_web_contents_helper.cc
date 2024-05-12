@@ -10,9 +10,12 @@
 #include "base/logging.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "content/public/browser/media_player_id.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "services/media_session/public/mojom/media_session.mojom.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "url/gurl.h"
 
@@ -66,6 +69,20 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
       service_->GetMediaSourceAPISuppressorScript());
   frame_observer_config->AddMediaDetector(
       service_->GetMediaDetectorScript(url));
+}
+
+void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  auto urls = web_contents()->GetLoadedUrlByMediaPlayer();
+  if (!urls.empty()) {
+    DVLOG(-1) << "Lofasz: "
+              << std::max_element(urls.begin(), urls.end(),
+                                  [](const auto& e1, const auto& e2) {
+                                    return e1.second.first.spec().size() <
+                                           e2.second.first.spec().size();
+                                  })
+                     ->second.first;
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);

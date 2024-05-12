@@ -1,18 +1,19 @@
 diff --git a/content/browser/media/session/media_session_player_observer.h b/content/browser/media/session/media_session_player_observer.h
-index 4d5e6d64f308154358d46926b983e081777eace8..bc809a504e4536a189ab51817dcfd7a2946a600d 100644
+index 4d5e6d64f308154358d46926b983e081777eace8..88f97f81f8901edb07d84952694709f92bef40a1 100644
 --- a/content/browser/media/session/media_session_player_observer.h
 +++ b/content/browser/media/session/media_session_player_observer.h
-@@ -7,7 +7,9 @@
+@@ -7,7 +7,10 @@
  
  #include <optional>
  
 +#include "base/functional/callback_forward.h"
  #include "base/time/time.h"
++#include "content/public/browser/media_player_id.h"
 +#include "url/gurl.h"
  
  namespace media {
  enum class MediaContentType;
-@@ -60,6 +62,9 @@ class MediaSessionPlayerObserver {
+@@ -60,6 +63,9 @@ class MediaSessionPlayerObserver {
    // The given |player_id| has been requested to start Media Remoting.
    virtual void OnRequestMediaRemoting(int player_id) = 0;
  
@@ -22,3 +23,12 @@ index 4d5e6d64f308154358d46926b983e081777eace8..bc809a504e4536a189ab51817dcfd7a2
    // Returns the position for |player_id|.
    virtual std::optional<media_session::MediaPosition> GetPosition(
        int player_id) const = 0;
+@@ -91,6 +97,8 @@ class MediaSessionPlayerObserver {
+   // Returns the RenderFrameHost this player observer belongs to. Returns
+   // nullptr if unavailable.
+   virtual RenderFrameHost* render_frame_host() const = 0;
++
++  virtual MediaPlayerId GetMediaPlayerId() const = 0;
+ };
+ 
+ }  // namespace content
