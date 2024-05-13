@@ -8,11 +8,14 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveHomepageManagerClassAdapter extends BraveClassVisitor {
-    static String sHomepageManagerClassName = "org/chromium/chrome/browser/homepage/HomepageManager";
-    static String sBraveHomepageManagerClassName = "org/chromium/chrome/browser/homepage/BraveHomepageManager";
+    static String sHomepageManagerClassName =
+            "org/chromium/chrome/browser/homepage/HomepageManager";
+    static String sBraveHomepageManagerClassName =
+            "org/chromium/chrome/browser/homepage/BraveHomepageManager";
 
     public BraveHomepageManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeMethodOwner(sHomepageManagerClassName, "shouldCloseAppWithZeroTabs", sBraveHomepageManagerClassName);
+
+        redirectConstructor(sHomepageManagerClassName, sBraveHomepageManagerClassName);
     }
 }
