@@ -370,28 +370,30 @@ import os
 }
 
 extension GroupedAdBlockEngine.Source {
-  func blocklistType(isAlwaysAggressive: Bool) -> ContentBlockerManager.BlocklistType? {
+  /// For some sources we don't support content blockers because of various reasons
+  private var allowContentBlockers: Bool {
     switch self {
-    case .filterList(let componentId, let uuid):
-      guard uuid != AdblockFilterListCatalogEntry.defaultFilterListComponentUUID else {
-        // For now we don't compile this into content blockers because we use the one coming from slim list
-        // We might change this in the future as it ends up with 95k items whereas the limit is 150k.
-        // So there is really no reason to use slim list except perhaps for performance which we need to test out.
-        return nil
-      }
-
-      return .filterList(componentId: componentId, isAlwaysAggressive: isAlwaysAggressive)
-    case .filterListURL(let uuid):
-      return .filterListURL(uuid: uuid)
-    case .filterListText:
-      return .filterListText
+    case .filterList(let componentId):
+      return !AdblockFilterListCatalogEntry.disabledContentBlockersComponentIDs.contains(
+        componentId
+      )
+    case .filterListURL, .filterListText:
+      return true
     }
+  }
+
+  /// Return the blocklist type for this source if it is supported
+  func blocklistType(
+    engineType: GroupedAdBlockEngine.EngineType
+  ) -> ContentBlockerManager.BlocklistType? {
+    guard allowContentBlockers else { return nil }
+    return .engineSource(self, engineType: engineType)
   }
 }
 
 extension AdblockFilterListCatalogEntry {
   var engineSource: GroupedAdBlockEngine.Source {
-    return .filterList(componentId: componentId, uuid: uuid)
+    return .filterList(componentId: componentId)
   }
 }
 

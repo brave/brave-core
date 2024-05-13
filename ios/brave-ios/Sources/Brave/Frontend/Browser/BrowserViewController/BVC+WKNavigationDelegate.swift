@@ -527,7 +527,7 @@ extension BrowserViewController: WKNavigationDelegate {
         )
 
         // Load rule lists
-        let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
         tab?.contentBlocker.set(ruleLists: ruleLists)
       }
 

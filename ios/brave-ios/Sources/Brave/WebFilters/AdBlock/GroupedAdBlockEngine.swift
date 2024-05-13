@@ -13,13 +13,13 @@ import os.log
 /// and ensures information is always returned on the correct thread on the engine.
 public actor GroupedAdBlockEngine {
   public enum Source: Codable, Hashable, CustomDebugStringConvertible {
-    case filterList(componentId: String, uuid: String)
+    case filterList(componentId: String)
     case filterListURL(uuid: String)
     case filterListText
 
     public var debugDescription: String {
       switch self {
-      case .filterList(let componentId, _): return componentId
+      case .filterList(let componentId): return componentId
       case .filterListURL(let uuid): return uuid
       case .filterListText: return "filter-list-text"
       }

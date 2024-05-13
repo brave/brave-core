@@ -62,18 +62,21 @@ final class GroupedAdBlockEngineTests: XCTestCase {
     var engine: AdblockEngine? = AdblockEngine()
     weak var weakEngine: AdblockEngine? = engine
     let localFileURL = Bundle.module.url(
-      forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt"
+      forResource: "iodkpdagapdfkphljnddpjlldadblomo",
+      withExtension: "txt"
     )!
 
     let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
-      version: "bundled"
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+      version: "0"
     )
-    
+
     var cachedEngine: GroupedAdBlockEngine? = GroupedAdBlockEngine(
       engine: engine!,
       group: GroupedAdBlockEngine.FilterListGroup(
-        infos: [filterListInfo], localFileURL: localFileURL, fileType: .text
+        infos: [filterListInfo],
+        localFileURL: localFileURL,
+        fileType: .text
       ),
       type: .standard
     )
@@ -91,17 +94,21 @@ final class GroupedAdBlockEngineTests: XCTestCase {
 
   func testCompilationofResources() throws {
     let localFileURL = Bundle.module.url(
-      forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt"
+      forResource: "iodkpdagapdfkphljnddpjlldadblomo",
+      withExtension: "txt"
     )!
     let textFilterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),      
-      version: "bundled"
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+      version: "0"
     )
     let resourcesInfo = GroupedAdBlockEngine.ResourcesInfo(
-      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!, version: "bundled"
+      localFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!,
+      version: "bundled"
     )
     let group = GroupedAdBlockEngine.FilterListGroup(
-      infos: [textFilterListInfo], localFileURL: localFileURL, fileType: .text
+      infos: [textFilterListInfo],
+      localFileURL: localFileURL,
+      fileType: .text
     )
 
     let expectation = expectation(description: "Compiled engine resources")
@@ -119,7 +126,10 @@ final class GroupedAdBlockEngineTests: XCTestCase {
           let frameURL = URL(string: "https://stackoverflow.com")!
 
           let sameDomainTypes = try await engine.makeEngineScriptTypes(
-            frameURL: frameURL, isMainFrame: true, isDeAmpEnabled: false, index: 0
+            frameURL: frameURL,
+            isMainFrame: true,
+            isDeAmpEnabled: false,
+            index: 0
           )
 
           // We should have no scripts injected
@@ -128,7 +138,8 @@ final class GroupedAdBlockEngineTests: XCTestCase {
           if await engine.group.infos.contains(textFilterListInfo) {
             // This engine file contains some scriplet rules so we can test this part is working
             let crossDomainTypes = try await engine.makeEngineScriptTypes(
-              frameURL: URL(string: "https://reddit.com")!, isMainFrame: true,
+              frameURL: URL(string: "https://reddit.com")!,
+              isMainFrame: true,
               isDeAmpEnabled: false,
               index: 0
             )
@@ -157,7 +168,10 @@ final class GroupedAdBlockEngineTests: XCTestCase {
   func testPerformance() throws {
     // Given
     // Ad block data and an engine manager
-    let sampleFilterListURL = Bundle.module.url(forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt")!
+    let sampleFilterListURL = Bundle.module.url(
+      forResource: "iodkpdagapdfkphljnddpjlldadblomo",
+      withExtension: "txt"
+    )!
     // Then
     // Measure performance
     let options = XCTMeasureOptions()
@@ -170,11 +184,13 @@ final class GroupedAdBlockEngineTests: XCTestCase {
         source: .filterListURL(uuid: uuid),
         version: "bundled"
       )
-      
+
       let group = GroupedAdBlockEngine.FilterListGroup(
-        infos: [filterListInfo], localFileURL: sampleFilterListURL, fileType: .text
+        infos: [filterListInfo],
+        localFileURL: sampleFilterListURL,
+        fileType: .text
       )
-      
+
       do {
         _ = try GroupedAdBlockEngine.compile(group: group, type: .standard)
       } catch {
