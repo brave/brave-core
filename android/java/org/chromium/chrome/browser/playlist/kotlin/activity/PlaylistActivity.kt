@@ -17,12 +17,18 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 import android.content.Intent
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
+import org.chromium.chrome.browser.playlist.hls_content.HlsUtils
 import org.chromium.playlist.mojom.PlaylistEvent
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import org.chromium.chrome.browser.util.TabUtils
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService
 import org.chromium.chrome.browser.init.AsyncInitializationActivity
@@ -65,15 +71,18 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.Playlist
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistItemGestureHelper
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.playlist.mojom.HlsContent
 import java.util.LinkedList
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import android.net.Uri;
+
+import java.util.Queue;
 
 import android.view.View
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import com.google.common.util.concurrent.ListenableFuture
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 
@@ -157,6 +166,7 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
                     playlistItems.forEachIndexed { index, playlistItem ->
                         mPlaylistService?.reorderItemFromPlaylist(mPlaylistId,playlistItem.id, index.toShort()) {}
                     }
+                    VideoPlaybackService.reorderPlaylistItemModel(playlistItems)
                     // mPlaylistViewModel.reorderPlaylistItems(playlistItems)
                     // VideoPlaybackService.reorderPlaylistItemModel(playlistItems)
                 }
@@ -269,6 +279,33 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
                 playlist -> 
                     Log.e(TAG, playlist.toString())
                     mPlaylist = playlist
+
+                    mPlaylist.items.forEach { playlistItem ->
+                        if (!PlaylistUtils.isPlaylistItemCached(playlistItem)) {
+                            // val isDownloadQueueModelExists =
+                            //     mPlaylistRepository.isHlsContentQueueModelExists(playlistItemModel.id)
+                            //         ?: false
+                            if (playlistItem.cached && MediaUtils.isHlsFile(playlistItem.mediaPath.url)) {
+                                val hlsContent = HlsContent()
+                                hlsContent.playlistItemId = playlistItem.id
+                                hlsContent.isPrepared = false
+                                mPlaylistService?.addHlsContent(hlsContent)
+                                // startDownload(playlistItem)
+                                // mPlaylistRepository.insertHlsContentQueueModel(
+                                //     HlsContentQueueModel(
+                                //         playlistItemModel.id, HlsContentStatus.NOT_READY.name
+                                //     )
+                                // )
+
+                            }
+                        }
+                    }
+
+                    PlaylistUtils.checkAndStartHlsDownload(this@PlaylistActivity)
+
+                    PlaylistUtils.hlsContentProgress.observe(this@PlaylistActivity) {
+                        mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
+                    }
 
                     mIvPlaylistOptions.setImageResource(if (mPlaylistId == ConstantUtils.DEFAULT_PLAYLIST) R.drawable.ic_edit_playlist else R.drawable.ic_options_toolbar_playlist)
 
@@ -565,5 +602,61 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
             stopVideoPlayerOnDelete(it)
             deletePlaylistItems(arrayListOf(it))
         }
+    }
+
+    fun startDownload(playlistItem : PlaylistItem) {
+        HlsUtils.getManifestFile(
+            this@PlaylistActivity,
+            mPlaylistService,
+            playlistItem,
+            object : HlsUtils.HlsManifestDelegate {
+                override fun onHlsManifestCompleted(segmentsQueue: Queue<Segment>) {
+                    Log.e(TAG, "onHlsManifestCompleted")
+                    val total = segmentsQueue.size
+                    val hlsMediaFilePath = HlsUtils.getHlsMediaFilePath(playlistItem)
+                    Log.e(TAG, "hlsMediaFilePath : "+hlsMediaFilePath)
+                    HlsUtils.deleteFileIfExist(hlsMediaFilePath)
+                    HlsUtils.getHLSFile(
+                        this@PlaylistActivity,
+                        mPlaylistService,
+                        playlistItem,
+                        segmentsQueue,
+                        object : HlsUtils.HlsFileDelegate {
+                            override fun onProgress(sofar: Int) {
+                                Log.e(TAG, ((sofar * 100) / total).toString())
+                                if (total > 0) {
+                                    PlaylistUtils.updateHlsContentProgress(
+                                        HlsContentProgressModel(
+                                            playlistItem.id,
+                                            total.toLong(),
+                                            sofar.toLong(),
+                                            ((sofar * 100) / total).toString()
+                                        )
+                                    )
+                                }
+                            }
+
+                            override fun onReady(mediaPath: String) {
+                                Log.e(TAG, "onReady  mediaPath : "+mediaPath)
+                                PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
+                                    val updatedFileSize = MediaUtils.getFileSizeFromUri(
+                                        this@PlaylistActivity,
+                                        Uri.parse("file://$mediaPath")
+                                    )
+                                    mPlaylistService?.updateItemHlsMediaFilePath(
+                                        playlistItem.id,
+                                        mediaPath,
+                                        updatedFileSize
+                                    )
+                                    // addNewPlaylistItemModel(playlistItem.id)
+                                    // removeContentAndStartNextDownload(playlistItem.id)
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        )
+
     }
 }

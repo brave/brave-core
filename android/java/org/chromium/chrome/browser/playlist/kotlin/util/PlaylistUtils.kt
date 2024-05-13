@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
 import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.chrome.browser.playlist.hls_content.HlsService
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/" + this::class.java.simpleName
@@ -148,8 +149,13 @@ object PlaylistUtils {
     fun checkAndStartHlsDownload(context: Context) {
         try {
             val hlsServiceClass = HlsService::class.java
-            if (!ServiceUtils.isServiceRunning(context, hlsServiceClass)) {
-                context.startService(Intent(context, hlsServiceClass))
+            if (!isServiceRunning(
+                    context, hlsServiceClass
+                )
+            ) {
+                    context.startService(
+                        Intent(context, hlsServiceClass)
+                    )
             }
         } catch (ex: Exception) {
             Log.e(TAG, "hlsServiceClass" + ex.message)

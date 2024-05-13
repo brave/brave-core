@@ -50,7 +50,7 @@ constexpr char kPlaylistItemParentKey[] = "parent";
 constexpr char kPlaylistItemMediaFileBytesKey[] = "mediaFileBytes";
 
 #if BUILDFLAG(IS_ANDROID)
-// Keys for HlsContent's base:Dict
+// Keys for HlsContent'sbase:Dict
 constexpr char kHlsContentPlaylistItemIDKey[] = "playlistItemId";
 constexpr char kIsPreparedKey[] = "isPrepared";
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -82,6 +82,13 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
                 !dict.contains(kPlaylistItemHlsMediaFilePathKey) ||
                 !dict.contains(kPlaylistItemIsSelectedKey);
 #endif  // BUILDFLAG(IS_ANDROID)
+  return isMalformed;
+  // DO NOT ADD MORE
+}
+
+bool IsHlsContentValueMalformed(const base::Value::Dict& dict) {
+  bool isMalformed = !dict.contains(kHlsContentPlaylistItemIDKey) ||
+                     !dict.contains(kIsPreparedKey);
   return isMalformed;
   // DO NOT ADD MORE
 }
@@ -210,12 +217,6 @@ base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-bool IsHlsContentValueMalformed(const base::Value::Dict& dict) {
-  bool isMalformed = !dict.contains(kHlsContentPlaylistItemIDKey) ||
-                     !dict.contains(kIsPreparedKey);
-  return isMalformed;
-}
-
 mojom::HlsContentPtr ConvertValueToHlsContent(const base::Value::Dict& dict) {
   DCHECK(!IsHlsContentValueMalformed(dict));
 

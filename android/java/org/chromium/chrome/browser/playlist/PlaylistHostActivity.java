@@ -30,7 +30,6 @@ import org.chromium.chrome.browser.playlist.kotlin.fragment.AllPlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel;
-import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel;
@@ -126,7 +125,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                             //                 tempMoveOrCopyModel
                                             //                         .getPlaylistOptionsEnum(),
                                             //                 createdPlaylist.id,
-                                            //                 tempMoveOrCopyModel.getPlaylistItems());
+                                            //
+                                            // tempMoveOrCopyModel.getPlaylistItems());
                                             // mPlaylistViewModel.performMoveOrCopy(
                                             //         PlaylistUtils.moveOrCopyModel);
                                         }
@@ -220,7 +220,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             }
                             if (moveOrCopyModel.getPlaylistItems().size() > 0) {
                                 // loadPlaylist(
-                                //         moveOrCopyModel.getPlaylistItems().get(0).getPlaylistId());
+                                //
+                                // moveOrCopyModel.getPlaylistItems().get(0).getPlaylistId());
                             }
                         });
 
@@ -268,11 +269,13 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             } else if (option == PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
                                 // openPlaylistInTab(
                                 //         false,
-                                //         playlistItemOption.getPlaylistItemModel().getPageSource());
+                                //
+                                // playlistItemOption.getPlaylistItemModel().getPageSource());
                             } else if (option == PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
                                 // openPlaylistInTab(
                                 //         true,
-                                //         playlistItemOption.getPlaylistItemModel().getPageSource());
+                                //
+                                // playlistItemOption.getPlaylistItemModel().getPageSource());
                             } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                                 // deleteHLSContent(playlistItemOption.getPlaylistItemModel().getId());
                                 // mPlaylistService.removeItemFromPlaylist(

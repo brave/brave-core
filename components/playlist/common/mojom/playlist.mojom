@@ -34,12 +34,6 @@ enum HlsContentStatus {
   kNotReady, // COntent needs preparing
 };
 
-[EnableIf=is_android]
-struct HlsContent {
-  string playlist_item_id;
-  bool is_prepared;
-};
-
 struct Playlist {
   string? id;
   string name;
@@ -86,6 +80,12 @@ struct PlaylistItem {
   // user copied this item to another list.
   array<string> parents;
   bool is_selected;
+};
+
+[EnableIf=is_android]
+struct HlsContent {
+  string playlist_item_id;
+  bool is_prepared;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -165,17 +165,13 @@ interface PlaylistService {
   CancelQuery(string query_id);
 
   [EnableIf=is_android]
-  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
-    int64 updated_file_size);
+  AddHlsContent(HlsContent hls_content);
 
   [EnableIf=is_android]
-  AddHlsContent(string playlist_item_id);
+  GetAllHlsContent() => (array<HlsContent> hls_contents);
 
   [EnableIf=is_android]
-  GetAllHlsContent() => (array<string> hls_contents);
-
-  [EnableIf=is_android]
-  GetFirstHlsContent() => (string hls_content);
+  GetFirstHlsContent() => (HlsContent hls_content);
 
   [EnableIf=is_android]
   RemoveHlsContent(string playlist_item_id);

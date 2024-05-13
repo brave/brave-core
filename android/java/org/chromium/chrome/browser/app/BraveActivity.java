@@ -146,7 +146,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
-import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
