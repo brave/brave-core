@@ -223,17 +223,36 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     else:
         return_value = _to_page_graph_value("return_value")
 
-    pattern = (
-        ";\n"
-        "if (UNLIKELY(${page_graph_enabled})) {{\n"
-        "  if (auto pg_scope = ScopedPageGraphCall(); pg_scope.has_value()) {{\n"
-        "    probe::RegisterPageGraphWebAPICallWithResult("
-        "      ${current_execution_context}, \n"
-        "      ${page_graph_binding_name}, {_1}, \n"
-        "      CreatePageGraphValues({_2}), \n"
-        "      {_3}, {_4});\n"
-        "  }}"
-        "}}")
+    # The odd pattern below:
+    #     auto *pg_v8_receiver = ${v8_receiver};
+    # is to make sure the code generator sets up `v8_receiver` correctly
+    # (which necessarily happens before the PageGraph check block),
+    # but to only interact with it in cases where we know there will be
+    # a context associated with it.
+    pattern = (";\n"
+               "if (UNLIKELY(${page_graph_enabled})) {{\n"
+               "  if (auto pg_scope = ScopedPageGraphCall();"
+               "    pg_scope.has_value()) {{\n"
+               "    auto pg_context = ${current_execution_context};\n"
+               "    auto pg_v8_receiver = ${v8_receiver};\n"
+               "    auto pg_maybe_receiver_context = pg_v8_receiver->"
+               "        GetCreationContext();\n"
+               "    if (!pg_maybe_receiver_context.IsEmpty()) {{\n"
+               "      auto pg_receiver_v8_context = pg_maybe_receiver_context"
+               "          .ToLocalChecked();\n"
+               "      auto pg_maybe_receiver_execution_context = "
+               "          ToExecutionContext(pg_receiver_v8_context);\n"
+               "      if (pg_maybe_receiver_execution_context) {{\n"
+               "        pg_context = pg_maybe_receiver_execution_context;\n"
+               "      }}\n"
+               "    }}\n"
+               "    probe::RegisterPageGraphWebAPICallWithResult("
+               "      pg_context, \n"
+               "      ${page_graph_binding_name}, {_1}, \n"
+               "      CreatePageGraphValues({_2}), \n"
+               "      {_3}, {_4});\n"
+               "  }}"
+               "}}")
     _1 = receiver_data
     _2 = args
     _3 = exception_state

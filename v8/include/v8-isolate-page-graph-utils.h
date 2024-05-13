@@ -9,9 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "v8/include/v8-isolate.h"
-
 #include "brave/components/brave_page_graph/common/buildflags.h"
+#include "v8/include/v8-context.h"
+#include "v8/include/v8-isolate.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 namespace v8::page_graph {
@@ -29,7 +29,7 @@ class V8_EXPORT PageGraphDelegate {
                                     const int script_id,
                                     Local<String> source) = 0;
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
-  virtual void OnBuiltinCall(Isolate* isolate,
+  virtual void OnBuiltinCall(Local<Context> context,
                              const char* builtin_name,
                              const std::vector<std::string>& args,
                              const std::string* result) = 0;
