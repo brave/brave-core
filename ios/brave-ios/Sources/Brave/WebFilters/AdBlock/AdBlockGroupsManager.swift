@@ -32,17 +32,17 @@ import os
   public static let shared = AdBlockGroupsManager(
     standardManager: GroupedAdBlockEngine.EngineType.standard.makeDefaultManager(),
     aggressiveManager: GroupedAdBlockEngine.EngineType.aggressive.makeDefaultManager(),
-    contentBlockerManager: ContentBlockerManager.shared,
+    contentBlockerManager: ContentBlockerManager(),
     sourceProvider: DefaultSourceProvider()
   )
 
   private let standardManager: AdBlockEngineManager
   private let aggressiveManager: AdBlockEngineManager
-  private let contentBlockerManager: ContentBlockerManager
   private let sourceProvider: SourceProvider
-
   /// The info for the resource file. This is a shared file used by all filter lists that contain scriplets. This information is used for lazy loading.
   public var resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+
+  let contentBlockerManager: ContentBlockerManager
 
   init(
     standardManager: AdBlockEngineManager,
@@ -298,6 +298,49 @@ import os
     }
   }
 
+  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
+    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
+    let level = domain.blockAdsAndTrackingLevel
+
+    return await Set(
+      validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
+        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
+
+        do {
+          return try await self.contentBlockerManager.ruleList(for: blocklistType, mode: mode)
+        } catch {
+          // We can't log the error because some rules have empty rules. This is normal
+          // But on relaunches we try to reload the filter list and this will give us an error.
+          // Need to find a more graceful way of handling this so error here can be logged properly
+          return nil
+        }
+      })
+    )
+  }
+
+  private func validBlocklistTypes(for domain: Domain) -> Set<(ContentBlockerManager.BlocklistType)>
+  {
+    guard !domain.areAllShieldsOff else { return [] }
+    // 1. Get the generic types
+    let genericTypes = contentBlockerManager.validGenericTypes(for: domain)
+    let genericRuleLists = genericTypes.map { genericType -> ContentBlockerManager.BlocklistType in
+      return .generic(genericType)
+    }
+
+    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
+      return Set(genericRuleLists)
+    }
+
+    // 2. Get the sources types
+    return Set(genericRuleLists).union(sourceProvider.enabledBlocklistTypes)
+  }
+
+  public func cleaupInvalidRuleLists() async {
+    let allBlocklistTypes = ContentBlockerManager.BlocklistType.allStaticTypes
+      .union(sourceProvider.blocklistTypes)
+    await contentBlockerManager.cleaupInvalidRuleLists(validTypes: allBlocklistTypes)
+  }
+
   /// Ensure all the content blockers are compiled for any file info found in the list of enabled sources
   private func ensureContentBlockers(
     for enabledSources: [GroupedAdBlockEngine.Source],
@@ -319,7 +362,7 @@ import os
   ) async {
     guard
       let blocklistType = fileInfo.filterListInfo.source.blocklistType(
-        isAlwaysAggressive: engineType.isAlwaysAggressive
+        engineType: engineType
       )
     else {
       return
@@ -482,13 +525,13 @@ extension GroupedAdBlockEngine.EngineType {
 extension FilterListSetting {
   @MainActor var engineSource: GroupedAdBlockEngine.Source? {
     guard let componentId = componentId else { return nil }
-    return .filterList(componentId: componentId, uuid: uuid)
+    return .filterList(componentId: componentId)
   }
 }
 
 extension FilterList {
   @MainActor var engineSource: GroupedAdBlockEngine.Source {
-    return .filterList(componentId: entry.componentId, uuid: self.entry.uuid)
+    return .filterList(componentId: entry.componentId)
   }
 }
 
@@ -566,5 +609,30 @@ extension AdBlockGroupsManager.SourceProvider {
     let enabledSources = self.enabledSources
     let sources = self.sources(for: engineType)
     return sources.filter({ enabledSources.contains($0) })
+  }
+
+  /// Get all enabled blocklist types
+  var enabledBlocklistTypes: [ContentBlockerManager.BlocklistType] {
+    return GroupedAdBlockEngine.EngineType.allCases.flatMap { engineType in
+      return enabledSources(for: engineType).compactMap { source in
+        return source.blocklistType(engineType: engineType)
+      }
+    }
+  }
+
+  /// Get all valid blocklist types
+  var blocklistTypes: [ContentBlockerManager.BlocklistType] {
+    return GroupedAdBlockEngine.EngineType.allCases.flatMap { engineType in
+      return sources(for: engineType).compactMap { source in
+        return source.blocklistType(engineType: engineType)
+      }
+    }
+  }
+}
+
+extension GroupedAdBlockEngine.EngineType {
+  /// Return the allowed content blocker modes for the given engine type
+  var allowedModes: [ContentBlockerManager.BlockingMode] {
+    return isAlwaysAggressive ? [.aggressive] : [.standard, .aggressive]
   }
 }

@@ -68,14 +68,6 @@ import Preferences
     var filterLists = regionalFilterLists.enumerated().compactMap {
       index,
       entry -> FilterList? in
-      // Certain filter lists are disabled if they are currently incompatible with iOS
-      guard
-        !AdblockFilterListCatalogEntry.disabledFilterListComponentIDs.contains(
-          entry.componentId
-        )
-      else {
-        return nil
-      }
       let setting = allFilterListSettings.first(where: {
         $0.componentId == entry.componentId
       })
@@ -147,10 +139,6 @@ import Preferences
 
   /// - Warning: Do not call this before we load core data
   public func isEnabled(for componentId: String) -> Bool {
-    guard !AdblockFilterListCatalogEntry.disabledFilterListComponentIDs.contains(componentId) else {
-      return false
-    }
-
     return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
       ?? allFilterListSettings.first(where: { $0.componentId == componentId })?.isEnabled
       ?? pendingDefaults[componentId]

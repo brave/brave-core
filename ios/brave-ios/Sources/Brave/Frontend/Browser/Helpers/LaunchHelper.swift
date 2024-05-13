@@ -103,36 +103,17 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
+
       await AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(
         allowedModes: Set(remainingModes)
       )
+      await AdBlockGroupsManager.shared.cleaupInvalidRuleLists()
       await AdblockResourceDownloader.shared.startFetching()
-      /// Cleanup rule lists so we don't have dead rule lists
-      let validBlocklistTypes = await self.getAllValidBlocklistTypes()
-      await ContentBlockerManager.shared.cleaupInvalidRuleLists(validTypes: validBlocklistTypes)
       Self.signpost.endInterval("nonBlockingLaunchTask", state)
 
       // Update the setting
       await self.lastBlocklistVersion.value = self.currentBlocklistVersion
     }
-  }
-
-  /// Get all possible types of blocklist types available in this app, this includes actual and potential types
-  /// This is used to delete old filter lists so that we clean up old stuff
-  @MainActor private func getAllValidBlocklistTypes() -> Set<ContentBlockerManager.BlocklistType> {
-    return FilterListStorage.shared
-      // All filter lists blocklist types
-      .validBlocklistTypes
-      // All generic types
-      .union(
-        ContentBlockerManager.BlocklistType.allStaticTypes
-      )
-      // All custom filter list urls
-      .union(
-        CustomFilterListStorage.shared.filterListsURLs.map {
-          .filterListURL(uuid: $0.setting.uuid)
-        }
-      ).union([.filterListText])
   }
 }
 
@@ -144,7 +125,7 @@ extension FilterListStorage {
       return Set(
         allFilterListSettings.compactMap { setting -> ContentBlockerManager.BlocklistType? in
           return setting.engineSource?.blocklistType(
-            isAlwaysAggressive: setting.isAlwaysAggressive
+            engineType: setting.engineType
           )
         }
       )
@@ -153,7 +134,7 @@ extension FilterListStorage {
       return Set(
         filterLists.compactMap { filterList in
           return filterList.engineSource.blocklistType(
-            isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
+            engineType: filterList.engineType
           )
         }
       )

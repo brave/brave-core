@@ -52,7 +52,7 @@ class LinkPreviewViewController: UIViewController {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !currentTab.isPrivate)
 
     Task(priority: .userInitiated) {
-      let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domain)
+      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
         webView.configuration.userContentController.add(ruleList)
       }

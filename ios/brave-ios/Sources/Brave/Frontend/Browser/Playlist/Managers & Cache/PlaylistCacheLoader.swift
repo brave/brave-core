@@ -400,7 +400,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
         domainForShields.shield_adblockAndTp = true
 
         // Load block lists
-        let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
         tab.contentBlocker.set(ruleLists: ruleLists)
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(

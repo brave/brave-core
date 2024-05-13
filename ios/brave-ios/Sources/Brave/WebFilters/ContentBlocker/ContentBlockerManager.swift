@@ -100,35 +100,35 @@ import os.log
     }
 
     case generic(GenericBlocklistType)
-    case filterList(componentId: String, isAlwaysAggressive: Bool)
-    case filterListURL(uuid: String)
-    case filterListText
+    case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
       case .generic(let type):
         return [Self.genericPrifix, type.bundledFileName].joined(separator: "-")
-      case .filterList(let componentId, _):
-        return [Self.filterListPrefix, componentId].joined(separator: "-")
-      case .filterListURL(let uuid):
-        return [Self.filterListURLPrefix, uuid].joined(separator: "-")
-      case .filterListText:
-        return "filter-list-text"
+      case .engineSource(let source, _):
+        switch source {
+        case .filterList(let componentId):
+          return [Self.filterListPrefix, componentId].joined(separator: "-")
+        case .filterListURL(let uuid):
+          return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+        case .filterListText:
+          return "filter-list-text"
+        }
       }
     }
 
     func mode(isAggressiveMode: Bool) -> BlockingMode {
       switch self {
-      case .filterListURL, .filterListText:
-        return .general
-      case .filterList(_, let isAlwaysAggressive):
-        if isAlwaysAggressive || isAggressiveMode {
-          return .aggressive
-        } else {
-          return .standard
-        }
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
+      case .engineSource(_, let engineType):
+        switch engineType {
+        case .standard:
+          return isAggressiveMode ? .aggressive : .standard
+        case .aggressive:
+          return .aggressive
+        }
       }
     }
 
@@ -155,7 +155,6 @@ import os.log
     }
   }
 
-  public static var shared = ContentBlockerManager()
   /// The store in which these rule lists should be compiled
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
@@ -553,64 +552,6 @@ import os.log
     results.insert(.upgradeMixedContent)
 
     return results
-  }
-
-  /// Return the enabled blocklist types for the given domain
-  private func validBlocklistTypes(for domain: Domain) -> Set<(BlocklistType)> {
-    guard !domain.areAllShieldsOff else { return [] }
-
-    // Get the generic types
-    let genericTypes = validGenericTypes(for: domain)
-
-    let genericRuleLists = genericTypes.map { genericType -> BlocklistType in
-      return .generic(genericType)
-    }
-
-    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
-      return Set(genericRuleLists)
-    }
-
-    // Get rule lists for filter lists
-    let filterLists = FilterListStorage.shared.filterLists
-    let additionalRuleLists = filterLists.compactMap { filterList -> BlocklistType? in
-      guard filterList.isEnabled else { return nil }
-      return .filterList(
-        componentId: filterList.entry.componentId,
-        isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
-      )
-    }
-
-    // Get rule lists for custom filter lists
-    let customFilterLists = CustomFilterListStorage.shared.filterListsURLs
-    let customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
-      guard customURL.setting.isEnabled else { return nil }
-      return .filterListURL(uuid: customURL.setting.uuid)
-    }
-
-    return Set(genericRuleLists).union(additionalRuleLists)
-      .union(customRuleLists).union([.filterListText])
-  }
-
-  /// Return the enabled rule types for this domain and the enabled settings.
-  /// It will attempt to return cached results if they exist otherwise it will attempt to load results from the rule store
-  public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
-    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
-    let level = domain.blockAdsAndTrackingLevel
-
-    return await Set(
-      validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
-        let mode = blocklistType.mode(isAggressiveMode: level.isAggressive)
-
-        do {
-          return try await self.ruleList(for: blocklistType, mode: mode)
-        } catch {
-          // We can't log the error because some rules have empty rules. This is normal
-          // But on relaunches we try to reload the filter list and this will give us an error.
-          // Need to find a more graceful way of handling this so error here can be logged properly
-          return nil
-        }
-      })
-    )
   }
 
   /// Remove the rule list for the given identifier. This will remove them from this local cache and from the rule store.

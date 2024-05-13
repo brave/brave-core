@@ -39,13 +39,13 @@ public actor AdblockResourceDownloader: Sendable {
     await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
       genericType in
       let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
-      let modes = await ContentBlockerManager.shared.missingModes(
+      let modes = await AdBlockGroupsManager.shared.contentBlockerManager.missingModes(
         for: blocklistType,
         version: genericType.version
       )
 
       do {
-        try await ContentBlockerManager.shared.compileBundledRuleList(
+        try await AdBlockGroupsManager.shared.contentBlockerManager.compileBundledRuleList(
           for: genericType,
           modes: modes
         )
@@ -112,7 +112,7 @@ public actor AdblockResourceDownloader: Sendable {
 
       if !downloadResult.isModified && !allowedModes.isEmpty {
         // If the download is not modified, only compile the missing modes for performance reasons
-        let missingModes = await ContentBlockerManager.shared.missingModes(
+        let missingModes = await AdBlockGroupsManager.shared.contentBlockerManager.missingModes(
           for: blocklistType,
           version: downloadResult.version
         )
@@ -128,7 +128,7 @@ public actor AdblockResourceDownloader: Sendable {
       }
 
       // try to compile
-      await ContentBlockerManager.shared.compileRuleList(
+      await AdBlockGroupsManager.shared.contentBlockerManager.compileRuleList(
         at: fileURL,
         for: blocklistType,
         version: downloadResult.version,
