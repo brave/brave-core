@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">এই ব্রাউজার উইন্ডোতে আপনার <ph name="NUMBER_OF_TABS"/>টি ট্যাব খোলা আছে।</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>টি ট্যাব</translation>
 <translation id="1307431692088049276">আর জিজ্ঞাসা করবেন না</translation>
-<translation id="2272117088509540883">- Brave সার্চ</translation>
-<translation id="2701279958223202597">উন্নত গোপনীয়তার সাথে স্বাধীন অনুসন্ধান সমর্থন করুন৷ Brave সার্চ আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে ট্র্যাক করে না৷</translation>
-<translation id="6438467592401259882">উন্নত গোপনীয়তার সাথে স্বাধীন অনুসন্ধান সমর্থন করুন৷</translation>
-<translation id="5167182095453855816">বড় প্রযুক্তিকে প্রতিরোধের সময়।</translation>
-<translation id="45040495135337202">Brave আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে অনুসরণ করে না। এবং এটি বড় প্রযুক্তি থেকে 100% স্বতন্ত্র।</translation>
 <translation id="6919364924256365253">এটা Google করবেন না। এটা Bing করতে পারবেন না। শুধুমাত্র Brave করুন।</translation>
 <translation id="3313148036097793884">Brave আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে অনুসরণ করে না। এবং এটি 100% স্বতন্ত্র।</translation>
 <translation id="7295094278358921487">অনুসন্ধান করুন এবং আপনি খুঁজে পেয়ে যাবেন। ব্যক্তিগতভাবে।</translation>
+<translation id="45040495135337202">Brave আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে অনুসরণ করে না। এবং এটি বড় প্রযুক্তি থেকে 100% স্বতন্ত্র।</translation>
 <translation id="42032117189492785">একটি অনন্য ইনডেক্স দিয়ে AI-ইনফিউজড অনুসন্ধান।</translation>
 <translation id="8606416238399082160">সম্পূর্ণভাবে ব্যক্তিগত, 100% স্বতন্ত্র এবং দুর্দান্ত AI বৈশিষ্ট্য সহ।</translation>
 <translation id="5240031343741051161">Brave সার্চ ব্যবহার করুন</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">সক্ষম করুন</translation>
 <translation id="5046066249040287308">Brave ওয়ালেট ইউটিলিটি পরিষেবা</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
+<translation id="7299769530898469069">সেভ করা ভার্সন লোড করা যায়নি</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
-<translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>
-<translation id="8517321676372639828">সংরক্ষিত সংস্করণের জন্য পরীক্ষা করুন</translation>
+<translation id="8010675257566903381">ওয়েব্যাক মেশিন এই সাইটের একটি সেভ করা ভার্সন খুঁজে পায়নি।</translation>
+<translation id="1207694258341311738">সেভ করা ভার্সন চেক করুন</translation>
 <translation id="191143826155037518">Brave আপনার নিকট উপলভ্য করা হয়েছে <ph name="BEGIN_LINK_MPL"/>Mozilla পাবলিক লাইসেন্স 2.0 এর অধীনে <ph name="END_LINK_MPL"/> (MPL) এবং এতে অন্তর্ভুক্ত আছে <ph name="BEGIN_LINK_OSS"/>ওপেন সোর্স সফটওয়্যারসমূহ<ph name="END_LINK_OSS"/> অন্য সব বিভিন্ন লাইসেন্সের অধীনে।
 আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS"/> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE"/>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">সেরা সাইট</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
 <translation id="8820817407110198400">বুকমার্ক বার</translation>
+<translation id="4144468798716165316">দ্রুত কমেন্ট</translation>
 <translation id="7310387888625228830">Leo AI অ্যাসিস্ট্যান্ট</translation>
 <translation id="5222974844674487962">Brave সংবাদ বোতাম দেখান</translation>
 <translation id="383007806262310953">বুকমার্ক বার দেখান</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">বুকমার্ক বার সব পেজে লুকানো রয়েছে</translation>
 <translation id="3416468988018290825">সর্বদা সম্পূর্ণ URL গুলি দেখান৷</translation>
 <translation id="5529693968082667490">ট্যাব সার্চ বাটন দেখান</translation>
-<translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="1013121820689882118">স্পীডরিডার</translation>
 <translation id="2025435450953474282">রিডার মোডে নিবন্ধগুলি স্বয়ংক্রিয়ভাবে লোড হয় যা আপনার সময় বাঁচায়</translation>
+<translation id="7984721311211272523">ট্যাব স্পিকার আইকনে মিউট ফাংশন বন্ধ করুন</translation>
 <translation id="2422927186524098759">সাইডবার</translation>
 <translation id="832432428796481785">সাইডবার বোতাম দেখান</translation>
 <translation id="5581036754486769849">ব্যক্তিগত উইন্ডোগুলিতে স্বয়ংক্রিয়ভাবে পূরণ করার অনুমতি দিন</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="3357319404342882895">সঠিক</translation>
 <translation id="8823559166155093873">কুকি-গুলি অবরুদ্ধ করুন</translation>
-<translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
-<translation id="3587482841069643663">সকল</translation>
+<translation id="6196640612572343990">তৃতীয় পক্ষের কুকিজ অবরুদ্ধ করুন</translation>
+<translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
+<translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
 <translation id="2360360976480535628">উন্নত ভিউ</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Brave রিওয়ার্ড বোতাম দেখান</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
-<translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
+<translation id="7791141927430186653">X (আগে Twitter নামে পরিচিত ছিল) এম্বেড করা টুইট</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
 <translation id="933652931229970927">স্বয়ংক্রিয়ভাবে ক্র্যাশ রিপোর্টগুলো পাঠায়</translation>
 <translation id="4891600875049212418">সংবেদনশীল সাইট ভিজিট করার সময় অফ-দ্য-রেকর্ড হিসাবে যান</translation>
+<translation id="1968895725257436430">ডেটা সংগ্রহ</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">একটি সেতু অনুরোধ করতে CAPTCHA সমাধান করুন।</translation>
 <translation id="6936835573742749135">একটি CAPTCHA অনুরোধ করতে পারবেন না। পরে আবার চেষ্টা করুন।</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
-<translation id="1369311132025451972">স্বয়ংক্রিয়ভাবে .onion সাইটগুলিতে পুনঃনির্দেশিত করে</translation>
-<translation id="6214393847480015759">Tor উইন্ডোতে, Brave স্বয়ংক্রিয়ভাবে একটি ওয়েবসাইটের .onion সংস্করণে স্যুইচ করবে যখন উপলব্ধ হবে।</translation>
 <translation id="1294350054292274934">Tor উইন্ডোতে শুধুমাত্র .onion ঠিকানাগুলি সমাধান করুন</translation>
 <translation id="1258903596167452221">Tor উইন্ডোর বাইরে Onion পরিষেবা পাওয়া যাবে না।</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
 <translation id="7703184801853248830">অবৈধ গেটওয়ে ঠিকানা</translation>
 <translation id="7690058578502751948">Brave-এ শুধুমাত্র উত্স আইসোলেসন সহ একটি বৈধ IPFS গেটওয়ে সক্ষম আছে</translation>
-<translation id="3411013544209536575">সহায়ক পরামর্শসমূহ</translation>
+<translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="2775956301559569472">404 পৃষ্ঠায় ওয়েব্যাক মেশিন প্রম্পট দেখান</translation>
 <translation id="3095201688102519917">বিবিধ ট্যাব সহ কোনও উইন্ডো বন্ধ করার আগে আমাকে জানান</translation>
 <translation id="7120553802660696133">শেষ ট্যাব বন্ধ করার সময় উইন্ডো বন্ধ করুন</translation>
-<translation id="7984721311211272523">ট্যাব স্পিকার আইকনে মিউট ফাংশন বন্ধ করুন</translation>
 <translation id="6129027151000961048">লিও</translation>
 <translation id="2751872555001636931">সাইডবারে লিও আইকন দেখান</translation>
 <translation id="8055509865174199683">ওয়েবসাইটগুলিতে প্রসঙ্গ মেনুতে Leo দেখান</translation>
@@ -750,6 +747,7 @@
 <translation id="5574059574002819179">স্বতঃসম্পূর্ণ পরামর্শ সামঞ্জস্যপূর্ণ করুন</translation>
 <translation id="8157373421434119674">ডেটা এবং চ্যাটের ইতিহাস</translation>
 <translation id="614530507403667291">নতুন কথোপকথনের জন্য ডিফল্ট মডেল</translation>
+<translation id="8826914609353373601">প্রিমিয়াম সাবস্ক্রিপশন ম্যানেজ করুন</translation>
 <translation id="349846214503465941">প্লেলিস্ট সক্রিয় করুন</translation>
 <translation id="7903608716704052878">অফলাইন দেখার জন্য স্বয়ংক্রিয়ভাবে ফাইল যোগ করুন</translation>
 <translation id="4193768184502613558">এই বিকল্পটি স্বয়ংক্রিয়ভাবে মিডিয়া ফাইলগুলিকে ক্যাশে করবে যাতে আপনি সেগুলিকে ইন্টারনেট সংযোগ ছাড়াই চালাতে পারেন।</translation>

@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Bloķē nākamo un beigu kartes elementus vietnē youtube.com.</translation>
 <translation id="5152595963250646670">Bloķēt YouTube elementus, kas novērš uzmanību</translation>
 <translation id="2998960761270772157">Bloķē pierakstīšanos, izvēlni, komentārus un video informācijas elementus vietnē youtube.com.</translation>
+<translation id="8531835121131500698">Bloķēt YouTube Shorts</translation>
+<translation id="2167271714269158912">Bloķēt Shorts no sākumlapas, tendenču lapas un meklēšanas rezultātiem youtube.com.</translation>
 <translation id="6052725679982758334">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="7498695072878479744">Atļaut Google pieteikšanās pogas trešo pušu vietnēs</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Apstiprināts satura veidotājs</translation>
 <translation id="2369994359029526515">Neapstiprināts satura veidotājs</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
-<translation id="7861645265922445992">Pieprasīt balvas</translation>
 <translation id="1848737374354350807">Bilance</translation>
 <translation id="4781696154289395607">Jūs ziedojāt <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Apstrādājot jūsu ieguldījumu, radās kļūda.</translation>
-<translation id="2221902203895354376">Ir pieejams marķiera piešķīrums!</translation>
-<translation id="2377929997600454162">Jūsu <ph name="MONTH_VALUE"/> reklāmu atlīdzības ir šeit!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Atlīdzības: <ph name="TOKEN"/>BAT</translation>
-<translation id="1649629664206601032">Jums ir <ph name="TOKEN"/>dienas, lai saņemtu</translation>
 <translation id="683765328936486920">vietnē YouTube</translation>
 <translation id="8969049974285901797">vietnē Twitch</translation>
 <translation id="8038539967102225446">Brave reklāmas ir klāt!</translation>
@@ -458,7 +455,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3763681089644577874">Bloķēt sīkfailus</translation>
 <translation id="614747795780742163">Neļauj tīmekļa vietnēm saglabāt informāciju par iepriekšējiem apmeklējumiem</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
-<translation id="4941539331405513605">Bloķēt starpvietņu sīkfailus</translation>
+<translation id="6196640612572343990">Bloķēt trešo pušu sīkfailus</translation>
 <translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="1553643198679271031">Pieprasīt nereģistrēt</translation>
 <translation id="4891600875049212418">Apmeklējot sensitīvas vietnes, pāriet neredzamajā režīmā</translation>
@@ -605,6 +602,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5488357322146334497">Ziņojums</translation>
 <translation id="1904000155026201268">Es apzinos, ka gadījumā, ja pazaudēšu savus atkopšanas vārdus, nevarēšu piekļūt savam kriptovalūtas makam.</translation>
 <translation id="5333225216561354793">Jums jāapstiprina turpmāk aprakstītais</translation>
+<translation id="6937275455070754004">Izvēlieties, kuras blokķēdes izmantot savā makā.</translation>
 <translation id="1645800479814134195">Es saprotu, ka tas ir mans maks un es esmu atbildīgs par jebkādiem saistītajiem līdzekļiem, aktīviem vai kontiem, kā arī par atbilstošu darbību veikšanu, lai aizsargātu un dublētu savu maku. Es saprotu, ka Brave nevar piekļūt manam makam vai atsaukt darījumus manā vārdā un ka mana atkopšanas frāze ir VIENĪGAIS veids, kā atgūt piekļuvi nozaudētas paroles, nozagtas ierīces vai līdzīgu apstākļu gadījumā.</translation>
 <translation id="4565891212173086999">Esmu izlasījis un piekrītu <ph name="CLICK_START"/>lietošanas noteikumiem<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Jūsu atkopšanas frāze</translation>
@@ -612,12 +610,12 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2708402071160162126">BRĪDINĀJUMS: Nekad neizpaudiet atkopšanas frāzi. Jebkurš, kam ir šī frāze, var neatgriezeniski atņemt jūsu līdzekļus.</translation>
 <translation id="111912712268284159">Mana frāze ir dublēta drošā vietā.</translation>
 <translation id="6896758677409633944">Kopēt</translation>
-<translation id="1783600039044302171">Aizsargāt savus kripto ar paroli</translation>
 <translation id="3726490322412361740">Ievadiet paroli</translation>
 <translation id="3038243139480464605">Atkārtojiet paroli</translation>
 <translation id="3043677904160378840">Parolēm jābūt vismaz 8 rakstzīmēm.</translation>
 <translation id="7396672979287122068">Atkārtoti ievadītā parole nesakrīt</translation>
-<translation id="7084181009966710506">Izveido maku...</translation>
+<translation id="1566412704591731844">Izveido jūsu maku...</translation>
+<translation id="7779823116893018906">Tas var aizņemt pāris sekundes...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> Konts <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Pievienot kontu</translation>
 <translation id="3448492834076427715">Atjaunināt kontu</translation>
@@ -640,6 +638,11 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3157931365184549694">Atjaunot</translation>
 <translation id="5844138175312846408">Jums jau ir maks?</translation>
 <translation id="2502258949541727762">Pirms mēs sākam</translation>
+<translation id="4303748097351941030">Atbalstītie tīkli</translation>
+<translation id="4204268048253692928">Jūs iestatījumos jebkurā brīdī varat pievienot tīklus.</translation>
+<translation id="2523174693142405417">Meklēt tīklos</translation>
+<translation id="1164748583090434571">Parādīt testa tīklus</translation>
+<translation id="935220650946301698">Turpināt ar <ph name="NUMBER"/> tīkliem</translation>
 <translation id="8248460961680233459">Izveidot paroli</translation>
 <translation id="2789310860394340571">Šo paroli izmantosiet, lai piekļūtu savam makam.</translation>
 <translation id="2136372518715274136">Ievadiet jauno paroli</translation>
@@ -846,7 +849,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7791543448312431591">Pievienot</translation>
 <translation id="6889920539620318793">Iestatīt kā aktīvu</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
-<translation id="4945690646623486292">Atlasīt tīklu</translation>
+<translation id="4556601961751528347">Mainīt pievienoto kontu</translation>
 <translation id="5233638681132016545">Jauna cilne</translation>
 <translation id="8006088103295786154">Piekļūt Brave makam</translation>
 <translation id="8030169304546394654">Atvienots</translation>
@@ -872,6 +875,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4255623233927788178">Skats uz pārlūka bloķēšanu</translation>
 <translation id="8274201358637112807">Šī lapa vēlas mijiedarboties ar Brave maku</translation>
 <translation id="3355936511340229503">Savienojuma kļūda</translation>
+<translation id="1531836666020185856">Piedāvātais</translation>
 <translation id="4891604214809245310">Nevar iestatīt tīklu uz <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Šķiet, ka citi VPN šajā ierīcē ir iestatīti uz "Vienmēr ieslēgts". Lai iespējotu Brave ugunsmūri + VPN, vispirms atspējojiet citu VPN iestatījumu "Vienmēr ieslēgts" un tad pievienojieties vēlreiz. Ja problēma joprojām pastāv, mēģiniet atinstalēt citus VPN.</translation>
 <translation id="85136472535634474">Atvērt VPN iestatījumus</translation>
@@ -1039,7 +1043,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1677961202754619328">Atbilstoši Uphold pašlaik tavam Uphold kontam ir piemēroti ierobežojumi. Lūdzu, piesakies savā Uphold kontā un pārbaudi, vai tajā ir kādi paziņojumi vai citas konta prasības, kas jāizpilda, tad mēģini vēlreiz.</translation>
 <translation id="5425006356459378415">Brave Rewards nav pieejami</translation>
 <translation id="833643743158564518">Jūsu reģionā pašlaik ir atspējota jauna reģistrācija Brave Rewards. Taču jūs vienmēr varat mēģināt vēlreiz vēlāk. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Visi tīkli</translation>
 <translation id="7748944510530490017">Primārie tīkli</translation>
 <translation id="2781668117338732220">Sekundārie tīkli</translation>
 <translation id="282560918037172384">Testa tīkli</translation>
@@ -1179,4 +1182,11 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="3251885322612056119">Atjauninātie pakalpojuma noteikumi</translation>
 <translation id="4049035689681585146">Mēs esam atjauninājuši Brave balvu pakalpojuma noteikumus. Atjauninājumus veicām, lai paskaidrotu mūsu noteikumus un nodrošinātu, ka tie atbilst jaunajām iespējām. Ja jūs turpināsiet izmantot Brave balvas, tas nozīmēs, ka piekrītat atjauninātajiem pakalpojuma noteikumiem. Ja nepiekrītat, varat <ph name="RESET_START"/>atiestatīt<ph name="RESET_END"/> Brave balvas, lai atspējotu šo funkciju.</translation>
 <translation id="2165953574528546737">Skatīt <ph name="TOS_START"/>Brave balvu pakalpojuma noteikumus<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Iespējot vairākus logus</translation>
+<translation id="6167344249617630304">Atveriet līdz 5 logiem vienlaikus un pārvietojiet cilnes no viena loga uz citu</translation>
+<translation id="1063948063403254568">Atrasti vairāki logi</translation>
+<translation id="4661882208707630158">Lūdzu, apvienojiet cilnes citā Brave logā vai aizveriet citus Brave logus, pirms atspējojat vairāku logu funkciju.</translation>
+<translation id="6891382640886173702">Apvienot logus</translation>
+<translation id="2912247081180973411">Aizvērt logus</translation>
+<translation id="4010699428656610296">Lūdzu, apvienojiet citas cilnes citā Brave logā.</translation>
 </translationbundle>

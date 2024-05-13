@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">יש לך <ph name="NUMBER_OF_TABS"/> כרטיסיות פתוחות בחלון הדפדפן הזה.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> כרטיסיות</translation>
 <translation id="1307431692088049276">אל תשאלו אותי שוב</translation>
-<translation id="2272117088509540883">- Brave Search</translation>
-<translation id="2701279958223202597">לתמוך בחיפוש עצמאי המציע פרטיות טובה יותר. Brave Search אינו עוקב אחריך, אחרי הבקשות שלך, או ההקלקות שלך.</translation>
-<translation id="6438467592401259882">לתמוך בחיפוש עצמאי עם פרטיות טובה יותר</translation>
-<translation id="5167182095453855816">הגיע הזמן לעזוב את הביג טק.</translation>
-<translation id="45040495135337202">Brave לא עוקבת אחריך, אחרי השאילתות שלך או אחרי הקליקים שלך. והיא 100% בלתי תלויה בביג טק.</translation>
 <translation id="6919364924256365253">אל תחפש בגוגל. אי אפשר לחפש בבינג. פשוט השתמש ב-Brave.</translation>
 <translation id="3313148036097793884">Brave לא עוקבת אחריך, אחרי השאילתות שלך או אחרי הקליקים שלך. והיא 100% עצמאית.</translation>
 <translation id="7295094278358921487">חפש ותמצא. באופן פרטי.</translation>
+<translation id="45040495135337202">Brave לא עוקבת אחריך, אחרי השאילתות שלך או אחרי הקליקים שלך. והיא 100% בלתי תלויה בביג טק.</translation>
 <translation id="42032117189492785">חיפוש מוטבע בינה מלאכותית עם אינדקס ייחודי.</translation>
 <translation id="8606416238399082160">פרטית לחלוטין, 100% עצמאית ועם תכונות בינה מלאכותית מעולות.</translation>
 <translation id="5240031343741051161">שווה לנסות את Brave Search</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">הפעל</translation>
 <translation id="5046066249040287308">שירותי ארנק Brave</translation>
 <translation id="4552520379838695057">מצטערים, עמוד זה חסר.</translation>
+<translation id="7299769530898469069">לא ניתן היה לטעון גרסה שמורה</translation>
 <translation id="2609895996619941644">האם ברצונכם לבדוק אם גרסה שמורה זמינה ב-Wayback Machine?</translation>
-<translation id="8053093028263274061">אנו מצטערים, אין גרסה שמורה זמינה.</translation>
-<translation id="8517321676372639828">בדוק אם יש גרסה שמורה</translation>
+<translation id="8010675257566903381">Wayback Machine לא הצליח למצוא גרסה שמורה של אתר זה.</translation>
+<translation id="1207694258341311738">בדוק גרסה שמורה</translation>
 <translation id="191143826155037518">Brave זמין עבורך תחת <ph name="BEGIN_LINK_MPL"/> הרישיון הציבורי של מוזילה 2.0<ph name="END_LINK_MPL"/> (MPL) אשר כולל <ph name="BEGIN_LINK_OSS"/> תוכנת קוד פתוח<ph name="END_LINK_OSS"/> תחת מגוון רישיונות אחרים. באפשרותך לקרוא <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> הנחיות כיצד להוריד ולבנות בעצמך<ph name="END_LINK_BUILD_INSTRUCTIONS"/> את <ph name="BEGIN_LINK_SOURCE_CODE"/>קוד המקור הספציפי בו נעשה שימוש כדי ליצור עותק זה <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="3987546108749866209">השתמשו בכרטיסיות אנכיות</translation>
@@ -350,6 +347,7 @@
 <translation id="2858138569776157458">אתרים נבחרים</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="8820817407110198400">סרגל הסימניות</translation>
+<translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="7310387888625228830">עוזר בינה מלאכותית של ליאו</translation>
 <translation id="5222974844674487962">כפתור הצג חדשות אמיצות</translation>
 <translation id="383007806262310953">הצג את סרגל הסימניות</translation>
@@ -358,9 +356,9 @@
 <translation id="7158817046543187970">סרגל הסימניות מוסתר בכל הדפים</translation>
 <translation id="3416468988018290825">הצג תמיד כתובות אתרים מלאות</translation>
 <translation id="5529693968082667490">הצג לחצן חיפוש כרטיסייה</translation>
-<translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">מאמרים נטענים באופן אוטומטי במצב קריאה, כדי לחסוך לך זמן</translation>
+<translation id="7984721311211272523">השבת את פונקציית ההשתקה בסמלי רמקול כרטיסיות</translation>
 <translation id="2422927186524098759">סרגל צידי</translation>
 <translation id="832432428796481785">הצג כפתור הסרגל הצידי</translation>
 <translation id="5581036754486769849">אפשר מילוי אוטומטי בחלונות אנונימיים</translation>
@@ -401,8 +399,9 @@
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="3357319404342882895">חמור</translation>
 <translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
-<translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
-<translation id="3587482841069643663">הכל</translation>
+<translation id="6196640612572343990">‏חסום קובצי Cookie של צד שלישי</translation>
+<translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
+<translation id="6883611015375728278">חסימת כל העוגיות</translation>
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
@@ -435,7 +434,7 @@
 <translation id="8826461509529116322">הצג את לחצן Brave Rewards</translation>
 <translation id="9185018653595759199">חסימת רשתות חברתיות</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
-<translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
+<translation id="7791141927430186653">אפשר ציוצים מוטבעים של X (לשעבר Twitter)</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
@@ -446,6 +445,7 @@
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
 <translation id="4891600875049212418">עברו ל-Off-The-Record בעת ביקור באתרים רגישים</translation>
+<translation id="1968895725257436430">איסוף נתונים</translation>
 <translation id="4846154056248462491">ביציאה</translation>
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
@@ -599,8 +599,6 @@
 <translation id="811745063252080651">פתרו את ה-CAPTCHA כדי לבקש גשר.</translation>
 <translation id="6936835573742749135">לא ניתן לבקש CAPTCHA. נסה שוב מאוחר יותר.</translation>
 <translation id="2653659639078652383">שלח</translation>
-<translation id="1369311132025451972">הפנה מחדש אוטומטית אתרי .onion</translation>
-<translation id="6214393847480015759">Brave יעבור אוטומטית בחלונות Tor לגרסת .onion של אתר אינטרנט כאשר זו תהיה זמינה.</translation>
 <translation id="1294350054292274934">פתור כתובות .onion רק בחלונות Tor</translation>
 <translation id="1258903596167452221">שירותי Onion לא יהיו זמינים מחוץ לחלונות Tor.</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
@@ -730,11 +728,10 @@
 <translation id="8571837315037233299">כתובת השער</translation>
 <translation id="7703184801853248830">כתובת שער לא חוקית</translation>
 <translation id="7690058578502751948">ניתן להשתמש רק בשער IPFS תקף עם Origin Isolation מופעל ב- Brave</translation>
-<translation id="3411013544209536575">טיפים לעזרה</translation>
+<translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="2775956301559569472">הצג הודעת Wayback Machine בדפי 404</translation>
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
 <translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
-<translation id="7984721311211272523">השבת את פונקציית ההשתקה בסמלי רמקול כרטיסיות</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">הצג את סמל Leo בסרגל הצד</translation>
 <translation id="8055509865174199683">הצג את ליאו בתפריט הקונטקסט באתרי אינטרנט</translation>
@@ -748,6 +745,7 @@
 <translation id="5574059574002819179">התאם הצעות בהשלמה אוטומטית</translation>
 <translation id="8157373421434119674">היסטוריית נתונים וצ'אט</translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
+<translation id="8826914609353373601">נהל מנוי פרימיום</translation>
 <translation id="349846214503465941">אפשר רשימת השמעה</translation>
 <translation id="7903608716704052878">הוסף אוטומטית קבצים לצפייה במצב לא מקוון</translation>
 <translation id="4193768184502613558">אפשרות זו תשמור באופן אוטומטי קבצי מדיה במטמון כך שניתן יהיה לנגן אותם ללא חיבור לאינטרנט.</translation>

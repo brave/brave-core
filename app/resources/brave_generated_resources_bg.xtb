@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">Имате <ph name="NUMBER_OF_TABS"/> раздела отворени в този прозорец на браузъра.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> раздела</translation>
 <translation id="1307431692088049276">Не ме питай отново</translation>
-<translation id="2272117088509540883">- Brave Търсене</translation>
-<translation id="2701279958223202597">Поддържайте независимо търсене с по-добра поверителност. Brave Търсене не следи нито вас, нито заявките ви, или кликванията ви.</translation>
-<translation id="6438467592401259882">Поддържайте независимо търсене с по-добра поверителност.</translation>
-<translation id="5167182095453855816">Време е да се откажем от технологичните гиганти</translation>
-<translation id="45040495135337202">Brave не проследява активността, заявките или кликванията ви. И е 100% независим от големите технологични компании.</translation>
 <translation id="6919364924256365253">Не търсете с Google. Bing няма да свърши работа. Просто ползвайте Brave.</translation>
 <translation id="3313148036097793884">Brave не проследява активността, заявките или кликванията ви. И е 100% независим.</translation>
 <translation id="7295094278358921487">Търсете и ще намерите. Напълно поверително.</translation>
+<translation id="45040495135337202">Brave не проследява активността, заявките или кликванията ви. И е 100% независим от големите технологични компании.</translation>
 <translation id="42032117189492785">Търсене с помощта на изкуствен интелект и уникален индекс.</translation>
 <translation id="8606416238399082160">Напълно поверителен, 100% независим и със страхотни функции на изкуствен интелект.</translation>
 <translation id="5240031343741051161">Опитайте Brave Търсене</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">Активиране</translation>
 <translation id="5046066249040287308">Комунална услуга чрез портфейла на Brave</translation>
 <translation id="4552520379838695057">За съжаление тази страница липсва.</translation>
+<translation id="7299769530898469069">Запазената версия не може да бъде заредена</translation>
 <translation id="2609895996619941644">Искате ли да проверите дали запазената версия е налична на Wayback Machine?</translation>
-<translation id="8053093028263274061">За съжаление няма налична запазена версия.</translation>
-<translation id="8517321676372639828">Проверете за запазена версия</translation>
+<translation id="8010675257566903381">Wayback Machine не успя да намери запазена версия на този сайт.</translation>
+<translation id="1207694258341311738">Проверете запазената версия</translation>
 <translation id="191143826155037518">Brave се предоставя на разположение под <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) и включва <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/> под множество други лицензи.
         Можете да прочетете <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>инструкции как да изтеглите и изградите за себе си<ph name="END_LINK_BUILD_INSTRUCTIONS"/> конкретния <ph name="BEGIN_LINK_SOURCE_CODE"/>изходен код, използван за създаването на това копие<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">Водещи сайтове</translation>
 <translation id="7859704718976024901">История на сърфирането</translation>
 <translation id="8820817407110198400">Лента на отметките</translation>
+<translation id="4144468798716165316">Бързи команди</translation>
 <translation id="7310387888625228830">Асистент Leo AI</translation>
 <translation id="5222974844674487962">Показване на бутона Brave News</translation>
 <translation id="383007806262310953">Показване на лентата на отметките</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">Лентата за отметки е скрита на всички страници</translation>
 <translation id="3416468988018290825">Винаги показвай пълните URL адреси</translation>
 <translation id="5529693968082667490">Показване на бутона за търсене на раздел</translation>
-<translation id="1643029991199044105">Преминете през най-скоро използваните раздели с Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Статиите се зареждат автоматично в режим за четене, което ви спестява време</translation>
+<translation id="7984721311211272523">Деактивирайте функцията за изключване на звука в раздела с иконите за високоговорителя</translation>
 <translation id="2422927186524098759">Странична лента</translation>
 <translation id="832432428796481785">Бутон за показване на страничната лента</translation>
 <translation id="5581036754486769849">Разрешава автоматично попълване в поверителни прозорци</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="3357319404342882895">Конкретна</translation>
 <translation id="8823559166155093873">Блокиране на бисквитките</translation>
-<translation id="5770288601196774623">Само между сайтовете</translation>
-<translation id="3587482841069643663">Всички</translation>
+<translation id="6196640612572343990">Блокиране на „бисквитките“ на трети страни</translation>
+<translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
+<translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
 <translation id="7390783310074170337">Изглед по подразбиране</translation>
 <translation id="130615081792797568">Опростен изглед</translation>
 <translation id="2360360976480535628">Разширен изглед</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Покажи бутона на Награди в Brave</translation>
 <translation id="9185018653595759199">Блокиране на социални медии</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
-<translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
+<translation id="7791141927430186653">Разрешаване на вградени туитове от X (известен преди като Twitter)</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
 <translation id="8792121506918889955">Политика за работа с IP на WebRTC</translation>
 <translation id="6165508094623778733">Научете повече</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">Използвайте услугите на Google за насочени съобщения</translation>
 <translation id="933652931229970927">Автоматично изпращане на отчети с диагностика</translation>
 <translation id="4891600875049212418">Преминете в режим „Off-The-Record“, когато посещавате чувствителни сайтове</translation>
+<translation id="1968895725257436430">Събиране на данни</translation>
 <translation id="4846154056248462491">При излизане</translation>
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">Решете CAPTCHA, за да поискате мост.</translation>
 <translation id="6936835573742749135">Не може да се поиска CAPTCHA. Опитайте отново по-късно.</translation>
 <translation id="2653659639078652383">Изпращане</translation>
-<translation id="1369311132025451972">Автоматично пренасочване на .onion сайтове</translation>
-<translation id="6214393847480015759">В прозорци на Tor Brave автоматично превключва към .onion версията на даден уебсайт, когато е налична.</translation>
 <translation id="1294350054292274934">Разрешаване на .onion адреси само в прозорци на Tor</translation>
 <translation id="1258903596167452221">Услугите на Onion няма да са достъпни извън прозорци на Tor.</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">Адрес на шлюза</translation>
 <translation id="7703184801853248830">Невалиден адрес на шлюза</translation>
 <translation id="7690058578502751948">В Brave може да се използва само валиден шлюз на IPFS с активирано изолиране на източника</translation>
-<translation id="3411013544209536575">Съвети за помощ</translation>
+<translation id="1643029991199044105">Преминете през най-скоро използваните раздели с Ctrl-Tab</translation>
 <translation id="2775956301559569472">Показване на подкана Wayback Machine на страници 404</translation>
 <translation id="3095201688102519917">Предупреди ме, преди затваряне на прозорец с няколко раздела</translation>
 <translation id="7120553802660696133">Затвори прозореца при затваряне на последния раздел</translation>
-<translation id="7984721311211272523">Деактивирайте функцията за изключване на звука в раздела с иконите за високоговорителя</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показване на иконата на Leo в системния панел</translation>
 <translation id="8055509865174199683">Показване на Лео в контекстното меню на уебсайтове</translation>
@@ -748,6 +745,7 @@ Leo. Това действие не може да бъде отменено.</tr
 <translation id="5574059574002819179">Настройте предложенията за автоматично довършване.</translation>
 <translation id="8157373421434119674">Данни и история на чата</translation>
 <translation id="614530507403667291">Образец по подразбиране за нови разговори</translation>
+<translation id="8826914609353373601">Управление на premium абонамент</translation>
 <translation id="349846214503465941">Активиране на плейлиста</translation>
 <translation id="7903608716704052878">Автоматично добавяне на файлове за гледане офлайн</translation>
 <translation id="4193768184502613558">Тази опция автоматично ще съхранява в кеш медийни файлове, за да можете да ги възпроизвеждате без връзка с интернет.</translation>

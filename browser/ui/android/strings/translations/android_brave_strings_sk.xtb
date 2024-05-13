@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blokuje prvky Ďalšia udalosť a Koncová karta na youtube.com.</translation>
 <translation id="5152595963250646670">Blokovať rušivé prvky YouTube</translation>
 <translation id="2998960761270772157">Blokuje prvky prihlásenia, ponuky, komentárov a informácií o videu na youtube.com.</translation>
+<translation id="8531835121131500698">Blokovať krátke videá YouTube</translation>
+<translation id="2167271714269158912">Blokuje krátke videá na domovskej stránke, na populárnej stránke a vo výsledkoch vyhľadávania na youtube.com.</translation>
 <translation id="6052725679982758334">Blokovanie sociálnych médií</translation>
 <translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Overený tvorca</translation>
 <translation id="2369994359029526515">Neoverený tvorca</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
-<translation id="7861645265922445992">Uplatniť Rewards</translation>
 <translation id="1848737374354350807">Zůstatek:</translation>
 <translation id="4781696154289395607">Prispeli ste <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Pri spracovávaní vášho príspevku vznikol problém.</translation>
-<translation id="2221902203895354376">Je dostupná dotácia tokenov!</translation>
-<translation id="2377929997600454162">Práve dorazili vaše odmeny z reklám za mesiac <ph name="MONTH_VALUE"/>!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Odmeny: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Na vyzdvihnutie máte ešte <ph name="TOKEN"/> dní</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch.tv</translation>
 <translation id="8038539967102225446">Brave reklamy sú tu!</translation>
@@ -458,7 +455,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3763681089644577874">Blokovať súbory cookie</translation>
 <translation id="614747795780742163">Zabraňuje webovým stránkam ukladať informácie o vašich predchádzajúcich návštevách</translation>
 <translation id="6883611015375728278">Zakázať všetky cookies</translation>
-<translation id="4941539331405513605">Blokovať súbory cookie viacerých stránok</translation>
+<translation id="6196640612572343990">Blokovať súbory cookie tretích strán</translation>
 <translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
 <translation id="1553643198679271031">Požiadať o pokračovanie bez oficiálneho zápisu</translation>
 <translation id="4891600875049212418">Pri návšteve citlivých lokalít postupovať bez oficiálneho zápisu</translation>
@@ -604,6 +601,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5488357322146334497">Zpráva</translation>
 <translation id="1904000155026201268">Rozumiem, že ak stratím frázu na obnovenie, nebudem mať prístup k svojej kryptopeňaženke.</translation>
 <translation id="5333225216561354793">Potrebujeme, aby ste potvrdili nasledujúce položky</translation>
+<translation id="6937275455070754004">Vyberte si, ktoré blokchainy chcete v peňaženke používať.</translation>
 <translation id="1645800479814134195">Beriem na vedomie, že ide o peňaženku na vlastnú zodpovednosť a že som sám zodpovedný za všetky súvisiace finančné prostriedky, aktíva alebo účty a za prijatie vhodných opatrení na zabezpečenie, ochranu a zálohovanie svojej peňaženky. Beriem na vedomie, že spoločnosť Brave nemôže v mojom mene získať prístup k mojej peňaženke ani zvrátiť transakcie a že fáza obnovy je JEDINÝM spôsobom, ako získať prístup v prípade straty hesla, krádeže zariadenia alebo podobných okolností.</translation>
 <translation id="4565891212173086999">Prečítal som si a súhlasím s <ph name="CLICK_START"/>Podmienkami používania<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Vaša fráza na obnovenie</translation>
@@ -611,12 +609,12 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2708402071160162126">VAROVANIE: Nikdy nezverejňujte svoju frázu na zálohovanie. Každý, kto má túto frázu, vám môže navždy vziať aktíva.</translation>
 <translation id="111912712268284159">Svoju frázu mám zálohovanú na bezpečnom mieste.</translation>
 <translation id="6896758677409633944">Kopírovať</translation>
-<translation id="1783600039044302171">Zabezpečte si krypto heslom</translation>
 <translation id="3726490322412361740">Zadajte heslo</translation>
 <translation id="3038243139480464605">Overiť heslo</translation>
 <translation id="3043677904160378840">Heslá musia mať aspoň 8 znakov.</translation>
 <translation id="7396672979287122068">Overené heslo sa nezhoduje</translation>
-<translation id="7084181009966710506">Vytváranie peňaženky...</translation>
+<translation id="1566412704591731844">Vaša peňaženka sa vytvára…</translation>
+<translation id="7779823116893018906">Môže to trvať niekoľko sekúnd…</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/><ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Pridať účet</translation>
 <translation id="3448492834076427715">Aktualizovať účet</translation>
@@ -639,6 +637,11 @@ Naozaj chcete pokračovať?</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="5844138175312846408">Už máte peňaženku?</translation>
 <translation id="2502258949541727762">Skôr ako začneme</translation>
+<translation id="4303748097351941030">Podporované siete</translation>
+<translation id="4204268048253692928">Siete môžete kedykoľvek pridať v Nastaveniach.</translation>
+<translation id="2523174693142405417">Hľadať siete</translation>
+<translation id="1164748583090434571">Zobraziť testovacie siete</translation>
+<translation id="935220650946301698">Pokračovať so sieťami <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Vytvoriť heslo</translation>
 <translation id="2789310860394340571">Toto heslo použijete pri prístupe do svojej peňaženky.</translation>
 <translation id="2136372518715274136">Zadajte nové heslo</translation>
@@ -845,7 +848,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7791543448312431591">Pridať</translation>
 <translation id="6889920539620318793">Nastaviť ako aktívne</translation>
 <translation id="2653659639078652383">Odoslať</translation>
-<translation id="4945690646623486292">Zvoliť sieť</translation>
+<translation id="4556601961751528347">Zmeniť pripojený účet</translation>
 <translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Prístup k peňaženke Brave</translation>
 <translation id="8030169304546394654">Odpojené</translation>
@@ -871,6 +874,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4255623233927788178">Zobraziť v blokovom prieskumníkovi</translation>
 <translation id="8274201358637112807">Táto stránka chce spolupracovať s peňaženkou Brave</translation>
 <translation id="3355936511340229503">Chyba pripojenia</translation>
+<translation id="1531836666020185856">Odporúčané</translation>
 <translation id="4891604214809245310">Sieť nemožno nastaviť na <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Zdá sa, že na tomto zariadení máte ďalšie siete VPN nastavené na „Vždy zapnuté“. Pokiaľ chcete povoliť Brave Firewall + VPN, pred opätovným pripojením najskôr deaktivujte nastavenie „Vždy zapnuté“ pre ostatné siete VPN. Ak problém pretrváva, skúste odinštalovať iné siete VPN.</translation>
 <translation id="85136472535634474">Otvoriť nastavenia siete VPN</translation>
@@ -1038,7 +1042,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1677961202754619328">Podľa údajov spoločnosti Uphold existujú v súčasnosti určité obmedzenia týkajúce sa vášho účtu Uphold. Prihláste sa do účtu Uphold a skontrolujte, či máte nejaké oznámenia alebo zostávajúce požiadavky na účet, ktoré treba splniť, a potom to skúste znova.</translation>
 <translation id="5425006356459378415">Brave Rewards nie sú k dispozícii</translation>
 <translation id="833643743158564518">Nové registrácie do služby Brave Rewards sú vo vašom regióne momentálne zakázané. Vždy to však môžete skúsiť neskôr. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Všetky siete</translation>
 <translation id="7748944510530490017">Primárne siete</translation>
 <translation id="2781668117338732220">Sekundárne siete</translation>
 <translation id="282560918037172384">Testovacie Siete</translation>
@@ -1178,4 +1181,11 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="3251885322612056119">Aktualizované podmienky služby</translation>
 <translation id="4049035689681585146">Aktualizovali sme podmienky služby Odmeny Brave. Tieto aktualizácie sme vykonali s cieľom objasniť naše podmienky a zabezpečiť, aby obsahovali nové funkcie. Ak budete naďalej používať službu Odmeny Brave, súhlasíte s aktualizovanými podmienkami služby. Ak s nimi nesúhlasíte, môžete <ph name="RESET_START"/>reset<ph name="RESET_END"/> službu Odmeny Brave, čím deaktivujete funkciu.</translation>
 <translation id="2165953574528546737">Prečítajte si<ph name="TOS_START"/>Brave Rewards Terms of Service<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Povoliť viacero okien</translation>
+<translation id="6167344249617630304">Otvorte až 5 okien naraz a presúvajte karty z jedného okna do druhého</translation>
+<translation id="1063948063403254568">Zistilo sa viacero okien</translation>
+<translation id="4661882208707630158">Pred vypnutím funkcie viacerých okien zlúčte karty do iného okna Brave alebo zatvorte ostatné okná Brave.</translation>
+<translation id="6891382640886173702">Zlúčiť okná</translation>
+<translation id="2912247081180973411">Zatvoriť okná</translation>
+<translation id="4010699428656610296">Zlúčiť ostatné karty do iného okna Brave.</translation>
 </translationbundle>

@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
 <translation id="1307431692088049276">次回から質問しない</translation>
-<translation id="2272117088509540883">- Brave Search</translation>
-<translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
-<translation id="6438467592401259882">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
-<translation id="5167182095453855816">テクノロジーは今や新時代へ。</translation>
-<translation id="45040495135337202">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。大手テック企業からは100％独立した独自のシステムです。</translation>
 <translation id="6919364924256365253">GoogleもBingも卒業。これからはBraveで。</translation>
 <translation id="3313148036097793884">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。100％独立した独自のシステムです。</translation>
 <translation id="7295094278358921487">見たいデータをプライベートで検索</translation>
+<translation id="45040495135337202">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。大手テック企業からは100％独立した独自のシステムです。</translation>
 <translation id="42032117189492785">独自のインデックスでAIを取り入れた検索を。</translation>
 <translation id="8606416238399082160">完全プライベート、100％独立型、優れたAI機能も搭載。</translation>
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
-<translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
-<translation id="8053093028263274061">申し訳ございません、利用可能な保存されたバージョンはありません。</translation>
-<translation id="8517321676372639828">保存されたバージョンをチェックする</translation>
+<translation id="7299769530898469069">保存されたバージョンを読み込めません</translation>
+<translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認したいですか？</translation>
+<translation id="8010675257566903381">Wayback Machineで、このサイトの保存されたバージョンを見つけられませんでした。</translation>
+<translation id="1207694258341311738">保存されたバージョンをチェックする</translation>
 <translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS"/>オープンソース・ソフトウェア<ph name="END_LINK_OSS"/>が含まれています。
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
+<translation id="4144468798716165316">クイックコマンド</translation>
 <translation id="7310387888625228830">Leo AI アシスタント</translation>
 <translation id="5222974844674487962">Braveニュースボタンを表示する</translation>
 <translation id="383007806262310953">ブックマーク バーを表示する</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">ブックマーク バーをすべてのページで非表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
-<translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
+<translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
 <translation id="2422927186524098759">サイドバー</translation>
 <translation id="832432428796481785">サイドバーのボタンを表示</translation>
 <translation id="5581036754486769849">プライベートウィンドウでオートフィルを許可</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="3357319404342882895">厳格</translation>
 <translation id="8823559166155093873">クッキーをブロック</translation>
-<translation id="5770288601196774623">サイト間のみ</translation>
-<translation id="3587482841069643663">すべて</translation>
+<translation id="6196640612572343990">サードパーティの Cookie をブロックする</translation>
+<translation id="5657156137487675418">全てのクッキーを許可する</translation>
+<translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Brave Rewardsボタンを表示する</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
-<translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
+<translation id="7791141927430186653">X (旧Twitter) の埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
+<translation id="1968895725257436430">データコレクション</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">CAPTCHAを解いて、ブリッジをリクエストしてください。</translation>
 <translation id="6936835573742749135">CAPTCHAを要求できません。後で再試行してください。</translation>
 <translation id="2653659639078652383">送信</translation>
-<translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
-<translation id="6214393847480015759">Torウィンドウでは、Braveは利用可能な場合、自動的にウェブサイトの.onionバージョンに切り替えます。</translation>
 <translation id="1294350054292274934">Torウィンドウで.onionアドレスのみを解決</translation>
 <translation id="1258903596167452221">OnionサービスはTorウィンドウの外では利用できません。</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
@@ -619,24 +617,24 @@
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
 <translation id="5840822070878669614">Brave ウェブストアを開く</translation>
-<translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
+<translation id="4954512758656527938">デフォルトの Ethereum ウォレット</translation>
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="6942354363301686374">拡張機能（フォールバックなし）</translation>
 <translation id="1274962333945373242">暗号資産ウォレット (非推奨)</translation>
 <translation id="702381242110464396">拡張機能（Braveウォレットのフォールバック）</translation>
 <translation id="4718664830805652430">デフォルトのベース通貨</translation>
-<translation id="7992507032049865603">デフォルトのベース暗号資産</translation>
+<translation id="7992507032049865603">デフォルトのベース暗号資産通貨</translation>
 <translation id="3044369626313583722">Braveウォレットボタンを表示する</translation>
 <translation id="7568430944629653319">NFTディスカバリーを有効にする</translation>
-<translation id="970496996377628529">サードパーティーのAPIを使用して、所有するNFTを自動的にウォレットに追加します。</translation>
-<translation id="4898839076551703154">プライベートウィンドウでBraveウォレットを有効にします。</translation>
-<translation id="1550684990179058322">警告: プライベートウィンドウのセッションでウォレットアドレスを再利用すると、サイトでプライベートウィンドウのセッションをプライベートウィンドウ以外のセッションにリンクすることが許可されます。</translation>
+<translation id="970496996377628529">サードパーティーAPIを使用し、所有するNFTを自動的にウォレットに表示します。</translation>
+<translation id="4898839076551703154">プライベートウィンドウでBraveウォレットを有効にする</translation>
+<translation id="1550684990179058322">注意：プライベートウィンドウのセッションでウォレットアドレスを再利用すると、サイトでプライベートウィンドウと通常ウインドウの間でセッションの紐付けがされてしまう可能性があります。</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
-<translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
+<translation id="414639769490080648">Brave Wallet が自動的にロックされる分数</translation>
 <translation id="856371974127598760">ウォレットネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
-<translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
+<translation id="5693968582510626466">トランザクションのクリアは、ウォレットを使用する開発時や、ローカルサーバーの状態をクリアするときなどに使用します。</translation>
 <translation id="4440478655766953083">NFTを自動でピン留めする</translation>
 <translation id="464460032678285850">Braveウォレットに追加されたNFTは、自動的にローカルIPFSノードにピン留めされる場合があります。
 注：ピン留めのためにIPFSデーモンが起動することがあり、ローカルノードがIPFSネットワークにキャッシュされたデータとピン留めのNFTを共有します。</translation>
@@ -654,7 +652,7 @@
 <translation id="4226543734057230801">Ethereumネットワーク</translation>
 <translation id="3504157706952484145">Filecoinネットワーク</translation>
 <translation id="1561541094377237745">Solanaネットワーク</translation>
-<translation id="7141438739990875547">ビットコインネットワーク</translation>
+<translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="1077567586443625607">Zcashネットワーク</translation>
 <translation id="3159419679550543837">テストネットワークを表示</translation>
 <translation id="3215569562674795548">編集または新しいネットワークを追加</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
 <translation id="7703184801853248830">無効なゲートウェイアドレス</translation>
 <translation id="7690058578502751948">Brave で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
-<translation id="3411013544209536575">ヘルプのヒント</translation>
+<translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
-<translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">サイドバーにLeoアイコンを表示</translation>
 <translation id="8055509865174199683">ウェブサイトのコンテキストメニューにLeoを表示</translation>
@@ -750,6 +747,7 @@ Leoとの会話がすべて削除されます。この操作を元に戻すこ�
 <translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="8157373421434119674">データ＆チャット履歴</translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
+<translation id="8826914609353373601">プレミアムサブスクリプションを管理</translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
 <translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
 <translation id="4193768184502613558">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>

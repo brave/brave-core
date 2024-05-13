@@ -112,14 +112,10 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="7551864359422178684">V tem oknu brskalnika so odprti <ph name="NUMBER_OF_TABS"/> zavihki.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> zavihkov</translation>
 <translation id="1307431692088049276">Ne sprašuj več</translation>
-<translation id="2272117088509540883">- Brave iskanje</translation>
-<translation id="2701279958223202597">Podprite neodvisno iskanje z boljšo zasebnostjo. Brave iskanje ne sledi vam, vašim poizvedbam ali klikom.</translation>
-<translation id="6438467592401259882">Podprite neodvisno iskanje z boljšo zasebnostjo.</translation>
-<translation id="5167182095453855816">Čas je, da pustimo tehnološke velikane za sabo.</translation>
-<translation id="45040495135337202">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen od velikanov tehnologije.</translation>
 <translation id="6919364924256365253">Pustite Google. Pozabite Bing. Uporabite Brave.</translation>
 <translation id="3313148036097793884">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen.</translation>
 <translation id="7295094278358921487">Iščite in našli boste. Zasebno.</translation>
+<translation id="45040495135337202">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen od velikanov tehnologije.</translation>
 <translation id="42032117189492785">Iskanje s pomočjo umetne inteligence in z edinstvenim indeksom.</translation>
 <translation id="8606416238399082160">Popolnoma zasebno, 100-odstotno neodvisno in z odličnimi funkcijami umetne inteligence.</translation>
 <translation id="5240031343741051161">Preizkusite iskanje Brave</translation>
@@ -197,9 +193,10 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3435896845095436175">Omogoči</translation>
 <translation id="5046066249040287308">Uporabna storitev Denarnice Brave</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
+<translation id="7299769530898469069">Ni mogoče naložiti shranjene različice</translation>
 <translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
-<translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
-<translation id="8517321676372639828">Preveri, ali je na voljo shranjena različica</translation>
+<translation id="8010675257566903381">Wayback Machine ni našel shranjene različice tega spletnega mesta.</translation>
+<translation id="1207694258341311738">Preveri shranjeno različico</translation>
 <translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL"/>javna licenca Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) in vključuje <ph name="BEGIN_LINK_OSS"/>odprtokodno programsko opremo<ph name="END_LINK_OSS"/> pod različnimi drugimi licencami.
 Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifično <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
@@ -354,6 +351,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2858138569776157458">Najb. prilj.</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
+<translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="7310387888625228830">Leo AI pomočnik</translation>
 <translation id="5222974844674487962">Prikaži gumb Brave News</translation>
 <translation id="383007806262310953">Pokaži vrstico z zaznamki</translation>
@@ -362,9 +360,9 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7158817046543187970">Vrstica z zaznamki je skrita na vseh straneh</translation>
 <translation id="3416468988018290825">Vedno prikaži celoten naslov URL</translation>
 <translation id="5529693968082667490">Prikaži gumb za iskanje po zavihkih</translation>
-<translation id="1643029991199044105">S Ctrl-Tab se pomikajte po zadnjih uporabljenih zavihkih</translation>
 <translation id="1013121820689882118">Hitri bralnik</translation>
 <translation id="2025435450953474282">Članki se samodejno naložijo v načinu bralnika in vam prihranijo čas</translation>
+<translation id="7984721311211272523">Onemogočite funkcijo izklopa zvoka s pomočjo ikon zvočnikov v zavihkih</translation>
 <translation id="2422927186524098759">Stranska vrstica</translation>
 <translation id="832432428796481785">Prikaz gumba za stransko vrstico</translation>
 <translation id="5581036754486769849">Dovoli samodejno izpolnjevanje v zasebnih oknih</translation>
@@ -405,8 +403,9 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="3357319404342882895">Strožje</translation>
 <translation id="8823559166155093873">Blokiraj piškotke</translation>
-<translation id="5770288601196774623">Samo med mesti</translation>
-<translation id="3587482841069643663">Vse</translation>
+<translation id="6196640612572343990">Blokiraj piškotke drugih spletnih mest</translation>
+<translation id="5657156137487675418">Dovoli vse piškotke</translation>
+<translation id="6883611015375728278">Blokiraj vse piškotke</translation>
 <translation id="7390783310074170337">Privzeti pogled</translation>
 <translation id="130615081792797568">Preprost pogled</translation>
 <translation id="2360360976480535628">Napredni pogled</translation>
@@ -439,7 +438,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="8826461509529116322">Prikaži gumb Brave Rewards</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
-<translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
+<translation id="7791141927430186653">Dovoli X (prej Twitter) vdelane tvite</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
 <translation id="8792121506918889955">Politika ravnanja z WebRTC IP</translation>
 <translation id="6165508094623778733">Preberite več</translation>
@@ -450,6 +449,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3540231253392253941">Za potisna sporočila uporabite Googlove storitve</translation>
 <translation id="933652931229970927">Samodejno pošiljanje diagnostičnih poročil</translation>
 <translation id="4891600875049212418">Ko obiščete občutljiva spletna mesta, preklopite v Nezabeleženi način</translation>
+<translation id="1968895725257436430">Zbiranje podatkov</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
@@ -603,8 +603,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="811745063252080651">Rešite CAPTCHA, da zahtevate most.</translation>
 <translation id="6936835573742749135">Ni mogoče zahtevati CAPTCHA. Poskusi znova kasneje.</translation>
 <translation id="2653659639078652383">Pošlji</translation>
-<translation id="1369311132025451972">Samodejno preusmeri spletna mesta .onion</translation>
-<translation id="6214393847480015759">Brave bo v oknih Tor samodejno preklopil na različico .onion spletnega mesta, ko bo na voljo.</translation>
 <translation id="1294350054292274934">Samo razreši naslove .onion v oknih Tor</translation>
 <translation id="1258903596167452221">Storitve Onion ne bodo na voljo zunaj oken Tor.</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
@@ -735,11 +733,10 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="8571837315037233299">Naslov prehoda</translation>
 <translation id="7703184801853248830">Neveljaven naslov prehoda</translation>
 <translation id="7690058578502751948">V Brave lahko uporabite samo veljaven prehod IPFS z omogočeno izolacijo za Origin</translation>
-<translation id="3411013544209536575">Pomoč in nasveti</translation>
+<translation id="1643029991199044105">S Ctrl-Tab se pomikajte po zadnjih uporabljenih zavihkih</translation>
 <translation id="2775956301559569472">Prikaži poziv računalnika Wayback na 404 straneh</translation>
 <translation id="3095201688102519917">Opozori me pred zaprtjem okna z več zavihki</translation>
 <translation id="7120553802660696133">Zapri okno, ko se zapre zadnji zavihek</translation>
-<translation id="7984721311211272523">Onemogočite funkcijo izklopa zvoka s pomočjo ikon zvočnikov v zavihkih</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
 <translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
@@ -753,6 +750,7 @@ Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="5574059574002819179">Prilagodite predloge za samodejno dokončanje</translation>
 <translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
+<translation id="8826914609353373601">Upravljanje premium naročnine</translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>
 <translation id="7903608716704052878">Samodejno dodajanje datotek za ogled brez povezave</translation>
 <translation id="4193768184502613558">Ta možnost samodejno shrani medijske datoteke v predpomnilnik, da jih lahko predvajate brez internetne povezave.</translation>

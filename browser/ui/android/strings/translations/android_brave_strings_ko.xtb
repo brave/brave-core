@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">youtube.com의 다음 콘텐츠와 엔드 카드 요소를 차단합니다.</translation>
 <translation id="5152595963250646670">YouTube의 거추장스러운 요소 차단</translation>
 <translation id="2998960761270772157">youtube.com의 로그인, 메뉴, 댓글, 동영상 정보 요소를 차단합니다.</translation>
+<translation id="8531835121131500698">YouTube Shorts 차단</translation>
+<translation id="2167271714269158912">youtube.com 홈, 인기 급상승 페이지, 검색결과에서 Shorts를 차단합니다.</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
 <translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">인증된 제작자</translation>
 <translation id="2369994359029526515">미인증 제작자</translation>
 <translation id="6112368337882254910">자동 기부</translation>
-<translation id="7861645265922445992">리워드 받기</translation>
 <translation id="1848737374354350807">잔액</translation>
 <translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT를 후원했습니다.</translation>
 <translation id="2429828319207652823">기부금 처리 중 문제가 생겼습니다.</translation>
-<translation id="2221902203895354376">토큰 보조금을 받을 수 있습니다!</translation>
-<translation id="2377929997600454162"><ph name="MONTH_VALUE"/> 광고 리워드가 도착했습니다!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> 리워드: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">받을 수 있는 기한 <ph name="TOKEN"/>일 남음</translation>
 <translation id="683765328936486920">YouTube에서 활동</translation>
 <translation id="8969049974285901797">Twitch에서 활동</translation>
 <translation id="8038539967102225446">여기에 Brave 광고가 있습니다!</translation>
@@ -458,7 +455,7 @@
 <translation id="3763681089644577874">쿠키 차단</translation>
 <translation id="614747795780742163">웹사이트가 이전 방문에 대한 정보를 저장하지 못하도록 합니다</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
+<translation id="6196640612572343990">타사 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="1553643198679271031">오프더레코드 요청</translation>
 <translation id="4891600875049212418">민감한 사이트 방문 시 오프더레코드 활성화</translation>
@@ -604,6 +601,7 @@
 <translation id="5488357322146334497">메시지</translation>
 <translation id="1904000155026201268">복구 문구를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
 <translation id="5333225216561354793">아래 항목에 동의해주셔야 합니다.</translation>
+<translation id="6937275455070754004">월렛에서 사용할 블록체인을 선택합니다.</translation>
 <translation id="1645800479814134195">나는 이것이 자기 보호관리 월렛이므로 연결된 자금, 자산, 계좌에 대한 책임은 전적으로 내게 있고, 적절한 조치를 통해 월렛의 보안을 유지하고 보호하며 백업해야 한다는 사실을 이해합니다. 나는 Brave가 내 월렛에 액세스하거나 나를 대신하여 트랜잭션을 번복할 수 없고, 비밀번호 분실, 디바이스 도난 등의 상황에서 복구 구문이 월렛에 다시 액세스할 수 있는 '유일한' 수단임을 이해합니다.</translation>
 <translation id="4565891212173086999"><ph name="CLICK_START"/>이용 약관<ph name="CLICK_END"/>을 읽었으며 이에 동의합니다.</translation>
 <translation id="3933122286596948824">복구 문구</translation>
@@ -611,12 +609,12 @@
 <translation id="2708402071160162126">경고: 백복구 문구는 절대 공유하지 마세요. 이 문구를 아는 누군가가 회원님의 자금을 탈취하면 되찾을 수 없습니다.</translation>
 <translation id="111912712268284159">내 구문을 안전하게 보관해 두었습니다.</translation>
 <translation id="6896758677409633944">복사</translation>
-<translation id="1783600039044302171">비밀번호로 암호화폐 안전하게 보호</translation>
 <translation id="3726490322412361740">비밀번호 입력</translation>
 <translation id="3038243139480464605">검증 비밀번호</translation>
 <translation id="3043677904160378840">비밀번호는 8자 이상이어야 합니다.</translation>
 <translation id="7396672979287122068">검증 비밀번호가 일치하지 않음</translation>
-<translation id="7084181009966710506">월렛 생성 중...</translation>
+<translation id="1566412704591731844">월렛 만드는 중...</translation>
+<translation id="7779823116893018906">몇 초가 소요됩니다...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> 계정 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">계정 추가</translation>
 <translation id="3448492834076427715">계정 업데이트</translation>
@@ -639,6 +637,11 @@
 <translation id="3157931365184549694">복구</translation>
 <translation id="5844138175312846408">이미 월렛이 있으십니까?</translation>
 <translation id="2502258949541727762">시작하기 전에</translation>
+<translation id="4303748097351941030">지원되는 네트워크</translation>
+<translation id="4204268048253692928">네트워크는 언제든지 설정에서 추가할 수 있습니다.</translation>
+<translation id="2523174693142405417">네트워크 검색</translation>
+<translation id="1164748583090434571">테스트넷 표시</translation>
+<translation id="935220650946301698"><ph name="NUMBER"/>개 네트워크로 계속</translation>
 <translation id="8248460961680233459">비밀번호 만들기</translation>
 <translation id="2789310860394340571">이 비밀번호를 사용하여 월렛에 액세스합니다.</translation>
 <translation id="2136372518715274136">새 비밀번호 입력</translation>
@@ -845,7 +848,7 @@
 <translation id="7791543448312431591">추가</translation>
 <translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="2653659639078652383">제출</translation>
-<translation id="4945690646623486292">네트워크 선택</translation>
+<translation id="4556601961751528347">연결된 계정 변경</translation>
 <translation id="5233638681132016545">새 탭</translation>
 <translation id="8006088103295786154">Brave 월렛에 액세스</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
@@ -871,6 +874,7 @@
 <translation id="4255623233927788178">블록 탐색기에서 보기</translation>
 <translation id="8274201358637112807">이 페이지가 Brave 월렛과 상호작용하려고 합니다.</translation>
 <translation id="3355936511340229503">연결 오류</translation>
+<translation id="1531836666020185856">특선</translation>
 <translation id="4891604214809245310">네트워크를 <ph name="NETWORK_NAME"/>(으)로 설정할 수 없음</translation>
 <translation id="685345388423515592">이 디바이스에 다른 VPN이 "항상"으로 설정된 것 같습니다. Brave Firewall + VPN을 활성화하려면 먼저 다른 VPN의 "항상" 설정을 비활성화하고 다시 연결하세요. 문제가 지속되면 다른 VPN을 제거해보세요.</translation>
 <translation id="85136472535634474">VPN 설정 열기</translation>
@@ -1038,7 +1042,6 @@
 <translation id="1677961202754619328">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요.</translation>
 <translation id="5425006356459378415">Brave Rewards 사용 불가</translation>
 <translation id="833643743158564518">귀하가 계신 지역에서는 현재 Brave Rewards 신규 가입이 중단되었습니다. 나중에 언제든 다시 시도해주세요. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="7748944510530490017">주사용 네트워크</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="282560918037172384">테스트 네트워크</translation>
@@ -1178,4 +1181,11 @@
 <translation id="3251885322612056119">업데이트된 서비스 약관</translation>
 <translation id="4049035689681585146">Brave Rewards 서비스 약관이 업데이트되었습니다. 조항을 명확하게 하고 새 기능을 모두 포괄할 수 있도록 업데이트했습니다. 동의하지 않으셔서 Brave Rewards를 <ph name="RESET_START"/>초기화<ph name="RESET_END"/>하면 기능이 비활성화됩니다.</translation>
 <translation id="2165953574528546737"><ph name="TOS_START"/>Brave Rewards 서비스 약관<ph name="TOS_END"/> 보기</translation>
+<translation id="1381108437654541567">여러 창 활성화</translation>
+<translation id="6167344249617630304">동시에 최대 5개의 창을 열고 한 창에서 다른 창으로 탭 이동</translation>
+<translation id="1063948063403254568">여러 창 감지됨</translation>
+<translation id="4661882208707630158">탭을 다른 Brave 창으로 병합하거나 다른 Brave 창을 닫아야 여러 창 기능을 비활성화할 수 있습니다.</translation>
+<translation id="6891382640886173702">창 병합</translation>
+<translation id="2912247081180973411">창 닫기</translation>
+<translation id="4010699428656610296">다른 탭을 다른 Brave 창으로 병합하세요.</translation>
 </translationbundle>

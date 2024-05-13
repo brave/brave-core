@@ -109,14 +109,10 @@
 <translation id="7551864359422178684">Šajā pārlūkprogrammas logā jums ir atvērta(-s) <ph name="NUMBER_OF_TABS"/> cilne(-s).</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> cilnes</translation>
 <translation id="1307431692088049276">Nejautāt man atkal</translation>
-<translation id="2272117088509540883">- Brave meklēšana</translation>
-<translation id="2701279958223202597">Nodrošina neatkarīgu meklēšanu un labāku privātumu. Brave meklētājs neizseko jūs, jūsu meklējumus vai jūsu klikšķus.</translation>
-<translation id="6438467592401259882">Nodrošina neatkarīgu meklēšanu un labāku privātumu.</translation>
-<translation id="5167182095453855816">Laiks atteikties no lielajām tehnoloģijām.</translation>
-<translation id="45040495135337202">Brave neizseko jums, jūsu vaicājumiem vai klikšķiem. Un tas ir 100% neatkarīgs no Big Tech.</translation>
 <translation id="6919364924256365253">Nemeklējiet to Google. Un ari ne Bing. Vienkārši izmantojiet Brave.</translation>
 <translation id="3313148036097793884">Brave neizseko jums, jūsu vaicājumiem vai klikšķiem. Un tas ir 100% neatkarīgs.</translation>
 <translation id="7295094278358921487">Meklējiet un jūs atradīsiet. Privāti.</translation>
+<translation id="45040495135337202">Brave neizseko jums, jūsu vaicājumiem vai klikšķiem. Un tas ir 100% neatkarīgs no lielajām tehnoloģijām</translation>
 <translation id="42032117189492785">Mākslīgā intelekta uzlabota meklēšana ar unikālu indeksu.</translation>
 <translation id="8606416238399082160">Pilnībā privāts, 100% neatkarīgs un ar lieliskām mākslīgā intelekta funkcijām.</translation>
 <translation id="5240031343741051161">Izmēģiniet Brave meklēšanu</translation>
@@ -194,9 +190,10 @@
 <translation id="3435896845095436175">Iespējot</translation>
 <translation id="5046066249040287308">Brave maka ērtības pakalpojums</translation>
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
+<translation id="7299769530898469069">Nevarēja ielādēt saglabāto versiju</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
-<translation id="8053093028263274061">Diemžēl, saglabātā versija nav pieejama.</translation>
-<translation id="8517321676372639828">Meklēt saglabāto versiju</translation>
+<translation id="8010675257566903381">Wayback Machine nevarēja atrast šīs vietnes saglabāto versiju.</translation>
+<translation id="1207694258341311738">Pārbaudīt saglabāto versiju</translation>
 <translation id="191143826155037518">Brave pieejamu padarījusi <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0 (Mozilla publiskā licence 2.0)<ph name="END_LINK_MPL"/> (MPL) un tā ietver <ph name="BEGIN_LINK_OSS"/>atklātā pirmkoda programmatūras<ph name="END_LINK_OSS"/> ar daudzām citām licencēm.
         Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkrēto<ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
@@ -350,6 +347,7 @@
 <translation id="2858138569776157458">Populāras</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
+<translation id="4144468798716165316">Ātrās komandas</translation>
 <translation id="7310387888625228830">Leo AI asistents</translation>
 <translation id="5222974844674487962">Rādīt Brave ziņu pogu</translation>
 <translation id="383007806262310953">Rādīt grāmatzīmes</translation>
@@ -358,9 +356,9 @@
 <translation id="7158817046543187970">Grāmatzīmju josla ir noslēpta visās lapās</translation>
 <translation id="3416468988018290825">Vienmēr rādīt pilnus URL vietrāžus</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
-<translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
 <translation id="1013121820689882118">Ātrais lasītājs</translation>
 <translation id="2025435450953474282">Raksti tiek automātiski ielādēti lasītāja režīmā, ietaupot jūsu laiku</translation>
+<translation id="7984721311211272523">Atspējot skaņas izslēgšanas funkciju skaļruņu ikonu cilnē</translation>
 <translation id="2422927186524098759">Sānjosla</translation>
 <translation id="832432428796481785">Parādīt sānjoslas pogu</translation>
 <translation id="5581036754486769849">Iespējot automātisko aizpildi inkognito režīma logos</translation>
@@ -401,8 +399,9 @@
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="3357319404342882895">Stingrais režīms</translation>
 <translation id="8823559166155093873">Bloķēt sīkfailus</translation>
-<translation id="5770288601196774623">Tikai starpvietņu</translation>
-<translation id="3587482841069643663">Visi</translation>
+<translation id="6196640612572343990">Bloķēt trešo pušu sīkfailus</translation>
+<translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
+<translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
 <translation id="7390783310074170337">Noklusējuma skats</translation>
 <translation id="130615081792797568">Vienkāršs skats</translation>
 <translation id="2360360976480535628">Uzlabots skats</translation>
@@ -435,7 +434,7 @@
 <translation id="8826461509529116322">Parādīt Brave atlīdzību pogu</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
-<translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
+<translation id="7791141927430186653">Atļaut X (iepriekš Twitter) iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
 <translation id="8792121506918889955">WebRTC IP apstrādes politika</translation>
 <translation id="6165508094623778733">Uzzinināt vairāk</translation>
@@ -446,6 +445,7 @@
 <translation id="3540231253392253941">Informatīvajiem paziņojumiem lietot Google pakalpojumus</translation>
 <translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
 <translation id="4891600875049212418">Apmeklējot sensitīvas vietnes, pāriet neredzamajā režīmā</translation>
+<translation id="1968895725257436430">Datu vākšana</translation>
 <translation id="4846154056248462491">Izejot</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
 <translation id="6438096877646138757">Vietnes, kas notīra sīkfailus, kad jūs tās aizverat</translation>
@@ -599,8 +599,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="811745063252080651">Atrisiniet CAPTCHA, lai pieprasītu tiltu.</translation>
 <translation id="6936835573742749135">Nevar pieprasīt CAPTCHA. Mēģiniet vēlreiz vēlāk.</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
-<translation id="1369311132025451972">Automātiski novirzīt .onion vietnes</translation>
-<translation id="6214393847480015759">Tor logos Brave automātiski pārslēgsies uz tīmekļa vietnes .onion versiju, kad tā ir pieejama.</translation>
 <translation id="1294350054292274934">Atrisināt tikai .onion adreses Tor logos</translation>
 <translation id="1258903596167452221">Onion pakalpojumi nebūs pieejami ārpus Tor logiem.</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
@@ -731,11 +729,10 @@ Piezīme: Ja ir atlasīts lokālais mezgls, resurss tiks pieprasīts tieši no j
 <translation id="8571837315037233299">Vārtejas adrese</translation>
 <translation id="7703184801853248830">Nederīga vārtejas adrese</translation>
 <translation id="7690058578502751948">Brave var izmantot tikai derīgu IPFS vārteju ar iespējotu avota izolāciju.</translation>
-<translation id="3411013544209536575">Palīdzības padomi</translation>
+<translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
 <translation id="2775956301559569472">Parādīt Wayback Machine uzvedni 404 lapās</translation>
 <translation id="3095201688102519917">Brīdināt, pirms tiek aizvērts logs ar vairākām cilnēm</translation>
 <translation id="7120553802660696133">Aizvērt logu, kad tiek aizvērta pēdējā cilne</translation>
-<translation id="7984721311211272523">Atspējot skaņas izslēgšanas funkciju skaļruņu ikonu cilnē</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Rādīt Leo ikonu sānjoslā</translation>
 <translation id="8055509865174199683">Rādīt Leo tīmekļa vietnēs konteksta izvēlnē</translation>
@@ -749,6 +746,7 @@ Leo. Šo darbību nevar atsaukt.</translation>
 <translation id="5574059574002819179">Pielāgot automātiskās pabeigšanas ieteikumus</translation>
 <translation id="8157373421434119674">Dati un tērzēšanas vēsture</translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
+<translation id="8826914609353373601">Pārvaldīt premium abonementu</translation>
 <translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
 <translation id="7903608716704052878">Automātiski pievienot failus, lai skatītu bezsaistē</translation>
 <translation id="4193768184502613558">Šī opcija automātiski saglabās multivides failus kešatmiņā, lai jūs varētu tos atskaņot bez interneta savienojuma.</translation>

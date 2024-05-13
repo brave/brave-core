@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">Έχετε <ph name="NUMBER_OF_TABS"/> ανοιχτές καρτέλες σε αυτό το παράθυρο του προγράμματος περιήγησης.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> καρτέλες</translation>
 <translation id="1307431692088049276">Να μην ερωτηθώ ξανά</translation>
-<translation id="2272117088509540883">- Αναζήτηση Brave</translation>
-<translation id="2701279958223202597">Υποστηρίξτε την ανεξάρτητη αναζήτηση με καλύτερη προστασία απορρήτου. Η λειτουργία Aναζήτηση Brave δεν παρακολουθεί εσάς, τα ερωτήματα αναζήτησής σας ή τα κλικ σας.</translation>
-<translation id="6438467592401259882">Υποστηρίξτε την ανεξάρτητη αναζήτηση με καλύτερο ιδιωτικό απόρρητο.</translation>
-<translation id="5167182095453855816">Ώρα να εγκαταλείψετε τις Big Tech.</translation>
-<translation id="45040495135337202">Το Brave δεν παρακολουθεί εσάς, τις αναζητήσεις σας ή τα κλικ σας. Και είναι 100% ανεξάρτητο από τις εταιρείες Big Tech.</translation>
 <translation id="6919364924256365253">Μην το ψάχνετε στο Google. Ούτε στο Bing. Μόνο στο Brave.</translation>
 <translation id="3313148036097793884">Το Brave δεν παρακολουθεί εσάς, τις αναζητήσεις σας ή τα κλικ σας. Και είναι 100% ανεξάρτητο.</translation>
 <translation id="7295094278358921487">Ψάξτε και θα βρείτε. Με ιδιωτικότητα.</translation>
+<translation id="45040495135337202">Το Brave δεν παρακολουθεί εσάς, τις αναζητήσεις σας ή τα κλικ σας. Και είναι 100% ανεξάρτητο από τις εταιρείες Big Tech.</translation>
 <translation id="42032117189492785">Αναζήτηση με υποστήριξη ΑΙ και μοναδική ευρετηριοποίηση.</translation>
 <translation id="8606416238399082160">Απόλυτα ιδιωτικό, 100% ανεξάρτητο και με φανταστικά χαρακτηριστικά ΑΙ.</translation>
 <translation id="5240031343741051161">Δοκιμάστε την Αναζήτηση Brave</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">Ενεργοποίηση</translation>
 <translation id="5046066249040287308">Υπηρεσία βοηθητικών προγραμμάτων Πορτοφολιού Brave</translation>
 <translation id="4552520379838695057">Λυπούμαστε, αυτή η σελίδα λείπει.</translation>
+<translation id="7299769530898469069">Δεν ήταν δυνατή η φόρτωση της αποθηκευμένης έκδοσης</translation>
 <translation id="2609895996619941644">Θέλετε να ελέγξετε αν υπάρχει μια αποθηκευμένη έκδοση στο Wayback Machine;</translation>
-<translation id="8053093028263274061">Λυπούμαστε, δεν υπάρχει καμιά διαθέσιμη αποθηκευμένη έκδοση.</translation>
-<translation id="8517321676372639828">Ελέγξτε για αποθηκευμένη έκδοση</translation>
+<translation id="8010675257566903381">Το Wayback Machine δεν εντόπισε αποθηκευμένη έκδοση αυτού του ιστότοπου.</translation>
+<translation id="1207694258341311738">Έλεγχος αποθηκευμένης έκδοσης</translation>
 <translation id="191143826155037518">Το Brave είναι διαθέσιμο σε εσάς κάτω από το <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) και περιλαμβάνει <ph name="BEGIN_LINK_OSS"/>λογισμικό ανοικτού κώδικα<ph name="END_LINK_OSS"/> υπό διάφορες άλλες άδειες.
         Μπορείτε να διαβάσετε <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>οδηγίες σχετικά με τον τρόπο λήψης και κατασκευής για εσάς<ph name="END_LINK_BUILD_INSTRUCTIONS"/> τον συγκεκριμένο <ph name="BEGIN_LINK_SOURCE_CODE"/>πηγαίο κώδικα που χρησιμοποιήθηκε για τη δημιουργία αυτού του αντιγράφου<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">Κορυφαίοι ιστότοποι</translation>
 <translation id="7859704718976024901">Ιστορικό περιήγησης</translation>
 <translation id="8820817407110198400">Γραμμή σελιδοδεικτών</translation>
+<translation id="4144468798716165316">Γρήγορες εντολές</translation>
 <translation id="7310387888625228830">Βοηθός Leo AI</translation>
 <translation id="5222974844674487962">Εμφάνιση κουμπιού Brave News</translation>
 <translation id="383007806262310953">Εμφάνιση σελιδοδεικτών</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">Η γραμμή σελιδοδεικτών είναι κρυφή σε όλες τις σελίδες</translation>
 <translation id="3416468988018290825">Να εμφανίζονται πάντα οι πλήρεις διευθύνσεις URL</translation>
 <translation id="5529693968082667490">Εμφάνιση κουμπιού αναζήτησης καρτελών</translation>
-<translation id="1643029991199044105">Μεταβείτε διαδοχικά στις καρτέλες που χρησιμοποιήσατε πιο πρόσφατα με Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Τα άρθρα φορτώνονται αυτόματα στη λειτουργία ανάγνωσης, εξοικονομώντας χρόνο</translation>
+<translation id="7984721311211272523">Απενεργοποίηση λειτουργίας σίγασης στα εικονίδια ηχείου καρτέλας</translation>
 <translation id="2422927186524098759">Πλευρική γραμμή</translation>
 <translation id="832432428796481785">Εμφάνιση κουμπιού πλευρικής γραμμής</translation>
 <translation id="5581036754486769849">Επιτρέπεται η αυτόματη συμπλήρωση σε ιδιωτικά παράθυρα</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">Αναβάθμιση συνδέσεων σε HTTPS</translation>
 <translation id="3357319404342882895">Αυστηρό</translation>
 <translation id="8823559166155093873">Αποκλεισμός Cookies</translation>
-<translation id="5770288601196774623">Μόνο μεταξύ ιστότοπων</translation>
-<translation id="3587482841069643663">Όλα</translation>
+<translation id="6196640612572343990">Αποκλεισμός cookie τρίτων</translation>
+<translation id="5657156137487675418">Να επιτρέπονται όλα τα cookies</translation>
+<translation id="6883611015375728278">Αποκλεισμός όλων των cookies</translation>
 <translation id="7390783310074170337">Προεπιλεγμένη προβολή</translation>
 <translation id="130615081792797568">Απλή προβολή</translation>
 <translation id="2360360976480535628">Προβολή για προχωρημένους</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Εμφάνιση κουμπιού Ανταμοιβών Brave</translation>
 <translation id="9185018653595759199">Αποκλεισμός μέσων κοινωνικής δικτύωσης</translation>
 <translation id="863171915776379000">Να επιτρέπονται οι συνδέσεις στο Facebook και οι ενσωματωμένες αναρτήσεις</translation>
-<translation id="5165042248369837294">Να επιτρέπονται ενσωματωμένα tweet από το Twitter</translation>
+<translation id="7791141927430186653">Να επιτρέπονται ενσωματωμένα tweet από το X (πρώην Twitter)</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
 <translation id="8792121506918889955">Πολιτική διαχείρισης IP WebRTC</translation>
 <translation id="6165508094623778733">Μάθετε περισσότερα</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">Χρησιμοποιήστε τις υπηρεσίες Google για μηνύματα push</translation>
 <translation id="933652931229970927">Αυτόματη αποστολή αναφορών διαγνωστικών</translation>
 <translation id="4891600875049212418">Μείνετε κάτω από το ραντάρ, όταν επισκέπτεστε ευαίσθητους ιστότοπους</translation>
+<translation id="1968895725257436430">Συλλογή δεδομένων</translation>
 <translation id="4846154056248462491">Κατά την έξοδο</translation>
 <translation id="2808630562319398131">Επαναφορά δεδομένων Ανταμοιβών του Brave...</translation>
 <translation id="6438096877646138757">Ιστοσελίδες που διαγράφουν τα cookies όταν τις κλείνετε</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">Λύστε το CAPTCHA για να ζητήσετε μια γέφυρα.</translation>
 <translation id="6936835573742749135">Δεν είναι δυνατή η αίτηση CAPTCHA. Προσπαθήστε ξανά αργότερα.</translation>
 <translation id="2653659639078652383">Υποβολή</translation>
-<translation id="1369311132025451972">Αυτόματη ανακατεύθυνση ιστότοπων .onion</translation>
-<translation id="6214393847480015759">Στα παράθυρα Tor, ο Brave θα κάνει αυτόματα εναλλαγή στην έκδοση .onion μιας ιστοσελίδας, εάν είναι διαθέσιμη.</translation>
 <translation id="1294350054292274934">Επίλυση μόνο διευθύνσεων .onion σε παράθυρα Tor.</translation>
 <translation id="1258903596167452221">Οι υπηρεσίες onion δεν θα είναι διαθέσιμες εκτός παραθύρων Tor.</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και συνδέσμους magnet.</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">Διεύθυνση πύλης</translation>
 <translation id="7703184801853248830">Μη έγκυρη διεύθυνση πύλης</translation>
 <translation id="7690058578502751948">Μόνο μια έγκυρη πύλη IPFS με ενεργοποιημένη την απομόνωση Origin μπορεί να χρησιμοποιηθεί στο Brave</translation>
-<translation id="3411013544209536575">Βοηθητικές συμβουλές</translation>
+<translation id="1643029991199044105">Μεταβείτε διαδοχικά στις καρτέλες που χρησιμοποιήσατε πιο πρόσφατα με Ctrl-Tab</translation>
 <translation id="2775956301559569472">Εμφάνιση προτροπής Wayback Machine σε σελίδες 404</translation>
 <translation id="3095201688102519917">Να λαμβάνω ειδοποίηση πριν κλείσω το παράθυρο με πολλές καρτέλες</translation>
 <translation id="7120553802660696133">Κλείστε το παράθυρο κατά το κλείσιμο της τελευταίας καρτέλας</translation>
-<translation id="7984721311211272523">Απενεργοποίηση λειτουργίας σίγασης στα εικονίδια ηχείου καρτέλας</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Εμφάνιση εικονιδίου Leo στην πλευρική γραμμή</translation>
 <translation id="8055509865174199683">Εμφάνιση Leo στο μενού περιβάλλοντος στους ιστότοπους</translation>
@@ -750,6 +747,7 @@ Leo. Αυτή η ενέργεια δε μπορεί να αναιρεθεί.</tr
 <translation id="5574059574002819179">Ρύθμιση προτάσεων αυτόματης συμπλήρωσης</translation>
 <translation id="8157373421434119674">Ιστορικό δεδομένων και συνομιλίας</translation>
 <translation id="614530507403667291">Προεπιλεγμένο μοντέλο για νέες συζητήσεις</translation>
+<translation id="8826914609353373601">Διαχείριση συνδρομής premium</translation>
 <translation id="349846214503465941">Ενεργοποίηση λίστας αναπαραγωγής</translation>
 <translation id="7903608716704052878">Αυτόματη προσθήκη αρχείων για προβολή εκτός σύνδεσης</translation>
 <translation id="4193768184502613558">Αυτή η επιλογή θα αποθηκεύει αυτόματα τις προσωρινές μνήμες των αρχείων, ώστε να μπορείτε να κάνετε αναπαραγωγή τους χωρίς σύνδεση στο διαδίκτυο.</translation>

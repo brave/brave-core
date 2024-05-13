@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blokerer for næste og slutkortselementer på youtube.com.</translation>
 <translation id="5152595963250646670">Bloker for distraherende elementer på YouTube</translation>
 <translation id="2998960761270772157">Blokerer for log ind-, menu-, kommentar- og videoinfoelementer på youtube.com.</translation>
+<translation id="8531835121131500698">Bloker YouTube Shorts</translation>
+<translation id="2167271714269158912">Blokerer shorts fra startsiden, trendsiden og søgeresultaterne på youtube.com.</translation>
 <translation id="6052725679982758334">Blokering af sociale medier</translation>
 <translation id="7498695072878479744">Tillad Google login-knapper på tredjepartssider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Bekræftet skaber</translation>
 <translation id="2369994359029526515">Ikke-bekræftet skaber</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
-<translation id="7861645265922445992">Få belønninger</translation>
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="4781696154289395607">Du har bidraget <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Der opstod en fejl med at behandle dit bidrag.</translation>
-<translation id="2221902203895354376">En poletbevilling er tilgængelig!</translation>
-<translation id="2377929997600454162">Dine annoncebelønninger for <ph name="MONTH_VALUE"/> er her!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>-belønninger: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Du kan gøre krav på dette i <ph name="TOKEN"/> dage</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
 <translation id="8038539967102225446">Brave-Annoncer er her!</translation>
@@ -458,7 +455,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3763681089644577874">Blokér cookies</translation>
 <translation id="614747795780742163">Forhindrer hjemmesider i at gemme oplysninger om dine tidligere besøg</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
-<translation id="4941539331405513605">Blokér cross-site cookies</translation>
+<translation id="6196640612572343990">Bloker cookies fra tredjeparter</translation>
 <translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="1553643198679271031">Anmod i incognito</translation>
 <translation id="4891600875049212418">Forbliv anonym, imens du besøger følsomme sider</translation>
@@ -604,6 +601,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="1904000155026201268">Jeg er indforstået med, at hvis jeg mister mine gendannelsessætning, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
 <translation id="5333225216561354793">Vi kræver, at du bekræfter nedenstående</translation>
+<translation id="6937275455070754004">Vælg, hvilke blockchains du vil bruge i din tegnebog.</translation>
 <translation id="1645800479814134195">Jeg forstår, at dette er en wallet til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Brave ikke kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
 <translation id="4565891212173086999">Jeg har læst og accepterer <ph name="CLICK_START"/>Brugervilkårene<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Din gendannelsessætning</translation>
@@ -611,12 +609,12 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
 <translation id="111912712268284159">Jeg har gemt min sætning et sikkert sted.</translation>
 <translation id="6896758677409633944">Kopier</translation>
-<translation id="1783600039044302171">Beskyt din krypto med en adgangskode</translation>
 <translation id="3726490322412361740">Indtast adgangskode</translation>
 <translation id="3038243139480464605">Bekræft kodeord</translation>
 <translation id="3043677904160378840">Adgangskoden skal indeholde mindst 8 tegn.</translation>
 <translation id="7396672979287122068">Bekræftede adgangskode stemte ikke overens</translation>
-<translation id="7084181009966710506">Opretter tegnebog...</translation>
+<translation id="1566412704591731844">Opretter din wallet...</translation>
+<translation id="7779823116893018906">Det kan tage et par sekunder...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-konto<ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tilføj konto</translation>
 <translation id="3448492834076427715">Opdatér konto</translation>
@@ -639,6 +637,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3157931365184549694">Gendan</translation>
 <translation id="5844138175312846408">Har du allerede en wallet?</translation>
 <translation id="2502258949541727762">Inden vi begynder</translation>
+<translation id="4303748097351941030">Understøttede netværk</translation>
+<translation id="4204268048253692928">Du kan altid tilføje netværk i Indstillinger</translation>
+<translation id="2523174693142405417">Søg netværk</translation>
+<translation id="1164748583090434571">Vis testnets</translation>
+<translation id="935220650946301698">Fortsæt med <ph name="NUMBER"/>-netværk</translation>
 <translation id="8248460961680233459">Opret adgangskode</translation>
 <translation id="2789310860394340571">Du vil bruge denne adgangskode til at få adgang til din tegnebog.</translation>
 <translation id="2136372518715274136">Indtast ny adgangskode</translation>
@@ -845,7 +848,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>
 <translation id="2653659639078652383">Indsend</translation>
-<translation id="4945690646623486292">Vælg netværk</translation>
+<translation id="4556601961751528347">Skift tilsluttet konto</translation>
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="8006088103295786154">Tilgå Brave Wallet</translation>
 <translation id="8030169304546394654">Afbrudt</translation>
@@ -871,6 +874,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4255623233927788178">Se på Block Explorer</translation>
 <translation id="8274201358637112807">Denne side vil gerne interagere med Brave Wallet</translation>
 <translation id="3355936511340229503">Forbindelsesfejl</translation>
+<translation id="1531836666020185856">Fremhævet</translation>
 <translation id="4891604214809245310">Kunne ikke indstille netværk til <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Det ser ud til, at du har andre VPN'ere på denne enhed, som er indstillet til "Altid aktiveret". For at aktivere Brave Firewall + VPN, skal du først deaktivere denne "Altid aktiveret"-tilstand for de andre VPN'ere, inden du opretter forbindelse. Hvis problemet fortsætter, skal du afinstallere de andre VPN'ere.</translation>
 <translation id="85136472535634474">Åbn VPN-indstillinger</translation>
@@ -1038,7 +1042,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1677961202754619328">Ifølge Uphold er din Uphold-konto på nuværende tidspunkt begrænset. Log ind på din Uphold-konto og tjek, hvorvidt du har meddelelser eller kontobetingelser, der skal besvares eller udfyldes, og prøv derefter igen.</translation>
 <translation id="5425006356459378415">Brave-belønninger er ikke tilgængelige</translation>
 <translation id="833643743158564518">Du kan pt ikke tilmelde dig Brave-belønninger i dit område. Men du kan altid prøve igen senere. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Alle netværk</translation>
 <translation id="7748944510530490017">Primære netværker</translation>
 <translation id="2781668117338732220">Sekundære netværk</translation>
 <translation id="282560918037172384">Test netværker</translation>
@@ -1178,4 +1181,11 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="3251885322612056119">Opdaterede servicevilkår</translation>
 <translation id="4049035689681585146">Vi har opdateret vores servicevilkår for Brave-belønninger. Vi har foretaget disse opdateringer for at klargøre vores vilkår og sikre, at de dækker nye funktioner. Hvis du fortsætter med at bruge Brave-belønninger, indvilliger du i de opdaterede servicevilkår. Hvis du ikke er enig, kan du <ph name="RESET_START"/>nulstille<ph name="RESET_END"/> Brave-belønninger, hvilket står denne funktion fra.</translation>
 <translation id="2165953574528546737">Se <ph name="TOS_START"/>Servicevilkår for Brave-belønninger<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Aktiver flere faner</translation>
+<translation id="6167344249617630304">Åbn op til 5 faner ad gangen, og flyt faner fra et vindue til et andet</translation>
+<translation id="1063948063403254568">Flere faner fundet</translation>
+<translation id="4661882208707630158">Sammenflet faner til en anden Brave-fane, eller luk andre Brave-faner, før du deaktiverer funktionen med flere faner.</translation>
+<translation id="6891382640886173702">Sammenflet faner</translation>
+<translation id="2912247081180973411">Vælg faner</translation>
+<translation id="4010699428656610296">Venligst flet andre faner til en anden Brave-fane.</translation>
 </translationbundle>
