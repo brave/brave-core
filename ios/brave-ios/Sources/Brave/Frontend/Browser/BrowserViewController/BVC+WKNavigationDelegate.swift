@@ -1035,7 +1035,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
       if webView.url?.isLocal == false {
         // Set rewards inter site url as new page load url.
-        rewardsXHRLoadURL = webView.url
+        tab.rewardsXHRLoadURL = webView.url
       }
 
       if tab.walletEthProvider != nil {
