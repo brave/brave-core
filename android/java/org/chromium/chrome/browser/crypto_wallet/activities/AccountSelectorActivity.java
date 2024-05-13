@@ -58,14 +58,6 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
         mRVNetworkSelector.setAdapter(mAccountSelectorRecyclerView);
         mAccountSelectorRecyclerView.setAccountSelectorItemListener(this);
         initAccounts();
-
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setOnMenuItemClickListener(item -> {
-            BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
-            sheetDialogFragment.show(
-                    getSupportFragmentManager(), CreateAccountBottomSheetFragment.TAG);
-            return true;
-        });
     }
 
     @Override
