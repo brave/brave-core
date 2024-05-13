@@ -77,17 +77,6 @@ struct PrivacyReportAllTimeListsView: View {
                 Text(item.name)
                   .font(.callout)
                   .foregroundColor(Color(.bravePrimary))
-
-                if let url = URL(string: item.name),
-                  let humanFriendlyTrackerName = BlockedTrackerParser.parse(
-                    url: url,
-                    fallbackToDomainURL: false
-                  )
-                {
-                  Text(humanFriendlyTrackerName)
-                    .font(.footnote)
-                    .foregroundColor(Color(.braveLabel))
-                }
               }
 
               Group {

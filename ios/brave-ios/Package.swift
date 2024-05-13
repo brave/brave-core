@@ -299,7 +299,6 @@ var package = Package(
         .copy("WelcomeFocus/Resources/Fonts/Poppins-SemiBold.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
-        .copy("Welcome/Resources/disconnect-entitylist.json"),
         .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],
       plugins: ["LoggerPlugin"]
