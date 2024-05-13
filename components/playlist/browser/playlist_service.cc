@@ -19,7 +19,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
@@ -59,7 +58,6 @@ std::vector<base::FilePath> GetOrphanedPaths(
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
                                  PrefService* local_state,
-                                 MediaDetectorComponentManager* manager,
                                  std::unique_ptr<Delegate> delegate,
                                  base::Time browser_first_run_time)
     : delegate_(std::move(delegate)),
@@ -71,9 +69,8 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   background_web_contentses_ =
-      std::make_unique<PlaylistBackgroundWebContentses>(context, this);
+      std::make_unique<PlaylistBackgroundWebContentses>(context);
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
-  media_detector_component_manager_ = manager;
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -484,18 +481,6 @@ std::vector<mojom::PlaylistPtr> PlaylistService::GetAllPlaylists() {
 
 bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
-}
-
-const std::string& PlaylistService::GetMediaSourceAPISuppressorScript() const {
-  return media_detector_component_manager_->GetMediaSourceAPISuppressorScript();
-}
-
-std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
-  return media_detector_component_manager_->GetMediaDetectorScript(url);
-}
-
-void PlaylistService::SetUpForTesting() const {
-  media_detector_component_manager_->SetUseLocalScript();
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(

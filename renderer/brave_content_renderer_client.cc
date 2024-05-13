@@ -219,20 +219,6 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
 }
 
-void BraveContentRendererClient::RunScriptsAtDocumentEnd(
-    content::RenderFrame* render_frame) {
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    if (auto* playlist_observer =
-            playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
-      playlist_observer->RunScriptsAtDocumentEnd();
-    }
-  }
-#endif
-
-  ChromeContentRendererClient::RunScriptsAtDocumentEnd(render_frame);
-}
-
 void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
     blink::WebServiceWorkerContextProxy* context_proxy,
     v8::Local<v8::Context> v8_context,

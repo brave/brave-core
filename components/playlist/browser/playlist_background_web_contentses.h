@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "url/gurl.h"
 
@@ -30,8 +29,6 @@ class WebContents;
 
 namespace playlist {
 
-class PlaylistService;
-
 // `PlaylistBackgroundWebContentses` fulfills background `WebContents` requests.
 // After creating the background `WebContents`, it waits 10 seconds for the
 // first non-empty media list to arrive. On receiving the media, or if the timer
@@ -41,8 +38,7 @@ class PlaylistService;
 // or uses a static look-up table to decide if it has to otherwise.
 class PlaylistBackgroundWebContentses final {
  public:
-  PlaylistBackgroundWebContentses(content::BrowserContext* context,
-                                  PlaylistService* service);
+  explicit PlaylistBackgroundWebContentses(content::BrowserContext* context);
   PlaylistBackgroundWebContentses(const PlaylistBackgroundWebContentses&) =
       delete;
   PlaylistBackgroundWebContentses& operator=(
@@ -77,7 +73,6 @@ class PlaylistBackgroundWebContentses final {
   }
 
   raw_ptr<content::BrowserContext> context_;
-  raw_ptr<PlaylistService> service_;
   std::map<std::unique_ptr<content::WebContents>,
            base::OneShotTimer,
            base::UniquePtrComparator>  // for heterogeneous lookups

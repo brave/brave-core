@@ -24,7 +24,6 @@ class NoDestructor;
 
 namespace playlist {
 class PlaylistService;
-class MediaDetectorComponentManager;
 
 class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
@@ -56,13 +55,6 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
-
-  void PrepareMediaDetectorComponentManager();
-
-  // The media detector component is global extension and it's used all service
-  // instances.
-  std::unique_ptr<MediaDetectorComponentManager>
-      media_detector_component_manager_;
 };
 
 }  // namespace playlist
