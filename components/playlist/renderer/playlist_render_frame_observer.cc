@@ -41,20 +41,9 @@ void PlaylistRenderFrameObserver::OnDestruct() {
   delete this;
 }
 
-void PlaylistRenderFrameObserver::AddMediaSourceAPISuppressor(
-    const std::string& media_source_api_suppressor) {
+void PlaylistRenderFrameObserver::EnableMediaSourceAPISuppressor() {
   DVLOG(2) << __FUNCTION__;
-
-  media_source_api_suppressor_ = media_source_api_suppressor;
-  CHECK(!media_source_api_suppressor_->empty());
-}
-
-void PlaylistRenderFrameObserver::AddMediaDetector(
-    const std::string& media_detector) {
-  DVLOG(2) << __FUNCTION__;
-
-  media_detector_ = media_detector;
-  CHECK(!media_detector_->empty());
+  media_source_api_suppressor_enabled_ = true;
 }
 
 void PlaylistRenderFrameObserver::BindConfigurator(
@@ -64,51 +53,26 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-const mojo::AssociatedRemote<mojom::PlaylistMediaResponder>&
-PlaylistRenderFrameObserver::GetMediaResponder() {
-  if (!media_responder_) {
-    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
-        &media_responder_);
-    media_responder_.reset_on_disconnect();
-  }
-
-  return media_responder_;
-}
-
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
-  if (media_source_api_suppressor_) {
+  if (media_source_api_suppressor_enabled_) {
     v8::Isolate* isolate =
         render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
-    Inject(*media_source_api_suppressor_,
+    Inject(R"(
+      (function () {
+        if (
+          window.MediaSource ||
+          window.WebKitMediaSource ||
+          window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId
+        ) {
+          delete window.MediaSource
+          delete window.WebKitMediaSource
+        }
+      })
+      )",
            render_frame()->GetWebFrame()->MainWorldScriptContext());
-  }
-}
-
-void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
-  if (media_detector_) {
-    v8::Isolate* isolate =
-        render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
-    v8::Isolate::Scope isolate_scope(isolate);
-    v8::HandleScope handle_scope(isolate);
-
-    v8::Local<v8::Context> context =
-#if !BUILDFLAG(IS_ANDROID)
-        render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
-            isolate, isolated_world_id_);
-#else
-        render_frame()->GetWebFrame()->MainWorldScriptContext();
-#endif
-    v8::Local<v8::Function> on_media_detected =
-        gin::CreateFunctionTemplate(
-            isolate,
-            base::BindRepeating(&PlaylistRenderFrameObserver::OnMediaDetected,
-                                weak_ptr_factory_.GetWeakPtr()))
-            ->GetFunction(context)
-            .ToLocalChecked();
-    Inject(*media_detector_, context, {on_media_detected.As<v8::Value>()});
   }
 }
 
@@ -131,18 +95,6 @@ void PlaylistRenderFrameObserver::Inject(
 
   std::ignore = function->Call(context, context->Global(), args.size(),
                                args.empty() ? nullptr : args.data());
-}
-
-void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
-  const auto url = render_frame()->GetWebFrame()->GetDocument().Url();
-  DVLOG(2) << __FUNCTION__ << " - " << url << ":\n" << media;
-
-  auto items = ExtractPlaylistItems(url, std::move(media));
-  if (items.empty()) {  // ExtractPlaylistItems() might discard media
-    return;
-  }
-
-  GetMediaResponder()->OnMediaDetected(std::move(items));
 }
 
 }  // namespace playlist

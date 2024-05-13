@@ -12,7 +12,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -35,16 +34,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace playlist {
-
-// static
-void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
-                                             PlaylistService* service) {
-  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      web_contents, service);
-  PlaylistMediaHandler::CreateForWebContents(
-      web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
-                                        service->GetWeakPtr()));
-}
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
@@ -185,28 +174,6 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
 #endif
 
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
-}
-
-void PlaylistTabHelper::ReadyToCommitNavigation(
-    content::NavigationHandle* navigation_handle) {
-  DVLOG(2) << __FUNCTION__;
-
-  if (!navigation_handle->IsInPrimaryMainFrame()) {
-    return;
-  }
-
-  const GURL url = navigation_handle->GetURL();
-  if (!url.SchemeIsHTTPOrHTTPS()) {
-    return;
-  }
-
-  mojo::AssociatedRemote<mojom::PlaylistRenderFrameObserverConfigurator>
-      frame_observer_config;
-  navigation_handle->GetRenderFrameHost()
-      ->GetRemoteAssociatedInterfaces()
-      ->GetInterface(&frame_observer_config);
-  frame_observer_config->AddMediaDetector(
-      service_->GetMediaDetectorScript(url));
 }
 
 void PlaylistTabHelper::DidFinishNavigation(

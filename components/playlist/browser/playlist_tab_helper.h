@@ -37,9 +37,6 @@ class PlaylistTabHelper
       public media_session::mojom::AudioFocusObserver,
       public media_session::mojom::MediaSessionObserver {
  public:
-  static void CreateForWebContents(content::WebContents* web_contents,
-                                   PlaylistService* service);
-
   ~PlaylistTabHelper() override;
 
   const std::vector<mojom::PlaylistItemPtr>& saved_items() const {
@@ -72,8 +69,6 @@ class PlaylistTabHelper
   std::u16string GetSavedFolderName();
 
   // content::WebContentsObserver:
-  void ReadyToCommitNavigation(
-      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
@@ -124,7 +119,6 @@ class PlaylistTabHelper
 
  private:
   friend class content::WebContentsUserData<PlaylistTabHelper>;
-  using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
 
   PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
 

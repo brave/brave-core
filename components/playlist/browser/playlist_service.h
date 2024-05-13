@@ -50,7 +50,6 @@ class Image;
 
 namespace playlist {
 
-class MediaDetectorComponentManager;
 class PlaylistBackgroundWebContentses;
 
 // This class is key interface for playlist. Client will ask any playlist
@@ -105,7 +104,6 @@ class PlaylistService : public KeyedService,
 
   PlaylistService(content::BrowserContext* context,
                   PrefService* local_state,
-                  MediaDetectorComponentManager* manager,
                   std::unique_ptr<Delegate> delegate,
                   base::Time browser_first_run_time);
   ~PlaylistService() override;
@@ -197,6 +195,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
+  // TODO(sszaloki): that's no longer called, fix Android!
   void OnMediaDetected(GURL url, std::vector<mojom::PlaylistItemPtr> items);
 
   bool HasPlaylistItem(const std::string& id) const;
@@ -213,9 +212,6 @@ class PlaylistService : public KeyedService,
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
   bool playlist_enabled() const { return *enabled_pref_; }
-
-  const std::string& GetMediaSourceAPISuppressorScript() const;
-  std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -244,8 +240,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaFileExtension);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
-
-  void SetUpForTesting() const;
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
@@ -378,8 +372,6 @@ class PlaylistService : public KeyedService,
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
   std::unique_ptr<PlaylistBackgroundWebContentses> background_web_contentses_;
-
-  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 
   PlaylistP3A playlist_p3a_;
 

@@ -44,9 +44,8 @@ const char* GetUserAgentOverride(const GURL& url) {
 namespace playlist {
 
 PlaylistBackgroundWebContentses::PlaylistBackgroundWebContentses(
-    content::BrowserContext* context,
-    PlaylistService* service)
-    : context_(context), service_(service) {}
+    content::BrowserContext* context)
+    : context_(context) {}
 
 PlaylistBackgroundWebContentses::~PlaylistBackgroundWebContentses() = default;
 
@@ -64,7 +63,7 @@ void PlaylistBackgroundWebContentses::Add(
           web_contents.get(), std::move(callback)));
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents.get(), service_.get(),
+      web_contents.get(),
       std::move(callback_for_media_handler));
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);

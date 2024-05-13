@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
 #include "base/timer/timer.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -42,7 +41,6 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
-      PlaylistService* service,
       base::OnceCallback<void(GURL, bool)> callback);
 
   // content::WebContentsObserver:
@@ -53,7 +51,6 @@ class PlaylistBackgroundWebContentsHelper final
 
   void GetLoadedUrl();
 
-  raw_ptr<PlaylistService> service_;
   base::OnceCallback<void(GURL, bool)> callback_;
   base::OneShotTimer timer_;
 

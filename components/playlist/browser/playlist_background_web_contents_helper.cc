@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/media_session.h"
@@ -27,15 +26,11 @@ PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
-    PlaylistService* service,
     base::OnceCallback<void(GURL, bool)> callback)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      service_(service),
-      callback_(std::move(callback)) {
-  CHECK(service_);
-}
+      callback_(std::move(callback)) {}
 
 void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -56,8 +51,7 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
-  frame_observer_config->AddMediaSourceAPISuppressor(
-      service_->GetMediaSourceAPISuppressorScript());
+  frame_observer_config->EnableMediaSourceAPISuppressor();
 }
 
 void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
