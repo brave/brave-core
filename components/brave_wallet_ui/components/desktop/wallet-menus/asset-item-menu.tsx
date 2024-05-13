@@ -75,7 +75,6 @@ export const AssetItemMenu = (props: Props) => {
     setSelectedSellAsset,
     sellAmount,
     setSellAmount,
-    selectedSellAssetNetwork,
     openSellAssetLink,
     checkIsAssetSellSupported
   } = useMultiChainSellAssets()
@@ -191,7 +190,6 @@ export const AssetItemMenu = (props: Props) => {
       {showSellModal && selectedSellAsset && (
         <SellAssetModal
           selectedAsset={selectedSellAsset}
-          selectedAssetsNetwork={selectedSellAssetNetwork}
           onClose={() => setShowSellModal(false)}
           sellAmount={sellAmount}
           setSellAmount={setSellAmount}

@@ -50,7 +50,6 @@ import {
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined | null
   sellAmount: string
   showSellModal: boolean
   sellAssetBalance: string
@@ -63,7 +62,6 @@ interface Props {
 export const SellAssetModal = (props: Props) => {
   const {
     selectedAsset,
-    selectedAssetsNetwork,
     sellAmount,
     showSellModal,
     sellAssetBalance,
@@ -210,10 +208,7 @@ export const SellAssetModal = (props: Props) => {
                 />
               </Row>
               <Row width='unset'>
-                <AssetIconWithPlaceholder
-                  asset={selectedAsset}
-                  network={selectedAssetsNetwork}
-                />
+                <AssetIconWithPlaceholder asset={selectedAsset} />
                 <Text
                   textSize='22px'
                   isBold={true}

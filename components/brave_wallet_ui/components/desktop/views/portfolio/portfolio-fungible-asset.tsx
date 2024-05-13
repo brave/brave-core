@@ -541,7 +541,6 @@ export const PortfolioFungibleAsset = () => {
           selectedAssetsNetwork && (
             <HideTokenModal
               selectedAsset={selectedAssetFromParams}
-              selectedAssetNetwork={selectedAssetsNetwork}
               onClose={onCloseHideTokenModal}
               onHideAsset={onHideAsset}
             />

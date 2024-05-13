@@ -412,7 +412,6 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                     <NFTIconWrapper width='unset'>
                       <NftIconWithPlaceholder
                         asset={sendToken}
-                        network={txNetwork}
                         iconStyles={NftIconStyles}
                       />
                     </NFTIconWrapper>
@@ -421,10 +420,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                       width='unset'
                       padding='0px 24px'
                     >
-                      <AssetIconWithPlaceholder
-                        asset={sendToken}
-                        network={txNetwork}
-                      />
+                      <AssetIconWithPlaceholder asset={sendToken} />
                     </Row>
                   )}
                 </>
@@ -463,10 +459,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                           width='unset'
                           margin='0px 0px 10px 0px'
                         >
-                          <SwapIconWithPlaceholder
-                            asset={sellToken}
-                            network={txNetwork}
-                          />
+                          <SwapIconWithPlaceholder asset={sellToken} />
                           <SwapAmountText
                             textSize='14px'
                             isBold={true}
@@ -480,10 +473,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                           width='unset'
                           justifyContent='flex-start'
                         >
-                          <SwapIconWithPlaceholder
-                            asset={buyToken}
-                            network={txNetwork}
-                          />
+                          <SwapIconWithPlaceholder asset={buyToken} />
                           <RowWrapped
                             width='unset'
                             justifyContent='flex-start'

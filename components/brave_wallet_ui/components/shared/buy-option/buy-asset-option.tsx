@@ -139,15 +139,9 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
           <NameAndIcon>
             <IconsWrapper marginRight='14px'>
               {token.isErc721 || token.isNft ? (
-                <NftAssetIconWithPlaceholder
-                  asset={token}
-                  network={tokenNetwork}
-                />
+                <NftAssetIconWithPlaceholder asset={token} />
               ) : (
-                <AssetIconWithPlaceholder
-                  asset={token}
-                  network={tokenNetwork}
-                />
+                <AssetIconWithPlaceholder asset={token} />
               )}
               {tokenNetwork &&
                 !isPanel &&

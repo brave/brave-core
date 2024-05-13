@@ -359,10 +359,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               <SwapPlaceholderIcon />
                             </SellIconPlaceholder>
                           ) : (
-                            <SwapIconWithPlaceholder
-                              asset={sellToken}
-                              network={txNetwork}
-                            />
+                            <SwapIconWithPlaceholder asset={sellToken} />
                           )}
                         </SwapSellIcon>
                         <SwapBuyIcon>
@@ -371,25 +368,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               <SwapPlaceholderIcon />
                             </BuyIconPlaceholder>
                           ) : (
-                            <SwapIconWithPlaceholder
-                              asset={buyToken}
-                              network={txNetwork}
-                            />
+                            <SwapIconWithPlaceholder asset={buyToken} />
                           )}
                         </SwapBuyIcon>
                       </SwapIconsWrapper>
                     ) : (
                       <>
                         {isNonFungibleToken ? (
-                          <NftIconWithPlaceholder
-                            asset={sendToken}
-                            network={txNetwork}
-                          />
+                          <NftIconWithPlaceholder asset={sendToken} />
                         ) : (
-                          <AssetIconWithPlaceholder
-                            asset={sendToken}
-                            network={txNetwork}
-                          />
+                          <AssetIconWithPlaceholder asset={sendToken} />
                         )}
                       </>
                     )}

@@ -9,11 +9,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
-
-// Queries
-import { useGetVisibleNetworksQuery } from '../../../common/slices/api.slice'
 
 // Components
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
@@ -47,9 +43,6 @@ interface Props {
 export const TokenIconsStack = (props: Props) => {
   const { tokens } = props
 
-  // queries
-  const { data: networks = [] } = useGetVisibleNetworksQuery()
-
   // Memos / Computed
   const additionalTokensLength = tokens.length - 3
 
@@ -76,10 +69,7 @@ export const TokenIconsStack = (props: Props) => {
           key={getAssetIdKey(token)}
           leftPosition={calculateIconLeftPosition(i)}
         >
-          <AssetIconWithPlaceholder
-            asset={token}
-            network={getTokensNetwork(networks, token)}
-          />
+          <AssetIconWithPlaceholder asset={token} />
         </IconWrapper>
       ))}
       {tokens.length > 3 && (

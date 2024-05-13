@@ -77,15 +77,9 @@ export const SelectButton = (props: Props) => {
         {token && (
           <IconsWrapper>
             {token.isNft || token.isErc721 ? (
-              <NftIconWithPlaceholder
-                asset={token}
-                network={tokensNetwork}
-              />
+              <NftIconWithPlaceholder asset={token} />
             ) : (
-              <AssetIconWithPlaceholder
-                asset={token}
-                network={tokensNetwork}
-              />
+              <AssetIconWithPlaceholder asset={token} />
             )}
             {tokensNetwork &&
               checkIfTokenNeedsNetworkIcon(
