@@ -10,7 +10,7 @@ import Preferences
 import SwiftUI
 import os.log
 
-public struct AIChatLeoPurchaseLogs: View {
+public struct AIChatLeoSkusLogsView: View {
   @State
   private var text = ""
 
@@ -27,12 +27,10 @@ public struct AIChatLeoPurchaseLogs: View {
         .padding()
     }
     .task {
-      repeat {
-        text = await fetchLogs()
-        try? await Task.sleep(seconds: 1.0)
-      } while !Task.isCancelled
+      text = "Loading. Please Wait..."
+      text = await fetchLogs()
     }
-    .navigationTitle("Leo Purchase Logs")
+    .navigationTitle("Leo Skus Logs")
     .toolbar {
       Button("Copy") {
         UIPasteboard.general.setValue(text, forPasteboardType: "public.plain-text")
@@ -59,6 +57,7 @@ public struct AIChatLeoPurchaseLogs: View {
     }
   }
 
+  @MainActor
   private func getSkusState() async -> String {
     var result = ""
     let orderId = Preferences.AIChat.subscriptionOrderId.value ?? "None"

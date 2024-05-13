@@ -1109,7 +1109,16 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Leo Logs",
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: AIChatLeoPurchaseLogs())
+            let controller = UIHostingController(rootView: AIChatLeoSkusLogsView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "StoreKit Receipt Viewer",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: StoreKitReceiptView())
             self.navigationController?.pushViewController(controller, animated: true)
           },
           accessory: .disclosureIndicator,

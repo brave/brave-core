@@ -26,6 +26,10 @@ public class AIChatViewModel: NSObject, ObservableObject {
   @Published var requestInProgress: Bool = false
   @Published var apiError: AiChat.APIError = .none
 
+  public var slashActions: [AiChat.ActionGroup] {
+    return api.slashActions
+  }
+
   public var isContentAssociationPossible: Bool {
     return webView?.url?.isWebPage(includeDataURIs: true) == true
   }
