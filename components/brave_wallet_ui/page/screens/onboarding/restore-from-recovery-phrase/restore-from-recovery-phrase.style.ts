@@ -91,8 +91,9 @@ export const RecoveryTextInput = styled.input`
 `
 
 export const InfoAlert = styled(Alert).attrs({
-  kind: 'error',
-  mode: 'simple'
+  type: 'info',
+  mode: 'simple',
+  hasActions: true
 })<{ padding?: string }>`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
