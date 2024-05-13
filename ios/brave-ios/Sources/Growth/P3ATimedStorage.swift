@@ -88,7 +88,7 @@ public struct P3ATimedStorage<Value: Codable> {
     defer {
       save()
     }
-    records.append(.init(id: .init(), date: Calendar.current.startOfDay(for: date()), value: value))
+    records.append(.init(id: .init(), date: calendar.startOfDay(for: date()), value: value))
   }
 
   fileprivate mutating func save() {
@@ -130,6 +130,15 @@ extension P3ATimedStorage where Value: AdditiveArithmetic & Comparable {
   /// Returns the sum of all the records values or 0 if no values are recorded
   public var combinedValue: Value {
     let values = records.map(\.value)
+    if values.isEmpty { return .zero }
+    return max(.zero, values.reduce(.zero, { $0 + $1 }))
+  }
+  /// Returns the sum of all the values within a specified date range or 0 if no values are recorded
+  ///
+  /// - Note: Records are stored with dates set to the start of the day they were recorded (12AM),
+  ///         so the date range supplied should also use start of day dates.
+  public func combinedValue(in dateRange: some RangeExpression<Date>) -> Value {
+    let values = records.filter({ dateRange.contains($0.date) }).map(\.value)
     if values.isEmpty { return .zero }
     return max(.zero, values.reduce(.zero, { $0 + $1 }))
   }
