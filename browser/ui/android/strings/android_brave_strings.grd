@@ -3965,8 +3965,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
       Always-on VPN
     </message>
-    <message name="IDS_ALWAYS_ON_VPN_KILL_SWITCH" desc="Vpn setting title for always on">
-      Always-on VPN &amp; Kill switch
+    <message name="IDS_KILL_SWITCH" desc="Vpn setting title for kill switch">
+      Kill switch
     </message>
     <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
       How to turn on:

@@ -71,6 +71,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
     private static final String PREF_SPLIT_TUNNELING = "split_tunneling";
     private static final String PREF_ALWAYS_ON = "always_on";
+    private static final String PREF_KILL_SWITCH = "kill_switch";
     private static final String PREF_BRAVE_VPN_SUBSCRIPTION_SECTION =
             "brave_vpn_subscription_section";
 
@@ -192,7 +193,16 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         new Preference.OnPreferenceClickListener() {
                             @Override
                             public boolean onPreferenceClick(Preference preference) {
-                                BraveVpnUtils.openAlwaysOnActivity(getActivity());
+                                BraveVpnUtils.openAlwaysOnActivity(getActivity(), false);
+                                return true;
+                            }
+                        });
+        findPreference(PREF_KILL_SWITCH)
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                BraveVpnUtils.openAlwaysOnActivity(getActivity(), true);
                                 return true;
                             }
                         });
@@ -321,6 +331,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                                             BraveVpnPrefUtils
                                                                     .isSubscriptionPurchase());
                                             findPreference(PREF_ALWAYS_ON)
+                                                    .setEnabled(
+                                                            BraveVpnPrefUtils
+                                                                    .isSubscriptionPurchase());
+                                            findPreference(PREF_KILL_SWITCH)
                                                     .setEnabled(
                                                             BraveVpnPrefUtils
                                                                     .isSubscriptionPurchase());
