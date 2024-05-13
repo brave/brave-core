@@ -56,9 +56,12 @@
             android:textColor="@android:color/white" />
 
         <TextView
+            android:id="@+id/kill_switch_desc_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             style="@style/DefaultRegular"
+            android:layout_marginHorizontal="16dp"
             android:textColor="@color/text_secondary"
             android:text="@string/kill_switch_text"
             android:gravity="center_horizontal"/>

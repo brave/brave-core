@@ -49,6 +49,10 @@
             android:title="@string/always_on_vpn"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="kill_switch"
+            android:title="@string/kill_switch"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="split_tunneling"
             android:title="@string/split_tunneling"/>
 
