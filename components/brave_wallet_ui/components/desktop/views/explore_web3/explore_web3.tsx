@@ -89,7 +89,7 @@ export const ExploreWeb3View = () => {
   const controls = React.useMemo(() => {
     return [
       {
-        buttonIconName: 'funnel',
+        buttonIconName: 'filter',
         onClick: () => setShowFilters(true)
       }
     ]

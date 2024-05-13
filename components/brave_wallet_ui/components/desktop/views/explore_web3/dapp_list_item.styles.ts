@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 import { Row } from '../../../shared/style'
@@ -18,7 +18,7 @@ export const StyledWrapper = styled(Row)`
 `
 
 export const PlaceholderImage = styled(Icon).attrs({
-    name: 'image'
+  name: 'image'
 })<{ size?: string }>`
   --leo-icon-size: ${(p) => p.size ?? '40px'};
 `
