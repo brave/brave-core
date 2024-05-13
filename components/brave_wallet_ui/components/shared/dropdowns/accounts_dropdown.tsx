@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -30,7 +31,7 @@ interface Props {
   accounts: BraveWallet.AccountInfo[]
   selectedAccount: BraveWallet.AccountInfo
   showAllAccountsOption?: boolean
-  onSelectAccount: (address: string) => void
+  onSelectAccount: (uniqueKey: string) => void
   checkIsAccountOptionDisabled?: (account: BraveWallet.AccountInfo) => boolean
 }
 
@@ -46,54 +47,65 @@ export const AccountsDropdown = (props: Props) => {
   return (
     <DropdownFilter
       onChange={(e) => onSelectAccount(e.value ?? '')}
-      value={selectedAccount.accountId.address}
+      value={selectedAccount.accountId.uniqueKey}
     >
       <Row
         slot='value'
         justifyContent='flex-start'
       >
-        {selectedAccount.address !== AllAccountsOption.address && (
+        {selectedAccount.accountId.uniqueKey !==
+          AllAccountsOption.accountId.uniqueKey && (
           <CreateAccountIcon
             size='tiny'
             account={selectedAccount}
             marginRight={8}
           />
         )}
-        {selectedAccount.address === AllAccountsOption.address
+        {selectedAccount.accountId.uniqueKey ===
+        AllAccountsOption.accountId.uniqueKey
           ? selectedAccount.name
           : reduceAccountDisplayName(selectedAccount.name, 12)}
       </Row>
       {showAllAccountsOption && (
-        <leo-option value={AllAccountsOption.accountId.address}>
+        <leo-option value={AllAccountsOption.accountId.uniqueKey}>
           <DropdownOption
-            justifyContent='flex-start'
+            justifyContent='space-between'
             isDisabled={false}
           >
             {AllAccountsOption.name}
+            {selectedAccount.accountId.uniqueKey ===
+              AllAccountsOption.accountId.uniqueKey && (
+              <Icon name='check-normal' />
+            )}
           </DropdownOption>
         </leo-option>
       )}
       {accounts.map((account) => (
         <leo-option
-          value={account.accountId.address}
+          value={account.accountId.uniqueKey}
           key={account.accountId.uniqueKey}
         >
           <DropdownOption
-            justifyContent='flex-start'
+            justifyContent='space-between'
             isDisabled={
               checkIsAccountOptionDisabled
                 ? checkIsAccountOptionDisabled(account)
                 : false
             }
           >
-            {account.address !== AllAccountsOption.address && (
-              <CreateAccountIcon
-                size='tiny'
-                account={account}
-                marginRight={8}
-              />
-            )}
-            {account.name}
+            <Row width='unset'>
+              {account.accountId.uniqueKey !==
+                AllAccountsOption.accountId.uniqueKey && (
+                <CreateAccountIcon
+                  size='tiny'
+                  account={account}
+                  marginRight={8}
+                />
+              )}
+              {account.name}
+            </Row>
+            {selectedAccount.accountId.uniqueKey ===
+              account.accountId.uniqueKey && <Icon name='check-normal' />}
           </DropdownOption>
         </leo-option>
       ))}
