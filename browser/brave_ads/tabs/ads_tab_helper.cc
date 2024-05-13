@@ -228,7 +228,7 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
 
 void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
   if (ads_service_) {
-    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
+    ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
   }
 }
 
