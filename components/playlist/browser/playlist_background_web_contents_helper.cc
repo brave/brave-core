@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "base/time/time.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/media_player_id.h"
@@ -21,28 +22,18 @@
 
 namespace playlist {
 
-// static
-void PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-    content::WebContents* web_contents,
-    PlaylistService* service,
-    PlaylistMediaHandler::OnceCallback on_media_detected_callback) {
-  content::WebContentsUserData<
-      PlaylistBackgroundWebContentsHelper>::CreateForWebContents(web_contents,
-                                                                 service);
-  PlaylistMediaHandler::CreateForWebContents(
-      web_contents, std::move(on_media_detected_callback));
-}
-
 PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
     default;
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
-    PlaylistService* service)
+    PlaylistService* service,
+    base::OnceCallback<void(GURL, bool)> callback)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      service_(service) {
+      service_(service),
+      callback_(std::move(callback)) {
   CHECK(service_);
 }
 
@@ -67,22 +58,27 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
       ->GetInterface(&frame_observer_config);
   frame_observer_config->AddMediaSourceAPISuppressor(
       service_->GetMediaSourceAPISuppressorScript());
-  frame_observer_config->AddMediaDetector(
-      service_->GetMediaDetectorScript(url));
 }
 
 void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
+  // TODO: use heuristics on when the site finished loading the page
+  timer_.Start(FROM_HERE, base::Seconds(1), this,
+               &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
+}
+
+void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
   auto urls = web_contents()->GetLoadedUrlByMediaPlayer();
-  if (!urls.empty()) {
-    DVLOG(-1) << "Lofasz: "
-              << std::max_element(urls.begin(), urls.end(),
-                                  [](const auto& e1, const auto& e2) {
-                                    return e1.second.first.spec().size() <
-                                           e2.second.first.spec().size();
-                                  })
-                     ->second.first;
+  if (urls.empty()) {
+    return std::move(callback_).Run({}, {});
   }
+
+  const auto url_it = std::max_element(
+      urls.begin(), urls.end(), [](const auto& e1, const auto& e2) {
+        return e1.second.first.spec().size() < e2.second.first.spec().size();
+      });
+
+  std::move(callback_).Run(url_it->second.first, url_it->second.second);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);

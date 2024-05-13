@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
+#include "base/timer/timer.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -29,11 +30,6 @@ class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
  public:
-  static void CreateForWebContents(
-      content::WebContents* web_contents,
-      PlaylistService* service,
-      PlaylistMediaHandler::OnceCallback on_media_detected_callback);
-
   PlaylistBackgroundWebContentsHelper(
       const PlaylistBackgroundWebContentsHelper&) = delete;
   PlaylistBackgroundWebContentsHelper& operator=(
@@ -43,11 +39,11 @@ class PlaylistBackgroundWebContentsHelper final
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
-  using content::WebContentsUserData<
-      PlaylistBackgroundWebContentsHelper>::CreateForWebContents;
 
-  PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
-                                      PlaylistService* service);
+  PlaylistBackgroundWebContentsHelper(
+      content::WebContents* web_contents,
+      PlaylistService* service,
+      base::OnceCallback<void(GURL, bool)> callback);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
@@ -55,7 +51,11 @@ class PlaylistBackgroundWebContentsHelper final
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  void GetLoadedUrl();
+
   raw_ptr<PlaylistService> service_;
+  base::OnceCallback<void(GURL, bool)> callback_;
+  base::OneShotTimer timer_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

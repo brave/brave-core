@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/unique_ptr_adapters.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -49,7 +50,7 @@ class PlaylistBackgroundWebContentses final {
   ~PlaylistBackgroundWebContentses();
 
   void Add(const GURL& url,
-           PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+           base::OnceCallback<void(GURL, bool)> callback,
            base::TimeDelta timeout = base::Seconds(10));
 
   void Reset();
@@ -63,9 +64,9 @@ class PlaylistBackgroundWebContentses final {
                            UserAgentOverride);
 
   void Remove(content::WebContents* web_contents,
-              PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+              base::OnceCallback<void(GURL, bool)> callback,
               GURL url,
-              std::vector<mojom::PlaylistItemPtr> items);
+              bool is_mse);
 
   // used by
   // PlaylistBackgroundWebContentsTest.ExtractPlaylistItemsInTheBackground, and
