@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const config = require('../lib/config')
+const Log = require('../lib/logging')
 const util = require('../lib/util')
 const assert = require('assert')
 
@@ -129,6 +130,9 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     let filterFilePaths = getApplicableFilters(suite)
     if (filterFilePaths.length > 0)
       braveArgs.push(`--test-launcher-filter-file="${filterFilePaths.join(';')}"`)
+    if (config.isTeamcity) {
+      braveArgs.push('--test-launcher-teamcity-reporter-ignore-preliminary-failures')
+    }
   }
 
   if (
@@ -137,7 +141,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     config.targetOS !== 'android' &&
     config.targetOS !== 'ios'
   ) {
-    runChromiumTestLauncherTeamcityReporterIntegrationTest()
+    runChromiumTestLauncherTeamcityReporterIntegrationTests()
   }
 
   if (config.targetOS === 'ios') {
@@ -186,54 +190,139 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 }
 
-const runChromiumTestLauncherTeamcityReporterIntegrationTest = () => {
-  const args = [
-    "--gtest_filter=DISABLED_TeamcityReporterIntegration*",
-    "--gtest_also_run_disabled_tests",
-  ]
+const runChromiumTestLauncherTeamcityReporterIntegrationTests = () => {
+  const generalTestCase = {
+    args: [
+      '--test-launcher-bot-mode',
+      '--gtest_filter=DISABLED_TeamcityReporterIntegration*',
+      '--gtest_also_run_disabled_tests',
+      // Enable retry limit explicitly, because it's set to 0 when
+      // --gtest_filter is passed.
+      '--test-launcher-retry-limit=1',
+    ],
+
+    expectedLines: [
+      "##teamcity[testSuiteStarted name='brave_unit_tests']",
+      "##teamcity[testRetrySupport enabled='true']",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Success'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Success'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testSuiteFinished name='brave_unit_tests']"
+    ]
+  }
+
+  const ignorePreliminaryFailuresTestCase = {
+    args: [
+      ...generalTestCase.args,
+      '--test-launcher-teamcity-reporter-ignore-preliminary-failures'
+    ],
+
+    expectedLines: [
+      "##teamcity[testSuiteStarted name='brave_unit_tests']",
+      "##teamcity[testRetrySupport enabled='true']",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Success'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Success'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure'",
+      "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped'",
+      "##teamcity[testSuiteFinished name='brave_unit_tests']"
+    ]
+  }
 
   const runOptions = config.defaultOptions
   runOptions.stdio = 'pipe'
   runOptions.continueOnFail = true
-  const prog = util.run(path.join(config.outputDir, 'brave_unit_tests'), args, runOptions)
 
-  const expectedOutput = [
-    "##teamcity[testSuiteStarted name='brave_unit_tests']",
-    "##teamcity[testRetrySupport enabled='false']",
-    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Success' captureStandardOutput='true']",
-    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Success' duration='",
-    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Failure' captureStandardOutput='true']",
-    "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.Failure']",
-    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Failure' duration='",
-    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure' captureStandardOutput='true']",
-    "##teamcity[testFailed name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure']",
-    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.CheckFailure' duration='",
-    "##teamcity[testStarted name='DISABLED_TeamcityReporterIntegrationTest.Skipped' captureStandardOutput='true']",
-    "##teamcity[testIgnored name='DISABLED_TeamcityReporterIntegrationTest.Skipped']",
-    "##teamcity[testFinished name='DISABLED_TeamcityReporterIntegrationTest.Skipped' duration='",
-    "##teamcity[testSuiteFinished name='brave_unit_tests']",
-  ]
-
-  const stdoutLines = prog.stdout.toString().split('\n');
-  for (const line of stdoutLines) {
-    if (line.startsWith(expectedOutput[0])) {
-      expectedOutput.splice(0, 1)
-      if (expectedOutput.length == 0) {
-        break
-      }
-    }
+  for (const testCase of [generalTestCase, ignorePreliminaryFailuresTestCase]) {
+    const prog = util.run(
+      path.join(config.outputDir, 'brave_unit_tests'),
+      testCase.args,
+      runOptions
+    )
+    const outputLines = prog.stdout.toString().split('\n')
+    checkTeamcityReporterOutput(outputLines, testCase.expectedLines)
   }
+}
 
-  const isMatched = expectedOutput.length == 0;
+const checkTeamcityReporterOutput = (outputLines, expectedTeamcityLines) => {
+  const outputTeamcityLines = outputLines.filter((line) =>
+    line.startsWith('##teamcity')
+  )
+
+  const isMatched =
+    outputTeamcityLines.length === expectedTeamcityLines.length &&
+    expectedTeamcityLines.every((expectedLine, index) => {
+      const outputLine = outputTeamcityLines[index]
+      return outputLine.startsWith(expectedLine)
+    })
+
   if (!isMatched) {
+    const notMatchedOutputLines = outputTeamcityLines.filter(
+      (outputLine, index) => {
+        const expectedLine = expectedTeamcityLines[index]
+        return !outputLine.startsWith(expectedLine)
+      }
+    )
+
+    const notMatchedExpectedLines = expectedTeamcityLines.filter(
+      (expectedLine, index) => {
+        const outputLine = outputTeamcityLines[index]
+        return !outputLine?.startsWith(expectedLine)
+      }
+    )
+
+    Log.error(
+      'TeamcityReporter output test failed, output ##teamcity lines do not match expected lines (note ##teamcity was replaced with %%teamcity):'
+    )
     console.error(
-      prog.stdout.toString().replace(/##teamcity/gm, '%%teamcity') +
-      '\nChromiumTestLauncherTeamcityReporterIntegration test failed, the line was not found in the output (note: ##teamcity was replaced with %%teamcity):\n' +
-      expectedOutput[0].replace(/##teamcity/gm, '%%teamcity')
+      [
+        '\nNot matched output lines:',
+        ...notMatchedOutputLines,
+        '\nNot matched expected lines:',
+        ...notMatchedExpectedLines,
+        '\nTest output lines:',
+        ...outputTeamcityLines,
+        '\nExpected lines:',
+        ...expectedTeamcityLines,
+        '\nFull test output:',
+        ...outputLines
+      ]
+        .join('\n')
+        .replace(/##teamcity/gm, '%%teamcity')
     )
     process.exit(1)
   } else {
-    console.log('ChromiumTestLauncherTeamcityReporterIntegration test passed')
+    console.log('TeamcityReporter output test passed')
   }
 }
 
