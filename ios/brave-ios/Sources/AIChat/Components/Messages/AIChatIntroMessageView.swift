@@ -59,53 +59,6 @@ struct AIChatIntroMessageView: View {
     }
   }
 
-  private var popoverMessage: String {
-    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
-      return String(
-        format: Strings.AIChat.introGenericPopoverMessage,
-        model.displayName,
-        model.displayMaker
-      )
-    }
-
-    switch modelKey {
-    case .chatBasic:
-      return String(
-        format: Strings.AIChat.introPopoverLlamaMessageDescription,
-        model.displayName,
-        model.displayMaker
-      )
-
-    case .chatExpanded:
-      return String(
-        format: Strings.AIChat.introPopoverMixtralMessageDescription,
-        model.displayName,
-        model.displayMaker
-      )
-
-    case .chatClaudeInstant:
-      return String(
-        format: Strings.AIChat.introPopoverClaudeInstantMessageDescription,
-        model.displayName,
-        model.displayMaker
-      )
-
-    case .chatClaudeHaiku:
-      return String(
-        format: Strings.AIChat.introPopoverClaudeHaikuMessageDescription,
-        model.displayName,
-        model.displayMaker
-      )
-
-    case .chatClaudeSonnet:
-      return String(
-        format: Strings.AIChat.introPopoverClaudeSonnetMessageDescription,
-        model.displayName,
-        model.displayMaker
-      )
-    }
-  }
-
   var body: some View {
     VStack(alignment: .leading, spacing: 0.0) {
       AIChatProductIcon(containerShape: Circle(), padding: 9.0)
@@ -151,7 +104,7 @@ struct AIChatIntroMessageView: View {
             backgroundColor: UIColor(braveSystemName: .containerBackground)
           ) {
             VStack {
-              Text(popoverMessage)
+              Text(introMessage)
                 .font(.footnote)
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
                 .fixedSize(horizontal: false, vertical: true)
@@ -179,13 +132,6 @@ struct AIChatIntroMessageView: View {
         }
       }
       .frame(maxWidth: .infinity, alignment: .leading)
-
-      Text(introMessage)
-        .font(.subheadline)
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
     }
   }
 }

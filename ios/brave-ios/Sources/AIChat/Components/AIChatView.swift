@@ -151,13 +151,6 @@ public struct AIChatView: View {
                     if model.shouldShowSuggestions && !model.requestInProgress
                       && model.apiError == .none
                     {
-                      if model.conversationHistory.isEmpty {
-                        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
-                          .font(.callout)
-                          .frame(maxWidth: .infinity, alignment: .leading)
-                          .padding([.horizontal, .bottom])
-                      }
-
                       if model.suggestionsStatus != .isGenerating
                         && !model.suggestedQuestions.isEmpty
                       {

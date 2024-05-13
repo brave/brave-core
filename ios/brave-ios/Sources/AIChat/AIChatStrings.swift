@@ -324,60 +324,6 @@ extension Strings {
       comment:
         "The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name"
     )
-    public static let introPopoverLlamaMessageDescription = NSLocalizedString(
-      "aichat.introPopoverLlamaMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
-    public static let introPopoverMixtralMessageDescription = NSLocalizedString(
-      "aichat.introPopoverMixtralMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
-    public static let introPopoverClaudeInstantMessageDescription = NSLocalizedString(
-      "aichat.introPopoverClaudeInstantMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
-    public static let introPopoverClaudeHaikuMessageDescription = NSLocalizedString(
-      "aichat.introPopoverClaudeHaikuMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
-    public static let introPopoverClaudeSonnetMessageDescription = NSLocalizedString(
-      "aichat.introPopoverClaudeSonnetMessageDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
-    public static let introGenericPopoverMessage = NSLocalizedString(
-      "aichat.introGenericPopoverMessage",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value:
-        "%@ is a model created by %@ to handle advanced tasks. This model is hosted by Brave.",
-      comment:
-        "The model intro popover message when you first enter the chat assistant popover -- %@ is a place-holder for the model name"
-    )
     public static let paywallViewTitle = NSLocalizedString(
       "aichat.paywallViewTitle",
       tableName: "BraveLeo",
