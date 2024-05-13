@@ -323,6 +323,7 @@ public class KeyringModel implements KeyringServiceObserver {
                                         countCreatedAccounts++;
                                         if (countCreatedAccounts == createAccounts.size()) {
                                             createAccountsLiveData.removeObserver(this);
+                                            // Set ETH account by default as initial state.
                                             mKeyringService.getAllAccounts(allAccounts -> mKeyringService.setSelectedAccount(
                                                     allAccounts.ethDappSelectedAccount.accountId, success1 -> callback.call(recoveryPhrases)));
                                         }
