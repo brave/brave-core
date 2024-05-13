@@ -7,10 +7,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "brave_tab_strip_model_browsertest.cc",
-    "shared_pinned_tab_service_browsertest.cc",
-  ]
+  sources = [ "brave_tab_strip_model_browsertest.cc" ]
 
   deps = [
     "//brave/components/constants",
@@ -23,6 +20,7 @@ source_set("browser_tests") {
   ]
 
   if (!is_android) {
+    sources += [ "shared_pinned_tab_service_browsertest.cc" ]
     deps += [ "//chrome/test:test_support_ui" ]
   }
 }
