@@ -9,6 +9,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
 import android.graphics.Paint;
 import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,8 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private ProgressBar mMonthlyPlanProgress;
@@ -229,13 +232,22 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                         mProductDetails = yearlyProductDetails;
                         mBtnVpnPlanAction.setEnabled(true);
                         if (monthlyProductDetails != null) {
-                            mYearlyText.setText(
+                            String discountText =
                                     getString(
                                             R.string.renew_monthly_save,
                                             InAppPurchaseWrapper.getInstance()
                                                     .getYearlyDiscountPercentage(
                                                             monthlyProductDetails,
-                                                            yearlyProductDetails)));
+                                                            yearlyProductDetails));
+                            SpannableString discountSpannableString =
+                                    SpanApplier.applySpans(
+                                            discountText,
+                                            new SpanInfo(
+                                                    "<discount_text>",
+                                                    "</discount_text>",
+                                                    new StyleSpan(android.graphics.Typeface.BOLD),
+                                                    new UnderlineSpan()));
+                            mYearlyText.setText(discountSpannableString);
                         }
                     }
                 });
