@@ -83,7 +83,7 @@ BASE_FEATURE(kRestrictWebSocketsPool,
 // Enables protection against fingerprinting on screen dimensions.
 BASE_FEATURE(kBraveBlockScreenFingerprinting,
              "BraveBlockScreenFingerprinting",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
