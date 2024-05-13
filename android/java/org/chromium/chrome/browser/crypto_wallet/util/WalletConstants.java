@@ -112,4 +112,7 @@ public final class WalletConstants {
 
     public static final List<String> KNOWN_TEST_CHAIN_IDS =
             new ArrayList<>(KNOWN_TEST_CHAINS_MAP.keySet());
+
+    public static final List<Integer> SUPPORTED_COIN_TYPES_ON_DAPPS =
+            Arrays.asList(CoinType.ETH, CoinType.SOL);
 }
