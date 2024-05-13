@@ -11,7 +11,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -336,22 +335,15 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
                        ClosingSharedPinnedTab) {
-  // Precondition
-  Browser* browser = CreateNewBrowser();
-  std::unique_ptr<Browser> unq_browser(browser);
-  TabStripModel* tab_strip_model = browser->tab_strip_model();
-  BrowserView* browser_view = new BrowserView(std::move(unq_browser));
-  BrowserFrame* browser_frame = new BrowserFrame(browser_view);
+  auto* browser_instance = CreateNewBrowser();
+  chrome::NewTab(browser_instance);
 
-  // Test sets the default tab as pinned,
-  // runs ExecuteCommand for closing a shared pinned tab
-  // and verifies that the tab isn't closed
-  tab_strip_model->SetTabPinned(0, /* pinned= */ true);
-  BraveBrowserFrameMac* brave_browser_frame_mac =
-      new BraveBrowserFrameMac(browser_frame, browser_view);
-  brave_browser_frame_mac->ExecuteCommand(IDC_CLOSE_TAB,
-                                          WindowOpenDisposition::CURRENT_TAB,
-                                          /* is_before_first_responder=*/true);
+  EXPECT_EQ(browser_instance->tab_strip_model()->count(), 2);
+  EXPECT_EQ(browser_instance->tab_strip_model()->active_index(), 1);
 
-  EXPECT_TRUE(tab_strip_model->count() == 1);
+  EXPECT_EQ(browser_instance->tab_strip_model()->SetTabPinned(1, true), 0);
+  EXPECT_EQ(browser_instance->tab_strip_model()->active_index(), 0);
+
+  chrome::ExecuteCommand(browser_instance, IDC_CLOSE_TAB);
+  EXPECT_EQ(browser_instance->tab_strip_model()->count(), 2);
 }
