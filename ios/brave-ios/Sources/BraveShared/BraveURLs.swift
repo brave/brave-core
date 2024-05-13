@@ -40,6 +40,9 @@ extension URL {
     public static let braveVPNLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
     )!
+    public static let braveVPNRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
+    )!
     public static let safeBrowsingHelp = URL(
       string: "https://support.brave.com/hc/en-us/articles/15222663599629-Safe-Browsing-in-Brave"
     )!

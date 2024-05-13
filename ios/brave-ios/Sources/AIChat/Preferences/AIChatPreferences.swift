@@ -48,4 +48,7 @@ extension Preferences {
 public struct AIChatConstants {
   static let braveLeoWikiURL = URL(string: "https://github.com/brave/brave-browser/wiki/Brave-Leo")!
   static let braveLeoPrivacyPolicyURL = URL(string: "https://brave.com/privacy/browser/#brave-leo")!
+  static let braveVPNLinkReceipt = URL(
+    string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
+  )!
 }

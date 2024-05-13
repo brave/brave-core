@@ -5,6 +5,7 @@
 
 import DesignSystem
 import Preferences
+import SafariServices
 import Shared
 import StoreKit
 import UIKit
@@ -118,7 +119,8 @@ class BuyVPNViewController: VPNSetupLoadingController {
       .addTarget(self, action: #selector(yearlySubscriptionAction), for: .touchUpInside)
 
     iapObserver.delegate = self
-
+    buyVPNView.delegate = self
+    
     Preferences.VPN.popupShowed.value = true
   }
 
@@ -272,8 +274,15 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
 // MARK: - BuyVPNVActionDelegate
 
 extension BuyVPNViewController: BuyVPNView.ActionDelegate {
+
   func refreshSiteCredentials() {
-    // TODO: Action delegate sites perform
+    let p3aLearnMoreController = SFSafariViewController(
+      url: .brave.braveVPNRefreshCredentials,
+      configuration: .init()
+    )
+    p3aLearnMoreController.modalPresentationStyle = .currentContext
+
+    present(p3aLearnMoreController, animated: true)
   }
 }
 
