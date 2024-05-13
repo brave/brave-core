@@ -5,10 +5,10 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import android.view.MenuItem;
-import android.widget.Button;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -45,7 +45,9 @@ public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(mIsKillSwitch ? R.string.kill_switch: R.string.always_on_vpn));
+        actionBar.setTitle(
+                getResources()
+                        .getString(mIsKillSwitch ? R.string.kill_switch : R.string.always_on_vpn));
 
         ViewPager killSwitchTutorialViewPager = findViewById(R.id.kill_switch_tutorial_view_pager);
 

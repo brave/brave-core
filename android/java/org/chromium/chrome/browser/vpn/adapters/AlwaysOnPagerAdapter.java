@@ -63,22 +63,24 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                                     null,
                                     new StyleSpan(android.graphics.Typeface.BOLD)));
             if (mIsKillSwitch) {
-                killSwitchText = killSwitchText + "\n"
-                            + mContext.getResources()
-                                    .getString(R.string.kill_switch_tutorial_text_4);
+                killSwitchText =
+                        killSwitchText
+                                + "\n"
+                                + mContext.getResources()
+                                        .getString(R.string.kill_switch_tutorial_text_4);
                 tutorialSpannableString =
-                    SpanApplier.applySpans(
-                            killSwitchText,
-                            new SpanInfo(
-                                    "<always_on_tutorial>",
-                                    "</always_on_tutorial>",
-                                    null,
-                                    new StyleSpan(android.graphics.Typeface.BOLD)),
-                            new SpanInfo(
-                                    "<always_on_tutorial_2>",
-                                    "</always_on_tutorial_2>",
-                                    null,
-                                    new StyleSpan(android.graphics.Typeface.BOLD)));
+                        SpanApplier.applySpans(
+                                killSwitchText,
+                                new SpanInfo(
+                                        "<always_on_tutorial>",
+                                        "</always_on_tutorial>",
+                                        null,
+                                        new StyleSpan(android.graphics.Typeface.BOLD)),
+                                new SpanInfo(
+                                        "<always_on_tutorial_2>",
+                                        "</always_on_tutorial_2>",
+                                        null,
+                                        new StyleSpan(android.graphics.Typeface.BOLD)));
             }
             killSwitchTutorialText.setText(tutorialSpannableString);
         } else {

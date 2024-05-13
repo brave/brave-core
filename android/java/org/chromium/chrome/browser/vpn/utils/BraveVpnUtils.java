@@ -63,8 +63,9 @@ public class BraveVpnUtils {
     public static String IS_KILL_SWITCH = "is_kill_switch";
 
     public static String getBraveAccountUrl() {
-        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
-                                                               : BRAVE_ACCOUNT_PROD_PAGE_URL;
+        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging()
+                ? BRAVE_ACCOUNT_STAGING_PAGE_URL
+                : BRAVE_ACCOUNT_PROD_PAGE_URL;
     }
 
     public static void openBraveVpnPlansActivity(Activity activity) {
