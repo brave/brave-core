@@ -93,10 +93,11 @@ export const RecoveryTextInput = styled.input`
 export const InfoAlert = styled(Alert).attrs({
   kind: 'error',
   mode: 'simple'
-})`
+})<{ padding?: string }>`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
   width: 100%;
+  padding: ${(p) => p.padding || 'unset'};
 `
 
 export const InputLabel = styled(Text)`

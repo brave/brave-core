@@ -306,7 +306,12 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
           {(phraseWords.length > 0 && !isCorrectPhraseLength) ||
           hasInvalidSeedError ? (
-            <InfoAlert>{getLocale('braveWalletRestoreWalletError')}</InfoAlert>
+            <InfoAlert
+              padding='16px 0 0'
+              kind='error'
+            >
+              {getLocale('braveWalletRestoreWalletError')}
+            </InfoAlert>
           ) : (
             <VerticalSpace space='54px' />
           )}
