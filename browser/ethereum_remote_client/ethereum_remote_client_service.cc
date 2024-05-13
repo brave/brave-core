@@ -99,7 +99,7 @@ bool EthereumRemoteClientService::OpenSeed(const std::string& cipher_seed,
 std::string EthereumRemoteClientService::GetRandomNonce() {
   // crypto::RandBytes is fail safe.
   uint8_t nonceBytes[kNonceByteLength];
-  crypto::RandBytes(nonceBytes, kNonceByteLength);
+  crypto::RandBytes(nonceBytes);
   return std::string(reinterpret_cast<char*>(nonceBytes), kNonceByteLength);
 }
 
@@ -107,7 +107,7 @@ std::string EthereumRemoteClientService::GetRandomNonce() {
 std::string EthereumRemoteClientService::GetRandomSeed() {
   // crypto::RandBytes is fail safe.
   uint8_t random_seed_bytes[kSeedByteLength];
-  crypto::RandBytes(random_seed_bytes, kSeedByteLength);
+  crypto::RandBytes(random_seed_bytes);
   return std::string(reinterpret_cast<char*>(random_seed_bytes),
                      kSeedByteLength);
 }

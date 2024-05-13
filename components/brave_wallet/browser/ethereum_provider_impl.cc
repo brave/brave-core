@@ -497,7 +497,7 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
                                         base::Value id) {
   const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
     std::vector<uint8_t> bytes(16);
-    crypto::RandBytes(&bytes.front(), bytes.size());
+    crypto::RandBytes(bytes);
     std::string hex_bytes = ToHex(bytes);
     subscriptions.push_back(hex_bytes);
     return std::tuple<bool, std::string>{subscriptions.size() == 1, hex_bytes};
