@@ -33,30 +33,32 @@ import java.util.List;
 
 /**
  * Network selector adapter used by {@link NetworkSelectorActivity} that shows networks supporting
- * DApps. The adapter also contains three labels for primary, secondary and test networks.
- * Labels are shown only if there is at least one network. Tapping on a network will switch the
- * selected network and will finish the activity by calling {@link NetworkClickListener#onNetworkItemSelected}.
+ * DApps. The adapter also contains three labels for primary, secondary and test networks. Labels
+ * are shown only if there is at least one network. Tapping on a network will switch the selected
+ * network and will finish the activity by calling {@link
+ * NetworkClickListener#onNetworkItemSelected}.
  */
-public class NetworkSelectorAdapter
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NetworkSelectorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /** Item types. */
     private static final int NETWORK_ITEM = 0;
+
     private static final int LABEL_PRIMARY_ITEM = 1;
     private static final int LABEL_SECONDARY_ITEM = 2;
     private static final int LABEL_TEST_ITEM = 3;
 
-    private final LayoutInflater inflater;
+    private final LayoutInflater mInflater;
     private final NetworkClickListener mNetworkClickListener;
     private final List<NetworkSelectorItem> mNetworkSelectorItems;
 
     private int mSelectedNetworkIndex = -1;
 
-    public NetworkSelectorAdapter(@NonNull final Context context,
-                                  @NonNull final NetworkModel.NetworkLists networks,
-                                  @NonNull final NetworkInfo selectedNetwork,
-                                  @NonNull final NetworkClickListener networkClickListener) {
-        inflater = LayoutInflater.from(context);
+    public NetworkSelectorAdapter(
+            @NonNull final Context context,
+            @NonNull final NetworkModel.NetworkLists networks,
+            @NonNull final NetworkInfo selectedNetwork,
+            @NonNull final NetworkClickListener networkClickListener) {
+        mInflater = LayoutInflater.from(context);
         mNetworkClickListener = networkClickListener;
 
         int count = 0;
@@ -66,7 +68,8 @@ public class NetworkSelectorAdapter
             count++;
             for (NetworkInfo networkInfo : networks.mPrimaryNetworkList) {
                 mNetworkSelectorItems.add(new NetworkSelectorItem(networkInfo));
-                if (mSelectedNetworkIndex == -1 && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
+                if (mSelectedNetworkIndex == -1
+                        && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
                     mSelectedNetworkIndex = count;
                 }
                 count++;
@@ -78,7 +81,8 @@ public class NetworkSelectorAdapter
             count++;
             for (NetworkInfo networkInfo : networks.mSecondaryNetworkList) {
                 mNetworkSelectorItems.add(new NetworkSelectorItem(networkInfo));
-                if (mSelectedNetworkIndex == -1 && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
+                if (mSelectedNetworkIndex == -1
+                        && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
                     mSelectedNetworkIndex = count;
                 }
                 count++;
@@ -90,7 +94,8 @@ public class NetworkSelectorAdapter
             count++;
             for (NetworkInfo networkInfo : networks.mTestNetworkList) {
                 mNetworkSelectorItems.add(new NetworkSelectorItem(networkInfo));
-                if (mSelectedNetworkIndex == -1 && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
+                if (mSelectedNetworkIndex == -1
+                        && NetworkUtils.areEqual(selectedNetwork, networkInfo)) {
                     mSelectedNetworkIndex = count;
                 }
                 count++;
@@ -104,23 +109,27 @@ public class NetworkSelectorAdapter
     }
 
     @Override
-    public @NonNull RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public @NonNull RecyclerView.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType) {
         if (viewType == NETWORK_ITEM) {
-            View view = inflater.inflate(R.layout.item_network_selector, parent, false);
-            return new NetworkViewHolder(view, position -> {
-                final int oldPosition = mSelectedNetworkIndex;
-                mSelectedNetworkIndex = position;
-                notifyItemChanged(oldPosition);
-                notifyItemChanged(mSelectedNetworkIndex);
-                final NetworkSelectorItem networkSelectorItem = mNetworkSelectorItems.get(mSelectedNetworkIndex);
-                mNetworkClickListener.onNetworkItemSelected(networkSelectorItem.getNetworkInfo());
-            });
+            View view = mInflater.inflate(R.layout.item_network_selector, parent, false);
+            return new NetworkViewHolder(
+                    view,
+                    position -> {
+                        final int oldPosition = mSelectedNetworkIndex;
+                        mSelectedNetworkIndex = position;
+                        notifyItemChanged(oldPosition);
+                        notifyItemChanged(mSelectedNetworkIndex);
+                        final NetworkSelectorItem networkSelectorItem =
+                                mNetworkSelectorItems.get(mSelectedNetworkIndex);
+                        mNetworkClickListener.onNetworkItemSelected(
+                                networkSelectorItem.getNetworkInfo());
+                    });
         } else {
             // Label item.
-            View view = inflater.inflate(R.layout.label_network_selector, parent, false);
+            View view = mInflater.inflate(R.layout.label_network_selector, parent, false);
             return new LabelViewHolder(view);
         }
-
     }
 
     @Override
@@ -132,27 +141,27 @@ public class NetworkSelectorAdapter
             final NetworkInfo network = networkSelectorItem.getNetworkInfo();
             final NetworkViewHolder networkViewHolder = (NetworkViewHolder) holder;
 
-            networkViewHolder.tvName.setText(network.chainName);
-            networkViewHolder.ivSelected.setVisibility(mSelectedNetworkIndex == position ? View.VISIBLE : View.INVISIBLE);
+            networkViewHolder.mName.setText(network.chainName);
+            networkViewHolder.mSelectedIcon.setVisibility(
+                    mSelectedNetworkIndex == position ? View.VISIBLE : View.INVISIBLE);
 
-            @DrawableRes
-            int logo = Utils.getNetworkIconDrawable(network.chainId, network.coin);
+            @DrawableRes int logo = Utils.getNetworkIconDrawable(network.chainId, network.coin);
             if (logo != -1) {
-                networkViewHolder.ivNetworkPicture.setVisibility(View.VISIBLE);
-                networkViewHolder.ivNetworkPicture.setImageResource(logo);
+                networkViewHolder.mNetworkLogo.setVisibility(View.VISIBLE);
+                networkViewHolder.mNetworkLogo.setImageResource(logo);
                 if (NetworkUtils.isTestNetwork(network.chainId)) {
                     // Grey style test net image.
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(0);
 
                     ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    networkViewHolder.ivNetworkPicture.setColorFilter(filter);
+                    networkViewHolder.mNetworkLogo.setColorFilter(filter);
                 } else {
-                    networkViewHolder.ivNetworkPicture.setColorFilter(null);
+                    networkViewHolder.mNetworkLogo.setColorFilter(null);
                 }
             } else {
-                networkViewHolder.ivNetworkPicture.setVisibility(View.INVISIBLE);
-                networkViewHolder.ivNetworkPicture.setColorFilter(null);
+                networkViewHolder.mNetworkLogo.setVisibility(View.INVISIBLE);
+                networkViewHolder.mNetworkLogo.setColorFilter(null);
             }
         } else {
             final LabelViewHolder labelViewHolder = (LabelViewHolder) holder;
@@ -173,24 +182,25 @@ public class NetworkSelectorAdapter
         interface OnClickListener {
             void onClick(final int position);
         }
-        final ImageView ivNetworkPicture;
-        final TextView tvName;
-        final ImageView ivSelected;
-        final Button btnAction;
 
-        public NetworkViewHolder(@NonNull final View itemView, @NonNull final OnClickListener listener) {
+        final ImageView mNetworkLogo;
+        final TextView mName;
+        final ImageView mSelectedIcon;
+
+        public NetworkViewHolder(
+                @NonNull final View itemView, @NonNull final OnClickListener listener) {
             super(itemView);
             itemView.setClickable(true);
-            tvName = itemView.findViewById(R.id.tv_item_network_name);
-            ivNetworkPicture = itemView.findViewById(R.id.iv_item_network_picture);
-            ivSelected = itemView.findViewById(R.id.iv_item_network_selector_selected);
-            btnAction = itemView.findViewById(R.id.btn_item_network_action);
+            mName = itemView.findViewById(R.id.tv_item_network_name);
+            mNetworkLogo = itemView.findViewById(R.id.iv_item_network_picture);
+            mSelectedIcon = itemView.findViewById(R.id.iv_item_network_selector_selected);
 
-            itemView.setOnClickListener(view -> {
-                if (getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onClick(getBindingAdapterPosition());
-                }
-            });
+            itemView.setOnClickListener(
+                    view -> {
+                        if (getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
+                            listener.onClick(getBindingAdapterPosition());
+                        }
+                    });
         }
     }
 
@@ -205,9 +215,10 @@ public class NetworkSelectorAdapter
 
     public static class NetworkSelectorItem {
         private final int mType;
+
         /** Network info is available only when type is {@code NETWORK_ITEM}. */
-        @Nullable
-        private final NetworkInfo mNetworkInfo;
+        @Nullable private final NetworkInfo mNetworkInfo;
+
         /** Network name resource is available only when type is not {@code NETWORK_ITEM} */
         private final int mNetworkNameRes;
 
@@ -221,7 +232,8 @@ public class NetworkSelectorAdapter
             } else if (mType == LABEL_TEST_ITEM) {
                 mNetworkNameRes = R.string.brave_wallet_network_filter_test;
             } else {
-                throw new IllegalStateException(String.format("Network name not found for label type %d.", mType));
+                throw new IllegalStateException(
+                        String.format("Network name not found for label type %d.", mType));
             }
         }
 
@@ -238,7 +250,8 @@ public class NetworkSelectorAdapter
         @NonNull
         public NetworkInfo getNetworkInfo() {
             if (mType != NETWORK_ITEM || mNetworkInfo == null) {
-                throw new IllegalStateException("Network info can be retrieved only for network items.");
+                throw new IllegalStateException(
+                        "Network info can be retrieved only for network items.");
             }
             return mNetworkInfo;
         }
@@ -246,10 +259,10 @@ public class NetworkSelectorAdapter
         @StringRes
         public int getNetworkNameRes() {
             if (mType == NETWORK_ITEM || mNetworkNameRes == 0) {
-                throw new IllegalStateException("Network name can be retrieved only for label items.");
+                throw new IllegalStateException(
+                        "Network name can be retrieved only for label items.");
             }
             return mNetworkNameRes;
         }
     }
-
 }

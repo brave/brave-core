@@ -10,9 +10,6 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AccountKind;
@@ -20,7 +17,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSelectorRecyclerView;
-import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.AccountSelectorItemListener;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
@@ -97,8 +93,8 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
                                     // TODO(apaymyshev): Why I'm not allowed to select imported
                                     // account?
                                     if (accountInfo.accountId.kind != AccountKind.IMPORTED
-                                            && WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS.contains(
-                                                    accountInfo.accountId.coin)) {
+                                            && WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS
+                                                    .contains(accountInfo.accountId.coin)) {
                                         accountSelectorItemModelList.add(
                                                 AccountSelectorItemModel.makeForAccountInfo(
                                                         accountInfo));

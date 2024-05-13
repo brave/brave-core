@@ -50,8 +50,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
      * Creates an Intent object to open network selector activity.
      *
      * @return Intent object to open network selector activity.
-     *
-     * <b>Note:</b>: It should only be called if the wallet is set up and unlocked.
+     *     <p><b>Note:</b>: It should only be called if the wallet is set up and unlocked.
      */
     @NonNull
     public static Intent createIntent(@NonNull final Context context) {
@@ -96,7 +95,8 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
         mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkModel = mWalletModel.getCryptoModel().getNetworkModel();
         NetworkModel.NetworkLists networkLists = mNetworkModel.mNetworkLists.getValue();
-        NetworkInfo selectedNetwork = mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        NetworkInfo selectedNetwork =
+                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
         // See GitHub issue https://github.com/brave/brave-browser/issues/37399.
         // When live data will be refactored this check can be removed.
         if (networkLists == null || selectedNetwork == null) {
@@ -105,18 +105,36 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
             return;
         }
 
-        mNetworkSelectorAdapter = new NetworkSelectorAdapter(this, filterSupportedDapp(networkLists), mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue(), this);
+        mNetworkSelectorAdapter =
+                new NetworkSelectorAdapter(
+                        this,
+                        filterSupportedDapp(networkLists),
+                        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue(),
+                        this);
         mRVNetworkSelector.setAdapter(mNetworkSelectorAdapter);
     }
 
     @NonNull
-    private NetworkModel.NetworkLists filterSupportedDapp(@NonNull final NetworkModel.NetworkLists networkLists) {
-        final Predicate<NetworkInfo> supportedNetworkFilter = networkInfo -> WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS.contains(networkInfo.coin);
+    private NetworkModel.NetworkLists filterSupportedDapp(
+            @NonNull final NetworkModel.NetworkLists networkLists) {
+        final Predicate<NetworkInfo> supportedNetworkFilter =
+                networkInfo ->
+                        WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS.contains(networkInfo.coin);
 
-        final List<NetworkInfo> filteredPrimaryNetworkList = networkLists.mPrimaryNetworkList.stream().filter(supportedNetworkFilter).collect(Collectors.toList());
-        final List<NetworkInfo> filteredSecondaryNetworkList = networkLists.mSecondaryNetworkList.stream().filter(supportedNetworkFilter).collect(Collectors.toList());
-        final List<NetworkInfo> filteredTestNetworkList = networkLists.mTestNetworkList.stream().filter(supportedNetworkFilter).collect(Collectors.toList());
-        return new NetworkModel.NetworkLists(filteredPrimaryNetworkList, filteredSecondaryNetworkList, filteredTestNetworkList);
+        final List<NetworkInfo> filteredPrimaryNetworkList =
+                networkLists.mPrimaryNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        final List<NetworkInfo> filteredSecondaryNetworkList =
+                networkLists.mSecondaryNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        final List<NetworkInfo> filteredTestNetworkList =
+                networkLists.mTestNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        return new NetworkModel.NetworkLists(
+                filteredPrimaryNetworkList, filteredSecondaryNetworkList, filteredTestNetworkList);
     }
 
     private void launchAddNetwork() {
