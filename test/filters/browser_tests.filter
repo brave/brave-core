@@ -1615,7 +1615,6 @@
 -ContentAutofillDriverBrowserTest.*
 -ContentFaviconDriverTest.*
 -ContentScriptApiPrerenderingTest.*
--ContentScriptApiTest.*
 -ContentScriptApiTestWithActivityLog.*
 -ContentSettingBubbleDialogTest.*
 -ContentSettingBubbleModelMediaStreamTest.BubbleContentForNonBlockedMic
