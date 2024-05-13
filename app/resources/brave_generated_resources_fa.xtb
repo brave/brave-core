@@ -109,14 +109,10 @@
 <translation id="7551864359422178684">شما <ph name="NUMBER_OF_TABS"/> زبانه باز در این پنجره مرورگر دارید.</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> زبانه</translation>
 <translation id="1307431692088049276">دیگر از من سؤال نشود</translation>
-<translation id="2272117088509540883">- جستجوی Brave</translation>
-<translation id="2701279958223202597">از جستجوی مستقل با حریم خصوصی بیشتر حمایت کنید. جستجوی Brave شما، عباراتی که جستجو می‌کنید یا کلیک‌هایتان را ردیابی نمی‌کند.</translation>
-<translation id="6438467592401259882">از جستجوی مستقل با حریم خصوصی بیشتر حمایت کنید.</translation>
-<translation id="5167182095453855816">زمان کنار گذاشتن فناوری‌های بزرگ</translation>
-<translation id="45040495135337202">Brave درخواست‌ها یا کلیک‌های شما را ردیابی نمی‌کند. و 100% مستقل از شرکت‌های بزرگ فناوری است.</translation>
 <translation id="6919364924256365253">در گوگل جستجو نکنید. در بینگ جستجو نکنید. فقط در Brave جستجو کنید.</translation>
 <translation id="3313148036097793884">Brave درخواست‌ها یا کلیک‌های شما را ردیابی نمی‌کند. و 100% مستقل است.</translation>
 <translation id="7295094278358921487">جستجو کنید و یافت خواهید کرد. به صورت خصوصی</translation>
+<translation id="45040495135337202">Brave درخواست‌ها یا کلیک‌های شما را ردیابی نمی‌کند. و 100% مستقل از شرکت‌های بزرگ فناوری است.</translation>
 <translation id="42032117189492785">جستجوی مبتنی بر هوش مصنوعی با یک شاخص منحصر به فرد.</translation>
 <translation id="8606416238399082160">کاملاً خصوصی، 100% مستقل، و همراه با مشخصه‌های هوش مصنوعی عالی.</translation>
 <translation id="5240031343741051161">جستجوی Brave را امتحان کنید</translation>
@@ -194,9 +190,10 @@
 <translation id="3435896845095436175">فعال کنید</translation>
 <translation id="5046066249040287308">خدمات ابزار کیف پول Brave</translation>
 <translation id="4552520379838695057">متأسفیم، آن صفحه یافت نمی‌شود.</translation>
+<translation id="7299769530898469069">نسخه ذخیره‌شده باز نشد</translation>
 <translation id="2609895996619941644">می‌خواهید بررسی کنید که آیا نسخه ذخیره‌شده‌ای در Wayback Machine موجود است؟</translation>
-<translation id="8053093028263274061">متأسفیم، نسخه ذخیره‌شده‌ای موجود نیست.</translation>
-<translation id="8517321676372639828">بررسی برای نسخه ذخیره‌شده</translation>
+<translation id="8010675257566903381">وی‌بک ماشین نتوانست نسخه ذخیره‌شده این سایت را پیدا کند.</translation>
+<translation id="1207694258341311738">بررسی نسخه ذخیره‌شده</translation>
 <translation id="191143826155037518">Brave تحت <ph name="BEGIN_LINK_MPL"/>مجوزهای عمومی Mozilla نسخه 2.0<ph name="END_LINK_MPL"/> (MPL) در اختیار شما قرار داده می‌شود و شامل <ph name="BEGIN_LINK_OSS"/>نرم‌افزار متن‌باز<ph name="END_LINK_OSS"/> تحت مجموعه دیگری از مجوزها است.
 شما می‌توانید <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>دستورالعمل‌های مربوط به نحوه دانلود و ایجاد<ph name="END_LINK_BUILD_INSTRUCTIONS"/> کد منبع مشخص <ph name="BEGIN_LINK_SOURCE_CODE"/>استفاده‌شده برای ایجاد این نسخه را مطالعه کنید<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
@@ -214,7 +211,7 @@
 <translation id="4405580203042711503">تب جدید در زیر</translation>
 <translation id="5611474372949142946">تب‌های زیر را ببندید</translation>
 <translation id="573844928911967687">همه زبانه‌ها را به این پنجره بیاورید</translation>
-<translation id="2703180365855369896">زبانه‌های تکراری را ببندید</translation>
+<translation id="2703180365855369896">بستن زبانه‌های تکراری</translation>
 <translation id="3704707436873245822">کپی کردن متن از تصویر</translation>
 <translation id="5268098808165185458">در حال کپی کردن متن از تصویر...</translation>
 <translation id="4046485130884276245">متن از تصویر کپی شد</translation>
@@ -350,6 +347,7 @@
 <translation id="2858138569776157458">سایت‌های برتر</translation>
 <translation id="7859704718976024901">سابقه مرور</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
+<translation id="4144468798716165316">دستورات سریع</translation>
 <translation id="7310387888625228830">دستیار هوش مصنوعی Leo</translation>
 <translation id="5222974844674487962">نمایش دکمه اخبار Brave</translation>
 <translation id="383007806262310953">نمایش نوار نشانک‌ها</translation>
@@ -358,9 +356,9 @@
 <translation id="7158817046543187970">نوار نشانک در همه صفحات مخفی شده است</translation>
 <translation id="3416468988018290825">همیشه آدرس وب کامل نشان داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
-<translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="1013121820689882118">تندخوان</translation>
 <translation id="2025435450953474282">مقالات به‌طور خودکار در حالت پرونده‌خوان بارگیری می‌شوند و در زمان شما صرفه‌جویی می‌شود</translation>
+<translation id="7984721311211272523">غیرفعال کردن عملکرد بی‌صدا در آیکون‌های صفحه بلندگو</translation>
 <translation id="2422927186524098759">نوار کناری</translation>
 <translation id="832432428796481785">نمایش دکمه نوار کناری</translation>
 <translation id="5581036754486769849">مجاز کردن تکمیل خودکار در پنجره‌های خصوصی</translation>
@@ -401,8 +399,9 @@
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="3357319404342882895">سختگیرانه</translation>
 <translation id="8823559166155093873">مسدود کردن کوکی‌ها</translation>
-<translation id="5770288601196774623">فقط بین سایتی</translation>
-<translation id="3587482841069643663">همه</translation>
+<translation id="6196640612572343990">مسدود کردن کوکی‌های شخص ثالث</translation>
+<translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
+<translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
 <translation id="7390783310074170337">نمای پیش‌فرض</translation>
 <translation id="130615081792797568">نمای ساده</translation>
 <translation id="2360360976480535628">نمای پیشرفته</translation>
@@ -435,7 +434,7 @@
 <translation id="8826461509529116322">نمایش دکمه «پاداش‌های Brave»</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
-<translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
+<translation id="7791141927430186653">مجاز کردن توییت‌های جاسازی‌شده X (‏Twitter سابق)</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="8792121506918889955">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
@@ -446,6 +445,7 @@
 <translation id="3540231253392253941">استفاده از سرویس‌های Google برای پیام‌رسانی فشاری</translation>
 <translation id="933652931229970927">ارسال خودکار گزارش‌های عیب‌یابی</translation>
 <translation id="4891600875049212418">هنگام بازدید از سایت‌های حساس، به «حالت خصوصی و محرمانه» بروید</translation>
+<translation id="1968895725257436430">جمع‌آوری داده</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
@@ -599,8 +599,6 @@
 <translation id="811745063252080651">برای درخواست پل، CAPTCHA را حل کنید.</translation>
 <translation id="6936835573742749135">نمی توان CAPTCHA درخواست کرد. بعدا دوباره تلاش کنید.</translation>
 <translation id="2653659639078652383">ارائه</translation>
-<translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
-<translation id="6214393847480015759">در ویندوز Tor، Brave به‌طور خودکار به نسخه .onion یک وب‌سایت در دسترس تغییر می‌کند.</translation>
 <translation id="1294350054292274934">فقط آدرس‌های .onion را در ویندوز Tor به‌روزرسانی کنید</translation>
 <translation id="1258903596167452221">خدمات Onion خارج از ویندوز Tor در دسترس نخواهد بود.</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
@@ -629,7 +627,7 @@
 <translation id="3044369626313583722">نمایش دکمه کیف پول Brave</translation>
 <translation id="7568430944629653319">کشف NFT را فعال کنید</translation>
 <translation id="970496996377628529">NFT‌هایی را که دارید به طور خودکار با استفاده از API‌های شخص ثالث به Wallet اضافه کنید.</translation>
-<translation id="4898839076551703154">Brave Wallet را در پنجره خصوصی فعال کنید.</translation>
+<translation id="4898839076551703154">Brave Wallet را در پنجره‌های خصوصی فعال کنید.</translation>
 <translation id="1550684990179058322">هشدار: استفاده مجدد از آدرس کیف پول در یک جلسه پنجره خصوصی می‌تواند سایت را قادر سازد تا یک جلسه پنجره خصوصی را به یک جلسه پنجره غیرخصوصی پیوند دهد.</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
@@ -649,7 +647,7 @@
 <translation id="3752403403443723332">کیف پول شما بازنشانی شده است.</translation>
 <translation id="594766067816395072">اطلاعات تراکنش کیف پول شما بازنشانی شده است.</translation>
 <translation id="1615009913945115836">NFT‌های پین‌شده شما بازتنظیم شدند.</translation>
-<translation id="57798285717509216">قبل از امضا، نتایج معاملات را مشاهده کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
+<translation id="57798285717509216">قبل از امضا، نتایج تراکنش‌ها را مشاهده کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">شبکه‌های Ethereum</translation>
 <translation id="3504157706952484145">شبکه‌های Filecoin</translation>
 <translation id="1561541094377237745">شبکه‌های Solana</translation>
@@ -731,11 +729,10 @@
 <translation id="8571837315037233299">نشانی دروازه</translation>
 <translation id="7703184801853248830">نشانی دروازه نامعتبر است</translation>
 <translation id="7690058578502751948">فقط یک گذرگاه IPFS معتبر با جداسازی Origin فعال می‌تواند در Brave استفاده شود</translation>
-<translation id="3411013544209536575">نکات راهنما</translation>
+<translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
 <translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
-<translation id="7984721311211272523">غیرفعال کردن عملکرد بی‌صدا در آیکون‌های صفحه بلندگو</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">نمایش آیکون Leo در نوار کناری</translation>
 <translation id="8055509865174199683">نمایش Leo در منوی زمینه در وب‌سایت‌ها</translation>
@@ -749,6 +746,7 @@ Leo حذف خواهد شد. این کار غیرقابل بازگشت است.</t
 <translation id="5574059574002819179">پیشنهادهای تکمیل خودکار را تنظیم کنید</translation>
 <translation id="8157373421434119674">داده‌ها و تاریخچه چت</translation>
 <translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
+<translation id="8826914609353373601">مدیریت اشتراک ممتاز</translation>
 <translation id="349846214503465941">لیست پخش را فعال کنید</translation>
 <translation id="7903608716704052878">به‌طور خودکار فایل‌ها را برای مشاهده آفلاین اضافه کنید</translation>
 <translation id="4193768184502613558">این گزینه به‌طور خودکار فایل‌های رسانه‌ای را ذخیره می‌کند تا بتوانید آنها را بدون اتصال به اینترنت پخش کنید.</translation>

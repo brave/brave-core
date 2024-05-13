@@ -110,14 +110,10 @@
 <translation id="7551864359422178684">У вас остались открытые вкладки (<ph name="NUMBER_OF_TABS"/>) в этом окне браузера.</translation>
 <translation id="2571596981920752023">Вкладок: <ph name="NUMBER_OF_TABS"/></translation>
 <translation id="1307431692088049276">Не спрашивать снова</translation>
-<translation id="2272117088509540883">- Brave Поиск</translation>
-<translation id="2701279958223202597">Обеспечение конфиденциальности во время поиска. Brave Поиск не следит за вами, вашими запросами и нажатиями.</translation>
-<translation id="6438467592401259882">Обеспечение конфиденциальности во время поиска.</translation>
-<translation id="5167182095453855816">Защитите данные от крупных корпораций</translation>
-<translation id="45040495135337202">Brave не отслеживает ваши действия и запросы. Мы не зависим от технологических гигантов.</translation>
 <translation id="6919364924256365253">Не ищите в Google и Bing — выбирайте Brave</translation>
 <translation id="3313148036097793884">Brave не отслеживает ваши действия и запросы. Наша поисковая система полностью независима.</translation>
 <translation id="7295094278358921487">Кто ищет — тот всегда найдет. И полностью конфиденциально</translation>
+<translation id="45040495135337202">Brave не отслеживает ваши действия и запросы. Наша поисковая система не зависит от технологических гигантов.</translation>
 <translation id="42032117189492785">Поиск с поддержкой ИИ и уникальным индексом</translation>
 <translation id="8606416238399082160">Brave — это конфиденциальный и независимый браузер с полезными функциями ИИ.</translation>
 <translation id="5240031343741051161">Попробовать Brave Поиск</translation>
@@ -195,9 +191,10 @@
 <translation id="3435896845095436175">Включить</translation>
 <translation id="5046066249040287308">Утилита Brave Кошелька</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
+<translation id="7299769530898469069">Не удалось загрузить сохраненную версию.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
-<translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
-<translation id="8517321676372639828">Проверить наличие сохраненной версии</translation>
+<translation id="8010675257566903381">В Wayback Machine нет сохраненной версии этого сайта.</translation>
+<translation id="1207694258341311738">Проверить наличие сохраненной версии</translation>
 <translation id="191143826155037518">Brave работает в соответствии с <ph name="BEGIN_LINK_MPL"/>лицензией Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) и включает <ph name="BEGIN_LINK_OSS"/>программное обеспечение с открытым кодом<ph name="END_LINK_OSS"/> под многочисленными лицензиями других компаний.
         Вы можете прочитать <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>инструкции о том, как скачать и написать самому<ph name="END_LINK_BUILD_INSTRUCTIONS"/> конкретный <ph name="BEGIN_LINK_SOURCE_CODE"/>исходный код, используемый для создания этой копии<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Добавить все вкладки в закладки…</translation>
@@ -351,6 +348,7 @@
 <translation id="2858138569776157458">Топ сайтов</translation>
 <translation id="7859704718976024901">История просмотров</translation>
 <translation id="8820817407110198400">Закладки</translation>
+<translation id="4144468798716165316">Быстрые команды</translation>
 <translation id="7310387888625228830">ИИ-помощник Leo</translation>
 <translation id="5222974844674487962">Показывать кнопку Brave Новостей</translation>
 <translation id="383007806262310953">Показывать панель закладок</translation>
@@ -359,9 +357,9 @@
 <translation id="7158817046543187970">Панель закладок скрыта на всех вкладках</translation>
 <translation id="3416468988018290825">Всегда показывать полные URL-адреса</translation>
 <translation id="5529693968082667490">Показать кнопку «Поиск по вкладкам»</translation>
-<translation id="1643029991199044105">Циклически просматривайте последние использованные вкладки, нажимая Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Статьи автоматически загружаются в режиме чтения — это экономит ваше время</translation>
+<translation id="7984721311211272523">Деактивировать функцию отключения звука с помощью значка динамика на вкладке</translation>
 <translation id="2422927186524098759">Боковая панель</translation>
 <translation id="832432428796481785">Показывать кнопку боковой панели</translation>
 <translation id="5581036754486769849">Разрешить автозаполнение в режиме инкогнито</translation>
@@ -402,8 +400,9 @@
 <translation id="3570081523466826008">Переключаться на HTTPS</translation>
 <translation id="3357319404342882895">Обязательно</translation>
 <translation id="8823559166155093873">Блокировка файлов cookie</translation>
-<translation id="5770288601196774623">Только между сайтами</translation>
-<translation id="3587482841069643663">Все</translation>
+<translation id="6196640612572343990">Блокировать сторонние файлы cookie</translation>
+<translation id="5657156137487675418">Разрешить все файлы cookie</translation>
+<translation id="6883611015375728278">Блокировать все cookie</translation>
 <translation id="7390783310074170337">Стандартный вид</translation>
 <translation id="130615081792797568">Простой вид</translation>
 <translation id="2360360976480535628">Расширенный вид</translation>
@@ -436,7 +435,7 @@
 <translation id="8826461509529116322">Показать кнопку «Награды Brave»</translation>
 <translation id="9185018653595759199">Блокировка социальных сетей</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
-<translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
+<translation id="7791141927430186653">Разрешить встроенные твиты X (ранее Твиттер)</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
 <translation id="8792121506918889955">Политика обработки IP WebRTC</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
@@ -447,6 +446,7 @@
 <translation id="3540231253392253941">Использовать сервисы Google для обмена push-сообщениями</translation>
 <translation id="933652931229970927">Автоматически отправлять данные диагностики</translation>
 <translation id="4891600875049212418">Включать режим «Не для протокола» при посещении сайтов с деликатным контентом</translation>
+<translation id="1968895725257436430">Сбор данных</translation>
 <translation id="4846154056248462491">На выходе</translation>
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="6438096877646138757">Сайты, которые удаляют файлы cookie при закрытии</translation>
@@ -600,8 +600,6 @@
 <translation id="811745063252080651">Чтобы запросить мост, введите ответ на капчу.</translation>
 <translation id="6936835573742749135">Не удалось запросить капчу. Повторите попытку позже.</translation>
 <translation id="2653659639078652383">Submit</translation>
-<translation id="1369311132025451972">Автоматически перенаправлять с сайтов .onion</translation>
-<translation id="6214393847480015759">В окнах Tor Brave автоматически переключается на версию .onion веб-сайта, если она доступна.</translation>
 <translation id="1294350054292274934">Только разрешить адрес .onion в окнах Tor</translation>
 <translation id="1258903596167452221">Сервисы Onion не будут доступны вне окон Tor.</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
@@ -732,11 +730,10 @@
 <translation id="8571837315037233299">Адрес шлюза</translation>
 <translation id="7703184801853248830">Недопустимый адрес шлюза</translation>
 <translation id="7690058578502751948">В Brave можно использовать только действительный адрес шлюза IPFS с включенной изоляцией от источника.</translation>
-<translation id="3411013544209536575">Полезные советы</translation>
+<translation id="1643029991199044105">Циклически просматривайте последние использованные вкладки, нажимая Ctrl-Tab</translation>
 <translation id="2775956301559569472">Показывать окно Wayback Machine на страницах с ошибкой 404</translation>
 <translation id="3095201688102519917">Предупреждать перед закрытием окна с несколькими вкладками</translation>
 <translation id="7120553802660696133">Закрывать окно при закрытии последней вкладки</translation>
-<translation id="7984721311211272523">Деактивировать функцию отключения звука с помощью значка динамика на вкладке</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показывать значок Leo на боковой панели</translation>
 <translation id="8055509865174199683">Показывать Leo в контекстных меню сайтов</translation>
@@ -750,6 +747,7 @@
 <translation id="5574059574002819179">Настроить опции автозаполнения</translation>
 <translation id="8157373421434119674">История и данные чата</translation>
 <translation id="614530507403667291">Выбрать модель для всех новых бесед</translation>
+<translation id="8826914609353373601">Управление премиум-подпиской</translation>
 <translation id="349846214503465941">Включить плейлист</translation>
 <translation id="7903608716704052878">Автоматически добавлять файлы для просмотра, находясь не в сети</translation>
 <translation id="4193768184502613558">Этот вариант автоматически будет кэшировать медиафайлы, чтобы вы могли воспроизводить их, находясь не в сети.</translation>

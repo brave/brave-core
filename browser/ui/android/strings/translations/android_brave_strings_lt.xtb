@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blokuoja sekantį ir galutinį elementą svetainėje youtube.com.</translation>
 <translation id="5152595963250646670">Blokuoti blaškančius „YouTube“ elementus</translation>
 <translation id="2998960761270772157">Youtube.com svetainėje blokuoja prisijungimo, meniu ir vaizdo įrašų informacijos elementus.</translation>
+<translation id="8531835121131500698">Blokuoti „YouTube Shorts“</translation>
+<translation id="2167271714269158912">Blokuoja „Shorts“ pagrindiniame puslapyje, tendencijų puslapyje ir youtube.com paieškos rezultatų puslapyje.</translation>
 <translation id="6052725679982758334">Socialinės žiniasklaidos blokavimas</translation>
 <translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Patvirtintas kūrėjas</translation>
 <translation id="2369994359029526515">Nepatvirtintas kūrėjas</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
-<translation id="7861645265922445992">Reikalauti „Rewards“</translation>
 <translation id="1848737374354350807">Likutis</translation>
 <translation id="4781696154289395607">Paaukojote <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Apdorojant jūsų indėlį iškilo problema.</translation>
-<translation id="2221902203895354376">Galima gauti simbolinę dotaciją!</translation>
-<translation id="2377929997600454162">Jūsų <ph name="MONTH_VALUE"/> atlygis už reklamą jau čia!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> atlygis: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Jums liko <ph name="TOKEN"/> dienų pareikalauti</translation>
 <translation id="683765328936486920">per „YouTube“</translation>
 <translation id="8969049974285901797">per „Twitch“</translation>
 <translation id="8038539967102225446">„Brave Ads“ jau čia!</translation>
@@ -462,7 +459,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3763681089644577874">Blokuoti slapukus</translation>
 <translation id="614747795780742163">Neleidžia svetainėms laikyti informacijos apie jūsų ankstesnius apsilankymus</translation>
 <translation id="6883611015375728278">Blokuoti visus slapukus</translation>
-<translation id="4941539331405513605">Blokuoti kelių svetainių slapukus</translation>
+<translation id="6196640612572343990">Blokuoti trečiosios šalies slapukus</translation>
 <translation id="5657156137487675418">Leisti visus slapukus</translation>
 <translation id="1553643198679271031">Pateikti neregistruoto režimo užklausą</translation>
 <translation id="4891600875049212418">Naršyti išnykstančiuoju režimu lankant jautrias svetaines</translation>
@@ -608,6 +605,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5488357322146334497">Pranešimas</translation>
 <translation id="1904000155026201268">Suprantu, kad praradęs atkūrimo frazę neteksiu prieigos prie savo kriptopiniginės.</translation>
 <translation id="5333225216561354793">Reikalaujame, kad patvirtintumėte toliau pateiktus elementus</translation>
+<translation id="6937275455070754004">Pasirinkite, kurias blokų grandines naudoti savo piniginėje.</translation>
 <translation id="1645800479814134195">Suprantu, kad tai yra savarankiška piniginė ir kad tik aš esu atsakingas už visas susijusias lėšas, turtą ar sąskaitas ir už atitinkamų veiksmų, skirtų apsaugoti ir sukurti atsarginę savo piniginės kopiją, atlikimą. Suprantu, kad „Brave“ negali pasiekti mano piniginės arba atšaukti operacijų mano vardu ir kad mano atkūrimo frazė yra VIENINTELIS būdas atgauti prieigą praradus slaptažodį, pavogus įrenginį ar panašiai.</translation>
 <translation id="4565891212173086999">Perskaičiau ir sutinku su <ph name="CLICK_START"/>naudojimo sąlygomis<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
@@ -615,12 +613,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2708402071160162126">ĮSPĖJIMAS. Niekada neatskleiskite atkūrimo frazės. Sužinoję šią frazę, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
 <translation id="111912712268284159">Susikūriau frazės atsarginę kopiją saugioje vietoje.</translation>
 <translation id="6896758677409633944">Kopijuoti</translation>
-<translation id="1783600039044302171">Apsaugokite savo kriptovaliutą slaptažodžiu</translation>
 <translation id="3726490322412361740">Įveskite slaptažodį</translation>
 <translation id="3038243139480464605">Patvirtinti slaptažodį</translation>
 <translation id="3043677904160378840">Slaptažodžius turi sudaryti bent 8 simboliai.</translation>
 <translation id="7396672979287122068">Patvirtinimo slaptažodis nesutampa</translation>
-<translation id="7084181009966710506">Kuriama piniginė...</translation>
+<translation id="1566412704591731844">Kuriama jūsų piniginė...</translation>
+<translation id="7779823116893018906">Tai gali užtrukti kelias sekundes...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> paskyra <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Pridėti paskyrą</translation>
 <translation id="3448492834076427715">Atnaujinti paskyrą</translation>
@@ -643,6 +641,11 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3157931365184549694">Atkurti</translation>
 <translation id="5844138175312846408">Jau turite piniginę?</translation>
 <translation id="2502258949541727762">Prieš pradedant</translation>
+<translation id="4303748097351941030">Palaikomi tinklai</translation>
+<translation id="4204268048253692928">Galite bet kada pridėti tinklus Nuostatose.</translation>
+<translation id="2523174693142405417">Ieškoti tinklų</translation>
+<translation id="1164748583090434571">Rodyti „testnet“</translation>
+<translation id="935220650946301698">Tęsti naudojant <ph name="NUMBER"/> tinklus</translation>
 <translation id="8248460961680233459">Sukurti slaptažodį</translation>
 <translation id="2789310860394340571">Šį slaptažodį naudosite savo piniginei pasiekti.</translation>
 <translation id="2136372518715274136">Įveskite naują slaptažodį</translation>
@@ -849,7 +852,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>
 <translation id="2653659639078652383">Pateikti</translation>
-<translation id="4945690646623486292">Pasirinkti tinklą</translation>
+<translation id="4556601961751528347">Keisti prijungtą paskyrą</translation>
 <translation id="5233638681132016545">Naujas skirtukas</translation>
 <translation id="8006088103295786154">Eiti į „Brave“ piniginę</translation>
 <translation id="8030169304546394654">Atsijungta</translation>
@@ -875,6 +878,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4255623233927788178">Peržiūrėti blokų naršyklėje</translation>
 <translation id="8274201358637112807">Šis puslapis nori sąveikauti su „Brave“ pinigine</translation>
 <translation id="3355936511340229503">Ryšio klaida</translation>
+<translation id="1531836666020185856">Reklamuojama</translation>
 <translation id="4891604214809245310">Nepavyko nustatyti tinklo kaip<ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Atrodo, kad šiame įrenginyje esate nustatę kitų VPN, kad jie būtų „Visada įjungti“. Norėdami įgalinti „Brave“ užkardą ir VPN, prieš jungdamiesi dar kartą pirmiausia kitiems VPN išjunkite šią nuostatą „Visada įjungti“. Jei problemos išspręsti nepavyko, pabandykite pašalinti kitus VPN.</translation>
 <translation id="85136472535634474">Atverti VPN nuostatas</translation>
@@ -1042,7 +1046,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1677961202754619328">„Uphold“ duomenimis, šiuo metu jūsų „Uphold“ paskyrai taikomi tam tikri apribojimai. Prisijunkite prie savo „Uphold“ paskyros ir patikrinkite, ar yra pranešimų arba neįvykdytų reikalavimų, tada bandykite dar kartą.</translation>
 <translation id="5425006356459378415">„Brave“ atlygis nepasiekiamas</translation>
 <translation id="833643743158564518">Šiuo metu jūsų regione nepasiekiama naujos „Brave Rewards“ paskyros registravimo funkcija. Pabandykite vėliau. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Visi tinklai</translation>
 <translation id="7748944510530490017">Pagrindiniai tinklai</translation>
 <translation id="2781668117338732220">Papildomi tinklai</translation>
 <translation id="282560918037172384">Bandomieji tinklai</translation>
@@ -1182,4 +1185,11 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="3251885322612056119">Atnaujintos paslaugų teikimo sąlygos</translation>
 <translation id="4049035689681585146">Atnaujinome „Brave“ atlygio funkcijos paslaugų teikimo sąlygas. Parengėme šiuos naujinius, kad paaiškintume mūsų sąlygas ir užtikrintume, kad apimamos naujos funkcijos. Jei toliau naudosite „Brave“ atlygio funkciją, tai reikš, kad sutinkate su atnaujintomis paslaugų teikimo sąlygomis. Jei nesutinkate, galite <ph name="RESET_START"/>iš naujo nustatyti<ph name="RESET_END"/> „Brave“ atlygio funkciją ir tada ji bus išjungta.</translation>
 <translation id="2165953574528546737">Žr. <ph name="TOS_START"/>„Brave“ atlygio funkcijos paslaugų teikimo sąlygas<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Įgalinti kelis langus</translation>
+<translation id="6167344249617630304">Vienu metu atverkite iki 5 langų ir perkelkite korteles iš vieno lango į kitą</translation>
+<translation id="1063948063403254568">Aptikti keli langai</translation>
+<translation id="4661882208707630158">Prieš išjungdami kelių langų funkciją, sujunkite korteles į kitą „Brave“ langą arba užverkite kitus „Brave“ langus.</translation>
+<translation id="6891382640886173702">Sujungti langus</translation>
+<translation id="2912247081180973411">Užverti langus</translation>
+<translation id="4010699428656610296">Sujunkite kitas korteles į kitą „Brave“ langą.</translation>
 </translationbundle>

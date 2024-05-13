@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blocca l’avvio del video successivo e le end card su youtube.com.</translation>
 <translation id="5152595963250646670">Blocca gli elementi di disturbo di YouTube</translation>
 <translation id="2998960761270772157">Blocca gli elementi di accesso, menu, commenti e informazioni video su youtube.com</translation>
+<translation id="8531835121131500698">Blocca YouTube Shorts</translation>
+<translation id="2167271714269158912">Blocca i video Shorts su homepage, pagina tendenze e risultati di ricerca su youtube.com.</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Autore verificato</translation>
 <translation id="2369994359029526515">Autore non verificato</translation>
 <translation id="6112368337882254910">Contribuisci automaticamente</translation>
-<translation id="7861645265922445992">Richiedi ricompense</translation>
 <translation id="1848737374354350807">Bilancio:</translation>
 <translation id="4781696154289395607">Hai contribuito con <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Si è verificato un problema nell'elaborazione del tuo contributo.</translation>
-<translation id="2221902203895354376">È disponibile una concessione di token!</translation>
-<translation id="2377929997600454162">Sono disponibili le ricompense per gli annunci di <ph name="MONTH_VALUE"/>!</translation>
-<translation id="2716238748894345194">Ricompense di <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Per raccogliere la ricompensa ti restano <ph name="TOKEN"/> giorni</translation>
 <translation id="683765328936486920">su YouTube</translation>
 <translation id="8969049974285901797">su Twitch</translation>
 <translation id="8038539967102225446">Gli annunci Brave sono qui!</translation>
@@ -458,7 +455,7 @@ Confermi di voler procedere?</translation>
 <translation id="3763681089644577874">Blocca i cookie</translation>
 <translation id="614747795780742163">Impedisce ai siti web di memorizzare informazioni sulle visite precedenti</translation>
 <translation id="6883611015375728278">Blocca tutti i cookie</translation>
-<translation id="4941539331405513605">Blocca i cookie intersito</translation>
+<translation id="6196640612572343990">Blocca cookie di terze parti</translation>
 <translation id="5657156137487675418">Consenti tutti i cookie</translation>
 <translation id="1553643198679271031">Richiesta modalità confidenziale</translation>
 <translation id="4891600875049212418">Mantieni un profilo confidenziale quando visiti siti sensibili</translation>
@@ -604,6 +601,7 @@ Confermi di voler procedere?</translation>
 <translation id="5488357322146334497">Messaggio</translation>
 <translation id="1904000155026201268">Sono consapevole che se perdo le parole di recupero non potrò accedere al mio portafoglio di criptovalute.</translation>
 <translation id="5333225216561354793">Ti chiediamo di prendere atto dei seguenti punti</translation>
+<translation id="6937275455070754004">Scegli quali blockchain utilizzare nel tuo portafoglio.</translation>
 <translation id="1645800479814134195">Sono consapevole che si tratta di un portafoglio autogestito e che sono l’unica persona responsabile di qualsiasi fondo, asset o conto associato e di dover intraprendere le azioni appropriate per proteggere, tutelare ed eseguire il backup del mio portafoglio. Sono consapevole che Brave non può accedere al mio portafoglio o annullare le transazioni per mio conto e che la mia frase di recupero è l’UNICO modo per riottenere l’accesso in caso di smarrimento della password, furto del dispositivo o circostanze simili.</translation>
 <translation id="4565891212173086999">Ho letto e accetto le <ph name="CLICK_START"/>Condizioni di utilizzo<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">La tua frase di recupero</translation>
@@ -611,12 +609,12 @@ Confermi di voler procedere?</translation>
 <translation id="2708402071160162126">AVVISO: non condividere mai la tua chiave di recupero. Chiunque entri in possesso di questa frase può impossessarsi dei tuoi asset per sempre.</translation>
 <translation id="111912712268284159">Ho eseguito il backup della mia frase in un posto sicuro.</translation>
 <translation id="6896758677409633944">Copia</translation>
-<translation id="1783600039044302171">Metti al sicuro le tue cripto con una password</translation>
 <translation id="3726490322412361740">Inserisci password</translation>
 <translation id="3038243139480464605">Verifica la password</translation>
 <translation id="3043677904160378840">Le password devono contenere almeno 8 caratteri.</translation>
 <translation id="7396672979287122068">La password verificata non corrisponde</translation>
-<translation id="7084181009966710506">Creazione del portafoglio in corso...</translation>
+<translation id="1566412704591731844">Creazione del portafoglio...</translation>
+<translation id="7779823116893018906">Potrebbe volerci qualche secondo...</translation>
 <translation id="1577948178257477049">Account <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Aggiungi account</translation>
 <translation id="3448492834076427715">Aggiorna l’account</translation>
@@ -639,6 +637,11 @@ Confermi di voler procedere?</translation>
 <translation id="3157931365184549694">Ripristina</translation>
 <translation id="5844138175312846408">Hai già un portafoglio?</translation>
 <translation id="2502258949541727762">Prima di iniziare</translation>
+<translation id="4303748097351941030">Reti supportate</translation>
+<translation id="4204268048253692928">Puoi aggiungere reti in qualsiasi momento dalle Impostazioni.</translation>
+<translation id="2523174693142405417">Cerca reti</translation>
+<translation id="1164748583090434571">Mostra reti di prova</translation>
+<translation id="935220650946301698">Continua con <ph name="NUMBER"/> reti</translation>
 <translation id="8248460961680233459">Crea una password</translation>
 <translation id="2789310860394340571">Userai questa password per accedere al tuo portafoglio.</translation>
 <translation id="2136372518715274136">Inserisci la nuova password</translation>
@@ -845,7 +848,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7791543448312431591">Aggiungi</translation>
 <translation id="6889920539620318793">Imposta come attivo</translation>
 <translation id="2653659639078652383">Invia</translation>
-<translation id="4945690646623486292">Seleziona la rete</translation>
+<translation id="4556601961751528347">Cambia account collegato</translation>
 <translation id="5233638681132016545">Nuova scheda</translation>
 <translation id="8006088103295786154">Accedi al portafoglio di Brave</translation>
 <translation id="8030169304546394654">Disconnesso</translation>
@@ -871,6 +874,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="4255623233927788178">Visualizza sull'esploratore di blocchi</translation>
 <translation id="8274201358637112807">Questa pagina vuole interagire con il portafoglio di Brave</translation>
 <translation id="3355936511340229503">Errore di connessione</translation>
+<translation id="1531836666020185856">In evidenza</translation>
 <translation id="4891604214809245310">Impossibile impostare la rete come <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">A quanto pare ci sono altre VPN impostate come sempre attive. Se vuoi attivare Brave Firewall + VPN, devi prima disabilitare questa impostazione per le altre VPN e poi ricollegarti. Se il problema persiste, prova a disinstallare le altre VPN.</translation>
 <translation id="85136472535634474">Apri le impostazioni della VPN</translation>
@@ -1038,7 +1042,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1677961202754619328">Secondo Uphold, ci sono alcune limitazioni attive sul tuo conto Uphold. Accedi ad Uphold e verifica la presenza di avvisi o di richieste da completare, poi riprova.</translation>
 <translation id="5425006356459378415">Ricompense Brave non disponibili</translation>
 <translation id="833643743158564518">Nella tua area geografica al momento non è possibile iscriversi al programma Ricompense di Brave. Puoi comunque riprovare in seguito. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Tutte le reti</translation>
 <translation id="7748944510530490017">Reti principali</translation>
 <translation id="2781668117338732220">Reti secondarie</translation>
 <translation id="282560918037172384">Reti di prova</translation>
@@ -1178,4 +1181,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="3251885322612056119">Termini di servizio aggiornati</translation>
 <translation id="4049035689681585146">Abbiamo aggiornato i Termini di servizio per le Ricompense di Brave. Con questi aggiornamenti abbiamo chiarito i nostri termini e le nuove funzioni. Continuando a utilizzare le Ricompense Brave, accetti i Termini di servizio aggiornati. Se non vuoi accettarli, puoi <ph name="RESET_START"/>reimpostare<ph name="RESET_END"/> le Ricompense Brave, disattivando così la funzione.</translation>
 <translation id="2165953574528546737">Visualizza i <ph name="TOS_START"/>Termini di servizio delle Ricompense Brave<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Abilita finestre multiple</translation>
+<translation id="6167344249617630304">Apri fino a 5 finestre alla volta e sposta le schede da una finestra all’altra</translation>
+<translation id="1063948063403254568">Finestre multiple rilevate</translation>
+<translation id="4661882208707630158">Unisci le schede in un’altra finestra Brave, oppure chiudi altre finestre Brave, prima di disabilitare la funzione finestre multiple.</translation>
+<translation id="6891382640886173702">Unisci finestre</translation>
+<translation id="2912247081180973411">Chiudi finestre</translation>
+<translation id="4010699428656610296">Unisci altre schede in un’altra finestra Brave.</translation>
 </translationbundle>

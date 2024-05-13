@@ -4,6 +4,7 @@
 <translation id="1011749477052068769">Chuyển đến đây</translation>
 <translation id="1014147525163127655">Không có khoá truy cập nào cho <ph name="ORIGIN"/> trên thiết bị này</translation>
 <translation id="1016498331642356377">Tìm kiếm nhanh bằng giọng nói. Để chỉnh sửa lối tắt này, hãy chạm và giữ.</translation>
+<translation id="1017104654974573432">Chọn vấn đề</translation>
 <translation id="2566435362010629810">Brave Dev</translation>
 <translation id="1028699632127661925">Đang gửi đến <ph name="DEVICE_NAME"/>...</translation>
 <translation id="103269572468856066">Đồng thời xóa dữ liệu khỏi các trang web và ứng dụng này?</translation>
@@ -13,6 +14,7 @@
 <translation id="1058669287135776095">Bạn không có kết nối mạng. Hãy kiểm tra kết nối Internet rồi thử lại.</translation>
 <translation id="10614374240317010">Không bao giờ lưu</translation>
 <translation id="107147699690128016">Nếu bạn thay đổi đuôi tệp, thì tệp có thể mở trong một ứng dụng khác và tiềm ẩn nguy cơ đối với thiết bị.</translation>
+<translation id="1082920045291562218">Trang Chia sẻ kèm theo phản hồi về bảng tóm tắt đã đóng</translation>
 <translation id="1089606299949659462">Đã hoàn tất quá trình xem xét!</translation>
 <translation id="1095761715416917775">Đảm bảo bạn luôn có thể truy cập vào dữ liệu đồng bộ hóa</translation>
 <translation id="1100066534610197918">Mở trong thẻ mới trong nhóm</translation>
@@ -58,7 +60,6 @@
 <translation id="1996480094660735607">Hình tượng trưng của Brave: <ph name="DOODLE_DESCRIPTION"/></translation>
 <translation id="7074197713963877855">Giờ đây, bạn có thể xem thông tin về <ph name="SITE_NAME"/> và nội dung của kênh trong phần Đang theo dõi. Các trang web và nội dung tìm kiếm mà bạn theo dõi sẽ được lưu trong Tài khoản Brave của bạn. Bạn có thể quản lý các trang web/nội dung mà mình theo dõi trong phần cài đặt bất cứ lúc nào.</translation>
 <translation id="1263231323834454256">Danh sách đọc</translation>
-<translation id="1266864766717917324">Không thể chia sẻ <ph name="CONTENT_TYPE"/></translation>
 <translation id="1269129608791067105">Bạn sẽ thấy nhật ký ở đây</translation>
 <translation id="1273937721055267968">Chặn <ph name="DOMAIN"/></translation>
 <translation id="1283039547216852943">Nhấn để mở rộng</translation>
@@ -95,8 +96,6 @@
 <translation id="1436784010935106834">Đã xóa</translation>
 <translation id="1437543266176261764">Chạy trong <ph name="APP_NAME"/></translation>
 <translation id="1448440926884431741">Sắp xếp các sản phẩm bạn theo dõi trong phần Dấu trang</translation>
-<translation id="1450753235335490080">Không thể chia sẻ <ph name="CONTENT_TYPE"/></translation>
-<translation id="4062260058797397880">Liên kết Brave và các dịch vụ khác của Brave nếu bạn muốn các dịch vụ này sử dụng dữ liệu của nhau để mang lại trải nghiệm phù hợp với bạn hơn.</translation>
 <translation id="5598889255595678761">Chọn ngôn ngữ cho Brave</translation>
 <translation id="1477626028522505441">Tải xuống <ph name="FILE_NAME"/> không thành công do sự cố máy chủ.</translation>
 <translation id="148482509007564431">Luồng lưu dấu trang</translation>
@@ -109,6 +108,7 @@
 <translation id="1513858653616922153">Xóa mật khẩu</translation>
 <translation id="1521774566618522728">Hoạt động hôm nay</translation>
 <translation id="8090895580117672212">Để quản lý Tài khoản Brave của bạn, hãy nhấn vào nút "Quản lý tài khoản"</translation>
+<translation id="154513667535157406">Nút Thích gửi phản hồi cho biết bạn thích nội dung tóm tắt này</translation>
 <translation id="1549000191223877751">Di chuyển đến cửa sổ khác</translation>
 <translation id="1705567146636171298">Cập nhật Brave</translation>
 <translation id="1568636008098739136">Nghe trang này. Để chỉnh sửa lối tắt này, hãy chạm và giữ lối tắt.</translation>
@@ -199,7 +199,6 @@
 <translation id="2093731487903423814">15 phút qua</translation>
 <translation id="2096012225669085171">Đồng bộ hóa và cá nhân hóa trên các thiết bị</translation>
 <translation id="2100273922101894616">Tự động đăng nhập</translation>
-<translation id="2100314319871056947">Hãy thử chia sẻ văn bản theo các đoạn nhỏ hơn</translation>
 <translation id="2111511281910874386">Chuyển đến trang</translation>
 <translation id="2119609734654412418">Dấu trang của bạn sẽ xuất hiện ở thẻ này</translation>
 <translation id="2122601567107267586">Không thể mở ứng dụng</translation>
@@ -247,6 +246,7 @@
 <translation id="2364539095045928896">Nút Đóng để đóng thông báo về quyền riêng tư của trung tâm thông tin chi tiết về trang.</translation>
 <translation id="2386938421315164605">Ẩn và hiện chủ đề</translation>
 <translation id="2390510615457643724">Bạn có muốn tải <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>) xuống lần nữa?</translation>
+<translation id="2395004545133500011">Đã mở trang tính chia sẻ cùng nội dung tóm tắt</translation>
 <translation id="2410754283952462441">Chọn một tài khoản</translation>
 <translation id="2414886740292270097">Tối</translation>
 <translation id="2421705177906985956">Hiện không có trang web nào để hiển thị</translation>
@@ -288,21 +288,23 @@
 <translation id="260403163289591229">Đang theo dõi</translation>
 <translation id="2604446170045642109">Bạn có thể tắt giao diện tối cho các trang web trong phần cài đặt.</translation>
 <translation id="2612676031748830579">Số thẻ</translation>
+<translation id="2620314865574742210"><ph name="NAME"/> đã mời bạn truy cập một mục được chia sẻ.</translation>
 <translation id="2625189173221582860">Đã sao chép mật khẩu</translation>
 <translation id="2634393460268044753">Gửi URL của các trang web bạn truy cập và một mẫu nhỏ nội dung trang, nội dung tải xuống, hoạt động của tiện ích và thông tin hệ thống cho dịch vụ Duyệt web An toàn của Brave để kiểm tra xem các nội dung đó có gây hại hay không.</translation>
 <translation id="2642087927315268160">Đã đóng bảng đăng nhập ở dưới cùng.</translation>
 <translation id="2643064289437760082">Bạn có thể xoá dữ liệu đo lường quảng cáo bất cứ lúc nào bằng cách xoá dữ liệu duyệt web</translation>
 <translation id="2647434099613338025">Thêm ngôn ngữ</translation>
-<translation id="2649068648233607930">Trình duyệt của bạn do <ph name="DOMAIN"/> quản lý</translation>
 <translation id="2650077116157640844">Các miền khác trên thiết bị đã đồng bộ hoá</translation>
 <translation id="2650348088770008516">Đã đóng nội dung giải thích hướng dẫn về quyền riêng tư</translation>
 <translation id="2650408372219180431">Xuất và xoá mật khẩu được lưu vào thiết bị này</translation>
 <translation id="2650751991977523696">Tải tệp xuống lần nữa?</translation>
 <translation id="265156376773362237">Tải trước ở chế độ chuẩn</translation>
+<translation id="2653659639078652383">Gửi</translation>
 <translation id="2656405586795711023">Ứng dụng web</translation>
 <translation id="2669454659051515572">Bất cứ ai sử dụng thiết bị này đều có thể xem các tệp đã tải xuống</translation>
 <translation id="5806087344347665213">Nếu một trang web tìm cách đánh cắp mật khẩu của bạn hoặc nếu bạn tải một tệp gây hại xuống, thì Brave có thể gửi các URL (bao gồm cả các đoạn nội dung trên trang) cho Brave</translation>
 <translation id="2702516483241149200">Mới: chia sẻ một đường liên kết dẫn tới văn bản này</translation>
+<translation id="2705073298859543115">Tạo nội dung tóm tắt</translation>
 <translation id="3769942772151914580">Khả năng bảo vệ chủ động theo thời gian thực trước các trang web, nội dung tải xuống và tiện ích nguy hiểm, dựa trên dữ liệu duyệt web được gửi tới Brave</translation>
 <translation id="2708226184420201102">Mở trong trình duyệt <ph name="PRODUCT_NAME"/></translation>
 <translation id="271033894570825754">Mới</translation>
@@ -358,6 +360,7 @@
 <translation id="2942036813789421260">Thẻ xem trước đang đóng</translation>
 <translation id="4700262879698141140">Đang cập nhật Brave để kết nối với các thiết bị khác</translation>
 <translation id="2951071800649516099">Thêm các trang vào danh sách đọc để đọc sau</translation>
+<translation id="2956070106555335453">Tổng hợp</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> trang chưa đọc}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> trang chưa đọc}}</translation>
 <translation id="296370266220139811">Tiết kiệm thời gian, công sức nhập</translation>
 <translation id="2977350910003566746">Sắp xếp theo lần mở gần nhất</translation>
@@ -366,7 +369,6 @@
 <translation id="2981364137500752533">Bạn có thể mở tối đa 5 cửa sổ.</translation>
 <translation id="2983102365694924129">Dựa vào hoạt động của bạn trên một trang web. Chế độ cài đặt này đang tắt.</translation>
 <translation id="5948666439178419683">Bao gồm văn bản xung quanh trong các lượt tìm kiếm của Brave</translation>
-<translation id="2987620471460279764">Văn bản được chia sẻ từ thiết bị khác</translation>
 <translation id="2989523299700148168">Đã truy cập gần đây</translation>
 <translation id="2992473221983447149">Nội dung mô tả hình ảnh</translation>
 <translation id="2996291259634659425">Tạo cụm mật khẩu</translation>
@@ -374,7 +376,6 @@
 <translation id="2996932914629936323">Xóa nhật ký khỏi mọi thiết bị đã đồng bộ hóa</translation>
 <translation id="2019027298133375428">Khi một trang web được tạo bằng Brave Sites yêu cầu tải trước các đường liên kết trên trang ở chế độ riêng tư, thì Brave sẽ mã hóa và tải trước những trang này thông qua các máy chủ của Brave mà không có cookie. Điều này giúp ẩn danh tính của bạn khỏi trang web được tải trước.</translation>
 <translation id="5730179015008010982">Các URL bạn truy cập sẽ được gửi cho Brave nhằm dự đoán những trang web có thể sắp tới bạn sẽ truy cập và nhằm hiển thị cho bạn thông tin bổ sung về trang bạn đang truy cập</translation>
-<translation id="3016635187733453316">Hãy đảm bảo thiết bị này có kết nối Internet</translation>
 <translation id="3026955690410463085">Thêm đường liên kết</translation>
 <translation id="3027644380269727216">Dựa vào hoạt động của bạn trên một trang web. Chế độ cài đặt này đang bật.</translation>
 <translation id="3029276696788198026">Không tải trước</translation>
@@ -386,6 +387,7 @@
 <translation id="3046945242843292318">Truy cập trang web này nhanh hơn vào lần tới</translation>
 <translation id="3055259925215945098">Đã di chuyển dấu trang</translation>
 <translation id="4163313568284712797">Không thể nhận dạng bạn bằng thông tin được gửi cho Brave về hoạt động sử dụng Brave của bạn\n\nNếu Brave gặp sự cố, thông tin về sự cố đó có thể chứa một số thông tin cá nhân\n\nNếu bạn bật tính năng đồng bộ hoá, thì các chỉ số cũng có thể bao gồm thông tin về các URL bạn truy cập</translation>
+<translation id="3059531648236115056">Thêm nội dung tóm tắt</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> dấu trang}other{<ph name="BOOKMARKS_COUNT_MANY"/> dấu trang}}</translation>
 <translation id="6153252609477956632">Các bài viết về chủ đề mà bạn quan tâm trên Brave</translation>
 <translation id="3066573403916685335">Di chuyển xuống</translation>
@@ -393,13 +395,14 @@
 <translation id="1094255666887095087"><ph name="APP_NAME"/> sẽ mở trong Brave. Bằng việc tiếp tục, bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản dịch vụ của Brave<ph name="END_LINK1"/> cũng như <ph name="BEGIN_LINK2"/>Điều khoản dịch vụ bổ sung của Brave và ChromeOS<ph name="END_LINK2"/>. <ph name="BEGIN_LINK3"/>Chính sách quyền riêng tư<ph name="END_LINK3"/> cũng được áp dụng.</translation>
 <translation id="3080525922482950719">Bạn có thể lưu các trang để đọc vào lúc khác hoặc khi không có kết nối mạng</translation>
 <translation id="3091010850649238832">Hiện các nội dung của bảng nhớ tạm</translation>
+<translation id="3093004810561729002">Một người dùng</translation>
 <translation id="821565628224723530">Một số hình ảnh được gửi đến Brave để cải thiện nội dung mô tả cho bạn</translation>
 <translation id="3114507951000454849">Đọc tin tức hôm nay <ph name="NEWS_ICON"/></translation>
 <translation id="3123734510202723619">Thông báo</translation>
 <translation id="3146775326699342508">Đăng nhập để sử dụng dấu trang và nhiều tiện ích khác từ các thiết bị khác của bạn</translation>
 <translation id="5063487983358782016">Trang chủ của Brave</translation>
 <translation id="3158667104057012316">Sắp xếp thủ công</translation>
-<translation id="3166827708714933426">Phím tắt dành cho thẻ và cửa sổ</translation>
+<translation id="3166827708714933426">Lối tắt cho thẻ và cửa sổ</translation>
 <translation id="7249949543831830993">Brave hiện đang chạy trên trang này.</translation>
 <translation id="3167258285411721858">Bạn có thể yêu cầu trang web dành cho thiết bị di động cho <ph name="HOST_NAME"/></translation>
 <translation id="3169472444629675720">Khám phá</translation>
@@ -437,7 +440,6 @@
 <translation id="8801234437789558906">Dấu trang, lịch sử, mật khẩu và các dữ liệu khác trên Brave sẽ không được đồng bộ hóa với Tài khoản Brave của bạn nữa</translation>
 <translation id="3384347053049321195">Chia sẻ hình ảnh</translation>
 <translation id="3387650086002190359">Tải xuống <ph name="FILE_NAME"/> không thành công do lỗi hệ thống tệp.</translation>
-<translation id="3389286852084373014">Văn bản quá lớn</translation>
 <translation id="3398320232533725830">Mở trình quản lý dấu trang</translation>
 <translation id="1081508498128395141">Sẽ có nhiều trang được tải trước hơn. Những trang này có thể được tải trước thông qua các máy chủ của Brave khi được các trang web khác yêu cầu.</translation>
 <translation id="3414952576877147120">Kích thước:</translation>
@@ -485,6 +487,7 @@
 <translation id="3631987586758005671">Đang chia sẻ đến <ph name="DEVICE_NAME"/></translation>
 <translation id="363596933471559332">Tự động đăng nhập vào các trang web bằng thông tin đăng nhập được lưu trữ. Khi tính năng này tắt, bạn sẽ luôn được yêu cầu xác minh trước khi đăng nhập vào trang web.</translation>
 <translation id="3636940436873918441">Ngôn ngữ ưu tiên</translation>
+<translation id="368329460027487650">Đã đăng xuất. Mở các tuỳ chọn đăng nhập.</translation>
 <translation id="3687645719033307815">Bạn đang xem bản xem trước của trang này</translation>
 <translation id="3690369331356918524">Cảnh báo bạn nếu mật khẩu bị lộ trong một sự cố rò rỉ dữ liệu</translation>
 <translation id="3692944402865947621">Không tải <ph name="FILE_NAME"/> xuống được do không tìm thấy vị trí bộ nhớ.</translation>
@@ -547,7 +550,9 @@
 <translation id="4034817413553209278">{HOURS,plural, =1{# giờ}other{# giờ}}</translation>
 <translation id="4035877632587724847">Không cho phép</translation>
 <translation id="4042941173059740150">Tiếp tục truy cập <ph name="SITE_ETLD_PLUS_ONE"/> bằng tài khoản <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
+<translation id="404352903042073578">Nhóm chưa đặt tên</translation>
 <translation id="4044708993631234325">Bảng dưới cùng</translation>
+<translation id="405365679581583349">Cập nhật Dịch vụ Google Play</translation>
 <translation id="405399507749852140">Nhận thông báo nếu có chương trình giảm giá trên một trang web bất kỳ</translation>
 <translation id="4056223980640387499">Màu nâu đỏ</translation>
 <translation id="4062305924942672200">Thông tin pháp lý</translation>
@@ -616,11 +621,13 @@
 <translation id="4404568932422911380">Không có dấu trang nào</translation>
 <translation id="4405224443901389797">Chuyển tới...</translation>
 <translation id="4405636711880428279">Xoá thẻ ảo?</translation>
+<translation id="4409014848144759297"><ph name="WEBSITE_TITLE"/> và <ph name="TAB_COUNT"/> thẻ khác</translation>
 <translation id="4409271659088619928">Bạn đang dùng công cụ tìm kiếm <ph name="DSE"/>. Để xóa nhật ký tìm kiếm, hãy xem hướng dẫn (nếu có) của công cụ tìm kiếm đó.</translation>
 <translation id="5749788945734786627">Quản lý Tài khoản Brave của bạn</translation>
 <translation id="4425140285732600465">Đang theo dõi giá. Nhận thông báo nếu có chương trình giảm giá trên một trang web bất kỳ.</translation>
 <translation id="4425173294238317796">Trang xác nhận khoá truy cập</translation>
 <translation id="442518031075347249">Bạn sẽ không thể sử dụng thẻ ảo qua Google Pay được nữa. <ph name="BEGIN_LINK1"/>Tìm hiểu thêm về thẻ ảo<ph name="END_LINK1"/></translation>
+<translation id="5227079195476744158">Một số nhật ký duyệt web của bạn có thể không xuất hiện ở đây. Nếu cần, hãy nhấn vào Mở toàn bộ nhật ký duyệt web trên Brave. Tài khoản Brave của bạn cũng có thể có các dạng nhật ký duyệt web khác tại <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="4430277756566635951">Bạn hiện đang chọn <ph name="EMAIL"/>. Chọn một tài khoản.</translation>
 <translation id="4452411734226507615">Đóng thẻ <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Đã đánh dấu trang vào <ph name="FOLDER_NAME"/></translation>
@@ -630,6 +637,7 @@
 <translation id="4481181637083926190">{BOOKMARK_COUNT,plural, =1{Đã lưu dấu trang vào "<ph name="FOLDER_NAME"/>". Dấu trang chỉ được lưu vào thiết bị này.}other{Đã lưu dấu trang vào "<ph name="FOLDER_NAME"/>". Dấu trang chỉ được lưu vào thiết bị này.}}</translation>
 <translation id="4484496141267039529">Không có kết nối. Hãy thử lại sau.</translation>
 <translation id="53119194224775367">Tất cả dữ liệu của ứng dụng Brave sẽ bị xóa vĩnh viễn, bao gồm tất cả các tệp, các tùy chọn cài đặt, tài khoản, cơ sở dữ liệu, v.v.</translation>
+<translation id="4489640160615759754">Trang tính chia sẻ cùng nội dung tóm tắt</translation>
 <translation id="4494806687727322324">Quản trị viên đã bật tính năng lưu mật khẩu</translation>
 <translation id="4508528996305412043">Đã mở trình đơn thẻ nguồn cấp dữ liệu</translation>
 <translation id="4509501256689523862">Khi bạn duyệt web, chế độ cài đặt này, <ph name="BEGIN_LINK_1"/>Chủ đề quảng cáo<ph name="END_LINK_1"/>, <ph name="BEGIN_LINK_2"/>chế độ cài đặt cookie<ph name="END_LINK_2"/> và khả năng cá nhân hoá quảng cáo của trang web bạn đang xem sẽ quyết định liệu quảng cáo bạn thấy có được cá nhân hoá không</translation>
@@ -639,6 +647,7 @@
 <translation id="1664855196866195614">Dữ liệu được chọn đã bị xóa khỏi Brave và các thiết bị đã đồng bộ hóa của bạn.
 
 Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web khác, chẳng hạn như tìm kiếm và hoạt động từ các dịch vụ khác của Brave tại <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="452279259461584111">Đã đóng trang tính chia sẻ cùng nội dung tóm tắt</translation>
 <translation id="4523326818319942067">một giờ qua</translation>
 <translation id="452750746583162491">Xem lại các dữ liệu đã đồng bộ hóa của bạn</translation>
 <translation id="4532845899244822526">Chọn thư mục</translation>
@@ -665,6 +674,7 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="465657074423018424">Tính năng Duyệt web an toàn bảo vệ bạn khỏi các trang web lừa đảo. Nếu bạn tắt tính năng này, hãy cẩn thận hơn khi duyệt web, đặc biệt là trước khi nhập mật khẩu.</translation>
 <translation id="4662373422909645029">Biệt hiệu không được bao gồm số</translation>
 <translation id="4663756553811254707">Đã xóa <ph name="NUMBER_OF_BOOKMARKS"/> dấu trang</translation>
+<translation id="4664020984660113387">Xoá nội dung tóm tắt</translation>
 <translation id="4668279686271488041">Dữ liệu đo lường quảng cáo sẽ thường xuyên bị xoá khỏi thiết bị của bạn</translation>
 <translation id="4668347365065281350">Tất cả dữ liệu do các trang web lưu trữ, bao gồm cả cookie và dữ liệu khác lưu trữ trên máy</translation>
 <translation id="6904731820418823295">Đã bật giao diện tối cho các trang web trong Brave</translation>
@@ -679,6 +689,7 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="4732120983431207637">Trình gỡ ngăn xếp</translation>
 <translation id="4736934858538408121">Thẻ ảo</translation>
 <translation id="473775607612524610">Cập nhật</translation>
+<translation id="4738065825338914557">Đang huỷ đăng ký…</translation>
 <translation id="4738836084190194332">Đồng bộ hóa lần gần đây nhất: <ph name="WHEN"/></translation>
 <translation id="4741753828624614066">Bạn sẽ nhận được nội dung đề xuất cải tiến trên thanh địa chỉ</translation>
 <translation id="4742970037960872810">Xóa nội dung được làm nổi bật</translation>
@@ -720,10 +731,10 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="1248710015876067820">Số phiên bản Brave không được hỗ trợ.</translation>
 <translation id="4905823827770127520">Đưa một đường liên kết vào trang</translation>
 <translation id="3217997482476578430">Tính năng Khám phá của Brave</translation>
-<translation id="4909709702739934280">Trình duyệt này do quản trị viên của bạn quản lý</translation>
 <translation id="4910889077668685004">Ứng dụng thanh toán</translation>
 <translation id="4912413785358399818">Di chuyển thẻ</translation>
 <translation id="4913169188695071480">Ngừng làm mới</translation>
+<translation id="4918086044614829423">Chấp nhận</translation>
 <translation id="492284538114688557">Đã phát hiện có mặt hàng giảm giá</translation>
 <translation id="4925120120285606924">Ảnh chụp màn hình <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Mật khẩu của bạn sẽ được xuất và tải xuống dưới dạng tệp văn bản. Mật khẩu sẽ hiển thị với bất kỳ ai và bất kỳ ứng dụng nào có quyền truy cập vào thư mục đích.</translation>
@@ -734,6 +745,7 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="5742837711075932301">Khi bạn đăng nhập vào cùng một Tài khoản Brave, các thiết bị khác có thể dùng điện thoại này làm khoá bảo mật.</translation>
 <translation id="4957722034734105353">Tìm hiểu thêm...</translation>
 <translation id="4961107849584082341">Dịch trang này sang ngôn ngữ bất kỳ</translation>
+<translation id="8367947725773962458">Cập nhật Dịch vụ Google Play để lưu và sử dụng mật khẩu mới trong Tài khoản Brave</translation>
 <translation id="7307583170263691471">Chủ động và nhanh chóng bảo vệ bạn khỏi các trang web, tệp đã tải xuống và tiện ích nguy hiểm. Cảnh báo bạn những mật khẩu đã bị lộ. Yêu cầu gửi dữ liệu duyệt web cho Brave.</translation>
 <translation id="497421865427891073">Đi về phía trước</translation>
 <translation id="4987271110129728827">Không tìm được trang đó. Hãy kiểm tra lỗi chính tả hoặc thử tìm kiếm trên web.</translation>
@@ -777,7 +789,6 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="5180063720319462041">Đã dịch trang sang <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="5186634140793586141">Quản lý các chủ đề và nội dung tìm kiếm mà bạn quan tâm</translation>
 <translation id="5191251636205085390">Tìm hiểu và kiểm soát các công nghệ mới giúp thay thế cookie của bên thứ ba</translation>
-<translation id="5193988420012215838">Đã sao chép vào bảng nhớ tạm</translation>
 <translation id="5204967432542742771">Nhập mật khẩu</translation>
 <translation id="5206168361184759344">{FILE_COUNT,plural, =1{Đang tải tệp xuống…}other{Đang tải # tệp xuống…}}</translation>
 <translation id="5210286577605176222">Quay về thẻ trước</translation>
@@ -799,11 +810,10 @@ Tài khoản Brave của bạn có thể có các dạng nhật ký duyệt web 
 <translation id="989239400026154074">Brave đề xuất Brave</translation>
 <translation id="7815000350132166985">Nếu bạn cho phép cookie thì Brave có thể dùng các cookie này khi tải trước</translation>
 <translation id="1681635711794313507">Vì các trang tải trước đã được mã hóa và trang web có đường liên kết đến các trang này là một trang web tạo bằng Brave Sites, nên các máy chủ của Brave không nhận được thông tin mới khi tải trước các trang này ở chế độ riêng tư.</translation>
-<translation id="5329858041417644019">Trình duyệt của bạn không được quản lý</translation>
 <translation id="5342314432463739672">Yêu cầu cấp quyền</translation>
 <translation id="534580735623577507">Không có trang web nào trong <ph name="TIME_PERIOD"/></translation>
 <translation id="5355191726083956201">Tính năng Bảo vệ tăng cường đang bật</translation>
-<translation id="5361107212971249203">văn bản</translation>
+<translation id="4771279424883068914">URL của trang mà bạn đưa ra ý kiến phản hồi sẽ được gửi cho Brave và có thể được nhân viên xem xét nhằm cải thiện tính năng này</translation>
 <translation id="5375577065097716013">Tìm hình ảnh bằng Brave Ống kính <ph name="BEGIN_NEW"/>Mới<ph name="END_NEW"/></translation>
 <translation id="4799771635362945886">Đảm bảo bạn luôn có thể sử dụng dữ liệu Brave trong Tài khoản Brave của mình</translation>
 <translation id="539881862970320163">Đề xuất sử dụng mật khẩu mạnh. Bàn phím đang ẩn.</translation>
@@ -860,6 +870,7 @@ Chỉ những người biết cụm mật khẩu của bạn mới đọc đư�
 <translation id="5657871969392618475">Thông tin của bạn được bảo mật bằng khoá hồ sơ</translation>
 <translation id="5659593005791499971">Email</translation>
 <translation id="5665379678064389456">Tạo sự kiện trong <ph name="APP_NAME"/></translation>
+<translation id="5680616253592639556">Thiếu thông tin</translation>
 <translation id="5668833306439455813">Brave không thể kiểm tra để tìm các bản cập nhật</translation>
 <translation id="5686790454216892815">Tên tệp quá dài</translation>
 <translation id="4809211418322514799">Brave tự động xoá các trang web mà đã hơn 30 ngày bạn không truy cập. Những trang web bạn truy cập lại có thể xuất hiện lại trong danh sách. Ngoài ra, bạn có thể ngăn một trang web đề xuất quảng cáo cho bạn. Tìm hiểu thêm về <ph name="BEGIN_LINK"/>quản lý quyền riêng tư trong quảng cáo trên Brave.<ph name="END_LINK"/></translation>
@@ -912,7 +923,7 @@ Chỉ những người biết cụm mật khẩu của bạn mới đọc đư�
 <translation id="5604589745019948682">Để theo dõi một trang web, hãy truy cập vào trang web đó, mở trình đơn Brave rồi nhấn vào Theo dõi.</translation>
 <translation id="5879072387416556377">Nhận đề xuất tốt hơn</translation>
 <translation id="5899667542927581604">Trang thông báo "Không có khoá truy cập nào" đã đóng</translation>
-<translation id="5916664084637901428">Bật</translation>
+<translation id="5916664084637901428">Đang bật</translation>
 <translation id="5919204609460789179">Cập nhật <ph name="PRODUCT_NAME"/> để bắt đầu đồng bộ hóa</translation>
 <translation id="5938820472109305350">Thêm <ph name="INTEREST"/></translation>
 <translation id="6103327872225198548">Sử dụng Brave để tìm kiếm</translation>
@@ -937,6 +948,7 @@ Chỉ những người biết cụm mật khẩu của bạn mới đọc đư�
 <translation id="6030719887161080597">Quản lý thông tin mà các trang web sử dụng để đo lường hiệu suất quảng cáo</translation>
 <translation id="6039379616847168523">Chuyển sang thẻ tiếp theo</translation>
 <translation id="6040143037577758943">Đóng</translation>
+<translation id="6040939430773295212">Trùng lặp</translation>
 <translation id="604124094241169006">Tự động</translation>
 <translation id="6042308850641462728">Xem thêm</translation>
 <translation id="604996488070107836">Không tải xuống được <ph name="FILE_NAME"/> do lỗi không xác định.</translation>
@@ -989,6 +1001,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="6324997754869598316">(Lỗi <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Chia sẻ qua <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Mã hóa</translation>
+<translation id="6340526405444716530">Cá nhân hóa</translation>
 <translation id="6341580099087024258">Hỏi vị trí lưu tệp</translation>
 <translation id="6342069812937806050">Vừa mới</translation>
 <translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 và <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> tùy chọn khác}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 và <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> tùy chọn khác}}</translation>
@@ -1024,7 +1037,9 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="6473086018775716761">Danh sách các lựa chọn chia sẻ đã được mở ở nửa dưới của màn hình.</translation>
 <translation id="6475951671322991020">Tải video xuống</translation>
 <translation id="6477928892249167417">Các trang web này có vẻ quan trọng đối với bạn:</translation>
+<translation id="387105482057676379">Liên kết Brave và các dịch vụ khác của Brave cho mục đích cá nhân hoá và các mục đích khác</translation>
 <translation id="6482749332252372425">Tải xuống <ph name="FILE_NAME"/> không thành công do thiếu dung lượng bộ nhớ.</translation>
+<translation id="6495590690749880440">Bạn muốn mở nhóm thẻ?</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Đã tải tệp xuống}other{Đã tải xong # tệp xuống}}</translation>
 <translation id="3960299545138990065">Khởi động lại Brave</translation>
 <translation id="6518133107902771759">Xác minh</translation>
@@ -1052,6 +1067,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="2466982615210189224">Các hình ảnh được gửi đến Brave để cải thiện nội dung mô tả cho bạn.</translation>
 <translation id="661266467055912436">Tăng độ bảo mật cho bạn và mọi người trên web.</translation>
 <translation id="8127050479140582768">Để gửi thẻ này cho một thiết bị khác, hãy đăng nhập vào Brave trên cả hai thiết bị</translation>
+<translation id="6625890511281718257">Trang Chia sẻ kèm theo phản hồi về bảng tóm tắt</translation>
 <translation id="6627583120233659107">Chỉnh sửa thư mục</translation>
 <translation id="6636623428211296678">Khám phá thêm về các chế độ cài đặt bên dưới hoặc hoàn tất ngay bây giờ</translation>
 <translation id="2259649928554669581">Bạn có thể xem thêm các tùy chọn cài đặt liên quan đến quyền riêng tư, bảo mật và hoạt động thu thập dữ liệu trong phần <ph name="BEGIN_LINK1"/>Đồng bộ hóa<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Các dịch vụ của Brave<ph name="END_LINK2"/></translation>
@@ -1082,6 +1098,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="6719634564325948108">Kết nối bằng mã QR?</translation>
 <translation id="7499197548870160669">Trong Tài khoản Brave của bạn</translation>
 <translation id="6738867403308150051">Đang tải xuống...</translation>
+<translation id="3959692514454538383">Một số nhật ký duyệt web của bạn có thể không xuất hiện ở đây. Để xem toàn bộ nhật ký duyệt web, hãy nhấn vào Mở toàn bộ nhật ký duyệt web trên Brave.</translation>
 <translation id="2275686406263739320">Các trang web bạn truy cập thường ghi nhớ mối quan tâm của bạn để mang lại trải nghiệm phù hợp với cá nhân bạn. Các trang web cũng có thể lưu trữ thông tin trên Brave về mối quan tâm của bạn.</translation>
 <translation id="6751521182688001123">Mở nhanh một thẻ mới. Để chỉnh sửa lối tắt này, hãy chạm và giữ.</translation>
 <translation id="6756507620369789050">Chia sẻ ý kiến phản hồi</translation>
@@ -1125,6 +1142,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="6910211073230771657">Đã xóa</translation>
 <translation id="6918398787259831832">Nếu sự cố này vẫn tiếp diễn, hãy <ph name="BEGIN_LINK"/>tìm hiểu thêm thông tin<ph name="END_LINK"/> từ <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="5854472260286669100">Tất cả mã bảo mật đã lưu trên thiết bị và trong Tài khoản Brave của bạn sẽ bị xoá</translation>
+<translation id="6937524809504266803">Chế độ cá nhân hoá và liên kết</translation>
 <translation id="6942665639005891494">Thay đổi vị trí tải xuống mặc định bất cứ lúc nào bằng cách sử dụng tùy chọn menu Cài đặt</translation>
 <translation id="694267552845942083">Bạn hiện đang tùy chỉnh các chế độ cài đặt Đồng bộ hóa của mình. Để hoàn tất thao tác bật tính năng đồng bộ hóa, hãy nhấn vào nút Xác nhận ở gần cuối màn hình. Di chuyển lên</translation>
 <translation id="6945221475159498467">Chọn</translation>
@@ -1140,10 +1158,12 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="7013762323294215682">Khoá truy cập này sẽ được lưu vào trình quản lý mật khẩu của bạn. Bất cứ ai có quyền truy cập vào trình quản lý mật khẩu đó đều có thể sử dụng khoá truy cập này.</translation>
 <translation id="7020741890149022655">Thêm vào danh sách đọc <ph name="BEGIN_NEW"/>Mới<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Mở trong trình duyệt</translation>
+<translation id="7025769836128625875">Đây là một tính năng AI thử nghiệm và không phải lúc nào cũng chính xác. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="7027549951530753705">Đã khôi phục <ph name="ITEM_TITLE"/></translation>
 <translation id="7029809446516969842">Mật khẩu</translation>
 <translation id="7030304022046916278">Gửi URL để tính năng Duyệt web an toàn kiểm tra</translation>
 <translation id="7035701931849773472">Tuỳ chọn khác</translation>
+<translation id="7053983685419859001">Chặn</translation>
 <translation id="7054588988317389591">Tải nội dung mô tả hình ảnh?</translation>
 <translation id="7055152154916055070">Liên kết chuyển hướng đã chặn:</translation>
 <translation id="754645164710303412">Mở toàn bộ nhật ký duyệt web trên Brave</translation>
@@ -1155,6 +1175,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="2374582967527009647">Gửi URL để tính năng Duyệt web an toàn kiểm tra. Đồng thời gửi một mẫu nhỏ dữ liệu hoạt động trên các trang, tệp đã tải xuống, tiện ích và thông tin hệ thống để giúp phát hiện các mối đe dọa mới. Tạm thời liên kết dữ liệu này với Tài khoản Brave của bạn sau khi bạn đăng nhập để bảo vệ bạn trên các ứng dụng Brave.</translation>
 <translation id="5499149312981370855">Chọn xem có bao gồm nhật ký duyệt web trên Brave hay không để mang lại trải nghiệm phù hợp hơn trong các dịch vụ của Brave</translation>
 <translation id="8208853227947884571">Brave đã được cập nhật</translation>
+<translation id="7094933634769755999">Không chính xác</translation>
 <translation id="7105047059074518658">Đăng nhập để duyệt xem một cách dễ dàng hơn trên các thiết bị</translation>
 <translation id="7106762743910369165">Trình duyệt này do tổ chức của bạn quản lý</translation>
 <translation id="144902786838571419">Brave giúp bạn có nhiều quyền kiểm soát hơn đối với những quảng cáo mà bạn thấy và hạn chế những thông tin mà các trang web có thể tìm hiểu về bạn khi cho bạn xem quảng cáo được cá nhân hoá.</translation>
@@ -1169,16 +1190,15 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="7177873915659574692">Không thể tạo mã QR. URL chứa nhiều hơn <ph name="CHARACTER_LIMIT"/> ký tự.</translation>
 <translation id="7180611975245234373">Làm mới</translation>
 <translation id="7183693674623539380">Nhóm thẻ – <ph name="TITLE_OF_GROUP"/></translation>
+<translation id="6475793992224120104">Kiểm soát cách Brave sử dụng nhật ký duyệt web cùng với các dữ liệu khác của bạn trên các dịch vụ của Brave</translation>
 <translation id="8355565210555500987">Giúp bạn an toàn trên Brave và có thể dùng để tăng cường bảo mật cho bạn trong các ứng dụng khác của Brave sau khi đăng nhập.</translation>
 <translation id="7191430249889272776">Thẻ được mở dưới nền.</translation>
 <translation id="7196215469483532480">Đã mở nội dung giải thích hướng dẫn về quyền riêng tư trên toàn màn hình</translation>
 <translation id="1014116676551114642">Nội dung của Brave dành cho người trẻ – tắt</translation>
 <translation id="7207760545532569765">Khôi phục <ph name="TAB_COUNT"/> thẻ dưới dạng các thẻ nền mới.</translation>
-<translation id="3111958038206230539">Cá nhân hóa dịch vụ của Brave</translation>
 <translation id="7221869452894271364">Tải lại trang này</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 tệp đang chờ tải xuống}other{# tệp đang chờ tải xuống}}</translation>
 <translation id="72415438529550637">Nội dung đề xuất mật khẩu đã đóng.</translation>
-<translation id="8287068819750208230">Hãy đảm bảo <ph name="TARGET_DEVICE_NAME"/> đã bật tính năng đồng bộ hóa trên Brave</translation>
 <translation id="7252076891734325316">Để điện thoại của bạn gần máy tính</translation>
 <translation id="4957342254208357193">Thiết bị Android của bạn có thể có chế độ cài đặt tương tự. Nếu bạn bật tính năng Đo lường quảng cáo trong Brave và trên thiết bị Android, một công ty có thể đo lường mức độ hiệu quả của quảng cáo trên những trang web bạn truy cập và ứng dụng bạn dùng.</translation>
 <translation id="727288900855680735">Gửi <ph name="ONE_TIME_CODE"/> tới <ph name="ORIGIN"/>?</translation>
@@ -1284,7 +1304,6 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="7707922173985738739">Sử dụng dữ liệu di động</translation>
 <translation id="7709918231054955894">Xem tất cả thẻ của bạn</translation>
 <translation id="7733878270780732638">Không đủ dung lượng trên thiết bị.</translation>
-<translation id="7757787379047923882">Văn bản được chia sẻ từ <ph name="DEVICE_NAME"/></translation>
 <translation id="7759809451544302770">Tùy chọn</translation>
 <translation id="7762668264895820836">Thẻ SD <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="7764225426217299476">Thêm địa chỉ</translation>
@@ -1297,6 +1316,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="7703329426540523149">Tạm thời liên kết dữ liệu này với Tài khoản Brave của bạn khi sau bạn đăng nhập để bảo vệ bạn trên các ứng dụng Brave</translation>
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="7798392620021911922">Đã khôi phục <ph name="TAB_COUNT"/> thẻ</translation>
+<translation id="780287761701992588">Sử dụng dấu trang, mật khẩu và nhiều nội dung khác trên mọi thiết bị của bạn</translation>
 <translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="7808889146555843082">Thao tác xóa mật khẩu này sẽ không xóa tài khoản của bạn trên <ph name="SITE"/>. Hãy đổi mật khẩu hoặc xóa tài khoản của bạn trên <ph name="SITE"/> để giữ an toàn cho tài khoản của bạn.</translation>
 <translation id="7810647596859435254">Mở bằng…</translation>
@@ -1329,7 +1349,6 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="7934668619883965330">Không thể tải tệp xuống. Định dạng tệp không được hỗ trợ.</translation>
 <translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> đã lỗi thời.</translation>
 <translation id="7944772052836377867">Tính năng đồng bộ hóa cần xác minh danh tính của bạn</translation>
-<translation id="7947953824732555851">Chấp nhận &amp; đăng nhập</translation>
 <translation id="7951102827450076904">Luôn mở tệp PDF đã tải xuống</translation>
 <translation id="7957413488482743710">Thẻ ảo giúp bạn ẩn thẻ thực, bảo vệ bạn trước nguy cơ bị lừa đảo. <ph name="BEGIN_LINK1"/>Tìm hiểu thêm về thẻ ảo<ph name="END_LINK1"/></translation>
 <translation id="7959485987650214982">Thẻ trên thiết bị này</translation>
@@ -1383,6 +1402,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="8135406045838672858">Các tệp PDF đã tải xuống sẽ tự động mở bằng <ph name="APP_NAME"/></translation>
 <translation id="6337533477704327362">Bạn không cần ghi nhớ mật khẩu này. Mật khẩu này sẽ được lưu vào Trình quản lý mật khẩu của Brave.</translation>
 <translation id="6779735068647643024">Xác minh danh tính của bạn để lưu mật khẩu vào Tài khoản Brave và sử dụng các mật khẩu đó</translation>
+<translation id="8171286197772512427">Trang Chia sẻ kèm theo phản hồi về bảng tóm tắt đã mở</translation>
 <translation id="8179976553408161302">Enter</translation>
 <translation id="8186512483418048923">Còn lại <ph name="FILES"/> tệp</translation>
 <translation id="8190358571722158785">Còn 1 ngày</translation>
@@ -1440,9 +1460,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="8453310803815879010">Bắt đầu Trò chơi Khủng long</translation>
 <translation id="7018408824172283743">Tiếp tục sử dụng dữ liệu Brave trong Tài khoản Brave</translation>
 <translation id="8460448946170646641">Xem xét các chế độ kiểm soát quan trọng đối với quyền riêng tư và tính bảo mật</translation>
-<translation id="8466613982764129868">Hãy đảm bảo <ph name="TARGET_DEVICE_NAME"/> có kết nối Internet</translation>
 <translation id="8473863474539038330">Địa chỉ và các lựa chọn khác</translation>
-<translation id="3272193332592864557">Kiểm soát cách dùng nhật ký đã đồng bộ hoá để cá nhân hoá các dịch vụ khác của Brave</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">Mở trang lịch sử</translation>
 <translation id="8493948351860045254">Giải phóng dung lượng</translation>
@@ -1457,10 +1475,12 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="8512053371384421952">Bạn sẽ không còn nhận được thông báo của <ph name="DOMAIN"/>.</translation>
 <translation id="133012818630824069">Xuất mật khẩu đã lưu trữ với Brave</translation>
 <translation id="8516012719330875537">Trình chỉnh sửa ảnh</translation>
+<translation id="8521833595674902532">Đã xảy ra lỗi. Không thể hoàn tất nội dung tóm tắt</translation>
 <translation id="8523928698583292556">Xóa mật khẩu đã lưu trữ</translation>
 <translation id="8526855376374973824">Quy trình cấp quyền gửi thông báo</translation>
 <translation id="8540136935098276800">Nhập URL có định dạng chính xác</translation>
 <translation id="854522910157234410">Mở trang này</translation>
+<translation id="8551524210492420949">Phản cảm hoặc không an toàn</translation>
 <translation id="5503308854539525011">Brave giới hạn tổng lượng dữ liệu mà các trang web có thể chia sẻ thông qua trình duyệt để đo lường hiệu suất quảng cáo</translation>
 <translation id="8559990750235505898">Đề xuất dịch trang bằng các ngôn ngữ khác</translation>
 <translation id="8560602726703398413">Tìm danh sách đọc trong phần Dấu trang</translation>
@@ -1528,6 +1548,7 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="8965591936373831584">đang chờ xử lý</translation>
 <translation id="8970887620466824814">Đã xảy ra lỗi.</translation>
 <translation id="8972098258593396643">Tải xuống thư mục mặc định?</translation>
+<translation id="8982113230057126145">Nút Không thích gửi phản hồi cho biết bạn không thích nội dung tóm tắt này</translation>
 <translation id="2481553173340651149">Dữ liệu đã được mã hoá bằng cụm mật khẩu của bạn. Nhập cụm mật khẩu để lưu dữ liệu Brave vào Tài khoản Brave và sử dụng dữ liệu đó.</translation>
 <translation id="8996847606757455498">Chọn nhà cung cấp khác</translation>
 <translation id="8998289560386111590">Tính năng đăng nhập không hoạt động trên thiết bị của bạn</translation>
@@ -1587,7 +1608,6 @@ Ví dụ: một số trang web có thể phản hồi yêu cầu này bằng cá
 <translation id="939598580284253335">Nhập cụm mật khẩu</translation>
 <translation id="952301137339791907">Đã mở bảng thông tin chi tiết về trang ở dưới cùng</translation>
 <translation id="5406914950576900927">Brave có thể sử dụng <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> để tìm kiếm tại Trung Quốc. Bạn có thể thay đổi điều này trong <ph name="BEGIN_LINK"/>Cài đặt<ph name="END_LINK"/>.</translation>
-<translation id="962979164594783469">Cài đặt ứng dụng này</translation>
 <translation id="96681097142096641">Xem trang ở chế độ đơn giản?</translation>
 <translation id="970715775301869095">Còn <ph name="MINUTES"/> phút</translation>
 <translation id="981121421437150478">Ngoại tuyến</translation>

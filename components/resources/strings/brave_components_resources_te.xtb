@@ -14,6 +14,7 @@
 <translation id="5327248766486351172">పేరు</translation>
 <translation id="5317780077021120954">సేవ్ చేయి</translation>
 <translation id="7658239707568436148">రద్దు చేయి</translation>
+<translation id="1383876407941801731">వెతుకు</translation>
 <translation id="385051799172605136">వెనుకకు</translation>
 <translation id="370665806235115550">లోడ్ అవుతోంది...</translation>
 <translation id="8890516388109605451">మూలాధారాలు</translation>
@@ -32,17 +33,10 @@
 <translation id="583281660410589416">తెలియని</translation>
 <translation id="7375125077091615385">రకం:</translation>
 <translation id="1992397118740194946">సెట్ చెయ్యలేదు</translation>
-<translation id="1919345977826869612">ప్రకటనలు</translation>
-<translation id="3970114302595058915">ID</translation>
-<translation id="4250680216510889253">కాదు</translation>
-<translation id="1426410128494586442">అవును</translation>
-<translation id="7805768142964895445">స్థితి</translation>
-<translation id="5565735124758917034">సక్రియం</translation>
-<translation id="2448312741937722512">రకం</translation>
-<translation id="3798449238516105146">సంస్కరణ</translation>
 <translation id="7180611975245234373">రీఫ్రెష్ చేయి</translation>
 <translation id="4309915981827077375">సాధారణ సమాచారం</translation>
 <translation id="3368922792935385530">కనెక్ట్ అయింది</translation>
+<translation id="1919345977826869612">ప్రకటనలు</translation>
 <translation id="3587482841069643663">మొత్తం</translation>
 <translation id="2631006050119455616">సేవ్ చేయబడింది</translation>
 <translation id="3866249974567520381">వివరణ</translation>
@@ -50,6 +44,7 @@
 <translation id="2799223571221894425">మళ్లీ ప్రారంభించు</translation>
 <translation id="5939518447894949180">రీసెట్ చేయి</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
+<translation id="2448312741937722512">రకం</translation>
 <translation id="923467487918828349">అన్నీ చూపించు</translation>
 <translation id="2356070529366658676">అడుగు</translation>
 <translation id="59174027418879706">ప్రారంభించబడింది</translation>
@@ -59,6 +54,7 @@
 <translation id="1327977588028644528">గేట్‌వే</translation>
 <translation id="8028993641010258682">పరిమాణం</translation>
 <translation id="3202131003361292969">పథం</translation>
+<translation id="3798449238516105146">సంస్కరణ</translation>
 <translation id="1272079795634619415">ఆపు</translation>
 <translation id="5895138241574237353">మళ్ళీ ప్రారంభించు</translation>
 <translation id="8725066075913043281">మళ్ళీ ప్రయత్నించండి</translation>
@@ -73,10 +69,12 @@
 <translation id="3479552764303398839">ఇప్పుడు కాదు</translation>
 <translation id="1483493594462132177">పంపు</translation>
 <translation id="1177863135347784049">అనుకూలీకరించిన</translation>
-<translation id="1383876407941801731">శోధించు</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="6979737339423435258">మొత్తం సమయం</translation>
 <translation id="629730747756840877">ఖాతా</translation>
+<translation id="5292796745632149097">ఈ పరికరానికి పంపండి</translation>
+<translation id="1426410128494586442">అవును</translation>
+<translation id="4250680216510889253">కాదు</translation>
 <translation id="1201402288615127009">తరువాత</translation>
 <translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="6896758677409633944">కాపీ చేయి</translation>
@@ -102,6 +100,7 @@
 <translation id="7982789257301363584">నెట్‌వర్క్</translation>
 <translation id="4804818685124855865">డిస్‌కనెక్ట్ చెయ్యి</translation>
 <translation id="2391762656119864333">ఉపసంహరించు</translation>
+<translation id="5565735124758917034">సక్రియం</translation>
 <translation id="8874184842967597500">కనెక్ట్ చేయబడలేదు</translation>
 <translation id="5677928146339483299">బ్లాక్ చేయబడింది</translation>
 <translation id="1165039591588034296">ఎర్రర్</translation>
@@ -141,8 +140,10 @@
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
 <translation id="7138678301420049075">ఇతర</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
+<translation id="6196640612572343990">మూడవ పక్షం కుక్కీలను బ్లాక్ చేయి</translation>
 <translation id="5657156137487675418">అన్ని కుక్కీలను అనుమతించు</translation>
 <translation id="2453860139492968684">ముగించు</translation>
+<translation id="7805768142964895445">స్థితి</translation>
 <translation id="5747552184818312860">గడువు ముగింపు</translation>
 <translation id="1116694919640316211">గురించి</translation>
 <translation id="2740531572673183784">సరే</translation>

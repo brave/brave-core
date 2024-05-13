@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Chặn các thành phần thẻ tiếp theo và thẻ kết thúc trên youtube.com.</translation>
 <translation id="5152595963250646670">Chặn các yếu tố gây mất tập trung trên YouTube</translation>
 <translation id="2998960761270772157">Chặn các yếu tố đăng nhập, menu, bình luận và thông tin video trên youtube.com.</translation>
+<translation id="8531835121131500698">Chặn video ngắn trên YouTube</translation>
+<translation id="2167271714269158912">Chặn các video ngắn khỏi trang chủ, trang thịnh hành và kết quả tìm kiếm trên youtube.com.</translation>
 <translation id="6052725679982758334">Chặn Mạng Xã hội</translation>
 <translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Người tạo nội dung đã được xác minh</translation>
 <translation id="2369994359029526515">Người tạo nội dung chưa được xác minh</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
-<translation id="7861645265922445992">Nhận Phần thưởng</translation>
 <translation id="1848737374354350807">Số dư:</translation>
 <translation id="4781696154289395607">Bạn đã đóng góp <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Đã xảy ra lỗi khi xử lý khoản đóng góp của bạn.</translation>
-<translation id="2221902203895354376">Khoản thưởng token đang khả dụng!</translation>
-<translation id="2377929997600454162">Phần thưởng Quảng cáo <ph name="MONTH_VALUE"/> của bạn ở đây!</translation>
-<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Phần thưởng: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">Bạn còn <ph name="TOKEN"/> ngày để nhận</translation>
 <translation id="683765328936486920">trên YouTube</translation>
 <translation id="8969049974285901797">trên Twitch</translation>
 <translation id="8038539967102225446">Đây là Quảng cáo Brave!</translation>
@@ -458,7 +455,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3763681089644577874">Chặn Cookie</translation>
 <translation id="614747795780742163">Ngăn chặn các trang web lưu trữ thông tin về các lần truy cập trước của bạn</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
-<translation id="4941539331405513605">Chặn cookie liên trang</translation>
+<translation id="6196640612572343990">Chặn cookie của bên thứ ba</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="1553643198679271031">Yêu cầu Ẩn danh</translation>
 <translation id="4891600875049212418">Để chế độ ẩn danh khi truy cập các trang web nhạy cảm</translation>
@@ -604,6 +601,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="1904000155026201268">Tôi hiểu rằng nếu tôi làm mất cụm từ khôi phục, tôi sẽ không thể truy cập ví tiền điện tử của mình.</translation>
 <translation id="5333225216561354793">Chúng tôi yêu cầu bạn công nhận các mục dưới đây</translation>
+<translation id="6937275455070754004">Chọn blockchain nào sẽ sử dụng trong ví của bạn.</translation>
 <translation id="1645800479814134195">Tôi hiểu đây là ví tự lưu ký và chỉ mình tôi chịu trách nhiệm về mọi khoản tiền, tài sản hoặc tài khoản liên quan và thực hiện hành động thích hợp để bảo mật, bảo vệ và sao lưu ví của mình. Tôi hiểu rằng Brave không thể thay mặt tôi truy cập vào ví của tôi hoặc đảo ngược các giao dịch và cụm từ khôi phục của tôi là cách DUY NHẤT để lấy lại quyền truy cập trong trường hợp mất mật khẩu, thiết bị bị đánh cắp hoặc trường hợp tương tự.</translation>
 <translation id="4565891212173086999">Tôi đã đọc và đồng ý với <ph name="CLICK_START"/>Điều khoản sử dụng<ph name="CLICK_END"/>&gt;.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
@@ -611,12 +609,12 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
 <translation id="111912712268284159">Tôi đã sao lưu cụm từ của mình ở một nơi an toàn.</translation>
 <translation id="6896758677409633944">Sao chép</translation>
-<translation id="1783600039044302171">Bảo mật tiền điện tử của bạn bằng mật khẩu</translation>
 <translation id="3726490322412361740">Nhập mật khẩu</translation>
 <translation id="3038243139480464605">Xác minh mật khẩu</translation>
 <translation id="3043677904160378840">Mật khẩu phải có ít nhất 8 ký tự.</translation>
 <translation id="7396672979287122068">Mật khẩu đã xác minh không khớp</translation>
-<translation id="7084181009966710506">Đang tạo Ví...</translation>
+<translation id="1566412704591731844">Đang tạo ví của bạn…</translation>
+<translation id="7779823116893018906">Có thể mất vài giây…</translation>
 <translation id="1577948178257477049">Tài khoản <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Thêm tài khoản</translation>
 <translation id="3448492834076427715">Cập nhật tài khoản</translation>
@@ -639,6 +637,11 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="5844138175312846408">Đã có ví?</translation>
 <translation id="2502258949541727762">Trước khi chúng tôi bắt đầu</translation>
+<translation id="4303748097351941030">Mạng được hỗ trợ</translation>
+<translation id="4204268048253692928">Bạn có thể thêm mạng bất cứ lúc nào trong Cài đặt.</translation>
+<translation id="2523174693142405417">Tìm kiếm mạng</translation>
+<translation id="1164748583090434571">Hiển thị các mạng thử nghiệm</translation>
+<translation id="935220650946301698">Tiếp tục với <ph name="NUMBER"/> mạng</translation>
 <translation id="8248460961680233459">Tạo mật khẩu</translation>
 <translation id="2789310860394340571">Bạn sẽ sử dụng mật khẩu này để truy cập vào ví của mình.</translation>
 <translation id="2136372518715274136">Nhập mật khẩu mới</translation>
@@ -845,7 +848,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="6889920539620318793">Đặt là đang hoạt động</translation>
 <translation id="2653659639078652383">Gửi</translation>
-<translation id="4945690646623486292">Chọn mạng</translation>
+<translation id="4556601961751528347">Thay đổi tài khoản được kết nối</translation>
 <translation id="5233638681132016545">Tab mới</translation>
 <translation id="8006088103295786154">Truy cập Ví Brave</translation>
 <translation id="8030169304546394654">Đã ngắt kết nối</translation>
@@ -871,6 +874,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4255623233927788178">Xem trên trình khám phá khối</translation>
 <translation id="8274201358637112807">Trang này muốn tương tác với Ví Brave</translation>
 <translation id="3355936511340229503">Lỗi kết nối</translation>
+<translation id="1531836666020185856">Nổi bật</translation>
 <translation id="4891604214809245310">Không thể đặt mạng thành <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Có vẻ như bạn có các VPN khác trên thiết bị này được đặt thành “Luôn bật”. Để bật Brave Tường lửa + VPN, trước tiên hãy tắt cài đặt “Luôn bật” này cho các VPN khác trước khi kết nối lại. Nếu vẫn còn lỗi thì hãy thử gỡ cài đặt các VPN khác.</translation>
 <translation id="85136472535634474">Mở Cài đặt VPN</translation>
@@ -1038,7 +1042,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1677961202754619328">Theo Uphold, hiện tại tài khoản Uphold của bạn có một số hạn chế. Vui lòng đăng nhập vào tài khoản Uphold của bạn và kiểm tra xem có bất kỳ thông báo nào hay còn yêu cầu tài khoản nào cần hoàn thành hay không, sau đó thử lại.</translation>
 <translation id="5425006356459378415">Phần thưởng Brave không khả dụng</translation>
 <translation id="833643743158564518">Các đăng ký mới cho Phần thưởng Brave hiện đã bị vô hiệu hóa ở khu vực của bạn. Tuy nhiên, bạn luôn có thể thử lại sau. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Tất cả các mạng</translation>
 <translation id="7748944510530490017">Mạng chính</translation>
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="282560918037172384">Mạng thử nghiệm</translation>
@@ -1178,4 +1181,11 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="3251885322612056119">Đã cập nhật điều khoản dịch vụ</translation>
 <translation id="4049035689681585146">Chúng tôi đã cập nhật Điều khoản dịch vụ dành cho Brave Phần thưởng. Chúng tôi thực hiện những cập nhật này để làm rõ các điều khoản của mình và đảm bảo chúng bao gồm các tính năng mới. Nếu bạn tiếp tục sử dụng Brave Phần thưởng tức là bạn đồng ý với Điều khoản dịch vụ được cập nhật. Nếu không đồng ý thì bạn có thể <ph name="RESET_START"/>đặt lại<ph name="RESET_END"/> Brave Phần thưởng, như vậy sẽ vô hiệu hóa tính năng này.</translation>
 <translation id="2165953574528546737">Xem <ph name="TOS_START"/>Điều khoản dịch vụ của Brave Phần thưởng<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Kích hoạt đa cửa sổ</translation>
+<translation id="6167344249617630304">Mở tối đa 5 cửa sổ cùng lúc và di chuyển các tab từ cửa sổ này sang cửa sổ khác</translation>
+<translation id="1063948063403254568">Đã phát hiện đa cửa sổ</translation>
+<translation id="4661882208707630158">Vui lòng hợp nhất các tab sang một cửa sổ Brave khác hoặc đóng các cửa sổ Brave khác trước khi tắt tính năng đa cửa sổ.</translation>
+<translation id="6891382640886173702">Hợp nhất các cửa sổ</translation>
+<translation id="2912247081180973411">Đóng các cửa sổ</translation>
+<translation id="4010699428656610296">Vui lòng hợp nhất các tab khác vào một cửa sổ Brave khác.</translation>
 </translationbundle>

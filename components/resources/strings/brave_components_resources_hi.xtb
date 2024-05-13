@@ -75,6 +75,7 @@
 <translation id="2875302873837723333">शीर्ष साइट्स</translation>
 <translation id="8173998484743827990">Brave आँकड़े</translation>
 <translation id="383680190590774040">घड़ी</translation>
+<translation id="1383876407941801731">खोज</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="3159285901314605198">बैकग्राउंड इमेज</translation>
 <translation id="385051799172605136">वापस</translation>
@@ -322,24 +323,6 @@
 <translation id="7168491065836975228">पुरस्कार आतंरिक</translation>
 <translation id="1992397118740194946">सेट नहीं है</translation>
 <translation id="758790787422117549">पर्सोना ID</translation>
-<translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="3671566813999349838">राशि</translation>
-<translation id="751223241692981112">पर क्लेम किया गया</translation>
-<translation id="3913089081619091801">क्लेम ID</translation>
-<translation id="972516647724462985">समाप्ति का समय</translation>
-<translation id="3970114302595058915">आई-डी</translation>
-<translation id="8511126279042126492">लेगसी प्रमोशन</translation>
-<translation id="4250680216510889253">नहीं</translation>
-<translation id="1426410128494586442">हां</translation>
-<translation id="8102423594645796250">प्रमोशन</translation>
-<translation id="7805768142964895445">स्थिति</translation>
-<translation id="5565735124758917034">सक्रिय</translation>
-<translation id="2196753816869469810">अटेस्ट किया हुआ</translation>
-<translation id="1098052486217676340">पूरा हुआ</translation>
-<translation id="8000774832235490222">समाप्त</translation>
-<translation id="2448312741937722512">प्रकार</translation>
-<translation id="5334568292977026472">UGP</translation>
-<translation id="3798449238516105146">वर्शन</translation>
 <translation id="7180611975245234373">रीफ्रेश करें</translation>
 <translation id="1456696701804096710">पुनः प्रयास की संख्या:</translation>
 <translation id="8118649457152178086">रिवॉर्ड का देश :</translation>
@@ -365,18 +348,19 @@
 <translation id="5856438412804207598">मौजूदा प्लैटफ़ॉर्म :</translation>
 <translation id="5916290544882167205">Brave सॉफ़्टवेयर। Brave, Brave सॉफ़्टवेयर का एक पंजीकृत ट्रेडमार्क है। साइट के नाम साइट के मालिकों के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
 <translation id="9026369588205476247">आपकी निजता को सुरक्षित रखने के लिए, इस Brave रिवार्ड्स के लेखा जोखा को आपके डिवाइस(इस कंप्यूटर) के आलावा कहीं और सुरक्षित, दर्ज़ और जोड़ा नहीं गया है| आपके डिवाइस पर डाटा हानि की स्थिति में ये Brave से पुनःप्राप्त नहीं किया जा सकता|</translation>
+<translation id="1919345977826869612">विज्ञापन</translation>
 <translation id="3587482841069643663">सभी</translation>
 <translation id="4241224519481557898">श्रेणी</translation>
 <translation id="3080423471207781945">प्रति घंटे प्राप्त अधिकतम विज्ञापन:</translation>
 <translation id="7847825746023377505"><ph name="TOTAL_DAYS"/> दिनों में कोई भी विज्ञापन नहीं देखा गया.</translation>
 <translation id="7902420836933072528">आपके द्वारा पिछले [[totalDays]] दिनों में प्राप्त किए गए विज्ञापन</translation>
 <translation id="8863685593846905344">एड्स इतिहास</translation>
-<translation id="2777306694585938662">विज्ञापन के रिवॉर्ड प्राप्त हुए</translation>
 <translation id="5212777575344695266">अनुचित के रूप में चिह्नित करें</translation>
 <translation id="2111256234277361810">अनुचित के रूप में चिह्नित करें ✓</translation>
 <translation id="8988332871810963281">वर्तमान में कोई Brave Ads इतिहास नहीं है</translation>
 <translation id="5345727496083327478">अब आपको इस श्रेणी के विज्ञापन नहीं मिलेंगे</translation>
 <translation id="2631006050119455616">सेव कर लिया गया है</translation>
+<translation id="3671566813999349838">राशि</translation>
 <translation id="6976444672879155794">ऑटो कंट्रीब्यूट [[processor]]</translation>
 <translation id="8804164990146287819">गोपनीयता नीति</translation>
 <translation id="7262285991915892790">पर BAT आइकन को लाएं</translation>
@@ -391,17 +375,8 @@
 <translation id="1418534671788496616">अपनी डिपॉज़िट हिस्ट्री को देखें.</translation>
 <translation id="3412655388715513818">इस साइट को</translation>
 <translation id="418343137736963579">स्वतः-योगदान से बाहर कुल साइटों की संख्या</translation>
-<translation id="8802504113265057166">समाप्ति तिथि तक उपयोग नहीं की जाने वाली [[currency]] को अपने आप Brave User Growth Pool में लौटा दिया जाएगा।</translation>
-<translation id="279567716178902927">अनुदान समाप्ति तिथि</translation>
 <translation id="1389143276807887637">आयात</translation>
 <translation id="5737831580668469027">मासिक कॉन्ट्रिब्यूशन!</translation>
-<translation id="2487641031722095938">यह आपका भाग्यशाली दिन है!</translation>
-<translation id="6255773350565723852">आपकी टोकन अनुदान पहुँच रही है।</translation>
-<translation id="3453206261112715431">मुफ़्त टोकन अनुदान</translation>
-<translation id="4448429859987034344">बधाई हो!</translation>
-<translation id="4677106999274433911">आपने विज्ञापनों के पुरस्कारों का क्लेम सफ़लतापूर्वक कर लिया है।</translation>
-<translation id="8304661078305276044">विज्ञापनों के पुरस्कार</translation>
-<translation id="1770001816413426741">पुरस्कारों की अवधि</translation>
 <translation id="2280319752798785157">मासिक योगदान</translation>
 <translation id="8307851765167460403">अभी तक कोई गतिविधि नहीं...</translation>
 <translation id="3630697955794050612">बंद</translation>
@@ -441,11 +416,11 @@
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="1792148354504719133">साइट</translation>
 <translation id="6432779622695508363">लाइक पर सुझाव</translation>
-<translation id="6367285596431004439">टोकन अनुदान प्राप्त हुआ</translation>
 <translation id="2726674968268546964">टोकंस</translation>
 <translation id="5015443703424816075">टोकन</translation>
 <translation id="1634828734222219955">संपूर्ण</translation>
 <translation id="3535654229833214438">लेन-देन</translation>
+<translation id="2448312741937722512">प्रकार</translation>
 <translation id="8772672608371898774">Brave सत्यापित प्रकाशक</translation>
 <translation id="5050370287908180130">विवरण के लिए मासिक लेखा जोखा देखें</translation>
 <translation id="7853202427316060426">गतिविधि</translation>
@@ -530,6 +505,7 @@
 <translation id="8028993641010258682">आकार</translation>
 <translation id="7870625241353817260">स्टोरेज भर गया है</translation>
 <translation id="3202131003361292969">पथ</translation>
+<translation id="3798449238516105146">वर्शन</translation>
 <translation id="2892680660204660712">साथी की आईडी</translation>
 <translation id="7536543993364605970">एजेंट वर्जन</translation>
 <translation id="3693482323085649439">नोड चल रहा है</translation>
@@ -621,21 +597,15 @@
       other {इस महीने आपने Brave रिवॉर्ड द्वारा सपोर्ट किए जाने वाले # क्रिएटर को देखा है}
     }</translation>
 <translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
-<translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
-<translation id="3274366539954332481">यह रहे आपके <ph name="MONTH"/> Ad Rewards</translation>
-<translation id="7861645265922445992">रिवार्ड्स क्लेम करें</translation>
-<translation id="9013419433042554094">टोकन क्लेम करें</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="885805571521218129">यह इस महीने Brave Ads के लिए आपकी अनुमानित कमाई की सीमा को दर्शाता है.</translation>
 <translation id="3863981251715594911">ये कैसे काम करता है?</translation>
-<translation id="4782365133987903299">आपके पास क्लेम करने के लिए <ph name="DAYS"/> बचे हैं</translation>
 <translation id="7931127789630755251">Brave में देखे जाने वाले निजी विज्ञापनों के लिए टोकन जमा करें</translation>
 <translation id="2278423362884506724">कंटेंट क्रिएटर्स का सपोर्ट करें और गिफ़्ट कार्ड खरीदने, अन्य करेंसी में बदलने वगैरह के लिए अपने टोकन का इस्तेमाल करें.</translation>
 <translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3717922248131893262">Brave रिवॉर्ड का इस्तेमाल करते रहने के लिए अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें. <ph name="LINK_BEGIN"/>निजता नीति<ph name="LINK_END"/></translation>
 <translation id="2965798296974325760">पुरस्कारों का उपयोग करना शुरू करें</translation>
-<translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
 <translation id="2956070106555335453">सारांश</translation>
 <translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
 <translation id="3984338085370091436">ये क्रिएटर अभी Brave क्रिएटर्स द्वारा वेरिफ़ाई नहीं किए गए हैं. जब उनका वेरिफ़िकेशन हो जाएगा, तो उसके बाद आप उन्हें अपना योगदान भेज पाएँगे.</translation>
@@ -651,15 +621,6 @@
 <translation id="654447476965480878">BAT कमाने के बारे में और जानें</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> को हम मौजूदा वर्चुअल BAT बैलेंस को सपोर्ट करना बंद कर देंगे. इस तारीख से पहले एक कस्टोडियल अकाउंट को कनेक्ट करें ताकि हम आपके कमाए गए बैलेंस को आपके कस्टोडियल अकाउंट में ट्रांसफ़र कर सकें, नहीं तो आप अपना बैलेंस खो देंगे.</translation>
 <translation id="707569835145765061">कार्रवाई ज़रूरी है : कोई कस्टोडियल अकाउंट कनेक्ट करें वरना आप अपना vBAT खो देंगे</translation>
-<translation id="1258144146756156541">कन्फ़र्म करें कि आप एक इंसान हैं</translation>
-<translation id="1555514580945108302">हम्म्… सही नहीं, दोबारा कोशिश करें.</translation>
-<translation id="8078414184292711961">BAT आइकन को <ph name="HINT"/> टारगेट तक लाएँ.</translation>
-<translation id="2151535059686617995">आज आपका भाग्यशाली दिन है!</translation>
-<translation id="4560448935659791043">आपने एक विज्ञापन पुरस्कार अर्जित किया है!</translation>
-<translation id="6333727259565526314">आपका रिवार्ड जल्द आएगा.</translation>
-<translation id="39734939514946950">आपकी रिवार्ड राशि</translation>
-<translation id="717952606991220586">ओह, कुछ गलत है। बाद में पुन: प्रयास करें।</translation>
-<translation id="7210234701206674260">ब्रेव इनामों में कोई समस्या आ रही है. कृपया कुछ देर बाद पुनः प्रयास करें</translation>
 <translation id="3358400027937159351">आपने सहयोग के तौर पर <ph name="AMOUNT"/> दिए हैं.</translation>
 <translation id="1619753851206150396">आप लॉग आउट हो गए हैं</translation>
 <translation id="3035648636451344428">आपका <ph name="PROVIDER"/> खाता सुरक्षित रखने के लिए, ऐसा समय-समय पर होता है। लॉग आउट होने पर भी आपको भुगतान प्राप्त होता रहेगा, लेकिन आप अपने खाते में बकाया नहीं देख पाएंगे या अपने <ph name="PROVIDER"/> खाते से योगदान नहीं कर पाएंगे।</translation>
@@ -774,7 +735,6 @@
 <translation id="5486744676117070166">अगला गैर मान प्राप्त नहीं हो पाया</translation>
 <translation id="6180576227145734714">निर्दिष्ट होने पर लेन-देन डेटा 'टू' एक मान्य पता होना चाहिए</translation>
 <translation id="6688162556547723415">अनुरोध की गई विधि और/या अकाउंट यूज़र के द्वारा ऑथराइज़ किए हुए नहीं हैं</translation>
-<translation id="1383876407941801731">खोजें</translation>
 <translation id="8767749833522980474">क्रिप्टो</translation>
 <translation id="944736176598169208">Rewards</translation>
 <translation id="6122742277607781713">पोर्टफ़ोलियो</translation>
@@ -819,6 +779,11 @@
 <translation id="5009335307032488349">NFT को नाम या आईडी से सर्च करें</translation>
 <translation id="8667560635828712526">एसेट चुनें</translation>
 <translation id="4853960199138416955">वर्तमान में Brave वॉलेट Bitcoin NFT (ऑर्डिनल्स) को सपोर्ट नहीं करता है। ऑर्डिनल्स वाले पते से BTC भेजने पर अनजाने में इसके ऑर्डिनल्स स्थानांतरित हो सकते हैं।</translation>
+<translation id="29976300677902325">प्राप्तकर्ता चुनें</translation>
+<translation id="7231620608040154667">मेरा पता</translation>
+<translation id="4504682768625050939">सार्वजनिक पता या डोमेन डालें.</translation>
+<translation id="5292796745632149097">इस पर भेजें</translation>
+<translation id="7022684620581223496">ग़लत डोमेन एक्सटेंशन.</translation>
 <translation id="9209024278910716955">चुने गए नेटवर्क पर खरीदारी की सुविधा नहीं है</translation>
 <translation id="4982630604810554641">डोमने ढूँढ रहे हैं...</translation>
 <translation id="5467044307473123584">Brave .eth डोमेन को हल करने के लिए ऑफ़-चेन गेटवे के इस्तेमाल को सपोर्ट करता है.</translation>
@@ -837,6 +802,8 @@
 <translation id="712738518060477110">बताई गई राशि में <ph name="SWAP_FEE_PERCENTAGE"/> Brave शुल्क शामिल है.</translation>
 <translation id="8368540604723748428">कई दशमलव स्थान</translation>
 <translation id="6575120282593094155">आपके पास अभी तक <ph name="ACCOUNT_TYPE"/> अकाउंट नहीं है। क्या आप अभी एक अकाउंट बनाना चाहते हैं?</translation>
+<translation id="1426410128494586442">हां</translation>
+<translation id="4250680216510889253">नहीं</translation>
 <translation id="1201402288615127009">अगला</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="6896758677409633944">कॉपी बनाएं</translation>
@@ -961,6 +928,7 @@
 <translation id="7657130382217527063">ध्यान दें : ज़रूरी है कि प्राइवेट की हेक्स-एनकोडेड JSON के तौर पर दिया जाए, जिसमें प्राइवेट की और प्रोटोकॉल की जानकारी हो. <ph name="LINK_START"/>और जानें<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">एक्सपोर्ट करें</translation>
 <translation id="1366855498335432549">जमा</translation>
+<translation id="790104325876206743">अकाउंट सेटिंग्स</translation>
 <translation id="6322030314101903925">कोई एसेट उपलब्ध नहीं है</translation>
 <translation id="836614343069504000">शुरू करने के लिए टोकन जमा करें या खरीदें. अगर आपको इम्पोर्ट किए गए अकाउंट में टोकन नहीं दिखते हैं, तो फ़िल्टर और डिसप्ले की सेटिंग को देखें. अनजान टोकन को कस्टम एसेट के तौर पर जोड़ना पड़ सकता है.</translation>
 <translation id="2902856457593699108">की दिखाएं</translation>
@@ -1046,6 +1014,7 @@
 <translation id="2391762656119864333">निरस्‍त करें</translation>
 <translation id="9218424917282368512">नेटवर्क बदलें</translation>
 <translation id="7526139040829362392">अकाउंट बदलें</translation>
+<translation id="5565735124758917034">सक्रिय</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
 <translation id="4217695020908122747">कनेक्ट किए गए अकाउंट</translation>
 <translation id="8497650996740651467">उपलब्ध अकाउंट</translation>
@@ -1126,10 +1095,10 @@
 <translation id="4512871563176965522">भत्ते की मनचाही राशि</translation>
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="2832270987629018596">यह SOL पता मान्य नहीं है</translation>
-<translation id="882486206986535424">यह मान्य पता नहीं है</translation>
-<translation id="8684908590733515816">डोमेन का कोई लिंक किया हुआ <ph name="COIN_TYPE_SYMBOL"/> पता नहीं होता</translation>
-<translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
-<translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
+<translation id="2115100722958448834"><ph name="COIN_TYPE_SYMBOL"/> सही पता नहीं है.</translation>
+<translation id="240219768078450165">डोमेन का कोई लिंक किया हुआ<ph name="COIN_TYPE_SYMBOL"/> पता नहीं  है.</translation>
+<translation id="4932382283590063268">प्राप्त करने वाला पता आपका अपना पता है</translation>
+<translation id="3124753063207986114">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 <translation id="7029817408221097939">यूनिफ़ाइड एड्रेस अमान्य है</translation>
 <translation id="6370376419663123629">पता सही नहीं लगता</translation>
 <translation id="3767148796886402380">अपने पते की जाँच करके, यह पक्का करें कि यही सही पता है (जैसे लोअर या अपर केस वाले अक्षर)।</translation>
@@ -1140,10 +1109,9 @@
 <translation id="4667144295226514387">गैस की सीमा नहीं मिली</translation>
 <translation id="2021522108838444624">राशि 0 से ज़्यादा होनी चाहिए</translation>
 <translation id="8464365289405373974">जहाँ भेजना है, वहाँ का पता देना ज़रूरी है</translation>
-<translation id="4884792073752467460">पाने वाले का पता अमान्य है</translation>
 <translation id="6326239384961270135">पारदर्शी हिस्सा गायब है</translation>
 <translation id="8585995109882455949">मुझे सही पता किस तरह मिल सकता है?</translation>
-<translation id="8395402412470376435">Brave यूज़र को सत्यापित करता है और उन्हें गलत कैपिटलाइज़ेशन की वजह से, गलत पते पर फ़ंड भेजने से रोकता है। यह एक "चेकसम" प्रोसेस है जो सत्यापित करता है कि यह एक मान्य एथेरियम पता है।</translation>
+<translation id="105524480632150318">Brave ग़लत कॅपिटलाइज़ेशन की वजह से यूज़र को ग़लत पते पर धनराशि भेजने से रोकता है. नीचे दिए गए निर्देशों को फ़ॉलो करके सुनिश्चित करें कि यह सही पता है.</translation>
 <translation id="4583433813614292221">1. विज़िट करें</translation>
 <translation id="8061317754447191238">etherscan पर जाएँ और उस वॉलेट का पता पेस्ट करें, जिसे आप टोकन भेजना चाहते हैं। फिर दर्ज करें</translation>
 <translation id="5393164213211430081">2. ETH पता कॉपी करके दर्ज करें</translation>
@@ -1258,6 +1226,7 @@
 <translation id="4378208228955237306">NFT पर नेटवर्क लोगो दिखाएँ</translation>
 <translation id="5472199803712163015">स्पैम NFT</translation>
 <translation id="5722321409991816187">स्पैम NFT दिखाएँ</translation>
+<translation id="2588752742385122166">पोर्टफ़ोलियो सेटिंग</translation>
 <translation id="7662492121143629144">सभी अकाउंट</translation>
 <translation id="6954150712710630841">ट्रांज़ैक्शन सबमिट हो गया है</translation>
 <translation id="905855245798176174">लेनदेन नेटवर्क पर भेज दिया गया है और कन्फ़र्मेशन का इंतज़ार किया जा रहा है.</translation>
@@ -1672,9 +1641,10 @@
 <translation id="939305735877869636">ब्रेव</translation>
 <translation id="6261915643960475695">बिज़नेस</translation>
 <translation id="8265589281845759879">गाड़ियाँ</translation>
+<translation id="7726519849288907308">सेलिब्रिटीज़</translation>
 <translation id="7577010593836079522">संस्कृति</translation>
+<translation id="6807791860691150411">शिक्षा</translation>
 <translation id="3706423975342040244">मनोरंजन</translation>
-<translation id="3284069358246729581">मनोरंजन की ख़बरें</translation>
 <translation id="1432147735538902155">फ़ैशन</translation>
 <translation id="3350377832708834609">फ़िल्म और TV</translation>
 <translation id="736592699917579616">खाना</translation>
@@ -1682,6 +1652,7 @@
 <translation id="2228584369802328636">गेमिंग</translation>
 <translation id="6941852195052765076">स्वास्थ्य</translation>
 <translation id="932327136139879170">होम बटन</translation>
+<translation id="2233040275795129413">लाइफ़ स्टाइल</translation>
 <translation id="5178222043222938163">संगीत</translation>
 <translation id="1322083935398004629">राजनीति</translation>
 <translation id="8739620487574841501">क्षेत्रीय ख़बरें</translation>
@@ -1689,10 +1660,9 @@
 <translation id="1264974993859112054">खेल-कूद</translation>
 <translation id="2283599456633275070">यात्रा</translation>
 <translation id="7487067081878637334">तकनीक</translation>
-<translation id="151743034625508713">टेक्नोलॉजी ख़बरें</translation>
-<translation id="2388279876296929435">टेक्नोलॉजी की समीक्षा</translation>
 <translation id="5030268312472358928">बड़ी ख़बरें</translation>
 <translation id="5510475084662028636">टॉप सोर्स</translation>
+<translation id="1269093011552192762">UK News</translation>
 <translation id="1297570508541015874">अमेरिका की ख़बरें</translation>
 <translation id="1459693405370120464">मौसम</translation>
 <translation id="8366057325711477500">विश्व समाचार</translation>
@@ -1849,6 +1819,7 @@
 <translation id="9210143726807220086">वर्टिकल टैब को फैलाएँ/छोटा करें</translation>
 <translation id="684629111155788563">सभी टैब को नए ग्रुप में डालें</translation>
 <translation id="9106013521852824634">टैब खुद को भेजें</translation>
+<translation id="6973516366678963184">Wayback Machine बबल दिखाएँ</translation>
 <translation id="1926106318101432555">बुकमार्क खोलें...</translation>
 <translation id="6118819645013156507">किसी और विंडो पर स्विच करें...</translation>
 <translation id="1623204575967809688">मौजूदा विंडो को इसमें मिलाएँ...</translation>
@@ -1862,6 +1833,14 @@
 <translation id="1344005710343072293">इस मेल को पहले से <ph name="COMMAND"/> में इस्तेमाल किया जा रहा है. इसे सेव करने से पहले से बना हुआ शॉर्टकट हट जाएगा.</translation>
 <translation id="831931573200952705">इस मेल को पहले से <ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता.</translation>
 <translation id="3537006124004887164">इस मेल को पहले से<ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता. सिस्टम सेटिंग्स में `ऐप शॉर्टकट` के ज़रिए इसमें बदलाव करने की कोशिश करें.</translation>
+<translation id="712598284361781729">नया स्प्लिट व्यू</translation>
+<translation id="6655450014966273037">स्प्लिट व्यू बंद करें</translation>
+<translation id="1130188644637295274">स्प्लिट व्यू में खोलें</translation>
+<translation id="7195519370590486580">टैब्स में जाएँ</translation>
+<translation id="3617523374417810198">नया स्प्लिट व्यू</translation>
+<translation id="9053179124396567872">स्प्लिट व्यू बंद करें</translation>
+<translation id="8571323456914890254">स्प्लिट व्यू में खोलें</translation>
+<translation id="2397258152713354053">टैब्स में जाएँ</translation>
 <translation id="8591883849678260674">मूल देखें</translation>
 <translation id="1969654232209826429">पढ़ने में कम से कम इतना समय लगेगा</translation>
 <translation id="4101707289420716287">स्पीडरीडर बंद करें</translation>
@@ -1911,6 +1890,8 @@
 <translation id="2505565639170795978">नमस्ते, मैं लियो हूँ. मैं Brave का एक ऐसा AI असिस्टेंट हूँ, जिसे पूरी तरह से होस्ट किया गया है. मुझमें Llama 13B की शक्ति है, इस मॉडल को Meta द्वारा इस तरह से बनाया गया है कि यह बेहतर प्रदर्शन के साथ ही ज़्यादातर परिस्थितियों में काम करता है.</translation>
 <translation id="8030558642460377506">नमस्ते, मैं Leo हूं। मैं Brave का पूरी तरह से होस्ट किया गया AI असिस्टेंट हूं। मुझे Mixtral 8x7B द्वारा संचालित किया जाता है, यह ऐसा मॉडल है, जिसे उन्नत कार्य करने के लिए Mistral AI द्वारा बनाया गया है।</translation>
 <translation id="2489317965865266353">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude Instant की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
+<translation id="8583558415545871403">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Haiku की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
+<translation id="4147243042852964992">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Sonnet की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, <ph name="COMPANY_NAME"/> की पेशकश</translation>
 <translation id="8944485226638699751">सीमित</translation>
 <translation id="6187065185557150870">चैट</translation>
@@ -1953,11 +1934,13 @@
 <translation id="8742658901413346500">यह बातचीत बहुत लंबी है और संभव है कि लियो जल्द ही भूलने लगे. आप प्रीमियम मॉडल को अपनाकर लंबी बातचीत की सुविधा पा सकते हैं या चैट को रीसेट कर सकते हैं.</translation>
 <translation id="7550152963854770123">चैट मिटाएँ</translation>
 <translation id="7494736170250048402">लियो को मैसेज भेजें</translation>
-<translation id="4110772752544684964">यह पेज लियो के लिए काफ़ी बड़ा है. संभव है कि बातचीत से कुछ संदर्भ गायब हो जाएँ.</translation>
+<translation id="1093419424466417703">लियो के लिए पेज बहुत लंबा है. हो सकता है बातचीत से कुछ संदर्भ पूरी तरह से ना हों. लियो पेज के <ph name="PERCENTAGE"/> कंटेंट को पढ़ सकता है.</translation>
 <translation id="4370698775470316661">यह बातचीत बहुत लंबी है, इसलिए इसे जारी नहीं रखा जा सकता है. ऐसे कुछ अन्य मॉडल हो सकते हैं, जिनके साथ लियो लंबी बातचीत के दौरान भी सटीकता बनाए रख सके.</translation>
 <translation id="6291843235651817590">सामान्य विषय की चैट</translation>
 <translation id="8193130769524604031">चैट के एडवांस कार्य</translation>
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
+<translation id="7979673624064378842">फ़टाफ़ट चैट करने की सुविधा</translation>
+<translation id="2836330653441111204">संतुलित गति और बुद्धिमत्ता</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
 <translation id="1037324977127422019">नमस्ते, मैं लियो हूँ!</translation>
 <translation id="8930348081963284873">मैं AI द्वारा संचालित बुद्धिमान असिस्टेंट हूँ, जिसे Brave के अंदर बनाया गया है।</translation>
@@ -1991,6 +1974,7 @@
 <translation id="42981349822642051">बड़ा करें</translation>
 <translation id="3130793786899299931">लंबाई बदलें</translation>
 <translation id="6320643499534852464">सोशल मीडिया</translation>
+<translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="6303294677342628402">शील्ड्स</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
 <translation id="7509914170164691086"><ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> के लिए शील्ड चालू है</translation>
@@ -2016,7 +2000,7 @@
 <translation id="4448697385961650078">ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
 <translation id="8593054718053894081">ट्रैकर और विज्ञापनों को तेज़ी से ब्लॉक करता है</translation>
 <translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
-<translation id="4941539331405513605">क्रॉस-साइट कुकीज़ ब्लॉक करें</translation>
+<translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
 <translation id="693506469193748756">यह वेबसाइट बंद करने पर मुझे भुला देना</translation>
 <translation id="5471580724041424345">जब आप कोई वेबसाइट बंद करते हैं तो कुकीज़ समेत वेबसाइट का अन्य डेटा मिटाता है.</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
@@ -2069,6 +2053,11 @@
 <translation id="546481172717459539">सिस्टम सेटिंग मिलाएँ</translation>
 <translation id="7799817062559422778">लाइट मोड</translation>
 <translation id="4117637339509843559">डार्क मोड</translation>
+<translation id="6302485303316397682">और ज़्यादा बेहतर सर्च रिज़ल्ट चाहिए?</translation>
+<translation id="7014699001826714920">मुहीम में शामिल हों और Brave Search को बेहतर बनाने में मदद करें.</translation>
+<translation id="6821108091726602352">Brave के वेब डिस्कवरी प्रोजेक्ट में भाग लेकर वेब को ठीक करने में हमारी सहायता करें. पूरी तरह से गुमनाम सर्च सिग्नल शेयर करके, आप Brave को सर्च इंडेक्स क बढ़ाने में मदद कर सकते हैं.</translation>
+<translation id="6764845498618413165">और जानें.</translation>
+<translation id="7818938154803162778">मैं बिलकुल मदद करूंगा</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: कनेक्ट हो गया है</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: कनेक्ट नहीं है</translation>
 <translation id="3541307549916475335">Brave VPN पैनल UI</translation>
@@ -2082,6 +2071,7 @@
 <translation id="1024255913009642477">VPN पहले से खरीद चुके हैं?</translation>
 <translation id="8814357473522731680">द्वारा संचालित</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="7805768142964895445">स्थिति</translation>
 <translation id="5747552184818312860">समय सीमा समाप्ति दिनांक</translation>
 <translation id="8421945428836418371">अपने आप रिकनेक्ट करें</translation>
 <translation id="434523916398030617">तकनीकी सपोर्ट के लिए संपर्क करें</translation>

@@ -140,6 +140,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="4304059894777924102">Brave kan inte kontrollera dina lösenord. Testa att kontrollera internetanslutningen.</translation>
 <translation id="2100587595569959771">Läs mer om annonsanpassning i Brave</translation>
 <translation id="1807774211756215222">Öppna länken i en ny &amp;flik i Brave</translation>
+<translation id="387105482057676379">Länka Brave och andra tjänster från Brave för anpassning och andra syften</translation>
 <translation id="3867175562099983425">Hantera Brave-profiler</translation>
 <translation id="2106568569080763501">I Brave kan du klicka på ett telefonnummer på nätet och ringa det med Skype!</translation>
 <translation id="308146532933302843">Läs mer om varför vissa nedladdningar blockeras i Brave</translation>
@@ -164,6 +165,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="4055805654398742145">Lösenordshantering</translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Organisationen avslutar Brave automatiskt när det inte har använts på 1 minut. Webbinformation raderas. Detta kan innefatta historik, autofyll och nedladdningar.}other{Organisationen avslutar Brave automatiskt när det inte har använts på # minuter. Webbinformation raderas. Detta kan innefatta historik, autofyll och nedladdningar.}}</translation>
 <translation id="4148957013307229264">Installerar...</translation>
+<translation id="5506080358066715848">Organisationen kan se och hantera webbinformation i jobbprofilen, till exempel bokmärken, historik och lösenord. Den kan inte se webbinformation i personliga Brave-profiler.</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – nätverksinloggning – Brave</translation>
 <translation id="2871190378186459992">Upptäck fantastiska appar, spel, tillägg och teman för Brave.</translation>
 <translation id="5757460455745382269">Användargränssnittet i Brave visas på det här språket</translation>
@@ -217,6 +219,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8174413867995118050">Andra Brave-profiler</translation>
 <translation id="7708394612738038097">Du loggar in med ett hanterat konto och ger dess administratör kontroll över din Brave-profil. Dina uppgifter i Brave, t.ex. dina appar, bokmärken, din historik, ditt lösenord och andra inställningar, kopplas då permanent till <ph name="USER_NAME"/>. Du kommer att kunna ta bort dessa uppgifter via instrumentpanelen i Brave Konton, men du kommer inte att kunna koppla dem till något annat konto. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra kod: <ph name="EXTRA_CODE"/>.</translation>
+<translation id="2487133103111559902">Om du vill få tillgång till anpassning kan du ta med Brave i webb- och appaktiviteten</translation>
 <translation id="5154625106151193600">Läs mer om varför vissa filer blockeras i Brave</translation>
 <translation id="1786715389543715322">Brave uppdateras (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Tillåt inloggning i Brave</translation>
@@ -225,6 +228,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="239760341987199724">Använd Brave som standardwebbläsare</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave kanske inte fungerar ordentligt eftersom det inte längre stöds på den här Linux-distributionen</translation>
+<translation id="2596557398669145729">Den här nedladdningen blockerades av Brave eftersom filen kan skada dina personliga konton och sociala nätverkskonton</translation>
 <translation id="696826782632239602">Du behöver ge Brave åtkomst till din plats om den ska kunna delas med webbplatsen</translation>
 <translation id="3809116188788099368">För att skydda din integritet raderar vi automatiskt intressen som är äldre än fyra veckor. Medan du surfar kan ett intresse dyka upp på listan igen. Och om Brave gör fel eller om du inte vill se vissa annonser kan du ta bort intresset.</translation>
 <translation id="1744365871163268756">Vänta medan de senaste systemuppdateringarna installeras av Brave.</translation>
@@ -236,6 +240,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Visa Brave på det här språket</translation>
 <translation id="569897634095159764">Det går inte att ansluta till internet. Proxyservern kräver autentisering.</translation>
+<translation id="82926023981336111">Anpassa och kontrollera Brave. Ställ in Brave som standardwebbläsare.</translation>
 <translation id="5809516625706423866">Det går inte att ansluta till internet. HTTP 401 Åtkomst nekad. Kontrollera proxykonfigurationen.</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="8054200348483755053">Brave har upptäckt att dessa objekt innehåller skadlig programvara:</translation>
@@ -258,6 +263,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="608006075545470555">Lägg till en jobbprofil i den här webbläsaren</translation>
 <translation id="5849446944780602366">Anpassa och styr Brave. En uppdatering är tillgänglig.</translation>
 <translation id="5505258595603236622">När inställningen är aktiverad sparar Brave batteri genom att begränsa aktivitet i bakgrunden och visuella effekter, till exempel jämnare scrollning och bildfrekvenser för video.</translation>
+<translation id="5711722515923392428">På • Brave kan inte verifiera var tillägget kommer från</translation>
 <translation id="7433698744896946664">Tillåt att tillägg visar åtkomstförfrågningar i verktygsfältet i Brave</translation>
 <translation id="492209281555538239">Det här lösenordet sparas i ditt Brave-konto. Du behöver inte komma ihåg det.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> är skadlig och har blockerats av Brave.</translation>
@@ -292,6 +298,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="6373767849825830651">Brave är en webbläsare som kör webbsidor och appar blixtsnabbt. Den är snabb, stabil och lätt att använda. Surfa säkrare med Braves skydd mot skadliga program och lösenordsfiske.</translation>
 <translation id="2139300032719313227">Starta om Chrome OS</translation>
 <translation id="638302211119176182">Brave läser in ännu fler sidor i förväg som du troligen kommer att besöka, så att de läses in snabbare när du besöker dem</translation>
+<translation id="890319829408077946">Av • Brave kan inte verifiera var tillägget kommer från</translation>
 <translation id="1684121725014454063">Välkommen till Brave-profiler</translation>
 <translation id="2675662665675552980">Det styr också vilken sida som visas när du startar Brave.</translation>
 <translation id="648319183876919572">Förbättrad säker webbsökning gör mer för att skydda dig mot farliga webbplatser och nedladdningar</translation>
@@ -314,6 +321,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="1489465648257900784">Din profil kan inte användas eftersom den kommer från en nyare version av Brave.
 
 Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog eller använd en nyare version av Brave.</translation>
+<translation id="1505112054322049777">Om du vill få tillgång till anpassning och andra funktioner kan du ta med Brave i webb- och appaktiviteten och de länkade Brave-tjänsterna</translation>
 <translation id="6666624454809779082">Brave har redan installerats för alla användare på datorn.</translation>
 <translation id="5360050006043219962">Logga in och aktivera synkronisering om du vill få tillgång till dina saker i Brave på olika enheter.</translation>
 <translation id="3136039682492230890">Den här filen bör genomsökas eftersom den kan vara farlig.</translation>
@@ -341,9 +349,11 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="1008530050039597147">Du behöver ge Brave kamerabehörighet för den här webbplatsen</translation>
 <translation id="1197672524850678392">Det gick inte att starta Brave. Försök igen.</translation>
 <translation id="3405035915691517126">Brave kan inte kontrollera dina lösenord. Försök igen om ett dygn.</translation>
+<translation id="3074679259444363247">Brave behöver omgivelseförståelse och behörighet för handspårning för att starta en omslutande session</translation>
 <translation id="5755581833598928580">Använd Brave varje gång du klickar på länkar i meddelanden, dokument och andra appar</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
 <translation id="713191641919118540">Braves uppskattning av dina intressen</translation>
+<translation id="5468053269968670855">{NUM_EXTENSIONS,plural, =1{Vi rekommenderar att du tar bort detta}other{Vi rekommenderar att du tar bort dessa}}</translation>
 <translation id="9068395155143628872">Genom annonsmätning kan webbplatser du besöker begära information från Brave som hjälper dem att mäta annonsernas resultat. Med annonsmätning begränsas spårningen från webbplats till webbplats genom att så lite information som möjligt överförs mellan webbplatserna.</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>
 <translation id="3403365884036456766">Inställningsfilen är skadad eller ogiltig.
@@ -352,6 +362,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="7339898014177206373">Nytt fönster</translation>
 <translation id="3511996232906761537">Här finns webben, bokmärken och allt annat du använder Brave till.</translation>
 <translation id="5380963249588143069">Systemadministratören har konfigurerat Brave så att <ph name="TARGET_URL_HOSTNAME"/> öppnas i <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
+<translation id="8580803879249090057">Den här nedladdningen blockerades av Brave eftersom filen kan skada dina personliga konton och sociala nätverkskonton, bland annat <ph name="USER_EMAIL"/></translation>
 <translation id="38294420683216447">Du kan hålla dina saker i Brave åtskilda med hjälp av Brave-profiler. Det gör det enklare att skilja på nytta och nöje.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Du behöver ge Brave behörighet att använda kameran på webbplatsen</translation>
@@ -378,6 +389,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="7963515534397191222">Det gick inte att uppdatera Brave till den senaste versionen. Därför går du miste om nya funktioner och säkerhetskorrigeringar.</translation>
 <translation id="7872446069773932638">Laddar ned … <ph name="SECONDS"/> sekund/sekunder återstår</translation>
 <translation id="1977195831772110829"><ph name="BEGIN_BOLD"/>Så här kan du hantera dina uppgifter:<ph name="END_BOLD"/> För att skydda din integritet raderar vi automatiskt intressen som är äldre än fyra veckor. Medan du surfar kan ett intresse dyka upp på listan igen. Du kan också ta bort intressen som du inte vill att Brave ska inkludera.</translation>
+<translation id="5687542525349822727">Ställ in Brave som standardwebbläsare</translation>
 <translation id="2925193881330501265">Du var inloggad i Brave som <ph name="USER_EMAIL_ADDRESS"/>. Använd samma konto när du loggar in igen.</translation>
 <translation id="6915252145142862992">Det här är en sekundär installation av Brave. Det går inte att göra den till standardwebbläsare.</translation>
 <translation id="7685904775439037072">När du har gett Brave åtkomst kan webbplatser begära att få åtkomst.</translation>
@@ -389,6 +401,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="813913629614996137">Initierar …</translation>
 <translation id="7550680632761245819">Aktivera ytterligare skydd i Braves JavaScript- och WebAssembly-motor</translation>
 <translation id="9067428552314418522">Filen är farlig och har blockerats av Brave.</translation>
+<translation id="1755067029031059271">Brave kan inte verifiera var tillägget kommer från. Det kan vara osäkert. Ta bort det från Brave så att det inte längre kan se och ändra data, inklusive personliga uppgifter, på webbplatser du besöker.</translation>
 <translation id="8207657266087451193">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave så att beskrivningen kan genereras. Du kan när som helst inaktivera den här inställningen.</translation>
 <translation id="8622246347342688645">Brave kan inte kontrollera dina lösenord eftersom du inte är inloggad</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave visar en varning<ph name="END_LINK"/> om osäkra webbplatser och nedladdningar</translation>
@@ -433,6 +446,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8986207147630327271">Du lägger till en jobbprofil i den här webbläsaren och ger administratören kontrollen enbart över jobbprofilen.</translation>
 <translation id="3424657754843264466">Hantera Brave-profiler</translation>
 <translation id="82609232232243542">Logga in i Brave</translation>
+<translation id="7055223246119657449">Den här nedladdningen blockerades av Brave eftersom arkivfilen innehåller andra filer som kan dölja skadlig programvara</translation>
 <translation id="3273774796888928550">Logga in i Brave. Om du bara vill logga in en gång med ett konto kan du <ph name="GUEST_LINK_BEGIN"/>använda enheten som gäst<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave avslutades automatiskt</translation>
 <translation id="5173820533850252773">Den här versionen av Brave är inaktuell</translation>

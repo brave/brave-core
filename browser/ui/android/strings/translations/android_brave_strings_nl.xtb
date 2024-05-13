@@ -91,6 +91,8 @@
 <translation id="1005372663692637999">Blokkeert de elementen voor de volgende content en aftiteling op youtube.com.</translation>
 <translation id="5152595963250646670">Afleidende elementen van YouTube blokkeren</translation>
 <translation id="2998960761270772157">Blokkeert de elementen voor aanmelden, menu, reacties en video-informatie op youtube.com.</translation>
+<translation id="8531835121131500698">YouTube Shorts blokkeren</translation>
+<translation id="2167271714269158912">Blokkeer Shorts van de startpagina, trendingpagina en zoekresultaten op youtube.com.</translation>
 <translation id="6052725679982758334">Sociale media blokkeren</translation>
 <translation id="7498695072878479744">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
@@ -296,14 +298,9 @@
 <translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
 <translation id="2369994359029526515">Niet-geverifieerde ontwikkelaar</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="7861645265922445992">Beloningen claimen</translation>
 <translation id="1848737374354350807">Balance</translation>
 <translation id="4781696154289395607">Jij hebt <ph name="BAT_VALUE"/> BAT bijgedragen.</translation>
 <translation id="2429828319207652823">Er is een probleem opgetreden bij het verwerken van je bijdrage.</translation>
-<translation id="2221902203895354376">Er is een tokentoewijzing beschikbaar!</translation>
-<translation id="2377929997600454162">Uw advertentiebeloningen voor <ph name="MONTH_VALUE"/> zijn er!</translation>
-<translation id="2716238748894345194">Beloningen van <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
-<translation id="1649629664206601032">U hebt nog <ph name="TOKEN"/> dagen om te claimen</translation>
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
 <translation id="8038539967102225446">Brave Ads zijn hier!</translation>
@@ -458,7 +455,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3763681089644577874">Cookies blokkeren</translation>
 <translation id="614747795780742163">Voorkomt dat websites informatie over je eerdere bezoeken opslaan</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
-<translation id="4941539331405513605">Cross-site cookies blokkeren</translation>
+<translation id="6196640612572343990">Indirecte cookies blokkeren</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="1553643198679271031">Off-The-Record aanvragen</translation>
 <translation id="4891600875049212418">Ga off the record wanneer u gevoelige sites bezoekt</translation>
@@ -604,6 +601,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
 <translation id="5333225216561354793">We vereisen dat u onderstaande items bevestigt</translation>
+<translation id="6937275455070754004">Kies welke blockchains u wilt gebruiken in uw wallet.</translation>
 <translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Brave geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
 <translation id="4565891212173086999">Ik heb de <ph name="CLICK_START"/>gebruiksvoorwaarden<ph name="CLICK_END"/> gelezen en ga hiermee akkoord.</translation>
 <translation id="3933122286596948824">Jouw herstelwoorden</translation>
@@ -611,12 +609,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
 <translation id="111912712268284159">Ik heb mijn herstelzin op een veilige plek opgeslagen.</translation>
 <translation id="6896758677409633944">Kopiëren</translation>
-<translation id="1783600039044302171">Je crypto met een wachtwoord beveiligen</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="3038243139480464605">Wachtwoord verifiëren</translation>
 <translation id="3043677904160378840">Wachtwoorden moeten minimaal 8 tekens lang zijn</translation>
 <translation id="7396672979287122068">Geverifieerd wachtwoord komt niet overeen</translation>
-<translation id="7084181009966710506">Wallet wordt aangemaakt...</translation>
+<translation id="1566412704591731844">Uw wallet wordt aangemaakt...</translation>
+<translation id="7779823116893018906">Dit kan enkele seconden duren...</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
 <translation id="3448492834076427715">Account bijwerken</translation>
@@ -639,6 +637,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3157931365184549694">Herstel</translation>
 <translation id="5844138175312846408">Hebt u al een wallet?</translation>
 <translation id="2502258949541727762">Voordat we beginnen</translation>
+<translation id="4303748097351941030">Ondersteunde netwerken</translation>
+<translation id="4204268048253692928">U kunt op elk gewenst moment netwerken toevoegen in instellingen.</translation>
+<translation id="2523174693142405417">Netwerken zoeken</translation>
+<translation id="1164748583090434571">Testnetwerken weergeven</translation>
+<translation id="935220650946301698">Doorgaan met <ph name="NUMBER"/> netwerken</translation>
 <translation id="8248460961680233459">Een wachtwoord maken</translation>
 <translation id="2789310860394340571">Je gebruikt dit wachtwoord om toegang tot je wallet te krijgen.</translation>
 <translation id="2136372518715274136">Nieuw wachtwoord invoeren</translation>
@@ -845,7 +848,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7791543448312431591">Voeg toe</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="2653659639078652383">Verzenden</translation>
-<translation id="4945690646623486292">Netwerk selecteren</translation>
+<translation id="4556601961751528347">Gekoppeld account wijzigen</translation>
 <translation id="5233638681132016545">Nieuw tabblad</translation>
 <translation id="8006088103295786154">Toegang tot Brave Wallet</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
@@ -871,6 +874,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4255623233927788178">Weergeven op Blokkering Explorer</translation>
 <translation id="8274201358637112807">Deze pagina wil communiceren met Brave Wallet</translation>
 <translation id="3355936511340229503">Verbindingsfout</translation>
+<translation id="1531836666020185856">Uitgelicht</translation>
 <translation id="4891604214809245310">Kan netwerk niet instellen op <ph name="NETWORK_NAME"/></translation>
 <translation id="685345388423515592">Het lijkt erop dat u andere VPN's op dit apparaat hebt ingeschakeld op 'Altijd aan'. Om Brave Firewall + VPN in te schakelen, schakelt u eerst de 'Altijd aan'-instelling uit voor andere VPN's voordat u opnieuw verbinding maakt. Als het probleem zich blijft voordoen, probeer dan andere VPN's te verwijderen.</translation>
 <translation id="85136472535634474">VPN-instellingen openen</translation>
@@ -1038,7 +1042,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1677961202754619328">Volgens Uphold gelden er momenteel enkele beperkingen voor uw Uphold-account. Log in bij uw Uphold-account en controleer of er meldingen zijn en of er gegevens ontbreken. Probeer het vervolgens opnieuw.</translation>
 <translation id="5425006356459378415">Brave Rewards is niet beschikbaar</translation>
 <translation id="833643743158564518">Nieuwe aanmeldingen voor Brave Rewards zijn momenteel uitgeschakeld in uw regio. U kunt het later echter altijd opnieuw proberen. <ph name="LEARN_MORE"/></translation>
-<translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="282560918037172384">Testnetwerken</translation>
@@ -1178,4 +1181,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3251885322612056119">Bijgewerkte Servicevoorwaarden</translation>
 <translation id="4049035689681585146">We hebben de Servicevoorwaarden voor Brave Rewards bijgewerkt. We hebben deze updates doorgevoerd om onze voorwaarden te verduidelijken en om ervoor te zorgen dat ze nieuwe functies dekken. Als u Brave Rewards blijft gebruiken, gaat u akkoord met de bijgewerkte Servicevoorwaarden. Als u niet akkoord gaat, kunt u Brave Rewards <ph name="RESET_START"/>opnieuw instellen<ph name="RESET_END"/>, waardoor de functie wordt uitgeschakeld.</translation>
 <translation id="2165953574528546737">Raadpleeg de <ph name="TOS_START"/>Servicevoorwaarden van Brave Rewards<ph name="TOS_END"/></translation>
+<translation id="1381108437654541567">Meerdere vensters inschakelen</translation>
+<translation id="6167344249617630304">Open maximaal vijf vensters tegelijk en verplaats tabbladen van het ene venster naar het andere</translation>
+<translation id="1063948063403254568">Meerdere vensters gedetecteerd</translation>
+<translation id="4661882208707630158">Voeg tabbladen samen in een ander Brave-venster of sluit andere Brave-vensters voordat u de functie voor meerdere vensters uitschakelt.</translation>
+<translation id="6891382640886173702">Vensters samenvoegen</translation>
+<translation id="2912247081180973411">Vensters sluiten</translation>
+<translation id="4010699428656610296">Voeg andere tabbladen samen in een ander Brave-venster.</translation>
 </translationbundle>
