@@ -206,12 +206,6 @@
                     }
                   }
                 },
-                "channels": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "creatives": {
                   "type": "array",
                   "items": {
