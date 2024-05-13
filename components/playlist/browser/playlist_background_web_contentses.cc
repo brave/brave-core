@@ -52,7 +52,7 @@ PlaylistBackgroundWebContentses::~PlaylistBackgroundWebContentses() = default;
 
 void PlaylistBackgroundWebContentses::Add(
     const GURL& url,
-    PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+    base::OnceCallback<void(GURL, bool)> callback,
     base::TimeDelta timeout) {
   auto web_contents = content::WebContents::Create(
       content::WebContents::CreateParams(context_));
@@ -61,7 +61,7 @@ void PlaylistBackgroundWebContentses::Add(
   auto [callback_for_media_handler, callback_for_timer] =
       base::SplitOnceCallback(base::BindOnce(
           &PlaylistBackgroundWebContentses::Remove, weak_factory_.GetWeakPtr(),
-          web_contents.get(), std::move(on_media_detected_callback)));
+          web_contents.get(), std::move(callback)));
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
       web_contents.get(), service_.get(),
@@ -79,8 +79,7 @@ void PlaylistBackgroundWebContentses::Add(
 
   background_web_contentses_[std::move(web_contents)].Start(
       FROM_HERE, timeout,
-      base::BindOnce(std::move(callback_for_timer), GURL(),
-                     std::vector<mojom::PlaylistItemPtr>()));
+      base::BindOnce(std::move(callback_for_timer), GURL(), false));
 }
 
 void PlaylistBackgroundWebContentses::Reset() {
@@ -89,15 +88,15 @@ void PlaylistBackgroundWebContentses::Reset() {
 
 void PlaylistBackgroundWebContentses::Remove(
     content::WebContents* web_contents,
-    PlaylistMediaHandler::OnceCallback on_media_detected_callback,
+    base::OnceCallback<void(GURL, bool)> callback,
     GURL url,
-    std::vector<mojom::PlaylistItemPtr> items) {
+    bool is_mse) {
   const auto it = background_web_contentses_.find(web_contents);
   CHECK(it != background_web_contentses_.cend());
   it->second.Stop();  // no-op if called by the timer
   background_web_contentses_.erase(it);
 
-  std::move(on_media_detected_callback).Run(std::move(url), std::move(items));
+  std::move(callback).Run(std::move(url), is_mse);
 }
 
 }  // namespace playlist

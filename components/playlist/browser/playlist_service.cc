@@ -307,12 +307,20 @@ void PlaylistService::AddMediaFilesFromItems(
     const std::string& playlist_id,
     bool cache,
     AddMediaFilesCallback callback,
-    std::vector<mojom::PlaylistItemPtr> items) {
+    std::vector<mojom::PlaylistItemPtr> items,
+    GURL url,
+    bool is_mse) {
   if (items.empty()) {
     if (callback) {
       std::move(callback).Run({});
     }
     return;
+  }
+
+  CHECK(items.size() == 1);
+  if (items[0]->is_blob_from_media_source) {
+    items[0]->media_path = items[0]->media_source = url;
+    items[0]->is_blob_from_media_source = is_mse;
   }
 
   auto target_playlist_id =
@@ -531,16 +539,21 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     const std::string& playlist_id,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
-  auto add_media_files_from_items = base::IgnoreArgs<GURL>(base::BindOnce(
+  CHECK(items.size() == 1);
+
+  const bool needs_background = items[0]->is_blob_from_media_source;
+  const GURL url = items[0]->page_source;
+
+  auto add_media_files_from_items = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, GetWeakPtr(), playlist_id,
       can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-      std::move(callback)));
+      std::move(callback), std::move(items));
 
-  if (items.size() == 1 && items[0]->is_blob_from_media_source) {
-    background_web_contentses_->Add(items[0]->page_source,
+  if (needs_background) {
+    background_web_contentses_->Add(url,
                                     std::move(add_media_files_from_items));
   } else {
-    std::move(add_media_files_from_items).Run(GURL(), std::move(items));
+    std::move(add_media_files_from_items).Run(GURL(), false);
   }
 }
 
@@ -906,9 +919,10 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  background_web_contentses_->Add(
-      item->page_source,
-      base::IgnoreArgs<GURL>(std::move(update_media_src_and_recover)));
+  // TODO(sszaloki): fix this use-case
+  // background_web_contentses_->Add(
+  //     item->page_source,
+  //     base::IgnoreArgs<GURL>(std::move(update_media_src_and_recover)));
 }
 
 void PlaylistService::RemoveLocalDataForItemsInPlaylist(
