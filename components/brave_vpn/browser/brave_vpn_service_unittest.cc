@@ -125,8 +125,9 @@ std::string GenerateTestingCreds(const std::string& domain,
   auto now = base::Time::Now();
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
+  // Give sufficient additional years to prevent it expire.
   std::string year =
-      base::NumberToString(active_subscription ? exploded.year + 1 : 0);
+      base::NumberToString(active_subscription ? exploded.year + 10 : 0);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{year}", year);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{domain}", domain);
   return json;
