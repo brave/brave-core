@@ -323,7 +323,8 @@ public class KeyringModel implements KeyringServiceObserver {
                                         countCreatedAccounts++;
                                         if (countCreatedAccounts == createAccounts.size()) {
                                             createAccountsLiveData.removeObserver(this);
-                                            callback.call(recoveryPhrases);
+                                            mKeyringService.getAllAccounts(allAccounts -> mKeyringService.setSelectedAccount(
+                                                    allAccounts.ethDappSelectedAccount.accountId, success1 -> callback.call(recoveryPhrases)));
                                         }
                                     }
                                 });
