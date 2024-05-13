@@ -620,6 +620,8 @@ public class BrowserViewController: UIViewController {
     recordAdsUsageType()
     recordDefaultBrowserLikelyhoodP3A()
     recordWeeklyUsage()
+    recordURLBarSubmitLocationP3A(from: nil)
+    recordCreateTabAction(location: nil)
 
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
@@ -2614,6 +2616,7 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 
 extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
+    recordCreateTabAction(location: .toolbar)
     openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
@@ -3077,6 +3080,10 @@ extension BrowserViewController: SessionRestoreScriptHandlerDelegate {
 extension BrowserViewController: TabTrayDelegate {
   func tabOrderChanged() {
     tabsBar.updateData()
+  }
+
+  func didCreateTab() {
+    recordCreateTabAction(location: .tabTray)
   }
 }
 

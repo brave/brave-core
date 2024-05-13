@@ -19,6 +19,9 @@ protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
   /// This info can be used to update UI in other place, for example update order of tabs in tabs bar.
   func tabOrderChanged()
+  /// Notifies the delegate that the user tapped the add button to create a tab and the tab tray
+  /// used the tab manager to create one
+  func didCreateTab()
 }
 
 class TabTrayController: AuthenticationController {
@@ -667,6 +670,8 @@ class TabTrayController: AuthenticationController {
     } else {
       tabManager.addTabAndSelect(isPrivate: privateMode)
     }
+
+    delegate?.didCreateTab()
   }
 
   @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {

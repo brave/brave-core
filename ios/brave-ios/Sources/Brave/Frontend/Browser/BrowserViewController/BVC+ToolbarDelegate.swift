@@ -236,6 +236,7 @@ extension BrowserViewController: TopToolbarDelegate {
     isBraveSearchPromotion: Bool = false,
     isUserDefinedURLNavigation: Bool = false
   ) {
+    recordURLBarSubmitLocationP3A(from: tabManager.selectedTab)
     processAddressBarTask?.cancel()
     processAddressBarTask = Task { @MainActor in
       if !isBraveSearchPromotion,
@@ -1037,6 +1038,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    recordCreateTabAction(location: .toolbar)
     self.openBlankNewTab(
       attemptLocationFieldFocus: false,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
