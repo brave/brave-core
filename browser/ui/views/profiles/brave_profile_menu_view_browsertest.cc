@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -19,6 +20,8 @@
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/test/widget_activation_waiter.h"
+#include "ui/views/widget/widget.h"
 
 class BraveProfileMenuViewTest : public InProcessBrowserTest {
  public:
@@ -28,33 +31,47 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
   ~BraveProfileMenuViewTest() override = default;
 
  protected:
-  AvatarToolbarButton* avatar_button() {
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
-    AvatarToolbarButton* button =
-        browser_view->toolbar_button_provider()->GetAvatarToolbarButton();
-    DCHECK(button);
-    return button;
-  }
-
-  void OpenProfileMenuView() {
+  void ClickAvatarButton() {
     ui::MouseEvent press(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     ui::MouseEvent release(ui::ET_MOUSE_RELEASED, gfx::Point(), gfx::Point(),
                            ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
-    avatar_button()->OnMousePressed(press);
-    avatar_button()->OnMousePressed(release);
-    base::RunLoop().RunUntilIdle();
-    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser());
-    EXPECT_TRUE(coordinator->IsShowing());
+    BrowserView* browser_view =
+        BrowserView::GetBrowserViewForBrowser(browser());
+    AvatarToolbarButton* button =
+        browser_view->toolbar_button_provider()->GetAvatarToolbarButton();
+    ASSERT_TRUE(button);
+    button->OnMousePressed(press);
+    button->OnMousePressed(release);
   }
 
   ProfileMenuViewBase* profile_menu() {
     auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser());
-    ProfileMenuViewBase* bubble =
-        coordinator ? coordinator->GetProfileMenuViewBaseForTesting() : nullptr;
-    DCHECK(bubble);
-    return bubble;
+    return coordinator ? coordinator->GetProfileMenuViewBaseForTesting()
+                       : nullptr;
+  }
+
+  void OpenProfileMenuView() {
+    ClickAvatarButton();
+
+    ProfileMenuViewBase* menu = profile_menu();
+    ASSERT_TRUE(menu);
+    menu->set_close_on_deactivate(false);
+
+#if BUILDFLAG(IS_MAC)
+    base::RunLoop().RunUntilIdle();
+#else
+    views::Widget* menu_widget = menu->GetWidget();
+    ASSERT_TRUE(menu_widget);
+    if (menu_widget->CanActivate()) {
+      views::test::WaitForWidgetActive(menu_widget, /*active=*/true);
+    } else {
+      LOG(ERROR) << "menu_widget can not be activated";
+    }
+#endif
+
+    auto* coordinator = ProfileMenuCoordinator::FromBrowser(browser());
+    EXPECT_TRUE(coordinator->IsShowing());
   }
 
   std::u16string GetProfileName() {
