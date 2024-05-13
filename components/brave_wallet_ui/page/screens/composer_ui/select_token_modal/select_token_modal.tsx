@@ -105,7 +105,7 @@ const checkIsDropdownOptionDisabled = (
   network: BraveWallet.NetworkInfo
 ) => {
   if (
-    account.address === AllAccountsOption.address ||
+    account.accountId.uniqueKey === AllAccountsOption.accountId.uniqueKey ||
     network.chainId === AllNetworksOption.chainId
   ) {
     return false
@@ -297,7 +297,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       const balancesMap: Record<string, string> = {}
       for (const asset of tokensBySelectedComposerOption) {
         balancesMap[getAssetIdKey(asset)] =
-          selectedAccountFilter.address === AllAccountsOption.address
+          selectedAccountFilter.accountId.uniqueKey ===
+          AllAccountsOption.accountId.uniqueKey
             ? getFullAssetBalance(
                 asset,
                 networks,
@@ -380,7 +381,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [tokensSortedByValue, selectedNetworkFilter])
 
     const tokensFilteredByAccount = React.useMemo(() => {
-      if (selectedAccountFilter.address === AllAccountsOption.address) {
+      if (
+        selectedAccountFilter.accountId.uniqueKey ===
+        AllAccountsOption.accountId.uniqueKey
+      ) {
         return tokensFilteredByNetwork
       }
 
@@ -481,9 +485,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const onSelectAccountFilter = React.useCallback(
-      (address: string) => {
+      (uniqueKey: string) => {
         const account =
-          accounts.find((a) => a.accountId.address === address) ??
+          accounts.find((a) => a.accountId.uniqueKey === uniqueKey) ??
           AllAccountsOption
         if (checkIsDropdownOptionDisabled(account, selectedNetworkFilter)) {
           return
