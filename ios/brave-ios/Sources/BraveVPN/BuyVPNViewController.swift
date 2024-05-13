@@ -15,7 +15,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
   let iapObserver: BraveVPNInAppPurchaseObserver
   private var iapRestoreTimer: Timer?
 
-  var activeSubcriptionChoice: SubscriptionType = .yearly {
+  var activeSubcriptionChoice: VPNSubscriptionType = .yearly {
     didSet {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
     }
@@ -179,7 +179,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
     SKPaymentQueue.default().presentCodeRedemptionSheet()
   }
 
-  private func addPaymentForSubcription(type: SubscriptionType) {
+  private func addPaymentForSubcription(type: VPNSubscriptionType) {
     var subscriptionProduct: SKProduct?
 
     switch type {
@@ -266,6 +266,14 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
       alert.addAction(ok)
       self.present(alert, animated: true)
     }
+  }
+}
+
+// MARK: - BuyVPNVActionDelegate
+
+extension BuyVPNViewController: BuyVPNView.ActionDelegate {
+  func refreshSiteCredentials() {
+    // TODO: Action delegate sites perform
   }
 }
 

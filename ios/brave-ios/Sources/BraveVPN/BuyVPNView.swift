@@ -8,14 +8,18 @@ import Preferences
 import Shared
 import UIKit
 
-enum SubscriptionType: String {
+enum VPNSubscriptionType: String {
   case yearly = "yearly"
   case monthly = "monthly"
 }
 
 class BuyVPNView: UIView {
 
-  var activeSubcriptionChoice: SubscriptionType {
+  protocol ActionDelegate: AnyObject {
+    func refreshSiteCredentials()
+  }
+
+  var activeSubcriptionChoice: VPNSubscriptionType {
     didSet {
       setNeedsLayout()
       layoutIfNeeded()
@@ -146,7 +150,7 @@ class BuyVPNView: UIView {
       $0.textColor = UIColor(braveSystemName: .primitivePrimary20)
       $0.minimumScaleFactor = 0.5
       $0.adjustsFontSizeToFitWidth = true
-      
+
       $0.text = "Already Purchased on brave.com?"
     }
 
@@ -219,11 +223,13 @@ class BuyVPNView: UIView {
     $0.distribution = .fillEqually
   }
 
-  // MARK: - Init/Lifecycle
-
   private let scrollView = UIScrollView()
 
-  init(with activeSubscription: SubscriptionType) {
+  weak var delegate: ActionDelegate?
+
+  // MARK: - Init/Lifecycle
+
+  init(with activeSubscription: VPNSubscriptionType) {
     activeSubcriptionChoice = activeSubscription
 
     super.init(frame: .zero)
@@ -330,7 +336,7 @@ class BuyVPNView: UIView {
   }
 
   @objc func refreshCredentialsAction() {
-    // TODO: Refresh Credentials
+    delegate?.refreshSiteCredentials()
   }
 }
 
