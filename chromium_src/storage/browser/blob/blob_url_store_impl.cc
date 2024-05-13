@@ -14,9 +14,7 @@
 namespace storage {
 
 void BlobURLStoreImpl::Resolve(const GURL& url, ResolveCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
+  if (!IsBlobResolvable(url)) {
     std::move(callback).Run(mojo::NullRemote(), std::nullopt);
     return;
   }
@@ -28,9 +26,7 @@ void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
     const GURL& url,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
     ResolveAsURLLoaderFactoryCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
+  if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt, std::nullopt);
     return;
   }
@@ -43,15 +39,21 @@ void BlobURLStoreImpl::ResolveForNavigation(
     const GURL& url,
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
     ResolveForNavigationCallback callback) {
-  // If a URL is not mapped to the current `storage_key_`, it's likely stored
-  // with a different StorageKey (partitioned) and should not be resolved.
-  if (registry_ && !registry_->IsUrlMapped(url, storage_key_)) {
+  if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
   BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(url, std::move(token),
                                                       std::move(callback));
+}
+
+bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {
+  // Check if the URL is mapped to a BlobURLStore with the current
+  // `storage_key_` or if it's an extension-generated blob.
+  return (registry_ && registry_->IsUrlMapped(url, storage_key_)) ||
+         (url.SchemeIsBlob() &&
+          url::Origin::Create(url).scheme() == "chrome-extension");
 }
 
 }  // namespace storage
