@@ -184,11 +184,7 @@ base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
 
   const PageLandInfo& page_land = page_lands_[tab_id];
 
-  const base::TimeDelta remaining_time =
-      page_land.timer.desired_run_time() - base::TimeTicks::Now();
-  CHECK(!remaining_time.is_negative());
-
-  return remaining_time;
+  return page_land.timer.desired_run_time() - base::TimeTicks::Now();
 }
 
 void SiteVisit::SuspendPageLand(const TabInfo& tab) {
