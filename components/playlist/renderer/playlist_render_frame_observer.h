@@ -21,19 +21,6 @@
 
 namespace playlist {
 
-// `PlaylistRenderFrameObserver` is responsible for injecting scripts into the
-// observed frame, and for sending back found media via the
-// `mojom::PlaylistMediaResponder` interface to the corresponding
-// `PlaylistMediaHandler` in the browser process.
-// The `mojom::PlaylistRenderFrameObserverConfigurator` interface is exposed to
-// the browser process, so that `WebContentsObserver`s can get a chance to
-// initialize scripts before the `RenderFrame` commits the navigation in the
-// renderer. While `PlaylistTabHelper` only uses the media detector script
-// (injected at document end), `PlaylistBackgroundWebContentsHelper` needs the
-// MediaSource API suppressor (injected at document start), too.
-// Currently, Android injects into main (see
-// https://github.com/brave/brave-browser/issues/36443), whereas desktop into
-// `isolated_world_id_` (`ISOLATED_WORLD_ID_BRAVE_INTERNAL`).
 class PlaylistRenderFrameObserver final
     : public content::RenderFrameObserver,
       public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver>,

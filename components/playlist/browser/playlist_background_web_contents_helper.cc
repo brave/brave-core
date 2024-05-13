@@ -57,7 +57,7 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
 void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   // TODO: use heuristics on when the site finished loading the page
-  timer_.Start(FROM_HERE, base::Seconds(1), this,
+  timer_.Start(FROM_HERE, base::Seconds(2), this,
                &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
 }
 
@@ -71,6 +71,9 @@ void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
       urls.begin(), urls.end(), [](const auto& e1, const auto& e2) {
         return e1.second.first.spec().size() < e2.second.first.spec().size();
       });
+
+  // TODO(sszaloki): do url.is_valid() check here!!!
+  DVLOG(-1) << "URL extracted from the background: " << url_it->second.first;
 
   std::move(callback_).Run(url_it->second.first, url_it->second.second);
 }
