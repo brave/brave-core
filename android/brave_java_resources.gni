@@ -915,6 +915,7 @@ brave_java_resources = [
   "java/res/layout/item_fragment_two_line_item.xml",
   "java/res/layout/item_fragment_two_line_single_text.xml",
   "java/res/layout/item_network_selector.xml",
+  "java/res/layout/label_network_selector.xml",
   "java/res/layout/item_news_settings.xml",
   "java/res/layout/item_news_settings_section.xml",
   "java/res/layout/item_two_line_horizontal.xml",
