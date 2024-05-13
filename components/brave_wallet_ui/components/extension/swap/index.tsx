@@ -290,17 +290,11 @@ function SwapAsset(props: SwapAssetProps) {
           ) : (
             <>
               {asset.isErc721 ? (
-                <NftIconWithPlaceholder
-                  asset={asset}
-                  network={network}
-                />
+                <NftIconWithPlaceholder asset={asset} />
               ) : (
-                <AssetIconWithPlaceholder
-                  asset={asset}
-                  network={network}
-                />
+                <AssetIconWithPlaceholder asset={asset} />
               )}
-              {network && asset.contractAddress !== '' && (
+              {asset.contractAddress !== '' && (
                 <NetworkIconWrapper>
                   <CreateNetworkIcon
                     network={network}

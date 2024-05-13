@@ -135,10 +135,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
           marginRight='0px'
           title={getTokenVerificationString}
         >
-          <AssetIconWithPlaceholder
-            asset={asset}
-            network={network}
-          />
+          <AssetIconWithPlaceholder asset={asset} />
           {!transfer.asset.verified && (
             <NetworkIconWrapper>
               <UnverifiedTokenIndicator />
@@ -232,14 +229,10 @@ export const NonFungibleErcTokenTransfer = ({
           {asset.isNft ? (
             <NftAssetIconWithPlaceholder
               asset={asset}
-              network={network}
               iconStyles={NFT_ICON_STYLE}
             />
           ) : (
-            <AssetIconWithPlaceholder
-              asset={asset}
-              network={network}
-            />
+            <AssetIconWithPlaceholder asset={asset} />
           )}
         </IconsWrapper>
 

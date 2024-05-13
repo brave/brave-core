@@ -342,7 +342,6 @@ export const ConfirmTransactionPanel = () => {
           {(isERC721TransferFrom || isERC721SafeTransferFrom) && (
             <NftAssetIconWithPlaceholder
               asset={transactionDetails.erc721BlockchainToken}
-              network={transactionsNetwork}
             />
           )}
 

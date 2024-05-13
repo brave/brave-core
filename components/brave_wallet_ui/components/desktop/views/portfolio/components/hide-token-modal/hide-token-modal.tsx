@@ -29,7 +29,6 @@ import { AssetIcon } from '../../style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedAssetNetwork: BraveWallet.NetworkInfo
   onClose: () => void
   onHideAsset: () => void
 }
@@ -37,7 +36,7 @@ interface Props {
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big' })
 
 export const HideTokenModal = (props: Props) => {
-  const { selectedAsset, selectedAssetNetwork, onClose, onHideAsset } = props
+  const { selectedAsset, onClose, onHideAsset } = props
 
   return (
     <PopupModal
@@ -47,10 +46,7 @@ export const HideTokenModal = (props: Props) => {
     >
       <StyledWrapper>
         <IconWrapper>
-          <AssetIconWithPlaceholder
-            asset={selectedAsset}
-            network={selectedAssetNetwork}
-          />
+          <AssetIconWithPlaceholder asset={selectedAsset} />
         </IconWrapper>
         <TokenSymbol>{selectedAsset.symbol}</TokenSymbol>
         <Instructions>

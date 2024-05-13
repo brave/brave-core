@@ -197,10 +197,7 @@ export const AssetDetailsHeader = (props: Props) => {
         >
           {selectedAsset ? (
             <IconsWrapper>
-              <AssetIconWithPlaceholder
-                asset={selectedAsset}
-                network={selectedAssetsNetwork}
-              />
+              <AssetIconWithPlaceholder asset={selectedAsset} />
               {selectedAssetsNetwork &&
                 checkIfTokenNeedsNetworkIcon(
                   selectedAssetsNetwork,
