@@ -127,10 +127,6 @@ source_set("extensions") {
   }
 
   if (enable_ipfs) {
-    sources += [
-      "api/ipfs_api.cc",
-      "api/ipfs_api.h",
-    ]
     deps += [ "//brave/components/ipfs" ]
   }
 

@@ -21,10 +21,6 @@ json_features("api_features") {
   if (ethereum_remote_client_enabled) {
     sources += [ "_brave_wallet_api_features.json" ]
   }
-
-  if (enable_ipfs) {
-    sources += [ "_ipfs_api_features.json" ]
-  }
 }
 
 json_features("permission_features") {
@@ -57,10 +53,6 @@ brave_extensions_api_schema_sources = [
   "greaselion.json",
   "rewards_notifications.json",
 ]
-
-if (enable_ipfs) {
-  brave_extensions_api_schema_sources += [ "ipfs.json" ]
-}
 
 if (ethereum_remote_client_enabled) {
   brave_extensions_api_schema_sources += [ "brave_wallet.json" ]
