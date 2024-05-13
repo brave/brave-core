@@ -28,6 +28,12 @@ enum PlaylistEvent {
   kUpdated,
 };
 
+[EnableIf=is_android]
+enum HlsContentStatus {
+  kReady,    // Content is already prepared
+  kNotReady, // COntent needs preparing
+};
+
 struct Playlist {
   string? id;
   string name;
@@ -74,6 +80,12 @@ struct PlaylistItem {
   // user copied this item to another list.
   array<string> parents;
   bool is_selected;
+};
+
+[EnableIf=is_android]
+struct HlsContent {
+  string playlist_item_id;
+  bool is_prepared;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -145,6 +157,18 @@ interface PlaylistService {
    pending_remote<PlaylistStreamingObserver> observer);
   ClearAllQueries();
   CancelQuery(string query_id);
+
+  [EnableIf=is_android]
+  AddHlsContent(HlsContent hls_content);
+
+  [EnableIf=is_android]
+  GetAllHlsContent() => (array<HlsContent> hls_contents);
+
+  [EnableIf=is_android]
+  GetFirstHlsContent() => (HlsContent hls_content);
+
+  [EnableIf=is_android]
+  RemoveHlsContent(string playlist_item_id);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };

@@ -480,16 +480,16 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         PlaylistPreferenceUtils.defaultPrefs(requireContext()).recentlyPlayedPlaylist =
             GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
         val subItemMediaList = mutableListOf<MediaItem>()
-        mPlaylistModel.items.forEach {
-            if (PlaylistUtils.isPlaylistItemCached(it)) {
-                val mediaItem = MediaItemUtil.buildMediaItem(
-                    it,
-                    mPlaylistModel.id,
-                    if (mPlaylistModel.id == DEFAULT_PLAYLIST) resources.getString(R.string.playlist_play_later) else mPlaylistModel.name,
-                )
-                subItemMediaList.add(mediaItem)
-            }
-        }
+        // mPlaylistModel.items.forEach {
+        //     if (PlaylistUtils.isPlaylistItemCached(it)) {
+        //         val mediaItem = MediaItemUtil.buildMediaItem(
+        //             it,
+        //             mPlaylistModel.id,
+        //             if (mPlaylistModel.id == DEFAULT_PLAYLIST) resources.getString(R.string.playlist_play_later) else mPlaylistModel.name,
+        //         )
+        //         subItemMediaList.add(mediaItem)
+        //     }
+        // }
         mScope.launch {
             // val selectedPlaylistItem = mPlaylistModel.items[position]
             // val lastPlayedPositionModel =

@@ -12,6 +12,7 @@ import android.app.TaskStackBuilder
 import android.content.Intent
 import android.media.session.PlaybackState
 import android.os.Handler
+import org.chromium.chrome.R
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.media3.common.AudioAttributes
@@ -28,9 +29,6 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import org.chromium.base.BravePreferenceKeys
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
@@ -39,6 +37,7 @@ import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.setLatestPlaylistItem
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.playlist.mojom.PlaylistItem
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +51,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
+import org.chromium.base.ContextUtils
 
 @UnstableApi
 class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
@@ -59,10 +59,6 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     private lateinit var mMediaLibrarySession: MediaLibrarySession
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
-
-    private val mPlaylistRepository: PlaylistRepository by lazy {
-        PlaylistRepository(applicationContext)
-    }
 
     companion object {
         private lateinit var mPlayer: ExoPlayer
@@ -76,30 +72,30 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
 
         private var mediaItemsInPlayer: ArrayList<MediaItem> = ArrayList()
 
-        fun addNewPlaylistItemModel(newPlaylistItemModel: PlaylistItemModel) {
-            if (newPlaylistItemModel.playlistId == currentPlaylistId) {
+        fun addNewPlaylistItemModel(newPlaylistItem: PlaylistItem) {
+            if (ConstantUtils.DEFAULT_PLAYLIST == currentPlaylistId) {
                 val mediaItem = MediaItemUtil.buildMediaItem(
-                    newPlaylistItemModel,
-                    newPlaylistItemModel.playlistId,
-                    newPlaylistItemModel.name, // TODO update playlist name here
+                    newPlaylistItem,
+                    ConstantUtils.DEFAULT_PLAYLIST,
+                    ContextUtils.getApplicationContext().resources.getString(R.string.playlist_play_later), // TODO update playlist name here
                 )
                 mediaItemsInPlayer.add(mediaItem)
                 mPlayer.addMediaItem(mediaItem)
             }
         }
 
-        fun removePlaylistItemModel(playlistItemModelId: String) {
+        fun removePlaylistItemModel(playlistItemId: String) {
             mediaItemsInPlayer.forEachIndexed { index, mediaItem ->
-                if (mediaItem.mediaId == playlistItemModelId && mediaItem.mediaId != currentPlaylistId) {
+                if (mediaItem.mediaId == playlistItemId && mediaItem.mediaId != currentPlaylistId) {
                     mPlayer.removeMediaItem(index)
                     mediaItemsInPlayer.removeAt(index)
                 }
             }
         }
 
-        fun reorderPlaylistItemModel(playlistItemModelList : List<PlaylistItemModel>) {
+        fun reorderPlaylistItemModel(playlistItemList : List<PlaylistItem>) {
             mediaItemsInPlayer.forEachIndexed { oldIndex, mediaItem ->
-               val newIndex = playlistItemModelList.indexOfFirst{ it.id == mediaItem.mediaId }
+               val newIndex = playlistItemList.indexOfFirst{ it.id == mediaItem.mediaId }
                 mPlayer.moveMediaItem(oldIndex, newIndex)
             }
         }
@@ -257,8 +253,6 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
                 mediaItem.mediaId.let {
                     mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
-                    // val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
-                    // mPlaylistRepository.insertLastPlayedPosition(lastPlayedPositionModel)
                 }
             }
         }

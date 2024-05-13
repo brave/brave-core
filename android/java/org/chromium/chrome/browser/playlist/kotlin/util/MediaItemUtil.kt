@@ -16,41 +16,41 @@ import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
 import org.chromium.playlist.mojom.PlaylistItem
 
 object MediaItemUtil {
-    @JvmStatic
-    fun buildMediaItem(
-        playlistItemModel: PlaylistItemModel,
-        playlistId: String,
-        playlistName: String,
-    ): MediaItem {
-        val mediaPath = if (playlistItemModel.isCached) {
-            if (MediaUtils.isHlsFile(playlistItemModel.mediaPath)) {
-                playlistItemModel.hlsMediaPath
-            } else {
-                playlistItemModel.mediaPath
-            }
-        } else {
-            playlistItemModel.mediaSrc
-        }
+    // @JvmStatic
+    // fun buildMediaItem(
+    //     playlistItemModel: PlaylistItemModel,
+    //     playlistId: String,
+    //     playlistName: String,
+    // ): MediaItem {
+    //     val mediaPath = if (playlistItemModel.isCached) {
+    //         if (MediaUtils.isHlsFile(playlistItemModel.mediaPath)) {
+    //             playlistItemModel.hlsMediaPath
+    //         } else {
+    //             playlistItemModel.mediaPath
+    //         }
+    //     } else {
+    //         playlistItemModel.mediaSrc
+    //     }
 
-        val bundle = Bundle()
-        bundle.putString(ConstantUtils.PLAYLIST_ID, playlistId)
-        val metadata =
-            MediaMetadata.Builder()
-                .setExtras(bundle)
-                .setTitle(playlistName)
-                .setArtist(playlistItemModel.name)
-                .setArtworkUri(Uri.parse(playlistItemModel.thumbnailPath))
-                .build()
+    //     val bundle = Bundle()
+    //     bundle.putString(ConstantUtils.PLAYLIST_ID, playlistId)
+    //     val metadata =
+    //         MediaMetadata.Builder()
+    //             .setExtras(bundle)
+    //             .setTitle(playlistName)
+    //             .setArtist(playlistItemModel.name)
+    //             .setArtworkUri(Uri.parse(playlistItemModel.thumbnailPath))
+    //             .build()
 
-        return MediaItem.Builder()
-            .setMediaId(playlistItemModel.id)
-            .setMediaMetadata(metadata)
-            .setRequestMetadata(
-                MediaItem.RequestMetadata.Builder().setMediaUri(Uri.parse(mediaPath)).build()
-            )
-            .setUri(Uri.parse(mediaPath))
-            .build()
-    }
+    //     return MediaItem.Builder()
+    //         .setMediaId(playlistItemModel.id)
+    //         .setMediaMetadata(metadata)
+    //         .setRequestMetadata(
+    //             MediaItem.RequestMetadata.Builder().setMediaUri(Uri.parse(mediaPath)).build()
+    //         )
+    //         .setUri(Uri.parse(mediaPath))
+    //         .build()
+    // }
 
     @JvmStatic
     fun buildMediaItem(

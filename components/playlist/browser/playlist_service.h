@@ -208,6 +208,16 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
+
+#if BUILDFLAG(IS_ANDROID)
+  void AddHlsContent(mojom::HlsContentPtr hls_content) override;
+  void GetAllHlsContent(GetAllHlsContentCallback callback) override;
+  std::vector<mojom::HlsContentPtr> GetAllHlsContent();
+  void GetFirstHlsContent(GetFirstHlsContentCallback callback) override;
+  mojom::HlsContentPtr GetFirstHlsContent();
+  void RemoveHlsContent(const std::string& playlist_item_id) override;
+#endif  // BUILDFLAG(IS_ANDROID)
+
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
