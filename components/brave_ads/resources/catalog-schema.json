@@ -160,9 +160,6 @@
                       },
                       "conversionPublicKey": {
                         "type": "string"
-                      },
-                      "extractExternalId": {
-                        "type": "boolean"
                       }
                     }
                   }
