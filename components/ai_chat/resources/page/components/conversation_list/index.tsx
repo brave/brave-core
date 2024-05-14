@@ -41,9 +41,10 @@ function ConversationList(props: ConversationListProps) {
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
   const showSuggestions: boolean =
-    hasAcceptedAgreement && context.shouldSendPageContents && (
-    suggestedQuestions.length > 0 ||
-    SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
+    hasAcceptedAgreement &&
+    context.shouldSendPageContents &&
+    (suggestedQuestions.length > 0 ||
+      SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus))
 
   const handleQuestionSubmit = (question: string) => {
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
@@ -79,7 +80,9 @@ function ConversationList(props: ConversationListProps) {
   const lastAssistantId = React.useMemo(() => {
     // Get the last entry that is an assistant entry
     for (let i = conversationHistory.length - 1; i >= 0; i--) {
-      if (conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT) {
+      if (
+        conversationHistory[i].characterType === mojom.CharacterType.ASSISTANT
+      ) {
         return i
       }
     }
@@ -91,26 +94,36 @@ function ConversationList(props: ConversationListProps) {
       <div>
         {conversationHistory.map((turn, id) => {
           const isLastEntry = id === lastAssistantId
-          const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
-          const isEntryInProgress = isLastEntry && isAIAssistant && context.isGenerating
+          const isAIAssistant =
+            turn.characterType === mojom.CharacterType.ASSISTANT
+          const isEntryInProgress =
+            isLastEntry && isAIAssistant && context.isGenerating
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
-          const showLongPageContentInfo = id === 1 && isAIAssistant && context.shouldShowLongPageWarning
+          const showLongPageContentInfo =
+            id === 1 && isAIAssistant && context.shouldShowLongPageWarning
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: context.isMobile,
-            [styles.turnContainerHighlight]: isAIAssistant && activeMenuId === id
+            [styles.turnContainerHighlight]:
+              isAIAssistant && activeMenuId === id
           })
 
           const turnClass = classnames({
             [styles.turn]: true,
-            [styles.turnAI]: isAIAssistant,
+            [styles.turnAI]: isAIAssistant
           })
 
           const avatarStyles = classnames({
             [styles.avatar]: true,
             [styles.avatarAI]: isAIAssistant
           })
+
+          const handleCopyText = () => {
+            const event = turn.events?.find((event) => event.completionEvent)
+            if (!event?.completionEvent) return
+            navigator.clipboard.writeText(event.completionEvent.completion)
+          }
 
           return (
             <div
@@ -121,41 +134,56 @@ function ConversationList(props: ConversationListProps) {
               <div
                 data-id={id}
                 className={turnClass}
-                onMouseLeave={isAIAssistant ? () => setActiveMenuId(null) : undefined}
+                onMouseLeave={
+                  isAIAssistant ? () => setActiveMenuId(null) : undefined
+                }
                 {...(isAIAssistant ? longPressProps : {})}
               >
-                {isAIAssistant && (
-                  <div className={styles.asistantMenu}>
-                    <ContextMenuAssistant
-                      ref={portalRefs}
-                      turnId={id}
-                      turnText={turn.text}
-                      isOpen={activeMenuId === id}
-                      onClick={() => showAssistantMenu(id)}
-                      onClose={hideAssistantMenu}
-                    />
-                  </div>
-                )}
-                <div className={avatarStyles}>
-                  <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
-                </div>
-                <div
-                  className={styles.message}
-                >
-                  { isAIAssistant && (
-                      <AssistantResponse
-                        entry={turn}
-                        isEntryInProgress={isEntryInProgress}
+                <div className={styles.turnHeader}>
+                  <div className={styles.avatarContainer}>
+                    <div className={avatarStyles}>
+                      <Icon
+                        name={isHuman ? 'user-circle' : 'product-brave-leo'}
                       />
-                    )
-                  }
-                  {
-                    !isAIAssistant && !turn.selectedText && turn.text
-                  }
-                  {turn.selectedText &&
-                      <ActionTypeLabel actionType={turn.actionType} />}
+                    </div>
+                    <span>{isHuman ? 'You' : 'Leo'}</span>
+                  </div>
+                  {isAIAssistant && (
+                    <div className={styles.turnActions}>
+                      <Button
+                        size='tiny'
+                        kind='plain-faint'
+                        onClick={handleCopyText}
+                      >
+                        <Icon name='copy' />
+                      </Button>
+                      <ContextMenuAssistant
+                        ref={portalRefs}
+                        turnId={id}
+                        isOpen={activeMenuId === id}
+                        onClick={() => showAssistantMenu(id)}
+                        onClose={hideAssistantMenu}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className={styles.message}>
+                  {isAIAssistant && (
+                    <AssistantResponse
+                      entry={turn}
+                      isEntryInProgress={isEntryInProgress}
+                    />
+                  )}
+                  {!isAIAssistant && !turn.selectedText && turn.text}
+                  {turn.selectedText && (
+                    <ActionTypeLabel actionType={turn.actionType} />
+                  )}
                   {turn.selectedText && <Quote text={turn.selectedText} />}
-                  {showSiteTitle && <div className={styles.siteTitleContainer}><SiteTitle size="default" /></div>}
+                  {showSiteTitle && (
+                    <div className={styles.siteTitleContainer}>
+                      <SiteTitle size='default' />
+                    </div>
+                  )}
                   {showLongPageContentInfo && <LongPageInfo />}
                 </div>
               </div>
