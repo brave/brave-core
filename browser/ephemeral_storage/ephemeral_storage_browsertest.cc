@@ -165,13 +165,14 @@ void HttpRequestMonitor::Clear() {
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
     : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-  SetUpHttpsServer();
 }
 
 EphemeralStorageBrowserTest::~EphemeralStorageBrowserTest() = default;
 
 void EphemeralStorageBrowserTest::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
+
+  SetUpHttpsServer();
 
   host_resolver()->AddRule("*", "127.0.0.1");
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
