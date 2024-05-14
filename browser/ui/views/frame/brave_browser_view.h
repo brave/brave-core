@@ -102,6 +102,7 @@ class BraveBrowserView : public BrowserView,
                           content::WebContents* new_contents,
                           int index,
                           int reason) override;
+  bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
