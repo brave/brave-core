@@ -113,11 +113,17 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       let btcTxData = activeParsedTransaction.transaction.txDataUnion.btcTxData
     {
       let inputs = btcTxData.inputs.enumerated().map { (index, input) in
-        "Input: \(index)\n" + "Value: \(input.value)\n" + "Address:\n\(input.address)\n"
-      }.joined(separator: "\n")
+        let inputLine = "\(Strings.Wallet.inputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(input.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(input.address)"
+        return [inputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
       let outputs = btcTxData.outputs.enumerated().map { (index, output) in
-        "Output: \(index)\n" + "Value: \(output.value)\n" + "Address:\n\(output.address)\n"
-      }.joined(separator: "\n")
+        let outputLine = "\(Strings.Wallet.outputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(output.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(output.address)"
+        return [outputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
       return inputs + "\n\n" + outputs
     } else {
       if activeParsedTransaction.transaction.txArgs.isEmpty {

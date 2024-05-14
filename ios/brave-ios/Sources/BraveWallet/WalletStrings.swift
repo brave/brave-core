@@ -5566,5 +5566,37 @@ extension Strings {
       value: "Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.",
       comment: "A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected."
     )
+    public static let inputLabel = NSLocalizedString(
+      "wallet.inputLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Input",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index."
+    )
+    public static let outputLabel = NSLocalizedString(
+      "wallet.outputLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Output",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index."
+    )
+    public static let valueLabel = NSLocalizedString(
+      "wallet.valueLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Value",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value."
+    )
+    public static let addressLabel = NSLocalizedString(
+      "wallet.addressLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Address",
+      comment:
+        "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address."
+    )
   }
 }
