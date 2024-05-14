@@ -213,7 +213,8 @@ provideStrings({
   braveWalletRestoreWalletError: 'Check your recovery phrase and try again.',
   braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
   braveWalletMetamaskDetected: 'Metamask wallet detected!',
-  braveWalletMetamaskImportUsePassword: 'Use password',
+  braveWalletLegacyWalletDetected: 'Legacy wallet detected!',
+  braveWalletUsePassword: 'Use password',
   braveWalletRecoveryPhraseWord: 'Word $1',
 
   // onboarding import wallet screen

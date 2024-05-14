@@ -281,10 +281,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
           {importableWallets?.isMetaMaskInitialized && (
             <AlertWrapper>
-              <InfoAlert
-                type='info'
-                mode='simple'
-              >
+              <InfoAlert padding='0 0 16px 0'>
                 <div slot='icon'>
                   <Icon name='metamask-color' />
                 </div>
@@ -297,7 +294,29 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                       history.push(WalletRoutes.OnboardingImportMetaMask)
                     }
                   >
-                    {getLocale('braveWalletMetamaskImportUsePassword')}
+                    {getLocale('braveWalletUsePassword')}
+                  </Button>
+                </div>
+              </InfoAlert>
+            </AlertWrapper>
+          )}
+
+          {importableWallets?.isLegacyCryptoWalletsInitialized && (
+            <AlertWrapper>
+              <InfoAlert>
+                <div slot='icon'>
+                  <Icon name='crypto-wallets' />
+                </div>
+                {getLocale('braveWalletLegacyWalletDetected')}
+                <div slot='content-after'>
+                  <Button
+                    kind='plain'
+                    size='small'
+                    onClick={() =>
+                      history.push(WalletRoutes.OnboardingImportLegacy)
+                    }
+                  >
+                    {getLocale('braveWalletUsePassword')}
                   </Button>
                 </div>
               </InfoAlert>
@@ -306,7 +325,12 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
           {(phraseWords.length > 0 && !isCorrectPhraseLength) ||
           hasInvalidSeedError ? (
-            <InfoAlert>{getLocale('braveWalletRestoreWalletError')}</InfoAlert>
+            <InfoAlert
+              padding='16px 0 0'
+              type='error'
+            >
+              {getLocale('braveWalletRestoreWalletError')}
+            </InfoAlert>
           ) : (
             <VerticalSpace space='54px' />
           )}
