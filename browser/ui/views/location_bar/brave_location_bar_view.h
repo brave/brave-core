@@ -84,8 +84,8 @@ class BraveLocationBarView : public LocationBarView {
   void OnThemeChanged() override;
   void ChildVisibilityChanged(views::View* child) override;
   void AddedToWidget() override;
-
   int GetBorderRadius() const override;
+  void FocusLocation(bool is_user_initiated) override;
 
   SkPath GetFocusRingHighlightPath() const;
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);

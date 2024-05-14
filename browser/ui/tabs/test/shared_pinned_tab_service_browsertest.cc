@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -16,7 +17,11 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/dns/mock_host_resolver.h"
 
 class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
  public:
@@ -57,7 +62,51 @@ class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
     run_loop_->Run();
   }
 
+  auto* https_server() { return https_server_.get(); }
+
   // InProcessBrowserTest:
+  void SetUpOnMainThread() override {
+    PlatformBrowserTest::SetUpOnMainThread();
+
+    host_resolver()->AddRule("*", "127.0.0.1");
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
+        [](const net::test_server::HttpRequest& request)
+            -> std::unique_ptr<net::test_server::HttpResponse> {
+          auto response =
+              std::make_unique<net::test_server::BasicHttpResponse>();
+          response->set_code(net::HTTP_OK);
+          response->set_content(R"html(
+        <html>
+          <body>
+            Hello World!
+          </body>
+        </html>
+        )html");
+          response->set_content_type("text/html; charset=utf-8");
+          return response;
+        }));
+    ASSERT_TRUE(https_server_->Start());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   void TearDownOnMainThread() override {
     for (auto& browser : browsers_) {
       if (browser) {
@@ -74,6 +123,9 @@ class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
 
  private:
   base::test::ScopedFeatureList feature_list_;
+
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
 
   std::vector<base::WeakPtr<Browser>> browsers_;
 
@@ -236,4 +288,44 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
     return shared_pinned_tab_service->IsSharedContents(
         tab_strip_model_1->GetWebContentsAt(0));
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* shared_pinned_tab_service = GetForBrowser(browser_1);
+  ASSERT_TRUE(shared_pinned_tab_service);
+  ASSERT_TRUE(shared_pinned_tab_service->IsSharedContents(
+      tab_strip_model_1->GetWebContentsAt(0)));
+
+  // When new window is open,
+  auto* browser_2 = CreateNewBrowser();
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() > 1; }));
+  ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
+
+  // Then a dummy pinned tab in the window should have the same URL as the
+  // shared pinned tab.
+  EXPECT_EQ(tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL(),
+            tab_strip_model_2->GetWebContentsAt(0)
+                ->GetController()
+                .GetVisibleEntry()
+                ->GetVirtualURL());
+
+  // When navigate to other sites,
+  GURL url = https_server()->GetURL("www.example.com", "/index.html");
+
+  ASSERT_TRUE(
+      content::NavigateToURL(tab_strip_model_1->GetWebContentsAt(0), url));
+  ASSERT_EQ(url, tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL());
+
+  // Then dummy contents' URL should be synchronized.
+  EXPECT_EQ(tab_strip_model_1->GetWebContentsAt(0)->GetVisibleURL(),
+            tab_strip_model_2->GetWebContentsAt(0)
+                ->GetController()
+                .GetVisibleEntry()
+                ->GetVirtualURL());
 }
