@@ -91,7 +91,6 @@ import os.log
   public enum BlocklistType: Hashable, CustomDebugStringConvertible {
     fileprivate static let genericPrifix = "stored-type"
     fileprivate static let filterListPrefix = "filter-list"
-    fileprivate static let filterListURLPrefix = "filter-list-url"
 
     /// These are all types that are non-configurable by the user
     /// and don't need additional stored or fetched catalogues to get a complete list.
@@ -111,9 +110,9 @@ import os.log
         case .filterList(let componentId):
           return [Self.filterListPrefix, componentId].joined(separator: "-")
         case .filterListURL(let uuid):
-          return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+          return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
         case .filterListText:
-          return "filter-list-text"
+          return [Self.filterListPrefix, "text"].joined(separator: "-")
         }
       }
     }
@@ -192,10 +191,7 @@ import os.log
 
       self.versions.value.removeValue(forKey: identifier)
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
-      let prefixes = [
-        BlocklistType.genericPrifix, BlocklistType.filterListPrefix,
-        BlocklistType.filterListURLPrefix,
-      ]
+      let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix]
       guard prefixes.contains(where: { identifier.hasPrefix($0) }) else { return }
 
       do {
@@ -435,6 +431,13 @@ import os.log
     }
   }
 
+  /// Eagerly load the rule lists for this type
+  func loadRuleLists(for type: BlocklistType) async throws {
+    for mode in type.allowedModes {
+      _ = try await ruleList(for: type, mode: mode)
+    }
+  }
+
   /// Return all the modes that need to be compiled for the given type
   func missingModes(for type: BlocklistType, version: String) async -> [BlockingMode] {
     return await type.allowedModes.asyncFilter { mode in
@@ -458,6 +461,15 @@ import os.log
     }
   }
 
+  /// Tells us if the rule list is compiled and ready
+  func isReady(for type: BlocklistType, mode: BlockingMode) -> Bool {
+    do {
+      return try cachedRuleLists[type.makeIdentifier(for: mode)]?.get() != nil
+    } catch {
+      return false
+    }
+  }
+
   /// Check if a rule list is compiled for this type
   func hasRuleList(for type: BlocklistType, mode: BlockingMode) async -> Bool {
     do {
@@ -470,8 +482,17 @@ import os.log
   /// Remove the rule list for the blocklist type
   public func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
     for mode in type.allowedModes {
-      try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
+      try await removeRuleLists(for: type, mode: mode, force: force)
     }
+  }
+
+  /// Remove the rule list for the blocklist type
+  public func removeRuleLists(
+    for type: BlocklistType,
+    mode: BlockingMode,
+    force: Bool = false
+  ) async throws {
+    try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
   }
 
   /// Load a rule list from the rule store and return it. Will use cached results if they exist

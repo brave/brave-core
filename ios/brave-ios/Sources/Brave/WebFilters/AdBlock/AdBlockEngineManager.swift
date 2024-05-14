@@ -149,7 +149,8 @@ import os
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
   func compileDelayedIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) {
     // Cancel the previous task
     delayTask?.cancel()
@@ -159,7 +160,8 @@ import os
       try await Task.sleep(seconds: 60)
       await compileAvailableIfNeeded(
         for: enabledSources,
-        resourcesInfo: resourcesInfo
+        resourcesInfo: resourcesInfo,
+        contentBlockerManager: contentBlockerManager
       )
     }
   }
@@ -167,13 +169,15 @@ import os
   /// This will compile available data right away if it is needed and cancel any delayedTasks
   func compileImmediatelyIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async {
     delayTask?.cancel()
 
     await self.compileAvailableIfNeeded(
       for: enabledSources,
-      resourcesInfo: resourcesInfo
+      resourcesInfo: resourcesInfo,
+      contentBlockerManager: contentBlockerManager
     )
   }
 
@@ -196,14 +200,20 @@ import os
   /// This will compile available data right away if it is needed
   private func compileAvailableIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async {
     do {
       let compilableFiles = compilableFiles(for: enabledSources)
-      guard self.checkNeedsCompile(for: compilableFiles) else { return }
+
+      guard self.checkNeedsCompile(for: compilableFiles) else {
+        return
+      }
+
       try await compileAvailable(
         for: compilableFiles,
-        resourcesInfo: resourcesInfo
+        resourcesInfo: resourcesInfo,
+        contentBlockerManager: contentBlockerManager
       )
     } catch {
       ContentBlockerManager.log.error(
@@ -215,7 +225,8 @@ import os
   /// Compile an engine from all available data
   private func compileAvailable(
     for files: [AdBlockEngineManager.FileInfo],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async throws {
     let engineType = self.engineType
     let group = try combineRules(for: files)
@@ -386,6 +397,7 @@ extension GroupedAdBlockEngine.Source {
   func blocklistType(
     engineType: GroupedAdBlockEngine.EngineType
   ) -> ContentBlockerManager.BlocklistType? {
+    // Check if we have some other restriction for this filter list
     guard allowContentBlockers else { return nil }
     return .engineSource(self, engineType: engineType)
   }
@@ -400,5 +412,11 @@ extension AdblockFilterListCatalogEntry {
 extension CustomFilterListSetting {
   @MainActor var engineSource: GroupedAdBlockEngine.Source {
     return .filterListURL(uuid: uuid)
+  }
+}
+
+extension Array where Element == GroupedAdBlockEngine.FilterListInfo {
+  var groupedVersion: String {
+    return map { $0.version }.joined(separator: ",")
   }
 }

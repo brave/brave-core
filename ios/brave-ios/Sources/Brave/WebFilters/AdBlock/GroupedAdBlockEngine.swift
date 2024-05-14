@@ -37,10 +37,14 @@ public actor GroupedAdBlockEngine {
     }
   }
 
+  /// The type of engine (`standard` or `aggressive`) which determines wether or not 1st party content will be blocked.
+  ///
+  /// Aggressive engines will block 1st party content whereas the standard engine will not
   public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
     case standard
     case aggressive
 
+    /// Tells us if this engine is always aggressive or if we need to switch between standard and aggressive
     var isAlwaysAggressive: Bool {
       switch self {
       case .standard: return false
