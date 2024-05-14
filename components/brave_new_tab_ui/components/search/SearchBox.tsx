@@ -19,6 +19,7 @@ const SearchInput = styled(Input)`
   --leo-control-focus-effect: none;
   --leo-control-padding: 6px;
   --leo-control-color: rgba(255, 255, 255, 0.1);
+  --leo-control-text-color: ${color.white};
 
   display: inline-block;
   width: 540px;
@@ -89,15 +90,15 @@ export default function SearchBox() {
             </Option>
           </leo-option>)}
           <CustomizeButton kind="plain-faint" size="small" onClick={() => {
-            history.pushState(undefined, '', '?openSettings=Search')
+              history.pushState(undefined, '', '?openSettings=Search')
 
-            // For now, close the search box - the Settings dialog doesn't use a
-            // dialog, so it gets rendered underneath.
-            setOpen(false)
-          }}>
-            {getLocale('searchCustomizeList')}
-          </CustomizeButton>
-        </EnginePicker>
+              // For now, close the search box - the Settings dialog doesn't use a
+              // dialog, so it gets rendered underneath.
+              setOpen(false)
+            }}>
+              {getLocale('searchCustomizeList')}
+            </CustomizeButton>
+          </EnginePicker>
       </Flex>
       <SearchIconContainer slot="right-icon">
         <Icon name="search" />
