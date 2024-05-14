@@ -14,6 +14,35 @@ import os.log
 
 extension BrowserViewController {
 
+  func recordWeeklyUsage() {
+    var weeklyUsage = P3ATimedStorage<Int>.weeklyUsage
+    weeklyUsage.replaceTodaysRecordsIfLargest(value: 1)
+    let calendar = Calendar(identifier: .gregorian)
+    let mondayWeekday = 2
+    let isTodayMonday = calendar.component(.weekday, from: .now) == mondayWeekday
+    guard
+      let thisMonday = isTodayMonday
+        ? calendar.startOfDay(for: .now)
+        : calendar.nextDate(
+          after: .now,
+          matching: .init(weekday: mondayWeekday),
+          matchingPolicy: .nextTime,
+          direction: .backward
+        ),
+      let lastMonday = calendar.nextDate(
+        after: thisMonday,
+        matching: .init(weekday: mondayWeekday),
+        matchingPolicy: .nextTime,
+        direction: .backward
+      )
+    else {
+      return
+    }
+    let answer = weeklyUsage.combinedValue(in: lastMonday..<thisMonday)
+    // buckets are 0...7 but no reason to declare them in this case
+    UmaHistogramExactLinear("Brave.Core.WeeklyUsage", answer, 8)
+  }
+
   func recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: Bool = false) {
     let isInstalledInThePastWeek: Bool = {
       guard let installDate = Preferences.DAU.installationDate.value else {
@@ -310,5 +339,8 @@ extension P3ATimedStorage where Value == Int {
   }
   fileprivate static var forwardNavigationActionPerformed: Self {
     .init(name: "forward-navigation-action-performed", lifetimeInDays: 7)
+  }
+  fileprivate static var weeklyUsage: Self {
+    .init(name: "browser-weekly-usage", lifetimeInDays: 14)
   }
 }
