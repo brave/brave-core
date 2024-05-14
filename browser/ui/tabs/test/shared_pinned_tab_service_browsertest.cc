@@ -7,11 +7,9 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -20,118 +18,105 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "ui/base/window_open_disposition.h"
 
-class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
- public:
-  SharedPinnedTabServiceBrowserTest()
-      : feature_list_(tabs::features::kBraveSharedPinnedTabs) {}
+SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
+    : feature_list_(tabs::features::kBraveSharedPinnedTabs) {}
 
-  ~SharedPinnedTabServiceBrowserTest() override = default;
+SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
+    default;
 
-  Browser* CreateNewBrowser() {
-    auto* new_browser =
-        chrome::OpenEmptyWindow(browser()->profile(),
-                                /*should_trigger_session_restore= */ false);
-    browsers_.push_back(new_browser->AsWeakPtr());
-    return new_browser;
+Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
+  auto* new_browser =
+      chrome::OpenEmptyWindow(browser()->profile(),
+                              /*should_trigger_session_restore= */ false);
+  browsers_.push_back(new_browser->AsWeakPtr());
+  return new_browser;
+}
+
+SharedPinnedTabService* SharedPinnedTabServiceBrowserTest::GetForBrowser(
+    Browser* browser) {
+  return SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+}
+
+void SharedPinnedTabServiceBrowserTest::WaitUntil(
+    base::RepeatingCallback<bool()> condition) {
+  if (condition.Run()) {
+    return;
   }
 
-  SharedPinnedTabService* GetForBrowser(Browser* browser) {
-    return SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
-  }
+  base::RepeatingTimer scheduler;
+  scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                  base::BindLambdaForTesting([this, &condition]() {
+                    if (condition.Run()) {
+                      run_loop_->Quit();
+                    }
+                  }));
+  Run();
+}
 
-  void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run()) {
-      return;
+void SharedPinnedTabServiceBrowserTest::Run() {
+  run_loop_ = std::make_unique<base::RunLoop>();
+  run_loop_->Run();
+}
+
+// InProcessBrowserTest:
+void SharedPinnedTabServiceBrowserTest::TearDownOnMainThread() {
+  for (auto& browser : browsers_) {
+    if (browser) {
+      browser->window()->Close();
     }
-
-    base::RepeatingTimer scheduler;
-    scheduler.Start(FROM_HERE, base::Milliseconds(100),
-                    base::BindLambdaForTesting([this, &condition]() {
-                      if (condition.Run()) {
-                        run_loop_->Quit();
-                      }
-                    }));
-    Run();
   }
 
-  void Run() {
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
+  }));
 
-  auto* https_server() { return https_server_.get(); }
+  InProcessBrowserTest::TearDownOnMainThread();
+}
 
-  // InProcessBrowserTest:
-  void SetUpOnMainThread() override {
-    PlatformBrowserTest::SetUpOnMainThread();
+void SharedPinnedTabServiceBrowserTest::SetUpOnMainThread() {
+  PlatformBrowserTest::SetUpOnMainThread();
 
-    host_resolver()->AddRule("*", "127.0.0.1");
-    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+  host_resolver()->AddRule("*", "127.0.0.1");
+  mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
-        [](const net::test_server::HttpRequest& request)
-            -> std::unique_ptr<net::test_server::HttpResponse> {
-          auto response =
-              std::make_unique<net::test_server::BasicHttpResponse>();
-          response->set_code(net::HTTP_OK);
-          response->set_content(R"html(
+  https_server_ = std::make_unique<net::EmbeddedTestServer>(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+  https_server_->RegisterRequestHandler(base::BindLambdaForTesting(
+      [](const net::test_server::HttpRequest& request)
+          -> std::unique_ptr<net::test_server::HttpResponse> {
+        auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+        response->set_code(net::HTTP_OK);
+        response->set_content(R"html(
         <html>
           <body>
             Hello World!
           </body>
         </html>
         )html");
-          response->set_content_type("text/html; charset=utf-8");
-          return response;
-        }));
-    ASSERT_TRUE(https_server_->Start());
-  }
+        response->set_content_type("text/html; charset=utf-8");
+        return response;
+      }));
+  ASSERT_TRUE(https_server_->Start());
+}
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    PlatformBrowserTest::SetUpCommandLine(command_line);
-    mock_cert_verifier_.SetUpCommandLine(command_line);
-  }
+void SharedPinnedTabServiceBrowserTest::SetUpCommandLine(
+    base::CommandLine* command_line) {
+  PlatformBrowserTest::SetUpCommandLine(command_line);
+  mock_cert_verifier_.SetUpCommandLine(command_line);
+}
 
-  void SetUpInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
-    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
-  }
+void SharedPinnedTabServiceBrowserTest::SetUpInProcessBrowserTestFixture() {
+  PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+  mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+}
 
-  void TearDownInProcessBrowserTestFixture() override {
-    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void TearDownOnMainThread() override {
-    for (auto& browser : browsers_) {
-      if (browser) {
-        browser->window()->Close();
-      }
-    }
-
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
-    }));
-
-    InProcessBrowserTest::TearDownOnMainThread();
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
-  content::ContentMockCertVerifier mock_cert_verifier_;
-
-  std::vector<base::WeakPtr<Browser>> browsers_;
-
-  std::unique_ptr<base::RunLoop> run_loop_;
-};
+void SharedPinnedTabServiceBrowserTest::TearDownInProcessBrowserTestFixture() {
+  mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+  PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+}
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
   // Precondition
