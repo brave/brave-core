@@ -466,26 +466,6 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
   RequestOTRServiceWorkerBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  void SetUp() override {
-    // We still need this so InstallMockExtension() can find its files.
-    brave::RegisterPathProvider();
-
-    // Reuse upstream test files in content.
-    content::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(content::DIR_TEST_DATA, &test_data_dir);
-
-    // We need an HTTPS server to test service workers.
-    content::SetupCrossSiteRedirector(&https_server_);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(https_server_.Start());
-
-    // Bypass BaseLocalDataFilesBrowserTest::SetUp() because we've handled
-    // everything already.
-    ExtensionBrowserTest::SetUp();
-  }
-
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
@@ -497,8 +477,20 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    base::FilePath test_data_dir;
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    base::PathService::Get(content::DIR_TEST_DATA, &test_data_dir);
+
+    // We need an HTTPS server to test service workers.
+    content::SetupCrossSiteRedirector(&https_server_);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_.Start());
+
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    RequestOTRBrowserTestBase::SetUpOnMainThread();
+
+    // Bypass BaseLocalDataFilesBrowserTest::SetUp() because we've handled
+    // everything already.
+    ExtensionBrowserTest::SetUpOnMainThread();
   }
 
   void TearDownInProcessBrowserTestFixture() override {

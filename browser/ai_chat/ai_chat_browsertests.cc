@@ -22,15 +22,13 @@ namespace ai_chat {
 
 class AiChatBrowserTest : public InProcessBrowserTest {
  public:
-  AiChatBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
+  AiChatBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+
+  void SetUpOnMainThread() override {
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir.AppendASCII("ai_chat"));
     EXPECT_TRUE(https_server_.Start());
-  }
-
-  void SetUpOnMainThread() override {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*:*", "127.0.0.1");
   }

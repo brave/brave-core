@@ -40,7 +40,6 @@ class BraveCheckClientDownloadRequestBaseBrowserTest
     browser()->profile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
                                                  false);
 
-    brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     https_server_.ServeFilesFromDirectory(test_data_dir_);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());

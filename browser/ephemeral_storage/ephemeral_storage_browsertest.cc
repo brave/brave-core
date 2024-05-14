@@ -187,9 +187,6 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
 }
 
 void EphemeralStorageBrowserTest::SetUpHttpsServer() {
-  brave::RegisterPathProvider();
-  content::RegisterPathProvider();
-
   std::vector<base::FilePath> test_data_dirs(2);
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
   base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);

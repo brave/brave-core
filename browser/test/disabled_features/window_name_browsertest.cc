@@ -30,15 +30,7 @@ const char kLinkID[] = "clickme";
 class BraveWindowNameBrowserTest : public InProcessBrowserTest {
  public:
   BraveWindowNameBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    EXPECT_TRUE(https_server_.Start());
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveWindowNameBrowserTest(const BraveWindowNameBrowserTest&) = delete;
   BraveWindowNameBrowserTest& operator=(const BraveWindowNameBrowserTest&) =
@@ -48,6 +40,12 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 

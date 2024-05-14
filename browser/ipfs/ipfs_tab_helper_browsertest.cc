@@ -67,6 +67,7 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
  public:
   IpfsTabHelperBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 

@@ -83,13 +83,7 @@ std::string NonWriteableScriptMethod(const std::string& provider,
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
   JSEthereumProviderBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~JSEthereumProviderBrowserTest() override = default;
 
@@ -114,6 +108,10 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     InProcessBrowserTest::SetUpOnMainThread();
 
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     // Map all hosts to localhost.
     host_resolver()->AddRule("*", "127.0.0.1");

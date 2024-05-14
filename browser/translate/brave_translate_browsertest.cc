@@ -99,11 +99,12 @@ const char kXhrPromiseTemplate[] = R"(
 
 class BraveTranslateBrowserTest : public InProcessBrowserTest {
  public:
-  BraveTranslateBrowserTest() {
+  BraveTranslateBrowserTest() = default;
+
+  void SetUpOnMainThread() override {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     CHECK(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -112,9 +113,6 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &BraveTranslateBrowserTest::HandleRequest, base::Unretained(this)));
     CHECK(https_server_->Start());
-  }
-
-  void SetUpOnMainThread() override {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     ResetObserver();
   }

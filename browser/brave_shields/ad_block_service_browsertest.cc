@@ -122,16 +122,12 @@ void AdBlockServiceTest::SetUpOnMainThread() {
   PlatformBrowserTest::SetUpOnMainThread();
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
+  InitEmbeddedTestServer();
   // Most tests are written for aggressive mode. Individual tests should reset
   // this using `DisableAggressiveMode` if they are testing standard mode
   // behavior.
   brave_shields::SetCosmeticFilteringControlType(
       content_settings(), brave_shields::ControlType::BLOCK, GURL());
-}
-
-void AdBlockServiceTest::SetUp() {
-  InitEmbeddedTestServer();
-  PlatformBrowserTest::SetUp();
 }
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
@@ -295,7 +291,6 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
 
 base::FilePath AdBlockServiceTest::GetTestDataDir() {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  brave::RegisterPathProvider();
   return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 

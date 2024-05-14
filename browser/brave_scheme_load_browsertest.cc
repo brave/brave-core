@@ -35,7 +35,6 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -66,6 +65,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_TRUE(ui_test_utils::NavigateToURL(
         browser(), embedded_test_server()->GetURL(origin, path)));
     return WaitForLoadStop(active_contents());
+    // TODO(bridiver) - this also needs to wait for the script to load
   }
 
   // Check loading |url| in guest window is not allowed for an url.

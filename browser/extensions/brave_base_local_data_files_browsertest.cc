@@ -21,13 +21,8 @@ using brave_component_updater::LocalDataFilesObserver;
 using content::BrowserThread;
 using extensions::ExtensionBrowserTest;
 
-void BaseLocalDataFilesBrowserTest::SetUp() {
-  brave::RegisterPathProvider();
-  MaybeInitEmbeddedTestServer();
-  ExtensionBrowserTest::SetUp();
-}
-
 void BaseLocalDataFilesBrowserTest::SetUpOnMainThread() {
+  MaybeInitEmbeddedTestServer();
   MaybeSetUpEmbeddedTestServerOnMainThread();
   ExtensionBrowserTest::SetUpOnMainThread();
 }

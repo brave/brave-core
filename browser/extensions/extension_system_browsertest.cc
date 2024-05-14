@@ -18,18 +18,15 @@ using extensions::ExtensionBrowserTest;
 
 class ExtensionSystemBrowserTest : public ExtensionBrowserTest {
  public:
-  ExtensionSystemBrowserTest() {
-    brave::RegisterPathProvider();
-    dir_test_data_ = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+  ExtensionSystemBrowserTest() {}
 
+  void SetUpOnMainThread() override {
+    ExtensionBrowserTest::SetUpOnMainThread();
+    dir_test_data_ = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->ServeFilesFromDirectory(dir_test_data_);
     EXPECT_TRUE(https_server_->Start());
-  }
-
-  void SetUpOnMainThread() override {
-    ExtensionBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }

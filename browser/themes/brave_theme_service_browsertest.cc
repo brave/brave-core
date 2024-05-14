@@ -50,7 +50,7 @@
 
 class BraveThemeServiceTest : public InProcessBrowserTest {
  public:
-  BraveThemeServiceTest() { brave::RegisterPathProvider(); }
+  BraveThemeServiceTest() = default;
   ~BraveThemeServiceTest() override = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

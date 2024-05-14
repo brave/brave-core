@@ -86,10 +86,7 @@ class InstallCrxFileWaiter : public extensions::InstallObserver {
 
 class BraveCrxGenerationTest : public InProcessBrowserTest {
  public:
-  BraveCrxGenerationTest() {
-    CHECK(temp_directory_.CreateUniqueTempDir());
-    brave::RegisterPathProvider();
-  }
+  BraveCrxGenerationTest() { CHECK(temp_directory_.CreateUniqueTempDir()); }
 
   bool InstallExtension(const base::FilePath& crx_path,
                         crx_file::VerifierFormat format) {

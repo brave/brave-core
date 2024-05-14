@@ -106,7 +106,14 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         speedreader::kSpeedreaderFeature,
         {{speedreader::kSpeedreaderTTS.name, "true"}});
 #endif
-    brave::RegisterPathProvider();
+  }
+
+  SpeedReaderBrowserTest(const SpeedReaderBrowserTest&) = delete;
+  SpeedReaderBrowserTest& operator=(const SpeedReaderBrowserTest&) = delete;
+
+  ~SpeedReaderBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -132,14 +139,6 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
 
     EXPECT_TRUE(https_server_.Start());
-  }
-
-  SpeedReaderBrowserTest(const SpeedReaderBrowserTest&) = delete;
-  SpeedReaderBrowserTest& operator=(const SpeedReaderBrowserTest&) = delete;
-
-  ~SpeedReaderBrowserTest() override = default;
-
-  void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 

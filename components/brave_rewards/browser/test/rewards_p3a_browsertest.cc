@@ -59,7 +59,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
-    brave::RegisterPathProvider();
     auto* profile = browser()->profile();
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile));
