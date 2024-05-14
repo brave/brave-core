@@ -26,10 +26,6 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 #endif
 
 // Add Brave cases into GetIconIdAndroid.
-// kWidevine is not expected to happen here as Widevine is not enabled in
-// Android, we add this case here just to avoid build error due to unhandled
-// cases in the switch.
-//
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
 #define IDR_ANDROID_STORAGE_ACCESS                   \
@@ -93,6 +89,11 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
+    case ContentSettingsType::DEFAULT:
+      // Currently we have only one DEFAULT type that is
+      // not mapped, which is Widevine, it's used for
+      // UMA purpose only
+      return RequestType::kWidevine;
     default:
       return ContentSettingsTypeToRequestType_ChromiumImpl(
           content_settings_type);
