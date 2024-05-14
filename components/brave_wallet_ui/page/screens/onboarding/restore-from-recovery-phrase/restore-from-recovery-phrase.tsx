@@ -281,7 +281,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
           {importableWallets?.isMetaMaskInitialized && (
             <AlertWrapper>
-              <InfoAlert>
+              <InfoAlert padding='0 0 16px 0'>
                 <div slot='icon'>
                   <Icon name='metamask-color' />
                 </div>
@@ -327,7 +327,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           hasInvalidSeedError ? (
             <InfoAlert
               padding='16px 0 0'
-              kind='error'
+              type='error'
             >
               {getLocale('braveWalletRestoreWalletError')}
             </InfoAlert>
