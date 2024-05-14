@@ -11,6 +11,11 @@
 
 inline constexpr char kPlaylistFeatureInternalName[] = "playlist";
 inline constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
+
+#if !BUILDFLAG(IS_ANDROID)
+inline constexpr char kSplitViewFeatureInternalName[] = "brave-split-view";
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 inline constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
 #if BUILDFLAG(IS_WIN)

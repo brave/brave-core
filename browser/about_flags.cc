@@ -408,7 +408,7 @@
           FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
       },                                                                  \
       {                                                                   \
-          "brave-split-view",                                             \
+          kSplitViewFeatureInternalName,                                  \
           "Enable split view",                                            \
           "Enables split view",                                           \
           kOsWin | kOsMac | kOsLinux,                                     \
