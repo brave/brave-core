@@ -11367,3 +11367,22 @@ extension Strings {
       "This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field"
   )
 }
+
+// MARK: - Paywall
+
+extension Strings {
+  public struct Paywall {
+    public static let alreadyPurchasedTitle = NSLocalizedString(
+      "paywall.alreadyPurchasedTitle",
+      bundle: .module,
+      value: "Already purchased on brave.com?",
+      comment: "Title label text for refreshing credentials from brave site."
+    )
+    public static let refreshCredentialsButtonTitle = NSLocalizedString(
+      "paywall.refreshCredentialsButtonTitle",
+      bundle: .module,
+      value: "Refresh your credentials",
+      comment: "Button action text for refreshing credentials from brave site."
+    )
+  }
+}

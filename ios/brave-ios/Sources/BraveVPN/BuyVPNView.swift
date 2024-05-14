@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import DesignSystem
 import Preferences
 import Shared
@@ -151,14 +152,14 @@ class BuyVPNView: UIView {
       $0.minimumScaleFactor = 0.5
       $0.adjustsFontSizeToFitWidth = true
 
-      $0.text = "Already Purchased on brave.com?"
+      $0.text = Strings.Paywall.alreadyPurchasedTitle
     }
 
     let refreshButton = UIButton().then {
       $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
       $0.titleLabel?.textAlignment = .center
 
-      $0.setTitle("Refresh your credentials", for: .normal)
+      $0.setTitle(Strings.Paywall.refreshCredentialsButtonTitle, for: .normal)
 
       $0.snp.makeConstraints {
         $0.height.equalTo(50)

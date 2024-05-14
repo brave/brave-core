@@ -119,7 +119,7 @@ struct AIChatPaywallView: View {
       }
       .sheet(isPresented: $shouldRefreshCredentials) {
         if shouldRefreshCredentials {
-          AIChatSafariControllerView(url: AIChatConstants.braveVPNLinkReceipt)
+          AIChatSafariControllerView(url: .brave.braveVPNRefreshCredentials)
             .edgesIgnoringSafeArea(.all)
         }
       }
@@ -364,7 +364,7 @@ private struct AIChatRefreshCredentialsView: View {
 
   var body: some View {
     VStack(spacing: 8) {
-      Text("Already purchased on brave.com?")
+      Text(Strings.Paywall.alreadyPurchasedTitle)
         .font(.callout.weight(.semibold))
         .foregroundColor(Color(braveSystemName: .primitivePrimary20))
 
@@ -374,7 +374,7 @@ private struct AIChatRefreshCredentialsView: View {
         },
         label: {
           HStack {
-            Text("Refresh your credentials")
+            Text(Strings.Paywall.refreshCredentialsButtonTitle)
               .font(.subheadline.weight(.semibold))
               .foregroundColor(Color(.white))
               .padding()
