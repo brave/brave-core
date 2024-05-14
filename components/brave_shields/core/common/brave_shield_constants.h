@@ -10,37 +10,39 @@
 
 namespace brave_shields {
 
-const char kAds[] = "shieldsAds";
-const char kCosmeticFiltering[] = "cosmeticFiltering";
-const char kTrackers[] = "trackers";
-const char kHTTPUpgradableResources[] = "httpUpgradableResources";
-const char kHTTPSUpgrades[] = "httpsUpgrades";
-const char kJavaScript[] = "javascript";
-const char kFingerprintingV2[] = "fingerprintingV2";
-const char kBraveShields[] = "braveShields";
-const char kReferrers[] = "referrers";
-const char kCookies[] = "shieldsCookiesV3";
-const char kFacebookEmbeds[] = "fb-embeds";
-const char kTwitterEmbeds[] = "twitter-embeds";
-const char kLinkedInEmbeds[] = "linked-in-embeds";
+inline constexpr char kAds[] = "shieldsAds";
+inline constexpr char kCosmeticFiltering[] = "cosmeticFiltering";
+inline constexpr char kTrackers[] = "trackers";
+inline constexpr char kHTTPUpgradableResources[] = "httpUpgradableResources";
+inline constexpr char kHTTPSUpgrades[] = "httpsUpgrades";
+inline constexpr char kJavaScript[] = "javascript";
+inline constexpr char kFingerprintingV2[] = "fingerprintingV2";
+inline constexpr char kBraveShields[] = "braveShields";
+inline constexpr char kReferrers[] = "referrers";
+inline constexpr char kCookies[] = "shieldsCookiesV3";
+inline constexpr char kFacebookEmbeds[] = "fb-embeds";
+inline constexpr char kTwitterEmbeds[] = "twitter-embeds";
+inline constexpr char kLinkedInEmbeds[] = "linked-in-embeds";
 
 // Values used before the migration away from ResourceIdentifier, kept around
 // for migration purposes only.
-const char kObsoleteAds[] = "ads";
-const char kObsoleteCookies[] = "cookies";
-const char kObsoleteShieldsCookies[] = "shieldsCookies";
+inline constexpr char kObsoleteAds[] = "ads";
+inline constexpr char kObsoleteCookies[] = "cookies";
+inline constexpr char kObsoleteShieldsCookies[] = "shieldsCookies";
 
 // Some users were not properly migrated from fingerprinting V1.
-const char kObsoleteFingerprinting[] = "fingerprinting";
+inline constexpr char kObsoleteFingerprinting[] = "fingerprinting";
 
 // Filename for cached text from a custom filter list subscription
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
 
-const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
-const char kMobileNotificationsListUuid[] =
+inline constexpr char kCookieListUuid[] =
+    "AC023D22-AE88-4060-A978-4FEEEC4221693";
+inline constexpr char kMobileNotificationsListUuid[] =
     "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";
-const char kExperimentalListUuid[] = "564C3B75-8731-404C-AD7C-5683258BA0B0";
+inline constexpr char kExperimentalListUuid[] =
+    "564C3B75-8731-404C-AD7C-5683258BA0B0";
 
 inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";
@@ -68,8 +70,10 @@ inline constexpr char kAdBlockFilterListCatalogComponentBase64PublicKey[] =
     "1H8y9SR970LqsUMozu3ioSHtFh/IVgq7Nqy4TljaKsTE+3AdtjiOyHpW9ZaOkA7j"
     "2QIDAQAB";
 
-const char kCookieListEnabledHistogram[] = "Brave.Shields.CookieListEnabled";
-const char kCookieListPromptHistogram[] = "Brave.Shields.CookieListPrompt";
+inline constexpr char kCookieListEnabledHistogram[] =
+    "Brave.Shields.CookieListEnabled";
+inline constexpr char kCookieListPromptHistogram[] =
+    "Brave.Shields.CookieListPrompt";
 
 }  // namespace brave_shields
 
