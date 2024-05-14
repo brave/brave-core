@@ -1124,7 +1124,8 @@ public class BytecodeTest {
                         Supplier.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        ModalDialogManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",

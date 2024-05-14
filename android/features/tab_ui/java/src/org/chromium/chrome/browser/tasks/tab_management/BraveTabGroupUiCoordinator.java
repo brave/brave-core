@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.resources.dynamics.DynamicResourceLoader;
 import org.chromium.ui.widget.ChromeImageView;
 
@@ -56,7 +57,8 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            @NonNull SnackbarManager snackbarManager) {
+            @NonNull SnackbarManager snackbarManager,
+            @NonNull ModalDialogManager modalDialogManager) {
         super(
                 activity,
                 parentView,
@@ -73,7 +75,8 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 dynamicResourceLoaderSupplier,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
-                snackbarManager);
+                snackbarManager,
+                modalDialogManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
 
