@@ -569,7 +569,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   }
 
   private func validateBitcoinSendAddress(fromAccount: BraveWallet.AccountInfo) {
-    let isMainnet = fromAccount.keyringId == BraveWallet.KeyringId.bitcoin84
+    guard let selectedSendToken else { return }
+    let isMainnet = selectedSendToken.chainId == BraveWallet.BitcoinMainnet
     addressError = sendAddress.isBTCAddress(isMainnet: isMainnet) ? nil : .notBtcAddress
   }
 
