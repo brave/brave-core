@@ -8,24 +8,13 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/files/file_path.h"
-#include "base/rand_util.h"
-#include "base/metrics/field_trial_params.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 
 namespace {
-constexpr char kAdBlockResourcesFilename[] = "resources.json";
-const char kAdBlockExceptionComponentId[] = "adcocjohghhfpidemphmcmlmhnfgikei";
 
-BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
-constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
-    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
-BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
-             "AdBlockDefaultResourceUpdateInterval",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+constexpr char kAdBlockResourcesFilename[] = "resources.json";
 
 }  // namespace
 
@@ -42,14 +31,6 @@ AdBlockDefaultResourceProvider::AdBlockDefaultResourceProvider(
       cus,
       base::BindRepeating(&AdBlockDefaultResourceProvider::OnComponentReady,
                           weak_factory_.GetWeakPtr()));
-  update_check_timer_.Start(
-      FROM_HERE, base::Minutes(kComponentUpdateCheckIntervalMins.Get()),
-      base::BindRepeating([]() {
-        // Separated into two methods as exception component is not available in
-        // iOS. So can't check it from CheckAdBlockComponentsUpdate() together.
-        CheckAdBlockComponentsUpdate();
-        CheckAdBlockExceptionComponentsUpdate();
-      }));
 }
 
 AdBlockDefaultResourceProvider::~AdBlockDefaultResourceProvider() = default;
@@ -97,15 +78,6 @@ void AdBlockDefaultResourceProvider::LoadResources(
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      resources_path),
       std::move(cb));
-}
-
-void CheckAdBlockExceptionComponentsUpdate() {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandUpdate(kAdBlockExceptionComponentId);
-      }),
-      base::Seconds(base::RandInt(0, 10)));
 }
 
 }  // namespace brave_shields

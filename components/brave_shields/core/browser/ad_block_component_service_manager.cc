@@ -13,11 +13,10 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/ranges/algorithm.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -293,7 +292,11 @@ void AdBlockComponentServiceManager::UpdateFilterLists(
     return;
   }
 
-  std::vector<std::string> component_ids;
+  std::vector<std::string> component_ids = {
+      kAdBlockResourceComponentId,
+      kAdBlockFilterListCatalogComponentId,
+  };
+
   for (const auto& [key, provider] : component_filters_providers_) {
     component_ids.push_back(provider->component_id());
   }
@@ -356,6 +359,12 @@ void AdBlockComponentServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));
+
+  update_check_timer_.Start(
+      FROM_HERE,
+      base::Minutes(features::kComponentUpdateCheckIntervalMins.Get()),
+      base::BindRepeating(&AdBlockComponentServiceManager::UpdateFilterLists,
+                          weak_factory_.GetWeakPtr(), base::DoNothing()));
 }
 
 }  // namespace brave_shields
