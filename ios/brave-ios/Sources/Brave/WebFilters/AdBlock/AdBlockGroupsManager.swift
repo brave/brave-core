@@ -498,6 +498,8 @@ import os
     }
 
     do {
+      let clock = ContinuousClock()
+      let start = clock.now
       try await contentBlockerManager.compileRuleList(
         at: fileInfo.localFileURL,
         for: blocklistType,
@@ -505,7 +507,7 @@ import os
         modes: modes
       )
       ContentBlockerManager.log.debug(
-        "Compiled rule lists for \(fileInfo.filterListInfo.debugDescription)"
+        "Compiled rule lists for \(fileInfo.filterListInfo.debugDescription) (\(clock.now.formatted(since: start)))"
       )
     } catch {
       ContentBlockerManager.log.error(
@@ -707,7 +709,7 @@ extension AdBlockEngineManager.FileInfo {
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
     var sources: [GroupedAdBlockEngine.Source] = []
-    if engineType == .standard {
+    if engineType == .standard && !FeatureList.kBraveAdblockDropSlimList.enabled {
       // We add this type to the list
       // so the file info can be put it to the appropriate engine manager.
       // But it's never added to an engine because it's never in enabledSources.

@@ -300,8 +300,14 @@ import os
     )
 
     guard !modes.isEmpty else {
+      let versionsString = compilableFiles.enumerated()
+        .map({ " #\($0) \($1.filterListInfo.debugDescription(for: engineType))" })
+        .joined(separator: "\n")
       ContentBlockerManager.log.debug(
-        "Rule lists already compiled for `\(self.engineType.debugDescription)` engine"
+        """
+        Rule lists already compiled for `\(self.engineType.debugDescription)` engine
+        \(versionsString)
+        """
       )
       return
     }
@@ -384,7 +390,7 @@ import os
           compiledInfos.append(fileInfo.filterListInfo)
         } catch {
           ContentBlockerManager.log.error(
-            "Could not load rules for \(fileInfo.filterListInfo.debugDescription): \(error)"
+            "Could not load rules for \(fileInfo.filterListInfo.debugDescription(for: self.engineType)): \(error)"
           )
         }
       }
@@ -494,6 +500,7 @@ extension GroupedAdBlockEngine.Source {
   var contentBlockerSource: GroupedAdBlockEngine.Source {
     switch self {
     case .filterList(let componentId):
+      guard !FeatureList.kBraveAdblockDropSlimList.enabled else { return self }
       // We replace the default filter list with the slim list when we compile content blockers
       return AdblockFilterListCatalogEntry.defaultListComponentID == componentId ? .slimList : self
     case .filterListURL, .filterListText, .slimList:
