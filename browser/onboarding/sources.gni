@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_onboarding_sources = [
-  "//brave/browser/onboarding/domain_map.cc",
-  "//brave/browser/onboarding/domain_map.h",
   "//brave/browser/onboarding/onboarding_tab_helper.cc",
   "//brave/browser/onboarding/onboarding_tab_helper.h",
   "//brave/browser/onboarding/pref_names.h",
@@ -20,5 +18,4 @@ brave_browser_onboarding_deps = [
   "//components/pref_registry",
   "//components/prefs",
   "//content/public/browser",
-  "//net/base/registry_controlled_domains",
 ]
