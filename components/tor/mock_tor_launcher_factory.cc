@@ -5,6 +5,8 @@
 
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 
+#include "brave/components/tor/tor_launcher_observer.h"
+
 // static
 MockTorLauncherFactory& MockTorLauncherFactory::GetInstance() {
   static base::NoDestructor<MockTorLauncherFactory> instance;
@@ -13,3 +15,10 @@ MockTorLauncherFactory& MockTorLauncherFactory::GetInstance() {
 
 MockTorLauncherFactory::MockTorLauncherFactory() = default;
 MockTorLauncherFactory::~MockTorLauncherFactory() = default;
+
+void MockTorLauncherFactory::NotifyObservers(
+    base::RepeatingCallback<void(TorLauncherObserver&)> notify) {
+  for (auto& observer : observers_) {
+    notify.Run(observer);
+  }
+}

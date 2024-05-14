@@ -27,6 +27,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -149,6 +150,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(tor_browser->profile()->IsTor());
     content::WebContents* tor_web_contents =
         tor_browser->tab_strip_model()->GetActiveWebContents();
+    content::WaitForLoadStop(tor_web_contents);
     EXPECT_EQ(tor_web_contents->GetVisibleURL(), url);
     // We don't close the original tab
     EXPECT_EQ(browser->tab_strip_model()->count(), is_tor ? 2 : 1);
