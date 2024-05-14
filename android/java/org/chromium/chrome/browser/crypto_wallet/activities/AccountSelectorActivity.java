@@ -10,32 +10,24 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AccountKind;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSelectorRecyclerView;
-import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.AccountSelectorItemListener;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AccountSelectorActivity extends BraveWalletBaseActivity
         implements AccountSelectorItemListener {
     private static final String TAG = "AccountSelector";
-
-    private static final List<Integer> SUPPORTED_COIN_TYPES_ON_DAPPS =
-            Arrays.asList(CoinType.ETH, CoinType.SOL);
 
     private KeyringModel mKeyringModel;
     private RecyclerView mRVNetworkSelector;
@@ -62,14 +54,6 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
         mRVNetworkSelector.setAdapter(mAccountSelectorRecyclerView);
         mAccountSelectorRecyclerView.setAccountSelectorItemListener(this);
         initAccounts();
-
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setOnMenuItemClickListener(item -> {
-            BottomSheetDialogFragment sheetDialogFragment = new CreateAccountBottomSheetFragment();
-            sheetDialogFragment.show(
-                    getSupportFragmentManager(), CreateAccountBottomSheetFragment.TAG);
-            return true;
-        });
     }
 
     @Override
@@ -109,8 +93,8 @@ public class AccountSelectorActivity extends BraveWalletBaseActivity
                                     // TODO(apaymyshev): Why I'm not allowed to select imported
                                     // account?
                                     if (accountInfo.accountId.kind != AccountKind.IMPORTED
-                                            && SUPPORTED_COIN_TYPES_ON_DAPPS.contains(
-                                                    accountInfo.accountId.coin)) {
+                                            && WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS
+                                                    .contains(accountInfo.accountId.coin)) {
                                         accountSelectorItemModelList.add(
                                                 AccountSelectorItemModel.makeForAccountInfo(
                                                         accountInfo));

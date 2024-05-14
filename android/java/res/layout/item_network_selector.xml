@@ -5,39 +5,15 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="4dp"
-    android:animateLayoutChanges="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:paddingHorizontal="12dp"
-    tools:ignore="UseCompoundDrawables">
-
-    <TextView
-        android:id="@+id/iv_item_network_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/wallet_secondary_text_color"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/btn_item_network_action"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_item_network_action"
-        style="@style/BraveWalletTextButton"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        android:textStyle="bold"
-        android:textColor="@color/brave_link"
-        app:layout_constraintBottom_toBottomOf="@id/iv_item_network_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_item_network_label"
-        app:layout_constraintTop_toTopOf="@id/iv_item_network_label" />
+    android:paddingHorizontal="12dp">
 
     <ImageView
         android:id="@+id/iv_item_network_selector_selected"
@@ -47,7 +23,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_item_network_label"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_check"
         app:tint="@color/brave_blue_tint_color" />
 
@@ -61,7 +37,7 @@
         android:paddingVertical="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_item_network_selector_selected"
-        app:layout_constraintTop_toBottomOf="@id/iv_item_network_label" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_network_name"
@@ -75,6 +51,6 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_item_network_picture"
-        app:layout_constraintTop_toBottomOf="@id/iv_item_network_label"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Demo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/DappsModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/KeyringModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/NetworkModel.java",
-  "../../brave/android/java/org/chromium/chrome/browser/app/domain/NetworkSelectorModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/WalletModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/helpers/Api33AndPlusBackPressHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/helpers/ImageLoader.java",

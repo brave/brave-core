@@ -29,7 +29,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
-import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingNetworkSelectionFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -41,8 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /** Grid adapter used during Wallet onboarding flow that shows all available networks. */
@@ -85,9 +82,7 @@ public class OnboardingNetworkSelectorGridAdapter
     private final String mPopularNetworks;
     private final String mSelectAll;
 
-    private final ExecutorService mExecutor;
     private final Handler mHandler;
-    private final String mTokensPath;
 
     private final Context mContext;
     private boolean mShowTestNetworks;
@@ -145,9 +140,7 @@ public class OnboardingNetworkSelectorGridAdapter
         mPopularNetworks = context.getString(R.string.wallet_popular);
         mSelectAll = context.getString(R.string.brave_wallet_select_all);
 
-        mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        mTokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
     }
 
     @NonNull
