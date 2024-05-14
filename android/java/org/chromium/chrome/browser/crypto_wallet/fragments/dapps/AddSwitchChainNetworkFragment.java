@@ -181,6 +181,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         if (mPanelType == ADD_ETHEREUM_CHAIN) {
             mBraveWalletBaseActivity.getJsonRpcService().getPendingAddChainRequests(
                     addChainRequests -> {
+                        if (addChainRequests == null || addChainRequests.length == 0) {
+                            return;
+                        }
                         mAddChainRequest = addChainRequests[0];
                         mNetworkInfo = mAddChainRequest.networkInfo;
                         hasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
