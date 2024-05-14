@@ -18,6 +18,22 @@ function getBuildOutputPathList(buildOutputRelativePath) {
   ])
 }
 
+function getReporters() {
+  if (process.env.TEAMCITY_VERSION !== undefined) {
+    return [
+      [
+        '<rootDir>/tools/jest_teamcity_reporter/jest_teamcity_reporter.js',
+        { 'suiteName': 'test-unit' }
+      ]
+    ]
+  } else {
+    return ['default']
+  }
+}
+
+/**
+ * @type {import('@jest/types').Config.InitialOptions}
+ */
 module.exports = {
   preset: 'ts-jest/presets/default',
   testEnvironment: '<rootDir>/components/test/testEnvironment.js',
@@ -29,8 +45,9 @@ module.exports = {
     }
   },
   transform: {
-    '.(jsx|js|ts|tsx)': 'ts-jest'
+    '\\.(jsx|js|ts|tsx)$': 'ts-jest'
   },
+  reporters: getReporters(),
   clearMocks: true,
   resetMocks: true,
   resetModules: true,
@@ -55,7 +72,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/build/commands/lib/test.js',
     '<rootDir>/build/rustup',
-    '<rootDir>/third_party',
+    '<rootDir>/third_party'
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
