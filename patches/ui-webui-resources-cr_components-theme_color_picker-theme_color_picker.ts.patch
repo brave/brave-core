@@ -1,0 +1,24 @@
+diff --git a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
+index 61d40205af66ca441f0a37e6826581ba36e43eae..6025b190cac9083a44990fc1a5f7b68e3a3bf83b 100644
+--- a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
++++ b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
+@@ -18,7 +18,7 @@ import type {BrowserColorVariant} from '//resources/mojo/ui/base/mojom/themes.mo
+ import {ThemeColorPickerBrowserProxy} from './browser_proxy.js';
+ import {EMPTY_COLOR} from './color_utils.js';
+ import type {Color, SelectedColor} from './color_utils.js';
+-import {ColorType, DARK_BASELINE_BLUE_COLOR, DARK_BASELINE_GREY_COLOR, LIGHT_BASELINE_BLUE_COLOR, LIGHT_BASELINE_GREY_COLOR} from './color_utils.js';
++import {ColorType, DARK_DEFAULT_COLOR, DARK_BASELINE_GREY_COLOR, LIGHT_DEFAULT_COLOR, LIGHT_BASELINE_GREY_COLOR} from './color_utils.js';
+ import type {ThemeColorElement} from './theme_color.js';
+ import {getCss} from './theme_color_picker.css.js';
+ import {getHtml} from './theme_color_picker.html.js';
+@@ -137,8 +137,8 @@ export class ThemeColorPickerElement extends ThemeColorPickerElementBase {
+ 
+   private computeDefaultColor_(): Color {
+     assert(this.theme_);
+-      return this.theme_.isDarkMode ? DARK_BASELINE_BLUE_COLOR :
+-                                      LIGHT_BASELINE_BLUE_COLOR;
++      return this.theme_.isDarkMode ? DARK_DEFAULT_COLOR :
++                                      LIGHT_DEFAULT_COLOR;
+   }
+ 
+   private computeGreyDefaultColor_(): Color {
