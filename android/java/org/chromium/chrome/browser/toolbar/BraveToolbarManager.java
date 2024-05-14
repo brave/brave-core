@@ -111,6 +111,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
+    private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
@@ -287,7 +288,8 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mCompositorViewHolder::getDynamicResourceLoader,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
-                                    mSnackbarManager);
+                                    mSnackbarManager,
+                                    mModalDialogManagerSupplier.get());
             mBottomControlsCoordinatorSupplier.set(
                     new BraveBottomControlsCoordinator(
                             mLayoutStateProviderSupplier,
