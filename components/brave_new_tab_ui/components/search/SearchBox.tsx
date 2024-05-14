@@ -51,7 +51,7 @@ const CustomizeButton = styled(Button)`
 
 const Container = styled.div`
   --leo-control-radius: ${radius.m};
-  
+
   display: flex;
 
   /* If we have search results, don't add a radius to the bottom of the search box */

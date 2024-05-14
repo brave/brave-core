@@ -47,7 +47,7 @@ import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
-const SearchWidget = React.lazy(() => import('../../components/search/SearchPlaceholder'))
+const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
 
 interface Props {
   newTabData: NewTab.State
@@ -704,19 +704,17 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.FooterContent>
             </Page.Footer>
-            {newTabData.showToday &&
-              <Page.GridItemNavigationBraveNews>
+              <Page.GridItemPageFooter>
                 {loadTimeData.getBoolean('featureFlagSearchWidget')
                   && <React.Suspense fallback={null}>
-                    <SearchWidget />
+                    <SearchPlaceholder />
                   </React.Suspense>}
-                {defaultState.featureFlagBraveNewsFeedV2Enabled
+                {newTabData.showToday && (defaultState.featureFlagBraveNewsFeedV2Enabled
                   ? <React.Suspense fallback={null}>
                     <BraveNewsPeek/>
                   </React.Suspense>
-                  : <BraveNewsHint />}
-              </Page.GridItemNavigationBraveNews>
-            }
+                  : <BraveNewsHint />)}
+              </Page.GridItemPageFooter>
           </Page.Page>
         { newTabData.showToday &&
         <BraveNews

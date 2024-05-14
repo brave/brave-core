@@ -269,7 +269,7 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveNews = styled('div') <{}>`
+export const GridItemPageFooter = styled('div') <{}>`
   position: absolute;
   bottom: 20px;
   left: 50%;
