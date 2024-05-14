@@ -30,6 +30,17 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Don't show the split view flag in stable channel.
+  version_info::Channel channel = chrome::GetChannel();
+  if (base::EqualsCaseInsensitiveASCII(kSplitViewFeatureInternalName,
+                                       internal_name) &&
+      channel == version_info::Channel::STABLE) {
+    return true;
+  }
+#endif
+
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kHttpsUpgradesName,
                                        internal_name)) {
     return true;
