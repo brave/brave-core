@@ -179,17 +179,19 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         assert getActivity() instanceof BraveWalletBaseActivity;
         mBraveWalletBaseActivity = (BraveWalletBaseActivity) getActivity();
         if (mPanelType == ADD_ETHEREUM_CHAIN) {
-            mBraveWalletBaseActivity.getJsonRpcService().getPendingAddChainRequests(
-                    addChainRequests -> {
-                        if (addChainRequests == null || addChainRequests.length == 0) {
-                            return;
-                        }
-                        mAddChainRequest = addChainRequests[0];
-                        mNetworkInfo = mAddChainRequest.networkInfo;
-                        hasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
-                        updateState();
-                        fillOriginInfo(mAddChainRequest.originInfo);
-                    });
+            mBraveWalletBaseActivity
+                    .getJsonRpcService()
+                    .getPendingAddChainRequests(
+                            addChainRequests -> {
+                                if (addChainRequests == null || addChainRequests.length == 0) {
+                                    return;
+                                }
+                                mAddChainRequest = addChainRequests[0];
+                                mNetworkInfo = mAddChainRequest.networkInfo;
+                                hasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
+                                updateState();
+                                fillOriginInfo(mAddChainRequest.originInfo);
+                            });
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             mBraveWalletBaseActivity.getJsonRpcService().getPendingSwitchChainRequests(
                     switchChainRequests -> {
