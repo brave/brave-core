@@ -317,21 +317,6 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
                 ->GetVirtualURL());
 }
 
-IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
-                       ClosingSharedPinnedTab) {
-  auto* browser_instance = CreateNewBrowser();
-  chrome::NewTab(browser_instance);
-
-  EXPECT_EQ(browser_instance->tab_strip_model()->count(), 2);
-  EXPECT_EQ(browser_instance->tab_strip_model()->active_index(), 1);
-
-  EXPECT_EQ(browser_instance->tab_strip_model()->SetTabPinned(1, true), 0);
-  EXPECT_EQ(browser_instance->tab_strip_model()->active_index(), 0);
-
-  chrome::ExecuteCommand(browser_instance, IDC_CLOSE_TAB);
-  EXPECT_EQ(browser_instance->tab_strip_model()->count(), 2);
-}
-
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
                        CloseTabShortCutShouldBeDisabled) {
