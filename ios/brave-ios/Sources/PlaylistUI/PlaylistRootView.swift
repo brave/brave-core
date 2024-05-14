@@ -11,13 +11,18 @@ import SwiftUI
 @available(iOS 16.0, *)
 public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
   public init(
-    delegate: PlaylistRootView.Delegate,
-    initialPlaybackInfo: PlaylistRootView.InitialPlaybackInfo?
+    player: PlayerModel,
+    delegate: PlaylistRootView.Delegate
   ) {
     super.init(
-      rootView: PlaylistRootView(delegate: delegate, initialPlaybackInfo: initialPlaybackInfo)
+      rootView: PlaylistRootView(
+        player: player,
+        delegate: delegate
+      )
     )
-    modalPresentationStyle = .fullScreen
+    // FIXME: This needs to be over fullscreen because the webview to load streaming urls is added to BVC, which needs to be in the view hierarchy
+    // Maybe alter the web loader/streamer setup to ask for a UIView to put the web view on instead?
+    modalPresentationStyle = .overFullScreen
   }
 
   @available(*, unavailable)
@@ -44,59 +49,51 @@ public struct PlaylistRootView: View {
   public struct Delegate {
     /// Open a URL in a tab (optionally in private mode)
     public var openTabURL: (URL, _ isPrivate: Bool) -> Void
-    /// Returns the neccessary web loader for handling reloading streams
-    public var webLoaderFactory: () -> PlaylistWebLoaderFactory
     /// Called when playlist is dismissed
     public var onDismissal: () -> Void
 
     public init(
       openTabURL: @escaping (URL, _ isPrivate: Bool) -> Void,
-      webLoaderFactory: @escaping () -> PlaylistWebLoaderFactory,
       onDismissal: @escaping () -> Void
     ) {
       self.openTabURL = openTabURL
-      self.webLoaderFactory = webLoaderFactory
       self.onDismissal = onDismissal
     }
   }
 
-  public struct InitialPlaybackInfo {
-    public var itemUUID: String
-    public var timestamp: TimeInterval
-
-    public init(itemUUID: String, timestamp: TimeInterval) {
-      self.itemUUID = itemUUID
-      self.timestamp = timestamp
-    }
-  }
-
+  var player: PlayerModel
   private var delegate: Delegate
-  private var initialPlaybackInfo: InitialPlaybackInfo?
 
   public init(
-    delegate: Delegate,
-    initialPlaybackInfo: InitialPlaybackInfo?
+    player: PlayerModel,
+    delegate: Delegate
   ) {
+    self.player = player
     self.delegate = delegate
-    self.initialPlaybackInfo = initialPlaybackInfo
   }
 
   public var body: some View {
-    PlaylistContentView(initialPlaybackInfo: initialPlaybackInfo)
-      .preparePlaylistEnvironment()
-      .prepareMediaStreamer(webLoaderFactory: delegate.webLoaderFactory())
-      .environment(\.managedObjectContext, DataController.swiftUIContext)
-      .environment(\.colorScheme, .dark)
-      .preferredColorScheme(.dark)
-      .environment(
-        \.openTabURL,
-        .init { url, isPrivate in
-          delegate.openTabURL(url, isPrivate)
-        }
-      )
-      .onDisappear {
-        delegate.onDismissal()
+    PlaylistContentView(
+      playerModel: player
+    )
+    .preparePlaylistEnvironment()
+    .environment(\.managedObjectContext, DataController.swiftUIContext)
+    .environment(\.colorScheme, .dark)
+    .preferredColorScheme(.dark)
+    .environment(
+      \.openTabURL,
+      .init { url, isPrivate in
+        delegate.openTabURL(url, isPrivate)
       }
+    )
+    .onDisappear {
+      delegate.onDismissal()
+    }
+    .onAppear {
+      if player.isPictureInPictureActive {
+        player.stopPictureInPicture()
+      }
+    }
   }
 }
 
@@ -115,25 +112,15 @@ extension View {
 }
 
 #if DEBUG
-class PreviewWebLoaderFactory: PlaylistWebLoaderFactory {
-  class PreviewWebLoader: UIView, PlaylistWebLoader {
-    func load(url: URL) async -> PlaylistInfo? { return nil }
-    func stop() {}
-  }
-  func makeWebLoader() -> any PlaylistWebLoader {
-    PreviewWebLoader()
-  }
-}
 // swift-format-ignore
 @available(iOS 16.0, *)
 #Preview {
   PlaylistRootView(
+    player: .preview,
     delegate: .init(
       openTabURL: { _, _ in },
-      webLoaderFactory: { PreviewWebLoaderFactory() },
       onDismissal: { }
-    ),
-    initialPlaybackInfo: nil
+    )
   )
 }
 #endif

@@ -12,136 +12,32 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct PlaylistContentView: View {
-  var initialPlaybackInfo: PlaylistRootView.InitialPlaybackInfo?
+  @ObservedObject var playerModel: PlayerModel
 
-  @Environment(\.loadMediaStreamingAsset) private var loadMediaStreamingAsset
-
-  // FIXME: Will this have to be an ObservedObject instead to handle PiP?
-  @StateObject private var playerModel: PlayerModel = .init()
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.isFullScreen) private var isFullScreen
 
   @FetchRequest(sortDescriptors: []) private var folders: FetchedResults<PlaylistFolder>
-  @State private var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
-  @State private var selectedItemID: PlaylistItem.ID?
-  // FIXME: OrderedSet?
-  @State private var itemQueue: [PlaylistItem.ID] = []
-  @State private var seekToInitialTimestamp: TimeInterval?
 
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
   @State private var newPlaylistName: String = ""
   @State private var isPopulatingNewPlaylist: Bool = false
 
-  @ObservedObject private var firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay
-  @ObservedObject private var resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff
-  @ObservedObject private var lastPlayedItemURL = Preferences.Playlist.lastPlayedItemUrl
+  private var selectedItemID: PlaylistItem.ID? {
+    playerModel.selectedItemID
+  }
+
+  private var selectedFolderID: PlaylistFolder.ID {
+    playerModel.selectedFolderID
+  }
 
   private var selectedFolder: PlaylistFolder? {
-    folders.first(where: { $0.id == selectedFolderID })
+    folders.first(where: { $0.id == playerModel.selectedFolderID })
   }
 
   private var selectedItem: PlaylistItem? {
-    selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
-  }
-
-  // FIXME: Move all selected folder/item queue logic into a testable ObservableObject
-  private func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
-    var queue: [PlaylistItem.ID] = []
-    var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
-    if playerModel.isShuffleEnabled {
-      if let selectedItemID {
-        items.removeAll(where: { $0 == selectedItemID })
-        queue.append(selectedItemID)
-      }
-      queue.append(contentsOf: items.shuffled())
-    } else {
-      if let selectedItemID {
-        items = Array(items.drop(while: { $0 != selectedItemID }))
-      }
-      queue.append(contentsOf: items)
-    }
-    itemQueue = queue
-  }
-
-  private func playNextItem() {
-    playerModel.pause()
-
-    let repeatMode = playerModel.repeatMode
-
-    if repeatMode == .one {
-      // Replay the current video regardless of shuffle state/queue
-      playerModel.play()
-      return
-    }
-
-    guard let currentItem = selectedItem else {
-      // FIXME: What should we do here if nothing is playing, play first item?
-      return
-    }
-
-    if currentItem.id == itemQueue.last {
-      if repeatMode == .all {
-        // Last item in the set and repeat mode is on, start from the beginning of the queue
-        selectedItemID = itemQueue.first
-      }
-      // Nothing to play if not repeating
-      return
-    }
-
-    if let currentItemIndex = itemQueue.firstIndex(of: currentItem.id) {
-      // This should be safe as we've already checked if the selected item is the last in the queue
-      selectedItemID = itemQueue[currentItemIndex + 1]
-    }
-
-    Task {
-      await self.prepareToPlaySelectedItem(
-        initialOffset: seekToInitialTimestamp,
-        playImmediately: true
-      )
-    }
-  }
-
-  @MainActor private func prepareToPlaySelectedItem(
-    initialOffset: TimeInterval?,
-    playImmediately: Bool
-  ) async {
-    guard let item = selectedItem else { return }
-    // Shrink it down?
-    withAnimation(.snappy) {
-      selectedDetent = .small
-    }
-    // FIXME: Need a possible loading state here
-    // Loading a media streaming asset may take time, need some sort of intermediate state where
-    // we stop the current playback and show a loader even if the selected item is not fully ready
-    // yet
-    let playerItemToReplace: AVPlayerItem? = await {
-      if let cachedData = item.cachedData {
-        do {
-          var isStale: Bool = false
-          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-          if FileManager.default.fileExists(atPath: url.path) {
-            return .init(url: url)
-          }
-        } catch {
-        }
-      }
-      if let newItem = try? await loadMediaStreamingAsset(item: .init(item: item)),
-        let url = URL(string: newItem.src)
-      {
-        return .init(asset: AVURLAsset(url: url))
-      }
-      return nil
-    }()
-    if let playerItem = playerItemToReplace {
-      playerModel.item = playerItem
-      if let initialOffset {
-        await playerModel.seek(to: initialOffset, accurately: true)
-      } else if resumeFromLastTimePlayed.value {
-        await playerModel.seek(to: item.lastPlayedOffset, accurately: true)
-      }
-      if playImmediately {
-        playerModel.play()
-      }
-    }
+    playerModel.selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
   }
 
   public var body: some View {
@@ -156,20 +52,23 @@ struct PlaylistContentView: View {
           set: { newValue in
             // Make the item queue prior to setting the `selectedItemID`, which will start playing
             // said item
-            makeItemQueue(selectedItemID: newValue)
+            withAnimation(.snappy) {
+              selectedDetent = .small
+            }
+            // FIXME: Move this into PlayerModel
+            playerModel.makeItemQueue(selectedItemID: newValue)
             if selectedItemID == newValue {
               // Already selected, restart it (based on prior behaviour)
-              withAnimation(.snappy) {
-                selectedDetent = .small
-              }
               Task {
                 await playerModel.seek(to: 0, accurately: true)
                 playerModel.play()
               }
               return
             }
-            selectedItemID = newValue
-            Task { await prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true) }
+            playerModel.selectedItemID = newValue
+            Task {
+              await playerModel.prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true)
+            }
           }
         ),
         isPlaying: playerModel.isPlaying
@@ -183,7 +82,7 @@ struct PlaylistContentView: View {
               selectedFolder
             },
             set: {
-              selectedFolderID = $0.id
+              playerModel.selectedFolderID = $0.id
             }
           ),
           selectedItemID: selectedItemID,
@@ -194,7 +93,7 @@ struct PlaylistContentView: View {
             set: { newValue in
               if newValue {
                 if selectedItemID == nil {
-                  selectedItemID = itemQueue.first
+                  playerModel.selectedItemID = playerModel.itemQueue.first
                 } else {
                   playerModel.play()
                 }
@@ -218,55 +117,33 @@ struct PlaylistContentView: View {
         }
       }
     }
-    .task(priority: .medium) {
-      // FIXME: Will have to adjust this in the future to handle end of TTS
-      for await _ in playerModel.didPlayToEndStream {
-        playNextItem()
+    .safeAreaInset(edge: .top, spacing: 0) {
+      if !isFullScreen {
+        HStack {
+          Button("Done") {
+            dismiss()
+          }
+          .fontWeight(.semibold)
+          Spacer()
+          if playerModel.isPictureInPictureSupported {
+            Button {
+              playerModel.startPictureInPicture()
+            } label: {
+              Image(braveSystemName: "leo.picture.in-picture")
+            }
+            .transition(.opacity.animation(.default))
+          }
+        }
+        .padding(.horizontal)
+        .tint(Color.primary)
+        // Mimic an actual navigation bar re: sizing/layout
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        .frame(height: 44)
+        // --
       }
     }
     .onAppear {
-      // Make an initial queue assuming nothing selected
-      makeItemQueue(selectedItemID: nil)
-      // Possibly update the selected folder based on the last item played
-      let lastPlayedItem: PlaylistItem? = lastPlayedItemURL.value
-        .map { PlaylistItem.getItems(pageSrc: $0) }?.first
-      if let initialPlaybackInfo,
-        let item = PlaylistItem.getItem(uuid: initialPlaybackInfo.itemUUID)
-      {
-        // If we're coming from a tab with some initial video data update the folder & item
-        seekToInitialTimestamp = initialPlaybackInfo.timestamp
-        selectedItemID = item.id
-        if let folderID = selectedItem?.playlistFolder?.id {
-          selectedFolderID = folderID
-        }
-        // Remake the item queue with the newly selected item
-        makeItemQueue(selectedItemID: selectedItemID)
-      } else {
-        // Just opening playlist without inherited item data, so restore the previously watched item
-        // or just auto-play the first item if the pref is on
-        if let lastPlayedItem {
-          if let lastPlayedItemParentFolder = lastPlayedItem.playlistFolder {
-            selectedFolderID = lastPlayedItemParentFolder.id
-          }
-          selectedItemID = lastPlayedItem.id
-        } else {
-          // Start the first video in the queue if auto-play is enabled
-          if resumeFromLastTimePlayed.value, let selectedItem {
-            seekToInitialTimestamp = selectedItem.lastPlayedOffset
-          }
-          selectedItemID = itemQueue.first
-        }
-      }
-      Task { @MainActor in
-        // If we need to stream the item we need to wait until `loadMediaStreamingAsset` is valid
-        if selectedItem?.cachedData == nil, !loadMediaStreamingAsset.isPrepared {
-          try await Task.sleep(for: .seconds(0.5))
-        }
-        await self.prepareToPlaySelectedItem(
-          initialOffset: seekToInitialTimestamp,
-          playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay.value
-        )
-      }
+      playerModel.prepareItemQueue()
       if selectedItem != nil {
         selectedDetent = .small
       } else {
@@ -280,7 +157,6 @@ struct PlaylistContentView: View {
           playTime: playerModel.currentTime
         )
       }
-      playerModel.stop()
     }
     .alert("New Playlist", isPresented: $isNewPlaylistAlertPresented) {
       TextField("My New Playlist", text: $newPlaylistName)
@@ -297,7 +173,7 @@ struct PlaylistContentView: View {
           return
         }
         PlaylistFolder.addFolder(title: newPlaylistName) { uuid in
-          selectedFolderID = uuid
+          playerModel.selectedFolderID = uuid
           if let defaultFolderItems = PlaylistFolder.getFolder(
             uuid: PlaylistFolder.savedFolderUUID
           )?.playlistItems, !defaultFolderItems.isEmpty {
@@ -320,15 +196,7 @@ struct PlaylistContentView: View {
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
     }
-    .onChange(of: selectedItemID) {
-      [selectedItem, currentTime = playerModel.currentTime, duration = playerModel.duration]
-      newValue in
-      if let priorSelectedItem = selectedItem {
-        PlaylistManager.shared.updateLastPlayed(
-          item: .init(item: priorSelectedItem),
-          playTime: currentTime == duration ? 0.0 : currentTime
-        )
-      }
+    .onChange(of: selectedItemID) { newValue in
       if newValue == nil {
         withAnimation(.snappy) {
           selectedDetent = .anchor(.emptyPlaylistContent)
@@ -337,13 +205,10 @@ struct PlaylistContentView: View {
         return
       }
     }
-    .onChange(of: playerModel.isShuffleEnabled) { _ in
-      makeItemQueue(selectedItemID: selectedItemID)
-    }
     .onChange(of: Array(folders)) { newValue in
       if !newValue.map(\.id).contains(selectedFolderID) {
         // Reset the selected folder if the user deletes the folder they had selected
-        selectedFolderID = PlaylistFolder.savedFolderUUID
+        playerModel.selectedFolderID = PlaylistFolder.savedFolderUUID
       }
     }
   }

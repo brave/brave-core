@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AVKit
 import BraveCore
 import CarPlay
 import Combine
@@ -32,6 +33,25 @@ public class PlaylistCarplayManager: NSObject {
   var currentlyPlayingItemIndex = -1
   var currentPlaylistItem: PlaylistInfo?
   var isPlaylistControllerPresented = false
+
+  // New UI only
+  private var playerModelBox: AnyPlayerModel?
+  private var isPiPStarting: Bool = false
+  // ----
+
+  private struct AnyPlayerModel {
+    private var _playerModel: Any
+
+    @available(iOS 16.0, *)
+    init(playerModel: PlayerModel) {
+      self._playerModel = playerModel
+    }
+
+    @available(iOS 16.0, *)
+    var playerModel: PlayerModel {
+      _playerModel as! PlayerModel
+    }
+  }
 
   // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
   var playlistController: PlaylistViewController? {
@@ -130,22 +150,36 @@ public class PlaylistCarplayManager: NSObject {
     tab?.stopMediaPlayback()
 
     if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
+      let mediaStreamer = PlaylistMediaStreamer(
+        playerView: browserController!.view,
+        webLoaderFactory: LivePlaylistWebLoaderFactory()
+      )
+      let player =
+        self.playerModelBox?.playerModel
+        ?? PlayerModel(
+          mediaStreamer: mediaStreamer,
+          initialPlaybackInfo: initialItem.map { item in
+            .init(itemUUID: item.id, timestamp: initialItemPlaybackOffset)
+          }
+        )
+      player.pictureInPictureDelegate = self
+      self.playerModelBox = .init(playerModel: player)
       return PlaylistHostingController(
+        player: player,
         delegate: .init(
           openTabURL: { [weak browserController] url, isPrivate in
             browserController?.dismiss(animated: true)
             browserController?.openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: false)
           },
-          webLoaderFactory: {
-            LivePlaylistWebLoaderFactory()
-          },
-          onDismissal: { [weak self] in
-            self?.isPlaylistControllerPresented = false
+          onDismissal: { [weak self, weak player] in
+            guard let self else { return }
+            self.isPlaylistControllerPresented = false
+            if let player, !player.isPictureInPictureActive, !isPiPStarting {
+              self.playerModelBox = nil
+            }
+            isPiPStarting = false
           }
-        ),
-        initialPlaybackInfo: initialItem.map { item in
-          .init(itemUUID: item.id, timestamp: initialItemPlaybackOffset)
-        }
+        )
       )
     }
 
@@ -247,5 +281,50 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
     limitedUserInterfacesChanged limitedUserInterfaces: CPLimitableUserInterface
   ) {
     Logger.module.debug("Limited UI changed to: \(limitedUserInterfaces.rawValue)")
+  }
+}
+
+extension PlaylistCarplayManager: AVPictureInPictureControllerDelegate {
+  // This is actually the `restoreUserInterfaceForPictureInPictureStopWithCompletionHandler`
+  // delegate method, but the `async` version gets named wierdly
+  @MainActor public func pictureInPictureController(
+    _ pictureInPictureController: AVPictureInPictureController
+  ) async -> Bool {
+    guard let browserController else { return false }
+    if browserController.presentedViewController is PlaylistHostingController {
+      // Already restoring by opening playlist
+      return true
+    }
+    browserController.dismiss(animated: true) {
+      browserController.openPlaylist(tab: nil, item: nil)
+    }
+    return true
+  }
+
+  public func pictureInPictureControllerDidStopPictureInPicture(
+    _ pictureInPictureController: AVPictureInPictureController
+  ) {
+    if browserController?.presentedViewController is PlaylistHostingController {
+      // Already restoring by opening playlist
+      return
+    }
+    playerModelBox = nil
+  }
+
+  public func pictureInPictureControllerWillStartPictureInPicture(
+    _ pictureInPictureController: AVPictureInPictureController
+  ) {
+    // We need to mark that PiP _will_ start, so that when `PlaylistRootView.Delegate.onDismissal`
+    // is called we don't kill the player box
+    isPiPStarting = true
+    browserController?.dismiss(animated: true)
+  }
+
+  public func pictureInPictureControllerDidStartPictureInPicture(
+    _ pictureInPictureController: AVPictureInPictureController
+  ) {
+    // Reset the var tracking this since we can now just look at
+    // `AVPictureInPictureController.isPictureInPictureActive`
+    isPiPStarting = false
   }
 }

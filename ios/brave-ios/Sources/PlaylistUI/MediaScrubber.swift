@@ -193,16 +193,6 @@ struct DefaultMediaScrubberLabel: View {
   }
 }
 
-@available(iOS 16.0, *)
-extension Duration {
-  fileprivate var isValid: Bool {
-    components.seconds > 0
-  }
-  fileprivate var seconds: Double {
-    Double(components.seconds)
-  }
-}
-
 #if DEBUG
 @available(iOS 16.0, *)
 private struct MediaScrubberPreview: View {

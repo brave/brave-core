@@ -39,8 +39,7 @@ struct PlayerView: View {
 
   var body: some View {
     VideoPlayerLayout(aspectRatio: isFullScreen ? nil : 16 / 9) {
-      VideoPlayer(player: playerModel.player)
-        .disabled(true)
+      VideoPlayer(playerLayer: playerModel.playerLayer)
     }
     .background {
       if !isFullScreen, playerModel.isPlaying {
@@ -349,5 +348,44 @@ private struct VideoPlayerLayout: Layout {
     cache: inout ()
   ) {
     subviews[0].place(at: bounds.origin, proposal: proposal)
+  }
+}
+
+@available(iOS 16.0, *)
+private struct VideoPlayer: UIViewRepresentable {
+  var playerLayer: AVPlayerLayer
+
+  func makeUIView(context: Context) -> PlayerView {
+    PlayerView(playerLayer: playerLayer)
+  }
+
+  func updateUIView(_ uiView: PlayerView, context: Context) {
+  }
+
+  func sizeThatFits(_ proposal: ProposedViewSize, uiView: PlayerView, context: Context) -> CGSize? {
+    proposal.replacingUnspecifiedDimensions()
+  }
+
+  class PlayerView: UIView {
+    var playerLayer: AVPlayerLayer
+
+    init(playerLayer: AVPlayerLayer) {
+      self.playerLayer = playerLayer
+      super.init(frame: .zero)
+      layer.addSublayer(playerLayer)
+      backgroundColor = .black
+    }
+
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
+    }
+
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      CATransaction.setDisableActions(true)
+      playerLayer.frame = bounds
+      CATransaction.setDisableActions(false)
+    }
   }
 }

@@ -94,6 +94,8 @@ class PlaylistViewController: UIViewController {
     listController.initialItemPlaybackOffset = initialItemPlaybackOffset
     listController.delegate = self
     detailController.delegate = self
+
+    modalPresentationStyle = .fullScreen
   }
 
   required init?(coder: NSCoder) {

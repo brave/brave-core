@@ -297,7 +297,6 @@ extension BrowserViewController {
         [weak self] playlistController in
         guard let self = self else { return }
 
-        playlistController.modalPresentationStyle = .fullScreen
         PlaylistP3A.recordUsage()
 
         self.dismiss(animated: true) {

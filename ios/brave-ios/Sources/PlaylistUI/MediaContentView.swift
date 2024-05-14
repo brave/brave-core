@@ -268,7 +268,7 @@ extension MediaContentView {
 @available(iOS 16.0, *)
 #Preview {
   MediaContentView(
-    model: .init(),
+    model: .preview,
     selectedItem: .init(
       context: DataController.swiftUIContext,
       name: "Test",

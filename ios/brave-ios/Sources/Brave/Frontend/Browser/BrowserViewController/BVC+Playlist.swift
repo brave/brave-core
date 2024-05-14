@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import BraveShared
 import BraveUI
 import Data
@@ -312,7 +311,6 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset
     )
-    playlistController.modalPresentationStyle = .fullScreen
     // Legacy UI set up for shared playlists
     if let playlistController = playlistController as? PlaylistViewController {
       if let folderSharingPageUrl = folderSharingPageUrl {

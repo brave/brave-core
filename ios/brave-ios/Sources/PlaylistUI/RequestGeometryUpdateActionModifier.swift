@@ -62,6 +62,7 @@ struct RequestGeometryUpdateAction {
   }
 }
 
+// FIXME: Move to BraveUI
 @available(iOS 16.0, *)
 extension EnvironmentValues {
   private struct RequestGeometryUpdateActionKey: EnvironmentKey {

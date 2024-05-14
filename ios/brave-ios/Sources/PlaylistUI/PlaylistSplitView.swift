@@ -20,7 +20,6 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @Environment(\.isFullScreen) private var isFullScreen
-  @Environment(\.dismiss) private var dismiss
 
   @Binding var selectedDetent: PlaylistSheetDetent
   var sidebar: Sidebar
@@ -234,28 +233,6 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
         .coordinateSpace(name: "PlaylistSplitView.Content")
     }
     .background(Color(braveSystemName: .pageBackground))
-    .safeAreaInset(edge: .top, spacing: 0) {
-      if !isFullScreen {
-        // Opt for HStack here in case we add more items to the "toolbar" in the future
-        HStack {
-          Button("Done") {
-            dismiss()
-          }
-          .fontWeight(.semibold)
-          .padding(.horizontal)
-          Spacer()
-        }
-        .tint(Color.primary)
-        // Mimic an actual navigation bar re: sizing/layout
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-        .frame(height: 44)
-        // --
-        .transition(
-          .move(edge: sidebarLayoutMode == .bottomSheet ? .top : .leading)
-            .combined(with: .opacity)
-        )
-      }
-    }
     .overlay(alignment: .bottom) {
       if sidebarLayoutMode == .bottomSheet {
         VStack(spacing: 0) {

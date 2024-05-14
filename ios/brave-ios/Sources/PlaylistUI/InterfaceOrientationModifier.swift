@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+// FIXME: Move to BraveUI
 extension EnvironmentValues {
   private struct InterfaceOrientationKey: EnvironmentKey {
     static var defaultValue: UIInterfaceOrientation = .unknown

@@ -5,15 +5,26 @@
 
 import AVKit
 import Combine
+import Data
 import Foundation
 import MediaPlayer
+import OrderedCollections
+import Playlist
+import Preferences
 import SwiftUI
 import os
 
+// FIXME: Add unit tests
 @available(iOS 16.0, *)
-final class PlayerModel: ObservableObject {
+public final class PlayerModel: ObservableObject {
 
-  init() {
+  public init(
+    mediaStreamer: PlaylistMediaStreamer?,
+    initialPlaybackInfo: InitialPlaybackInfo?
+  ) {
+    self.mediaStreamer = mediaStreamer
+    self.initialPlaybackInfo = initialPlaybackInfo
+
     // FIXME: Consider moving this to a setUp method and call explicitly from UI
     player.seek(to: .zero)
     player.actionAtItemEnd = .none
@@ -22,13 +33,21 @@ final class PlayerModel: ObservableObject {
     playerLayer.needsDisplayOnBoundsChange = true
     playerLayer.player = player
 
+    pipController = AVPictureInPictureController(playerLayer: playerLayer)
+    pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+    pipController?.delegate = pictureInPictureDelegate
+
     setupPlayerKeyPathObservation()
+    setupPlayerNotifications()
+    setupPictureInPictureKeyPathObservation()
     setupRemoteCommandCenterHandlers()
     updateSystemPlayer()
 
+    // FIXME: Maybe only set this before first playback
     DispatchQueue.global().async {
       // should mode be `.moviePlayback`?
       try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+      try? AVAudioSession.sharedInstance().setActive(true)
     }
   }
 
@@ -37,6 +56,7 @@ final class PlayerModel: ObservableObject {
       log.warning("PlayerModel deallocated without first stopping the underlying media.")
       stop()
     }
+    try? AVAudioSession.sharedInstance().setActive(false)
   }
 
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PlayerModel")
@@ -63,11 +83,7 @@ final class PlayerModel: ObservableObject {
 
   var duration: TimeInterval {
     guard let item = player.currentItem else { return 0 }
-    let seconds = CMTimeConvertScale(
-      item.asset.duration,
-      timescale: item.currentTime().timescale,
-      method: .roundHalfAwayFromZero
-    ).seconds
+    let seconds = item.asset.duration.seconds
     return seconds.isNaN ? 0.0 : seconds
   }
 
@@ -78,31 +94,10 @@ final class PlayerModel: ObservableObject {
         guard let self else { return }
         continuation.yield(currentTime)
       }
-      // Should be tied to the View, but adding ane extra killswitch
+      // Should be tied to the View, but adding one extra killswitch
       self.cancellables.insert(observer)
       continuation.onTermination = { _ in
         observer.cancel()
-      }
-    }
-  }
-
-  var didPlayToEndStream: AsyncStream<Void> {
-    return .init { [weak self] continuation in
-      guard let self else { return }
-      let observer = NotificationCenter.default.addObserver(
-        forName: AVPlayerItem.didPlayToEndTimeNotification,
-        object: nil,
-        queue: .main
-      ) { _ in
-        continuation.yield()
-      }
-      let cancellable = AnyCancellable {
-        _ = observer
-      }
-      // Should be tied to the View, but adding ane extra killswitch
-      self.cancellables.insert(cancellable)
-      continuation.onTermination = { _ in
-        cancellable.cancel()
       }
     }
   }
@@ -131,7 +126,7 @@ final class PlayerModel: ObservableObject {
       return
     }
     player.pause()
-    item = nil
+    currentItem = nil
   }
 
   private let seekInterval: TimeInterval = 15.0
@@ -177,7 +172,13 @@ final class PlayerModel: ObservableObject {
 
   @Published var repeatMode: RepeatMode = .none
 
-  @Published var isShuffleEnabled: Bool = false
+  @Published var isShuffleEnabled: Bool = false {
+    didSet {
+      if oldValue != isShuffleEnabled {
+        makeItemQueue(selectedItemID: selectedItemID)
+      }
+    }
+  }
 
   struct PlaybackSpeed: Equatable {
     var rate: Float
@@ -266,7 +267,7 @@ final class PlayerModel: ObservableObject {
           }
         }
       }
-      // Should be tied to the View, but adding ane extra killswitch
+      // Should be tied to the View, but adding one extra killswitch
       self.cancellables.insert(timeObserver)
       continuation.onTermination = { _ in
         timeObserver.cancel()
@@ -277,14 +278,40 @@ final class PlayerModel: ObservableObject {
   // MARK: - Picture in Picture
 
   private var pipController: AVPictureInPictureController?
+  public weak var pictureInPictureDelegate: AVPictureInPictureControllerDelegate? {
+    didSet {
+      pipController?.delegate = pictureInPictureDelegate
+    }
+  }
 
-  // FIXME: Maybe update this based on AVPictureInPictureController.isPictureInPicturePossible KVO
-  @Published private(set) var isPictureInPictureSupported: Bool =
+  var isPictureInPictureSupported: Bool {
     AVPictureInPictureController.isPictureInPictureSupported()
+      && pipController?.isPictureInPicturePossible == true
+  }
 
-  func togglePictureInPicture() {
-    pipController = AVPictureInPictureController(playerLayer: playerLayer)
+  public var isPictureInPictureActive: Bool {
+    pipController?.isPictureInPictureActive ?? false
+  }
+
+  public func startPictureInPicture() {
     pipController?.startPictureInPicture()
+  }
+
+  public func stopPictureInPicture() {
+    pipController?.stopPictureInPicture()
+  }
+
+  private func setupPictureInPictureKeyPathObservation() {
+    guard let pipController else { return }
+    func subscriber<Value>(
+      for keyPath: KeyPath<AVPictureInPictureController, Value>
+    ) -> AnyCancellable {
+      objectWillChangeSubscriber(on: pipController, for: keyPath)
+    }
+    cancellables.formUnion([
+      subscriber(for: \.isPictureInPicturePossible),
+      subscriber(for: \.isPictureInPictureActive),
+    ])
   }
 
   // MARK: - AirPlay
@@ -293,13 +320,208 @@ final class PlayerModel: ObservableObject {
     player.allowsExternalPlayback
   }
 
+  // MARK: - Playlist Queue
+
+  public struct InitialPlaybackInfo {
+    public var itemUUID: String
+    public var timestamp: TimeInterval
+
+    public init(itemUUID: String, timestamp: TimeInterval) {
+      self.itemUUID = itemUUID
+      self.timestamp = timestamp
+    }
+  }
+
+  public let mediaStreamer: PlaylistMediaStreamer?
+  public let initialPlaybackInfo: InitialPlaybackInfo?
+
+  @Published var selectedItemID: PlaylistItem.ID? {
+    willSet {
+      if let selectedItem {
+        let currentTime = currentTime
+        // Reset the current item's last played time if you changed videos in the last 10s
+        PlaylistManager.shared.updateLastPlayed(
+          item: .init(item: selectedItem),
+          playTime: (duration - 10...duration).contains(currentTime) ? 0 : currentTime
+        )
+      }
+    }
+  }
+
+  @Published var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
+
+  var itemQueue: OrderedSet<PlaylistItem.ID> = []
+  var seekToInitialTimestamp: TimeInterval?
+
+  private var selectedFolder: PlaylistFolder? {
+    PlaylistFolder.getFolder(uuid: selectedFolderID)
+  }
+
+  private var selectedItem: PlaylistItem? {
+    selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
+  }
+
+  public func prepareItemQueue() {
+    let firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay.value
+    let lastPlayedItemURL = Preferences.Playlist.lastPlayedItemUrl.value
+    let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
+
+    defer {
+      Task { @MainActor in
+        await self.prepareToPlaySelectedItem(
+          initialOffset: seekToInitialTimestamp,
+          playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay
+        )
+      }
+    }
+
+    if !itemQueue.isEmpty {
+      // Already prepared the queue, no need to do so again
+      return
+    }
+
+    // Make an initial queue without any selected item
+    makeItemQueue(selectedItemID: nil)
+    // Possibly update the selected folder based on the last item played
+    let lastPlayedItem: PlaylistItem? =
+      lastPlayedItemURL
+      .map { PlaylistItem.getItems(pageSrc: $0) }?.first
+    if let initialPlaybackInfo,
+      let item = PlaylistItem.getItem(uuid: initialPlaybackInfo.itemUUID)
+    {
+      // If we're coming from a tab with some initial video data update the folder & item
+      seekToInitialTimestamp = initialPlaybackInfo.timestamp
+      selectedItemID = item.id
+      if let folderID = selectedItem?.playlistFolder?.id {
+        selectedFolderID = folderID
+      }
+      // Remake the item queue with the newly selected item
+      makeItemQueue(selectedItemID: selectedItemID)
+    } else {
+      // Just opening playlist without inherited item data, so restore the previously watched item
+      // or just auto-play the first item if the pref is on
+      if let lastPlayedItem {
+        if let lastPlayedItemParentFolder = lastPlayedItem.playlistFolder {
+          selectedFolderID = lastPlayedItemParentFolder.id
+        }
+        selectedItemID = lastPlayedItem.id
+        // Remake the item queue with the newly selected item
+        makeItemQueue(selectedItemID: selectedItemID)
+      } else {
+        // Start the first video in the queue if auto-play is enabled
+        if resumeFromLastTimePlayed, let selectedItem {
+          seekToInitialTimestamp = selectedItem.lastPlayedOffset
+        }
+        selectedItemID = itemQueue.first
+      }
+    }
+  }
+
+  func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
+    var queue: OrderedSet<PlaylistItem.ID> = []
+    var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
+    if isShuffleEnabled {
+      if let selectedItemID {
+        items.removeAll(where: { $0 == selectedItemID })
+        queue.append(selectedItemID)
+      }
+      queue.append(contentsOf: items.shuffled())
+    } else {
+      // FIXME: We should leave prior items in to allow playing previous item instead of just next
+      if let selectedItemID {
+        items = Array(items.drop(while: { $0 != selectedItemID }))
+      }
+      queue = OrderedSet(items)
+    }
+    itemQueue = queue
+  }
+
+  func playNextItem() {
+    pause()
+
+    let repeatMode = repeatMode
+
+    if repeatMode == .one {
+      // Replay the current video regardless of shuffle state/queue
+      play()
+      return
+    }
+
+    guard let currentItem = selectedItem else {
+      // FIXME: What should we do here if nothing is playing, play first item?
+      return
+    }
+
+    if currentItem.id == itemQueue.last {
+      if repeatMode == .all {
+        // Last item in the set and repeat mode is on, start from the beginning of the queue
+        selectedItemID = itemQueue.first
+      }
+      // Nothing to play if not repeating
+      return
+    }
+
+    if let currentItemIndex = itemQueue.firstIndex(of: currentItem.id) {
+      // This should be safe as we've already checked if the selected item is the last in the queue
+      selectedItemID = itemQueue[currentItemIndex + 1]
+    }
+
+    Task {
+      await self.prepareToPlaySelectedItem(
+        initialOffset: seekToInitialTimestamp,
+        playImmediately: true
+      )
+    }
+  }
+
+  @MainActor func prepareToPlaySelectedItem(
+    initialOffset: TimeInterval?,
+    playImmediately: Bool
+  ) async {
+    guard let item = selectedItem else { return }
+    // FIXME: Need a possible loading state here
+    // Loading a media streaming asset may take time, need some sort of intermediate state where
+    // we stop the current playback and show a loader even if the selected item is not fully ready
+    // yet
+    let playerItemToReplace: AVPlayerItem? = await {
+      if let cachedData = item.cachedData {
+        do {
+          var isStale: Bool = false
+          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+          if FileManager.default.fileExists(atPath: url.path) {
+            return .init(url: url)
+          }
+        } catch {
+        }
+      }
+      if let newItem = try? await mediaStreamer?.loadMediaStreamingAsset(.init(item: item)),
+        let url = URL(string: newItem.src)
+      {
+        return .init(asset: AVURLAsset(url: url))
+      }
+      return nil
+    }()
+    let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
+    if let playerItem = playerItemToReplace {
+      self.currentItem = playerItem
+      if let initialOffset {
+        await seek(to: initialOffset, accurately: true)
+      } else if resumeFromLastTimePlayed {
+        await seek(to: item.lastPlayedOffset, accurately: true)
+      }
+      if playImmediately {
+        play()
+      }
+    }
+  }
+
   // MARK: -
 
-  let player: AVPlayer = .init()
+  private let player: AVPlayer = .init()
   private let videoDecorationOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
     kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
   ])
-  var item: AVPlayerItem? {
+  private var currentItem: AVPlayerItem? {
     get {
       player.currentItem
     }
@@ -309,46 +531,62 @@ final class PlayerModel: ObservableObject {
       newValue?.add(videoDecorationOutput)
     }
   }
-  private let playerLayer: AVPlayerLayer = .init()
+  private(set) var playerLayer: AVPlayerLayer = .init()
 
   private var cancellables: Set<AnyCancellable> = []
   private var itemCancellables: Set<AnyCancellable> = []
 
+  /// Sets up NotificationCenter notifications
+  private func setupPlayerNotifications() {
+    let observer = NotificationCenter.default.addObserver(
+      forName: AVPlayerItem.didPlayToEndTimeNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      self?.playNextItem()
+    }
+    cancellables.insert(
+      .init {
+        _ = observer
+      }
+    )
+  }
+
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher
   private func setupPlayerKeyPathObservation() {
     func subscriber<Value>(for keyPath: KeyPath<AVPlayer, Value>) -> AnyCancellable {
-      let observation = player.observe(keyPath, options: [.prior]) { [weak self] _, change in
-        if change.isPrior {
-          self?.objectWillChange.send()
-        }
-      }
-      return .init {
-        observation.invalidate()
-      }
+      objectWillChangeSubscriber(on: player, for: keyPath)
     }
     cancellables.formUnion([
       subscriber(for: \.timeControlStatus),
       subscriber(for: \.allowsExternalPlayback),
-      // FIXME: Add the rest
     ])
   }
 
+  /// Sets up KVO observations for AVPlayerItem properties which trigger the `objectWillChange` publisher
   private func setupPlayerItemKeyPathObservation() {
     itemCancellables.removeAll()
-    guard let item = item else { return }
+    guard let item = currentItem else { return }
     func subscriber<Value>(for keyPath: KeyPath<AVPlayerItem, Value>) -> AnyCancellable {
-      let observation = item.observe(keyPath, options: [.prior]) { [weak self] _, change in
-        if change.isPrior {
-          self?.objectWillChange.send()
-        }
-      }
-      return .init {
-        observation.invalidate()
-      }
+      objectWillChangeSubscriber(on: item, for: keyPath)
     }
     itemCancellables.formUnion([
       subscriber(for: \.presentationSize)
     ])
+  }
+
+  private func objectWillChangeSubscriber<Object: NSObject, Value>(
+    on object: Object,
+    for keyPath: KeyPath<Object, Value>
+  ) -> AnyCancellable {
+    let observation = object.observe(keyPath, options: [.prior]) { [weak self] _, change in
+      if change.isPrior {
+        self?.objectWillChange.send()
+      }
+    }
+    return .init {
+      observation.invalidate()
+    }
   }
 }
 
@@ -492,3 +730,10 @@ extension PlayerModel.RepeatMode {
 extension PlayerModel.PlaybackSpeed {
   static var supportedSpeeds: [Self] = [.normal, .fast, .faster]
 }
+
+#if DEBUG
+@available(iOS 16.0, *)
+extension PlayerModel {
+  static let preview: PlayerModel = .init(mediaStreamer: nil, initialPlaybackInfo: nil)
+}
+#endif

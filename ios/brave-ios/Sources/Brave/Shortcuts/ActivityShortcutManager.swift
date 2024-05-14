@@ -232,7 +232,6 @@ public class ActivityShortcutManager: NSObject {
 
       let tab = bvc.tabManager.selectedTab
       PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
-        playlistController.modalPresentationStyle = .fullScreen
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }
