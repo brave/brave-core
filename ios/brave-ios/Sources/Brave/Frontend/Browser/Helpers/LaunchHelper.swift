@@ -52,8 +52,8 @@ public actor LaunchHelper {
       // This is done first because compileResources need their results
       await AdBlockGroupsManager.shared.loadResourcesFromCache()
       async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
-      async let adblockResourceCache: Void = AdblockResourceDownloader.shared
-        .loadCachedAndBundledDataIfNeeded(allowedModes: launchBlockModes)
+      async let adblockResourceCache: Void = AdBlockGroupsManager.shared
+        .loadBundledDataIfNeeded(allowedModes: launchBlockModes)
       _ = await (loadEngines, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
 
@@ -103,12 +103,7 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
-
-      await AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(
-        allowedModes: Set(remainingModes)
-      )
       await AdBlockGroupsManager.shared.cleaupInvalidRuleLists()
-      await AdblockResourceDownloader.shared.startFetching()
       Self.signpost.endInterval("nonBlockingLaunchTask", state)
 
       // Update the setting

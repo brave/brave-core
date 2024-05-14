@@ -80,6 +80,59 @@ import os
     }
   }
 
+  /// This will load bundled data for the given content blocking modes. But only if the files are not already compiled.
+  func loadBundledDataIfNeeded(
+    allowedModes: Set<ContentBlockerManager.BlockingMode>
+  ) async {
+    guard !allowedModes.isEmpty else { return }
+
+    // Compile bundled blocklists but only if we don't have anything already loaded.
+    await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
+      genericType in
+      let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
+      let modes = await AdBlockGroupsManager.shared.contentBlockerManager.missingModes(
+        for: blocklistType,
+        version: genericType.version
+      )
+
+      if genericType == .blockAds {
+        // This type is temproary and replaced with a downloaded filter list
+        // Check if we have the downloaded version of this replacement
+        let results = await modes.asyncMap { mode in
+          return await AdBlockGroupsManager.shared.contentBlockerManager.hasRuleList(
+            for: .engineSource(
+              .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+              engineType: .standard
+            ),
+            mode: mode
+          )
+        }
+
+        if results.allSatisfy({ $0 }) {
+          do {
+            // Remove this as it's no longer needed
+            try await AdBlockGroupsManager.shared.contentBlockerManager.removeRuleLists(
+              for: blocklistType
+            )
+          } catch {
+            // we don't care if we failed to remove this
+          }
+
+          return
+        }
+      }
+
+      do {
+        try await AdBlockGroupsManager.shared.contentBlockerManager.compileBundledRuleList(
+          for: genericType,
+          modes: modes
+        )
+      } catch {
+        assertionFailure("A bundled file should not fail to compile")
+      }
+    }
+  }
+
   /// Load the engines from cache for all engine types
   /// Will use the cached dat files to do this, however, for upgrades, it
   /// will load from legacy storage (using text files) if the dat file is unavailable.
@@ -298,6 +351,7 @@ import os
     }
   }
 
+  /// Get all required rule lists for the given domain
   public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
     let validBlocklistTypes = self.validBlocklistTypes(for: domain)
     let level = domain.blockAdsAndTrackingLevel
@@ -318,11 +372,28 @@ import os
     )
   }
 
+  /// A list of all valid (enabled) blocklist types for the given domain
   private func validBlocklistTypes(for domain: Domain) -> Set<(ContentBlockerManager.BlocklistType)>
   {
     guard !domain.areAllShieldsOff else { return [] }
+
     // 1. Get the generic types
-    let genericTypes = contentBlockerManager.validGenericTypes(for: domain)
+    let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
+      switch type {
+      case .blockAds:
+        // We only use this legacy list during the upgrade so we don't have
+        // a pause on network blocking. Later we can remove this logic.
+        return !contentBlockerManager.isReady(
+          for: .engineSource(
+            .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
+            engineType: domain.blockAdsAndTrackingLevel.isAggressive ? .aggressive : .standard
+          ),
+          mode: .standard
+        )
+      default:
+        return true
+      }
+    }
     let genericRuleLists = genericTypes.map { genericType -> ContentBlockerManager.BlocklistType in
       return .generic(genericType)
     }
@@ -335,6 +406,7 @@ import os
     return Set(genericRuleLists).union(sourceProvider.enabledBlocklistTypes)
   }
 
+  /// Remove all un-needed content blockers
   public func cleaupInvalidRuleLists() async {
     let allBlocklistTypes = ContentBlockerManager.BlocklistType.allStaticTypes
       .union(sourceProvider.blocklistTypes)
@@ -627,12 +699,5 @@ extension AdBlockGroupsManager.SourceProvider {
         return source.blocklistType(engineType: engineType)
       }
     }
-  }
-}
-
-extension GroupedAdBlockEngine.EngineType {
-  /// Return the allowed content blocker modes for the given engine type
-  var allowedModes: [ContentBlockerManager.BlockingMode] {
-    return isAlwaysAggressive ? [.aggressive] : [.standard, .aggressive]
   }
 }

@@ -458,6 +458,15 @@ import os.log
     }
   }
 
+  /// Tells us if the rule list is compiled and ready
+  func isReady(for type: BlocklistType, mode: BlockingMode) -> Bool {
+    do {
+      return try cachedRuleLists[type.makeIdentifier(for: mode)]?.get() != nil
+    } catch {
+      return false
+    }
+  }
+
   /// Check if a rule list is compiled for this type
   func hasRuleList(for type: BlocklistType, mode: BlockingMode) async -> Bool {
     do {
