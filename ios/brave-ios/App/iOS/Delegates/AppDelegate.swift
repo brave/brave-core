@@ -271,6 +271,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       )
     }
 
+    LanguageMetrics.recordPrimaryLanguageP3A()
+
     Task(priority: .low) {
       await self.cleanUpLargeTemporaryDirectory()
     }
