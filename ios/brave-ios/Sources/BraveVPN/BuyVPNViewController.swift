@@ -120,7 +120,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
 
     iapObserver.delegate = self
     buyVPNView.delegate = self
-    
+
     Preferences.VPN.popupShowed.value = true
   }
 
