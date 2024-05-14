@@ -134,6 +134,8 @@ enum TransactionParser {
     currencyFormatter: NumberFormatter,
     decimalFormatStyle: WeiFormatter.DecimalFormatStyle? = nil
   ) -> ParsedTransaction? {
+    let fromAccountInfo =
+      accountInfos.first(where: { $0.accountId == transaction.fromAccountId }) ?? .init()
     let formatter = WeiFormatter(
       decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: Int(network.decimals))
     )
@@ -189,10 +191,10 @@ enum TransactionParser {
         return .init(
           transaction: transaction,
           namedFromAddress: NamedAddresses.name(
-            for: transaction.fromAccountId.address,
+            for: fromAccountInfo.address,
             accounts: accountInfos
           ),
-          fromAccountId: transaction.fromAccountId,
+          fromAccountInfo: fromAccountInfo,
           namedToAddress: NamedAddresses.name(for: filTxData.to, accounts: accountInfos),
           toAddress: filTxData.to,
           network: network,
@@ -217,8 +219,7 @@ enum TransactionParser {
       } else if let btcTxData = transaction.txDataUnion.btcTxData {  // BTC send tx
         // Require 8 decimals precision for BTC parsing
         let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
-        let fromAccount = accountInfos.first(where: { $0.accountId == transaction.fromAccountId })
-        let namedFromAccount = fromAccount?.name ?? ""
+        let namedFromAccount = fromAccountInfo.name
         let fromValue = "\(btcTxData.amount)"
         let fromValueFormatted =
           formatter.decimalString(
@@ -244,7 +245,7 @@ enum TransactionParser {
         return .init(
           transaction: transaction,
           namedFromAddress: namedFromAccount,
-          fromAccountId: transaction.fromAccountId,
+          fromAccountInfo: fromAccountInfo,
           namedToAddress: "",
           toAddress: btcTxData.to,
           network: network,
@@ -288,10 +289,10 @@ enum TransactionParser {
         return .init(
           transaction: transaction,
           namedFromAddress: NamedAddresses.name(
-            for: transaction.fromAccountId.address,
+            for: fromAccountInfo.address,
             accounts: accountInfos
           ),
-          fromAccountId: transaction.fromAccountId,
+          fromAccountInfo: fromAccountInfo,
           namedToAddress: NamedAddresses.name(
             for: transaction.ethTxToAddress,
             accounts: accountInfos
@@ -353,10 +354,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -440,10 +441,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(
           for: transaction.ethTxToAddress,
           accounts: accountInfos
@@ -514,10 +515,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(
           for: transaction.ethTxToAddress,
           accounts: accountInfos
@@ -566,10 +567,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,  // The caller, which may not be the owner
+        fromAccountInfo: fromAccountInfo,  // The caller, which may not be the owner
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -616,10 +617,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -688,10 +689,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
         network: network,
@@ -825,10 +826,10 @@ enum TransactionParser {
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
-          for: transaction.fromAccountId.address,
+          for: fromAccountInfo.address,
           accounts: accountInfos
         ),
-        fromAccountId: transaction.fromAccountId,
+        fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
         network: network,
@@ -950,8 +951,8 @@ struct ParsedTransaction: Equatable {
 
   /// Account name for the from address of the transaction
   let namedFromAddress: String
-  /// `AccountId` sending from
-  let fromAccountId: BraveWallet.AccountId
+  /// `AccountInfo` sending from
+  let fromAccountInfo: BraveWallet.AccountInfo
 
   /// Account name for the to address of the transaction
   let namedToAddress: String
@@ -995,7 +996,7 @@ struct ParsedTransaction: Equatable {
   init() {
     self.transaction = .init()
     self.namedFromAddress = ""
-    self.fromAccountId = .init()
+    self.fromAccountInfo = .init()
     self.namedToAddress = ""
     self.toAddress = ""
     self.network = .init()
@@ -1005,7 +1006,7 @@ struct ParsedTransaction: Equatable {
   init(
     transaction: BraveWallet.TransactionInfo,
     namedFromAddress: String,
-    fromAccountId: BraveWallet.AccountId,
+    fromAccountInfo: BraveWallet.AccountInfo,
     namedToAddress: String,
     toAddress: String,
     network: BraveWallet.NetworkInfo,
@@ -1013,7 +1014,7 @@ struct ParsedTransaction: Equatable {
   ) {
     self.transaction = transaction
     self.namedFromAddress = namedFromAddress
-    self.fromAccountId = fromAccountId
+    self.fromAccountInfo = fromAccountInfo
     self.namedToAddress = namedToAddress
     self.toAddress = toAddress
     self.network = network
@@ -1026,8 +1027,8 @@ struct ParsedTransaction: Equatable {
       || namedToAddress.localizedCaseInsensitiveContains(query)
       || toAddress.localizedCaseInsensitiveContains(query)
       || transaction.txHash.localizedCaseInsensitiveContains(query)
-      || (!fromAccountId.address.isEmpty
-        && fromAccountId.address.localizedCaseInsensitiveContains(query))
+      || (!fromAccountInfo.address.isEmpty
+        && fromAccountInfo.address.localizedCaseInsensitiveContains(query))
     {
       return true
     }

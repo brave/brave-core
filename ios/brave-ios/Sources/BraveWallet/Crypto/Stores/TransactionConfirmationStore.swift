@@ -380,7 +380,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var assetRatios: [String: Double] = [:]
   private var currentAllowanceCache: [String: String] = [:]
   /// Cache of gas token balance for each chainId (in pending transactions) for each account.
-  /// Outer key is the `chainId`, inner key is the `accountId.uniqueKey`.
+  /// Outer key is the `NetworkInfo.chainId`, inner key is the `AccountInfo.id`.
   private var gasTokenBalanceCache: [String: [String: Double]] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
@@ -416,7 +416,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
 
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
-    let ownerAddress = parsedTransaction.fromAccountId.address
+    let ownerAddress = parsedTransaction.fromAccountInfo.address
     let (allowance, _, _) = await rpcService.erc20TokenAllowance(
       contract: details.token?.contractAddress(in: selectedChain) ?? "",
       ownerAddress: ownerAddress,
@@ -448,11 +448,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         accountId: account.accountId,
         type: .available
       ) {
-        gasBalancesForChain[account.accountId.uniqueKey] = availableBTCBalance
+        gasBalancesForChain[account.id] = availableBTCBalance
       }
     } else {
       if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
-        gasBalancesForChain[account.accountId.uniqueKey] = gasTokenBalance
+        gasBalancesForChain[account.id] = gasTokenBalance
       }
     }
     gasTokenBalanceCache[network.chainId] = gasBalancesForChain
@@ -539,7 +539,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -550,7 +550,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -584,7 +584,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -595,7 +595,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -626,7 +626,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -637,7 +637,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -667,7 +667,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -678,7 +678,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -711,7 +711,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -722,7 +722,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -748,7 +748,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
-          activeParsedTransaction.fromAccountId.uniqueKey
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -759,7 +759,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.accountId.uniqueKey == activeParsedTransaction.fromAccountId.uniqueKey
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,

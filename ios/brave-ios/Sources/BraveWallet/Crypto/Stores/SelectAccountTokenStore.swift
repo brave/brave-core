@@ -412,7 +412,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
       return AccountSection(
         account: account,
-        bitcoinAccountInfo: bitcoinAccounts[account.accountId.uniqueKey],
+        bitcoinAccountInfo: bitcoinAccounts[account.id],
         tokenBalances:
           accountTokenBalances
           .sorted { lhs, rhs in

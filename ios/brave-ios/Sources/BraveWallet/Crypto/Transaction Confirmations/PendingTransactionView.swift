@@ -77,7 +77,7 @@ struct PendingTransactionView: View {
   /// View showing the currently selected account with a blockie. Used for `erc20Approve` txType only.
   @ViewBuilder private var erc20ApproveAccountView: some View {
     HStack {
-      let address = confirmationStore.activeParsedTransaction.fromAccountId.blockieSeed
+      let address = confirmationStore.activeParsedTransaction.fromAccountInfo.blockieSeed
       AddressView(address: address) {
         Text(address.truncatedAddress)
           .fontWeight(.semibold)
@@ -243,7 +243,7 @@ struct PendingTransactionView: View {
         erc20ApproveHeader
       } else {
         TransactionHeader(
-          fromAccountId: confirmationStore.activeParsedTransaction.fromAccountId,
+          fromAccountInfo: confirmationStore.activeParsedTransaction.fromAccountInfo,
           fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,

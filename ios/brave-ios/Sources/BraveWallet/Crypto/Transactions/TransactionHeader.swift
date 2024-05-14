@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionHeader: View {
 
-  let fromAccountId: BraveWallet.AccountId
+  let fromAccountInfo: BraveWallet.AccountInfo
   let fromAccountName: String
   let toAccountAddress: String
   let toAccountName: String
@@ -25,25 +25,25 @@ struct TransactionHeader: View {
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        if fromAccountId.address == toAccountAddress || toAccountAddress.isEmpty {
-          Blockie(address: fromAccountId.address)
+        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty {
+          Blockie(address: fromAccountInfo.address)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)
             )
-          AddressView(address: fromAccountId.address) {
+          AddressView(address: fromAccountInfo.address) {
             Text(fromAccountName)
           }
         } else {
           BlockieGroup(
-            fromAddress: fromAccountId.blockieSeed,
+            fromAddress: fromAccountInfo.blockieSeed,
             toAddress: toAccountAddress,
             size: min(blockieSize, maxBlockieSize)
           )
           Group {
             if sizeCategory.isAccessibilityCategory {
               VStack {
-                AddressView(address: fromAccountId.address) {
+                AddressView(address: fromAccountInfo.address) {
                   Text(fromAccountName)
                 }
                 Image(systemName: "arrow.down")
@@ -53,7 +53,7 @@ struct TransactionHeader: View {
               }
             } else {
               HStack {
-                AddressView(address: fromAccountId.address) {
+                AddressView(address: fromAccountInfo.address) {
                   Text(fromAccountName)
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)

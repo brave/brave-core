@@ -68,14 +68,14 @@ struct TransactionDetailsView: View {
           HStack {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoFromTitle)
-              if !parsedTransaction.fromAccountId.address.isEmpty {
-                AddressView(address: parsedTransaction.fromAccountId.address) {
+              if !parsedTransaction.fromAccountInfo.address.isEmpty {
+                AddressView(address: parsedTransaction.fromAccountInfo.address) {
                   // zwspOutput to avoid hyphen when wrapped
-                  Text(parsedTransaction.fromAccountId.address.zwspOutput)
+                  Text(parsedTransaction.fromAccountInfo.address.zwspOutput)
                     .font(.callout)
                     .foregroundColor(Color(braveSystemName: .textPrimary))
                   if isLocalAccount(
-                    address: parsedTransaction.fromAccountId.address,
+                    address: parsedTransaction.fromAccountInfo.address,
                     namedAddress: parsedTransaction.namedFromAddress
                   ) {  // only show named address if its actual name, not truncated address.
                     Text(parsedTransaction.namedFromAddress)
@@ -90,9 +90,9 @@ struct TransactionDetailsView: View {
               }
             }
             Spacer()
-            if !parsedTransaction.fromAccountId.address.isEmpty {
+            if !parsedTransaction.fromAccountInfo.address.isEmpty {
               WalletIconButton(braveSystemName: "leo.copy") {
-                UIPasteboard.general.string = parsedTransaction.fromAccountId.address
+                UIPasteboard.general.string = parsedTransaction.fromAccountInfo.address
               }
             }
           }

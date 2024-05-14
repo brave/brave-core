@@ -659,14 +659,14 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         self.sendTokenOnEth(
           amount: amount,
           token: token,
-          from: selectedAccount.accountId,
+          from: selectedAccount,
           completion: completion
         )
       case .sol:
         self.sendTokenOnSol(
           amount: amount,
           token: token,
-          from: selectedAccount.accountId,
+          from: selectedAccount,
           completion: completion
         )
       case .fil:
@@ -693,7 +693,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   func sendTokenOnEth(
     amount: String,
     token: BraveWallet.BlockchainToken,
-    from fromAccountId: BraveWallet.AccountId,
+    from fromAccountInfo: BraveWallet.AccountInfo,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
     isMakingTx = true
@@ -725,7 +725,11 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           signedTransaction: nil
         )
         if network.isEip1559 {
-          self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAccountId) {
+          self.makeEIP1559Tx(
+            chainId: network.chainId,
+            baseData: baseData,
+            from: fromAccountInfo.accountId
+          ) {
             success,
             errorMessage in
             self.isMakingTx = false
@@ -736,7 +740,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountId
+            from: fromAccountInfo.accountId
           ) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
@@ -744,7 +748,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         }
       } else if token.isErc721 {
         self.ethTxManagerProxy.makeErc721TransferFromData(
-          from: fromAccountId.address,
+          from: fromAccountInfo.address,
           to: sendToAddress,
           tokenId: token.tokenId,
           contractAddress: token.contractAddress
@@ -767,7 +771,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountId
+            from: fromAccountInfo.accountId
           ) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
@@ -795,7 +799,11 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             signedTransaction: nil
           )
           if network.isEip1559 {
-            self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAccountId) {
+            self.makeEIP1559Tx(
+              chainId: network.chainId,
+              baseData: baseData,
+              from: fromAccountInfo.accountId
+            ) {
               success,
               errorMessage in
               self.isMakingTx = false
@@ -806,7 +814,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             self.txService.addUnapprovedTransaction(
               txDataUnion: txDataUnion,
               chainId: network.chainId,
-              from: fromAccountId
+              from: fromAccountInfo.accountId
             ) { success, txMetaId, errorMessage in
               self.isMakingTx = false
               completion(success, errorMessage)
@@ -820,7 +828,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private func sendTokenOnSol(
     amount: String,
     token: BraveWallet.BlockchainToken,
-    from fromAccountId: BraveWallet.AccountId,
+    from fromAccountInfo: BraveWallet.AccountInfo,
     completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
   ) {
     isMakingTx = true
@@ -840,7 +848,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
-          from: fromAccountId.address,
+          from: fromAccountInfo.address,
           to: sendToAddress,
           lamports: amount
         ) { solTxData, error, errMsg in
@@ -853,7 +861,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountId
+            from: fromAccountInfo.accountId
           ) { success, txMetaId, errMsg in
             self.isMakingTx = false
             completion(success, errMsg)
@@ -863,7 +871,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
           chainId: network.chainId,
           splTokenMintAddress: token.contractAddress,
-          fromWalletAddress: fromAccountId.address,
+          fromWalletAddress: fromAccountInfo.address,
           toWalletAddress: sendToAddress,
           amount: amount
         ) { solTxData, error, errMsg in
@@ -876,7 +884,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           self.txService.addUnapprovedTransaction(
             txDataUnion: txDataUnion,
             chainId: network.chainId,
-            from: fromAccountId
+            from: fromAccountInfo.accountId
           ) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
