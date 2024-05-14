@@ -8,9 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
-// #include <unordered_set>
 
-// #include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
@@ -36,7 +34,6 @@
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
-// #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 
 #if BUILDFLAG(IS_LINUX)
@@ -54,11 +51,6 @@ const char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 
-// staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
-// syncer::kSyncServiceURL manually
-const char kBraveSyncServiceStagingURL[] =
-    "https://sync-v2.bravesoftware.com/v2";
-
 const char kDummyUrl[] = "https://no-thanks.invalid";
 
 std::string GetUpdateURLHost() {
@@ -73,6 +65,11 @@ std::string GetUpdateURLHost() {
 }
 
 #if BUILDFLAG(IS_ANDROID)
+// staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
+// syncer::kSyncServiceURL manually
+const char kBraveSyncServiceStagingURL[] =
+    "https://sync-v2.bravesoftware.com/v2";
+
 void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
   DCHECK_NE(brave_sync_service_url, nullptr);
   const char kProcessTypeSwitchName[] = "type";

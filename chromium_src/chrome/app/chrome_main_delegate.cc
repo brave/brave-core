@@ -4,4 +4,5 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "src/chrome/app/chrome_main_delegate.cc"  // IWYU pragma: export
-#include "brave/app/brave_main_delegate.cc"        // IWYU pragma: export
+
+#include "brave/app/brave_main_delegate.cc"  // IWYU pragma: export
