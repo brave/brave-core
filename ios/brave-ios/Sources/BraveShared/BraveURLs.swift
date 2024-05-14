@@ -64,6 +64,9 @@ extension URL {
     public static let braveLeoLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=link-order&product=leo"
     )!
+    public static let braveLeoModelCategorySupport = URL(
+      string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
