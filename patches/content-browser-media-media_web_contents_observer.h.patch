@@ -1,34 +1,36 @@
 diff --git a/content/browser/media/media_web_contents_observer.h b/content/browser/media/media_web_contents_observer.h
-index 30dc069777641ecaafdab9d694e3cf440f7f35c3..89e5dce861a6feff2ce4860fd14fdd2c861d8b12 100644
+index 30dc069777641ecaafdab9d694e3cf440f7f35c3..51317762accbe46322189c3d89f055803cac6d60 100644
 --- a/content/browser/media/media_web_contents_observer.h
 +++ b/content/browser/media/media_web_contents_observer.h
 @@ -73,6 +73,9 @@ class CONTENT_EXPORT MediaWebContentsObserver
  
    ~MediaWebContentsObserver() override;
  
-+  base::flat_map<MediaPlayerId, std::pair<GURL, bool>>
++  base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
 +  GetLoadedUrlByMediaPlayer() const;
 +
    // Called by WebContentsImpl when the audible state may have changed.
    void MaybeUpdateAudibleState();
  
-@@ -216,6 +219,10 @@ class CONTENT_EXPORT MediaWebContentsObserver
+@@ -216,6 +219,11 @@ class CONTENT_EXPORT MediaWebContentsObserver
          media_session::mojom::RemotePlaybackMetadataPtr
              remote_playback_metadata) override;
      void OnVideoVisibilityChanged(bool meets_visibility_threshold) override;
-+    void OnMediaLoaded(const GURL& url, bool is_mse) override;
++    void OnMediaLoaded(const GURL& url, bool is_mse, double duration) override;
 +
 +    const GURL& GetLoadedUrl() const;
 +    bool IsMse() const;
++    double GetDuration() const;
  
     private:
      PlayerInfo* GetPlayerInfo();
-@@ -238,6 +245,9 @@ class CONTENT_EXPORT MediaWebContentsObserver
+@@ -238,6 +246,10 @@ class CONTENT_EXPORT MediaWebContentsObserver
      std::unique_ptr<AudioStreamMonitor::AudibleClientRegistration>
          audio_client_registration_;
  
 +    GURL url_;
-+    bool is_mse_;
++    bool is_mse_ = false;
++    double duration_ = 0.0;
 +
      base::WeakPtrFactory<MediaPlayerObserverHostImpl> weak_factory_{this};
    };

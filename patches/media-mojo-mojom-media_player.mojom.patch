@@ -1,5 +1,5 @@
 diff --git a/media/mojo/mojom/media_player.mojom b/media/mojo/mojom/media_player.mojom
-index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..1bf0b27b2bbeaf9bba9166c9f6e87372630589be 100644
+index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..f9f33778bca944de600bdf449f0a92ff7aac7f7e 100644
 --- a/media/mojo/mojom/media_player.mojom
 +++ b/media/mojo/mojom/media_player.mojom
 @@ -8,6 +8,7 @@ import "media/mojo/mojom/media_types.mojom";
@@ -25,7 +25,7 @@ index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..1bf0b27b2bbeaf9bba9166c9f6e87372
    OnVideoVisibilityChanged(bool meets_visibility_threshold);
 +
 +  // Notifies that the video visibility has changed.
-+  OnMediaLoaded(url.mojom.Url url, bool is_mse);
++  OnMediaLoaded(url.mojom.Url url, bool is_mse, double duration);
  };
  
  // Implemented by MediaWebContentsObserver::MediaPlayerHostImpl in the browser

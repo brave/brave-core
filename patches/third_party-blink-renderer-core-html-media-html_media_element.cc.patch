@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/media/html_media_element.cc b/third_party/blink/renderer/core/html/media/html_media_element.cc
-index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..925af8c922586d17fb151c22496e7350c53f6298 100644
+index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..5921dccc3e53ff98eb6fb479d02920bbf67353ad 100644
 --- a/third_party/blink/renderer/core/html/media/html_media_element.cc
 +++ b/third_party/blink/renderer/core/html/media/html_media_element.cc
-@@ -2232,6 +2232,12 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
+@@ -2232,6 +2232,13 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
      SetShouldDelayLoadEvent(false);
  
      OnLoadFinished();
@@ -10,12 +10,13 @@ index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..925af8c922586d17fb151c22496e7350
 +    for (auto& observer : media_player_observer_remote_set_->Value()) {
 +      observer->OnMediaLoaded(
 +          current_src_.GetSource(),
-+          GetLoadType() == WebMediaPlayer::kLoadTypeMediaSource);
++          GetLoadType() == WebMediaPlayer::kLoadTypeMediaSource,
++          duration_);
 +    }
    }
  
    if (ready_state_ == kHaveFutureData && old_state <= kHaveCurrentData &&
-@@ -4884,6 +4890,12 @@ void HTMLMediaElement::SuspendForFrameClosed() {
+@@ -4884,6 +4891,12 @@ void HTMLMediaElement::SuspendForFrameClosed() {
      web_media_player_->SuspendForFrameClosed();
  }
  
