@@ -376,7 +376,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         let btcBalances = await bitcoinWalletService.fetchBTCBalances(
           accountId: selectedAccount.accountId
         )
-        balance = BDouble(btcBalances[.available] ?? 0)
+        balance = BDouble(btcBalances[.available, default: 0])
         if self.btcPrice == nil,
           btcBalances[.pending] != 0,  // price needed for details display
           let btcPriceString = await assetRatioService.fetchPrices(

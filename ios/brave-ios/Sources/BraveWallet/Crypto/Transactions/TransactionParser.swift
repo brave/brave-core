@@ -38,7 +38,7 @@ enum TransactionParser {
         {
           gasFee = .init(fee: value, fiat: fiat)
         } else {
-          gasFee = .init(fee: value, fiat: "$0.00")
+          gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
       }
     case .sol:
@@ -56,7 +56,7 @@ enum TransactionParser {
         {
           gasFee = .init(fee: value, fiat: fiat)
         } else {
-          gasFee = .init(fee: value, fiat: "$0.00")
+          gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
       }
     case .fil:
@@ -82,7 +82,7 @@ enum TransactionParser {
         {
           gasFee = .init(fee: gasFeeString, fiat: fiat)
         } else {
-          gasFee = .init(fee: gasFeeString, fiat: "$0.00")
+          gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
       }
     case .btc:
@@ -100,7 +100,7 @@ enum TransactionParser {
       {
         gasFee = .init(fee: gasFeeString, fiat: fiat)
       } else {
-        gasFee = .init(fee: gasFeeString, fiat: "$0.00")
+        gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
       }
     case .zec:
       break
@@ -143,15 +143,13 @@ enum TransactionParser {
     case .ethSend, .other:
       if let filTxData = transaction.txDataUnion.filTxData {  // FIL send tx
         let sendValue = filTxData.value
-        var sendValueFormatted = ""
-        var sendFiat = "$0.00"
-        sendValueFormatted =
+        let sendValueFormatted =
           formatter.decimalString(
             for: sendValue,
             radix: .decimal,
             decimals: Int(network.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
-        sendFiat =
+        let sendFiat =
           currencyFormatter.formatAsFiat(
             assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
               * (Double(sendValueFormatted) ?? 0)
@@ -330,7 +328,7 @@ enum TransactionParser {
         allTokens: allTokens
       )
       var fromAmount = ""
-      var fromFiat = "$0.00"
+      var fromFiat = currencyFormatter.formatAsFiat(0) ?? "$0.00"
       if let token = fromToken {
         fromAmount =
           formatter.decimalString(
