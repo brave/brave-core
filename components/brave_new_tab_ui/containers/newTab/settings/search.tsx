@@ -78,7 +78,7 @@ export default function SearchSettings() {
     </SettingsRow>
     <Hr />
     <EnginesContainer direction='column' gap={spacing.xl}>
-      <div>{getLocale('searchEnabledSearchEnginesTitle')}</div>
+      <div>{getLocale('searchEnableSearchEnginesTitle')}</div>
       <EnginesGrid>
         {engines.map(engine => <EngineCard key={engine.keyword}>
           <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => setEngineEnabled(engine, e.checked)}>

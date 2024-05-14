@@ -246,8 +246,8 @@
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_SHOW_SETTING" desc="Setting for enabling the searchbox on the NTP">
         Show search widget on the new tab page
       </message>
-      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLED_SEARCH_ENGINES_TITLE" desc="Title above the list of enabled search engines">
-        Enabled search engines on the New Tab Page
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_ENGINES_TITLE" desc="Title above the list of search engines">
+        Enable search engines on the New Tab Page
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
         Customize available engines
