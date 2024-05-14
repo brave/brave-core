@@ -164,7 +164,7 @@ public class NetworkSelectorAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         } else {
             final LabelViewHolder labelViewHolder = (LabelViewHolder) holder;
-            labelViewHolder.labelTv.setText(networkSelectorItem.getNetworkNameRes());
+            labelViewHolder.mLabel.setText(networkSelectorItem.getNetworkNameRes());
         }
     }
 
@@ -204,11 +204,11 @@ public class NetworkSelectorAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public static class LabelViewHolder extends RecyclerView.ViewHolder {
-        final TextView labelTv;
+        final TextView mLabel;
 
         public LabelViewHolder(View itemView) {
             super(itemView);
-            labelTv = itemView.findViewById(R.id.iv_item_network_label);
+            mLabel = itemView.findViewById(R.id.iv_item_network_label);
         }
     }
 
