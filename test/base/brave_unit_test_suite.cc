@@ -23,6 +23,4 @@ void BraveUnitTestSuite::Initialize() {
   ChromeUnitTestSuite::Initialize();
 
   brave::InitializeResourceBundle();
-
-  brave::RegisterPathProvider();
 }
