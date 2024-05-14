@@ -28,6 +28,13 @@ struct MediaContentView: View {
       PlayerView(playerModel: model)
         .zIndex(1)
         .playlistSheetDetentAnchor(id: .mediaPlayer)
+        .overlay {
+          if model.isLoadingStreamingURL {
+            ProgressView()
+              .progressViewStyle(.circular)
+              .transition(.opacity.animation(.default))
+          }
+        }
       if !isFullScreen {
         PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)

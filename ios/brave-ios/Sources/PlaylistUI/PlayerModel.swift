@@ -349,6 +349,7 @@ public final class PlayerModel: ObservableObject {
   }
 
   @Published var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
+  @Published var isLoadingStreamingURL: Bool = false
 
   var itemQueue: OrderedSet<PlaylistItem.ID> = []
   var seekToInitialTimestamp: TimeInterval?
@@ -483,24 +484,35 @@ public final class PlayerModel: ObservableObject {
     // Loading a media streaming asset may take time, need some sort of intermediate state where
     // we stop the current playback and show a loader even if the selected item is not fully ready
     // yet
-    let playerItemToReplace: AVPlayerItem? = await {
-      if let cachedData = item.cachedData {
-        do {
-          var isStale: Bool = false
-          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-          if FileManager.default.fileExists(atPath: url.path) {
-            return .init(url: url)
-          }
-        } catch {
+    var playerItemToReplace: AVPlayerItem?
+    if let cachedData = item.cachedData {
+      do {
+        var isStale: Bool = false
+        let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+        if FileManager.default.fileExists(atPath: url.path) {
+          playerItemToReplace = .init(url: url)
         }
+      } catch {
+        // FIXME: Should the cached data be deleted at this point?
       }
-      if let newItem = try? await mediaStreamer?.loadMediaStreamingAsset(.init(item: item)),
-        let url = URL(string: newItem.src)
-      {
-        return .init(asset: AVURLAsset(url: url))
+    }
+    if playerItemToReplace == nil, let mediaStreamer {
+      if !isPictureInPictureActive {
+        // Stop the current video and start loading the streaming video, but only if we're not
+        // in pip, since setting the item to nil during pip will cause it to close.
+        currentItem = nil
       }
-      return nil
-    }()
+      isLoadingStreamingURL = true
+      do {
+        let newItem = try await mediaStreamer.loadMediaStreamingAsset(.init(item: item))
+        if let url = URL(string: newItem.src) {
+          playerItemToReplace = .init(asset: AVURLAsset(url: url))
+        }
+      } catch {
+        // FIXME: Show an error on the UI
+      }
+      isLoadingStreamingURL = false
+    }
     let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
     if let playerItem = playerItemToReplace {
       self.currentItem = playerItem
