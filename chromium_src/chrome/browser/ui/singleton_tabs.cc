@@ -7,6 +7,11 @@
 #include "src/chrome/browser/ui/singleton_tabs.cc"
 #undef ShowSingletonTab
 
+// ShowSingletonTab functions (for Browser and Profile) are used to display
+// various help pages both local (such as chrome://password-manager/settings)
+// and remote (on https://www.google.com and https://support.google.com).
+// For remote URLs going to Google we want to point users to our community site
+// instead.
 void ShowSingletonTab(Browser* browser, const GURL& url) {
   GURL new_url = url.DomainIs("google.com") ?
     GURL("https://community.brave.com/") : url;
