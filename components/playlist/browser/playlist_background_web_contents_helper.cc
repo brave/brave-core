@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/media_session.h"
@@ -26,11 +28,16 @@ PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
+    std::string duration,
     base::OnceCallback<void(GURL, bool)> callback)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      callback_(std::move(callback)) {}
+      duration_(*base::ValueToTimeDelta(base::Value(duration))),
+      callback_(std::move(callback)) {
+  timer_.Start(FROM_HERE, base::Milliseconds(500), this,
+               &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
+}
 
 void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -56,26 +63,32 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
 
 void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  // TODO: use heuristics on when the site finished loading the page
-  timer_.Start(FROM_HERE, base::Seconds(2), this,
-               &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
+  // // TODO: use heuristics on when the site finished loading the page
+  // timer_.Start(FROM_HERE, base::Seconds(2), this,
+  //              &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
 }
 
 void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
-  auto urls = web_contents()->GetLoadedUrlByMediaPlayer();
-  if (urls.empty()) {
-    return std::move(callback_).Run({}, {});
+  for (const auto& [_, url] : web_contents()->GetLoadedUrlByMediaPlayer()) {
+    const auto duration = base::Seconds(std::get<2>(url));
+    if (std::abs((duration_ - duration).InSeconds()) < 3) {
+      DVLOG(-1) << "URL extracted from the background: " << std::get<0>(url);
+      return std::move(callback_).Run(std::get<0>(url), std::get<1>(url));
+    }
   }
 
-  const auto url_it = std::max_element(
-      urls.begin(), urls.end(), [](const auto& e1, const auto& e2) {
-        return e1.second.first.spec().size() < e2.second.first.spec().size();
-      });
+  // const auto url_it = std::max_element(
+  //     urls.begin(), urls.end(), [](const auto& e1, const auto& e2) {
+  //       return std::get<0>(e1.second).spec().size() <
+  //       std::get<0>(e2.second).spec().size();
+  //     });
 
-  // TODO(sszaloki): do url.is_valid() check here!!!
-  DVLOG(-1) << "URL extracted from the background: " << url_it->second.first;
+  // // TODO(sszaloki): do url.is_valid() check here!!!
+  // DVLOG(-1) << "URL extracted from the background: " <<
+  // std::get<0>(url_it->second);
 
-  std::move(callback_).Run(url_it->second.first, url_it->second.second);
+  // std::move(callback_).Run(std::get<0>(url_it->second),
+  // std::get<1>(url_it->second));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);

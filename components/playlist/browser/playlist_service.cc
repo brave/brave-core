@@ -528,6 +528,7 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
 
   const bool needs_background = items[0]->is_blob_from_media_source;
   const GURL url = items[0]->page_source;
+  std::string duration = items[0]->duration;
 
   auto add_media_files_from_items = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, GetWeakPtr(), playlist_id,
@@ -536,6 +537,7 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
 
   if (needs_background) {
     background_web_contentses_->Add(url,
+                                    std::move(duration),
                                     std::move(add_media_files_from_items));
   } else {
     std::move(add_media_files_from_items).Run(GURL(), false);

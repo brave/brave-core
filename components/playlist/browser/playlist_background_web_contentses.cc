@@ -51,6 +51,7 @@ PlaylistBackgroundWebContentses::~PlaylistBackgroundWebContentses() = default;
 
 void PlaylistBackgroundWebContentses::Add(
     const GURL& url,
+    std::string duration,
     base::OnceCallback<void(GURL, bool)> callback,
     base::TimeDelta timeout) {
   auto web_contents = content::WebContents::Create(
@@ -64,6 +65,7 @@ void PlaylistBackgroundWebContentses::Add(
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
       web_contents.get(),
+      std::move(duration),
       std::move(callback_for_media_handler));
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);

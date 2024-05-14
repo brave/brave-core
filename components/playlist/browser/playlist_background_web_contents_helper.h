@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
+#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -41,6 +42,7 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
+      std::string duration,
       base::OnceCallback<void(GURL, bool)> callback);
 
   // content::WebContentsObserver:
@@ -51,8 +53,9 @@ class PlaylistBackgroundWebContentsHelper final
 
   void GetLoadedUrl();
 
+  base::TimeDelta duration_;
   base::OnceCallback<void(GURL, bool)> callback_;
-  base::OneShotTimer timer_;
+  base::RepeatingTimer timer_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

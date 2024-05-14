@@ -46,6 +46,7 @@ class PlaylistBackgroundWebContentses final {
   ~PlaylistBackgroundWebContentses();
 
   void Add(const GURL& url,
+           std::string duration,
            base::OnceCallback<void(GURL, bool)> callback,
            base::TimeDelta timeout = base::Seconds(10));
 

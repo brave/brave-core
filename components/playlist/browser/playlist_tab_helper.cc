@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
@@ -94,8 +95,9 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
 
   auto& url = urls.at(*player_id);
   CHECK(items.size() == 1);
-  items[0]->media_path = items[0]->media_source = url.first;
-  items[0]->is_blob_from_media_source = url.second;
+  items[0]->media_path = items[0]->media_source = std::get<0>(url);
+  items[0]->is_blob_from_media_source = std::get<1>(url);
+  items[0]->duration = base::TimeDeltaToValue(base::Seconds(std::get<2>(url))).GetString();
 
   CHECK(service_);
   service_->AddMediaFiles(std::move(items), kDefaultPlaylistID,
