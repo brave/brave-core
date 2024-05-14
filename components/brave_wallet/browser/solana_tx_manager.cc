@@ -14,6 +14,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -31,6 +32,17 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
+
+// https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
+constexpr int kValidBlockHeightThreshold = 150;
+
+// Transactions submitted after 30 minutes are safe to be updated to dropped
+// since usual transactions are only valid for about 2 minutes.
+// Most transactions are updated to dropped after blockhash is expired (under 2
+// minutes). This is severd as a fallbacks to cleanup transactions which are
+// stuck in submitted status somehow, for example, old transactions without
+// last valid block height information.
+constexpr int kSafeDropThresholdInMinutes = 30;
 
 SolanaTxManager::SolanaTxManager(
     TxService* tx_service,
@@ -103,8 +115,8 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
+  auto chain_id = meta->chain_id();
   if (blockhash.empty()) {
-    auto chain_id = meta->chain_id();
     GetSolanaBlockTracker()->GetLatestBlockhash(
         chain_id,
         base::BindOnce(&SolanaTxManager::OnGetLatestBlockhash,
@@ -112,9 +124,33 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
                        std::move(callback)),
         true);
   } else {
-    OnGetLatestBlockhash(std::move(meta), std::move(callback), blockhash, 0,
-                         mojom::SolanaProviderError::kSuccess, "");
+    // No existing last valid block height info, use the current block height
+    // + 150 as the last valid block height.
+    json_rpc_service_->GetSolanaBlockHeight(
+        chain_id,
+        base::BindOnce(&SolanaTxManager::OnGetBlockHeightForBlockhash,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                       std::move(callback), blockhash));
   }
+}
+
+void SolanaTxManager::OnGetBlockHeightForBlockhash(
+    std::unique_ptr<SolanaTxMeta> meta,
+    ApproveTransactionCallback callback,
+    const std::string& blockhash,
+    uint64_t block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(
+        false, mojom::ProviderErrorUnion::NewSolanaProviderError(error),
+        error_message);
+    return;
+  }
+
+  OnGetLatestBlockhash(std::move(meta), std::move(callback), blockhash,
+                       block_height + kValidBlockHeightThreshold,
+                       mojom::SolanaProviderError::kSuccess, "");
 }
 
 void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
@@ -133,6 +169,9 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   meta->set_status(mojom::TransactionStatus::Approved);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
+  meta->tx()->set_wired_tx(
+      meta->tx()->GetSignedTransaction(keyring_service_, meta->from()));
+
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
     std::move(callback).Run(
         false,
@@ -143,9 +182,7 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   }
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->chain_id(),
-      meta->tx()->GetSignedTransaction(keyring_service_, meta->from()),
-      meta->tx()->send_options(),
+      meta->chain_id(), meta->tx()->wired_tx(), meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
@@ -240,6 +277,11 @@ void SolanaTxManager::UpdatePendingTransactions(
         std::nullopt, mojom::TransactionStatus::Submitted, std::nullopt);
     for (const auto& pending_transaction : pending_transactions) {
       const auto& pending_chain_id = pending_transaction->chain_id();
+      // Skip already queried chain ids.
+      if (pending_chain_ids.contains(pending_chain_id)) {
+        continue;
+      }
+
       json_rpc_service_->GetSolanaBlockHeight(
           pending_chain_id,
           base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
@@ -295,11 +337,33 @@ void SolanaTxManager::OnGetSignatureStatuses(
       continue;
     }
 
+    // Drop transactions that are stuck in submitted status for more than 30
+    // minutes.
+    if (base::Time::Now() >=
+        meta->submitted_time() + base::Minutes(kSafeDropThresholdInMinutes)) {
+      meta->set_status(mojom::TransactionStatus::Dropped);
+      tx_state_manager_->AddOrUpdateTx(*meta);
+      continue;
+    }
+
+    // Avoid sending out multiple rebraodcast requests in one period.
+    bool do_rebroadcast = base::Time::Now() >=
+                          meta->submitted_time() +
+                              base::Seconds(kSolanaBlockTrackerTimeInSeconds);
+    bool is_blockhash_expired =
+        meta->tx()->message()->last_valid_block_height() &&
+        meta->tx()->message()->last_valid_block_height() < block_height;
+
+    // No signature status found, rebroadcast transaction if possible until
+    // blockhash is expired.
     if (!signature_statuses[i]) {
-      if (meta->tx()->message()->last_valid_block_height() &&
-          meta->tx()->message()->last_valid_block_height() < block_height) {
+      if (is_blockhash_expired) {
         meta->set_status(mojom::TransactionStatus::Dropped);
         tx_state_manager_->AddOrUpdateTx(*meta);
+      } else if (do_rebroadcast) {
+        json_rpc_service_->SendSolanaTransaction(
+            meta->chain_id(), meta->tx()->wired_tx(),
+            meta->tx()->send_options(), base::DoNothing());
       }
       continue;
     }
@@ -312,10 +376,17 @@ void SolanaTxManager::OnGetSignatureStatuses(
     }
 
     // Update SolanaTxMeta with signature status.
+    // Rebroadcast transaction if it's processed and blockhash is not expired.
     if (!signature_statuses[i]->confirmation_status.empty()) {
       meta->set_signature_status(*signature_statuses[i]);
 
-      if (signature_statuses[i]->confirmation_status == "finalized") {
+      if (signature_statuses[i]->confirmation_status == "processed") {
+        if (!is_blockhash_expired && do_rebroadcast) {
+          json_rpc_service_->SendSolanaTransaction(
+              meta->chain_id(), meta->tx()->wired_tx(),
+              meta->tx()->send_options(), base::DoNothing());
+        }
+      } else if (signature_statuses[i]->confirmation_status == "finalized") {
         meta->set_status(mojom::TransactionStatus::Confirmed);
         meta->set_confirmed_time(base::Time::Now());
       }
@@ -334,7 +405,59 @@ void SolanaTxManager::SpeedupOrCancelTransaction(
 
 void SolanaTxManager::RetryTransaction(const std::string& tx_meta_id,
                                        RetryTransactionCallback callback) {
-  NOTIMPLEMENTED();
+  std::unique_ptr<SolanaTxMeta> meta =
+      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+  if (!meta || !meta->tx()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  if (!meta->IsRetriable()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
+    return;
+  }
+
+  if (!meta->tx()->message()->UsesDurableNonce()) {
+    // Clear blockhash to trigger getting a new one when user approves.
+    meta->tx()->message()->set_recent_blockhash("");
+
+    // Clear sign_tx_param because they're no longer relevant for transactions
+    // not using durable nonce, and clear this ensures we re-serialize the
+    // message using the new blockhash in
+    // SolanaTransacaction::GetSerializedMessage. sign_tx_param is not relevant
+    // anymore because all existing signatures will be invalid if the blockhash
+    // (message) changes, and we are the only one able to re-sign the new
+    // message so we don't need to worry about having a different account order
+    // than other implementations that dApp uses (Solana web3.js for example).
+    meta->tx()->set_sign_tx_param(nullptr);
+  }
+
+  // Clear last valid block height for retried transaction, which will be
+  // updated when user approves.
+  meta->tx()->message()->set_last_valid_block_height(0);
+
+  // Reset necessary fields for retried transaction.
+  meta->set_id(TxMeta::GenerateMetaID());
+  meta->set_status(mojom::TransactionStatus::Unapproved);
+  meta->set_created_time(base::Time::Now());
+  meta->set_submitted_time(base::Time());
+  meta->set_confirmed_time(base::Time());
+  meta->set_tx_hash("");
+  meta->set_signature_status(SolanaSignatureStatus());
+
+  meta->tx()->ClearRawSignatures();
+
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(true, meta->id(), "");
 }
 
 void SolanaTxManager::GetTransactionMessageToSign(
@@ -349,8 +472,8 @@ void SolanaTxManager::GetTransactionMessageToSign(
   }
 
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
+  auto chain_id = meta->chain_id();
   if (blockhash.empty()) {
-    auto chain_id = meta->chain_id();
     GetSolanaBlockTracker()->GetLatestBlockhash(
         chain_id,
         base::BindOnce(&SolanaTxManager::OnGetLatestBlockhashHardware,
@@ -358,10 +481,29 @@ void SolanaTxManager::GetTransactionMessageToSign(
                        std::move(callback)),
         true);
   } else {
-    OnGetLatestBlockhashHardware(std::move(meta), std::move(callback),
-                                 blockhash, 0,
-                                 mojom::SolanaProviderError::kSuccess, "");
+    json_rpc_service_->GetSolanaBlockHeight(
+        chain_id,
+        base::BindOnce(&SolanaTxManager::OnGetBlockHeightForBlockhashHardware,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                       std::move(callback), blockhash));
   }
+}
+
+void SolanaTxManager::OnGetBlockHeightForBlockhashHardware(
+    std::unique_ptr<SolanaTxMeta> meta,
+    GetTransactionMessageToSignCallback callback,
+    const std::string& blockhash,
+    uint64_t block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  OnGetLatestBlockhashHardware(std::move(meta), std::move(callback), blockhash,
+                               block_height + kValidBlockHeightThreshold,
+                               mojom::SolanaProviderError::kSuccess, "");
 }
 
 mojom::CoinType SolanaTxManager::GetCoinType() const {
@@ -661,6 +803,8 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
+  meta->tx()->set_wired_tx(base::Base64Encode(*transaction_bytes));
+
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
     std::move(callback).Run(
         false,
@@ -671,8 +815,7 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
   }
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->chain_id(), base::Base64Encode(*transaction_bytes),
-      meta->tx()->send_options(),
+      meta->chain_id(), meta->tx()->wired_tx(), meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));

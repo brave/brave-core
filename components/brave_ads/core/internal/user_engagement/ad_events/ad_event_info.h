@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENT_INFO_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -38,7 +39,7 @@ struct AdEventInfo final {
   std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
-  base::Time created_at;
+  std::optional<base::Time> created_at;
 };
 
 using AdEventList = std::vector<AdEventInfo>;

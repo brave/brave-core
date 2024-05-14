@@ -140,6 +140,7 @@
     *** mTabCreatorManager;
     *** mSnackbarManager;
     *** mTabObscuringHandler;
+    *** mReadAloudControllerSupplier;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
@@ -486,14 +487,20 @@
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
-    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
-    *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+}
+
+-keep class org.chromium.chrome.browser.tab_ui.TabUiThemeUtils {
+    *** getTitleTextColor(...);
+    *** getCardViewBackgroundColor(...);
+}
+
+-keep class org.chromium.chrome.browser.tab_ui.BraveTabUiThemeUtils {
+    *** getTitleTextColor(...);
     *** getCardViewBackgroundColor(...);
 }
 
@@ -521,6 +528,30 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
+    *** mInstanceId;
+    moveTabAction(...);
+    handleMenuOrKeyboardAction(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiInstanceManagerApi31 {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
+    *** isOpenInOtherWindowSupported(...);
+    *** isMoveToOtherWindowSupported(...);
+    *** canEnterMultiWindowMode(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
     public <init>(...);
 }
 
@@ -821,5 +852,50 @@
 }
 
 -keep class org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.language.LocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
+
+-keep class org.chromium.components.language.BraveLocaleManagerDelegateImpl {
+    public <init>(...);
+    *** getApplicationLocale(...);
+    *** setApplicationLocale(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.ToolbarSwipeLayout {
+    public <init>(...);
+    *** mMoveToolbar;
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.BraveToolbarSwipeLayout {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.embedder_support.view.ContentView {
+    protected <init>(...);
+}
+
+-keep class org.chromium.components.embedder_support.view.BraveContentView {
+    protected <init>(...);
+}
+
+-keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.AutocompleteEditText {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.BraveAutocompleteEditText {
     public <init>(...);
 }

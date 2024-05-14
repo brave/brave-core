@@ -35,3 +35,19 @@ static_library("browser") {
     "//crypto",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_on_demand_updater.cc",
+    "mock_on_demand_updater.h",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//components/component_updater",
+    "//testing/gmock",
+  ]
+}

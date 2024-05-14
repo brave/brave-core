@@ -25,6 +25,7 @@ import android.hardware.biometrics.BiometricManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -34,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -51,6 +53,8 @@ import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -72,6 +76,7 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
@@ -91,8 +96,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -136,8 +139,20 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
+    /**
+     * Saves a given text to clipboard, shows a toast and clears it again after 60 seconds.
+     *
+     * @param context Context used to retrieve the clipboard service.
+     * @param textToCopy Text that will be copied to clipboard.
+     * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
+     * @param scheduleClear {@code true} to clear the clipboard after {@link
+     *     #CLEAR_CLIPBOARD_INTERVAL}.
+     */
     public static void saveTextToClipboard(
-            Context context, String textToCopy, int textToShow, boolean scheduleClear) {
+            @NonNull final Context context,
+            @NonNull final String textToCopy,
+            @StringRes final int textToShow,
+            final boolean scheduleClear) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", textToCopy);
@@ -148,7 +163,9 @@ public class Utils {
         if (!scheduleClear) {
             return;
         }
-        clearClipboard(textToCopy, CLEAR_CLIPBOARD_INTERVAL);
+
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
     }
 
     public static String getTextFromClipboard(Context context) {
@@ -164,16 +181,17 @@ public class Utils {
         return "";
     }
 
-    public static void clearClipboard(String textToCompare, int delay) {
-        (new Timer()).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
-                if (textToCompare.equals(clipboardText)) {
-                    saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
-                }
-            }
-        }, delay);
+    /**
+     * Clears the clipboard and replaces it with "***" if it matches a given text.
+     *
+     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
+     *     match.
+     */
+    public static void clearClipboard(@NonNull final String textToCompare) {
+        String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
+        if (textToCompare.equals(clipboardText)) {
+            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
+        }
     }
 
     public static boolean shouldShowCryptoOnboarding() {
@@ -188,15 +206,39 @@ public class Utils {
         sharedPreferencesEditor.apply();
     }
 
-    public static void hideKeyboard(Activity activity) {
+    /**
+     * Hides software keyboard.
+     *
+     * @param activity Activity used to retrieve input method service.
+     */
+    public static void hideKeyboard(@NonNull final Activity activity) {
+        hideKeyboard(activity, null);
+    }
+
+    /**
+     * Hides software keyboard targeting a specific window token, useful for those components
+     * handling multiple views off screen (e.g. ViewPager2)
+     *
+     * @param activity Activity used to retrieve input method service.
+     * @param windowToken Token of the window that is making the request.
+     */
+    public static void hideKeyboard(
+            @NonNull final Activity activity, @Nullable final IBinder windowToken) {
         InputMethodManager imm =
                 (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        View focusedView = activity.getCurrentFocus();
-        if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        if (windowToken != null) {
+            imm.hideSoftInputFromWindow(windowToken, 0);
+        } else {
+            View focusedView = activity.getCurrentFocus();
+            if (focusedView != null) {
+                imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+            }
+        }
     }
 
     /**
      * Get a short name of a network
+     *
      * @param networkName of chain e.g. Ethereum Mainnet
      * @return short name of the network e.g. Ethereum
      */
@@ -806,8 +848,82 @@ public class Utils {
         return asset;
     }
 
+    @DrawableRes
+    public static int getNetworkIconDrawable(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
+        @DrawableRes int logo;
+        switch (chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.SEPOLIA_CHAIN_ID:
+                logo = R.drawable.ic_eth_color;
+                break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_matic_color;
+                break;
+            case BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_bnbchain_color;
+                break;
+            case BraveWalletConstants.SOLANA_MAINNET:
+            case BraveWalletConstants.SOLANA_TESTNET:
+            case BraveWalletConstants.SOLANA_DEVNET:
+                logo = R.drawable.ic_sol_color;
+                break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_aurora_color;
+                break;
+            case BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_arb_color;
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_avax_color;
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_celo_color;
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_op_color;
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_ftm_color;
+                break;
+            case BraveWalletConstants.FILECOIN_MAINNET:
+            case BraveWalletConstants.FILECOIN_TESTNET:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
+                logo = R.drawable.ic_filecoin_color;
+                break;
+            case BraveWalletConstants.BITCOIN_MAINNET:
+            case BraveWalletConstants.BITCOIN_TESTNET:
+                logo = R.drawable.ic_btc_color;
+                break;
+            case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
+                logo = R.drawable.ic_neon_color;
+                break;
+            default:
+                logo = -1;
+        }
+        // Local host chain is not unique per network
+        if (logo == -1 && chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
+            switch (coin) {
+                case CoinType.SOL:
+                    logo = R.drawable.ic_sol_color;
+                    break;
+                case CoinType.ETH:
+                    logo = R.drawable.ic_eth_color;
+                    break;
+                case CoinType.FIL:
+                    logo = R.drawable.ic_filecoin_color;
+                    break;
+                default: // Do nothing
+            }
+        }
+        return logo;
+    }
+
     @NonNull
-    public static String getNetworkIconName(String chainId, @CoinType.EnumType int coin) {
+    public static String getNetworkIconName(
+            @NonNull final String chainId, @CoinType.EnumType final int coin) {
         String logo;
         switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
@@ -818,7 +934,7 @@ public class Utils {
             case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
                 logo = "matic.png";
                 break;
-            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+            case BraveWalletConstants.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
                 logo = "bnb.png";
                 break;
             case BraveWalletConstants.SOLANA_MAINNET:
@@ -849,6 +965,13 @@ public class Utils {
             case BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID:
             case BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID:
                 logo = "fil.png";
+                break;
+            case BraveWalletConstants.BITCOIN_MAINNET:
+            case BraveWalletConstants.BITCOIN_TESTNET:
+                logo = "btc.png";
+                break;
+            case BraveWalletConstants.NEON_EVM_MAINNET_CHAIN_ID:
+                logo = "neon.png";
                 break;
             default:
                 logo = "";
@@ -1017,7 +1140,7 @@ public class Utils {
     }
 
     @SuppressLint("MissingPermission")
-    public static boolean isBiometricAvailable(@Nullable Context context) {
+    public static boolean isBiometricSupported(@Nullable Context context) {
         // Only Android versions 9 and above are supported.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
@@ -1069,8 +1192,12 @@ public class Utils {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "getProfile " + e);
         }
-        if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
-        if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
+        if (chromeActivity == null) {
+            chromeActivity = BraveActivity.getChromeTabbedActivity();
+        }
+        if (chromeActivity == null) {
+            return ProfileManager.getLastUsedRegularProfile(); // Last resort
+        }
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }
@@ -1287,16 +1414,47 @@ public class Utils {
         BalanceHelper.getP3ABalances(
                 activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
 
-        multiResponse.setWhenAllCompletedAction(() -> {
-            HashMap<Integer, HashSet<String>> activeAddresses =
-                    getP3ABalancesContext.activeAddresses;
-            // P3A active accounts
-            BalanceHelper.updateActiveAddresses(nativeAssetsBalancesResponses,
-                    blockchainTokensBalancesResponses, activeAddresses);
-            for (int coinType : P3ACoinTypes) {
-                braveWalletP3A.recordActiveWalletCount(
-                        activeAddresses.get(coinType).size(), coinType);
-            }
-        });
+        multiResponse.setWhenAllCompletedAction(
+                () -> {
+                    HashMap<Integer, HashSet<String>> activeAddresses =
+                            getP3ABalancesContext.activeAddresses;
+                    // P3A active accounts
+                    BalanceHelper.updateActiveAddresses(
+                            nativeAssetsBalancesResponses,
+                            blockchainTokensBalancesResponses,
+                            activeAddresses);
+                    for (int coinType : P3ACoinTypes) {
+                        braveWalletP3A.recordActiveWalletCount(
+                                activeAddresses.get(coinType).size(), coinType);
+                    }
+                });
+    }
+
+    /**
+     * Gets truncated address from a valid full contract address.
+     *
+     * @param address full contract address
+     * @return truncated address
+     */
+    @NonNull
+    public static String getTruncatedAddress(@NonNull final String address) {
+
+        if (address.isEmpty()) {
+            Log.w(TAG, "Empty contract address.");
+            assert false;
+            return "";
+        }
+
+        int prefixLength = address.startsWith("0x") ? 6 : 4;
+        int lastFourCharactersIndex = address.length() - 4;
+
+        if (lastFourCharactersIndex < 0 || prefixLength > address.length()) {
+            Log.w(TAG, "Invalid contract address.");
+            assert false;
+            return "";
+        }
+        return (address.substring(0, prefixLength)
+                + "***"
+                + address.substring(address.length() - 4));
     }
 }

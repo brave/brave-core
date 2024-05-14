@@ -18,7 +18,8 @@ class EdgeNodeRemove final : public EdgeNode {
  public:
   EdgeNodeRemove(GraphItemContext* context,
                  NodeScript* out_node,
-                 NodeHTML* in_node);
+                 NodeHTML* in_node,
+                 const FrameId& frame_id);
   ~EdgeNodeRemove() override;
 
   ItemName GetItemName() const override;

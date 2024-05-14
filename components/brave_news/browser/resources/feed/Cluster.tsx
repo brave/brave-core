@@ -7,7 +7,7 @@ import { Cluster as Info, ClusterType } from 'gen/brave/components/brave_news/co
 import Card, { Title } from './Card';
 import Article from './Article';
 import styled from 'styled-components';
-import { icon, radius, spacing } from '@brave/leo/tokens/css';
+import { icon, radius, spacing } from '@brave/leo/tokens/css/variables';
 import { channelIcons } from '../shared/Icons';
 import { getTranslatedChannelName } from '../shared/channel';
 

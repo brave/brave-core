@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_CHANNELS_CONTROLLER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
@@ -26,6 +27,14 @@ using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
 inline constexpr char kTopSourcesChannel[] = "Top Sources";
 inline constexpr char kTopNewsChannel[] = "Top News";
+// Channels that are considered sensitive and should not be included in the feed
+// unless the user explicitly subscribes to them.
+inline constexpr std::array<const char*, 1> kSensitiveChannels = {"Politics"};
+
+// Get all the channels for a publisher in a specific locale.
+std::vector<std::string> GetChannelsForPublisher(
+    const std::string& locale,
+    const mojom::PublisherPtr& publisher);
 
 class ChannelsController {
  public:

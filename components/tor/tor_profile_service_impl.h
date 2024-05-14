@@ -27,7 +27,7 @@ class BrowserContext;
 namespace net {
 class ProxyConfigService;
 class ProxyConfigServiceTor;
-}
+}  // namespace net
 
 namespace tor {
 
@@ -41,6 +41,7 @@ class TorProfileServiceImpl
       public TorLauncherObserver {
  public:
   TorProfileServiceImpl(
+      content::BrowserContext* original_context,
       content::BrowserContext* context,
       PrefService* local_state,
       BraveTorClientUpdater* tor_client_updater,
@@ -78,6 +79,8 @@ class TorProfileServiceImpl
 
   void OnBridgesConfigChanged();
 
+  void OnBuiltinBridgesResponse(const base::Value::Dict& bridges);
+
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<BraveTorClientUpdater> tor_client_updater_ = nullptr;
@@ -87,6 +90,7 @@ class TorProfileServiceImpl
   raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
       nullptr;  // NOT OWNED
   PrefChangeRegistrar pref_change_registrar_;
+  std::unique_ptr<class BuiltinBridgesRequest> builtin_bridges_request_;
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
 };
 

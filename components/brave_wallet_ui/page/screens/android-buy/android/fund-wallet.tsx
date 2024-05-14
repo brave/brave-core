@@ -17,7 +17,6 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
-import * as Lib from '../../../../common/async/lib'
 
 // Actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
@@ -31,7 +30,6 @@ import {
 import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
 
 // Hooks
-import { LibContext } from '../../../../common/context/lib.context'
 import { ApiProxyContext } from '../../../../common/context/api-proxy.context'
 
 // Resources
@@ -47,9 +45,7 @@ export function AndroidFundWalletApp() {
           light={walletLightTheme}
         >
           <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <LibContext.Provider value={Lib}>
-              <FundWalletScreen isAndroid={true} />
-            </LibContext.Provider>
+            <FundWalletScreen isAndroid={true} />
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       </BrowserRouter>

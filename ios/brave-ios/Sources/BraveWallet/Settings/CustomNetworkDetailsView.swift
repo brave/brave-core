@@ -47,7 +47,7 @@ struct NetworkTextField: View {
   }
 }
 
-class CustomNetworkModel: ObservableObject, Identifiable {
+class NetworkModel: ObservableObject, Identifiable {
   enum Mode {
     case add
     case edit
@@ -65,10 +65,10 @@ class CustomNetworkModel: ObservableObject, Identifiable {
   @Published var networkId = NetworkInputItem(input: "") {
     didSet {
       if networkId.input != oldValue.input {
-        if let intValue = Int(networkId.input), intValue > 0 {
-          networkId.error = nil
-        } else {
+        if networkId.input.isEmpty {
           networkId.error = Strings.Wallet.customNetworkChainIdErrMsg
+        } else {
+          networkId.error = nil
         }
       }
     }
@@ -268,9 +268,9 @@ enum CustomNetworkError: LocalizedError, Identifiable {
   }
 }
 
-struct CustomNetworkDetailsView: View {
+struct NetworkDetailsView: View {
   @ObservedObject var networkStore: NetworkStore
-  @ObservedObject var model: CustomNetworkModel
+  @ObservedObject var model: NetworkModel
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
@@ -278,7 +278,7 @@ struct CustomNetworkDetailsView: View {
 
   init(
     networkStore: NetworkStore,
-    model: CustomNetworkModel
+    model: NetworkModel
   ) {
     self.networkStore = networkStore
     self.model = model
@@ -302,7 +302,6 @@ struct CustomNetworkDetailsView: View {
           item: $model.networkId
         )
         .keyboardType(.numberPad)
-        .disabled(model.mode.isEditMode)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
@@ -503,9 +502,16 @@ struct CustomNetworkDetailsView: View {
   private func addCustomNetwork() {
     guard validateAllFields() else { return }
 
-    var chainIdInHex = ""
-    if let idValue = Int(model.networkId.input) {
-      chainIdInHex = "0x\(String(format: "%02x", idValue))"
+    var chainIdInHex = model.networkId.input
+    if model.networkId.input.hasPrefix("0x") || model.networkId.input.hasPrefix("0X") {
+      let hexDecimalString = model.networkId.input.removingHexPrefix
+      if let decimalString = UInt8(hexDecimalString, radix: 16) {
+        chainIdInHex = "0x\(String(format: "%x", decimalString))"
+      }
+    } else {
+      if let idValue = Int(model.networkId.input) {
+        chainIdInHex = "0x\(String(format: "%x", idValue))"
+      }
     }
     // Check if input chain id already existed for non-edit mode
     if !model.mode.isEditMode,
@@ -582,10 +588,10 @@ struct NetworkRadioButton: View {
 }
 
 #if DEBUG
-struct CustomNetworkDetailsView_Previews: PreviewProvider {
+struct NetworkDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      CustomNetworkDetailsView(
+      NetworkDetailsView(
         networkStore: .previewStore,
         model: .init()
       )

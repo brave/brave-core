@@ -19,7 +19,7 @@ export const ORDINALS = {
   9: getLocale('braveWalletOrdinalTenth'),
   10: getLocale('braveWalletOrdinalEleventh'),
   11: getLocale('braveWalletOrdinalTwelfth'),
-  12: getLocale('braveWalletOridinalThirteenth'),
+  12: getLocale('braveWalletOrdinalThirteenth'),
   13: getLocale('braveWalletOrdinalFourteenth'),
   14: getLocale('braveWalletOrdinalFifteenth'),
   15: getLocale('braveWalletOrdinalSixteenth'),
@@ -47,7 +47,7 @@ export const formatOrdinals = (n: number) => {
   return `${n}${suffix}`
 }
 
-export const getWordIndicesToVerfy = (_wordsLength: number): number[] => {
+export const getWordIndicesToVerify = (_wordsLength: number): number[] => {
   if (_wordsLength < 3) {
     // phrase is not long enough (must be longer than 3 words)
     return [-3, -2, -1]

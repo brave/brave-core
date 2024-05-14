@@ -66,7 +66,7 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
 
     ads.triggerNotificationAdEvent(
       notification.placementID,
-      eventType: .viewed,
+      eventType: .viewedImpression,
       completion: { _ in }
     )
     notificationsPresenter?.display(notification: rewardsNotification, from: presentingController)

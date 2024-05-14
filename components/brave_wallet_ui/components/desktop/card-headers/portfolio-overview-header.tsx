@@ -4,6 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
+
+// Types
+import { WalletRoutes } from '../../../constants/types'
 
 // Selectors
 import { UISelectors } from '../../../common/selectors'
@@ -15,17 +19,13 @@ import { DefaultPanelHeader } from './default-panel-header'
 import { getLocale } from '../../../../common/locale'
 
 // Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-
-import { PortfolioOverviewMenu } from '../wallet-menus/portfolio-overview-menu'
 
 // Styled Components
 import {
   HeaderTitle,
   MenuButton,
-  ButtonIcon,
-  MenuWrapper
+  ButtonIcon
 } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
@@ -33,19 +33,8 @@ export const PortfolioOverviewHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
-  // State
-  const [showPortfolioOverviewMenu, setShowPortfolioOverviewMenu] =
-    React.useState<boolean>(false)
-
-  // Refs
-  const portfolioOverviewMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // Hooks
-  useOnClickOutside(
-    portfolioOverviewMenuRef,
-    () => setShowPortfolioOverviewMenu(false),
-    showPortfolioOverviewMenu
-  )
+  // Routing
+  const history = useHistory()
 
   return isPanel ? (
     <DefaultPanelHeader title={getLocale('braveWalletTopNavPortfolio')} />
@@ -55,14 +44,10 @@ export const PortfolioOverviewHeader = () => {
       justifyContent='space-between'
     >
       <HeaderTitle>{getLocale('braveWalletTopNavPortfolio')}</HeaderTitle>
-      <MenuWrapper ref={portfolioOverviewMenuRef}>
-        <MenuButton
-          onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
-        >
-          <ButtonIcon name='tune' />
-        </MenuButton>
-        {showPortfolioOverviewMenu && <PortfolioOverviewMenu />}
-      </MenuWrapper>
+      {/* ToDo: Route to Add Token or Add NFT, to be handled in https://github.com/brave/brave-browser/issues/37258 */}
+      <MenuButton onClick={() => history.push(WalletRoutes.AddAssetModal)}>
+        <ButtonIcon name='plus-add' />
+      </MenuButton>
     </Row>
   )
 }

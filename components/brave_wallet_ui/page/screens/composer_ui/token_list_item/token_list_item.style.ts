@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import {
@@ -35,21 +36,10 @@ export const NetworkIconWrapper = styled.div`
 `
 
 export const ButtonWrapper = styled(Row)`
-  --background-hover: ${leo.color.container.background};
-  --shadow-hover: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  @media (prefers-color-scheme: dark) {
-    --background-hover: transparent;
-    --shadow-hover: 0px 0px 16px rgba(0, 0, 0, 0.36);
-  }
-  flex-direction: row;
   background-color: transparent;
-  border-radius: 8px;
-  justify-content: space-between;
   white-space: nowrap;
-  margin-bottom: 8px;
   &:hover {
-    background-color: var(--background-hover);
-    box-shadow: var(--shadow-hover);
+    background-color: ${leo.color.page.background};
   }
 `
 
@@ -62,7 +52,7 @@ export const Button = styled(WalletButton)`
   background-color: transparent;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 10px 16px;
   white-space: nowrap;
   width: 100%;
   &:disabled {
@@ -95,6 +85,26 @@ export const NetworkAndFiatText = styled(Text)`
   color: ${leo.color.text.secondary};
 `
 
+export const PercentChangeText = styled(NetworkAndFiatText)<{
+  isDown: boolean
+}>`
+  color: ${(p) =>
+    p.isDown
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
+`
+
+export const PercentChangeIcon = styled(Icon)<{
+  isDown: boolean
+}>`
+  --leo-icon-size: 14px;
+  margin-right: 2px;
+  color: ${(p) =>
+    p.isDown
+      ? leo.color.systemfeedback.errorIcon
+      : leo.color.systemfeedback.successIcon};
+`
+
 export const DisabledLabel = styled.div`
   display: flex;
   align-items: center;
@@ -108,4 +118,28 @@ export const DisabledLabel = styled.div`
   font-family: 'Poppins';
   padding: 4px 6px;
   border-radius: 4px;
+`
+
+export const AccountsIcon = styled(Icon).attrs({
+  name: 'user-accounts'
+})`
+  --leo-icon-size: 16px;
+  margin-right: 8px;
+  color: ${leo.color.icon.default};
+`
+
+export const InfoButton = styled(WalletButton)`
+  cursor: pointer;
+  background-color: none;
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0px 16px 0px 0px;
+`
+
+export const InfoIcon = styled(Icon).attrs({
+  name: 'info-outline'
+})`
+  --leo-icon-size: 15px;
+  color: ${leo.color.icon.default};
 `

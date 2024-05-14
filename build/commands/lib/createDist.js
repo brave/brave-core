@@ -13,9 +13,9 @@ const createDist = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   util.touchOverriddenFiles()
   util.updateBranding()
-  config.buildTarget = 'create_dist'
+  config.buildTargets = ['create_dist']
   util.generateNinjaFiles()
-  util.buildTarget()
+  util.buildTargets()
 }
 
 module.exports = createDist

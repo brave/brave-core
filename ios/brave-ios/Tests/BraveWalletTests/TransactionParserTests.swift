@@ -39,26 +39,31 @@ class TransactionParserTests: XCTestCase {
     (BraveWallet.AccountInfo.previewAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Ethereum Account 2"
       $0.address = "0x0987654321098765432109876543210987654321"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0x0987654321098765432109876543210987654321"
     },
     (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Solana Account 1"
       $0.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0xaaaaaaaaaabbbbbbbbbbccccccccccdddddddddd"
     },
     (BraveWallet.AccountInfo.mockSolAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Solana Account 2"
       $0.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "0xeeeeeeeeeeffffffffff11111111112222222222"
     },
     (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Filecoin Testnet 1"
       $0.address = "fil_testnet_address_1"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "fil_testnet_address_1"
     },
     (BraveWallet.AccountInfo.mockFilTestnetAccount.copy() as! BraveWallet.AccountInfo).then {
       $0.name = "Filecoin Testnet 2"
       $0.address = "fil_testnet_address_2"
+      $0.accountId.uniqueKey = $0.address
       $0.accountId.address = "fil_testnet_address_2"
     },
   ]
@@ -117,7 +122,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -132,7 +138,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: network.nativeToken,
           fromValue: "0x1b667a56d488000",
           fromAmount: "0.1234",
-          fromFiat: "$0.12",
+          fromFiat: "$0.123",
           fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000031",
@@ -218,7 +224,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -233,7 +240,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: .previewDaiToken,
           fromValue: "0x5ff20a91f724000",
           fromAmount: "0.4321",
-          fromFiat: "$0.86",
+          fromFiat: "$0.864",
           fromTokenMetadata: nil,
           gasFee: .init(
             fee: "0.000078",
@@ -309,7 +316,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -324,7 +332,7 @@ class TransactionParserTests: XCTestCase {
           fromToken: .previewToken,
           fromValue: "0x1b6951ef585a000",
           fromAmount: "0.12345",
-          fromFiat: "$0.12",
+          fromFiat: "$0.123",
           toToken: .previewDaiToken,
           minBuyValue: "0x5c6f2d76e910358b",
           minBuyAmount: "6.660592362643797387",
@@ -403,7 +411,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -422,7 +431,7 @@ class TransactionParserTests: XCTestCase {
           toToken: .previewDaiToken,
           minBuyValue: "0x1bd02ca9a7c244e",
           minBuyAmount: "0.125259433834718286",
-          minBuyAmountFiat: "$0.25",
+          minBuyAmountFiat: "$0.251",
           gasFee: .init(
             fee: "0.000466",
             fiat: "$0.000466"
@@ -492,7 +501,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -581,7 +591,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -673,7 +684,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to
+      effectiveRecipient: transactionData.baseData.to,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -762,7 +774,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil
+      effectiveRecipient: nil,
+      isRetriable: false
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -864,7 +877,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil
+      effectiveRecipient: nil,
+      isRetriable: false
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -952,7 +966,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil
+      effectiveRecipient: nil,
+      isRetriable: false
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -1072,7 +1087,7 @@ class TransactionParserTests: XCTestCase {
       )
     )
     let expectedParsedWithdrawNonceAccount = SolanaTxDetails.ParsedSolanaInstruction(
-      name: "System Program - Withdraw Nonce Account",
+      name: "System Program - Withdraw From Nonce Account",
       details: [
         .init(key: "Nonce Account", value: fromPubkey),
         .init(key: "To Account", value: toPubkey),
@@ -1213,7 +1228,8 @@ class TransactionParserTests: XCTestCase {
       confirmedTime: Date(),
       originInfo: nil,
       chainId: BraveWallet.FilecoinTestnet,
-      effectiveRecipient: nil
+      effectiveRecipient: nil,
+      isRetriable: false
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -1234,7 +1250,7 @@ class TransactionParserTests: XCTestCase {
           gasFeeCap: "0.000000000000101965",
           gasFee: GasFee(
             fee: "0.000000155797727645",
-            fiat: "$0.0000003116"
+            fiat: "$0.000000312"
           )
         )
       )

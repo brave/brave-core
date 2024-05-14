@@ -13,8 +13,6 @@
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
 #include "brave/components/brave_wallet/common/mem_utils.h"
 
 namespace brave_wallet {
@@ -35,14 +33,15 @@ enum class ExtendedKeyVersion {
   kZpub = 0x04b24746,
 };
 
-// This class implement basic functionality of bip32 spec
-class HDKey : public HDKeyBase {
+// This class implement basic ECDSA over the Secp256k1 functionality of bip32
+// spec.
+class HDKey {
  public:
   HDKey();
-  ~HDKey() override;
+  ~HDKey();
 
   static std::unique_ptr<HDKey> GenerateFromSeed(
-      const std::vector<uint8_t>& seed);
+      base::span<const uint8_t> seed);
 
   static std::unique_ptr<HDKey> GenerateFromExtendedKey(const std::string& key);
   static std::unique_ptr<HDKey> GenerateFromPrivateKey(
@@ -51,45 +50,45 @@ class HDKey : public HDKeyBase {
   static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
                                                   const std::string& json);
 
-  std::string GetPath() const override;
+  std::string GetPath() const;
 
   std::string GetPrivateExtendedKey(
       ExtendedKeyVersion version = ExtendedKeyVersion::kXprv) const;
-  std::string EncodePrivateKeyForExport() const override;
-  std::vector<uint8_t> GetPrivateKeyBytes() const override;
-  // TODO(darkdh): For exporting private key as keystore file
-  // std::string GetPrivateKeyinV3UTC() const;
-
-  std::vector<uint8_t> GetPublicKeyBytes() const override;
+  std::vector<uint8_t> GetPrivateKeyBytes() const;
+  std::vector<uint8_t> GetPublicKeyBytes() const;
   std::string GetPublicExtendedKey(
       ExtendedKeyVersion version = ExtendedKeyVersion::kXpub) const;
   std::string GetSegwitAddress(bool testnet) const;
-  std::string GetZCashTransparentAddress(bool testnet);
+  std::string GetZCashTransparentAddress(bool testnet) const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
   std::optional<std::vector<uint8_t>> DecryptCipherFromX25519_XSalsa20_Poly1305(
       const std::string& version,
-      const std::vector<uint8_t>& nonce,
-      const std::vector<uint8_t>& ephemeral_public_key,
-      const std::vector<uint8_t>& ciphertext) const;
+      base::span<const uint8_t> nonce,
+      base::span<const uint8_t> ephemeral_public_key,
+      base::span<const uint8_t> ciphertext) const;
 
-  std::unique_ptr<HDKeyBase> DeriveNormalChild(uint32_t index) override;
-  std::unique_ptr<HDKeyBase> DeriveHardenedChild(uint32_t index) override;
+  // index should be 0 to 2^31-1
+  // If anything failed, nullptr will be returned.
+  std::unique_ptr<HDKey> DeriveNormalChild(uint32_t index);
+  // index should be 0 to 2^31-1
+  // If anything failed, nullptr will be returned.
+  std::unique_ptr<HDKey> DeriveHardenedChild(uint32_t index);
 
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
   // path format: m/[n|n']*/[n|n']*...
   // n: 0 to 2^31-1 (normal derivation)
   // n': n + 2^31 (harden derivation)
   // If path is invalid, nullptr will be returned
-  std::unique_ptr<HDKeyBase> DeriveChildFromPath(
-      const std::string& path) override;
+  std::unique_ptr<HDKey> DeriveChildFromPath(const std::string& path);
+
   // TODO(apaymyshev): make arg and return types fixed size spans and arrays
   // where possible.
 
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> SignCompact(const std::vector<uint8_t>& msg, int* recid);
+  std::vector<uint8_t> SignCompact(base::span<const uint8_t> msg, int* recid);
 
   // Sign the message using private key and return it in DER format.
   std::optional<std::vector<uint8_t>> SignDer(
@@ -98,15 +97,15 @@ class HDKey : public HDKeyBase {
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
-  bool Verify(const std::vector<uint8_t>& msg,
-              const std::vector<uint8_t>& sig) override;
+  bool VerifyForTesting(base::span<const uint8_t> msg,
+                        base::span<const uint8_t> sig);
 
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
   std::vector<uint8_t> RecoverCompact(bool compressed,
-                                      const std::vector<uint8_t>& msg,
-                                      const std::vector<uint8_t>& sig,
+                                      base::span<const uint8_t> msg,
+                                      base::span<const uint8_t> sig,
                                       int recid);
 
  private:

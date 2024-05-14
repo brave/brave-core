@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
-index 3fcc5dd58ae924dd114933feee6295760cde9ec8..a6e8fd36dcf7ed39b4447bcf67604e78c93b27ac 100644
+index ade6d6dc417210a11b700c9f73aa954535abde01..2b039f364336cccf52151be188cc89157d1e5c98 100644
 --- a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
 +++ b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
 @@ -165,6 +165,7 @@ const FontData* FontFallbackList::GetFontData(

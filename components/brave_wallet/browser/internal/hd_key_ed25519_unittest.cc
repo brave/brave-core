@@ -241,7 +241,7 @@ TEST(HDKeyEd25519UnitTest, EncodePrivateKeyForExport) {
   EXPECT_TRUE(
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
   auto master_key = HDKeyEd25519::GenerateFromSeed(bytes);
-  EXPECT_EQ(master_key->EncodePrivateKeyForExport(),
+  EXPECT_EQ(master_key->GetBase58EncodedKeypair(),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");
 }
@@ -256,18 +256,18 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   const std::vector<uint8_t> sig_a = key->Sign(msg_a);
   const std::vector<uint8_t> sig_b = key->Sign(msg_b);
 
-  EXPECT_TRUE(key->Verify(msg_a, sig_a));
-  EXPECT_TRUE(key->Verify(msg_b, sig_b));
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
 
   // wrong signature
-  EXPECT_FALSE(key->Verify(msg_a, sig_b));
-  EXPECT_FALSE(key->Verify(msg_b, sig_a));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a));
 
   // signature size != 64
-  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(128, 0xff)));
-  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(32, 0xff)));
-  EXPECT_FALSE(key->Verify(msg_b, std::vector<uint8_t>(128, 0xff)));
-  EXPECT_FALSE(key->Verify(msg_b, std::vector<uint8_t>(32, 0xff)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(128, 0xff)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(32, 0xff)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, std::vector<uint8_t>(128, 0xff)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, std::vector<uint8_t>(32, 0xff)));
 }
 
 TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
@@ -276,7 +276,7 @@ TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
       "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
       &private_key));
   auto master_key = HDKeyEd25519::GenerateFromPrivateKey(private_key);
-  EXPECT_EQ(master_key->EncodePrivateKeyForExport(),
+  EXPECT_EQ(master_key->GetBase58EncodedKeypair(),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");
   EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),

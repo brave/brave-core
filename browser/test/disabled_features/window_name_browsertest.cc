@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"

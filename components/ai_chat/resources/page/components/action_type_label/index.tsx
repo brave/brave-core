@@ -8,9 +8,12 @@ import Icon from '@brave/leo/react/icon'
 import * as mojom from '../../api/page_handler'
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
+import Button from '@brave/leo/react/button'
 
 interface ActionTypeLabelProps {
   actionType: mojom.ActionType
+  removable?: boolean
+  onCloseClick?: () => void
 }
 
 function getCategoryAndItem(actionType: mojom.ActionType): {
@@ -89,12 +92,29 @@ function getCategoryAndItem(actionType: mojom.ActionType): {
 function ActionTypeLabel (props: ActionTypeLabelProps) {
   const { category, item } = getCategoryAndItem(props.actionType)
 
+  let removeButtonElement = null
+
+  if (props.removable) {
+    removeButtonElement = (
+      <Button
+        className={styles.removeButton}
+        fab
+        kind="plain-faint"
+        title="remove action"
+        onClick={props.onCloseClick}
+      >
+        <Icon name="close"/>
+      </Button>
+    )
+  }
+
   if (category && item) {
     return (
       <div className={styles.actionTypeLabel}>
         <span className={styles.text}>{category}</span>
         <Icon name='carat-right' />
         <span className={styles.text}>{item}</span>
+        {removeButtonElement}
       </div>
     )
   }
@@ -102,6 +122,7 @@ function ActionTypeLabel (props: ActionTypeLabelProps) {
   return (
     <div className={styles.actionTypeLabel}>
       <span className={styles.text}>{item}</span>
+      {removeButtonElement}
     </div>
   )
 }

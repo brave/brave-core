@@ -43,6 +43,11 @@ void BraveAdBlockHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
+      "brave_adblock.updateFilterLists",
+      base::BindRepeating(&BraveAdBlockHandler::UpdateFilterLists,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
       "brave_adblock.getListSubscriptions",
       base::BindRepeating(&BraveAdBlockHandler::GetListSubscriptions,
                           base::Unretained(this)));
@@ -121,6 +126,23 @@ void BraveAdBlockHandler::EnableFilterList(const base::Value::List& args) {
   g_brave_browser_process->ad_block_service()
       ->component_service_manager()
       ->EnableFilterList(uuid, enabled);
+}
+
+void BraveAdBlockHandler::UpdateFilterLists(const base::Value::List& args) {
+  AllowJavascript();
+
+  DCHECK_EQ(args.size(), 1U);
+  if (!args[0].is_string()) {
+    return;
+  }
+
+  std::string callback_id = args[0].GetString();
+
+  g_brave_browser_process->ad_block_service()
+      ->component_service_manager()
+      ->UpdateFilterLists(
+          base::BindOnce(&BraveAdBlockHandler::OnFilterListsUpdated,
+                         weak_factory_.GetWeakPtr(), std::move(callback_id)));
 }
 
 void BraveAdBlockHandler::GetListSubscriptions(const base::Value::List& args) {
@@ -283,4 +305,17 @@ base::Value::List BraveAdBlockHandler::GetSubscriptions() {
   }
 
   return list_value;
+}
+
+void BraveAdBlockHandler::OnFilterListsUpdated(std::string callback_id,
+                                               bool success) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  if (success) {
+    ResolveJavascriptCallback(base::Value(callback_id), base::Value());
+  } else {
+    RejectJavascriptCallback(base::Value(callback_id), base::Value());
+  }
 }

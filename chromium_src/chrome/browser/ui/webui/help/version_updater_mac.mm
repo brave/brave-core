@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/updater/buildflags.h"
+
+#if BUILDFLAG(BRAVE_ENABLE_UPDATER)
+#include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
+#else
+
 #include "brave/chromium_src/chrome/browser/ui/webui/help/version_updater_mac.h"
 
 #include <memory>
@@ -74,8 +80,7 @@ VersionUpdaterMac::VersionUpdaterMac()
   show_promote_button_ = false;
 }
 
-VersionUpdaterMac::~VersionUpdaterMac() {
-}
+VersionUpdaterMac::~VersionUpdaterMac() {}
 
 void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
                                        PromoteCallback promote_callback) {
@@ -170,8 +175,8 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     case kAutoupdateCheckFailed:
     case kAutoupdateInstallFailed:
       status = FAILED;
-      message = l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR,
-                                              sparkle_status);
+      message =
+          l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR, sparkle_status);
       break;
 
     default:
@@ -199,11 +204,13 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     }
   }
 
-  if (!status_callback_.is_null())
+  if (!status_callback_.is_null()) {
     status_callback_.Run(status, 0, false, false, std::string(), 0, message);
+  }
 }
-
 
 void VersionUpdaterMac::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();
 }
+
+#endif  // BUILDFLAG(BRAVE_ENABLE_UPDATER)

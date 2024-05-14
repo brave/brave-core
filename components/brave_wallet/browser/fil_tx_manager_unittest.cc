@@ -86,11 +86,8 @@ class FilTxManagerUnitTest : public testing::Test {
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
-                                   base::DoNothing());
-    task_environment_.RunUntilIdle();
-    keyring_service_->AddAccountSync(
-        mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+    GetAccountUtils().EnsureFilTestAccount(0);
   }
 
   AccountUtils GetAccountUtils() {

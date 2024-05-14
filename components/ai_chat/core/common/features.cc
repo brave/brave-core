@@ -29,6 +29,8 @@ const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
                                                   "is_freemium_available",
                                                   true);
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
+const base::FeatureParam<bool> kConversationAPIEnabled{
+    &kAIChat, "conversation_api", false};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 
 bool IsAIChatEnabled() {
@@ -41,6 +43,13 @@ BASE_FEATURE(kAIChatHistory,
 
 bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
+}
+
+BASE_FEATURE(kContextMenuRewriteInPlace,
+             "AIChatContextMenuRewriteInPlace",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+bool IsContextMenuRewriteInPlaceEnabled() {
+  return base::FeatureList::IsEnabled(features::kContextMenuRewriteInPlace);
 }
 
 }  // namespace ai_chat::features

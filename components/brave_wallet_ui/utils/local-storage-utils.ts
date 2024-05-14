@@ -85,10 +85,7 @@ export const makeInitialFilteredOutNetworkKeys = () => {
 
 export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
   return (
-    panelType === 'connectWithSite' ||
-    panelType === 'signData' ||
-    panelType === 'signAllTransactions' ||
-    panelType === 'signTransaction'
+    panelType === 'connectWithSite' || panelType === 'connectHardwareWallet'
   )
 }
 
@@ -133,9 +130,14 @@ export function setStoredPortfolioTimeframe(
 
 export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
   try {
-    return JSON.parse(
-      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) || '{}'
+    const registry: TokenBalancesRegistry = JSON.parse(
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) ||
+        JSON.stringify(createEmptyTokenBalancesRegistry())
     )
+    if (registry.accounts) {
+      return registry
+    }
+    return createEmptyTokenBalancesRegistry()
   } catch (error) {
     console.error(error)
     return createEmptyTokenBalancesRegistry()

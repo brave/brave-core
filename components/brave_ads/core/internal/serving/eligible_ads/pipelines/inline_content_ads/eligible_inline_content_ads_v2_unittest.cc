@@ -60,8 +60,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"foo-bar3"},
-                                TextEmbeddingHtmlEventList{}},
+          InterestUserModelInfo{SegmentList{"foo-bar3"}},
       },
       /*dimensions=*/"200x100", callback.Get());
 }
@@ -98,8 +97,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
-                                TextEmbeddingHtmlEventList{}}},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
       /*dimensions=*/"?x?", callback.Get());
 }
 
@@ -111,8 +109,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
-                                TextEmbeddingHtmlEventList{}}},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
       /*dimensions=*/"200x100", callback.Get());
 }
 

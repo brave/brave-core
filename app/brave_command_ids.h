@@ -136,6 +136,14 @@
 
 #define IDC_WINDOW_BRING_ALL_TABS 56320
 
+// Commands related to split view
+#define IDC_NEW_SPLIT_VIEW 56325
+#define IDC_TILE_TABS 56326
+#define IDC_BREAK_TILE 56327
+
+// Wayback machine
+#define IDC_SHOW_WAYBACK_MACHINE_BUBBLE 56350
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_

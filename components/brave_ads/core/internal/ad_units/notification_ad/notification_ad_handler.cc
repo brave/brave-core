@@ -16,15 +16,9 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
-#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
@@ -55,12 +49,10 @@ void MaybeCloseAllNotifications() {
 NotificationAdHandler::NotificationAdHandler(
     Account& account,
     SiteVisit& site_visit,
-    EpsilonGreedyBanditProcessor& epsilon_greedy_bandit_processor,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
     : account_(account),
       site_visit_(site_visit),
-      epsilon_greedy_bandit_processor_(epsilon_greedy_bandit_processor),
       serving_(subdivision_targeting, anti_targeting_resource) {
   AddAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
@@ -89,17 +81,17 @@ void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::NotificationAdEventType::kServed, event_type)
-      << "Should not be called with kServed as this event is handled when "
-         "calling TriggerEvent with kViewed";
+  CHECK_NE(mojom::NotificationAdEventType::kServedImpression, event_type)
+      << "Should not be called with kServedImpression as this event is handled "
+         "when calling TriggerEvent with kViewedImpression";
 
   if (!UserHasOptedInToNotificationAds()) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::NotificationAdEventType::kViewed) {
+  if (event_type == mojom::NotificationAdEventType::kViewedImpression) {
     return event_handler_.FireEvent(
-        placement_id, mojom::NotificationAdEventType::kServed,
+        placement_id, mojom::NotificationAdEventType::kServedImpression,
         base::BindOnce(&NotificationAdHandler::FireServedEventCallback,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   }
@@ -121,7 +113,7 @@ void NotificationAdHandler::FireServedEventCallback(
   }
 
   event_handler_.FireEvent(
-      placement_id, mojom::NotificationAdEventType::kViewed,
+      placement_id, mojom::NotificationAdEventType::kViewedImpression,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -172,7 +164,7 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
 
 void NotificationAdHandler::OnDidServeNotificationAd(
     const NotificationAdInfo& ad) {
-  BLOG(1, "Served notification ad:\n"
+  BLOG(1, "Served notification ad impression:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
@@ -190,25 +182,21 @@ void NotificationAdHandler::OnDidServeNotificationAd(
 
 void NotificationAdHandler::OnDidFireNotificationAdServedEvent(
     const NotificationAdInfo& ad) {
-  BLOG(3, "Served notification ad with placement id "
+  BLOG(3, "Served notification ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-
-  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
     const NotificationAdInfo& ad) {
-  BLOG(3, "Viewed notification ad with placement id "
+  BLOG(3, "Viewed notification ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
-
-  SetNotificationAdServedAtPredictorVariable(base::Time::Now());
+                    ConfirmationType::kViewedImpression);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
@@ -226,13 +214,6 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
-
-  epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::NotificationAdEventType::kClicked});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kClicked);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
@@ -248,13 +229,6 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kDismissed);
-
-  epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::NotificationAdEventType::kDismissed});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kDismissed);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
@@ -265,13 +239,6 @@ void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
 
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/false);
-
-  epsilon_greedy_bandit_processor_->Process(
-      {ad.segment, mojom::NotificationAdEventType::kTimedOut});
-
-  SetNotificationAdEventPredictorVariable(
-      mojom::NotificationAdEventType::kTimedOut);
-  PredictorsManager::GetInstance().AddTrainingSample();
 }
 
 }  // namespace brave_ads

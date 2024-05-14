@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import classnames from 'classnames'
+import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
@@ -13,90 +13,119 @@ import Button from '@brave/leo/react/button'
 import styles from './style.module.scss'
 import DataContext from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
+import ActionTypeLabel from '../action_type_label'
 
-const MAX_INPUT_CHAR = 2000
-const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
-
-function InputBox () {
-  const [inputText, setInputText] = React.useState('')
+function InputBox() {
   const context = React.useContext(DataContext)
 
-  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
-  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
-
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value)
+    context.setInputText(e.target.value)
   }
 
-  const submitInputTextToAPI = () => {
-    if (!inputText) return
-    if (isCharLimitExceeded) return
-    if (context.shouldDisableUserInput) return
-
-    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
-    setInputText('')
+  const handleSubmit = (e: PointerEvent) => {
+    context.submitInputTextToAPI()
   }
 
-  const handleSubmit = (e: CustomEvent<any>) => {
-    e.preventDefault()
-    submitInputTextToAPI()
-  }
-
-  const handleMic = (e: CustomEvent<any>) => {
-    e.preventDefault()
+  const handleMic = (e: PointerEvent) => {
     getPageHandlerInstance().pageHandler.handleVoiceRecognition()
   }
 
-  const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
-        submitInputTextToAPI()
+        context.submitInputTextToAPI()
       }
 
       e.preventDefault()
+    }
+
+    if (
+      e.key === 'Backspace' &&
+      context.inputText === '' &&
+      context.selectedActionType
+    ) {
+      context.resetSelectedActionType()
+    }
+  }
+
+  const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
+    if (node && context.selectedActionType) {
+      node.focus()
     }
   }
 
   return (
     <form className={styles.form}>
+      {context.selectedActionType && (
+        <div className={styles.actionsLabelContainer}>
+          <ActionTypeLabel
+            removable={true}
+            actionType={context.selectedActionType}
+            onCloseClick={context.resetSelectedActionType}
+          />
+        </div>
+      )}
       <div
-        className={(context.isMobile ? styles.growWrapMobile : styles.growWrap)}
-        data-replicated-value={inputText}
+        className={styles.growWrap}
+        data-replicated-value={context.inputText}
       >
         <textarea
+          ref={maybeAutofocus}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
-          onKeyDown={onUserPressEnter}
-          value={inputText}
+          onKeyDown={handleOnKeyDown}
+          value={context.inputText}
           autoFocus
           rows={1}
         />
       </div>
-      {isCharLimitApproaching && (
-        <div className={classnames({
-          [styles.counterText]: true,
-          [styles.counterTextVisible]: isCharLimitApproaching,
-          [styles.counterTextError]: isCharLimitExceeded
-        })}>
-          {`${inputText.length} / ${MAX_INPUT_CHAR}`}
+      {context.isCharLimitApproaching && (
+        <div
+          className={classnames({
+            [styles.counterText]: true,
+            [styles.counterTextVisible]: context.isCharLimitApproaching,
+            [styles.counterTextError]: context.isCharLimitExceeded
+          })}
+        >
+          {context.inputTextCharCountDisplay}
         </div>
       )}
-      <div className={styles.actions}>
-        {context.isMobile && <Button
-          kind="plain-faint"
-          onClick={handleMic}
-          disabled={context.shouldDisableUserInput}
+      <div className={styles.toolsContainer}>
+        <div className={styles.tools}>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
           >
-          <Icon name='microphone' />
-        </Button>}
-        <Button
-          kind="plain-faint"
-          onClick={handleSubmit}
-          disabled={context.shouldDisableUserInput}
-          title={getLocale('sendChatButtonLabel')}
+            <Icon
+              className={classnames({
+                [styles.slashIconActive]: context.isToolsMenuOpen
+              })}
+              name='slash'
+            />
+          </Button>
+          {context.isMobile && (
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={handleMic}
+              disabled={context.shouldDisableUserInput}
+            >
+              <Icon name='microphone' />
+            </Button>
+          )}
+        </div>
+        <div>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={handleSubmit}
+            disabled={context.shouldDisableUserInput}
+            title={getLocale('sendChatButtonLabel')}
           >
-          <Icon name='send' />
-        </Button>
+            <Icon name='send' />
+          </Button>
+        </div>
       </div>
     </form>
   )

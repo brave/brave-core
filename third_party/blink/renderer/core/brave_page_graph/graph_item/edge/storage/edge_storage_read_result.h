@@ -23,6 +23,7 @@ class EdgeStorageReadResult final : public EdgeStorage {
   EdgeStorageReadResult(GraphItemContext* context,
                         NodeStorage* out_node,
                         NodeScript* in_node,
+                        const FrameId& frame_id,
                         const String& key,
                         const blink::PageGraphValue& value);
 

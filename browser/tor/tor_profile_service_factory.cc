@@ -129,7 +129,8 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
         g_brave_browser_process->tor_pluggable_transport_updater();
   }
   return new tor::TorProfileServiceImpl(
-      context, g_browser_process->local_state(), tor_client_updater,
+      Profile::FromBrowserContext(context)->GetOriginalProfile(), context,
+      g_browser_process->local_state(), tor_client_updater,
       tor_pluggable_transport_updater);
 }
 

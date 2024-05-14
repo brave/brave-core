@@ -6,11 +6,8 @@
 package org.chromium.base.shared_preferences;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.Log;
 
 public class BraveStrictPreferenceKeyChecker extends StrictPreferenceKeyChecker {
-    private static String TAG = "BraveReflectionUtil";
-
     BraveStrictPreferenceKeyChecker(PreferenceKeyRegistry registry) {
         super(registry);
     }
@@ -18,12 +15,11 @@ public class BraveStrictPreferenceKeyChecker extends StrictPreferenceKeyChecker 
     @Override
     public void checkIsKeyInUse(String key) {
         if (!isKeyInUse(key) && !BravePreferenceKeys.isBraveKeyInUse(key)) {
-            Log.e(
-                    TAG,
-                    "Key "
-                            + key
-                            + " is not registered for Brave's use. Either add it to"
-                            + " BravePreferenceKeys or remove it if it's not used.");
+            // Do nothing here for now. We might reconsider it in the future
+            // in case we want to make some kind of sanitation of pref keys
+            // used in Brave.
+            // Upstreams function isKeyInUse is called here and Brave's
+            // BravePreferenceKeys.isBraveKeyInUse is just a stub method
         }
     }
 

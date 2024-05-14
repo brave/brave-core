@@ -1,0 +1,13 @@
+[book]
+authors = [
+    "Jack Grigg",
+    "Sean Bowe",
+    "Daira Hopwood",
+    "Ying Tong Lai",
+]
+language = "en"
+multilingual = false
+src = "src"
+title = "The Pasta Book"
+
+[preprocessor.katex]

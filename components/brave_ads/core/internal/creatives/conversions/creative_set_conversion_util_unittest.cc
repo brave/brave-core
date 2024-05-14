@@ -22,16 +22,8 @@ namespace brave_ads {
 class BraveAdsCreativeSetConversionUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
-       FilterConvertedAndNonMatchingCreativeSetConversions) {
+       GetMatchingCreativeSetConversions) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
-
-  AdEventList ad_events;
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
-  ad_events.push_back(ad_event);
-
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
@@ -41,8 +33,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      test::BuildCreativeSetConversion(ad_event.creative_set_id,
-                                       /*url_pattern=*/"https://www.qux.com/",
+      test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern=*/"https://*.qux.com/fred",
                                        /*observation_window=*/base::Days(7));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
@@ -59,16 +51,50 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   creative_set_conversions.push_back(creative_set_conversion_4);
 
   const std::vector<GURL> redirect_chain = {
-      GURL("https://baz.com/"), GURL("https://foo.com/bar"),
-      GURL("https://www.qux.com/"), GURL("https://quux.com/corge/grault"),
-      GURL("https://garbly.com/waldo")};
+      GURL("https://baz.com/" /*matches creative_set_conversion_4*/),
+      GURL("https://foo.com/bar" /*matches creative_set_conversion_1*/),
+      GURL("https://www.qux.com/fred" /*matches creative_set_conversion_2*/),
+      GURL("https://quux.com/corge/grault"), GURL("https://garbly.com/waldo")};
 
   // Act & Assert
-  const CreativeSetConversionList expected_creative_set_conversions = {
-      creative_set_conversion_1, creative_set_conversion_4};
-  EXPECT_EQ(expected_creative_set_conversions,
-            FilterConvertedAndNonMatchingCreativeSetConversions(
-                creative_set_conversions, ad_events, redirect_chain));
+  const CreativeSetConversionList expected_matching_creative_set_conversions = {
+      creative_set_conversion_1, creative_set_conversion_2,
+      creative_set_conversion_4};
+  EXPECT_EQ(expected_matching_creative_set_conversions,
+            GetMatchingCreativeSetConversions(creative_set_conversions,
+                                              redirect_chain));
+}
+
+TEST_F(BraveAdsCreativeSetConversionUtilTest, GetCreativeSetConversionCounts) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
+
+  AdEventList ad_events;
+
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad, ConfirmationType::kServedImpression, Now());
+  ad_events.push_back(ad_event_1);
+
+  AdEventInfo ad_event_2 =
+      BuildAdEvent(ad, ConfirmationType::kConversion, Now());
+  ad_event_2.creative_set_id = "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8";
+  ad_events.push_back(ad_event_2);
+
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
+  ad_events.push_back(ad_event_3);
+
+  const AdEventInfo ad_event_4 =
+      BuildAdEvent(ad, ConfirmationType::kConversion, Now());
+  ad_events.push_back(ad_event_4);
+  ad_events.push_back(ad_event_4);
+
+  // Act & Assert
+  const CreativeSetConversionCountMap expected_creative_set_conversion_counts =
+      {{ad_event_2.creative_set_id, 1}, {ad_event_4.creative_set_id, 2}};
+  EXPECT_EQ(expected_creative_set_conversion_counts,
+            GetCreativeSetConversionCounts(ad_events));
 }
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
@@ -118,7 +144,85 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 }
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
-       FindNonExpiredCreativeSetConversion) {
+       FilterCreativeSetConversionBucketsThatExceedTheCap) {
+  // Arrange
+  CreativeSetConversionList creative_set_conversions;
+
+  const CreativeSetConversionInfo creative_set_conversion_1 =
+      test::BuildCreativeSetConversion(
+          kCreativeSetId,
+          /*url_pattern=*/"https://foo.com/*",
+          /*observation_window=*/base::Days(3));  // Bucket #1
+  creative_set_conversions.push_back(creative_set_conversion_1);
+
+  const CreativeSetConversionInfo creative_set_conversion_2 =
+      test::BuildCreativeSetConversion(
+          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern=*/"https://baz.com/",
+          /*observation_window=*/base::Days(30));  // Bucket #1
+  creative_set_conversions.push_back(creative_set_conversion_2);
+  creative_set_conversions.push_back(creative_set_conversion_2);
+
+  const CreativeSetConversionCountMap creative_set_conversion_counts = {
+      {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
+
+  CreativeSetConversionBucketMap creative_set_conversion_buckets =
+      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
+
+  // Act
+  FilterCreativeSetConversionBucketsThatExceedTheCap(
+      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 2,
+      creative_set_conversion_buckets);
+
+  // Assert
+  CreativeSetConversionBucketMap expected_creative_set_conversion_buckets = {
+      {creative_set_conversion_1.id, {creative_set_conversion_1}}};
+  EXPECT_EQ(expected_creative_set_conversion_buckets,
+            creative_set_conversion_buckets);
+}
+
+TEST_F(BraveAdsCreativeSetConversionUtilTest,
+       DoNotFilterCreativeSetConversionBucketsIfCapIsZero) {
+  // Arrange
+  CreativeSetConversionList creative_set_conversions;
+
+  const CreativeSetConversionInfo creative_set_conversion_1 =
+      test::BuildCreativeSetConversion(
+          kCreativeSetId,
+          /*url_pattern=*/"https://foo.com/*",
+          /*observation_window=*/base::Days(3));  // Bucket #1
+  creative_set_conversions.push_back(creative_set_conversion_1);
+
+  const CreativeSetConversionInfo creative_set_conversion_2 =
+      test::BuildCreativeSetConversion(
+          /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern=*/"https://baz.com/",
+          /*observation_window=*/base::Days(30));  // Bucket #1
+  creative_set_conversions.push_back(creative_set_conversion_2);
+  creative_set_conversions.push_back(creative_set_conversion_2);
+
+  const CreativeSetConversionCountMap creative_set_conversion_counts = {
+      {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
+
+  CreativeSetConversionBucketMap creative_set_conversion_buckets =
+      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
+
+  // Act
+  FilterCreativeSetConversionBucketsThatExceedTheCap(
+      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 0,
+      creative_set_conversion_buckets);
+
+  // Assert
+  CreativeSetConversionBucketMap expected_creative_set_conversion_buckets = {
+      {creative_set_conversion_1.id, {creative_set_conversion_1}},
+      {creative_set_conversion_2.id,
+       {creative_set_conversion_2, creative_set_conversion_2}}};
+  EXPECT_EQ(expected_creative_set_conversion_buckets,
+            creative_set_conversion_buckets);
+}
+
+TEST_F(BraveAdsCreativeSetConversionUtilTest,
+       GetCreativeSetConversionsWithinObservationWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -144,34 +248,16 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
-  // Act & Assert
-  EXPECT_EQ(creative_set_conversion_1, FindNonExpiredCreativeSetConversion(
-                                           creative_set_conversions, ad_event));
-}
+  // Act
+  const CreativeSetConversionList unexpired_creative_set_conversions =
+      GetCreativeSetConversionsWithinObservationWindow(creative_set_conversions,
+                                                       ad_event);
 
-TEST_F(BraveAdsCreativeSetConversionUtilTest,
-       DoNotFindNonExpiredCreativeSetConversion) {
-  // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
-
-  AdvanceClockBy(base::Days(7) + base::Milliseconds(1));
-
-  CreativeSetConversionList creative_set_conversions;
-
-  const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildVerifiableCreativeSetConversion(
-          kCreativeSetId,
-          /*url_pattern=*/"https://foo.com/*",
-          /*observation_window=*/base::Days(7),
-          kVerifiableConversionAdvertiserPublicKey);
-  creative_set_conversions.push_back(creative_set_conversion);
-
-  // Act & Assert
-  EXPECT_FALSE(
-      FindNonExpiredCreativeSetConversion(creative_set_conversions, ad_event));
+  // Assert
+  const CreativeSetConversionList expected_unexpired_creative_set_conversions =
+      {creative_set_conversion_1};
+  EXPECT_EQ(expected_unexpired_creative_set_conversions,
+            unexpired_creative_set_conversions);
 }
 
 }  // namespace brave_ads

@@ -44,12 +44,14 @@ const defaultState: CreateOrderFromReceiptInputFields = {
 function App() {
   const [skusState, setSkusState] = React.useState({})
   const [vpnState, setVpnState] = React.useState({})
+  const [leoState, setLeoState] = React.useState({})
   const [createOrderFormData, setCreateOrderFormData] = React.useState<CreateOrderFromReceiptInputFields>(defaultState)
 
   const resetSkusState = () => {
     API.resetSkusState()
     setSkusState({})
     setVpnState({})
+    setLeoState({})
   }
 
   const getSkusState = () => {
@@ -61,6 +63,12 @@ function App() {
   const getVpnState = () => {
     API.getVpnState().then((r: any) => {
       setVpnState(JSON.parse(r.response))
+    })
+  }
+
+  const getLeoState = () => {
+    API.getLeoState().then((r: any) => {
+      setLeoState(JSON.parse(r.response))
     })
   }
 
@@ -101,12 +109,18 @@ function App() {
           Reset SKUs state
         </button>
         <button onClick={getVpnState}>Fetch VPN state</button>
+        <button onClick={getLeoState}>Fetch Leo state</button>
         <button onClick={getSkusState}>Fetch SKUs state</button>
       </ButtonContainer>
 
       <StateContainer>
         <b>VPN State:</b>
         <JsonView data={vpnState} shouldInitiallyExpand={(level) => true} />
+      </StateContainer>
+
+      <StateContainer>
+        <b>Leo State:</b>
+        <JsonView data={leoState} shouldInitiallyExpand={(level) => true} />
       </StateContainer>
 
       <StateContainer>

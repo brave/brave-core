@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveStatsAPIKey;
+/// The endpoint we want to submit webcompat reports to
+OBJC_EXPORT NSString* const kWebcompatReportEndpoint;
 
 OBJC_EXPORT
 @interface BraveStats : NSObject

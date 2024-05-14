@@ -136,6 +136,14 @@ void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "clearPinnedNft", base::BindRepeating(&BraveWalletHandler::ClearPinnedNft,
                                             base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setWalletInPrivateWindowsEnabled",
+      base::BindRepeating(&BraveWalletHandler::SetWalletInPrivateWindowsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getWalletInPrivateWindowsEnabled",
+      base::BindRepeating(&BraveWalletHandler::GetWalletInPrivateWindowsEnabled,
+                          base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
@@ -425,6 +433,25 @@ void BraveWalletHandler::ClearPinnedNft(const base::Value::List& args) {
   service->Reset(
       base::BindOnce(&BraveWalletHandler::OnBraveWalletPinServiceReset,
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
+}
+
+void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  bool enabled = args[1].GetBool();
+  Profile::FromWebUI(web_ui())->GetPrefs()->SetBoolean(
+      kBraveWalletPrivateWindowsEnabled, enabled);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(true));
+}
+
+void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  bool enabled = Profile::FromWebUI(web_ui())->GetPrefs()->GetBoolean(
+      kBraveWalletPrivateWindowsEnabled);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], enabled);
 }
 
 void BraveWalletHandler::OnBraveWalletPinServiceReset(

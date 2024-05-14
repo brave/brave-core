@@ -62,7 +62,7 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(mojom::Result result,
-                                                  const std::string& body) {
+                                                  std::string body) {
   if (result != mojom::Result::OK) {
     engine_->LogError(FROM_HERE)
         << "Invalid server response for publisher prefix list";

@@ -73,7 +73,7 @@ public class UptimeMonitor {
     ]
     let durationInMinutes = Int(Preferences.UptimeMonitor.uptimeSum.value / 60.0)
     UmaHistogramRecordValueToBucket(
-      "Brave.Uptime.BrowserOpenMinutes",
+      "Brave.Uptime.BrowserOpenTime.2",
       buckets: buckets,
       value: durationInMinutes
     )

@@ -7,6 +7,7 @@ brave_extensions_web_component_files = [ "brave_item_list_more_items.ts" ]
 
 brave_extensions_non_web_component_files = [
   "brave_overrides/extensions_detail_view.ts",
+  "brave_overrides/extensions_toolbar.ts",
   "brave_overrides/index.ts",
   "brave_overrides/side_bar.ts",
 ]

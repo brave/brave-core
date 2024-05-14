@@ -80,8 +80,8 @@ HistoryItemList BuildHistoryItems() {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
 
-  const HistoryItemInfo history_item =
-      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
+  const HistoryItemInfo history_item = BuildHistoryItem(
+      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
 
   return {history_item, history_item};
 }

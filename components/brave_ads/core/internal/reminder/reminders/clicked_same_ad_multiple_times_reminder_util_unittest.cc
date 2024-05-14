@@ -187,8 +187,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
 
-  AddHistory(ad, ConfirmationType::kServed);
-  AddHistory(ad, ConfirmationType::kViewed);
+  AddHistory(ad, ConfirmationType::kServedImpression);
+  AddHistory(ad, ConfirmationType::kViewedImpression);
   const HistoryItemInfo history_item =
       AddHistory(ad, ConfirmationType::kClicked);
 

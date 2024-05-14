@@ -10,42 +10,6 @@ const path = require('path')
 const Log = require('./logging')
 const util = require('./util')
 
-
-function maybeInstallDepotTools(options = config.defaultOptions) {
-  options.cwd = config.braveCoreDir
-
-  if (!fs.existsSync(config.depotToolsDir)) {
-    Log.progressScope('install depot_tools', () => {
-      fs.mkdirSync(config.depotToolsDir)
-      util.run(
-        'git',
-        [
-          '-C',
-          config.depotToolsDir,
-          'clone',
-          'https://chromium.googlesource.com/chromium/tools/depot_tools.git',
-          '.'
-        ],
-        options
-      )
-    })
-  }
-
-  const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
-  if (!fs.existsSync(ninjaLogCfgPath)) {
-    // Create a ninja config to prevent autoninja from calling "cipd auth-info"
-    // each time. See for details:
-    // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
-    const ninjaLogCfgConfig = {
-      'is-googler': false,
-      'version': 3,
-      'countdown': 10,
-      'opt-in': false,
-    };
-    fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
-  }
-}
-
 function toGClientConfigItem(name, value, pretty = true) {
   // Convert value to json and replace "%True%" -> True, "%False%" -> False,
   // "%None%" -> None.
@@ -215,7 +179,6 @@ async function checkInternalDepsEndpoint() {
 }
 
 module.exports = {
-  maybeInstallDepotTools,
   buildDefaultGClientConfig,
   syncChromium,
   checkInternalDepsEndpoint

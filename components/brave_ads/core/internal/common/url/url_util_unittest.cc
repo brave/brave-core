@@ -25,7 +25,8 @@ TEST(BraveAdsUrlUtilTest, DoesNotSupportInvalidUrl) {
 
 TEST(BraveAdsUrlUtilTest, DoesSupportUrlWithHttpsScheme) {
   // Act & Assert
-  EXPECT_TRUE(DoesSupportUrl(GURL("https://foobar.com")));
+  EXPECT_TRUE(DoesSupportUrl(GURL(
+      R"(https://ford.com/trucks/f150/?searchid=397e152f-2dfd-406d-a162-e0625fb0d088|78983965-707e-43f4-b36d-9745a6991de6|bc19ce21-a918-4aa4-99ca-79faf291adff|%%BRANDED%%)")));
 }
 
 TEST(BraveAdsUrlUtilTest, DoesNotSupportUrlWithHttpScheme) {

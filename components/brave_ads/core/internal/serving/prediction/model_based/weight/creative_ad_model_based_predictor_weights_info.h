@@ -21,7 +21,6 @@ struct CreativeAdModelBasedPredictorWeightsInfo final {
   double untargeted_segment = 0.0;
 
   double last_seen_ad = 0.0;
-  double last_seen_advertiser = 0.0;
 };
 
 }  // namespace brave_ads

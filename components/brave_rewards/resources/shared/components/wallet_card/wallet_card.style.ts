@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const root = styled.div`
   background: linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%);

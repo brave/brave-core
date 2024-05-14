@@ -83,6 +83,7 @@ interface Props {
   isPanel?: boolean
   isAccountDetails?: boolean
   spotPrice: string
+  isGrouped?: boolean
 }
 
 const ICON_CONFIG = { size: 'medium', marginLeft: 0, marginRight: 8 } as const
@@ -97,7 +98,8 @@ export const PortfolioAssetItem = ({
   isPanel,
   spotPrice,
   account,
-  isAccountDetails
+  isAccountDetails,
+  isGrouped
 }: Props) => {
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -199,9 +201,10 @@ export const PortfolioAssetItem = ({
       <Wrapper
         fullWidth={true}
         showBorder={isAccountDetails && showBalanceInfo}
+        isGrouped={isGrouped}
       >
         {token.visible && (
-          <HoverArea isPanel={isPanel}>
+          <HoverArea isGrouped={isGrouped}>
             <Button
               disabled={isLoading}
               rightMargin={10}
@@ -210,15 +213,9 @@ export const PortfolioAssetItem = ({
               <NameAndIcon>
                 <IconsWrapper>
                   {isNonFungibleToken ? (
-                    <NftIconWithPlaceholder
-                      asset={token}
-                      network={network}
-                    />
+                    <NftIconWithPlaceholder asset={token} />
                   ) : (
-                    <AssetIconWithPlaceholder
-                      asset={token}
-                      network={network}
-                    />
+                    <AssetIconWithPlaceholder asset={token} />
                   )}
                   {!isPanel &&
                     network &&

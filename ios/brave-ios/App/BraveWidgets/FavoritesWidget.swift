@@ -17,9 +17,7 @@ struct FavoritesWidget: Widget {
     .configurationDisplayName(Strings.Widgets.favoritesWidgetTitle)
     .description(Strings.Widgets.favoritesWidgetDescription)
     .supportedFamilies([.systemMedium, .systemLarge])
-    #if swift(>=5.9)
     .contentMarginsDisabled()
-    #endif
   }
 }
 

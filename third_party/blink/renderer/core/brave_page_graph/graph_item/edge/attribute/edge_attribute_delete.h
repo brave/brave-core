@@ -20,6 +20,7 @@ class EdgeAttributeDelete final : public EdgeAttribute {
   EdgeAttributeDelete(GraphItemContext* context,
                       NodeActor* out_node,
                       NodeHTMLElement* in_node,
+                      const FrameId& frame_id,
                       const String& name,
                       const bool is_style = false);
   ~EdgeAttributeDelete() override;

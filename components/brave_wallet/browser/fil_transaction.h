@@ -56,7 +56,7 @@ class FilTransaction {
   mojom::FilTxDataPtr ToFilTxData() const;
   std::optional<std::string> GetSignedTransaction(
       const FilAddress& from,
-      const std::vector<uint8_t>& private_key) const;
+      base::span<const uint8_t> private_key) const;
   static std::optional<FilTransaction> FromValue(
       const base::Value::Dict& value);
 

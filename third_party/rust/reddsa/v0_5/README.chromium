@@ -1,0 +1,9 @@
+Name: reddsa
+URL: https://crates.io/crates/reddsa
+Description: A standalone implementation of the RedDSA signature scheme.
+Version: 0.5.1
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File:
+Revision: b1bbad7bac08331c0b2cb7b91da6e94e698f8021

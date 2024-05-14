@@ -591,11 +591,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     let footerHeight: CGFloat = 10.0
 
     switch searchSection {
-    case .quickBar, .aiChat, .searchSuggestions, .findInPage:
+    case .quickBar, .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
       return CGFloat.leastNormalMagnitude
     case .searchSuggestionsOptIn:
       return footerHeight
-    case .openTabsAndHistoryAndBookmarks:
+    case .aiChat:
       return footerHeight
     }
   }
@@ -839,17 +839,6 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
   func numberOfSections(in tableView: UITableView) -> Int {
     return dataSource.availableSections.count
-  }
-
-  func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-    guard let section = dataSource.availableSections[safe: indexPath.section] else {
-      return
-    }
-
-    if section == .openTabsAndHistoryAndBookmarks {
-      let suggestion = data[indexPath.item]
-      searchDelegate?.searchViewController(self, didHighlightText: suggestion.url, search: false)
-    }
   }
 }
 

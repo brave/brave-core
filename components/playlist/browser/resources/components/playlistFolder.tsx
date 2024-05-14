@@ -18,7 +18,7 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 
-import { color, font, spacing } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import LeoButton from '@brave/leo/react/button'
 
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
@@ -220,7 +220,7 @@ export default function PlaylistFolder({
 
   // Share single callback among multiple items.
   const onItemClick = React.useCallback(
-    (item) => {
+    (item: PlaylistItemMojo) => {
       if (!playlist) return
 
       if (editMode === PlaylistEditMode.BULK_EDIT) {

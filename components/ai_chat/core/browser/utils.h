@@ -6,12 +6,23 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
+#include "base/functional/callback_forward.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+
 class PrefService;
 
 namespace ai_chat {
 
 // Check both policy and feature flag to determine if AI Chat is enabled.
 bool IsAIChatEnabled(PrefService* prefs);
+bool HasUserOptedIn(PrefService* prefs);
+void SetUserOptedIn(PrefService* prefs, bool opted_in);
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+using GetOCRTextCallback = base::OnceCallback<void(std::string)>;
+void GetOCRText(const SkBitmap& image, GetOCRTextCallback callback);
+#endif
 
 }  // namespace ai_chat
 

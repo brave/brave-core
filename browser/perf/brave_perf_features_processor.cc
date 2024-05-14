@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -23,6 +24,10 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace {
 void FakeCallback(brave_rewards::mojom::CreateRewardsWalletResult) {}
@@ -77,6 +82,13 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
   // Speedreader
   profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefEnabled, true);
 #endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  profile->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
+                               base::Time::Now());
+  profile->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveChatAutocompleteProviderEnabled, true);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   // Adblock
   EnableAdblockCookieList(profile->GetWeakPtr());

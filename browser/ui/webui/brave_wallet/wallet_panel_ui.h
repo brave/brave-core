@@ -13,14 +13,14 @@
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
-class WalletPanelUI : public ui::MojoBubbleWebUIController,
+class WalletPanelUI : public TopChromeWebUIController,
                       public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
@@ -37,9 +37,6 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   // to modify panel deactivation flag when necessary.
   void SetDeactivationCallback(
       base::RepeatingCallback<void(bool)> deactivation_callback);
-
-  // Allows disabling CSP on wallet panel so EvalJS could be run in main world.
-  static bool& ShouldDisableCSPForTesting();
 
   static constexpr std::string GetWebUIName() { return "WalletPanel"; }
 

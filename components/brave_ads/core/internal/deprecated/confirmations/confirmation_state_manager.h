@@ -67,9 +67,9 @@ class ConfirmationStateManager final {
   void LoadCallback(InitializeCallback callback,
                     const std::optional<std::string>& json);
 
-  bool ParseConfirmationTokensFromDictionary(const base::Value::Dict& dict);
+  void ParseConfirmationTokensFromDictionary(const base::Value::Dict& dict);
 
-  bool ParsePaymentTokensFromDictionary(const base::Value::Dict& dict);
+  void ParsePaymentTokensFromDictionary(const base::Value::Dict& dict);
 
   bool is_initialized_ = false;
 

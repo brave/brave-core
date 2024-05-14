@@ -19,58 +19,69 @@ namespace {
 constexpr char kUndefinedType[] = "";
 constexpr char kClickedType[] = "click";
 constexpr char kDismissedType[] = "dismiss";
-constexpr char kViewedType[] = "view";
-constexpr char kServedType[] = "served";
+constexpr char kViewedImpressionType[] = "view";
+constexpr char kServedImpressionType[] = "served";
 constexpr char kLandedType[] = "landed";
 constexpr char kSavedAdType[] = "bookmark";
 constexpr char kMarkAdAsInappropriateType[] = "flag";
 constexpr char kLikedAdType[] = "upvote";
 constexpr char kDislikedAdType[] = "downvote";
 constexpr char kConversionType[] = "conversion";
+constexpr char kMediaPlayType[] = "media_play";
+constexpr char kMedia25Type[] = "media_25";
+constexpr char kMedia100Type[] = "media_100";
 
 constexpr auto kToConfirmationTypeMap =
     base::MakeFixedFlatMap<std::string_view, ConfirmationType>(
         {{kUndefinedType, ConfirmationType::kUndefined},
          {kClickedType, ConfirmationType::kClicked},
          {kDismissedType, ConfirmationType::kDismissed},
-         {kViewedType, ConfirmationType::kViewed},
-         {kServedType, ConfirmationType::kServed},
+         {kViewedImpressionType, ConfirmationType::kViewedImpression},
+         {kServedImpressionType, ConfirmationType::kServedImpression},
          {kLandedType, ConfirmationType::kLanded},
          {kSavedAdType, ConfirmationType::kSavedAd},
          {kMarkAdAsInappropriateType, ConfirmationType::kMarkAdAsInappropriate},
          {kLikedAdType, ConfirmationType::kLikedAd},
          {kDislikedAdType, ConfirmationType::kDislikedAd},
-         {kConversionType, ConfirmationType::kConversion}});
+         {kConversionType, ConfirmationType::kConversion},
+         {kMediaPlayType, ConfirmationType::kMediaPlay},
+         {kMedia25Type, ConfirmationType::kMedia25},
+         {kMedia100Type, ConfirmationType::kMedia100}});
 
 constexpr auto kConfirmationTypeToStringMap =
     base::MakeFixedFlatMap<ConfirmationType, std::string_view>(
         {{ConfirmationType::kUndefined, kUndefinedType},
          {ConfirmationType::kClicked, kClickedType},
          {ConfirmationType::kDismissed, kDismissedType},
-         {ConfirmationType::kViewed, kViewedType},
-         {ConfirmationType::kServed, kServedType},
+         {ConfirmationType::kViewedImpression, kViewedImpressionType},
+         {ConfirmationType::kServedImpression, kServedImpressionType},
          {ConfirmationType::kLanded, kLandedType},
          {ConfirmationType::kSavedAd, kSavedAdType},
          {ConfirmationType::kMarkAdAsInappropriate, kMarkAdAsInappropriateType},
          {ConfirmationType::kLikedAd, kLikedAdType},
          {ConfirmationType::kDislikedAd, kDislikedAdType},
-         {ConfirmationType::kConversion, kConversionType}});
+         {ConfirmationType::kConversion, kConversionType},
+         {ConfirmationType::kMediaPlay, kMediaPlayType},
+         {ConfirmationType::kMedia25, kMedia25Type},
+         {ConfirmationType::kMedia100, kMedia100Type}});
 
 }  // namespace
 
 ConfirmationType ToConfirmationType(const std::string_view value) {
-  const auto* iter = kToConfirmationTypeMap.find(value);
+  const auto iter = kToConfirmationTypeMap.find(value);
   if (iter != kToConfirmationTypeMap.cend()) {
     return iter->second;
   }
 
-  SCOPED_CRASH_KEY_STRING32("ConfirmationType", "value", value);
+  // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+  // potential defects using `NOTREACHED`.
+  SCOPED_CRASH_KEY_STRING32("Issue32066", "confirmation_type", value);
   NOTREACHED() << "Unexpected value for ConfirmationType: " << value;
   return ConfirmationType::kUndefined;
 }
 
 const char* ToString(const ConfirmationType type) {
-  const auto* iter = kConfirmationTypeToStringMap.find(type);
+  const auto iter = kConfirmationTypeToStringMap.find(type);
   if (iter != kConfirmationTypeToStringMap.cend()) {
     return iter->second.data();
   }

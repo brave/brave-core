@@ -22,6 +22,7 @@ class EdgeStorageSet final : public EdgeStorage {
   EdgeStorageSet(GraphItemContext* context,
                  NodeScript* out_node,
                  NodeStorage* in_node,
+                 const FrameId& frame_id,
                  const String& key,
                  const blink::PageGraphValue& value);
   ~EdgeStorageSet() override;

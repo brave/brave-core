@@ -27,7 +27,7 @@ constexpr int kCardViewBuckets[] = {0, 1, 10, 20, 40, 80, 100};
 constexpr int kCardClickBuckets[] = {2, 5, 10, 15, 20, 25};
 constexpr int kSidebarFilterUsageBuckets[] = {1, 4, 7, 10};
 constexpr int kClickCardDepthBuckets[] = {3, 6, 10, 15, 20};
-constexpr int kSubscriptionCountBuckets[] = {1, 4, 7, 10};
+constexpr int kSubscriptionCountBuckets[] = {0, 1, 4, 8, 13};
 constexpr size_t kCardClickDepthMetricThreshold = 5;
 constexpr base::TimeDelta kMonthlyUserTimeThreshold = base::Days(30);
 constexpr base::TimeDelta kReportInterval = base::Days(1);
@@ -91,12 +91,11 @@ void NewsMetrics::RecordDirectFeedsTotal() {
     return;
   }
 
-  constexpr int kBuckets[] = {0, 1, 2, 3, 4, 5, 10};
   std::size_t feed_count =
       pref_manager_->GetSubscriptions().direct_feeds().size();
   DVLOG(1) << "DirectFeedTotal: " << feed_count;
-  p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, kBuckets,
-                                     feed_count);
+  p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName,
+                                     kSubscriptionCountBuckets, feed_count);
 }
 
 void NewsMetrics::RecordWeeklyAddedDirectFeedsCount(int change) {
@@ -333,6 +332,9 @@ void NewsMetrics::OnConfigChanged() {
   }
   was_enabled_ = pref_manager_->IsEnabled();
   RecordFeatureEnabledChange();
+
+  // Get initial publisher count, which should be 0.
+  OnPublishersChanged();
 }
 
 void NewsMetrics::OnPublishersChanged() {
@@ -354,14 +356,11 @@ void NewsMetrics::OnPublishersChanged() {
 
 void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
-  std::vector<std::string> subscribed_channels;
+  base::flat_set<std::string> distinct_channels;
   for (const auto& [locale, channels] :
        pref_manager_->GetSubscriptions().channels()) {
-    for (const auto& channel : channels) {
-      subscribed_channels.push_back(channel);
-    }
+    distinct_channels.insert(channels.begin(), channels.end());
   }
-  base::flat_set<std::string> distinct_channels(subscribed_channels);
   RecordTotalSubscribedCount(SubscribeType::kChannels,
                              distinct_channels.size());
 }

@@ -150,7 +150,9 @@ extension BrowserViewController {
     let forwardList = webView.backForwardList.forwardList
 
     guard let currentURL = webView.backForwardList.currentItem?.url,
-      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode)
+      let headers = (tab.responses[currentURL] as? HTTPURLResponse)?.allHeaderFields
+        as? [String: String],
+      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
     else { return }
 
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)

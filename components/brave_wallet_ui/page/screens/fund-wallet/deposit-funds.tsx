@@ -6,7 +6,10 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
-import type { VariableSizeList as List } from 'react-window'
+
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -54,22 +57,19 @@ import {
   HorizontalSpace,
   LoadingIcon,
   Row,
-  VerticalSpace,
   LeoSquaredButton
 } from '../../../components/shared/style'
-import {
-  Description,
-  NextButtonRow,
-  Title
-} from '../onboarding/onboarding.style'
+import { Description, Title } from '../onboarding/onboarding.style'
 import {
   AddressText,
   AddressTextLabel,
+  TokenListWrapper,
   QRCodeContainer,
   QRCodeImage,
   ScrollContainer,
   SearchWrapper,
-  SelectAssetWrapper
+  SelectAssetWrapper,
+  SearchAndDropdownWrapper
 } from './fund-wallet.style'
 import {
   LoadingRing //
@@ -100,15 +100,6 @@ import {
   PageTitleHeader //
 } from '../../../components/desktop/card-headers/page-title-header'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
-
-const itemSize = 82
-
-function getItemSize(index: number): number {
-  return itemSize
-}
-
-const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
-  getAssetIdKey(data[i])
 
 interface Props {
   isAndroid?: boolean
@@ -150,6 +141,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           hideNav={isAndroid}
           hideHeader={isAndroid}
           wrapContentInBox={true}
+          useFullHeight={true}
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
@@ -174,8 +166,8 @@ function AssetSelection() {
   const chainIdParam = params.get('chainId')
   const coinTypeParam = params.get('coinType')
 
-  // refs
-  const listRef = React.useRef<List<BraveWallet.BlockchainToken[]>>(null)
+  // redux
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>(
@@ -382,68 +374,59 @@ function AssetSelection() {
   const renderToken = React.useCallback<
     RenderTokenFunc<BraveWallet.BlockchainToken>
   >(
-    ({ item: asset }) => {
+    ({ item: asset, ref }) => {
       const assetId = getAssetIdKey(asset)
       return (
         <BuyAssetOptionItem
           key={assetId}
           token={asset}
           onClick={() => history.push(makeDepositFundsRoute(assetId))}
+          ref={ref}
         />
       )
     },
     [history]
   )
 
-  // effects
-  React.useEffect(() => {
-    // scroll selected item into view
-    if (listRef.current && selectedDepositAssetId) {
-      const itemIndex = assetListSearchResults.findIndex(
-        (asset) => getAssetIdKey(asset) === selectedDepositAssetId
-      )
-      if (itemIndex > -1) {
-        listRef.current.scrollToItem(itemIndex, 'smart')
-      }
-    }
-  }, [selectedDepositAssetId, assetListSearchResults, listRef])
-
   // render
   return (
     <>
-      <SelectAssetWrapper>
+      <SelectAssetWrapper
+        fullWidth={true}
+        fullHeight={true}
+        justifyContent='flex-start'
+      >
         <FilterTokenRow
-          horizontalPadding={0}
+          horizontalPadding={12}
           isV2={false}
         >
-          <Column
-            flex={1}
-            style={{ minWidth: '25%' }}
-            alignItems='flex-start'
-          >
+          <SearchAndDropdownWrapper alignItems='flex-start'>
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
               value={searchValue}
               isV2={false}
             />
-          </Column>
+          </SearchAndDropdownWrapper>
           <NetworkFilterSelector
             isV2={false}
             selectedNetwork={selectedNetworkFromFilter}
             onSelectNetwork={setSelectedNetworkFilter}
+            dropdownPosition='right'
           />
         </FilterTokenRow>
 
         {fullAssetsList.length ? (
-          <VirtualizedTokensList
-            listRef={listRef}
-            getItemKey={getItemKey}
-            getItemSize={getItemSize}
-            userAssetList={assetListSearchResults}
-            estimatedItemSize={itemSize}
-            renderToken={renderToken}
-          />
+          <TokenListWrapper
+            fullWidth={true}
+            justifyContent='flex-start'
+          >
+            <VirtualizedTokensList
+              userAssetList={assetListSearchResults}
+              selectedAssetId={selectedDepositAssetId}
+              renderToken={renderToken}
+            />
+          </TokenListWrapper>
         ) : (
           <Column>
             <LoadingIcon
@@ -453,20 +436,22 @@ function AssetSelection() {
             />
           </Column>
         )}
-
-        <VerticalSpace space={'12px'} />
       </SelectAssetWrapper>
 
-      <NextButtonRow>
+      <Row
+        width='unset'
+        padding='20px 0px 0px 0px'
+      >
         <LeoSquaredButton
           onClick={nextStep}
           isDisabled={!isNextStepEnabled}
+          size={isPanel ? 'medium' : 'large'}
         >
           {selectedAsset
             ? getLocale('braveWalletButtonContinue')
             : getLocale('braveWalletBuySelectAsset')}
         </LeoSquaredButton>
-      </NextButtonRow>
+      </Row>
     </>
   )
 }
@@ -622,29 +607,37 @@ function DepositAccount() {
 
   if (!selectedAccount || showAccountSearch) {
     return (
-      <SearchWrapper>
-        <SelectHeader
-          title={getLocale('braveWalletSelectAccount')}
-          onBack={closeAccountSearch}
-          hasAddButton={false}
-        />
-        <SearchBar
-          placeholder={getLocale('braveWalletSearchAccount')}
-          action={onSearchTextChanged}
-        />
-        <ScrollContainer>
-          <SelectAccount
-            accounts={accountListSearchResults}
-            selectedAccount={selectedAccount}
-            onSelectAccount={onSelectAccountFromSearch}
+      <Column
+        padding='0 12px'
+        fullWidth
+      >
+        <SearchWrapper>
+          <SelectHeader
+            title={getLocale('braveWalletSelectAccount')}
+            onBack={closeAccountSearch}
+            hasAddButton={false}
           />
-        </ScrollContainer>
-      </SearchWrapper>
+          <SearchBar
+            placeholder={getLocale('braveWalletSearchAccount')}
+            action={onSearchTextChanged}
+          />
+          <ScrollContainer>
+            <SelectAccount
+              accounts={accountListSearchResults}
+              selectedAccount={selectedAccount}
+              onSelectAccount={onSelectAccountFromSearch}
+            />
+          </ScrollContainer>
+        </SearchWrapper>
+      </Column>
     )
   }
 
   return (
-    <Column gap={'16px'}>
+    <Column
+      gap={'16px'}
+      padding='0 12px'
+    >
       <Column alignItems='flex-start'>
         <Title>{depositTitleText}</Title>
 

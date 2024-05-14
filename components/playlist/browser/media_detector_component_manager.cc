@@ -86,12 +86,6 @@ MediaDetectorComponentManager::MediaDetectorComponentManager(
   // TODO(sko) We have breaking changes and not using scripts from component
   // updater. But we should use script from the component at some point.
   SetUseLocalScript();
-
-  // TODO(sko) These lists should be dynamically updated from the playlist.
-  // Even after we finish the job, we should leave these call so that we can
-  // use local resources until the component is updated.
-  SetUseLocalListToHideMediaSrcAPI();
-  SetUseLocalListToUseFakeUA();
 }
 
 MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
@@ -177,15 +171,6 @@ void MediaDetectorComponentManager::SetUseLocalScript() {
   OnGetScripts(GetLocalScriptMap());
 }
 
-bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
-    const GURL& url) const {
-  net::SchemefulSite schemeful_site(url);
-  return base::ranges::any_of(sites_to_hide_media_src_api_,
-                              [&schemeful_site](const auto& site_to_hide) {
-                                return site_to_hide == schemeful_site;
-                              });
-}
-
 const std::string&
 MediaDetectorComponentManager::GetMediaSourceAPISuppressorScript() {
   MaybeInitScripts();
@@ -225,40 +210,6 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
   }
 
   return detector_script;
-}
-
-void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {
-  sites_to_hide_media_src_api_ = {
-      {net::SchemefulSite(GURL("https://youtube.com"))},
-      {net::SchemefulSite(GURL("https://vimeo.com"))},
-      {net::SchemefulSite(GURL("https://ted.com"))},
-      {net::SchemefulSite(GURL("https://bitchute.com"))},
-      {net::SchemefulSite(GURL("https://marthastewart.com"))},
-      {net::SchemefulSite(GURL("https://bbcgoodfood.com"))},
-      {net::SchemefulSite(GURL("https://rumble.com/"))},
-      {net::SchemefulSite(GURL("https://brighteon.com"))},
-  };
-}
-
-bool MediaDetectorComponentManager::ShouldUseFakeUA(const GURL& url) const {
-  net::SchemefulSite schemeful_site(url);
-  return base::ranges::any_of(
-      sites_to_use_fake_ua_,
-      [&schemeful_site](const auto& site_to_use_fake_ua) {
-        return site_to_use_fake_ua == schemeful_site;
-      });
-}
-
-void MediaDetectorComponentManager::SetUseLocalListToUseFakeUA() {
-  sites_to_use_fake_ua_ = {
-      {net::SchemefulSite(GURL("https://ted.com"))},
-      {net::SchemefulSite(GURL("https://marthastewart.com"))},
-      {net::SchemefulSite(GURL("https://bbcgoodfood.com"))},
-      {net::SchemefulSite(GURL("https://rumble.com/"))},
-      {net::SchemefulSite(
-          GURL("https://brighteon.com"))},  // This site partially supported,
-                                            // Audio only.
-  };
 }
 
 }  // namespace playlist

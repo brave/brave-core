@@ -43,6 +43,8 @@ class ConversationDriverIOS : public ConversationDriver,
   GURL GetPageURL() const override;
   void GetPageContent(ConversationDriver::GetPageContentCallback callback,
                       std::string_view invalidation_token) override;
+  void PrintPreviewFallback(
+      ConversationDriver::GetPageContentCallback callback) override;
 
   // Observer
   void OnHistoryUpdate() override;

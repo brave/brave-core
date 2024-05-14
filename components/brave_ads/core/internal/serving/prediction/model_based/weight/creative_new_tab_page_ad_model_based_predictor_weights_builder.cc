@@ -34,9 +34,6 @@ BuildCreativeNewTabPageAdModelBasedPredictorWeights() {
 
   weights.last_seen_ad = kNewTabPageAdLastSeenPredictorWeight.Get();
 
-  weights.last_seen_advertiser =
-      kNewTabPageAdLastSeenAdvertiserPredictorWeight.Get();
-
   return weights;
 }
 

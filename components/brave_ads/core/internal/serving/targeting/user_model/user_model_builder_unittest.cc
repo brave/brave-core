@@ -9,16 +9,13 @@
 #include <vector>
 
 #include "base/metrics/field_trial_params.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -51,17 +48,10 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
   void SetUpFeatures() {
     std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-    enabled_features.emplace_back(
-        kEpsilonGreedyBanditFeature,
-        base::FieldTrialParams({{"epsilon_value", "0.0"}}));
-
     enabled_features.emplace_back(kPurchaseIntentFeature,
                                   base::FieldTrialParams({}));
 
     enabled_features.emplace_back(kTextClassificationFeature,
-                                  base::FieldTrialParams({}));
-
-    enabled_features.emplace_back(kTextEmbeddingFeature,
                                   base::FieldTrialParams({}));
 
     const std::vector<base::test::FeatureRef> disabled_features;
@@ -81,9 +71,7 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   task_environment_.RunUntilIdle();
 
   // Act & Assert
-  base::MockCallback<BuildUserModelCallback> callback;
-  EXPECT_CALL(callback, Run(test::TargetingHelper::Expectation()));
-  BuildUserModel(callback.Get());
+  EXPECT_EQ(test::TargetingHelper::Expectation(), BuildUserModel());
 }
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
@@ -91,9 +79,7 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
   const UserModelInfo expected_user_model;
 
   // Act & Assert
-  base::MockCallback<BuildUserModelCallback> callback;
-  EXPECT_CALL(callback, Run(expected_user_model));
-  BuildUserModel(callback.Get());
+  EXPECT_EQ(expected_user_model, BuildUserModel());
 }
 
 }  // namespace brave_ads

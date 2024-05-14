@@ -12,7 +12,6 @@ import DataContext from '../../state/context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-
 function ErrorRateLimit() {
   const context = React.useContext(DataContext)
 
@@ -20,17 +19,12 @@ function ErrorRateLimit() {
     // Freemium model with non-premium user has stricter rate limits. Secondary
     // action is to switch to completely free model.
     if (context.currentModel?.access === mojom.ModelAccess.BASIC_AND_PREMIUM) {
-      const handleSwitchToBasicModel = () => {
-        context.switchToBasicModel()
-        getPageHandlerInstance().pageHandler.retryAPIRequest()
-      }
-
       return (
         <PremiumSuggestion
           title={getLocale('rateLimitReachedTitle')}
           description={getLocale('rateLimitReachedDesc')}
           secondaryActionButton={
-            <Button kind='plain-faint' onClick={handleSwitchToBasicModel}>
+            <Button kind='plain-faint' onClick={context.handleSwitchToBasicModelAndRetry}>
               {getLocale('switchToBasicModelButtonLabel')}
             </Button>
           }
@@ -43,8 +37,8 @@ function ErrorRateLimit() {
         title={getLocale('rateLimitReachedTitle')}
         description={getLocale('rateLimitReachedDesc')}
         secondaryActionButton={
-          <Button kind='plain-faint' onClick={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}>
-            {getLocale('retryButtonLabel')}
+          <Button kind='plain-faint' onClick={context.handleMaybeLater}>
+            {getLocale('maybeLaterLabel')}
           </Button>
         }
       />

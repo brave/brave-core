@@ -42,9 +42,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(prefs::kIssuerPing, 7'200'000);
   registry->RegisterListPref(prefs::kIssuers);
 
-  registry->RegisterDictionaryPref(prefs::kEpsilonGreedyBanditArms);
-  registry->RegisterListPref(prefs::kEpsilonGreedyBanditEligibleSegments);
-
   registry->RegisterListPref(prefs::kNotificationAds);
   registry->RegisterTimePref(prefs::kServeAdAt, base::Time());
 

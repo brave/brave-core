@@ -25,7 +25,8 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  test::RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNewTabPageAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerDay.Get() - 1);
 
   // Act & Assert
@@ -35,7 +36,8 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  test::RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNewTabPageAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
@@ -47,7 +49,8 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        ShouldNotAllowIfExceedsCapWithin1Day) {
   // Arrange
-  test::RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNewTabPageAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

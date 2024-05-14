@@ -12,6 +12,7 @@ import components.path_util as path_util
 
 from components.android_tools import InstallApk
 from components.common_options import CommonOptions
+from components.browser_type import FieldTrialConfig
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
 
@@ -25,10 +26,11 @@ class BrowserBinary:
   android_package: Optional[str] = None
 
   profile_dir: Optional[str] = None
-  field_trial_config: Optional[str] = None
+  field_trial_config: Optional[FieldTrialConfig] = None
 
   def __init__(self, binary_path: Optional[str], android_package: Optional[str],
-               profile_dir: Optional[str], field_trial_config: Optional[str]):
+               profile_dir: Optional[str],
+               field_trial_config: Optional[FieldTrialConfig]):
     self.binary_path = binary_path
     self.android_package = android_package
     self.profile_dir = profile_dir

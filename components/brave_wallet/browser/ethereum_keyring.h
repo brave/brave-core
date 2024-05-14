@@ -11,16 +11,16 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
 class EthTransaction;
 
-class EthereumKeyring : public HDKeyring {
+class EthereumKeyring : public Secp256k1HDKeyring {
  public:
-  EthereumKeyring() = default;
+  explicit EthereumKeyring(base::span<const uint8_t> seed);
   ~EthereumKeyring() override = default;
   EthereumKeyring(const EthereumKeyring&) = delete;
   EthereumKeyring& operator=(const EthereumKeyring&) = delete;
@@ -51,9 +51,13 @@ class EthereumKeyring : public HDKeyring {
       const std::vector<uint8_t>& ciphertext,
       const std::string& address);
 
+  std::string EncodePrivateKeyForExport(const std::string& address) override;
+
  private:
-  std::string GetAddressInternal(HDKeyBase* hd_key) const override;
-  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
+  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, ConstructRootHDKey);
+
+  std::string GetAddressInternal(const HDKey& hd_key) const override;
+  std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
 };
 
 }  // namespace brave_wallet

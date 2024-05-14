@@ -43,8 +43,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   base::DoNothing());
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
     resolver_ =
         std::make_unique<AccountResolverDelegateImpl>(keyring_service_.get());

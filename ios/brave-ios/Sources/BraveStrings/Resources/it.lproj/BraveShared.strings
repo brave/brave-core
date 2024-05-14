@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copia informazioni app negli appunti.";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Copia negli appunti le informazioni sulle dimensioni dell’app.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "mese";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Tocca per ricevere i token gratuiti.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Ricompense Brave 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tocca qui per maggiori informazioni.";
 
@@ -1461,7 +1454,7 @@
 "p3a.continue" = "Continua";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "I dati anonimi raccolti grazie alle P3A ci aiutano a calcolare l’utilizzo complessivo. In questo modo siamo certi di perfezionare delle funzioni di Brave che riscuotono successo.";
+"p3a.settingSubtitle" = "Queste risposte anonime aiutano Brave a stimare l’utilizzo complessivo di alcune funzioni e a migliorarle per te.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Acconsenti alle analisi di prodotto rispettose della privacy (P3A)";
@@ -2340,12 +2333,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Informazioni sul saldo";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Data della richiesta:";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "ID utilizzato";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Vuoi davvero cancellare tutti i log di Rewards?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2410,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Origine informazioni chiave";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Promozione legacy";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "%d log mostrati";
 
@@ -2440,24 +2424,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Processore";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Attivo";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Confermato";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Corrotto";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Completato";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Scaduta";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Promozioni";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Editore";
@@ -2494,9 +2460,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Log Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Ogni promozione BAT richiesta o in sospeso da Ads o Grants";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Condividi";
@@ -2706,13 +2669,10 @@
 "settings.qualitySettings" = "Impostazioni della qualità";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Questo messaggio privato anonimo permette a Brave di calcolare gli utenti attivi.";
+"settings.sendUsagePingDescription" = "Questo messaggio privato permette a Brave di calcolare gli utenti attivi.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Invia automaticamente un ping di utilizzo giornaliero a Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Impossibile caricare la pagina.";
@@ -3053,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Eliminare l’account del servizio di sincronizzazione";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Con l’eliminazione dell’account verranno cancellati dai server Brave tutti i dati crittografati dell’utente e si disattiverà la sincronizzazione per tutti i dispositivi connessi. Non saranno però eliminati i dati archiviati in locale su tali dispositivi.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "L’eliminazione è definitiva e non c’è modo di recuperare i dati. Chi vuole ricominciare a usare la sincronizzazione dovrà creare un nuovo account e riaggiungere uno alla volta ciascun dispositivo.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Si è verificato un errore durante la ricerca dei dispositivi nella catena di sincronizzazione.";
 
@@ -3121,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Eliminare l’account del servizio di sincronizzazione";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Il codice di sincronizzazione è stato generato da una versione obsoleta di Brave su un altro dispositivo. Aggiorna Brave su tutti i dispositivi sincronizzati e riprova.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivi e impostazioni";
@@ -3485,9 +3436,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "In promozione";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Valuta Brave sull’App Store";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Nascondi";
 
@@ -3635,9 +3583,6 @@
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Più veloce della luce: fino a 100 Mbps";
 
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Ricevuta App Store";
-
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versione dell’app";
 
@@ -3664,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problema di affidabilità della connessione";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Scegli la categoria che descrive il problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Nessun collegamento a internet durante la connessione";
@@ -4058,9 +4000,6 @@
 /* History tableview section header */
 "Yesterday" = "Ieri";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Attiva i video in alta qualità di YouTube";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Attivando questa funzione sperimentale riprodurrai il video alla massima qualità disponibile e utilizzerai dei dati in più.";
 
@@ -4069,9 +4008,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "On";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Qualità di riproduzione su YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Consenti su Wi-Fi";

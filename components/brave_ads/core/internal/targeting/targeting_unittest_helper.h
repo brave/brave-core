@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_TARGETING_UNITTEST_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_TARGETING_UNITTEST_HELPER_H_
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_unittest_helper.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_unittest_helper.h"
 
 namespace brave_ads {
 
@@ -45,10 +43,8 @@ class TargetingHelper final {
   static InterestUserModelInfo InterestExpectation();
 
  private:
-  EpsilonGreedyBanditHelper epsilon_greedy_bandit_;
   PurchaseIntentHelper purchase_intent_;
   TextClassificationHelper text_classification_;
-  TextEmbeddingHelper text_embedding_;
 };
 
 }  // namespace test

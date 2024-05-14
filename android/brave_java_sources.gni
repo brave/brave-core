@@ -12,16 +12,17 @@ import("//brave/base/brave_base_shared_preferences_java.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
+import("//brave/browser/tab_ui/android/brave_tab_ui_sources.gni")
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
+import("//brave/components/signin/public/android/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
-  "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
@@ -43,6 +44,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/DormantUsersEngagementDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/accessibility/settings/BraveAccessibilitySettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/AppMenuIconRowFooter.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl.java",
@@ -91,6 +93,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/models/FeedItemsCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator.java",
   "../../brave/android/java/org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
@@ -110,14 +113,16 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/NetworkSelectorActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/AccountSelectorRecyclerView.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/ApproveTxFragmentPageAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/AutoGridLayoutManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CreateAccountAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoWalletOnboardingPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/FragmentNavigationItemAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/NetworkSelectorAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/NetworkSpinnerAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/OnboardingNetworkSelectorGridAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/RecoveryPhraseAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/SignMessagePagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/TwoLineItemRecyclerViewAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletOnboardingPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/controller/DAppsWalletController.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/ApproveTxBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/BaseWalletNextPageFragment.java",
@@ -145,6 +150,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingBackupWalletFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingCreatingWalletFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingInitWalletFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingNetworkSelectionFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingRecoveryPhraseFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingRestoreWalletFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/onboarding/OnboardingSecurePasswordFragment.java",
@@ -169,7 +175,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/presenters/Amount.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/presenters/SolanaInstructionPresenter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AccountsPermissionsHelper.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AddressUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AndroidUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetsPricesHelper.java",
@@ -231,6 +236,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
+  "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiInstanceManagerApi31.java",
+  "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveRadioButtonGroupThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveThemePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
@@ -448,7 +456,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/BraveVpnPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/BraveVpnProfileActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/BraveVpnSupportActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/VpnAlwaysOnActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/VpnServerSelectionActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/adapters/AlwaysOnPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/adapters/BraveVpnPlanPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/adapters/BraveVpnServerSelectionAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/fragments/BraveVpnAlwaysOnErrorDialogFragment.java",
@@ -485,6 +495,7 @@ brave_java_sources = [
 
 brave_java_sources += brave_ads_java_sources
 brave_java_sources += brave_components_embedder_support_java_sources
+brave_java_sources += brave_components_signin_java_sources
 brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
@@ -518,6 +529,7 @@ brave_java_base_module_sources = [
 ]
 
 brave_java_base_module_deps = [
+  "//brave/components/language/android:java",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//third_party/androidx:androidx_core_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",

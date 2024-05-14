@@ -50,6 +50,14 @@ RegisterPolymerTemplateModifications({
     } else {
       console.error('[Brave Settings Overrides] People Page cannot find syncSetup/advanced template')
     }
+    const syncSetupPageContent = templateContent.querySelector(
+        'template[is=dom-if][route-path="/syncSetup/pageContent"]')
+    if (syncSetupPageContent) {
+      syncSetupPageContent.remove()
+    } else {
+      console.error('[Brave Settings Overrides] People Page cannot ' +
+                    'find syncSetup/pageContent template')
+    }
     // always show the template content
     signinTemplate.setAttribute('if', 'true')
     // remove the google account button

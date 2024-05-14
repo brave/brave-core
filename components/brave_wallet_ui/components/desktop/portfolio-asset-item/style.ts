@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 
@@ -16,17 +16,28 @@ import {
   Column,
   Row
 } from '../../shared/style'
+import {
+  layoutPanelWidth //
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const HoverArea = styled.div<{ isPanel?: boolean }>`
+export const HoverArea = styled.div<{
+  noHover?: boolean
+  isGrouped?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 12px ${(p) => (p.isPanel ? 0 : 12)}px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: var(--hover-area-border-radius);
+  transition: background-color 300ms ease-out;
   &:hover {
-    background-color: ${(p) => p.theme.color.background01}85;
+    background-color: ${(p) =>
+      p.noHover ? 'none' : leo.color.page.background};
+  }
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: ${(p) => (p.isGrouped ? 12 : 8)}px;
   }
 `
 
@@ -131,10 +142,16 @@ export const AssetMenuButtonIcon = styled(Icon).attrs({
 
 export const Wrapper = styled(Column)<{
   showBorder?: boolean
+  isGrouped?: boolean
 }>`
   border-radius: ${(p) => (p.showBorder ? 16 : 0)}px;
   border: ${(p) =>
     p.showBorder ? `1px solid ${leo.color.divider.subtle}` : 'none'};
+  --hover-area-border-radius: ${(p) => (p.isGrouped ? '0px' : '10px')};
+  &:last-child {
+    --hover-area-border-radius: ${(p) =>
+      p.isGrouped ? '0px 0px 10px 10px' : '10px'};
+  }
 `
 
 export const InfoBar = styled(Row)`

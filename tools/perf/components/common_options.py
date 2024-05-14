@@ -44,6 +44,7 @@ class CommonOptions:
   do_report: bool = False
   report_on_failure: bool = False
   local_run: bool = False
+  retry_count = 2
   targets: List[str] = []
   config: str = ''
 
@@ -106,6 +107,10 @@ class CommonOptions:
                         type=str,
                         help='(with config=auto) The name of machine on CI.'
                         'Used select the config by machine-id + chromium')
+    parser.add_argument('--retry-count',
+                        type=int,
+                        default=2,
+                        help='Number of retries for a failed benchmark')
     parser.add_argument('--no-report',
                         action='store_true',
                         help='[ci-mode] Don\'t to the dashboard')
@@ -159,6 +164,9 @@ class CommonOptions:
       options.targets = args.targets.split(',')
 
     options.local_run = args.local_run or options.mode != PerfMode.RUN
+    if args.retry_count is not None:
+      options.retry_count = args.retry_count
+
     options.do_report = (not args.no_report and not args.local_run
                          and options.mode == PerfMode.RUN)
 

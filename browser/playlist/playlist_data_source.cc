@@ -95,6 +95,22 @@ content::URLDataSource::RangeDataResult ReadFileRange(
   // Note that HTTP range's first and last position are inclusive.
   int64_t first_byte_position =
       range.HasFirstBytePosition() ? range.first_byte_position() : 0;
+  auto file_length = file.GetLength();
+  if (first_byte_position == file_length) {
+    // It looks like the media player tries to make sure that it's the end of
+    // file by sending the first byte position as the file size.
+    content::URLDataSource::RangeDataResult result;
+    result.buffer = base::MakeRefCounted<base::RefCountedBytes>();
+    result.file_size = 0;
+    result.range =
+        net::HttpByteRange::Bounded(first_byte_position, first_byte_position);
+    auto mime_type = playlist::mime_util::GetMimeTypeForFileExtension(
+                         file_path.FinalExtension())
+                         .value_or("video/mp4");
+    result.mime_type = mime_type;
+    return result;
+  }
+
   int64_t last_byte_position =
       range.HasLastBytePosition()
           ? range.last_byte_position()
@@ -113,7 +129,7 @@ content::URLDataSource::RangeDataResult ReadFileRange(
 
   content::URLDataSource::RangeDataResult result;
   result.buffer = base::RefCountedBytes::TakeVector(&buffer);
-  result.file_size = file.GetLength();
+  result.file_size = file_length;
   result.range = net::HttpByteRange::Bounded(
       first_byte_position, first_byte_position + read_size - 1);
   auto mime_type = playlist::mime_util::GetMimeTypeForFileExtension(

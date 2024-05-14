@@ -11,9 +11,9 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
@@ -216,6 +216,21 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
     DataReceivedCallback data_received_callback,
     ResultCallback result_callback,
     const base::flat_map<std::string, std::string>& headers,
+    const APIRequestOptions& request_options) {
+  return RequestSSE(method, url, payload, payload_content_type,
+                    std::move(data_received_callback),
+                    std::move(result_callback), headers, request_options,
+                    base::NullCallback());
+}
+
+APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    DataReceivedCallback data_received_callback,
+    ResultCallback result_callback,
+    const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseStartedCallback response_started_callback) {
   auto iter = CreateRequestURLLoaderHandler(
@@ -269,10 +284,18 @@ APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
     request->method = method;
   }
 
+  DVLOG(4) << method << " " << url.spec();
+
   if (!headers.empty()) {
     for (auto entry : headers) {
+      DVLOG(4) << "> " << entry.first << ": " << entry.second;
       request->headers.SetHeader(entry.first, entry.second);
     }
+  }
+
+  if (!payload.empty()) {
+    DVLOG(4) << "Payload type " << payload_content_type << ":";
+    DVLOG(4) << payload;
   }
 
   auto url_loader =
@@ -383,11 +406,11 @@ void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     std::string_view string_piece,
     base::OnceClosure resume) {
-  DVLOG(2) << "\n[[" << __func__ << "]]"
-           << " Chunk received";
+  DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
     ParseSSE(string_piece);
   } else {
+    DVLOG(4) << "Chunk content: \n" << string_piece;
     TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
     ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
     data_received_callback_.Run(base::Value(string_piece));

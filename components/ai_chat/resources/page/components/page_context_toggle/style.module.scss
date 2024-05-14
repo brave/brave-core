@@ -7,7 +7,7 @@
   width: 100%;
   background: var(--leo-color-page-background);
   border-radius: var(--leo-radius-m);
-  padding: 10px 16px;
+  padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,28 +24,37 @@
 
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
-
-  h1 {
-    margin: 0;
-    padding: 0;
-  }
 }
 
-.tooltipContainer {
+.tooltip {
+  --leo-tooltip-padding: 0;
+}
+
+.tooltipContent {
+  max-width: 280px;
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-secondary);
-  max-width: 280px;
-  padding: 0;
 }
 
 .tooltipInfo {
-  font: inherit;
   padding: var(--leo-spacing-xl);
 }
 
 .tooltipSiteTitle {
   border-top: 1px solid var(--leo-color-divider-subtle);
   padding: var(--leo-spacing-m);
+}
+
+.tooltipButton {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  leo-icon {
+    --leo-icon-size: 14px;
+    --leo-icon-color: var(--leo-color-text-tertiary);
+  }
 }
 
 .toggle {

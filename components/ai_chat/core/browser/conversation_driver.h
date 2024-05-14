@@ -12,6 +12,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/observer_list.h"
@@ -19,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
@@ -26,6 +28,7 @@
 
 class PrefService;
 
+FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -53,6 +56,7 @@ class ConversationDriver {
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(mojom::SiteInfoPtr site_info) {}
+    virtual void OnPrintPreviewRequested(bool is_pdf) {}
   };
 
   ConversationDriver(
@@ -73,15 +77,14 @@ class ConversationDriver {
   void SetDefaultModel(const std::string& model_key);
   const mojom::Model& GetCurrentModel();
   std::vector<mojom::ModelPtr> GetModels();
-  const std::vector<mojom::ConversationTurn>& GetConversationHistory();
+  const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
   // when the page changes.
   void OnConversationActiveChanged(bool is_conversation_active);
-  void AddToConversationHistory(mojom::ConversationTurn turn);
-  void UpdateOrCreateLastAssistantEntry(std::string text);
-  void SubmitHumanConversationEntry(mojom::ConversationTurn turn);
+  void AddToConversationHistory(mojom::ConversationTurnPtr turn);
+  void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void RetryAPIRequest();
   bool IsRequestInProgress();
   void AddObserver(Observer* observer);
@@ -97,19 +100,29 @@ class ConversationDriver {
   bool GetShouldSendPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
+  mojom::ConversationTurnPtr ClearErrorAndGetFailedMessage();
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool GetCanShowPremium();
   void DismissPremiumPrompt();
   bool HasUserOptedIn();
   void SetUserOptedIn(bool user_opted_in);
-  bool IsPageContentsTruncated();
+  int GetContentUsedPercentage();
   void SubmitSummarizationRequest();
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
 
-  void SubmitSelectedText(const std::string& selected_text,
-                          mojom::ActionType action_type);
+  void AddSubmitSelectedTextError(const std::string& selected_text,
+                                  mojom::ActionType action_type,
+                                  mojom::APIError error);
+
+  void SubmitSelectedText(
+      const std::string& selected_text,
+      mojom::ActionType action_type,
+      EngineConsumer::GenerationDataCallback received_callback =
+          base::NullCallback(),
+      EngineConsumer::GenerationCompletedCallback completed_callback =
+          base::NullCallback());
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -127,8 +140,13 @@ class ConversationDriver {
   // no existing chat history, the page content should not be linked.
   void MaybeUnlinkPageContent();
 
-  bool IsArticleTextEmptyForTesting() const { return article_text_.empty(); }
+  const std::string& GetArticleTextForTesting() const { return article_text_; }
   bool IsSuggestionsEmptyForTesting() const { return suggestions_.empty(); }
+
+  void SetEngineForTesting(std::unique_ptr<EngineConsumer> engine_for_testing) {
+    engine_ = std::move(engine_for_testing);
+  }
+  EngineConsumer* GetEngineForTesting() { return engine_.get(); }
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -143,6 +161,8 @@ class ConversationDriver {
   // for explanation.
   virtual void GetPageContent(GetPageContentCallback callback,
                               std::string_view invalidation_token) = 0;
+
+  virtual void PrintPreviewFallback(GetPageContentCallback callback) = 0;
 
   virtual void OnFaviconImageDataChanged();
 
@@ -159,7 +179,19 @@ class ConversationDriver {
   // is expected.
   void OnNewPage(int64_t navigation_id);
 
+  void NotifyPrintPreviewRequested(bool is_pdf);
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_Delta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_DeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDelta);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+
   void InitEngine();
   void OnUserOptedIn();
   bool MaybePopPendingRequests();
@@ -167,8 +199,6 @@ class ConversationDriver {
 
   void PerformAssistantGeneration(
       const std::string& input,
-      std::optional<std::string> selected_text,
-      const std::vector<mojom::ConversationTurn>& history,
       int64_t current_navigation_id,
       std::string page_content = "",
       bool is_video = false,
@@ -183,7 +213,7 @@ class ConversationDriver {
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback);
 
   void OnEngineCompletionDataReceived(int64_t navigation_id,
-                                      std::string result);
+                                      mojom::ConversationEntryEventPtr result);
   void OnEngineCompletionComplete(int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
@@ -195,7 +225,7 @@ class ConversationDriver {
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
-
+  void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
   void SetAPIError(const mojom::APIError& error);
   bool IsContentAssociationPossible();
 
@@ -213,13 +243,14 @@ class ConversationDriver {
 
   // TODO(nullhook): Abstract the data model
   std::string model_key_;
-  std::vector<mojom::ConversationTurn> chat_history_;
+  std::vector<mojom::ConversationTurnPtr> chat_history_;
   bool is_conversation_active_ = false;
 
   // Page content
   std::string article_text_;
   std::string content_invalidation_token_;
   bool is_page_text_fetch_in_progress_ = false;
+  bool is_print_preview_fallback_requested_ = false;
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_;
 
   bool is_request_in_progress_ = false;
@@ -241,7 +272,7 @@ class ConversationDriver {
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
-  std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
+  mojom::ConversationTurnPtr pending_conversation_entry_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

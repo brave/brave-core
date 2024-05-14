@@ -89,6 +89,14 @@ const getEnvConfig = (key, default_value = undefined) => {
   return default_value
 }
 
+const getDepotToolsDir = (rootDir) => {
+  let depotToolsDir = getEnvConfig(['projects', 'depot_tools', 'dir'])
+  if (!path.isAbsolute(depotToolsDir)) {
+    depotToolsDir = path.join(rootDir, depotToolsDir)
+  }
+  return path.normalize(depotToolsDir)
+}
+
 const parseExtraInputs = (inputs, accumulator, callback) => {
   for (let input of inputs) {
     let separatorIndex = input.indexOf(':')
@@ -115,12 +123,13 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
 }
 
 const Config = function () {
-  this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
+  this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
+  this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
   this.internalDepsUrl = 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
-  this.buildTarget = 'brave'
+  this.buildTargets = ['brave']
   this.rootDir = rootDir
   this.isUniversalBinary = false
   this.isChromium = false
@@ -131,7 +140,8 @@ const Config = function () {
   this.braveCoreDir = braveCoreDir
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
-  this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
+  this.depotToolsDir = getDepotToolsDir(this.braveCoreDir)
+  this.depotToolsRepo = getEnvConfig(['projects', 'depot_tools', 'repository', 'url'])
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
@@ -242,7 +252,6 @@ const Config = function () {
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
-  this.enable_dangling_raw_ptr_checks = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
@@ -419,7 +428,7 @@ Config.prototype.buildArgs = function () {
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
-    enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
+    enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
     ...this.extraGnArgs,
@@ -659,6 +668,7 @@ Config.prototype.buildArgs = function () {
     // in the future to see if this is no longer needed
     // https://github.com/brave/brave-browser/issues/29934
     args.ios_partition_alloc_enabled = false
+    args.use_partition_alloc = false
 
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
@@ -717,10 +727,8 @@ Config.prototype.buildArgs = function () {
     delete args.zebpay_sandbox_client_id
     delete args.zebpay_sandbox_client_secret
     delete args.zebpay_sandbox_oauth_url
-    delete args.webcompat_report_api_endpoint
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
-    delete args.enable_dangling_raw_ptr_checks
   }
 
   return args
@@ -776,10 +784,19 @@ Config.prototype.addPythonPathToEnv = function (env, addPath) {
 }
 
 Config.prototype.getProjectVersion = function (projectName) {
-  return getEnvConfig(['projects', projectName, 'tag']) || getEnvConfig(['projects', projectName, 'branch'])
+  return (
+    getEnvConfig(['projects', projectName, 'revision']) ||
+    getEnvConfig(['projects', projectName, 'tag']) ||
+    getEnvConfig(['projects', projectName, 'branch'])
+  )
 }
 
-Config.prototype.getProjectRef = function (projectName) {
+Config.prototype.getProjectRef = function (projectName, defaultValue = 'origin/master') {
+  const revision = getEnvConfig(['projects', projectName, 'revision'])
+  if (revision) {
+    return revision
+  }
+
   const tag = getEnvConfig(['projects', projectName, 'tag'])
   if (tag) {
     return `refs/tags/${tag}`
@@ -790,7 +807,7 @@ Config.prototype.getProjectRef = function (projectName) {
     return `origin/${branch}`
   }
 
-  return 'origin/master'
+  return defaultValue
 }
 
 Config.prototype.update = function (options) {
@@ -1161,7 +1178,7 @@ Config.prototype.update = function (options) {
   }
 
   if (options.target) {
-    this.buildTarget = options.target
+    this.buildTargets = options.target.split(',')
   }
 
   if (options.use_libfuzzer) {
@@ -1229,12 +1246,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Use hermetic toolchain only internally.
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-      env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
+      env.GYP_MSVS_HASH_7393122652 = 'd325744cf9'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 
     if (this.getCachePath()) {
-      console.log("using git cache path " + this.getCachePath())
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
@@ -1293,9 +1309,14 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.VSCMD_SKIP_SENDTELEMETRY = '1'
     }
 
+    // TeamCity displays only stderr on the "Build Problems" page when an error
+    // occurs. By redirecting stdout to stderr, we ensure that all outputs from
+    // external processes are visible in case of a failure.
+    const stdio = this.isTeamcity ? ['inherit', process.stderr, 'inherit'] : 'inherit'
+
     return {
       env,
-      stdio: 'inherit',
+      stdio: stdio,
       cwd: this.srcDir,
       shell: true,
       git_cwd: '.',

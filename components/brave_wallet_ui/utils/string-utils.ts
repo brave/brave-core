@@ -10,8 +10,14 @@ import { loadTimeData } from '../../common/loadTimeData'
 export const stripChromeImageURL = (url?: string) =>
   url?.replace('chrome://image?', '')
 
-export const stripERC20TokenImageURL = (url?: string) =>
-  url?.replace('chrome://erc-token-images/', '')
+export const stripERC20TokenImageURL = <T extends string | undefined>(
+  url?: T
+): T => {
+  if (url) {
+    return url.replace('chrome://erc-token-images/', '') as T
+  }
+  return undefined as T
+}
 
 export const toProperCase = (value: string) =>
   value.replace(
@@ -57,7 +63,7 @@ export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
       return isOfframp ? 'ETH' : ''
     case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
       return 'AVAXC'
-    case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+    case BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID:
       return 'BSC'
     case BraveWallet.POLYGON_MAINNET_CHAIN_ID:
       return 'MATIC'

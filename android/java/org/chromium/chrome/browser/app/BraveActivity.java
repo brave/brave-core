@@ -12,6 +12,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -40,6 +41,14 @@ import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
 import org.jni_zero.JNINamespace;
@@ -123,6 +132,9 @@ import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -143,6 +155,7 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
@@ -164,11 +177,14 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -242,13 +258,15 @@ public abstract class BraveActivity extends ChromeActivity
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
+    private static final int MONTH_1 = 1;
+
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
-    /**
-     * Settings for sending local notification reminders.
-     */
+    private static final boolean ENABLE_IN_APP_UPDATE = false;
+
+    /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
 
     // Explicitly declare this variable to avoid build errors.
@@ -269,7 +287,7 @@ public abstract class BraveActivity extends ChromeActivity
     private JsonRpcService mJsonRpcService;
     private MiscAndroidMetrics mMiscAndroidMetrics;
     private SwapService mSwapService;
-    private WalletModel mWalletModel;
+    @Nullable private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
     private EthTxManagerProxy mEthTxManagerProxy;
@@ -289,9 +307,9 @@ public abstract class BraveActivity extends ChromeActivity
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
 
-    /**
-     * Serves as a general exception for failed attempts to get BraveActivity.
-     */
+    private AppUpdateManager mAppUpdateManager;
+
+    /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
         public BraveActivityNotFoundException(String message) {
             super(message);
@@ -328,6 +346,20 @@ public abstract class BraveActivity extends ChromeActivity
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING);
 
         executeInitSafeBrowsing(0);
+
+        if (ENABLE_IN_APP_UPDATE) {
+            if (mAppUpdateManager == null) {
+                mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+            }
+            mAppUpdateManager
+                    .getAppUpdateInfo()
+                    .addOnSuccessListener(
+                            appUpdateInfo -> {
+                                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                    completeUpdateSnackbar();
+                                }
+                            });
+        }
     }
 
     @Override
@@ -440,12 +472,20 @@ public abstract class BraveActivity extends ChromeActivity
             mNotificationPermissionController = null;
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
+        if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
         super.onDestroyInternal();
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
     }
 
+    /**
+     * Gets Wallet model for Brave activity. It may be {@code null} if native initialization has not
+     * completed yet.
+     */
+    @Nullable
     public WalletModel getWalletModel() {
         return mWalletModel;
     }
@@ -474,9 +514,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void maybeShowPendingTransactions() {
-        assert mWalletModel != null;
-        // trigger to observer to refresh data to process the pending request
-        mWalletModel.getCryptoModel().refreshTransactions();
+        if (mWalletModel != null) {
+            // Trigger to observer to refresh data to process the pending request.
+            mWalletModel.getCryptoModel().refreshTransactions();
+        }
     }
 
     private void maybeShowSignTxRequestLayout() {
@@ -648,13 +689,15 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showAccountCreation(@CoinType.EnumType int coinType) {
-        assert mWalletModel != null : " mWalletModel is null ";
-        mWalletModel.getDappsModel().addAccountCreationRequest(coinType);
+        if (mWalletModel != null) {
+            mWalletModel.getDappsModel().addAccountCreationRequest(coinType);
+        }
     }
 
     private void updateWalletBadgeVisibility() {
-        assert mWalletModel != null;
-        mWalletModel.getDappsModel().updateWalletBadgeVisibility();
+        if (mWalletModel != null) {
+            mWalletModel.getDappsModel().updateWalletBadgeVisibility();
+        }
     }
 
     private void verifySubscription() {
@@ -687,8 +730,8 @@ public abstract class BraveActivity extends ChromeActivity
                             BraveReflectionUtil.getField(
                                     ChromeTabbedActivity.class, "mLayoutManager", this);
             if (layoutManager != null
-                    && layoutManager.getOverviewLayout() != null
-                    && !layoutManager.getOverviewLayout().isActive()
+                    && layoutManager.getTabSwitcherLayoutForTesting() != null
+                    && !layoutManager.getTabSwitcherLayoutForTesting().isActive()
                     && mMiscAndroidMetrics != null) {
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }
@@ -788,8 +831,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         if (isClearBrowsingDataOnExit()) {
-            List<Integer> dataTypes = Arrays.asList(
-                    BrowsingDataType.HISTORY, BrowsingDataType.COOKIES, BrowsingDataType.CACHE);
+            List<Integer> dataTypes =
+                    Arrays.asList(
+                            BrowsingDataType.HISTORY,
+                            BrowsingDataType.SITE_DATA,
+                            BrowsingDataType.CACHE);
 
             int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
 
@@ -802,6 +848,7 @@ public abstract class BraveActivity extends ChromeActivity
         setLoadedFeed(false);
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
+        BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
         Intent intent = getIntent();
         if (intent != null
                 && intent.getBooleanExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, false)) {
@@ -900,12 +947,15 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onPreferenceChange() {
-        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
-        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        String captchaID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (BraveQAPreferences.shouldVlogRewards()) {
-            Log.e(AdaptiveCaptchaHelper.TAG,
+            Log.e(
+                    AdaptiveCaptchaHelper.TAG,
                     "captchaID : " + captchaID + " Payment ID : " + paymentID);
         }
         maybeSolveAdaptiveCaptcha();
@@ -913,7 +963,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void turnSafeBrowsingOff() {
-        SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
+        SafeBrowsingBridge safeBrowsingBridge = new SafeBrowsingBridge(getCurrentProfile());
+        safeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
     }
 
     @Override
@@ -927,11 +978,14 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void maybeSolveAdaptiveCaptcha() {
-        String captchaID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_ID);
-        String paymentID = UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                   .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
-        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
+        String captchaID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_ID);
+        String paymentID =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
+        if (!TextUtils.isEmpty(captchaID)
+                && !TextUtils.isEmpty(paymentID)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             AdaptiveCaptchaHelper.startAttestation(captchaID, paymentID);
         }
@@ -943,9 +997,6 @@ public abstract class BraveActivity extends ChromeActivity
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
-        BraveSearchEngineUtils.initializeBraveSearchEngineStates(
-                (TabModelSelector) getTabModelSelectorSupplier().get());
-
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
@@ -953,21 +1004,22 @@ public abstract class BraveActivity extends ChromeActivity
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
 
-        if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+        if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                 >= MAX_FAILED_CAPTCHA_ATTEMPTS) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, true);
         }
 
         if (BraveQAPreferences.shouldVlogRewards()) {
-            Log.e(AdaptiveCaptchaHelper.TAG,
+            Log.e(
+                    AdaptiveCaptchaHelper.TAG,
                     "Failed attempts : "
-                            + UserPrefs.get(Profile.getLastUsedRegularProfile())
-                                      .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
+                            + UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                    .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS));
         }
-        if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
+        if (!UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .getBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED)) {
             maybeSolveAdaptiveCaptcha();
         }
 
@@ -980,8 +1032,10 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         // Make sure this option is disabled
-        if (PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING) {
-            PreloadPagesSettingsBridge.setState(PreloadPagesState.NO_PRELOADING);
+        if (PreloadPagesSettingsBridge.getState(getCurrentProfile())
+                != PreloadPagesState.NO_PRELOADING) {
+            PreloadPagesSettingsBridge.setState(
+                    getCurrentProfile(), PreloadPagesState.NO_PRELOADING);
         }
 
         if (BraveRewardsHelper.hasRewardsEnvChange()) {
@@ -1172,10 +1226,104 @@ public abstract class BraveActivity extends ChromeActivity
                 && ChromeSharedPreferences.getInstance()
                                 .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_7);
-            BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE, DAYS_7);
+            BraveRewardsHelper.setRewardsOnboardingIconTiming(calendar.getTimeInMillis());
+
+            if (ENABLE_IN_APP_UPDATE) {
+                setInAppUpdateTiming();
+            }
+        }
+
+        // Check multiwindow toggle for upgrade case
+        if (!isFirstInstall
+                && !BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()
+                && MultiWindowUtils.getInstanceCount() > 1
+                && !BraveMultiWindowUtils.shouldEnableMultiWindows()) {
+            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
+            BraveMultiWindowUtils.updateEnableMultiWindows(true);
+        } else if (!BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()) {
+            BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
+        }
+
+        if (ENABLE_IN_APP_UPDATE
+                && System.currentTimeMillis()
+                        > ChromeSharedPreferences.getInstance()
+                                .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
+            checkAppUpdate();
+        }
+    }
+
+    private void setInAppUpdateTiming() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, MONTH_1);
+        ChromeSharedPreferences.getInstance()
+                .writeLong(
+                        BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, calendar.getTimeInMillis());
+    }
+
+    private void completeUpdateSnackbar() {
+        Snackbar snackbar =
+                Snackbar.make(
+                                getResources().getString(R.string.in_app_update_text),
+                                new SnackbarController() {
+                                    @Override
+                                    public void onDismissNoAction(Object actionData) {}
+
+                                    @Override
+                                    public void onAction(Object actionData) {
+                                        if (mAppUpdateManager != null) {
+                                            mAppUpdateManager.completeUpdate();
+                                            mAppUpdateManager.unregisterListener(
+                                                    installStateUpdatedListener);
+                                        }
+                                    }
+                                },
+                                Snackbar.TYPE_ACTION,
+                                Snackbar.UMA_UNKNOWN)
+                        .setAction(getResources().getString(R.string.update), null)
+                        .setSingleLine(false)
+                        .setDuration(10000);
+        SnackbarManager snackbarManager =
+                SnackbarManagerProvider.from(getActivityTab().getWindowAndroid());
+        snackbarManager.showSnackbar(snackbar);
+    }
+
+    private final InstallStateUpdatedListener installStateUpdatedListener =
+            installState -> {
+                if (installState.installStatus() == InstallStatus.DOWNLOADED) {
+                    completeUpdateSnackbar();
+                }
+            };
+
+    private void checkAppUpdate() {
+        mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+
+        Task<AppUpdateInfo> appUpdateInfoTask = mAppUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(
+                appUpdateInfo -> {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                        if (appUpdateInfo.updatePriority() >= 4 /* high priority */
+                                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                            startAppUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE);
+                        } else {
+                            startAppUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE);
+                        }
+                    }
+                });
+    }
+
+    private void startAppUpdateFlow(AppUpdateInfo appUpdateInfo, int appUpdateType) {
+        try {
+            mAppUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo, appUpdateType, BraveActivity.this, 1);
+            setInAppUpdateTiming();
+        } catch (IntentSender.SendIntentException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -1369,13 +1517,19 @@ public abstract class BraveActivity extends ChromeActivity
                     ChromeSharedPreferences.getInstance()
                             .readBoolean(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
             if (value) {
-                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.setShieldsValue(
+                        ProfileManager.getLastUsedRegularProfile(),
+                        "",
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                        BraveShieldsContentSettings.DEFAULT, false);
+                        BraveShieldsContentSettings.DEFAULT,
+                        false);
             } else {
-                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.setShieldsValue(
+                        ProfileManager.getLastUsedRegularProfile(),
+                        "",
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                        BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                        BraveShieldsContentSettings.ALLOW_RESOURCE,
+                        false);
             }
         }
     }
@@ -1444,12 +1598,14 @@ public abstract class BraveActivity extends ChromeActivity
     private void checkForYandexSE() {
         String countryCode = Locale.getDefault().getCountry();
         if (sYandexRegions.contains(countryCode)) {
-            Profile lastUsedRegularProfile = Profile.getLastUsedRegularProfile();
-            TemplateUrl yandexTemplateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                    lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
+            Profile lastUsedRegularProfile = ProfileManager.getLastUsedRegularProfile();
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(
+                            lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
             if (yandexTemplateUrl != null) {
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
-                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl,
+                BraveSearchEngineUtils.setDSEPrefs(
+                        yandexTemplateUrl,
                         lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
             }
         }
@@ -1610,7 +1766,7 @@ public abstract class BraveActivity extends ChromeActivity
     public Profile getCurrentProfile() {
         Tab tab = getActivityTab();
         if (tab == null) {
-            return Profile.getLastUsedRegularProfile();
+            return ProfileManager.getLastUsedRegularProfile();
         }
 
         return Profile.fromWebContents(tab.getWebContents());
@@ -2075,6 +2231,9 @@ public abstract class BraveActivity extends ChromeActivity
                             mMiscAndroidMetrics = miscAndroidMetrics;
                             mMiscAndroidMetrics.recordPrivacyHubEnabledStatus(
                                     OnboardingPrefManager.getInstance().isBraveStatsEnabled());
+                            mMiscAndroidMetrics.recordSetAsDefault(
+                                    BraveSetDefaultBrowserUtils.isAppSetAsDefaultBrowser(
+                                            BraveActivity.this));
                             if (mUsageMonitor == null) {
                                 mUsageMonitor = UsageMonitor.getInstance(mMiscAndroidMetrics);
                             }
@@ -2148,14 +2307,24 @@ public abstract class BraveActivity extends ChromeActivity
     // as upstream does, to keep the GmsCore process alive.
     private void executeInitSafeBrowsing(long delay) {
         // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
-        PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> {
-            if (SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING) {
-                // initSafeBrowsing could be executed on a background thread
-                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                        () -> { BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing(); });
-            }
-            executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
-        }, delay);
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    SafeBrowsingBridge safeBrowsingBridge =
+                            new SafeBrowsingBridge(getCurrentProfile());
+                    if (safeBrowsingBridge.getSafeBrowsingState()
+                            != SafeBrowsingState.NO_SAFE_BROWSING) {
+                        // initSafeBrowsing could be executed on a background thread
+                        PostTask.postTask(
+                                TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                () -> {
+                                    BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
+                                });
+                    }
+                    executeInitSafeBrowsing(
+                            BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
+                },
+                delay);
     }
 
     public void updateBottomSheetPosition(int orientation) {
@@ -2209,5 +2378,11 @@ public abstract class BraveActivity extends ChromeActivity
 
     public RootUiCoordinator getRootUiCoordinator() {
         return mRootUiCoordinator;
+    }
+
+    public MultiInstanceManager getMultiInstanceManager() {
+        return (MultiInstanceManager)
+                BraveReflectionUtil.getField(
+                        ChromeTabbedActivity.class, "mMultiInstanceManager", this);
     }
 }

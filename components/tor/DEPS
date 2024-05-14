@@ -2,6 +2,7 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+extensions/common",
+  "+services/data_decoder/public",
   "+services/network/public",
   "+third_party/re2",
 ]

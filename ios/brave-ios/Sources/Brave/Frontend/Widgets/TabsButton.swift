@@ -106,6 +106,6 @@ class TabsButton: UIButton {
     willDisplayMenuFor configuration: UIContextMenuConfiguration,
     animator: UIContextMenuInteractionAnimating?
   ) {
-    UIImpactFeedbackGenerator(style: .medium).bzzt()
+    UIImpactFeedbackGenerator(style: .medium).vibrate()
   }
 }

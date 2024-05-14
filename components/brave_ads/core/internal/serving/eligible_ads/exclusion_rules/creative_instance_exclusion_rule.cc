@@ -29,7 +29,7 @@ std::string CreativeInstanceExclusionRule::GetUuid(
 base::expected<void, std::string> CreativeInstanceExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeCap(
-          creative_ad, ad_events_, ConfirmationType::kServed,
+          creative_ad, ad_events_, ConfirmationType::kServedImpression,
           kShouldExcludeAdIfCreativeInstanceWithinTimeWindow.Get(),
           kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get())) {
     return base::unexpected(base::ReplaceStringPlaceholders(

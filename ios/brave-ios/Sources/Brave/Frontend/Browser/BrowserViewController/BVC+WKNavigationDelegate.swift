@@ -13,6 +13,7 @@ import Favicon
 import Foundation
 import Growth
 import LocalAuthentication
+import MarketplaceKit
 import Preferences
 import SafariServices
 import Shared
@@ -58,6 +59,8 @@ extension UTType {
 
 // MARK: WKNavigationDelegate
 extension BrowserViewController: WKNavigationDelegate {
+  private static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "navigation")
+
   public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
   {
     if tabManager.selectedTab?.webView !== webView {
@@ -95,6 +98,25 @@ extension BrowserViewController: WKNavigationDelegate {
         topToolbar.updateReaderModeState(ReaderModeState.unavailable)
         hideReaderModeBar(animated: false)
       }
+    }
+
+    resetRedirectChain(webView)
+
+    // Append source URL to redirect chain
+    appendUrlToRedirectChain(webView)
+  }
+
+  fileprivate func resetRedirectChain(_ webView: WKWebView) {
+    if let tab = tab(for: webView) {
+      tab.redirectChain = []
+    }
+  }
+
+  fileprivate func appendUrlToRedirectChain(_ webView: WKWebView) {
+    // The redirect chain MUST be sorted by the order of redirects with the
+    // first URL being the source URL.
+    if let tab = tab(for: webView), let url = webView.url {
+      tab.redirectChain.append(url)
     }
   }
 
@@ -207,6 +229,22 @@ extension BrowserViewController: WKNavigationDelegate {
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
+    if #available(iOS 17.4, *) {
+      if requestURL.scheme == MarketplaceKitURIScheme {
+        if let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?
+          .queryItems,
+          let adpURL = queryItems.first(where: {
+            $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
+          })?.value?.asURL,
+          navigationAction.sourceFrame.isMainFrame,
+          adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
+        {
+          return (.allow, preferences)
+        }
+        return (.cancel, preferences)
+      }
+    }
+
     if isStoreURL(requestURL) {
       let shouldOpen = await handleExternalURL(
         requestURL,
@@ -307,8 +345,8 @@ extension BrowserViewController: WKNavigationDelegate {
         tab.loadRequest(modifiedRequest)
 
         if let url = modifiedRequest.url {
-          ContentBlockerManager.log.debug(
-            "Redirected user to `\(url.absoluteString, privacy: .private)`"
+          Self.log.debug(
+            "Redirected to `\(url.absoluteString, privacy: .private)`"
           )
         }
 
@@ -342,8 +380,7 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
           .searchResultAd: BraveAds.shouldSupportSearchResultAds()
-            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing
-            && !rewards.isEnabled,
+            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
         ])
       }
 
@@ -368,17 +405,6 @@ extension BrowserViewController: WKNavigationDelegate {
       BraveSearchManager.isValidURL(requestURL)
     {
 
-      // Add Brave Search headers if Rewards is enabled
-      if !isPrivateBrowsing && rewards.isEnabled
-        && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
-      {
-        var modifiedRequest = URLRequest(url: requestURL)
-        modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
-        tab?.loadRequest(modifiedRequest)
-        ContentBlockerManager.signpost.endInterval("decidePolicyFor", state, "Redirected to search")
-        return (.cancel, preferences)
-      }
-
       if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
         braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
         navigationAction.navigationType == .linkActivated
@@ -386,6 +412,21 @@ extension BrowserViewController: WKNavigationDelegate {
         braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
         tab?.braveSearchResultAdManager = nil
       } else {
+        // Add Brave Search headers if Rewards is enabled
+        if !isPrivateBrowsing && rewards.isEnabled
+          && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
+        {
+          var modifiedRequest = URLRequest(url: requestURL)
+          modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
+          tab?.loadRequest(modifiedRequest)
+          ContentBlockerManager.signpost.endInterval(
+            "decidePolicyFor",
+            state,
+            "Redirected to search"
+          )
+          return (.cancel, preferences)
+        }
+
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
@@ -436,11 +477,11 @@ extension BrowserViewController: WKNavigationDelegate {
         {
           let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
 
-          let shouldBlock = await AdBlockStats.shared.shouldBlock(
+          let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
             requestURL: requestURL,
             sourceURL: requestURL,
             resourceType: .document,
-            isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+            domain: domain
           )
 
           if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
@@ -599,6 +640,31 @@ extension BrowserViewController: WKNavigationDelegate {
     let response = navigationResponse.response
     let responseURL = response.url
     let tab = tab(for: webView)
+    let isInvalid: Bool
+    if let httpResponse = response as? HTTPURLResponse {
+      isInvalid = httpResponse.statusCode >= 400
+    } else {
+      isInvalid = true
+    }
+
+    // Handle invalid upgrade to https
+    if isInvalid,
+      navigationResponse.isForMainFrame,
+      let responseURL = responseURL,
+      let tab = tab,
+      let originalResponse = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: responseURL
+      )
+    {
+      tab.loadRequest(originalResponse)
+      return .cancel
+    }
+
+    // Store the response in the tab
+    if let responseURL = responseURL {
+      tab?.responses[responseURL] = response
+    }
 
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
     if let responseURL = responseURL,
@@ -620,7 +686,7 @@ extension BrowserViewController: WKNavigationDelegate {
       let responseURL = responseURL,
       InternalURL(responseURL)?.isSessionRestore == true
     {
-      tab.shouldClassifyLoadsForAds = false
+      tab.shouldNotifyAdsServiceTabDidChange = false
     }
 
     var request: URLRequest?
@@ -870,7 +936,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
     // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
     // So manually trigger it with the current trust.
-    logSecureContentState(tab: tab, details: "ObserveValue trigger in didCommit")
 
     observeValue(
       forKeyPath: KVOConstants.serverTrust.keyPath,
@@ -918,8 +983,7 @@ extension BrowserViewController: WKNavigationDelegate {
       // Inject app's IAP receipt for Brave SKUs if necessary
       if !tab.isPrivate {
         Task { @MainActor in
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .vpnMonthly)
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .leoMonthly)
+          await BraveSkusAccountLink.injectLocalStorage(webView: webView)
         }
       }
 
@@ -939,25 +1003,25 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if let url = tab.url, tab.shouldClassifyLoadsForAds {
+      if tab.shouldNotifyAdsServiceTabDidChange, tab.navigationType != WKNavigationType.backForward
+      {
         rewards.reportTabUpdated(
           tab: tab,
-          url: url,
           isSelected: tabManager.selectedTab == tab,
           isPrivate: privateBrowsingManager.isPrivateBrowsing
         )
+        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
       }
+      // Set `shouldNotifyAdsServiceTabDidChange` to `true` so that listeners
+      // are notified of tab changes after the tab is restored.
+      tab.shouldNotifyAdsServiceTabDidChange = true
 
       Task {
         await tab.updateEthereumProperties()
         await tab.updateSolanaProperties()
       }
 
-      tab.reportPageLoad(to: rewards, redirectionURLs: tab.redirectURLs)
-      tab.redirectURLs = []
       if webView.url?.isLocal == false {
-        // Reset should classify
-        tab.shouldClassifyLoadsForAds = true
         // Set rewards inter site url as new page load url.
         rewardsXHRLoadURL = webView.url
       }
@@ -978,8 +1042,7 @@ extension BrowserViewController: WKNavigationDelegate {
     _ webView: WKWebView,
     didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
   ) {
-    guard let tab = tab(for: webView), let url = webView.url, rewards.isEnabled else { return }
-    tab.redirectURLs.append(url)
+    appendUrlToRedirectChain(webView)
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.
@@ -989,6 +1052,17 @@ extension BrowserViewController: WKNavigationDelegate {
     withError error: Error
   ) {
     guard let tab = tab(for: webView) else { return }
+
+    // Handle invalid upgrade to https
+    if let responseURL = webView.url,
+      let response = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: responseURL
+      )
+    {
+      tab.loadRequest(response)
+      return
+    }
 
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
@@ -1697,16 +1771,74 @@ extension BrowserViewController: WKUIDelegate {
           modifiedRequest.setValue(headerValue, forHTTPHeaderField: headerKey)
         }
 
+        Self.log.debug(
+          "Debouncing `\(requestURL.absoluteString)`"
+        )
+
         return modifiedRequest
       }
     }
 
     // Handle query param stripping
-    return navigationAction.request.stripQueryParams(
+    if let request = navigationAction.request.stripQueryParams(
       initiatorURL: tab.committedURL,
       redirectSourceURL: tab.redirectSourceURL,
       isInternalRedirect: tab.isInternalRedirect
-    )
+    ) {
+      Self.log.debug(
+        "Stripping query params for `\(requestURL.absoluteString)`"
+      )
+      return request
+    }
+
+    // Attempt to upgrade to HTTPS
+    if ShieldPreferences.httpsUpgradeLevel.isEnabled,
+      let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
+    {
+      Self.log.debug(
+        "Upgrading `\(requestURL.absoluteString)` to HTTPS"
+      )
+
+      tab.upgradedHTTPSRequest = navigationAction.request
+      var request = navigationAction.request
+      request.url = upgradedURL
+      return request
+    }
+
+    return nil
+  }
+
+  /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
+  /// or show the interstitial page
+  private func handleInvalidHTTPSUpgrade(tab: Tab, responseURL: URL) -> URLRequest? {
+    // Handle invalid upgrade to https
+    guard responseURL.scheme == "https",
+      let originalRequest = tab.upgradedHTTPSRequest,
+      let originalURL = originalRequest.url,
+      responseURL.baseDomain == originalURL.baseDomain
+    else {
+      braveCore.httpsUpgradeExceptionsService.addException(for: responseURL)
+      return nil
+    }
+
+    if ShieldPreferences.httpsUpgradeLevel.isStrict,
+      let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
+    {
+      Self.log.debug(
+        "Show http blocked interstitial for `\(originalURL.absoluteString)`"
+      )
+
+      let request = PrivilegedRequest(url: url) as URLRequest
+      return request
+    } else {
+      Self.log.debug(
+        "Revert HTTPS upgrade for `\(originalURL.absoluteString)`"
+      )
+
+      tab.upgradedHTTPSRequest = nil
+      braveCore.httpsUpgradeExceptionsService.addException(for: originalURL)
+      return originalRequest
+    }
   }
 }
 

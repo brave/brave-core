@@ -187,10 +187,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "areShortcutsSupported",
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
-  if (ShouldDisableCSPForTesting()) {
-    html_source->DisableContentSecurityPolicy();
-  }
-
   html_source->AddBoolean("shouldExposeElementsForTesting",
                           ShouldExposeElementsForTesting());
 
@@ -219,12 +215,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "showCommandsInOmnibox",
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
-}
-
-// static
-bool& BraveSettingsUI::ShouldDisableCSPForTesting() {
-  static bool disable_csp = false;
-  return disable_csp;
 }
 
 // static

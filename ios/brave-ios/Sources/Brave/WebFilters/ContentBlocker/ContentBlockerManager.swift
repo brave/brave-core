@@ -13,10 +13,13 @@ import WebKit
 import os.log
 
 /// A class that aids in the managment of rule lists on the rule store.
-actor ContentBlockerManager {
-  // TODO: Use a proper logger system once implemented and adblock files are moved to their own module(#5928).
+@MainActor class ContentBlockerManager {
   /// Logger to use for debugging.
-  static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "adblock")
+  nonisolated static let log = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "adblock"
+  )
+
   static let signpost = OSSignposter(logger: log)
   private static let maxContentBlockerSize = 150_000
 
@@ -66,6 +69,20 @@ actor ContentBlockerManager {
       case .blockCookies: return "block-cookies"
       case .blockTrackers: return "block-trackers"
       case .upgradeMixedContent: return "mixed-content-upgrade"
+      }
+    }
+  }
+
+  enum CompileResult {
+    case empty
+    case success(WKContentRuleList)
+    case failure(Error)
+
+    func get() throws -> WKContentRuleList? {
+      switch self {
+      case .empty: return nil
+      case .success(let ruleList): return ruleList
+      case .failure(let error): throw error
       }
     }
   }
@@ -139,14 +156,21 @@ actor ContentBlockerManager {
   /// The store in which these rule lists should be compiled
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
-  private var cachedRuleLists: [String: Result<WKContentRuleList, Error>]
-  /// A list of etld+1s that are always aggressive
-  /// TODO: @JS Replace this with the 1st party ad-block list
-  let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
+  private var cachedRuleLists: [String: CompileResult]
+  /// The available known versions of the compiled block lists
+  private let versions: Preferences.Option<[String: String]>
 
-  init(ruleStore: WKContentRuleListStore = .default()) {
+  init(
+    ruleStore: WKContentRuleListStore = .default(),
+    container: UserDefaults = Preferences.defaultContainer
+  ) {
     self.ruleStore = ruleStore
     self.cachedRuleLists = [:]
+    self.versions = Preferences.Option(
+      key: "content-blocker.versions",
+      default: [:],
+      container: container
+    )
   }
 
   /// Remove all rule lists minus the given valid types.
@@ -157,13 +181,14 @@ actor ContentBlockerManager {
     let state = Self.signpost.beginInterval("cleaupInvalidRuleLists", id: signpostID)
     let availableIdentifiers = await ruleStore.availableIdentifiers() ?? []
 
-    await availableIdentifiers.asyncConcurrentForEach { identifier in
+    await availableIdentifiers.asyncForEach { identifier in
       guard
         !validTypes.contains(where: { type in
           type.allowedModes.contains(where: { type.makeIdentifier(for: $0) == identifier })
         })
       else { return }
 
+      self.versions.value.removeValue(forKey: identifier)
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
       let prefixes = [
         BlocklistType.genericPrifix, BlocklistType.filterListPrefix,
@@ -184,60 +209,91 @@ actor ContentBlockerManager {
   /// Compile the rule list found in the given local URL using the specified modes
   func compileRuleList(
     at localFileURL: URL,
-    for type: BlocklistType,
+    for blocklistType: BlocklistType,
+    version: String,
     modes: [BlockingMode]
-  ) async throws {
+  ) async {
+    guard !modes.isEmpty else { return }
+
     let result: ContentBlockingRulesResult
     let signpostID = Self.signpost.makeSignpostID()
     let state = Self.signpost.beginInterval(
       "convertRules",
       id: signpostID,
-      "\(type.debugDescription)"
+      "\(blocklistType.debugDescription) v\(version)"
     )
 
     do {
-      let filterSet = try String(contentsOf: localFileURL)
-      result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-      Self.signpost.endInterval("convertRules", state)
-    } catch {
-      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
-      throw error
-    }
+      do {
+        let filterSet = try String(contentsOf: localFileURL)
+        result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        Self.signpost.endInterval("convertRules", state)
+      } catch {
+        Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
+        throw error
+      }
 
-    try await compile(encodedContentRuleList: result.rulesJSON, for: type, modes: modes)
+      try await compile(
+        encodedContentRuleList: result.rulesJSON,
+        for: blocklistType,
+        version: version,
+        modes: modes
+      )
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile rule list for `\(blocklistType.debugDescription)`"
+      )
+    }
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes
   func compile(
     encodedContentRuleList: String,
     for type: BlocklistType,
+    version: String,
     modes: [BlockingMode]
   ) async throws {
     guard !modes.isEmpty else { return }
     var foundError: Error?
+    let ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
+
+    guard !ruleList.isEmpty else {
+      for mode in modes {
+        self.cachedRuleLists[type.makeIdentifier(for: mode)] = .empty
+      }
+
+      ContentBlockerManager.log.debug(
+        "Empty filter set for `\(type.debugDescription)` v\(version)"
+      )
+      return
+    }
 
     for mode in modes {
       let identifier = type.makeIdentifier(for: mode)
 
       do {
-        let moddedRuleList = try self.modify(
-          encodedContentRuleList: encodedContentRuleList,
+        let moddedRuleList = try await self.modify(
+          ruleList: ruleList,
           for: mode
         )
         let ruleList = try await compile(
           encodedContentRuleList: moddedRuleList ?? encodedContentRuleList,
           for: type,
+          version: version,
           mode: mode
         )
+
         self.cachedRuleLists[identifier] = .success(ruleList)
-        Self.log.debug("Compiled rule list for `\(identifier)`")
+        Self.log.debug("Compiled rule list for `\(identifier)` v\(version)")
       } catch {
         self.cachedRuleLists[identifier] = .failure(error)
         Self.log.debug(
-          "Failed to compile rule list for `\(identifier)`: \(String(describing: error))"
+          "Failed to compile rule list for `\(identifier)` v\(version): \(String(describing: error))"
         )
         foundError = error
       }
+
+      self.versions.value[identifier] = version
     }
 
     if let error = foundError {
@@ -245,44 +301,54 @@ actor ContentBlockerManager {
     }
   }
 
-  private func modify(encodedContentRuleList: String, for mode: BlockingMode) throws -> String? {
-    switch mode {
-    case .aggressive, .general:
-      // Aggressive mode and general mode has no modification to the rules
-      return nil
+  private func modify(
+    ruleList: [[String: Any?]],
+    for mode: BlockingMode
+  ) async throws -> String? {
+    return try await Task.detached {
+      switch mode {
+      case .aggressive, .general:
+        // Aggressive mode and general mode has no modification to the rules
+        let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+        return String(bytes: modifiedData, encoding: .utf8)
 
-    case .standard:
-      // Add the ignore first party rule to make it standard
-      var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
+      case .standard:
+        var ruleList = ruleList
+        let maxContentBlockerSize = await Self.maxContentBlockerSize
+        // We need to make sure we are not going over the limit
+        // So we make space for the added rule
+        if ruleList.count >= (maxContentBlockerSize) {
+          ruleList = Array(ruleList[..<(maxContentBlockerSize - 1)])
+        }
 
-      // We need to make sure we are not going over the limit
-      // So we make space for the added rule
-      if ruleList.count >= (Self.maxContentBlockerSize) {
-        ruleList = Array(ruleList[..<(Self.maxContentBlockerSize - 1)])
+        ruleList.append([
+          "action": ["type": "ignore-previous-rules"],
+          "trigger": [
+            "url-filter": ".*",
+            "load-type": ["first-party"],
+          ] as [String: Any?],
+        ])
+
+        let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
+        return String(bytes: modifiedData, encoding: .utf8)
       }
-
-      ruleList.append([
-        "action": ["type": "ignore-previous-rules"],
-        "trigger": [
-          "url-filter": ".*",
-          "load-type": ["first-party"],
-        ] as [String: Any?],
-      ])
-
-      let modifiedData = try JSONSerialization.data(withJSONObject: ruleList)
-      return String(bytes: modifiedData, encoding: .utf8)
-    }
+    }.value
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type
   private func compile(
     encodedContentRuleList: String,
     for type: BlocklistType,
+    version: String,
     mode: BlockingMode
   ) async throws -> WKContentRuleList {
     let identifier = type.makeIdentifier(for: mode)
     let signpostID = Self.signpost.makeSignpostID()
-    let state = Self.signpost.beginInterval("compileRuleList", id: signpostID, "\(identifier)")
+    let state = Self.signpost.beginInterval(
+      "compileRuleList",
+      id: signpostID,
+      "`\(identifier)` v\(version)"
+    )
 
     do {
       let ruleList = try await ruleStore.compileContentRuleList(
@@ -299,15 +365,22 @@ actor ContentBlockerManager {
   }
 
   /// Return all the modes that need to be compiled for the given type
-  func missingModes(for type: BlocklistType) async -> [BlockingMode] {
+  func missingModes(for type: BlocklistType, version: String) async -> [BlockingMode] {
     return await type.allowedModes.asyncFilter { mode in
+      let identifier = type.makeIdentifier(for: mode)
+
       // If the file wasn't modified, make sure we have something compiled.
       // We should, but this can be false during upgrades if the identifier changed for some reason.
       if await hasRuleList(for: type, mode: mode) {
-        ContentBlockerManager.log.debug(
-          "Rule list already compiled for `\(type.makeIdentifier(for: mode))`"
-        )
-        return false
+        if let existingVersion = versions.value[identifier], existingVersion < version {
+          return true
+        } else {
+          ContentBlockerManager.log.debug(
+            "Rule list already compiled for `\(type.makeIdentifier(for: mode))` v\(version)"
+          )
+
+          return false
+        }
       } else {
         return true
       }
@@ -374,12 +447,7 @@ actor ContentBlockerManager {
     modes: [BlockingMode]
   ) async throws {
     guard !modes.isEmpty else { return }
-    guard
-      let fileURL = Bundle.module.url(
-        forResource: genericType.bundledFileName,
-        withExtension: "json"
-      )
-    else {
+    guard let fileURL = genericType.fileURL else {
       assertionFailure("A bundled file shouldn't fail to load")
       return
     }
@@ -389,12 +457,13 @@ actor ContentBlockerManager {
     try await compile(
       encodedContentRuleList: encodedContentRuleList,
       for: type,
+      version: genericType.version,
       modes: modes
     )
   }
 
   /// Return the valid generic types for the given domain
-  @MainActor public func validGenericTypes(for domain: Domain) -> Set<GenericBlocklistType> {
+  public func validGenericTypes(for domain: Domain) -> Set<GenericBlocklistType> {
     guard !domain.areAllShieldsOff else { return [] }
     var results = Set<GenericBlocklistType>()
 
@@ -415,7 +484,7 @@ actor ContentBlockerManager {
   }
 
   /// Return the enabled blocklist types for the given domain
-  @MainActor private func validBlocklistTypes(for domain: Domain) -> Set<(BlocklistType)> {
+  private func validBlocklistTypes(for domain: Domain) -> Set<(BlocklistType)> {
     guard !domain.areAllShieldsOff else { return [] }
 
     // Get the generic types
@@ -435,7 +504,7 @@ actor ContentBlockerManager {
       guard filterList.isEnabled else { return nil }
       return .filterList(
         componentId: filterList.entry.componentId,
-        isAlwaysAggressive: filterList.isAlwaysAggressive
+        isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
       )
     }
 
@@ -452,8 +521,8 @@ actor ContentBlockerManager {
   /// Return the enabled rule types for this domain and the enabled settings.
   /// It will attempt to return cached results if they exist otherwise it will attempt to load results from the rule store
   public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
-    let validBlocklistTypes = await self.validBlocklistTypes(for: domain)
-    let level = await domain.blockAdsAndTrackingLevel
+    let validBlocklistTypes = self.validBlocklistTypes(for: domain)
+    let level = domain.blockAdsAndTrackingLevel
 
     return await Set(
       validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
@@ -475,6 +544,7 @@ actor ContentBlockerManager {
   private func removeRuleList(forIdentifier identifier: String, force: Bool) async throws {
     guard force || self.cachedRuleLists[identifier] != nil else { return }
     self.cachedRuleLists.removeValue(forKey: identifier)
+    self.versions.value.removeValue(forKey: identifier)
     try await ruleStore.removeContentRuleList(forIdentifier: identifier)
     Self.log.debug("Removed rule list for `\(identifier)`")
   }
@@ -511,5 +581,39 @@ extension ShieldLevel {
     } else {
       return [.standard, .general]
     }
+  }
+}
+
+extension ContentBlockerManager {
+  fileprivate static var versionDateFormatter: ISO8601DateFormatter {
+    return ISO8601DateFormatter()
+  }
+}
+
+extension ContentBlockerManager.GenericBlocklistType {
+  var fileURL: URL? {
+    return Bundle.module.url(
+      forResource: bundledFileName,
+      withExtension: "json"
+    )
+  }
+
+  @MainActor private var fileDate: Date? {
+    guard let fileURL = fileURL else { return nil }
+    let attributes = try? FileManager.default.attributesOfItem(atPath: fileURL.path)
+    return (attributes?[.modificationDate] as? Date) ?? (attributes?[.creationDate] as? Date)
+  }
+
+  /// Return a version string which is gathered from the date
+  @MainActor var version: String {
+    guard let fileDate = fileDate else { return "0" }
+    return ContentBlockerManager.versionDateFormatter.string(from: fileDate)
+  }
+}
+
+extension ResourceDownloader.DownloadResult {
+  /// Return a version string which is gathered from the date
+  @MainActor var version: String {
+    return ContentBlockerManager.versionDateFormatter.string(from: date)
   }
 }

@@ -79,9 +79,10 @@ enum AdBlockMode {
 };
 
 enum FingerprintMode {
-  STRICT,
-  STANDARD,
-  ALLOW
+  // STRICT clashes with Windows SDK
+  STRICT_MODE,
+  STANDARD_MODE,
+  ALLOW_MODE
 };
 
 enum CookieBlockMode {
@@ -91,7 +92,8 @@ enum CookieBlockMode {
 };
 
 enum HttpsUpgradeMode {
-  STRICT,
-  STANDARD,
-  DISABLED
+  // STRICT clashes with Windows SDK
+  STRICT_MODE,
+  STANDARD_MODE,
+  DISABLED_MODE
 };

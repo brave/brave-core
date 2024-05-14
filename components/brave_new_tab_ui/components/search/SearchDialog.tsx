@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components'
-import SearchBox from './SearchBox';
+import SearchBox, { Backdrop } from './SearchBox';
 import SearchResults from './SearchResults';
-import { color, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
 import { createPortal } from 'react-dom';
 
 interface Props {
@@ -14,7 +14,8 @@ interface Props {
   offsetY: number
 }
 
-const duration = '0.12s'
+const duration = '0.4s'
+const easing = 'cubic-bezier(0.7, -0.4, 0.4, 1.4)'
 
 const enterDialog = keyframes`
   from {
@@ -62,24 +63,25 @@ const Dialog = styled.dialog<{ offsetY: number }>`
 
   outline: none;
   border: none;
+  border-radius: ${radius.m};
   background: transparent;
   margin-top: var(--margin-top);
   padding: 2px;
 
-  animation: ${enterDialog} ${duration} ease-in-out;
+  animation: ${enterDialog} ${duration} ${easing};
 
   &::backdrop {
     opacity: 1;
     background: ${color.dialogs.scrimBackground};
     backdrop-filter: blur(4px);
-    animation: ${enterBackdrop} ${duration} ease-in-out;
+    animation: ${enterBackdrop} ${duration} ${easing};
   }
 
   &.closing {
-    animation: ${exitDialog} ${duration} ease-in-out;
+    animation: ${exitDialog} ${duration} ${easing};
 
     &::backdrop {
-      animation: ${exitBackdrop} ${duration} ease-in-out;
+      animation: ${exitBackdrop} ${duration} ${easing};
     }
   }
 `
@@ -136,6 +138,7 @@ export default function Component(props: Props) {
       doClose()
     }
   }}>
+    <Backdrop />
     <SearchBox />
     <SearchResults />
   </Dialog>, document.body)

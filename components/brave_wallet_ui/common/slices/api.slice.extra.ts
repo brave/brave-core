@@ -188,28 +188,6 @@ export const useGetCombinedTokensListQuery = (
   return combinedQuery
 }
 
-export const useTransactionQuery = (
-  txID: string | typeof skipToken,
-  opts?: { skip?: boolean }
-) => {
-  return useGetTransactionsQuery(
-    txID === skipToken
-      ? skipToken
-      : {
-          accountId: null,
-          chainId: null,
-          coinType: null
-        },
-    {
-      skip: txID === skipToken || opts?.skip,
-      selectFromResult: (res) => ({
-        isLoading: res.isLoading,
-        transaction: res.data?.find((tx) => tx.id === txID)
-      })
-    }
-  )
-}
-
 export const useTransactionsNetworkQuery = <
   T extends
     | Pick<

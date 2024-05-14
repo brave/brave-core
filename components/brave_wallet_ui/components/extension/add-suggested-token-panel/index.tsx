@@ -138,10 +138,7 @@ export function AddSuggestedTokenPanel() {
         {isFetching ? (
           <LoadingRing size={'40px'} />
         ) : (
-          <AssetIconWithPlaceholder
-            asset={token}
-            network={tokenNetwork}
-          />
+          <AssetIconWithPlaceholder asset={token} />
         )}
         {!isFetching && token ? (
           <TokenName>

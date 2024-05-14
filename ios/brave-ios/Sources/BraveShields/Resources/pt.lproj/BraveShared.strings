@@ -1,0 +1,75 @@
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "O **Brave Player** é o seu passaporte para ver vídeos sem anúncios nem interrupções.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Ajustar proteções";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Este site está a bloquear alguns bloqueadores de anúncios e poderá não funcionar como esperado.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Para resolver o problema, o Brave pode ajustar as definições das proteções. Depois, pode tentar ver este conteúdo no Brave Player.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Manter definições atuais";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Ajustar definições de bloqueio de anúncios deste site";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agressivo";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Impede o carregamento de anúncios, pop-ups e rastreadores.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Desativado";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Padrão";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir sempre vídeos deste site com o Brave Player";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Experimentar";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Não agora";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "O Brave Player permite ver vídeos sem interrupções.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Ver antes no Brave Player";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Voltar";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Uma vez que solicitou o bloqueio agressivo de rastreadores e anúncios, o Brave irá bloquear este site antes de ser estabelecida a primeira ligação de rede.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "O Brave impediu o carregamento do seguinte site:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Este site poderá tentar monitorizar a sua navegação noutros sites";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Prosseguir";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domínio bloqueado";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Ativar a API do Controlo de privacidade global em JS";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Ativar o Controlo de privacidade global";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Rastreadores e bloqueio de anúncios";
+

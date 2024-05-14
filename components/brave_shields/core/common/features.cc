@@ -52,6 +52,12 @@ BASE_FEATURE(kBraveAdblockCspRules,
 BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
              "BraveAdblockMobileNotificationsListDefault",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, Brave will enable "Brave Experimental Adblock Rules" list by
+// default unless overridden by a locally set preference.
+// NOTE: this should only be turned on by default in Nightly and Beta.
+BASE_FEATURE(kBraveAdblockExperimentalListDefault,
+             "BraveAdblockExperimentalListDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will block domains listed in the user's selected adblock
 // filters and present a security interstitial with choice to proceed and
 // optionally whitelist the domain.

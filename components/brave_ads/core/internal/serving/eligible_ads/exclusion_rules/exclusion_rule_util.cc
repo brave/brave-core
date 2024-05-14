@@ -33,15 +33,25 @@ bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
 
   const size_t count = count_if_until(
       ad_events,
-      [&creative_ad, &confirmation_type, now,
+      [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 
   return count < cap;
+}
+
+bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType confirmation_type,
+                            const size_t cap) {
+  return DoesRespectCampaignCap(creative_ad, ad_events, confirmation_type,
+                                base::TimeDelta::FiniteMax(), cap);
 }
 
 bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
@@ -57,15 +67,25 @@ bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
 
   const size_t count = count_if_until(
       ad_events,
-      [&creative_ad, &confirmation_type, now,
+      [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_set_id == creative_ad.creative_set_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 
   return count < cap;
+}
+
+bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
+                               const AdEventList& ad_events,
+                               const ConfirmationType confirmation_type,
+                               const size_t cap) {
+  return DoesRespectCreativeSetCap(creative_ad, ad_events, confirmation_type,
+                                   base::TimeDelta::FiniteMax(), cap);
 }
 
 bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
@@ -81,16 +101,26 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
 
   const size_t count = count_if_until(
       ad_events,
-      [&creative_ad, &confirmation_type, now,
+      [&creative_ad, confirmation_type, now,
        time_constraint](const AdEventInfo& ad_event) {
+        CHECK(ad_event.created_at);
+
         return ad_event.confirmation_type == confirmation_type &&
                ad_event.creative_instance_id ==
                    creative_ad.creative_instance_id &&
-               now - ad_event.created_at < time_constraint;
+               now - *ad_event.created_at < time_constraint;
       },
       cap);
 
   return count < cap;
+}
+
+bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
+                            const AdEventList& ad_events,
+                            const ConfirmationType confirmation_type,
+                            const size_t cap) {
+  return DoesRespectCreativeCap(creative_ad, ad_events, confirmation_type,
+                                base::TimeDelta::FiniteMax(), cap);
 }
 
 }  // namespace brave_ads

@@ -57,7 +57,7 @@ class RecentSearchQRCodeScannerController: UIViewController {
       guard let self = self, !string.isEmpty, !self.didScan else { return }
       // Feedback indicating code scan is finalized
       AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-      UIImpactFeedbackGenerator(style: .medium).bzzt()
+      UIImpactFeedbackGenerator(style: .medium).vibrate()
 
       self.didScan = true
       self.onDidScan(string)

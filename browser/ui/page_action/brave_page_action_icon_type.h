@@ -17,6 +17,8 @@ namespace brave {
 DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kUndefinedPageActionIconType, -1);
 DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kPlaylistPageActionIconType, -2);
 DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kBravePlayerPageActionIconType, -3);
+DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kWaybackMachineActionIconType, -4);
+DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE(kSpeedreaderPageActionIconType, -5);
 
 #undef DECLARE_BRAVE_PAGE_ACTION_ICON_TYPE
 

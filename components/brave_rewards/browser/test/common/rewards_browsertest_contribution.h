@@ -73,8 +73,7 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
 
   std::vector<mojom::Result> GetMultipleACStatus();
 
-  void StartProcessWithConnectedWallet(RewardsServiceImpl* rewards_service,
-                                       double balance);
+  void StartProcessWithBalance(double balance);
 
   std::vector<mojom::Result> GetMultipleTipStatus();
 

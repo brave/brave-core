@@ -28,6 +28,8 @@ static_library("misc_metrics") {
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//components/autofill/core/browser",
+    "//components/bookmarks/browser",
+    "//components/browsing_data/core",
     "//components/content_settings/core/browser",
     "//components/history/core/browser",
     "//components/keyed_service/core",

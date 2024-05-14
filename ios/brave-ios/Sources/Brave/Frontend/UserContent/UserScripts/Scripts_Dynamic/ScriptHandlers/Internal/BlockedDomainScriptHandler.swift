@@ -75,6 +75,7 @@ class BlockedDomainScriptHandler: TabContentScript {
       // All testing indicates no, so we will not handle.
       // If we find it is, then we need to disable or hide the "Go Back" button in these cases.
       // But this would require heavy changes or ugly mechanisms to InternalSchemeHandler.
+      tab?.goBack()
       return
     }
 

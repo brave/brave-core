@@ -49,16 +49,18 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Act & Assert
-  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
-                                mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event=*/true);
+  TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceId,
+      mojom::PromotedContentAdEventType::kViewedImpression,
+      /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
-                                mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event=*/true);
+  TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceId,
+      mojom::PromotedContentAdEventType::kViewedImpression,
+      /*should_fire_event=*/true);
 
   // Act & Assert
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
@@ -69,9 +71,10 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BraveAdsPromotedContentAdIntegrationTest,
        DoNotTriggerEventForInvalidCreativeInstanceId) {
   // Act & Assert
-  TriggerPromotedContentAdEvent(kPlacementId, kInvalidCreativeInstanceId,
-                                mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event=*/false);
+  TriggerPromotedContentAdEvent(
+      kPlacementId, kInvalidCreativeInstanceId,
+      mojom::PromotedContentAdEventType::kViewedImpression,
+      /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest,
@@ -80,9 +83,10 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest,
   test::OptOutOfBraveNewsAds();
 
   // Act & Assert
-  TriggerPromotedContentAdEvent(kPlacementId, kInvalidCreativeInstanceId,
-                                mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event=*/false);
+  TriggerPromotedContentAdEvent(
+      kPlacementId, kInvalidCreativeInstanceId,
+      mojom::PromotedContentAdEventType::kViewedImpression,
+      /*should_fire_event=*/false);
 }
 
 }  // namespace brave_ads

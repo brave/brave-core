@@ -15,7 +15,7 @@ import successIconDark from './assets/success_icon_dark.svg'
 
 import { enableRewardsButton } from './css_mixins'
 
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const root = styled.div`
   flex: 0 0 auto;

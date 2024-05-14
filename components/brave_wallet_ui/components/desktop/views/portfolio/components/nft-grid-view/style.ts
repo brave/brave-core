@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
@@ -114,7 +114,7 @@ export const MoreButton = styled(WalletButton)`
 `
 
 export const MoreIcon = styled(Icon).attrs({
-  name: 'more-horizontal'
+  name: 'more-vertical'
 })`
   --leo-icon-size: 22px;
   color: ${leo.color.text.secondary};

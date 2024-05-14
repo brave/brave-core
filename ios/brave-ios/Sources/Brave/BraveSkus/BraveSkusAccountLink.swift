@@ -42,11 +42,26 @@ class BraveSkusAccountLink {
     }
   }
 
+  @MainActor
+  static func injectLocalStorage(webView: WKWebView) async {
+    if let vpnSubscriptionProductId = Preferences.VPN.subscriptionProductId.value,
+      let product = BraveStoreProduct(rawValue: vpnSubscriptionProductId)
+    {
+      await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: product)
+    }
+
+    if let aiChatSubscriptionProductId = Preferences.AIChat.subscriptionProductId.value,
+      let product = BraveStoreProduct(rawValue: aiChatSubscriptionProductId)
+    {
+      await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: product)
+    }
+  }
+
   /// Injects Skus product order receipt information into WebKit's LocalStorage for use by the `Environment.host` page
   /// - Parameter webView: The web-view whose LocalStorage to inject the product order information
   /// - Parameter product: The product whose receipt information to inject
   @MainActor
-  @discardableResult static func injectLocalStorage(
+  @discardableResult private static func injectLocalStorage(
     webView: WKWebView,
     product: BraveStoreProduct
   ) async -> Bool {

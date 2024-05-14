@@ -51,6 +51,12 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   AdBlockComponentFiltersProvider& operator=(
       const AdBlockComponentFiltersProvider&) = delete;
 
+  const std::string& component_id() const { return component_id_; }
+
+  // Return a file path to the filter set if its available
+  // Otherwise an empty path is returned
+  base::FilePath GetFilterSetPath();
+
   void LoadFilterSet(
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;

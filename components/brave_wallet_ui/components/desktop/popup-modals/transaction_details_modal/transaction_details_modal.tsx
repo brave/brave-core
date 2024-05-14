@@ -11,10 +11,21 @@ import Icon from '@brave/leo/react/icon'
 // Slices
 import {
   useCancelTransactionMutation,
+  useGetAccountInfosRegistryQuery,
+  useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
   useRetryTransactionMutation,
   useSpeedupTransactionMutation
 } from '../../../../common/slices/api.slice'
+import {
+  useGetCombinedTokensListQuery,
+  useAccountQuery
+} from '../../../../common/slices/api.slice.extra'
+import {
+  accountInfoEntityAdaptorInitialState //
+} from '../../../../common/slices/entities/account-info.entity'
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
@@ -22,8 +33,7 @@ import { useExplorer } from '../../../../common/hooks/explorer'
 // Types
 import {
   BraveWallet,
-  SerializableTransactionInfo,
-  SpotPriceRegistry
+  SerializableTransactionInfo
 } from '../../../../constants/types'
 
 // Utils
@@ -35,13 +45,24 @@ import {
   isSwapTransaction,
   isEthereumTransaction,
   isSolanaTransaction,
-  isFilecoinTransaction
+  getTransactionToAddress,
+  getTransactionApprovalTargetAddress,
+  getTransactionTransferredValue,
+  getTransactionFormattedSendCurrencyTotal,
+  findTransactionToken,
+  getETHSwapTransactionBuyAndSellTokens
 } from '../../../../utils/tx-utils'
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
+import {
+  getAddressLabel,
+  getAccountLabel
+} from '../../../../utils/account-utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -139,63 +160,81 @@ const errorTxTypes = [
 interface Props {
   onClose: () => void
   transaction: BraveWallet.TransactionInfo | SerializableTransactionInfo
-  networkAsset?: BraveWallet.BlockchainToken
-  sendToken?: BraveWallet.BlockchainToken
-  buyToken?: BraveWallet.BlockchainToken
-  sellToken?: BraveWallet.BlockchainToken
-  txNetwork?: BraveWallet.NetworkInfo
-  txTypeLocale: string
-  formattedSendCurrencyTotal: string
-  formattedSendFiatValue: string
-  defaultFiatCurrency: string
-  senderLabel: string
-  recipient: string
-  recipientLabel: string
-  approvalTargetLabel: string
-  formattedSellAmount: string
-  formattedBuyAmount: string
-  formattedBuyFiatValue: string
-  spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
-export const TransactionDetailsModal = (props: Props) => {
-  const {
-    onClose,
-    transaction,
-    sendToken,
-    txNetwork,
-    txTypeLocale,
-    formattedSendCurrencyTotal,
-    formattedSendFiatValue,
-    defaultFiatCurrency,
-    networkAsset,
-    senderLabel,
-    approvalTargetLabel,
-    recipient,
-    recipientLabel,
-    buyToken,
-    sellToken,
-    formattedSellAmount,
-    formattedBuyAmount,
-    formattedBuyFiatValue,
-    spotPriceRegistry
-  } = props
-
+export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   // Constants
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isEthereumTx = isEthereumTransaction(transaction)
   const isSolanaTx = isSolanaTransaction(transaction)
-  const isFilecoinTx = isFilecoinTransaction(transaction)
   const isSwapTx = isSwapTransaction(transaction)
   const isSolanaSwap = isSwapTx && isSolanaTx
+  const recipient = getTransactionToAddress(transaction)
+  const approvalTarget = getTransactionApprovalTargetAddress(transaction)
 
   // Queries
+  const { data: defaultFiatCurrency = '' } =
+    useGetDefaultFiatCurrencyQuery(undefined)
+  const { data: txNetwork } = useGetNetworkQuery({
+    chainId: transaction.chainId,
+    coin: txCoinType
+  })
   const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
     isSolanaTx && transaction.chainId && transaction.id
       ? {
           chainId: transaction.chainId,
           txId: transaction.id
         }
+      : skipToken
+  )
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+
+  const { data: accountInfosRegistry = accountInfoEntityAdaptorInitialState } =
+    useGetAccountInfosRegistryQuery(undefined)
+
+  const { account } = useAccountQuery(transaction.fromAccountId)
+
+  // memos & computed from queries
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(txNetwork)
+  }, [txNetwork])
+
+  const txToken = findTransactionToken(transaction, combinedTokensList)
+
+  const { buyToken, sellToken, buyAmount, sellAmount, buyAmountWei } =
+    React.useMemo(() => {
+      return transaction.txType === BraveWallet.TransactionType.ETHSwap
+        ? getETHSwapTransactionBuyAndSellTokens({
+            nativeAsset: networkAsset,
+            tokensList: combinedTokensList,
+            tx: transaction
+          })
+        : {
+            buyToken: undefined,
+            sellToken: txToken,
+            buyAmount: new Amount(''),
+            sellAmount: new Amount(''),
+            buyAmountWei: new Amount('')
+          }
+    }, [transaction, networkAsset, combinedTokensList, txToken])
+
+  const networkAssetPriceId = networkAsset
+    ? getPriceIdForToken(networkAsset)
+    : ''
+  const txTokenPriceId = txToken ? getPriceIdForToken(txToken) : ''
+  const sellTokenPriceId = sellToken ? getPriceIdForToken(sellToken) : ''
+  const buyTokenPriceId = buyToken ? getPriceIdForToken(buyToken) : ''
+  const priceIds = [
+    networkAssetPriceId,
+    txTokenPriceId,
+    sellTokenPriceId,
+    buyTokenPriceId
+  ].filter(Boolean)
+
+  // price queries
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    priceIds.length && defaultFiatCurrency
+      ? { ids: priceIds, toCurrency: defaultFiatCurrency }
       : skipToken
   )
 
@@ -230,7 +269,70 @@ export const TransactionDetailsModal = (props: Props) => {
     })
   }
 
+  // memos
+  const [normalizedTransferredValue, transferredValueWei] =
+    React.useMemo(() => {
+      const { normalized, wei } = getTransactionTransferredValue({
+        tx: transaction,
+        sellToken,
+        token: txToken,
+        txAccount: account,
+        txNetwork
+      })
+      return [normalized.format(6), wei]
+    }, [transaction, sellToken, txToken, account, txNetwork])
+
+  const formattedSendCurrencyTotal = getTransactionFormattedSendCurrencyTotal({
+    normalizedTransferredValue,
+    tx: transaction,
+    sellToken,
+    token: txToken,
+    txNetwork
+  })
+
   // Computed
+  const sendToken =
+    transaction.txType === BraveWallet.TransactionType.ETHSend ||
+    transaction.fromAccountId.coin === BraveWallet.CoinType.FIL ||
+    transaction.fromAccountId.coin === BraveWallet.CoinType.BTC ||
+    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+      ? networkAsset
+      : txToken
+
+  const formattedBuyFiatValue = buyToken
+    ? computeFiatAmount({
+        spotPriceRegistry,
+        value: buyAmountWei.format(),
+        token: buyToken
+      }).formatAsFiat(defaultFiatCurrency)
+    : ''
+
+  const computedSendFiatAmount = sendToken
+    ? computeFiatAmount({
+        spotPriceRegistry,
+        value: transferredValueWei.format(),
+        token: sendToken
+      }).formatAsFiat(defaultFiatCurrency)
+    : ''
+
+  const isTxApprovalUnlimited = getIsTxApprovalUnlimited(transaction)
+
+  const formattedSendFiatValue =
+    transaction.txType === BraveWallet.TransactionType.ERC20Approve
+      ? isTxApprovalUnlimited
+        ? getLocale('braveWalletTransactionApproveUnlimited')
+        : computedSendFiatAmount
+      : computedSendFiatAmount
+
+  const txTypeLocale =
+    transaction.txType === BraveWallet.TransactionType.ERC20Approve
+      ? 'braveWalletApprovalTransactionIntent'
+      : isSwapTx
+      ? 'braveWalletSwap'
+      : 'braveWalletTransactionSent'
+
+  const formattedSellAmount = sellAmount?.formatAsAsset(6, sellToken?.symbol)
+  const formattedBuyAmount = buyAmount?.formatAsAsset(6, buyToken?.symbol)
   const gasFee =
     txCoinType === BraveWallet.CoinType.SOL
       ? solFeeEstimates ?? ''
@@ -245,15 +347,10 @@ export const TransactionDetailsModal = (props: Props) => {
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
-  const { txStatus, fromAddress } = transaction
+  const { txStatus, fromAddress, isRetriable } = transaction
 
   const showCancelSpeedupButtons =
     isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
-
-  const showRetryTransactionButton =
-    BraveWallet.TransactionStatus.Error === transaction.txStatus &&
-    !isSolanaTx &&
-    !isFilecoinTx
 
   const txCurrencyTotal =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
@@ -277,6 +374,19 @@ export const TransactionDetailsModal = (props: Props) => {
 
   const showErrorTxStatus = errorTxTypes.includes(txStatus)
 
+  const recipientLabel = getAddressLabel(recipient, accountInfosRegistry)
+
+  const senderLabel = getAccountLabel(
+    transaction.fromAccountId,
+    accountInfosRegistry
+  )
+
+  const approvalTargetLabel = getAddressLabel(
+    approvalTarget,
+    accountInfosRegistry
+  )
+
+  // render
   return (
     <PopupModal
       onClose={onClose}
@@ -302,7 +412,6 @@ export const TransactionDetailsModal = (props: Props) => {
                     <NFTIconWrapper width='unset'>
                       <NftIconWithPlaceholder
                         asset={sendToken}
-                        network={txNetwork}
                         iconStyles={NftIconStyles}
                       />
                     </NFTIconWrapper>
@@ -311,10 +420,7 @@ export const TransactionDetailsModal = (props: Props) => {
                       width='unset'
                       padding='0px 24px'
                     >
-                      <AssetIconWithPlaceholder
-                        asset={sendToken}
-                        network={txNetwork}
-                      />
+                      <AssetIconWithPlaceholder asset={sendToken} />
                     </Row>
                   )}
                 </>
@@ -353,10 +459,7 @@ export const TransactionDetailsModal = (props: Props) => {
                           width='unset'
                           margin='0px 0px 10px 0px'
                         >
-                          <SwapIconWithPlaceholder
-                            asset={sellToken}
-                            network={txNetwork}
-                          />
+                          <SwapIconWithPlaceholder asset={sellToken} />
                           <SwapAmountText
                             textSize='14px'
                             isBold={true}
@@ -370,10 +473,7 @@ export const TransactionDetailsModal = (props: Props) => {
                           width='unset'
                           justifyContent='flex-start'
                         >
-                          <SwapIconWithPlaceholder
-                            asset={buyToken}
-                            network={txNetwork}
-                          />
+                          <SwapIconWithPlaceholder asset={buyToken} />
                           <RowWrapped
                             width='unset'
                             justifyContent='flex-start'
@@ -631,7 +731,7 @@ export const TransactionDetailsModal = (props: Props) => {
           </Row>
         )}
 
-        {showRetryTransactionButton && (
+        {isRetriable && (
           <Row padding='32px 0px 0px 0px'>
             <Button
               onClick={onClickRetryTransaction}

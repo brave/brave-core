@@ -7,7 +7,7 @@ import { LineBreak, LoadingSkeletonStyleProps, Skeleton } from './styles'
 
 export interface LoadingSkeletonProps extends LoadingSkeletonStyleProps {
   count?: number
-  wrapper?: React.FunctionComponent
+  wrapper?: React.FunctionComponent<React.PropsWithChildren>
 }
 
 export const LoadingSkeleton = (props: LoadingSkeletonProps) => {

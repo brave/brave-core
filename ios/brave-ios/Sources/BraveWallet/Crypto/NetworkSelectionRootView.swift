@@ -77,7 +77,7 @@ struct NetworkSelectionRootView: View {
           .buttonStyle(FadeButtonStyle())
         }
 
-        if Preferences.Wallet.showTestNetworks.value && !allNetworks.testNetworks.isEmpty {
+        if !allNetworks.testNetworks.isEmpty {
           DividerLine()
             .padding(.top, 12)
 

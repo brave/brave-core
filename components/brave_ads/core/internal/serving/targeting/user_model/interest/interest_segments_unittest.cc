@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -42,10 +41,6 @@ class BraveAdsInterestSegmentsTest : public UnitTestBase {
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeatureStates(
-      {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
-
   targeting_->MockInterest();
   task_environment_.RunUntilIdle();
 
@@ -57,10 +52,6 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
   // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeatureStates(
-      {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
-
   // Act
   const SegmentList segments = BuildInterestSegments();
 
@@ -72,8 +63,7 @@ TEST_F(BraveAdsInterestSegmentsTest,
        DoNotBuildInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeatureStates(
-      {{kTextClassificationFeature, false}, {kTextEmbeddingFeature, false}});
+  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   targeting_->MockInterest();
   task_environment_.RunUntilIdle();

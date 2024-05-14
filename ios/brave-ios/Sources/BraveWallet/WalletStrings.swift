@@ -300,6 +300,14 @@ extension Strings {
       comment:
         "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
     )
+    public static let defaultBitcoinAccountName = NSLocalizedString(
+      "wallet.defaultBitcoinAccountName",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin Account %lld",
+      comment:
+        "The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\")"
+    )
     public static let defaultSecondaryEthAccountName = NSLocalizedString(
       "wallet.defaultSecondaryEthAccountName",
       tableName: "BraveWallet",
@@ -470,6 +478,13 @@ extension Strings {
       bundle: .module,
       value: "Filecoin",
       comment: "A description of an Filecoin account, displayed in Accounts tab."
+    )
+    public static let btcAccountDescription = NSLocalizedString(
+      "wallet.btcAccountDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin",
+      comment: "A description of an Bitcoin account, displayed in Accounts tab."
     )
     public static let exportButtonTitle = NSLocalizedString(
       "wallet.exportButtonTitle",
@@ -908,7 +923,7 @@ extension Strings {
       value: "Word #%d",
       comment: "The placeholder on the mneomic/recovery phrase text field of each grid."
     )
-    public static let restoreWalletImportFromLegacyBraveWallet = NSLocalizedString(
+    public static let restoreWalletImportFromTwentyFourPhrases = NSLocalizedString(
       "wallet.restoreWalletImportFromLegacyBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
@@ -916,7 +931,7 @@ extension Strings {
       comment:
         "A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet."
     )
-    public static let restoreWalletImportFromRegularBraveWallet = NSLocalizedString(
+    public static let restoreWalletImportWithTwelvePhrases = NSLocalizedString(
       "wallet.restoreWalletImportFromRegularBraveWallet",
       tableName: "BraveWallet",
       bundle: .module,
@@ -938,6 +953,13 @@ extension Strings {
       bundle: .module,
       value: "New Password",
       comment: "A title displayed above 2 text fields for entering a new wallet password"
+    )
+    public static let restoreLegacyBraveWalletToggleLabel = NSLocalizedString(
+      "wallet.restoreLegacyBraveWalletToggleTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Import from legacy Brave crypto wallets?",
+      comment: "A label for toggle for user to use to indicate importing a legacy brave wallet or not"
     )
     public static let createWalletBackButtonTitle = NSLocalizedString(
       "wallet.createWalletBackButtonTitle",
@@ -2522,13 +2544,6 @@ extension Strings {
       comment:
         "The message of an alert when the user attempted to remove custom network and it fails for some reason"
     )
-    public static let customNetworksTitle = NSLocalizedString(
-      "wallet.customNetworksTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Custom Networks",
-      comment: "The title of custom network list screen"
-    )
     public static let addCustomNetworkBarItemTitle = NSLocalizedString(
       "wallet.addCustomNetworkBarItemTitle",
       tableName: "BraveWallet",
@@ -2543,13 +2558,6 @@ extension Strings {
       value: "Add Network…",
       comment:
         "The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network."
-    )
-    public static let noNetworks = NSLocalizedString(
-      "wallet.noNetworks",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "No Networks Added",
-      comment: "The empty state displayed when the user has not yet added any custom networks."
     )
     public static let transactionBacklogTitle = NSLocalizedString(
       "wallet.transactionBacklogTitle",
@@ -2731,6 +2739,37 @@ extension Strings {
       comment:
         "The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc."
     )
+    public static let retryTransactionButtonTitle = NSLocalizedString(
+      "wallet.retryTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Retry Transaction",
+      comment:
+        "The title for the button to retry a failed transaction."
+    )
+    public static let cancelTransactionButtonTitle = NSLocalizedString(
+      "wallet.cancelTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancel Transaction",
+      comment:
+        "The title for the button to cancel a submitted transaction."
+    )
+    public static let speedUpTransactionButtonTitle = NSLocalizedString(
+      "wallet.speedUpTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Speed Up",
+      comment:
+        "The title for the button to speed up a submitted transaction."
+    )
+    public static let errorAlertTitle = NSLocalizedString(
+      "wallet.errorAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Error",
+      comment: "A title displayed in an alert above the error message or description."
+    )
     public static let sent = NSLocalizedString(
       "wallet.sent",
       tableName: "BraveWallet",
@@ -2869,14 +2908,6 @@ extension Strings {
       value: "Default Base Currency",
       comment:
         "The title that appears before the current default base currency code. Example: \"Default base currency: USD\""
-    )
-    public static let showTestNetworksTitle = NSLocalizedString(
-      "wallet.showTestNetworksTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Show Test Networks",
-      comment:
-        "A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings"
     )
     public static let addSuggestedTokenTitle = NSLocalizedString(
       "wallet.addSuggestedTokenTitle",
@@ -3389,6 +3420,13 @@ extension Strings {
       value: "Filecoin",
       comment: "One of the coin types for users to create an account to store FIL assets"
     )
+    public static let coinTypeBitcoin = NSLocalizedString(
+      "wallet.coinTypeBitcoin",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Bitcoin",
+      comment: "One of the coin types for users to create an account to store BTC assets"
+    )
     public static let coinTypeEthereumDescription = NSLocalizedString(
       "wallet.coinTypeEthereumDescription",
       tableName: "BraveWallet",
@@ -3410,6 +3448,13 @@ extension Strings {
       bundle: .module,
       value: "Store FIL asset",
       comment: "A description for Filecoin coin type."
+    )
+    public static let coinTypeBitcoinDescription = NSLocalizedString(
+      "wallet.coinTypeBitcoinDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Store BTC asset",
+      comment: "A description for Bitcoin coin type."
     )
     public static let coinTypeUnknown = NSLocalizedString(
       "wallet.coinTypeUnknown",
@@ -3778,7 +3823,7 @@ extension Strings {
       "wallet.solanaWithdrawNonceAccountInstructionName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Withdraw Nonce Account",
+      value: "Withdraw From Nonce Account",
       comment:
         "The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details."
     )
@@ -5448,6 +5493,63 @@ extension Strings {
       value: "This is Ethereum wallet which support Ethereum Network and level 2 network such as %@",
       comment:
         "The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names."
+    )
+    public static let btcPendingBalancesBannerDesc = NSLocalizedString(
+      "wallet.btcPendingBalancesBannerDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Some balances may be unavailable",
+      comment: "Banner description displayed below BTC rows displaying balance when there is a pending BTC balance."
+    )
+    public static let btcAvailableBalanceTitle = NSLocalizedString(
+      "wallet.btcAvailableBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Available",
+      comment: "Title displayed in row beside users available BTC balance."
+    )
+    public static let btcAvailableBalanceDesc = NSLocalizedString(
+      "wallet.btcAvailableBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Funds available for you to use.",
+      comment: "Description displayed in row beside users available balance."
+    )
+    public static let btcPendingBalanceTitle = NSLocalizedString(
+      "wallet.btcPendingBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Pending",
+      comment: "Title displayed in row beside users pending BTC balance."
+    )
+    public static let btcPendingBalanceDesc = NSLocalizedString(
+      "wallet.btcPendingBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "A pending change in your wallet balance.",
+      comment: "Description displayed in row beside users pending balance."
+    )
+    public static let btcTotalBalanceTitle = NSLocalizedString(
+      "wallet.btcTotalBalanceTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Total",
+      comment: "Title displayed in row beside users total BTC balance."
+    )
+    public static let btcTotalBalanceDesc = NSLocalizedString(
+      "wallet.btcTotalBalanceDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Your available funds plus any not-yet-confirmed transactions.",
+      comment: "Description displayed in row beside users total balance."
+    )
+    public static let setDefaultNetwork = NSLocalizedString(
+      "wallet.setDefaultNetwork",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Set as Default",
+      comment:
+        "One of the context menu option for user to tap to set a default network in wallet settings."
     )
   }
 }

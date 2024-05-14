@@ -284,7 +284,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd,
+                    ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
@@ -315,7 +316,8 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 
   account_->DepositWithUserData(creative_ad.creative_instance_id,
                                 creative_ad.segment, AdType::kNotificationAd,
-                                ConfirmationType::kViewed, /*user_data=*/{});
+                                ConfirmationType::kViewedImpression,
+                                /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
@@ -363,7 +365,8 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
 
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd,
+                    ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAccountTest, GetStatement) {
@@ -373,41 +376,44 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
   AdvanceClockTo(TimeFromString("31 October 2020"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_7);
 

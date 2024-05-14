@@ -413,6 +413,15 @@ Additional details:
   <message name="IDS_POLICY_DATA_CONTROLS_MUTUALLY_EXCLUSIVE_KEY_SETS" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains incoherent values">
     Keys "<ph name="DATA_CONTROLS_FIRST_KEY_SET">$1<ex>"destinations", "sources"</ex></ph>" cannot be set in the same dictionary as the "<ph name="DATA_CONTROLS_SECOND_KEY_SET">$2<ex>"and", "or"</ex></ph>" keys
   </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_CONDITION" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported condition">
+    "<ph name="DATA_CONTROLS_ATTRIBUTE">$1<ex>destination</ex></ph>" is not a supported condition for "<ph name="DATA_CONTROLS_RESTRICTION">$2<ex>SCREENSHOT</ex></ph>"
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_RESTRICTION" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported restriction">
+    "<ph name="DATA_CONTROLS_RESTRICTION">$1<ex>SCREENSHARE</ex></ph>" is not a supported restriction on this platform
+  </message>
+  <message name="IDS_POLICY_DATA_CONTROLS_UNSUPPORTED_LEVEL" desc="The text displayed in the status column of the DataControlsRules policy when one of its rules contains an unsupported restriction level">
+    "<ph name="DATA_CONTROLS_RESTRICTION">$1<ex>SCREENSHOT</ex></ph>" cannot be set to "<ph name="DATA_CONTROLS_LEVEL">$2<ex>WARN</ex></ph>"
+  </message>
 
   <!-- chrome://policy -->
   <message name="IDS_POLICY_TITLE" desc="Page title and the title of the section that lists policies.">
@@ -750,6 +759,9 @@ Additional details:
     List entry "<ph name="LANGUAGE_ID">$1<ex>en-GB</ex></ph>": Entry ignored because it is also included in the SpellcheckLanguage policy.
     </message>
   </if>
+  <message name="IDS_POLICY_DEFAULT_GEO_POLICY_ARC_CONFLICT" desc="Warning message for the DefaultGeolocationSetting policy, when the BraveLocationServicesEnabled policy is set. The former will no longer affect the ARC, when the latter is set.">
+    Warning: This policy is conflicting with the <ph name="POLICY_NAME">$1<ex>BraveLocationServicesEnabled</ex></ph> and will have no effect on Android apps. Otherwise, this policy is working as intended.
+  </message>
   <message name="IDS_POLICY_LABEL_IS_AFFILIATED" desc="Label to indicate if the user is affiliated or not.">
     Is affiliated:
   </message>
@@ -785,6 +797,15 @@ Additional details:
   </message>
   <message name="IDS_POLICY_MORE_ACTIONS" desc="Label for the dropdown menu on the chrome://policy page that offers additional actions such as downloading policy data as a JSON file, uploading report or showing policy logs.">
     More actions
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT" desc="Part of the label for policy table sorting arrows.">
+    Sort
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT_ASCENDING" desc="Part of the label for policy table sorting arrows denoting ascending sort order.">
+    in ascending order
+  </message>
+  <message name="IDS_POLICY_TABLE_COLUMN_SORT_DESCENDING" desc="Part of the label for policy table sorting arrows denoting descending sort order.">
+    in descending order
   </message>
 
   <!-- Strings for chrome://policy/logs -->

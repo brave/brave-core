@@ -42,16 +42,16 @@ function FeedbackForm(props: FeedbackFormProps) {
     props.onSubmit?.(category, feedbackText, shouldSendUrl)
   }
 
-  const handleSelectOnChange = (e: any) => {
-    setCategory(e.detail.value)
+  const handleSelectOnChange = ({ value }: { value: string }) => {
+    setCategory(value)
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedbackText(e.target.value)
   }
 
-  const handleCheckboxChange = (e: CustomEvent<{ checked: boolean; }>) => {
-    setShouldSendUrl(e.detail.checked)
+  const handleCheckboxChange = ({ checked }: { checked: boolean; }) => {
+    setShouldSendUrl(checked)
   }
 
   React.useEffect(() => {

@@ -46,9 +46,10 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
   expected_ad_content.brand_display_url = ad.target_url.host();
   expected_ad_content.brand_url = ad.target_url;
   expected_ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-  expected_ad_content.confirmation_type = ConfirmationType::kViewed;
-  EXPECT_EQ(expected_ad_content, BuildAdContent(ad, ConfirmationType::kViewed,
-                                                kTitle, kDescription));
+  expected_ad_content.confirmation_type = ConfirmationType::kViewedImpression;
+  EXPECT_EQ(expected_ad_content,
+            BuildAdContent(ad, ConfirmationType::kViewedImpression, kTitle,
+                           kDescription));
 }
 
 }  // namespace brave_ads

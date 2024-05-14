@@ -5,7 +5,6 @@
 module bat_ads.mojom;
 
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
-import "brave/components/brave_federated/public/interfaces/brave_federated.mojom";
 import "mojo/public/mojom/base/big_string.mojom";
 import "mojo/public/mojom/base/file.mojom";
 import "mojo/public/mojom/base/time.mojom";
@@ -111,9 +110,6 @@ interface BatAdsClient {
       (brave_ads.mojom.DBCommandResponseInfo response);
 
   RecordP2AEvents(array<string> events);
-
-  AddFederatedLearningPredictorTrainingSample(
-      array<brave_federated.mojom.CovariateInfo> training_sample);
 
   [Sync]
   GetProfilePref(string path) => (mojo_base.mojom.Value? value);

@@ -8,7 +8,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "components/grit/brave_components_strings.h"
-#include "content/public/browser/url_data_source.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_vpn {

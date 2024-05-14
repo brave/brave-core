@@ -16,7 +16,9 @@ namespace brave_shields {
 
 inline constexpr char kUsagePrefName[] = "brave_shields.p3a_usage";
 inline constexpr char kFirstReportedPrefName[] =
-    "brave_shields.p3a_first_reported_v2";
+    "brave_shields.p3a_first_reported_v2";  // DEPRECATED
+inline constexpr char kFirstReportedRevisionPrefName[] =
+    "brave_shields.p3a_first_reported_revision";
 
 inline constexpr char kAdsStrictCountPrefName[] =
     "brave_shields.p3a_ads_strict_domain_count";
@@ -44,6 +46,8 @@ inline constexpr char kDomainFPSettingsAboveHistogramName[] =
     "Brave.Shields.DomainFingerprintSettingsAboveGlobal";
 inline constexpr char kDomainFPSettingsBelowHistogramName[] =
     "Brave.Shields.DomainFingerprintSettingsBelowGlobal";
+inline constexpr char kForgetFirstPartyHistogramName[] =
+    "Brave.Shields.ForgetFirstParty";
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum ShieldsIconUsage {
@@ -82,9 +86,15 @@ void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
                                                 ControlType* prev_setting,
                                                 ControlType new_setting);
 
+// Records global "forget me when I close this site" setting,
+// and any per-site exceptions.
+void RecordForgetFirstPartySetting(HostContentSettingsMap* map);
+
 void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state);
 
-void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* local_state);
+void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* registry);
+void RegisterShieldsP3AProfilePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
 
 // To be called at initialization. Will count all domain settings and
 // record to all histograms, if executed for the first time.

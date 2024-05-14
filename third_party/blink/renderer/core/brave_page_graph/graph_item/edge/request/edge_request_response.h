@@ -23,6 +23,7 @@ class EdgeRequestResponse : public EdgeRequest {
                       NodeResource* out_node,
                       GraphNode* in_node,
                       const InspectorId request_id,
+                      const FrameId& frame_id,
                       const RequestStatus request_status,
                       const ResponseMetadata& metadata);
 

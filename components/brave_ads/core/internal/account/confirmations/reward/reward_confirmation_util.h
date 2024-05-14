@@ -9,12 +9,13 @@
 #include <optional>
 #include <string>
 
+#include "base/values.h"
+
 namespace brave_ads {
 
 class TokenGeneratorInterface;
 struct ConfirmationInfo;
 struct TransactionInfo;
-struct UserDataInfo;
 
 std::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation);
@@ -22,7 +23,7 @@ std::optional<std::string> BuildRewardCredential(
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
     TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
-    const UserDataInfo& user_data);
+    base::Value::Dict user_data);
 
 }  // namespace brave_ads
 

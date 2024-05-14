@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/password_encryptor.h"
+
 #include <string_view>
 
-#include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "base/base64.h"
+#include "base/test/values_test_util.h"
 #include "crypto/aead.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -70,6 +73,64 @@ TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password", ToSpan("salt"), 200, 256);
   EXPECT_FALSE(encryptor4->Decrypt(ciphertext, nonce));
+}
+
+TEST(PasswordEncryptorUnitTest, EncryptToDictAndDecryptFromDict) {
+  std::unique_ptr<PasswordEncryptor> encryptor =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          "password", ToSpan("salt"), 100, 256);
+  const std::vector<uint8_t> nonce(12, 0xAB);
+  auto encrypted_dict = encryptor->EncryptToDict(ToSpan("bravo"), nonce);
+  EXPECT_EQ(encrypted_dict, base::test::ParseJsonDict(R"(
+  {
+    "ciphertext": "WlrXR4nyn5DI7grdDIPjHeVlxKtK",
+    "nonce": "q6urq6urq6urq6ur"
+  }
+  )"));
+  EXPECT_EQ("bravo", ToString(*encryptor->DecryptFromDict(encrypted_dict)));
+
+  // nonce mismatch
+  auto bad_nonce = encrypted_dict.Clone();
+  bad_nonce.Set("nonce", base::Base64Encode(std::vector<uint8_t>(12, 0xFF)));
+  EXPECT_FALSE(encryptor->DecryptFromDict(bad_nonce));
+
+  // no nonce
+  auto no_nonce = encrypted_dict.Clone();
+  no_nonce.Remove("nonce");
+  EXPECT_FALSE(encryptor->DecryptFromDict(no_nonce));
+
+  // empty ciphertext
+  auto empty_ciphertext = encrypted_dict.Clone();
+  empty_ciphertext.Set("ciphertext", "");
+  EXPECT_FALSE(encryptor->DecryptFromDict(empty_ciphertext));
+
+  // wrong ciphertext
+  auto wrong_ciphertext = encrypted_dict.Clone();
+  wrong_ciphertext.FindString("ciphertext")->at(0) = 'A';
+  EXPECT_FALSE(encryptor->DecryptFromDict(wrong_ciphertext));
+
+  // no ciphertext
+  auto no_ciphertext = encrypted_dict.Clone();
+  no_ciphertext.Remove("ciphertext");
+  EXPECT_FALSE(encryptor->DecryptFromDict(no_ciphertext));
+
+  // password mismatch
+  std::unique_ptr<PasswordEncryptor> encryptor2 =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          "password2", ToSpan("salt"), 100, 256);
+  EXPECT_FALSE(encryptor2->DecryptFromDict(encrypted_dict));
+
+  // salt mismatch
+  std::unique_ptr<PasswordEncryptor> encryptor3 =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          "password", ToSpan("salt2"), 100, 256);
+  EXPECT_FALSE(encryptor3->DecryptFromDict(encrypted_dict));
+
+  // iteration mismatch
+  std::unique_ptr<PasswordEncryptor> encryptor4 =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          "password", ToSpan("salt"), 200, 256);
+  EXPECT_FALSE(encryptor4->DecryptFromDict(encrypted_dict));
 }
 
 TEST(PasswordEncryptorUnitTest, DecryptForImporter) {

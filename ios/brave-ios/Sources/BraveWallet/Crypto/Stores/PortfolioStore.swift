@@ -67,13 +67,39 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
       let balance: Double
       switch groupType {
       case .account(let account):
-        balance = asset.balanceForAccounts[account.address] ?? 0
+        balance = asset.balanceForAccounts[account.id] ?? 0
       case .none, .network:
         balance = asset.totalBalance
       }
       let assetValue = (Double(asset.price) ?? 0) * balance
       return partialResult + assetValue
     }
+  }
+
+  /// Sort by the group's total fiat/value
+  static func sorted(
+    lhs: AssetGroupViewModel,
+    rhs: AssetGroupViewModel
+  ) -> Bool {
+    if lhs.totalFiatValue == rhs.totalFiatValue {
+      return sameBalanceSort(lhs: lhs, rhs: rhs)
+    } else {
+      return lhs.totalFiatValue > rhs.totalFiatValue
+    }
+  }
+
+  /// Sorts primary networks to be first (Solana Mainnet first primary network),  then sorts alphabetically.
+  /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
+  private static func sameBalanceSort(lhs: AssetGroupViewModel, rhs: AssetGroupViewModel) -> Bool {
+    if case .account(let lhsAccount) = lhs.groupType, case .account(let rhsAccount) = rhs.groupType
+    {
+      return lhsAccount.sort(with: rhsAccount, parentOrder: lhs.id < rhs.id)
+    }
+    if case .network(let lhsNetwork) = lhs.groupType, case .network(let rhsNetwork) = rhs.groupType
+    {
+      return lhsNetwork.sort(with: rhsNetwork, parentOrder: lhs.id < rhs.id)
+    }
+    return lhs.id < rhs.id
   }
 }
 
@@ -83,8 +109,10 @@ public struct AssetViewModel: Identifiable, Equatable {
   let network: BraveWallet.NetworkInfo
   let price: String
   let history: [BraveWallet.AssetTimePrice]
-  /// Balance for each account for this asset. The key is the account address.
+  /// Balance for each account for this asset. The key is the account.id.
   let balanceForAccounts: [String: Double]
+  /// All BTC balance types for each account. Key is `account.id`.
+  let btcBalances: [String: [BTCBalanceType: Double]]
   /// The total balance for all accounts for this asset.
   var totalBalance: Double {
     balanceForAccounts.values.reduce(0, +)
@@ -99,7 +127,7 @@ public struct AssetViewModel: Identifiable, Equatable {
     let balance: Double
     switch groupType {
     case .account(let account):
-      balance = balanceForAccounts[account.address] ?? 0
+      balance = balanceForAccounts[account.id] ?? 0
     case .none, .network:
       balance = totalBalance
     }
@@ -111,11 +139,11 @@ public struct AssetViewModel: Identifiable, Equatable {
     let balance: Double
     switch groupType {
     case .account(let account):
-      balance = balanceForAccounts[account.address] ?? 0
+      balance = balanceForAccounts[account.id] ?? 0
     case .none, .network:
       balance = totalBalance
     }
-    return currencyFormatter.string(from: NSNumber(value: (Double(price) ?? 0) * balance)) ?? ""
+    return currencyFormatter.formatAsFiat((Double(price) ?? 0) * balance) ?? ""
   }
 
   /// Sort by the fiat/value of the asset (price x balance), otherwise by balance when price is unavailable.
@@ -132,7 +160,7 @@ public struct AssetViewModel: Identifiable, Equatable {
         let lhsValue = (lhsPrice * lhs.totalBalance)
         let rhsValue = (rhsPrice * rhs.totalBalance)
         if lhsValue == rhsValue, lhsValue <= 0 {
-          return emptyBalanceSort(lhs: lhs, rhs: rhs)
+          return sameBalanceSort(lhs: lhs, rhs: rhs)
         }
         if sortOrder == .valueAsc {
           return lhsValue < rhsValue
@@ -146,7 +174,7 @@ public struct AssetViewModel: Identifiable, Equatable {
         return false
       }
       if lhs.totalBalance == rhs.totalBalance, lhs.totalBalance <= 0 {
-        return emptyBalanceSort(lhs: lhs, rhs: rhs)
+        return sameBalanceSort(lhs: lhs, rhs: rhs)
       }
       // price unavailable, sort by balance
       if sortOrder == .valueAsc {
@@ -162,37 +190,21 @@ public struct AssetViewModel: Identifiable, Equatable {
 
   /// Sorts primary networks to be first (Solana Mainnet first primary network), then sorts native assets to be first, then sorts alphabetically.
   /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
-  private static func emptyBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
-    // sort primary networks to be first
-    let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhs.network.chainId)
-    let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhs.network.chainId)
-    if isLHSPrimaryNetwork && !isRHSPrimaryNetwork {
-      return true
-    } else if !isLHSPrimaryNetwork && isRHSPrimaryNetwork {
-      return false
-    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-      lhs.network.chainId != rhs.network.chainId,
-      lhs.network.chainId == BraveWallet.SolanaMainnet
-    {
-      // Solana Mainnet to be first primary network
-      return true
-    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-      lhs.network.chainId != rhs.network.chainId,
-      rhs.network.chainId == BraveWallet.SolanaMainnet
-    {
-      // Solana Mainnet to be first primary network
-      return false
+  private static func sameBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+    var parentOrder: Bool {
+      // sort native tokens to be first
+      let isLHSNativeToken = lhs.network.isNativeAsset(lhs.token)
+      let isRHSNativeToken = rhs.network.isNativeAsset(rhs.token)
+      if isLHSNativeToken && !isRHSNativeToken {
+        return true
+      } else if !isLHSNativeToken && isRHSNativeToken {
+        return false
+      }
+      // sort by name
+      return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
     }
-    // sort native tokens to be first
-    let isLHSNativeToken = lhs.network.isNativeAsset(lhs.token)
-    let isRHSNativeToken = rhs.network.isNativeAsset(rhs.token)
-    if isLHSNativeToken && !isRHSNativeToken {
-      return true
-    } else if !isLHSNativeToken && isRHSNativeToken {
-      return false
-    }
-    // sort by name
-    return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
+
+    return lhs.network.sort(with: rhs.network, parentOrder: parentOrder)
   }
 }
 
@@ -232,6 +244,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   @Published private(set) var historicalBalances: [BalanceTimePrice] = []
   /// Whether or not balances are still currently loading
   @Published private(set) var isLoadingBalances: Bool = false
+  /// The BTC balances for each Bitcoin account.  Key is `account.id`.
+  @Published private(set) var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
   /// The current default base currency code
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
@@ -277,7 +291,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     return Filters(
       accounts: allAccounts.map { account in
         .init(
-          isSelected: !nonSelectedAccountAddresses.contains(where: { $0 == account.address }),
+          isSelected: !nonSelectedAccountAddresses.contains(
+            where: { $0 == account.id }
+          ),
           model: account
         )
       },
@@ -293,22 +309,13 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
   private var isSavingFilters: Bool = false
 
-  public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
-    blockchainRegistry: self.blockchainRegistry,
-    rpcService: self.rpcService,
-    keyringService: self.keyringService,
-    assetRatioService: self.assetRatioService,
-    walletService: self.walletService,
-    ipfsApi: self.ipfsApi,
-    userAssetManager: self.assetManager
-  )
-
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
-  /// Cache of token balances for each account. [token.id: [account.address: balance]]
-  private var tokenBalancesCache: [String: [String: Double]] = [:]
+  private typealias TokenBalanceCache = [String: [String: Double]]
+  /// Cache of token balances for each account. [token.id: [account.cacheBalanceKey: balance]]
+  private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
@@ -320,6 +327,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let assetManager: WalletUserAssetManagerType
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -336,6 +344,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -344,6 +353,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
+    self.bitcoinWalletService = bitcoinWalletService
     self.assetManager = userAssetManager
 
     // cache balance update observer
@@ -359,7 +369,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.sortOrderFilter.observe(from: self)
     Preferences.Wallet.isHidingSmallBalancesFilter.observe(from: self)
     Preferences.Wallet.nonSelectedAccountsFilter.observe(from: self)
@@ -371,8 +380,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     rpcServiceObserver = nil
     keyringServiceObserver = nil
     walletServiceObserver = nil
-
-    userAssetsStore.tearDown()
   }
 
   func setupObservers() {
@@ -416,8 +423,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         // assets update will be called via `CryptoStore`
       }
     )
-
-    self.userAssetsStore.setupObservers()
   }
 
   func update() {
@@ -427,7 +432,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       guard !isLocked else { return }  // `update() will be called after unlock`
 
       self.isLoadingBalances = true
-      self.allAccounts = await keyringService.allAccounts().accounts
+      self.allAccounts = await keyringService.allAccountInfos()
         .filter { account in
           WalletConstants.supportedCoinTypes().contains(account.coin)
         }
@@ -475,6 +480,28 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
+      if selectedAccounts.contains(where: { $0.coin == .btc }) {
+        /// We  need to know if user has pending balance to show/hide banner. Re-fetch on view load.
+        self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
+        {
+          [bitcoinWalletService] group in
+          for account in selectedAccounts where account.coin == .btc {
+            group.addTask {
+              let btcBalances = await bitcoinWalletService.fetchBTCBalances(
+                accountId: account.accountId
+              )
+              return [account.id: btcBalances]
+            }
+          }
+          var accountsBTCBalances: [String: [BTCBalanceType: Double]] = [:]
+          for await accountBTCBalances in group {
+            accountsBTCBalances.merge(with: accountBTCBalances)
+          }
+          return accountsBTCBalances
+        }
+      }
+
       // Looping through `allTokenNetworkAccounts` to get token's cached balance
       for tokenNetworkAccounts in allTokenNetworkAccounts {
         if let tokenBalances = assetManager.getBalances(
@@ -493,24 +520,40 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           // fetched it's balance. Should never happen. But we will fetch its
           // balance and cache it in CD.
           // 2. Test Cases will come here, we will fetch balance using
-          // a mock `rpcService`
+          // a mock `rpcService` and `bitcoinWalletService`
           let fetchedTokenBalances = await withTaskGroup(
-            of: [String: [String: Double]].self,
-            body: { @MainActor [tokenBalancesCache, rpcService, assetManager] group in
+            of: TokenBalanceCache.self,
+            body: {
+              @MainActor
+              [tokenBalancesCache, rpcService, bitcoinWalletService, assetManager]
+              group in
               group.addTask { @MainActor in
                 let token = tokenNetworkAccounts.token
                 var tokenBalances = tokenBalancesCache[token.id] ?? [:]
                 // fetch balance for this token for each account
                 for account in tokenNetworkAccounts.accounts {
-                  let balanceForToken = await rpcService.balance(
-                    for: token,
-                    in: account,
-                    network: tokenNetworkAccounts.network
-                  )
-                  tokenBalances.merge(with: [account.address: balanceForToken ?? 0])
+                  var balanceForToken: Double?
+                  let tokenNetwork = tokenNetworkAccounts.network
+                  if account.coin == .btc,
+                    tokenNetwork.supportedKeyrings.contains(
+                      account.keyringId.rawValue as NSNumber
+                    )
+                  {
+                    balanceForToken = await bitcoinWalletService.fetchBTCBalance(
+                      accountId: account.accountId,
+                      type: .total
+                    )
+                  } else {
+                    balanceForToken = await rpcService.balance(
+                      for: token,
+                      in: account,
+                      network: tokenNetworkAccounts.network
+                    )
+                  }
+                  tokenBalances.merge(with: [account.id: balanceForToken ?? 0])
                   assetManager.updateBalance(
                     for: token,
-                    account: account.address,
+                    account: account.id,
                     balance: "\(balanceForToken ?? 0)",
                     completion: nil
                   )
@@ -518,7 +561,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 return [token.id: tokenBalances]
               }
               return await group.reduce(
-                into: [String: [String: Double]](),
+                into: TokenBalanceCache(),
                 { partialResult, new in
                   partialResult.merge(with: new)
                 }
@@ -529,6 +572,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         }
       }
 
+      guard !Task.isCancelled else { return }
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allAssetRatioIds = allTokens.map(\.assetRatioId)
@@ -572,7 +616,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           return nil
         }
         .reduce(0.0, +)
-      balance = currencyFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+      balance = currencyFormatter.formatAsFiat(currentBalance) ?? "–"
       // Compute historical balances based on historical prices and current balances
       let assetsWithHistory = allAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
       let minCount = assetsWithHistory.map(\.history.count).min() ?? 0  // Shortest array count
@@ -586,7 +630,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         return .init(
           date: assetsWithHistory.map { $0.history[index].date }.max() ?? .init(),
           price: value,
-          formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+          formattedPrice: currencyFormatter.formatAsFiat(value) ?? "0.00"
         )
       }
 
@@ -601,7 +645,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           priceDifference: String(
             format: "%@%@",
             isBalanceUp ? "+" : "",  // include plus if balance increased
-            currencyFormatter.string(from: NSNumber(value: priceDifference)) ?? "\(priceDifference)"
+            currencyFormatter.formatAsFiat(priceDifference) ?? "\(priceDifference)"
           ),
           percentageChange: String(
             format: "%@%.2f%%",
@@ -632,6 +676,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           groupType: .none,
           assets: buildAssetViewModels(
             for: .none,
+            accounts: selectedAccounts,
             allVisibleUserAssets: allVisibleUserAssets
           )
         )
@@ -641,6 +686,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         let groupType: AssetGroupType = .account(account)
         let assets = buildAssetViewModels(
           for: .account(account),
+          accounts: selectedAccounts,
           allVisibleUserAssets: allVisibleUserAssets
         )
         return AssetGroupViewModel(
@@ -653,6 +699,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         let groupType: AssetGroupType = .network(network)
         let assets = buildAssetViewModels(
           for: groupType,
+          accounts: selectedAccounts,
           allVisibleUserAssets: allVisibleUserAssets
         )
         return AssetGroupViewModel(
@@ -664,7 +711,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
     return
       groups
-      .sorted(by: { $0.totalFiatValue > $1.totalFiatValue })
+      .sorted(by: {
+        AssetGroupViewModel.sorted(lhs: $0, rhs: $1)
+      })
       .optionallyFilter(  // when grouping assets & hiding small balances
         shouldFilter: filters.groupBy != .none && filters.isHidingSmallBalances,
         isIncluded: { group in
@@ -676,6 +725,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
   private func buildAssetViewModels(
     for groupType: AssetGroupType,
+    accounts: [BraveWallet.AccountInfo],
     allVisibleUserAssets: [NetworkAssets]
   ) -> [AssetViewModel] {
     let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
@@ -683,7 +733,20 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     case .none:
       return allVisibleUserAssets.flatMap { networkAssets in
         networkAssets.tokens.map { token in
-          AssetViewModel(
+          var btcBalancesForToken: [String: [BTCBalanceType: Double]] = [:]
+          if token.coin == .btc {
+            let keyringIdForToken = BraveWallet.KeyringId.keyringId(for: .btc, on: token.chainId)
+            let accountIdsForToken =
+              accounts
+              .filter({ $0.keyringId == keyringIdForToken })
+              .map(\.accountId)
+            btcBalancesForToken = accountsBTCBalances.filter({ item in
+              accountIdsForToken.contains(where: { accountId in
+                item.key == accountId.uniqueKey
+              })
+            })
+          }
+          return AssetViewModel(
             groupType: groupType,
             token: token,
             network: networkAssets.network,
@@ -693,8 +756,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               .filter { key, value in
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
-                selectedAccounts.contains(where: { $0.address == key })
-              }
+                selectedAccounts.contains(where: { $0.id == key })
+              },
+            btcBalances: btcBalancesForToken
           )
         }
       }
@@ -717,6 +781,19 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       else {
         return []
       }
+      var btcBalancesForNetwork: [String: [BTCBalanceType: Double]] = [:]
+      if network.coin == .btc {
+        let keyringIdForNetwork = BraveWallet.KeyringId.keyringId(for: .btc, on: network.chainId)
+        let accountIdsForToken =
+          accounts
+          .filter({ $0.keyringId == keyringIdForNetwork })
+          .map(\.accountId)
+        btcBalancesForNetwork = accountsBTCBalances.filter({ item in
+          accountIdsForToken.contains(where: { accountId in
+            item.key == accountId.uniqueKey
+          })
+        })
+      }
       return networkAssets.tokens
         .map { token in
           AssetViewModel(
@@ -729,8 +806,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               .filter { key, value in
                 // if we previously fetched balance for an account it will remain in cache.
                 // filter out to avoid including in total balance
-                selectedAccounts.contains(where: { $0.address == key })
-              }
+                selectedAccounts.contains(where: { $0.id == key })
+              },
+            btcBalances: btcBalancesForNetwork
           )
         }
         .optionallyFilter(
@@ -763,15 +841,16 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               balanceForAccounts: tokenBalancesCache[token.id, default: [:]]
                 .filter { key, value in
                   // only provide grouped account balance
-                  key == account.address
-                }
+                  key == account.id
+                },
+              btcBalances: accountsBTCBalances.filter({ $0.key == account.id })
             )
           }
         }
         .optionallyFilter(
           shouldFilter: filters.isHidingSmallBalances,
           isIncluded: { asset in
-            let balanceForAccount = asset.balanceForAccounts[account.address] ?? 0
+            let balanceForAccount = asset.balanceForAccounts[account.id] ?? 0
             let value = (Double(asset.price) ?? 0) * balanceForAccount
             return value >= 0.05
           }

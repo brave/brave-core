@@ -20,6 +20,7 @@ class EdgeRequestRedirect final : public EdgeRequestResponse {
                       NodeResource* out_node,
                       NodeResource* in_node,
                       const InspectorId request_id,
+                      const FrameId& frame_id,
                       const ResponseMetadata& metadata);
   ~EdgeRequestRedirect() override;
 

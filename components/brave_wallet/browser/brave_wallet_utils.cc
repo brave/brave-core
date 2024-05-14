@@ -126,17 +126,17 @@ const mojom::NetworkInfo* GetPolygonMainnet() {
 
 const mojom::NetworkInfo* GetBscMainnet() {
   const auto coin = mojom::CoinType::ETH;
-  const auto* chain_id = mojom::kBinanceSmartChainMainnetChainId;
+  const auto* chain_id = mojom::kBnbSmartChainMainnetChainId;
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "Binance Smart Chain Mainnet",
+       "BNB Smart Chain",
        {"https://bscscan.com"},
        {},
        0,
        {GURL("https://bsc-dataseed1.binance.org")},
        "BNB",
-       "Binance Chain Native Token",
+       "BNB",
        18,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id),
@@ -2121,6 +2121,11 @@ void SetTransactionSimulationOptInStatus(
     const mojom::BlowfishOptInStatus& status) {
   prefs->SetInteger(kBraveWalletTransactionSimulationOptInStatus,
                     static_cast<int>(status));
+}
+
+bool IsRetriableStatus(mojom::TransactionStatus status) {
+  return status == mojom::TransactionStatus::Error ||
+         status == mojom::TransactionStatus::Dropped;
 }
 
 }  // namespace brave_wallet

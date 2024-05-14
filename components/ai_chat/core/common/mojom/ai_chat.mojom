@@ -71,12 +71,12 @@ enum SuggestionGenerationStatus {
 struct SiteInfo {
   // Title is present if the site has associated page content
   string? title;
-  // the content so long that it's being truncated
-  bool is_content_truncated;
   // Indicates if the URL scheme is of a type that allows for content association.
   bool is_content_association_possible;
   // Current tab's hostname
   string? hostname;
+  // Percentage of the content that has been utilized by remote LLM (0-100)
+  int32 content_used_percentage;
 };
 
 enum ActionType {
@@ -87,18 +87,40 @@ enum ActionType {
   SUMMARIZE_SELECTED_TEXT,
   QUERY,
   EXPLAIN,
-  PARAPHRASE,
   CREATE_TAGLINE,
   CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
   CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+  // Rewrite
+  PARAPHRASE,
   IMPROVE,
+  // Change tone
   ACADEMICIZE,
   PROFESSIONALIZE,
   PERSUASIVE_TONE,
   CASUALIZE,
   FUNNY_TONE,
+  // Change length
   SHORTEN,
   EXPAND,
+};
+
+struct SearchQueriesEvent {
+  array<string> search_queries;
+};
+
+struct SearchStatusEvent {
+  bool is_searching = true;
+};
+
+struct CompletionEvent {
+  string completion;
+};
+
+// Events that occur during a conversation turn (only assistant for now)
+union ConversationEntryEvent {
+  CompletionEvent completion_event;
+  SearchQueriesEvent search_queries_event;
+  SearchStatusEvent search_status_event;
 };
 
 // Represents a single turn in a conversation.
@@ -112,8 +134,18 @@ struct ConversationTurn {
   CharacterType character_type;
   ActionType action_type;
   ConversationTurnVisibility visibility;
+  // The text that is displayed to the user. This might be different than
+  // the text sent to the AI engine to represent this turn, which might be more
+  // verbose.
+  // TODO(petemill): Store the text sent to the AI engine to aid in regeneration
+  // and error retries.
   string text;
   string? selected_text;
+  // Ordered list of events that occurred during this turn
+  // TODO(petemill): ConversationTurn's |text| and |selected_text| might move
+  // to be an event - as the events become richer, the order around text could
+  // be important.
+  array<ConversationEntryEvent>? events;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a
@@ -148,6 +180,21 @@ struct ModelWithSubtitle {
   string subtitle;
 };
 
+struct ActionDetails {
+  string label;
+  ActionType type;
+};
+
+union ActionEntry {
+  string subheading;
+  ActionDetails details;
+};
+
+struct ActionGroup {
+  string category;
+  array<ActionEntry> entries;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
@@ -166,6 +213,7 @@ interface PageHandler {
   GenerateQuestions();
 
   SubmitHumanConversationEntry(string input);
+  SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   HandleVoiceRecognition();
   SubmitSummarizationRequest();
   MarkAgreementAccepted();
@@ -184,6 +232,9 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  // Reset the current error state and returns the
+  // most recent message from the conversation to the caller.
+  ClearErrorAndGetFailedMessage() => (ConversationTurn turn);
   GetCanShowPremiumPrompt() => (bool can_show);
   DismissPremiumPrompt();
 
@@ -193,6 +244,9 @@ interface PageHandler {
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id, bool send_hostname) => (bool is_success);
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+  ClosePanel();
+  GetActionMenuList() => (array<ActionGroup> action_list);
+  OpenModelSupportUrl();
 };
 
 interface ChatUIPage {

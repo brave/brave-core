@@ -15,14 +15,10 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
-#include "base/task/bind_post_task.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/task/thread_pool.h"
+#include "brave/components/ai_chat/content/browser/pdf_utils.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_process_host.h"
@@ -38,13 +34,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "ui/accessibility/ax_node.h"
-#include "ui/accessibility/ax_tree_manager.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-#include "brave/components/text_recognition/browser/text_recognition.h"
-#endif
 
 namespace ai_chat {
 
@@ -55,7 +45,6 @@ namespace {
 constexpr auto kScreenshotRetrievalHosts =
     base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
                                              {
-                                                 "docs.google.com",
                                                  "twitter.com",
                                              });
 #endif
@@ -242,7 +231,8 @@ class PageContentFetcher {
     //   see in a moment. And this  </text>
     // </transcript>
 
-    if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+    if (!result.has_value() ||
+        !data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
       VLOG(1) << "Could not find transcript element.";
       return;
     }
@@ -329,7 +319,7 @@ class PageContentFetcher {
     }
     bool is_ok =
         loader->NetError() == net::OK && response_body && response_code == 200;
-    ;
+
     std::string patch_content = is_ok ? *response_body : "";
     if (!is_ok || patch_content.empty()) {
       DVLOG(1) << __func__ << " invalid patch response from url: "
@@ -346,80 +336,15 @@ class PageContentFetcher {
 };
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-void OnGetTextFromImage(
-    FetchPageContentCallback callback,
-    const std::pair<bool, std::vector<std::string>>& supported_strs) {
-  if (!supported_strs.first) {
-    std::move(callback).Run("", false, "");
-    return;
-  }
-
-  std::stringstream ss;
-  auto& strs = supported_strs.second;
-  for (size_t i = 0; i < strs.size(); ++i) {
-    ss << base::TrimWhitespaceASCII(strs[i], base::TrimPositions::TRIM_ALL);
-    if (i < strs.size() - 1) {
-      ss << "\n";
-    }
-  }
-  std::move(callback).Run(ss.str(), false, "");
-}
-
 void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
-#if BUILDFLAG(IS_MAC)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&text_recognition::GetTextFromImage, image),
-      base::BindOnce(&OnGetTextFromImage, std::move(callback)));
-#endif
-#if BUILDFLAG(IS_WIN)
-  const std::string& locale = brave_l10n::GetDefaultLocaleString();
-  const std::string language_code = brave_l10n::GetISOLanguageCode(locale);
-  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
-      ->PostTask(FROM_HERE,
-                 base::BindOnce(
-                     &text_recognition::GetTextFromImage, language_code, image,
-                     base::BindPostTaskToCurrentDefault(base::BindOnce(
-                         &OnGetTextFromImage, std::move(callback)))));
-
-#endif
+  GetOCRText(image,
+             base::BindOnce(
+                 [](FetchPageContentCallback callback, std::string text) {
+                   std::move(callback).Run(std::move(text), false, "");
+                 },
+                 std::move(callback)));
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-
-ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
-  if (!start_node) {
-    return nullptr;
-  }
-  for (const auto& node : start_node->GetAllChildren()) {
-    if (node->GetRole() == ax::mojom::Role::kPdfRoot) {
-      return node;
-    }
-    ui::AXNode* result = FindPdfRoot(node);
-    if (result) {
-      return result;
-    }
-  }
-  return nullptr;
-}
-
-std::string ExtractPdfContent(const ui::AXNode* pdf_root) {
-  // Skip status subtree and get text from region siblings
-  if (!pdf_root || pdf_root->GetChildCount() < 2 ||
-      pdf_root->GetChildAtIndex(0)->GetRole() != ax::mojom::Role::kBanner) {
-    return std::string();
-  }
-  std::string pdf_content;
-  const auto& children = pdf_root->GetAllChildren();
-  for (auto it = children.cbegin() + 1; it != children.cend(); ++it) {
-    const ui::AXNode* node = *it;
-    if (node->GetRole() == ax::mojom::Role::kRegion) {
-      base::StrAppend(&pdf_content, {node->GetTextContentUTF8(),
-                                     it == children.cend() - 1 ? "" : "\n"});
-    }
-  }
-  return pdf_content;
-}
 
 // Obtains a patch URL from a pull request URL
 std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
@@ -460,23 +385,11 @@ void FetchPageContent(content::WebContents* web_contents,
     return;
   }
 
-  if (web_contents->GetContentsMimeType() == "application/pdf") {
-    ui::AXTreeManager* ax_tree_manager = nullptr;
-    // FindPdfChildFrame
-    primary_rfh->ForEachRenderFrameHost(
-        [&ax_tree_manager](content::RenderFrameHost* rfh) {
-          if (!rfh->GetProcess()->IsPdf()) {
-            return;
-          }
-          ui::AXTreeID ax_tree_id = rfh->GetAXTreeID();
-          if (ax_tree_id.type() == ax::mojom::AXTreeIDType::kUnknown) {
-            return;
-          }
-          ax_tree_manager = ui::AXTreeManager::FromID(ax_tree_id);
-        });
+  if (IsPdf(web_contents)) {
     std::string pdf_content;
-    if (ax_tree_manager) {
-      pdf_content = ExtractPdfContent(FindPdfRoot(ax_tree_manager->GetRoot()));
+    auto* pdf_root = GetPdfRoot(primary_rfh);
+    if (pdf_root) {
+      pdf_content = ExtractPdfContent(pdf_root);
     }
 
     // No need to proceed renderer content fetching because we won't get any.
@@ -486,8 +399,7 @@ void FetchPageContent(content::WebContents* web_contents,
 
   auto url = web_contents->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  auto host = url.host();
-  if (base::Contains(kScreenshotRetrievalHosts, host)) {
+  if (base::Contains(kScreenshotRetrievalHosts, url.host_piece())) {
     content::RenderWidgetHostView* view =
         web_contents->GetRenderWidgetHostView();
     if (view) {

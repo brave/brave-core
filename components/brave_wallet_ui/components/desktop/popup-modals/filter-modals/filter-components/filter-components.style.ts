@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Dropdown from '@brave/leo/react/dropdown'
 import LeoIcon from '@brave/leo/react/icon'
 
@@ -70,4 +70,5 @@ export const Icon = styled(LeoIcon)`
 
 export const DropdownFilter = styled(Dropdown)`
   min-width: 40%;
+  color: ${leo.color.text.primary};
 `

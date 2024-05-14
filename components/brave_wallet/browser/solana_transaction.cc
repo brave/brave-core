@@ -188,7 +188,7 @@ SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
   return message_ == tx.message_ && raw_signatures_ == tx.raw_signatures_ &&
-         sign_tx_param_ == tx.sign_tx_param_ &&
+         wired_tx_ == tx.wired_tx_ && sign_tx_param_ == tx.sign_tx_param_ &&
          to_wallet_address_ == tx.to_wallet_address_ &&
          spl_token_mint_address_ == tx.spl_token_mint_address_ &&
          tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
@@ -201,7 +201,7 @@ bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
 
 // Get serialized message bytes and array of signers.
 // Serialized message will be the result of decoding
-// sign_tx_param_->encoded_serialized_msg if exists.
+// sign_tx_param_->encoded_serialized_msg if sign_tx_param_ exists.
 std::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>
 SolanaTransaction::GetSerializedMessage() const {
   if (!sign_tx_param_) {
@@ -368,6 +368,8 @@ base::Value::Dict SolanaTransaction::ToValue() const {
   dict.Set("tx_type", static_cast<int>(tx_type_));
   dict.Set("lamports", base::NumberToString(lamports_));
   dict.Set("amount", base::NumberToString(amount_));
+  dict.Set("wired_tx", wired_tx_);
+
   if (send_options_) {
     dict.Set(kSendOptions, send_options_->ToValue());
   }
@@ -454,6 +456,12 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     return nullptr;
   }
   tx->set_amount(amount);
+
+  const auto* wired_tx = value.FindString("wired_tx");
+  if (wired_tx) {
+    tx->set_wired_tx(*wired_tx);
+  }
+
   const base::Value::Dict* send_options_value = value.FindDict(kSendOptions);
   if (send_options_value) {
     tx->set_send_options(SendOptions::FromValue(*send_options_value));
@@ -571,6 +579,23 @@ SolanaTransaction::FromSignedTransactionBytes(
 
   return std::make_unique<SolanaTransaction>(std::move(*message),
                                              std::move(signatures));
+}
+
+bool SolanaTransaction::IsPartialSigned() const {
+  if (!sign_tx_param_) {
+    return false;
+  }
+
+  for (const auto& sig_pubkey_pair : sign_tx_param_->signatures) {
+    // Has non-empty signature.
+    if (sig_pubkey_pair->signature && !sig_pubkey_pair->signature->empty() &&
+        sig_pubkey_pair->signature !=
+            std::vector<uint8_t>(kSolanaSignatureSize, 0)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace brave_wallet

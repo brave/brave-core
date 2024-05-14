@@ -32,8 +32,8 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
+import org.chromium.chrome.browser.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -42,11 +42,12 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -67,6 +68,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.features.start_surface.StartSurface;
@@ -78,7 +80,6 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class BraveToolbarManager extends ToolbarManager {
     private static final String TAG = "BraveToolbarManager";
@@ -113,6 +114,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
+    private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -125,11 +127,13 @@ public class BraveToolbarManager extends ToolbarManager {
     private final Object mLock = new Object();
     private boolean mBottomControlsEnabled;
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
+    private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
             BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ToolbarControlContainer controlContainer,
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
@@ -172,13 +176,15 @@ public class BraveToolbarManager extends ToolbarManager {
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
-            @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate,
-            @Nullable BooleanSupplier overviewIncognitoSupplier,
-            @Nullable View baseChromeLayout) {
+            @Nullable ObservableSupplier<Integer> overviewColorSupplier,
+            @Nullable View baseChromeLayout,
+            ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
+            OneshotSupplier<AppHeaderCoordinator> appHeaderCoordinatorSupplier) {
         super(
                 activity,
                 controlsSizer,
                 fullscreenManager,
+                edgeToEdgeControllerSupplier,
                 controlContainer,
                 compositorViewHolder,
                 urlFocusChangedCallback,
@@ -219,15 +225,17 @@ public class BraveToolbarManager extends ToolbarManager {
                 ephemeralTabCoordinatorSupplier,
                 initializeWithIncognitoColors,
                 backPressManager,
-                openHistoryClustersDelegate,
-                overviewIncognitoSupplier,
-                baseChromeLayout);
+                overviewColorSupplier,
+                baseChromeLayout,
+                readAloudControllerSupplier,
+                appHeaderCoordinatorSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
         mWindowAndroid = windowAndroid;
         mCompositorViewHolder = compositorViewHolder;
+        mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
 
         if (isToolbarPhone()) {
             updateBottomToolbarVisibility();
@@ -261,26 +269,57 @@ public class BraveToolbarManager extends ToolbarManager {
                     (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
-            mTabGroupUi = TabManagementDelegateProvider.getDelegate().createTabGroupUi(mActivity,
-                    mBottomControls.findViewById(R.id.bottom_container_slot), mBrowserControlsSizer,
-                    mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
-                    mBottomSheetController, mActivityLifecycleDispatcher, mIsWarmOnResumeSupplier,
-                    mTabModelSelector, mTabContentManager, mCompositorViewHolder,
-                    mCompositorViewHolder::getDynamicResourceLoader, mTabCreatorManager,
-                    mLayoutStateProviderSupplier, mSnackbarManager);
-            mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
-                    mLayoutStateProviderSupplier,
-                    BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
-                            id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
-                    mActivityTabProvider, mToolbarTabController::openHomepage,
-                    mCallbackController.makeCancelable((reason) -> setUrlBarFocus(true, reason)),
-                    mMenuButtonCoordinator.getMenuButtonHelperSupplier(), mAppThemeColorProvider,
-                    /* Below are parameters for BottomControlsCoordinator */
-                    mActivity, mWindowAndroid, mLayoutManager,
-                    mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
-                    mFullscreenManager, mBottomControls, mTabGroupUi, mTabObscuringHandler,
-                    mOverlayPanelVisibilitySupplier, getConstraintsProxy(), mBookmarkModelSupplier,
-                    mLocationBarModel));
+            mTabGroupUi =
+                    TabManagementDelegateProvider.getDelegate()
+                            .createTabGroupUi(
+                                    mActivity,
+                                    mBottomControls.findViewById(R.id.bottom_container_slot),
+                                    mBrowserControlsSizer,
+                                    mIncognitoStateProvider,
+                                    mScrimCoordinator,
+                                    mOmniboxFocusStateSupplier,
+                                    mBottomSheetController,
+                                    mActivityLifecycleDispatcher,
+                                    mIsWarmOnResumeSupplier,
+                                    mTabModelSelector,
+                                    mTabContentManager,
+                                    mCompositorViewHolder,
+                                    mCompositorViewHolder::getDynamicResourceLoader,
+                                    mTabCreatorManager,
+                                    mLayoutStateProviderSupplier,
+                                    mSnackbarManager);
+            mBottomControlsCoordinatorSupplier.set(
+                    new BraveBottomControlsCoordinator(
+                            mLayoutStateProviderSupplier,
+                            BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
+                                    id ->
+                                            ((ChromeActivity) mActivity)
+                                                    .onOptionsItemSelected(id, null)),
+                            mActivityTabProvider,
+                            mToolbarTabController::openHomepage,
+                            mCallbackController.makeCancelable(
+                                    (reason) -> setUrlBarFocus(true, reason)),
+                            mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                            mAppThemeColorProvider,
+                            mBookmarkModelSupplier,
+                            mLocationBarModel,
+                            /* Below are parameters for BottomControlsCoordinator */
+                            mActivity,
+                            mWindowAndroid,
+                            mLayoutManager,
+                            mCompositorViewHolder.getResourceManager(),
+                            mBrowserControlsSizer,
+                            mFullscreenManager,
+                            mEdgeToEdgeControllerSupplier,
+                            mBottomControls,
+                            mTabGroupUi,
+                            mTabObscuringHandler,
+                            mOverlayPanelVisibilitySupplier,
+                            getConstraintsProxy(),
+                            /* readAloudRestoringSupplier= */ () -> {
+                                final var readAloud = mReadAloudControllerSupplier.get();
+                                return readAloud != null && readAloud.isRestoringPlayer();
+                            }));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
             updateBottomToolbarVisibility();

@@ -45,16 +45,18 @@ struct AccountPicker: View {
 
   private var accountView: some View {
     HStack {
-      Blockie(address: keyringStore.selectedAccount.address)
+      Blockie(address: keyringStore.selectedAccount.blockieSeed)
         .frame(width: avatarSize, height: avatarSize)
       VStack(alignment: .leading, spacing: 2) {
         Text(keyringStore.selectedAccount.name)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
           .multilineTextAlignment(.leading)
-        Text(keyringStore.selectedAccount.address.truncatedAddress)
-          .foregroundColor(Color(.braveLabel))
-          .multilineTextAlignment(.leading)
+        if !keyringStore.selectedAccount.address.isEmpty {
+          Text(keyringStore.selectedAccount.address.truncatedAddress)
+            .foregroundColor(Color(.braveLabel))
+            .multilineTextAlignment(.leading)
+        }
       }
       .font(.caption)
       Image(systemName: "chevron.down.circle")

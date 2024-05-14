@@ -99,9 +99,11 @@ void TxManager::CheckIfBlockTrackerShouldRun(
     }
     for (const auto& chain_id : new_pending_chain_ids) {
       bool running = block_tracker_->IsRunning(chain_id);
+      auto interval = GetCoinType() == mojom::CoinType::SOL
+                          ? base::Seconds(kSolanaBlockTrackerTimeInSeconds)
+                          : base::Seconds(kBlockTrackerDefaultTimeInSeconds);
       if (!running) {
-        block_tracker_->Start(chain_id,
-                              base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+        block_tracker_->Start(chain_id, interval);
       }
     }
     pending_chain_ids_ = new_pending_chain_ids;

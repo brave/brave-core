@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react';
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css';
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
 import styled from "styled-components";
 import SecureLink, { SecureLinkProps, defaultAllowedSchemes, validateScheme } from '$web-common/SecureLink';
 import { configurationCache, useBraveNews } from '../shared/Context';
@@ -41,7 +41,7 @@ const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTM
     ref.current!.style.opacity = ''
   }, [rest.src])
 
-  const handleError = React.useCallback((e) => {
+  const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
     ref.current!.style.opacity = '0'
     onError?.(e)
   }, [onError])

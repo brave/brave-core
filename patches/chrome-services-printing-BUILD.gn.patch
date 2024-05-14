@@ -1,0 +1,12 @@
+diff --git a/chrome/services/printing/BUILD.gn b/chrome/services/printing/BUILD.gn
+index e2979ac86e7c9fd69ec0a671cd5adaf2eeade2c7..405bd85835236cbba7da1eb9fb7b930087bcdf90 100644
+--- a/chrome/services/printing/BUILD.gn
++++ b/chrome/services/printing/BUILD.gn
+@@ -29,6 +29,7 @@ source_set("lib") {
+     "//mojo/public/cpp/bindings",
+     "//printing/buildflags",
+   ]
++  import("//brave/services/printing/sources.gni") sources += brave_services_printing_sources deps += brave_services_printing_deps
+ 
+   if (is_chromeos) {
+     sources += [

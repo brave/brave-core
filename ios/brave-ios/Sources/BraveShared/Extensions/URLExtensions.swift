@@ -28,10 +28,7 @@ extension URL {
   ///
   /// Returns the original url without  internal parameters
   public var strippedInternalURL: URL? {
-    if InternalURL.isValid(url: self),
-      let internalURL = InternalURL(self)
-    {
-
+    if let internalURL = InternalURL(self) {
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
@@ -39,6 +36,8 @@ extension URL {
         return internalURL.extractedUrlParam
       case .blockedPage:
         return decodeEmbeddedInternalURL(for: .blocked)
+      case .httpBlockedPage:
+        return decodeEmbeddedInternalURL(for: .httpBlocked)
       case .readerModePage:
         return decodeEmbeddedInternalURL(for: .readermode)
       default:
@@ -69,7 +68,8 @@ extension URL {
     }
 
     if let internalUrl = InternalURL(self),
-      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
+      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isHTTPBlockedPage
+        || internalUrl.isBlockedPage
     {
       return internalUrl.extractedUrlParam?.displayURL
     }
@@ -106,13 +106,28 @@ extension URL {
   }
 
   /// Embed a url into an internal URL for the given path. The url will be placed in a `url` querey param
-  public func encodeEmbeddedInternalURL(for path: InternalURL.Path) -> URL? {
+  public func encodeEmbeddedInternalURL(
+    for path: InternalURL.Path,
+    headers: [String: String]? = nil
+  ) -> URL? {
     let baseURL = "\(InternalURL.baseUrl)/\(path.rawValue)"
 
     guard
       let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
     else {
       return nil
+    }
+
+    if let headers = headers, !headers.isEmpty,
+      let data = try? JSONSerialization.data(withJSONObject: headers),
+      let encodedHeaders = data.base64EncodedString.addingPercentEncoding(
+        withAllowedCharacters: .alphanumerics
+      )
+    {
+      return URL(
+        string:
+          "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)&headers=\(encodedHeaders)"
+      )
     }
 
     return URL(string: "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)")
@@ -123,6 +138,7 @@ extension InternalURL {
 
   enum URLType {
     case blockedPage
+    case httpBlockedPage
     case sessionRestorePage
     case errorPage
     case readerModePage
@@ -132,6 +148,13 @@ extension InternalURL {
   }
 
   var urlType: URLType {
+    // This needs to be before `isBlockedPage`
+    // because http-blocked has the word "blocked" in it
+    // We should refactor this code because its really iffy.
+    if isHTTPBlockedPage {
+      return .httpBlockedPage
+    }
+
     if isBlockedPage {
       return .blockedPage
     }

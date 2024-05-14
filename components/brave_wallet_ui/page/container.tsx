@@ -21,7 +21,7 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import * as WalletPageActions from './actions/wallet_page_actions'
 
 // selectors
-import { WalletSelectors } from '../common/selectors'
+import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PageSelectors } from './selectors'
 
 // types
@@ -30,6 +30,7 @@ import { WalletRoutes } from '../constants/types'
 // hooks
 import {
   useSafePageSelector,
+  useSafeUISelector,
   useSafeWalletSelector
 } from '../common/hooks/use-safe-selector'
 import { useLocationPathName } from '../common/hooks/use-pathname'
@@ -62,8 +63,6 @@ import { UnlockedWalletRoutes } from './router/unlocked_wallet_routes'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 
-const initialSessionRoute = getInitialSessionRoute()
-
 export const Container = () => {
   // routing
   const walletLocation = useLocationPathName()
@@ -85,6 +84,11 @@ export const Container = () => {
     PageSelectors.setupStillInProgress
   )
 
+  // ui selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  const initialSessionRoute = getInitialSessionRoute(isPanel)
+
   // state
   const [sessionRoute, setSessionRoute] = React.useState(initialSessionRoute)
 
@@ -103,7 +107,7 @@ export const Container = () => {
 
     // store the last url before wallet lock
     // so that we can return to that page after unlock
-    if (isPersistableSessionRoute(walletLocation)) {
+    if (isPersistableSessionRoute(walletLocation, isPanel)) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
         walletLocation
@@ -118,7 +122,7 @@ export const Container = () => {
     ) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     }
-  }, [walletLocation, mnemonic, dispatch])
+  }, [walletLocation, isPanel, mnemonic, dispatch])
 
   // render
   if (!hasInitialized) {

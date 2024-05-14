@@ -29,7 +29,7 @@ struct SuggestedNetworkView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
-  @State private var isPresentingNetworkDetails: CustomNetworkModel?
+  @State private var isPresentingNetworkDetails: NetworkModel?
   @State private var customNetworkError: CustomNetworkError?
   @State private var isLoading: Bool = false
 
@@ -134,9 +134,11 @@ struct SuggestedNetworkView: View {
       } label: {
         HStack(spacing: 8) {
           Spacer()
-          Text(keyringStore.selectedAccount.address.truncatedAddress)
-            .fontWeight(.semibold)
-          Blockie(address: keyringStore.selectedAccount.address)
+          if !keyringStore.selectedAccount.address.isEmpty {
+            Text(keyringStore.selectedAccount.address.truncatedAddress)
+              .fontWeight(.semibold)
+          }
+          Blockie(address: keyringStore.selectedAccount.blockieSeed)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)
@@ -248,7 +250,7 @@ struct SuggestedNetworkView: View {
       Color.clear
         .sheet(item: $isPresentingNetworkDetails) { detailsModel in
           NavigationView {
-            CustomNetworkDetailsView(
+            NetworkDetailsView(
               networkStore: networkStore,
               model: detailsModel
             )

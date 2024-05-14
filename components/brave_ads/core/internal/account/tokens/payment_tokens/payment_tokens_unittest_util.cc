@@ -31,7 +31,7 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
   CHECK(payment_token.public_key.has_value());
 
-  payment_token.confirmation_type = ConfirmationType::kViewed;
+  payment_token.confirmation_type = ConfirmationType::kViewedImpression;
 
   payment_token.ad_type = AdType::kNotificationAd;
 

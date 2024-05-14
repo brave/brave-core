@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
@@ -44,7 +43,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
-#include "components/history//core/browser/features.h"
+#include "components/history/core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
@@ -279,18 +278,6 @@
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
       })
 
-#define BRAVE_FEDERATED_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      "brave-federated",                                                       \
-      "Enables local data collection for notification ad timing "              \
-      "(brave-federated)",                                                     \
-      "Starts local collection for notification ad timing data. This data is " \
-      "stored locally and automatically erased after one month. No data "      \
-      "leaves the client.",                                                    \
-      kOsDesktop,                                                              \
-      FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning),       \
-  })
-
 #define CRYPTO_WALLETS_FEATURE_ENTRIES                                      \
   IF_BUILDFLAG(                                                             \
       ETHEREUM_REMOTE_CLIENT_ENABLED,                                       \
@@ -406,6 +393,13 @@
           "Shows scroll bar on vertical tab strip when it overflows",     \
           kOsWin | kOsMac | kOsLinux,                                     \
           FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
+      },                                                                  \
+      {                                                                   \
+          kSplitViewFeatureInternalName,                                  \
+          "Enable split view",                                            \
+          "Enables split view",                                           \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),            \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
@@ -441,9 +435,18 @@
       kOsWin | kOsMac | kOsLinux,                            \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
   })
+#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                      \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "brave-ai-chat-context-menu-rewrite-in-place",                     \
+      "Brave AI Chat Rewrite In Place From Context Menu",                \
+      "Enables AI Chat rewrite in place feature from the context menu",  \
+      kOsDesktop,                                                        \
+      FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
+  })
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
+#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
 #endif
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -577,6 +580,17 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::                         \
                                  kBraveAdblockMobileNotificationsListDefault), \
+      },                                                                       \
+      {                                                                        \
+          "brave-adblock-experimental-list-default",                           \
+          "Treat 'Brave Experimental Adblock Rules' as a default list "        \
+          "source",                                                            \
+                                                                               \
+          "Enables the 'Brave Experimental Adblock Rules' regional list if "   \
+          "its toggle in brave://adblock hasn't otherwise been modified",      \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockExperimentalListDefault),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-scriptlet-debug-logs",                                \
@@ -984,7 +998,6 @@
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
-  BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
@@ -993,6 +1006,7 @@
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

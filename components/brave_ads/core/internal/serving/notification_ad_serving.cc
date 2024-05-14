@@ -78,8 +78,7 @@ void NotificationAdServing::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  BuildUserModel(base::BindOnce(&NotificationAdServing::BuildUserModelCallback,
-                                weak_factory_.GetWeakPtr()));
+  GetEligibleAds();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,21 +101,16 @@ base::expected<void, std::string> NotificationAdServing::CanServeAd() const {
 }
 
 void NotificationAdServing::GetEligibleAds() {
-  BuildUserModel(base::BindOnce(&NotificationAdServing::BuildUserModelCallback,
-                                weak_factory_.GetWeakPtr()));
-}
+  const UserModelInfo user_model = BuildUserModel();
 
-void NotificationAdServing::BuildUserModelCallback(
-    const UserModelInfo& user_model) {
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
   eligible_ads_->GetForUserModel(
-      user_model,
-      base::BindOnce(&NotificationAdServing::GetEligibleAdsForUserModelCallback,
-                     weak_factory_.GetWeakPtr()));
+      user_model, base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
+                                 weak_factory_.GetWeakPtr()));
 }
 
-void NotificationAdServing::GetEligibleAdsForUserModelCallback(
+void NotificationAdServing::GetEligibleAdsCallback(
     const CreativeNotificationAdList& creative_ads) {
   if (creative_ads.empty()) {
     BLOG(1, "Notification ad not served: No eligible ads found");

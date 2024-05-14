@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -20,7 +18,8 @@ std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
   CHECK(!UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, should_use_random_uuids);
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      should_use_random_uuids);
   return BuildNonRewardConfirmation(transaction, /*user_data=*/{});
 }
 

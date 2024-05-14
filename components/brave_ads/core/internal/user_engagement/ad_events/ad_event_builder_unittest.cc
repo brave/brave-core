@@ -26,7 +26,7 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Act & Assert
   AdEventInfo expected_ad_event;
   expected_ad_event.type = AdType::kNotificationAd;
-  expected_ad_event.confirmation_type = ConfirmationType::kViewed;
+  expected_ad_event.confirmation_type = ConfirmationType::kViewedImpression;
   expected_ad_event.placement_id = kPlacementId;
   expected_ad_event.creative_instance_id = kCreativeInstanceId;
   expected_ad_event.creative_set_id = kCreativeSetId;
@@ -35,7 +35,8 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   expected_ad_event.segment = kSegment;
   expected_ad_event.created_at = Now();
   EXPECT_EQ(expected_ad_event,
-            BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()));
+            BuildAdEvent(ad, ConfirmationType::kViewedImpression,
+                         /*created_at=*/Now()));
 }
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
@@ -43,8 +44,8 @@ TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
 
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
   // Act & Assert
   AdEventInfo expected_rebuilt_ad_event;

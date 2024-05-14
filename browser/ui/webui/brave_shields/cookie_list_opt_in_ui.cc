@@ -21,6 +21,8 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/webui/web_ui_util.h"
 
 namespace {
 
@@ -34,7 +36,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 CookieListOptInUI::CookieListOptInUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   DCHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kBraveAdblockCookieListOptIn));
 

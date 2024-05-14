@@ -378,17 +378,25 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   private readonly createErrorFromCode = (
     code: TrezorErrorsCodes
   ): HardwareOperationResult => {
+    const deviceName = getLocale('braveWalletConnectHardwareTrezor')
+
     switch (code) {
       case TrezorErrorsCodes.BridgeNotReady:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeNotReady'),
+          error: getLocale('braveWalletBridgeNotReady').replace(
+            '$1',
+            deviceName
+          ),
           code: code
         }
       case TrezorErrorsCodes.CommandInProgress:
         return {
           success: false,
-          error: getLocale('braveWalletBridgeCommandInProgress'),
+          error: getLocale('braveWalletBridgeCommandInProgress').replace(
+            '$1',
+            deviceName
+          ),
           code: code
         }
     }

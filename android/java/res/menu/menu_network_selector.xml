@@ -13,10 +13,4 @@
       app:iconTint="@color/brave_wallet_day_night_toolbar_icon_color"
       android:title="@string/close"
       app:showAsAction="ifRoom" />
-
-  <item android:id="@+id/menu_add_network"
-      android:icon="@drawable/ic_plus"
-      app:iconTint="@color/brave_wallet_day_night_icon_color"
-      android:title="@string/brave_wallet_add_network"
-      app:showAsAction="never" />
 </menu>

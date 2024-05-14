@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.ChromeBackgroundServiceImpl;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.autofill.AutofillProfile;
 import org.chromium.components.autofill.FieldType;
 import org.chromium.components.autofill.Source;
@@ -145,8 +146,10 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
     }
 
     private void fillAddressAutoFill(Context context, Map<String, AutofillId> fields) {
-        ArrayList<AutofillProfile> profileList =
-                PersonalDataManager.getInstance().getProfilesToSuggest(true);
+        PersonalDataManager personalDataManager =
+                PersonalDataManagerFactory.getForProfile(
+                        ProfileManager.getLastUsedRegularProfile());
+        ArrayList<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest(true);
         FillResponse.Builder fillResponse = new FillResponse.Builder();
         if (profileList != null && !profileList.isEmpty()) {
             for (AutofillProfile profile : profileList) {
@@ -281,7 +284,11 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
                             fields, nodesMap, context.getResources().getString(R.string.country));
 
             AutofillAddress autofillAddress =
-                    new AutofillAddress(context, AutofillProfile.builder().build());
+                    new AutofillAddress(
+                            context,
+                            AutofillProfile.builder().build(),
+                            PersonalDataManagerFactory.getForProfile(
+                                    ProfileManager.getLastUsedRegularProfile()));
             AutofillProfile profile = autofillAddress.getProfile();
             profile.setSource(Source.ACCOUNT);
             profile.setInfo(FieldType.ADDRESS_HOME_COUNTRY, country);
@@ -294,7 +301,10 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
             profile.setInfo(FieldType.ADDRESS_HOME_ZIP, postalCode);
             profile.setInfo(FieldType.ADDRESS_HOME_STATE, state);
 
-            profile.setGUID(PersonalDataManager.getInstance().setProfileToLocal(profile));
+            PersonalDataManager personalDataManager =
+                    PersonalDataManagerFactory.getForProfile(
+                            ProfileManager.getLastUsedRegularProfile());
+            profile.setGUID(personalDataManager.setProfileToLocal(profile));
             autofillAddress.updateAddress(profile);
         }
         mSaveCallback.onSuccess();
@@ -343,7 +353,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
         // First try the explicit autofill hints...
 
         String[] hints = node.getAutofillHints();
-        if (hints != null && hints.length > 0) {
+        if (hints != null && hints.length > 0 && hints[0] != null && !hints[0].isEmpty()) {
             return hints[0].toLowerCase(Locale.getDefault());
         }
 

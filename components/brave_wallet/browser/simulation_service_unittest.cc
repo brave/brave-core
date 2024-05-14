@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -210,9 +211,9 @@ TEST_F(SimulationServiceUnitTest, GetScanTransactionURL) {
             "transactions?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kGoerliChainId, mojom::CoinType::ETH, "en-US");
+      mojom::kSepoliaChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
-            "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/"
+            "https://blowfish.wallet.brave.com/ethereum/v0/sepolia/scan/"
             "transactions?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
@@ -222,7 +223,7 @@ TEST_F(SimulationServiceUnitTest, GetScanTransactionURL) {
             "transactions?language=en-US");
 
   url = simulation_service_->GetScanTransactionURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
+      mojom::kBnbSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
             "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
             "transactions?language=en-US");
@@ -265,10 +266,10 @@ TEST_F(SimulationServiceUnitTest, GetScanMessageURL) {
             "https://blowfish.wallet.brave.com/ethereum/v0/mainnet/scan/"
             "message?language=en-US");
 
-  url = simulation_service_->GetScanMessageURL(mojom::kGoerliChainId,
+  url = simulation_service_->GetScanMessageURL(mojom::kSepoliaChainId,
                                                mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
-            "https://blowfish.wallet.brave.com/ethereum/v0/goerli/scan/"
+            "https://blowfish.wallet.brave.com/ethereum/v0/sepolia/scan/"
             "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(mojom::kPolygonMainnetChainId,
@@ -278,7 +279,7 @@ TEST_F(SimulationServiceUnitTest, GetScanMessageURL) {
             "message?language=en-US");
 
   url = simulation_service_->GetScanMessageURL(
-      mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
+      mojom::kBnbSmartChainMainnetChainId, mojom::CoinType::ETH, "en-US");
   EXPECT_EQ(url,
             "https://blowfish.wallet.brave.com/bnb/v0/mainnet/scan/"
             "message?language=en-US");
@@ -393,7 +394,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
           l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK)));
 
   simulation_service_->ScanEVMTransaction(
-      GetCannedScanEVMTransactionParams(false, mojom::kOptimismMainnetChainId),
+      GetCannedScanEVMTransactionParams(false, mojom::kNeonEVMMainnetChainId),
       "en-US", callback.Get());
 
   task_environment_.RunUntilIdle();

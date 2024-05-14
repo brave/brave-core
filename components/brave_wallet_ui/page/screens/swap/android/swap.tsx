@@ -17,7 +17,6 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
-import * as Lib from '../../../../common/async/lib'
 
 // actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
@@ -29,7 +28,6 @@ import {
   default as BraveCoreThemeProvider
 } from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
-import { LibContext } from '../../../../common/context/lib.context'
 
 export function AndroidSwapApp() {
   return (
@@ -39,13 +37,11 @@ export function AndroidSwapApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <LibContext.Provider value={Lib}>
-            <Switch>
-              <Route>
-                <Swap />
-              </Route>
-            </Switch>
-          </LibContext.Provider>
+          <Switch>
+            <Route>
+              <Swap />
+            </Route>
+          </Switch>
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>

@@ -8,15 +8,16 @@
 
 #include <optional>
 
+#include "base/values.h"
+
 namespace brave_ads {
 
 struct ConfirmationInfo;
 struct TransactionInfo;
-struct UserDataInfo;
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const TransactionInfo& transaction,
-    const UserDataInfo& user_data);
+    base::Value::Dict user_data);
 
 }  // namespace brave_ads
 

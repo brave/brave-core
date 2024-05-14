@@ -6,6 +6,6 @@
 import Foundation
 
 extension Int {
-  static let regularWalletRecoveryPhraseNumber = 12
-  static let legacyWalletRecoveryPhraseNumber = 24
+  static let walletTwelveRecoveryPhraseNumber = 12
+  static let walletTwentyFourRecoveryPhraseNumber = 24
 }

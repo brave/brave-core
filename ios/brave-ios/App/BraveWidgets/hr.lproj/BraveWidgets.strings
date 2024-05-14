@@ -1,0 +1,291 @@
+/* (No Comment) */
+"0W40Cl" = "Nova kartica";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Sljedeći broj mogućnosti: ${count} podudara se s „Procij. ušt. vremena”.";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Sljedeći broj mogućnosti: ${count} podudara se s „Procij. smanj. br. pod.”.";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Sljedeći broj mogućnosti: ${count} podudara se s „Br. blokiranih oglasa.”.";
+
+/* (No Comment) */
+"7Ds8rk" = "Omiljena konfiguracija zaključanog zaslona";
+
+/* (No Comment) */
+"7JYzOv" = "Vrsta";
+
+/* (No Comment) */
+"7MuqiB" = "Prečac";
+
+/* (No Comment) */
+"8pcZ6L" = "Omiljena miniaplikacija zaključanog zaslona";
+
+/* (No Comment) */
+"8vyYRy" = "#3";
+
+/* (No Comment) */
+"9E2oRR" = "#1";
+
+/* (No Comment) */
+"AGMpus" = "Konfiguracija prečaca";
+
+/* (No Comment) */
+"bUXzTx" = "Vrsta statistike";
+
+/* (No Comment) */
+"crhbMy" = "Knjižne oznake";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
+
+/* (No Comment) */
+"EUS9FL" = "Prečac miniaplikacije";
+
+/* (No Comment) */
+"FGO5qW" = "Popis za reprodukciju Brave";
+
+/* (No Comment) */
+"gpCwrM" = "Konfiguracija statistike";
+
+/* (No Comment) */
+"hssb67" = "Konfiguracija miniaplikacije prečaca";
+
+/* (No Comment) */
+"iB2TOM" = "Omiljeni upis";
+
+/* (No Comment) */
+"joEZJM" = "#2";
+
+/* (No Comment) */
+"jXiFQY" = "Novčanik Brave";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
+
+/* (No Comment) */
+"nthxSL" = "Preuzimanje";
+
+/* (No Comment) */
+"nXONef" = "Omiljeno";
+
+/* (No Comment) */
+"qKrzyX" = "Skeniraj kôd QR";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Možete li potvrditi jeste li htjeli „Procij. ušt. vremena”?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Možete li potvrditi jeste li htjeli „Procij. smanj. br. pod.”?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Možete li potvrditi jeste li htjeli „Br. blokiranih oglasa”?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
+
+/* (No Comment) */
+"tVvJ9c" = "Miniaplikacija konfiguracije statistike";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Sljedeći broj mogućnosti: ${count} podudara se s „Popis za reprodukciju preglednika Brave”.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novčanik Brave”.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Sljedeći broj mogućnosti: ${count} podudara se s „Preuzimanja”.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Sljedeći broj mogućnosti: ${count} podudara se s „Očitaj kôd QR”.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Sljedeći broj mogućnosti: ${count} podudara se s „Povijest”.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova privatna kartica”.";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Sljedeći broj mogućnosti: ${count} podudara se s „Novosti Brave”.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Sljedeći broj mogućnosti: ${count} podudara se s „Pretraživanje”.";
+
+/* (No Comment) */
+"tYwiRd" = "Procjena ušteđenog vremena";
+
+/* (No Comment) */
+"VBH4G6" = "Povijest";
+
+/* (No Comment) */
+"vjA5pZ" = "Procij. smanj. br. pod.";
+
+/* (No Comment) */
+"vs094F" = "Nova privatna kartica";
+
+/* (No Comment) */
+"xcI3h9" = "Oglasi su blokirani";
+
+/* (No Comment) */
+"XCyA8c" = "Novosti Brave";
+
+/* (No Comment) */
+"XkwBGY" = "Konfiguracija prečaca zaključanog zaslona";
+
+/* (No Comment) */
+"Y7TWy8" = "Pretraži";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Možete li potvrditi jeste li htjeli „Popis za reprodukciju preglednika Brave”?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Možete li potvrditi jeste li htjeli „Novčanik Brave”?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Možete li potvrditi jeste li htjeli „Preuzimanja”?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Možete li potvrditi jeste li htjeli „Očitaj kôd QR”?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Možete li potvrditi jeste li htjeli „Povijest”?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Možete li potvrditi jeste li htjeli „Nova privatna kartica”?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Možete li potvrditi jeste li htjeli „Novosti Brave”?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Možete li potvrditi jeste li htjeli „Pretraživanje”?";
+
+/* (No Comment) */
+"ziTvSZ" = "Konfiguracija miniaplikacije prečaca";
+

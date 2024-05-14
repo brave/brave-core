@@ -48,6 +48,7 @@ interface Props {
   isV2?: boolean
   disableAllAccountsOption?: boolean
   onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
+  dropdownPosition?: 'left' | 'right'
 }
 
 export const NetworkFilterSelector = ({
@@ -56,7 +57,8 @@ export const NetworkFilterSelector = ({
   selectedNetwork = AllNetworksOption,
   isV2,
   selectedAccount,
-  disableAllAccountsOption
+  disableAllAccountsOption,
+  dropdownPosition
 }: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] =
@@ -153,7 +155,7 @@ export const NetworkFilterSelector = ({
       </DropDownButton>
 
       {showNetworkFilter && (
-        <DropDown>
+        <DropDown dropdownPosition={dropdownPosition}>
           {primaryNetworks.map((network: BraveWallet.NetworkInfo) => (
             <NetworkFilterItem
               key={`${network.chainId + network.chainName}`}

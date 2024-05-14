@@ -35,7 +35,7 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 // be returned.
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
-    const std::string& passphrase);
+    const std::string& passphrase = "");
 // This is mainly used for restoring legacy brave crypto wallet
 std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
     const std::string& mnemonic);
@@ -196,6 +196,8 @@ mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
 void SetTransactionSimulationOptInStatus(
     PrefService* prefs,
     const mojom::BlowfishOptInStatus& status);
+
+bool IsRetriableStatus(mojom::TransactionStatus status);
 
 }  // namespace brave_wallet
 

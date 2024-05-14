@@ -101,8 +101,8 @@ function TopSitesList (props: Props) {
 
   useMaintainScrollPosition('grid-pages-container-scroll-position', gridPagesContainerRef)
 
-  const showPage = (e: CustomEvent<{ activeDot: number }>) => {
-    const el = gridPagesContainerRef.current?.children[e.detail.activeDot] as HTMLElement
+  const showPage = (e: { activeDot: number }) => {
+    const el = gridPagesContainerRef.current?.children[e.activeDot] as HTMLElement
     if (!el) return
 
     gridPagesContainerRef.current?.scrollTo({ left: el.offsetLeft, behavior: 'smooth' })

@@ -29,8 +29,7 @@ import {
 import PendingSignatureRequestsPanel from './pending_signature_requests_panel'
 
 const storyContextProps: WalletPanelStoryProps = {
-  panelStateOverride: {
-    selectedPanel: 'signTransaction',
+  walletApiDataOverrides: {
     signTransactionRequests: [
       mockSolDappSignTransactionRequest,
       mockSolDappSignTransactionRequest
@@ -38,9 +37,7 @@ const storyContextProps: WalletPanelStoryProps = {
     signAllTransactionsRequests: [
       mockSolDappSignAllTransactionsRequest,
       mockSolDappSignAllTransactionsRequest
-    ]
-  },
-  walletApiDataOverrides: {
+    ],
     transactionInfos: [
       deserializeTransaction(mockSolDappSignAndSendTransactionRequest),
       deserializeTransaction({

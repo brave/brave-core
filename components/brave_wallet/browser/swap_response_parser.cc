@@ -16,13 +16,15 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/swap_responses.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
 namespace {
 
-constexpr int kSwapValidationErrorCode = 100;
+constexpr char kSwapValidationErrorCode[] = "100";
 constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
@@ -169,21 +171,21 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
   //
   // {
-  // 	"code": 100,
+  // 	"code": "100",
   // 	"reason": "Validation Failed",
   // 	"validationErrors": [{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match pattern \"^\\d+$\""
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should be integer"
   // 		},
   // 		{
   // 			"field": "sellAmount",
-  // 			"code": 1001,
+  // 			"code": "1001",
   // 			"reason": "should match some schema in anyOf"
   // 		}
   // 	]
@@ -388,9 +390,12 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   auto result = mojom::BlockchainToken::New();
   result->name = value.name;
   result->symbol = value.symbol;
-  result->logo = value.logo_uri;
+  result->logo = value.logo_uri.value_or("");
   result->contract_address =
-      value.address == kLiFiNativeAssetContractAddress ? "" : value.address;
+      (value.address == kLiFiNativeEVMAssetContractAddress ||
+       value.address == kLiFiNativeSVMAssetContractAddress)
+          ? ""
+          : value.address;
 
   if (!base::StringToInt(value.decimals, &result->decimals)) {
     return nullptr;
@@ -425,6 +430,10 @@ std::optional<mojom::LiFiStepType> ParseStepType(const std::string& value) {
     return mojom::LiFiStepType::kNative;
   }
 
+  if (value == "protocol") {
+    return mojom::LiFiStepType::kProtocol;
+  }
+
   return std::nullopt;
 }
 
@@ -451,15 +460,18 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
   result->to_amount_min = value.to_amount_min;
   result->approval_address = value.approval_address;
 
-  for (const auto& fee_cost_value : value.fee_costs) {
-    auto fee_cost = mojom::LiFiFeeCost::New();
-    fee_cost->name = fee_cost_value.name;
-    fee_cost->description = fee_cost_value.description;
-    fee_cost->percentage = fee_cost_value.percentage;
-    fee_cost->token = ParseToken(fee_cost_value.token);
-    fee_cost->amount = fee_cost_value.amount;
-    fee_cost->included = fee_cost_value.included;
-    result->fee_costs.push_back(std::move(fee_cost));
+  if (value.fee_costs) {
+    result->fee_costs.emplace(std::vector<mojom::LiFiFeeCostPtr>());
+    for (const auto& fee_cost_value : *value.fee_costs) {
+      auto fee_cost = mojom::LiFiFeeCost::New();
+      fee_cost->name = fee_cost_value.name;
+      fee_cost->description = fee_cost_value.description;
+      fee_cost->percentage = fee_cost_value.percentage;
+      fee_cost->token = ParseToken(fee_cost_value.token);
+      fee_cost->amount = fee_cost_value.amount;
+      fee_cost->included = fee_cost_value.included;
+      result->fee_costs->push_back(std::move(fee_cost));
+    }
   }
 
   for (const auto& gas_cost_value : value.gas_costs) {
@@ -584,7 +596,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       !value->transaction_request.value &&
       !value->transaction_request.gas_price &&
       !value->transaction_request.gas_limit &&
-      !value->transaction_request.chain_id) {
+      !value->transaction_request.chain_id.has_value()) {
     return mojom::LiFiTransactionUnion::NewSolanaTransaction(
         value->transaction_request.data);
   }
@@ -608,7 +620,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       value->transaction_request.gas_limit->empty() ||
 
       !value->transaction_request.chain_id ||
-      value->transaction_request.chain_id->empty()) {
+      !value->transaction_request.chain_id.has_value()) {
     return nullptr;
   }
 
@@ -620,7 +632,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
   evm_transaction->gas_price = value->transaction_request.gas_price.value();
   evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
 
-  if (value->transaction_request.chain_id) {
+  if (value->transaction_request.chain_id.has_value()) {
     auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
     if (!chain_id) {
       return nullptr;
@@ -632,6 +644,112 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       std::move(evm_transaction));
 }
 
+mojom::LiFiErrorCode ParseLiFiErrorCode(
+    const std::optional<std::string>& value) {
+  if (!value) {
+    return mojom::LiFiErrorCode::kSuccess;
+  }
+
+  if (value == "1000") {
+    return mojom::LiFiErrorCode::kDefaultError;
+  }
+  if (value == "1001") {
+    return mojom::LiFiErrorCode::kFailedToBuildTransactionError;
+  }
+  if (value == "1002") {
+    return mojom::LiFiErrorCode::kNoQuoteError;
+  }
+  if (value == "1003") {
+    return mojom::LiFiErrorCode::kNotFoundError;
+  }
+  if (value == "1004") {
+    return mojom::LiFiErrorCode::kNotProcessableError;
+  }
+  if (value == "1005") {
+    return mojom::LiFiErrorCode::kRateLimitError;
+  }
+  if (value == "1006") {
+    return mojom::LiFiErrorCode::kServerError;
+  }
+  if (value == "1007") {
+    return mojom::LiFiErrorCode::kSlippageError;
+  }
+  if (value == "1008") {
+    return mojom::LiFiErrorCode::kThirdPartyError;
+  }
+  if (value == "1009") {
+    return mojom::LiFiErrorCode::kTimeoutError;
+  }
+  if (value == "1010") {
+    return mojom::LiFiErrorCode::kUnauthorizedError;
+  }
+  if (value == "1011") {
+    return mojom::LiFiErrorCode::kValidationError;
+  }
+
+  return mojom::LiFiErrorCode::kDefaultError;
+}
+
+mojom::LifiToolErrorCode ParseLiFiToolErrorCode(const std::string& value) {
+  // No route was found for this action.
+  if (value == "NO_POSSIBLE_ROUTE") {
+    return mojom::LifiToolErrorCode::kNoPossibleRoute;
+  }
+
+  // The tool's liquidity is insufficient.
+  if (value == "INSUFFICIENT_LIQUIDITY") {
+    return mojom::LifiToolErrorCode::kInsufficientLiquidity;
+  }
+
+  // The third-party tool timed out.
+  if (value == "TOOL_TIMEOUT") {
+    return mojom::LifiToolErrorCode::kToolTimeout;
+  }
+
+  // An unknown error occurred.
+  if (value == "UNKNOWN_ERROR") {
+    return mojom::LifiToolErrorCode::kUnknownError;
+  }
+
+  // There was a problem getting on-chain data. Please try again later.
+  if (value == "RPC_ERROR") {
+    return mojom::LifiToolErrorCode::kRpcError;
+  }
+
+  // The initial amount is too low to transfer using this tool.
+  if (value == "AMOUNT_TOO_LOW") {
+    return mojom::LifiToolErrorCode::kAmountTooLow;
+  }
+
+  // The initial amount is too high to transfer using this tool.
+  if (value == "AMOUNT_TOO_HIGH") {
+    return mojom::LifiToolErrorCode::kAmountTooHigh;
+  }
+
+  // The fees are higher than the initial amount -- this would result in
+  // negative resulting token.
+  if (value == "FEES_HIGHER_THAN_AMOUNT" || value == "FEES_HGHER_THAN_AMOUNT") {
+    return mojom::LifiToolErrorCode::kFeesHigherThanAmount;
+  }
+
+  // This tool does not support different recipient addresses.
+  if (value == "DIFFERENT_RECIPIENT_NOT_SUPPORTED") {
+    return mojom::LifiToolErrorCode::kDifferentRecipientNotSupported;
+  }
+
+  // The third-party tool returned an error.
+  if (value == "TOOL_SPECIFIC_ERROR") {
+    return mojom::LifiToolErrorCode::kToolSpecificError;
+  }
+
+  // The tool cannot guarantee that the minimum amount will be met.
+  if (value == "CANNOT_GUARANTEE_MIN_AMOUNT") {
+    return mojom::LifiToolErrorCode::kCannotGuaranteeMinAmount;
+  }
+
+  return mojom::LifiToolErrorCode::kUnknownError;
+}
+
 mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
   auto value = swap_responses::LiFiErrorResponse::FromValue(json_value);
   if (!value) {
@@ -640,6 +758,8 @@ mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
 
   auto result = mojom::LiFiError::New();
   result->message = value->message;
+  result->code = ParseLiFiErrorCode(value->code);
+
   return result;
 }
 

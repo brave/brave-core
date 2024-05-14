@@ -11,6 +11,7 @@ import sys
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
+from dataclasses import dataclass
 
 import components.path_util as path_util
 from components.version import BraveVersion
@@ -76,6 +77,12 @@ def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
 def _FixUpUnpackedBrowser(out_dir: str):
   if sys.platform == 'darwin':
     GetProcessOutput(['xattr', '-cr', out_dir], check=True)
+
+
+@dataclass
+class FieldTrialConfig:
+  filename: str
+  revision: str
 
 
 class FieldTrialsMode(Enum):
@@ -145,8 +152,9 @@ class BrowserType:
                             out_dir: str, common_options: CommonOptions) -> str:
     raise NotImplementedError()
 
-  def MakeFieldTrials(self, version: Optional[BraveVersion], artifacts_dir: str,
-                      common_options: CommonOptions) -> Optional[str]:
+  def MakeFieldTrials(
+      self, version: Optional[BraveVersion], artifacts_dir: str,
+      common_options: CommonOptions) -> Optional[FieldTrialConfig]:
     if self.field_trials_mode != FieldTrialsMode.GRIFFIN:
       return None
     if version is None:
@@ -213,8 +221,9 @@ class BraveBrowserTypeImpl(BrowserType):
       DownloadFile(url, apk_filename)
       return apk_filename
 
-    brave_platform = ToBravePlatformName(target_os)
-    url = _GetBraveDownloadUrl(tag, f'brave-{tag}-{brave_platform}.zip')
+    if url is None:
+      brave_platform = ToBravePlatformName(target_os)
+      url = _GetBraveDownloadUrl(tag, f'brave-{tag}-{brave_platform}.zip')
     DownloadArchiveAndUnpack(out_dir, url)
     _FixUpUnpackedBrowser(out_dir)
 
@@ -222,7 +231,8 @@ class BraveBrowserTypeImpl(BrowserType):
 
 
 def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
-                            variations_repo_dir: str, branch: str) -> str:
+                            variations_repo_dir: str,
+                            branch: str) -> FieldTrialConfig:
   combined_version: str = version.combined_version()
   logging.debug('Generating trials for combined_version %s', combined_version)
   target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')
@@ -234,7 +244,20 @@ def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
       f'--target-version={combined_version}', '--target-channel=NIGHTLY'
   ]
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
-  return target_path
+
+  get_rev_args = [
+      'git',
+      'rev-list',
+      '-n',
+      '1',
+      '--first-parent',
+      f'--before={version.commit_date}',
+      f'origin/{branch}',
+  ]
+  _, rev = GetProcessOutput(get_rev_args, cwd=variations_repo_dir, check=True)
+  rev = rev.rstrip()
+
+  return FieldTrialConfig(target_path, rev)
 
 
 class ChromiumBrowserTypeImpl(BrowserType):

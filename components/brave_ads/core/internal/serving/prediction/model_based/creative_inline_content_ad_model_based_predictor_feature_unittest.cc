@@ -282,36 +282,4 @@ TEST(BraveAdsCreativeInlineContentAdModelBasedPredictorFeatureTest,
   EXPECT_DOUBLE_EQ(1.0, kInlineContentAdLastSeenPredictorWeight.Get());
 }
 
-TEST(BraveAdsCreativeInlineContentAdModelBasedPredictorFeatureTest,
-     LastSeenAdvertiserAdPredictorWeight) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kCreativeInlineContentAdModelBasedPredictorFeature,
-      {{"last_seen_advertiser_predictor_weight", "0.5"}});
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(0.5,
-                   kInlineContentAdLastSeenAdvertiserPredictorWeight.Get());
-}
-
-TEST(BraveAdsCreativeInlineContentAdModelBasedPredictorFeatureTest,
-     DefaultLastSeenAdvertiserAdPredictorWeight) {
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0,
-                   kInlineContentAdLastSeenAdvertiserPredictorWeight.Get());
-}
-
-TEST(BraveAdsCreativeInlineContentAdModelBasedPredictorFeatureTest,
-     DefaultLastSeenAdvertiserAdPredictorWeightWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      kCreativeInlineContentAdModelBasedPredictorFeature);
-
-  // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0,
-                   kInlineContentAdLastSeenAdvertiserPredictorWeight.Get());
-}
-
 }  // namespace brave_ads

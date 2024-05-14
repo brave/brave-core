@@ -126,6 +126,13 @@ RegisterPolymerTemplateModifications({
     } else {
       customizeFontsSubpageTrigger.remove()
     }
+    const customizeFontsTemplate = templateContent.querySelector(
+        'template[is=dom-if][route-path="/fonts"]')
+    if (!customizeFontsTemplate) {
+      console.error(`[Brave Settings Overrides] Couldn't find customize fonts subpage template`)
+    } else {
+      customizeFontsTemplate.remove()
+    }
     const pageZoom = templateContent.querySelector('.cr-row:has(#pageZoom)')
     if (!pageZoom) {
       console.error(`[Brave Settings Overrides] Couldn't find page zoom`)
@@ -161,16 +168,33 @@ RegisterPolymerTemplateModifications({
     }
     // </if>
 
-    // Remove show images on tab hover toggle as we already have a settings for
-    // this in the Tabs settings.
-    const hoverCardImagesTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[showHoverCardImagesOption_]]"]')
-    if (!hoverCardImagesTemplate) {
+    // Remove show images on tab hover toggle and tab memory usage toggle as we
+    // already have settings for these in the Tabs settings.
+    const hoverCardImagesTemplateNotShow = templateContent.querySelector(
+      'template[is=dom-if][if="[[!showHoverCardImagesOption_]]"]')
+    if (!hoverCardImagesTemplateNotShow) {
       console.error(
         '[Brave Settings Overrides] Appearance Page cannot find hover card' +
-        ' images template')
+        ' images template with !showHoverCardImagesOption_')
     } else {
-      hoverCardImagesTemplate.remove()
+      hoverCardImagesTemplateNotShow.remove()
+    }
+    const hoverCardImagesTemplateShow = templateContent.querySelector(
+      'template[is=dom-if][if="[[showHoverCardImagesOption_]]"]')
+    if (!hoverCardImagesTemplateShow) {
+      console.error(
+        '[Brave Settings Overrides] Appearance Page cannot find hover card' +
+        ' images template with showHoverCardImagesOption_')
+    } else {
+      hoverCardImagesTemplateShow.remove()
+    }
+    const colorSchemeModeRow = templateContent.getElementById(
+      'colorSchemeModeRow')
+    if (!colorSchemeModeRow) {
+      console.error(
+          `[Brave Settings Overrides] Couldn't find colorSchemeModeRow`)
+    } else {
+      colorSchemeModeRow.remove()
     }
   },
 })

@@ -15,6 +15,9 @@ class SearchEngineTracker;
 
 namespace misc_metrics {
 
+inline constexpr char kBraveCoreIsDefaultHistogramName[] =
+    "Brave.Core.IsDefault";
+
 class ProcessMiscMetrics;
 
 class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
@@ -35,6 +38,7 @@ class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
   void RecordLocationBarChange(bool is_new_tab, bool is_search_query) override;
   void RecordAppMenuNewTab() override;
   void RecordTabSwitcherNewTab() override;
+  void RecordSetAsDefault(bool is_default) override;
 
  private:
   raw_ptr<ProcessMiscMetrics> misc_metrics_;

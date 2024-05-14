@@ -9,7 +9,8 @@
 #include <string_view>
 
 #include "base/big_endian.h"
-#include "base/sys_byteorder.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 
@@ -21,6 +22,7 @@ namespace {
 constexpr char kTransparentHashPersonalizer[] = "ZTxIdTranspaHash";
 constexpr char kSaplingHashPersonalizer[] = "ZTxIdSaplingHash";
 constexpr char kOrchardHashPersonalizer[] = "ZTxIdOrchardHash";
+constexpr char kTxHashPersonalizerPrefix[] = "ZcashTxHash_";
 
 constexpr uint32_t kV5TxVersion = 5 | 1 << 31 /* overwintered bit */;
 // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
@@ -29,10 +31,15 @@ constexpr uint32_t kConsensusBranchId = 0xC2D6D0B4;
 
 // https://zips.z.cash/zip-0244#txid-digest-1
 std::string GetTxHashPersonalizer() {
-  uint32_t consensus = base::ByteSwapToLE32(kConsensusBranchId);
-  std::string personalizer("ZcashTxHash_");
-  personalizer.append(reinterpret_cast<const char*>(&consensus),
-                      sizeof(kConsensusBranchId));
+  std::string personalizer(kTxHashPersonalizerPrefix);
+
+  personalizer.append(sizeof(kConsensusBranchId), '\0');
+  base::as_writable_byte_span(personalizer)
+      .subspan<std::string(kTxHashPersonalizerPrefix).size(),
+               sizeof(kConsensusBranchId)>()
+      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
+          base::byte_span_from_ref(kConsensusBranchId))));
+
   return personalizer;
 }
 

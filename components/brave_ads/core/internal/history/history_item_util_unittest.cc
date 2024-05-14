@@ -41,14 +41,15 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   expected_history_item.ad_content.brand_display_url = ad.target_url.host();
   expected_history_item.ad_content.brand_url = ad.target_url;
   expected_history_item.ad_content.confirmation_type =
-      ConfirmationType::kViewed;
+      ConfirmationType::kViewedImpression;
   expected_history_item.ad_content.user_reaction_type =
       mojom::UserReactionType::kNeutral;
   expected_history_item.category_content.category = ad.segment;
   expected_history_item.category_content.user_reaction_type =
       mojom::UserReactionType::kNeutral;
   EXPECT_EQ(expected_history_item,
-            BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body));
+            BuildHistoryItem(ad, ConfirmationType::kViewedImpression, ad.title,
+                             ad.body));
 }
 
 }  // namespace brave_ads

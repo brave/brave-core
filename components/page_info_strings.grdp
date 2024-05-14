@@ -145,7 +145,7 @@
   <if expr="not is_ios">
 
     <!-- Certificate exception decision UI (after clicking through an SSL certificate error) -->
-    <!-- TODO(crbug.com/502473): Support revoking certificate overrides on iOS Page Info. -->
+    <!-- TODO(crbug.com/41183997): Support revoking certificate overrides on iOS Page Info. -->
     <message name="IDS_PAGE_INFO_INVALID_CERTIFICATE_DESCRIPTION" desc="A short paragraph to the user that security warnings are disabled. This is the case when the user has encountered a certificate error for the current site and chosen to override it.">
       You have chosen to turn off security warnings for this site.
     </message>
@@ -404,6 +404,9 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_CAMERA_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the camera permission is in the ask state and the site can prompt the user to ask if they allow the site to use their camera.">
       Can ask to use your camera
     </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_CAPTURED_SURFACE_CONTROL_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the scroll and zoom permission is in the ask state and the site can prompt the user to ask if they allow the site to scroll and zoom shared tabs.">
+      Can ask to scroll and zoom shared tabs
+    </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_CAMERA_PAN_TILT_ZOOM_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the camera and movement permission is in the ask state and the site can prompt the user to ask if they allow the site to use and move their camera.">
       Can ask to use &amp; move your camera
     </message>
@@ -494,6 +497,25 @@
     </message>
     <message name="IDS_PAGE_INFO_SITE_SETTINGS_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_SITE_SETTINGS_LINK.">
       Go to site settings
+    </message>
+
+    <!-- Link to guide users to system settings. -->
+    <if expr="is_macosx">
+      <message name="IDS_PAGE_INFO_SYSTEM_SETTINGS_LINK" desc="This is the text of the link pointing to macOS's System Settings. This sometimes appears under the notification permission in the Page Info bubble.">
+        System Settings
+      </message>
+      <message name="IDS_PAGE_INFO_NOTIFICATIONS_SYSTEM_SETTINGS_DESCRIPTION" desc="The description for the notifications permission with a link to macOS's System Settings.">
+        Enable notifications in the Notification Center. Open <ph name="LINK">$1<ex>System Settings</ex></ph>.
+      </message>
+    </if>
+    <message name="IDS_PAGE_INFO_CAMERA_SYSTEM_SETTINGS_DESCRIPTION" desc="The description for the camera permission with a link to system settings.">
+        To use your camera, give Brave access in <ph name="LINK">$1<ex>system settings</ex></ph>.
+    </message>
+    <message name="IDS_PAGE_INFO_MICROPHONE_SYSTEM_SETTINGS_DESCRIPTION" desc="The description for the microphone permission with a link to system settings.">
+        To use your microphone, give Brave access in <ph name="LINK">$1<ex>system settings</ex></ph>.
+    </message>
+    <message name="IDS_PAGE_INFO_SETTINGS_OF_A_SYSTEM_LINK" desc="This is the text of the link pointing to settings of a system. This appears under a permission in the Page Info bubble if the permission is blocked on the system level.">
+        system settings
     </message>
 
     <!-- Permission decision strings -->
@@ -816,6 +838,12 @@
     This site is flagged by your organization
   </message>
   <message name="IDS_PAGE_INFO_ENTERPRISE_WARN_DETAILS" desc="A more detailed summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been flagged by your admin to show a warning">
+    Your organization has flagged this site as it might violate a policy.
+  </message>
+  <message name="IDS_PAGE_INFO_ENTERPRISE_BLOCK_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been blocked by your admin">
+    This site is blocked by your organization
+  </message>
+  <message name="IDS_PAGE_INFO_ENTERPRISE_BLOCK_DETAILS" desc="A more detailed summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been blocked by your admin">
     Your organization has blocked this site because it violates a policy.
   </message>
 

@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_FEATURES_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_FEATURES_H_
 
+#include <string>
+
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace features {
 
@@ -14,7 +17,9 @@ BASE_DECLARE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore);
 BASE_DECLARE_FEATURE(kBraveCopyCleanLinkByDefault);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveWebViewRoundedCorners);
+
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
+extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;
 
 }  // namespace features
 

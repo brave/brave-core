@@ -27,9 +27,9 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    this.onSelectedTabChangedCallback_ = this.onSelectedTabChanged_.bind(this);
-    this.$.tabs.addEventListener('selected-item-changed',
-      this.onSelectedTabChangedCallback_);
+    this.onSelectedPageChangedCallback_ = this.onSelectedPageChanged_.bind(this);
+    this.$.pages.addEventListener('selected-item-changed',
+      this.onSelectedPageChangedCallback_);
 
     this.updateSaveButtonStateCallback_ = this.updateSaveButtonState_.bind(this);
     this.shadowRoot.querySelector('#on-exit-tab').addEventListener(
@@ -43,10 +43,10 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
   override disconnectedCallback() {
     super.disconnectedCallback()
 
-    if (this.onSelectedTabChangedCallback_) {
-      this.$.tabs.removeEventListener('selected-item-changed',
-        this.onSelectedTabChangedCallback_);
-      this.onSelectedTabChangedCallback_ = null;
+    if (this.onSelectedPageChangedCallback_) {
+      this.$.pages.removeEventListener('selected-item-changed',
+        this.onSelectedPageChangedCallback_);
+      this.onSelectedPageChangedCallback_ = null;
     }
 
     if (this.saveOnExitSettingsCallback_) {
@@ -62,7 +62,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
     }
   }
 
-  private onSelectedTabChangedCallback_: (() => void) | null = null
+  private onSelectedPageChangedCallback_: (() => void) | null = null
   private updateSaveButtonStateCallback_: (() => void) | null = null
   private saveOnExitSettingsCallback_: (() => void) | null = null
 
@@ -84,14 +84,14 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
    * Updates Clear and Save buttons visibility based on the selected tab.
    * @private
    */
-  onSelectedTabChanged_() {
-    const tab = this.$.tabs.selectedItem;
-    if (!tab) {
+  onSelectedPageChanged_() {
+    const page = this.$.pages.selectedItem;
+    if (!page) {
       return;
     }
-    const isOnExitTab = (tab.id === 'on-exit-tab');
-    this.$.clearBrowsingDataConfirm.hidden = isOnExitTab;
-    this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').hidden = !isOnExitTab;
+    const isOnExitPage = (page.id === 'on-exit-tab');
+    this.$.clearBrowsingDataConfirm.hidden = isOnExitPage;
+    this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').hidden = !isOnExitPage;
   }
 
   /**

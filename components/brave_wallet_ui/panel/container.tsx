@@ -46,8 +46,12 @@ import {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSignMessageErrorsQuery,
+  useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
-  useGetPendingTokenSuggestionRequestsQuery
+  useGetPendingSignAllTransactionsRequestsQuery,
+  useGetPendingTokenSuggestionRequestsQuery,
+  useGetPendingSignTransactionRequestsQuery
 } from '../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -83,26 +87,16 @@ function Container() {
   const hardwareWalletCode = useSafePanelSelector(
     PanelSelectors.hardwareWalletCode
   )
-  const selectedTransactionId = useSafePanelSelector(
-    PanelSelectors.selectedTransactionId
-  )
 
   // panel selectors (unsafe)
+  const selectedTransactionId = useUnsafePanelSelector(
+    PanelSelectors.selectedTransactionId
+  )
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
-  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
-  )
-  const signMessageErrorData = useUnsafePanelSelector(
-    PanelSelectors.signMessageErrorData
-  )
-  const signTransactionRequests = useUnsafePanelSelector(
-    PanelSelectors.signTransactionRequests
-  )
-  const signAllTransactionsRequests = useUnsafePanelSelector(
-    PanelSelectors.signAllTransactionsRequests
   )
 
   // queries & mutations
@@ -113,6 +107,12 @@ function Container() {
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
   const { data: getEncryptionPublicKeyRequest } =
     useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const { data: signTransactionRequests } =
+    useGetPendingSignTransactionRequestsQuery()
+  const { data: signAllTransactionsRequests } =
+    useGetPendingSignAllTransactionsRequestsQuery()
+  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
+  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
@@ -172,12 +172,12 @@ function Container() {
   }
 
   if (
+    selectedPanel === 'connectHardwareWallet' &&
     selectedAccount &&
     (selectedPendingTransaction ||
-      signMessageData.length ||
-      signAllTransactionsRequests.length ||
-      signTransactionRequests.length) &&
-    selectedPanel === 'connectHardwareWallet'
+      signMessageData?.length ||
+      signAllTransactionsRequests?.length ||
+      signTransactionRequests?.length)
   ) {
     return (
       <PanelWrapper isLonger={false}>
@@ -211,7 +211,7 @@ function Container() {
     )
   }
 
-  if (signMessageErrorData.length !== 0) {
+  if (signMessageErrorData?.length) {
     return (
       <PanelWrapper>
         <SignInWithEthereumError />
@@ -239,7 +239,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'signData') {
+  if (signMessageData?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
@@ -267,7 +267,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <TransactionStatus transactionId={selectedTransactionId} />
+          <TransactionStatus transactionLookup={selectedTransactionId} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -288,21 +288,13 @@ function Container() {
     )
   }
 
-  if (
-    (signAllTransactionsRequests.length > 0 ||
-      signTransactionRequests.length > 0) &&
-    (selectedPanel === 'signTransaction' ||
-      selectedPanel === 'signAllTransactions')
-  ) {
+  if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <PendingSignatureRequestsPanel
             signMode={
-              signAllTransactionsRequests.length ||
-              selectedPanel === 'signAllTransactions'
-                ? 'signAllTxs'
-                : 'signTx'
+              signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'
             }
           />
         </LongWrapper>

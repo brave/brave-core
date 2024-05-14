@@ -32,6 +32,7 @@ brave_bytecode_jars = [
   "obj/chrome/browser/search_engines/android/java.javac.jar",
   "obj/chrome/browser/site_settings/android/java.javac.jar",
   "obj/chrome/browser/tab_group/java.javac.jar",
+  "obj/chrome/browser/tab_ui/android/java.javac.jar",
   "obj/chrome/browser/ui/android/appmenu/internal/java.javac.jar",
   "obj/chrome/browser/ui/android/logo/java.javac.jar",
   "obj/chrome/browser/ui/android/omnibox/java.javac.jar",
@@ -40,10 +41,12 @@ brave_bytecode_jars = [
   "obj/chrome/browser/ui/android/toolbar/java.javac.jar",
   "obj/components/browser_ui/notifications/android/java.javac.jar",
   "obj/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/components/embedder_support/android/content_view_java.javac.jar",
   "obj/components/external_intents/android/java.javac.jar",
   "obj/components/permissions/android/java.javac.jar",
   "obj/components/sync/android/sync_java.javac.jar",
   "obj/components/variations/android/variations_java.javac.jar",
+  "obj/chrome/browser/language/android/base_module_java.javac.jar",
 ]
 
 template("brave_bytecode_rewriter") {

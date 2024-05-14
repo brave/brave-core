@@ -88,8 +88,8 @@
 		<string>OpenWebsiteIntent</string>
 		<string>ShortcutsConfigurationIntent</string>
 		<string>StatsConfigurationIntent</string>
-		<string>com.brave.ios.browsing</string>
 		<string>com.brave.ios.browser-scene</string>
+		<string>com.brave.ios.browsing</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

@@ -88,7 +88,7 @@ struct Filters {
     Preferences.Wallet.nonSelectedAccountsFilter.value =
       accounts
       .filter({ !$0.isSelected })
-      .map(\.model.address)
+      .map(\.model.id)
     Preferences.Wallet.nonSelectedNetworksFilter.value =
       networks
       .filter({ !$0.isSelected })
@@ -130,11 +130,10 @@ struct FiltersDisplaySettingsView: View {
   /// Returns true if all visible networks are selected
   var allNetworksSelected: Bool {
     networks
-      .filter {
-        if !Preferences.Wallet.showTestNetworks.value {
-          return !WalletConstants.supportedTestNetworkChainIds.contains($0.model.chainId)
+      .filter { network in
+        !networkStore.hiddenChains.contains { hiddenChain in
+          hiddenChain.chainId == network.model.chainId
         }
-        return true
       }
       .allSatisfy(\.isSelected)
   }

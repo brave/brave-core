@@ -10,7 +10,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 
@@ -32,10 +32,11 @@ BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 void BraveSidePanelCoordinator::Show(
     std::optional<SidePanelEntry::Id> entry_id,
     std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
-  // Choose Brave's own default, and exclude items that user has removed
+  // If user clicks sidebar toolbar button, |entry_id| is null.
+  // Then, choose Brave's own default, and exclude items that user has removed
   // from sidebar. If none are enabled, do nothing.
   auto* profile = browser_view_->GetProfile();
-  if (!entry_id.has_value() && !GetLastActiveEntryKey()) {
+  if (!entry_id) {
     // Early return as user removes all default panel entries.
     auto default_entry_id = GetDefaultEntryId(profile);
     if (!default_entry_id.has_value()) {

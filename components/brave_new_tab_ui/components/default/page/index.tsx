@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
 import { defaultState } from '../../../storage/new_tab_storage'
-import { spacing } from '@brave/leo/tokens/css'
+import { spacing } from '@brave/leo/tokens/css/variables'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
@@ -110,7 +110,7 @@ const StyledPage = styled('div') <PageProps>`
   }
 `
 
-export const Page: React.FunctionComponent<PageProps> = (props) => {
+export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> = (props) => {
   // Note(petemill): When we scroll to the bottom, if there's an
   // extra scroll area (Brave News) then we "sticky" the Page at
   // the bottom scroll and overlay the extra content on top.

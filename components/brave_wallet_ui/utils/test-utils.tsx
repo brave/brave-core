@@ -113,7 +113,7 @@ export function renderHookOptionsWithMockStore(
   store: ReturnType<typeof createMockStore>
 ) {
   return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
       <Provider store={store}>{children}</Provider>
     )
   }

@@ -25,7 +25,7 @@ CreativeSetConversionInfo::~CreativeSetConversionInfo() = default;
 
 bool CreativeSetConversionInfo::IsValid() const {
   return !id.empty() && !url_pattern.empty() &&
-         !observation_window.is_negative() && !expire_at.is_null();
+         !observation_window.is_negative() && expire_at;
 }
 
 }  // namespace brave_ads

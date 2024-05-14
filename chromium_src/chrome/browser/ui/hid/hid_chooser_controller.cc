@@ -22,10 +22,10 @@ std::u16string BraveCreateTitleLabel() {
 
 }  // namespace
 
-#define CreateChooserTitle                         \
-  brave_wallet::IsBraveWalletOrigin(               \
-      render_frame_host->GetLastCommittedOrigin()) \
-      ? BraveCreateTitleLabel()                    \
+#define CreateChooserTitle                                                  \
+  brave_wallet::IsBraveWalletOrigin(                                        \
+      render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin()) \
+      ? BraveCreateTitleLabel()                                             \
       : CreateChooserTitle
 #include "src/chrome/browser/ui/hid/hid_chooser_controller.cc"
 #undef CreateChooserTitle

@@ -25,6 +25,8 @@ void OpenURL(const std::string& url);
 // Handles voice recognition for a prompt
 void HandleVoiceRecognition(content::WebContents* web_contents,
                             content::WebContents* context_web_contents);
+// Closes Leo chat window
+void CloseActivity(content::WebContents* web_contents);
 
 }  // namespace ai_chat
 

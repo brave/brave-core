@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Icons
@@ -171,13 +171,13 @@ export const SelectTimelineWrapper = styled(Row)`
   }
 `
 
-export const ControlsRow = styled(Row)`
-  box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.02);
+export const ControlsRow = styled(Row)<{ controlsHidden?: boolean }>`
+  box-shadow: 0px -1px 1px ${leo.color.elevation.primary};
   border-radius: 16px 16px 0px 0px;
-  padding: 24px 16px;
+  padding: ${(p) => (p.controlsHidden ? '12px' : '24px 32px')};
   background-color: ${leo.color.container.background};
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 16px;
+    padding: ${(p) => (p.controlsHidden ? '8px' : '16px')};
   }
 `
 
@@ -253,7 +253,7 @@ export const ControlBarWrapper = styled(Row)<{
   margin-bottom: 16px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: ${(p) => (p.showSearchBar ? (p.isNFTView ? '2px' : '0px') : '4px')}
-      24px 0px 24px;
+      16px 0px 16px;
     margin-bottom: ${(p) => (p.showSearchBar ? 12 : 16)}px;
   }
 `

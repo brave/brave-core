@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/user_script_manager.h b/extensions/browser/user_script_manager.h
-index c4e2908d85e41a717462c6377ceb58a4624846d6..693afcacfa02d813995048224b31c3cf21043ad6 100644
+index faaf3db52b3e6795764dcc5cc5569e850ac09669..e59c71cfeff766dd38dd41ac2b158bd6bf6836dd 100644
 --- a/extensions/browser/user_script_manager.h
 +++ b/extensions/browser/user_script_manager.h
 @@ -25,7 +25,7 @@

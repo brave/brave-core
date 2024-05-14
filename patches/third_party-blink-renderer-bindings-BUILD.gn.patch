@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index 3607b9fbad0a23513080a5f5c7c26d0dfeb0d5e7..496e6d6931b8b6a801e5a16575a676c741cd44e7 100644
+index b1c8a6458c7c73d3cf82ad9fc50b889fe94af5b7..3d45b3a72d9b317a2f9db382129ae83176ef0882 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
-@@ -173,6 +173,7 @@ template("generate_bindings") {
+@@ -196,6 +196,7 @@ template("generate_bindings") {
      args += invoker.targets
  
      deps = [ ":web_idl_database" ]

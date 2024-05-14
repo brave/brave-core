@@ -130,7 +130,7 @@ class OnionLocationButtonView : public views::LabelButton {
       content::OpenURLParams open_tor(onion_location_, content::Referrer(),
                                       WindowOpenDisposition::SWITCH_TO_TAB,
                                       ui::PAGE_TRANSITION_TYPED, false);
-      tor_browser->OpenURL(open_tor);
+      tor_browser->OpenURL(open_tor, /*navigation_handle_callback=*/{});
     }
   }
 

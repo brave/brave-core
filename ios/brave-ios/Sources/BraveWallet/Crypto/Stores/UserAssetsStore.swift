@@ -105,8 +105,6 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     self.assetManager = userAssetManager
 
     self.setupObservers()
-
-    Preferences.Wallet.showTestNetworks.observe(from: self)
   }
 
   func tearDown() {
@@ -296,7 +294,8 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           network: networkAssets.network,
           price: "",
           history: [],
-          balanceForAccounts: [:]
+          balanceForAccounts: [:],
+          btcBalances: [:]
         )
       }
     }
@@ -316,13 +315,5 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       tokens: allUserTokens.filter { $0.isErc721 || $0.isNft },
       ipfsApi: ipfsApi
     )
-  }
-}
-
-extension UserAssetsStore: PreferencesObserver {
-  public func preferencesDidChange(for key: String) {
-    if key == Preferences.Wallet.showTestNetworks.key {
-      networkFilters.removeAll()
-    }
   }
 }

@@ -3,8 +3,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import Then
+import UIKit
 
 extension UIView {
   /// Setup basic control defaults based on Brave design system colors

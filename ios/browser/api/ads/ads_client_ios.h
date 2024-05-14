@@ -77,9 +77,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void ClearLocalStatePref(const std::string& path) override;
   bool HasLocalStatePrefPath(const std::string& path) const override;
   void RecordP2AEvents(const std::vector<std::string>& events) override;
-  void AddFederatedLearningPredictorTrainingSample(
-      const std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_sample) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

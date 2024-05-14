@@ -28,8 +28,7 @@ BravePrimaryAccountMutatorImpl::~BravePrimaryAccountMutatorImpl() = default;
 
 #if !BUILDFLAG(IS_CHROMEOS)
 bool BravePrimaryAccountMutatorImpl::ClearPrimaryAccount(
-    signin_metrics::ProfileSignout source_metric,
-    signin_metrics::SignoutDelete delete_metric) {
+    signin_metrics::ProfileSignout source_metric) {
   return true;
 }
 #endif

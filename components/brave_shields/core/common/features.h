@@ -21,6 +21,7 @@ BASE_DECLARE_FEATURE(kBraveAdblockCosmeticFiltering);
 BASE_DECLARE_FEATURE(kBraveAdblockCspRules);
 BASE_DECLARE_FEATURE(kBraveAdblockDefault1pBlocking);
 BASE_DECLARE_FEATURE(kBraveAdblockMobileNotificationsListDefault);
+BASE_DECLARE_FEATURE(kBraveAdblockExperimentalListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockScriptletDebugLogs);
 BASE_DECLARE_FEATURE(kBraveDarkModeBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock);

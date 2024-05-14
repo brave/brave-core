@@ -20,12 +20,12 @@ import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import WarningLongPage from '../alerts/warning_long_page'
-import InfoLongConversation from '../alerts/info_long_conversation'
+import LongConversationInfo from '../alerts/long_conversation_info'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
+import ToolsButtonMenu from '../tools_button_menu'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -110,9 +110,7 @@ function Main() {
       <div className={styles.header}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>
-            <span>Leo</span>
-          </div>
+          <div className={styles.logoTitle}>leo ai</div>
           {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
@@ -120,6 +118,7 @@ function Main() {
             <>
             {shouldDisplayEraseAction && (
               <Button
+                fab
                 kind='plain-faint'
                 aria-label='Erase conversation history'
                 title='Erase conversation history'
@@ -128,7 +127,17 @@ function Main() {
                 <Icon name='erase' />
               </Button>
             )}
-              <FeatureButtonMenu />
+            <FeatureButtonMenu />
+            <Button
+              fab
+              kind='plain-faint'
+              aria-label='Close'
+              title='Close'
+              className={styles.closeButton}
+              onClick={() => getPageHandlerInstance().pageHandler.closePanel()}
+            >
+              <Icon name='close' />
+            </Button>
             </>
           )}
         </div>
@@ -189,13 +198,9 @@ function Main() {
           <WarningPremiumDisconnected />
         </div>
         }
-        {context.shouldShowLongPageWarning &&
-        <div className={styles.promptContainer}>
-            <WarningLongPage />
-        </div>}
         {context.shouldShowLongConversationInfo &&
         <div className={styles.promptContainer}>
-            <InfoLongConversation />
+            <LongConversationInfo />
         </div>}
         {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
@@ -205,7 +210,9 @@ function Main() {
             <PageContextToggle />
           </div>
         )}
-        <InputBox />
+        <ToolsButtonMenu>
+          <InputBox />
+        </ToolsButtonMenu>
       </div>
     </main>
   )

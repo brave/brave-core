@@ -10,9 +10,6 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです。";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでLeoを利用できます。";
-
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Braveアカウントに購入情報をリンク";
 
@@ -25,10 +22,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "稼働状況";
 
-/* The subtitle for the error showing there is an erro from Appstore */
-"aichat.appStoreErrorSubTitle" = "App Storeに接続できませんでした。後でもう一度お試しください。";
-
-/* The title for the error showing there is an erro from Appstore */
+/* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Storeとの接続時にエラーが発生しました";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
@@ -66,12 +60,6 @@
 
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "フィードバックのカテゴリを選択してください";
-
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "回答が参考にならない";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "操作がうまくいかない";
 
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "その他";
@@ -208,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "創造性を発揮";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "さまざまなスキルを持つパワフルなモデルへの優先アクセス";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "さまざまなAIモデルを探索";
 
@@ -288,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "年額サブスクリプション";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "チャット";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "言語モデル";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "デフォルトモデル";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "限定";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "詳細設定";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "プレミアムプラン";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "サブスクリプションの管理";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "新しいチャット";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "リセット";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "無制限";
 

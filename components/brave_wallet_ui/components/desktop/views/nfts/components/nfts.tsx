@@ -47,6 +47,7 @@ import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import { makePortfolioAssetRoute } from '../../../../../utils/routes-utils'
 import {
+  selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
 
@@ -58,8 +59,8 @@ import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-disco
 import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
-import { NftGrid } from './nfts.styles'
-import { Row, ScrollableColumn } from '../../../../shared/style'
+import { BannerWrapper, NFTListWrapper, NftGrid } from './nfts.styles'
+import { Row } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 import {
@@ -137,8 +138,7 @@ export const Nfts = (props: Props) => {
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } =
-    useNftPin()
+  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
   const urlSearchParams = useQuery()
   const tab = urlSearchParams.get('tab')
   const selectedTab: NftDropdownOptionId =
@@ -148,15 +148,14 @@ export const Nfts = (props: Props) => {
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
-  const { userTokensRegistry, hiddenNfts } = useGetUserTokensRegistryQuery(
-    undefined,
-    {
+  const { userTokensRegistry, hiddenNfts, visibleNfts } =
+    useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
         userTokensRegistry: result.data,
+        visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
-    }
-  )
+    })
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -449,7 +448,7 @@ export const Nfts = (props: Props) => {
     ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
       listUiByAccounts
     ) : (
-      <NftGrid>
+      <NftGrid padding='0px'>
         {renderedList.map(renderGridViewItem)}
         {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
       </NftGrid>
@@ -477,15 +476,14 @@ export const Nfts = (props: Props) => {
     >
       {isNftPinningFeatureEnabled &&
       isIpfsBannerVisible &&
-      nonFungibleTokens.length > 0 ? (
-        <Row
+      visibleNfts.length > 0 ? (
+        <BannerWrapper
           justifyContent='center'
           alignItems='center'
-          padding='0px 32px'
           marginBottom={16}
         >
           <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-        </Row>
+        </BannerWrapper>
       ) : null}
 
       <ControlBarWrapper
@@ -528,7 +526,7 @@ export const Nfts = (props: Props) => {
               <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
               </PortfolioActionButton>
-              {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
+              {isNftPinningFeatureEnabled && visibleNfts.length > 0 ? (
                 <PortfolioActionButton onClick={onClickIpfsButton}>
                   <ButtonIcon name='product-ipfs-outline' />
                 </PortfolioActionButton>
@@ -543,7 +541,7 @@ export const Nfts = (props: Props) => {
           )}
         </Row>
       </ControlBarWrapper>
-      <ScrollableColumn padding='0px 20px 20px 20px'>
+      <NFTListWrapper>
         {nftList.length === 0 &&
         userTokensRegistry?.hiddenTokenIds.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
@@ -558,7 +556,7 @@ export const Nfts = (props: Props) => {
         ) : (
           listUi
         )}
-      </ScrollableColumn>
+      </NFTListWrapper>
       {showAddNftModal && (
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}

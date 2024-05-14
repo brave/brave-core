@@ -12,6 +12,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveSearchConversionPromotionView;
+class BraveOmniboxPopupViewViews;
 
 // This will render brave specific matches such as the braver search conversion
 // promotion.
@@ -25,6 +26,7 @@ class BraveOmniboxResultView : public OmniboxResultView {
 
   void OpenMatch();
   void RefreshOmniboxResult();
+  BraveOmniboxPopupViewViews* GetPopupView();
 
   // OmniboxResultView overrides:
   void SetMatch(const AutocompleteMatch& match) override;
@@ -34,7 +36,7 @@ class BraveOmniboxResultView : public OmniboxResultView {
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
  private:
-  void ResetChildrenVisibility();
+  void ResetChildren();
   void UpdateForBraveSearchConversion();
   void HandleSelectionStateChangedForPromotionView();
 

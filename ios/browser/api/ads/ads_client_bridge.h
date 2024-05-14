@@ -68,9 +68,6 @@
 - (void)clearLocalStatePref:(const std::string&)path;
 - (bool)hasLocalStatePrefPath:(const std::string&)path;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;
-- (void)addFederatedLearningPredictorTrainingSample:
-    (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
-        training_sample;
 
 @end
 

@@ -11,9 +11,6 @@ static_library("brave_wayback_machine") {
   assert_no_deps = [ "//chrome/*" ]
 
   sources = [
-    "brave_wayback_machine_delegate.h",
-    "brave_wayback_machine_infobar_delegate.cc",
-    "brave_wayback_machine_infobar_delegate.h",
     "brave_wayback_machine_tab_helper.cc",
     "brave_wayback_machine_tab_helper.h",
     "brave_wayback_machine_utils.cc",
@@ -22,19 +19,20 @@ static_library("brave_wayback_machine") {
     "url_constants.h",
     "wayback_machine_url_fetcher.cc",
     "wayback_machine_url_fetcher.h",
+    "wayback_state.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/api_request_helper",
-    "//components/infobars/content",
-    "//components/infobars/core",
+    "//brave/components/constants",
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//net",
     "//services/network/public/cpp",
+    "//ui/gfx:native_widget_types",
     "//url",
   ]
 }

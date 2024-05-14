@@ -3,76 +3,65 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id_gemini.h"
+
 #include <string>
 #include <tuple>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id_gemini.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=*GetRecipientIDGemini*
-
-using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
-namespace brave_rewards::internal::endpoints::test {
-using Error = GetRecipientIDGemini::Error;
-using Result = GetRecipientIDGemini::Result;
+namespace brave_rewards::internal {
 
-// clang-format off
+using Error = endpoints::GetRecipientIDGemini::Error;
+using Result = endpoints::GetRecipientIDGemini::Result;
+
 using GetRecipientIDGeminiParamType = std::tuple<
     std::string,          // test name suffix
     net::HttpStatusCode,  // GET recipient ID Gemini endpoint response status code
     std::string,          // GET recipient ID Gemini endpoint response body
     Result                // expected result
 >;
-// clang-format on
 
-class GetRecipientIDGemini
-    : public TestWithParam<GetRecipientIDGeminiParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-};
+class RewardsGetRecipientIDGeminiTest
+    : public RewardsEngineTest,
+      public WithParamInterface<GetRecipientIDGeminiParamType> {};
 
-TEST_P(GetRecipientIDGemini, Paths) {
+TEST_P(RewardsGetRecipientIDGeminiTest, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = status_code;
-        response->body = body;
-        std::move(callback).Run(std::move(response));
-      });
+  auto request_url = engine().Get<EnvironmentConfig>().gemini_api_url().Resolve(
+      "/v1/payments/recipientIds");
 
-  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
-  EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
+  auto response = mojom::UrlResponse::New();
+  response->status_code = status_code;
+  response->body = body;
 
-  RequestFor<endpoints::GetRecipientIDGemini>(mock_engine_impl_, "token")
-      .Send(callback.Get());
+  client().AddNetworkResultForTesting(request_url.spec(), mojom::UrlMethod::GET,
+                                      std::move(response));
 
-  task_environment_.RunUntilIdle();
+  auto result = WaitFor<Result&&>([&](auto callback) {
+    endpoints::RequestFor<endpoints::GetRecipientIDGemini>(engine(), "token")
+        .Send(std::move(callback));
+  });
+
+  EXPECT_EQ(result, expected_result);
 }
 
-// clang-format off
 INSTANTIATE_TEST_SUITE_P(
-  Endpoints,
-  GetRecipientIDGemini,
-  Values(
-    GetRecipientIDGeminiParamType{
-      "HTTP_200_success",
-      net::HTTP_OK,
-      R"(
+    RewardsGetRecipientIDGeminiTest,
+    RewardsGetRecipientIDGeminiTest,
+    Values(
+        GetRecipientIDGeminiParamType{"HTTP_200_success", net::HTTP_OK,
+                                      R"(
         [
           {
             "label": "de476441-a834-4b93-82e3-3226e5153f73",
@@ -83,12 +72,10 @@ INSTANTIATE_TEST_SUITE_P(
           }
         ]
       )",
-      "6378fc55-18db-488a-85a3-1af557767d0a"
-    },
-    GetRecipientIDGeminiParamType{
-      "HTTP_200_no_recipient_id_with_brave_browser_label",
-      net::HTTP_OK,
-      R"(
+                                      "6378fc55-18db-488a-85a3-1af557767d0a"},
+        GetRecipientIDGeminiParamType{
+            "HTTP_200_no_recipient_id_with_brave_browser_label", net::HTTP_OK,
+            R"(
         [
           {
             "label": "de476441-a834-4b93-82e3-3226e5153f73",
@@ -99,12 +86,10 @@ INSTANTIATE_TEST_SUITE_P(
           }
         ]
       )",
-      ""
-    },
-    GetRecipientIDGeminiParamType{
-      "HTTP_200_failed_to_parse_body",
-      net::HTTP_OK,
-      R"(
+            ""},
+        GetRecipientIDGeminiParamType{
+            "HTTP_200_failed_to_parse_body", net::HTTP_OK,
+            R"(
         [
           {
             "label": "de476441-a834-4b93-82e3-3226e5153f73",
@@ -115,18 +100,10 @@ INSTANTIATE_TEST_SUITE_P(
           }
         ]
       )",
-      base::unexpected(Error::kFailedToParseBody)
-    },
-    GetRecipientIDGeminiParamType{
-      "HTTP_503_unexpected_status_code",
-      net::HTTP_SERVICE_UNAVAILABLE,
-      "",
-      base::unexpected(Error::kUnexpectedStatusCode)
-    }),
-  [](const auto& info) {
-    return std::get<0>(info.param);
-  }
-);
-// clang-format on
+            base::unexpected(Error::kFailedToParseBody)},
+        GetRecipientIDGeminiParamType{
+            "HTTP_503_unexpected_status_code", net::HTTP_SERVICE_UNAVAILABLE,
+            "", base::unexpected(Error::kUnexpectedStatusCode)}),
+    [](const auto& info) { return std::get<0>(info.param); });
 
-}  // namespace brave_rewards::internal::endpoints::test
+}  // namespace brave_rewards::internal

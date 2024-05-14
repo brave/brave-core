@@ -47,14 +47,13 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   const UserModelInfo user_model{
       IntentUserModelInfo{SegmentList{"parent-child"}},
       LatentInterestUserModelInfo{SegmentList{"foo-bar"}},
-      InterestUserModelInfo{SegmentList{"parent"},
-                            TextEmbeddingHtmlEventList{}}};
+      InterestUserModelInfo{SegmentList{"parent"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
-                         ConfirmationType::kViewed, Now() - base::Hours(3),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad_2, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, Now() - base::Hours(3),
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
@@ -80,7 +79,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = false;
   expected_creative_ad_predictor_1.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_1.score = 4.0;
+  expected_creative_ad_predictor_1.score = 3.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -100,9 +99,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .parent_matches.value = false;
   expected_creative_ad_predictor_2.input_variable.last_seen_ad.value =
       base::Hours(3);
-  expected_creative_ad_predictor_2.input_variable.last_seen_advertiser.value =
-      base::Hours(3);
-  expected_creative_ad_predictor_2.score = 0.25;
+  expected_creative_ad_predictor_2.score = 0.125;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_2);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -120,7 +117,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = true;
   expected_creative_ad_predictor_3.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_3.score = 4.0;
+  expected_creative_ad_predictor_3.score = 3.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
   EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);

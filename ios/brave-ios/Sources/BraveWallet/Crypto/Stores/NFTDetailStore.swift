@@ -190,7 +190,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
                 in: account,
                 network: network
               )
-              return [account.address: Int(balanceForToken ?? 0)]
+              return [account.id: Int(balanceForToken ?? 0)]
             }
           }
           return await group.reduce(
@@ -203,11 +203,11 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
           )
         }
       )
-      if let address = nftBalances.first(where: { address, balance in
+      if let uniqueKey = nftBalances.first(where: { _, balance in
         balance > 0
       })?.key,
         let account = accounts.first(where: { accountInfo in
-          accountInfo.address.caseInsensitiveCompare(address) == .orderedSame
+          accountInfo.id.caseInsensitiveCompare(uniqueKey) == .orderedSame
         })
       {
         owner = account

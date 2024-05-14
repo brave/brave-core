@@ -12,7 +12,7 @@ import androidx.preference.PreferenceCategory;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -34,7 +34,7 @@ public class BraveLanguageSettings extends LanguageSettings {
                 (PreferenceCategory) findPreference(APP_LANGUAGE_SECTION);
         if (appLanguageSection != null) {
             boolean isBraveTranslateEnabled =
-                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.OFFER_TRANSLATE_ENABLED);
             ChromeSwitchPreference braveTranslateFeaturePreference =
                     new ChromeSwitchPreference(getContext());
@@ -43,7 +43,7 @@ public class BraveLanguageSettings extends LanguageSettings {
             braveTranslateFeaturePreference.setChecked(isBraveTranslateEnabled);
             braveTranslateFeaturePreference.setOnPreferenceChangeListener(
                     (preference, newValue) -> {
-                        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                 .setBoolean(BravePref.OFFER_TRANSLATE_ENABLED, (boolean) newValue);
                         if (getActivity() != null) {
                             BraveRelaunchUtils.askForRelaunch(getActivity());

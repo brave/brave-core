@@ -7,6 +7,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -64,65 +65,79 @@ namespace brave_wallet {
 
 namespace {
 
-std::string GetRelativeScanPath(const std::string& chain_id,
-                                mojom::CoinType coin) {
-  if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) {
-    return "solana/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::SOL &&
-             chain_id == mojom::kSolanaTestnet) {
-    return "solana/v0/testnet/scan";
-  } else if (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) {
-    return "solana/v0/devnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kMainnetChainId) {
-    return "ethereum/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kGoerliChainId) {
-    return "ethereum/v0/goerli/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kPolygonMainnetChainId) {
-    return "polygon/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBinanceSmartChainMainnetChainId) {
-    return "bnb/v0/mainnet/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kArbitrumMainnetChainId) {
-    return "arbitrum/v0/one/scan";
-  } else if (coin == mojom::CoinType::ETH &&
-             chain_id == mojom::kBaseMainnetChainId) {
-    return "base/v0/mainnet/scan";
+std::optional<std::string> GetRelativeScanPath(const std::string& chain_id,
+                                               mojom::CoinType coin) {
+  if (coin == mojom::CoinType::SOL) {
+    static base::NoDestructor<base::flat_map<std::string, std::string>>
+        chain_id_lookup(
+            {{brave_wallet::mojom::kSolanaMainnet, "solana/v0/mainnet/scan"},
+             {brave_wallet::mojom::kSolanaTestnet, "solana/v0/testnet/scan"},
+             {brave_wallet::mojom::kSolanaDevnet, "solana/v0/devnet/scan"}});
+
+    if (!chain_id_lookup->contains(chain_id)) {
+      return std::nullopt;
+    }
+
+    return chain_id_lookup->at(chain_id);
   }
 
-  return "";
+  if (coin == mojom::CoinType::ETH) {
+    static base::NoDestructor<base::flat_map<std::string, std::string>>
+        chain_id_lookup(
+            {{brave_wallet::mojom::kArbitrumMainnetChainId,
+              "arbitrum/v0/one/scan"},
+             {brave_wallet::mojom::kArbitrumSepoliaChainId,
+              "arbitrum/v0/sepolia/scan"},
+             {brave_wallet::mojom::kAvalancheFujiTestnetChainId,
+              "avalanche/v0/fuji/scan"},
+             {brave_wallet::mojom::kAvalancheMainnetChainId,
+              "avalanche/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBaseMainnetChainId, "base/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBaseSepoliaTestnetChainId,
+              "base/v0/sepolia/scan"},
+             {brave_wallet::mojom::kBlastMainnetChainId,
+              "blast/v0/mainnet/scan"},
+             {brave_wallet::mojom::kBlastSepoliaTestnetChainId,
+              "blast/v0/sepolia/scan"},
+             {brave_wallet::mojom::kBnbSmartChainMainnetChainId,
+              "bnb/v0/mainnet/scan"},
+             {brave_wallet::mojom::kDegenChainId, "degen/v0/mainnet/scan"},
+             {brave_wallet::mojom::kMainnetChainId, "ethereum/v0/mainnet/scan"},
+             {brave_wallet::mojom::kGnosisChainId, "gnosis/v0/mainnet/scan"},
+             {brave_wallet::mojom::kLineaChainId, "linea/v0/mainnet/scan"},
+             {brave_wallet::mojom::kOptimismMainnetChainId,
+              "optimism/v0/mainnet/scan"},
+             {brave_wallet::mojom::kOptimismSepoliaChainId,
+              "optimism/v0/sepolia/scan"},
+             {brave_wallet::mojom::kPolygonMainnetChainId,
+              "polygon/v0/mainnet/scan"},
+             {brave_wallet::mojom::kSepoliaChainId, "ethereum/v0/sepolia/scan"},
+             {brave_wallet::mojom::kZoraChainId, "zora/v0/mainnet/scan"}});
+
+    if (!chain_id_lookup->contains(chain_id)) {
+      return std::nullopt;
+    }
+
+    return chain_id_lookup->at(chain_id);
+  }
+
+  return std::nullopt;
 }
 
 bool HasTransactionScanSupportInternal(const std::string& chain_id,
                                        mojom::CoinType coin) {
-  return (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaMainnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaTestnet) ||
-         (coin == mojom::CoinType::SOL && chain_id == mojom::kSolanaDevnet) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBaseMainnetChainId);
+  return GetRelativeScanPath(chain_id, coin).has_value();
 }
 
 bool HasMessageScanSupportInternal(const std::string& chain_id,
                                    mojom::CoinType coin) {
-  return (coin == mojom::CoinType::ETH && chain_id == mojom::kMainnetChainId) ||
-         (coin == mojom::CoinType::ETH && chain_id == mojom::kGoerliChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kPolygonMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kBinanceSmartChainMainnetChainId) ||
-         (coin == mojom::CoinType::ETH &&
-          chain_id == mojom::kArbitrumMainnetChainId);
+  // Only EVM is supported
+  // SVM tx signature requests are handled by the scan-transactions endpoint
+  if (coin == mojom::CoinType::ETH) {
+    return GetRelativeScanPath(chain_id, coin).has_value();
+  }
+
+  return false;
 }
 
 const base::flat_map<std::string, std::string> GetHeaders() {
@@ -159,9 +174,16 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& language) {
   DCHECK(coin == mojom::CoinType::SOL || coin == mojom::CoinType::ETH);
-  std::string spec = base::StringPrintf(
-      "%s/%s/%s", kBlowfishBaseAPIURL,
-      GetRelativeScanPath(chain_id, coin).c_str(), "transactions");
+
+  auto scan_path = GetRelativeScanPath(chain_id, coin);
+
+  if (!scan_path.has_value()) {
+    return GURL();
+  }
+
+  std::string spec =
+      base::StringPrintf("%s/%s/%s", kBlowfishBaseAPIURL,
+                         scan_path.value().c_str(), "transactions");
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 
@@ -169,9 +191,9 @@ GURL SimulationService::GetScanTransactionURL(const std::string& chain_id,
 GURL SimulationService::GetScanMessageURL(const std::string& chain_id,
                                           mojom::CoinType coin,
                                           const std::string& language) {
-  std::string spec =
-      base::StringPrintf("%s/%s/message", kBlowfishBaseAPIURL,
-                         GetRelativeScanPath(chain_id, coin).c_str());
+  std::string spec = base::StringPrintf(
+      "%s/%s/message", kBlowfishBaseAPIURL,
+      GetRelativeScanPath(chain_id, coin).value_or("").c_str());
   return net::AppendQueryParameter(GURL(spec), "language", language);
 }
 

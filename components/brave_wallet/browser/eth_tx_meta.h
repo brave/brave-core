@@ -47,6 +47,8 @@ class EthTxMeta : public TxMeta {
   void set_tx(std::unique_ptr<EthTransaction> tx) { tx_ = std::move(tx); }
   void set_sign_only(bool sign_only) { sign_only_ = sign_only; }
 
+  bool IsRetriable() const;
+
  private:
   bool sign_only_ = false;
   TransactionReceipt tx_receipt_;

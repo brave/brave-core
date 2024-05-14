@@ -42,4 +42,26 @@ def SendResults(original_function, *args, **kwargs):
 
 @override_utils.override_function(globals())
 def _MakeBuildStatusUrl(*_args):
-    return os.environ.get('BUILD_URL')  # Jenkins env
+    return None
+
+
+@override_utils.override_function(globals())
+def MakeHistogramSetWithDiagnostics(original_function, histograms_file,
+                                    test_name, bot, buildername, buildnumber,
+                                    project, buildbucket, revisions_dict, *args,
+                                    **kwargs):
+    # Add the extra diagnostic passed via env
+    for key, value in os.environ.items():
+        s = key.split('DASHBOARD_EXTRA_DIAG_')
+        if len(s) > 1:
+            diag = s[1].lower()
+            logging.info('Extra diag: %s = %s', diag, value)
+            revisions_dict['--' + diag] = value
+
+    # Remove unused fields:
+    revisions_dict.pop('--v8_revisions')
+    revisions_dict.pop('--webrtc_revisions')
+
+    return original_function(histograms_file, test_name, bot, buildername,
+                             buildnumber, project, buildbucket, revisions_dict,
+                             *args, **kwargs)

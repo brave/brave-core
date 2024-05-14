@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -83,7 +84,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             // overwrite.
             if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
                 // Set it for normal tab only
-                setDSEPrefs(dseTemplateUrl, Profile.getLastUsedRegularProfile());
+                setDSEPrefs(dseTemplateUrl, ProfileManager.getLastUsedRegularProfile());
                 BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
             }
         }

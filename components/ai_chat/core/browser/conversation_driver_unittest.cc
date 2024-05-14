@@ -14,11 +14,14 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -42,6 +45,54 @@ using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 namespace ai_chat {
 
 namespace {
+
+bool CompareConversationTurn(const mojom::ConversationTurnPtr& a,
+                             const mojom::ConversationTurnPtr& b) {
+  if (!a || !b) {
+    return a == b;  // Both should be null or neither
+  }
+  return a->action_type == b->action_type &&
+         a->character_type == b->character_type &&
+         a->selected_text == b->selected_text && a->text == b->text &&
+         a->visibility == b->visibility;
+}
+
+class MockEngineConsumer : public EngineConsumer {
+ public:
+  MOCK_METHOD(void,
+              GenerateQuestionSuggestions,
+              (const bool&, const std::string&, SuggestedQuestionsCallback),
+              (override));
+  MOCK_METHOD(void,
+              GenerateAssistantResponse,
+              (const bool&,
+               const std::string&,
+               const ConversationHistory&,
+               const std::string&,
+               GenerationDataCallback,
+               GenerationCompletedCallback),
+              (override));
+  MOCK_METHOD(void,
+              GenerateRewriteSuggestion,
+              (std::string,
+               const std::string&,
+               GenerationDataCallback,
+               GenerationCompletedCallback),
+              (override));
+  MOCK_METHOD(void, SanitizeInput, (std::string&), (override));
+  MOCK_METHOD(void, ClearAllQueries, (), (override));
+
+  bool SupportsDeltaTextResponses() const override {
+    return supports_delta_text_responses_;
+  }
+
+  void SetSupportsDeltaTextResponses(bool supports_delta_text_responses) {
+    supports_delta_text_responses_ = supports_delta_text_responses;
+  }
+
+ private:
+  bool supports_delta_text_responses_ = false;
+};
 
 class MockConversationDriverObserver : public ConversationDriver::Observer {
  public:
@@ -83,6 +134,7 @@ class MockConversationDriver : public ConversationDriver {
               GetPageContent,
               (GetPageContentCallback, std::string_view),
               (override));
+  MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
 };
 
 }  // namespace
@@ -104,6 +156,15 @@ class ConversationDriverUnitTest : public testing::Test {
         &prefs_, &local_state_, nullptr, skus_service_getter,
         shared_url_loader_factory_, "");
   }
+
+  void EmulateUserOptedIn() {
+    // Mimic opening panel and user opted in.
+    conversation_driver_->OnConversationActiveChanged(true);
+    conversation_driver_->SetUserOptedIn(true);
+  }
+
+  // Waiting for is_request_in_progress_ to be false.
+  void WaitForOnEngineCompletionComplete() { task_environment_.RunUntilIdle(); }
 
   void TearDown() override {}
 
@@ -139,9 +200,7 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
             network::URLLoaderCompletionStatus());
       }));
 
-  // Mimic opening panel and user opted in.
-  conversation_driver_->OnConversationActiveChanged(true);
-  conversation_driver_->SetUserOptedIn(true);
+  EmulateUserOptedIn();
 
   // 1. Test without page contents.
   EXPECT_TRUE(conversation_driver_->GetShouldSendPageContents());
@@ -165,23 +224,23 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   // article_text_ and suggestions_ should be cleared when page content is
   // unlinked.
   EXPECT_FALSE(conversation_driver_->GetShouldSendPageContents());
-  EXPECT_TRUE(conversation_driver_->IsArticleTextEmptyForTesting());
+  EXPECT_TRUE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history = conversation_driver_->GetConversationHistory();
-  EXPECT_EQ(
-      history,
-      std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt)}));
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken.", std::nullopt));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt, std::nullopt));
+  EXPECT_EQ(history.size(), expected_history.size());
+  for (size_t i = 0; i < history.size(); i++) {
+    EXPECT_TRUE(CompareConversationTurn(history[i], expected_history[i]));
+  }
 
   // 2. Test with page contents.
   is_page_content_linked = true;
@@ -208,34 +267,345 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   EXPECT_TRUE(conversation_driver_->GetShouldSendPageContents());
-  EXPECT_FALSE(conversation_driver_->IsArticleTextEmptyForTesting());
+  EXPECT_FALSE(conversation_driver_->GetArticleTextForTesting().empty());
   EXPECT_TRUE(conversation_driver_->IsSuggestionsEmptyForTesting());
   auto& history2 = conversation_driver_->GetConversationHistory();
-  EXPECT_EQ(
-      history2,
-      std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt),
-           mojom::ConversationTurn(
-               mojom::CharacterType::HUMAN,
-               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-               mojom::ConversationTurnVisibility::VISIBLE,
-               l10n_util::GetStringUTF8(
-                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-               "I have spoken again."),
-           mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
-                                   mojom::ActionType::RESPONSE,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "This is the way.", std::nullopt)}));
+  std::vector<mojom::ConversationTurnPtr> expected_history2;
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken.", std::nullopt));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt, std::nullopt));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+      "I have spoken again.", std::nullopt));
+  expected_history2.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
+      std::nullopt, std::nullopt));
+  EXPECT_EQ(history2.size(), expected_history2.size());
+  for (size_t i = 0; i < history2.size(); i++) {
+    EXPECT_TRUE(CompareConversationTurn(history2[i], expected_history2[i]));
+  }
+}
+
+TEST_F(ConversationDriverUnitTest, PrintPreviewFallback) {
+  // The only purpose of this interceptor is to make sure
+  // ConversationDriver::OnEngineCompletionDataReceived is called so we can run
+  // next SubmitSummarizationRequest
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        std::string body = network::GetUploadData(request);
+        // Set header for enabling SSE.
+        auto head = network::mojom::URLResponseHead::New();
+        head->mime_type = "text/event-stream";
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(
+            request.url, std::move(head),
+            R"(data: {"completion": "...", "stop": null})",
+            network::URLLoaderCompletionStatus());
+      }));
+  constexpr char expected_text[] = "This is the way.";
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(testing::Return(GURL("https://www.brave.com")));
+  EmulateUserOptedIn();
+
+  // Fallback iniatiated on empty string then succeeded.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  WaitForOnEngineCompletionComplete();
+
+  // Fallback iniatiated on white spaces and line breaks then succeeded.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(
+          base::test::RunOnceCallback<0>("       \n     \n  ", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  WaitForOnEngineCompletionComplete();
+
+  // Fallback failed will not retrigger another fallback.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
+  WaitForOnEngineCompletionComplete();
+
+  // Fallback won't initiate for video content.
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", true, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
+  WaitForOnEngineCompletionComplete();
+
+  // Fallback won't initiate if we already have content
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>(expected_text, false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), expected_text);
+  WaitForOnEngineCompletionComplete();
+
+  // Don't fallback on failed print preview extraction.
+  EXPECT_CALL(*conversation_driver_, GetPageURL)
+      .WillRepeatedly(testing::Return(GURL("https://docs.google.com")));
+  EXPECT_CALL(*conversation_driver_, GetPageContent)
+      .WillOnce(base::test::RunOnceCallback<0>("", false, ""));
+  EXPECT_CALL(*conversation_driver_, PrintPreviewFallback).Times(0);
+  conversation_driver_->SubmitSummarizationRequest();
+  EXPECT_EQ(conversation_driver_->GetArticleTextForTesting(), "");
+}
+
+TEST_F(ConversationDriverUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
+  // Tests that history combines completion events when the engine provides
+  // delta text responses.
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+
+  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 0u);
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("This"));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
+  }
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(" is "));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is ");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
+  }
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("successful."));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "This is successful.");
+  }
+}
+
+TEST_F(ConversationDriverUnitTest,
+       UpdateOrCreateLastAssistantEntry_DeltaWithSearch) {
+  // Tests that history combines completion events when the engine provides
+  // delta text responses.
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(true);
+  // In addition, add a non-completion event (e.g. search) and verify it's
+  // not removed.
+  {
+    auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
+        mojom::SearchStatusEvent::New());
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+  }
+  {
+    // Leading space on the first message should be removed
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(" This is"));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 2u);
+
+    EXPECT_TRUE(events->at(1)->is_completion_event());
+    EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is");
+  }
+  {
+    // Leading space on subsequent message should be kept
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(" successful."));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 2u);
+
+    EXPECT_TRUE(events->at(1)->is_completion_event());
+    EXPECT_EQ(events->at(1)->get_completion_event()->completion,
+              "This is successful.");
+  }
+}
+
+TEST_F(ConversationDriverUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
+  // Tests that history combines completion events when the engine provides
+  // delta text responses.
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(false);
+
+  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 0u);
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("This"));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
+  }
+  {
+    // Leading space should be removed for every partial message
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(" This is "));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is ");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
+  }
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("This is successful."));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+
+    EXPECT_TRUE(events->at(0)->is_completion_event());
+    EXPECT_EQ(events->at(0)->get_completion_event()->completion,
+              "This is successful.");
+  }
+}
+
+TEST_F(ConversationDriverUnitTest,
+       UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch) {
+  // Tests that history combines completion events when the engine provides
+  // delta text responses.
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(false);
+  // In addition, add a non-completion event (e.g. search) and verify it's
+  // not removed.
+  {
+    auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
+        mojom::SearchStatusEvent::New());
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 1u);
+  }
+  {
+    // Leading space should be removed for every partial message
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(" This is "));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is ");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 2u);
+
+    EXPECT_TRUE(events->at(1)->is_completion_event());
+    EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is ");
+  }
+  {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("This is successful."));
+    conversation_driver_->UpdateOrCreateLastAssistantEntry(std::move(event));
+
+    const std::vector<mojom::ConversationTurnPtr>& history =
+        conversation_driver_->GetConversationHistory();
+    EXPECT_EQ(history.size(), 1u);
+
+    EXPECT_EQ(history.back()->text, "This is successful.");
+    auto& events = history.back()->events;
+    EXPECT_EQ(events->size(), 2u);
+
+    EXPECT_TRUE(events->at(1)->is_completion_event());
+    EXPECT_EQ(events->at(1)->get_completion_event()->completion,
+              "This is successful.");
+  }
 }
 
 }  // namespace ai_chat

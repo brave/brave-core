@@ -68,7 +68,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="60dp"
                 android:text="@string/new_tab_private_desc"
-                android:textColor="@color/modern_grey_400"
+                android:textColor="@color/baseline_neutral_60"
                 android:gravity="center" />
 
             <!-- This is just dummy view to avoid crashes within Chromium's part of code-->

@@ -9,21 +9,17 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr base::TimeDelta kDebugRetryProcessingConfirmationAfter =
-    base::Seconds(5);
+constexpr base::TimeDelta kDebugRetryProcessingAfter = base::Seconds(5);
 }  // namespace
 
 base::TimeDelta RetryProcessingConfirmationAfter() {
-  return ShouldDebug() ? kDebugRetryProcessingConfirmationAfter
+  return ShouldDebug() ? kDebugRetryProcessingAfter
                        : RandTimeDelta(kRetryProcessingConfirmationAfter.Get());
-}
-
-base::Time ProcessConfirmationAt() {
-  return base::Time::Now();
 }
 
 }  // namespace brave_ads

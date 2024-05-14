@@ -14,11 +14,6 @@ export type ShowConnectToSitePayload = {
   originInfo: BraveWallet.OriginInfo
 }
 
-export type SignMessageHardwarePayload = {
-  request: BraveWallet.SignMessageRequest
-  account: BraveWallet.AccountInfo
-}
-
 export type SignMessageProcessedPayload = {
   approved: boolean
   id: number
@@ -31,14 +26,4 @@ export type SignAllTransactionsProcessedPayload = {
   id: number
   signatures?: BraveWallet.ByteArrayStringUnion[]
   error?: string
-}
-
-export type SignTransactionHardwarePayload = {
-  request: BraveWallet.SignTransactionRequest
-  account: BraveWallet.AccountInfo
-}
-
-export type SignAllTransactionsHardwarePayload = {
-  request: BraveWallet.SignAllTransactionsRequest
-  account: BraveWallet.AccountInfo
 }

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import { Column } from '../../../shared/style'
 import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
@@ -16,16 +16,16 @@ export const ControlsWrapper = styled(Column)`
 `
 
 export const AssetsWrapper = styled(Column)`
-  padding: 16px 24px 24px 24px;
+  padding: 16px 20px 20px 20px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 16px;
+    padding: 8px;
   }
 `
 
 export const NFTsWrapper = styled(Column)`
-  padding: 16px 32px 24px 32px;
+  padding: 16px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 16px;
+    padding: 8px;
   }
 `
 
@@ -42,4 +42,11 @@ export const SectionTitle = styled.span`
   line-height: 24px;
   font-weight: 600;
   color: ${leo.color.text.secondary};
+`
+
+export const EmptyStateWrapper = styled(Column)`
+  padding: 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 16px;
+  }
 `

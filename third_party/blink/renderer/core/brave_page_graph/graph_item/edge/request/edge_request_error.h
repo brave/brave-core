@@ -21,6 +21,7 @@ class EdgeRequestError final : public EdgeRequestResponse {
                    NodeResource* out_node,
                    GraphNode* in_node,
                    const InspectorId request_id,
+                   const FrameId& frame_id,
                    const ResponseMetadata& metadata);
   ~EdgeRequestError() override;
 

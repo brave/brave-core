@@ -10,9 +10,6 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo — це помічник на базі ШІ, вбудований просто в браузер.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Зв’яжіть покупку в App Store з вашим обліковим записом Brave, щоб користуватися Leo і на інших пристроях.";
-
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Зв’язати покупку з обліковим записом Brave";
 
@@ -25,10 +22,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Стан";
 
-/* The subtitle for the error showing there is an erro from Appstore */
-"aichat.appStoreErrorSubTitle" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу пізніше.";
-
-/* The title for the error showing there is an erro from Appstore */
+/* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Помилка з’єднання з App Store";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
@@ -66,12 +60,6 @@
 
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Про що ваш відгук?";
-
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "Відповідь не корисна";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "Щось не працює";
 
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Інше";
@@ -208,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Розкрийте свій творчий потенціал";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Пріоритетний доступ до потужних моделей із різними навичками";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Досліджуйте різні ШІ-моделі";
 
@@ -288,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Щорічна передплата";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "Чат";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "МОВНІ МОДЕЛІ";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "Типова модель";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "З обмеженнями";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "Розширені налаштування";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "Перейти на версію Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "Керувати передплатами";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "Новий чат";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "Скинути";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "Необмежено";
 

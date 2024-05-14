@@ -73,6 +73,7 @@ if (include_polymer) {
 
     if (include_polymer) {
       ts_deps += [ "//third_party/polymer/v3_0:library" ]
+      webui_context_type = "trusted"
     }
   }
 }
@@ -146,6 +147,8 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 leo_icons = [
   "activity.svg",
   "appearance.svg",
+  "arrow-diagonal-down-right.svg",
+  "arrow-diagonal-up-right.svg",
   "arrow-down.svg",
   "arrow-left.svg",
   "arrow-right.svg",
@@ -366,25 +369,75 @@ leo_icons = [
   "window-tab-new.svg",
   "window.svg",
   "windows-open.svg",
+  "import-arrow.svg",
+  "metamask-color.svg",
+  "phantom-color.svg",
+  "coinbase-color.svg",
+  "trezor-color.svg",
+  "wallet-ledger.svg",
+  "close-circle.svg",
+  "eth-color.svg",
+  "matic-color.svg",
+  "op-color.svg",
+  "aurora-color.svg",
+  "sol-color.svg",
+  "filecoin-color.svg",
+  "slash.svg",
 ]
 
 if (enable_brave_vpn_panel) {
   leo_icons += [
+    "country-al.svg",
+    "country-ar.svg",
+    "country-at.svg",
     "country-au.svg",
+    "country-be.svg",
+    "country-bg.svg",
     "country-br.svg",
     "country-ca.svg",
     "country-ch.svg",
+    "country-cl.svg",
+    "country-co.svg",
+    "country-cr.svg",
+    "country-cy.svg",
+    "country-cz.svg",
     "country-de.svg",
+    "country-dk.svg",
+    "country-ee.svg",
     "country-es.svg",
+    "country-fi.svg",
     "country-fr.svg",
     "country-gb.svg",
+    "country-gr.svg",
+    "country-hk.svg",
+    "country-hr.svg",
+    "country-hu.svg",
+    "country-id.svg",
+    "country-ie.svg",
+    "country-is.svg",
     "country-it.svg",
     "country-jp.svg",
+    "country-kr.svg",
+    "country-lu.svg",
     "country-mx.svg",
+    "country-my.svg",
     "country-nl.svg",
+    "country-no.svg",
+    "country-nz.svg",
+    "country-pa.svg",
+    "country-pe.svg",
+    "country-pl.svg",
+    "country-pt.svg",
+    "country-py.svg",
+    "country-ro.svg",
     "country-se.svg",
     "country-sg.svg",
+    "country-th.svg",
+    "country-tr.svg",
+    "country-ua.svg",
     "country-us.svg",
+    "country-uy.svg",
+    "country-za.svg",
   ]
 }
 

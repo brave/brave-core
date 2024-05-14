@@ -10,7 +10,7 @@ import Button from '$web-components/button'
 import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
-import { ViewType } from '../../state/component_types'
+import { useViewTypeTransition } from '../../state/hooks'
 import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes, P3APhase } from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
 
@@ -45,13 +45,16 @@ function ProfileItem (props: ProfileItemProps) {
 }
 
 function SelectProfile () {
-  const { browserProfiles, currentSelectedBrowser, setViewType, incrementCount } = React.useContext(DataContext)
-  const filteredProfiles = browserProfiles?.filter(profile => profile.browserType === currentSelectedBrowser)
+  const {
+    viewType,
+    setViewType,
+    incrementCount,
+    currentSelectedBrowserProfiles
+  } = React.useContext(DataContext)
   const [selectedProfiles, setSelectedProfiles] = React.useState<Set<number>>(new Set())
 
-  const handleBackButton = () => {
-    setViewType(ViewType.ImportSelectBrowser)
-  }
+  const { back } = useViewTypeTransition(viewType)
+  const handleBackButton = () => setViewType(back!)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target
@@ -67,7 +70,9 @@ function SelectProfile () {
   }
 
   const selectAll = () => {
-    setSelectedProfiles(new Set(filteredProfiles?.map(profile => profile.index)))
+    setSelectedProfiles(
+      new Set(currentSelectedBrowserProfiles?.map((profile) => profile.index))
+    )
   }
 
   const handleImportProfiles = () => {
@@ -113,7 +118,7 @@ function SelectProfile () {
               <button onClick={selectAll}>{getLocale('braveWelcomeSelectAllButtonLabel')}</button>
             </div>
           </div>
-          {filteredProfiles?.map(entry => {
+          {currentSelectedBrowserProfiles?.map((entry) => {
             return (<ProfileItem
               key={entry.index}
               id={entry.index}

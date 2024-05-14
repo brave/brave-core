@@ -1,0 +1,23 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_renderer_context_menu_sources = []
+brave_browser_renderer_context_menu_deps = []
+
+if (is_win || is_linux) {
+  brave_browser_renderer_context_menu_sources += [
+    "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.cc",
+    "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h",
+  ]
+
+  brave_browser_renderer_context_menu_deps += [
+    "//base",
+    "//brave/components/l10n/common",
+    "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
+    "//components/renderer_context_menu",
+    "//ui/base",
+  ]
+}

@@ -71,7 +71,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 TipPanelUI::TipPanelUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   auto* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kBraveTipPanelHost);
 
@@ -80,6 +80,11 @@ TipPanelUI::TipPanelUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(
       source, base::make_span(kTipPanelGenerated, kTipPanelGeneratedSize),
       IDR_TIP_PANEL_HTML);
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src chrome://resources chrome://theme chrome://rewards-image "
+      "chrome://favicon2 blob: data: 'self';");
 }
 
 TipPanelUI::~TipPanelUI() = default;

@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -43,11 +42,14 @@ public class BraveSetDefaultBrowserUtils {
     public static boolean isBraveSetAsDefaultBrowser(Context context) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
-        ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(
-                browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
-        if (resolveInfo == null || resolveInfo.activityInfo == null
-                || resolveInfo.activityInfo.packageName == null
-                || ContextUtils.getApplicationContext() == null) {
+        ResolveInfo resolveInfo =
+                context.getPackageManager()
+                        .resolveActivity(
+                                browserIntent,
+                                supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+        if (resolveInfo == null
+                || resolveInfo.activityInfo == null
+                || resolveInfo.activityInfo.packageName == null) {
             return false;
         }
 
@@ -62,6 +64,22 @@ public class BraveSetDefaultBrowserUtils {
                     || resolveInfo.activityInfo.packageName.equals(
                             BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME);
         }
+    }
+
+    public static boolean isAppSetAsDefaultBrowser(Context context) {
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
+        ResolveInfo resolveInfo =
+                context.getPackageManager()
+                        .resolveActivity(
+                                browserIntent,
+                                supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+        if (resolveInfo == null
+                || resolveInfo.activityInfo == null
+                || resolveInfo.activityInfo.packageName == null) {
+            return false;
+        }
+        return resolveInfo.activityInfo.packageName.equals(context.getPackageName());
     }
 
     public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {

@@ -24,7 +24,7 @@ HistoryItemInfo BuildAndAddHistoryItem() {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  return AddHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);
+  return AddHistory(ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
 }
 
 }  // namespace

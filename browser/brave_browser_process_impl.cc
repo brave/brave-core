@@ -25,7 +25,6 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -53,7 +52,6 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
-#include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
@@ -153,9 +151,6 @@ void BraveBrowserProcessImpl::Init() {
   content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
       ipfs::kIPNSScheme);
 #endif
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdateCallback(
-          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,

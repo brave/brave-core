@@ -5,60 +5,46 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
-#include <iterator>
-#include <set>
-
-#include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-namespace {
-
-std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
-  std::set<std::string> creative_set_ids;
-
-  for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type == ConfirmationType::kConversion) {
-      creative_set_ids.insert(ad_event.creative_set_id);
-    }
-  }
-
-  return creative_set_ids;
-}
-
-}  // namespace
-
-CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
+CreativeSetConversionList GetMatchingCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions,
-    const AdEventList& ad_events,
     const std::vector<GURL>& redirect_chain) {
   if (creative_set_conversions.empty()) {
     return {};
   }
 
-  const std::set<std::string> converted_creative_sets =
-      GetConvertedCreativeSets(ad_events);
-
-  CreativeSetConversionList filtered_creative_set_conversions;
+  CreativeSetConversionList matching_creative_set_conversions;
 
   base::ranges::copy_if(
       creative_set_conversions,
-      std::back_inserter(filtered_creative_set_conversions),
-      [&converted_creative_sets, &redirect_chain](
+      std::back_inserter(matching_creative_set_conversions),
+      [&redirect_chain](
           const CreativeSetConversionInfo& creative_set_conversion) {
-        return !base::Contains(converted_creative_sets,
-                               creative_set_conversion.id) &&
-               DoesCreativeSetConversionUrlPatternMatchRedirectChain(
-                   creative_set_conversion, redirect_chain);
+        return DoesCreativeSetConversionUrlPatternMatchRedirectChain(
+            creative_set_conversion, redirect_chain);
       });
 
-  return filtered_creative_set_conversions;
+  return matching_creative_set_conversions;
+}
+
+CreativeSetConversionCountMap GetCreativeSetConversionCounts(
+    const AdEventList& ad_events) {
+  CreativeSetConversionCountMap creative_set_conversion_counts;
+
+  for (const auto& ad_event : ad_events) {
+    if (ad_event.confirmation_type == ConfirmationType::kConversion) {
+      creative_set_conversion_counts[ad_event.creative_set_id]++;
+    }
+  }
+
+  return creative_set_conversion_counts;
 }
 
 CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
@@ -72,21 +58,37 @@ CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
   return buckets;
 }
 
-std::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+void FilterCreativeSetConversionBucketsThatExceedTheCap(
+    const std::map<std::string, size_t>& creative_set_conversion_counts,
+    const size_t creative_set_conversion_cap,
+    CreativeSetConversionBucketMap& creative_set_conversion_buckets) {
+  if (creative_set_conversion_cap == 0) {
+    // No cap.
+    return;
+  }
+
+  for (const auto& [creative_set_id, creative_set_conversion_count] :
+       creative_set_conversion_counts) {
+    if (creative_set_conversion_count >= creative_set_conversion_cap) {
+      creative_set_conversion_buckets.erase(creative_set_id);
+    }
+  }
+}
+
+CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event) {
-  const auto iter = base::ranges::find_if(
+  CreativeSetConversionList unexpired_creative_set_conversions;
+
+  base::ranges::copy_if(
       creative_set_conversions,
+      std::back_inserter(unexpired_creative_set_conversions),
       [&ad_event](const CreativeSetConversionInfo& creative_set_conversion) {
         return !HasObservationWindowForAdEventExpired(
             creative_set_conversion.observation_window, ad_event);
       });
 
-  if (iter == creative_set_conversions.cend()) {
-    return std::nullopt;
-  }
-
-  return *iter;
+  return unexpired_creative_set_conversions;
 }
 
 }  // namespace brave_ads

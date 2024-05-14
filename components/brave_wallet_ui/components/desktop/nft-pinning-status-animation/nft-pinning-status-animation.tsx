@@ -5,7 +5,11 @@
 
 import * as React from 'react'
 
-import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
+// hooks
+import { OverallPinningStatus } from '../../../common/hooks/nft-pin'
+import {
+  useGetPinnableVisibleNftIdsQuery //
+} from '../../../common/slices/api.slice'
 
 // styles
 import {
@@ -31,8 +35,13 @@ export const NftPinningStatusAnimation = ({
   status,
   isAutopinEnabled
 }: Props) => {
-  const { pinnableNftsCount } = useNftPin()
+  // queries
+  const { data: pinnableNftIds = [] } = useGetPinnableVisibleNftIdsQuery()
 
+  // computed
+  const pinnableNftsCount = pinnableNftIds.length
+
+  // render
   return (
     <StyledWrapper
       size={

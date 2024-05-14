@@ -84,24 +84,16 @@ void InlineContentAdServing::GetEligibleAds(
     const int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) const {
-  BuildUserModel(base::BindOnce(&InlineContentAdServing::BuildUserModelCallback,
-                                weak_factory_.GetWeakPtr(), tab_id, dimensions,
-                                std::move(callback)));
-}
+  const UserModelInfo user_model = BuildUserModel();
 
-void InlineContentAdServing::BuildUserModelCallback(
-    const int32_t tab_id,
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback,
-    const UserModelInfo& user_model) const {
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
-      base::BindOnce(
-          &InlineContentAdServing::GetEligibleAdsForUserModelCallback,
-          weak_factory_.GetWeakPtr(), tab_id, dimensions, std::move(callback)));
+      base::BindOnce(&InlineContentAdServing::GetEligibleAdsCallback,
+                     weak_factory_.GetWeakPtr(), tab_id, dimensions,
+                     std::move(callback)));
 }
 
-void InlineContentAdServing::GetEligibleAdsForUserModelCallback(
+void InlineContentAdServing::GetEligibleAdsCallback(
     const int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,

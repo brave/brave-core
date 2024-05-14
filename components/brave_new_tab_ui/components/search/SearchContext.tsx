@@ -4,13 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/components/omnibox/browser/omnibox.mojom.m';
+import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { getDefaultSearchEngine, isSearchEngineEnabled, setDefaultSearchEngine } from './config';
 
 interface Context {
+  open: boolean,
+  setOpen: (open: boolean) => void,
   query: string,
   setQuery: (query: string) => void
   searchEngine?: SearchEngineInfo,
@@ -20,6 +22,8 @@ interface Context {
 }
 
 const Context = React.createContext<Context>({
+  open: false,
+  setOpen: () => {},
   query: '',
   setQuery: () => { },
   searchEngine: undefined,
@@ -68,11 +72,15 @@ class SearchPage implements PageInterface {
   updateSelection(selection: OmniboxPopupSelection) {
     for (const listener of this.selectionListeners) listener(selection)
   }
+
+  setInputText(inputText: string) {}
+  setThumbnail(thumbnailUrl: string) {}
 }
 
 export const search = new SearchPage()
 
 export function SearchContext(props: React.PropsWithChildren<{}>) {
+  const [open, setOpen] = React.useState(false)
   const [searchEngine, setSearchEngineInternal] = React.useState<SearchEngineInfo>()
   const [query, setQuery] = React.useState('')
   const { result: searchEngines = [] } = usePromise(() => searchEnginesPromise, [])
@@ -109,13 +117,15 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   }, [query, searchEngine])
 
   const context = React.useMemo(() => ({
+    open,
+    setOpen,
     searchEngine,
     setSearchEngine,
     query,
     setQuery,
     searchEngines,
     filteredSearchEngines
-  }), [searchEngine, setSearchEngine, filteredSearchEngines, query, searchEngines])
+  }), [searchEngine, setSearchEngine, filteredSearchEngines, query, searchEngines, open])
 
   return <Context.Provider value={context}>
     {props.children}

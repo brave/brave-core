@@ -31,6 +31,7 @@ struct PortfolioView: View {
   @State private var isPresentingAssetsFilters: Bool = false
   @State private var isPresentingAddCustomNFT: Bool = false
   @State private var isPresentingNFTsFilters: Bool = false
+  @State private var bitcoinBalanceDetails: BitcoinBalanceDetails?
 
   var body: some View {
     ScrollView {
@@ -47,6 +48,9 @@ struct PortfolioView: View {
         contentDrawer
       }
     }
+    .onAppear {
+      portfolioStore.update()
+    }
     .background(
       VStack(spacing: 0) {
         Color(braveSystemName: .pageBackground)  // top scroll rubberband area
@@ -59,8 +63,11 @@ struct PortfolioView: View {
           EditUserAssetsView(
             networkStore: networkStore,
             keyringStore: keyringStore,
-            userAssetsStore: portfolioStore.userAssetsStore
+            userAssetsStore: cryptoStore.openUserAssetsStore()
           )
+          .onDisappear {
+            cryptoStore.closeUserAssetsStore()
+          }
         }
     )
     .background(
@@ -94,9 +101,12 @@ struct PortfolioView: View {
             networkStore: networkStore,
             networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
             keyringStore: keyringStore,
-            userAssetStore: cryptoStore.nftStore.userAssetsStore,
+            userAssetStore: cryptoStore.openUserAssetsStore(),
             supportedTokenTypes: [.nft]
           )
+          .onDisappear {
+            cryptoStore.closeUserAssetsStore()
+          }
         }
     )
     .background(
@@ -123,6 +133,26 @@ struct PortfolioView: View {
           })
         }
     )
+    .background(
+      Color.clear
+        .sheet(
+          isPresented: Binding(
+            get: { bitcoinBalanceDetails != nil },
+            set: {
+              if !$0 {
+                bitcoinBalanceDetails = nil
+              }
+            }
+          )
+        ) {
+          if let bitcoinBalanceDetails {
+            BTCBalanceDetailsView(
+              details: bitcoinBalanceDetails,
+              currencyFormatter: .usdCurrencyFormatter
+            )
+          }
+        }
+    )
   }
 
   private var contentDrawer: some View {
@@ -140,7 +170,8 @@ struct PortfolioView: View {
             networkStore: networkStore,
             portfolioStore: portfolioStore,
             isPresentingEditUserAssets: $isPresentingEditUserAssets,
-            isPresentingFilters: $isPresentingAssetsFilters
+            isPresentingFilters: $isPresentingAssetsFilters,
+            bitcoinBalanceDetails: $bitcoinBalanceDetails
           )
           .padding(.horizontal, 8)
         } else {
@@ -180,7 +211,7 @@ struct PortfolioAssetGroupHeaderView: View {
         if case .network(let networkInfo) = group.groupType {
           NetworkIconView(network: networkInfo, length: 32)
         } else if case .account(let accountInfo) = group.groupType {
-          Blockie(address: accountInfo.address)
+          Blockie(address: accountInfo.blockieSeed)
             .frame(width: 32, height: 32)
             .clipShape(RoundedRectangle(cornerRadius: 4))
         }

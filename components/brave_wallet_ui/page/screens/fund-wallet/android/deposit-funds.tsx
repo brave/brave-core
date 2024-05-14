@@ -17,7 +17,6 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
-import * as Lib from '../../../../common/async/lib'
 
 // actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
@@ -29,7 +28,6 @@ import {
   default as BraveCoreThemeProvider
 } from '../../../../../common/BraveCoreThemeProvider'
 import { DepositFundsScreen } from '../deposit-funds'
-import { LibContext } from '../../../../common/context/lib.context'
 import { ApiProxyContext } from '../../../../common/context/api-proxy.context'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -44,9 +42,7 @@ export function AndroidDepositApp() {
           light={walletLightTheme}
         >
           <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <LibContext.Provider value={Lib}>
-              <DepositFundsScreen isAndroid={true} />
-            </LibContext.Provider>
+            <DepositFundsScreen isAndroid={true} />
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       </BrowserRouter>

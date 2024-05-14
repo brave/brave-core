@@ -28,10 +28,8 @@ struct TopNewsWidget: Widget {
     .supportedFamilies(supportedFamilies)
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
-    #if swift(>=5.9)
     .contentMarginsDisabled()
     .containerBackgroundRemovable(false)
-    #endif
   }
 }
 

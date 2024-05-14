@@ -7,16 +7,39 @@
 
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 namespace ai_chat {
 
 Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
   auto* browser_window =
       BrowserWindow::FindBrowserWindowWithWebContents(web_contents);
   auto* browser_view = static_cast<BrowserView*>(browser_window);
-  CHECK(browser_view);
+  if (!browser_view) {
+    return nullptr;
+  }
+
   return browser_view->browser();
+}
+
+void ClosePanel(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  Browser* browser = GetBrowserForWebContents(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  if (SidePanelUI* ui = SidePanelUI::GetSidePanelUIForBrowser(browser)) {
+    ui->Close();
+  }
 }
 
 }  // namespace ai_chat

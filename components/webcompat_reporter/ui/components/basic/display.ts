@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { TextSection } from './structure'
-import { CheckCircleIcon } from 'brave-ui/components/icons'
+import { CheckCircleIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
 import { Card } from 'brave-ui/components'
 import { CardProps } from 'brave-ui/components/layout/card'
 
@@ -42,7 +42,7 @@ export const DisclaimerText = styled(TextSection)`
 
 export const NonInteractiveURL = styled('p')<{}>`
   box-sizing: border-box;
-  color: ${p => p.theme.color.brandBrave};
+  color: ${p => p.theme.color.interactive05};
   font-size: 14px;
   font-weight: 500;
   display: inline-block;
@@ -56,6 +56,16 @@ export const SuccessIcon = styled(CheckCircleIcon)`
   color: ${p => p.theme.color.subtle};
   width: 30px;
   margin-right: 10px;
+`
+
+export const CloseIcon = styled(CloseStrokeIcon)`
+  color: ${p => p.theme.color.subtle};
+  width: 24px;
+  height: 24px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
 `
 
 export const RectangularCard = styled(Card)<CardProps>`

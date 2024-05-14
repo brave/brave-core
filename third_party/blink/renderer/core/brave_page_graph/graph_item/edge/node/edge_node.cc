@@ -7,13 +7,15 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 
 namespace brave_page_graph {
 
 EdgeNode::EdgeNode(GraphItemContext* context,
                    NodeActor* out_node,
-                   NodeHTML* in_node)
-    : GraphEdge(context, out_node, in_node) {}
+                   NodeHTML* in_node,
+                   const FrameId& frame_id)
+    : GraphEdge(context, out_node, in_node), frame_id_(frame_id) {}
 
 EdgeNode::~EdgeNode() = default;
 
@@ -35,6 +37,13 @@ bool EdgeNode::IsEdgeNodeInsert() const {
 
 bool EdgeNode::IsEdgeNodeRemove() const {
   return false;
+}
+
+void EdgeNode::AddGraphMLAttributes(xmlDocPtr doc,
+                                    xmlNodePtr parent_node) const {
+  GraphEdge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefEdgeFrameId)
+      ->AddValueNode(doc, parent_node, frame_id_);
 }
 
 }  // namespace brave_page_graph

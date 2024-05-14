@@ -22,7 +22,11 @@ export const ProtectedRoute = ({
   return (
     <Route
       {...routeProps}
-      render={() => (requirement ? children : <Redirect to={redirectRoute} />)}
+      render={
+        () => requirement
+          ? children as React.ReactNode
+          : <Redirect to={redirectRoute} />
+      }
     />
   )
 }

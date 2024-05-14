@@ -62,7 +62,7 @@ GetEthBalanceScannerContractAddresses() {
             "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
            // BSC, Optimism, and Arbitrum contract addresses pulled from
            // https://github.com/onyb/x/blob/75800edce88688dcfe59dd6b4a664087862369bb/core/evm/scanner/balances/EVMScanner.ts
-           {mojom::kBinanceSmartChainMainnetChainId,
+           {mojom::kBnbSmartChainMainnetChainId,
             "0x53242a975aa7c607e17138b0e0231162e3e68593"},
            {mojom::kOptimismMainnetChainId,
             "0x9e5076DF494FC949aBc4461F4E57592B81517D81"},
@@ -115,7 +115,7 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
       blockchains({{mojom::kArbitrumMainnetChainId, "arbitrum"},
                    {mojom::kAvalancheMainnetChainId, "avalanche"},
                    {mojom::kBaseMainnetChainId, "base"},
-                   {mojom::kBinanceSmartChainMainnetChainId, "bsc"},
+                   {mojom::kBnbSmartChainMainnetChainId, "bsc"},
                    {mojom::kMainnetChainId, "eth"},
                    {mojom::kFantomMainnetChainId, "fantom"},
                    {mojom::kFlareMainnetChainId, "flare"},

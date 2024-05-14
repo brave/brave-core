@@ -12,6 +12,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -20,13 +23,14 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/query_filter/utils.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
@@ -44,6 +48,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/channel_info.h"
@@ -106,16 +111,43 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
          to->profile() == from->profile();
 }
 
+std::optional<tabs::TabHandle> GetActiveTabHandle(Browser* browser) {
+  CHECK(browser);
+  auto* model = browser->tab_strip_model();
+  auto* active_contents = model->GetActiveWebContents();
+  if (!active_contents) {
+    return std::nullopt;
+  }
+
+  const int active_tab_index = model->GetIndexOfWebContents(active_contents);
+  return model->GetTabHandleAt(active_tab_index);
+}
+
+std::vector<int> GetSelectedIndices(Browser* browser) {
+  auto* model = browser->tab_strip_model();
+  const auto selection = model->selection_model();
+  auto indices = std::vector<int>(selection.selected_indices().begin(),
+                                  selection.selected_indices().end());
+  CHECK(!indices.empty())
+      << "Returning empty indices could case infinite recursion";
+  return indices;
+}
+
 }  // namespace
 
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
-  if (browser->profile()->IsTor()) {
-    chrome::OpenEmptyWindow(browser->profile());
+  NewOffTheRecordWindowTor(browser->profile());
+}
+
+void NewOffTheRecordWindowTor(Profile* profile) {
+  CHECK(profile);
+  if (profile->IsTor()) {
+    chrome::OpenEmptyWindow(profile);
     return;
   }
 
-  TorProfileManager::SwitchToTorProfile(browser->profile());
+  TorProfileManager::SwitchToTorProfile(profile);
 }
 
 void NewTorConnectionForSite(Browser* browser) {
@@ -396,6 +428,12 @@ void ShowPlaylistBubble(Browser* browser) {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+void ShowWaybackMachineBubble(Browser* browser) {
+  BraveBrowserWindow::From(browser->window())->ShowWaybackMachineBubble();
+}
+#endif
+
 void GroupTabsOnCurrentOrigin(Browser* browser) {
   auto url =
       browser->tab_strip_model()->GetActiveWebContents()->GetVisibleURL();
@@ -646,25 +684,37 @@ void BringAllTabs(Browser* browser) {
 
   // Find all browsers with the same profile
   std::vector<Browser*> browsers;
+  base::flat_set<Browser*> browsers_to_close;
   base::ranges::copy_if(
       *BrowserList::GetInstance(), std::back_inserter(browsers),
       [&](const Browser* from) { return CanTakeTabs(from, browser); });
 
   // Detach all tabs from other browsers
-  std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;
-  std::stack<std::unique_ptr<content::WebContents>> detached_unpinned_tabs;
+  std::stack<std::unique_ptr<tabs::TabModel>> detached_pinned_tabs;
+  std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs](auto* other) {
+                                    &detached_unpinned_tabs,
+                                    &browsers_to_close](auto* other) {
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
-      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
       const bool is_pinned = i < pinned_tab_count;
+      if (is_pinned && base::FeatureList::IsEnabled(
+                           tabs::features::kBraveSharedPinnedTabs)) {
+        // SharedPinnedTabService is responsible for synchronizing pinned
+        // tabs, thus we shouldn't manually detach and attach tabs here.
+        // Meanwhile, the tab strips don't get empty when they have dummy
+        // contents, we should close the browsers manually.
+        browsers_to_close.insert(other);
+        continue;
+      }
+
+      auto tab = tab_strip_model->DetachTabAtForInsertion(i);
       if (is_pinned) {
-        detached_pinned_tabs.push(std::move(contents));
+        detached_pinned_tabs.push(std::move(tab));
       } else {
-        detached_unpinned_tabs.push(std::move(contents));
+        detached_unpinned_tabs.push(std::move(tab));
       }
     }
   });
@@ -672,7 +722,7 @@ void BringAllTabs(Browser* browser) {
   // Insert pinned tabs
   auto* tab_strip_model = browser->tab_strip_model();
   while (!detached_pinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
+    tab_strip_model->InsertDetachedTabAt(
         tab_strip_model->IndexOfFirstNonPinnedTab(),
         std::move(detached_pinned_tabs.top()), AddTabTypes::ADD_PINNED);
     detached_pinned_tabs.pop();
@@ -680,10 +730,15 @@ void BringAllTabs(Browser* browser) {
 
   // Insert unpinned tabs
   while (!detached_unpinned_tabs.empty()) {
-    tab_strip_model->InsertWebContentsAt(
+    tab_strip_model->InsertDetachedTabAt(
         tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
         AddTabTypes::ADD_NONE);
     detached_unpinned_tabs.pop();
+  }
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    base::ranges::for_each(browsers_to_close,
+                           [](auto* other) { other->window()->Close(); });
   }
 }
 
@@ -843,6 +898,151 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
       !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));
+}
+
+bool CanOpenNewSplitViewForTab(Browser* browser,
+                               std::optional<tabs::TabHandle> tab) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return false;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return false;
+  }
+
+  if (!tab) {
+    tab = GetActiveTabHandle(browser);
+  }
+
+  return !split_view_data->IsTabTiled(*tab);
+}
+
+void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (!CanOpenNewSplitViewForTab(browser, tab)) {
+    return;
+  }
+
+  if (!tab) {
+    tab = GetActiveTabHandle(browser);
+  }
+
+  auto* model = browser->tab_strip_model();
+  const int tab_index = model->GetIndexOfTab(*tab);
+  const int new_tab_index = model->IsTabPinned(tab_index)
+                                ? model->IndexOfFirstNonPinnedTab()
+                                : tab_index + 1;
+
+  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+                   /*foreground*/ true);
+  split_view_data->TileTabs(std::make_pair(
+      model->GetTabHandleAt(tab_index), model->GetTabHandleAt(new_tab_index)));
+}
+
+void TileTabs(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (indices.empty()) {
+    return TileTabs(browser, GetSelectedIndices(browser));
+  }
+
+  CHECK_LE(indices.size(), 2u);
+  CHECK(!indices.empty());
+  if (indices.size() == 1) {
+    auto* model = browser->tab_strip_model();
+    int active_tab_index =
+        model->GetIndexOfWebContents(model->GetActiveWebContents());
+    CHECK_NE(indices[0], active_tab_index);
+    auto new_indices = indices;
+    new_indices.push_back(active_tab_index);
+    return TileTabs(browser, new_indices);
+  }
+
+  auto* model = browser->tab_strip_model();
+  auto tab1 = indices[0];
+  auto tab2 = indices[1];
+  CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab1)));
+  CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab2)));
+
+  if (tab2 < tab1) {
+    std::swap(tab1, tab2);
+  }
+
+  split_view_data->TileTabs(
+      std::make_pair(model->GetTabHandleAt(tab1), model->GetTabHandleAt(tab2)));
+}
+
+void BreakTiles(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (indices.empty()) {
+    return BreakTiles(browser, GetSelectedIndices(browser));
+  }
+
+  auto* model = browser->tab_strip_model();
+  for (auto index : indices) {
+    // The tile could have already been broken from the earlier iteration.
+    if (auto tab_handle = model->GetTabHandleAt(index);
+        split_view_data->IsTabTiled(tab_handle)) {
+      split_view_data->BreakTile(tab_handle);
+    }
+  }
+}
+
+bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return false;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return false;
+  }
+
+  if (indices.empty()) {
+    return IsTabsTiled(browser, GetSelectedIndices(browser));
+  }
+
+  auto* model = browser->tab_strip_model();
+
+  return base::ranges::any_of(indices, [&](auto index) {
+    return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
+  });
+}
+
+bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return false;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return false;
+  }
+
+  if (indices.empty()) {
+    return CanTileTabs(browser, GetSelectedIndices(browser));
+  }
+
+  if (indices.size() != 2) {
+    return false;
+  }
+
+  auto* model = browser->tab_strip_model();
+  return base::ranges::none_of(indices, [&](auto index) {
+    return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
+  });
 }
 
 }  // namespace brave

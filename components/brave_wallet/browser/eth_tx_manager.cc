@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
@@ -566,7 +567,16 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
   }
 
   meta->tx()->set_nonce(nonce);
-  DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
+
+  if (keyring_service_->IsLockedSync()) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewProviderError(
+            mojom::ProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   keyring_service_->SignTransactionByDefaultKeyring(*meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);
@@ -1143,10 +1153,18 @@ void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
                                     RetryTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta =
       GetEthTxStateManager()->GetEthTx(tx_meta_id);
-  if (!meta || meta->status() != mojom::TransactionStatus::Error) {
+
+  if (!meta || !meta->tx()) {
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  if (!meta->IsRetriable()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_RETRIABLE));
     return;
   }
 

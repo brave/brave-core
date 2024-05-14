@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -51,6 +52,15 @@ size_t BindParameters(
 
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
+    if (!creative_set_conversion.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid creative set conversion");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     BindString(command, index++, creative_set_conversion.id);
     BindString(command, index++, creative_set_conversion.url_pattern);
     BindString(command, index++,
@@ -59,7 +69,8 @@ size_t BindParameters(
     BindInt(command, index++,
             creative_set_conversion.observation_window.InDays());
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(creative_set_conversion.expire_at));
+              ToChromeTimestampFromTime(
+                  creative_set_conversion.expire_at.value_or(base::Time())));
 
     ++count;
   }
@@ -81,8 +92,11 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
         verifiable_advertiser_public_key_base64;
   }
   creative_set_conversion.observation_window = base::Days(ColumnInt(record, 3));
-  creative_set_conversion.expire_at =
+  const base::Time expire_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+  if (!expire_at.is_null()) {
+    creative_set_conversion.expire_at = expire_at;
+  }
 
   return creative_set_conversion;
 }
@@ -94,7 +108,7 @@ void GetCallback(GetConversionsCallback callback,
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative set conversions");
     return std::move(callback).Run(/*success=*/false,
-                                   /*conversion_queue_items=*/{});
+                                   /*conversion_set_conversions=*/{});
   }
 
   CHECK(command_response->result);
@@ -104,6 +118,15 @@ void GetCallback(GetConversionsCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const CreativeSetConversionInfo creative_set_conversion =
         GetFromRecord(&*record);
+    if (!creative_set_conversion.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid creative set conversion");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     creative_set_conversions.push_back(creative_set_conversion);
   }
 

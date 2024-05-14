@@ -12,29 +12,6 @@
 
 CustomStyledLabel::~CustomStyledLabel() = default;
 
-void CustomStyledLabel::Layout(PassKey) {
-  // Link click doesn't work when StyledLabel is multilined.
-  // And there is upstream bug -
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=1371538 Below code is
-  // copied from WIP
-  // PR(https://chromium-review.googlesource.com/c/chromium/src/+/3934027) to
-  // skip layout when it doesn't need layout. Layout() happens between
-  // OnMousePressed() and OnMouseReleased(). As Layout() deletes all children,
-  // RootView::mouse_pressed_handler_ is gone before OnMouseReleased(). So, any
-  // child can't get mouse release event.
-  // NOTE: There is another finding from @sangwoo.
-  // This Layout() comes from LinkFragment::RecalculateFont() whenever hovered
-  // over link in StyledLabel even we don't need to change font.
-  // For more details, please see
-  // https://github.com/brave/brave-core/pull/17121#discussion_r1101354123
-  if (last_layout_size_ == size()) {
-    return;
-  }
-
-  last_layout_size_ = size();
-  LayoutSuperclass<StyledLabel>(this);
-}
-
 std::unique_ptr<views::Label> CustomStyledLabel::CreateLabel(
     const std::u16string& text,
     const RangeStyleInfo& style_info,

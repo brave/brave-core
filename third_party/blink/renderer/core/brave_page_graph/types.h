@@ -13,6 +13,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
 #include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/graphics/dom_node_id.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/hash_functions.h"
@@ -28,6 +29,7 @@ class GraphEdge;
 class GraphNode;
 class NodeHTML;
 
+using FrameId = blink::DOMNodeId;
 using ItemDesc = String;
 using ItemName = String;
 using GraphMLId = std::string;
@@ -102,7 +104,8 @@ enum GraphMLAttrDef {
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
   kGraphMLAttrDefEventListenerId,
-  kGraphMLAttrDefFrameId,
+  kGraphMLAttrDefEdgeFrameId,
+  kGraphMLAttrDefNodeFrameId,
   kGraphMLAttrDefHost,
   kGraphMLAttrDefIncognito,
   kGraphMLAttrDefIsDeleted,
@@ -123,8 +126,8 @@ enum GraphMLAttrDef {
   kGraphMLAttrDefResourceType,
   kGraphMLAttrDefResponseHash,
   kGraphMLAttrDefRule,
-  kGraphMLAttrDefScriptIdForEdge,
-  kGraphMLAttrDefScriptIdForNode,
+  kGraphMLAttrDefEdgeScriptId,
+  kGraphMLAttrDefNodeScriptId,
   kGraphMLAttrDefScriptPosition,
   kGraphMLAttrDefScriptType,
   kGraphMLAttrDefSecondaryPattern,

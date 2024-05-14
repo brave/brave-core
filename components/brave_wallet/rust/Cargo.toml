@@ -1,5 +1,5 @@
 [package]
-name = "brave-wallet-cxx"
+name = "brave_wallet"
 version = "1.0.0"
 edition = "2021"
 license = "MPL-2.0"
@@ -13,6 +13,6 @@ curve25519-dalek = "3.2.0"
 bech32 = "0.9.1"
 
 [lib]
-name = "brave_wallet_cxx"
+name = "brave_wallet"
 path = "lib.rs"
 crate-type = ["rlib"]

@@ -20,6 +20,7 @@ class EdgeRequest : public GraphEdge {
               GraphNode* out_node,
               GraphNode* in_node,
               const InspectorId request_id,
+              const FrameId& frame_id,
               const RequestStatus request_status);
   ~EdgeRequest() override;
 
@@ -43,6 +44,7 @@ class EdgeRequest : public GraphEdge {
 
  private:
   const InspectorId request_id_;
+  const FrameId frame_id_;
   const RequestStatus request_status_;
 };
 

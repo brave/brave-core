@@ -5,13 +5,16 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
+import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import * as mojom from '../../api/page_handler'
+
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
 
-function getCategoryName (category: mojom.ModelCategory) {
+function getCategoryName(category: mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
   // on the enum name rather than the number value, e.g. "CHAT" vs 0
   const categoryKey = Object.keys(mojom.ModelCategory)[category]
@@ -19,12 +22,12 @@ function getCategoryName (category: mojom.ModelCategory) {
   return getLocale(key)
 }
 
-function getIntroMessage (model: mojom.Model) {
+function getIntroMessage(model: mojom.Model) {
   const key = `introMessage-${model.key}`
   return getLocale(key)
 }
 
-export default function ModelIntro () {
+export default function ModelIntro() {
   const context = React.useContext(DataContext)
 
   const model = context.currentModel
@@ -47,8 +50,41 @@ export default function ModelIntro () {
               $2: model.displayMaker
             }
           })}
+          <Tooltip
+            mode='default'
+            className={styles.tooltip}
+            offset={4}
+          >
+            <div
+              slot='content'
+              className={styles.tooltipContent}
+            >
+              {formatMessage(getIntroMessage(model), {
+                tags: {
+                  $1: (content) => {
+                    return (
+                        <a
+                          key={content}
+                          onClick={() => getPageHandlerInstance().pageHandler.openModelSupportUrl()}
+                          href="#"
+                          target='_blank'
+                        >
+                          {content}
+                        </a>
+                    )
+                  }
+                }
+              })}
+            </div>
+            <Button
+              fab
+              kind='plain-faint'
+              className={styles.tooltipButton}
+            >
+              <Icon name='info-outline' />
+            </Button>
+          </Tooltip>
         </h3>
-        <p className={styles.modelIntro}>{getIntroMessage(model)}</p>
       </div>
     </div>
   )

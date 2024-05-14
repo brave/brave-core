@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
@@ -44,7 +45,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 29;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 31;
 
     private int mItemsLeft;
 
@@ -96,8 +97,12 @@ public class BravePrivacySettingsTest {
     @Test
     @SmallTest
     public void testDisabledOptions() {
-        TestThreadUtils.runOnUiThreadBlocking(() -> {
-            assertFalse(PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING);
-        });
+        TestThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    assertFalse(
+                            PreloadPagesSettingsBridge.getState(
+                                            ProfileManager.getLastUsedRegularProfile())
+                                    != PreloadPagesState.NO_PRELOADING);
+                });
     }
 }

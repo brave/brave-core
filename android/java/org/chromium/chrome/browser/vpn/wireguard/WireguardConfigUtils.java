@@ -28,10 +28,11 @@ public class WireguardConfigUtils {
             throw new IOException("Configuration file already exists");
         }
         FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-        Config config = new Config.Builder()
-                                .setInterface(getInterface(address, clientPrivateKey))
-                                .addPeers(getPeers(host, serverPublicKey))
-                                .build();
+        Config config =
+                new Config.Builder()
+                        .setInterface(getInterface(address, clientPrivateKey))
+                        .addPeers(getPeers(host, serverPublicKey, true))
+                        .build();
         fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
         return config;
     }

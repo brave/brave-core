@@ -4,7 +4,7 @@
 function redirectToDestination() {
     const urlParams = new URLSearchParams(window.location.search);
     const url = urlParams.get('url');
-    window.location = atob(url);
+    window.location = atob(url.replace(/\-/g, '+').replace(/\_/g, '/'));
 }
 </script>
 </head>

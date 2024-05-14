@@ -14,8 +14,8 @@
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#include "brave/components/speedreader/speedreader_delegate.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
@@ -49,7 +49,7 @@ class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
       public PageDistiller,
-      public SpeedreaderThrottleDelegate,
+      public SpeedreaderDelegate,
       public mojom::SpeedreaderHost,
       public SpeedreaderService::Observer,
       public dom_distiller::DistillabilityObserver,
@@ -136,7 +136,7 @@ class SpeedreaderTabHelper
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
-  // SpeedreaderThrottleDelegate:
+  // SpeedreaderDelegate:
   bool IsPageDistillationAllowed() override;
   bool IsPageContentPresent() override;
   std::string TakePageContent() override;

@@ -6,7 +6,10 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 
 #include <string>
+#include <utility>
 
+#include "base/check_is_test.h"
+#include "base/functional/callback.h"  // IWYU pragma: keep
 #include "base/no_destructor.h"
 
 namespace brave_component_updater {
@@ -20,14 +23,34 @@ BraveOnDemandUpdater::BraveOnDemandUpdater() = default;
 
 BraveOnDemandUpdater::~BraveOnDemandUpdater() = default;
 
+component_updater::OnDemandUpdater*
+BraveOnDemandUpdater::RegisterOnDemandUpdater(
+    component_updater::OnDemandUpdater* on_demand_updater) {
+  if (!on_demand_updater) {
+    CHECK_IS_TEST();
+  }
+  return std::exchange(on_demand_updater_, on_demand_updater);
+}
+
 void BraveOnDemandUpdater::OnDemandUpdate(const std::string& id) {
-  DCHECK(!on_demand_update_callback_.is_null());
-  on_demand_update_callback_.Run(id);
+  OnDemandUpdate(id, component_updater::OnDemandUpdater::Priority::FOREGROUND,
+                 component_updater::Callback());
 }
 
-void BraveOnDemandUpdater::RegisterOnDemandUpdateCallback(Callback callback) {
-  on_demand_update_callback_ = callback;
+void BraveOnDemandUpdater::OnDemandUpdate(
+    const std::string& id,
+    component_updater::OnDemandUpdater::Priority priority,
+    component_updater::Callback callback) {
+  CHECK(on_demand_updater_);
+  on_demand_updater_->OnDemandUpdate(id, priority, std::move(callback));
 }
 
+void BraveOnDemandUpdater::OnDemandUpdate(
+    const std::vector<std::string>& ids,
+    component_updater::OnDemandUpdater::Priority priority,
+    component_updater::Callback callback) {
+  CHECK(on_demand_updater_);
+  on_demand_updater_->OnDemandUpdate(ids, priority, std::move(callback));
+}
 
 }  // namespace brave_component_updater

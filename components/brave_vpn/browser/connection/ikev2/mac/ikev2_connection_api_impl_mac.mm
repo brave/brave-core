@@ -176,8 +176,13 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
     return;
   }
 
+  auto weak_ptr = weak_factory_.GetWeakPtr();
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (!weak_ptr) {
+      return;
+    }
+
     if (error) {
       SetLastConnectionError(
           base::SysNSStringToUTF8([error localizedDescription]));
@@ -206,6 +211,10 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
     }
 
     [vpn_manager saveToPreferencesWithCompletionHandler:^(NSError* save_error) {
+      if (!weak_ptr) {
+        return;
+      }
+
       if (save_error) {
         SetLastConnectionError(
             base::SysNSStringToUTF8([save_error localizedDescription]));
@@ -221,6 +230,10 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
       VLOG(2) << "Create - load & save again.";
       [vpn_manager loadFromPreferencesWithCompletionHandler:^(
                        NSError* load_again_error) {
+        if (!weak_ptr) {
+          return;
+        }
+
         if (load_again_error) {
           SetLastConnectionError(
               base::SysNSStringToUTF8([load_again_error localizedDescription]));
@@ -232,6 +245,10 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
 
         [vpn_manager saveToPreferencesWithCompletionHandler:^(
                          NSError* save_again_error) {
+          if (!weak_ptr) {
+            return;
+          }
+
           if (save_again_error) {
             SetLastConnectionError(base::SysNSStringToUTF8(
                 [save_again_error localizedDescription]));
@@ -248,8 +265,13 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
 }
 
 void IKEv2ConnectionAPIImplMac::ConnectImpl(const std::string& name) {
+  auto weak_ptr = weak_factory_.GetWeakPtr();
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (!weak_ptr) {
+      return;
+    }
+
     if (error) {
       SetLastConnectionError(
           base::SysNSStringToUTF8([error localizedDescription]));
@@ -279,8 +301,13 @@ void IKEv2ConnectionAPIImplMac::ConnectImpl(const std::string& name) {
 }
 
 void IKEv2ConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
+  auto weak_ptr = weak_factory_.GetWeakPtr();
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (!weak_ptr) {
+      return;
+    }
+
     if (error) {
       LOG(ERROR) << "Disconnect - loadFromPrefs: "
                  << base::SysNSStringToUTF8([error localizedDescription]);
@@ -297,6 +324,10 @@ void IKEv2ConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
     // Always clear on-demand bit when user disconnect vpn connection.
     [vpn_manager setOnDemandEnabled:NO];
     [vpn_manager saveToPreferencesWithCompletionHandler:^(NSError* save_error) {
+      if (!weak_ptr) {
+        return;
+      }
+
       if (save_error) {
         SetLastConnectionError(
             base::SysNSStringToUTF8([save_error localizedDescription]));
@@ -309,8 +340,13 @@ void IKEv2ConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
 }
 
 void IKEv2ConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
+  auto weak_ptr = weak_factory_.GetWeakPtr();
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
+    if (!weak_ptr) {
+      return;
+    }
+
     if (error) {
       LOG(ERROR) << "Connect - loadFromPrefs error: "
                  << base::SysNSStringToUTF8([error localizedDescription]);

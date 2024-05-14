@@ -14,11 +14,13 @@ EdgeRequestError::EdgeRequestError(GraphItemContext* context,
                                    NodeResource* out_node,
                                    GraphNode* in_node,
                                    const InspectorId request_id,
+                                   const FrameId& frame_id,
                                    const ResponseMetadata& metadata)
     : EdgeRequestResponse(context,
                           out_node,
                           in_node,
                           request_id,
+                          frame_id,
                           kRequestStatusError,
                           metadata) {}
 

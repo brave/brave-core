@@ -3,29 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoints/brave/get_parameters.h"
+
 #include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoints/brave/get_parameters.h"
+#include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=*GetParameters*
-
-using ::testing::_;
 using ::testing::TestParamInfo;
-using ::testing::TestWithParam;
 using ::testing::Values;
+using ::testing::WithParamInterface;
 
-namespace brave_rewards::internal::endpoints::test {
+namespace brave_rewards::internal::endpoints {
+
 using Error = GetParameters::Error;
 using Result = GetParameters::Result;
 
@@ -36,45 +33,42 @@ using GetParametersParamType =
                base::RepeatingCallback<Result()>  // expected result
                >;
 
-class GetParameters : public TestWithParam<GetParametersParamType> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_;
-};
+class RewardsGetParametersTest
+    : public RewardsEngineTest,
+      public WithParamInterface<GetParametersParamType> {};
 
-TEST_P(GetParameters, Paths) {
+TEST_P(RewardsGetParametersTest, Paths) {
   const auto& [ignore, status_code, body, make_result] = GetParam();
 
   Result expected_result = make_result.Run();
 
-  EXPECT_CALL(*mock_engine_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = status_code;
-        response->body = body;
-        std::move(callback).Run(std::move(response));
-      });
+  auto request_url =
+      engine().Get<EnvironmentConfig>().rewards_api_url().Resolve(
+          "/v1/parameters");
 
-  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
-  EXPECT_CALL(callback, Run).Times(1).WillOnce([&](Result&& result) {
-    if (result.has_value()) {
-      EXPECT_TRUE(expected_result.has_value());
-      EXPECT_EQ(*result.value(), *expected_result.value());
-    } else {
-      EXPECT_FALSE(expected_result.has_value());
-      EXPECT_EQ(result.error(), expected_result.error());
-    }
+  auto response = mojom::UrlResponse::New();
+  response->status_code = status_code;
+  response->body = body;
+
+  client().AddNetworkResultForTesting(request_url.spec(), mojom::UrlMethod::GET,
+                                      std::move(response));
+
+  auto result = WaitFor<Result&&>([&](auto callback) {
+    RequestFor<endpoints::GetParameters>(engine()).Send(std::move(callback));
   });
 
-  RequestFor<endpoints::GetParameters>(mock_engine_).Send(callback.Get());
-
-  task_environment_.RunUntilIdle();
+  if (result.has_value()) {
+    EXPECT_TRUE(expected_result.has_value());
+    EXPECT_EQ(*result.value(), *expected_result.value());
+  } else {
+    EXPECT_FALSE(expected_result.has_value());
+    EXPECT_EQ(result.error(), expected_result.error());
+  }
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    Endpoints,
-    GetParameters,
+    RewardsGetParametersTest,
+    RewardsGetParametersTest,
     Values(
         GetParametersParamType{
             "0_HTTP_200_success", net::HTTP_OK,
@@ -179,4 +173,4 @@ INSTANTIATE_TEST_SUITE_P(
       return std::get<0>(info.param);
     });
 
-}  // namespace brave_rewards::internal::endpoints::test
+}  // namespace brave_rewards::internal::endpoints

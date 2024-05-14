@@ -129,12 +129,29 @@ extension View {
               keyringStore: keyringStore,
               networkStore: networkStore,
               preSelectedCoin: accountNetwork?.coin,
-              preSelectedFilecoinNetwork: accountNetwork
+              preSelectedAccountNetwork: accountNetwork
             )
           }
           .navigationViewStyle(.stack)
           .onDisappear { onAddAccountDismissed() }
         }
     )
+  }
+
+  func errorAlert(errorMessage: Binding<String?>) -> some View {
+    alert(
+      isPresented: Binding(
+        get: { errorMessage.wrappedValue != nil },
+        set: { _, _ in
+          errorMessage.wrappedValue = nil
+        }
+      )
+    ) {
+      Alert(
+        title: Text(Strings.Wallet.errorAlertTitle),
+        message: Text(errorMessage.wrappedValue ?? Strings.Wallet.unknownError),
+        dismissButton: .default(Text(Strings.OKString))
+      )
+    }
   }
 }

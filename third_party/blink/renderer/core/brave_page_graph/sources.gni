@@ -175,7 +175,5 @@ if (enable_brave_page_graph) {
     "//brave/third_party/blink/renderer/core/brave_page_graph/types.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h",
-    "//brave/third_party/blink/renderer/core/brave_page_graph/utilities/urls.cc",
-    "//brave/third_party/blink/renderer/core/brave_page_graph/utilities/urls.h",
   ]
 }

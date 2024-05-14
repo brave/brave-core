@@ -132,8 +132,8 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
-      guard oldValue.address != selectedAccount.address,  // Same account
-        !oldValue.address.isEmpty  // initializing `KeyringStore`
+      guard oldValue.accountId != selectedAccount.accountId,  // Same account
+        !oldValue.accountId.uniqueKey.isEmpty  // initializing `KeyringStore`
       else {
         return
       }
@@ -194,6 +194,9 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     self.keychain = keychain
 
     setupObservers()
+
+    Preferences.Wallet.isBitcoinTestnetEnabled.observe(from: self)
+
     updateInfo()
 
     Task { @MainActor in
@@ -425,7 +428,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       keyringService.createWallet(password: password) { mnemonic in
         self.isCreatingWallet = false
         self.updateInfo()
-        if !mnemonic.isEmpty {
+        if mnemonic != nil {
           self.passwordToSaveInBiometric = password
         }
         completion?(mnemonic)
@@ -434,7 +437,11 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func recoveryPhrase(password: String, completion: @escaping ([RecoveryWord]) -> Void) {
-    keyringService.mnemonicForDefaultKeyring(password: password) { phrase in
+    keyringService.walletMnemonic(password: password) { phrase in
+      guard let phrase else {
+        completion([])
+        return
+      }
       let words =
         phrase
         .split(separator: " ")
@@ -447,13 +454,13 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func restoreWallet(
     words: [String],
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: ((Bool) -> Void)? = nil
   ) {
     restoreWallet(
       phrase: words.joined(separator: " "),
       password: password,
-      isLegacyBraveWallet: isLegacyBraveWallet,
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat,
       completion: completion
     )
   }
@@ -461,7 +468,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func restoreWallet(
     phrase: String,
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: ((Bool) -> Void)? = nil
   ) {
     guard !isRestoringWallet else {  // wallet is already being restored.
@@ -473,7 +480,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     keyringService.restoreWallet(
       mnemonic: phrase,
       password: password,
-      isLegacyBraveWallet: isLegacyBraveWallet
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat
     ) { [weak self] isMnemonicValid in
       guard let self = self else { return }
       self.isRestoringWallet = false
@@ -653,5 +660,25 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   /// it to the keychain
   func retrievePasswordFromKeychain() -> String? {
     keychain.getPasswordFromKeychain(key: Self.passwordKeychainKey)
+  }
+}
+
+extension KeyringStore: PreferencesObserver {
+  public func preferencesDidChange(for key: String) {
+    if Preferences.Wallet.isBitcoinTestnetEnabled.value == false {
+      // user disabled Bitcoin Testnet
+      Task { @MainActor in
+        let allAccounts = await keyringService.allAccounts()
+        if let currentlySelectedAccount = allAccounts.selectedAccount,
+          currentlySelectedAccount.keyringId == .bitcoin84Testnet,
+          let firstAvailableAccount = allAccounts.accounts.first(where: {
+            $0.keyringId != currentlySelectedAccount.keyringId
+          })
+        {
+          // we need to switch to the first available account
+          setSelectedAccount(to: firstAvailableAccount)
+        }
+      }
+    }
   }
 }

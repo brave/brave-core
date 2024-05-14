@@ -42,7 +42,7 @@
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -471,11 +471,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
 
   // Remove upstream's about menu. It's moved into help sub menu.
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
-    RemoveItemAt(*index);
-  }
-
-  // Remove upstream's distill menu. It's replaced with speedreader.
-  if (const auto index = GetIndexOfCommandId(IDC_DISTILL_PAGE)) {
     RemoveItemAt(*index);
   }
 }

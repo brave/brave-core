@@ -18,6 +18,7 @@ static_library("renderer") {
   public_deps = [ "//brave/components/playlist/common" ]
 
   deps = [
+    "//brave/gin:converter_specializations",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

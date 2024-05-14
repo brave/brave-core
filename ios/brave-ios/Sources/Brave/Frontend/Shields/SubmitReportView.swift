@@ -126,11 +126,9 @@ struct SubmitReportView: View {
   }
 }
 
-#if swift(>=5.9)
 #Preview {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
     isPrivateBrowsing: false
   )
 }
-#endif

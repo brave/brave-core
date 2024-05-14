@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const ChartBalance = styled.span`
   font-family: Poppins;
@@ -42,7 +42,7 @@ export const TooltipWrapper = styled.div<ToolTipProps>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  position: absolute;
+  position: relative;
   transform: ${(p) =>
     p.labelPosition === 'start'
       ? 'var(--label-start-translate)'

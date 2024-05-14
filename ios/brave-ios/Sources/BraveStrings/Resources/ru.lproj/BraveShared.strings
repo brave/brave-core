@@ -502,8 +502,7 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопировать сведения о приложении";
 
-/* Copy app info to clipboard action sheet action.
-   View all version info action sheet action. */
+/* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Скопировать сведения о размере приложения";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -1034,12 +1033,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "мес.";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Нажмите, чтобы получить бесплатные баллы.";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Награды 💵🎁";
-
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Нажмите, чтобы узнать больше.";
 
@@ -1461,7 +1454,7 @@
 "p3a.continue" = "Продолжить";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Анонимные данные аналитики продукта без нарушения конфиденциальности (P3A) помогают нам оценивать полную информацию об использовании Brave и улучшать популярные функции.";
+"p3a.settingSubtitle" = "Эти анонимные сведения помогают Brave оценивать, как используются определенные функции, и улучшать работу браузера.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Разрешить выполнение аналитики продукта без нарушения конфиденциальности (P3A)";
@@ -2340,12 +2333,6 @@
 "RewardsInternalsBalanceInfoHeader" = "Баланс";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClaimedAt" = "Получено в";
-
-/* No comment provided by engineer. */
-"RewardsInternalsClaimID" = "Получить идентификатор";
-
-/* No comment provided by engineer. */
 "RewardsInternalsClearLogsConfirmation" = "Удалить все журналы вознаграждений Brave Rewards?";
 
 /* No comment provided by engineer. */
@@ -2423,9 +2410,6 @@
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Шаблон ключевых данных";
 
-/* No comment provided by engineer. */
-"RewardsInternalsLegacyPromotion" = "Устаревшие бонусы";
-
 /* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
 "RewardsInternalsLogsCount" = "Показано журналов: %d";
 
@@ -2440,24 +2424,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsProcessor" = "Обработчик";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusActive" = "Активно";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusAttested" = "Подтверждено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusCorrupted" = "Повреждено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusFinished" = "Завершено";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionStatusOver" = "Истекло";
-
-/* No comment provided by engineer. */
-"RewardsInternalsPromotionsTitle" = "Бонусы";
 
 /* No comment provided by engineer. */
 "RewardsInternalsPublisher" = "Издатель";
@@ -2494,9 +2460,6 @@
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableLogsDescription" = "Настройки журналов Brave Rewards";
-
-/* No comment provided by engineer. */
-"RewardsInternalsSharablePromotionsDescription" = "Все бонусные баллы внимания, полученные или причитающиеся за просмотр Brave Ads, а также рекламные гранты";
 
 /* No comment provided by engineer. */
 "RewardsInternalsShare" = "Поделиться";
@@ -2706,13 +2669,10 @@
 "settings.qualitySettings" = "Настройки качества";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Отправляя анонимные конфиденциальные уведомления, вы поможете Brave оценивать количество активных пользователей.";
+"settings.sendUsagePingDescription" = "Конфиденциальные уведомления помогают Brave оценивать количество активных пользователей.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматически отправлять ежедневные данные PING в Brave";
-
-/* Header for the Youtube settings section */
-"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не удалось загрузить страницу.";
@@ -3053,12 +3013,6 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Удалить аккаунт Синхронизации";
 
-/* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Если вы удалите аккаунт, то ваши зашифрованные данные будут удалены с серверов Brave, а Синхронизация отключится на всех подключенных устройствах. При этом данные, которые хранятся на этих устройствах локально, не удалятся.";
-
-/* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Удаление необратимо — вы не сможете восстановить данные. Если вы захотите опять использовать Brave Синхронизацию, создайте новый аккаунт и повторно добавьте устройства.";
-
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Не удалось обнаружить устройства в цепи синхронизации.";
 
@@ -3121,9 +3075,6 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Удалить аккаунт Синхронизации";
-
-/* Sync Error Description */
-"syncDeprecatedVersionError" = "Код синхронизации сгенерирован на устройстве с устаревшей версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
@@ -3485,9 +3436,6 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Бонусы";
 
-/* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Оцените Brave в AppStore";
-
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Скрыть";
 
@@ -3635,9 +3583,6 @@
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Скорость до 100 Мбит/с";
 
-/* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Квитанция от AppStore";
-
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Версия приложения";
 
@@ -3664,9 +3609,6 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Выберите наиболее подходящую категорию проблемы.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Отсутствует соединение с Интернетом";
@@ -4058,9 +4000,6 @@
 /* History tableview section header */
 "Yesterday" = "Вчера";
 
-/* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Видео YouTube в высоком разрешении";
-
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Эта экспериментальная функция воспроизводит видео в лучшем доступном качестве и будет расходовать дополнительный трафик.";
 
@@ -4069,9 +4008,6 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Включить";
-
-/* Title for youtube playback quality settings */
-"YoutubeMediaQualitySettingsTitle" = "Качество воспроизведения на Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Разрешать только при подключении к сети Wi-Fi";

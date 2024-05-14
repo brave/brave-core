@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import 'chrome://resources/brave/leo.bundle.js'
+import '//resources/brave/leo.bundle.js'
 
 import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { getTemplate } from './cr_button.html.js';
@@ -53,6 +53,18 @@ export class CrButtonElement extends PolymerElement {
     if (this.classList.contains('action-button')) {
       kind = 'filled'
     }
+
+    // Avatar buttons should not have a border
+    const avatar = this.classList.contains('avatar')
+    if (avatar || this.classList.contains('plain')) {
+      kind = 'plain'
+    }
+
+    // Avatar buttons should be round.
+    if (avatar) {
+      this.$.button.setAttribute('fab', '')
+    }
+
     this.$.button.setAttribute('kind', kind)
   }
 }

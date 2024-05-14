@@ -28,8 +28,8 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
 
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
-  const paperRippleChild = document.createElement('paper-ripple')
-  menuEl.appendChild(paperRippleChild)
+  const crRippleChild = document.createElement('cr-ripple')
+  menuEl.appendChild(crRippleChild)
   return menuEl
 }
 
@@ -91,7 +91,7 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
-      .cr-nav-menu-item paper-ripple {
+      .cr-nav-menu-item cr-ripple {
         display: none !important;
       }
 
@@ -183,6 +183,10 @@ RegisterStyleOverride(
         margin-bottom: 20px !important;
       }
 
+      #autofill {
+        margin-top: 20px !important;
+      }
+
       #about-menu {
         display: flex;
         flex-direction: row;
@@ -234,7 +238,7 @@ RegisterPolymerTemplateModifications({
     // Add Content item
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
-      '/brave-content',
+      '/braveContent',
       'content-big',
       'content',
     )
@@ -297,15 +301,6 @@ RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move HelpTips after downloads
-    const helpTipsEl = createMenuElement(
-      loadTimeData.getString('braveHelpTips'),
-      '/braveHelpTips',
-      'help-outline',
-      'braveHelpTips',
-    )
-    const downloadsEl = getMenuElement(templateContent, '/downloads')
-    downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
@@ -327,6 +322,7 @@ RegisterPolymerTemplateModifications({
     const newAboutEl = document.createElement('a')
     newAboutEl.setAttribute('href', '/help')
     newAboutEl.setAttribute('id', aboutEl.id)
+    newAboutEl.setAttribute('role', 'menuitem')
 
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')

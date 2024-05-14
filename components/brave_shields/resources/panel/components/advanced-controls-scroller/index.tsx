@@ -7,9 +7,8 @@ import styled, { css } from 'styled-components'
 
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 
-interface Props {
+interface Props extends React.PropsWithChildren {
   isExpanded: boolean
-  children?: React.ReactChildren | React.ReactElement
 }
 
 interface ScrollBoxProps {

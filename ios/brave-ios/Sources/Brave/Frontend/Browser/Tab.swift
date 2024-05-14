@@ -3,7 +3,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveWallet
+import CertificateUtilities
 import Data
 import Favicon
 import Foundation
@@ -95,13 +97,69 @@ class Tab: NSObject {
 
   private(set) var type: TabType = .regular
 
-  var redirectURLs = [URL]()
+  var redirectChain = [URL]()
+  var responses = [URL: URLResponse]()
 
   var isPrivate: Bool {
     return type.isPrivate
   }
 
-  var secureContentState: TabSecureContentState = .unknown
+  private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
+  func updateSecureContentState() async {
+    lastKnownSecureContentState = await secureContentState
+  }
+  @MainActor private var secureContentState: TabSecureContentState {
+    get async {
+      guard let webView = webView, let committedURL = self.committedURL else {
+        return .unknown
+      }
+      if let internalURL = InternalURL(committedURL), internalURL.isAboutHomeURL {
+        // New Tab Page is a special case, should be treated as `unknown` instead of `localhost`
+        return .unknown
+      }
+      if webView.url != committedURL {
+        // URL has not been committed yet, so we will not evaluate the secure status of the page yet
+        return lastKnownSecureContentState
+      }
+      if let internalURL = InternalURL(committedURL) {
+        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: committedURL) != 0 {
+          return .invalidCert
+        }
+        return .localhost
+      }
+      if committedURL.scheme?.lowercased() == "http" {
+        return .missingSSL
+      }
+      if let serverTrust = webView.serverTrust,
+        case let origin = committedURL.origin, !origin.isOpaque
+      {
+        let isMixedContent = !webView.hasOnlySecureContent
+        let result = await BraveCertificateUtils.verifyTrust(
+          serverTrust,
+          host: origin.host,
+          port: Int(origin.port)
+        )
+        switch result {
+        case 0:
+          // Cert is valid
+          return isMixedContent ? .mixedContent : .secure
+        case Int(Int32.min):
+          // Cert is valid but should be validated by the system
+          // Let the system handle it and we'll show an error if the system cannot validate it
+          do {
+            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: origin.host)
+            return isMixedContent ? .mixedContent : .secure
+          } catch {
+            return .invalidCert
+          }
+        default:
+          return .invalidCert
+        }
+      }
+      return .unknown
+    }
+  }
+
   var sslPinningError: Error?
 
   private let _syncTab: BraveSyncTab?
@@ -184,6 +242,9 @@ class Tab: NSObject {
   var restoring: Bool = false
   var pendingScreenshot = false
 
+  /// The type of action triggering a navigation.
+  var navigationType: WKNavigationType?
+
   /// This object holds on to information regarding the current web page
   ///
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
@@ -241,9 +302,13 @@ class Tab: NSObject {
 
   var mimeType: String?
   var isEditing: Bool = false
-  var shouldClassifyLoadsForAds = true
+  var shouldNotifyAdsServiceTabDidChange = true
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
+
+  /// This is the request that was upgraded to HTTPS
+  /// This allows us to rollback the upgrade when we encounter a 4xx+
+  var upgradedHTTPSRequest: URLRequest?
 
   /// The tabs new tab page controller.
   ///
@@ -402,12 +467,12 @@ class Tab: NSObject {
       configuration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration!.ignoresViewportScaleLimits = true
-      configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
+      configuration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
       configuration!.enablePageTopColorSampling()
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
         configuration!.setURLSchemeHandler(
-          InternalSchemeHandler(),
+          InternalSchemeHandler(tab: self),
           forURLScheme: InternalURL.scheme
         )
       }
@@ -502,6 +567,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
+      shouldNotifyAdsServiceTabDidChange = false
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)

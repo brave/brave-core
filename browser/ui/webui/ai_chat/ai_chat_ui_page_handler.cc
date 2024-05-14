@@ -13,6 +13,7 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -53,6 +54,13 @@ using mojom::CharacterType;
 using mojom::ConversationTurn;
 using mojom::ConversationTurnVisibility;
 
+AIChatUIPageHandler::ChatContextObserver::ChatContextObserver(
+    content::WebContents* web_contents,
+    AIChatUIPageHandler& page_handler)
+    : content::WebContentsObserver(web_contents), page_handler_(page_handler) {}
+
+AIChatUIPageHandler::ChatContextObserver::~ChatContextObserver() = default;
+
 AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
     content::WebContents* chat_context_web_contents,
@@ -68,6 +76,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    chat_context_observer_ =
+        std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
     // Report visibility of AI Chat UI to the Conversation, so that
     // automatic actions are only performed when neccessary.
     bool is_visible =
@@ -122,10 +132,21 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
-  mojom::ConversationTurn turn = {
+
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      ConversationTurnVisibility::VISIBLE, input, std::nullopt};
+      ConversationTurnVisibility::VISIBLE, input, std::nullopt, std::nullopt);
   active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
+}
+
+void AIChatUIPageHandler::SubmitHumanConversationEntryWithAction(
+    const std::string& input,
+    mojom::ActionType action_type) {
+  DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
+      << "Should not be able to submit more"
+      << "than a single human conversation turn at a time.";
+
+  active_chat_tab_helper_->SubmitSelectedText(input, action_type);
 }
 
 void AIChatUIPageHandler::SubmitSummarizationRequest() {
@@ -192,9 +213,10 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
   if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
     ShowSingletonTab(browser, url);
   } else {
-    contents_to_navigate->OpenURL({url, content::Referrer(),
-                                   WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                   ui::PAGE_TRANSITION_LINK, false});
+    contents_to_navigate->OpenURL(
+        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+         ui::PAGE_TRANSITION_LINK, false},
+        /*navigation_handle_callback=*/{});
   }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
@@ -211,9 +233,10 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
-  contents_to_navigate->OpenURL({url, content::Referrer(),
-                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                                 ui::PAGE_TRANSITION_LINK, false});
+  contents_to_navigate->OpenURL(
+      {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+       ui::PAGE_TRANSITION_LINK, false},
+      /*navigation_handle_callback=*/{});
 #else
   // We handle open link different on Android as we need to close the chat
   // window because it's always full screen
@@ -282,6 +305,13 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
+void AIChatUIPageHandler::ClearErrorAndGetFailedMessage(
+    ClearErrorAndGetFailedMessageCallback callback) {
+  mojom::ConversationTurnPtr failed_turn =
+      active_chat_tab_helper_->ClearErrorAndGetFailedMessage();
+  std::move(callback).Run(std::move(failed_turn));
+}
+
 void AIChatUIPageHandler::GetCanShowPremiumPrompt(
     GetCanShowPremiumPromptCallback callback) {
   std::move(callback).Run(active_chat_tab_helper_->GetCanShowPremium());
@@ -308,6 +338,15 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   active_chat_tab_helper_->SetUserOptedIn(true);
+}
+
+void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
+  page_handler_->HandleWebContentsDestroyed();
+}
+
+void AIChatUIPageHandler::HandleWebContentsDestroyed() {
+  chat_tab_helper_observation_.Reset();
+  chat_context_observer_.reset();
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
@@ -364,6 +403,14 @@ void AIChatUIPageHandler::OnPageHasContent(mojom::SiteInfoPtr site_info) {
   }
 }
 
+void AIChatUIPageHandler::OnPrintPreviewRequested(bool is_pdf) {
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  print_preview_extractor_ = std::make_unique<PrintPreviewExtractor>(
+      active_chat_tab_helper_->web_contents(), profile_, is_pdf);
+  print_preview_extractor_->CreatePrintPreview();
+#endif
+}
+
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {
@@ -417,6 +464,23 @@ void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
   active_chat_tab_helper_->GetPremiumStatus(
       base::BindOnce(&AIChatUIPageHandler::OnGetPremiumStatus,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::ClosePanel() {
+#if !BUILDFLAG(IS_ANDROID)
+  ai_chat::ClosePanel(web_contents());
+#else
+  ai_chat::CloseActivity(web_contents());
+#endif
+}
+
+void AIChatUIPageHandler::GetActionMenuList(
+    GetActionMenuListCallback callback) {
+  std::move(callback).Run(ai_chat::GetActionMenuList());
+}
+
+void AIChatUIPageHandler::OpenModelSupportUrl() {
+  OpenURL(GURL(kLeoModelSupportUrl));
 }
 
 void AIChatUIPageHandler::OnGetPremiumStatus(

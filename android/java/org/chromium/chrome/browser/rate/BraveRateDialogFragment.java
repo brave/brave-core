@@ -5,12 +5,11 @@
 
 package org.chromium.chrome.browser.rate;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -19,13 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 public class BraveRateDialogFragment extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_rating_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_rating_dialog_tag";
     private static final String TAG = "RateDialogFragment";
     private boolean mIsFromSettings;
 
@@ -68,27 +69,36 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
-    public void setupDialog(@NonNull Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((BottomSheetDialog) getDialog())
+                .getBehavior()
+                .setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rating_dialog_fragment, null);
         clickOnHappyImageView(view);
         clickOnSadImageView(view);
-        dialog.setContentView(view);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.brave_rating_dialog_fragment, container, false);
     }
 
     private void clickOnHappyImageView(View view) {
         ImageView happyImageView = view.findViewById(R.id.happyImageView);
-        happyImageView.setOnClickListener((v) -> {
-            dismiss();
-            BraveAskPlayStoreRatingDialog fragment =
-                    BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
-            fragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                    BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
-        });
+        happyImageView.setOnClickListener(
+                (v) -> {
+                    dismiss();
+                    BraveAskPlayStoreRatingDialog fragment =
+                            BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
+                    fragment.show(
+                            ((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                            BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
+                });
     }
 
     private void clickOnSadImageView(View view) {

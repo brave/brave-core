@@ -15,6 +15,9 @@
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
+namespace {
+constexpr char kMasterNode[] = "m";
+}
 
 HDKeyEd25519::HDKeyEd25519(
     std::string path,
@@ -26,8 +29,8 @@ HDKeyEd25519::~HDKeyEd25519() = default;
 
 // static
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
-    const std::vector<uint8_t>& seed) {
-  auto master_private_key = generate_ed25519_extended_secrect_key_from_seed(
+    base::span<const uint8_t> seed) {
+  auto master_private_key = generate_ed25519_extended_secret_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
   if (!master_private_key->is_ok()) {
     VLOG(0) << std::string(master_private_key->error_message());
@@ -39,8 +42,8 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
 
 // static
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromPrivateKey(
-    const std::vector<uint8_t>& private_key) {
-  auto master_private_key = generate_ed25519_extended_secrect_key_from_bytes(
+    base::span<const uint8_t> private_key) {
+  auto master_private_key = generate_ed25519_extended_secret_key_from_bytes(
       rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
   if (!master_private_key->is_ok()) {
     VLOG(0) << std::string(master_private_key->error_message());
@@ -53,14 +56,12 @@ std::string HDKeyEd25519::GetPath() const {
   return path_;
 }
 
-std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveNormalChild(uint32_t index) {
-  // Normal derivation is not supported for ed25519.
-  // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
-  NOTIMPLEMENTED();
-  return nullptr;
-}
-
-std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveHardenedChild(uint32_t index) {
+// index should be 0 to 2^31-1
+// If anything failed, nullptr will be returned
+// Normal derivation is not supported for ed25519.
+// https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveHardenedChild(
+    uint32_t index) {
   auto child_private_key = private_key_->unwrap().derive_hardened_child(index);
   if (!child_private_key->is_ok()) {
     VLOG(0) << std::string(child_private_key->error_message());
@@ -72,7 +73,7 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveHardenedChild(uint32_t index) {
                                         std::move(child_private_key));
 }
 
-std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChildFromPath(
     const std::string& path) {
   if (path_ != kMasterNode) {
     VLOG(0) << "must derive only from master key";
@@ -88,7 +89,7 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
   return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
 }
 
-std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg) {
+std::vector<uint8_t> HDKeyEd25519::Sign(base::span<const uint8_t> msg) {
   auto signature_result = private_key_->unwrap().sign(
       rust::Slice<const uint8_t>{msg.data(), msg.size()});
   if (!signature_result->is_ok()) {
@@ -99,8 +100,8 @@ std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg) {
   return std::vector<uint8_t>(signature_bytes.begin(), signature_bytes.end());
 }
 
-bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
-                          const std::vector<uint8_t>& sig) {
+bool HDKeyEd25519::VerifyForTesting(base::span<const uint8_t> msg,
+                                    base::span<const uint8_t> sig) {
   auto verification_result = private_key_->unwrap().verify(
       rust::Slice<const uint8_t>{msg.data(), msg.size()},
       rust::Slice<const uint8_t>{sig.data(), sig.size()});
@@ -109,10 +110,6 @@ bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
     return false;
   }
   return true;
-}
-
-std::string HDKeyEd25519::EncodePrivateKeyForExport() const {
-  return GetBase58EncodedKeypair();
 }
 
 std::vector<uint8_t> HDKeyEd25519::GetPrivateKeyBytes() const {

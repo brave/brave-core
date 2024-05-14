@@ -4,7 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/core/browser/constants.h"
+
+#include <utility>
+
 #include "base/strings/strcat.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
 
@@ -28,6 +32,10 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED},
       {"introMessage-chat-claude-instant",
        IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT},
+      {"introMessage-chat-claude-haiku",
+       IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU},
+      {"introMessage-chat-claude-sonnet",
+       IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET},
       {"modelNameSyntax", IDS_CHAT_UI_MODEL_NAME_SYNTAX},
       {"modelFreemiumLabelNonPremium",
        IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM},
@@ -85,12 +93,18 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-claude-haiku",
+       IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-claude-sonnet",
+       IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"clearChatButtonLabel", IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL},
       {"sendChatButtonLabel", IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL},
       {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
       {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
+      {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
+      {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
       {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
       {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
       {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},
@@ -128,9 +142,158 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"funnyToneLabel", IDS_AI_CHAT_CONTEXT_FUNNY_TONE},
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
-      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL}};
+      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
+      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL}};
 
   return kLocalizedStrings;
 }
 
+std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
+  std::vector<mojom::ActionGroupPtr> action_list;
+
+  {
+    std::vector<mojom::ActionEntryPtr> entries;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS),
+        std::move(entries));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPLAIN),
+            mojom::ActionType::EXPLAIN)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::ActionEntryPtr> entries;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_REWRITE),
+        std::move(entries));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PARAPHRASE),
+            mojom::ActionType::PARAPHRASE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_IMPROVE),
+            mojom::ActionType::IMPROVE)));
+
+    // Subheading
+    auto change_tone_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CHANGE_TONE);
+    group->entries.push_back(
+        mojom::ActionEntry::NewSubheading(change_tone_subheading));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_ACADEMICIZE)},
+                " / "),
+            mojom::ActionType::ACADEMICIZE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE)},
+                " / "),
+            mojom::ActionType::PROFESSIONALIZE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE)},
+                " / "),
+            mojom::ActionType::PERSUASIVE_TONE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CASUALIZE)},
+                " / "),
+            mojom::ActionType::CASUALIZE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_FUNNY_TONE)},
+                " / "),
+            mojom::ActionType::FUNNY_TONE)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_SHORTEN)},
+                " / "),
+            mojom::ActionType::SHORTEN)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {change_tone_subheading,
+                 l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)},
+                "/ "),
+            mojom::ActionType::EXPAND)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  {
+    std::vector<mojom::ActionEntryPtr> entries;
+    mojom::ActionGroupPtr group = mojom::ActionGroup::New(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE),
+        std::move(entries));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE),
+            mojom::ActionType::CREATE_TAGLINE)));
+
+    // Subheading
+    auto social_media_subheading =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST);
+    group->entries.push_back(
+        mojom::ActionEntry::NewSubheading(social_media_subheading));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {social_media_subheading,
+                 l10n_util::GetStringUTF8(
+                     IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)},
+                " / "),
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT)));
+
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            base::JoinString(
+                {social_media_subheading,
+                 l10n_util::GetStringUTF8(
+                     IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
+                " / "),
+            mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG)));
+
+    action_list.push_back(std::move(group));
+  }
+
+  return action_list;
+}
+
+const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "docs.google.com",
+                                             });
+
+const char kLeoModelSupportUrl[] =
+    "https://support.brave.com/hc/en-us/categories/"
+    "20990938292237-Brave-Leo";
 }  // namespace ai_chat

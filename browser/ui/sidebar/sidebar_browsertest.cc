@@ -32,11 +32,11 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
-#include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/features.h"
-#include "brave/components/sidebar/pref_names.h"
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/constants.h"
+#include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
+#include "brave/components/sidebar/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -496,6 +496,33 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   ASSERT_TRUE(bookmark_item_index.has_value());
   EXPECT_TRUE(controller()->IsActiveIndex(bookmark_item_index));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+
+  // Wait till bookmark panel is activated.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
+
+  panel_ui->Close();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
+
+  // Remove bookmarks and check it's gone.
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(*bookmark_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Open panel w/o entry id.
+  panel_ui->Show();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
+  // Check bookmark panel is not opened again as it's deleted item.
+  EXPECT_NE(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
 // Test sidebar's initial horizontal option is set properly.

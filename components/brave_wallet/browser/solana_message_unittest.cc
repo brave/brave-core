@@ -10,58 +10,16 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/sys_byteorder.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
-
-namespace {
-
-constexpr char kFromAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
-constexpr char kToAccount[] = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
-constexpr char kTestAccount[] = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
-constexpr char kRecentBlockhash[] =
-    "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
-constexpr uint64_t kLastValidBlockHeight = 3090;
-
-SolanaMessage GetTestLegacyMessage() {
-  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
-  SolanaInstruction instruction(
-      // Program ID
-      mojom::kSolanaSystemProgramId,
-      // Accounts
-      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
-      data);
-  auto message = SolanaMessage::CreateLegacyMessage(
-      kRecentBlockhash, kLastValidBlockHeight, kFromAccount, {instruction});
-  return std::move(*message);
-}
-
-SolanaMessage GetTestV0Message() {
-  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
-  SolanaMessageAddressTableLookup lookup(*SolanaAddress::FromBase58(kToAccount),
-                                         {3, 1}, {2, 4});
-  SolanaInstruction instruction(
-      mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
-       SolanaAccountMeta(kToAccount, 1, false, true)},
-      data);
-  std::vector<SolanaMessageAddressTableLookup> lookups;
-  lookups.push_back(std::move(lookup));
-  return SolanaMessage(
-      mojom::SolanaMessageVersion::kV0, kRecentBlockhash, kLastValidBlockHeight,
-      kFromAccount, SolanaMessageHeader(1, 0, 1),
-      {*SolanaAddress::FromBase58(kFromAccount),
-       *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId)},
-      {instruction}, std::move(lookups));
-}
-
-}  // namespace
 
 TEST(SolanaMessageUnitTest, SerializeDeserialize) {
   std::vector<uint8_t> expected_bytes_legacy = {
@@ -179,7 +137,7 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto message_without_blockhash =
       SolanaMessage::CreateLegacyMessage("", 0, kFromAccount, {instruction});
   ASSERT_TRUE(message_without_blockhash);
@@ -575,6 +533,32 @@ TEST(SolanaMessageUnitTest, FromToValue) {
 
   message_from_value = SolanaMessage::FromValue(value);
   EXPECT_EQ(message2, message_from_value);
+}
+
+TEST(SolanaMessageUnitTest, UsesDurableNonce) {
+  // Mock AdvanceNonceAccount instruction.
+
+  SolanaInstruction instruction = SolanaInstruction(
+      mojom::kSolanaSystemProgramId,
+      std::vector<SolanaAccountMeta>(
+          {SolanaAccountMeta(kTestAccount, std::nullopt, false, true),
+           SolanaAccountMeta(kFromAccount, std::nullopt, false, false),
+           SolanaAccountMeta(kToAccount, std::nullopt, true, false)}),
+      base::byte_span_from_ref(
+          base::numerics::U32FromLittleEndian(base::byte_span_from_ref(
+              mojom::SolanaSystemInstruction::kAdvanceNonceAccount))));
+
+  auto message1 = GetTestLegacyMessage();
+  auto message2 = GetTestV0Message();
+  for (auto* message : {&message1, &message2}) {
+    EXPECT_FALSE(message->UsesDurableNonce());
+
+    std::vector<SolanaInstruction> vec;
+    vec.emplace_back(instruction);
+    vec.emplace_back(message->instructions()[0]);
+    message->SetInstructionsForTesting(vec);
+    EXPECT_TRUE(message->UsesDurableNonce());
+  }
 }
 
 }  // namespace brave_wallet

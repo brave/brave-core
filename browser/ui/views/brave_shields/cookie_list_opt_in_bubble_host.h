@@ -11,11 +11,7 @@
 #include "base/callback_list.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-
-class CookieListOptInUI;
-
-template <typename T>
-class WebUIBubbleManagerT;
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 
 namespace content {
 class WebContents;
@@ -55,7 +51,7 @@ class CookieListOptInBubbleHost
                     int index,
                     TabChangeType change_type) override;
 
-  std::unique_ptr<WebUIBubbleManagerT<CookieListOptInUI>> bubble_manager_;
+  std::unique_ptr<WebUIBubbleManager> bubble_manager_;
   base::CallbackListSubscription session_restored_subscription_;
 
   BROWSER_USER_DATA_KEY_DECL();

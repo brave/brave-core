@@ -9,6 +9,7 @@ import { useHistory } from 'react-router'
 // api
 import {
   useGetAutopinEnabledQuery,
+  useGetPinnableVisibleNftIdsQuery,
   useSetAutopinEnabledMutation
 } from '../../../common/slices/api.slice'
 
@@ -22,7 +23,6 @@ import { Row } from '../../shared/style'
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { useNftPin } from '../../../common/hooks/nft-pin'
 
 // routes
 import { WalletRoutes } from '../../../constants/types'
@@ -52,7 +52,8 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
 
   // hooks
-  const { pinnableNftsCount } = useNftPin()
+  const { data: pinnableNftIds = [] } = useGetPinnableVisibleNftIdsQuery()
+  const pinnableNftsCount = pinnableNftIds.length
 
   // routing
   const history = useHistory()

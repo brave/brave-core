@@ -26,11 +26,13 @@ int GetFileExtendedAttribute(const base::FilePath& path,
   ssize_t length = getxattr(path.value().c_str(), name, value->data(),
                             expected_length, /*position=*/0,
                             /*options=*/0);
-  if (length != expected_length) {
+  if (length < 0) {
+    return errno;
+  } else if (length != expected_length) {
     VLOG(0) << "Failed to retrieve extended attribute " << name << " from file "
             << path << ". The expected data length (" << expected_length
             << ") and actual data length (" << length << ") do not match.";
-    return ENODATA;
+    return ENOTRECOVERABLE;
   }
 
   return 0;

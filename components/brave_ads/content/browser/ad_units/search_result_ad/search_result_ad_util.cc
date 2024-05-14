@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_util.h"
 
-#include <optional>
 #include <string_view>
 
 #include "brave/components/brave_search/common/brave_search_utils.h"

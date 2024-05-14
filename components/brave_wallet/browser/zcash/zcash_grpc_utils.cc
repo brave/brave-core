@@ -7,8 +7,9 @@
 
 #include <utility>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
+#include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {
 
@@ -34,10 +35,8 @@ void GRrpcMessageStreamHandler::OnDataReceived(std::string_view string_piece,
         OnComplete(false);
         return;
       }
-      uint32_t size = 0;
-      base::ReadBigEndian(reinterpret_cast<const uint8_t*>(&(data_view[1])),
-                          &size);
-      message_body_size = size;
+      message_body_size = base::numerics::U32FromBigEndian(
+          base::as_byte_span(data_view).subspan<1, 4u>());
       if (*message_body_size > kMaxMessageSizeBytes) {
         // Too large message
         OnComplete(false);

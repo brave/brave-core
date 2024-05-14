@@ -33,7 +33,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   test::SetMaximumNotificationAdsPerHour(ads_per_hour);
 
-  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNotificationAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
   // Act & Assert
@@ -49,7 +50,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   test::SetMaximumNotificationAdsPerHour(ads_per_hour);
 
-  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNotificationAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
   // Act & Assert
@@ -63,7 +65,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   test::SetMaximumNotificationAdsPerHour(ads_per_hour);
 
-  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNotificationAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour - 1);
 
   // Act & Assert
@@ -77,7 +80,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   test::SetMaximumNotificationAdsPerHour(ads_per_hour);
 
-  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNotificationAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
   AdvanceClockBy(base::Hours(1));
@@ -93,7 +97,8 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   test::SetMaximumNotificationAdsPerHour(ads_per_hour);
 
-  test::RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed,
+  test::RecordAdEvents(AdType::kNotificationAd,
+                       ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

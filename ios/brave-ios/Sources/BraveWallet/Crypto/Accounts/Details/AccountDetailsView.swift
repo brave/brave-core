@@ -41,6 +41,7 @@ struct AccountDetailsView: View {
     NavigationView {
       List {
         Section {
+          // TODO: Cleanup with brave-browser#37029
           AccountDetailsHeaderView(account: account)
             .frame(maxWidth: .infinity)
             .listRowInsets(.zero)
@@ -79,13 +80,15 @@ struct AccountDetailsView: View {
             )
           }
         )
-        Section {
-          NavigationLink(
-            destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
-          ) {
-            Text(Strings.Wallet.accountPrivateKey)
+        if account.coin != .btc {
+          Section {
+            NavigationLink(
+              destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
+            ) {
+              Text(Strings.Wallet.accountPrivateKey)
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         if account.isImported {
           Section {
@@ -153,7 +156,7 @@ struct AccountDetailsHeaderView: View {
         .frame(width: 220, height: 220)
         .overlay(
           Group {
-            if let image = account.qrCodeImage?.cgImage {
+            if let image = account.address.qrCodeImage?.cgImage {
               Image(uiImage: UIImage(cgImage: image))
                 .resizable()
                 .interpolation(.none)

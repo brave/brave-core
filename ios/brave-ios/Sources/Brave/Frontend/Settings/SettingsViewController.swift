@@ -163,6 +163,13 @@ class SettingsViewController: TableViewController {
     navigationController?.pushViewController(hostingController, animated: true)
   }
 
+  private func displayBraveWalletDebugMenu() {
+    let hostingController =
+      UIHostingController(rootView: BraveWalletDebugMenu())
+
+    navigationController?.pushViewController(hostingController, animated: true)
+  }
+
   /// The function for refreshing VPN status for menu
   /// - Parameter notification: NEVPNStatusDidChange
   @objc private func vpnConfigChanged(notification: NSNotification) {
@@ -938,24 +945,8 @@ class SettingsViewController: TableViewController {
               )
             }
 
-            let viewMoreDetails = UIAlertAction(title: Strings.viewAllVersionInfo, style: .default)
-            { [unowned self, weak actionSheet] _ in
-              let versionController = ChromeWebViewController(privateBrowsing: false).then {
-                $0.loadURL("brave://version/?show-variations-cmd")
-              }
-              versionController.title = version
-
-              actionSheet?.dismiss(
-                animated: true,
-                completion: {
-                  self.navigationController?.pushViewController(versionController, animated: true)
-                }
-              )
-            }
-
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
-            actionSheet.addAction(viewMoreDetails)
             actionSheet.addAction(
               UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
             )
@@ -1079,6 +1070,14 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
+          text: "View Brave Wallet Debug Menu",
+          selection: { [unowned self] in
+            self.displayBraveWalletDebugMenu()
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "Consolidate Privacy Report Data",
           detailText:
             "This will force all data to consolidate. All stats for 'last 7 days' should be cleared and 'all time data' views should be preserved.",
@@ -1089,62 +1088,6 @@ class SettingsViewController: TableViewController {
             PrivacyReportsManager.consolidateData(dayRange: -10)
           },
           cellClass: MultilineButtonCell.self
-        ),
-        Row(
-          text: "View Chromium Local State",
-          selection: { [unowned self] in
-            let localStateController = ChromeWebViewController(privateBrowsing: false).then {
-              $0.title = "Chromium Local State"
-              $0.loadURL("brave://local-state")
-            }
-            if #available(iOS 16.0, *) {
-              let webView = localStateController.webView
-              webView.isFindInteractionEnabled = true
-              localStateController.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                systemItem: .search,
-                primaryAction: .init { [weak webView] _ in
-                  guard let findInteraction = webView?.findInteraction,
-                    !findInteraction.isFindNavigatorVisible
-                  else {
-                    return
-                  }
-                  findInteraction.searchText = ""
-                  findInteraction.presentFindNavigator(showingReplace: false)
-                }
-              )
-            }
-            self.navigationController?.pushViewController(localStateController, animated: true)
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
-        Row(
-          text: "View Brave Histogram (p3a) Logs",
-          selection: { [unowned self] in
-            let histogramsController = ChromeWebViewController(privateBrowsing: false).then {
-              $0.title = "Histograms (p3a)"
-              $0.loadURL("brave://histograms")
-            }
-            if #available(iOS 16.0, *) {
-              let webView = histogramsController.webView
-              webView.isFindInteractionEnabled = true
-              histogramsController.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                systemItem: .search,
-                primaryAction: .init { [weak webView] _ in
-                  guard let findInteraction = webView?.findInteraction,
-                    !findInteraction.isFindNavigatorVisible
-                  else {
-                    return
-                  }
-                  findInteraction.searchText = ""
-                  findInteraction.presentFindNavigator(showingReplace: false)
-                }
-              )
-            }
-            self.navigationController?.pushViewController(histogramsController, animated: true)
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
         ),
         Row(
           text: "VPN Logs",
@@ -1166,14 +1109,23 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Leo Logs",
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: AIChatLeoPurchaseLogs())
+            let controller = UIHostingController(rootView: AIChatLeoSkusLogsView())
             self.navigationController?.pushViewController(controller, animated: true)
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: "Retention Preferences Debug Menu",
+          text: "StoreKit Receipt Viewer",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: StoreKitReceiptView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "Onboarding Debug Menu",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
               RetentionPreferencesDebugMenuViewController(

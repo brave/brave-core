@@ -13,7 +13,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=OFACSanctionLocaleUtilTest*
+// npm run test -- brave_unit_tests --filter=OFACSanctionUtilTest*
 
 namespace brave_l10n {
 
@@ -42,6 +42,10 @@ struct ParamInfo final {
     {"en_US", false, "en", "US", false},
     {"en_US", true, "en", "US", false},
 
+    // Belarus.
+    {"en_BY", false, "en", "BY", true},
+    {"en_BY", true, "en", "BY", true},
+
     // Cuba.
     {"en_CU", false, "en", "CU", true},
     {"en_CU", true, "en", "CU", true},
@@ -49,6 +53,10 @@ struct ParamInfo final {
     // Iran.
     {"en_IR", false, "en", "IR", true},
     {"en_IR", true, "en", "IR", true},
+
+    // Moldova.
+    {"en_MD", false, "en", "MD", true},
+    {"en_MD", true, "en", "MD", true},
 
     // North Korea.
     {"en_KP", false, "en", "KP", true},
@@ -62,12 +70,20 @@ struct ParamInfo final {
     {"en_SY", false, "en", "SY", true},
     {"en_SY", true, "en", "SY", true},
 
+    // Ukraine.
+    {"en_UA", false, "en", "UA", true},
+    {"en_UA", true, "en", "UA", true},
+
     // ISO 639-1 language codes and ISO 3166-1 numeric-3 country codes, see
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes and
     // https://en.wikipedia.org/wiki/ISO_3166-1_numeric.
 
     {"en_840", false, "en", "840", false},
     {"en_840", true, "en", "840", false},
+
+    // Belarus.
+    {"en_112", false, "en", "112", true},
+    {"en_112", true, "en", "112", true},
 
     // Cuba.
     {"en_192", false, "en", "192", true},
@@ -76,6 +92,10 @@ struct ParamInfo final {
     // Iran.
     {"en_364", false, "en", "364", true},
     {"en_364", true, "en", "364", true},
+
+    // Moldova.
+    {"en_498", false, "en", "498", true},
+    {"en_498", true, "en", "498", true},
 
     // North Korea.
     {"en_408", false, "en", "408", true},
@@ -89,41 +109,46 @@ struct ParamInfo final {
     {"en_760", false, "en", "760", true},
     {"en_760", true, "en", "760", true},
 
+    // Ukraine.
+    {"en_804", false, "en", "804", true},
+    {"en_804", true, "en", "804", true},
+
     // ISO 639-1 language codes and UN M.49 codes, see
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes and
     // https://en.wikipedia.org/wiki/UN_M49.
 
-    // World.
+    // World which includes sanctioned Belarus, Cuba, Iran, Moldova, North
+    // Korea, Russia, Syria and Ukraine.
     {"en_001", false, "en", "001", false},
     {"en_001", true, "en", "001", true},
 
-    // Caribbean.
+    // Caribbean which includes sanctioned Cuba.
     {"en_029", false, "en", "029", false},
     {"en_029", true, "en", "029", true},
 
-    // Eastern Asia.
+    // Eastern Asia which includes sanctioned North Korea.
     {"en_030", false, "en", "030", false},
     {"en_030", true, "en", "030", true},
 
-    // Southern Asia.
+    // Southern Asia which includes sanctioned Iran.
     {"en_034", false, "en", "034", false},
     {"en_034", true, "en", "034", true},
 
-    // Western Asia.
+    // Western Asia which includes sanctioned Syria.
     {"en_145", false, "en", "145", false},
     {"en_145", true, "en", "145", true},
 
-    // Eastern Europe (Including Northern Asia).
+    // Eastern Europe (including Northern Asia) which includes sanctioned
+    // Belarus, Moldova, Russia and Ukraine.
     {"en_151", false, "en", "151", false},
     {"en_151", true, "en", "151", true}};
 
 }  // namespace
 
-class OFACSanctionLocaleUtilTest
-    : public testing::Test,
-      public testing::WithParamInterface<ParamInfo> {};
+class OFACSanctionUtilTest : public testing::Test,
+                             public testing::WithParamInterface<ParamInfo> {};
 
-TEST_P(OFACSanctionLocaleUtilTest, Locale) {
+TEST_P(OFACSanctionUtilTest, Locale) {
   // Arrange
   const ParamInfo param = GetParam();
 
@@ -168,7 +193,7 @@ std::string TestParamToString(
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         OFACSanctionLocaleUtilTest,
+                         OFACSanctionUtilTest,
                          testing::ValuesIn(kTests),
                          TestParamToString);
 

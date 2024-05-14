@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
@@ -20,13 +18,11 @@ class BraveAdsVersionNumberUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForRewardsUser) {
   // Act & Assert
-  const base::Value::Dict expected_user_data =
-      base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-          R"(
-              {
-                "versionNumber": "$1"
-              })",
-          {GetBrowserVersionNumber()}, nullptr));
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "versionNumber": "1.2.3.4"
+          })");
   EXPECT_EQ(expected_user_data, BuildVersionNumberUserData());
 }
 

@@ -12,7 +12,12 @@ class PrefService;
 
 namespace brave_stats {
 
+#if BUILDFLAG(IS_ANDROID)
+void ResetAndroidFirstRunStateForTesting();
+#endif  // #BUILDFLAG(IS_ANDROID)
+
 base::Time GetFirstRunTime(PrefService* local_state);
+bool IsFirstRun(PrefService* local_state);
 
 }  // namespace brave_stats
 

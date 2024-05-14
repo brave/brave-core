@@ -17,7 +17,7 @@ class BraveSearchResultAdManager: NSObject {
 
   init?(url: URL, rewards: BraveRewards, isPrivateBrowsing: Bool) {
     if !BraveAds.shouldSupportSearchResultAds() || !BraveSearchManager.isValidURL(url)
-      || isPrivateBrowsing || rewards.isEnabled
+      || isPrivateBrowsing
     {
       return nil
     }
@@ -41,7 +41,7 @@ class BraveSearchResultAdManager: NSObject {
 
     rewards.ads.triggerSearchResultAdEvent(
       searchResultAd,
-      eventType: .viewed,
+      eventType: .viewedImpression,
       completion: { _ in }
     )
   }

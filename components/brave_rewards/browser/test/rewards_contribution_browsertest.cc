@@ -203,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        AutoContributionMultiplePublishersUphold) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   SetSKUOrderResponse();
@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        TipVerifiedPublisherWithCustomAmount) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   contribution_->TipPublisher(
       test_util::GetUrl(https_server_.get(), "duckduckgo.com"), false, 1, 0,
       1.25);
@@ -234,13 +234,13 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringTipForVerifiedPublisher) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   contribution_->TipPublisher(
       test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
 
   const double amount = 5.0;
   contribution_->TipViaCode("duckduckgo.com", amount,
@@ -255,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     DISABLED_MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 50);
+  contribution_->StartProcessWithBalance(50);
 
   double total_amount = 0.0;
   const double amount = 5.0;
@@ -285,7 +285,7 @@ IN_PROC_BROWSER_TEST_F(
 
 // Ensure that we can make a one-time tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
 
   rewards_service_->SendContribution("duckduckgo.com", 2.5, false,
                                      base::DoNothing());
@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
 // Ensure that we can make a recurring tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringTipNonIntegralAmount) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   rewards_service_->SetAutoContributeEnabled(true);
 
   const bool verified = true;
@@ -315,7 +315,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringAndPartialAutoContribution) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   rewards_service_->SetAutoContributeEnabled(true);
   SetSKUOrderResponse();
 
@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        MultipleRecurringOverBudgetAndPartialAutoContribution) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
   rewards_service_->SetAutoContributeEnabled(true);
   SetSKUOrderResponse();
 
@@ -392,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
-  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
+  contribution_->StartProcessWithBalance(30);
 
   test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
                                                  "3zsistemi.si");

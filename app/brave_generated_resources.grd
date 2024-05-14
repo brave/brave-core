@@ -557,6 +557,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART" desc="This is used for replacing SETTING_TEXT from above FOOTNOTE_TEXT.">
           this setting
         </message>
+
+        <!-- Geolocation permission bubble -->
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_LOW_ACCURACY_LABEL" desc="The text for geolocation permission bubble with low accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>general location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
+        </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITH_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. <ph name="PART_TWO">$1</ph>Learn more<ph name="PART_TWO_END">$1</ph>
+        </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_BUBBLE_HIGH_ACCURACY_WITHOUT_LOCATION_SERVICE_LABEL" desc="The text for geolocation permission bubble with high accuracy. Each part will be used to get offset in the string">
+          This site has requested your <ph name="PART_ONE">$1</ph>precise location<ph name="PART_ONE_END">$1</ph>. Brave will only able to provide <ph name="PART_TWO">$1</ph>general location<ph name="PART_TWO_END">$1</ph> data due to <ph name="PART_THREE">$1</ph>Location Services<ph name="PART_THREE_END">$1</ph> being disabled. <ph name="PART_FOUR">$1</ph>Learn more<ph name="PART_FOUR_END">$1</ph>
+        </message>
+
         <!-- Closing confirm dialog -->
         <message name="IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL" desc="The text for ok button in the dialog">
           Close all
@@ -577,21 +589,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Don't ask me again
         </message>
         <!-- Brave search conversion promotion -->
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_INPUT_APPEND_LABEL" desc="The text that appended to the input query in button type match">
-          - Brave Search
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about brave search in promotion match">
-          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
-          Support independent search with better privacy.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_TITLE" desc="The text for the banner type title">
-          Time to ditch big tech.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
-        </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE" desc="The text for the banner type title">
           Don't Google it. Can't Bing it. Just Brave it.
         </message>
@@ -799,8 +796,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
           Add to Sidebar
         </message>
+        <message name="IDS_SIDEBAR_BOOKMARKS_PANEL_HEADER_TITLE" desc="Text of bookmarks panel header">
+          bookmarks
+        </message>
         <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
-          Reading List
+          reading list
         </message>
         <message name="IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP" desc="Text of side panel's close button">
           Close
@@ -916,20 +916,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Brave Wayback Machine -->
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
         Sorry, that page is missing.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CANT_FIND_HEADER_TEXT" desc="The label for sorry message when page is not available on bubble">
+        Couldn't load saved version
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
         Do you want to check if a saved version is available on the Wayback Machine?
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
-        Sorry, there is no saved version available.
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
+        Wayback Machine couldn't find a saved version of this site.
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
-        Check for saved version
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
+        Check saved version
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
-        Don't ask me again
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Text to show for the no thanks button.">
+        Dismiss
       </message>
 
       <!-- Brave's copyright statement -->
@@ -1100,6 +1103,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT" desc="The label for open privacy panel">
         Open System Preferences
+      </message>
+
+      <!-- Downloads -->
+      <message name="IDS_DOWNLOADS_TITLE" desc="Title for the downloads page and navigation bar label.">
+        Downloads
       </message>
 
       <!-- Bookmarks -->

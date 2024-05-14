@@ -10,7 +10,7 @@ import 'chrome://resources/cr_elements/icons.html.js';
 import './components/brave_adblock_subscribe_dropdown.js';
 import './components/brave_adblock_editor.js';
 
-import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -36,6 +36,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       subscriptionList_: Array,
       customFilters_: String,
       subscribeUrl_: String,
+      listsUpdatingState_: String,
       hasListExpanded_: {
         type: Boolean,
         value: false
@@ -47,6 +48,9 @@ class AdBlockSubpage extends AdBlockSubpageBase {
 
   ready() {
     super.ready()
+
+    this.listsUpdatingState_ = ''
+
     this.browserProxy_.getRegionalLists().then(value => {
       this.filterList_ = value
     })
@@ -69,6 +73,20 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     if (!this.hasListExpanded_) {
       this.hasListExpanded_ = true
     }
+  }
+
+  handleUpdateLists_() {
+    if (this.listsUpdatingState_ === 'updating') {
+      return
+    }
+
+    this.listsUpdatingState_ = 'updating'
+
+    this.browserProxy_.updateFilterLists().then(() => {
+      this.listsUpdatingState_ = 'updated'
+    }, () => {
+      this.listsUpdatingState_ = 'failed'
+    })
   }
 
   searchListBy_(title) {

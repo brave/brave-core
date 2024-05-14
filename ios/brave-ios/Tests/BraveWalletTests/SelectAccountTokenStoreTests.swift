@@ -12,13 +12,6 @@ import XCTest
 
 @MainActor class SelectAccountTokenStoreTests: XCTestCase {
 
-  override func setUp() {
-    Preferences.Wallet.showTestNetworks.value = true
-  }
-  override func tearDown() {
-    Preferences.Wallet.showTestNetworks.reset()
-  }
-
   private var cancellables: Set<AnyCancellable> = .init()
 
   private let allUserAssets: [BraveWallet.BlockchainToken] = [
@@ -181,6 +174,7 @@ import XCTest
     rpcService._allNetworks = { coin, completion in
       completion(self.allNetworks[coin] ?? [])
     }
+    rpcService._hiddenNetworks = { $1([]) }
     rpcService._balance = { accountAddress, coin, _, completion in
       if coin == .eth {
         completion(ethBalanceWei, .success, "")  // eth balance for both eth accounts

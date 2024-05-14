@@ -11,12 +11,8 @@ import {
   StyledSettingsInfo,
   StyledSettingsTitle,
   StyledSettingsCopy,
-  StyledWidgetToggle,
   SettingsWidget,
-  StyledAddButtonIcon,
-  StyledHideButtonIcon,
   StyledWidgetSettings,
-  StyledButtonLabel,
   ToggleCardsWrapper,
   ToggleCardsTitle,
   ToggleCardsCopy,
@@ -25,11 +21,22 @@ import {
 } from '../../../components/default'
 import braveTalkBanner from './assets/brave-talk.png'
 import rewardsBanner from './assets/braverewards.png'
-import HideIcon from './assets/hide-icon'
 import Toggle from '@brave/leo/react/toggle'
-import { PlusIcon } from 'brave-ui/components/icons'
+import Button from '@brave/leo/react/button'
 
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import styled, { css } from 'styled-components'
+import { spacing } from '@brave/leo/tokens/css/variables'
+
+const StyledButton = styled(Button) <{ float: boolean }>`
+  margin-top: ${spacing.xl};
+  width: fit-content;
+  ${p => p.float && css`
+    float: right;
+    margin-right: ${spacing.m};
+  `}
+`
 
 interface Props {
   toggleShowBraveTalk: () => void
@@ -42,98 +49,61 @@ interface Props {
   cardsHidden: boolean
 }
 
-class CardsSettings extends React.PureComponent<Props, {}> {
-  renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
-    const ButtonContainer = on ? StyledHideButtonIcon : StyledAddButtonIcon
-    const ButtonIcon = on ? HideIcon : PlusIcon
-
-    return (
-      <StyledWidgetToggle
-        isAdd={!on}
-        float={float}
-        onClick={toggleFunc}
-      >
-        <ButtonContainer>
-          <ButtonIcon />
-        </ButtonContainer>
-        <StyledButtonLabel>
-          {
-            on
-            ? getLocale('hideWidget')
-            : getLocale('addWidget')
-          }
-        </StyledButtonLabel>
-      </StyledWidgetToggle>
-    )
-  }
-
-  render () {
-    const {
-      toggleShowBraveTalk,
-      showBraveTalk,
-      braveTalkSupported,
-      toggleShowRewards,
-      showRewards,
-      braveRewardsSupported,
-      toggleCards,
-      cardsHidden
-    } = this.props
-    return (
-      <StyledWidgetSettings>
-        {
-          braveTalkSupported
-          ? <FeaturedSettingsWidget>
-              <StyledBannerImage src={braveTalkBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {getLocale('braveTalkWidgetTitle')}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('braveTalkWidgetWelcomeTitle')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showBraveTalk, toggleShowBraveTalk)}
-            </FeaturedSettingsWidget>
-          : null
-        }
-        {
-          braveRewardsSupported
-            ? <SettingsWidget>
-              <StyledBannerImage src={rewardsBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {getLocale('braveRewardsTitle')}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('rewardsWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showRewards, toggleShowRewards, false)}
-            </SettingsWidget>
-            : null
-        }
-        <FeaturedSettingsWidget>
-          <ToggleCardsWrapper>
-            <ToggleCardsText>
-              <ToggleCardsTitle>
-                {getLocale('cardsToggleTitle')}
-              </ToggleCardsTitle>
-              <ToggleCardsCopy>
-                {getLocale('cardsToggleDesc')}
-              </ToggleCardsCopy>
-            </ToggleCardsText>
-            <ToggleCardsSwitch>
-              <Toggle
-                size='small'
-                onChange={toggleCards.bind(this, cardsHidden)}
-                checked={!cardsHidden}
-              />
-            </ToggleCardsSwitch>
-          </ToggleCardsWrapper>
-        </FeaturedSettingsWidget>
-      </StyledWidgetSettings>
-    )
-  }
+const ToggleButton = ({ on, toggleFunc, float }: { on: boolean, toggleFunc: any, float?: boolean }) => {
+  return <StyledButton onClick={toggleFunc} kind={on ? 'outline' : 'filled'} float={float}>
+    <div slot="icon-before">
+      <Icon name={on ? 'eye-off' : 'plus-add'} />
+    </div>
+    {getLocale(on ? 'hideWidget' : 'addWidget')}
+  </StyledButton>
 }
 
-export default CardsSettings
+function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
+  return <StyledWidgetSettings>
+    {braveTalkSupported && <FeaturedSettingsWidget>
+      <StyledBannerImage src={braveTalkBanner} />
+      <StyledSettingsInfo>
+        <StyledSettingsTitle>
+          {getLocale('braveTalkWidgetTitle')}
+        </StyledSettingsTitle>
+        <StyledSettingsCopy>
+          {getLocale('braveTalkWidgetWelcomeTitle')}
+        </StyledSettingsCopy>
+      </StyledSettingsInfo>
+      <ToggleButton on={showBraveTalk} toggleFunc={toggleShowBraveTalk} float />
+    </FeaturedSettingsWidget>}
+    {braveRewardsSupported && <SettingsWidget>
+      <StyledBannerImage src={rewardsBanner} />
+      <StyledSettingsInfo>
+        <StyledSettingsTitle>
+          {getLocale('braveRewardsTitle')}
+        </StyledSettingsTitle>
+        <StyledSettingsCopy>
+          {getLocale('rewardsWidgetDesc')}
+        </StyledSettingsCopy>
+      </StyledSettingsInfo>
+      <ToggleButton on={showRewards} toggleFunc={toggleShowRewards} />
+    </SettingsWidget>}
+    <FeaturedSettingsWidget>
+      <ToggleCardsWrapper>
+        <ToggleCardsText>
+          <ToggleCardsTitle>
+            {getLocale('cardsToggleTitle')}
+          </ToggleCardsTitle>
+          <ToggleCardsCopy>
+            {getLocale('cardsToggleDesc')}
+          </ToggleCardsCopy>
+        </ToggleCardsText>
+        <ToggleCardsSwitch>
+          <Toggle
+            size='small'
+            onChange={() => toggleCards(cardsHidden)}
+            checked={!cardsHidden}
+          />
+        </ToggleCardsSwitch>
+      </ToggleCardsWrapper>
+    </FeaturedSettingsWidget>
+  </StyledWidgetSettings>
+}
+
+export default React.memo(CardSettings)

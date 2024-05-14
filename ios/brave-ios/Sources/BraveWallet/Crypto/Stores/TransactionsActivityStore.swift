@@ -12,6 +12,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   @Published var transactionSections: [TransactionSection] = []
   /// Filter query to filter the transactions by.
   @Published var query: String = ""
+  @Published var errorMessage: String?
   /// Selected networks to show transactions for.
   @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
@@ -77,7 +78,6 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     self.assetManager = userAssetManager
 
     self.setupObservers()
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Task { @MainActor in
       self.currencyCode = await walletService.defaultBaseCurrency()
     }
@@ -247,6 +247,23 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction,
+    transaction: BraveWallet.TransactionInfo
+  ) {
+    Task { @MainActor in
+      guard
+        let errorMessage = await txService.handleTransactionFollowUpAction(
+          action,
+          transaction: transaction
+        )
+      else {
+        return
+      }
+      self.errorMessage = errorMessage
+    }
+  }
+
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
@@ -361,24 +378,5 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   func closeTransactionDetailsStore() {
     self.transactionDetailsStore?.tearDown()
     self.transactionDetailsStore = nil
-  }
-}
-
-extension TransactionsActivityStore: PreferencesObserver {
-  public func preferencesDidChange(for key: String) {
-    guard key == Preferences.Wallet.showTestNetworks.key else { return }
-    Task { @MainActor in
-      let allNetworks = await self.rpcService.allNetworksForSupportedCoins()
-      self.networkFilters = allNetworks.map { network in
-        // if user previously de-selected a network, keep it de-selected
-        let isSelected: Bool =
-          self.networkFilters
-          .first(where: { selectedNetworkModel in
-            selectedNetworkModel.model.chainId == network.chainId
-              && selectedNetworkModel.model.coin == network.coin
-          })?.isSelected ?? true
-        return .init(isSelected: isSelected, model: network)
-      }
-    }
   }
 }

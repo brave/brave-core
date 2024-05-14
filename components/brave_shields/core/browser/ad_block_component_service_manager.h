@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "components/prefs/pref_service.h"
 
 class AdBlockServiceTest;
@@ -34,7 +35,8 @@ class AdBlockComponentServiceManager
       PrefService* local_state,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
-      AdBlockFilterListCatalogProvider* catalog_provider);
+      AdBlockFilterListCatalogProvider* catalog_provider,
+      AdBlockListP3A* list_p3a);
   AdBlockComponentServiceManager(const AdBlockComponentServiceManager&) =
       delete;
   AdBlockComponentServiceManager& operator=(
@@ -50,9 +52,14 @@ class AdBlockComponentServiceManager
   void SetFilterListCatalog(std::vector<FilterListCatalogEntry> catalog);
   const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
+  // Get the filter set path for a given filter list.
+  // If the filter list is not available, an empty path is returned.
+  base::FilePath GetFilterSetPath(const std::string& uuid);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
+
+  void UpdateFilterLists(base::OnceCallback<void(bool)> callback);
 
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
@@ -83,6 +90,8 @@ class AdBlockComponentServiceManager
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+
+  raw_ptr<AdBlockListP3A> list_p3a_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

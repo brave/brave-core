@@ -75,15 +75,9 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
       <StyledWrapper ref={forwardedRef}>
         <NameAndIcon>
           {token.isNft ? (
-            <NftIconWithPlaceholder
-              asset={token}
-              network={tokensNetwork}
-            />
+            <NftIconWithPlaceholder asset={token} />
           ) : (
-            <AssetIconWithPlaceholder
-              asset={token}
-              network={tokensNetwork}
-            />
+            <AssetIconWithPlaceholder asset={token} />
           )}
           <NameAndSymbol>
             <AssetName>

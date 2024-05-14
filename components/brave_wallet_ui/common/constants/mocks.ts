@@ -90,7 +90,8 @@ export const getMockedTransactionInfo =
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com'
       },
-      effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
+      effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+      isRetriable: false
     }
   }
 
@@ -576,7 +577,8 @@ SerializableTransactionInfo = {
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
   },
-  effectiveRecipient: undefined
+  effectiveRecipient: undefined,
+  isRetriable: false
 }
 
 export const mockSolDappSignAllTransactionsRequest: //
@@ -1592,7 +1594,7 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.AURORA_MAINNET_CHAIN_ID]: '4326',
     [BraveWallet.AVALANCHE_MAINNET_CHAIN_ID]: '345',
     [BraveWallet.BASE_MAINNET_CHAIN_ID]: '56453455',
-    [BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID]: '444',
+    [BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID]: '444',
     [BraveWallet.CELO_MAINNET_CHAIN_ID]: '55851',
     [BraveWallet.FANTOM_MAINNET_CHAIN_ID]: '1',
     [BraveWallet.GNOSIS_CHAIN_ID]: '440502',
@@ -1622,7 +1624,7 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.AURORA_MAINNET_CHAIN_ID]: '1111',
     [BraveWallet.AVALANCHE_MAINNET_CHAIN_ID]: '565',
     [BraveWallet.BASE_MAINNET_CHAIN_ID]: '4444',
-    [BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID]: '2122',
+    [BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID]: '2122',
     [BraveWallet.CELO_MAINNET_CHAIN_ID]: '1',
     [BraveWallet.FANTOM_MAINNET_CHAIN_ID]: '0',
     [BraveWallet.GNOSIS_CHAIN_ID]: '2',

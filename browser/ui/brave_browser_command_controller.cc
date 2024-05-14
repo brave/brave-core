@@ -14,14 +14,18 @@
 #include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
+#include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -125,11 +129,25 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser_->is_type_normal() && selection.active_tab_changed()) {
+    UpdateCommandForSplitView();
+  }
 }
 
 void BraveBrowserCommandController::OnTabGroupChanged(
     const TabGroupChange& change) {
   UpdateCommandsForTabs();
+}
+
+void BraveBrowserCommandController::OnTileTabs(
+    const SplitViewBrowserData::Tile& tile) {
+  UpdateCommandForSplitView();
+}
+void BraveBrowserCommandController::OnWillBreakTile(
+    const SplitViewBrowserData::Tile& tile) {
+  UpdateCommandForSplitView();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -205,6 +223,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
+  UpdateCommandForWaybackMachine();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
     brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
@@ -233,7 +252,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
-    UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
   }
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -275,6 +293,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandsForPin();
 
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser_->is_type_normal()) {
+    UpdateCommandForSplitView();
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -347,6 +370,12 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #endif
 }
 
+void BraveBrowserCommandController::UpdateCommandForWaybackMachine() {
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  UpdateCommandEnabled(IDC_SHOW_WAYBACK_MACHINE_BUBBLE, true);
+#endif
+}
+
 void BraveBrowserCommandController::UpdateCommandsForTabs() {
   UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
                        brave::CanMuteAllTabs(&*browser_, false));
@@ -386,6 +415,26 @@ void BraveBrowserCommandController::UpdateCommandsForSend() {
 void BraveBrowserCommandController::UpdateCommandsForPin() {
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
                        brave::CanCloseUnpinnedTabs(&*browser_));
+}
+
+void BraveBrowserCommandController::UpdateCommandForSplitView() {
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(std::to_address(browser_));
+  if (!split_view_browser_data) {
+    // Can happen on start up.
+    return;
+  }
+
+  if (!split_view_browser_data_observation_.IsObserving()) {
+    split_view_browser_data_observation_.Observe(split_view_browser_data);
+  }
+
+  UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
+                                               std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_TILE_TABS,
+                       brave::CanTileTabs(std::to_address(browser_)));
+  UpdateCommandEnabled(IDC_BREAK_TILE,
+                       brave::IsTabsTiled(std::to_address(browser_)));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -518,6 +567,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       NOTREACHED() << " This command shouldn't be enabled";
 #endif
       break;
+    case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+      brave::ShowWaybackMachineBubble(&*browser_);
+#endif
+      break;
     case IDC_GROUP_TABS_ON_CURRENT_ORIGIN:
       brave::GroupTabsOnCurrentOrigin(&*browser_);
       break;
@@ -552,14 +606,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ScrollTabToBottom(&*browser_);
       break;
     case IDC_BRAVE_SEND_TAB_TO_SELF:
-      chrome::SendTabToSelfFromPageAction(&*browser_);
+      chrome::SendTabToSelf(&*browser_);
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
-      brave::ToggleCommander(std::to_address(browser_));
+      brave::ToggleCommander(base::to_address(browser_));
 #endif
       break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
@@ -594,6 +648,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_WINDOW_BRING_ALL_TABS:
       brave::BringAllTabs(&*browser_);
+      break;
+    case IDC_NEW_SPLIT_VIEW:
+      brave::NewSplitViewForTab(&*browser_);
+      break;
+    case IDC_TILE_TABS:
+      brave::TileTabs(&*browser_);
+      break;
+    case IDC_BREAK_TILE:
+      brave::BreakTiles(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

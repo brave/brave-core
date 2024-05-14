@@ -48,9 +48,10 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kServedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PerWeekExclusionRule exclusion_rule(ad_events);
@@ -67,9 +68,10 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest,
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kServedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -88,9 +90,10 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Week) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kServedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -109,9 +112,10 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   creative_ad.per_week = 2;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kServedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

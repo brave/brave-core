@@ -63,10 +63,7 @@ export const TokenDetailsModal = (props: Props) => {
         <StyledWrapper>
           <TokenBalanceRow>
             <CryptoBalance>{assetBalance}</CryptoBalance>
-            <AssetIconWithPlaceholder
-              asset={selectedAsset}
-              network={selectedAssetNetwork}
-            />
+            <AssetIconWithPlaceholder asset={selectedAsset} />
           </TokenBalanceRow>
           <FiatBalance>
             {formattedFiatBalance || <Skeleton width='20%' />}

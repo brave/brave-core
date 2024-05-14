@@ -26,7 +26,9 @@
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/base/webui/web_ui_util.h"
 
 namespace brave_rewards {
 
@@ -151,7 +153,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   auto* profile = Profile::FromWebUI(web_ui);
   if (auto* browser = chrome::FindLastActiveWithProfile(profile)) {
     panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(browser);

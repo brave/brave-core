@@ -28,12 +28,13 @@ export default function FeatureMenu() {
   return (
     <ButtonMenu>
       <Button
+        className={styles.settingsButton}
         slot='anchor-content'
         title={getLocale('leoSettingsTooltipLabel')}
-        size="small"
+        fab
         kind="plain-faint"
       >
-        <Icon name='more-horizontal' />
+        <Icon name='settings' />
       </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}

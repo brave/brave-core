@@ -31,7 +31,7 @@ class AIChatFeedbackAPI {
 
   void SendRating(bool is_liked,
                   bool is_premium,
-                  const base::span<const mojom::ConversationTurn>& history,
+                  const base::span<const mojom::ConversationTurnPtr>& history,
                   const std::string& model_name,
                   api_request_helper::APIRequestHelper::ResultCallback
                       on_complete_callback);

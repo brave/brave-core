@@ -35,7 +35,7 @@ struct ConfirmationInfo final {
   std::string creative_instance_id;
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
-  base::Time created_at;
+  std::optional<base::Time> created_at;
   std::optional<RewardInfo> reward;
   UserDataInfo user_data;
 };

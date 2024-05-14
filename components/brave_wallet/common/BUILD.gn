@@ -20,6 +20,7 @@ buildflag_header("buildflags") {
     "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
     "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
     "ENABLE_ZCASH_BY_DEFAULT=$enable_zcash_by_default",
+    "ENABLE_ORCHARD=$enable_orchard",
   ]
 }
 
@@ -152,6 +153,7 @@ source_set("unit_tests") {
     "eth_request_helper_unittest.cc",
     "eth_sign_typed_data_helper_unittest.cc",
     "f4_jumble_unittest.cc",
+    "fil_address_unittest.cc",
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "mem_utils_unittest.cc",

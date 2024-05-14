@@ -369,13 +369,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
         </message>
       </if>
-      <if expr="not chromeos_ash and not is_macosx">
+      <if expr="not is_chromeos and not is_macosx">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
           <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in - Brave
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
           Brave - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
@@ -663,6 +663,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser
       </message>
+      <message name="IDS_DEFAULT_BROWSER_INFOBAR_REFRESH_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
+        Brave isn't your default browser
+      </message>
       <if expr="is_win">
         <!-- Try Brave Toast Dialog -->
         <message name="IDS_TRY_TOAST_HEADING" desc="Top line of the try-chrome-again dialog">
@@ -683,17 +686,8 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Download Bubble Items -->
-      <message name="IDS_DOWNLOAD_BUBBLE_DANGEROUS_FILE" desc="Message shown to the user to validate the download of a dangerous file.">
-        Brave blocked this file because this type of file is dangerous
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_MALICIOUS_URL_BLOCKED" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
-        Brave blocked this file because it is dangerous
-      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
         Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_MALWARE" desc="Subpage summary for malware warning for the user.">
-        Brave blocked this file because it has malware
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LINK" desc="Text for the link to the help page about why Brave blocks some downloaded files.">
         Learn why Brave blocks some downloads
@@ -734,8 +728,17 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS" desc="On the chrome://downloads page, the description shown for a blocked file that is dangerous.">
         Brave blocked this download because the file is dangerous
       </message>
+      <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT" desc="On the chrome://downloads page, the description shown for a blocked file that is dangerous because of cookie theft.">
+        Brave blocked this download because the file can harm your personal and social network accounts
+      </message>
+      <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT_AND_ACCOUNT" desc="On the chrome://downloads page, the description with account info shown for a blocked file that is dangerous because of cookie theft.">
+        Brave blocked this download because the file can harm your personal and social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
+      </message>
       <message name="IDS_BLOCK_DOWNLOAD_REASON_UNCOMMON" desc="On the chrome://downloads page, the description shown for a blocked file that is uncommon.">
         Brave blocked this download because the file isn't commonly downloaded and it may be dangerous
+      </message>
+      <message name="IDS_BLOCK_DOWNLOAD_REASON_UNCOMMON_SUSPICIOUS_ARCHIVE" desc="On the chrome://downloads page, the description shown for a blocked file that is suspicious archive.">
+        Brave blocked this download because the archive file includes other files that may hide malware
       </message>
       <message name="IDS_BLOCK_DOWNLOAD_REASON_POTENTIALLY_UNWANTED" desc="On the chrome://downloads page, the description shown for a blocked file that is potentially unwanted.">
         Brave blocked this download because the file is deceptive and may make unexpected changes to your device
@@ -809,8 +812,22 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_EXTENSIONS_SAFETY_CHECK_PRIMARY_LABEL" desc="Alerts the user that the extension should be reviewed.">
         Brave recommends you review this extension
       </message>
+      <message name="IDS_EXTENSIONS_SAFETY_CHECK_OFFSTORE" desc="Alerts the user that the extension is not from the Brave web store.">
+        Brave can't verify where this extension comes from, and it might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including personal info.
+      </message>
+      <message name="IDS_EXTENSIONS_SAFETY_CHECK_OFFSTORE_ON" desc="Alerts the user that the extension is not from the Brave web store.">
+        On • Brave can't verify where this extension comes from
+      </message>
+      <message name="IDS_EXTENSIONS_SAFETY_CHECK_OFFSTORE_OFF" desc="Alerts the user that the extension is not from the Brave web store.">
+        Off • Brave can't verify where this extension comes from
+      </message>
 
       <!-- chrome://settings/extensions page -->
+  <message name="IDS_EXTENSIONS_SC_DESCRIPTION" desc="Detailed message displayed in the Safety Check description section.">
+    {NUM_EXTENSIONS, plural,
+     =1 {Brave recommends that you remove it}
+     other {Brave recommends that you remove them}}
+  </message>
       <message name="IDS_EXTENSIONS_ITEM_SHOW_ACCESS_REQUESTS_IN_TOOLBAR" desc="The label on the toggle to allow the extension to show site access requests in the toolbar.">
         Allow extension to show access requests in the Brave toolbar
       </message>
@@ -958,6 +975,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_EXPLANATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
           Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords, and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
+        <message name="IDS_ENTERPRISE_WELCOME_PROFILE_INFORMATION_DETAILS" desc="Paragraph disclaiming to the user what their organization can do with their profile information.">
+          Your organization can see and manage browsing data in your work profile, such as your bookmarks, history, and passwords. It can’t see browsing data in personal Brave profiles.
+        </message>
         <!-- New one-click sign-in dialog contents for SAML support -->
         <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_TITLE_NEW" desc="The title of the modal dialog window that opens when the user chooses to use one click sign-in.">
           You're signed in to Brave!
@@ -1033,6 +1053,12 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_AVATAR_BUTTON_INTERCEPT_BUBBLE_CHROME_SIGNIN_TEXT" desc="Text asking the user to sign into Brave while the Brave Signin Bubble intercept is shown.">
           Sign in to Brave?
         </message>
+        <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" translateable="false" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
+          Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out, this data will stay on this device.
+        </message>
+        <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_UNSYNCED_BODY" translateable="false" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
+          Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out.
+        </message>
       </if>
 
       <if expr="not chromeos_ash and not is_android">
@@ -1062,14 +1088,29 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Profile Menu -->
+      <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
+        Sign in to Brave
+      </message>
       <if expr="not use_titlecase">
+        <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="The text label of the Customize Brave button in the Profile Menu.">
+          Customize your Brave
+        </message>
         <message name="IDS_PROFILE_MENU_PROFILES_LIST_TITLE" desc="Title in the profile menu for the list of 'other Brave profiles'.">
           Other Brave profiles
         </message>
+        <message name="IDS_PROFILE_MENU_MANAGE_PROFILES" desc="The text label of the Manage Brave Profiles item in the Profile Menu.">
+          Manage Brave profiles
+        </message>
       </if>
       <if expr="use_titlecase">
+        <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="The text label of the Customize Brave button in the Profile Menu.">
+          Customize Your Brave
+        </message>
         <message name="IDS_PROFILE_MENU_PROFILES_LIST_TITLE" desc="Title in the profile menu for the list of 'other Brave profiles'.">
           Other Brave Profiles
+        </message>
+        <message name="IDS_PROFILE_MENU_MANAGE_PROFILES" desc="The text label of the Manage Brave Profiles item in the Profile Menu.">
+          Manage Brave Profiles
         </message>
       </if>
 
@@ -1379,6 +1420,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_MESSAGE_MISSING_AR_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to augmented reality capabilities, but Brave is missing the Android camera permission.">
           Brave needs camera permission to create a 3D map of your surroundings
         </message>
+        <message name="IDS_MESSAGE_MISSING_XR_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to mixed reality capabilities, but Brave is missing the Android scene understanding and hand tracking permission.">
+          Brave needs scene understanding and hand tracking permission to start an immersive session
+        </message>
         <message name="IDS_MESSAGE_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in a prompt ui when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
           Brave needs camera permission for this site
         </message>
@@ -1537,7 +1581,7 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Brave parent extension/app install blocking dialog. -->
-      <if expr="enable_extensions and enable_supervised_users">
+      <if expr="enable_extensions">
         <message name="IDS_EXTENSION_PERMISSIONS_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave
         </message>
@@ -1625,6 +1669,15 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_FRE_DEFAULT_BROWSER_ILLUSTRATION_ALT_TEXT" desc="Alt text for the illustration in the page that prompts user to set Brave as their default browser.">
           Brave logo inside a computer screen.
+        </message>
+        <message name="IDS_APP_MENU_TOOLTIP_DEFAULT_PROMPT" desc="The tooltip to show for the browser menu when the default browser prompt is displayed">
+          Customize and control Brave. Set Brave as your default.
+        </message>
+        <message name="IDS_APP_MENU_BUTTON_DEFAULT_PROMPT" desc="Text in the browser menu chip indicating that the user can change their default browser">
+          Set Brave as your default
+        </message>
+        <message name="IDS_SET_BROWSER_AS_DEFAULT_MENU_ITEM" desc="Menu item that prompts user to set Brave as their default browser.">
+          Set Brave as your default browser
         </message>
 
         <!-- Profile switch IPH -->
@@ -1823,7 +1876,7 @@ Permissions you've already given to websites and apps may apply to this account.
 
         <!--Network errors.-->
         <message name="IDS_NO_NETWORK_PRESENT_ERROR" desc="Error message displayed in the main dialog when the Updater is unable to connect to the network.">
-          Unable to connect to the Internet. If you use a firewall, please allowlist <ph name="PRODUCT_EXE_NAME">$1<ex>BraveUpdater.exe</ex></ph>.
+          Unable to connect to the Internet. If you use a firewall, please ensure <ph name="PRODUCT_EXE_NAME">$1<ex>BraveUpdater.exe</ex></ph> is in the allowlist.
         </message>
         <message name="IDS_ERROR_HTTPSTATUS_UNAUTHORIZED" desc="Error message displayed in the main dialog when an update check or download fails due to unauthorized access, usually due to proxy problems.">
           Unable to connect to the Internet. HTTP 401 Unauthorized. Please check your proxy configuration.

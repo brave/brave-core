@@ -15,15 +15,15 @@
   GetDeletionPreferenceFromDataType_ChromiumImpl
 #define GetDataTypeFromDeletionPreference \
   GetDataTypeFromDeletionPreference_ChromiumImpl
-#define NUM_TYPES \
-  NUM_TYPES:      \
+#define TABS \
+  TABS:      \
   case BrowsingDataType::BRAVE_AI_CHAT
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/components/browsing_data/core/browsing_data_utils.cc"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#undef NUM_TYPES
+#undef TABS
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #undef GetDataTypeFromDeletionPreference
 #undef GetDeletionPreferenceFromDataType
@@ -54,7 +54,7 @@ std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
            BrowsingDataType::BRAVE_AI_CHAT},
       });
 
-  auto* iter = kPreferenceToDataType.find(pref_name);
+  const auto iter = kPreferenceToDataType.find(pref_name);
   if (iter != kPreferenceToDataType.end()) {
     return iter->second;
   }

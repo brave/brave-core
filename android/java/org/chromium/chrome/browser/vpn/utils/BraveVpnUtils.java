@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
@@ -59,9 +60,12 @@ public class BraveVpnUtils {
     public static BraveVpnServerRegion selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
+    public static String IS_KILL_SWITCH = "is_kill_switch";
+
     public static String getBraveAccountUrl() {
-        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_STAGING_PAGE_URL
-                                                               : BRAVE_ACCOUNT_PROD_PAGE_URL;
+        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging()
+                ? BRAVE_ACCOUNT_STAGING_PAGE_URL
+                : BRAVE_ACCOUNT_PROD_PAGE_URL;
     }
 
     public static void openBraveVpnPlansActivity(Activity activity) {
@@ -89,6 +93,18 @@ public class BraveVpnUtils {
         Intent braveVpnSupportIntent = new Intent(activity, SplitTunnelActivity.class);
         braveVpnSupportIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveVpnSupportIntent);
+    }
+
+    public static void openAlwaysOnActivity(Activity activity, boolean isKillSwitch) {
+        Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
+        vpnAlwaysOnActivityIntent.putExtra(IS_KILL_SWITCH, isKillSwitch);
+        activity.startActivity(vpnAlwaysOnActivityIntent);
+    }
+
+    public static void openVpnSettings(Activity activity) {
+        Intent vpnSettingsIntent = new Intent("android.net.vpn.SETTINGS");
+        vpnSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(vpnSettingsIntent);
     }
 
     public static void openVpnServerSelectionActivity(Activity activity) {

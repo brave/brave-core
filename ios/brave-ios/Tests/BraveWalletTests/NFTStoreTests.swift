@@ -20,6 +20,7 @@ class NFTStoreTests: XCTestCase {
   let ethAccount2 = (BraveWallet.AccountInfo.mockEthAccount.copy() as! BraveWallet.AccountInfo).then
   {
     $0.address = "mock_eth_id_2"
+    $0.accountId.uniqueKey = $0.address
     $0.name = "Ethereum Account 2"
   }
   let unownedEthNFT =
@@ -94,7 +95,7 @@ class NFTStoreTests: XCTestCase {
       case .fil:
         completion([.mockFilecoinTestnet])
       case .btc:
-        XCTFail("Should not fetch btc network")
+        completion([])  // no NFT in Bitcoin
       case .zec:
         XCTFail("Should not fetch zec network")
       @unknown default:
@@ -147,6 +148,9 @@ class NFTStoreTests: XCTestCase {
         return
       }
       completion("1", 0, "1", .success, "")
+    }
+    rpcService._hiddenNetworks = {
+      $1([BraveWallet.FilecoinTestnet])
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -1042,6 +1046,9 @@ class NFTStoreTests: XCTestCase {
         }
         """
       completion("", metadata, .success, "")
+    }
+    rpcService._hiddenNetworks = {
+      $1([BraveWallet.FilecoinTestnet])
     }
 
     // setup store

@@ -7,6 +7,7 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_NODE_EDGE_NODE_CREATE_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace brave_page_graph {
@@ -18,7 +19,8 @@ class EdgeNodeCreate final : public EdgeNode {
  public:
   EdgeNodeCreate(GraphItemContext* context,
                  NodeActor* out_node,
-                 NodeHTML* in_node);
+                 NodeHTML* in_node,
+                 const FrameId& frame_id);
   ~EdgeNodeCreate() override;
 
   ItemName GetItemName() const override;

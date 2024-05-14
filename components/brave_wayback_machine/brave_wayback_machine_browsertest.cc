@@ -3,41 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/infobars/content/content_infobar_manager.h"
-#include "components/infobars/core/infobar_manager.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "net/http/http_status_code.h"
 
 using BraveWaybackMachineTest = InProcessBrowserTest;
-using ::testing::_;
 
-namespace {
+IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, BubbleLaunchTest) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* button_provider = browser_view->toolbar_button_provider();
 
-class TestObserver : public infobars::InfoBarManager::Observer {
- public:
-  TestObserver() = default;
-  ~TestObserver() override = default;
-  MOCK_METHOD1(OnInfoBarAdded, void(infobars::InfoBar* infobar));
-};
-
-}  // namespace
-
-IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, InfobarAddTest) {
   auto* model = browser()->tab_strip_model();
   auto* contents = model->GetActiveWebContents();
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
-  auto* infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(contents);
+  BraveWaybackMachineTabHelper* tab_helper =
+      BraveWaybackMachineTabHelper::FromWebContents(contents);
+  EXPECT_FALSE(tab_helper->ShouldCheckWaybackMachine(net::HTTP_OK));
+  EXPECT_TRUE(tab_helper->ShouldCheckWaybackMachine(net::HTTP_NOT_FOUND));
 
-  TestObserver observer;
-  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
-  infobar_manager->AddObserver(&observer);
-  tab_helper->CreateInfoBar();
-  infobar_manager->RemoveObserver(&observer);
+  auto* icon = static_cast<WaybackMachineActionIconView*>(
+      button_provider->GetPageActionIconView(
+          brave::kWaybackMachineActionIconType));
+  EXPECT_FALSE(icon->GetVisible());
+
+  tab_helper->SetWaybackState(WaybackState::kNeedToCheck);
+  EXPECT_TRUE(icon->GetVisible());
+
+  // Check bubble is launched.
+  icon->ExecuteCommandForTesting();
+  EXPECT_TRUE(!!tab_helper->active_window());
 }

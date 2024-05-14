@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
+
+#include <optional>
+
 #include "base/debug/debugging_buildflags.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -66,7 +69,7 @@ TEST(FeatureOverrideTest, OverridesTest) {
       // Overridden but with the same state.
       {raw_ref<const base::Feature>(
            kTestEnabledButOverridenFeatureWithSameState),
-       true, false},
+       true, true},
   };
   for (const auto& test_case : kTestCases) {
     SCOPED_TRACE(testing::Message() << test_case.feature->name);
@@ -74,6 +77,9 @@ TEST(FeatureOverrideTest, OverridesTest) {
     EXPECT_EQ(test_case.is_overridden,
               FeatureList::GetInstance()->IsFeatureOverridden(
                   test_case.feature->name));
+    EXPECT_EQ(test_case.is_overridden ? std::make_optional(test_case.is_enabled)
+                                      : std::nullopt,
+              FeatureList::GetStateIfOverridden(*test_case.feature));
   }
 }
 

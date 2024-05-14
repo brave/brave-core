@@ -100,7 +100,7 @@
 
 - ({{cpp_namespace}}::{{union.name}}Ptr)cppObjPtr
 {
-  auto obj = {{cpp_namespace}}::{{union.name}}Ptr(absl::in_place);
+  auto obj = {{cpp_namespace}}::{{union.name}}Ptr(std::in_place);
   switch (self.tag) {
     case {{tag_enum_name}}Null: {
       break;

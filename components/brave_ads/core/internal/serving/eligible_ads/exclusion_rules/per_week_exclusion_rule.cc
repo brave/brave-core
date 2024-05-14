@@ -27,7 +27,7 @@ std::string PerWeekExclusionRule::GetUuid(
 base::expected<void, std::string> PerWeekExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeSetCap(
-          creative_ad, ad_events_, ConfirmationType::kServed,
+          creative_ad, ad_events_, ConfirmationType::kServedImpression,
           /*time_constraint=*/base::Days(7), creative_ad.per_week)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the perWeek frequency cap",

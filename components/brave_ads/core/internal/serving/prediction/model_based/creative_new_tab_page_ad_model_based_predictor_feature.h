@@ -50,11 +50,6 @@ inline constexpr base::FeatureParam<double>
         &kCreativeNewTabPageAdModelBasedPredictorFeature,
         "last_seen_ad_predictor_weight", 1.0};
 
-inline constexpr base::FeatureParam<double>
-    kNewTabPageAdLastSeenAdvertiserPredictorWeight{
-        &kCreativeNewTabPageAdModelBasedPredictorFeature,
-        "last_seen_advertiser_predictor_weight", 1.0};
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PREDICTION_MODEL_BASED_CREATIVE_NEW_TAB_PAGE_AD_MODEL_BASED_PREDICTOR_FEATURE_H_

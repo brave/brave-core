@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -28,24 +29,33 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
-import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
-    public BraveAppMenuPropertiesDelegateImpl(Context context,
+    public BraveAppMenuPropertiesDelegateImpl(
+            Context context,
             ActivityTabProvider activityTabProvider,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
-            TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
+            TabModelSelector tabModelSelector,
+            ToolbarManager toolbarManager,
+            View decorView,
             @Nullable OneshotSupplier<LayoutStateProvider> layoutStateProvidersSupplier,
-            @Nullable OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            @Nullable OneshotSupplier<IncognitoReauthController>
-                    incognitoReauthControllerOneshotSupplier,
+            @Nullable
+                    OneshotSupplier<IncognitoReauthController>
+                            incognitoReauthControllerOneshotSupplier,
             @Nullable Supplier<ReadAloudController> readAloudControllerSupplier) {
-        super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, layoutStateProvidersSupplier, startSurfaceSupplier,
-                bookmarkModelSupplier, incognitoReauthControllerOneshotSupplier,
+        super(
+                context,
+                activityTabProvider,
+                multiWindowModeStateDispatcher,
+                tabModelSelector,
+                toolbarManager,
+                decorView,
+                layoutStateProvidersSupplier,
+                bookmarkModelSupplier,
+                incognitoReauthControllerOneshotSupplier,
                 readAloudControllerSupplier);
     }
 
@@ -111,5 +121,16 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
                 }
             }
         }
+    }
+
+    @Override
+    protected boolean shouldShowNewWindow() {
+        return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
+    }
+
+    @Override
+    protected boolean shouldShowMoveToOtherWindow() {
+        return BraveMultiWindowUtils.shouldEnableMultiWindows()
+                && super.shouldShowMoveToOtherWindow();
     }
 }

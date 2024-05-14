@@ -7,13 +7,20 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 
@@ -25,6 +32,8 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     // Might be {@code null} when detached from the screen.
     @Nullable protected OnNextPage mOnNextPage;
+
+    @Nullable private AnimationDrawable mAnimationDrawable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,9 +47,45 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.stop();
+        }
+    }
+
+    @Override
     public void onDetach() {
         mOnNextPage = null;
         super.onDetach();
+    }
+
+    @Nullable
+    protected NetworkModel getNetworkModel() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getNetworkModel();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    protected KeyringModel getKeyringModel() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getKeyringModel();
+        }
+
+        return null;
     }
 
     @Nullable
@@ -54,6 +99,16 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     }
 
     @Nullable
+    protected JsonRpcService getJsonRpcService() {
+        Activity activity = requireActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getJsonRpcService();
+        }
+
+        return null;
+    }
+
+    @Nullable
     protected BraveWalletP3a getBraveWalletP3A() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
@@ -61,5 +116,17 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
         }
 
         return null;
+    }
+
+    protected void setAnimatedBackground(@NonNull final View rootView) {
+        mAnimationDrawable =
+                (AnimationDrawable)
+                        ContextCompat.getDrawable(
+                                requireContext(), R.drawable.onboarding_gradient_animation);
+        if (mAnimationDrawable != null) {
+            rootView.setBackground(mAnimationDrawable);
+            mAnimationDrawable.setEnterFadeDuration(10);
+            mAnimationDrawable.setExitFadeDuration(5000);
+        }
     }
 }

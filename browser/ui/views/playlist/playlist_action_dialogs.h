@@ -117,10 +117,6 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
   void PlaylistTabHelperWillBeDestroyed() override;
   void OnSavedItemsChanged(
       const std::vector<playlist::mojom::PlaylistItemPtr>& items) override;
-  void OnFoundItemsChanged(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
-  void OnAddedItemFromTabHelper(
-      const std::vector<playlist::mojom::PlaylistItemPtr>& items) override {}
 
  private:
   static constexpr int kContentsWidth = 464;

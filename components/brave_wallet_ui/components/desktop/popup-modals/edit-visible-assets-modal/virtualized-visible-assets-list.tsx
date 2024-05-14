@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import { useLocation } from 'react-router-dom'
-import AutoSizer from '@brave/react-virtualized-auto-sizer'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import Button from '@brave/leo/react/button'
 
 // utils
@@ -158,13 +158,13 @@ export const VirtualizedVisibleAssetsList = (
     }
   }, [])
 
-  const getSize = React.useCallback((index) => {
+  const getSize = React.useCallback((index: number) => {
     return itemSizes.current[index] || assetWatchListItemHeight
   }, [])
 
   return (
     <AutoSizer style={VirtualListStyle}>
-      {function ({ width, height }) {
+      {function ({ width, height }: { width: number; height: number }) {
         return (
           <List
             ref={listRef}

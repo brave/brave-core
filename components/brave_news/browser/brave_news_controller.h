@@ -21,6 +21,7 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
+#include "brave/components/brave_news/browser/initialization_promise.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -162,6 +163,7 @@ class BraveNewsController
   void CheckForPublishersUpdate();
   void Prefetch();
   void MaybeInitPrefs();
+  void OnInitializingPrefsComplete();
 
   void NotifyPublishersChanged(mojom::PublishersEventPtr event);
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
@@ -188,6 +190,13 @@ class BraveNewsController
   base::OneShotTimer timer_prefetch_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
+  // Subscribe to this to know when the initial initializing (and seeding) of
+  // preferences is ensured. This happens after the feature is (re-)enabled
+  // and after locales and sources are fetched. A valid feed and list of
+  // channels might only be available after this event has fired. If News is
+  // already enabled and this event has already signalled, then they are already
+  // available.
+  InitializationPromise initialization_promise_;
   base::CancelableTaskTracker task_tracker_;
 
   base::ScopedObservation<BraveNewsPrefManager,

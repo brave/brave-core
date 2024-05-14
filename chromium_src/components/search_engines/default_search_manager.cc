@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/check_is_test.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -14,7 +15,12 @@ bool IsDefaultSearchProviderByExtension(PrefService* pref_service) {
 #if BUILDFLAG(IS_ANDROID)
   return false;
 #else
-  return pref_service->GetBoolean(prefs::kDefaultSearchProviderByExtension);
+  if (pref_service->FindPreference(prefs::kDefaultSearchProviderByExtension)) {
+    return pref_service->GetBoolean(prefs::kDefaultSearchProviderByExtension);
+  } else {
+    CHECK_IS_TEST();
+    return false;
+  }
 #endif
 }
 

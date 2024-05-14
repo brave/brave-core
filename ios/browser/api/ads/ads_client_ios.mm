@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -184,10 +183,4 @@ bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
 
 void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
   [bridge_ recordP2AEvents:events];
-}
-
-void AdsClientIOS::AddFederatedLearningPredictorTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  [bridge_
-      addFederatedLearningPredictorTrainingSample:std::move(training_sample)];
 }

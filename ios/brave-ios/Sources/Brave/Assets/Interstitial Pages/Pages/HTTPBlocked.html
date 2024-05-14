@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Copyright 2024 The Brave Authors. All rights reserved.
+  -- This Source Code Form is subject to the terms of the Mozilla Public
+  -- License, v. 2.0. If a copy of the MPL was not distributed with this
+  -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<html lang="en">
+  <head>
+      <meta name='viewport' content='initial-scale=1, maximum-scale=1, viewport-fit=cover'>
+      <meta name="referrer" content="no-referrer">
+      <title>%page_title%</title>
+      <link rel="stylesheet" href="internal://local/interstitial-style/BlockedDomain.css">
+  </head>
+
+  <body dir="&locale.dir;" class="background content">
+    <div class="container post">
+      <img src="internal://local/interstitial-icon/warning-triangle-outline.svg" alt="Icon" class="icon">
+      </img>
+      <h1>%blocked_title%</h1>
+      <p class="description">
+        %blocked_description%
+        <a href="https://support.brave.com/hc/en-us/articles/15513090104717-Strict-HTTPS-Upgrade-Mode-in-Brave-Browser" target="_blank" rel="noopener">
+          %learn_more%
+        </a>
+      </p>
+      <div class="actions">
+        <button id="proceed-action" class="main-action">%proceed_action%</button>
+        <button id="go-back-action" class="secondary-action">%go_back_action%</button>
+      </div>
+    </div>
+    
+    <script>
+      (() => {
+        const sendAction = (action) => {
+          webkit.messageHandlers["%message_handler%"].postMessage({
+            "securityToken": "%security_token%",
+            "action": action
+          })
+        }
+        
+        document.getElementById('proceed-action').onclick = () => {
+          sendAction('didProceed')
+        }
+        
+        document.getElementById('go-back-action').onclick = () => {
+          sendAction('didGoBack')
+        }
+      })()
+    </script>
+  </body>
+</html>

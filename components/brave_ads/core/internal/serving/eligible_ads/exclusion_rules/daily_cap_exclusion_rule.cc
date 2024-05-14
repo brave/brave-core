@@ -27,8 +27,8 @@ std::string DailyCapExclusionRule::GetUuid(
 base::expected<void, std::string> DailyCapExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCampaignCap(creative_ad, ad_events_,
-                              ConfirmationType::kServed, base::Days(1),
-                              creative_ad.daily_cap)) {
+                              ConfirmationType::kServedImpression,
+                              base::Days(1), creative_ad.daily_cap)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "campaignId $1 has exceeded the dailyCap frequency cap",
         {creative_ad.campaign_id}, nullptr));

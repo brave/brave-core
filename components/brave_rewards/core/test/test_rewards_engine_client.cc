@@ -343,10 +343,6 @@ void TestRewardsEngineClient::Log(const std::string& file,
   if (verbose_level <= vlog_level) {
     logging::LogMessage(file.c_str(), line, -verbose_level).stream() << message;
   }
-
-  if (log_callback_) {
-    log_callback_.Run(message);
-  }
 }
 
 void TestRewardsEngineClient::ClearAllNotifications() {}
@@ -386,10 +382,6 @@ void TestRewardsEngineClient::AddSPLAccountBalanceResultForTesting(
     mojom::SolanaAccountBalancePtr balance) {
   spl_balance_results_.emplace_back(solana_address, token_mint_address,
                                     std::move(balance));
-}
-
-void TestRewardsEngineClient::SetLogCallbackForTesting(LogCallback callback) {
-  log_callback_ = std::move(callback);
 }
 
 }  // namespace brave_rewards::internal

@@ -9,7 +9,6 @@
 #include <optional>
 #include <vector>
 
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -95,8 +95,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   SolanaProviderImplUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
-  }
+                &url_loader_factory_)) {}
   ~SolanaProviderImplUnitTest() override = default;
 
   void TearDown() override {
@@ -190,14 +189,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void CreateWallet() {
-    base::RunLoop run_loop;
-    keyring_service_->CreateWallet(
-        "brave",
-        base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
-          EXPECT_FALSE(mnemonic.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    AccountUtils(keyring_service_)
+        .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
   }
 
   mojom::AccountInfoPtr AddAccount() {
@@ -914,7 +907,7 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
       mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta(added_account->address, std::nullopt, true, true),
        SolanaAccountMeta(added_account->address, std::nullopt, false, true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto msg = SolanaMessage::CreateLegacyMessage(
       "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, added_account->address,
       {instruction});

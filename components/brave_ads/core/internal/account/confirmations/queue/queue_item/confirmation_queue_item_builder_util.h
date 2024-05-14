@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_QUEUE_ITEM_CONFIRMATION_QUEUE_ITEM_BUILDER_UTIL_H_
 
 namespace base {
-class Time;
 class TimeDelta;
 }  // namespace base
 
@@ -15,9 +14,6 @@ namespace brave_ads {
 
 // Returns the time at which the confirmation should be retried.
 base::TimeDelta RetryProcessingConfirmationAfter();
-
-// Returns the time at which the confirmation should be processed.
-base::Time ProcessConfirmationAt();
 
 }  // namespace brave_ads
 

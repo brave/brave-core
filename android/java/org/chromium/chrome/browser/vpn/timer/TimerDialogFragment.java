@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
@@ -45,6 +47,10 @@ public class TimerDialogFragment extends BottomSheetDialogFragment
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((BottomSheetDialog) getDialog())
+                .getBehavior()
+                .setState(BottomSheetBehavior.STATE_EXPANDED);
+
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.timer_action_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<TimerItemModel> timerItemModels =

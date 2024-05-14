@@ -16,7 +16,10 @@ class NodeHTML;
 
 class EdgeNode : public GraphEdge {
  public:
-  EdgeNode(GraphItemContext* context, NodeActor* out_node, NodeHTML* in_node);
+  EdgeNode(GraphItemContext* context,
+           NodeActor* out_node,
+           NodeHTML* in_node,
+           const FrameId& frame_id);
   ~EdgeNode() override;
 
   bool IsEdgeNode() const override;
@@ -25,6 +28,12 @@ class EdgeNode : public GraphEdge {
   virtual bool IsEdgeNodeDelete() const;
   virtual bool IsEdgeNodeInsert() const;
   virtual bool IsEdgeNodeRemove() const;
+
+  void AddGraphMLAttributes(xmlDocPtr doc,
+                            xmlNodePtr parent_node) const override;
+
+ private:
+  const FrameId frame_id_;
 };
 
 }  // namespace brave_page_graph

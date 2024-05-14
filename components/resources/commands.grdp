@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_APP_META_KEY" desc="The name of the Windows/Command/Meta key on Linux">
+    Meta
+  </message>
   <!--
     Please reuse existing strings as much as possible rather than adding new
     strings here.
@@ -430,6 +433,9 @@
   <message name="IDS_IDC_BRAVE_SEND_TAB_TO_SELF">
     Send tab to self
   </message>
+  <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
+    Show Wayback Machine bubble
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
@@ -489,4 +495,27 @@
   <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut">
     Add
   </message>
+
+  <if expr="use_titlecase">
+    <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
+      New Split View
+    </message>
+    <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in Split View' tab context menu item">
+      Open in Split View
+    </message>
+    <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
+      Unsplit Tabs
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
+      New split view
+    </message>
+    <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in split view' tab context menu item">
+      Open in split view
+    </message>
+    <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
+      Unsplit tabs
+    </message>
+  </if>
 </grit-part>

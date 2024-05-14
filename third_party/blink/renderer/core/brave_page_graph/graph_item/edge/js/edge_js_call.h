@@ -21,6 +21,7 @@ class EdgeJSCall final : public EdgeJS {
   EdgeJSCall(GraphItemContext* context,
              NodeScript* out_node,
              NodeJS* in_node,
+             const FrameId& frame_id,
              const blink::PageGraphValues& arguments,
              const int script_position);
 

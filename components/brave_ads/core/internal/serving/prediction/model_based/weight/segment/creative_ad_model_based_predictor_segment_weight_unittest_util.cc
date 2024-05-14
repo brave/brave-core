@@ -26,8 +26,6 @@ BuildCreativeAdModelBasedPredictorWeights() {
 
   weights.last_seen_ad = 1.0;
 
-  weights.last_seen_advertiser = 1.0;
-
   return weights;
 }
 }  // namespace brave_ads::test

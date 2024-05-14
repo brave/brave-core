@@ -121,7 +121,8 @@ def _ApplyBraveAstChanges(brave_ast, parsed_ast):
         raise ValueError(
             f"Mojo module ids are not equal while trying to patch: "
             f"{brave_ast.module.mojom_namespace} vs "
-            f"{ast.module.mojom_namespace}")
+            f"{parsed_ast.module.mojom_namespace}. "
+            "(Maybe missing an attribute?)")
 
     # Add new imports.
     for brave_import in brave_ast.import_list:

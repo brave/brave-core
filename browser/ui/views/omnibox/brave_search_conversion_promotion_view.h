@@ -45,39 +45,23 @@ class BraveSearchConversionPromotionView : public views::View {
   void OnThemeChanged() override;
 
  private:
-  void ConfigureForButtonType();
-  void UpdateButtonTypeState();
   void ConfigureForBannerType();
-  void UpdateBannerTypeState();
-  void ResetChildrenVisibility();
-  void UpdateHoverState();
   void UpdateState();
+  void UpdateHoverState();
   void OpenMatch();
   void Dismiss();
   void MaybeLater();
   int GetBannerTypeTitleStringResourceId();
   int GetBannerTypeDescStringResourceId();
   SkColor GetCloseButtonColor() const;
-
-  // Gives buttton type background based on selected or hovered state.
-  std::unique_ptr<views::Background> GetButtonTypeBackground();
+  int GetOverallHorizontalMarginAroundDescription() const;
 
   raw_ptr<BraveOmniboxResultView> result_view_ = nullptr;
 
   // Children for button or banner type promotion.
   // Promotion view is implemented w/o using existing omnibox view controls
   // because our promotion view's layout, bg and text colors are slightly
-  // different. |button_type_container_| is child view that holds whole UI for
-  // buton type and |banner_type_container_| is for banner type. When current
-  // promotion type is button, |button_type_container_| is only visible.
-  // Otherwise, |banner_type_container_| is only visible view.
-
-  // Children for button type promotion.
-  raw_ptr<views::View> button_type_container_ = nullptr;
-  raw_ptr<views::View> button_type_selection_indicator_ = nullptr;
-  raw_ptr<views::Label> button_type_description_ = nullptr;
-  raw_ptr<views::Label> button_type_contents_input_ = nullptr;
-  raw_ptr<views::Label> append_for_input_ = nullptr;
+  // different. |banner_type_container_| is for banner type.
 
   // Children for banner type promotion.
   raw_ptr<views::View> banner_type_container_ = nullptr;

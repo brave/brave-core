@@ -9,6 +9,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
 import android.graphics.Paint;
 import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,8 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private ProgressBar mMonthlyPlanProgress;
@@ -45,6 +48,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
     private TextView mRemovedValueText;
+    private TextView mYearlyText;
 
     private Button mBtnVpnPlanAction;
 
@@ -122,6 +126,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        mYearlyText = findViewById(R.id.yearly_text);
 
         mBtnVpnPlanAction = findViewById(R.id.vpn_plan_action_button);
         mBtnVpnPlanAction.setOnClickListener(
@@ -142,6 +147,11 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mIsVerification = true;
         verifySubscription();
 
+        getMonthlyProductDetails();
+        updateSelectedPlanView();
+    }
+
+    private void getMonthlyProductDetails() {
         // Set up monthly subscription
         mMonthlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
@@ -182,11 +192,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                         }
                                     }
                                 });
-                        mProductDetails = monthlyProductDetails;
+                        getYearlyProductDetails(monthlyProductDetails);
                     }
                 });
+    }
 
-        // Set up yearly subscription
+    private void getYearlyProductDetails(ProductDetails monthlyProductDetails) {
         mYearlyPlanProgress.setVisibility(View.VISIBLE);
         LiveDataUtil.observeOnce(
                 InAppPurchaseWrapper.getInstance().getYearlyProductDetails(),
@@ -220,9 +231,26 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                 });
                         mProductDetails = yearlyProductDetails;
                         mBtnVpnPlanAction.setEnabled(true);
+                        if (monthlyProductDetails != null) {
+                            String discountText =
+                                    getString(
+                                            R.string.renew_monthly_save,
+                                            InAppPurchaseWrapper.getInstance()
+                                                    .getYearlyDiscountPercentage(
+                                                            monthlyProductDetails,
+                                                            yearlyProductDetails));
+                            SpannableString discountSpannableString =
+                                    SpanApplier.applySpans(
+                                            discountText,
+                                            new SpanInfo(
+                                                    "<discount_text>",
+                                                    "</discount_text>",
+                                                    new StyleSpan(android.graphics.Typeface.BOLD),
+                                                    new UnderlineSpan()));
+                            mYearlyText.setText(discountSpannableString);
+                        }
                     }
                 });
-        updateSelectedPlanView();
     }
 
     private void updateSelectedPlanView() {

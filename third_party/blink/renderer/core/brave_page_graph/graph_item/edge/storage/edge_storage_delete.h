@@ -20,6 +20,7 @@ class EdgeStorageDelete final : public EdgeStorage {
   EdgeStorageDelete(GraphItemContext* context,
                     NodeScript* out_node,
                     NodeStorage* in_node,
+                    const FrameId& frame_id,
                     const String& key);
   ~EdgeStorageDelete() override;
 

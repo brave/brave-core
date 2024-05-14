@@ -26,8 +26,6 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_LIN_LIGHT" file="common/brave_bookmark_folder_open_lin_light.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_DARK" file="common/brave_bookmark_folder_open_win_dark.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_BOOKMARK_FOLDER_OPEN_WIN_LIGHT" file="common/brave_bookmark_folder_open_win_light.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR" file="brave/brave_wayback_infobar.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_WAYBACK_INFOBAR_DARK" file="brave/brave_wayback_infobar_dark.png" />
       </if>
 
       <if expr="enable_ai_chat">

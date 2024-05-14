@@ -15,10 +15,10 @@ namespace brave_tabs {
 // are given a small overlap. Rounded tab rectangles are drawn centered and
 // inset horizontally by an amount that will create the required visual gap.
 
-// The height of tab views in horizontal tabs mode. Note that the height of the
-// view may be greater than the visual height of the tab shape. See also
+// The visual height of tabs in horizontal tabs mode. Note that the height of
+// the view may be greater than the visual height of the tab shape. See also
 // `kHorizontalTabVerticalSpacing`.
-inline constexpr int kHorizontalTabViewHeight = 40;
+inline constexpr int kHorizontalTabHeight = 32;
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
@@ -27,6 +27,10 @@ inline constexpr int kHorizontalTabStripLeftMargin = 3;
 // bounds of the tab strip region. The portion of this space below tabs will be
 // occupied by tab group underlines.
 inline constexpr int kHorizontalTabVerticalSpacing = 4;
+
+// The height of the tab strip in horizontal mode.
+inline constexpr int kHorizontalTabStripHeight =
+    kHorizontalTabHeight + (kHorizontalTabVerticalSpacing * 2);
 
 // The visual gap between tabs.
 inline constexpr int kHorizontalTabGap = 4;

@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "additionalProperties": false,
   "required": [
     "version",
     "ping",
@@ -22,7 +21,6 @@
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
         "required": [
           "priority",
           "ptr",
@@ -61,7 +59,6 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
               "required": [
                 "dow",
                 "startMinute",
@@ -84,7 +81,6 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
               "required": [
                 "code",
                 "name"
@@ -103,7 +99,6 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
               "required": [
                 "creativeSetId",
                 "perDay",
@@ -111,7 +106,6 @@
                 "segments",
                 "creatives",
                 "oses",
-                "channels",
                 "perMonth",
                 "perWeek",
                 "value"
@@ -142,7 +136,6 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "additionalProperties": false,
                     "required": [
                       "urlPattern",
                       "type",
@@ -160,9 +153,6 @@
                       },
                       "conversionPublicKey": {
                         "type": "string"
-                      },
-                      "extractExternalId": {
-                        "type": "boolean"
                       }
                     }
                   }
@@ -172,7 +162,6 @@
                   "minItems": 1,
                   "items": {
                     "type": "object",
-                    "additionalProperties": false,
                     "required": [
                       "code",
                       "name"
@@ -194,7 +183,6 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "additionalProperties": false,
                     "required": [
                       "code",
                       "name"
@@ -209,17 +197,10 @@
                     }
                   }
                 },
-                "channels": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "creatives": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "additionalProperties": false,
                     "required": [
                       "creativeInstanceId",
                       "type",
@@ -231,7 +212,6 @@
                       },
                       "type": {
                         "type": "object",
-                        "additionalProperties": false,
                         "required": [
                           "code",
                           "name",

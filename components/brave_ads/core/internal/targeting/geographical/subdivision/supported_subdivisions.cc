@@ -11,7 +11,7 @@ namespace brave_ads {
 
 namespace {
 
-base::Value::List ToValueList(const SupportedSubdivisions& subdivisions) {
+base::Value::List ToValue(const SupportedSubdivisions& subdivisions) {
   base::Value::List list;
 
   for (const auto& [subdivision, name] : subdivisions) {
@@ -62,10 +62,15 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
              {"CA-BC", "British Columbia"},
              {"CA-MB", "Manitoba"},
              {"CA-NB", "New Brunswick"},
+             {"CA-NL", "Newfoundland and Labrador"},
              {"CA-NS", "Nova Scotia"},
+             {"CA-NT", "Northwest Territories"},
+             {"CA-NU", "Nunavut"},
              {"CA-ON", "Ontario"},
+             {"CA-PE", "Prince Edward Island"},
              {"CA-QC", "Quebec"},
-             {"CA-SK", "Saskatchewan"}}}});
+             {"CA-SK", "Saskatchewan"},
+             {"CA-YT", "Yukon"}}}});
 
   return *kSupportedSubdivisions;
 }
@@ -81,7 +86,7 @@ base::Value::List GetSupportedSubdivisionsAsValueList(
 
   const auto& [_, subdivisions] = *iter;
 
-  return ToValueList(subdivisions);
+  return ToValue(subdivisions);
 }
 
 }  // namespace brave_ads

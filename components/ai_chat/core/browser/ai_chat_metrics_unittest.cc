@@ -201,6 +201,7 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsage) {
   histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 3, 1);
 }
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
@@ -282,6 +283,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
   histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 1, 1);
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 14);
 }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 TEST_F(AIChatMetricsUnitTest, Reset) {
   ai_chat_metrics_->RecordReset();

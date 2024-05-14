@@ -36,7 +36,7 @@ struct AccountPrivateKeyView: View {
         }
       } else {
         self.error = .incorrectPassword
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        UIImpactFeedbackGenerator(style: .medium).vibrate()
       }
     }
   }

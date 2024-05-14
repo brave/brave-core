@@ -14,9 +14,12 @@ import UIKit
 
 extension BrowserViewController {
 
-  // MARK: Internal
+  /// The educational product notifications are presented
+  /// when no onboarding or  full screen callout is presented
+  /// There are 2 types one is Adblock and the other one DataSaved (JP Only)
+  @objc func showEducationalNotifications() {
+    if Preferences.DebugFlag.skipEduPopups == true { return }
 
-  @objc func updateShieldNotifications() {
     // Adding slight delay here for 2 reasons
     // First the content Blocker stats will be updated in current tab
     // after receiving notification from Global Stats
@@ -24,96 +27,49 @@ extension BrowserViewController {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
       guard let self = self else { return }
 
-      self.presentOnboardingAdblockNotifications()
-      self.presentEducationalProductNotifications()
-    }
-  }
-
-  private func presentOnboardingAdblockNotifications() {
-    if Preferences.DebugFlag.skipEduPopups == true { return }
-
-    var isAboutHomeUrl = false
-    if let selectedTab = tabManager.selectedTab,
-      let url = selectedTab.url,
-      let internalURL = InternalURL(url)
-    {
-      isAboutHomeUrl = internalURL.isAboutHomeURL
-    }
-
-    guard let selectedTab = tabManager.selectedTab,
-      !Preferences.General.onboardingAdblockPopoverShown.value,
-      !benchmarkNotificationPresented,
-      !Preferences.AppState.backgroundedCleanly.value,
-      Preferences.Onboarding.isNewRetentionUser.value == true,
-      !topToolbar.inOverlayMode,
-      !isTabTrayActive,
-      selectedTab.webView?.scrollView.isDragging == false,
-      isAboutHomeUrl == false
-    else {
-      return
-    }
-
-    let blockedRequestURLs = selectedTab.contentBlocker.blockedRequests
-
-    if !blockedRequestURLs.isEmpty, let url = selectedTab.url {
-
-      let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
-
-      guard currentBenchmarkWebsite != domain else {
-        return
+      var isAboutHomeUrl = false
+      if let url = tabManager.selectedTab?.url, let internalURL = InternalURL(url) {
+        isAboutHomeUrl = internalURL.isAboutHomeURL
       }
 
-      currentBenchmarkWebsite = domain
-
-      guard
-        let trackersDetail = BlockedTrackerParser.parse(
-          blockedRequestURLs: blockedRequestURLs,
-          selectedTabURL: url
-        )
+      // The conditions guarding presentation for educational notifications
+      guard let selectedTab = tabManager.selectedTab,
+        presentedViewController == nil,
+        !isOnboardingOrFullScreenCalloutPresented,
+        !Preferences.AppState.backgroundedCleanly.value,
+        !topToolbar.inOverlayMode,
+        !isTabTrayActive,
+        selectedTab.webView?.scrollView.isDragging == false,
+        isAboutHomeUrl == false
       else {
         return
       }
 
-      notifyTrackersBlocked(
-        domain: domain,
-        displayTrackers: trackersDetail.displayTrackers,
-        trackerCount: trackersDetail.trackerCount
-      )
-
-      Preferences.General.onboardingAdblockPopoverShown.value = true
-
+      self.presentEducationalProductNotifications(selectedTab: selectedTab)
     }
   }
 
-  private func presentEducationalProductNotifications() {
-    if Preferences.DebugFlag.skipEduPopups == true { return }
-
-    var isAboutHomeUrl = false
-    if let selectedTab = tabManager.selectedTab,
-      let url = selectedTab.url,
-      let internalURL = InternalURL(url)
-    {
-      isAboutHomeUrl = internalURL.isAboutHomeURL
-    }
-
-    guard let selectedTab = tabManager.selectedTab,
-      presentedViewController == nil,
-      !benchmarkNotificationPresented,
-      !isOnboardingOrFullScreenCalloutPresented,
-      !Preferences.AppState.backgroundedCleanly.value,
-      !topToolbar.inOverlayMode,
-      !isTabTrayActive,
-      selectedTab.webView?.scrollView.isDragging == false,
-      isAboutHomeUrl == false
+  private func presentEducationalProductNotifications(selectedTab: Tab) {
+    // Data Saved Pop-Over only exist in JP locale
+    guard Locale.current.regionCode == "JP",
+      !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
     else {
       return
     }
 
-    // Data Saved Pop-Over only exist in JP locale
-    if Locale.current.regionCode == "JP" {
-      if !benchmarkNotificationPresented,
-        !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
-      {
+    // Delay period 3 days should pass before showing any educational product notification
+    // This will be the case as long as new onboarding is active for JAPAN
+    var showAdblockNotifications = true
+    if let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value {
+      let showDate = appRetentionLaunchDate.addingTimeInterval(
+        FullScreenCalloutManager.delayAmountJpOnboarding
+      )
+
+      showAdblockNotifications = Date() > showDate
+    }
+
+    if showAdblockNotifications {
+      if !adblockProductNotificationPresented {
         guard let currentURL = selectedTab.url,
           DataSaved.get(with: currentURL.absoluteString) == nil,
           let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(
@@ -153,7 +109,7 @@ extension BrowserViewController {
   private func showBenchmarkNotificationPopover(
     controller: (UIViewController & PopoverContentComponent)
   ) {
-    benchmarkNotificationPresented = true
+    adblockProductNotificationPresented = true
 
     let popover = PopoverController(contentController: controller)
     popover.addsConvenientDismissalMargins = false

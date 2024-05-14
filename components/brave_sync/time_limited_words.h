@@ -20,6 +20,7 @@ FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetIndexByWord);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetRoundedDaysDiff);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetWordByIndex);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, Parse);
+FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetNotAfter);
 
 class TimeLimitedWords {
  public:
@@ -50,6 +51,8 @@ class TimeLimitedWords {
   static std::string GenerateResultToText(
       const GenerateResult& generate_result);
 
+  static base::Time GetNotAfter(const std::string& time_limited_words);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GenerateForDate);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetIndexByWord);
@@ -57,6 +60,7 @@ class TimeLimitedWords {
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetWordByIndex);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, Parse);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, ParseIgnoreDate);
+  FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetNotAfter);
 
   enum class WrongDateBehaviour { kIgnore = 1, kDontAllow = 2 };
   static base::expected<std::string, ValidationStatus> ParseImpl(

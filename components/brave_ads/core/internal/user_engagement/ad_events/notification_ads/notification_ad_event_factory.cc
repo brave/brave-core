@@ -18,11 +18,11 @@ std::unique_ptr<AdEventInterface<NotificationAdInfo>>
 NotificationAdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
   switch (event_type) {
-    case mojom::NotificationAdEventType::kServed: {
+    case mojom::NotificationAdEventType::kServedImpression: {
       return std::make_unique<NotificationAdEventServed>();
     }
 
-    case mojom::NotificationAdEventType::kViewed: {
+    case mojom::NotificationAdEventType::kViewedImpression: {
       return std::make_unique<NotificationAdEventViewed>();
     }
 

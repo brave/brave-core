@@ -12,7 +12,6 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
@@ -100,11 +99,6 @@ class AdsClientMock : public AdsClient {
               (mojom::DBTransactionInfoPtr, RunDBTransactionCallback));
 
   MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
-
-  MOCK_METHOD(void,
-              AddFederatedLearningPredictorTrainingSample,
-              (const std::vector<brave_federated::mojom::CovariateInfoPtr>
-                   training_sample));
 
   MOCK_METHOD(std::optional<base::Value>,
               GetProfilePref,

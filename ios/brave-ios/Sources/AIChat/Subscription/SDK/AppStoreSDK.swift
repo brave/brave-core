@@ -402,22 +402,36 @@ public class AppStoreSDK: ObservableObject {
         return nil
       }
 
+      var processingError: Error?
+
       // Try a maximum of 10 times before considering the purchase a failure
-      for i in 0..<10 {
+      for _ in 0..<10 {
         do {
           // Do additional purchase processing such as server-side validation
           // This function also asks for a receipt refresh
           try await processPurchase(of: product, transaction: transaction)
 
           Logger.module.info("[AppStoreSDK] - Transaction Verified with Backend")
+          processingError = nil
           break
         } catch {
+          processingError = error
+
           Logger.module.error(
             "[AppStoreSDK] - Backend Processing Failed: \(error, privacy: .public)"
           )
+
           Logger.module.info("[AppStoreSDK] - Waiting 2s and trying again...")
+
           try? await Task.sleep(seconds: 1.0)
         }
+      }
+
+      if let processingError {
+        Logger.module.info(
+          "[AppStoreSDK] - Marking Transaction In-Completed: \(processingError, privacy: .public)"
+        )
+        throw processingError
       }
 
       Logger.module.info("[AppStoreSDK] - Marking Transaction Completed")

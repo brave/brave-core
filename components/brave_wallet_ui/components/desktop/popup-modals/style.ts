@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
@@ -20,7 +20,7 @@ export const StyledWrapper = styled.div`
   top: 0;
   bottom: 0;
   position: fixed;
-  z-index: 100;
+  z-index: 30;
   background: rgba(33, 37, 41, 0.32);
   backdrop-filter: blur(16px);
 `
@@ -42,6 +42,7 @@ export const Modal = styled.div<{
   border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 8)}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
+  overflow: hidden;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     width: unset;
     min-width: unset;

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -159,6 +160,20 @@ void BraveToolbarView::Init() {
       kShowBookmarksButton, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
+
+  show_wallet_button_.Init(
+      kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
+      base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
+                          base::Unretained(this)));
+
+  if (browser_->profile()->IsIncognitoProfile() &&
+      !browser_->profile()->IsTor()) {
+    wallet_private_window_enabled_.Init(
+        kBraveWalletPrivateWindowsEnabled, browser_->profile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
+                            base::Unretained(this)));
+  }
+
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
       kLocationBarIsWide, profile->GetPrefs(),
@@ -203,15 +218,14 @@ void BraveToolbarView::Init() {
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
 
-  if (brave_wallet::IsNativeWalletEnabled() &&
-      brave_wallet::IsAllowedForContext(profile)) {
-    wallet_ = container_view->AddChildViewAt(
-        std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
-    wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
-                                      ui::EF_MIDDLE_MOUSE_BUTTON);
-    wallet_->UpdateImageAndText();
-  }
+  wallet_ = container_view->AddChildViewAt(
+      std::make_unique<WalletButton>(GetAppMenuButton(), profile),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
+                                    ui::EF_MIDDLE_MOUSE_BUTTON);
+  wallet_->UpdateImageAndText();
+
+  UpdateWalletButtonVisibility();
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(profile)) {
@@ -418,6 +432,28 @@ void BraveToolbarView::ResetButtonBounds() {
         location_bar_->x() - bookmark_width - button_right_margin;
     bookmark_->SetX(bookmark_x);
   }
+}
+
+void BraveToolbarView::UpdateWalletButtonVisibility() {
+  Profile* profile = browser()->profile();
+  if (brave_wallet::IsNativeWalletEnabled() &&
+      brave_wallet::IsAllowedForContext(profile)) {
+    // Hide all if user wants to hide.
+    if (!show_wallet_button_.GetValue()) {
+      wallet_->SetVisible(false);
+      return;
+    }
+
+    if (!profile->IsIncognitoProfile()) {
+      wallet_->SetVisible(true);
+      return;
+    }
+
+    wallet_->SetVisible(wallet_private_window_enabled_.GetValue());
+    return;
+  }
+
+  wallet_->SetVisible(false);
 }
 
 BEGIN_METADATA(BraveToolbarView)

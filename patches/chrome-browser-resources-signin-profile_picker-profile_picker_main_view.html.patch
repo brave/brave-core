@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
+index d129df04d1099585a4cfacd69af3930d9f05f8a9..ed2c1b1961699194960fb62ef45ac04cefef6886 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html
+@@ -160,7 +160,7 @@
+             class="profile-item" profile-state="[[item]]">
+         </profile-card>
+       </template>
+-      <cr-button id="addProfile" class="profile-item"
++      <cr-button id="addProfile" class="profile-item plain"
+           on-click="onAddProfileClick_"
+           aria-labelledby="addProfileButtonLabel">
+         <div id="addProfileButtonLabel"

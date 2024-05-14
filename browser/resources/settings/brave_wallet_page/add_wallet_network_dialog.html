@@ -37,13 +37,13 @@
   <div slot="body">
     <template is="dom-if" if="[[addNewAllowed]]">
       <div class="search-separator">
-        <cr-searchable-drop-down items="[[searchItems_]]"
+        <searchable-drop-down items="[[searchItems_]]"
                                 id="searchDropDown"
                                 label="$i18n{walletAddNetworkDialogSearchForNetworkLabel}"
                                 value="{{searchValue_}}"
                                 update-value-on-input
                                 placeholder="$i18n{walletAddNetworkDialogSearchForNetworkPlaceholder}">
-        </cr-searchable-drop-down>
+        </searchable-drop-down>
       </div>
     </template>
     <cr-input id="chainId"

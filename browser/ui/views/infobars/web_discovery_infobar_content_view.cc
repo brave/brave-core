@@ -82,6 +82,8 @@ class InfoBarStyledLabel : public CustomStyledLabel {
   }
 
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
+    CustomStyledLabel::OnBoundsChanged(previous_bounds);
+
     auto height = GetHeightForWidth(width());
     SetSize({width(), height});
     SetPosition({x(), (parent()->height() - height) / 2});
@@ -220,6 +222,14 @@ void WebDiscoveryInfoBarContentView::SwitchChildLayout() {
   // Not initialized yet.
   if (wide_layout_min_width_ == 0 || narrow_layout_preferred_width_ == 0)
     return;
+
+  // TODO(simonhong): This is workaround to prevent re-layout from narrow layout
+  // to wide layout at startup as we have a regression that StyledLabel doesn't
+  // do proper layout when its width is growing. With this workaround, we can
+  // show wdp infobar w/o wrong layout.
+  if (width() == 0) {
+    return;
+  }
 
   // There are three layout.
   // - Wide layout with wide border

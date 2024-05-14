@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { useUnpaddedImageUrl } from "../../../brave_news/browser/resources/shared/useUnpaddedImageUrl";
-import { icon } from "@brave/leo/tokens/css";
+import { icon } from "@brave/leo/tokens/css/variables";
 import styled from "styled-components";
 
 const hide = { opacity: 0 }

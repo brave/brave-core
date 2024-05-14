@@ -14,6 +14,10 @@ Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
   NOTIMPLEMENTED();
   return nullptr;
 }
+
+void ClosePanel(content::WebContents* web_contents) {
+  NOTIMPLEMENTED();
+}
 #endif
 
 }  // namespace ai_chat

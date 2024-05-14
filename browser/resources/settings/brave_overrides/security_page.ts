@@ -34,7 +34,7 @@ RegisterPolymerTemplateModifications({
       if (!enableHttpsFirstModeNewSettings) {
         console.error(
           '[Brave Settings Overrides] Could not find template with ' +
-          'if=[[!enableHttpsFirstModeNewSettings on security page.]]')
+          'if=[[!enableHttpsFirstModeNewSettings]] on security page.')
       } else {
         const httpsOnlyModeToggle = enableHttpsFirstModeNewSettings.content.
           getElementById('httpsOnlyModeToggle')
@@ -52,20 +52,24 @@ RegisterPolymerTemplateModifications({
     } else {
       link.setAttribute('hidden', 'true')
     }
-    const certsTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[showChromeRootStoreCertificates_]]"]')
-    if (!certsTemplate) {
-      console.error('[Brave Settings Overrides] Could not find certs template')
-      return
-    }
-    const chromeCertificates = certsTemplate.content.
-      getElementById('chromeCertificates')
-    if (!chromeCertificates) {
-      console.error(
-        '[Brave Settings Overrides] Could not find chromeCertificates id ' +
-        'on security page.')
+    const enableCertManagementUIV2 = templateContent.
+      querySelector(
+        'template[is=dom-if][if="[[!enableCertManagementUIV2_]]"]'
+    )
+    if (!enableCertManagementUIV2) {
+        console.error(
+          '[Brave Settings Overrides] Could not find template with ' +
+          'if=[[!enableCertManagementUIV2]] on security page.')
     } else {
-      chromeCertificates.setAttribute('hidden', 'true')
+      const chromeCertificates = enableCertManagementUIV2.content.
+        getElementById('chromeCertificates')
+      if (!chromeCertificates) {
+        console.error(
+          '[Brave Settings Overrides] Could not find chromeCertificates id ' +
+          'on security page.')
+      } else {
+        chromeCertificates.setAttribute('hidden', 'true')
+      }
     }
   }
 })

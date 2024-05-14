@@ -6,7 +6,6 @@
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
-    check_includes = false
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
@@ -30,17 +29,21 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/browser",
+      "//brave/browser/extensions:test_support",
       "//brave/common:common",
       "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/content/browser",
       "//brave/components/brave_shields/core/common",
       "//brave/components/constants",
+      "//brave/third_party/blink/renderer",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/content_settings/renderer",
       "//components/embedder_support:browser_util",
+      "//components/language/core/browser",
       "//components/permissions:permissions",
       "//components/prefs",
       "//content/public/browser",

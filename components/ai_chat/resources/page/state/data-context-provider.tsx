@@ -16,8 +16,60 @@ function toBlobURL(data: number[] | null) {
   return URL.createObjectURL(blob)
 }
 
+function normalizeText(text: string) {
+  return text.trim().replace(/\s/g, '').toLocaleLowerCase()
+}
+
+const MAX_INPUT_CHAR = 2000
+const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
+
+function useActionMenu() {
+  const [actionList, setActionList] = React.useState<mojom.ActionGroup[]>([])
+
+  const filterActionsByText = (searchText: string) => {
+    // effectively remove the leading slash (\), and normalize before comparing it to the action labels.
+    const text = normalizeText(searchText.substring(1))
+
+    const filteredList = actionList
+      .map((group) => ({
+        ...group,
+        entries: group.entries.filter((entry) => {
+          // Only apply filter to valid ActionType's label
+          if (entry.details) {
+            return normalizeText(entry.details.label).includes(text)
+          }
+          // For other items, we dont return or show
+          return false
+        })
+      })).filter((group) => group.entries.length > 0)
+
+    return filteredList
+  }
+
+  const getFirstValidActionType = (actionList: mojom.ActionGroup[]) => {
+    const action = actionList
+      .flatMap((actionGroup) => actionGroup.entries)
+      .filter((entries) => entries.details)
+
+    return action[0].details?.type
+  }
+
+  React.useEffect(() => {
+    getPageHandlerInstance().pageHandler.getActionMenuList().then(resp => {
+      setActionList(resp.actionList)
+    })
+  }, [])
+
+  return {
+    actionList,
+    filterActionsByText,
+    getFirstValidActionType,
+  }
+}
+
 interface DataContextProviderProps {
   children: React.ReactNode
+  store?: Partial<AIChatContext>
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
@@ -30,18 +82,21 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
     title: undefined,
     isContentAssociationPossible: false,
-    isContentTruncated: false,
     hostname: undefined,
+    contentUsedPercentage: 0
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
-  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
+  const [inputText, setInputText] = React.useState('')
+  const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
+  const { actionList: initialActionList, filterActionsByText, getFirstValidActionType } = useActionMenu()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -67,6 +122,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.access === mojom.ModelAccess.PREMIUM))
+
+  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
+  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
+  const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -163,17 +222,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.getShouldSendPageContents().then(({ shouldSend }) => setShouldSendPageContents(shouldSend))
   }
 
-  const shouldShowLongPageWarning = React.useMemo(() => {
-    if (
-      !hasDismissedLongPageWarning &&
-      conversationHistory.length >= 1 &&
-      siteInfo?.isContentTruncated
-    ) {
-      return true
-    }
-
-    return false
-  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
+  const shouldShowLongPageWarning = React.useMemo(() =>
+    conversationHistory.length >= 1 &&
+    siteInfo?.contentUsedPercentage < 100,
+  [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     if (!currentModel) return false
@@ -194,10 +246,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     return false
   }, [conversationHistory, currentModel, hasDismissedLongConversationInfo, siteInfo])
 
-  const dismissLongPageWarning = () => {
-    setHasDismissedLongPageWarning(true)
-  }
-
   const dismissLongConversationInfo = () => {
     setHasDismissedLongConversationInfo(true)
   }
@@ -208,6 +256,71 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const managePremium = () => {
     getPageHandlerInstance().pageHandler.managePremium()
+  }
+
+  const handleMaybeLater = () => {
+    getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
+      .then((res) => { setInputText(res.turn.text) })
+  }
+
+  const handleSwitchToBasicModelAndRetry = () => {
+    switchToBasicModel()
+    getPageHandlerInstance().pageHandler.retryAPIRequest()
+  }
+
+  const resetSelectedActionType = () => {
+    setSelectedActionType(undefined)
+  }
+
+  const handleActionTypeClick = (actionType: mojom.ActionType) => {
+    setSelectedActionType(actionType)
+    setTimeout(() => {
+      if (inputText.startsWith('/')) {
+        setInputText('')
+      }
+    })
+  }
+
+  const actionList = React.useMemo(() => {
+    // If inputText starts with '/' followed by word characters
+    // filter the action list based on inputText
+    const reg = new RegExp(/^\/\w+/)
+    return reg.test(inputText)
+    ? filterActionsByText(inputText)
+    : initialActionList
+  }, [inputText, initialActionList, filterActionsByText])
+
+
+  React.useEffect(() => {
+    const isOpen = inputText.startsWith('/') && actionList.length > 0
+    setIsToolsMenuOpen(isOpen)
+  }, [inputText, actionList])
+
+  const handleFilterActivation = () => {
+    if (isToolsMenuOpen && inputText.startsWith('/')) {
+      setSelectedActionType(getFirstValidActionType(actionList))
+      setInputText('')
+      setIsToolsMenuOpen(false)
+      return true
+    }
+
+    return false
+  }
+
+  const submitInputTextToAPI = () => {
+    if (!inputText) return
+    if (isCharLimitExceeded) return
+    if (shouldDisableUserInput) return
+    if (handleFilterActivation()) return
+
+    if (selectedActionType) {
+      getPageHandlerInstance().pageHandler.submitHumanConversationEntryWithAction(inputText, selectedActionType)
+    } else {
+      getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
+    }
+
+    setInputText('')
+    resetSelectedActionType()
   }
 
   const initialiseForTargetTab = async () => {
@@ -223,6 +336,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getCurrentAPIError()
     getCanShowPremiumPrompt()
     getShouldSendPageContents()
+    resetSelectedActionType()
   }
 
   const isMobile = React.useMemo(() => loadTimeData.getBoolean('isMobile'), [])
@@ -294,6 +408,13 @@ function DataContextProvider (props: DataContextProviderProps) {
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     isMobile,
+    inputText,
+    isCharLimitExceeded,
+    isCharLimitApproaching,
+    inputTextCharCountDisplay,
+    selectedActionType,
+    isToolsMenuOpen,
+    actionList,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -303,9 +424,16 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,
     userRefreshPremiumSession,
-    dismissLongPageWarning,
     dismissLongConversationInfo,
     updateShouldSendPageContents,
+    setInputText,
+    handleMaybeLater,
+    handleSwitchToBasicModelAndRetry,
+    submitInputTextToAPI,
+    resetSelectedActionType,
+    handleActionTypeClick,
+    setIsToolsMenuOpen,
+    ...props.store,
   }
 
   return (

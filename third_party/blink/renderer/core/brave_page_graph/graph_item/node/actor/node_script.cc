@@ -87,7 +87,7 @@ void NodeScript::AddInEdge(const GraphEdge* in_edge) {
 void NodeScript::AddGraphMLAttributes(xmlDocPtr doc,
                                       xmlNodePtr parent_node) const {
   NodeActor::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefScriptIdForNode)
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeScriptId)
       ->AddValueNode(doc, parent_node, script_id_);
   GraphMLAttrDefForType(kGraphMLAttrDefScriptType)
       ->AddValueNode(doc, parent_node,

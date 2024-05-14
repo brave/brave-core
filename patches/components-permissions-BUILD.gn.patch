@@ -1,17 +1,17 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index a97d977cf3fd87b1b0c895d49c97b48436ae193f..8927343055484d1c09f62b423f154487e432c0e1 100644
+index 0cc1fb02318efb609cd05c752131c2fc7af1c2ae..9f88322886a9d074153228e28fcabab52fb663dc 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
-@@ -2,7 +2,7 @@
- # Use of this source code is governed by a BSD-style license that can be
- # found in the LICENSE file.
+@@ -4,7 +4,7 @@
+ 
+ import("//device/vr/buildflags/buildflags.gni")
  
 -source_set("permissions_common") {
 +component("permissions_common") {
    sources = [
      "constants.cc",
      "constants.h",
-@@ -147,6 +147,7 @@ source_set("permissions") {
+@@ -157,6 +157,7 @@ source_set("permissions") {
    if (!is_android) {
      deps += [ "//components/guest_view/browser" ]
    }

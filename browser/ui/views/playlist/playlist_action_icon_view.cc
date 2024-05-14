@@ -5,20 +5,17 @@
 
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 
-#include <utility>
-
 #include "base/logging.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/ui/views/playlist/playlist_action_bubble_view.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/vector_icon_types.h"
 
 PlaylistActionIconView::PlaylistActionIconView(
     CommandUpdater* command_updater,
-    Browser* browser,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
@@ -26,49 +23,34 @@ PlaylistActionIconView::PlaylistActionIconView(
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
-                         /*ephemeral=*/false),
-      browser_(browser) {
+                         /*ephemeral=*/false) {
   SetVisible(false);
 }
 
 PlaylistActionIconView::~PlaylistActionIconView() = default;
 
-views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
-  return PlaylistActionBubbleView::GetBubble();
-}
-
 void PlaylistActionIconView::ShowPlaylistBubble() {
   DVLOG(2) << __FUNCTION__;
-  if (state_ == State::kNone) {
-    return;
-  }
 
-  if (PlaylistActionBubbleView::IsShowingBubble()) {
-    return;
+  if (auto* controller = GetController()) {
+    controller->ShowBubble(AsWeakPtr());
   }
-
-  auto* playlist_tab_helper = GetPlaylistTabHelper();
-  if (!playlist_tab_helper || playlist_tab_helper->is_adding_items()) {
-    return;
-  }
-
-  const auto saved_item_count = playlist_tab_helper->saved_items().size();
-  const auto found_item_count = playlist_tab_helper->found_items().size();
-  if (!saved_item_count && !found_item_count) {
-    return;
-  }
-
-  DCHECK(saved_item_count || found_item_count);
-  PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
 }
 
-base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::GetWeakPtr() {
+base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::AsWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
+views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
+  auto* controller = GetController();
+  return controller ? controller->GetBubble() : nullptr;
+}
+
 const gfx::VectorIcon& PlaylistActionIconView::GetVectorIcon() const {
-  return state_ == State::kAdded ? kLeoProductPlaylistAddedIcon
-                                 : kLeoProductPlaylistAddIcon;
+  auto* tab_helper = GetPlaylistTabHelper();
+  return tab_helper && !tab_helper->saved_items().empty()
+             ? kLeoProductPlaylistAddedIcon
+             : kLeoProductPlaylistAddIcon;
 }
 
 void PlaylistActionIconView::UpdateImpl() {
@@ -76,87 +58,76 @@ void PlaylistActionIconView::UpdateImpl() {
     return;
   }
 
-  if (PlaylistActionBubbleView::IsShowingBubble()) {
-    PlaylistActionBubbleView::CloseBubble();
-  }
-  playlist_tab_helper_observation_.Reset();
-
-  auto* playlist_tab_helper = GetPlaylistTabHelper();
-  if (!playlist_tab_helper) {
-    UpdateState(/* has_saved= */ false, /* found_items= */ false);
-    return;
+  tab_helper_observation_.Reset();
+  if (auto* tab_helper = GetPlaylistTabHelper()) {
+    tab_helper_observation_.Observe(tab_helper);
   }
 
-  playlist_tab_helper_observation_.Observe(playlist_tab_helper);
-
-  UpdateState(playlist_tab_helper->saved_items().size(),
-              playlist_tab_helper->found_items().size());
+  UpdateState();
 }
 
 void PlaylistActionIconView::PlaylistTabHelperWillBeDestroyed() {
-  playlist_tab_helper_observation_.Reset();
+  tab_helper_observation_.Reset();
 }
 
 void PlaylistActionIconView::OnSavedItemsChanged(
-    const std::vector<playlist::mojom::PlaylistItemPtr>& saved_items) {
-  auto* playlist_tab_helper = GetPlaylistTabHelper();
-  if (!playlist_tab_helper) {
-    return;
-  }
-
-  UpdateState(saved_items.size(), playlist_tab_helper->found_items().size());
+    const std::vector<playlist::mojom::PlaylistItemPtr>&) {
+  UpdateState();
 }
 
 void PlaylistActionIconView::OnFoundItemsChanged(
-    const std::vector<playlist::mojom::PlaylistItemPtr>& found_items) {
-  auto* playlist_tab_helper = GetPlaylistTabHelper();
-  if (!playlist_tab_helper) {
-    return;
-  }
-
-  UpdateState(playlist_tab_helper->saved_items().size(), found_items.size());
-}
-
-playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper() {
-  if (auto* contents = GetWebContents()) {
-    return playlist::PlaylistTabHelper::FromWebContents(contents);
-  }
-
-  return nullptr;
-}
-
-void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
-  State target_state = has_saved     ? State::kAdded
-                       : found_items ? State::kFound
-                                     : State::kNone;
-  if (auto old_state = std::exchange(state_, target_state);
-      old_state != target_state) {
-    DVLOG(2) << __FUNCTION__ << " " << static_cast<int>(target_state);
-    UpdateIconImage();
-  }
-  UpdateVisibilityPerState();
-}
-
-void PlaylistActionIconView::UpdateVisibilityPerState() {
-  const bool should_be_visible = state_ != State::kNone;
-  if (GetVisible() == should_be_visible) {
-    return;
-  }
-
-  SetVisible(should_be_visible);
-  PreferredSizeChanged();
+    const std::vector<playlist::mojom::PlaylistItemPtr>&) {
+  UpdateState();
 }
 
 void PlaylistActionIconView::OnAddedItemFromTabHelper(
-    const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
+    const std::vector<playlist::mojom::PlaylistItemPtr>&) {
   DVLOG(2) << __FUNCTION__;
-  // When this callback is invoked to this by a tab helper, it means that this
-  // view is now bound to the tab helper. So we don't have to check it again.
-  if (!PlaylistActionBubbleView::IsShowingBubble()) {
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&PlaylistActionIconView::ShowPlaylistBubble,
-                                  weak_ptr_factory_.GetWeakPtr()));
+
+  if (auto* controller = GetController();
+      controller && !controller->GetBubble()) {
+    ShowPlaylistBubble();
   }
+}
+
+playlist::PlaylistBubblesController* PlaylistActionIconView::GetController()
+    const {
+  auto* web_contents = GetWebContents();
+  return web_contents
+             ? playlist::PlaylistBubblesController::CreateOrGetFromWebContents(
+                   web_contents)
+             : nullptr;
+}
+
+const playlist::PlaylistTabHelper*
+PlaylistActionIconView::GetPlaylistTabHelper() const {
+  auto* web_contents = GetWebContents();
+  return web_contents
+             ? playlist::PlaylistTabHelper::FromWebContents(web_contents)
+             : nullptr;
+}
+
+playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper() {
+  return const_cast<playlist::PlaylistTabHelper*>(
+      std::as_const(*this).GetPlaylistTabHelper());
+}
+
+void PlaylistActionIconView::UpdateState() {
+  bool has_saved_items = false;
+  bool has_found_items = false;
+  if (auto* tab_helper = GetPlaylistTabHelper()) {
+    has_saved_items = !tab_helper->saved_items().empty();
+    has_found_items = !tab_helper->found_items().empty();
+  }
+
+  if (auto old_state = std::exchange(state_, has_saved_items   ? State::kSaved
+                                             : has_found_items ? State::kFound
+                                                               : State::kNone);
+      state_ != old_state) {
+    UpdateIconImage();
+  }
+
+  SetVisible(state_ != State::kNone);
 }
 
 BEGIN_METADATA(PlaylistActionIconView);

@@ -7,8 +7,9 @@
 
 #include <string_view>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
 #include "base/no_destructor.h"
+#include "base/numerics/byte_conversions.h"
 
 namespace brave {
 
@@ -28,9 +29,8 @@ bool PrivateCdnHelper::RemovePadding(std::string_view* padded_string) const {
   }
 
   // Read payload length from the header.
-  uint32_t data_length;
-  base::ReadBigEndian(reinterpret_cast<const uint8_t*>(padded_string->data()),
-                      &data_length);
+  uint32_t data_length = base::numerics::U32FromBigEndian(
+      base::as_byte_span(*padded_string).first<4u>());
 
   // Remove length header.
   padded_string->remove_prefix(sizeof(uint32_t));

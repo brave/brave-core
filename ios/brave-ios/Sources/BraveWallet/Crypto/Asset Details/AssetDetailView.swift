@@ -40,6 +40,8 @@ struct AssetDetailView: View {
   @State private var selectedContent: AssetDetailSegmentedControl.Item = .accounts
   /// Query displayed in the search bar above the transactions.
   @State private var query: String = ""
+  /// Error message displayed in alert for transaction list
+  @State private var errorMessage: String?
   @State private var isDoNotShowCheckboxChecked: Bool = false
 
   private var accountsBalanceHeader: some View {
@@ -69,7 +71,7 @@ struct AssetDetailView: View {
   private func accontBalanceRow(_ viewModel: AccountAssetViewModel) -> some View {
     HStack {
       AddressView(address: viewModel.account.address) {
-        AccountView(address: viewModel.account.address, name: viewModel.account.name)
+        AccountView(account: viewModel.account)
       }
       let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
       let showBalancePlaceholder =
@@ -125,9 +127,9 @@ struct AssetDetailView: View {
     VStack(spacing: 16) {
       HStack(alignment: .top, spacing: 40) {
         if case .coinMarket(let coinMarket) = assetDetailStore.assetDetailType,
-          let depositableToken = assetDetailStore.convertCoinMarketToDepositableToken(
+          assetDetailStore.convertCoinMarketToDepositableToken(
             symbol: coinMarket.symbol
-          )
+          ) != nil
         {
           PortfolioHeaderButton(style: .deposit) {
             let destination = WalletActionDestination(
@@ -153,16 +155,12 @@ struct AssetDetailView: View {
       let grids = [GridItem(.adaptive(minimum: 160), spacing: 8, alignment: .top)]
       let info: [CoinMarketInfo] = {
         let computedMarketCap =
-          assetDetailStore.currencyFormatter.string(
-            from: NSNumber(
-              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap)
-            )
+          assetDetailStore.currencyFormatter.formatAsFiat(
+            BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap)
           ) ?? ""
         let computedTotalVolume =
-          assetDetailStore.currencyFormatter.string(
-            from: NSNumber(
-              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume)
-            )
+          assetDetailStore.currencyFormatter.formatAsFiat(
+            BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume)
           ) ?? ""
         return [
           .init(title: Strings.Wallet.coinMarketRank, value: "#\(coinMarket.marketCapRank)"),
@@ -308,10 +306,22 @@ struct AssetDetailView: View {
           TransactionsListView(
             transactionSections: assetDetailStore.transactionSections,
             query: $query,
+            errorMessage: $errorMessage,
             showFilter: false,
             filtersButtonTapped: {},
             transactionTapped: { tx in
               self.transactionDetails = assetDetailStore.transactionDetailsStore(for: tx)
+            },
+            transactionFollowUpActionTapped: { action, tx in
+              Task { @MainActor in
+                guard
+                  let errorMessage = await assetDetailStore.handleTransactionFollowUpAction(
+                    action,
+                    transaction: tx
+                  )
+                else { return }
+                self.errorMessage = errorMessage
+              }
             }
           )
         }

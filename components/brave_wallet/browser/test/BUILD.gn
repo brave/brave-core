@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -45,7 +46,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/eth_tx_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/eth_tx_state_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/ethereum_keyring_unittest.cc",
-    "//brave/components/brave_wallet/browser/fil_address_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_block_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_nonce_tracker_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_requests_unittest.cc",
@@ -60,6 +60,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/json_rpc_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/json_rpc_service_unittest.cc",
+    "//brave/components/brave_wallet/browser/keyring_service_migrations_unittest.cc",
     "//brave/components/brave_wallet/browser/nft_metadata_fetcher_unittest.cc",
     "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
     "//brave/components/brave_wallet/browser/permission_utils_unittest.cc",
@@ -103,6 +104,10 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/zcash/zcash_wallet_service_unittest.cc",
   ]
 
+  if (enable_orchard) {
+    sources += [ "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc" ]
+  }
+
   if (enable_ipfs_local_node) {
     sources += [
       "//brave/components/brave_wallet/browser/brave_wallet_auto_pin_service_unittest.cc",
@@ -115,6 +120,7 @@ source_set("brave_wallet_unit_tests") {
     ":test_support",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:generated_bitcoin_rpc_responses",
@@ -128,6 +134,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:test_support",

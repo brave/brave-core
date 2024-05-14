@@ -461,7 +461,6 @@ export const AccountsAndTransactionsList = ({
       {showSellModal && selectedAsset && (
         <SellAssetModal
           selectedAsset={selectedAsset}
-          selectedAssetsNetwork={selectedAssetNetwork || selectedNetwork}
           onClose={() => setShowSellModal(false)}
           sellAmount={sellAmount}
           setSellAmount={setSellAmount}

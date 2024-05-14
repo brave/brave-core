@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_GENERAL_BROWSER_USAGE_H_
 
 #include <memory>
+#include <optional>
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
@@ -21,15 +23,14 @@ inline constexpr char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
 inline constexpr char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-inline constexpr char kDayZeroOnInstallTime[] = "Brave.DayZero.On.InstallTime";
-inline constexpr char kDayZeroOffInstallTime[] =
-    "Brave.DayZero.Off.InstallTime";
+inline constexpr char kDayZeroInstallTimePrefix[] = "Brave.DayZero.";
+inline constexpr char kDayZeroInstallTimeSuffix[] = ".InstallTime";
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
 class GeneralBrowserUsage {
  public:
   GeneralBrowserUsage(PrefService* local_state,
-                      bool day_zero_experiment_enabled,
+                      std::optional<std::string> day_zero_experiment_variant,
                       bool is_first_run,
                       base::Time first_run_time);
   ~GeneralBrowserUsage();

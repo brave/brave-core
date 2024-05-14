@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 54d5aa0412a0c6f1a9bf2e766f61fa40ac10dd44..8e96e88fb87f4e69b444aa935260fe2a2c32c793 100644
+index 405aaff30a8031b1e79ae9d273164283831da775..ffb464f02d57b67a047cc9fabc256f0983e77f2f 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -102,17 +102,6 @@
@@ -20,7 +20,7 @@ index 54d5aa0412a0c6f1a9bf2e766f61fa40ac10dd44..8e96e88fb87f4e69b444aa935260fe2a
      "ecosia": {
        "name": "Ecosia",
        "keyword": "ecosia.org",
-@@ -253,16 +242,6 @@
+@@ -256,16 +245,6 @@
        "id": 108
      },
  
@@ -35,5 +35,5 @@ index 54d5aa0412a0c6f1a9bf2e766f61fa40ac10dd44..8e96e88fb87f4e69b444aa935260fe2a
 -    },
 -
      "seznam_cz": {
-       "name": "Seznam",
+       "name": "Seznam.cz",
        "keyword": "seznam.cz",

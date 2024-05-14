@@ -14,16 +14,25 @@ class BraveComponentUpdaterAndroid;
 }
 }  // namespace chrome
 
+namespace brave_component_updater {
+class BraveOnDemandUpdater;
+}
+
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
   friend class ::IPFSDOMHandler;           \
   friend class ::chrome::android::BraveComponentUpdaterAndroid;
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER \
- private:                                                   \
-  friend void BraveOnDemandUpdate(const std::string&);      \
-                                                            \
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER          \
+ private:                                                            \
+  friend class brave_component_updater::BraveOnDemandUpdater;        \
+                                                                     \
+  virtual void OnDemandUpdate(const std::vector<std::string>& ids,   \
+                              Priority priority, Callback callback); \
+                                                                     \
  public:
+
 #include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export
+
 #undef BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER
 #undef BRAVE_COMPONENT_UPDATER_SERVICE_H_
 

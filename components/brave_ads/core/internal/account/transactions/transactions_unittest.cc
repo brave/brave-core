@@ -29,7 +29,7 @@ TEST_F(BraveAdsTransactionsTest, Add) {
   // Act
   const TransactionInfo transaction = AddTransaction(
       kCreativeInstanceId, kSegment, /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewed, add_transaction_callback.Get());
+      ConfirmationType::kViewedImpression, add_transaction_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -45,7 +45,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   AdvanceClockTo(TimeFromString("31 August 2019"));  //
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -76,7 +76,7 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 

@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_UTIL_H_
 
 #include <map>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -21,15 +20,25 @@ namespace brave_ads {
 using CreativeSetConversionBucketMap =
     std::map</*creative_set_id*/ std::string, CreativeSetConversionList>;
 
-CreativeSetConversionList FilterConvertedAndNonMatchingCreativeSetConversions(
+using CreativeSetConversionCountMap = std::map</*creative_set_id*/ std::string,
+                                               /*count*/ size_t>;
+
+CreativeSetConversionList GetMatchingCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions,
-    const AdEventList& ad_events,
     const std::vector<GURL>& redirect_chain);
+
+CreativeSetConversionCountMap GetCreativeSetConversionCounts(
+    const AdEventList& ad_events);
 
 CreativeSetConversionBucketMap SortCreativeSetConversionsIntoBuckets(
     const CreativeSetConversionList& creative_set_conversions);
 
-std::optional<CreativeSetConversionInfo> FindNonExpiredCreativeSetConversion(
+void FilterCreativeSetConversionBucketsThatExceedTheCap(
+    const std::map<std::string, size_t>& creative_set_conversion_counts,
+    size_t creative_set_conversion_cap,
+    CreativeSetConversionBucketMap& creative_set_conversion_buckets);
+
+CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventInfo& ad_event);
 

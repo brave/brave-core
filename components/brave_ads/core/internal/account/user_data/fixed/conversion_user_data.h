@@ -6,14 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_CONVERSION_USER_DATA_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_FIXED_CONVERSION_USER_DATA_H_
 
-#include <string>
-
-#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
+#include "base/values.h"
 
 namespace brave_ads {
 
-void BuildConversionUserData(const std::string& creative_instance_id,
-                             BuildUserDataCallback callback);
+struct ConversionInfo;
+
+base::Value::Dict BuildConversionUserData(const ConversionInfo& conversion);
 
 }  // namespace brave_ads
 

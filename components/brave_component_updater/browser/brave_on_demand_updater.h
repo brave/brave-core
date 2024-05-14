@@ -7,8 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_ON_DEMAND_UPDATER_H_
 
 #include <string>
+#include <vector>
 
-#include "base/functional/callback.h"
+#include "components/component_updater/component_updater_service.h"
 
 namespace base {
 template <typename T>
@@ -19,21 +20,29 @@ namespace brave_component_updater {
 
 class BraveOnDemandUpdater {
  public:
-  using Callback = base::RepeatingCallback<void(const std::string&)>;
   static BraveOnDemandUpdater* GetInstance();
 
   BraveOnDemandUpdater(const BraveOnDemandUpdater&) = delete;
   BraveOnDemandUpdater& operator=(const BraveOnDemandUpdater&) = delete;
-  ~BraveOnDemandUpdater();
+
+  component_updater::OnDemandUpdater* RegisterOnDemandUpdater(
+      component_updater::OnDemandUpdater* on_demand_updater);
+
   void OnDemandUpdate(const std::string& id);
 
-  void RegisterOnDemandUpdateCallback(Callback callback);
+  void OnDemandUpdate(const std::string& id,
+                      component_updater::OnDemandUpdater::Priority priority,
+                      component_updater::Callback callback);
+  void OnDemandUpdate(const std::vector<std::string>& ids,
+                      component_updater::OnDemandUpdater::Priority priority,
+                      component_updater::Callback callback);
 
  private:
   friend base::NoDestructor<BraveOnDemandUpdater>;
   BraveOnDemandUpdater();
+  ~BraveOnDemandUpdater();
 
-  Callback on_demand_update_callback_;
+  raw_ptr<component_updater::OnDemandUpdater> on_demand_updater_ = nullptr;
 };
 
 }  // namespace brave_component_updater

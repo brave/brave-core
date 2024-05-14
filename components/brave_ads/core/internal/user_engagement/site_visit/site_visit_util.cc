@@ -15,7 +15,7 @@ bool DidLandOnPage(const int32_t tab_id, const GURL& url) {
   const std::optional<TabInfo> tab =
       TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
-    // The tab does not exist.
+    // The tab has been closed.
     return false;
   }
 

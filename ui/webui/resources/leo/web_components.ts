@@ -8,6 +8,7 @@
 import '@brave/leo/web-components/button'
 import '@brave/leo/web-components/dropdown'
 import '@brave/leo/web-components/checkbox'
+import '@brave/leo/web-components/progressRing'
 import '@brave/leo/web-components/toggle'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'

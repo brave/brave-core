@@ -30,10 +30,31 @@ struct WebsiteRedirects {
     ],
     additionalPredicates: [
       { url in
-        !url.path.hasPrefix("/media")
+        let excludedPathPatterns = [
+          #"^/media"#,
+          #"^/poll"#,
+          #"^/rpan"#,
+          #"^/settings"#,
+          #"^/topics"#,
+          #"^/community-points"#,
+          #"^/r/[a-z0-9_]+/s/.*"#,
+          #"^/appeals?(/.*)?"#,
+          #"^/r/[a-z0-9_]+/appeals?(/.*)?"#,
+        ]
+
+        let path = url.path
+        for pattern in excludedPathPatterns {
+          if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive),
+            regex.firstMatch(in: path, range: NSRange(location: 0, length: path.utf16.count)) != nil
+          {
+            return false
+          }
+        }
+
+        return true
       }
     ],
-    excludedHosts: ["new.reddit.com"]
+    excludedHosts: ["new.reddit.com", "sh.reddit.com"]
   )
 
   private static let npr = Rule(

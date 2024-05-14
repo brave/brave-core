@@ -21,7 +21,7 @@ import { IconsWrapper } from '../../shared/style'
 
 export const PortfolioAssetItemLoadingSkeleton = () => {
   return (
-    <HoverArea>
+    <HoverArea noHover={true}>
       <Button disabled={true}>
         <NameAndIcon>
           <IconsWrapper>

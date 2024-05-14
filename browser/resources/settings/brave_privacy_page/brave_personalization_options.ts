@@ -11,6 +11,8 @@ import {loadTimeData} from '../i18n_setup.js'
 import {getTemplate} from './brave_personalization_options.html.js'
 import {BravePrivacyBrowserProxy, BravePrivacyBrowserProxyImpl} from './brave_privacy_page_browser_proxy.js'
 
+import '../privacy_page/do_not_track_toggle.js'
+
 const SettingsBravePersonalizationOptionsBase = BaseMixin(PolymerElement) as {
   new(): PolymerElement
 }
@@ -82,6 +84,25 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")
+  }
+
+  override ready() {
+    super.ready()
+    // Add hr to the "Do not track" row.
+    const doNotTrack = this.shadowRoot?.querySelector('#doNotTrack')
+    if (doNotTrack) {
+      const toggle = doNotTrack.shadowRoot?.querySelector('#toggle')
+      if (toggle) {
+        const toggleClass = toggle.getAttribute('class')
+        toggle.setAttribute('class', toggleClass + ' hr')
+      } else {
+        console.log(
+          '[Brave Settings Overrides] Could not find doNotTrack toggle')
+      }
+    } else {
+      console.log(
+        '[Brave Settings Overrides] Could not find element with id doNotTrack')
+    }
   }
 }
 

@@ -9,11 +9,13 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
@@ -30,6 +32,10 @@ constexpr ControlType kAdsSettingOrder[] = {
     ControlType::ALLOW, ControlType::BLOCK_THIRD_PARTY, ControlType::BLOCK};
 
 constexpr int kSettingCount = 3;
+
+// Increment this version if metrics in `MaybeRecordInitialShieldsSettings`
+// change, so that all metrics can be re-reported after update.
+constexpr int kCurrentReportRevision = 3;
 
 void RecordShieldsLevelSetting(const char* histogram_name,
                                ControlType setting) {
@@ -217,9 +223,34 @@ void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
                                    global_setting);
 }
 
+void RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
+  ContentSetting global_setting = map->GetContentSetting(
+      {}, {}, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+  auto per_site_settings = map->GetSettingsForOneType(
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+  bool has_per_site_exceptions = false;
+  for (const auto& source : per_site_settings) {
+    if (source.setting_value != global_setting) {
+      has_per_site_exceptions = true;
+      break;
+    }
+  }
+  bool is_enabled_globally = global_setting == CONTENT_SETTING_BLOCK;
+  int answer = 0;
+  if (is_enabled_globally && !has_per_site_exceptions) {
+    answer = 1;
+  } else if (is_enabled_globally && has_per_site_exceptions) {
+    answer = 2;
+  } else if (!is_enabled_globally && has_per_site_exceptions) {
+    answer = 3;
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kForgetFirstPartyHistogramName, answer, 4);
+}
+
 void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
                                        HostContentSettingsMap* map) {
-  if (profile_prefs->GetBoolean(kFirstReportedPrefName)) {
+  if (profile_prefs->GetInteger(kFirstReportedRevisionPrefName) >=
+      kCurrentReportRevision) {
     return;
   }
   VLOG(1) << "BraveShieldsP3A: Starting initial report for profile";
@@ -264,21 +295,33 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
 
   RecordShieldsDomainSettingCounts(profile_prefs, false, global_ads_setting);
   RecordShieldsDomainSettingCounts(profile_prefs, true, global_fp_setting);
-  profile_prefs->SetBoolean(kFirstReportedPrefName, true);
+  RecordForgetFirstPartySetting(map);
+
+  profile_prefs->SetInteger(kFirstReportedRevisionPrefName,
+                            kCurrentReportRevision);
 }
 
 void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state) {
   local_state->RegisterIntegerPref(kUsagePrefName, -1);
 }
 
-void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* profile_state) {
-  profile_state->RegisterBooleanPref(kFirstReportedPrefName, false);
-  profile_state->RegisterIntegerPref(kAdsStrictCountPrefName, 0);
-  profile_state->RegisterIntegerPref(kAdsStandardCountPrefName, 0);
-  profile_state->RegisterIntegerPref(kAdsAllowCountPrefName, 0);
-  profile_state->RegisterIntegerPref(kFPStrictCountPrefName, 0);
-  profile_state->RegisterIntegerPref(kFPStandardCountPrefName, 0);
-  profile_state->RegisterIntegerPref(kFPAllowCountPrefName, 0);
+void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterIntegerPref(kFirstReportedRevisionPrefName, 0);
+  registry->RegisterIntegerPref(kAdsStrictCountPrefName, 0);
+  registry->RegisterIntegerPref(kAdsStandardCountPrefName, 0);
+  registry->RegisterIntegerPref(kAdsAllowCountPrefName, 0);
+  registry->RegisterIntegerPref(kFPStrictCountPrefName, 0);
+  registry->RegisterIntegerPref(kFPStandardCountPrefName, 0);
+  registry->RegisterIntegerPref(kFPAllowCountPrefName, 0);
+}
+
+void RegisterShieldsP3AProfilePrefsForMigration(PrefRegistrySimple* registry) {
+  // Added 03/2024
+  registry->RegisterBooleanPref(kFirstReportedPrefName, false);
+}
+
+void MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
+  profile_prefs->ClearPref(kFirstReportedPrefName);
 }
 
 }  // namespace brave_shields

@@ -7,22 +7,45 @@
 
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
-ZCashKeyring::ZCashKeyring(bool testnet) : testnet_(testnet) {}
+ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed, bool testnet)
+    : Secp256k1HDKeyring(
+          seed,
+          GetRootPath(testnet ? mojom::KeyringId::kZCashTestnet
+                              : mojom::KeyringId::kZCashMainnet)),
+      testnet_(testnet) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (!seed.empty() && IsZCashShieldedTransactionsEnabled()) {
+    auto orchard_key = HDKeyZip32::GenerateFromSeed(seed);
+    if (!orchard_key) {
+      return;
+    }
+    orchard_key = orchard_key->DeriveHardenedChild(kZip32Purpose);
+    if (!orchard_key) {
+      return;
+    }
+    orchard_key_ = orchard_key->DeriveHardenedChild(
+        testnet_ ? kTestnetCoinType
+                 : static_cast<uint32_t>(mojom::CoinType::ZEC));
+  }
+#endif
+}
 
-mojom::ZCashAddressPtr ZCashKeyring::GetAddress(
+ZCashKeyring::~ZCashKeyring() = default;
+
+mojom::ZCashAddressPtr ZCashKeyring::GetTransparentAddress(
     const mojom::ZCashKeyId& key_id) {
-  auto key = DeriveKey(key_id);
-  if (!key) {
+  auto hd_key = DeriveKey(key_id);
+  if (!hd_key) {
     return nullptr;
   }
-
-  HDKey* hd_key = static_cast<HDKey*>(key.get());
 
   return mojom::ZCashAddress::New(hd_key->GetZCashTransparentAddress(testnet_),
                                   key_id.Clone());
@@ -30,29 +53,119 @@ mojom::ZCashAddressPtr ZCashKeyring::GetAddress(
 
 std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
     const mojom::ZCashKeyId& key_id) {
+  auto hd_key = DeriveKey(key_id);
+  if (!hd_key) {
+    return std::nullopt;
+  }
+
+  return hd_key->GetPublicKeyBytes();
+}
+
+std::string ZCashKeyring::GetAddressInternal(const HDKey& hd_key) const {
+  return hd_key.GetZCashTransparentAddress(testnet_);
+}
+
+std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
+    const mojom::ZCashKeyId& key_id) {
   auto hd_key_base = DeriveKey(key_id);
   if (!hd_key_base) {
     return std::nullopt;
   }
 
-  return hd_key_base->GetPublicKeyBytes();
+  return Hash160(hd_key_base->GetPublicKeyBytes());
 }
 
-std::string ZCashKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
-  if (!hd_key_base) {
-    return std::string();
+#if BUILDFLAG(ENABLE_ORCHARD)
+std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
+    const mojom::ZCashKeyId& transparent_key_id,
+    const mojom::ZCashKeyId& orchard_key_id) {
+  if (!orchard_key_) {
+    return std::nullopt;
   }
-  HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-  return hd_key->GetZCashTransparentAddress(testnet_);
+
+  auto esk = orchard_key_->DeriveHardenedChild(orchard_key_id.account);
+  if (!esk) {
+    return std::nullopt;
+  }
+
+  auto orchard_addr_bytes =
+      orchard_key_id.change
+          ? esk->GetDiversifiedAddress(orchard_key_id.index,
+                                       OrchardAddressKind::Internal)
+          : esk->GetDiversifiedAddress(orchard_key_id.index,
+                                       OrchardAddressKind::External);
+  if (!orchard_addr_bytes) {
+    return std::nullopt;
+  }
+
+  auto transparent_pubkey_hash = GetPubkeyHash(transparent_key_id);
+  if (!transparent_pubkey_hash) {
+    return std::nullopt;
+  }
+
+  return GetMergedUnifiedAddress(
+      std::vector<ParsedAddress>{
+          ParsedAddress(ZCashAddrType::kP2PKH, transparent_pubkey_hash.value()),
+          ParsedAddress(ZCashAddrType::kOrchard,
+                        std::vector<uint8_t>(orchard_addr_bytes->begin(),
+                                             orchard_addr_bytes->end()))},
+      testnet_);
 }
 
-std::unique_ptr<HDKeyBase> ZCashKeyring::DeriveAccount(uint32_t index) const {
+mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
+    const mojom::ZCashKeyId& key_id) {
+  if (!orchard_key_) {
+    return nullptr;
+  }
+
+  auto esk = orchard_key_->DeriveHardenedChild(key_id.account);
+  if (!esk) {
+    return nullptr;
+  }
+
+  auto addr_bytes = key_id.change
+                        ? esk->GetDiversifiedAddress(
+                              key_id.index, OrchardAddressKind::Internal)
+                        : esk->GetDiversifiedAddress(
+                              key_id.index, OrchardAddressKind::External);
+  if (!addr_bytes) {
+    return nullptr;
+  }
+
+  auto addr_str = GetOrchardUnifiedAddress(addr_bytes.value(), testnet_);
+  if (!addr_str) {
+    return nullptr;
+  }
+  return mojom::ZCashAddress::New(addr_str.value(), key_id.Clone());
+}
+
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
+  if (!orchard_key_) {
+    return std::nullopt;
+  }
+
+  auto esk = orchard_key_->DeriveHardenedChild(key_id.account);
+  if (!esk) {
+    return std::nullopt;
+  }
+
+  auto orchard_addr_bytes =
+      key_id.change ? esk->GetDiversifiedAddress(key_id.index,
+                                                 OrchardAddressKind::Internal)
+                    : esk->GetDiversifiedAddress(key_id.index,
+                                                 OrchardAddressKind::External);
+  return orchard_addr_bytes;
+}
+#endif
+
+std::unique_ptr<HDKey> ZCashKeyring::DeriveAccount(uint32_t index) const {
   // Mainnet - m/44'/133'/{index}'
   // Testnet - m/44'/1'/{index}'
   return root_->DeriveHardenedChild(index);
 }
 
-std::unique_ptr<HDKeyBase> ZCashKeyring::DeriveKey(
+std::unique_ptr<HDKey> ZCashKeyring::DeriveKey(
     const mojom::ZCashKeyId& key_id) {
   auto account_key = DeriveAccount(key_id.account);
   if (!account_key) {
@@ -74,14 +187,18 @@ std::unique_ptr<HDKeyBase> ZCashKeyring::DeriveKey(
 std::optional<std::vector<uint8_t>> ZCashKeyring::SignMessage(
     const mojom::ZCashKeyId& key_id,
     base::span<const uint8_t, 32> message) {
-  auto hd_key_base = DeriveKey(key_id);
-  if (!hd_key_base) {
+  auto hd_key = DeriveKey(key_id);
+  if (!hd_key) {
     return std::nullopt;
   }
 
-  auto* hd_key = static_cast<HDKey*>(hd_key_base.get());
-
   return hd_key->SignDer(message);
+}
+
+std::string ZCashKeyring::EncodePrivateKeyForExport(
+    const std::string& address) {
+  NOTIMPLEMENTED();
+  return "";
 }
 
 }  // namespace brave_wallet

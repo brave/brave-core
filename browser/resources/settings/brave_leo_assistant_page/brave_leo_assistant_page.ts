@@ -6,8 +6,8 @@
 import '//resources/cr_elements/md_select.css.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
-import {CrSettingsPrefs} from 'chrome://resources/cr_components/settings_prefs/prefs_types.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
+import {CrSettingsPrefs} from '/shared/settings/prefs/prefs_types.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
 import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess}
@@ -130,8 +130,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     onModelSelectionChange_(e: any) {
-      this.setPrefValue(MODEL_PREF_PATH, e.detail.value)
-      this.defaultModelKeyPrefValue_ = e.detail.value
+      this.setPrefValue(MODEL_PREF_PATH, e.value)
+      this.defaultModelKeyPrefValue_ = e.value
     }
 
     private updateShowLeoAssistantIcon_() {

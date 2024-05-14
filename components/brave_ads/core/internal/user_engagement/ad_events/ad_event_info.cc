@@ -23,8 +23,7 @@ bool AdEventInfo::IsValid() const {
   return type != AdType::kUndefined &&
          confirmation_type != ConfirmationType::kUndefined &&
          !placement_id.empty() && !creative_instance_id.empty() &&
-         !creative_set_id.empty() && !campaign_id.empty() &&
-         !created_at.is_null();
+         !creative_set_id.empty() && !campaign_id.empty() && created_at;
 }
 
 }  // namespace brave_ads

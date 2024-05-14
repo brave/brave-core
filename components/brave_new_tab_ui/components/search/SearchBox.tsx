@@ -6,27 +6,26 @@ import Flex from '$web-common/Flex';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Input from '@brave/leo/react/input';
-import { radius, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
 import { MediumIcon } from './SearchEngineIcon';
 import { useSearchContext } from './SearchContext';
 import { braveSearchHost } from './config';
+import Button from '@brave/leo/react/button';
+import { getLocale } from '$web-common/locale';
 
 const SearchInput = styled(Input)`
+  --leo-control-focus-effect: none;
   --leo-control-padding: 6px;
+  --leo-control-color: rgba(255, 255, 255, 0.1);
 
   display: inline-block;
   width: 540px;
-
-  /* If we have search results, don't add a radius to the bottom of the search box */
-  &:has(+ div) {
-    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
-  }
 `
 
 const EnginePicker = styled(Dropdown)`
-  --leo-control-radius: ${spacing.m};
+  --leo-control-radius: ${radius.m};
 `
 
 const EngineValueSlot = styled.div`
@@ -44,29 +43,63 @@ const Option = styled.div`
     gap: ${spacing.m};
 `
 
+const CustomizeButton = styled(Button)`
+  border-top: 1px solid ${color.divider.subtle};
+  color: ${color.text.secondary};
+`
+
+const Container = styled.div`
+  --leo-control-radius: ${radius.m};
+
+  /* If we have search results, don't add a radius to the bottom of the search box */
+  &:has(+ .search-results) {
+    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
+  }
+
+  border-radius: var(--leo-control-radius);
+`
+
+export const Backdrop = styled.div`
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(64px);
+`
+
 export default function SearchBox() {
-  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery } = useSearchContext()
+  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery, setOpen } = useSearchContext()
   const placeholderText = searchEngine?.host === braveSearchHost
-    ? 'Search the web privately'
-    : 'Search the web'
+    ? getLocale('searchBravePlaceholder')
+    : getLocale('searchNonBravePlaceholder')
   const searchInput = React.useRef<HTMLElement>()
-  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.detail.value)} placeholder={placeholderText}>
-    <Flex slot="left-icon">
-      <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
-        setSearchEngine(e.detail.value)
-      }}>
-        <EngineValueSlot slot="value">
-          <MediumIcon src={searchEngine?.faviconUrl.url} />
-        </EngineValueSlot>
-        {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
-          <Option>
-            <MediumIcon src={s.faviconUrl.url} />{s.name}
-          </Option>
-        </leo-option>)}
-      </EnginePicker>
-    </Flex>
-    <SearchIconContainer slot="right-icon">
-      <Icon name="search" />
-    </SearchIconContainer>
-  </SearchInput>
+  return <Container>
+    <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
+      <Flex slot="left-icon">
+        <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
+          setSearchEngine(e.value!)
+        }}>
+          <EngineValueSlot slot="value">
+            <MediumIcon src={searchEngine?.faviconUrl.url} />
+          </EngineValueSlot>
+          {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
+            <Option>
+              <MediumIcon src={s.faviconUrl.url} />{s.name}
+            </Option>
+          </leo-option>)}
+          <CustomizeButton kind="plain-faint" size="small" onClick={() => {
+            history.pushState(undefined, '', '?openSettings=Search')
+
+            // For now, close the search box - the Settings dialog doesn't use a
+            // dialog, so it gets rendered underneath.
+            setOpen(false)
+          }}>
+            {getLocale('searchCustomizeList')}
+          </CustomizeButton>
+        </EnginePicker>
+      </Flex>
+      <SearchIconContainer slot="right-icon">
+        <Icon name="search" />
+      </SearchIconContainer>
+    </SearchInput>
+  </Container>
 }

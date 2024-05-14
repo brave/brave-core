@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -56,7 +57,12 @@ void ConfirmationStateManager::LoadCallback(
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      BLOG(0, "Failed to load confirmation state");
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Failed to parse confirmation state");
+      base::debug::DumpWithoutCrashing();
+
       BLOG(3, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
@@ -80,6 +86,12 @@ void ConfirmationStateManager::SaveState() {
   Save(kConfirmationStateFilename, ToJson(),
        base::BindOnce([](const bool success) {
          if (!success) {
+           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+           // potential defects using `DumpWithoutCrashing`.
+           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                     "Failed to save confirmation state");
+           base::debug::DumpWithoutCrashing();
+
            return BLOG(0, "Failed to save confirmation state");
          }
 
@@ -107,28 +119,33 @@ std::string ConfirmationStateManager::ToJson() {
 bool ConfirmationStateManager::FromJson(const std::string& json) {
   const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
+  confirmation_tokens_.RemoveAll();
+  payment_tokens_.RemoveAllTokens();
+
   if (!dict) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Malformed confirmation JSON state");
+    base::debug::DumpWithoutCrashing();
+
     return false;
   }
 
-  if (!ParseConfirmationTokensFromDictionary(*dict)) {
-    BLOG(1, "Failed to parse confirmation tokens");
-  }
+  ParseConfirmationTokensFromDictionary(*dict);
 
-  if (!ParsePaymentTokensFromDictionary(*dict)) {
-    BLOG(1, "Failed to parse payment tokens");
-  }
+  ParsePaymentTokensFromDictionary(*dict);
 
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
+void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
     const base::Value::Dict& dict) {
   const auto* const list = dict.FindList("unblinded_tokens");
   if (!list) {
-    return false;
+    return;
   }
 
   ConfirmationTokenList filtered_confirmation_tokens =
@@ -151,20 +168,13 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
   }
 
   confirmation_tokens_.Set(filtered_confirmation_tokens);
-
-  return true;
 }
 
-bool ConfirmationStateManager::ParsePaymentTokensFromDictionary(
+void ConfirmationStateManager::ParsePaymentTokensFromDictionary(
     const base::Value::Dict& dict) {
-  const auto* const list = dict.FindList("unblinded_payment_tokens");
-  if (!list) {
-    return false;
+  if (const auto* const list = dict.FindList("unblinded_payment_tokens")) {
+    payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
   }
-
-  payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
-
-  return true;
 }
 
 }  // namespace brave_ads

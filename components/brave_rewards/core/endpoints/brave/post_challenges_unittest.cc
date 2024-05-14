@@ -27,19 +27,18 @@ class RewardsPostChallengesTest : public RewardsEngineTest {
   }
 
   PostChallenges::Result SendRequest(mojom::UrlResponsePtr response) {
-    AddNetworkResultForTesting(engine()
-                                   .Get<EnvironmentConfig>()
-                                   .rewards_grant_url()
-                                   .Resolve("/v3/wallet/challenges")
-                                   .spec(),
-                               mojom::UrlMethod::POST, std::move(response));
+    client().AddNetworkResultForTesting(engine()
+                                            .Get<EnvironmentConfig>()
+                                            .rewards_grant_url()
+                                            .Resolve("/v3/wallet/challenges")
+                                            .spec(),
+                                        mojom::UrlMethod::POST,
+                                        std::move(response));
 
     PostChallenges endpoint(engine());
 
-    auto [result] = WaitFor<PostChallenges::Result>(
+    return WaitFor<PostChallenges::Result>(
         [&](auto callback) { endpoint.Request(std::move(callback)); });
-
-    return std::move(result);
   }
 };
 

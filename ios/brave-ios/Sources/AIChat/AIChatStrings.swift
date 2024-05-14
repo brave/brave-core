@@ -78,15 +78,22 @@ extension Strings {
       "aichat.feedbackOptionTitleNotHelpful",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Answer is not helpful",
+      value: "Not helpful",
       comment: "The title for helpful feedback option"
     )
-    public static let feedbackOptionTitleNotWorking = NSLocalizedString(
-      "aichat.feedbackOptionTitleNotWorking",
+    public static let feedbackOptionTitleIncorrect = NSLocalizedString(
+      "aichat.feedbackOptionTitleIncorrect",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Something doesn't work",
-      comment: "The title for not working feedback option"
+      value: "Incorrect",
+      comment: "The title for incorrect feedback option"
+    )
+    public static let feedbackOptionTitleUnsafeHarmful = NSLocalizedString(
+      "aichat.feedbackOptionTitleUnsafeHarmful",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unsafe/harmful",
+      comment: "The title for unsafe/harmful feedback option"
     )
     public static let feedbackOptionTitleOther = NSLocalizedString(
       "aichat.feedbackOptionTitleOther",
@@ -392,7 +399,7 @@ extension Strings {
       "aichat.paywallUpsellModelTypeTopicSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Priority access to powerful models with different skills",
+      value: "Priority access to powerful models with different skills.",
       comment: "The subtitle model type entry in paywall upsell screen"
     )
     public static let paywallUpsellCreativityTopicSubTitle = NSLocalizedString(
@@ -504,7 +511,7 @@ extension Strings {
       "aichat.advancedSettingsLinkPurchaseActionSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Link your Appstore purchase to your Brave account to use Leo on other devices.",
+      value: "Link your App Store purchase to your Brave account to use Leo on other devices.",
       comment: "The subtitle for the button which links purchase to Brave Account"
     )
     public static let advancedSettingsSubscriptionHeaderTitle = NSLocalizedString(
@@ -519,14 +526,14 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "App Store Error",
-      comment: "The title for the error showing there is an erro from Appstore"
+      comment: "The title for the error showing there is an error from App Store"
     )
     public static let appStoreErrorSubTitle = NSLocalizedString(
       "aichat.appStoreErrorSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Could not connect to Appstore, please try again later.",
-      comment: "The subtitle for the error showing there is an erro from Appstore"
+      value: "Could not connect to App Store, please try again later.",
+      comment: "The subtitle for the error showing there is an error from App Store"
     )
     public static let resetLeoDataActionTitle = NSLocalizedString(
       "aichat.resetLeoDataActionTitle",

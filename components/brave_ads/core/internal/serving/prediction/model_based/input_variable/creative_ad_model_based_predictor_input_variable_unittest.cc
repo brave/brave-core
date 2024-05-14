@@ -30,14 +30,13 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableTest,
   const UserModelInfo user_model{
       IntentUserModelInfo{SegmentList{"parent-child"}},
       LatentInterestUserModelInfo{SegmentList{"xyzzy-thud"}},
-      InterestUserModelInfo{SegmentList{"parent"},
-                            TextEmbeddingHtmlEventList{}}};
+      InterestUserModelInfo{SegmentList{"parent"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kViewed, Now() - base::Hours(7),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      Now() - base::Hours(7),
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorInputVariableInfo input_variable =
@@ -55,7 +54,6 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableTest,
   expected_input_variable.interest_segment.parent_matches.value = true;
   expected_input_variable.untargeted_segment.value = false;
   expected_input_variable.last_seen_ad.value = base::Hours(7);
-  expected_input_variable.last_seen_advertiser.value = base::Hours(7);
   EXPECT_EQ(expected_input_variable, input_variable);
 }
 

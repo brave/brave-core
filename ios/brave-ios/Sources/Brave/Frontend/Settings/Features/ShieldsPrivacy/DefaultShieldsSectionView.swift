@@ -38,11 +38,20 @@ struct DefaultShieldsViewView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-      OptionToggleView(
-        title: Strings.HTTPSEverywhere,
-        subtitle: Strings.HTTPSEverywhereDescription,
-        option: Preferences.Shields.httpsEverywhere
-      )
+      Picker(selection: $settings.httpsUpgradeLevel) {
+        ForEach(HTTPSUpgradeLevel.allCases) { level in
+          Text(level.localizedTitle)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .tag(level)
+        }
+      } label: {
+        LabelView(
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: nil
+        )
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
       ToggleView(
         title: Strings.autoRedirectAMPPages,
         subtitle: Strings.autoRedirectAMPPagesDescription,
@@ -164,6 +173,20 @@ extension ShieldLevel: Identifiable {
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive
+    case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
+    case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
+    }
+  }
+}
+
+extension HTTPSUpgradeLevel: Identifiable {
+  public var id: String {
+    return rawValue
+  }
+
+  public var localizedTitle: String {
+    switch self {
+    case .strict: return Strings.Shields.httpsUpgradeLevelStrict
     case .disabled: return Strings.Shields.trackersAndAdsBlockingDisabled
     case .standard: return Strings.Shields.trackersAndAdsBlockingStandard
     }

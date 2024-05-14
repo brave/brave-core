@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_QUEUE_ITEM_CONFIRMATION_QUEUE_ITEM_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_QUEUE_ITEM_CONFIRMATION_QUEUE_ITEM_INFO_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/time/time.h"
@@ -29,7 +30,7 @@ struct ConfirmationQueueItemInfo final {
   [[nodiscard]] bool IsValid() const;
 
   ConfirmationInfo confirmation;
-  base::Time process_at;
+  std::optional<base::Time> process_at;
   int retry_count = 0;
 };
 

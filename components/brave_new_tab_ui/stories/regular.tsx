@@ -37,7 +37,7 @@ window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mime
   return await getDataUrl(buffer)
 }
 
-const StoreProvider: React.FunctionComponent = ({ children }) => {
+const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <ReduxProvider store={store}>
      {children}

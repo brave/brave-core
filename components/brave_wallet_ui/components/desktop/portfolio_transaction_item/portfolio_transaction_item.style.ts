@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 
@@ -28,14 +28,15 @@ export const PortfolioTransactionItemWrapper = styled.div<{
   width: 100%;
   margin-bottom: 16px;
   position: relative;
+  transition: background-color 300ms ease-out;
   background-color: ${(p) =>
-    p.isFocused ? `${leo.color.container.highlight}` : 'none'};
+    p.isFocused ? `${leo.color.page.background}` : 'none'};
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid ${leo.color.divider.subtle};
   cursor: pointer;
   &:hover {
-    background-color: ${leo.color.container.highlight};
+    background-color: ${leo.color.page.background};
   }
 `
 

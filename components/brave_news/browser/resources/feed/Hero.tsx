@@ -8,7 +8,7 @@ import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { BraveNewsLink, LargeImage, Title, braveNewsCardClickHandler } from './Card';
 import styled from 'styled-components';
-import { spacing } from '@brave/leo/tokens/css';
+import { spacing } from '@brave/leo/tokens/css/variables';
 import { useBraveNews } from '../shared/Context';
 
 interface Props {

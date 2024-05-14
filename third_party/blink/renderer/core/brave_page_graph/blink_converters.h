@@ -18,6 +18,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_value.h"
 #include "third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"
+#include "third_party/blink/renderer/bindings/modules/v8/v8_handwriting_recognizer_query_result.h"
 #include "third_party/blink/renderer/bindings/modules/v8/v8_related_application.h"  // IWYU pragma: keep
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener.h"
@@ -116,7 +117,6 @@ base::Value ToPageGraphValue(ScriptState* script_state, T& value) {
       return base::Value();
     }
   }
-  ScriptState::Scope scope(script_state);
   v8::Local<v8::Value> v8_value =
       ToV8Traits<pg_internal::strip_type_qualifiers_t<T>>::ToV8(script_state,
                                                                 value);
@@ -132,7 +132,6 @@ base::Value ToPageGraphValue(ScriptState* script_state, T& value) {
       return base::Value();
     }
   }
-  ScriptState::Scope scope(script_state);
   v8::Local<v8::Value> v8_value =
       ToV8Traits<pg_internal::strip_type_qualifiers_t<T>>::ToV8(script_state,
                                                                 &value);
@@ -205,11 +204,11 @@ base::Value ToPageGraphValue(ScriptState* script_state,
   return ToPageGraphValue(script_state, opt_value.value());
 }
 
-// Convert ScriptPromiseTyped<T> types.
+// Convert ScriptPromise<T> types.
 template <typename T>
 base::Value ToPageGraphValue(ScriptState* script_state,
-                             const ScriptPromiseTyped<T>& script_promise) {
-  return ToPageGraphValue<ScriptPromise>(script_state, script_promise);
+                             const ScriptPromise<T>& script_promise) {
+  return ToPageGraphValue<ScriptPromiseUntyped>(script_state, script_promise);
 }
 
 // Convert v8::Value.
@@ -228,11 +227,11 @@ CORE_EXPORT base::Value ToPageGraphValue<bindings::NativeValueTraitsAnyAdapter>(
     ScriptState* script_state,
     const bindings::NativeValueTraitsAnyAdapter& adapter);
 
-// Convert ScriptPromise.
+// Convert ScriptPromiseUntyped.
 template <>
-CORE_EXPORT base::Value ToPageGraphValue<ScriptPromise>(
+CORE_EXPORT base::Value ToPageGraphValue<ScriptPromiseUntyped>(
     ScriptState* script_state,
-    const ScriptPromise& script_promise);
+    const ScriptPromiseUntyped& script_promise);
 
 // Convert FlexibleArrayBufferView.
 template <>

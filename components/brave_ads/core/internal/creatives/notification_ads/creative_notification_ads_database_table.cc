@@ -22,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
@@ -60,7 +59,6 @@ void BindRecords(mojom::DBCommandInfo* command) {
       mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // split_test_group
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // embedding
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
@@ -114,18 +112,16 @@ CreativeNotificationAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.value = ColumnDouble(record, 12);
   creative_ad.split_test_group = ColumnString(record, 13);
   creative_ad.segment = ColumnString(record, 14);
-  creative_ad.embedding = DelimitedStringToVector(ColumnString(record, 15),
-                                                  kEmbeddingStringDelimiter);
-  creative_ad.geo_targets.insert(ColumnString(record, 16));
-  creative_ad.target_url = GURL(ColumnString(record, 17));
-  creative_ad.title = ColumnString(record, 18);
-  creative_ad.body = ColumnString(record, 19);
-  creative_ad.pass_through_rate = ColumnDouble(record, 20);
+  creative_ad.geo_targets.insert(ColumnString(record, 15));
+  creative_ad.target_url = GURL(ColumnString(record, 16));
+  creative_ad.title = ColumnString(record, 17);
+  creative_ad.body = ColumnString(record, 18);
+  creative_ad.pass_through_rate = ColumnDouble(record, 19);
 
   CreativeDaypartInfo daypart;
-  daypart.days_of_week = ColumnString(record, 21);
-  daypart.start_minute = ColumnInt(record, 22);
-  daypart.end_minute = ColumnInt(record, 23);
+  daypart.days_of_week = ColumnString(record, 20);
+  daypart.start_minute = ColumnInt(record, 21);
+  daypart.end_minute = ColumnInt(record, 22);
   creative_ad.dayparts.push_back(daypart);
 
   return creative_ad;
@@ -233,8 +229,6 @@ void CreativeNotificationAds::Save(
                                                 creative_ads_batch);
     dayparts_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
     deposits_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
-    embeddings_database_table_.InsertOrUpdate(&*transaction,
-                                              creative_ads_batch);
     geo_targets_database_table_.InsertOrUpdate(&*transaction,
                                                creative_ads_batch);
     segments_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
@@ -280,7 +274,6 @@ void CreativeNotificationAds::GetForSegments(
             creative_ads.value,
             creative_ads.split_test_group,
             segments.segment,
-            embeddings.embedding,
             geo_targets.geo_target,
             creative_ads.target_url,
             creative_notification_ad.title,
@@ -296,7 +289,6 @@ void CreativeNotificationAds::GetForSegments(
             INNER JOIN dayparts ON dayparts.campaign_id = creative_notification_ad.campaign_id
             INNER JOIN geo_targets ON geo_targets.campaign_id = creative_notification_ad.campaign_id
             INNER JOIN segments ON segments.creative_set_id = creative_notification_ad.creative_set_id
-            LEFT JOIN embeddings ON embeddings.creative_set_id = creative_notification_ad.creative_set_id
           WHERE
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at;)",
@@ -341,7 +333,6 @@ void CreativeNotificationAds::GetForActiveCampaigns(
             creative_ads.value,
             creative_ads.split_test_group,
             segments.segment,
-            embeddings.embedding,
             geo_targets.geo_target,
             creative_ads.target_url,
             creative_notification_ad.title,
@@ -357,7 +348,6 @@ void CreativeNotificationAds::GetForActiveCampaigns(
             INNER JOIN dayparts ON dayparts.campaign_id = creative_notification_ad.campaign_id
             INNER JOIN geo_targets ON geo_targets.campaign_id = creative_notification_ad.campaign_id
             INNER JOIN segments ON segments.creative_set_id = creative_notification_ad.creative_set_id
-            LEFT JOIN embeddings ON embeddings.creative_set_id = creative_notification_ad.creative_set_id
           WHERE
             $2 BETWEEN campaigns.start_at AND campaigns.end_at;)",
       {GetTableName(),
@@ -400,6 +390,11 @@ void CreativeNotificationAds::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV35(transaction);
       break;
     }
+
+    case 37: {
+      MigrateToV37(transaction);
+      break;
+    }
   }
 }
 
@@ -413,6 +408,14 @@ void CreativeNotificationAds::MigrateToV35(
   // downloading the catalog.
   DropTable(transaction, GetTableName());
   Create(transaction);
+}
+
+void CreativeNotificationAds::MigrateToV37(
+    mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  DropTable(transaction, "embeddings");
+  DropTable(transaction, "text_embedding_html_events");
 }
 
 void CreativeNotificationAds::InsertOrUpdate(

@@ -30,6 +30,8 @@ void FailedToMigrate(InitializeCallback callback) {
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
+  SetProfileBooleanPref("brave.brave_ads.state.has_migrated.confirmations.v8",
+                        true);
   SetProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
   std::move(callback).Run(/*success=*/true);
 }
@@ -49,10 +51,26 @@ void MigrateConfirmationState(InitializeCallback callback) {
                // Confirmation state does not exist.
                return SuccessfullyMigrated(std::move(callback));
              }
+             std::string mutable_json = *json;
 
-             if (!ConfirmationStateManager::GetInstance().FromJson(*json)) {
+             if (!GetProfileBooleanPref(
+                     "brave.brave_ads.state.has_migrated.confirmations.v8") &&
+                 !ConfirmationStateManager::GetInstance().FromJson(
+                     mutable_json)) {
+               // The confirmation state is corrupted, therefore, reset it to
+               // the default values for version 8.
+               BLOG(0,
+                    "Confirmation state is corrupted, resetting to default "
+                    "values");
+               mutable_json = "{}";
+             }
+
+             if (!ConfirmationStateManager::GetInstance().FromJson(
+                     mutable_json)) {
                // TODO(https://github.com/brave/brave-browser/issues/32066):
-               // Remove migration failure dumps.
+               // Detect potential defects using `DumpWithoutCrashing`.
+               SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                         "Failed to parse confirmation state");
                base::debug::DumpWithoutCrashing();
 
                BLOG(0, "Failed to load confirmation state");
@@ -61,38 +79,63 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
              BLOG(1, "Migrating confirmation state");
 
-             const absl::optional<ConfirmationList> confirmations =
-                 json::reader::ReadConfirmations(*json);
-             if (!confirmations) {
-               // Confirmation queue state does not exist.
-               return SuccessfullyMigrated(std::move(callback));
-             }
+             Save(kConfirmationStateFilename, mutable_json,
+                  base::BindOnce(
+                      [](const std::string& json, InitializeCallback callback,
+                         const bool success) {
+                        if (!success) {
+                          BLOG(0, "Failed to save confirmation state");
+                          return FailedToMigrate(std::move(callback));
+                        }
 
-             ConfirmationQueueItemList confirmation_queue_items;
-             for (const auto& confirmation : *confirmations) {
-               const ConfirmationQueueItemInfo confirmation_queue_item =
-                   BuildConfirmationQueueItem(confirmation, base::Time::Now());
-               confirmation_queue_items.push_back(confirmation_queue_item);
-             }
+                        BLOG(9, "Successfully saved confirmation state");
 
-             database::table::ConfirmationQueue database_table;
-             database_table.Save(
-                 confirmation_queue_items,
-                 base::BindOnce(
-                     [](InitializeCallback callback, const bool success) {
-                       if (!success) {
-                         // TODO(https://github.com/brave/brave-browser/issues/32066):
-                         // Remove migration failure dumps.
-                         base::debug::DumpWithoutCrashing();
+                        const std::optional<ConfirmationList> confirmations =
+                            json::reader::ReadConfirmations(json);
+                        if (!confirmations) {
+                          // Confirmation queue state does not exist.
+                          return SuccessfullyMigrated(std::move(callback));
+                        }
 
-                         BLOG(0, "Failed to save confirmation state");
-                         return FailedToMigrate(std::move(callback));
-                       }
+                        ConfirmationQueueItemList confirmation_queue_items;
+                        for (const auto& confirmation : *confirmations) {
+                          const ConfirmationQueueItemInfo
+                              confirmation_queue_item =
+                                  BuildConfirmationQueueItem(
+                                      confirmation,
+                                      /*process_at=*/base::Time::Now());
+                          confirmation_queue_items.push_back(
+                              confirmation_queue_item);
+                        }
 
-                       BLOG(3, "Successfully migrated confirmation state");
-                       SuccessfullyMigrated(std::move(callback));
-                     },
-                     std::move(callback)));
+                        database::table::ConfirmationQueue database_table;
+                        database_table.Save(
+                            confirmation_queue_items,
+                            base::BindOnce(
+                                [](InitializeCallback callback,
+                                   const bool success) {
+                                  if (!success) {
+                                    // TODO(https://github.com/brave/brave-browser/issues/32066):
+                                    // Detect potential defects using
+                                    // `DumpWithoutCrashing`.
+                                    SCOPED_CRASH_KEY_STRING64(
+                                        "Issue32066", "failure_reason",
+                                        "Failed to save confirmation state");
+                                    base::debug::DumpWithoutCrashing();
+
+                                    BLOG(0,
+                                         "Failed to save confirmation state");
+                                    return FailedToMigrate(std::move(callback));
+                                  }
+
+                                  BLOG(3,
+                                       "Successfully migrated confirmation "
+                                       "state");
+                                  SuccessfullyMigrated(std::move(callback));
+                                },
+                                std::move(callback)));
+                      },
+                      mutable_json, std::move(callback)));
            },
            std::move(callback)));
 }

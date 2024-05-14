@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/database/database.h"
 
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -13,10 +14,12 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_record_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "sql/meta_table.h"
+#include "sql/recovery.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -166,7 +169,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Execute(
   }
 
   if (!db_.Execute(command->sql.c_str())) {
-    VLOG(0) << "Database store error: " << db_.GetErrorMessage();
+    VLOG(0) << "Database error: " << db_.GetErrorMessage();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
   }
 
@@ -184,7 +187,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->sql.c_str()));
   if (!statement.is_valid()) {
-    VLOG(0) << "Database store error: Invalid statement";
+    VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
   }
 
@@ -212,7 +215,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Read(
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(command->sql.c_str()));
   if (!statement.is_valid()) {
-    VLOG(0) << "Database store error: Invalid statement";
+    VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
   }
 
@@ -265,16 +268,34 @@ int Database::GetTablesCount() {
   return tables_count;
 }
 
-void Database::ErrorCallback(const int error, sql::Statement* statement) {
-  VLOG(0) << "Database error: " << db_.GetDiagnosticInfo(error, statement);
+void Database::ErrorCallback(const int extended_error,
+                             sql::Statement* statement) {
+  // Attempt to recover a corrupt database, if it is eligible to be recovered.
+  if (sql::Recovery::RecoverIfPossible(
+          &db_, extended_error,
+          sql::Recovery::Strategy::kRecoverWithMetaVersionOrRaze)) {
+    // The `DLOG(FATAL)` below is intended to draw immediate attention to errors
+    // in newly-written code. Database corruption is generally a result of OS or
+    // hardware issues, not coding errors at the client level, so displaying the
+    // error would probably lead to confusion. The ignored call signals the
+    // test-expectation framework that the error was handled.
+    std::ignore = sql::Database::IsExpectedSqliteError(extended_error);
+    return;
+  }
 
-  {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Remove
-    // migration failure dumps.
-    SCOPED_CRASH_KEY_NUMBER("BraveAdsSqlVersionInfo", "value",
+  // The default handling is to assert on debug and to ignore on release.
+  if (!sql::Database::IsExpectedSqliteError(extended_error)) {
+    DLOG(FATAL) << db_.GetErrorMessage();
+
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
                             database::kVersion);
-    SCOPED_CRASH_KEY_STRING1024("BraveAdsSqlDiagnosticInfo", "value",
-                                db_.GetDiagnosticInfo(error, statement));
+    SCOPED_CRASH_KEY_STRING1024(
+        "Issue32066", "sqlite_diagnostic_info",
+        db_.GetDiagnosticInfo(extended_error, statement));
+    SCOPED_CRASH_KEY_STRING1024("Issue32066", "sqlite_error_message",
+                                db_.GetErrorMessage());
     base::debug::DumpWithoutCrashing();
   }
 }
@@ -283,6 +304,7 @@ void Database::MemoryPressureListenerCallback(
     base::MemoryPressureListener::
         MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   db_.TrimMemory();
 }
 

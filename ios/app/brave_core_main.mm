@@ -34,6 +34,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
+#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
@@ -126,6 +127,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
+@property(nonatomic)
+    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 @end
 
 @implementation BraveCoreMain
@@ -243,9 +246,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     component_updater::ComponentUpdateService* cus =
         GetApplicationContext()->GetComponentUpdateService();
     DCHECK(cus);
+    brave_component_updater::BraveOnDemandUpdater::GetInstance()
+        ->RegisterOnDemandUpdater(&cus->GetOnDemandUpdater());
+    [self registerComponentsForUpdate:cus];
 
     _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-    [self registerComponentsForUpdate:cus];
 
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
@@ -335,10 +340,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 - (void)registerComponentsForUpdate:
     (component_updater::ComponentUpdateService*)cus {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()
-      ->RegisterOnDemandUpdateCallback(
-          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
-
   RegisterSafetyTipsComponent(cus);
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(
@@ -371,8 +372,9 @@ static bool CustomLogHandler(int severity,
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
     bookmarks::BookmarkModel* bookmark_model_ =
-        ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-            _mainBrowserState);
+        ios::LocalOrSyncableBookmarkModelFactory::
+            GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+                _mainBrowserState);
     BookmarkUndoService* bookmark_undo_service_ =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 
@@ -468,6 +470,14 @@ static bool CustomLogHandler(int severity,
         [[BraveWalletAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _braveWalletAPI;
+}
+
+- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
+  if (!_httpsUpgradeExceptionsService) {
+    _httpsUpgradeExceptionsService =
+        [[HTTPSUpgradeExceptionsService alloc] init];
+  }
+  return _httpsUpgradeExceptionsService;
 }
 
 - (BraveStats*)braveStats {

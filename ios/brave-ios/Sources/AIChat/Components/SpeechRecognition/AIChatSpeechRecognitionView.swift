@@ -48,7 +48,7 @@ struct AIChatSpeechRecognitionView: View {
       if let recognition {
         // Feedback indicating recognition is finalized
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        UIImpactFeedbackGenerator(style: .medium).vibrate()
 
         // Update Text
         recognizedText = recognition

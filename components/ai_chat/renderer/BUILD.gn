@@ -9,11 +9,9 @@ assert(enable_ai_chat)
 
 static_library("renderer") {
   sources = [
-    "ai_chat_resource_sniffer_throttle.cc",
-    "ai_chat_resource_sniffer_throttle.h",
+    "ai_chat_resource_sniffer.cc",
+    "ai_chat_resource_sniffer.h",
     "ai_chat_resource_sniffer_throttle_delegate.h",
-    "ai_chat_resource_sniffer_url_loader.cc",
-    "ai_chat_resource_sniffer_url_loader.h",
     "page_content_extractor.cc",
     "page_content_extractor.h",
     "page_text_distilling.cc",
@@ -25,7 +23,6 @@ static_library("renderer") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common/mojom",
-    "//brave/components/body_sniffer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -36,6 +33,8 @@ static_library("renderer") {
     "//third_party/blink/public/strings",
     "//v8",
   ]
+
+  public_deps = [ "//brave/components/body_sniffer" ]
 }
 
 if (!is_ios) {

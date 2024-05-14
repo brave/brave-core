@@ -29,25 +29,27 @@ HandwritingRecognitionService::HandwritingRecognitionService(
 
 // IDL Interface:
 // static
-ScriptPromise HandwritingRecognitionService::createHandwritingRecognizer(
+ScriptPromise<HandwritingRecognizer>
+HandwritingRecognitionService::createHandwritingRecognizer(
     ScriptState*,
     Navigator&,
     const HandwritingModelConstraint*,
     ExceptionState& exception_state) {
   exception_state.ThrowDOMException(DOMExceptionCode::kNotSupportedError,
                                     kHandwritingDisabledError);
-  return ScriptPromise();
+  return ScriptPromise<HandwritingRecognizer>();
 }
 
 // static
-ScriptPromise HandwritingRecognitionService::queryHandwritingRecognizer(
+ScriptPromise<IDLNullable<HandwritingRecognizerQueryResult>>
+HandwritingRecognitionService::queryHandwritingRecognizer(
     ScriptState*,
     Navigator&,
     const HandwritingModelConstraint*,
     ExceptionState& exception_state) {
   exception_state.ThrowDOMException(DOMExceptionCode::kNotSupportedError,
                                     kHandwritingDisabledError);
-  return ScriptPromise();
+  return ScriptPromise<IDLNullable<HandwritingRecognizerQueryResult>>();
 }
 
 void HandwritingRecognitionService::Trace(Visitor* visitor) const {

@@ -23,7 +23,6 @@ class AntiTargetingResource;
 class EligibleNewTabPageAdsBase;
 class SubdivisionTargeting;
 struct NewTabPageAdInfo;
-struct UserModelInfo;
 
 class NewTabPageAdServing final {
  public:
@@ -51,9 +50,7 @@ class NewTabPageAdServing final {
   bool IsSupported() const { return !!eligible_ads_; }
 
   void GetEligibleAds(MaybeServeNewTabPageAdCallback callback) const;
-  void BuildUserModelCallback(MaybeServeNewTabPageAdCallback callback,
-                              const UserModelInfo& user_model) const;
-  void GetEligibleAdsForUserModelCallback(
+  void GetEligibleAdsCallback(
       MaybeServeNewTabPageAdCallback callback,
       const CreativeNewTabPageAdList& creative_ads) const;
 

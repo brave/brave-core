@@ -19,12 +19,14 @@
       }
     ],
     "language" : "en",
+    "maximumTestRepetitions" : 2,
     "region" : "US",
     "targetForVariableExpansion" : {
       "containerPath" : "container:Client.xcodeproj",
       "identifier" : "F84B21BD1A090F8100AAB793",
       "name" : "Client"
-    }
+    },
+    "testRepetitionMode" : "retryOnFailure"
   },
   "testTargets" : [
     {

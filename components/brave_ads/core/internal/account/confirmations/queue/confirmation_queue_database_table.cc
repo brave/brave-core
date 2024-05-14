@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -16,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
@@ -73,55 +75,52 @@ size_t BindParameters(
 
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
-    BindString(command, index++,
-               confirmation_queue_item.confirmation.transaction_id);
+    if (!confirmation_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid confirmation queue item");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
 
-    BindString(command, index++,
-               confirmation_queue_item.confirmation.creative_instance_id);
+    // The queue does not store dynamic user data for a confirmation due to the
+    // token redemption process which rebuilds the confirmation. Hence, we must
+    // regenerate the confirmation without the dynamic user data.
+    const ConfirmationInfo confirmation =
+        RebuildConfirmationWithoutDynamicUserData(
+            confirmation_queue_item.confirmation);
 
-    BindString(command, index++,
-               ToString(confirmation_queue_item.confirmation.type));
+    BindString(command, index++, confirmation.transaction_id);
 
-    BindString(command, index++,
-               ToString(confirmation_queue_item.confirmation.ad_type));
+    BindString(command, index++, confirmation.creative_instance_id);
+
+    BindString(command, index++, ToString(confirmation.type));
+
+    BindString(command, index++, ToString(confirmation.ad_type));
 
     BindInt64(command, index++,
               ToChromeTimestampFromTime(
-                  confirmation_queue_item.confirmation.created_at));
+                  confirmation.created_at.value_or(base::Time())));
 
-    if (confirmation_queue_item.confirmation.reward) {
-      BindString(
-          command, index++,
-          confirmation_queue_item.confirmation.reward->token.EncodeBase64()
-              .value_or(""));
-
+    if (confirmation.reward) {
       BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->blinded_token
-                     .EncodeBase64()
-                     .value_or(""));
-
-      BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->unblinded_token
-                     .EncodeBase64()
-                     .value_or(""));
+                 confirmation.reward->token.EncodeBase64().value_or(""));
 
       BindString(
           command, index++,
-          confirmation_queue_item.confirmation.reward->public_key.EncodeBase64()
-              .value_or(""));
+          confirmation.reward->blinded_token.EncodeBase64().value_or(""));
+
+      BindString(
+          command, index++,
+          confirmation.reward->unblinded_token.EncodeBase64().value_or(""));
 
       BindString(command, index++,
-                 confirmation_queue_item.confirmation.reward->signature);
+                 confirmation.reward->public_key.EncodeBase64().value_or(""));
 
-      // Dynamic user data is not persisted for a confirmation because it is
-      // rebuilt when redeeming the confirmation token, so we must build a new
-      // credential excluding the dynamic user data.
-      ConfirmationInfo mutable_confirmation(
-          confirmation_queue_item.confirmation);
-      mutable_confirmation.user_data.dynamic = {};
-      const std::optional<std::string> reward_credential_base64url =
-          BuildRewardCredential(mutable_confirmation);
-      BindString(command, index++, reward_credential_base64url.value_or(""));
+      BindString(command, index++, confirmation.reward->signature);
+
+      BindString(command, index++, confirmation.reward->credential_base64url);
     } else {
       BindString(command, index++, "");
       BindString(command, index++, "");
@@ -132,12 +131,13 @@ size_t BindParameters(
     }
 
     std::string user_data_json;
-    CHECK(base::JSONWriter::Write(
-        confirmation_queue_item.confirmation.user_data.fixed, &user_data_json));
+    CHECK(
+        base::JSONWriter::Write(confirmation.user_data.fixed, &user_data_json));
     BindString(command, index++, user_data_json);
 
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(confirmation_queue_item.process_at));
+              ToChromeTimestampFromTime(
+                  confirmation_queue_item.process_at.value_or(base::Time())));
 
     BindInt(command, index++, confirmation_queue_item.retry_count);
 
@@ -163,8 +163,11 @@ ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   confirmation_queue_item.confirmation.ad_type =
       ToAdType(ColumnString(record, 3));
 
-  confirmation_queue_item.confirmation.created_at =
+  const base::Time created_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+  if (!created_at.is_null()) {
+    confirmation_queue_item.confirmation.created_at = created_at;
+  }
 
   const std::string token = ColumnString(record, 5);
   const std::string blinded_token = ColumnString(record, 6);
@@ -198,8 +201,11 @@ ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
       base::JSONReader::ReadDict(ColumnString(record, 11))
           .value_or(base::Value::Dict());
 
-  confirmation_queue_item.process_at =
+  const base::Time process_at =
       ToTimeFromChromeTimestamp(ColumnInt64(record, 12));
+  if (!process_at.is_null()) {
+    confirmation_queue_item.process_at = process_at;
+  }
 
   confirmation_queue_item.retry_count = ColumnInt(record, 13);
 
@@ -223,6 +229,15 @@ void GetCallback(GetConfirmationQueueCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const ConfirmationQueueItemInfo confirmation_queue_item =
         GetFromRecord(&*record);
+    if (!confirmation_queue_item.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid confirmation queue item");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     confirmation_queue_items.push_back(confirmation_queue_item);
   }
 
@@ -427,6 +442,11 @@ void ConfirmationQueue::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV36(transaction);
       break;
     }
+
+    case 38: {
+      MigrateToV38(transaction);
+      break;
+    }
   }
 }
 
@@ -461,6 +481,15 @@ void ConfirmationQueue::MigrateToV36(
 
   // Optimize database query for `GetNext`.
   CreateTableIndex(transaction, GetTableName(), /*columns=*/{"process_at"});
+}
+
+void ConfirmationQueue::MigrateToV38(
+    mojom::DBTransactionInfo* transaction) const {
+  CHECK(transaction);
+
+  // The conversion queue is deprecated since all confirmations are now being
+  // added to the confirmation queue.
+  DropTable(transaction, "conversion_queue");
 }
 
 void ConfirmationQueue::InsertOrUpdate(

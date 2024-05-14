@@ -9,27 +9,34 @@
 #include <limits>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "brave/components/sidebar/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace ai_chat {
 
 namespace {
+
+using sidebar::features::SidebarDefaultMode;
+
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
 constexpr base::TimeDelta kReportDebounceDelay = base::Seconds(3);
 const int kChatCountBuckets[] = {1, 5, 10, 20, 50};
 const int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
+
+constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 // Value -1 is added to buckets to add padding for the "less than 1% option"
 const int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
 const int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
-
-constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
 
 constexpr char kSummarizeActionKey[] = "summarize";
 constexpr char kExplainActionKey[] = "explain";
@@ -63,6 +70,47 @@ const char* GetContextMenuActionKey(ContextMenuAction action) {
       return nullptr;
   }
 }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+
+void ReportHistogramForSidebarExperiment(
+    int value,
+    base::fixed_flat_map<SidebarDefaultMode, const char*, 3> name_map) {
+  auto current_mode = sidebar::features::GetSidebarDefaultMode();
+
+  for (int i = 0; i <= static_cast<int>(SidebarDefaultMode::kMaxValue); i++) {
+    SidebarDefaultMode i_mode = static_cast<SidebarDefaultMode>(i);
+    const char* histogram_name = name_map.at(i_mode);
+
+    // If the mode applies for a given histogram name, report it as usual.
+    // If not, do not report & suspend metric, so we don't double count
+    // reporting two or more metrics.
+    int report_value = current_mode == i_mode ? value : INT_MAX - 1;
+    base::UmaHistogramExactLinear(histogram_name, report_value, 3);
+  }
+}
+
+constexpr auto kEnabledHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kEnabledHistogramName},
+         {SidebarDefaultMode::kAlwaysOn, kEnabledSidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kEnabledSidebarEnabledBHistogramName}});
+
+constexpr auto kUsageWeeklyHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kUsageWeeklyHistogramName},
+         {SidebarDefaultMode::kAlwaysOn,
+          kUsageWeeklySidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kUsageWeeklySidebarEnabledBHistogramName}});
+
+constexpr auto kUsageDailyHistogramNames =
+    base::MakeFixedFlatMap<SidebarDefaultMode, const char*>(
+        {{SidebarDefaultMode::kOff, kUsageDailyHistogramName},
+         {SidebarDefaultMode::kAlwaysOn,
+          kUsageDailySidebarEnabledAHistogramName},
+         {SidebarDefaultMode::kOnOneShot,
+          kUsageDailySidebarEnabledBHistogramName}});
 
 }  // namespace
 
@@ -73,6 +121,7 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
                           prefs::kBraveChatP3AChatCountWeeklyStorage),
       prompt_count_storage_(local_state,
                             prefs::kBraveChatP3APromptCountWeeklyStorage),
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       omnibox_open_storage_(local_state,
                             prefs::kBraveChatP3AOmniboxOpenWeeklyStorage,
                             14),
@@ -80,7 +129,9 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
           local_state,
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
           14),
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       local_state_(local_state) {
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   for (int i = static_cast<int>(ContextMenuAction::kSummarize);
        i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
     ContextMenuAction action = static_cast<ContextMenuAction>(i);
@@ -88,6 +139,7 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
         local_state_, prefs::kBraveChatP3AContextMenuUsages,
         GetContextMenuActionKey(action));
   }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 AIChatMetrics::~AIChatMetrics() = default;
@@ -95,16 +147,18 @@ AIChatMetrics::~AIChatMetrics() = default;
 void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3AChatCountWeeklyStorage);
   registry->RegisterListPref(prefs::kBraveChatP3APromptCountWeeklyStorage);
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   registry->RegisterListPref(prefs::kBraveChatP3AOmniboxOpenWeeklyStorage);
   registry->RegisterListPref(
       prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage);
+  registry->RegisterDictionaryPref(prefs::kBraveChatP3AContextMenuUsages);
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastContextMenuUsageTime, {});
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   registry->RegisterTimePref(prefs::kBraveChatP3ALastPremiumCheck, {});
   registry->RegisterBooleanPref(prefs::kBraveChatP3ALastPremiumStatus, false);
   registry->RegisterTimePref(prefs::kBraveChatP3AFirstUsageTime, {});
   registry->RegisterTimePref(prefs::kBraveChatP3ALastUsageTime, {});
   registry->RegisterBooleanPref(prefs::kBraveChatP3AUsedSecondDay, false);
-  registry->RegisterDictionaryPref(prefs::kBraveChatP3AContextMenuUsages);
-  registry->RegisterTimePref(prefs::kBraveChatP3ALastContextMenuUsageTime, {});
 }
 
 void AIChatMetrics::RecordEnabled(
@@ -143,7 +197,8 @@ void AIChatMetrics::RecordEnabled(
 
   is_enabled_ = true;
 
-  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName, is_premium_ ? 2 : 1, 3);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      kEnabledHistogramNames);
   if (is_new_user && acquisition_source_.has_value()) {
     UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
                               *acquisition_source_);
@@ -176,8 +231,10 @@ void AIChatMetrics::RecordNewChat() {
 }
 
 void AIChatMetrics::RecordNewPrompt() {
-  UMA_HISTOGRAM_EXACT_LINEAR(kUsageDailyHistogramName, is_premium_ ? 2 : 1, 3);
-  UMA_HISTOGRAM_EXACT_LINEAR(kUsageWeeklyHistogramName, is_premium_ ? 2 : 1, 3);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      kUsageDailyHistogramNames);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      kUsageWeeklyHistogramNames);
   UMA_HISTOGRAM_EXACT_LINEAR(kUsageMonthlyHistogramName, is_premium_ ? 2 : 1,
                              3);
   p3a_utils::RecordFeatureUsage(local_state_,
@@ -190,6 +247,7 @@ void AIChatMetrics::RecordNewPrompt() {
       base::BindOnce(&AIChatMetrics::ReportChatCounts, base::Unretained(this)));
 }
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 void AIChatMetrics::RecordOmniboxOpen() {
   acquisition_source_ = AcquisitionSource::kOmnibox;
   omnibox_open_storage_.AddDelta(1);
@@ -209,6 +267,7 @@ void AIChatMetrics::RecordContextMenuUsage(ContextMenuAction action) {
                         base::Time::Now());
   ReportContextMenuMetrics();
 }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 void AIChatMetrics::HandleOpenViaSidebar() {
   acquisition_source_ = AcquisitionSource::kSidebar;
@@ -219,9 +278,11 @@ void AIChatMetrics::ReportAllMetrics() {
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&AIChatMetrics::ReportAllMetrics, base::Unretained(this)));
   ReportChatCounts();
-  ReportOmniboxCounts();
   ReportFeatureUsageMetrics();
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  ReportOmniboxCounts();
   ReportContextMenuMetrics();
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 void AIChatMetrics::ReportFeatureUsageMetrics() {
@@ -254,6 +315,7 @@ void AIChatMetrics::ReportChatCounts() {
                                      average_prompts_per_chat);
 }
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 void AIChatMetrics::ReportOmniboxCounts() {
   if (!is_enabled_) {
     return;
@@ -337,5 +399,6 @@ void AIChatMetrics::ReportContextMenuMetrics() {
                                   7);
   }
 }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 }  // namespace ai_chat

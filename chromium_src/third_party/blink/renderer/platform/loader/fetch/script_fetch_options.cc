@@ -21,7 +21,7 @@ namespace blink {
 FetchParameters ScriptFetchOptions::CreateFetchParameters(
     const KURL& url,
     const SecurityOrigin* security_origin,
-    scoped_refptr<const DOMWrapperWorld> world_for_csp,
+    const DOMWrapperWorld* world_for_csp,
     CrossOriginAttributeValue cross_origin,
     const WTF::TextEncoding& encoding,
     FetchParameters::DeferOption defer) const {

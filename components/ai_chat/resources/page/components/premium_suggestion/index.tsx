@@ -46,7 +46,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
 
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
     placeholders: {
-      $1: <data>15</data>
+      $1: <data>14.99</data>
     }
   })
 

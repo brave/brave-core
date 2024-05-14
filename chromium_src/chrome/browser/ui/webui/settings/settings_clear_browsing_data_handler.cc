@@ -28,17 +28,17 @@ void BraveRemoveJumplist(Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#define NUM_TYPES                                                           \
+#define HOSTED_APPS_DATA                                                    \
   BRAVE_AI_CHAT:                                                            \
   remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
   break;                                                                    \
-  case BrowsingDataType::NUM_TYPES
+  case BrowsingDataType::HOSTED_APPS_DATA
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#undef NUM_TYPES
+#undef HOSTED_APPS_DATA
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(IS_WIN)

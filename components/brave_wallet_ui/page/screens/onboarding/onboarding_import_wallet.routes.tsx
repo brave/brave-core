@@ -34,6 +34,9 @@ import {
 import {
   OnboardingRestoreFromExtension //
 } from './restore-from-recovery-phrase/restore-from-extension'
+import {
+  OnboardingImportWalletType //
+} from './components/onboarding_import_wallet_type/import_wallet_type'
 
 export const OnboardingImportWalletRoutes = () => {
   // redux
@@ -46,20 +49,18 @@ export const OnboardingImportWalletRoutes = () => {
   return (
     <Switch>
       <Route
+        path={WalletRoutes.OnboardingImportSelectWalletType}
+        exact
+      >
+        <OnboardingImportWalletType />
+      </Route>
+
+      <Route
         path={WalletRoutes.OnboardingImportTerms}
         exact
       >
         <OnboardingDisclosures />
       </Route>
-
-      <ProtectedRoute
-        path={WalletRoutes.OnboardingImportOrRestore}
-        exact
-        requirement={termsAcknowledged}
-        redirectRoute={WalletRoutes.OnboardingImportTerms}
-      >
-        <OnboardingImportOrRestoreWallet />
-      </ProtectedRoute>
 
       <ProtectedRoute
         path={WalletRoutes.OnboardingImportNetworkSelection}
@@ -68,6 +69,15 @@ export const OnboardingImportWalletRoutes = () => {
         redirectRoute={WalletRoutes.OnboardingImportTerms}
       >
         <OnboardingNetworkSelection />
+      </ProtectedRoute>
+
+      <ProtectedRoute
+        path={WalletRoutes.OnboardingImportOrRestore}
+        exact
+        requirement={termsAcknowledged}
+        redirectRoute={WalletRoutes.OnboardingImportTerms}
+      >
+        <OnboardingImportOrRestoreWallet />
       </ProtectedRoute>
 
       {/* From seed phrase */}

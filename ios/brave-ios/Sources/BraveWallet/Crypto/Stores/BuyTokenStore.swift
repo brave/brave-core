@@ -61,6 +61,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private var selectedNetwork: BraveWallet.NetworkInfo = .init()
   private(set) var orderedSupportedBuyOptions: OrderedSet<BraveWallet.OnRampProvider> = []
   private var prefilledToken: BraveWallet.BlockchainToken?
@@ -75,7 +76,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     BraveWallet.PolygonMainnetChainId: ["matic"],
     BraveWallet.FantomMainnetChainId: ["ftm"],
     BraveWallet.CeloMainnetChainId: ["celo"],
-    BraveWallet.BinanceSmartChainMainnetChainId: ["bnb"],
+    BraveWallet.BnbSmartChainMainnetChainId: ["bnb"],
     BraveWallet.SolanaMainnet: ["sol"],
     BraveWallet.FilecoinMainnet: ["fil"],
     BraveWallet.AvalancheMainnetChainId: ["avax", "avaxc"],
@@ -91,6 +92,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.blockchainRegistry = blockchainRegistry
@@ -98,6 +100,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     self.rpcService = rpcService
     self.walletService = walletService
     self.assetRatioService = assetRatioService
+    self.bitcoinWalletService = bitcoinWalletService
     self.prefilledToken = prefilledToken
     self.buyTokens = WalletConstants.supportedOnRampProviders.reduce(
       into: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]]()
@@ -189,10 +192,17 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
       currencyCode = selectedCurrency.currencyCode
     }
 
+    var accountAddress = account.address
+    if account.coin == .btc,
+      let bitcoinAccountInfo =
+        await bitcoinWalletService.bitcoinAccountInfo(accountId: account.accountId)
+    {
+      accountAddress = bitcoinAccountInfo.nextChangeAddress.addressString
+    }
     let (urlString, error) = await assetRatioService.buyUrlV1(
       provider: provider,
       chainId: selectedNetwork.chainId,
-      address: account.address,
+      address: accountAddress,
       symbol: symbol,
       amount: buyAmount,
       currencyCode: currencyCode
@@ -305,7 +315,7 @@ extension BraveWallet.BlockchainToken {
         rampNetworkPrefix = ""
       case BraveWallet.AvalancheMainnetChainId.lowercased():
         rampNetworkPrefix = "AVAXC"
-      case BraveWallet.BinanceSmartChainMainnetChainId.lowercased():
+      case BraveWallet.BnbSmartChainMainnetChainId.lowercased():
         rampNetworkPrefix = "BSC"
       case BraveWallet.PolygonMainnetChainId.lowercased():
         rampNetworkPrefix = "MATIC"

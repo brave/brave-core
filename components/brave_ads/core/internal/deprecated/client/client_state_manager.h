@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_
 
-#include <map>
 #include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
@@ -19,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
@@ -71,15 +68,6 @@ class ClientStateManager final {
   bool ToggleSaveAd(const AdContentInfo& ad_content);
 
   bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content);
-
-  void UpdateSeenAd(const AdInfo& ad);
-  const std::map<std::string, bool>& GetSeenAdsForType(AdType type);
-  void ResetSeenAdsForType(const CreativeAdList& creative_ads, AdType type);
-  void ResetAllSeenAdsForType(AdType type);
-  const std::map<std::string, bool>& GetSeenAdvertisersForType(AdType type);
-  void ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
-                                   AdType type);
-  void ResetAllSeenAdvertisersForType(AdType type);
 
   void AppendTextClassificationProbabilitiesToHistory(
       const TextClassificationProbabilityMap& probabilities);

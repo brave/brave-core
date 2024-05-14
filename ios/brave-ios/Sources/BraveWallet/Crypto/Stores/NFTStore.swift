@@ -66,7 +66,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     return Filters(
       accounts: allAccounts.map { account in
         .init(
-          isSelected: !nonSelectedAccountAddresses.contains(where: { $0 == account.address }),
+          isSelected: !nonSelectedAccountAddresses.contains(where: {
+            $0 == account.id
+          }),
           model: account
         )
       },
@@ -82,16 +84,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   /// we should avoid calling `update()` in `preferencesDidChange()` unless another view changed.
   private var isSavingFilters: Bool = false
   @Published var isLoadingDiscoverAssets: Bool = false
-
-  public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
-    blockchainRegistry: self.blockchainRegistry,
-    rpcService: self.rpcService,
-    keyringService: self.keyringService,
-    assetRatioService: self.assetRatioService,
-    walletService: self.walletService,
-    ipfsApi: self.ipfsApi,
-    userAssetManager: self.assetManager
-  )
 
   enum NFTDisplayType: Int, CaseIterable, Identifiable {
     case visible
@@ -222,7 +214,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         update()
       }
     }
-    Preferences.Wallet.showTestNetworks.observe(from: self)
     Preferences.Wallet.isHidingUnownedNFTsFilter.observe(from: self)
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.observe(from: self)
     Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)
@@ -234,8 +225,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     keyringServiceObserver = nil
     walletServiveObserver = nil
     txServiceObserver = nil
-
-    userAssetsStore.tearDown()
   }
 
   func setupObservers() {
@@ -280,8 +269,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         }
       }
     )
-
-    userAssetsStore.setupObservers()
   }
 
   /// Cache of NFT balances for each account tokenBalances: [token.contractAddress]
@@ -293,7 +280,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       let isLocked = await keyringService.isLocked()
       guard !isLocked else { return }  // `update() will be called after unlock`
 
-      self.allAccounts = await keyringService.allAccounts().accounts
+      self.allAccounts = await keyringService.allAccountInfos()
         .filter { account in
           WalletConstants.supportedCoinTypes().contains(account.coin)
         }
@@ -335,9 +322,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
                   body: { @MainActor group in
                     for account in allAccounts where account.coin == nft.coin {
                       if !forceUpdateNFTBalances,
-                        let cachedBalance = nftBalancesCache[nft.id]?[account.address]
+                        let cachedBalance = nftBalancesCache[nft.id]?[account.id]
                       {  // cached balance
-                        return [account.address: cachedBalance]
+                        return [account.id: cachedBalance]
                       } else {  // no balance for this account
                         group.addTask { @MainActor in
                           let balanceForToken = await rpcService.balance(
@@ -345,7 +332,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
                             in: account,
                             network: networkForNFT
                           )
-                          return [account.address: Int(balanceForToken ?? 0)]
+                          return [account.id: Int(balanceForToken ?? 0)]
                         }
                       }
                     }
@@ -478,7 +465,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         .flatMap { networkNFTs in
           networkNFTs.tokens.compactMap { token in
             // we need to exclude any NFT that THIS account does not own (balance is not 1)
-            guard let balance = nftBalancesCache[token.id]?[account.address], balance > 0 else {
+            guard let balance = nftBalancesCache[token.id]?[account.id], balance > 0 else {
               return nil
             }
             return NFTAssetViewModel(
@@ -741,11 +728,11 @@ public class NFTStore: ObservableObject, WalletObserverStore {
 
   func owner(for nft: BraveWallet.BlockchainToken) -> BraveWallet.AccountInfo? {
     guard let allBalances = nftBalancesCache[nft.id],
-      let address = allBalances.first(where: { address, balance in
+      let uniqueKey = allBalances.first(where: { _, balance in
         balance > 0
       })?.key
     else { return nil }
-    return allAccounts.first { $0.address.caseInsensitiveCompare(address) == .orderedSame }
+    return allAccounts.first { $0.id.caseInsensitiveCompare(uniqueKey) == .orderedSame }
   }
 }
 
@@ -783,7 +770,7 @@ extension Array where Element == NFTAssetViewModel {
       isIncluded: { nftAsset in
         let balancesForSelectedAccounts = nftAsset.balanceForAccounts.filter { balance in
           selectedAccounts.contains(where: { account in
-            account.address == balance.key
+            account.id == balance.key
           })
         }
         return balancesForSelectedAccounts.contains(where: { $0.value > 0 })

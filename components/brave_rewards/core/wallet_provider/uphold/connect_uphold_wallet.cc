@@ -82,18 +82,14 @@ void ConnectUpholdWallet::OnAuthorize(ConnectExternalWalletCallback callback,
 
   server_.get_me().Request(
       access_token,
-      // NOLINTNEXTLINE
-      base::BindOnce(
-          static_cast<void (ConnectUpholdWallet::*)(
-              ConnectExternalWalletCallback, const std::string&, mojom::Result,
-              const User&) const>(&ConnectUpholdWallet::OnGetUser),
-          base::Unretained(this), std::move(callback), access_token));
+      base::BindOnce(&ConnectUpholdWallet::OnGetUser, base::Unretained(this),
+                     std::move(callback), access_token));
 }
 
 void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
                                     const std::string& access_token,
                                     mojom::Result result,
-                                    const User& user) const {
+                                    User user) const {
   auto wallet = engine_->uphold()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
@@ -127,15 +123,9 @@ void ConnectUpholdWallet::OnGetUser(ConnectExternalWalletCallback callback,
   }
 
   server_.get_capabilities().Request(
-      access_token,
-      base::BindOnce(
-          // NOLINTNEXTLINE
-          static_cast<void (ConnectUpholdWallet::*)(
-              ConnectExternalWalletCallback, const std::string&,
-              const std::string&, mojom::Result, internal::uphold::Capabilities)
-                          const>(&ConnectUpholdWallet::OnGetCapabilities),
-          base::Unretained(this), std::move(callback), access_token,
-          user.country_id));
+      access_token, base::BindOnce(&ConnectUpholdWallet::OnGetCapabilities,
+                                   base::Unretained(this), std::move(callback),
+                                   access_token, user.country_id));
 }
 
 void ConnectUpholdWallet::OnGetCapabilities(
@@ -215,15 +205,13 @@ void ConnectUpholdWallet::CheckEligibility() {
   }
 
   server_.get_me().Request(
-      // NOLINTNEXTLINE
-      wallet->token, base::BindOnce(static_cast<void (ConnectUpholdWallet::*)(
-                                        mojom::Result, const User&) const>(
-                                        &ConnectUpholdWallet::OnGetUser),
-                                    base::Unretained(this)));
+      wallet->token,
+      base::BindOnce(&ConnectUpholdWallet::OnGetUserForEligibilityCheck,
+                     base::Unretained(this)));
 }
 
-void ConnectUpholdWallet::OnGetUser(mojom::Result result,
-                                    const User& user) const {
+void ConnectUpholdWallet::OnGetUserForEligibilityCheck(mojom::Result result,
+                                                       User user) const {
   auto wallet =
       engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
@@ -260,15 +248,13 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
 
   server_.get_capabilities().Request(
       wallet->token,
-      base::BindOnce(
-          // NOLINTNEXTLINE
-          static_cast<void (ConnectUpholdWallet::*)(mojom::Result, Capabilities)
-                          const>(&ConnectUpholdWallet::OnGetCapabilities),
-          base::Unretained(this)));
+      base::BindOnce(&ConnectUpholdWallet::OnGetCapabilitiesForEligibilityCheck,
+                     base::Unretained(this)));
 }
 
-void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
-                                            Capabilities capabilities) const {
+void ConnectUpholdWallet::OnGetCapabilitiesForEligibilityCheck(
+    mojom::Result result,
+    Capabilities capabilities) const {
   if (!engine_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return;
   }

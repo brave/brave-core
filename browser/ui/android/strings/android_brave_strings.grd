@@ -440,6 +440,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_YOUTUBE_DISTRACTING_ELEMENTS_DESCRIPTION" desc="Hides the sign in, menu, comments and video info elements on YouTube.">
         Blocks the sign in, menu, comments, and video info elements on youtube.com.
       </message>
+      <message name="IDS_BLOCK_YOUTUBE_SHORTS" desc="Hide YouTube shorts">
+        Block YouTube Shorts
+      </message>
+      <message name="IDS_BLOCK_YOUTUBE_SHORTS_DESCRIPTION" desc="Hides shorts on YouTube.">
+        Blocks Shorts from the home page, trending page and search results on youtube.com.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>
@@ -1533,7 +1539,7 @@ Are you sure you want to do this?
         Block all cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_2" desc="Title for shields option.">
-        Block cross-site cookies
+        Block third-party cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
@@ -1979,6 +1985,9 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
       We require that you acknowledge the items below
     </message>
+    <message name="IDS_CHOOSE_BLOCKCHAINS" desc="Brave Wallet supported networks subtitle">
+      Choose which blockchains to use in your wallet.
+    </message>
     <message name="IDS_UNDERSTAND_SELF_CUSTODY" desc="Brave Wallet self-custody explaination text">
       I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.
     </message>
@@ -2005,9 +2014,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_RETYPE_PASSWORD" desc="Brave wallet password hint text">
       Verify password
-    </message>
-    <message name="IDS_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
       Verified password did not match
@@ -2084,6 +2090,21 @@ Are you sure you want to do this?
     <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
       Before we begin
     </message>
+    <message name="IDS_SUPPORTED_NETWORKS" desc="Brave Wallet supported networks screen title">
+      Supported networks
+    </message>
+    <message name="IDS_ADD_NETWORKS" desc="Brave Wallet add networks text">
+      You can add networks anytime in Settings.
+    </message>
+    <message name="IDS_SEARCH_NETWORKS" desc="Brave Wallet search networks text">
+      Search networks
+    </message>
+    <message name="IDS_SHOW_TESTNETS" desc="Brave Wallet show testnets button">
+      Show testnets
+    </message>
+    <message name="IDS_CONTINUE_WITH_NETWORKS" desc="Continue with selected networks">
+      Continue with <ph name="NUMBER">%1$s</ph> networks
+    </message>
     <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
       Create a password
     </message>
@@ -2123,10 +2144,16 @@ Are you sure you want to do this?
     <message name="IDS_PASSWORD" desc="Brave Wallet onboarding text">
       Password
     </message>
+    <message name="IDS_ENTER_YOUR_PASSWORD" desc="Brave Wallet onboarding password hint">
+      Enter your password
+    </message>
     <message name="IDS_ACCESSIBILITY_BIOMETRIC_UNLOCK" desc="Brave Wallet onboarding biometric image accessibility text">
       Biometric unlock
     </message>
     <message name="IDS_UNLOCK_WALLET_TITLE" desc="Brave Wallet onboarding text">
+      Unlock Wallet
+    </message>
+    <message name="IDS_UNLOCK_WALLET_SUBTITLE" desc="Brave Wallet onboarding subtitle">
       Enter password to unlock wallet
     </message>
     <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
@@ -2278,7 +2305,7 @@ Are you sure you want to do this?
       One Year
     </message>
     <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renew annually save 16%
+      Renew annually <ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
@@ -2784,7 +2811,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Submit
     </message>
     <message name="IDS_BRAVE_WALLET_SELECT_NETWORK_TITLE" desc="Brave wallet network selection title">
-      Select Network
+      Change Connected Account
     </message>
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
       New tab
@@ -2872,6 +2899,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_VPN_CONNECTION_ERROR" desc="Vpn connection error message">
       Connection error
+    </message>
+    <message name="IDS_WALLET_FEATURED" desc="Header for featured networks">
+      Featured
+    </message>
+    <message name="IDS_WALLET_POPULAR" desc="Header for popular networks">
+      Popular
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_SELECTION_ERROR" desc="Network activity toolbar title">
       Unable to set network to <ph name="NETWORK_NAME">'%1$s'</ph>
@@ -3458,9 +3491,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
       New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
     </message>
-    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network filter selector title for all networks">
-      All Networks
-    </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_PRIMARY" desc="Network filter title for primary networks">
       Primary Networks
     </message>
@@ -3906,10 +3936,61 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Updated Terms of Service
     </message>
     <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="Terms of service text for rewards panel">
-    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you prefer not to agree, you have the option to <ph name="RESET_START">&lt;reset&gt;</ph>reset<ph name="RESET_END">&lt;/reset&gt;</ph> Brave Rewards, and this will disable the feature.
+      We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="RESET_START">&lt;reset&gt;</ph>reset<ph name="RESET_END">&lt;/reset&gt;</ph> Brave Rewards, which will disable the feature.
     </message>
     <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="Terms of service text for rewards panel">
       See <ph name="TOS_START">&lt;tos&gt;</ph>Brave Rewards Terms of Service<ph name="TOS_END">&lt;/tos&gt;</ph>
+    </message>
+    <message name="IDS_ENABLE_MULTI_WINDOWS_TITLE" desc="Title for preference that enables or disables multiple windows.">
+      Enable multiple windows
+    </message>
+    <message name="IDS_ENABLE_MULTI_WINDOWS_SUMMARY" desc="Summary for preference that enables or disables multiple windows.">
+      Open up to 5 windows at a time and move tabs from one window to another
+    </message>
+    <message name="IDS_MULTI_WINDOWS_DIALOG_TITLE" desc="Title for multiwindows detected dialog.">
+      Multiple windows detected
+    </message>
+    <message name="IDS_MULTI_WINDOWS_DIALOG_SUMMARY" desc="Summary for multiwindows detected dialog.">
+      Please merge tabs to another Brave window, or close other Brave windows, before disabling the multiple-windows feature.
+    </message>
+    <message name="IDS_MERGE_WINDOWS" desc="Button text of merge windows for multiwindows dialog">
+      Merge windows
+    </message>
+    <message name="IDS_CLOSE_WINDOWS" desc="Button text of close windows for multiwindows dialog">
+      Close windows
+    </message>
+    <message name="IDS_MERGE_WINDOWS_SNACKBAR" desc="Text for merge windows snackbar">
+      Please merge other tabs to another Brave window.
+    </message>
+    <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
+      Always-on VPN
+    </message>
+    <message name="IDS_KILL_SWITCH" desc="Vpn setting title for kill switch">
+      Kill switch
+    </message>
+    <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
+      How to turn on:
+    </message>
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_1" desc="Vpn kill swicth tutorial text">
+      1. Open your device's settings from your app drawer or tapping the button below.
+    </message>
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_2" desc="Vpn kill swicth tutorial text">
+      2. Find Brave VPN and tap on the settings icon to the right.
+    </message>
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
+      3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.
+    </message>
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_4" desc="Vpn kill swicth tutorial text">
+      4. Toggle <ph name="ALWAYS_ON_TUTORIAL_2_START">&lt;always_on_tutorial_2&gt;</ph>Block connections without VPN<ph name="ALWAYS_ON_TUTORIAL_2_END">&lt;/always_on_tutorial_2&gt;</ph> to enable the kill switch.
+    </message>
+    <message name="IDS_KILL_SWITCH_TEXT" desc="Vpn kill swicth tutorial text">
+      Kill switch will disable split tunneling. It also prevents connections from outside the VPN tunnel.
+    </message>
+    <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill swicth tutorial action text">
+      Open Android settings
+    </message>
+    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
+      Update is downloaded.
     </message>
   </messages>
   </release>

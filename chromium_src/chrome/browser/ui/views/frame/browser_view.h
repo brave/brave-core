@@ -21,6 +21,7 @@
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
+#define ContentsLayoutManager BraveContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
@@ -36,7 +37,9 @@
 #define GetSupportsTitle virtual GetSupportsTitle
 
 // On Windows <winuser.h> defines LoadAccelerators
-#pragma push_macro("LoadAccelerators")
+// Using push_macro seems to be causing #undef not to work in Chromium 125.
+// Unclear what causes this.
+// #pragma push_macro("LoadAccelerators")
 #undef LoadAccelerators
 #endif
 #define LoadAccelerators virtual LoadAccelerators
@@ -45,7 +48,7 @@
 
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
-#pragma pop_macro("LoadAccelerators")
+// #pragma pop_macro("LoadAccelerators")
 #undef GetSupportsTitle
 #endif
 
@@ -53,6 +56,7 @@
 #undef GetTabStripVisible
 #undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
+#undef ContentsLayoutManager
 #undef BookmarkBarView
 #undef SidePanel
 #undef BrowserViewLayout

@@ -159,7 +159,8 @@ DebounceNavigationThrottle::MaybeRedirect() {
                        if (!web_contents) {
                          return;
                        }
-                       web_contents->OpenURL(params);
+                       web_contents->OpenURL(params,
+                                             /*navigation_handle_callback=*/{});
                      },
                      web_contents->GetWeakPtr(), std::move(params)));
   return NavigationThrottle::CANCEL;

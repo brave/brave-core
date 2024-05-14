@@ -7,8 +7,8 @@
 
 #include <optional>
 #include <string>
-#include <utility>
 
+#include "base/check.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -28,7 +28,8 @@ std::optional<base::TimeDelta>
 base::TimeDelta DelayBeforeProcessingQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
     const base::Time time) {
-  return confirmation_queue_item.process_at - time;
+  CHECK(confirmation_queue_item.process_at);
+  return *confirmation_queue_item.process_at - time;
 }
 
 bool ShouldHaveProcessedQueueItemInThePast(
@@ -42,28 +43,6 @@ bool ShouldProcessQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
     const base::Time time) {
   return time >= confirmation_queue_item.process_at;
-}
-
-void BuildDynamicUserDataCallback(
-    const ConfirmationQueueItemInfo& confirmation_queue_item,
-    RebuildConfirmationQueueItemDynamicUserDataCallback callback,
-    base::Value::Dict user_data) {
-  ConfirmationQueueItemInfo mutable_confirmation_queue_item(
-      confirmation_queue_item);
-
-  mutable_confirmation_queue_item.confirmation.user_data.dynamic =
-      std::move(user_data);
-
-  if (mutable_confirmation_queue_item.confirmation.reward) {
-    const std::optional<std::string> reward_credential_base64url =
-        BuildRewardCredential(mutable_confirmation_queue_item.confirmation);
-    CHECK(reward_credential_base64url);
-
-    mutable_confirmation_queue_item.confirmation.reward->credential_base64url =
-        *reward_credential_base64url;
-  }
-
-  std::move(callback).Run(mutable_confirmation_queue_item);
 }
 
 }  // namespace
@@ -102,14 +81,44 @@ ScopedDelayBeforeProcessingConfirmationQueueItemForTesting::
       std::nullopt;
 }
 
-void RebuildConfirmationQueueItemDynamicUserData(
-    const ConfirmationQueueItemInfo& confirmation_queue_item,
-    RebuildConfirmationQueueItemDynamicUserDataCallback callback) {
-  CHECK(IsValid(confirmation_queue_item.confirmation));
+ConfirmationInfo RebuildConfirmationWithoutDynamicUserData(
+    const ConfirmationInfo& confirmation) {
+  CHECK(IsValid(confirmation));
 
-  BuildDynamicUserData(base::BindOnce(&BuildDynamicUserDataCallback,
-                                      confirmation_queue_item,
-                                      std::move(callback)));
+  ConfirmationInfo mutable_confirmation(confirmation);
+
+  mutable_confirmation.user_data.dynamic = {};
+
+  if (mutable_confirmation.reward) {
+    const std::optional<std::string> reward_credential_base64url =
+        BuildRewardCredential(mutable_confirmation);
+    CHECK(reward_credential_base64url);
+
+    mutable_confirmation.reward->credential_base64url =
+        *reward_credential_base64url;
+  }
+
+  return mutable_confirmation;
+}
+
+ConfirmationInfo RebuildConfirmationDynamicUserData(
+    const ConfirmationInfo& confirmation) {
+  CHECK(IsValid(confirmation));
+
+  ConfirmationInfo mutable_confirmation(confirmation);
+
+  mutable_confirmation.user_data.dynamic = BuildDynamicUserData();
+
+  if (mutable_confirmation.reward) {
+    const std::optional<std::string> reward_credential_base64url =
+        BuildRewardCredential(mutable_confirmation);
+    CHECK(reward_credential_base64url);
+
+    mutable_confirmation.reward->credential_base64url =
+        *reward_credential_base64url;
+  }
+
+  return mutable_confirmation;
 }
 
 }  // namespace brave_ads

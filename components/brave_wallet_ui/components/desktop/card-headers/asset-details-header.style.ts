@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, Column } from '../../shared/style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
@@ -61,4 +61,17 @@ export const UpDownIcon = styled(Icon)<{
 }>`
   --leo-icon-size: 24px;
   color: inherit;
+`
+
+export const IconsWrapper = styled(Column)`
+  position: relative;
+`
+
+export const NetworkIconWrapper = styled(Column)`
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: ${leo.color.container.background};
+  border-radius: 100%;
+  padding: 2px;
 `

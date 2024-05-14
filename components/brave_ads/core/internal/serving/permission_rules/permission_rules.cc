@@ -47,7 +47,7 @@ bool IsAdTypeWithinRollingTimeConstraint(const AdType type,
                                          const base::TimeDelta time_constraint,
                                          const size_t cap) {
   const std::vector<base::Time> history =
-      GetCachedAdEvents(type, ConfirmationType::kServed);
+      GetCachedAdEvents(type, ConfirmationType::kServedImpression);
 
   return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
 }

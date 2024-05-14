@@ -52,34 +52,6 @@
           android:src="@drawable/btn_brave"
           android:layout_gravity="center"
           android:contentDescription="@string/accessibility_toolbar_btn_brave_shields" />
-
-      <org.chromium.chrome.browser.BraveBadge
-            android:id="@+id/brave_shields_badge_small"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:background="@drawable/brave_badge_shields_background_small"
-            android:textColor="@android:color/white"
-            android:translationZ="1dp"
-            android:fontFamily="sans-serif-bold"
-            android:textSize="12sp" />
-
-      <org.chromium.chrome.browser.BraveBadge
-            android:id="@+id/brave_shields_badge_large"
-            android:layout_width="18dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:background="@drawable/brave_badge_shields_background_large"
-            android:textColor="@android:color/white"
-            android:translationZ="1dp"
-            android:fontFamily="sans-serif-bold"
-            android:textSize="12sp" />
   </FrameLayout>
 
   <FrameLayout android:id="@+id/brave_rewards_button_layout"
@@ -125,32 +97,14 @@
           android:textSize="9sp"
           tools:ignore="SmallSp" />
 
-      <org.chromium.chrome.browser.BraveBadge
-          android:id="@+id/brave_rewards_badge_small"
-          android:layout_width="16dp"
-          android:layout_height="16dp"
-          android:layout_marginStart="26dp"
-          android:layout_marginTop="6dp"
-          android:gravity="center"
-          android:visibility="invisible"
-          android:background="@drawable/brave_badge_rewards_background_small"
-          android:textColor="@android:color/white"
-          android:fontFamily="sans-serif-bold"
-          android:translationZ="1dp"
-          android:textSize="12sp" />
-
-      <org.chromium.chrome.browser.BraveBadge
-          android:id="@+id/brave_rewards_badge_large"
-          android:layout_width="18dp"
-          android:layout_height="16dp"
-          android:layout_marginStart="26dp"
-          android:layout_marginTop="6dp"
-          android:gravity="center"
-          android:visibility="invisible"
-          android:background="@drawable/brave_badge_rewards_background_large"
-          android:textColor="@android:color/white"
-          android:fontFamily="sans-serif-bold"
-          android:translationZ="1dp"
-          android:textSize="12sp" />
+      <View
+          android:id="@+id/rewards_notfication_badge"
+          android:layout_width="10dp"
+          android:layout_height="10dp"
+          android:layout_marginTop="7dp"
+          android:layout_marginEnd="6dp"
+          android:layout_gravity="end"
+          android:visibility="gone"
+          android:background="@drawable/brave_rewards_circle"/>
   </FrameLayout>
 </LinearLayout>

@@ -37,16 +37,13 @@ import { SignInWithEthereum } from './sign_in_with_ethereum'
 export const _SignAllSolanaTxPanel = () => {
   return (
     <WalletPanelStory
-      panelStateOverride={{
-        selectedPanel: 'signTransaction',
-        signTransactionRequests: [mockSolDappSignTransactionRequest],
-        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
-      }}
       uiStateOverride={{
         selectedPendingTransactionId:
           mockSolDappSignAndSendTransactionRequest.id
       }}
       walletApiDataOverrides={{
+        signTransactionRequests: [mockSolDappSignTransactionRequest],
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
         transactionInfos: [
           deserializeTransaction({
             ...mockSolDappSignAndSendTransactionRequest,
@@ -77,12 +74,9 @@ _SignAllSolanaTxPanel.story = {
 export const _SignSolanaTxPanel = () => {
   return (
     <WalletPanelStory
-      panelStateOverride={{
-        selectedPanel: 'signTransaction',
-        signTransactionRequests: [mockSolDappSignTransactionRequest],
-        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest]
-      }}
       walletApiDataOverrides={{
+        signTransactionRequests: [mockSolDappSignTransactionRequest],
+        signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
         transactionInfos: [
           deserializeTransaction(mockSolDappSignAndSendTransactionRequest)
         ]

@@ -37,7 +37,9 @@ TransactionInfo BuildTransaction(const double value,
   transaction.segment = kSegment;
   transaction.ad_type = AdType::kNotificationAd;
   transaction.confirmation_type = confirmation_type;
-  transaction.reconciled_at = reconciled_at;
+  if (!reconciled_at.is_null()) {
+    transaction.reconciled_at = reconciled_at;
+  }
 
   return transaction;
 }

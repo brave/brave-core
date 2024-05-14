@@ -123,7 +123,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -205,6 +205,12 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
+
+  // Added 2024-04
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
+#endif
+  brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -264,7 +270,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   webtorrent::RegisterProfilePrefs(registry);
 #endif
 
-  // wayback machine
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
 #endif
@@ -459,9 +464,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_search_conversion::RegisterPrefs(registry);
 
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
-
-  registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
+  // Enabled by default after fixing
+  // https://github.com/brave/brave-browser/issues/18017
+  // kEnableMediaRouterOnRestart is used to remember the user's choice.
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
+  registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
 
   // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
   registry->SetDefaultPrefValue(

@@ -28,6 +28,8 @@ namespace {
 static constexpr char kWordsv1SunsetDate[] = "Mon, 1 Aug 2022 00:00:00 GMT";
 static constexpr char kWordsv2Epoch[] = "Tue, 10 May 2022 00:00:00 GMT";
 
+static constexpr size_t kWordsV2Count = 25u;
+
 }  // namespace
 
 using base::Time;
@@ -137,7 +139,6 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
   using ValidationStatus = TimeLimitedWords::ValidationStatus;
 
   static constexpr size_t kPureWordsCount = 24u;
-  static constexpr size_t kWordsV2Count = 25u;
 
   auto now = Time::Now();
 
@@ -208,6 +209,43 @@ std::string TimeLimitedWords::GenerateResultToText(
     case TimeLimitedWords::GenerateResult::kNotAfterEarlierThanEpoch:
       return "Requested not_after is earlier than sync words v2 epoch";
   }
+}
+
+// static
+base::Time TimeLimitedWords::GetNotAfter(
+    const std::string& time_limited_words) {
+  std::vector<std::string> words = base::SplitString(
+      time_limited_words, " ", base::WhitespaceHandling::TRIM_WHITESPACE,
+      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  size_t num_words = words.size();
+
+  if (num_words != kWordsV2Count) {
+    return base::Time();
+  }
+
+  int days_encoded = GetIndexByWord(words[kWordsV2Count - 1u]);
+  const base::Time anchor_time = GetWordsV2Epoch() + base::Days(days_encoded);
+
+  // We need to find not_after as the offset from the anchor time which would
+  // satisfy this pseudo equation derived from TimeLimitedWords::ParseImpl:
+  //
+  //    GetRoundedDaysDiff(anchor + x, anchor) = 2
+  //        expand GetRoundedDaysDiff:
+  //    round(anchor - (anchor + x)) = 2
+  //    round(x) = 2
+  //    x=1.5...2.49999
+  //        and we need the smallest value of x, so it is 1.5 days or 36 hours.
+  const base::TimeDelta k1_5dayOffset = base::Hours(36);
+  base::Time not_after = anchor_time + k1_5dayOffset;
+
+  // Re-check in debug build the solution is correct.
+  // We should have two days rounded difference for our result, which means code
+  // words are rejected. And a moment before our result diffecence should be 1,
+  // which means code words are accepted.
+  DCHECK_EQ(GetRoundedDaysDiff(anchor_time, not_after), 2);
+  DCHECK_EQ(GetRoundedDaysDiff(anchor_time, not_after - base::Seconds(1)), 1);
+
+  return not_after;
 }
 
 }  // namespace brave_sync

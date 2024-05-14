@@ -56,6 +56,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
 
@@ -69,7 +70,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -98,6 +99,7 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -130,6 +132,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsDataController::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
+  BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
@@ -156,7 +159,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(web_contents);
+  BraveWaybackMachineTabHelper::CreateIfNeeded(web_contents);
 #endif
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
@@ -210,9 +213,14 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  playlist::PlaylistTabHelper::MaybeCreateForWebContents(
-      web_contents, playlist::PlaylistServiceFactory::GetForBrowserContext(
-                        web_contents->GetBrowserContext()));
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (auto* playlist_service =
+            playlist::PlaylistServiceFactory::GetForBrowserContext(
+                web_contents->GetBrowserContext())) {
+      playlist::PlaylistTabHelper::CreateForWebContents(web_contents,
+                                                        playlist_service);
+    }
+  }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 

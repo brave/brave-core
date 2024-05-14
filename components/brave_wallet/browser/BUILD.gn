@@ -375,6 +375,8 @@ source_set("hd_keyring") {
     "filecoin_keyring.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "secp256k1_hd_keyring.cc",
+    "secp256k1_hd_keyring.h",
     "solana_keyring.cc",
     "solana_keyring.h",
     "zcash/zcash_keyring.cc",
@@ -386,6 +388,7 @@ source_set("hd_keyring") {
     "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:rust_lib",
@@ -423,6 +426,8 @@ source_set("transaction") {
 source_set("test_support") {
   testonly = true
   sources = [
+    "solana_test_utils.cc",
+    "solana_test_utils.h",
     "test_utils.cc",
     "test_utils.h",
   ]

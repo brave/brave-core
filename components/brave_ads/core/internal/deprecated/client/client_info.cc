@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -56,29 +57,6 @@ base::Value::Dict ClientInfo::ToValue() const {
   }
   dict.Set("purchaseIntentSignalHistory",
            std::move(purchase_intent_signal_history_dict));
-
-  base::Value::Dict seen_ads_dict;
-  for (const auto& [ad_type, ads] : seen_ads) {
-    base::Value::Dict seen_ad_dict;
-    for (const auto& [creative_instance_id, seen_ad] : ads) {
-      seen_ad_dict.Set(creative_instance_id, seen_ad);
-    }
-
-    seen_ads_dict.Set(ToString(ad_type), std::move(seen_ad_dict));
-  }
-  dict.Set("seenAds", std::move(seen_ads_dict));
-
-  base::Value::Dict seen_advertisers_dict;
-  for (const auto& [ad_type, advertisers] : seen_advertisers) {
-    base::Value::Dict seen_advertiser_dict;
-    for (const auto& [advertiser_id, seen_advertiser] : advertisers) {
-      seen_advertiser_dict.Set(advertiser_id, seen_advertiser);
-    }
-
-    seen_advertisers_dict.Set(ToString(ad_type),
-                              std::move(seen_advertiser_dict));
-  }
-  dict.Set("seenAdvertisers", std::move(seen_advertisers_dict));
 
   base::Value::List probabilities_history_list;
   for (const auto& item : text_classification_probabilities) {
@@ -138,34 +116,6 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
     }
   }
 
-  if (const auto* const value = dict.FindDict("seenAds")) {
-    for (const auto [ad_type, ads] : *value) {
-      if (!ads.is_dict()) {
-        continue;
-      }
-
-      for (const auto [creative_instance_id, seen_ad] : ads.GetDict()) {
-        CHECK(seen_ad.is_bool());
-        seen_ads[ToAdType(ad_type)][creative_instance_id] = seen_ad.GetBool();
-      }
-    }
-  }
-
-  if (const auto* const value = dict.FindDict("seenAdvertisers")) {
-    for (const auto [ad_type, advertisers] : *value) {
-      if (!advertisers.is_dict()) {
-        continue;
-      }
-
-      for (const auto [advertiser_id, seen_advertiser] :
-           advertisers.GetDict()) {
-        CHECK(seen_advertiser.is_bool());
-        seen_advertisers[ToAdType(ad_type)][advertiser_id] =
-            seen_advertiser.GetBool();
-      }
-    }
-  }
-
   if (const auto* const value =
           dict.FindList("textClassificationProbabilitiesHistory")) {
     for (const auto& probability_history : *value) {
@@ -222,6 +172,12 @@ bool ClientInfo::FromJson(const std::string& json) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Malformed client JSON state");
+    base::debug::DumpWithoutCrashing();
+
     return false;
   }
 

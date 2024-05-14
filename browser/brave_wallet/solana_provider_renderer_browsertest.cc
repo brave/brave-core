@@ -33,6 +33,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -483,11 +484,11 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
   }
 
   TestSolanaProvider* GetProvider(content::RenderFrameHost* frame_host) {
-    if (!provider_map_.contains(frame_host)) {
+    if (!provider_map_.contains(frame_host->GetGlobalId())) {
       return nullptr;
     }
     return static_cast<TestSolanaProvider*>(
-        provider_map_.at(frame_host)->impl());
+        provider_map_.at(frame_host->GetGlobalId())->impl());
   }
   bool WaitForBinding(content::RenderFrameHost* render_frame_host,
                       base::OnceClosure callback) {
@@ -498,7 +499,7 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
     return true;
   }
   bool IsBound(content::RenderFrameHost* frame_host) {
-    return provider_map_.contains(frame_host);
+    return provider_map_.contains(frame_host->GetGlobalId());
   }
 
  private:
@@ -507,21 +508,21 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
       mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
     auto provider = mojo::MakeSelfOwnedReceiver(
         std::make_unique<TestSolanaProvider>(), std::move(receiver));
-    provider->set_connection_error_handler(
-        base::BindOnce(&TestBraveContentBrowserClient::OnDisconnect,
-                       weak_ptr_factory_.GetWeakPtr(), frame_host));
-    provider_map_[frame_host] = provider;
+    provider->set_connection_error_handler(base::BindOnce(
+        &TestBraveContentBrowserClient::OnDisconnect,
+        weak_ptr_factory_.GetWeakPtr(), frame_host->GetGlobalId()));
+    provider_map_[frame_host->GetGlobalId()] = provider;
     if (quit_on_binding_) {
       std::move(quit_on_binding_).Run();
     }
   }
-  void OnDisconnect(content::RenderFrameHost* frame_host) {
-    provider_map_.erase(frame_host);
+  void OnDisconnect(content::GlobalRenderFrameHostId frame_host_id) {
+    provider_map_.erase(frame_host_id);
   }
 
   base::OnceClosure quit_on_binding_;
   base::flat_map<
-      content::RenderFrameHost*,
+      content::GlobalRenderFrameHostId,
       mojo::SelfOwnedReceiverRef<brave_wallet::mojom::SolanaProvider>>
       provider_map_;
   base::WeakPtrFactory<TestBraveContentBrowserClient> weak_ptr_factory_{this};

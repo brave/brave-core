@@ -10,9 +10,6 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo är en AI-driven smart assistent som är inbyggd i webbläsaren.";
 
-/* The subtitle for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Länka App Store-köp till ditt Brave-konto för att använda Leo på andra enheter.";
-
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Länka köp till ditt Brave-konto";
 
@@ -25,10 +22,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The subtitle for the error showing there is an erro from Appstore */
-"aichat.appStoreErrorSubTitle" = "Det gick inte att ansluta till App Store. Försök igen senare.";
-
-/* The title for the error showing there is an erro from Appstore */
+/* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Fel i App Store";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
@@ -66,12 +60,6 @@
 
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Vad handlar din feedback om?";
-
-/* The title for helpful feedback option */
-"aichat.feedbackOptionTitleNotHelpful" = "Svaret är inte till hjälp";
-
-/* The title for not working feedback option */
-"aichat.feedbackOptionTitleNotWorking" = "Något fungerar inte";
 
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Övrigt";
@@ -208,9 +196,6 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Frigör din kreativitet";
 
-/* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Prioriterad åtkomst till kraftfulla modeller med olika färdigheter";
-
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Utforska olika AI-modeller";
 
@@ -288,4 +273,34 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Årlig prenumeration";
+
+/* The title of the section where chat models are displayed as a list. */
+"wallet.defaultModelChatSectionTitle" = "Chatt";
+
+/* The title of the section where language models are displayed as a list. */
+"wallet.defaultModelLanguageSectionTitle" = "SPRÅKMODELLER";
+
+/* The title of the menu where user can change the default model */
+"wallet.defaultModelViewTitle" = "Standardmodell";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "Begränsad";
+
+/* The title of action for quick menu which displaying advanced settings */
+"wallet.quickMenuAdvancedSettingsActionTitle" = "Avancerade inställningar";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"wallet.quickMenuGoPremiumActionTitle" = "Välj Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"wallet.quickMenuManageSubscriptionActionTitle" = "Hantera prenumerationer";
+
+/* The title of action for quick menu which starts a new chat */
+"wallet.quickMenuNewChatActionTitle" = "Ny chatt";
+
+/* The title of a button that will reset data for leo */
+"wallet.resetLeoDataAlertButtonTitle" = "Återställ";
+
+/* The title of the badge where a model which can be used unlimited */
+"wallet.unlimitedModelStatusTitle" = "Obegränsad";
 

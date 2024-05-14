@@ -455,8 +455,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   void SetupWallet() {
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   base::DoNothing());
+    keyring_service_->CreateWalletInternal(kMnemonicDivideCruise,
+                                           kTestWalletPassword, false, false);
   }
 
   void SetInterceptors(std::map<GURL, std::string> responses) {
@@ -722,12 +722,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     *valid_password = keyring_service_->ValidatePasswordInternal(new_password);
 
     base::RunLoop run_loop;
-    keyring_service_->GetMnemonicForDefaultKeyring(
-        new_password,
-        base::BindLambdaForTesting([&](const std::string& mnemonic) {
-          *valid_mnemonic = (mnemonic == in_mnemonic);
-          run_loop.Quit();
-        }));
+    keyring_service_->GetWalletMnemonic(
+        new_password, base::BindLambdaForTesting(
+                          [&](const std::optional<std::string>& mnemonic) {
+                            *valid_mnemonic = (mnemonic == in_mnemonic);
+                            run_loop.Quit();
+                          }));
     run_loop.Run();
   }
 
@@ -2466,12 +2466,9 @@ TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
   service_->GetBalanceScannerSupportedChains(
       base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
         std::vector<std::string> expected_chains = {
-            mojom::kMainnetChainId,
-            mojom::kBinanceSmartChainMainnetChainId,
-            mojom::kPolygonMainnetChainId,
-            mojom::kOptimismMainnetChainId,
-            mojom::kArbitrumMainnetChainId,
-            mojom::kAvalancheMainnetChainId,
+            mojom::kMainnetChainId,         mojom::kBnbSmartChainMainnetChainId,
+            mojom::kPolygonMainnetChainId,  mojom::kOptimismMainnetChainId,
+            mojom::kArbitrumMainnetChainId, mojom::kAvalancheMainnetChainId,
         };
         ASSERT_EQ(chains.size(), expected_chains.size());
         EXPECT_EQ(chains, expected_chains);
@@ -2714,20 +2711,13 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
   service_->GetAnkrSupportedChainIds(
       base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
         std::vector<std::string> expected_chains = {
-            mojom::kArbitrumMainnetChainId,
-            mojom::kAvalancheMainnetChainId,
-            mojom::kBaseMainnetChainId,
-            mojom::kBinanceSmartChainMainnetChainId,
-            mojom::kMainnetChainId,
-            mojom::kFantomMainnetChainId,
-            mojom::kFlareMainnetChainId,
-            mojom::kGnosisChainId,
-            mojom::kOptimismMainnetChainId,
-            mojom::kPolygonMainnetChainId,
-            mojom::kPolygonZKEVMChainId,
-            mojom::kRolluxMainnetChainId,
-            mojom::kSyscoinMainnetChainId,
-            mojom::kZkSyncEraChainId,
+            mojom::kArbitrumMainnetChainId, mojom::kAvalancheMainnetChainId,
+            mojom::kBaseMainnetChainId,     mojom::kBnbSmartChainMainnetChainId,
+            mojom::kMainnetChainId,         mojom::kFantomMainnetChainId,
+            mojom::kFlareMainnetChainId,    mojom::kGnosisChainId,
+            mojom::kOptimismMainnetChainId, mojom::kPolygonMainnetChainId,
+            mojom::kPolygonZKEVMChainId,    mojom::kRolluxMainnetChainId,
+            mojom::kSyscoinMainnetChainId,  mojom::kZkSyncEraChainId,
             mojom::kGoerliChainId};
         EXPECT_THAT(chains,
                     testing::UnorderedElementsAreArray(expected_chains));

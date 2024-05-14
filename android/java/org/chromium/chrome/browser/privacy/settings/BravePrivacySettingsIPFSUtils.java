@@ -7,23 +7,25 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BravePrivacySettingsIPFSUtils {
     public static void setIPFSGatewayPref(boolean preference) {
         if (BraveConfig.IPFS_ENABLED) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
-                    .setInteger(BravePref.IPFS_RESOLVE_METHOD,
-                            preference ? IPFSResolveMethodTypes.IPFS_ASK
-                                       : IPFSResolveMethodTypes.IPFS_DISABLED);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    .setInteger(
+                            BravePref.IPFS_RESOLVE_METHOD,
+                            preference
+                                    ? IPFSResolveMethodTypes.IPFS_ASK
+                                    : IPFSResolveMethodTypes.IPFS_DISABLED);
         }
     }
 
     public static boolean getIPFSGatewayPref() {
         if (BraveConfig.IPFS_ENABLED) {
-            return UserPrefs.get(Profile.getLastUsedRegularProfile())
-                           .getInteger(BravePref.IPFS_RESOLVE_METHOD)
+            return UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getInteger(BravePref.IPFS_RESOLVE_METHOD)
                     != IPFSResolveMethodTypes.IPFS_DISABLED;
         } else {
             return false;

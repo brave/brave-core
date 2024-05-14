@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
@@ -72,25 +73,11 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
     pref_service_.registry()->RegisterListPref(prefs::kDailyAsked);
     pref_service_.registry()->RegisterIntegerPref(prefs::kTotalAsked, 0);
     brave_search_conversion::RegisterPrefs(pref_service_.registry());
-    PrepareFieldTrialParamsForBannerTypeC();
   }
 
   void TearDown() override {
     pref_service_.ClearPref(prefs::kDailyAsked);
     pref_service_.ClearPref(prefs::kTotalAsked);
-  }
-
-  void PrepareFieldTrialParamsForBannerTypeC() {
-    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
-    constexpr char kBannerTypeParamName[] = "banner_type";
-    constexpr char kBannerTypeExperiements[] = "banner_type_c";
-
-    std::map<std::string, std::string> params;
-    params[kBannerTypeParamName] = "type_C";
-    ASSERT_TRUE(base::AssociateFieldTrialParams(
-        kPromotionTrial, kBannerTypeExperiements, params));
-    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
-                                           kBannerTypeExperiements);
   }
 
   std::unique_ptr<BraveSearchDefaultHost> GetAPIHost(const std::string& host) {
@@ -183,8 +170,7 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   template_url_service_.SetUserSelectedDefaultSearchProvider(default_provider);
 
   // Failed at fourth try by default.
-  MockGetCanSetCallback first, second, third, fourth, fifth, sixth, seventh,
-      eighth;
+  MockGetCanSetCallback first, second, third, fourth, fifth, sixth, seventh;
   EXPECT_CALL(first, Run(true));
   EXPECT_CALL(second, Run(true));
   EXPECT_CALL(third, Run(true));
@@ -195,8 +181,9 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   host->GetCanSetDefaultSearchProvider(third.Get());
   host->GetCanSetDefaultSearchProvider(fourth.Get());
 
-  feature_list.InitAndEnableFeature(
-      brave_search_conversion::features::kOmniboxBanner);
+  feature_list.InitAndEnableFeatureWithParameters(
+      brave_search_conversion::features::kOmniboxBanner,
+      {{brave_search_conversion::features::kBannerTypeParamName, "type_C"}});
   host->SetCanAlwaysSetDefault();
 
   // Can set after calling SetCanAlwaysSetDefault() with omnibox banner
@@ -211,22 +198,13 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   EXPECT_CALL(sixth, Run(false));
   host->GetCanSetDefaultSearchProvider(sixth.Get());
 
-  // Test with omnibox button type conversion.
-  feature_list.InitAndEnableFeature(
-      brave_search_conversion::features::kOmniboxButton);
-  host->SetCanAlwaysSetDefault();
-
-  // Can set if omnibox button promotion feature is enabled.
-  EXPECT_CALL(seventh, Run(true));
-  host->GetCanSetDefaultSearchProvider(seventh.Get());
-
   feature_list.Reset();
   feature_list.InitAndEnableFeature(brave_search_conversion::features::kNTP);
   host->SetCanAlwaysSetDefault();
 
   // Can set if ntp promotion feature is enabled.
-  EXPECT_CALL(eighth, Run(true));
-  host->GetCanSetDefaultSearchProvider(eighth.Get());
+  EXPECT_CALL(seventh, Run(true));
+  host->GetCanSetDefaultSearchProvider(seventh.Get());
 }
 
 }  // namespace

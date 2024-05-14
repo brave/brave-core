@@ -151,11 +151,15 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      final_recipient);
+      final_recipient, IsRetriable());
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {
   return mojom::CoinType::ETH;
+}
+
+bool EthTxMeta::IsRetriable() const {
+  return IsRetriableStatus(status_);
 }
 
 }  // namespace brave_wallet

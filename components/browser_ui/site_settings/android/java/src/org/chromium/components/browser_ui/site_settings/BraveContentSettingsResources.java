@@ -26,7 +26,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         }
     }
 
-    protected static ResourceItem getResourceItem(int contentType, SiteSettingsDelegate delegate) {
+    protected static ResourceItem getResourceItem(int contentType) {
         switch (contentType) {
             case ContentSettingsType.AUTOPLAY:
                 return new ResourceItem(
@@ -63,8 +63,6 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                         null,
                         "getResourceItem",
                         int.class,
-                        contentType,
-                        SiteSettingsDelegate.class,
-                        delegate);
+                        contentType);
     }
 }

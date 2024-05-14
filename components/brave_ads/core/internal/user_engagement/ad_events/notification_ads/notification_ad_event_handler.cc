@@ -86,12 +86,12 @@ void NotificationAdEventHandler::NotifyDidFireNotificationAdEvent(
   }
 
   switch (event_type) {
-    case mojom::NotificationAdEventType::kServed: {
+    case mojom::NotificationAdEventType::kServedImpression: {
       delegate_->OnDidFireNotificationAdServedEvent(ad);
       break;
     }
 
-    case mojom::NotificationAdEventType::kViewed: {
+    case mojom::NotificationAdEventType::kViewedImpression: {
       delegate_->OnDidFireNotificationAdViewedEvent(ad);
       break;
     }

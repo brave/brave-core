@@ -22,6 +22,7 @@ class EdgeJSResult final : public EdgeJS {
   EdgeJSResult(GraphItemContext* context,
                NodeJS* out_node,
                NodeScript* in_node,
+               const FrameId& frame_id,
                const blink::PageGraphValue& result);
 
   ~EdgeJSResult() override;

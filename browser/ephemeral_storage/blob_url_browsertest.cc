@@ -293,16 +293,7 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
   }
 };
 
-class BlobUrlPartitionEnabledBrowserTest : public BlobUrlBrowserTestBase {
- public:
-  BlobUrlPartitionEnabledBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBravePartitionBlobStorage);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
+using BlobUrlPartitionEnabledBrowserTest = BlobUrlBrowserTestBase;
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitioned) {
@@ -326,17 +317,6 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
-                       BlobsAreNotPartitionedWhenShieldsDisabled) {
-  // Disable shields on a.com and b.com.
-  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
-                                        a_site_ephemeral_storage_url_);
-  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
-                                        b_site_ephemeral_storage_url_);
-
-  TestBlobsAreNotPartitioned();
-}
-
-IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
                        BlobsArePartitionedIn1PESMode) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   TestBlobsArePartitioned();
@@ -353,7 +333,7 @@ class BlobUrlPartitionDisabledBrowserTest : public BlobUrlBrowserTestBase {
  public:
   BlobUrlPartitionDisabledBrowserTest() {
     scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBravePartitionBlobStorage);
+        net::features::kSupportPartitionedBlobUrl);
   }
 
  private:
@@ -361,23 +341,6 @@ class BlobUrlPartitionDisabledBrowserTest : public BlobUrlBrowserTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionDisabledBrowserTest,
-                       BlobsAreNotPartitioned) {
-  TestBlobsAreNotPartitioned();
-}
-
-class BlobUrlEphemeralStorageDisabledBrowserTest
-    : public BlobUrlBrowserTestBase {
- public:
-  BlobUrlEphemeralStorageDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBraveEphemeralStorage);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BlobUrlEphemeralStorageDisabledBrowserTest,
                        BlobsAreNotPartitioned) {
   TestBlobsAreNotPartitioned();
 }
@@ -390,7 +353,7 @@ class BlobUrlBrowserTest : public BlobUrlBrowserTestBase,
  public:
   BlobUrlBrowserTest() {
     scoped_feature_list_.InitWithFeatureState(
-        net::features::kBravePartitionBlobStorage, GetParam());
+        net::features::kSupportPartitionedBlobUrl, GetParam());
   }
 
  private:

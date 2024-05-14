@@ -9,6 +9,7 @@ const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/logging')
+const depotTools = require('../lib/depotTools')
 const syncUtil = require('../lib/syncUtils')
 
 program
@@ -66,9 +67,7 @@ async function RunCommand() {
     program.sync_chromium = false
   }
 
-  if (program.init || !fs.existsSync(config.depotToolsDir)) {
-    syncUtil.maybeInstallDepotTools()
-  }
+  depotTools.installDepotTools()
 
   if (program.init || !fs.existsSync(config.defaultGClientFile)) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)

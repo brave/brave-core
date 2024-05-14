@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -21,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -55,16 +55,27 @@ size_t BindParameters(mojom::DBCommandInfo* command,
 
   int index = 0;
   for (const auto& transaction : transactions) {
+    if (!transaction.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid transaction");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     BindString(command, index++, transaction.id);
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(transaction.created_at));
+              ToChromeTimestampFromTime(
+                  transaction.created_at.value_or(base::Time())));
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
     BindString(command, index++, transaction.segment);
     BindString(command, index++, ToString(transaction.ad_type));
     BindString(command, index++, ToString(transaction.confirmation_type));
     BindInt64(command, index++,
-              ToChromeTimestampFromTime(transaction.reconciled_at));
+              ToChromeTimestampFromTime(
+                  transaction.reconciled_at.value_or(base::Time())));
 
     ++count;
   }
@@ -78,13 +89,21 @@ TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   TransactionInfo transaction;
 
   transaction.id = ColumnString(record, 0);
-  transaction.created_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 1));
+  const base::Time created_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 1));
+  if (!created_at.is_null()) {
+    transaction.created_at = created_at;
+  }
   transaction.creative_instance_id = ColumnString(record, 2);
   transaction.value = ColumnDouble(record, 3);
   transaction.segment = ColumnString(record, 4);
   transaction.ad_type = ToAdType(ColumnString(record, 5));
   transaction.confirmation_type = ToConfirmationType(ColumnString(record, 6));
-  transaction.reconciled_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 7));
+  const base::Time reconciled_at =
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 7));
+  if (!reconciled_at.is_null()) {
+    transaction.reconciled_at = reconciled_at;
+  }
 
   return transaction;
 }
@@ -104,6 +123,15 @@ void GetCallback(GetTransactionsCallback callback,
 
   for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(&*record);
+    if (!transaction.IsValid()) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Invalid transaction");
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     transactions.push_back(transaction);
   }
 
@@ -302,7 +330,6 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
   for (const auto& payment_token : payment_tokens) {
     transaction_ids.push_back(payment_token.transaction_id);
   }
-  transaction_ids.emplace_back(rewards::kMigrationUnreconciledTransactionId);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -330,8 +357,6 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
     BindString(&*command, index, transaction_id);
     ++index;
   }
-
-  BindString(&*command, index, rewards::kMigrationUnreconciledTransactionId);
 
   transaction->commands.push_back(std::move(command));
 

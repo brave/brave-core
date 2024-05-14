@@ -40,64 +40,72 @@ class BraveAdsAdEventCacheTest : public UnitTestBase {
 
 TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForNewType) {
   // Arrange
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now()};
-  EXPECT_EQ(
-      expected_cached_ad_events,
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(expected_cached_ad_events,
+            GetCachedAdEvents(AdType::kNotificationAd,
+                              ConfirmationType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForExistingType) {
   // Arrange
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now(), Now()};
-  EXPECT_EQ(
-      expected_cached_ad_events,
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(expected_cached_ad_events,
+            GetCachedAdEvents(AdType::kNotificationAd,
+                              ConfirmationType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForMultipleIds) {
   // Arrange
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
-  CacheAdEvent(kID2, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
+  CacheAdEvent(kID2, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now(), Now()};
-  EXPECT_EQ(
-      expected_cached_ad_events,
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(expected_cached_ad_events,
+            GetCachedAdEvents(AdType::kNotificationAd,
+                              ConfirmationType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForMultipleAdTypes) {
   // Arrange
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
   CacheAdEvent(kID1, AdType::kNewTabPageAd, ConfirmationType::kClicked);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now()};
-  EXPECT_EQ(
-      expected_cached_ad_events,
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(expected_cached_ad_events,
+            GetCachedAdEvents(AdType::kNotificationAd,
+                              ConfirmationType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheTest, PurgeCacheOlderThan) {
   // Arrange
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
 
   AdvanceClockBy(base::Days(1) + base::Milliseconds(1));
 
-  CacheAdEvent(kID1, AdType::kNotificationAd, ConfirmationType::kViewed);
+  CacheAdEvent(kID1, AdType::kNotificationAd,
+               ConfirmationType::kViewedImpression);
 
   // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now()};
-  EXPECT_EQ(
-      expected_cached_ad_events,
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kViewed));
+  EXPECT_EQ(expected_cached_ad_events,
+            GetCachedAdEvents(AdType::kNotificationAd,
+                              ConfirmationType::kViewedImpression));
 }
 
 }  // namespace brave_ads

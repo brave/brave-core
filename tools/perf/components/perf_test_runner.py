@@ -7,6 +7,7 @@ import logging
 import os
 import shutil
 import time
+import sys
 from copy import deepcopy
 from typing import List, Optional, Tuple, Set
 from lib.util import scoped_cwd
@@ -21,9 +22,8 @@ from components.perf_config import (BenchmarkConfig, ParseTarget,
 
 
 def ReportToDashboardImpl(
-    dashboard_bot_name: str, version: BraveVersion,
+    dashboard_bot_name: str, version: BraveVersion, griffin_rev: Optional[str],
     output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
-  chromium_version_str = version.chromium_version.to_string()
 
   args = [
       path_util.GetVpython3Path(),
@@ -37,7 +37,7 @@ def ReportToDashboardImpl(
 
   build_properties = {}
   build_properties['bot_id'] = 'test_bot'
-  build_properties['builder_group'] = 'brave.perf'
+  build_properties['perf_dashboard_machine_group'] = 'BravePerf'
 
   build_properties['recipe'] = 'chromium'
   build_properties['slavename'] = 'test_bot'
@@ -45,20 +45,28 @@ def ReportToDashboardImpl(
   # Jenkins CI specific variable. Must be set when reporting is on.
   job_name = os.environ.get('JOB_NAME')
   build_number = os.environ.get('BUILD_NUMBER')
-  assert (job_name is not None)
-  assert (build_number is not None)
+  if job_name is None or build_number is None:
+    raise RuntimeError('Set env JOB_NAME & BUILD_NUMBER or use --local-run')
   build_properties['buildername'] = job_name
   build_properties['buildnumber'] = build_number
 
+  chromium_version_str = version.chromium_version.to_string()
+  os.environ['DASHBOARD_EXTRA_DIAG_brave_chrome_version'] = chromium_version_str
+  os.environ['DASHBOARD_EXTRA_DIAG_brave_tag'] = version.to_string()
+  os.environ['DASHBOARD_EXTRA_DIAG_brave_job_name'] = job_name
+  os.environ['DASHBOARD_EXTRA_DIAG_brave_job_id'] = build_number
+
+  if griffin_rev is not None:
+    os.environ['DASHBOARD_EXTRA_DIAG_brave_variations_revisions'] = griffin_rev
+
   build_properties[
       'got_revision_cp'] = 'refs/heads/main@{#%s}' % version.revision_number
-  build_properties['got_revision'] = version.git_hash
+  build_properties['got_revision'] = version.git_revision
 
-  # Encode and pass tags as v8/webrtc revisions.
-  # Sync the format with the dashboard JavaScript code:
-  # chart-container.html (brave/catapult repo)
-  build_properties['got_v8_revision'] = '0.' + f'{version.last_tag}'[1:]
-  build_properties['got_webrtc_revision'] = chromium_version_str
+  # It's necessary for process_perf_results.py, will be removed in patched
+  # MakeHistogramSetWithDiagnostics
+  build_properties['got_v8_revision'] = '0'
+  build_properties['got_webrtc_revision'] = '0'
 
   build_properties_serialized = json.dumps(build_properties)
   args.append('--build-properties=' + build_properties_serialized)
@@ -167,6 +175,8 @@ class RunableConfiguration:
       suffix = '.reference' if config.browser_type.report_as_reference else ''
       bench_out_dir = os.path.join(out_dir, benchmark_name,
                                    benchmark_name + suffix)
+      if os.path.exists(bench_out_dir):
+        shutil.rmtree(bench_out_dir)
 
       args.extend([
           f'--output-dir={bench_out_dir}', '--output-format=json-test-results',
@@ -195,11 +205,19 @@ class RunableConfiguration:
       for story in benchmark_config.stories:
         args.append(f'--story={story}')
 
+    # Optimize redownloading trace_processor_shell: if the file exists use it.
+    is_win = sys.platform == 'win32'
+    trace_processor_path = os.path.join(
+        path_util.GetChromiumPerfDir(), 'core', 'perfetto_binary_roller', 'bin',
+        'trace_processor_shell' + ('.exe' if is_win else ''))
+    if os.path.isfile(trace_processor_path):
+      args.append(f'--trace-processor-path={trace_processor_path}')
+
     extra_browser_args = deepcopy(config.extra_browser_args)
     extra_browser_args.extend(config.browser_type.extra_browser_args)
     if self.binary.field_trial_config:
       extra_browser_args.append(
-          f'--field-trial-config={self.binary.field_trial_config}')
+          f'--field-trial-config={self.binary.field_trial_config.filename}')
 
     args.extend(config.browser_type.extra_benchmark_args)
     args.extend(config.extra_benchmark_args)
@@ -244,13 +262,18 @@ class RunableConfiguration:
         test_out_dir = os.path.join(self.out_dir, 'results')
       logging.info('Running test %s', benchmark.name)
 
-      test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
-                                        self.common_options.local_run)
-
+      test_success: Optional[bool] = None
+      attempt: int = 0
+      while test_success != True and attempt <= self.common_options.retry_count:
+        attempt += 1
+        test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
+                                          self.common_options.local_run)
+        if not test_success:
+          error = (f'[attempt {attempt}] Test {benchmark.name}' +
+                   f' failed on binary {self.binary}')
+          self.logs.append(error)
       if not test_success:
         has_failure = True
-        error = f'Test {benchmark.name} failed on binary {self.binary}'
-        self.logs.append(error)
 
     spent_time = time.time() - start_time
     self.status_line += f'Run {spent_time:.2f}s '
@@ -262,8 +285,12 @@ class RunableConfiguration:
     start_time = time.time()
     assert self.config.dashboard_bot_name is not None
     assert self.config.version is not None
+    griffin_rev = None
+    if self.binary.field_trial_config is not None:
+      griffin_rev = self.binary.field_trial_config.revision
+
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
-        self.config.dashboard_bot_name, self.config.version,
+        self.config.dashboard_bot_name, self.config.version, griffin_rev,
         os.path.join(self.out_dir, 'results'))
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '

@@ -12,7 +12,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
@@ -33,7 +32,8 @@ void ConfirmationQueue::Add(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
 
   const ConfirmationQueueItemInfo confirmation_queue_item =
-      BuildConfirmationQueueItem(confirmation, ProcessConfirmationAt());
+      BuildConfirmationQueueItem(confirmation,
+                                 /*process_at=*/base::Time::Now());
   CHECK(confirmation_queue_item.IsValid());
 
   database_table_.Save(
@@ -96,16 +96,9 @@ void ConfirmationQueue::ProcessQueueItem(
 
   is_processing_ = true;
 
-  RebuildConfirmationQueueItemDynamicUserData(
-      confirmation_queue_item,
-      base::BindOnce(&ConfirmationQueue::ProcessQueueItemCallback,
-                     base::AsWeakPtr(this)));
-}
-
-void ConfirmationQueue::ProcessQueueItemCallback(
-    const ConfirmationQueueItemInfo& confirmation_queue_item) {
   RedeemConfirmationFactory::BuildAndRedeemConfirmation(
-      base::AsWeakPtr(this), confirmation_queue_item.confirmation);
+      weak_factory_.GetWeakPtr(),
+      RebuildConfirmationDynamicUserData(confirmation_queue_item.confirmation));
 }
 
 void ConfirmationQueue::SuccessfullyProcessedQueueItem(

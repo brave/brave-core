@@ -19,6 +19,7 @@ class EdgeStorage : public GraphEdge {
   EdgeStorage(GraphItemContext* context,
               GraphNode* out_node,
               GraphNode* in_node,
+              const FrameId& frame_id,
               const String& key);
   ~EdgeStorage() override;
 
@@ -38,6 +39,7 @@ class EdgeStorage : public GraphEdge {
   virtual bool IsEdgeStorageSet() const;
 
  private:
+  const FrameId frame_id_;
   const String key_;
 };
 

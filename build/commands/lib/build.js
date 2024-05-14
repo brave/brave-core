@@ -36,7 +36,7 @@ const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
   } else {
     if (options.no_gn_gen === undefined)
       util.generateNinjaFiles()
-    util.buildTarget()
+    util.buildTargets()
   }
 }
 

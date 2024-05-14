@@ -186,13 +186,3 @@ export const manageAction = styled.div`
 `
 
 export const settingGroup = styled.div``
-
-export const vbatNotice = styled.div`
-  margin-bottom: 32px;
-  background: #fff;
-  box-shadow:
-    0px 0px 1px rgba(0, 0, 0, 0.11),
-    0px 0.5px 1.5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-`

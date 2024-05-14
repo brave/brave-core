@@ -12,6 +12,11 @@
 namespace blink {
 
 DOMStringList* Location::ancestorOrigins() const {
+  auto* raw_origins = ancestorOrigins_ChromiumImpl();
+  if (!IsAttached() || !raw_origins || raw_origins->IsEmpty()) {
+    return raw_origins;
+  }
+
   auto* filtered_origins = MakeGarbageCollected<DOMStringList>();
   const auto* innermost_origin =
       DomWindow()->GetFrame()->GetSecurityContext()->GetSecurityOrigin();
@@ -24,7 +29,6 @@ DOMStringList* Location::ancestorOrigins() const {
     return origin->Protocol() == "chrome-untrusted";
   };
 
-  auto* raw_origins = ancestorOrigins_ChromiumImpl();
   for (uint32_t i = 0; i < raw_origins->length(); ++i) {
     const String raw_origin = raw_origins->item(i);
     const scoped_refptr<SecurityOrigin> origin =

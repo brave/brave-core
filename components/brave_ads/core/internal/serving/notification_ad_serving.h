@@ -29,7 +29,6 @@ class AntiTargetingResource;
 class EligibleNotificationAdsBase;
 class SubdivisionTargeting;
 struct NotificationAdInfo;
-struct UserModelInfo;
 
 class NotificationAdServing final : public AdsClientNotifierObserver {
  public:
@@ -61,9 +60,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   bool IsSupported() const { return !!eligible_ads_; }
 
   void GetEligibleAds();
-  void BuildUserModelCallback(const UserModelInfo& user_model);
-  void GetEligibleAdsForUserModelCallback(
-      const CreativeNotificationAdList& creative_ads);
+  void GetEligibleAdsCallback(const CreativeNotificationAdList& creative_ads);
 
   void UpdateMaximumAdsPerHour();
 

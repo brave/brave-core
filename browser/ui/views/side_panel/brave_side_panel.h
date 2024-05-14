@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_multi_source_observation.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -48,10 +49,13 @@ class BraveSidePanel : public views::View,
   ~BraveSidePanel() override;
 
   void SetPanelWidth(int width);
+  double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
   bool IsRightAligned();
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
+  bool IsClosing();
+  void DisableAnimationsForTesting() {}
 
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
@@ -72,8 +76,20 @@ class BraveSidePanel : public views::View,
  private:
   friend class sidebar::SidebarBrowserTest;
 
+  // views::ViewObserver:
+  void OnChildViewAdded(View* observed_view, View* child) override;
+  void OnChildViewRemoved(View* observed_view, View* child) override;
+  void OnViewPropertyChanged(View* observed_view,
+                             const void* key,
+                             int64_t old_value) override;
+
   void UpdateBorder();
   void OnSidePanelWidthChanged();
+
+  // Monitors addition of content view and change content view property that
+  // signals toggling of the view's visiblity.
+  base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
+      this};
 
   HorizontalAlignment horizontal_alignment_ = kHorizontalAlignLeft;
   std::optional<int> starting_width_on_resize_;

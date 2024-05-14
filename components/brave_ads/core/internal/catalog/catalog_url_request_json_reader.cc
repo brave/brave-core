@@ -35,6 +35,10 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   CatalogInfo catalog;
 
   catalog.id = document["catalogId"].GetString();
+  if (catalog.id.empty()) {
+    BLOG(1, "Invalid catalog id");
+    return std::nullopt;
+  }
 
   catalog.version = document["version"].GetInt();
 
@@ -49,12 +53,24 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     CatalogCampaignInfo campaign;
 
     campaign.id = campaign_node["campaignId"].GetString();
+    if (campaign.id.empty()) {
+      BLOG(1, "Invalid campaign id");
+      continue;
+    }
     campaign.priority = campaign_node["priority"].GetInt();
+
     campaign.pass_through_rate = campaign_node["ptr"].GetDouble();
+
     campaign.start_at = campaign_node["startAt"].GetString();
     campaign.end_at = campaign_node["endAt"].GetString();
+
     campaign.daily_cap = campaign_node["dailyCap"].GetInt();
+
     campaign.advertiser_id = campaign_node["advertiserId"].GetString();
+    if (campaign.advertiser_id.empty()) {
+      BLOG(1, "Invalid advertiser id");
+      continue;
+    }
 
     // Geo targets
     const auto& geo_targets_node = campaign_node["geoTargets"].GetArray();
@@ -90,25 +106,21 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       CatalogCreativeSetInfo creative_set;
 
       creative_set.id = creative_set_node["creativeSetId"].GetString();
+      if (creative_set.id.empty()) {
+        BLOG(1, "Invalid creative set id");
+        continue;
+      }
+
       creative_set.per_day = creative_set_node["perDay"].GetInt();
       creative_set.per_week = creative_set_node["perWeek"].GetInt();
       creative_set.per_month = creative_set_node["perMonth"].GetInt();
+
       creative_set.total_max = creative_set_node["totalMax"].GetInt();
 
       const char* value = creative_set_node["value"].GetString();
       if (!base::StringToDouble(value, &creative_set.value)) {
         BLOG(1, "Failed to parse creative set value " << value);
         continue;
-      }
-
-      if (creative_set_node.HasMember("embedding")) {
-        const auto& embedding_nodes = creative_set_node["embedding"].GetArray();
-        creative_set.embedding.reserve(embedding_nodes.Size());
-
-        for (const auto& embedding_node : embedding_nodes) {
-          creative_set.embedding.push_back(
-              static_cast<float>(embedding_node.GetDouble()));
-        }
       }
 
       if (creative_set_node.HasMember("splitTestGroup")) {
@@ -184,8 +196,12 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       // Creatives
       for (const auto& creative_node :
            creative_set_node["creatives"].GetArray()) {
-        const char* creative_instance_id =
+        const std::string creative_instance_id =
             creative_node["creativeInstanceId"].GetString();
+        if (creative_instance_id.empty()) {
+          BLOG(1, "Invalid creative instance id");
+          continue;
+        }
 
         // Type
         const auto& type = creative_node["type"].GetObject();

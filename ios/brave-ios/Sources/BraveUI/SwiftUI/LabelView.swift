@@ -8,12 +8,12 @@ import SwiftUI
 public struct LabelView: View {
   let title: String
   var subtitle: String?
-  
+
   public init(title: String, subtitle: String? = nil) {
     self.title = title
     self.subtitle = subtitle
   }
-  
+
   public var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(title)

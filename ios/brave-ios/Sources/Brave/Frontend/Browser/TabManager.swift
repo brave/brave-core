@@ -362,7 +362,7 @@ class TabManager: NSObject {
       SessionTab.setSelected(tabId: tabId)
     }
 
-    UIImpactFeedbackGenerator(style: .light).bzzt()
+    UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
 
@@ -398,7 +398,6 @@ class TabManager: NSObject {
       }
       rewards?.reportTabUpdated(
         tab: previousTab,
-        url: previousTabUrl,
         isSelected: false,
         isPrivate: previousTab.isPrivate
       )
@@ -408,7 +407,6 @@ class TabManager: NSObject {
       }
       rewards?.reportTabUpdated(
         tab: newSelectedTab,
-        url: newTabUrl,
         isSelected: true,
         isPrivate: newSelectedTab.isPrivate
       )

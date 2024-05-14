@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
@@ -86,9 +85,9 @@ void InlineContentAdHandler::TriggerEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::InlineContentAdEventType::kServed, event_type)
-      << "Should not be called with kServed as this event is handled when "
-         "calling MaybeServe";
+  CHECK_NE(mojom::InlineContentAdEventType::kServedImpression, event_type)
+      << "Should not be called with kServedImpression as this event is handled "
+         "when calling MaybeServe";
 
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false);
@@ -114,7 +113,7 @@ void InlineContentAdHandler::MaybeServeCallback(
   }
 
   event_handler_.FireEvent(ad->placement_id, ad->creative_instance_id,
-                           mojom::InlineContentAdEventType::kServed,
+                           mojom::InlineContentAdEventType::kServedImpression,
                            base::BindOnce(&FireServedEventCallback, dimensions,
                                           *ad, std::move(callback)));
 }
@@ -185,23 +184,21 @@ void InlineContentAdHandler::OnDidServeInlineContentAd(
 
 void InlineContentAdHandler::OnDidFireInlineContentAdServedEvent(
     const InlineContentAdInfo& ad) {
-  BLOG(3, "Served inline content ad with placement id "
+  BLOG(3, "Served inline content ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-
-  ClientStateManager::GetInstance().UpdateSeenAd(ad);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
     const InlineContentAdInfo& ad) {
-  BLOG(3, "Viewed inline content ad with placement id "
+  BLOG(3, "Viewed inline content ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewedImpression);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(

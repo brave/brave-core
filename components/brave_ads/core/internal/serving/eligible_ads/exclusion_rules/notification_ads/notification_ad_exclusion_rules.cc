@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/creative_instance_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_dismissed_exclusion_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_embedding_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -29,8 +28,6 @@ NotificationAdExclusionRules::NotificationAdExclusionRules(
 
   exclusion_rules_.push_back(
       std::make_unique<NotificationAdDismissedExclusionRule>(ad_events));
-
-  exclusion_rules_.push_back(std::make_unique<EmbeddingExclusionRule>());
 }
 
 NotificationAdExclusionRules::~NotificationAdExclusionRules() = default;

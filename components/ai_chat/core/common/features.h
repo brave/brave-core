@@ -22,6 +22,7 @@ extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
 extern const base::FeatureParam<bool> kFreemiumAvailable;
 
 extern const base::FeatureParam<bool> kAIChatSSE;
+extern const base::FeatureParam<bool> kConversationAPIEnabled;
 extern const base::FeatureParam<double> kAITemperature;
 
 bool IsAIChatEnabled();
@@ -29,6 +30,9 @@ bool IsAIChatEnabled();
 BASE_DECLARE_FEATURE(kAIChatHistory);
 
 bool IsAIChatHistoryEnabled();
+
+BASE_DECLARE_FEATURE(kContextMenuRewriteInPlace);
+bool IsContextMenuRewriteInPlaceEnabled();
 
 }  // namespace ai_chat::features
 

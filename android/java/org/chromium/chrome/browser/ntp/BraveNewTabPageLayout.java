@@ -125,6 +125,7 @@ public class BraveNewTabPageLayout
     private static final String TAG = "BraveNewTabPage";
 
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
+    private static final int HOUR_MS = 3_600_000;
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
@@ -182,7 +183,7 @@ public class BraveNewTabPageLayout
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
-    private boolean mNewsFeedViewedOnce;
+    private long mNewsFeedLastViewTime;
 
     private Supplier<Tab> mTabProvider;
 
@@ -192,7 +193,7 @@ public class BraveNewTabPageLayout
         super(context, attrs);
 
         mContext = context;
-        mProfile = Profile.getLastUsedRegularProfile();
+        mProfile = ProfileManager.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
@@ -482,11 +483,13 @@ public class BraveNewTabPageLayout
                         }
                         if (mIsDisplayNewsFeed
                                 && firstVisibleItemPosition >= newsFeedPosition - 1) {
-                            if (!mNewsFeedViewedOnce && mBraveNewsController != null) {
+                            long nowMillis = System.currentTimeMillis();
+                            if ((nowMillis - HOUR_MS) > mNewsFeedLastViewTime
+                                    && mBraveNewsController != null) {
                                 // Brave News interaction started
                                 mBraveNewsController.onInteractionSessionStarted();
-                                mNewsFeedViewedOnce = true;
                             }
+                            mNewsFeedLastViewTime = nowMillis;
                             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                                 mEndCardViewTime = System.currentTimeMillis();
                                 long timeDiff = mEndCardViewTime - mStartCardViewTime;
@@ -1168,11 +1171,11 @@ public class BraveNewTabPageLayout
             UiConfig uiConfig,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             NewTabPageUma uma,
-            boolean isIncognito,
+            Profile profile,
             WindowAndroid windowAndroid,
-            boolean isNtpAsHomeSurfaceOnTablet,
             boolean isSurfacePolishEnabled,
             boolean isSurfacePolishOmniboxColorEnabled,
+            boolean isSurfacePolishLessBrandSpaceEnabled,
             boolean isTablet,
             ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
@@ -1186,11 +1189,11 @@ public class BraveNewTabPageLayout
                 uiConfig,
                 lifecycleDispatcher,
                 uma,
-                isIncognito,
+                profile,
                 windowAndroid,
-                isNtpAsHomeSurfaceOnTablet,
                 isSurfacePolishEnabled,
                 isSurfacePolishOmniboxColorEnabled,
+                isSurfacePolishLessBrandSpaceEnabled,
                 isTablet,
                 tabStripHeightSupplier);
 
@@ -1232,9 +1235,10 @@ public class BraveNewTabPageLayout
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBackgroundImage(ntpImage);
 
-        } else if (UserPrefs.get(Profile.getLastUsedRegularProfile())
-                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
+        } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                && mSponsoredTab != null
+                && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
         }
     }
@@ -1488,18 +1492,8 @@ public class BraveNewTabPageLayout
     protected boolean isScrollableMvtEnabled() {
         return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
-                && UserPrefs.get(Profile.getLastUsedRegularProfile())
-                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
-    }
-
-    @Override
-    void setSearchProviderTopMargin(int topMargin) {
-        if (mLogoCoordinator != null) mLogoCoordinator.setTopMargin(topMargin);
-    }
-
-    @Override
-    void setSearchProviderBottomMargin(int bottomMargin) {
-        if (mLogoCoordinator != null) mLogoCoordinator.setBottomMargin(bottomMargin);
+                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
     private int getMaxRowsForMostVisitedTiles() {

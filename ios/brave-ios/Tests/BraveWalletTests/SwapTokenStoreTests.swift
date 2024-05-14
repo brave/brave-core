@@ -324,9 +324,15 @@ class SwapStoreTests: XCTestCase {
         XCTFail("Coin type is not supported for swap")
       }
     }
-    swapService._transaction = { _, completion in
+    swapService._transaction = { params, completion in
       if coin == .eth {
-        completion(.init(zeroExTransaction: .init()), nil, "")
+        if params.zeroExTransactionParams != nil {
+          completion(.init(zeroExTransaction: .init()), nil, "")
+        } else if params.lifiTransactionParams != nil {
+          completion(.init(lifiTransaction: .init(evmTransaction: .init())), nil, "")
+        } else {
+          XCTFail("Unexpected swap transaction params")
+        }
       } else if coin == .sol {
         completion(.init(jupiterTransaction: .init()), nil, "")
       } else {
@@ -360,8 +366,8 @@ class SwapStoreTests: XCTestCase {
     )
   }
 
-  /// Test change to `sellAmount` (from value) will fetch price quote and assign to `buyAmount`
-  func testFetchPriceQuoteSell() {
+  /// Test change to `sellAmount` (from value) will fetch ZeroEx price quote and assign to `buyAmount`
+  func testFetchZeroExPriceQuoteSell() {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -396,7 +402,7 @@ class SwapStoreTests: XCTestCase {
       )
     )
     swapService._quote = { _, completion in
-      completion(.init(zeroExQuote: zeroExQuote), .mockZeroExFees, nil, "")
+      completion(.init(zeroExQuote: zeroExQuote), .mockEthFees, nil, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -436,8 +442,8 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  /// Test change to `buyAmount` (to value) will fetch price quote and assign to `buyAmount`
-  func testFetchPriceQuoteBuy() {
+  /// Test change to `buyAmount` (to value) will fetch ZeroEx price quote and assign to `buyAmount`
+  func testFetchZeroExPriceQuoteBuy() {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -445,7 +451,7 @@ class SwapStoreTests: XCTestCase {
     let zeroExQuote: BraveWallet.ZeroExQuote = .init()
     zeroExQuote.sellAmount = "3000000000000000000"
     swapService._quote = { _, completion in
-      completion(.init(zeroExQuote: zeroExQuote), .mockZeroExFees, nil, "")
+      completion(.init(zeroExQuote: zeroExQuote), .mockEthFees, nil, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -502,8 +508,8 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  /// Test change to `sellAmount` (from value) will fetch price quote and assign to `buyAmount` on Solana Mainnet
-  func testSolanaFetchPriceQuoteSell() {
+  /// Test change to `sellAmount` (from value) will fetch Jupiter price quote and assign to `buyAmount` on Solana Mainnet
+  func testFetchJupiterPriceQuoteSell() {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -588,8 +594,8 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  /// Test change to `sellAmount` (from value) will fetch price quote and display insufficient liquidity (when returned by Jupiter price quote)
-  func testSolanaFetchPriceQuoteInsufficientLiquidity() {
+  /// Test change to `sellAmount` (from value) will fetch Jupiter price quote and display insufficient liquidity (when returned by Jupiter price quote)
+  func testFetchJupiterPriceQuoteInsufficientLiquidity() {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -648,8 +654,114 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
+  /// Test change to `sellAmount` (from value) will fetch LiFi price quote and assign to `buyAmount`
+  func testFetchLiFiPriceQuoteSell() {
+    let (
+      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
+      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
+    ) = setupServices()
+    let lifiQuote: BraveWallet.LiFiQuote = .mockOneETHtoUSDCQuote
+    swapService._quote = { _, completion in
+      completion(.init(lifiQuote: lifiQuote), .mockEthFees, nil, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager,
+      prefilledToken: nil
+    )
+
+    let buyAmountExpectation = expectation(description: "buyAmountExpectation")
+    store.$buyAmount
+      .dropFirst()
+      .collect(3)
+      .sink { buyAmounts in
+        defer { buyAmountExpectation.fulfill() }
+        guard let buyAmount = buyAmounts.last else {
+          XCTFail("Expected multiple buyAmount assignments.")
+          return
+        }
+        XCTAssertFalse(buyAmount.isEmpty)
+        XCTAssertEqual(buyAmount, "3537.7229")
+      }
+      .store(in: &cancellables)
+
+    XCTAssertTrue(store.buyAmount.isEmpty)
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(sellAmount: "1")
+    waitForExpectations(timeout: 2) { error in
+      XCTAssertNil(error)
+      // Verify fees
+      XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
+    }
+  }
+
+  /// Test change to `sellAmount` (from value) will fetch LiFi price quote and display insufficient liquidity (when returned by LiFi price quote)
+  func testFetchLiFiPriceQuoteInsufficientLiquidity() {
+    let (
+      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
+      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
+    ) = setupServices(
+      network: .mockMainnet,
+      coin: .eth
+    )
+    swapService._quote = { _, completion in
+      let errorUnion: BraveWallet.SwapErrorUnion = .init(
+        lifiError: .init(
+          message: "",
+          code: .notFoundError
+        )
+      )
+      completion(nil, nil, errorUnion, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager,
+      prefilledToken: nil
+    )
+
+    let stateExpectation = expectation(description: "stateExpectation")
+    store.$state
+      .dropFirst()
+      .collect(5)  // sellAmount, buyAmount didSet to `.idle`
+      .sink { states in
+        defer { stateExpectation.fulfill() }
+        guard let state = states.last else {
+          XCTFail("Expected multiple state updates.")
+          return
+        }
+        XCTAssertEqual(state, .error(Strings.Wallet.insufficientLiquidity))
+      }
+      .store(in: &cancellables)
+
+    XCTAssertNotEqual(store.state, .error(Strings.Wallet.insufficientLiquidity))
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(
+      fromAccount: .mockEthAccount,
+      selectedFromToken: .previewToken,
+      selectedToToken: .mockUSDCToken,
+      sellAmount: "0.01"
+    )
+    waitForExpectations(timeout: 2) { error in
+      XCTAssertNil(error)
+    }
+  }
+
   /// Test creating ERC20 approve transaction on EIP1559 network
-  @MainActor func testSwapERC20EIP1559Transaction() async {
+  @MainActor func testSwapERC20ApproveEIP1559Transaction() async {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -681,7 +793,7 @@ class SwapStoreTests: XCTestCase {
   }
 
   /// Test creating ERC20 approve transaction on non-EIP1559 network
-  @MainActor func testSwapERC20Transaction() async {
+  @MainActor func testSwapERC20ApproveTransaction() async {
     // Celo Mainnet / `.mockCelo` is not EIP1559
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
@@ -715,7 +827,7 @@ class SwapStoreTests: XCTestCase {
   }
 
   /// Test creating a eth swap transaction on EIP1559 network
-  @MainActor func testSwapETHSwapEIP1559Transaction() async {
+  @MainActor func testZeroExSwapETHEIP1559Transaction() async {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
@@ -740,7 +852,7 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest(
       currentSwapQuoteInfo: .init(
         base: .perSellAsset,
-        swapQuote: nil,
+        swapQuote: .init(zeroExQuote: .mockOneETHToBATQuote),
         swapFees: nil
       )
     )
@@ -753,8 +865,8 @@ class SwapStoreTests: XCTestCase {
     XCTAssertNil(submittedTxData?.ethTxData)
   }
 
-  /// Test creating a eth swap transaction on non-EIP1559 network
-  @MainActor func testSwapETHSwapTransaction() async {
+  /// Test creating a eth swap transaction on non-EIP1559 network using ZeroEx quote
+  @MainActor func testZeroExSwapETHTransaction() async {
     // Celo Mainnet / `.mockCelo` is not EIP1559
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
@@ -780,7 +892,46 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest(
       currentSwapQuoteInfo: .init(
         base: .perSellAsset,
-        swapQuote: nil,
+        swapQuote: .init(zeroExQuote: .mockOneETHToBATQuote),
+        swapFees: nil
+      )
+    )
+    store.state = .swap
+
+    let success = await store.createSwapTransaction()
+    XCTAssertTrue(success, "Expected to successfully create transaction")
+    XCTAssertFalse(store.isMakingTx)
+    XCTAssertNotNil(submittedTxData?.ethTxData)
+    XCTAssertNil(submittedTxData?.ethTxData1559)
+  }
+
+  /// Test creating a eth swap transaction on non-EIP1559 network using LiFi quote
+  @MainActor func testLiFiSwapETHTransaction() async {
+    let (
+      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
+      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
+    ) = setupServices(network: .mockCelo)
+    var submittedTxData: BraveWallet.TxDataUnion?
+    txService._addUnapprovedTransaction = { txData, _, _, completion in
+      submittedTxData = txData
+      completion(true, "tx-meta-id", "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager,
+      prefilledToken: nil
+    )
+    store.setUpTest(
+      currentSwapQuoteInfo: .init(
+        base: .perSellAsset,
+        swapQuote: .init(lifiQuote: .mockOneETHtoUSDCQuote),
         swapFees: nil
       )
     )

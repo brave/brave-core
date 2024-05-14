@@ -7,6 +7,7 @@ package org.chromium.components.safe_browsing;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
+import android.webkit.URLUtil;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -79,7 +80,8 @@ public class BraveSafeBrowsingApiHandler implements SafetyNetApiHandler {
     @Override
     public void startUriLookup(final long callbackId, String uri, int[] threatsOfInterest) {
         if (mBraveSafeBrowsingApiHandlerDelegate == null
-                || !mBraveSafeBrowsingApiHandlerDelegate.isSafeBrowsingEnabled()) {
+                || !mBraveSafeBrowsingApiHandlerDelegate.isSafeBrowsingEnabled()
+                || !isHttpsOrHttp(uri)) {
             mObserver.onUrlCheckDone(
                     callbackId, SafeBrowsingResult.TIMEOUT, "{}", DEFAULT_CHECK_DELTA);
             return;
@@ -191,5 +193,9 @@ public class BraveSafeBrowsingApiHandler implements SafetyNetApiHandler {
         return 0
                 != (mBraveSafeBrowsingApiHandlerDelegate.getActivity().getApplicationInfo().flags
                         & ApplicationInfo.FLAG_DEBUGGABLE);
+    }
+
+    private boolean isHttpsOrHttp(String uri) {
+        return URLUtil.isHttpsUrl(uri) || URLUtil.isHttpUrl(uri);
     }
 }

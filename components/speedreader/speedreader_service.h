@@ -67,6 +67,14 @@ class SpeedreaderService : public KeyedService {
   bool IsEnabledForSite(const GURL& url);
   bool IsEnabledForSite(content::WebContents* contents);
 
+  // Returns |true| if GetEnabledForSiteSetting is ALLOW.
+  bool IsExplicitlyEnabledForSite(const GURL& url);
+  bool IsExplicitlyEnabledForSite(content::WebContents* contents);
+
+  // Returns |true| if GetEnabledForSiteSetting is BLOCK.
+  bool IsExplicitlyDisabledForSite(const GURL& url);
+  bool IsExplicitlyDisabledForSite(content::WebContents* contents);
+
   // Allow or deny a site(all sites) from being run through speedreader.
   void EnableForAllSites(bool enabled);
   void EnableForSite(const GURL& url, bool enabled);

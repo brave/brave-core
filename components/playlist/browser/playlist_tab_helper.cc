@@ -7,18 +7,20 @@
 
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/playlist/common/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -26,28 +28,21 @@
 namespace playlist {
 
 // static
-void PlaylistTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents,
-    playlist::PlaylistService* service) {
-  if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    return;
-  }
-
-  if (!service) {
-    // |service| could be null when the service is not supported for the
-    // browser context.
-    return;
-  }
-
+void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
+                                             PlaylistService* service) {
   content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      contents, service);
+      web_contents, service);
+  PlaylistMediaHandler::CreateForWebContents(
+      web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                        service->GetWeakPtr()));
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents), service_(service) {
-  Observe(contents);
   CHECK(service_);
+
+  Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 
   playlist_enabled_pref_.Init(
@@ -114,7 +109,7 @@ void PlaylistTabHelper::MoveItemsToNewPlaylist(
     const std::string& new_playlist_name) {
   CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
 
-  auto new_playlist = playlist::mojom::Playlist::New();
+  auto new_playlist = mojom::Playlist::New();
   new_playlist->name = new_playlist_name;
   service_->CreatePlaylist(
       std::move(new_playlist),
@@ -158,31 +153,6 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
-bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
-  return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
-}
-
-bool PlaylistTabHelper::IsExtractingMediaFromBackgroundWebContents() const {
-  return !!media_extracted_from_background_web_contents_callback_;
-}
-
-void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
-    base::OnceCallback<void(bool)> extracted_callback) {
-  if (!ShouldExtractMediaFromBackgroundWebContents()) {
-    std::move(extracted_callback).Run(true);
-    return;
-  }
-
-  media_extracted_from_background_web_contents_callback_ =
-      std::move(extracted_callback);
-  media_extraction_from_background_web_contents_timer_.Start(
-      FROM_HERE, base::Seconds(10),
-      base::BindOnce(
-          &PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout,
-          weak_ptr_factory_.GetWeakPtr()));
-  ExtractMediaFromBackgroundContents();
-}
-
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
@@ -213,12 +183,6 @@ void PlaylistTabHelper::DidFinishNavigation(
   }
 
   DVLOG(2) << __FUNCTION__;
-
-  if (auto old_url =
-          std::exchange(target_url_, web_contents()->GetLastCommittedURL());
-      old_url == target_url_) {
-    return;
-  }
 
   // We're resetting data on finish, not on start, because navigation could fail
   // or aborted.
@@ -298,19 +262,39 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  if (items.empty()) {
+  if (!*playlist_enabled_pref_) {
     return;
   }
 
-  OnFoundMediaFromContents(url, std::move(items));
+  auto* contents = web_contents();
+  if (!contents || url != contents->GetLastCommittedURL()) {
+    return;
+  }
+
+  for (auto& new_item : items) {
+    const auto it = base::ranges::find_if(
+        found_items_,
+        [&](const auto& media_source) {
+          return media_source == new_item->media_source;
+        },
+        &mojom::PlaylistItem::media_source);
+    if (it != found_items_.cend()) {
+      DVLOG(2) << "The media source with url (" << (*it)->media_source
+               << ") already exists so update the data";
+      *it = std::move(new_item);
+    } else {
+      found_items_.push_back(std::move(new_item));
+    }
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnFoundItemsChanged(found_items_);
+  }
 }
 
 void PlaylistTabHelper::ResetData() {
   saved_items_.clear();
   found_items_.clear();
-  sent_extract_media_request_ = false;
-  media_extracted_from_background_web_contents_callback_.Reset();
-  media_extraction_from_background_web_contents_timer_.Stop();
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -347,104 +331,6 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
-  }
-}
-
-void PlaylistTabHelper::ExtractMediaFromBackgroundContents() {
-  if (!*playlist_enabled_pref_) {
-    return;
-  }
-
-  if (sent_extract_media_request_) {
-    return;
-  }
-
-  CHECK(service_);
-
-  service_->ExtractMediaFromBackgroundWebContents(
-      web_contents(),
-      base::BindOnce(&PlaylistTabHelper::OnFoundMediaFromContents,
-                     weak_ptr_factory_.GetWeakPtr()));
-
-  sent_extract_media_request_ = true;
-}
-
-void PlaylistTabHelper::OnFoundMediaFromContents(
-    const GURL& url,
-    std::vector<mojom::PlaylistItemPtr> items) {
-  if (!*playlist_enabled_pref_) {
-    return;
-  }
-
-  CHECK(web_contents());
-  if (url != web_contents()->GetLastCommittedURL()) {
-    return;
-  }
-
-  if (!items.empty() &&
-      service_->ShouldExtractMediaFromBackgroundWebContents(items)) {
-    if (IsExtractingMediaFromBackgroundWebContents()) {
-      // We don't have to update found items with |items| as they're going to
-      // be replaced.
-      return;
-    }
-
-    if (found_items_.size() &&
-        !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-      // We don't want to override |found_items_| with |items| as it results in
-      // refetching.
-      return;
-    }
-  }
-
-  DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
-
-  if (IsExtractingMediaFromBackgroundWebContents()) {
-    found_items_.clear();
-  }
-
-  for (auto& new_item : items) {
-    const auto it = base::ranges::find_if(
-        found_items_,
-        [&](const auto& media_source) {
-          return media_source == new_item->media_source;
-        },
-        &mojom::PlaylistItem::media_source);
-    if (it != found_items_.cend()) {
-      DVLOG(2) << "The media source with url (" << (*it)->media_source
-               << ") already exists so update the data";
-      *it = std::move(new_item);
-    } else {
-      found_items_.push_back(std::move(new_item));
-    }
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnFoundItemsChanged(found_items_);
-  }
-
-  if (found_items_.size() &&
-      !service_->ShouldExtractMediaFromBackgroundWebContents(found_items_)) {
-    // Wait until we find media or timeout. Some pages might not have media
-    // initially but update media later.
-    if (media_extracted_from_background_web_contents_callback_) {
-      std::move(media_extracted_from_background_web_contents_callback_)
-          .Run(true);
-    }
-    media_extraction_from_background_web_contents_timer_.Stop();
-  }
-  sent_extract_media_request_ = false;
-}
-
-void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {
-  // Media extraction failed. Found items is blob: that we can't cache from.
-  // Thus, clear them.
-  found_items_.clear();
-  CHECK(media_extracted_from_background_web_contents_callback_);
-  std::move(media_extracted_from_background_web_contents_callback_).Run(false);
-
-  for (auto& observer : observers_) {
-    observer.OnFoundItemsChanged(found_items_);
   }
 }
 

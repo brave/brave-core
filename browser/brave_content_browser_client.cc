@@ -39,6 +39,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -66,7 +67,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
-#include "brave/components/de_amp/browser/de_amp_throttle.h"
+#include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
@@ -187,7 +188,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_body_distiller.h"
+#include "brave/components/speedreader/speedreader_distilled_page_producer.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
@@ -218,6 +220,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
@@ -239,13 +242,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "components/omnibox/browser/omnibox.mojom.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #endif
 
@@ -328,24 +330,6 @@ void BindCosmeticFiltersResources(
       FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
                                 std::move(receiver)));
 }
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-void BindPlaylistMediaHandler(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<playlist::mojom::PlaylistMediaHandler> receiver) {
-  auto* playlist_service =
-      playlist::PlaylistServiceFactory::GetForBrowserContext(
-          frame_host->GetBrowserContext());
-  if (!playlist_service) {
-    // We don't support playlist on OTR profile.
-    return;
-  }
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<playlist::PlaylistMediaHandler>(
-          frame_host->GetGlobalId(), playlist_service->GetWeakPtr()),
-      std::move(receiver));
-}
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
@@ -581,6 +565,18 @@ void BraveContentBrowserClient::
       &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
+#if !BUILDFLAG(IS_ANDROID)
+  associated_registry.AddInterface<
+      geolocation::mojom::BraveGeolocationPermission>(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<
+             geolocation::mojom::BraveGeolocationPermission> receiver) {
+        BraveGeolocationPermissionTabHelper::BindBraveGeolocationPermission(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
+#endif  // !BUILDFLAG(IS_ANDROID)
+
   associated_registry.AddInterface<
       brave_shields::mojom::BraveShieldsHost>(base::BindRepeating(
       [](content::RenderFrameHost* render_frame_host,
@@ -615,6 +611,13 @@ void BraveContentBrowserClient::
           },
           &render_frame_host));
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
+      base::BindRepeating(
+          &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
+          &render_frame_host));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
@@ -655,7 +658,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_news::mojom::BraveNewsController>();
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    ntp_registration.Add<omnibox::mojom::PageHandler>();
+    ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
   if (base::FeatureList::IsEnabled(
@@ -865,11 +868,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
 #endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  map->Add<playlist::mojom::PlaylistMediaHandler>(
-      base::BindRepeating(&BindPlaylistMediaHandler));
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
@@ -953,6 +951,10 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         request.resource_type ==
         static_cast<int>(blink::mojom::ResourceType::kMainFrame);
 
+    auto body_sniffer_throttle =
+        std::make_unique<body_sniffer::BodySnifferThrottle>(
+            base::SingleThreadTaskRunner::GetCurrentDefault());
+
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     auto* tab_helper =
@@ -961,25 +963,32 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
               browser_context);
-      std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
-          speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
-              g_brave_browser_process->speedreader_rewriter_service(),
-              speedreader_service, tab_helper->GetWeakPtr(), request.url,
-              base::SingleThreadTaskRunner::GetCurrentDefault());
-      if (throttle) {
-        result.push_back(std::move(throttle));
+
+      auto producer =
+          speedreader::SpeedreaderDistilledPageProducer::MaybeCreate(
+              tab_helper->GetWeakPtr());
+      if (producer) {
+        body_sniffer_throttle->SetBodyProducer(std::move(producer));
+      }
+
+      auto handler = speedreader::SpeedreaderBodyDistiller::MaybeCreate(
+          g_brave_browser_process->speedreader_rewriter_service(),
+          speedreader_service, tab_helper->GetWeakPtr());
+      if (handler) {
+        body_sniffer_throttle->AddHandler(std::move(handler));
       }
     }
 #endif  // ENABLE_SPEEDREADER
 
     if (isMainFrame) {
       // De-AMP
-      if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-              base::SingleThreadTaskRunner::GetCurrentDefault(), request,
-              wc_getter)) {
-        result.push_back(std::move(de_amp_throttle));
+      auto handler = de_amp::DeAmpBodyHandler::Create(request, wc_getter);
+      if (handler) {
+        body_sniffer_throttle->AddHandler(std::move(handler));
       }
     }
+
+    result.push_back(std::move(body_sniffer_throttle));
 
     if (auto google_sign_in_permission_throttle =
             google_sign_in_permission::GoogleSignInPermissionThrottle::
@@ -997,6 +1006,7 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     int render_process_id,
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
+    const net::IsolationInfo& isolation_info,
     std::optional<int64_t> navigation_id,
     ukm::SourceIdObj ukm_source_id,
     network::URLLoaderFactoryBuilder& factory_builder,
@@ -1014,9 +1024,9 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      std::move(navigation_id), ukm_source_id, factory_builder, header_client,
-      bypass_redirect_checks, disable_secure_dns, factory_override,
-      navigation_response_task_runner);
+      isolation_info, std::move(navigation_id), ukm_source_id, factory_builder,
+      header_client, bypass_redirect_checks, disable_secure_dns,
+      factory_override, navigation_response_task_runner);
 }
 
 bool BraveContentBrowserClient::WillInterceptWebSocket(
@@ -1333,11 +1343,9 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   web_prefs->allow_non_empty_navigator_plugins = true;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (auto* playlist_service =
-          playlist::PlaylistServiceFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext())) {
-    playlist_service->ConfigureWebPrefsForBackgroundWebContents(web_contents,
-                                                                web_prefs);
+  if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
+          web_contents)) {
+    web_prefs->force_cosmetic_filtering = true;
   }
 #endif
 }

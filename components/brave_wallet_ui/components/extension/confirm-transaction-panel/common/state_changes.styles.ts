@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css'
+import { color } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 export const StateChangeText = styled.span<{ color?: string }>`

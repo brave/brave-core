@@ -34,9 +34,6 @@ BuildCreativeInlineContentAdModelBasedPredictorWeights() {
 
   weights.last_seen_ad = kInlineContentAdLastSeenPredictorWeight.Get();
 
-  weights.last_seen_advertiser =
-      kInlineContentAdLastSeenAdvertiserPredictorWeight.Get();
-
   return weights;
 }
 

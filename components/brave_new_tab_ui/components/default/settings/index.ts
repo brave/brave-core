@@ -5,27 +5,24 @@
 
 import styled, { css } from 'styled-components'
 
-import favoritesSelectedLight from './assets/favorites-selected.png'
-import favoritesUnselectedLight from './assets/favorites-unselected.png'
-import frecencySelectedLight from './assets/frecency-selected.png'
-import frecencyUnselectedLight from './assets/frecency-unselected.png'
+import favoritesSelectedLight from './assets/favorites-selected.svg'
+import favoritesUnselectedLight from './assets/favorites-unselected.svg'
+import frecencySelectedLight from './assets/frecency-selected.svg'
+import frecencyUnselectedLight from './assets/frecency-unselected.svg'
 
-import favoritesSelectedDark from './assets/favorites-selected-dark.png'
-import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
-import frecencySelectedDark from './assets/frecency-selected-dark.png'
-import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
+import favoritesSelectedDark from './assets/favorites-selected-dark.svg'
+import favoritesUnselectedDark from './assets/favorites-unselected-dark.svg'
+import frecencySelectedDark from './assets/frecency-selected-dark.svg'
+import frecencyUnselectedDark from './assets/frecency-unselected-dark.svg'
 
 import CheckedCircle from './assets/checked-circle.svg'
-import { color, effect, gradient } from '@brave/leo/tokens/css'
+import { color, effect, font, gradient, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
 // Usually containers will want to define spacing based on specific UI needs.
 interface ControllableLayoutProps {
   isLayoutControlled?: boolean
-}
-interface Props {
-  textDirection: string
 }
 
 const isDarkTheme = (p: any) => {
@@ -48,19 +45,6 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
   }
 }
 
-export const SettingsMenu = styled('div') <Props>`
-  width: 720px;
-  min-width: 720px;
-  ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
-  border-radius: 8px;
-  padding: 24px;
-  padding-bottom: 0px;
-  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
-  font-family: ${p => p.theme.fontFamily.body};
-`
-
 export const SettingsContent = styled('div') <{}>`
   display: grid;
   grid-template-columns: auto 1fr;
@@ -74,8 +58,8 @@ export const SettingsContent = styled('div') <{}>`
 export const SettingsSidebar = styled('aside') <{}>`
   position: relative;
   /* normalize against SettingsMenu default padding */
-  margin-left: -24px;
-  padding-left: 24px;
+  margin-inline-start: -24px;
+  padding-inline-start: 24px;
 `
 
 interface SettingsSidebarActiveButtonSliderProps {
@@ -86,7 +70,7 @@ export const SettingsSidebarActiveButtonSlider =
   styled('div') <SettingsSidebarActiveButtonSliderProps>`
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   height: 48px;
   width: 4px;
   background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
@@ -190,20 +174,11 @@ export const SettingsFeatureBody = styled('section') <{}>`
   overscroll-behavior: contain;
 `
 
-export const SettingsTitle = styled('div') <{}>`
-  margin-bottom: 17px;
-  grid-template-columns: 1fr 20px;
-  display: grid;
-  align-items: center;
-
-  h1 {
-    font-family: ${p => p.theme.fontFamily.heading};
+export const SettingsTitle = styled('h1') <{}>`
     margin: 0;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 30px;
-    letter-spacing: 0.02em;
-  }
+    margin-bottom: ${spacing.xl};
+    font: ${font.heading.h3};
+    color: ${color.text.secondary};
 `
 
 interface SettingsRowProps extends ControllableLayoutProps {
@@ -260,35 +235,6 @@ export const SettingsSectionTitle = styled('h3') <ControllableLayoutProps>`
   line-height: 24px;
 `
 
-interface SettingsWrapperProps {
-  textDirection: string
-}
-
-export const SettingsWrapper = styled('div') <SettingsWrapperProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin-right: ${p => p.textDirection === 'ltr' && '8px'};
-  margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
-  background: rgba(33, 37, 41, 0.32);
-
-  &:hover {
-    color: #ffffff;
-  }
-`
-
 export const SettingsWidget = styled('div') <{}>`
   width: calc(50% - var(--widget-gap));
   margin-top: calc(20px - var(--widget-gap));
@@ -334,56 +280,11 @@ export const StyledSettingsCopy = styled('div') <{}>`
   line-height: 17px;
 `
 
-interface WidgetToggleProps {
-  isAdd: boolean
-  float: boolean
-}
-
-export const StyledWidgetToggle = styled('button') <WidgetToggleProps>`
-  color: white;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 10px 25px;
-  border-radius: 100px;
-  float: ${p => p.float ? 'right' : 'none'};
-  margin-right: ${p => p.float ? 10 : 0}px;
-  border: none;
-  margin-top: 15px;
-  cursor: pointer;
-  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
-  width: fit-content;
-  display: flex;
-  align-items: center;
-
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
-  }
-`
-
 export const StyledButtonIcon = styled('div') <{}>`
   display: inline-block;
   margin-right: 5px;
   width: 19px;
   height: 17px;
-`
-
-export const StyledAddButtonIcon = styled(StyledButtonIcon)`
-  width: 19px;
-  height: 19px;
-`
-
-export const StyledHideButtonIcon = styled(StyledButtonIcon)`
-  width: 19px;
-  height: 17px;
-`
-
-export const StyledButtonLabel = styled('span') <{}>`
-  max-width: 100px;
-  text-overflow: ellipsis;
-  display: inline-block;
-  white-space: nowrap;
 `
 
 export const ToggleCardsWrapper = styled('div') <{}>`
@@ -427,44 +328,17 @@ export const StyledTopSitesCustomizationSettingsOption = styled('button') <{}>`
   width: calc(50% - var(--widget-gap) / 2);
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: ${spacing.xs};
   border: unset;
+  border-radius: ${radius.m};
   outline: unset;
   background: inherit;
 
   &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
+    box-shadow: ${effect.focusState};
   }
 `
 
-interface CustomizationImageBorderProps {
-  selected?: boolean
-}
-
-export const StyledTopSitesCustomizationImageBorder = styled('div') <CustomizationImageBorderProps>`
-  margin-bottom: 8px;
-  border-radius: 11px;
-
-  ${p => p.selected && css`
-    background: ${p => isDarkTheme(p) ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
-    padding: 3px;
-  `}
-
-  ${p => !p.selected && css`
-    border: 2px solid ${p => isDarkTheme(p) ? '#3B3E4F' : '#F1F3F5'};
-    background: ${p => isDarkTheme(p) ? '#17171F' : '#FFF'};
-    padding: 1px;
-
-    &:hover {
-      border: 2px solid ${p => isDarkTheme(p) ? '#C2C4CF' : '#AEB1C2'};
-      background: ${p => isDarkTheme(p) ? '#2B2D3F' : '#FAFAFF'};
-      padding: 1px;
-    }
-  `}
-`
 
 interface CustomizationImageProps {
   isFavorites: boolean
@@ -473,9 +347,9 @@ interface CustomizationImageProps {
 
 export const StyledTopSitesCustomizationImage = styled('img') <CustomizationImageProps>`
   width: 100%;
-  height: 100%;
   cursor: pointer;
   content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected ?? false, p.isFavorites)});
+  margin-bottom: ${spacing.m};
 
   ${p => p.selected && css`
     background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};

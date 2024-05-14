@@ -25,6 +25,7 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
   std::u16string FormattedStringWithEquivalentMeaning(
       const GURL& url,
       const std::u16string& formatted_url) const override;
+  bool GetURL(GURL* url) const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_

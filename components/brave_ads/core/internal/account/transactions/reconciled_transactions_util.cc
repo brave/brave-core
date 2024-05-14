@@ -26,7 +26,7 @@ bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
 }  // namespace
 
 bool DidReconcileTransaction(const TransactionInfo& transaction) {
-  return !transaction.reconciled_at.is_null();
+  return !!transaction.reconciled_at;
 }
 
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions) {

@@ -31,18 +31,6 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
   return domain;
 }
 
-bool EphemeralStorageOriginUtils::CanUseNonceForEphemeralStorageKeying(
-    const url::Origin& origin) {
-  return origin.opaque() && !origin.nonce_->raw_token().is_empty();
-}
-
-const base::UnguessableToken&
-EphemeralStorageOriginUtils::GetNonceForEphemeralStorageKeying(
-    const url::Origin& origin) {
-  CHECK(CanUseNonceForEphemeralStorageKeying(origin));
-  return origin.nonce_->raw_token();
-}
-
 bool IsOnion(const GURL& url) {
   return url.DomainIs(kOnionDomain);
 }

@@ -1,10 +1,10 @@
 diff --git a/chrome/renderer/worker_content_settings_client.h b/chrome/renderer/worker_content_settings_client.h
-index 1a4aa335e4208d504470e51be8954857bae747be..807207bd7dee1e428c377e42c60c67ed39e968d2 100644
+index c3ae92129a6747b7c3344e5b40a61fbc09903460..845dc3751f9de768b34520d74a8b3ffd8302c190 100644
 --- a/chrome/renderer/worker_content_settings_client.h
 +++ b/chrome/renderer/worker_content_settings_client.h
-@@ -41,6 +41,7 @@ class WorkerContentSettingsClient : public blink::WebContentSettingsClient {
-   bool AllowScriptFromSource(bool enabled_per_settings,
-                              const blink::WebURL& script_url) override;
+@@ -39,6 +39,7 @@ class WorkerContentSettingsClient : public blink::WebContentSettingsClient {
+   bool AllowRunningInsecureContent(bool allowed_per_settings,
+                                    const blink::WebURL& url) override;
    bool ShouldAutoupgradeMixedContent() override;
 +  BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H
  

@@ -9,16 +9,15 @@
 #include <cstddef>
 #include <optional>
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
@@ -26,7 +25,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
-#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -35,29 +33,6 @@ namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
-
-// An ArticleWeight has a few different components
-struct ArticleWeight {
-  // The pop_recency of the article. This is used for discover cards, where we
-  // don't consider the subscription status or visit_weighting.
-  double pop_recency = 0;
-
-  // The complete weighting of the article, combining the pop_score,
-  // visit_weighting & subscribed_weighting.
-  double weighting = 0;
-
-  // Whether the source which this article comes from has been visited. This
-  // only considers Publishers, not Channels.
-  bool visited = false;
-
-  // Whether any sources/channels that could cause this article to be shown are
-  // subscribed. At this point, disabled sources have already been filtered out.
-  bool subscribed = false;
-};
-
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
-using ArticleInfos = std::vector<ArticleInfo>;
-using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
 
 class FeedV2Builder {
  public:

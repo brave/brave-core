@@ -30,7 +30,7 @@ import {
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
+import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
 
 // Styled Components
 import { LeoSquaredButton } from '../../../components/shared/style'
@@ -116,9 +116,10 @@ export const Swap = () => {
         noCardPadding={true}
         noMinCardHeight={true}
         hideDivider={true}
+        hideNav={isPanel}
         cardHeader={
           isPanel ? (
-            <DefaultPanelHeader
+            <PanelActionHeader
               title={getLocale('braveWalletSwap')}
               expandRoute={WalletRoutes.Swap}
             />
@@ -229,11 +230,12 @@ export const Swap = () => {
           onSelectAsset={
             selectingFromOrTo === 'from' ? onSelectFromToken : onSelectToToken
           }
-          selectedToken={selectingFromOrTo === 'from' ? toToken : fromToken}
-          selectedSendOption='#token'
+          selectingFromOrTo={selectingFromOrTo}
+          selectedFromToken={fromToken}
+          selectedToToken={toToken}
           selectedNetwork={selectingFromOrTo === 'to' ? fromNetwork : undefined}
-          showFullFlatTokenList={selectingFromOrTo === 'to'}
           modalType='swap'
+          selectedSendOption='#token'
         />
       )}
       {showPrivacyModal && (

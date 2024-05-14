@@ -22,6 +22,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -217,10 +218,16 @@ void PublishersController::EnsurePublishersIsUpdating(
   GURL sources_url(
       base::StrCat({"https://", brave_news::GetHostname(), "/sources.",
                     brave_news::kRegionUrlPart, "json"}));
+  VLOG(1) << "Fetching publishers from " << sources_url.spec();
+
   auto on_request = base::BindOnce(
       [](PublishersController* controller,
          const BraveNewsSubscriptions& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
+        VLOG(1) << "Publishers response status code: "
+                << api_request_result.response_code()
+                << ", error code: " << api_request_result.error_code()
+                << ", final_url: " << api_request_result.final_url();
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
             ParseCombinedPublisherList(api_request_result.TakeBody());
@@ -248,9 +255,11 @@ void PublishersController::EnsurePublishersIsUpdating(
             std::make_unique<base::OneShotEvent>();
       },
       base::Unretained(this), subscriptions);
-  api_request_helper_->Request(
-      "GET", sources_url, "", "", std::move(on_request),
-      brave::private_cdn_headers, {.auto_retry_on_network_change = true});
+  api_request_helper_->Request("GET", sources_url, "", "",
+                               std::move(on_request),
+                               brave::private_cdn_headers,
+                               {.auto_retry_on_network_change = true,
+                                .timeout = GetDefaultRequestTimeout()});
 }
 
 void PublishersController::UpdateDefaultLocale() {

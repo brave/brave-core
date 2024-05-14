@@ -46,7 +46,6 @@ source_set("headers") {
     "prefs/pref_names.h",
     "prefs/pref_registry.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
-    "user_attention/user_activity/page_transition_types.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",
     "user_engagement/ad_events/ad_event_cache.h",
     "user_engagement/site_visit/site_visit_feature.h",
@@ -58,8 +57,5 @@ source_set("headers") {
     "//url",
   ]
 
-  public_deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_federated/public/interfaces",
-  ]
+  public_deps = [ "//brave/components/brave_ads/core/mojom" ]
 }

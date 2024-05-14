@@ -396,68 +396,114 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return false
     }
-    let (swapTransactionUnion, _, _) = await swapService.transaction(
-      params: .init(zeroExTransactionParams: swapQuoteParams)
-    )
-    guard let swapResponse = swapTransactionUnion?.zeroExTransaction else {
+    var gasPrice: String?
+    var gasLimit: String?
+    var to: String?
+    var value: String?
+    var data: [NSNumber]?
+    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+
+    if currentSwapQuoteInfo.swapQuote?.zeroExQuote != nil {
+      let (swapTransactionUnion, _, _) = await swapService.transaction(
+        params: .init(zeroExTransactionParams: swapQuoteParams)
+      )
+      guard let zeroExQuote = swapTransactionUnion?.zeroExTransaction else {
+        self.state = .error(Strings.Wallet.unknownError)
+        self.clearAllAmount()
+        return false
+      }
+      // these values are already in wei
+      gasPrice =
+        "0x\(weiFormatter.weiString(from: zeroExQuote.gasPrice, radix: .hex, decimals: 0) ?? "0")"
+      gasLimit =
+        "0x\(weiFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
+      to = zeroExQuote.to
+      value =
+        "0x\(weiFormatter.weiString(from: zeroExQuote.value, radix: .hex, decimals: 0) ?? "0")"
+      data = .init(hexString: zeroExQuote.data) ?? .init()
+
+    } else if let lifiQuote = currentSwapQuoteInfo.swapQuote?.lifiQuote {
+      guard let route = lifiQuote.routes.first, let step = route.steps.first else {
+        self.state = .error(Strings.Wallet.unknownError)
+        self.clearAllAmount()
+        return false
+      }
+      let (swapTransactionUnion, _, _) = await swapService.transaction(
+        params: .init(lifiTransactionParams: step)
+      )
+      guard let lifiTransaction = swapTransactionUnion?.lifiTransaction,
+        let evmTransaction = lifiTransaction.evmTransaction
+      else {
+        self.state = .error(Strings.Wallet.unknownError)
+        self.clearAllAmount()
+        return false
+      }
+      // these values are already in wei
+      gasPrice =
+        "0x\(weiFormatter.weiString(from: evmTransaction.gasPrice, radix: .hex, decimals: 0) ?? "0")"
+      gasLimit =
+        "0x\(weiFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
+      to = evmTransaction.to
+      value =
+        "0x\(weiFormatter.weiString(from: evmTransaction.value, radix: .hex, decimals: 0) ?? "0")"
+      data = .init(hexString: evmTransaction.data) ?? .init()
+    } else {
+      assertionFailure("Only ZeroEx and LiFi supported for Ethereum swaps")
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
     }
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    // these values are already in wei
-    let gasPrice =
-      "0x\(weiFormatter.weiString(from: swapResponse.gasPrice, radix: .hex, decimals: 0) ?? "0")"
-    let gasLimit =
-      "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
-    let value =
-      "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"
-    let data: [NSNumber] = .init(hexString: swapResponse.data) ?? .init()
 
+    guard let gasPrice,
+      let gasLimit,
+      let to,
+      let value,
+      let data
+    else {
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+      return false
+    }
+    let success: Bool
     if network.isEip1559 {
       let baseData: BraveWallet.TxData = .init(
         nonce: "",
         gasPrice: "",  // no gas price in eip1559
         gasLimit: gasLimit,
-        to: swapResponse.to,
+        to: to,
         value: value,
         data: data,
         signOnly: false,
         signedTransaction: nil
       )
-      let success = await self.makeEIP1559Tx(
+      success = await self.makeEIP1559Tx(
         chainId: network.chainId,
         baseData: baseData,
         from: accountInfo
       )
-      if !success {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-      }
-      return success
     } else {
       let baseData: BraveWallet.TxData = .init(
         nonce: "",
         gasPrice: gasPrice,
         gasLimit: gasLimit,
-        to: swapResponse.to,
+        to: to,
         value: value,
         data: data,
         signOnly: false,
         signedTransaction: nil
       )
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(
+      (success, _, _) = await txService.addUnapprovedTransaction(
         txDataUnion: txDataUnion,
         chainId: network.chainId,
         from: accountInfo.accountId
       )
-      if !success {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-      }
-      return success
     }
+    if !success {
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+    }
+    return success
   }
 
   @MainActor private func createERC20ApprovalTransaction(
@@ -574,65 +620,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     return bumpedValue.rounded().asString(radix: 16)
   }
 
-  @MainActor private func checkBalanceShowError(zeroExQuote: BraveWallet.ZeroExQuote) async {
-    guard
-      let accountInfo = accountInfo,
-      let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
-      let gasLimit = BDouble(zeroExQuote.estimatedGas),
-      let gasPrice = BDouble(zeroExQuote.gasPrice, over: "1000000000000000000"),
-      let fromToken = selectedFromToken,
-      let fromTokenBalance = selectedFromTokenBalance
-    else { return }
-
-    // Check if balance is insufficient
-    guard sellAmountValue <= fromTokenBalance else {
-      state = .error(Strings.Wallet.insufficientBalance)
-      return
-    }
-
-    // Get ETH balance for this account because gas can only be paid in ETH
-    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
-    let (balance, status, _) = await rpcService.balance(
-      address: accountInfo.address,
-      coin: network.coin,
-      chainId: network.chainId
-    )
-    if status == BraveWallet.ProviderError.success {
-      let fee = gasLimit * gasPrice
-      let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
-      let currentBalance =
-        BDouble(
-          balanceFormatter.decimalString(for: balance.removingHexPrefix, radix: .hex, decimals: 18)
-            ?? ""
-        ) ?? 0
-      if fromToken.symbol == network.symbol {
-        if currentBalance < fee + sellAmountValue {
-          self.state = .error(Strings.Wallet.insufficientFundsForGas)
-          return
-        }
-      } else {
-        if currentBalance < fee {
-          self.state = .error(Strings.Wallet.insufficientFundsForGas)
-          return
-        }
-      }
-      self.state = .swap
-      // check for ERC20 token allowance
-      if fromToken.isErc20 {
-        await self.checkAllowance(
-          network: network,
-          ownerAddress: accountInfo.address,
-          spenderAddress: zeroExQuote.allowanceTarget,
-          amountToSend: sellAmountValue,
-          fromToken: fromToken
-        )
-      }
-    } else {
-      self.state = .error(Strings.Wallet.unknownError)
-      self.clearAllAmount()
-    }
-  }
-
   @MainActor private func checkAllowance(
     network: BraveWallet.NetworkInfo,
     ownerAddress: String,
@@ -657,8 +644,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           decimals: Int(fromToken.decimals)
         ) ?? ""
       ) ?? 0
-    // no problem with its allowance
-    guard status == .success, amountToSend > allowanceValue else { return }
+    guard status == .success, amountToSend > allowanceValue else {
+      // no problem with its allowance
+      self.state = .swap
+      return
+    }
     self.state = .lowAllowance(spenderAddress)
   }
 
@@ -769,7 +759,58 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
     }
 
-    await checkBalanceShowError(zeroExQuote: zeroExQuote)
+    guard let accountInfo,
+      let gasLimit = BDouble(zeroExQuote.estimatedGas),
+      let gasPrice = BDouble(zeroExQuote.gasPrice, over: "1000000000000000000"),
+      let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
+      let fromToken = selectedFromToken
+    else {
+      self.state = .error(Strings.Wallet.unknownError)
+      return
+    }
+    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
+
+    // Check if balance available to pay for gas
+    let (ethBalanceString, _, _) = await rpcService.balance(
+      address: accountInfo.address,
+      coin: network.coin,
+      chainId: network.chainId
+    )
+    let fee = gasLimit * gasPrice
+    let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
+    let ethBalance =
+      BDouble(
+        balanceFormatter.decimalString(
+          for: ethBalanceString.removingHexPrefix,
+          radix: .hex,
+          decimals: 18
+        )
+          ?? ""
+      ) ?? 0
+    if fromToken.symbol == network.symbol {
+      if ethBalance < fee + sellAmountValue {
+        self.state = .error(Strings.Wallet.insufficientFundsForGas)
+        return
+      }
+    } else {
+      if ethBalance < fee {
+        self.state = .error(Strings.Wallet.insufficientFundsForGas)
+        return
+      }
+    }
+
+    // Check allowance if erc20
+    if fromToken.isErc20 {
+      await self.checkAllowance(
+        network: network,
+        ownerAddress: accountInfo.address,
+        spenderAddress: zeroExQuote.allowanceTarget,
+        amountToSend: sellAmountValue,
+        fromToken: fromToken
+      )
+    } else {
+      self.state = .swap
+    }
   }
 
   /// Update price market and sell/buy amount fields based on `JupiterQuote`
@@ -805,16 +846,115 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       selectedFromTokenPrice = rate.decimalDescription
     }
 
-    await checkBalanceShowError()
+    // Validate balance available
+    guard let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
+      let selectedFromTokenBalance
+    else {
+      self.state = .error(Strings.Wallet.unknownError)
+      return
+    }
+    // Check if balance is insufficient
+    guard sellAmountValue <= selectedFromTokenBalance else {
+      state = .error(Strings.Wallet.insufficientBalance)
+      return
+    }
+    // Cannot currently estimate SOL gas balance to verify
+    self.state = .swap
   }
 
   @MainActor private func handleLifiQuote(
     base: SwapParamsBase,
     _ lifiQuote: BraveWallet.LiFiQuote
   ) async {
-    self.state = .error(Strings.Wallet.unknownError)
-    // TODO(stephenheaps): Handle `LiFiQuote`
-    // https://github.com/brave/brave-browser/issues/36436
+    guard !Task.isCancelled else { return }
+    guard let route = lifiQuote.routes.first,
+      let step = route.steps.first,
+      // shouldn't occur, cross-chain token selection unavailable on iOS
+      route.fromToken.coin == route.toToken.coin
+    else {
+      self.state = .error(Strings.Wallet.unknownError)
+      return
+    }
+    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    switch base {
+    case .perSellAsset:
+      let decimal = Int(route.toToken.decimals)
+      let decimalString =
+        weiFormatter.decimalString(for: route.toAmount, decimals: decimal) ?? ""
+      if let bv = BDouble(decimalString) {
+        buyAmount = bv.decimalDescription
+      }
+    case .perBuyAsset:
+      let decimal = Int(route.fromToken.decimals)
+      let decimalString =
+        weiFormatter.decimalString(for: route.fromAmount, decimals: decimal) ?? ""
+      if let bv = BDouble(decimalString) {
+        sellAmount = bv.decimalDescription
+      }
+    }
+
+    guard let accountInfo,
+      let sellAmountValue = BDouble(sellAmount.normalizedDecimals)
+    else {
+      self.state = .error(Strings.Wallet.unknownError)
+      return
+    }
+    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
+
+    // Check if balance available to pay for gas
+    if route.fromToken.coin == .eth {
+      let (ethBalanceString, _, _) = await rpcService.balance(
+        address: accountInfo.address,
+        coin: network.coin,
+        chainId: network.chainId
+      )
+      let ethBalance =
+        BDouble(
+          weiFormatter.decimalString(
+            for: ethBalanceString.removingHexPrefix,
+            radix: .hex,
+            decimals: 18
+          ) ?? ""
+        ) ?? 0
+      let feeTotal: Double = step.estimate.gasCosts.reduce(Double(0)) { total, cost in
+        total + (Double(cost.amount) ?? 0)
+      }
+      let fee =
+        BDouble(
+          weiFormatter.decimalString(
+            for: "\(feeTotal)",
+            decimals: Int(network.decimals)
+          ) ?? ""
+        ) ?? 0
+      if route.fromToken.symbol == network.symbol {
+        if ethBalance < fee + sellAmountValue {
+          self.state = .error(Strings.Wallet.insufficientFundsForGas)
+          return
+        }
+      } else {
+        if ethBalance < fee {
+          self.state = .error(Strings.Wallet.insufficientFundsForGas)
+          return
+        }
+      }
+    }  // else fromToken.coin == .sol
+    // same-chain SOL swaps not currently supported.
+    // https://docs.li.fi/li.fi-api/solana
+
+    // `isErc20` not assigned in `LiFiRoute` response
+    let fromToken = selectedFromToken ?? route.fromToken
+    // Check allowance if token is erc20
+    if fromToken.isErc20 {
+      await self.checkAllowance(
+        network: network,
+        ownerAddress: accountInfo.address,
+        spenderAddress: step.estimate.approvalAddress,
+        amountToSend: sellAmountValue,
+        fromToken: fromToken
+      )
+    } else {
+      self.state = .swap
+    }
   }
 
   @MainActor private func handleSwapQuoteError(_ swapError: BraveWallet.SwapErrorUnion) async {
@@ -838,26 +978,14 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     {
       self.state = .error(Strings.Wallet.insufficientLiquidity)
       return
+    } else if let lifiError = swapError.lifiError,
+      lifiError.code == .notFoundError
+    {
+      self.state = .error(Strings.Wallet.insufficientLiquidity)
+      return
     }
-    // TODO(stephenheaps): Handle `LiFiError`
-    // https://github.com/brave/brave-browser/issues/36436
     self.state = .error(Strings.Wallet.unknownError)
     self.clearAllAmount()
-  }
-
-  @MainActor private func checkBalanceShowError() async {
-    guard let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
-      let selectedFromTokenBalance
-    else {
-      return
-    }
-    // Check if balance is insufficient
-    guard sellAmountValue <= selectedFromTokenBalance else {
-      state = .error(Strings.Wallet.insufficientBalance)
-      return
-    }
-    // Cannot currently estimate SOL gas balance to verify
-    self.state = .swap
   }
 
   @MainActor private func createSolSwapTransaction() async -> Bool {

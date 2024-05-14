@@ -82,6 +82,14 @@ inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
     "brave.wallet.private_windows_enabled";
 inline constexpr char kBraveWalletTransactionSimulationOptInStatus[] =
     "brave.wallet.transaction_simulation_opt_in_status";
+inline constexpr char kBraveWalletEncryptorSalt[] =
+    "brave.wallet.encryptor_salt";
+inline constexpr char kBraveWalletMnemonic[] =
+    "brave.wallet.encrypted_mnemonic";
+inline constexpr char kBraveWalletLegacyEthSeedFormat[] =
+    "brave.wallet.legacy_eth_seed_format";
+inline constexpr char kBraveWalletMnemonicBackedUp[] =
+    "brave.wallet.mnemonic_backed_up";
 
 // Added 02/2023 to migrate transactions to contain the
 // chain_id for each one.

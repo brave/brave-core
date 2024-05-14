@@ -4,47 +4,58 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
-import { PanelActions } from '../../panel/actions'
 import { BraveWallet } from '../../constants/types'
 
-// utils
-import { PanelSelectors } from '../../panel/selectors'
-
 // hooks
-import { useUnsafePanelSelector } from './use-safe-selector'
-import { useGetNetworkQuery } from '../slices/api.slice'
+import {
+  useGetNetworkQuery,
+  useGetPendingSignAllTransactionsRequestsQuery,
+  useGetPendingSignTransactionRequestsQuery,
+  useProcessSignAllTransactionsRequestHardwareMutation,
+  useProcessSignAllTransactionsRequestMutation,
+  useProcessSignTransactionRequestHardwareMutation,
+  useProcessSignTransactionRequestMutation
+} from '../slices/api.slice'
 import { useAccountQuery } from '../slices/api.slice.extra'
 
-export const useProcessSignSolanaTransaction = (props: {
-  signMode: 'signTx' | 'signAllTxs'
+export interface UseProcessSolTxProps {
   account?: BraveWallet.AccountInfo
+  signMode: 'signTx' | 'signAllTxs'
   request?:
     | BraveWallet.SignTransactionRequest
     | BraveWallet.SignAllTransactionsRequest
-}) => {
-  // redux
-  const dispatch = useDispatch()
+}
+
+export const useProcessSignSolanaTransaction = (
+  props: UseProcessSolTxProps
+) => {
+  // mutations
+  const [signTransaction] = useProcessSignTransactionRequestMutation()
+  const [signTransactionHardware] =
+    useProcessSignTransactionRequestHardwareMutation()
+  const [signAllTransactions] = useProcessSignAllTransactionsRequestMutation()
+  const [signAllTransactionsHardware] =
+    useProcessSignAllTransactionsRequestHardwareMutation()
 
   // methods
-  const cancelSign = React.useCallback(() => {
+  const cancelSign = React.useCallback(async () => {
     if (!props.request) {
       return
     }
 
     const payload = { approved: false, id: props.request.id }
 
-    dispatch(
-      props.signMode === 'signTx'
-        ? PanelActions.signTransactionProcessed(payload)
-        : PanelActions.signAllTransactionsProcessed(payload)
-    )
-  }, [dispatch, props.request, props.signMode])
+    if (props.signMode === 'signTx') {
+      await signTransaction(payload).unwrap()
+    } else {
+      await signAllTransactions(payload).unwrap()
+    }
+  }, [props.request, props.signMode, signAllTransactions, signTransaction])
 
-  const sign = React.useCallback(() => {
+  const sign = React.useCallback(async () => {
     if (!props.request || !props.account) {
       return
     }
@@ -54,41 +65,41 @@ export const useProcessSignSolanaTransaction = (props: {
 
     if (props.signMode === 'signTx') {
       if (isHwAccount) {
-        dispatch(
-          PanelActions.signTransactionHardware({
-            account: props.account,
-            request: props.request as BraveWallet.SignTransactionRequest
-          })
-        )
+        await signTransactionHardware({
+          account: props.account,
+          request: props.request as BraveWallet.SignTransactionRequest
+        }).unwrap()
         return
       }
-      dispatch(
-        PanelActions.signTransactionProcessed({
-          approved: true,
-          id: props.request.id
-        })
-      )
+      await signTransaction({
+        approved: true,
+        id: props.request.id
+      }).unwrap()
       return
     }
 
     if (props.signMode === 'signAllTxs') {
       if (isHwAccount) {
-        dispatch(
-          PanelActions.signAllTransactionsHardware({
-            account: props.account,
-            request: props.request as BraveWallet.SignAllTransactionsRequest
-          })
-        )
+        await signAllTransactionsHardware({
+          account: props.account,
+          request: props.request as BraveWallet.SignAllTransactionsRequest
+        }).unwrap()
         return
       }
-      dispatch(
-        PanelActions.signAllTransactionsProcessed({
-          approved: true,
-          id: props.request.id
-        })
-      )
+      await signAllTransactions({
+        approved: true,
+        id: props.request.id
+      }).unwrap()
     }
-  }, [dispatch, props.account, props.request, props.signMode])
+  }, [
+    props.account,
+    props.request,
+    props.signMode,
+    signAllTransactions,
+    signAllTransactionsHardware,
+    signTransaction,
+    signTransactionHardware
+  ])
 
   // render
   return {
@@ -100,32 +111,30 @@ export const useProcessSignSolanaTransaction = (props: {
 export const useSignSolanaTransactionsQueue = (
   signMode: 'signTx' | 'signAllTxs'
 ) => {
-  // redux
-  const signTransactionRequests = useUnsafePanelSelector(
-    PanelSelectors.signTransactionRequests
-  )
-  const signAllTransactionsRequests = useUnsafePanelSelector(
-    PanelSelectors.signAllTransactionsRequests
-  )
+  // state
+  const [queueNumber, setQueueNumber] = React.useState<number>(1)
+  const queueIndex = queueNumber - 1
+
+  // queries
+  const { data: signTransactionRequests } =
+    useGetPendingSignTransactionRequestsQuery()
+  const { data: signAllTransactionsRequests } =
+    useGetPendingSignAllTransactionsRequestsQuery()
   const signTransactionQueue =
     signMode === 'signTx'
       ? signTransactionRequests
       : signAllTransactionsRequests
-
-  // state
-  const [queueNumber, setQueueNumber] = React.useState<number>(1)
+  const selectedQueueData = signTransactionQueue
+    ? signTransactionQueue.at(queueIndex)
+    : undefined
+  const { data: network } = useGetNetworkQuery(selectedQueueData ?? skipToken)
+  const { account } = useAccountQuery(selectedQueueData?.fromAccountId)
 
   // computed
-  const queueLength = signTransactionQueue.length
-  const queueIndex = queueNumber - 1
-  const selectedQueueData = signTransactionQueue.at(queueIndex)
+  const queueLength = signTransactionQueue?.length || 0
 
   // force signing messages in-order
   const isDisabled = queueNumber !== 1
-
-  // queries
-  const { data: network } = useGetNetworkQuery(selectedQueueData ?? skipToken)
-  const { account } = useAccountQuery(selectedQueueData?.fromAccountId)
 
   // methods
   const queueNextSignTransaction = React.useCallback(() => {

@@ -2,8 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { color, radius, spacing } from '@brave/leo/tokens/css'
-import { AutocompleteResult, OmniboxPopupSelection } from 'gen/components/omnibox/browser/omnibox.mojom.m'
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { AutocompleteResult, OmniboxPopupSelection } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react'
 import styled from 'styled-components'
 import SearchResult from './SearchResult'
@@ -12,9 +12,12 @@ import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
 
 const Container = styled.div`
-  background: ${color.container.background};
+  border-top: 1px solid ${color.divider.subtle};
 
-  border: 1px solid ${color.divider.subtle};
+  background: rgba(255,255,255,0.1);
+
+  color: ${color.white};
+
   border-bottom-left-radius: ${radius.m};
   border-bottom-right-radius: ${radius.m};
 
@@ -118,7 +121,7 @@ export default function SearchResults() {
       document.removeEventListener('keydown', handler)
     }
   }, [result, selectedMatch, query, searchEngine])
-  return result && result?.matches.length ? <Container>
+  return result && result?.matches.length ? <Container data-theme="dark" className='search-results'>
     {result?.matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
   </Container> : null
 }

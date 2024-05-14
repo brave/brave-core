@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 
 const Kbd = styled.div<{ large?: boolean; square?: boolean }>`
   display: inline-block;

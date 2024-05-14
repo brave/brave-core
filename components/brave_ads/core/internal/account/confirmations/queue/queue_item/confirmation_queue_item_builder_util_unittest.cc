@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,9 +15,14 @@ namespace brave_ads {
 
 class BraveAdsConfirmationQueueItemBuilderUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest, ProcessConfirmationAt) {
+TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
+       RetryProcessingConfirmationAfter) {
+  // Arrange
+  const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
+      base::Seconds(7));
+
   // Act & Assert
-  EXPECT_FALSE(ProcessConfirmationAt().is_null());
+  EXPECT_EQ(base::Seconds(7), RetryProcessingConfirmationAfter());
 }
 
 }  // namespace brave_ads

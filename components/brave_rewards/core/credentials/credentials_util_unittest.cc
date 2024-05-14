@@ -12,12 +12,10 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
-
 namespace brave_rewards::internal {
 namespace credential {
 
-class PromotionUtilTest : public testing::Test {
+class RewardsPromotionUtilTest : public testing::Test {
  public:
   mojom::CredsBatch GetCredsBatch() {
     mojom::CredsBatch creds;
@@ -100,14 +98,14 @@ class PromotionUtilTest : public testing::Test {
   }
 };
 
-TEST_F(PromotionUtilTest, UnBlindCredsWorksCorrectly) {
+TEST_F(RewardsPromotionUtilTest, UnBlindCredsWorksCorrectly) {
   auto unblinded_encoded_tokens = UnBlindCreds(GetCredsBatch());
 
   EXPECT_TRUE(unblinded_encoded_tokens.has_value());
   EXPECT_EQ(unblinded_encoded_tokens->size(), 20u);
 }
 
-TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
+TEST_F(RewardsPromotionUtilTest, UnBlindCredsCredsNotCorrect) {
   auto creds = GetCredsBatch();
   creds.blinded_creds = creds.signed_creds;
 

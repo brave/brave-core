@@ -17,13 +17,13 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.omnibox.OmniboxFeatures;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
@@ -36,6 +36,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuilder {
     private @Nullable BraveSearchBannerProcessor mBraveSearchBannerProcessor;
@@ -50,11 +51,11 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private Context mContext;
     private AutocompleteDelegate mAutocompleteDelegate;
     private BraveLeoAutocompleteDelegate mLeoAutocompleteDelegate;
-    private @Nullable OmniboxImageSupplier mImageSupplier;
+    private @NonNull Optional<OmniboxImageSupplier> mImageSupplier;
 
-    BraveDropdownItemViewInfoListBuilder(@NonNull Supplier<Tab> tabSupplier,
-            BookmarkState bookmarkState, OpenHistoryClustersDelegate openHistoryClustersDelegate) {
-        super(tabSupplier, bookmarkState, openHistoryClustersDelegate);
+    BraveDropdownItemViewInfoListBuilder(
+            @NonNull Supplier<Tab> tabSupplier, BookmarkState bookmarkState) {
+        super(tabSupplier, bookmarkState);
 
         mActivityTabSupplier = tabSupplier;
     }
@@ -80,7 +81,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            mImageSupplier = new OmniboxImageSupplier(context);
+            mImageSupplier =
+                    OmniboxFeatures.isLowMemoryDevice()
+                            ? Optional.empty()
+                            : Optional.of(new OmniboxImageSupplier(context));
             mBraveLeoSuggestionProcessor =
                     new BraveLeoSuggestionProcessor(
                             context,
@@ -123,6 +127,17 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         List<DropdownItemViewInfo> viewInfoList =
                 super.buildDropdownViewInfoList(autocompleteResult);
 
+        // We want to show Leo auto suggestion even if the whole auto complete feature
+        // is disabled
+        Tab tab = mActivityTabSupplier.get();
+        boolean autocompleteEnabled =
+                tab != null
+                        ? mLeoAutocompleteDelegate.isAutoCompleteEnabled(tab.getWebContents())
+                        : true;
+        if (!autocompleteEnabled) {
+            viewInfoList.clear();
+        }
+
         if (isBraveLeoEnabled()
                 && !mUrlBarEditingTextProvider.getTextWithoutAutocomplete().isEmpty()) {
             final PropertyModel leoModel = mBraveLeoSuggestionProcessor.createModel();
@@ -148,11 +163,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                     tileNavSuggestPosition,
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
         }
-        if (isBraveSearchPromoBanner()) {
+        if (isBraveSearchPromoBanner() && autocompleteEnabled) {
             final PropertyModel model = mBraveSearchBannerProcessor.createModel();
             mBraveSearchBannerProcessor.populateModel(model);
-            viewInfoList.add(new DropdownItemViewInfo(
-                    mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
+            viewInfoList.add(
+                    new DropdownItemViewInfo(
+                            mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
         }
 
         return viewInfoList;
@@ -161,7 +177,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private boolean isBraveLeoEnabled() {
         Tab tab = mActivityTabSupplier.get();
         if (mLeoAutocompleteDelegate != null
-                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
+                && mLeoAutocompleteDelegate.isLeoEnabled()
                 && tab != null
                 && !tab.isIncognito()
                 && ChromeSharedPreferences.getInstance()

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Button from "@brave/leo/react/button";
-import { radius, spacing } from "@brave/leo/tokens/css";
+import { radius, spacing } from "@brave/leo/tokens/css/variables";
 import styled from "styled-components";
 
 

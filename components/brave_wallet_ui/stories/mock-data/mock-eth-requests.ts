@@ -64,6 +64,14 @@ export const mockSignMessageRequest: BraveWallet.SignMessageRequest = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
+export const mockSignMessageError: BraveWallet.SignMessageError = {
+  chainId: '1',
+  localizedErrMsg: 'This is an error message, unable to sign.',
+  type: 1,
+  id: '1',
+  originInfo: mockOriginInfo
+}
+
 export const mockAddChainRequest = {
   originInfo: mockOriginInfo,
   networkInfo: mockNetwork

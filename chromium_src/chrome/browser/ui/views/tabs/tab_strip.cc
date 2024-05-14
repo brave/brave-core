@@ -43,9 +43,9 @@
     continue;                                                                \
   }
 
-#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS        \
-  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {        \
-    return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_);   \
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {      \
+    return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN                      \
@@ -64,3 +64,11 @@
 #undef CompoundTabContainer
 #undef TabContainerImpl
 #undef AddTab
+
+bool TabStrip::IsTabTiled(const Tab* tab) const {
+  return false;
+}
+
+bool TabStrip::IsFirstTabInTile(const Tab* tab) const {
+  return false;
+}

@@ -30,12 +30,13 @@ class EngineConsumer {
 
   using GenerationResult = base::expected<std::string, mojom::APIError>;
 
-  using GenerationDataCallback = base::RepeatingCallback<void(std::string)>;
+  using GenerationDataCallback =
+      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
 
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
 
-  using ConversationHistory = std::vector<mojom::ConversationTurn>;
+  using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 
   EngineConsumer();
   EngineConsumer(const EngineConsumer&) = delete;
@@ -50,31 +51,35 @@ class EngineConsumer {
   virtual void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
-      std::optional<std::string> selected_text,
       const ConversationHistory& conversation_history,
       const std::string& human_input,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
+
+  virtual void GenerateRewriteSuggestion(
+      std::string text,
+      const std::string& question,
+      GenerationDataCallback received_callback,
+      GenerationCompletedCallback completed_callback) {}
 
   // Prevent indirect prompt injections being sent to the AI model.
   // Include break-out strings contained in prompts, as well as the base
   // model command separators.
   virtual void SanitizeInput(std::string& input) = 0;
 
+  // Stop any in-progress operations
   virtual void ClearAllQueries() = 0;
 
-  void SetAPIForTesting(
-      std::unique_ptr<RemoteCompletionClient> api_for_testing) {
-    api_ = std::move(api_for_testing);
-  }
-  RemoteCompletionClient* GetAPIForTesting() { return api_.get(); }
+  // For streaming responses, whether the engine provides the entire completion
+  // each time the callback is run (use |false|) or whether it provides a delta
+  // from the previous run (use |true|).
+  virtual bool SupportsDeltaTextResponses() const;
 
   void SetMaxPageContentLengthForTesting(int max_page_content_length) {
     max_page_content_length_ = max_page_content_length;
   }
 
  protected:
-  std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
   int max_page_content_length_ = 0;
 };
 

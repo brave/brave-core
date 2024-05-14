@@ -19,6 +19,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
@@ -94,24 +95,34 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 #if !BUILDFLAG(IS_ANDROID)
   dict.Set("Last connection error", GetLastVPNConnectionError());
 #endif
-  dict.Set("Order", GetVPNOrderInfo());
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
+    dict.Set("Order", base::Value::Dict());
+  } else {
+    auto order_info = GetOrderInfo("vpn.");
+    order_info.Set(
+        "env", local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
+    dict.Set("Order", std::move(order_info));
+  }
 #endif
   std::string result;
   base::JSONWriter::Write(dict, &result);
   std::move(callback).Run(result);
 }
 
-base::Value::Dict SkusInternalsUI::GetVPNOrderInfo() const {
+void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
   base::Value::Dict dict;
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* profile = Profile::FromWebUI(web_ui());
-  if (!brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
-    return dict;
-  }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  dict.Set("Order", GetOrderInfo("leo."));
+#endif
+  std::string result;
+  base::JSONWriter::Write(dict, &result);
+  std::move(callback).Run(result);
+}
 
-  dict.Set("env",
-           local_state_->GetString(brave_vpn::prefs::kBraveVPNEnvironment));
-
+base::Value::Dict SkusInternalsUI::GetOrderInfo(
+    const std::string& location) const {
+  base::Value::Dict dict;
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
     if (!base::StartsWith(kv.first, "skus:")) {
@@ -140,11 +151,11 @@ base::Value::Dict SkusInternalsUI::GetVPNOrderInfo() const {
         continue;
       }
 
-      if (auto* location = order_dict->FindString("location")) {
-        if (!base::StartsWith(*location, "vpn.")) {
+      if (auto* order_location = order_dict->FindString("location")) {
+        if (!base::StartsWith(*order_location, location)) {
           continue;
         }
-        order_dict_output.Set("location", *location);
+        order_dict_output.Set("location", *order_location);
       }
 
       if (auto* id = order_dict->FindString("id")) {
@@ -157,7 +168,6 @@ base::Value::Dict SkusInternalsUI::GetVPNOrderInfo() const {
     // Set output with env like {skus:production: {...}}.
     dict.Set(kv.first, std::move(order_dict_output));
   }
-#endif
   return dict;
 }
 

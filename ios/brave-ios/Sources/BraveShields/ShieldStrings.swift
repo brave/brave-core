@@ -317,3 +317,51 @@ extension Strings.Shields {
       "Text for a button in a blocked page info screen that takes you back where you came from"
   )
 }
+
+// MARK: - HTTPS Upgrades
+
+extension Strings.Shields {
+  /// The option the user can select to do aggressive ad and tracker blocking
+  public static let httpsUpgradeLevelStrict = NSLocalizedString(
+    "HttpsUpgradeLevelStrict",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Strict",
+    comment: "The option the user can select to do strict https upgrading"
+  )
+  /// The option the user can select for the type of https upgrading
+  public static let upgradeConnectionsToHTTPS = NSLocalizedString(
+    "UpgradeConnectionsToHTTPS",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Upgrade Connections to HTTPS",
+    comment: "The option the user can select for the type of https upgrading"
+  )
+
+  /// A page title for the warning page that appears when http was blocked
+  public static let siteIsNotSecure = NSLocalizedString(
+    "SiteIsNotSecure",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Site is not secure",
+    comment: "A page title for the warning page that appears when http was blocked"
+  )
+
+  /// A page title for the warning page that appears when http was blocked
+  public static let theConnectionIsNotSecure = NSLocalizedString(
+    "TheConnectionIsNotSecure",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "The connection to %@ is not secure",
+    comment: "A page title for the warning page that appears when http was blocked"
+  )
+
+  /// A tab title that appears when a page was blocked
+  public static let httpBlockedDescription = NSLocalizedString(
+    "YourConnectionIsNotPrivate",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "You are seeing this warning because this site does not support HTTPS.",
+    comment: "A description shown an a page where the http page was blocked"
+  )
+}

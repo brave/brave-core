@@ -160,14 +160,16 @@ class NewTabPage extends React.Component<Props, State> {
       showSearchPromotion: searchPromotionEnabled,
       forceToHideWidget: GetShouldForceToHideWidget(this.props, searchPromotionEnabled)
     })
-    window.addEventListener('resize', this.handleResize.bind(this))
+    window.addEventListener('resize', this.handleResize)
+    window.navigation.addEventListener('currententrychange', this.checkShouldOpenSettings)
   }
 
   componentWillUnmount () {
     if (this.braveNewsPromptTimerId) {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
-    window.removeEventListener('resize', this.handleResize.bind(this))
+    window.removeEventListener('resize', this.handleResize)
+    window.navigation.removeEventListener('currententrychange', this.checkShouldOpenSettings)
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -223,7 +225,7 @@ class NewTabPage extends React.Component<Props, State> {
     return !newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color' && !isReadableOnBackground(newTabData.backgroundWallpaper)
   }
 
-  handleResize () {
+  handleResize = () => {
     this.setState({
       forceToHideWidget: GetShouldForceToHideWidget(this.props, this.state.showSearchPromotion)
     })
@@ -259,7 +261,7 @@ class NewTabPage extends React.Component<Props, State> {
     this.visibilityTimer.startTracking()
   }
 
-  checkShouldOpenSettings () {
+  checkShouldOpenSettings = () => {
     const params = window.location.search
     const urlParams = new URLSearchParams(params)
     const openSettings = urlParams.get('openSettings') || this.props.newTabData.forceSettingsTab

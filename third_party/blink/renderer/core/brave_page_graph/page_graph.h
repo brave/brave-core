@@ -173,6 +173,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       const blink::ResourceError&,
       const base::UnguessableToken& devtools_frame_or_worker_token);
   // Script/module compilation tracking:
+  void ApplyCompilationModeOverride(const blink::ClassicScript&,
+                                    v8::ScriptCompiler::CachedData**,
+                                    v8::ScriptCompiler::CompileOptions*);
   void RegisterPageGraphScriptCompilation(
       blink::ExecutionContext* execution_context,
       const blink::ReferrerScriptInfo& referrer_info,
@@ -221,7 +224,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                            const int script_id,
                                            v8::Local<v8::String> source);
   void RegisterV8JSBuiltinCall(
-      v8::Isolate* isolate,
+      blink::ExecutionContext* receiver_context,
       const char* builtin_name,
       const blink::PageGraphValues& args,
       const std::optional<blink::PageGraphValue>& result);
@@ -332,10 +335,12 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   void DoRegisterRequestStart(const InspectorId request_id,
                               GraphNode* requesting_node,
+                              const brave_page_graph::FrameId& frame_id,
                               const KURL& local_url,
                               const String& resource_type);
   void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
                                    const InspectorId request_id,
+                                   const brave_page_graph::FrameId& frame_id,
                                    const blink::KURL& url,
                                    const String& resource_type);
   void RegisterRequestStartFromCurrentScript(
@@ -353,17 +358,21 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                          const InspectorId request_id,
                                          const blink::KURL& url,
                                          const String& resource_type);
-  void RegisterRequestStartForDocument(blink::Document* document,
+  void RegisterRequestStartForDocument(blink::DocumentLoader* loader,
                                        const InspectorId request_id,
-                                       const blink::KURL& url,
-                                       const bool is_main_frame);
+                                       const blink::KURL& url);
   void RegisterRequestRedirect(const ResourceRequest& request,
-                               const ResourceResponse& redirect_response);
+                               const ResourceResponse& redirect_response,
+                               const brave_page_graph::FrameId& frame_id);
   void RegisterRequestComplete(const InspectorId request_id,
-                               int64_t encoded_data_length);
-  void RegisterRequestCompleteForDocument(const InspectorId request_id,
-                                          const int64_t size);
-  void RegisterRequestError(const InspectorId request_id);
+                               int64_t encoded_data_length,
+                               const brave_page_graph::FrameId& frame_id);
+  void RegisterRequestCompleteForDocument(
+      const InspectorId request_id,
+      const int64_t size,
+      const brave_page_graph::FrameId& frame_id);
+  void RegisterRequestError(const InspectorId request_id,
+                            const brave_page_graph::FrameId& frame_id);
 
   void RegisterResourceBlockAd(const blink::WebURL& url, const String& rule);
   void RegisterResourceBlockTracker(const blink::WebURL& url,
@@ -401,10 +410,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                             const MethodName& method,
                             const blink::PageGraphValue& result);
 
-  void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInCall(blink::ExecutionContext* receiver_context,
                              const char* builtin_name,
                              const blink::PageGraphValues& args);
-  void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
+  void RegisterJSBuiltInResponse(blink::ExecutionContext* receiver_context,
                                  const char* builtin_name,
                                  const blink::PageGraphValue& result);
 
@@ -435,7 +444,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   bool IsRootFrame() const;
 
   // The blink assigned frame id for the local root's frame.
-  const String frame_id_;
+  const brave_page_graph::FrameId frame_id_;
   // Script tracker helper.
   ScriptTracker script_tracker_;
   // Data structure for keeping track of all the in-air requests that

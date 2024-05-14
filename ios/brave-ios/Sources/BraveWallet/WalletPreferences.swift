@@ -53,6 +53,7 @@ extension Preferences {
       default: true
     )
     /// The option to determine if we show or hide test networks in network lists
+    /// - warning: this preference should not be used other than the migration of itself.
     public static let showTestNetworks = Option<Bool>(
       key: "wallet.show-test-networks",
       default: false
@@ -156,6 +157,24 @@ extension Preferences {
     /// Used to track whether to show user wallet onboarding completed screen after user has created or restore a wallet
     public static let isOnboardingCompleted = Option<Bool>(
       key: "wallet.show-wallet-is-onboarding-completed",
+      default: false
+    )
+
+    /// Used for Debug section for anyone wants to test with Bitcoin Testnet network or account
+    public static let isBitcoinTestnetEnabled = Option<Bool>(
+      key: "wallet.is-bitcoin-testnet-enabled",
+      default: false
+    )
+
+    /// Used to track whether to migrate `account.address` to `account.accountId.uniqueKey` (`account.id`)
+    static let migrateCacheKeyCompleted = Option<Bool>(
+      key: "wallet.migrate-cache-key-completed",
+      default: false
+    )
+
+    /// Used to track whether `showTestNetworks` has been read for the last time
+    public static let migrateShowTestNetworksCompleted = Option<Bool>(
+      key: "wallet.migrate-show-test-networks-completed",
       default: false
     )
   }

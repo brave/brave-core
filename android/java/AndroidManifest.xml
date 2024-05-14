@@ -97,6 +97,14 @@
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
 <activity
+    android:name="org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
     android:name="org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
@@ -206,6 +214,9 @@
     android:label="@string/app_name"
     android:permission="android.permission.BIND_AUTOFILL_SERVICE"
     android:exported="true">
+    <meta-data
+        android:name="android.autofill"
+        android:resource="@xml/autofill_service_configuration" />
     <intent-filter>
         <action android:name="android.service.autofill.AutofillService" />
     </intent-filter>

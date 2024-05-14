@@ -20,7 +20,7 @@ export interface Props {
   navAction: (path: PanelTypes) => void
 }
 
-export class Panel extends React.PureComponent<Props> {
+export class Panel extends React.PureComponent<React.PropsWithChildren<Props>> {
   render() {
     const { title, headerStyle, navAction, children } = this.props
 

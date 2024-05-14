@@ -3,161 +3,99 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
+
 #include <string>
 #include <utility>
 
-#include "base/test/mock_callback.h"
-#include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
-#include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-// npm run test -- brave_unit_tests --filter=GeminiPostRecipientIdTest.*
-
-using ::testing::_;
+#include "brave/components/brave_rewards/core/common/environment_config.h"
+#include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 
 namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
 
-class GeminiPostRecipientIdTest : public testing::Test {
+class RewardsGeminiPostRecipientIdTest : public RewardsEngineTest {
  protected:
-  base::test::TaskEnvironment task_environment_;
-  MockRewardsEngine mock_engine_impl_;
-  PostRecipientId post_recipient_id_{mock_engine_impl_};
+  auto Request(mojom::UrlResponsePtr response) {
+    auto request_url =
+        engine().Get<EnvironmentConfig>().gemini_api_url().Resolve(
+            "/v1/payments/recipientIds");
+
+    client().AddNetworkResultForTesting(
+        request_url.spec(), mojom::UrlMethod::POST, std::move(response));
+
+    endpoint::gemini::PostRecipientId endpoint(engine());
+
+    return WaitForValues<mojom::Result, std::string&&>([&](auto callback) {
+      endpoint.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                       std::move(callback));
+    });
+  }
 };
 
-TEST_F(GeminiPostRecipientIdTest, ServerOK) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->url = request->url;
-        response->body = R"({
-              "result": "OK",
-              "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
-              "label": "deposit_address"
-            })";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerOK) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = R"({
+        "result": "OK",
+        "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
+        "label": "deposit_address"
+      })";
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback,
-              Run(mojom::Result::OK,
-                  std::string("60f9be89-ada7-486d-9cef-f6d3a10886d7")))
-      .Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::OK);
+  EXPECT_EQ(id, "60f9be89-ada7-486d-9cef-f6d3a10886d7");
 }
 
-TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->url = request->url;
-        response->body = R"({
-              "result": "OK",
-              "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
-              "label": "deposit_address"
-            })";
-        response->headers.insert(std::pair<std::string, std::string>(
-            "www-authenticate", "Bearer error=\"unverified_account\""));
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerOK_Unverified) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 200;
+  response->body = R"({
+        "result": "OK",
+        "recipient_id": "60f9be89-ada7-486d-9cef-f6d3a10886d7",
+        "label": "deposit_address"
+      })";
+  response->headers.insert(
+      {"www-authenticate", "Bearer error=\"unverified_account\""});
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, std::string())).Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::NOT_FOUND);
+  EXPECT_EQ(id, "");
 }
 
-TEST_F(GeminiPostRecipientIdTest, ServerError401) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_UNAUTHORIZED;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerError401) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 401;
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string()))
-      .Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(id, "");
 }
 
-TEST_F(GeminiPostRecipientIdTest, ServerError403) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_FORBIDDEN;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerError403) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 403;
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string()))
-      .Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+  EXPECT_EQ(id, "");
 }
 
-TEST_F(GeminiPostRecipientIdTest, ServerError404) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_NOT_FOUND;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerError404) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 404;
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, std::string())).Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::NOT_FOUND);
+  EXPECT_EQ(id, "");
 }
 
-TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = 418;
-        response->url = request->url;
-        response->body = "";
-        std::move(callback).Run(std::move(response));
-      });
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerErrorRandom) {
+  auto response = mojom::UrlResponse::New();
+  response->status_code = 418;
 
-  base::MockCallback<PostRecipientIdCallback> callback;
-  EXPECT_CALL(callback, Run(mojom::Result::FAILED, std::string())).Times(1);
-  post_recipient_id_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                             callback.Get());
-
-  task_environment_.RunUntilIdle();
+  auto [result, id] = Request(std::move(response));
+  EXPECT_EQ(result, mojom::Result::FAILED);
+  EXPECT_EQ(id, "");
 }
 
-}  // namespace gemini
-}  // namespace endpoint
 }  // namespace brave_rewards::internal

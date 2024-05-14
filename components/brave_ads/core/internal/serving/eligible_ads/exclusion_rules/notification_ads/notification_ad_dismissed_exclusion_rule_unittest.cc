@@ -79,7 +79,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed,
+      ConfirmationType::kViewedImpression,
       ConfirmationType::kDismissed,
   };
 
@@ -156,8 +156,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kClicked};
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -187,8 +187,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kClicked};
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -221,8 +221,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kClicked,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -252,8 +252,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kClicked,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -286,9 +286,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kClicked,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -320,9 +320,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kClicked,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -352,9 +352,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kClicked,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kClicked,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -387,8 +387,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {
@@ -417,8 +417,8 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   const std::vector<ConfirmationType> confirmation_types = {
-      ConfirmationType::kViewed, ConfirmationType::kDismissed,
-      ConfirmationType::kViewed, ConfirmationType::kDismissed};
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed,
+      ConfirmationType::kViewedImpression, ConfirmationType::kDismissed};
 
   AdEventList ad_events;
   for (const auto& confirmation_type : confirmation_types) {

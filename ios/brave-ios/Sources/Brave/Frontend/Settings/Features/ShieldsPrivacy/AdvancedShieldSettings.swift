@@ -28,7 +28,7 @@ import os
   @Published var cookieConsentBlocking: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
-        for: FilterList.cookieConsentNoticesComponentID,
+        for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
         isEnabled: cookieConsentBlocking
       )
     }
@@ -36,7 +36,7 @@ import os
   @Published var blockMobileAnnoyances: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
-        for: FilterList.mobileAnnoyancesComponentID,
+        for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID,
         isEnabled: blockMobileAnnoyances
       )
     }
@@ -69,6 +69,11 @@ import os
       }
     }
   }
+  @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
+    didSet {
+      ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+    }
+  }
 
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
@@ -97,15 +102,16 @@ import os
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.clearDataCallback = clearDataCallback
     self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
+    self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
-      for: FilterList.cookieConsentNoticesComponentID
+      for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
     )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
-      for: FilterList.mobileAnnoyancesComponentID
+      for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
     )
 
     var clearableSettings = [
@@ -232,11 +238,11 @@ import os
       .sink { filterLists in
         for filterList in filterLists {
           switch filterList.entry.componentId {
-          case FilterList.cookieConsentNoticesComponentID:
+          case AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID:
             if filterList.isEnabled != self.cookieConsentBlocking {
               self.cookieConsentBlocking = filterList.isEnabled
             }
-          case FilterList.mobileAnnoyancesComponentID:
+          case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
             if filterList.isEnabled != self.blockMobileAnnoyances {
               self.blockMobileAnnoyances = filterList.isEnabled
             }

@@ -123,6 +123,9 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     }
 
     @Override
+    public void onMediaFileDownloadScheduled(String id) {}
+
+    @Override
     public void onMediaFileDownloadProgressed(
             String id,
             long totalBytes,
@@ -136,7 +139,6 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
 
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
-        if (items.length == 0) return;
         if (mDelegate == null) return;
         mDelegate.onMediaFilesUpdated(pageUrl, items);
     }

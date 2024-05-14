@@ -77,7 +77,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
             return
           }
 
-          let models = await AdBlockStats.shared.cosmeticFilterModels(
+          let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
             forFrameURL: frameURL,
             domain: domain
           )
@@ -102,7 +102,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
   }
 
   @MainActor private func makeSetup(
-    from modelTuples: [AdBlockStats.CosmeticFilterModelTuple],
+    from modelTuples: [AdBlockGroupsManager.CosmeticFilterModelTuple],
     isAggressive: Bool
   ) throws -> UserScriptType.SelectorsPollerSetup {
     var standardSelectors: Set<String> = []

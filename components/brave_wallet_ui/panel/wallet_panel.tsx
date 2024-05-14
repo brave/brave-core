@@ -17,8 +17,6 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store, { walletPanelApiProxy } from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
-import { LibContext } from '../common/context/lib.context'
-import * as Lib from '../common/async/lib'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
 import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
@@ -43,11 +41,9 @@ function App() {
           light={walletLightTheme}
         >
           <ApiProxyContext.Provider value={walletPanelApiProxy}>
-            <LibContext.Provider value={Lib}>
-              <BrowserRouter>
-                <Container />
-              </BrowserRouter>
-            </LibContext.Provider>
+            <BrowserRouter>
+              <Container />
+            </BrowserRouter>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       )}

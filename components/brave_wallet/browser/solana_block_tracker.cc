@@ -20,9 +20,9 @@ namespace brave_wallet {
 namespace {
 
 constexpr base::TimeDelta kExpiredTimeDelta =
-    base::Seconds(kBlockTrackerDefaultTimeInSeconds);
+    base::Seconds(kSolanaBlockTrackerTimeInSeconds);
 
-}
+}  // namespace
 
 SolanaBlockTracker::SolanaBlockTracker(JsonRpcService* json_rpc_service)
     : json_rpc_service_(json_rpc_service), weak_ptr_factory_(this) {}

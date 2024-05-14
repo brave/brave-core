@@ -22,6 +22,7 @@ import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//printing/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("ui") {
@@ -85,6 +86,24 @@ source_set("ui") {
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
 
+    if (enable_print_preview) {
+      sources += [
+        "webui/ai_chat/print_preview_extractor.cc",
+        "webui/ai_chat/print_preview_extractor.h",
+      ]
+      deps += [
+        "//chrome/browser/pdf",
+        "//chrome/browser/pdf:pdf_pref_names",
+        "//chrome/services/printing/public/mojom",
+        "//components/pdf/browser",
+        "//components/printing/browser",
+        "//components/printing/common:mojo_interfaces",
+        "//components/services/print_compositor/public/mojom",
+        "//pdf:buildflags",
+        "//pdf:features",
+      ]
+    }
+
     if (is_android) {
       sources += [
         "android/ai_chat/brave_leo_settings_launcher_helper.cc",
@@ -97,6 +116,16 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "bookmark/bookmark_helper.cc",
+      "bookmark/bookmark_helper.h",
+      "bookmark/bookmark_prefs_service.cc",
+      "bookmark/bookmark_prefs_service.h",
+      "bookmark/bookmark_prefs_service_factory.cc",
+      "bookmark/bookmark_prefs_service_factory.h",
+      "bookmark/brave_bookmark_prefs.cc",
+      "bookmark/brave_bookmark_prefs.h",
+      "bookmark/brave_bookmark_tab_helper.cc",
+      "bookmark/brave_bookmark_tab_helper.h",
       "brave_browser.cc",
       "brave_browser.h",
       "brave_browser_command_controller.cc",
@@ -131,6 +160,38 @@ source_set("ui") {
       "session_crashed_bubble_brave.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+      "sidebar/sidebar.h",
+      "sidebar/sidebar_controller.cc",
+      "sidebar/sidebar_controller.h",
+      "sidebar/sidebar_model.cc",
+      "sidebar/sidebar_model.h",
+      "sidebar/sidebar_service_factory.cc",
+      "sidebar/sidebar_service_factory.h",
+      "sidebar/sidebar_tab_helper.cc",
+      "sidebar/sidebar_tab_helper.h",
+      "sidebar/sidebar_utils.cc",
+      "sidebar/sidebar_utils.h",
+      "tabs/brave_tab_color_mixer.cc",
+      "tabs/brave_tab_color_mixer.h",
+      "tabs/brave_tab_layout_constants.h",
+      "tabs/brave_tab_menu_model.cc",
+      "tabs/brave_tab_menu_model.h",
+      "tabs/brave_tab_prefs.cc",
+      "tabs/brave_tab_prefs.h",
+      "tabs/brave_tab_strip_model.cc",
+      "tabs/brave_tab_strip_model.h",
+      "tabs/brave_tab_style.h",
+      "tabs/features.cc",
+      "tabs/features.h",
+      "tabs/shared_pinned_tab_service.cc",
+      "tabs/shared_pinned_tab_service.h",
+      "tabs/shared_pinned_tab_service_factory.cc",
+      "tabs/shared_pinned_tab_service_factory.h",
+      "tabs/split_view_browser_data.cc",
+      "tabs/split_view_browser_data.h",
+      "tabs/split_view_browser_data_observer.h",
+      "tabs/split_view_tab_strip_model_adapter.cc",
+      "tabs/split_view_tab_strip_model_adapter.h",
       "toolbar/app_menu_icons.cc",
       "toolbar/app_menu_icons.h",
       "toolbar/bookmark_bar_sub_menu_model.cc",
@@ -202,8 +263,6 @@ source_set("ui") {
       "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
-      "webui/settings/settings_cookies_view_handler.cc",
-      "webui/settings/settings_cookies_view_handler.h",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
       "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
@@ -221,8 +280,35 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    deps +=
-        [ "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings" ]
+    deps += [
+      "//base",
+      "//brave/browser/profiles:util",
+      "//brave/common",
+      "//brave/components/constants",
+      "//brave/components/sidebar/browser",
+      "//brave/components/sidebar/common",
+      "//chrome/app:generated_resources",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
+      "//chrome/common:channel_info",
+      "//components/bookmarks/common",
+      "//components/google/core/common",
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//components/pref_registry",
+      "//components/prefs",
+      "//components/sessions",
+      "//components/user_prefs",
+      "//content/public/browser",
+      "//content/public/common",
+      "//extensions/buildflags",
+      "//skia",
+      "//third_party/abseil-cpp:absl",
+      "//ui/color:color_headers",
+      "//ui/color:mixers",
+      "//ui/webui/resources/cr_components/searchbox:mojo_bindings",
+      "//url",
+    ]
 
     if (enable_request_otr) {
       deps += [
@@ -275,6 +361,12 @@ source_set("ui") {
         "webui/settings/brave_extensions_manifest_v2_handler.h",
         "webui/settings/brave_tor_snowflake_extension_handler.cc",
         "webui/settings/brave_tor_snowflake_extension_handler.h",
+      ]
+
+      deps += [
+        "//chrome/browser/extensions",
+        "//extensions/browser",
+        "//extensions/common",
       ]
     }
   }
@@ -336,7 +428,6 @@ source_set("ui") {
       "views/brave_shields/cookie_list_opt_in_bubble_host.h",
       "views/brave_tab_search_bubble_host.cc",
       "views/brave_tab_search_bubble_host.h",
-      "views/bubble/brave_webui_bubble_manager.h",
       "views/commands/default_accelerators_views.cc",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",
@@ -352,6 +443,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
       "views/frame/brave_browser_view_layout.h",
+      "views/frame/brave_contents_layout_manager.cc",
+      "views/frame/brave_contents_layout_manager.h",
       "views/frame/brave_contents_view_util.cc",
       "views/frame/brave_contents_view_util.h",
       "views/frame/brave_non_client_hit_test_helper.cc",
@@ -432,7 +525,10 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.h",
     ]
 
-    deps += [ "//components/bookmarks/browser" ]
+    deps += [
+      "//chrome/browser/devtools",
+      "//components/bookmarks/browser",
+    ]
 
     if (enable_brave_vpn) {
       if (is_win) {
@@ -513,6 +609,29 @@ source_set("ui") {
     ]
   }
 
+  if (is_win || is_mac || is_linux) {
+    sources += [
+      "geolocation/brave_geolocation_permission_tab_helper.cc",
+      "geolocation/brave_geolocation_permission_tab_helper.h",
+      "geolocation/geolocation_utils.h",
+    ]
+
+    deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission" ]
+
+    if (is_win) {
+      sources += [ "geolocation/geolocation_utils_win.cc" ]
+    }
+
+    if (is_mac) {
+      sources += [ "geolocation/geolocation_utils_mac.mm" ]
+      frameworks = [ "CoreLocation.framework" ]
+    }
+
+    if (is_linux) {
+      sources += [ "geolocation/geolocation_utils_linux.cc" ]
+    }
+  }
+
   # brave's obsolete infobar is only used on Windows and Mac now.
   if (is_win || is_mac) {
     sources += [
@@ -536,14 +655,11 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/ethereum_remote_client/buildflags",
-    "//brave/browser/gcm_driver",
-    "//brave/browser/net",
     "//brave/browser/profiles",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/tabs",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -689,10 +805,26 @@ source_set("ui") {
   }
 
   if (toolkit_views) {
+    sources += [
+      "views/infobars/brave_confirm_infobar.cc",
+      "views/infobars/brave_confirm_infobar.h",
+      "views/infobars/brave_global_infobar_manager.cc",
+      "views/infobars/brave_global_infobar_manager.h",
+      "views/infobars/brave_infobar_container_view.cc",
+      "views/infobars/brave_infobar_container_view.h",
+      "views/infobars/brave_sync_account_deleted_infobar.cc",
+      "views/infobars/brave_sync_account_deleted_infobar.h",
+      "views/infobars/custom_styled_label.cc",
+      "views/infobars/custom_styled_label.h",
+      "views/infobars/web_discovery_infobar_content_view.cc",
+      "views/infobars/web_discovery_infobar_content_view.h",
+      "views/infobars/web_discovery_infobar_view.cc",
+      "views/infobars/web_discovery_infobar_view.h",
+    ]
+
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
-      "//brave/browser/ui/views/infobars",
       "//ui/views/controls/webview",
     ]
   }
@@ -741,14 +873,15 @@ source_set("ui") {
     deps += [ "//brave/components/brave_wayback_machine" ]
 
     if (toolkit_views) {
-      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
+      sources += [
+        "views/page_action/wayback_machine_action_icon_view.cc",
+        "views/page_action/wayback_machine_action_icon_view.h",
+        "views/page_action/wayback_machine_state_manager.cc",
+        "views/page_action/wayback_machine_state_manager.h",
+        "views/wayback_machine_bubble_view.cc",
+        "views/wayback_machine_bubble_view.h",
+      ]
     }
-  }
-
-  if (toolkit_views) {
-    deps += [
-      "//brave/browser/ui/views/infobars:brave_sync_account_deleted_infobar",
-    ]
   }
 
   if (enable_ipfs) {
@@ -785,8 +918,7 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
-      "//brave/browser/ui/sidebar",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
       "//components/favicon_base",
@@ -825,7 +957,6 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
-      "//brave/browser/ui/bookmark",
       "//brave/browser/ui/color:leo_colors",
       "//brave/common/importer",
       "//brave/components/brave_adaptive_captcha",
@@ -930,7 +1061,6 @@ source_set("ui") {
       ]
 
       deps += [
-        "//brave/browser/tor",
         "//brave/components/tor",
         "//brave/components/tor:pref_names",
         "//brave/components/tor/resources",
@@ -1036,6 +1166,8 @@ source_set("ui") {
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.cc",
+      "webui/brave_wallet/panel_handler/wallet_panel_handler.h",
       "webui/brave_wallet/trezor/trezor_ui.cc",
       "webui/brave_wallet/trezor/trezor_ui.h",
       "webui/brave_wallet/wallet_common_ui.cc",
@@ -1050,9 +1182,9 @@ source_set("ui") {
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
-      "//brave/browser/ui/webui/brave_wallet/panel_handler",
       "//brave/components/brave_news/browser",
       "//brave/components/brave_news/browser/resources:generated_resources",
+      "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
@@ -1063,6 +1195,7 @@ source_set("ui") {
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",
+      "//mojo/public/cpp/bindings",
     ]
   }
   if (is_android) {
@@ -1107,12 +1240,18 @@ source_set("ui") {
     sources += [
       "playlist/playlist_dialogs.cc",
       "playlist/playlist_dialogs.h",
-      "views/playlist/playlist_action_bubble_view.cc",
-      "views/playlist/playlist_action_bubble_view.h",
       "views/playlist/playlist_action_dialogs.cc",
       "views/playlist/playlist_action_dialogs.h",
       "views/playlist/playlist_action_icon_view.cc",
       "views/playlist/playlist_action_icon_view.h",
+      "views/playlist/playlist_add_bubble_view.cc",
+      "views/playlist/playlist_add_bubble_view.h",
+      "views/playlist/playlist_bubble_view.cc",
+      "views/playlist/playlist_bubble_view.h",
+      "views/playlist/playlist_bubbles_controller.cc",
+      "views/playlist/playlist_bubbles_controller.h",
+      "views/playlist/playlist_edit_bubble_view.cc",
+      "views/playlist/playlist_edit_bubble_view.h",
       "views/playlist/selectable_list_view.cc",
       "views/playlist/selectable_list_view.h",
       "views/playlist/thumbnail_provider.cc",

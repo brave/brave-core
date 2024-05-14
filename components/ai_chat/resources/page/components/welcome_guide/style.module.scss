@@ -12,28 +12,30 @@
   }
 }
 
+.header {
+  padding: var(--leo-spacing-2xl);
+}
+
 .title {
   font: var(--leo-font-heading-h1);
-  margin: 0 var(--leo-spacing-2xl);
+  margin: 0;
+  margin-bottom: var(--leo-spacing-m);
 }
 
 .subtitle {
   font: var(--leo-font-heading-h2);
   color: var(--leo-color-text-tertiary);
-  margin: var(--leo-spacing-2xl);
+  margin: var(--leo-spacing-m) 0;
 }
 
 .card {
   border-radius: var(--leo-radius-m);
-  box-shadow: var(--leo-effect-elevation-01);
   padding: var(--leo-spacing-2xl);
   margin-bottom: 12px;
-  position: relative;
-  overflow: hidden;
 
   p {
-    position: relative;
-    z-index: 2;
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
   }
 }
 
@@ -49,30 +51,10 @@
 
 .siteHelpCard {
   background-color: var(--leo-color-purple-10);
-
-  svg > path {
-    fill: var(--leo-color-purple-20);
-  }
 }
 
 .chatCard {
   background-color: var(--leo-color-teal-10);
-
-  svg > path {
-    fill: var(--leo-color-teal-20);
-  }
-}
-
-.graphic {
-  position: absolute;
-  width: 188px;
-  height: 188px;
-  bottom: -64px;
-  right: -50px;
-  pointer-events: none;
-  user-select: none;
-  opacity: .3;
-  z-index: 1;
 }
 
 .actions {

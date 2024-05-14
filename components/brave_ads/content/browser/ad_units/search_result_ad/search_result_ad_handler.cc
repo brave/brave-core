@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_handler.h"
 
 #include <iterator>
-#include <optional>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
@@ -136,7 +135,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed,
+      search_result_ad->Clone(),
+      mojom::SearchResultAdEventType::kViewedImpression,
       /*intentional*/ base::DoNothing());
 }
 

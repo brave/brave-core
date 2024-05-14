@@ -111,17 +111,19 @@ void InlineContentAdEventHandler::GetForTypeCallback(
   }
 
   if (event_type == mojom::InlineContentAdEventType::kClicked &&
-      !HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
-    // If an ad event doesn't have a corresponding viewed event when a click
-    // event is fired, trigger the viewed event first. This can happen if the ad
-    // is outside of the viewport and the viewed event hasn't been fired yet.
+      !HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewedImpression)) {
+    // If an ad event doesn't have a corresponding viewed impression event when
+    // a click event is fired, trigger the viewed impression event first. This
+    // can happen if the ad is outside of the viewport and the viewed impression
+    // event hasn't been fired yet.
     const auto ad_event = InlineContentAdEventFactory::Build(
-        mojom::InlineContentAdEventType::kViewed);
+        mojom::InlineContentAdEventType::kViewedImpression);
     return ad_event->FireEvent(
-        ad, base::BindOnce(
-                &InlineContentAdEventHandler::FireViewedEventCallback,
-                weak_factory_.GetWeakPtr(), ad,
-                mojom::InlineContentAdEventType::kViewed, std::move(callback)));
+        ad,
+        base::BindOnce(&InlineContentAdEventHandler::FireViewedEventCallback,
+                       weak_factory_.GetWeakPtr(), ad,
+                       mojom::InlineContentAdEventType::kViewedImpression,
+                       std::move(callback)));
   }
 
   const auto ad_event = InlineContentAdEventFactory::Build(event_type);
@@ -192,12 +194,12 @@ void InlineContentAdEventHandler::NotifyDidFireInlineContentAdEvent(
   }
 
   switch (event_type) {
-    case mojom::InlineContentAdEventType::kServed: {
+    case mojom::InlineContentAdEventType::kServedImpression: {
       delegate_->OnDidFireInlineContentAdServedEvent(ad);
       break;
     }
 
-    case mojom::InlineContentAdEventType::kViewed: {
+    case mojom::InlineContentAdEventType::kViewedImpression: {
       delegate_->OnDidFireInlineContentAdViewedEvent(ad);
       break;
     }

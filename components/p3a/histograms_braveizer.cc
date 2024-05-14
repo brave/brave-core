@@ -18,7 +18,6 @@ namespace {
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
 // clang-format off
 constexpr const char* kBravezationHistograms[] = {
-    "Bookmarks.Count.OnProfileLoad",
     "DefaultBrowser.State",
     "Extensions.LoadExtension",
     "Tabs.TabCount",
@@ -58,13 +57,6 @@ void HistogramsBraveizer::DoHistogramBravetization(
     uint64_t name_hash,
     base::HistogramBase::Sample sample) {
   DCHECK(histogram_name);
-  if (strcmp("Bookmarks.Count.OnProfileLoad", histogram_name) == 0) {
-    p3a_utils::RecordToHistogramBucket(
-        "Brave.Core.BookmarksCountOnProfileLoad.2",
-        {5, 20, 100, 500, 1000, 5000, 10000}, sample);
-    return;
-  }
-
   if (strcmp("DefaultBrowser.State", histogram_name) == 0) {
     int answer = 0;
     switch (sample) {

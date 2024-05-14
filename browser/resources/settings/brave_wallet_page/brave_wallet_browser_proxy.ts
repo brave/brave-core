@@ -65,6 +65,8 @@ export interface BraveWalletBrowserProxy {
   getPinnedNftCount(): Promise<number>
   clearPinnedNft(): Promise<boolean>
   isTransactionSimulationsFeatureEnabled(): Promise<boolean>
+  getWalletInPrivateWindowsEnabled(): Promise<boolean>
+  setWalletInPrivateWindowsEnabled(enabled: boolean): Promise<boolean>
 }
 
 export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
@@ -154,6 +156,14 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isTransactionSimulationsFeatureEnabled() {
     return sendWithPromise('isTransactionSimulationsFeatureEnabled')
+  }
+
+  getWalletInPrivateWindowsEnabled() {
+    return sendWithPromise('getWalletInPrivateWindowsEnabled')
+  }
+
+  setWalletInPrivateWindowsEnabled(value: boolean) {
+    return sendWithPromise('setWalletInPrivateWindowsEnabled', value)
   }
 
   static getInstance() {

@@ -27,6 +27,7 @@ void FailedToMigrate(InitializeCallback callback) {
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
+  SetProfileBooleanPref("brave.brave_ads.state.has_migrated.client.v6", true);
   SetProfileBooleanPref(prefs::kHasMigratedClientState, true);
   std::move(callback).Run(/*success=*/true);
 }
@@ -43,14 +44,29 @@ void MigrateClientState(InitializeCallback callback) {
            [](InitializeCallback callback,
               const std::optional<std::string>& json) {
              if (!json) {
-               // Client state does not exist
+               // Client state does not exist.
                return SuccessfullyMigrated(std::move(callback));
              }
+             std::string mutable_json = *json;
 
              ClientInfo client;
-             if (!client.FromJson(*json)) {
+
+             if (!GetProfileBooleanPref(
+                     "brave.brave_ads.state.has_migrated.client.v6") &&
+                 !client.FromJson(mutable_json)) {
+               // The client state is corrupted, therefore, reset it to the
+               // default values for version 6.
+               BLOG(0,
+                    "Client state is corrupted, resetting to default values");
+               mutable_json = "{}";
+             }
+
+             client = {};
+             if (!client.FromJson(mutable_json)) {
                // TODO(https://github.com/brave/brave-browser/issues/32066):
-               // Remove migration failure dumps.
+               // Detect potential defects using `DumpWithoutCrashing`.
+               SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                         "Failed to parse client state");
                base::debug::DumpWithoutCrashing();
 
                BLOG(0, "Failed to load client state");
@@ -59,14 +75,16 @@ void MigrateClientState(InitializeCallback callback) {
 
              BLOG(1, "Migrating client state");
 
-             const std::string migrated_json = client.ToJson();
-
-             Save(kClientStateFilename, migrated_json,
+             Save(kClientStateFilename, client.ToJson(),
                   base::BindOnce(
                       [](InitializeCallback callback, const bool success) {
                         if (!success) {
                           // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Remove migration failure dumps.
+                          // Detect potential defects using
+                          // `DumpWithoutCrashing`.
+                          SCOPED_CRASH_KEY_STRING64(
+                              "Issue32066", "failure_reason",
+                              "Failed to save client state");
                           base::debug::DumpWithoutCrashing();
 
                           BLOG(0, "Failed to save client state");

@@ -24,7 +24,7 @@ ConfirmationQueueItemInfo& ConfirmationQueueItemInfo::operator=(
 ConfirmationQueueItemInfo::~ConfirmationQueueItemInfo() = default;
 
 bool ConfirmationQueueItemInfo::IsValid() const {
-  return !process_at.is_null();
+  return !!process_at;
 }
 
 }  // namespace brave_ads

@@ -58,7 +58,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
+  effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+  isRetriable: false
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
@@ -111,7 +112,8 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  effectiveRecipient: undefined
+  effectiveRecipient: undefined,
+  isRetriable: false
 }
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
@@ -144,7 +146,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txParams: [],
   txStatus: BraveWallet.TransactionStatus.Confirmed,
   txType: BraveWallet.TransactionType.Other,
-  effectiveRecipient: mockAccount.address
+  effectiveRecipient: mockAccount.address,
+  isRetriable: false
 }
 
 export const mockedErc20ApprovalTransaction = {
@@ -201,7 +204,8 @@ export const mockEthSendTransaction = {
     eTldPlusOne: ''
   },
   chainId: BraveWallet.MAINNET_CHAIN_ID,
-  effectiveRecipient: mockEthAccount.accountId.address
+  effectiveRecipient: mockEthAccount.accountId.address,
+  isRetriable: false
 }
 
 export const mockBtcSendTransaction = {
@@ -237,7 +241,8 @@ export const mockBtcSendTransaction = {
     eTldPlusOne: ''
   },
   chainId: BraveWallet.BITCOIN_MAINNET,
-  effectiveRecipient: mockBtcAccount.accountId.address
+  effectiveRecipient: mockBtcAccount.accountId.address,
+  isRetriable: false
 }
 
 export const mockZecSendTransaction = {
@@ -272,7 +277,8 @@ export const mockZecSendTransaction = {
     eTldPlusOne: ''
   },
   chainId: BraveWallet.Z_CASH_MAINNET,
-  effectiveRecipient: mockZecAccount.accountId.address
+  effectiveRecipient: mockZecAccount.accountId.address,
+  isRetriable: false
 }
 
 export const createMockERC20TransferTxArgs = ({

@@ -10,6 +10,7 @@ import { sendWithPromise, addWebUiListener } from 'chrome://resources/js/cr.js';
 export interface BraveAdblockBrowserProxy {
   getRegionalLists(): Promise<any[]> // TODO(petemill): Define the expected type
   enableFilterList(uuid: string, enabled: boolean)
+  updateFilterList(uuid: string): Promise<boolean>
   getListSubscriptions(): Promise<any> // TODO(petemill): Define the expected type
   getCustomFilters(): Promise<any> // TODO(petemill): Define the expected type
   setSubscriptionEnabled(url: string, enabled: boolean)
@@ -42,6 +43,11 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
 
   enableFilterList (uuid, enabled) {
     chrome.send('brave_adblock.enableFilterList', [uuid, enabled])
+  }
+
+  /** @returns {Promise<boolean>} */
+  updateFilterLists () {
+    return sendWithPromise('brave_adblock.updateFilterLists')
   }
 
   setSubscriptionEnabled (url, enabled) {

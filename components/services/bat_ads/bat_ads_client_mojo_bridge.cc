@@ -5,7 +5,6 @@
 
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/time/time.h"
@@ -13,7 +12,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 
 namespace bat_ads {
 
@@ -215,15 +213,6 @@ void BatAdsClientMojoBridge::RecordP2AEvents(
     const std::vector<std::string>& events) {
   if (bat_ads_client_associated_receiver_.is_bound()) {
     bat_ads_client_associated_receiver_->RecordP2AEvents(events);
-  }
-}
-
-void BatAdsClientMojoBridge::AddFederatedLearningPredictorTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  if (bat_ads_client_associated_receiver_.is_bound()) {
-    bat_ads_client_associated_receiver_
-        ->AddFederatedLearningPredictorTrainingSample(
-            std::move(training_sample));
   }
 }
 

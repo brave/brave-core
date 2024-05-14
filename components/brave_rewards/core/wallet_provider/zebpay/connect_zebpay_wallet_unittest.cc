@@ -22,7 +22,9 @@ TEST_F(RewardsConnectZebPayWalletTest, LoginURL) {
       config.zebpay_oauth_url(),
       {"/account/login?returnUrl="
        "%2Fconnect%2Fauthorize%2Fcallback%3F"
-       "client_id%3D60189f6b-27e2-4652-9a48-14b3356b1182%26"
+       "client_id%3D",
+       config.zebpay_client_id(),
+       "%26"
        "grant_type%3Dauthorization_code%26"
        "redirect_uri%3Drewards%253A%252F%252Fzebpay%252Fauthorization%26"
        "response_type%3Dcode%26"

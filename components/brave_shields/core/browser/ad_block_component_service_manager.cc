@@ -10,19 +10,25 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/ranges/algorithm.h"
 #include "base/values.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
+using brave_shields::features::kBraveAdblockExperimentalListDefault;
 using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 
 namespace brave_shields {
@@ -43,8 +49,14 @@ const ListDefaultOverrideConstants kMobileNotificationsListConstants{
         kBraveAdblockMobileNotificationsListDefault),
     .list_uuid = kMobileNotificationsListUuid};
 
-const ListDefaultOverrideConstants kOverrideConstants[2] = {
-    kCookieListConstants, kMobileNotificationsListConstants};
+const ListDefaultOverrideConstants kExperimentalListConstants{
+    .feature =
+        raw_ref<const base::Feature>(kBraveAdblockExperimentalListDefault),
+    .list_uuid = kExperimentalListUuid};
+
+const ListDefaultOverrideConstants kOverrideConstants[3] = {
+    kCookieListConstants, kMobileNotificationsListConstants,
+    kExperimentalListConstants};
 
 }  // namespace
 
@@ -52,11 +64,13 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
-    AdBlockFilterListCatalogProvider* catalog_provider)
+    AdBlockFilterListCatalogProvider* catalog_provider,
+    AdBlockListP3A* list_p3a)
     : local_state_(local_state),
       locale_(locale),
       component_update_service_(cus),
-      catalog_provider_(catalog_provider) {
+      catalog_provider_(catalog_provider),
+      list_p3a_(list_p3a) {
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
@@ -150,12 +164,15 @@ void AdBlockComponentServiceManager::UpdateFilterListPrefs(
   if (!local_state_) {
     return;
   }
-  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
-  base::Value::Dict regional_filter_dict;
-  regional_filter_dict.Set("enabled", enabled);
-  update->Set(uuid, std::move(regional_filter_dict));
+  {
+    ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
+    base::Value::Dict regional_filter_dict;
+    regional_filter_dict.Set("enabled", enabled);
+    update->Set(uuid, std::move(regional_filter_dict));
+  }
 
   RecordP3ACookieListEnabled();
+  list_p3a_->ReportFilterListUsage();
 }
 
 void AdBlockComponentServiceManager::RecordP3ACookieListEnabled() {
@@ -171,6 +188,19 @@ bool AdBlockComponentServiceManager::IsFilterListAvailable(
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
   return catalog_entry != filter_list_catalog_.end();
+}
+
+base::FilePath AdBlockComponentServiceManager::GetFilterSetPath(
+    const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!uuid.empty());
+  auto it = component_filters_providers_.find(uuid);
+
+  if (it == component_filters_providers_.end()) {
+    return base::FilePath();
+  }
+
+  return it->second->GetFilterSetPath();
 }
 
 bool AdBlockComponentServiceManager::IsFilterListEnabled(
@@ -252,12 +282,40 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   UpdateFilterListPrefs(uuid, enabled);
 }
 
+void AdBlockComponentServiceManager::UpdateFilterLists(
+    base::OnceCallback<void(bool)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // If there are currently no components to update, then run the callback with
+  // a success value in a future turn.
+  if (component_filters_providers_.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  std::vector<std::string> component_ids;
+  for (const auto& [key, provider] : component_filters_providers_) {
+    component_ids.push_back(provider->component_id());
+  }
+
+  auto on_updated = [](decltype(callback) cb, update_client::Error error) {
+    std::move(cb).Run(error == update_client::Error::NONE ||
+                      error == update_client::Error::UPDATE_IN_PROGRESS);
+  };
+
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_ids, component_updater::OnDemandUpdater::Priority::FOREGROUND,
+      base::BindOnce(on_updated, std::move(callback)));
+}
+
 void AdBlockComponentServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   filter_list_catalog_ = std::move(catalog);
   StartRegionalServices();
   RecordP3ACookieListEnabled();
+
+  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_);
 }
 
 const std::vector<FilterListCatalogEntry>&

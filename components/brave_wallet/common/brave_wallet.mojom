@@ -567,12 +567,12 @@ struct ZeroExQuote {
 
 struct ZeroExErrorItem {
   string field;
-  int32 code;
+  string code;
   string reason;
 };
 
 struct ZeroExError {
-  int32 code;
+  string code;
   string reason;
   array<ZeroExErrorItem> validation_errors;
   bool is_insufficient_liquidity;
@@ -639,7 +639,8 @@ struct JupiterError {
 enum LiFiStepType {
   kSwap,
   kCross,
-  kNative
+  kNative,
+  kProtocol
 };
 
 struct LiFiToolDetails {
@@ -688,7 +689,7 @@ struct LiFiStepEstimate {
   string to_amount_min;
   string approval_address;
   string execution_duration;
-  array<LiFiFeeCost> fee_costs;
+  array<LiFiFeeCost>? fee_costs;
   array<LiFiGasCost> gas_costs;
 };
 
@@ -738,8 +739,59 @@ struct LiFiEVMTransaction {
   string gas_limit;
 };
 
+enum LifiToolErrorCode {
+  // No route was found for this action.
+  kNoPossibleRoute = 0,
+  // The tool's liquidity is insufficient.
+  kInsufficientLiquidity = 1,
+  // The third-party tool timed out.
+  kToolTimeout = 2,
+  // An unknown error occurred.
+  kUnknownError = 3,
+  // There was a problem getting on-chain data. Please try again later.
+  kRpcError = 3,
+  // he initial amount is too low to transfer using this tool.
+  kAmountTooLow = 4,
+  // The initial amount is too high to transfer using this tool.
+  kAmountTooHigh = 5,
+  // The fees are higher than the initial amount.
+  // This would result in negative resulting token.
+  kFeesHigherThanAmount = 6,
+  // This tool does not support different recipient addresses.
+  kDifferentRecipientNotSupported = 7,
+  // The third-party tool returned an error.
+  kToolSpecificError = 8,
+  // The tool cannot guarantee that the minimum amount will be met.
+  kCannotGuaranteeMinAmount = 9
+};
+
+// https://github.com/lifinance/types/blob/main/src/errors.ts
+enum LiFiErrorCode {
+  kSuccess = 0,
+  kDefaultError = 1000,
+  kFailedToBuildTransactionError = 1001,
+  kNoQuoteError = 1002,
+  kNotFoundError = 1003,
+  kNotProcessableError = 1004,
+  kRateLimitError = 1005,
+  kServerError = 1006,
+  kSlippageError = 1007,
+  kThirdPartyError = 1008,
+  kTimeoutError = 1009,
+  kUnauthorizedError = 1010,
+  kValidationError = 1011,
+};
+
+struct LifiToolError {
+  string error_type;
+  string code;
+  string tool;
+  string message;
+};
+
 struct LiFiError {
   string message;
+  LiFiErrorCode code;
 };
 
 enum SwapDiscountCode {
@@ -982,18 +1034,16 @@ interface KeyringService {
   IsWalletCreated() => (bool isCreated);
 
   // Creates a new wallet and encrypts it using the specified password
-  CreateWallet(string password) => (string mnemonic);
+  CreateWallet(string password) => (string? mnemonic);
 
   // Obtains the mnemonic code words for an already existing wallet
-  // TODO(darkdh): make result optional instead of using empty string indicated
-  // failure
-  GetMnemonicForDefaultKeyring(string password) => (string mnemonic);
+  GetWalletMnemonic(string password) => (string? mnemonic);
 
   // Restores a wallet with the specified mnemonic and encrypts it with the
-  // new password provided. isLegacyBraveWallet can be used to restore the
+  // new password provided. `is_legacy_eth_seed_format` can be used to restore the
   // wallet using Brave's legacy derivation paths.
-  RestoreWallet(string mnemonic, string password, bool isLegacyBraveWallet)
-    => (bool isValidMnemonic);
+  RestoreWallet(string mnemonic, string password, bool is_legacy_eth_seed_format)
+    => (bool is_valid_mnemonic);
 
   // Locks the keyring.
   Lock();
@@ -1197,7 +1247,7 @@ const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
-const string kBinanceSmartChainMainnetChainId = "0x38";
+const string kBnbSmartChainMainnetChainId = "0x38";
 const string kAvalancheMainnetChainId = "0xa86a"; // Avalanche C-Chain
 const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
 const string kCeloMainnetChainId = "0xa4ec";
@@ -1226,6 +1276,15 @@ const string kBaseMainnetChainId = "0x2105";
 const string kFlareMainnetChainId = "0xe";
 const string kRolluxMainnetChainId = "0x23a";
 const string kSyscoinMainnetChainId = "0x39";
+const string kArbitrumSepoliaChainId = "0x66eee";
+const string kAvalancheFujiTestnetChainId = "0xa869";
+const string kBaseSepoliaTestnetChainId = "0x14a34";
+const string kBlastMainnetChainId = "0xee";
+const string kBlastSepoliaTestnetChainId = "0xa0c71fd";
+const string kDegenChainId = "0x27bc86aa";
+const string kLineaChainId = "0xe708";
+const string kOptimismSepoliaChainId = "0xaa37dc";
+const string kZoraChainId = "0x76adf1";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -1688,6 +1747,7 @@ struct TransactionInfo {
   // and represents the final beneficiary of the transaction.
   // TODO(cypt4): Add for SOL
   string? effective_recipient;
+  bool is_retriable;
 };
 
 interface TxServiceObserver {
@@ -1735,7 +1795,10 @@ interface TxService {
                              string chain_id, string tx_meta_id, bool cancel)
     => (bool success, string tx_meta_id, string error_message);
 
-  // Used to retry a transaction
+  // Used to retry a transaction.
+  // tx_meta_id parameter is the ID of the transaction to be retried.
+  // tx_meta_id in the callback result is the ID of the new transaction if
+  // the retry is successful, otherwise it will be empty.
   RetryTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
     => (bool success, string tx_meta_id, string error_message);
 

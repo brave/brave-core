@@ -9,6 +9,7 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
@@ -18,10 +19,23 @@
 #include "brave/components/brave_player/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#endif
+
 namespace {
 
 PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // Add actions for Brave
+  // |browser| is null for non-browser window. See LocationBarView::Init().
+  if (!params.browser) {
+    return params;
+  }
+
+  params.types_enabled.insert(
+      base::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
+      brave::kWaybackMachineActionIconType);
+
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     // Browser could be null if the location bar was created for
     // PresentationReceiverWindowView.
@@ -45,6 +59,19 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
           });
       params.types_enabled.insert(insert_iter,
                                   brave::kBravePlayerPageActionIconType);
+    }
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    if (params.browser) {
+      params.types_enabled.insert(
+          base::ranges::find(
+              params.types_enabled,
+              PageActionIconType::kCookieControls),  // The place where
+                                                     // kReaderMode was.
+          brave::kSpeedreaderPageActionIconType);
     }
   }
 #endif

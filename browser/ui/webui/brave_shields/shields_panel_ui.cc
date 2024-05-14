@@ -23,13 +23,14 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "net/base/features.h"
 
 // Cache active Browser instance's TabStripModel to give
 // to ShieldsPanelDataHandler when this is created because
 // CreatePanelHandler() is run in async.
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
-    : ui::MojoBubbleWebUIController(web_ui, true),
+    : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 

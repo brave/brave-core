@@ -13,7 +13,7 @@ extension AdblockEngine {
     case couldNotDeserializeDATFile
   }
 
-  public func useResources(fromFileURL fileURL: URL) throws {
+  func useResources(fromFileURL fileURL: URL) throws {
     // Add scriplets if available
     if let json = try Self.validateJSON(Data(contentsOf: fileURL)) {
       useResources(json)

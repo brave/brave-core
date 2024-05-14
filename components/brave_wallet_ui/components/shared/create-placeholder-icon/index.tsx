@@ -54,11 +54,6 @@ export type IconAsset = Pick<
 
 interface Props {
   asset: IconAsset | undefined
-  /** @deprecated Not used */
-  network:
-    | Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'>
-    | undefined
-    | null
 }
 
 const isStorybook = isComponentInStorybook()
@@ -78,7 +73,7 @@ export function withPlaceholderIcon<
   const { size, marginLeft, marginRight } = config
 
   return function (funcProps: Props & PROPS_FOR_FUNCTION) {
-    const { asset, network, ...wrappedComponentProps } = funcProps
+    const { asset, ...wrappedComponentProps } = funcProps
 
     const isNative = asset && isNativeAsset(asset)
 

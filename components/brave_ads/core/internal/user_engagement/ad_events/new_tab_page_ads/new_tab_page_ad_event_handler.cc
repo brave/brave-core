@@ -157,18 +157,33 @@ void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(
   }
 
   switch (event_type) {
-    case mojom::NewTabPageAdEventType::kServed: {
+    case mojom::NewTabPageAdEventType::kServedImpression: {
       delegate_->OnDidFireNewTabPageAdServedEvent(ad);
       break;
     }
 
-    case mojom::NewTabPageAdEventType::kViewed: {
+    case mojom::NewTabPageAdEventType::kViewedImpression: {
       delegate_->OnDidFireNewTabPageAdViewedEvent(ad);
       break;
     }
 
     case mojom::NewTabPageAdEventType::kClicked: {
       delegate_->OnDidFireNewTabPageAdClickedEvent(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kMediaPlay: {
+      delegate_->OnDidFireNewTabPageAdMediaPlayEvent(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia25: {
+      delegate_->OnDidFireNewTabPageAdMedia25Event(ad);
+      break;
+    }
+
+    case mojom::NewTabPageAdEventType::kMedia100: {
+      delegate_->OnDidFireNewTabPageAdMedia100Event(ad);
       break;
     }
   }

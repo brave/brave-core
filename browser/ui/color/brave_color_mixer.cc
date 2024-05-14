@@ -12,9 +12,12 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
@@ -372,6 +375,12 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
     return;
   }
 
+  // This is behind features::IsChromeRefresh2023 upstream, but without it the
+  // colors are not set correctly.
+  if (!features::IsChromeRefresh2023()) {
+    AddMaterialSidePanelColorMixer(provider, key);
+  }
+
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
       : AddChromeLightThemeColorMixer(provider, key);
@@ -459,6 +468,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorWebDiscoveryInfoBarLink] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
   mixer[kColorWebDiscoveryInfoBarNoThanks] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
   mixer[kColorWebDiscoveryInfoBarClose] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  mixer[kColorWaybackMachineURLLoaded] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kLight)};
+  mixer[kColorWaybackMachineURLNotAvailable] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackErrorIcon, leo::Theme::kLight)};
+#endif
 
   // Color for download button when all completed and button needs user
   // interaction.
@@ -570,6 +586,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(0xBF, 0xEC, 0xEF, 0xF2)};
   mixer[kColorWebDiscoveryInfoBarClose] = {
       SkColorSetARGB(0xBF, 0x8C, 0x90, 0xA1)};
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  mixer[kColorWaybackMachineURLLoaded] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kDark)};
+  mixer[kColorWaybackMachineURLNotAvailable] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackErrorIcon, leo::Theme::kDark)};
+#endif
 
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x87, 0x84, 0xF4)};

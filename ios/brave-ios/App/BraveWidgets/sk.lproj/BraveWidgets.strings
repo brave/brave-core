@@ -1,0 +1,291 @@
+/* (No Comment) */
+"0W40Cl" = "Nová karta";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Odh. ušetrený čas“.";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Odh. ulož. údaje“.";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Blokované reklamy“.";
+
+/* (No Comment) */
+"7Ds8rk" = "Obľúbená konfigurácia uzamknutej obrazovky";
+
+/* (No Comment) */
+"7JYzOv" = "Písať";
+
+/* (No Comment) */
+"7MuqiB" = "Skratka";
+
+/* (No Comment) */
+"8pcZ6L" = "Obľúbená miniaplikácia uzamknutej obrazovky";
+
+/* (No Comment) */
+"8vyYRy" = "#3";
+
+/* (No Comment) */
+"9E2oRR" = "#1";
+
+/* (No Comment) */
+"AGMpus" = "Konfigurácia skratiek";
+
+/* (No Comment) */
+"bUXzTx" = "Druh štatistiky";
+
+/* (No Comment) */
+"crhbMy" = "Panel so záložkami";
+
+/* (No Comment) */
+"D5r3nt" = "Webová adresa";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Naozaj ste chceli „Záložky“?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Naozaj ste chceli „Zoznam prehrávania Brave“?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Naozaj ste chceli „Peňaženka Brave“?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Naozaj ste chceli „Stiahnuté“?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Naozaj ste chceli „História“?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Naozaj ste chceli „Nová súkromná karta“?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Naozaj ste chceli „Správy Brave“?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Naozaj ste chceli „Hľadať“?";
+
+/* (No Comment) */
+"EUS9FL" = "Skratka miniaplikácie";
+
+/* (No Comment) */
+"FGO5qW" = "Zoznam skladieb Brave";
+
+/* (No Comment) */
+"gpCwrM" = "Konfigurácia štatistík";
+
+/* (No Comment) */
+"hssb67" = "Skratka Konfigurácia miniaplikácií";
+
+/* (No Comment) */
+"iB2TOM" = "Obľúbený vstup";
+
+/* (No Comment) */
+"joEZJM" = "#2";
+
+/* (No Comment) */
+"jXiFQY" = "Peňaženka Brave";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Zoznam prehrávania Brave“.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Peňaženka Brave“.";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Stiahnuté“.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová súkromná karta“.";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Správy Brave“.";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Hľadať“.";
+
+/* (No Comment) */
+"nthxSL" = "Stiahnuté";
+
+/* (No Comment) */
+"nXONef" = "Obľúbené";
+
+/* (No Comment) */
+"qKrzyX" = "Skenovať QR kód";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Naozaj ste chceli „Záložky“?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Naozaj ste chceli „Zoznam prehrávania Brave“?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Naozaj ste chceli „Peňaženka Brave“?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Naozaj ste chceli „Stiahnuté“?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Naozaj ste chceli „História“?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Naozaj ste chceli „Nová súkromná karta“?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Naozaj ste chceli „Správy Brave“?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Naozaj ste chceli „Hľadať“?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Naozaj ste chceli „Odh. ušetrený čas“?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Naozaj ste chceli „Odh. ulož. údaje“?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Naozaj ste chceli „Blokované reklamy“?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Zoznam prehrávania Brave“.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Peňaženka Brave“.";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Stiahnuté“.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová súkromná karta“.";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Správy Brave“.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Hľadať“.";
+
+/* (No Comment) */
+"tVvJ9c" = "Widget konfigurácie štatistík";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Zoznam prehrávania Brave“.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Peňaženka Brave“.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Stiahnuté“.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Naskenovať QR kód“.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „História“.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová súkromná karta“.";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Správy Brave“.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Hľadať“.";
+
+/* (No Comment) */
+"tYwiRd" = "Približný ušetrený čas";
+
+/* (No Comment) */
+"VBH4G6" = "História";
+
+/* (No Comment) */
+"vjA5pZ" = "Odh. ulož. údaje";
+
+/* (No Comment) */
+"vs094F" = "Nová karta režimu Inkognito";
+
+/* (No Comment) */
+"xcI3h9" = "Zablokované reklamy";
+
+/* (No Comment) */
+"XCyA8c" = "Novinky Brave";
+
+/* (No Comment) */
+"XkwBGY" = "Konfigurácia skratky zamknutia obrazovky";
+
+/* (No Comment) */
+"Y7TWy8" = "Vyhľadávanie";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Naozaj ste chceli „Záložky“?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Naozaj ste chceli „Zoznam prehrávania Brave“?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Naozaj ste chceli „Peňaženka Brave“?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Naozaj ste chceli „Stiahnuté“?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Naozaj ste chceli „Naskenovať QR kód“?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Naozaj ste chceli „História“?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Naozaj ste chceli „Nová súkromná karta“?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Naozaj ste chceli „Správy Brave“?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Naozaj ste chceli „Hľadať“?";
+
+/* (No Comment) */
+"ziTvSZ" = "Skratky konfigurácie miniaplikácií";
+

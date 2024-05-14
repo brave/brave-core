@@ -19,6 +19,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
@@ -300,11 +301,24 @@ void SpeedreaderTabHelper::ProcessNavigation(
   TransitStateTo(DistillStates::DistillReverting(reason, false), true);
   TransitStateTo(DistillStates::ViewOriginal(), true);
 
-  if (url_looks_readable && enabled_for_site) {
-    // Speedreader enabled for this page.
-    TransitStateTo(DistillStates::Distilling(
-                       DistillStates::Distilling::Reason::kAutomatic),
-                   true);
+  if (enabled_for_site) {
+    // Check if url is pointed to the homepage, basically these pages aren't
+    // readable. We've got the same check in speedreader::IsURLLooksReadable
+    const bool homepage = !navigation_handle->GetURL().has_path() ||
+                          navigation_handle->GetURL().path_piece() == "/";
+
+    // Enable speedreader if the user explicitly enabled speedreader on the
+    // site.
+    const bool explicit_enabled_for_size =
+        !homepage && kSpeedreaderExplicitPref.Get() &&
+        GetSpeedreaderService()->GetEnabledForSiteSetting(
+            navigation_handle->GetURL());
+    if (url_looks_readable || explicit_enabled_for_size) {
+      // Speedreader enabled for this page.
+      TransitStateTo(DistillStates::Distilling(
+                         DistillStates::Distilling::Reason::kAutomatic),
+                     true);
+    }
   }
 }
 
@@ -330,7 +344,8 @@ void SpeedreaderTabHelper::UpdateUI() {
           ->ShowReaderModeToolbar();
     }
 
-    browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
+    browser->window()->UpdatePageActionIcon(
+        brave::kSpeedreaderPageActionIconType);
   }
 #endif
 }

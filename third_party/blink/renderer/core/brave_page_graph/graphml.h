@@ -23,8 +23,10 @@ class GraphMLAttr {
               const String& name,
               const GraphMLAttrType type = kGraphMLAttrTypeString);
 
-  GraphMLId GetGraphMLId() const;
+  const GraphMLId& GetGraphMLId() const;
+
   void AddDefinitionNode(xmlNodePtr parent_node) const;
+
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
                     std::string_view value) const;
@@ -55,10 +57,10 @@ class GraphMLAttr {
                            xmlNodePtr parent_node,
                            const xmlChar* value) const;
 
-  const uint64_t id_;
   const GraphMLAttrForType for_;
   const String name_;
   const GraphMLAttrType type_;
+  const GraphMLId graphml_id_;
 };
 
 using GraphMLAttrs = base::flat_map<GraphMLAttrDef, const GraphMLAttr*>;

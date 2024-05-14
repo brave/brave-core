@@ -47,7 +47,7 @@ struct UnlockWalletView: View {
       keyringStore.unlock(password: password) { unlocked in
         if !unlocked {
           unlockError = .incorrectPassword
-          UIImpactFeedbackGenerator(style: .medium).bzzt()
+          UIImpactFeedbackGenerator(style: .medium).vibrate()
         }
       }
     }
@@ -151,10 +151,8 @@ struct UnlockWalletView: View {
         return Image(systemName: "faceid")
       case .touchID:
         return Image(systemName: "touchid")
-      #if swift(>=5.9)
       case .opticID:
         return Image(systemName: "opticid")
-      #endif
       case .none:
         return nil
       @unknown default:

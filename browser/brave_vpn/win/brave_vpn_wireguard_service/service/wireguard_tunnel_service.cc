@@ -93,16 +93,15 @@ bool AddACEToPath(const base::FilePath& path,
 }
 
 bool ConfigureConfigPermissions(const base::FilePath& config_path) {
-  return AddACEToPath(
-      config_path,
-      {// Let only windows services to read the config.
-       {base::win::WellKnownSid::kService,
-        GENERIC_READ | GENERIC_WRITE | GENERIC_EXECUTE | DELETE,
-        base::win::SecurityAccessMode::kGrant},
-       // Let windows administrators only to remove the config.
-       {base::win::WellKnownSid::kBuiltinAdministrators,
-        GENERIC_EXECUTE | DELETE, base::win::SecurityAccessMode::kGrant}},
-      0, /*recursive=*/false);
+  return AddACEToPath(config_path,
+                      {// Let only windows services to read the config.
+                       {base::win::WellKnownSid::kLocalSystem,
+                        GENERIC_READ | GENERIC_WRITE | DELETE,
+                        base::win::SecurityAccessMode::kGrant},
+                       // Let windows administrators only to remove the config.
+                       {base::win::WellKnownSid::kBuiltinAdministrators, DELETE,
+                        base::win::SecurityAccessMode::kGrant}},
+                      0, /*recursive=*/false);
 }
 
 std::optional<base::FilePath> WriteConfigToFile(const std::string& config) {

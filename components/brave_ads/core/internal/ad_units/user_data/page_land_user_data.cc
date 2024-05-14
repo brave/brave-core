@@ -10,14 +10,17 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kHttpResponseStatusKey[] = "httpResponseStatusKey";
+
+constexpr char kHttpResponseStatusKey[] = "httpResponseStatus";
+constexpr char kHttpErrorPageResponseStatus[] = "errorPage";
+
 }  // namespace
 
 base::Value::Dict BuildPageLandUserData(const TabInfo& tab) {
   base::Value::Dict user_data;
 
   if (tab.is_error_page) {
-    user_data.Set(kHttpResponseStatusKey, "errorPage");
+    user_data.Set(kHttpResponseStatusKey, kHttpErrorPageResponseStatus);
   }
 
   return user_data;

@@ -57,6 +57,18 @@ class EnvironmentConfig : public RewardsEngineHelper,
   std::string bitflyer_client_id() const;
   std::string bitflyer_client_secret() const;
   std::string bitflyer_fee_address() const;
+
+  // Unit tests should be able to execute even if the build-time config values
+  // are not specified. Calling this method in unit tests will allow certain
+  // config values to have default values.
+  void AllowDefaultValuesForTesting() {
+    allow_default_values_for_testing_ = true;
+  }
+
+ private:
+  GURL URLValue(std::string value) const;
+
+  bool allow_default_values_for_testing_ = false;
 };
 
 }  // namespace brave_rewards::internal

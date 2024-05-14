@@ -13,19 +13,24 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -91,6 +96,13 @@ GetActionTypeQuestionMap() {
            {mojom::ActionType::EXPAND,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
   return *map;
+}
+
+const std::string& GetActionTypeQuestion(mojom::ActionType action_type) {
+  const auto& map = GetActionTypeQuestionMap();
+  auto iter = map.find(action_type);
+  CHECK(iter != map.end());
+  return iter->second;
 }
 
 }  // namespace
@@ -229,7 +241,8 @@ std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
   return models;
 }
 
-const std::vector<ConversationTurn>& ConversationDriver::GetConversationHistory() {
+const std::vector<mojom::ConversationTurnPtr>&
+ConversationDriver::GetConversationHistory() {
   return chat_history_;
 }
 
@@ -238,7 +251,7 @@ ConversationDriver::GetVisibleConversationHistory() {
   // Remove conversations that are meant to be hidden from the user
   std::vector<ai_chat::mojom::ConversationTurnPtr> list;
   for (const auto& turn : GetConversationHistory()) {
-    if (turn.visibility != ConversationTurnVisibility::HIDDEN) {
+    if (turn->visibility != ConversationTurnVisibility::HIDDEN) {
       list.push_back(turn.Clone());
     }
   }
@@ -249,7 +262,8 @@ ConversationDriver::GetVisibleConversationHistory() {
   return list;
 }
 
-void ConversationDriver::OnConversationActiveChanged(bool is_conversation_active) {
+void ConversationDriver::OnConversationActiveChanged(
+    bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
   MaybeSeedOrClearSuggestions();
@@ -261,7 +275,10 @@ void ConversationDriver::InitEngine() {
   auto* model = GetModel(model_key_);
   // Make sure we get a valid model, defaulting to static default or first.
   if (!model) {
-    NOTREACHED() << "Model was not part of static model list";
+    // It is unexpected that we get here. Dump a call stack
+    // to help figure out why it happens.
+    SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
+    base::debug::DumpWithoutCrashing();
     // Use default
     model = GetModel(features::kAIModelsDefaultKey.Get());
     DCHECK(model);
@@ -276,12 +293,16 @@ void ConversationDriver::InitEngine() {
   model_key_ = model->key;
 
   // Engine enum on model to decide which one
-  if (model->engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
-    VLOG(1) << "Started AI engine: llama";
+  if (features::kConversationAPIEnabled.Get()) {
+    DVLOG(1) << "Started AI engine: conversation api";
+    engine_ = std::make_unique<EngineConsumerConversationAPI>(
+        *model, url_loader_factory_, credential_manager_.get());
+  } else if (model->engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
+    DVLOG(1) << "Started AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
         *model, url_loader_factory_, credential_manager_.get());
   } else {
-    VLOG(1) << "Started AI engine: claude";
+    DVLOG(1) << "Started AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
         *model, url_loader_factory_, credential_manager_.get());
   }
@@ -301,18 +322,11 @@ void ConversationDriver::InitEngine() {
 }
 
 bool ConversationDriver::HasUserOptedIn() {
-  base::Time last_accepted_disclaimer =
-        pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
-  return !last_accepted_disclaimer.is_null();
+  return ::ai_chat::HasUserOptedIn(pref_service_);
 }
 
 void ConversationDriver::SetUserOptedIn(bool user_opted_in) {
-  if (user_opted_in) {
-    pref_service_->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
-                           base::Time::Now());
-  } else {
-    pref_service_->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
-  }
+  ::ai_chat::SetUserOptedIn(pref_service_, user_opted_in);
 }
 
 void ConversationDriver::OnUserOptedIn() {
@@ -323,38 +337,77 @@ void ConversationDriver::OnUserOptedIn() {
   }
 }
 
-void ConversationDriver::AddToConversationHistory(mojom::ConversationTurn turn) {
-  chat_history_.push_back(std::move(turn));
-
-  for (auto& obs : observers_) {
-    obs.OnHistoryUpdate();
+void ConversationDriver::AddToConversationHistory(
+    mojom::ConversationTurnPtr turn) {
+  if (!turn) {
+    return;
   }
 
   if (ai_chat_metrics_ != nullptr) {
     if (chat_history_.size() == 1) {
       ai_chat_metrics_->RecordNewChat();
     }
-
-    if (turn.character_type == CharacterType::HUMAN) {
+    if (turn->character_type == CharacterType::HUMAN) {
       ai_chat_metrics_->RecordNewPrompt();
     }
   }
+
+  chat_history_.push_back(std::move(turn));
+
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
 }
 
-void ConversationDriver::UpdateOrCreateLastAssistantEntry(std::string updated_text) {
-  updated_text = base::TrimWhitespaceASCII(updated_text, base::TRIM_LEADING);
+void ConversationDriver::UpdateOrCreateLastAssistantEntry(
+    mojom::ConversationEntryEventPtr event) {
   if (chat_history_.empty() ||
-      chat_history_.back().character_type != CharacterType::ASSISTANT) {
-    // OnHistoryUpdate will be called by AddToConversationHistory.
-    AddToConversationHistory(
-        {CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-         ConversationTurnVisibility::VISIBLE, updated_text, std::nullopt});
-  } else {
-    chat_history_.back().text = updated_text;
-    // Trigger an observer update to refresh the UI.
-    for (auto& obs : observers_) {
-      obs.OnHistoryUpdate();
+      chat_history_.back()->character_type != CharacterType::ASSISTANT) {
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
+        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        ConversationTurnVisibility::VISIBLE, "", std::nullopt,
+        std::vector<mojom::ConversationEntryEventPtr>{});
+    chat_history_.push_back(std::move(entry));
+  }
+
+  auto& entry = chat_history_.back();
+
+  if (event->is_completion_event()) {
+    if (!engine_->SupportsDeltaTextResponses() || entry->events->size() == 0 ||
+        !entry->events->back()->is_completion_event()) {
+      // The start of completion responses needs whitespace trim
+      // TODO(petemill): This should happen server-side?
+      event->get_completion_event()->completion = base::TrimWhitespaceASCII(
+          event->get_completion_event()->completion, base::TRIM_LEADING);
     }
+
+    // Optimize by merging with previous completion events if delta updates
+    // are supported or otherwise replacing the previous event.
+    if (entry->events->size() > 0) {
+      auto& last_event = entry->events->back();
+      if (last_event->is_completion_event()) {
+        // Merge completion events
+        if (engine_->SupportsDeltaTextResponses()) {
+          event->get_completion_event()->completion =
+              base::StrCat({last_event->get_completion_event()->completion,
+                            event->get_completion_event()->completion});
+        }
+        // Remove the last event because we'll replace in both delta and
+        // non-delta cases
+        entry->events->pop_back();
+      }
+    }
+
+    // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
+    // all UI is updated to instead use ConversationEntryEvent items.
+    entry->text = event->get_completion_event()->completion;
+  }
+
+  entry->events->push_back(std::move(event));
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
   }
 }
 
@@ -387,7 +440,7 @@ bool ConversationDriver::MaybePopPendingRequests() {
     return false;
   }
 
-  mojom::ConversationTurn request = std::move(*pending_conversation_entry_);
+  mojom::ConversationTurnPtr request = std::move(pending_conversation_entry_);
   pending_conversation_entry_.reset();
   SubmitHumanConversationEntry(std::move(request));
   return true;
@@ -488,6 +541,20 @@ void ConversationDriver::OnGeneratePageContentComplete(
     return;
   }
 
+  if (base::CollapseWhitespaceASCII(contents_text, true).empty() &&
+      !is_print_preview_fallback_requested_ && !is_video &&
+      // Don't fallback again for failed print preview retrieval.
+      !base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece())) {
+    DVLOG(1) << "Initiating print preview fallback";
+    is_print_preview_fallback_requested_ = true;
+    PrintPreviewFallback(
+        base::BindOnce(&ConversationDriver::OnGeneratePageContentComplete,
+                       weak_ptr_factory_.GetWeakPtr(), current_navigation_id_,
+                       std::move(callback)));
+    return;
+  }
+  is_print_preview_fallback_requested_ = false;
+
   OnPageContentUpdated(contents_text, is_video, invalidation_token);
 
   std::move(callback).Run(article_text_, is_video_,
@@ -538,6 +605,12 @@ void ConversationDriver::OnNewPage(int64_t navigation_id) {
   CleanUp();
 }
 
+void ConversationDriver::NotifyPrintPreviewRequested(bool is_pdf) {
+  for (auto& obs : observers_) {
+    obs.OnPrintPreviewRequested(is_pdf);
+  }
+}
+
 void ConversationDriver::CleanUp() {
   DVLOG(1) << __func__;
   chat_history_.clear();
@@ -548,6 +621,7 @@ void ConversationDriver::CleanUp() {
   suggestions_.clear();
   pending_conversation_entry_.reset();
   is_page_text_fetch_in_progress_ = false;
+  is_print_preview_fallback_requested_ = false;
   is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_send_page_contents_ = true;
@@ -599,6 +673,20 @@ void ConversationDriver::ClearConversationHistory() {
 
 mojom::APIError ConversationDriver::GetCurrentAPIError() {
   return current_error_;
+}
+
+mojom::ConversationTurnPtr ConversationDriver::ClearErrorAndGetFailedMessage() {
+  DCHECK(!chat_history_.empty());
+
+  SetAPIError(mojom::APIError::None);
+  mojom::ConversationTurnPtr turn = chat_history_.back().Clone();
+  chat_history_.pop_back();
+
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
+
+  return turn;
 }
 
 void ConversationDriver::GenerateQuestions() {
@@ -683,22 +771,49 @@ void ConversationDriver::MaybeUnlinkPageContent() {
   }
 }
 
-void ConversationDriver::SubmitSelectedText(const std::string& selected_text,
-                                            mojom::ActionType action_type) {
-  const auto& action_type_question_map = GetActionTypeQuestionMap();
-  auto iter = action_type_question_map.find(action_type);
-  DCHECK(iter != action_type_question_map.end());
+void ConversationDriver::AddSubmitSelectedTextError(
+    const std::string& selected_text,
+    mojom::ActionType action_type,
+    mojom::APIError error) {
+  if (error == mojom::APIError::None) {
+    return;
+  }
+  const std::string& question = GetActionTypeQuestion(action_type);
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+      CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
+      question, selected_text, std::nullopt);
+  AddToConversationHistory(std::move(turn));
+  SetAPIError(error);
+}
 
-  mojom::ConversationTurn turn = {CharacterType::HUMAN, action_type,
-                                  ConversationTurnVisibility::VISIBLE,
-                                  iter->second, selected_text};
-  SubmitHumanConversationEntry(turn);
+void ConversationDriver::SubmitSelectedText(
+    const std::string& selected_text,
+    mojom::ActionType action_type,
+    EngineConsumer::GenerationDataCallback received_callback,
+    EngineConsumer::GenerationCompletedCallback completed_callback) {
+  const std::string& question = GetActionTypeQuestion(action_type);
+
+  if (received_callback && completed_callback) {
+    // Start a one-off request and replace in-place with the result.
+    engine_->GenerateRewriteSuggestion(selected_text, question,
+                                       std::move(received_callback),
+                                       std::move(completed_callback));
+  } else if (!received_callback && !completed_callback) {
+    // Use sidebar.
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+        CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
+        question, selected_text, std::nullopt);
+
+    SubmitHumanConversationEntry(std::move(turn));
+  } else {
+    NOTREACHED_NORETURN() << "Both callbacks must be set or unset";
+  }
 }
 
 void ConversationDriver::SubmitHumanConversationEntry(
-    mojom::ConversationTurn turn) {
+    mojom::ConversationTurnPtr turn) {
   VLOG(1) << __func__;
-  DVLOG(4) << __func__ << ": " << turn.text;
+  DVLOG(4) << __func__ << ": " << turn->text;
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - conversation to be active
@@ -716,8 +831,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
               << "when there is already a pending conversation entry.";
       return;
     }
-    pending_conversation_entry_ =
-        std::make_unique<mojom::ConversationTurn>(std::move(turn));
+    pending_conversation_entry_ = std::move(turn);
     // Pending entry is added to conversation history when asked for
     // so notify observers.
     for (auto& obs : observers_) {
@@ -726,7 +840,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
     return;
   }
 
-  DCHECK(turn.character_type == CharacterType::HUMAN);
+  DCHECK(turn->character_type == CharacterType::HUMAN);
 
   is_request_in_progress_ = true;
   for (auto& obs : observers_) {
@@ -734,41 +848,38 @@ void ConversationDriver::SubmitHumanConversationEntry(
   }
 
   // If it's a suggested question, remove it
-  auto found_question_iter = base::ranges::find(suggestions_, turn.text);
+  auto found_question_iter = base::ranges::find(suggestions_, turn->text);
   if (found_question_iter != suggestions_.end()) {
     suggestions_.erase(found_question_iter);
     OnSuggestedQuestionsChanged();
   }
 
   // Directly modify Entry's text to remove engine-breaking substrings
-  engine_->SanitizeInput(turn.text);
-  if (turn.selected_text) {
-    engine_->SanitizeInput(*turn.selected_text);
+  engine_->SanitizeInput(turn->text);
+  if (turn->selected_text) {
+    engine_->SanitizeInput(*turn->selected_text);
   }
-  auto selected_text = turn.selected_text;
 
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   // TODO(jocelyn): Assigning turn.type below is a workaround for now since
   // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
-  std::string question_part = turn.text;
-  if (turn.action_type == mojom::ActionType::UNSPECIFIED) {
-    if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
-      turn.action_type = mojom::ActionType::SUMMARIZE_PAGE;
+  std::string question_part = turn->text;
+  if (turn->action_type == mojom::ActionType::UNSPECIFIED) {
+    if (turn->text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
+      turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
-    } else if (turn.text ==
+    } else if (turn->text ==
                l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
-      turn.action_type = mojom::ActionType::SUMMARIZE_VIDEO;
+      turn->action_type = mojom::ActionType::SUMMARIZE_VIDEO;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
     } else {
-      turn.action_type = mojom::ActionType::QUERY;
+      turn->action_type = mojom::ActionType::QUERY;
     }
   }
-
-  auto history = chat_history_;
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
@@ -780,8 +891,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
     // Fetch updated page content before performing generation
     GeneratePageContent(base::BindOnce(
         &ConversationDriver::PerformAssistantGeneration,
-        weak_ptr_factory_.GetWeakPtr(), question_part, std::move(selected_text),
-        history, current_navigation_id_));
+        weak_ptr_factory_.GetWeakPtr(), question_part, current_navigation_id_));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -789,15 +899,12 @@ void ConversationDriver::SubmitHumanConversationEntry(
     suggestions_.clear();
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration(question_part, std::move(selected_text), history,
-                               current_navigation_id_);
+    PerformAssistantGeneration(question_part, current_navigation_id_);
   }
 }
 
 void ConversationDriver::PerformAssistantGeneration(
     const std::string& input,
-    std::optional<std::string> selected_text,
-    const std::vector<mojom::ConversationTurn>& history,
     int64_t current_navigation_id,
     std::string page_content,
     bool is_video,
@@ -809,9 +916,9 @@ void ConversationDriver::PerformAssistantGeneration(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
-  engine_->GenerateAssistantResponse(
-      is_video, page_content, std::move(selected_text), history, input,
-      std::move(data_received_callback), std::move(data_completed_callback));
+  engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
+                                     input, std::move(data_received_callback),
+                                     std::move(data_completed_callback));
 }
 
 void ConversationDriver::RetryAPIRequest() {
@@ -819,14 +926,14 @@ void ConversationDriver::RetryAPIRequest() {
   DCHECK(!chat_history_.empty());
 
   // We're using a reverse iterator here to find the latest human turn
-  for (std::vector<ConversationTurn>::reverse_iterator rit =
+  for (std::vector<mojom::ConversationTurnPtr>::reverse_iterator rit =
            chat_history_.rbegin();
        rit != chat_history_.rend(); ++rit) {
-    if (rit->character_type == CharacterType::HUMAN) {
+    if (rit->get()->character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
       chat_history_.erase(human_turn_iter, chat_history_.end());
-      SubmitHumanConversationEntry(turn);
+      SubmitHumanConversationEntry(std::move(turn));
       break;
     }
   }
@@ -836,14 +943,15 @@ bool ConversationDriver::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-void ConversationDriver::OnEngineCompletionDataReceived(int64_t navigation_id,
-                                                  std::string result) {
+void ConversationDriver::OnEngineCompletionDataReceived(
+    int64_t navigation_id,
+    mojom::ConversationEntryEventPtr result) {
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
   }
 
-  UpdateOrCreateLastAssistantEntry(result);
+  UpdateOrCreateLastAssistantEntry(std::move(result));
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -865,7 +973,9 @@ void ConversationDriver::OnEngineCompletionComplete(
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
     if (!result->empty()) {
-      UpdateOrCreateLastAssistantEntry(*result);
+      UpdateOrCreateLastAssistantEntry(
+          mojom::ConversationEntryEvent::NewCompletionEvent(
+              mojom::CompletionEvent::New(*result)));
     }
   } else {
     // handle failure
@@ -900,15 +1010,21 @@ void ConversationDriver::SetAPIError(const mojom::APIError& error) {
 }
 
 bool ConversationDriver::HasPendingConversationEntry() {
-  return pending_conversation_entry_ != nullptr;
+  return !pending_conversation_entry_.is_null();
 }
 
-bool ConversationDriver::IsPageContentsTruncated() {
-  if (article_text_.empty()) {
-    return false;
+int ConversationDriver::GetContentUsedPercentage() {
+  if (GetCurrentModel().max_page_content_length >
+      static_cast<uint32_t>(article_text_.length())) {
+    return 100;
   }
-  return (static_cast<uint32_t>(article_text_.length()) >
-          GetCurrentModel().max_page_content_length);
+
+  // Convert to float to avoid integer division, which truncates towards zero
+  // and could lead to inaccurate results before multiplication.
+  float pct = static_cast<float>(GetCurrentModel().max_page_content_length) /
+              static_cast<float>(article_text_.length()) * 100;
+
+  return base::ClampRound(pct);
 }
 
 void ConversationDriver::SubmitSummarizationRequest() {
@@ -917,17 +1033,18 @@ void ConversationDriver::SubmitSummarizationRequest() {
   DCHECK(should_send_page_contents_)
       << "This conversation request should send page contents\n";
 
-  mojom::ConversationTurn turn = {
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
       ConversationTurnVisibility::VISIBLE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt};
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt,
+      std::nullopt);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
-  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->content_used_percentage = GetContentUsedPercentage();
   site_info->is_content_association_possible = IsContentAssociationPossible();
   const GURL url = GetPageURL();
 
@@ -1021,11 +1138,11 @@ void ConversationDriver::RateMessage(
           std::move(callback).Run(id);
           return;
         }
-        std::move(callback).Run(absl::nullopt);
+        std::move(callback).Run(std::nullopt);
       },
       std::move(callback));
 
-  const std::vector<mojom::ConversationTurn>& history =
+  const std::vector<mojom::ConversationTurnPtr>& history =
       GetConversationHistory();
 
   // TODO(petemill): Something more robust than relying on message index,
@@ -1033,7 +1150,7 @@ void ConversationDriver::RateMessage(
   uint32_t current_turn_id = turn_id + 1;
 
   if (current_turn_id <= history.size()) {
-    base::span<const mojom::ConversationTurn> history_slice =
+    base::span<const mojom::ConversationTurnPtr> history_slice =
         base::make_span(history).first(current_turn_id);
 
     bool is_premium = IsPremiumStatus(last_premium_status_);
@@ -1044,7 +1161,7 @@ void ConversationDriver::RateMessage(
     return;
   }
 
-  std::move(callback).Run(absl::nullopt);
+  std::move(callback).Run(std::nullopt);
 }
 
 void ConversationDriver::SendFeedback(

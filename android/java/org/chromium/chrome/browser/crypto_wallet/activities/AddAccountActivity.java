@@ -164,12 +164,17 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             return;
         }
 
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-        LiveDataUtil.observeOnce(mWalletModel.getKeyringModel().mAccountInfos, accounts -> {
-            mAddAccountText.setText(WalletUtils.generateUniqueAccountName(
-                    this, mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
-        });
+        getWindow()
+                .setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE);
+        LiveDataUtil.observeOnce(
+                mWalletModel.getKeyringModel().mAccountInfos,
+                accounts -> {
+                    mAddAccountText.setText(
+                            WalletUtils.generateUniqueAccountName(
+                                    mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                });
     }
 
     @Override
@@ -223,9 +228,9 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private void handleImportAccount(boolean result, boolean fromJson) {
         if (result) {
             setResult(Activity.RESULT_OK);
-            Utils.clearClipboard(mPrivateKeyControl.getText().toString(), 0);
+            Utils.clearClipboard(mPrivateKeyControl.getText().toString());
             if (fromJson) {
-                Utils.clearClipboard(mImportAccountPasswordText.getText().toString(), 0);
+                Utils.clearClipboard(mImportAccountPasswordText.getText().toString());
             }
             finish();
         } else {

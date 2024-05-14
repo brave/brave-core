@@ -14,6 +14,7 @@
 
 #include "base/base64.h"
 #include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -24,7 +25,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
@@ -33,6 +33,7 @@
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -57,12 +58,14 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #endif
@@ -1937,13 +1940,6 @@ class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
     feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
 
-  content::WebContents* GetBackgroundWebContents() {
-    auto* playlist_service =
-        playlist::PlaylistServiceFactory::GetForBrowserContext(profile());
-
-    return playlist_service->GetBackgroundWebContentsForTesting();
-  }
-
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -1960,10 +1956,12 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
       content_settings(), brave_shields::ControlType::ALLOW, url);
   UpdateAdBlockInstanceWithRules("b.com###ad-banner");
 
-  auto* web_contents = GetBackgroundWebContents();
+  playlist::PlaylistBackgroundWebContentses background_web_contentses(
+      profile(),
+      playlist::PlaylistServiceFactory::GetForBrowserContext(profile()));
+  background_web_contentses.Add(url, base::DoNothing());
 
-  web_contents->GetController().LoadURLWithParams(
-      content::NavigationController::LoadURLParams(url));
+  auto* web_contents = &background_web_contentses.web_contents();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
   // Check filter is applied properly.

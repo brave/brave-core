@@ -550,20 +550,13 @@ async function addUserToken({
   cache: BaseQueryCache
   tokenArg: BraveWallet.BlockchainToken
 }) {
-  if (tokenArg.isErc721) {
+  if (tokenArg.isNft || tokenArg.isErc721 || tokenArg.isErc1155) {
     try {
       // Get NFTMetadata
-      const metadata = await cache.getErc721Metadata({
-        coin: tokenArg.coin,
-        chainId: tokenArg.chainId,
-        contractAddress: tokenArg.contractAddress,
-        isErc721: tokenArg.isErc721,
-        tokenId: tokenArg.tokenId,
-        isNft: tokenArg.isNft
-      })
+      const metadata = await cache.getNftMetadata(tokenArg)
 
-      if (metadata?.image) {
-        tokenArg.logo = metadata?.image || metadata?.image_url || tokenArg.logo
+      if (metadata?.imageURL) {
+        tokenArg.logo = metadata?.imageURL
       }
     } catch (error) {
       console.log(error)

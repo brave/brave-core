@@ -83,7 +83,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
-            boolean isStartSurfaceRefactorEnabled,
             ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
@@ -118,7 +117,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 offlineDownloader,
                 initializeWithIncognitoColors,
                 startSurfaceLogoClickedCallback,
-                isStartSurfaceRefactorEnabled,
                 constraintsSupplier,
                 compositorInMotionSupplier,
                 browserStateBrowserControlsVisibilityDelegate,

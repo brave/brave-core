@@ -6,6 +6,7 @@
 import BraveCore
 import Foundation
 import OrderedCollections
+import Preferences
 
 extension BraveWalletKeyringService {
 
@@ -18,5 +19,15 @@ extension BraveWalletKeyringService {
     // be true with no accounts after wallet restore.
     let allAccountsForKeyring = await allAccounts().accounts.filter { $0.keyringId == keyringId }
     return !allAccountsForKeyring.isEmpty
+  }
+
+  /// Return a list of all accounts with checking if Bitcoin testnet is enabled
+  /// The list of account will not include Bitcoin Testnet Accounts if Bitcoin testnet is disabled.
+  func allAccountInfos(checkBTCTestnet: Bool = true) async -> [BraveWallet.AccountInfo] {
+    var accounts = await self.allAccounts().accounts
+    if checkBTCTestnet, !Preferences.Wallet.isBitcoinTestnetEnabled.value {
+      accounts = accounts.filter({ $0.keyringId != BraveWallet.KeyringId.bitcoin84Testnet })
+    }
+    return accounts
   }
 }

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
@@ -20,6 +20,10 @@ import DataContextProvider from './state/data-context-provider'
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App () {
+  React.useEffect(() => {
+    document.getElementById('mountPoint')?.classList.add('loaded')
+  }, [])
+
   return (
     <DataContextProvider>
       <BraveCoreThemeProvider>
@@ -31,10 +35,8 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  const mountPoint = document.getElementById('mountPoint')
-  render(<App />, mountPoint, () => {
-    mountPoint?.classList.add('loaded')
-  })
+  const root = createRoot(document.getElementById('mountPoint')!)
+  root.render(<App />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

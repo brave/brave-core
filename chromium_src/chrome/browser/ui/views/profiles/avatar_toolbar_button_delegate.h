@@ -13,13 +13,13 @@
 #define GetAvatarTooltipText virtual GetAvatarTooltipText
 // Adding friend class to `BraveAvatarToolbarButton` to still allow its instance
 // to call `GetWindowCount`.
-#define OnUserIdentityChanged            \
-  OnUserIdentityChangedUnused() {}       \
+#define GetWindowCount                   \
+  GetWindowCountUnused() const;          \
   friend class BraveAvatarToolbarButton; \
-  void OnUserIdentityChanged
+  int GetWindowCount
 #include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"  // IWYU pragma: export
 #undef GetAvatarIcon
 #undef GetAvatarTooltipText
-#undef OnUserIdentityChanged
+#undef GetWindowCount
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_AVATAR_TOOLBAR_BUTTON_DELEGATE_H_

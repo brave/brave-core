@@ -37,6 +37,7 @@ class SkusInternalsUI : public content::WebUIController,
   void GetEventLog(GetEventLogCallback callback) override;
   void GetSkusState(GetSkusStateCallback callback) override;
   void GetVpnState(GetVpnStateCallback callback) override;
+  void GetLeoState(GetLeoStateCallback callback) override;
   void ResetSkusState() override;
   void CopySkusStateToClipboard() override;
   void DownloadSkusState() override;
@@ -51,7 +52,7 @@ class SkusInternalsUI : public content::WebUIController,
   void FileSelectionCanceled(void* params) override;
 
   std::string GetLastVPNConnectionError() const;
-  base::Value::Dict GetVPNOrderInfo() const;
+  base::Value::Dict GetOrderInfo(const std::string& location) const;
   std::string GetSkusStateAsString() const;
 
   void EnsureMojoConnected();

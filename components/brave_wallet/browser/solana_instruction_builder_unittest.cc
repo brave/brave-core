@@ -24,12 +24,13 @@ namespace system_program {
 TEST(SolanaInstructionBuilderUnitTest, TransferSOL) {
   auto ins = Transfer("pubkey1", "pubkey2", 10000000);
   EXPECT_TRUE(ins);
-  EXPECT_EQ(ins.value(),
-            SolanaInstruction(
-                mojom::kSolanaSystemProgramId,
-                {SolanaAccountMeta("pubkey1", std::nullopt, true, true),
-                 SolanaAccountMeta("pubkey2", std::nullopt, false, true)},
-                {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
+  EXPECT_EQ(
+      ins.value(),
+      SolanaInstruction(
+          mojom::kSolanaSystemProgramId,
+          {SolanaAccountMeta("pubkey1", std::nullopt, true, true),
+           SolanaAccountMeta("pubkey2", std::nullopt, false, true)},
+          std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0})));
 
   ins = Transfer("", "", 10000000);
   EXPECT_FALSE(ins);
@@ -49,7 +50,7 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
                 {SolanaAccountMeta("source", std::nullopt, false, true),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                {3, 128, 150, 152, 0, 0, 0, 0, 0}));
+                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
 
   ins = Transfer("program", "source", "destination", "authority",
                  std::vector<std::string>({"signer1", "signer2"}), 10000000);
@@ -62,7 +63,7 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
                  SolanaAccountMeta("authority", std::nullopt, false, false),
                  SolanaAccountMeta("signer1", std::nullopt, true, false),
                  SolanaAccountMeta("signer2", std::nullopt, true, false)},
-                {3, 128, 150, 152, 0, 0, 0, 0, 0}));
+                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
 
   ins = Transfer("program", "source", "destination", "authority",
                  std::vector<std::string>(), 1);
@@ -73,7 +74,7 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
                 {SolanaAccountMeta("source", std::nullopt, false, true),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                {3, 1, 0, 0, 0, 0, 0, 0, 0}));
+                std::vector<uint8_t>({3, 1, 0, 0, 0, 0, 0, 0, 0})));
 
   ins = Transfer("", "", "", "", std::vector<std::string>(), 1);
   EXPECT_FALSE(ins);

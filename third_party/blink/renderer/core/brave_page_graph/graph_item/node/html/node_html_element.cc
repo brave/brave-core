@@ -95,7 +95,6 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* child,
   // If this node has no current children, then this is easy, just add
   // the provided child as the only child.
   if (child_nodes_.size() == 0) {
-    CHECK(sibling == nullptr);
     child_nodes_.push_back(child);
     return;
   }
@@ -135,8 +134,7 @@ void NodeHTMLElement::AddInEdge(const GraphEdge* in_edge) {
   } else if (const EdgeEventListenerRemove* remove_event_listener_in_edge =
                  DynamicTo<EdgeEventListenerRemove>(in_edge)) {
     event_listeners_.erase(remove_event_listener_in_edge->GetListenerId());
-  } else if (const EdgeNodeRemove* remove_node_in_edge =
-                 DynamicTo<EdgeNodeRemove>(in_edge)) {
+  } else if (DynamicTo<EdgeNodeRemove>(in_edge)) {
     // Special case for when something (script) is removing an HTML element
     // from the DOM.  Update the parallel HTML context by removing the pointer
     // to the parent element.

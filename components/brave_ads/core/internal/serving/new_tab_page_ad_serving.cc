@@ -70,21 +70,15 @@ base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
 
 void NewTabPageAdServing::GetEligibleAds(
     MaybeServeNewTabPageAdCallback callback) const {
-  BuildUserModel(base::BindOnce(&NewTabPageAdServing::BuildUserModelCallback,
-                                weak_factory_.GetWeakPtr(),
-                                std::move(callback)));
-}
+  const UserModelInfo user_model = BuildUserModel();
 
-void NewTabPageAdServing::BuildUserModelCallback(
-    MaybeServeNewTabPageAdCallback callback,
-    const UserModelInfo& user_model) const {
   eligible_ads_->GetForUserModel(
       user_model,
-      base::BindOnce(&NewTabPageAdServing::GetEligibleAdsForUserModelCallback,
+      base::BindOnce(&NewTabPageAdServing::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void NewTabPageAdServing::GetEligibleAdsForUserModelCallback(
+void NewTabPageAdServing::GetEligibleAdsCallback(
     MaybeServeNewTabPageAdCallback callback,
     const CreativeNewTabPageAdList& creative_ads) const {
   if (creative_ads.empty()) {

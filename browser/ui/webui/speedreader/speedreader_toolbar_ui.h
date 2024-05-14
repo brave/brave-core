@@ -11,15 +11,15 @@
 
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class Browser;
 class Profile;
 
-class SpeedreaderToolbarUI : public ui::MojoBubbleWebUIController,
+class SpeedreaderToolbarUI : public TopChromeWebUIController,
                              public speedreader::mojom::ToolbarFactory {
  public:
   SpeedreaderToolbarUI(content::WebUI* web_ui, const std::string& name);

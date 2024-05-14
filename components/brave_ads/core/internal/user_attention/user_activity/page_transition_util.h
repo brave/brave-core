@@ -8,8 +8,8 @@
 
 #include <optional>
 
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_types.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"
-#include "brave/components/brave_ads/core/public/user_attention/user_activity/page_transition_types.h"
 
 namespace brave_ads {
 

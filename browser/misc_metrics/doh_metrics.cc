@@ -15,6 +15,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/network_service_instance.h"
+#include "net/base/features.h"
 
 namespace misc_metrics {
 
@@ -22,12 +23,20 @@ namespace {
 
 const int kAutoSecureRequestsBuckets[] = {5, 50, 90};
 
-}  // namespace
-
 const char kDohModeAutomatic[] = "automatic";
 const char kDohModeSecure[] = "secure";
 const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
 const base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
+
+constexpr char kQuad9Suffix[] = ".Quad9";
+constexpr char kWikimediaSuffix[] = ".Wikimedia";
+constexpr char kCloudflareSuffix[] = ".Cloudflare";
+
+}  // namespace
+
+using net::DohFallbackEndpointType;
+using net::features::kBraveFallbackDoHProvider;
+using net::features::kBraveFallbackDoHProviderEndpoint;
 
 DohMetrics::DohMetrics(PrefService* local_state)
     : total_request_storage_(local_state, kMiscMetricsTotalDnsRequestStorage),
@@ -82,7 +91,28 @@ void DohMetrics::OnDnsRequestCounts(
                                4);
     return;
   }
-  p3a_utils::RecordToHistogramBucket(kAutoSecureRequestsHistogramName,
+
+  std::string histogram_name = kAutoSecureRequestsHistogramName;
+
+  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
+    auto endpoint_type = kBraveFallbackDoHProviderEndpoint.Get();
+
+    switch (endpoint_type) {
+      case DohFallbackEndpointType::kQuad9:
+        histogram_name += kQuad9Suffix;
+        break;
+      case DohFallbackEndpointType::kWikimedia:
+        histogram_name += kWikimediaSuffix;
+        break;
+      case DohFallbackEndpointType::kCloudflare:
+        histogram_name += kCloudflareSuffix;
+        break;
+      default:
+        break;
+    }
+  }
+
+  p3a_utils::RecordToHistogramBucket(histogram_name.c_str(),
                                      kAutoSecureRequestsBuckets,
                                      static_cast<int>(percentage));
 }

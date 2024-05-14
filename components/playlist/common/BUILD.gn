@@ -13,6 +13,8 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
+    "playlist_render_frame_observer_helper.cc",
+    "playlist_render_frame_observer_helper.h",
   ]
 
   public_deps = [
@@ -21,4 +23,17 @@ static_library("common") {
   ]
 
   deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "playlist_render_frame_observer_helper_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist/common",
+    "//url",
+  ]
 }

@@ -50,7 +50,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
         expected_url_request->content_type = "application/json";
         expected_url_request->method = mojom::UrlRequestMethodType::kPut;
 
-        EXPECT_EQ(url_request, expected_url_request);
+        EXPECT_EQ(expected_url_request, url_request);
       });
 
   BuildRedeemPaymentTokensUserData(payment_tokens, callback.Get());

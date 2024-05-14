@@ -1,0 +1,20 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  # In 2023, Chrome began switching to a new auto-update implementation
+  # ("Omaha 4"). As of this writing, Chrome uses Omaha 4 on macOS and is in the
+  # process of rolling it out on Windows. The new implementation is hidden
+  # behind upstream GN arg `enable_updater`. We set it to true to enable some
+  # integration points. But, as of this writing, we do not yet use Omaha 4. The
+  # arg below enables building our own Omaha 4 integration, which is still
+  # experimental.
+  brave_enable_updater = false
+}
+
+if (brave_enable_updater) {
+  assert(target_os == "mac",
+         "brave_enable_updater currently only takes effect on macOS.")
+}

@@ -23,3 +23,12 @@
   text-transform: uppercase;
   color: var(--leo-color-primary-50);
 }
+
+.removeButton {
+  padding-left: 5px;
+
+  leo-icon {
+    --leo-icon-size: 14px;
+    color: var(--leo-color-primary-30);
+  }
+}

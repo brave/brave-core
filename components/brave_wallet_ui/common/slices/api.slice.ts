@@ -47,6 +47,7 @@ import { sitePermissionEndpoints } from './endpoints/site_permissions.endpoints'
 import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
+import { signingEndpoints } from './endpoints/signing.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -151,6 +152,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: swapEndpoints })
       // Encryption endpoints
       .injectEndpoints({ endpoints: encryptionEndpoints })
+      // Message Signing endpoints
+      .injectEndpoints({ endpoints: signingEndpoints })
   )
 }
 
@@ -197,7 +200,6 @@ export const {
   useGetDefaultFiatCurrencyQuery,
   useGetDefaultSolanaWalletQuery,
   useGetERC20AllowanceQuery,
-  useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,
   useGetEVMTransactionSimulationQuery,
   useGetFVMAddressQuery,
@@ -206,6 +208,7 @@ export const {
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
+  useGetIsImagePinnableQuery,
   useGetIsMetaMaskInstalledQuery,
   useGetIsPrivateWindowQuery,
   useGetIsTxSimulationOptInStatusQuery,
@@ -222,8 +225,13 @@ export const {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSignAllTransactionsRequestsQuery,
+  useGetPendingSignMessageErrorsQuery,
+  useGetPendingSignMessageRequestsQuery,
+  useGetPendingSignTransactionRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
+  useGetPinnableVisibleNftIdsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetQrCodeImageQuery,
@@ -239,6 +247,7 @@ export const {
   useGetTokenInfoQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
+  useGetTransactionQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
   useGetWalletsToImportQuery,
@@ -260,7 +269,6 @@ export const {
   useLazyGetBuyUrlQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC20AllowanceQuery,
-  useLazyGetERC721MetadataQuery,
   useLazyGetEVMTransactionSimulationQuery,
   useLazyGetGasEstimation1559Query,
   useLazyGetIpfsGatewayTranslatedNftUrlQuery,
@@ -287,6 +295,12 @@ export const {
   usePrefetch,
   useProcessPendingDecryptRequestMutation,
   useProcessPendingGetEncryptionPublicKeyRequestMutation,
+  useProcessSignAllTransactionsRequestHardwareMutation,
+  useProcessSignAllTransactionsRequestMutation,
+  useProcessSignMessageErrorMutation,
+  useProcessSignMessageRequestMutation,
+  useProcessSignTransactionRequestHardwareMutation,
+  useProcessSignTransactionRequestMutation,
   useRefreshNetworkInfoMutation,
   useRejectTransactionsMutation,
   useRemoveAccountMutation,
@@ -315,18 +329,19 @@ export const {
   useSetNftDiscoveryEnabledMutation,
   useSetSelectedAccountMutation,
   useShowRecoveryPhraseMutation,
+  useSignMessageHardwareMutation,
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
   useUnlockWalletMutation,
   useUpdateAccountNameMutation,
   useUpdateNftSpamStatusMutation,
-  useUpdateNftsPinningStatusMutation,
   useUpdateUnapprovedTransactionGasFieldsMutation,
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
+  useSetAutoLockMinutesMutation,
   useValidateUnifiedAddressQuery
 } = walletApi
 

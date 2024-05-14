@@ -13,11 +13,13 @@ EdgeRequestRedirect::EdgeRequestRedirect(GraphItemContext* context,
                                          NodeResource* out_node,
                                          NodeResource* in_node,
                                          const InspectorId request_id,
+                                         const FrameId& frame_id,
                                          const ResponseMetadata& metadata)
     : EdgeRequestResponse(context,
                           out_node,
                           in_node,
                           request_id,
+                          frame_id,
                           kRequestStatusRedirect,
                           metadata) {}
 

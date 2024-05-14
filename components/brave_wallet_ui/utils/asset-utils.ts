@@ -115,6 +115,22 @@ export const addChainIdToToken = (
   }
 }
 
+export const addLogoToToken = (
+  token: BraveWallet.BlockchainToken,
+  logo: string
+) => {
+  try {
+    token.logo = logo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: logo
+    }
+  }
+}
+
 export const batSymbols = ['bat', 'wbat', 'bat.e'] as const
 export type BatSymbols = (typeof batSymbols)[number]
 

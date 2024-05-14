@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
@@ -142,12 +141,6 @@ void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
 
 void RecordP2AEvents(const std::vector<std::string>& events) {
   GetInstance()->RecordP2AEvents(events);
-}
-
-void AddFederatedLearningPredictorTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  GetInstance()->AddFederatedLearningPredictorTrainingSample(
-      std::move(training_sample));
 }
 
 std::optional<base::Value> GetProfilePref(const std::string& path) {

@@ -57,7 +57,11 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   BrowserList::AddObserver(this);
 
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
-#endif
+#else
+  // Set `is_browser_active_` to `true` because `BrowserList` class is not
+  // available on Android.
+  is_browser_active_ = true;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   OnVisibilityChanged(web_contents->GetVisibility());
 }
@@ -81,6 +85,14 @@ bool AdsTabHelper::IsVisible() const {
   return is_web_contents_visible_ && is_browser_active_;
 }
 
+bool AdsTabHelper::IsNewNavigation(
+    content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
+
+  return ui::PageTransitionIsNewNavigation(
+      navigation_handle->GetPageTransition());
+}
+
 bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
   CHECK(navigation_handle);
 
@@ -102,8 +114,8 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabContentDidChange();
 
-  // Set `is_restoring_` to `false` so that we notify listeners of tab changes
-  // after the tab is restored.
+  // Set `is_restoring_` to `false` so that listeners are notified of tab
+  // changes after the tab is restored.
   is_restoring_ = false;
 }
 
@@ -149,8 +161,9 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  if (is_restoring_) {
-    // Don't notify changes for restored tabs.
+  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty()) {
+    // Don't notify content changes if the tab was restored, was a previously
+    // committed navigation or if the tab redirect chain is empty.
     return;
   }
 
@@ -159,8 +172,11 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabContentDidChange() {
-  if (is_restoring_ || is_error_page_) {
-    // Don't notify content changes for restored tabs or error pages.
+  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty() ||
+      is_error_page_) {
+    // Don't notify content changes if the tab was restored, was a previously
+    // committed navigation, the web contents are still loading, or an error
+    // page was displayed.
     return;
   }
 
@@ -169,21 +185,27 @@ void AdsTabHelper::MaybeNotifyTabContentDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
+  CHECK(!redirect_chain_.empty());
+
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kSerializeDocumentToStringJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
-                     weak_factory_.GetWeakPtr()),
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(base::Value value) {
+void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain_,
+    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain,
                                                 /*html=*/value.GetString());
   }
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
+  CHECK(!redirect_chain_.empty());
+
   if (!UserHasJoinedBraveRewards()) {
     return;
   }
@@ -191,20 +213,22 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kDocumentBodyInnerTextJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
-                     weak_factory_.GetWeakPtr()),
+                     weak_factory_.GetWeakPtr(), redirect_chain_),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(base::Value value) {
+void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
+    const std::vector<GURL>& redirect_chain,
+    base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain_,
+    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain,
                                                 /*text=*/value.GetString());
   }
 }
 
 void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
   if (ads_service_) {
-    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
+    ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
   }
 }
 
@@ -228,6 +252,8 @@ void AdsTabHelper::DidStartNavigation(
 
   is_restoring_ =
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
+
+  is_new_navigation_ = IsNewNavigation(navigation_handle);
 
   redirect_chain_.clear();
 
@@ -275,12 +301,6 @@ void AdsTabHelper::MediaStoppedPlaying(
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   const bool last_is_web_contents_visible = is_web_contents_visible_;
   is_web_contents_visible_ = visibility == content::Visibility::VISIBLE;
-
-  if (redirect_chain_.empty()) {
-    // Don't notify changes for tabs which have not finished loading.
-    return;
-  }
-
   if (last_is_web_contents_visible != is_web_contents_visible_) {
     MaybeNotifyTabDidChange();
   }
@@ -297,18 +317,30 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   const bool last_is_browser_active = is_browser_active_;
   is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
                            web_contents()) != TabStripModel::kNoTab;
-  if (last_is_browser_active != is_browser_active_) {
-    MaybeNotifyBrowserDidBecomeActive();
+  if (last_is_browser_active == is_browser_active_) {
+    return;
   }
+
+  MaybeNotifyBrowserDidBecomeActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  MaybeNotifyTabDidChange();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   const bool last_is_browser_active = is_browser_active_;
   is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
                            web_contents()) == TabStripModel::kNoTab;
-  if (last_is_browser_active != is_browser_active_) {
-    MaybeNotifyBrowserDidResignActive();
+  if (last_is_browser_active == is_browser_active_) {
+    return;
   }
+
+  MaybeNotifyBrowserDidResignActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  MaybeNotifyTabDidChange();
 }
 #endif
 

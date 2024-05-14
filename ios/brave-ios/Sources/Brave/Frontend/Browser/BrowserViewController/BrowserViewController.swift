@@ -249,7 +249,7 @@ public class BrowserViewController: UIViewController {
 
   /// Boolean which is tracking If a product notification is presented
   /// in order to not to try to present another one over existing popover
-  var benchmarkNotificationPresented = false
+  var adblockProductNotificationPresented = false
   /// The string domain will be kept temporarily which is tracking site notification presented
   /// in order to not to process site list again and again
   var currentBenchmarkWebsite = ""
@@ -361,7 +361,7 @@ public class BrowserViewController: UIViewController {
     }
 
     iapObserver = BraveVPN.iapObserver
-    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils)
+    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
 
     super.init(nibName: nil, bundle: nil)
     didInit()
@@ -468,7 +468,7 @@ public class BrowserViewController: UIViewController {
     ScriptFactory.shared.clearCaches()
 
     Task {
-      await AdBlockStats.shared.didReceiveMemoryWarning()
+      await AdBlockGroupsManager.shared.didReceiveMemoryWarning()
     }
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
@@ -502,6 +502,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
     Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
+    ShieldPreferences.httpsUpgradeLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
 
     pageZoomListener = NotificationCenter.default.addObserver(
@@ -961,7 +962,7 @@ public class BrowserViewController: UIViewController {
       )
       $0.addObserver(
         self,
-        selector: #selector(updateShieldNotifications),
+        selector: #selector(showEducationalNotifications),
         name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
         object: nil
       )
@@ -1001,7 +1002,11 @@ public class BrowserViewController: UIViewController {
 
     // Adding a small delay before fetching gives more reliability to it,
     // epsecially when you are connected to a VPN.
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+    Task.delayed(bySeconds: 1.0) { @MainActor in
+      // Refresh Skus VPN Credentials before loading VPN state
+      await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
+        .refreshVPNCredentials()
+
       self.vpnProductInfo.load()
       if let customCredential = Preferences.VPN.skusCredential.value,
         let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
@@ -1253,7 +1258,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  #if swift(>=5.9)
   public override func viewIsAppearing(_ animated: Bool) {
     super.viewIsAppearing(animated)
 
@@ -1267,8 +1271,10 @@ public class BrowserViewController: UIViewController {
         self.updateToolbarStateForTraitCollection(self.traitCollection)
       }
     }
+
+    // Present Onboarding to new users, existing users will not see the onboarding
+    presentOnboardingIntro()
   }
-  #endif
 
   private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
@@ -1301,10 +1307,6 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func viewDidAppear(_ animated: Bool) {
-
-    // Present Onboarding to new users, existing users will not see the onboarding
-    presentOnboardingIntro()
-
     // Full Screen Callout Presentation
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.presentFullScreenCallouts()
@@ -1960,7 +1962,7 @@ public class BrowserViewController: UIViewController {
         // If navigation will start from NTP, tab display url will be nil until
         // didCommit is called and it will cause url bar be empty in that period
         // To fix this when tab display url is empty, webview url is used
-        if tab.url?.displayURL == nil {
+        if tab === tabManager.selectedTab, tab.url?.displayURL == nil {
           if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
             updateToolbarCurrentURL(url.displayURL)
           }
@@ -1975,7 +1977,7 @@ public class BrowserViewController: UIViewController {
         {
           tabManager.selectedTab?.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
-          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectionURLs: [])
+          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectChain: [])
         }
       }
 
@@ -1985,6 +1987,14 @@ public class BrowserViewController: UIViewController {
         !InternalURL.isValid(url: url), webView.estimatedProgress > 0
       {
         topToolbar.updateProgressBar(Float(webView.estimatedProgress))
+      }
+
+      Task {
+        await tab.updateSecureContentState()
+        self.logSecureContentState(tab: tab, path: .url)
+        if self.tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
+        }
       }
     case .title:
       // Ensure that the tab title *actually* changed to prevent repeated calls
@@ -2009,218 +2019,20 @@ public class BrowserViewController: UIViewController {
 
       navigationToolbar.updateForwardStatus(canGoForward)
     case .hasOnlySecureContent:
-      guard let tab = tabManager[webView] else {
-        break
-      }
-
-      if tab.secureContentState == .secure, !webView.hasOnlySecureContent,
-        tab.url?.origin == tab.webView?.url?.origin
-      {
-        if let url = tab.webView?.url, url.isInternalURL(for: .readermode) {
-          break
+      Task {
+        await tab.updateSecureContentState()
+        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent)
+        if tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
-
-        tab.secureContentState = .mixedContent
-        logSecureContentState(tab: tab, path: path)
-      }
-
-      if let url = tab.webView?.url,
-        InternalURL.isValid(url: url),
-        let internalUrl = InternalURL(url)
-      {
-
-        if internalUrl.isErrorPage {
-          if ErrorPageHelper.certificateError(for: url) != 0 {
-            // Cert validation takes precedence over all other errors
-            tab.secureContentState = .invalidCert
-            logSecureContentState(
-              tab: tab,
-              path: path,
-              details: "Cert validation takes precedence over all other errors"
-            )
-          } else if NetworkErrorPageHandler.isNetworkError(
-            errorCode: ErrorPageHelper.errorCode(for: url)
-          ) {
-            // Network error takes precedence over missing cert
-            // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
-            // Our network interstitial page shows
-            tab.secureContentState = .localhost
-            logSecureContentState(
-              tab: tab,
-              path: path,
-              details: "Network error takes precedence over missing cert"
-            )
-          } else {
-            // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
-            // then we display .missingSSL
-            tab.secureContentState = .missingSSL
-            logSecureContentState(
-              tab: tab,
-              path: path,
-              details: "Certificate is missing (no serverTrust)"
-            )
-          }
-        } else if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
-          tab.secureContentState = .localhost
-          logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
-        }
-      }
-
-      if tabManager.selectedTab === tab {
-        updateToolbarSecureContentState(tab.secureContentState)
       }
     case .serverTrust:
-      guard let tab = tabManager[webView] else {
-        break
-      }
-
-      tab.secureContentState = .unknown
-      logSecureContentState(tab: tab, path: path)
-
-      guard let url = webView.url,
-        let serverTrust = webView.serverTrust
-      else {
-        if let url = webView.url {
-          if InternalURL.isValid(url: url),
-            let internalUrl = InternalURL(url),
-            internalUrl.isAboutURL || internalUrl.isAboutHomeURL
-          {
-
-            tab.secureContentState = .localhost
-            logSecureContentState(
-              tab: tab,
-              path: path,
-              details: "Internal URL aboutURL or is aboutHomeURL"
-            )
-
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.localhost)
-            }
-            break
-          }
-
-          if InternalURL.isValid(url: url),
-            let internalUrl = InternalURL(url),
-            internalUrl.isErrorPage
-          {
-
-            if ErrorPageHelper.certificateError(for: url) != 0 {
-              // Cert validation takes precedence over all other errors
-              tab.secureContentState = .invalidCert
-              logSecureContentState(
-                tab: tab,
-                path: path,
-                details: "Cert validation takes precedence over all other errors"
-              )
-            } else if NetworkErrorPageHandler.isNetworkError(
-              errorCode: ErrorPageHelper.errorCode(for: url)
-            ) {
-              // Network error takes precedence over missing cert
-              // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
-              // Our network interstitial page shows
-              tab.secureContentState = .localhost
-              logSecureContentState(
-                tab: tab,
-                path: path,
-                details: "Network error takes precedence over missing cert"
-              )
-            } else {
-              // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
-              // then we display .missingSSL
-              tab.secureContentState = .missingSSL
-              logSecureContentState(
-                tab: tab,
-                path: path,
-                details: "Certificate is missing (no serverTrust)"
-              )
-            }
-
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(tab.secureContentState)
-            }
-            break
-          }
-
-          if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
-            tab.secureContentState = .localhost
-            logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
-
-            if tabManager.selectedTab === tab {
-              updateToolbarSecureContentState(.localhost)
-            }
-            break
-          }
-
-          // All our checks failed, we show the page as insecure
-          tab.secureContentState = .missingSSL
-          logSecureContentState(
-            tab: tab,
-            path: path,
-            details: "All our checks failed, we show the page as insecure"
-          )
-        } else {
-          // When there is no URL, it's likely a new tab.
-          tab.secureContentState = .localhost
-          logSecureContentState(
-            tab: tab,
-            path: path,
-            details: "When there is no URL, it's likely a new tab"
-          )
+      Task {
+        await tab.updateSecureContentState()
+        self.logSecureContentState(tab: tab, path: .serverTrust)
+        if self.tabManager.selectedTab === tab {
+          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
-
-        if tabManager.selectedTab === tab {
-          updateToolbarSecureContentState(tab.secureContentState)
-        }
-        break
-      }
-
-      guard let scheme = url.scheme,
-        let host = url.host
-      else {
-        tab.secureContentState = .unknown
-        logSecureContentState(tab: tab, path: path, details: "No webview URL host scheme)")
-
-        self.updateURLBar()
-        return
-      }
-
-      let port: Int
-      if let urlPort = url.port {
-        port = urlPort
-      } else if scheme == "https" {
-        port = 443
-      } else {
-        port = 80
-      }
-
-      Task { @MainActor in
-        do {
-          let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
-
-          // Cert is valid!
-          if result == 0 {
-            tab.secureContentState = .secure
-            logSecureContentState(tab: tab, path: path, details: "Cert is valid!")
-          } else if result == Int32.min {
-            // Cert is valid but should be validated by the system
-            // Let the system handle it and we'll show an error if the system cannot validate it
-            try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
-            tab.secureContentState = .secure
-            logSecureContentState(
-              tab: tab,
-              path: path,
-              details: "Cert is valid but should be validated by the system"
-            )
-          } else {
-            tab.secureContentState = .invalidCert
-            logSecureContentState(tab: tab, path: path, details: "Invalid Cert")
-          }
-        } catch {
-          tab.secureContentState = .invalidCert
-          logSecureContentState(tab: tab, path: path, details: "Verify Trust Error")
-        }
-
-        self.updateURLBar()
       }
     case ._sampledPageTopColor:
       updateStatusBarOverlayColor()
@@ -2229,19 +2041,24 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func logSecureContentState(tab: Tab, path: KVOConstants? = nil, details: String? = nil) {
+  func logSecureContentState(tab: Tab, path: KVOConstants? = nil) {
     var text = """
       Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
-       Tab VebView URL: \(tab.webView?.url?.absoluteString ?? "Empty Webview URL")
-       Secure State: \(tab.secureContentState.rawValue)
+       Secure State: \(tab.lastKnownSecureContentState.rawValue)
       """
 
     if let keyPath = path?.keyPath {
       text.append("\n Value Observed: \(keyPath)\n")
     }
 
-    if let extraDetails = details {
-      text.append("\n Extra Details: \(extraDetails)\n")
+    if let webView = tab.webView {
+      text.append(
+        """
+         WebView url: \(webView.url?.absoluteString ?? "nil")
+         WebView hasOnlySecureContent: \(webView.hasOnlySecureContent ? "true" : "false")
+         WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
+        """
+      )
     }
 
     DebugLogger.log(for: .secureState, text: text)
@@ -2303,7 +2120,7 @@ public class BrowserViewController: UIViewController {
 
     updateToolbarCurrentURL(tab.url?.displayURL)
     if tabManager.selectedTab === tab {
-      updateToolbarSecureContentState(tab.secureContentState)
+      self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
     }
 
     let isPage = tab.url?.isWebPage() ?? false
@@ -2846,6 +2663,7 @@ extension BrowserViewController: TabDelegate {
       ErrorPageHelper(certStore: profile.certStore),
       SessionRestoreScriptHandler(tab: tab),
       BlockedDomainScriptHandler(tab: tab),
+      HTTPBlockedScriptHandler(tab: tab, exceptionService: braveCore.httpsUpgradeExceptionsService),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       NightModeScriptHandler(tab: tab),
@@ -3460,7 +3278,6 @@ extension BrowserViewController: NewTabPageDelegate {
       guard let self = self else { return }
 
       let viewRect = CGRect(origin: self.view.center, size: .zero)
-
       self.presentActivityViewController(
         url,
         sourceView: self.view,
@@ -3502,7 +3319,7 @@ extension BrowserViewController: PreferencesObserver {
             ?? Preferences.General.defaultPageZoomLevel.value
         $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
       })
-    case Preferences.Shields.httpsEverywhere.key:
+    case ShieldPreferences.httpsUpgradeLevelRaw.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
     case Preferences.Privacy.blockAllCookies.key,

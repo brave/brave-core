@@ -30,11 +30,6 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
   ~BitcoinKnapsackSolverUnitTest() override = default;
 
  protected:
-  void SetUp() override {
-    keyring_.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                                "m/84'/0'");
-  }
-
   BitcoinTransaction MakeMockTransaction(uint64_t amount,
                                          uint32_t receive_index = 123) {
     BitcoinTransaction transaction;
@@ -86,7 +81,7 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
   double longterm_fee_rate() const { return 3.0; }
 
   bool testnet_ = false;
-  BitcoinKeyring keyring_{testnet_};
+  BitcoinKeyring keyring_{*MnemonicToSeed(kMnemonicAbandonAbandon), testnet_};
 };
 
 TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {

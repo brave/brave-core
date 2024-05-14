@@ -8,7 +8,6 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
-#include "brave/browser/onboarding/domain_map.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -25,41 +24,6 @@
 namespace {
 constexpr char kTestProfileName[] = "TestProfile";
 }  // namespace
-
-TEST(DomainMapTest, CompanyNameAndCountTest) {
-  std::vector<GURL> ads_list = {
-      GURL("https://www.blogger.com"),
-      GURL("https://www.youtube.com"),
-      GURL("https://www.google.com"),
-  };
-  auto result = onboarding::GetCompanyNamesAndCountFromAdsList(ads_list);
-  EXPECT_EQ(result.first, "Google");
-  EXPECT_EQ(result.second, 3);
-
-  ads_list.push_back(GURL("https://www.alexa.com"));
-  result = onboarding::GetCompanyNamesAndCountFromAdsList(ads_list);
-  EXPECT_EQ(result.first, "Amazon, Google");
-  EXPECT_EQ(result.second, 4);
-
-  ads_list.push_back(GURL("https://www.facebook.com"));
-  result = onboarding::GetCompanyNamesAndCountFromAdsList(ads_list);
-  EXPECT_EQ(result.first, "Amazon, Facebook, Google");
-  EXPECT_EQ(result.second, 5);
-
-  ads_list.push_back(GURL("https://www.d.com"));
-  result = onboarding::GetCompanyNamesAndCountFromAdsList(ads_list);
-  EXPECT_EQ(result.first, "Amazon, Facebook, Google");
-  EXPECT_EQ(result.second, 5);
-
-  std::vector<GURL> unknown_ads_list = {
-      GURL("https://www.a.com"),
-      GURL("https://www.b.com"),
-      GURL("https://www.c.com"),
-  };
-  result = onboarding::GetCompanyNamesAndCountFromAdsList(unknown_ads_list);
-  EXPECT_EQ(result.first, "");
-  EXPECT_EQ(result.second, 0);
-}
 
 class OnboardingTest : public testing::Test {
  public:

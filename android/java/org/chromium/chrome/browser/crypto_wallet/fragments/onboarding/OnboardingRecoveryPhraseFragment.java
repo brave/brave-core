@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +23,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -34,9 +31,11 @@ import java.util.List;
 public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
 
-    private List<String> recoveryPhrases;
+    private List<String> mRecoveryPhrases;
     private boolean mIsOnboarding;
-    private OnboardingViewModel mOnboardingViewModel;
+    private TextView mCopyButton;
+    private RecyclerView mRecoveryPhraseRecyclerView;
+    private RecoveryPhraseAdapter mRecoveryPhraseAdapter;
 
     @NonNull
     public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {
@@ -59,70 +58,83 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                .get(OnboardingViewModel.class);
-        mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password -> {
-            if (password == null) {
-                return;
-            }
-            KeyringService keyringService = getKeyringService();
-            if (keyringService != null) {
-                keyringService.getMnemonicForDefaultKeyring(password, result -> {
-                    recoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                    setupRecoveryPhraseRecyclerView(view);
-                    TextView copyButton = view.findViewById(R.id.btn_copy);
-                    assert getActivity() != null;
-                    copyButton.setOnClickListener(v -> {
-                        Utils.saveTextToClipboard(getActivity(),
-                                Utils.getRecoveryPhraseFromList(recoveryPhrases),
-                                R.string.text_has_been_copied, true);
-                    });
-                });
-            }
-        });
+
+        mRecoveryPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
+        mRecoveryPhraseRecyclerView.addItemDecoration(
+                new ItemOffsetDecoration(requireContext(), R.dimen.zero_margin));
+
+        GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3);
+        mRecoveryPhraseRecyclerView.setLayoutManager(layoutManager);
+
+        mRecoveryPhraseAdapter = new RecoveryPhraseAdapter();
+
+        mCopyButton = view.findViewById(R.id.btn_copy);
+        mCopyButton.setEnabled(false);
+        mCopyButton.setOnClickListener(
+                v ->
+                        Utils.saveTextToClipboard(
+                                requireContext(),
+                                Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
+                                R.string.text_has_been_copied,
+                                true));
 
         Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
-        recoveryPhraseButton.setOnClickListener(v -> {
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-            if (braveWalletP3A != null && mIsOnboarding) {
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-            }
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoNextPage();
-            }
-        });
+        recoveryPhraseButton.setOnClickListener(
+                v -> {
+                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                    if (braveWalletP3A != null && mIsOnboarding) {
+                        braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                    }
+                    if (mOnNextPage != null) {
+                        mOnNextPage.gotoNextPage();
+                    }
+                });
         CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
-        recoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                recoveryPhraseButton.setEnabled(true);
-                recoveryPhraseButton.setAlpha(1.0f);
-            } else {
-                recoveryPhraseButton.setEnabled(false);
-                recoveryPhraseButton.setAlpha(0.5f);
-            }
-        });
+        recoveryPhraseCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    if (isChecked) {
+                        recoveryPhraseButton.setEnabled(true);
+                        recoveryPhraseButton.setAlpha(1.0f);
+                    } else {
+                        recoveryPhraseButton.setEnabled(false);
+                        recoveryPhraseButton.setAlpha(0.5f);
+                    }
+                });
         TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(v -> {
-            BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-            if (braveWalletP3A != null && mIsOnboarding) {
-                braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-            }
-            if (mOnNextPage != null) {
-                mOnNextPage.onboardingCompleted();
-            }
-        });
+        recoveryPhraseSkipButton.setOnClickListener(
+                v -> {
+                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                    if (braveWalletP3A != null && mIsOnboarding) {
+                        braveWalletP3A.reportOnboardingAction(
+                                OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                    }
+                    if (mOnNextPage != null) {
+                        mOnNextPage.onboardingCompleted();
+                    }
+                });
     }
 
-    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        assert getActivity() != null;
-        recyclerView.addItemDecoration(
-                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(layoutManager);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
-        recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
-        recyclerView.setAdapter(recoveryPhraseAdapter);
+        KeyringService keyringService = getKeyringService();
+        if (keyringService != null) {
+            keyringService.getWalletMnemonic(
+                    mOnboardingViewModel.getPassword(),
+                    result -> {
+                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
+                        mRecoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
+                        mRecoveryPhraseRecyclerView.setAdapter(mRecoveryPhraseAdapter);
+                        mCopyButton.setEnabled(true);
+                    });
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mCopyButton.setEnabled(false);
     }
 }

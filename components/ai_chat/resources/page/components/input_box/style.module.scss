@@ -24,7 +24,7 @@
 
 .growWrap {
   display: grid;
-  grid-template-columns: calc(100% - 20px);
+  grid-template-columns: 1fr;
   max-height: 300px;
   overflow-y: auto;
 
@@ -47,7 +47,7 @@
 
   textarea,
   &::after {
-    padding: 10px var(--leo-spacing-xl);
+    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
     grid-area: 1 / 1 / 2 / 2;
   }
 
@@ -59,11 +59,6 @@
     background: var(--leo-color-gray-20);
     border-radius: var(--leo-spacing-m);
   }
-}
-
-.growWrapMobile {
-  @extend .growWrap;
-  grid-template-columns: calc(100% - 60px);
 }
 
 .buttonAgree {
@@ -106,10 +101,22 @@
   color: var(--leo-color-systemfeedback-error-icon);
 }
 
-.actions {
-  position: absolute;
-  top: 2px;
-  inset-inline-end: var(--leo-spacing-m);
+.toolsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--leo-spacing-xl) 4px;
+}
+
+.tools {
   display: flex;
   gap: 10px;
+}
+
+.actionsLabelContainer {
+  padding: 10px var(--leo-spacing-xl) 0 var(--leo-spacing-xl);
+}
+
+.slashIconActive {
+  --leo-icon-color: var(--leo-color-icon-interactive);
 }

@@ -113,7 +113,7 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
 void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   bool shields_enabled = false;
   brave_shields::mojom::FingerprintMode fp_block_mode =
-      brave_shields::mojom::FingerprintMode::STANDARD;
+      brave_shields::mojom::FingerprintMode::STANDARD_MODE;
   brave_shields::mojom::AdBlockMode ad_block_mode =
       brave_shields::mojom::AdBlockMode::STANDARD;
   brave_shields::BraveShieldsDataController* shields_data_controller =

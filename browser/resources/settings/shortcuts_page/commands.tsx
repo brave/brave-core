@@ -13,7 +13,7 @@ import { match } from './utils/match'
 import { getLocale } from '$web-common/locale'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 setIconBasePath('chrome://resources/brave-icons')
 

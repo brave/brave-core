@@ -78,29 +78,4 @@ TEST(BraveAdsConversionsFeatureTest,
             kHtmlMetaTagConversionIdPattern.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, ProcessConversionAfter) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kConversionsFeature, {{"process_after", "3h"}});
-
-  // Act & Assert
-  EXPECT_EQ(base::Hours(3), kProcessConversionAfter.Get());
-}
-
-TEST(BraveAdsConversionsFeatureTest, DefaultProcessConversionAfter) {
-  // Act & Assert
-  EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
-}
-
-TEST(BraveAdsConversionsFeatureTest,
-     DefaultProcessConversionAfterWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
-
-  // Act & Assert
-  EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
-}
-
 }  // namespace brave_ads

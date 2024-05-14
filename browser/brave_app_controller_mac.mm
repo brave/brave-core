@@ -201,7 +201,7 @@ class TorPrefObserver : public BooleanPrefMember {
 
 #if BUILDFLAG(ENABLE_TOR)
   if (tag == IDC_NEW_OFFTHERECORD_WINDOW_TOR) {
-    brave::NewOffTheRecordWindowTor([self getBrowser]);
+    brave::NewOffTheRecordWindowTor(profile);
     return;
   }
 #endif  // BUILDFLAG(ENABLE_TOR)

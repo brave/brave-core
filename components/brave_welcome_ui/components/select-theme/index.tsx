@@ -11,7 +11,7 @@ import classnames from '$web-common/classnames'
 import Button from '$web-components/button'
 
 import DataContext from '../../state/context'
-import { ViewType } from '../../state/component_types'
+import { useViewTypeTransition } from '../../state/hooks'
 
 interface ThemeModeItemProps {
   themeType: chrome.braveTheme.ThemeType
@@ -62,22 +62,23 @@ function ThemeModeItem (props: ThemeModeItemProps) {
 }
 
 function SelectTheme () {
-  const { setViewType, scenes } = React.useContext(DataContext)
+  const { viewType, setViewType, scenes } = React.useContext(DataContext)
   const [currentSelectedTheme, setCurrentTheme] = React.useState<chrome.braveTheme.ThemeType>('System')
 
   const handleSelectionChange = (themeType: chrome.braveTheme.ThemeType) => {
     setCurrentTheme?.(themeType)
   }
 
-  const handleSkip = () => {
-    setViewType(ViewType.HelpImprove)
+  const { forward } = useViewTypeTransition(viewType)
+  const goForward = () => {
+    setViewType(forward)
     scenes?.s2.play()
   }
 
+  const handleSkip = () => goForward()
   const handleNext = () => {
     chrome.braveTheme.setBraveThemeType(currentSelectedTheme)
-    setViewType(ViewType.HelpImprove)
-    scenes?.s2.play()
+    goForward()
   }
 
   return (

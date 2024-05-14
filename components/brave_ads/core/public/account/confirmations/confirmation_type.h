@@ -15,16 +15,45 @@ enum class ConfirmationType {
   // When adding new confirmation types they must be added with highest
   // priority at the top so that ads history can be filtered.
   kUndefined,
+
+  // Clicked is when the user clicks on an ad.
   kClicked,
+
+  // Dismissed is when the user dismisses an ad.
   kDismissed,
-  kViewed,
-  kServed,
+
+  // Viewed impression is when the ad is shown to the user.
+  kViewedImpression,
+
+  // Served impression is when the ad is served.
+  kServedImpression,
+
+  // Landed is when the user lands on the ad's landing page.
   kLanded,
+
+  // When the user marks an ad as inappropriate.
   kMarkAdAsInappropriate,
+
+  // When the user saves an ad.
   kSavedAd,
+
+  // When the user likes an ad.
   kLikedAd,
+
+  // When the user dislikes an ad.
   kDislikedAd,
-  kConversion
+
+  // When the user converts on an ad.
+  kConversion,
+
+  // When a new tab page video ad starts playing.
+  kMediaPlay,
+
+  // When played 25% of a new tab page video ad.
+  kMedia25,
+
+  // When played 100% of a new tab page video ad.
+  kMedia100,
 };
 
 // Returns a `ConfirmationType` value based on the string input.

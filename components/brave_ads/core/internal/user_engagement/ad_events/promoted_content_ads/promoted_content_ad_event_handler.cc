@@ -45,7 +45,7 @@ void PromotedContentAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
-  if (event_type == mojom::PromotedContentAdEventType::kServed &&
+  if (event_type == mojom::PromotedContentAdEventType::kServedImpression &&
       !PromotedContentAdPermissionRules::HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
     return FailedToFireEvent(placement_id, creative_instance_id, event_type,
@@ -168,12 +168,12 @@ void PromotedContentAdEventHandler::NotifyDidFirePromotedContentAdEvent(
   }
 
   switch (event_type) {
-    case mojom::PromotedContentAdEventType::kServed: {
+    case mojom::PromotedContentAdEventType::kServedImpression: {
       delegate_->OnDidFirePromotedContentAdServedEvent(ad);
       break;
     }
 
-    case mojom::PromotedContentAdEventType::kViewed: {
+    case mojom::PromotedContentAdEventType::kViewedImpression: {
       delegate_->OnDidFirePromotedContentAdViewedEvent(ad);
       break;
     }

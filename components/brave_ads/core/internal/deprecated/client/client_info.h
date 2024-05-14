@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_INFO_H_
 
-#include <map>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
@@ -37,14 +35,6 @@ struct ClientInfo final {
 
   AdPreferencesInfo ad_preferences;
   HistoryItemList history_items;
-  base::flat_map<
-      AdType,
-      std::map</*creative_instance_id*/ std::string, /*seen_ad*/ bool>>
-      seen_ads;
-  base::flat_map<
-      AdType,
-      std::map</*advertiser_id*/ std::string, /*seen_advertiser*/ bool>>
-      seen_advertisers;
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };

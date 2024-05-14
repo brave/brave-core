@@ -98,12 +98,8 @@ export type PanelTypes =
   | 'networks'
   | 'send'
   | 'settings'
-  | 'signData'
-  | 'signTransaction'
-  | 'signAllTransactions'
   | 'sitePermissions'
   | 'swap'
-  | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
 
@@ -179,12 +175,16 @@ export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
 
+export interface TransactionInfoLookup {
+  id: string
+  coin: BraveWallet.CoinType
+  chainId: string
+}
+
 export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  collapsedPortfolioAccountIds: string[]
-  collapsedPortfolioNetworkKeys: string[]
 }
 
 export interface WalletState {
@@ -208,12 +208,8 @@ export interface PanelState {
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
-  signMessageData: BraveWallet.SignMessageRequest[]
-  signTransactionRequests: BraveWallet.SignTransactionRequest[]
-  signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  selectedTransactionId?: string
-  signMessageErrorData: BraveWallet.SignMessageError[]
+  selectedTransactionId?: TransactionInfoLookup
 }
 
 export interface PageState {
@@ -482,7 +478,7 @@ export const BuySupportedChains = [
   BraveWallet.GOERLI_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET,
@@ -532,6 +528,7 @@ export enum WalletRoutes {
 
   // onboarding (import & restore)
   OnboardingImportStart = '/crypto/onboarding/import',
+  OnboardingImportSelectWalletType = '/crypto/onboarding/import/select',
   OnboardingImportTerms = '/crypto/onboarding/import/terms',
   OnboardingImportOrRestore = '/crypto/onboarding/import/choose',
   OnboardingImportNetworkSelection = '/crypto/onboarding/import/networks',
@@ -547,9 +544,11 @@ export enum WalletRoutes {
 
   // onboarding (connect hardware wallet)
   OnboardingHardwareWalletStart = '/crypto/onboarding/hardware',
+  OnboardingImportHardwareWalletWelcome = '/crypto/onboarding/hardware/welcome',
   OnboardingHardwareWalletTerms = '/crypto/onboarding/hardware/terms',
-  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect' +
-    '/:accountTypeName?',
+  OnboardingHardwareWalletConnect = '/crypto/onboarding/hardware/connect',
+  OnboardingHardwareWalletConnectSelectDevice = '/crypto/onboarding/' +
+    'hardware/select-device/:accountTypeName?',
   OnboardingHardwareWalletNetworkSelection = '/crypto/onboarding/hardware' +
     '/networks',
   OnboardingHardwareWalletCreatePassword = '/crypto/onboarding/' +
@@ -654,6 +653,7 @@ export interface CreateAccountOptionsType {
   description: string
   coin: BraveWallet.CoinType
   icon: string
+  chainIcons?: string[]
 }
 
 export interface NFTAttribute {
@@ -715,7 +715,7 @@ export const SupportedOnRampNetworks = [
   BraveWallet.MAINNET_CHAIN_ID, // ETH
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -729,7 +729,7 @@ export const SupportedOffRampNetworks = [
   BraveWallet.SOLANA_MAINNET,
   BraveWallet.MAINNET_CHAIN_ID, // ETH
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -934,10 +934,12 @@ export enum TokenStandards {
   ERC1155 = 'ERC1155',
   SPL = 'SPL'
 }
-
-export type ERC721Metadata = {
+export interface CommonNftMetadata {
+  attributes?: any[]
+  description?: string
   image?: string
   image_url?: string
+  name?: string
 }
 
 export enum AddressMessageInfoIds {
@@ -1054,6 +1056,11 @@ export interface BraveRewardsInfo {
   rewardsAccount: BraveWallet.AccountInfo | undefined
   rewardsNetwork: BraveWallet.NetworkInfo | undefined
   accountLink: string | undefined
+}
+
+export type AutoLockOption = {
+  minutes: number
+  label: string
 }
 
 export type BitcoinBalances = {

@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../style'
-import * as leo from '@brave/leo/tokens/css'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;

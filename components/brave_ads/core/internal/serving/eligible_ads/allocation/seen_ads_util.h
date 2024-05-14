@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_ALLOCATION_SEEN_ADS_UTIL_H_
 
 #include <optional>
+#include <string>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
@@ -16,10 +17,9 @@ class Time;
 
 namespace brave_ads {
 
-struct CreativeAdInfo;
-
-std::optional<base::Time> GetLastSeenAdAt(const AdEventList& ad_events,
-                                          const CreativeAdInfo& creative_ad);
+std::optional<base::Time> GetLastSeenAdAt(
+    const AdEventList& ad_events,
+    const std::string& creative_instance_id);
 
 }  // namespace brave_ads
 

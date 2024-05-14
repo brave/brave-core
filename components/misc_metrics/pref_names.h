@@ -19,8 +19,8 @@ inline constexpr char kMiscMetricsPagesLoadedCount[] =
     "brave.core_metrics.pages_loaded";
 inline constexpr char kMiscMetricsPagesReloadedCount[] =
     "brave.core_metrics.pages_reloaded";
-inline constexpr char kMiscMetricsHTTPAllowedLoadCount[] =
-    "brave.misc_metrics.http_allowed_pages_loaded";
+inline constexpr char kMiscMetricsInterstitialAllowDecisionCount[] =
+    "brave.misc_metrics.interstitial_allow_decisions";
 inline constexpr char kMiscMetricsFailedHTTPSUpgradeCount[] =
     "brave.misc_metrics.failed_https_upgrades";
 inline constexpr char kMiscMetricsFailedHTTPSUpgradeMetricAddedTime[] =
@@ -49,7 +49,7 @@ inline constexpr char kDailyUptimesListPrefName[] =
 inline constexpr char kDailyUptimeSumPrefName[] =
     "brave.misc_metrics.uptime_sum";
 inline constexpr char kDailyUptimeFrameStartTimePrefName[] =
-    "brave.misc_metrics.uptime_frame_start_time";
+    "brave.misc_metrics.uptime_frame_start_time_v2";
 
 inline constexpr char kMiscMetricsTabSwitcherNewTabsStorage[] =
     "brave.misc_metrics.tab_switcher_new_tabs_storage";
@@ -60,8 +60,8 @@ inline constexpr char kMiscMetricsNewTabLocationBarEntriesStorage[] =
 inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
     "brave.misc_metrics.total_location_bar_entries_storage";
 
-inline constexpr char kMiscMetricsDayZeroAtInstall[] =
-    "brave.misc_metrics.day_zero_at_install";
+inline constexpr char kMiscMetricsDayZeroVariantAtInstall[] =
+    "brave.misc_metrics.day_zero_variant_at_install";
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

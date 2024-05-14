@@ -15,8 +15,14 @@ EdgeRequestStart::EdgeRequestStart(GraphItemContext* context,
                                    GraphNode* out_node,
                                    NodeResource* in_node,
                                    const InspectorId request_id,
+                                   const FrameId& frame_id,
                                    const String& resource_type)
-    : EdgeRequest(context, out_node, in_node, request_id, kRequestStatusStart),
+    : EdgeRequest(context,
+                  out_node,
+                  in_node,
+                  request_id,
+                  frame_id,
+                  kRequestStatusStart),
       resource_type_(resource_type) {}
 
 EdgeRequestStart::~EdgeRequestStart() = default;

@@ -68,6 +68,15 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
   return insets;
 }
 
+gfx::Point TabGroupStyle::GetTitleChipOffset(
+    std::optional<int> text_height) const {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
+  }
+  return gfx::Point(brave_tabs::kHorizontalTabInset,
+                    brave_tabs::kHorizontalTabVerticalSpacing);
+}
+
 bool TabGroupStyle::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }

@@ -18,7 +18,9 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -40,6 +42,11 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
+
+namespace {
+std::optional<uint32_t> g_max_page_content_length_for_testing;
+
+}  // namespace
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
     content::WebContents* web_contents,
@@ -87,6 +94,12 @@ void AIChatTabHelper::BindPageContentExtractorHost(
   tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
 }
 
+// static
+void AIChatTabHelper::SetMaxContentLengthForTesting(
+    std::optional<uint32_t> max_length) {
+  g_max_page_content_length_for_testing = max_length;
+}
+
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
     AIChatMetrics* ai_chat_metrics,
@@ -104,9 +117,7 @@ AIChatTabHelper::AIChatTabHelper(
           web_contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
               ->GetURLLoaderFactoryForBrowserProcess(),
-          channel_name),
-      pdf_load_observer_(
-          std::make_unique<PDFA11yInfoLoadObserver>(nullptr, this)) {
+          channel_name) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
@@ -119,7 +130,7 @@ void AIChatTabHelper::SetOnPDFA11yInfoLoadedCallbackForTesting(
 }
 
 void AIChatTabHelper::OnPDFA11yInfoLoaded() {
-  DVLOG(3) << "PDF Loaded";
+  DVLOG(3) << " PDF Loaded: " << GetPageURL();
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
     FetchPageContent(web_contents(), "",
@@ -128,6 +139,13 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
+  }
+}
+
+void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_)
+        .Run(std::move(ocr_text), false, "");
   }
 }
 
@@ -182,8 +200,7 @@ void AIChatTabHelper::InnerWebContentsAttached(
     bool is_full_page) {
   // Setting a11y mode for PDF process which is dedicated for each
   // PDF so we don't have to unset it.
-  if (content::WebContents::FromRenderFrameHost(render_frame_host)
-          ->GetContentsMimeType() == "application/pdf") {
+  if (IsPdf(content::WebContents::FromRenderFrameHost(render_frame_host))) {
     // We need `AXMode::kNativeAPIs` for accessing pdf a11y info and
     // `AXMode::kWebContents` for observing a11y events from WebContents.
     bool mode_change_needed = false;
@@ -206,6 +223,18 @@ void AIChatTabHelper::InnerWebContentsAttached(
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
     is_pdf_a11y_info_loaded_ = false;
   }
+}
+
+void AIChatTabHelper::OnWebContentsFocused(
+    content::RenderWidgetHost* render_widget_host) {
+  if (IsPdf(web_contents())) {
+    CheckPDFA11yTree(web_contents()->GetPrimaryMainFrame());
+  }
+}
+
+void AIChatTabHelper::OnWebContentsLostFocus(
+    content::RenderWidgetHost* render_widget_host) {
+  check_pdf_a11y_tree_attempts_ = 0;
 }
 
 // favicon::FaviconDriverObserver
@@ -243,16 +272,26 @@ GURL AIChatTabHelper::GetPageURL() const {
 
 void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
                                      std::string_view invalidation_token) {
-  if (web_contents()->GetContentsMimeType() == "application/pdf" &&
-      !is_pdf_a11y_info_loaded_) {
+  if (IsPdf(web_contents()) && !is_pdf_a11y_info_loaded_) {
     if (pending_get_page_content_callback_) {
       std::move(pending_get_page_content_callback_).Run("", false, "");
     }
     // invalidation_token doesn't matter for PDF extraction.
     pending_get_page_content_callback_ = std::move(callback);
   } else {
-    FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+    if (base::Contains(kPrintPreviewRetrievalHosts,
+                       GetPageURL().host_piece())) {
+      pending_get_page_content_callback_ = std::move(callback);
+      NotifyPrintPreviewRequested(false);
+    } else {
+      FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+    }
   }
+}
+
+void AIChatTabHelper::PrintPreviewFallback(GetPageContentCallback callback) {
+  pending_get_page_content_callback_ = std::move(callback);
+  NotifyPrintPreviewRequested(IsPdf(web_contents()));
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
@@ -263,6 +302,38 @@ void AIChatTabHelper::BindPageContentExtractorReceiver(
     mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
   page_content_extractor_receiver_.reset();
   page_content_extractor_receiver_.Bind(std::move(receiver));
+}
+
+uint32_t AIChatTabHelper::GetMaxPageContentLength() {
+  if (g_max_page_content_length_for_testing) {
+    return *g_max_page_content_length_for_testing;
+  }
+  return GetCurrentModel().max_page_content_length;
+}
+
+void AIChatTabHelper::CheckPDFA11yTree(content::RenderFrameHost* primary_rfh) {
+  DVLOG(3) << __func__ << ": " << GetPageURL();
+  if (!primary_rfh || is_pdf_a11y_info_loaded_) {
+    return;
+  }
+
+  auto* pdf_root = GetPdfRoot(primary_rfh);
+  if (!IsPdfLoaded(pdf_root)) {
+    DVLOG(4) << "Waiting for PDF a11y tree ready, scheduled next check.";
+    if (++check_pdf_a11y_tree_attempts_ >= 5) {
+      DVLOG(4) << "PDF a11y tree not ready after 5 attempts.";
+      // Reset the counter for next OnWebContentsFocused
+      check_pdf_a11y_tree_attempts_ = 0;
+      return;
+    }
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&AIChatTabHelper::CheckPDFA11yTree,
+                       weak_ptr_factory_.GetWeakPtr(), primary_rfh),
+        base::Seconds(3));
+    return;
+  }
+  OnPDFA11yInfoLoaded();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

@@ -18,8 +18,9 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
+import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -31,7 +32,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -39,7 +40,6 @@ import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
-import org.chromium.components.browser_ui.accessibility.BraveAccessibilitySettings;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -289,8 +289,7 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BRAVE_VPN);
         }
 
-        if (BraveConfig.AI_CHAT_ENABLED
-                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+        if (BraveLeoPrefUtils.isLeoEnabled()) {
             findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_LEO);
@@ -402,8 +401,8 @@ public class BraveMainPreferencesBase
     }
 
     private void updateSearchEnginePreference() {
-        if (!TemplateUrlServiceFactory.getForProfile(Profile.getLastUsedRegularProfile())
-                        .isLoaded()) {
+        if (!TemplateUrlServiceFactory.getForProfile(ProfileManager.getLastUsedRegularProfile())
+                .isLoaded()) {
             ChromeBasePreference searchEnginePref =
                     (ChromeBasePreference) findPreference(PREF_BRAVE_SEARCH_ENGINES);
             searchEnginePref.setEnabled(false);

@@ -45,6 +45,22 @@ extension Preferences {
 }
 
 extension Preferences {
+  public final class FocusOnboarding {
+    /// The bool detemining if URL bar onboarding should be shown NTP
+    public static let urlBarIndicatorShowBeShown = Option<Bool>(
+      key: "focus.onboarding.url-bar-indicator",
+      default: false
+    )
+
+    /// The Bool determining onboarding finished fully
+    public static let focusOnboardingFinished = Option<Bool>(
+      key: "focus.onboarding.onboarding-finished",
+      default: false
+    )
+  }
+}
+
+extension Preferences {
   public final class FullScreenCallout {
 
     /// Whether the bottom bar callout is shown.

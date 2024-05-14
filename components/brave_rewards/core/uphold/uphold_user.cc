@@ -8,5 +8,7 @@
 namespace brave_rewards::internal::uphold {
 
 User::User() = default;
+User::User(const User&) = default;
+User& User::operator=(const User&) = default;
 
 }  // namespace brave_rewards::internal::uphold

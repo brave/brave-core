@@ -417,7 +417,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
             </Row>
             <AddressInput
               value={searchValue}
-              onInput={(e) => setSearchValue(e.detail.value)}
+              onInput={(e) => setSearchValue(e.value)}
               placeholder={getLocale('braveWalletAddressOrDomainPlaceholder')}
               type='text'
             >

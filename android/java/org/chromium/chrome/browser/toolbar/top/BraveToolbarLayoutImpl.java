@@ -58,7 +58,6 @@ import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -101,6 +100,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -203,6 +203,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // Make sure initial state matches previously set flags and toolbar type.
+        mIsBottomToolbarVisible =
+                BottomToolbarConfiguration.isBottomToolbarEnabled()
+                        && BraveMenuButtonCoordinator.isMenuFromBottom()
+                        && !BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class);
     }
 
     @Override
@@ -282,11 +288,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
-        if (!mBraveShieldsHandler.isDisconnectEntityLoaded
-                && !BraveShieldsUtils.hasShieldsTooltipShown(
-                        BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-            mBraveShieldsHandler.loadDisconnectEntityList(getContext());
-        }
         mBraveShieldsHandler.addObserver(
                 new BraveShieldsMenuObserver() {
                     @Override
@@ -386,6 +387,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
+    public void onTermsOfServiceUpdateAccepted() {
+        showOrHideRewardsBadge(false);
+    }
+
+    private void showOrHideRewardsBadge(boolean shouldShow) {
+        View rewardsBadge = findViewById(R.id.rewards_notfication_badge);
+        rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         if (isPlaylistEnabledByPrefsAndFlags()) {
@@ -405,6 +416,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
+        }
+        if (mBraveRewardsNativeWorker != null
+                && mBraveRewardsNativeWorker.isRewardsEnabled()
+                && mBraveRewardsNativeWorker.isSupported()
+                && mBraveRewardsNativeWorker.isTermsOfServiceUpdateRequired()) {
+            showOrHideRewardsBadge(true);
         }
         if (mShieldsLayout != null) {
             updateShieldsLayoutBackground(
@@ -508,7 +525,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 && mBraveRewardsNativeWorker.isSupported()) {
                             showOnBoarding();
                         }
-                        findMediaFiles(tab);
                     }
 
                     @Override
@@ -603,7 +619,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void findMediaFiles(Tab tab) {
         if (mPlaylistService != null && isPlaylistEnabledByPrefsAndFlags()) {
             hidePlaylistButton();
-            mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {});
+            mPlaylistService.findMediaFilesFromActiveTab();
         }
     }
 
@@ -1391,11 +1407,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onCompleteReset(boolean success) {
         if (success) {
             BraveRewardsHelper.resetRewards();
-            try {
-                BraveRelaunchUtils.askForRelaunch(BraveActivity.getBraveActivity());
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onCompleteReset " + e);
-            }
+            showOrHideRewardsBadge(false);
         }
     }
 
@@ -1616,7 +1628,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
-        if (items.length == 0) return;
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;

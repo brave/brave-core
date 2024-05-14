@@ -67,6 +67,10 @@ def merge_rewrapper_cfg(rewrapper_cfg, tool, _host_os):
     return rewrapper_cfg
 
 
+def merge_rewrapper_large_cfg(rewrapper_cfg, tool, host_os):
+    return merge_rewrapper_cfg(rewrapper_cfg, tool, host_os)
+
+
 def post_configure():
     generate_python_remote_wrapper()
 

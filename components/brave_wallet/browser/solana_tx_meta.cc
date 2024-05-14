@@ -47,11 +47,31 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      std::nullopt);
+      std::nullopt, IsRetriable());
 }
 
 mojom::CoinType SolanaTxMeta::GetCoinType() const {
   return mojom::CoinType::SOL;
+}
+
+bool SolanaTxMeta::IsRetriable() const {
+  if (!IsRetriableStatus(status_)) {
+    return false;
+  }
+
+  // For swap transactions, we need to get a fresh quote and start over from UI
+  // rather than directly retrying the transaction.
+  if (tx_->tx_type() == mojom::TransactionType::SolanaSwap) {
+    return false;
+  }
+
+  // Do not retry for transactions that are partially signed because this can
+  // only be retried from dApp side to re-sign the transaction.
+  if (!tx_->message()->UsesDurableNonce() && tx_->IsPartialSigned()) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace brave_wallet

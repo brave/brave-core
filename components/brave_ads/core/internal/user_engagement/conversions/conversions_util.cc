@@ -10,12 +10,13 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 
 namespace brave_ads {
 
 bool CanConvertAdEvent(const AdEventInfo& ad_event) {
   // Only convert view-through and click-through ad events.
-  if (ad_event.confirmation_type != ConfirmationType::kViewed &&
+  if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
       ad_event.confirmation_type != ConfirmationType::kClicked) {
     return false;
   }

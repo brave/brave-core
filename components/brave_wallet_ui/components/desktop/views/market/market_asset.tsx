@@ -451,7 +451,6 @@ export const MarketAsset = () => {
           selectedAssetsNetwork && (
             <HideTokenModal
               selectedAsset={selectedAssetFromParams}
-              selectedAssetNetwork={selectedAssetsNetwork}
               onClose={onCloseHideTokenModal}
               onHideAsset={onHideAsset}
             />

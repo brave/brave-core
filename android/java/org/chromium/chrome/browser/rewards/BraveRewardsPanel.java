@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards;
 
@@ -74,7 +72,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.PopupWindowTippingTabletUI;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
@@ -113,6 +111,7 @@ public class BraveRewardsPanel
     private static final String SUPPORT_URL = "https://support.brave.com";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
+    private static final String BRAVE_REWARDS_RESET_PAGE = "brave://rewards#reset";
 
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
@@ -1091,10 +1090,7 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetUserType(int userType) {
-        if (UserType.LEGACY_UNCONNECTED == userType
-                && mBraveRewardsNativeWorker.getVbatDeadline() > System.currentTimeMillis()) {
-            showVbatExpireNotice();
-        } else if (UserType.UNCONNECTED == userType) {
+        if (UserType.UNCONNECTED == userType) {
             newInstallViewChanges();
         }
     }
@@ -1163,9 +1159,10 @@ public class BraveRewardsPanel
         NoUnderlineClickableSpan resetClickableSpan =
                 new NoUnderlineClickableSpan(
                         mActivity,
-                        R.color.brave_blue_tint_color,
+                        R.color.rewards_panel_notification_secondary_text_color,
                         (textView) -> {
-                            mBraveRewardsNativeWorker.resetTheWholeState();
+                            TabUtils.openUrlInNewTab(false, BRAVE_REWARDS_RESET_PAGE);
+                            dismiss();
                         });
         NoUnderlineClickableSpan tosClickableSpan =
                 new NoUnderlineClickableSpan(
@@ -1485,7 +1482,7 @@ public class BraveRewardsPanel
         BraveTouchUtils.ensureMinTouchTarget(learnMoreUnverifiedText);
 
         if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
-                    Profile.getLastUsedRegularProfile())) {
+                ProfileManager.getLastUsedRegularProfile())) {
             if (mRewardsMainLayout != null) {
                 mRewardsMainLayout.setVisibility(View.GONE);
             }

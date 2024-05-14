@@ -167,14 +167,14 @@
   <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
     Show tab search button
   </message>
-  <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
-    Cycle through the most recently used tabs with Ctrl-Tab
-  </message>
   <message name="IDS_SETTINGS_SPEEDREADER_LABEL" desc="The label to activate Speedreader">
     Speedreader
   </message>
   <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
     Articles automatically load in reader mode, saving you time
+  </message>
+  <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">
+    Disable mute function in tab speaker icons
   </message>
 
   <if expr="toolkit_views">
@@ -231,6 +231,9 @@
       </message>
       <message name="IDS_SETTINGS_PIN_SHORTCUT" desc="The label for pin to taskbar button">
         Pin
+      </message>
+      <message name="IDS_SETTINGS_PIN_SHORTCUT_SUBLABEL" desc="The sub label for pin to taskbar button">
+        Click Pin and confirm in the following Windows notification
       </message>
       <message name="IDS_SETTINGS_SHORTCUT_PINNED" desc="The label for pinned state description">
         Brave is already pinned
@@ -344,13 +347,13 @@
     Block cookies
   </message>
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-    Only cross-site
+    Block third-party cookies
   </message>
   <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
-    Disabled
+    Allow all cookies
   </message>
   <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
-    All
+    Block all cookies
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL" desc="Default Brave view title label">
     Default view
@@ -422,6 +425,18 @@
   </message>
   <message name="IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL" desc="A button label to expand full custom filter lists">
     Show full list
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_BUTTON_LABEL" desc="A button label to update all active filter lists">
+    Update lists
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_RETRY_BUTTON_LABEL" desc="A button label to retry the update of all active filter lists">
+    Update failed - Retry
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_UPDATED_BUTTON_LABEL" desc="A button label when list updates have finished">
+    Lists updated
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_UPDATE_LISTS_UPDATING_BUTTON_LABEL" desc="A button label when lists are updating">
+    Lists updating
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to ask the user to enter a URL">
     Enter filter list URL
@@ -1440,21 +1455,20 @@
     Only a valid IPFS gateway with Origin isolation enabled can be used in Brave
   </message>
 
-  <!-- Settings / Help tips -->
-  <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help tips' section of Brave Settings">
-    Help tips
+  <!-- Settings / Content -->
+  <message name="IDS_SETTINGS_BRAVE_MRU_CYCLING_LABEL" desc="The label to activate MRU cycling with Ctrl-tab">
+    Cycle through the most recently used tabs with Ctrl-Tab
   </message>
-  <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
+  <message name="IDS_SETTINGS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
     Show Wayback Machine prompt on 404 pages
   </message>
+
+  <!-- Settings / System -->
   <message name="IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL" desc="The text for settings option">
     Warn me before closing window with multiple tabs
   </message>
   <message name="IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL" desc="The text for settings option">
     Close window when closing last tab
-  </message>
-  <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">
-    Disable mute function in tab speaker icons
   </message>
 
   <!-- Settings / Leo Assistant -->

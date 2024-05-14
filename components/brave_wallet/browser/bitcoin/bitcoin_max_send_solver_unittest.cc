@@ -30,11 +30,6 @@ class BitcoinMaxSendSolverUnitTest : public testing::Test {
   ~BitcoinMaxSendSolverUnitTest() override = default;
 
  protected:
-  void SetUp() override {
-    keyring_.ConstructRootHDKey(*MnemonicToSeed(kMnemonicAbandonAbandon, ""),
-                                "m/84'/0'");
-  }
-
   BitcoinTransaction MakeMockTransaction(uint32_t receive_index = 123) {
     BitcoinTransaction transaction;
     transaction.set_to(*keyring_.GetAddress(
@@ -75,7 +70,7 @@ class BitcoinMaxSendSolverUnitTest : public testing::Test {
   double longterm_fee_rate() const { return 3.0; }
 
   bool testnet_ = false;
-  BitcoinKeyring keyring_{testnet_};
+  BitcoinKeyring keyring_{*MnemonicToSeed(kMnemonicAbandonAbandon), testnet_};
 };
 
 TEST_F(BitcoinMaxSendSolverUnitTest, NoInputs) {

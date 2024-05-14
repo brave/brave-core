@@ -12,13 +12,6 @@ import XCTest
 
 @MainActor class TransactionConfirmationStoreTests: XCTestCase {
 
-  override func setUp() {
-    Preferences.Wallet.showTestNetworks.value = true
-  }
-  override func tearDown() {
-    Preferences.Wallet.showTestNetworks.reset()
-  }
-
   private var cancellables: Set<AnyCancellable> = .init()
 
   private func setupStore(
@@ -75,6 +68,7 @@ import XCTest
     rpcService._allNetworks = { coin, completion in
       completion(allNetworksForCoinType[coin] ?? [])
     }
+    rpcService._hiddenNetworks = { $1([]) }
     rpcService._balance = { _, coin, _, completion in
       if coin == .eth {
         completion(mockBalanceWei, .success, "")

@@ -33,7 +33,7 @@ export function createWalletApiBase() {
       ...balancesTags,
       'AccountInfos',
       'DefaultFiatCurrency',
-      'ERC721Metadata',
+      'NftMetadata',
       'SolanaEstimatedFees',
       'GasEstimation1559',
       'KnownBlockchainTokens',
@@ -71,7 +71,12 @@ export function createWalletApiBase() {
       'PendingAddChainRequests',
       'PendingSwitchChainRequests',
       'PendingDecryptRequest',
-      'PendingEncryptRequest'
+      'PendingEncryptRequest',
+      'PendingSignTransactionRequests',
+      'PendingSignAllTransactionsRequests',
+      'PinnableNftIds',
+      'PendingSignMessageRequests',
+      'PendingSignMessageErrors'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

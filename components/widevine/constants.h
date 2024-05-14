@@ -8,6 +8,5 @@
 
 inline constexpr char kWidevineComponentId[] =
     "oimompecagnajdejgnnjijobebaeigek";
-inline constexpr char kFakeArchitectureAttribute[] = "brave_fake_architecture";
 
 #endif  // BRAVE_COMPONENTS_WIDEVINE_CONSTANTS_H_

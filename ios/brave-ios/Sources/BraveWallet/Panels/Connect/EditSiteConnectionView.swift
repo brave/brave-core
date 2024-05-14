@@ -162,7 +162,7 @@ struct EditSiteConnectionView: View {
             if sizeCategory.isAccessibilityCategory {
               VStack {
                 AddressView(address: account.address) {
-                  AccountView(address: account.address, name: account.name)
+                  AccountView(account: account)
                 }
                 Spacer()
                 editButton(action: action, account: account)
@@ -170,7 +170,7 @@ struct EditSiteConnectionView: View {
             } else {
               HStack {
                 AddressView(address: account.address) {
-                  AccountView(address: account.address, name: account.name)
+                  AccountView(account: account)
                 }
                 Spacer()
                 editButton(action: action, account: account)

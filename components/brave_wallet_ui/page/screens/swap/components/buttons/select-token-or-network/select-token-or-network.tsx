@@ -31,9 +31,11 @@ import {
   Text,
   HorizontalSpacer,
   Row,
-  HiddenResponsiveRow,
-  AssetIcon
+  HiddenResponsiveRow
 } from '../../shared-swap.styles'
+import {
+  AssetIcon //
+} from '../../../../composer_ui/shared_composer.style'
 
 interface Props extends SelectTokenButtonStyleProps {
   onClick: () => void
@@ -96,12 +98,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
             size={buttonSize === 'small' ? 'small' : 'big'}
           />
         ) : (
-          text && (
-            <AssetIconWithPlaceholder
-              asset={asset}
-              network={network}
-            />
-          )
+          text && <AssetIconWithPlaceholder asset={asset} />
         )}
         <HiddenResponsiveRow dontHide={!isHeader}>
           <Text

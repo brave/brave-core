@@ -47,6 +47,10 @@ void RecordTipsSent(size_t tip_count) {
                                      tip_count);
 }
 
+void RecordRecurringTipConfigured(bool tip_configured) {
+  UMA_HISTOGRAM_BOOLEAN(kRecurringTipHistogramName, tip_configured);
+}
+
 void RecordNoWalletCreatedForAllMetrics() {
   UMA_HISTOGRAM_EXACT_LINEAR(kTipsSentHistogramName, INT_MAX - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAutoContributionsStateHistogramName, INT_MAX - 1,

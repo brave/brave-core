@@ -26,11 +26,11 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   PaymentTokenList payment_tokens;
 
   const PaymentTokenInfo payment_token_1 = test::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kNotificationAd);
+      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
   const PaymentTokenInfo payment_token_2 = test::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kNotificationAd);
+      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
   const PaymentTokenInfo payment_token_3 = test::BuildPaymentToken(
@@ -38,14 +38,15 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   payment_tokens.push_back(payment_token_3);
 
   const PaymentTokenInfo payment_token_4 = test::BuildPaymentToken(
-      ConfirmationType::kViewed, AdType::kInlineContentAd);
+      ConfirmationType::kViewedImpression, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act & Assert
   const AdTypeBucketMap expected_buckets = {
       {AdType::kNotificationAd,
-       {{ConfirmationType::kClicked, 1}, {ConfirmationType::kViewed, 2}}},
-      {AdType::kInlineContentAd, {{ConfirmationType::kViewed, 1}}}};
+       {{ConfirmationType::kClicked, 1},
+        {ConfirmationType::kViewedImpression, 2}}},
+      {AdType::kInlineContentAd, {{ConfirmationType::kViewedImpression, 1}}}};
   EXPECT_EQ(expected_buckets, BuildAdTypeBuckets(payment_tokens));
 }
 

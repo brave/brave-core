@@ -107,17 +107,6 @@ class ToggleButton : public ToolbarButton {
     return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_EXPAND);
   }
 
-#if DCHECK_IS_ON()
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
-    if (region_view_->is_animating()) {
-      return;
-    }
-
-    CHECK_EQ(width(), GetIconWidth());
-    CHECK_EQ(height(), GetIconWidth());
-  }
-#endif
-
   constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
  private:
@@ -156,12 +145,12 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     BraveTabSearchButton::UpdateColors();
 
     // Override images set from UpdateIcon().
-    SetImageModel(
-        views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kLeoSearchIcon, GetForegroundColor(),
-                                       /* icon_size= */ 16));
-    SetImageModel(views::Button::STATE_HOVERED, ui::ImageModel());
-    SetImageModel(views::Button::STATE_PRESSED, ui::ImageModel());
+    constexpr int kIconSize = 16;
+    const ui::ImageModel icon_image_model = ui::ImageModel::FromVectorIcon(
+        kLeoSearchIcon, GetForegroundColor(), kIconSize);
+    SetImageModel(views::Button::STATE_NORMAL, icon_image_model);
+    SetImageModel(views::Button::STATE_HOVERED, icon_image_model);
+    SetImageModel(views::Button::STATE_PRESSED, icon_image_model);
     SetBackground(nullptr);
   }
 

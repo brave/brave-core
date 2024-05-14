@@ -12,13 +12,6 @@ import XCTest
 
 class TransactionsActivityStoreTests: XCTestCase {
 
-  override func setUp() {
-    Preferences.Wallet.showTestNetworks.value = true
-  }
-  override func tearDown() {
-    Preferences.Wallet.showTestNetworks.reset()
-  }
-
   private var cancellables: Set<AnyCancellable> = .init()
 
   let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
@@ -65,14 +58,20 @@ class TransactionsActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in
-      if coin == .sol {
-        completion([.mockSolana, .mockSolanaTestnet])
-      } else if coin == .eth {
+      switch coin {
+      case .eth:
         completion([.mockMainnet, .mockGoerli])
-      } else {  // .fil
+      case .sol:
+        completion([.mockSolana, .mockSolanaTestnet])
+      case .fil:
         completion([.mockFilecoinMainnet, .mockFilecoinTestnet])
+      case .btc, .zec:
+        completion([])
+      @unknown default:
+        completion([])
       }
     }
+    rpcService._hiddenNetworks = { $1([]) }
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
         {
@@ -325,11 +324,11 @@ class TransactionsActivityStoreTests: XCTestCase {
         // verify gas fee fiat
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 0]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$0.0000006232"
+          "$0.000000623"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 1]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$0.0000006232"
+          "$0.000000623"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 1]?.transactions[safe: 1]?.gasFee?.fiat,
@@ -341,15 +340,15 @@ class TransactionsActivityStoreTests: XCTestCase {
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 2]?.transactions[safe: 1]?.gasFee?.fiat,
-          "$255.03792654"
+          "$255.04"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 3]?.transactions[safe: 0]?.gasFee?.fiat,
-          "$10.41008598"
+          "$10.41"
         )
         XCTAssertEqual(
           transactionSectionsWithPrices[safe: 3]?.transactions[safe: 1]?.gasFee?.fiat,
-          "$10.19894667"
+          "$10.20"
         )
       }
       .store(in: &cancellables)

@@ -16,7 +16,6 @@ extension SearchViewController {
       let numberOfRows = tableView(tableView, numberOfRowsInSection: initialSection)
       if sender.input == UIKeyCommand.inputDownArrow, numberOfRows > 0 {
         let next = IndexPath(item: 0, section: initialSection)
-        self.tableView(tableView, didHighlightRowAt: next)
         tableView.selectRow(at: next, animated: false, scrollPosition: .top)
       }
       return
@@ -69,7 +68,6 @@ extension SearchViewController {
     guard nextItem >= 0 else { return }
 
     let next = IndexPath(item: nextItem, section: nextSection)
-    tableView(tableView, didHighlightRowAt: next)
     tableView.selectRow(at: next, animated: false, scrollPosition: .middle)
   }
 }

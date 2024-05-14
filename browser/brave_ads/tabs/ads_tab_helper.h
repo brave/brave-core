@@ -49,6 +49,8 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   bool IsVisible() const;
 
+  bool IsNewNavigation(content::NavigationHandle* navigation_handle);
+
   bool IsErrorPage(content::NavigationHandle* navigation_handle);
 
   void ProcessNavigation();
@@ -63,9 +65,13 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void MaybeNotifyTabContentDidChange();
   void MaybeNotifyTabHtmlContentDidChange();
-  void OnMaybeNotifyTabHtmlContentDidChange(base::Value value);
+  void OnMaybeNotifyTabHtmlContentDidChange(
+      const std::vector<GURL>& redirect_chain,
+      base::Value value);
   void MaybeNotifyTabTextContentDidChange();
-  void OnMaybeNotifyTabTextContentDidChange(base::Value value);
+  void OnMaybeNotifyTabTextContentDidChange(
+      const std::vector<GURL>& redirect_chain,
+      base::Value value);
 
   void MaybeNotifyTabDidStartPlayingMedia();
   void MaybeNotifyTabDidStopPlayingMedia();
@@ -100,6 +106,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool is_web_contents_visible_ = false;
 
   bool is_restoring_ = false;
+  bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
 

@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
-#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -74,9 +73,6 @@ void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback);
 
 void RecordP2AEvents(const std::vector<std::string>& events);
-
-void AddFederatedLearningPredictorTrainingSample(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample);
 
 std::optional<base::Value> GetProfilePref(const std::string& path);
 bool GetProfileBooleanPref(const std::string& path);

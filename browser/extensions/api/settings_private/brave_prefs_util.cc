@@ -60,7 +60,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -350,7 +350,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   return *s_brave_allowlist;
 }
 
-absl::optional<api::settings_private::PrefObject> BravePrefsUtil::GetPref(
+std::optional<api::settings_private::PrefObject> BravePrefsUtil::GetPref(
     const std::string& name) {
   auto pref = PrefsUtil::GetPref(name);
   // Simulate "Enforced" mode for kCookieControlsMode pref when Cookies are
