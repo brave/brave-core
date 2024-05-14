@@ -49,7 +49,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   /// The amount the user inputs to send
   @Published var sendAmount = "" {
     didSet {
-      sendingMaxValue = false
+      if oldValue != sendAmount {
+        // only reset if changed (field focus re-assigns current value)
+        isSendingMaxValue = false
+      }
       sendAmountUpdatedTimer?.invalidate()
       sendAmountUpdatedTimer = Timer.scheduledTimer(
         withTimeInterval: 0.25,  // try not to validate for every character entered
@@ -76,7 +79,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   @Published private(set) var btcPrice: Double?
 
   /// Indicates if user tapped `100%` button for current `sendAmount`
-  private var sendingMaxValue: Bool = false
+  private var isSendingMaxValue: Bool = false
 
   enum AddressError: LocalizedError, Equatable {
     case sameAsFromAddress
@@ -264,11 +267,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         precisionAfterDecimalPoint: decimalPoint,
         rounded: rounded
       ).trimmingTrailingZeros
-    if amount == .all {
-      // `sendingMaxValue` reset to false in `sendAmount` didSet.
-      // Assign true after we've updated the value via 100% button.
-      sendingMaxValue = true
-    }
+    // `isSendingMaxValue` reset to false in `sendAmount` didSet.
+    // Assign true after we've updated the value via 100% button.
+    isSendingMaxValue = amount == .all
   }
 
   func didSelect(account: BraveWallet.AccountInfo, token: BraveWallet.BlockchainToken) {
@@ -956,7 +957,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     let btcTxData: BraveWallet.BtcTxData = .init(
       to: sendAddress,
       amount: amountInSatoshi,
-      sendingMaxAmount: sendingMaxValue,
+      sendingMaxAmount: isSendingMaxValue,
       fee: 0,
       inputs: [],
       outputs: []
