@@ -88,8 +88,8 @@ class IpfsTabHelperUnitTest : public testing::Test {
   }
 
   void SetAutoRedirectToConfiguredGateway(bool value) {
-    profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway,
-                                     value);
+    // profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway,
+    //                                  value);
   }
 
   ipfs::IPFSTabHelper* ipfs_tab_helper() {

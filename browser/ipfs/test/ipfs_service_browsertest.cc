@@ -84,7 +84,7 @@ class FakeIpfsService : public ipfs::IpfsService {
             user_dir,
             channel,
             std::make_unique<ipfs::IpfsDnsResolverImpl>(),
-            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs, nullptr)) {}
+            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs)) {}
   ~FakeIpfsService() override = default;
 
   void LaunchDaemon(BoolCallback callback) override {
@@ -104,17 +104,6 @@ class FakeIpfsService : public ipfs::IpfsService {
   bool launch_result_ = true;
   bool launched_ = false;
 };
-
-infobars::InfoBar* FindInfobar(
-    infobars::ContentInfoBarManager* content_infobar_manager,
-    const infobars::InfoBarDelegate::InfoBarIdentifier& type) {
-  for (infobars::InfoBar* infobar : content_infobar_manager->infobars()) {
-    if (infobar->delegate()->GetIdentifier() == type) {
-      return infobar;
-    }
-  }
-  return nullptr;
-}
 
 }  // namespace
 
@@ -1097,8 +1086,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, false);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, false);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1121,8 +1110,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_DISABLED));
@@ -1145,8 +1134,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1174,8 +1163,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1198,8 +1187,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1223,8 +1212,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1256,8 +1245,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
@@ -1286,8 +1275,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1314,8 +1303,8 @@ IN_PROC_BROWSER_TEST_F(
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1340,8 +1329,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
   ResetTestServer(
       base::BindRepeating(&IpfsServiceBrowserTest::HandlePublicGatewayRequest,
                           base::Unretained(this)));
-  browser()->profile()->GetPrefs()->SetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway, true);
+  // browser()->profile()->GetPrefs()->SetBoolean(
+  //     kIPFSAutoRedirectToConfiguredGateway, true);
   browser()->profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
@@ -1648,84 +1637,6 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, DNSResolversConfig) {
     ASSERT_EQ(
         fake_ipfs_service()->ipfs_dns_resolver_->GetFirstDnsOverHttpsServer(),
         std::nullopt);
-  }
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, MigrateProfilePrefs) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  {
-    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
-    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
-    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
-
-    ipfs::IpfsService::MigrateProfilePrefs(prefs);
-    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
-  }
-  {
-    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
-    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
-    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
-
-    ipfs::IpfsService::MigrateProfilePrefs(prefs);
-    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
-  }
-  {
-    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
-    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
-    prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
-
-    ipfs::IpfsService::MigrateProfilePrefs(prefs);
-    EXPECT_TRUE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
-  }
-  {
-    prefs->ClearPref(kIPFSAutoRedirectToConfiguredGateway);
-    prefs->SetBoolean(kIPFSAutoRedirectDNSLink, false);
-    prefs->SetBoolean(kIPFSAutoRedirectGateway, false);
-
-    ipfs::IpfsService::MigrateProfilePrefs(prefs);
-    EXPECT_FALSE(prefs->GetBoolean(kIPFSAutoRedirectToConfiguredGateway));
-  }
-}
-
-IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
-                       ImportToIpfs_AlwaysStartInfobar) {
-  auto* prefs = browser()->profile()->GetPrefs();
-
-  std::string domain = "test.domain.com";
-  std::string text = "text to import";
-  size_t key = base::FastHash(base::as_bytes(base::make_span(text)));
-  std::string filename = domain;
-  filename += "_";
-  filename += base::NumberToString(key);
-  std::string expected_response = base::StringPrintf(
-      R"({"Name":"%s","Hash":"QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU")"
-      R"(,"Size":"567857"})",
-      filename.c_str());
-
-  ResetTestServer(
-      base::BindRepeating(&IpfsServiceBrowserTest::HandleImportRequests,
-                          base::Unretained(this), expected_response));
-
-  prefs->SetInteger(kIPFSResolveMethod,
-                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
-  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, true);
-  GURL gateway_url = GetURL("navigate.to", "/");
-  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
-
-  //  Show global infobar if resolve method is IPFS_LOCAL
-  {
-    ipfs_service()->ImportTextToIpfs(
-        text, domain,
-        base::BindOnce(&IpfsServiceBrowserTest::OnImportCompletedSuccess,
-                       base::Unretained(this)));
-    WaitForRequest();
-
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    auto* infobar = FindInfobar(
-        infobars::ContentInfoBarManager::FromWebContents(contents),
-        infobars::InfoBarDelegate::BRAVE_IPFS_ALWAYS_START_INFOBAR_DELEGATE);
-    ASSERT_TRUE(infobar);
   }
 }
 

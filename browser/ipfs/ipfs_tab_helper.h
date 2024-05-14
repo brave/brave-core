@@ -25,7 +25,6 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
-class BraveGlobalInfobarService;
 class PrefService;
 
 namespace ipfs {
@@ -113,7 +112,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, IPFSAlwaysStartInfobar);
   friend class content::WebContentsUserData<IPFSTabHelper>;
-  friend class BraveIPFSInfoBarDelegateObserverImpl;
 #if !BUILDFLAG(IS_ANDROID)
   friend class IPFSTabHelperTest;
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
@@ -172,9 +170,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
-#if !BUILDFLAG(IS_ANDROID)
-  raw_ptr<BraveGlobalInfobarService> global_infobar_service_;
-#endif  // !BUILDFLAG(IS_ANDROID)
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
   base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;

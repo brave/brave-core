@@ -15,8 +15,6 @@
 
 #include "base/functional/bind.h"
 #include "base/supports_user_data.h"
-#include "brave/browser/infobars/brave_global_infobar_service.h"
-#include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/pref_names.h"
@@ -38,12 +36,6 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
-#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
-#include "brave/browser/infobars/brave_ipfs_infobar_delegate.h"
-#include "brave/browser/ui/views/infobars/brave_global_infobar_manager.h"
-#endif
 
 namespace {
 
@@ -100,52 +92,6 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
 
 namespace ipfs {
 
-#if !BUILDFLAG(IS_ANDROID)
-class BraveIPFSInfoBarDelegateObserverImpl
-    : public BraveIPFSInfoBarDelegateObserver {
- public:
-  explicit BraveIPFSInfoBarDelegateObserverImpl(
-      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper)
-      : ipfs_tab_helper_(ipfs_tab_helper) {}
-
-  void OnRedirectToIPFS(bool enable_gateway_autoredirect) override {
-    if (ipfs_tab_helper_ && ipfs_tab_helper_->ipfs_resolved_url_.is_valid()) {
-      if (enable_gateway_autoredirect) {
-        ipfs_tab_helper_->pref_service_->SetBoolean(
-            kIPFSAutoRedirectToConfiguredGateway, true);
-      }
-      ipfs_tab_helper_->LoadUrl(ipfs_tab_helper_->ipfs_resolved_url_);
-    }
-  }
-
-  ~BraveIPFSInfoBarDelegateObserverImpl() override = default;
-
- private:
-  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
-};
-
-class BraveIPFSFallbackInfoBarDelegateObserverImpl
-    : public BraveIPFSFallbackInfoBarDelegateObserver {
- public:
-  explicit BraveIPFSFallbackInfoBarDelegateObserverImpl(
-      base::WeakPtr<IPFSTabHelper> ipfs_tab_helper,
-      const GURL& original_url)
-      : original_url_(original_url), ipfs_tab_helper_(ipfs_tab_helper) {}
-
-  void OnRedirectToOriginalAddress() override {
-    if (ipfs_tab_helper_) {
-      ipfs_tab_helper_->LoadUrlForFallback(original_url_);
-    }
-  }
-
-  ~BraveIPFSFallbackInfoBarDelegateObserverImpl() override = default;
-
- private:
-  GURL original_url_;
-  base::WeakPtr<IPFSTabHelper> ipfs_tab_helper_;
-};
-
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 IPFSTabHelper::~IPFSTabHelper() = default;
 
@@ -155,12 +101,6 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<IPFSTabHelper>(*web_contents),
       pref_service_(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))
-#if !BUILDFLAG(IS_ANDROID)
-      ,
-      global_infobar_service_(
-          BraveGlobalInfobarServiceFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext()))
-#endif  // !BUILDFLAG(IS_ANDROID)
 {
   resolver_ = std::make_unique<IPFSHostResolver>(
       web_contents->GetBrowserContext(), kDnsDomainPrefix);
@@ -200,24 +140,6 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
                                     bool is_gateway_url,
                                     const bool& auto_redirect_blocked) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
-  ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
-  bool should_redirect =
-      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
-
-  if (ipfs.is_valid() && should_redirect
-#if !BUILDFLAG(IS_ANDROID)
-      && !auto_redirect_blocked) {
-    LoadUrlForAutoRedirect(GetIPFSResolvedURL());
-    if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-      global_infobar_service_->ShowAlwaysStartInfobar();
-    }
-#else
-  ) {
-    LoadUrl(GetIPFSResolvedURL());
-#endif  // !BUILDFLAG(IS_ANDROID)
-    return;
-  }
-  UpdateLocationBar();
 }
 
 void IPFSTabHelper::HostResolvedCallback(
@@ -291,19 +213,6 @@ void IPFSTabHelper::LoadUrlForFallback(const GURL& gurl) {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 void IPFSTabHelper::UpdateLocationBar() {
-#if !BUILDFLAG(IS_ANDROID)
-  auto* content_infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents());
-  // Check whether content_infobar_manager is present for unit tests
-  if (content_infobar_manager && ipfs_resolved_url_.is_valid() &&
-      !pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway)) {
-    BraveIPFSInfoBarDelegate::Create(
-        content_infobar_manager,
-        std::make_unique<BraveIPFSInfoBarDelegateObserverImpl>(
-            weak_ptr_factory_.GetWeakPtr()),
-        pref_service_);
-  }
-#endif
 
   if (web_contents()->GetDelegate())
     web_contents()->GetDelegate()->NavigationStateChanged(
@@ -362,13 +271,14 @@ bool IPFSTabHelper::IsDNSLinkCheckEnabled() const {
 }
 
 bool IPFSTabHelper::IsAutoRedirectIPFSResourcesEnabled() const {
-  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
-      pref_service_->GetInteger(kIPFSResolveMethod));
-  auto autoredirect_ipfs_resources_enabled =
-      pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
+  // auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+  //     pref_service_->GetInteger(kIPFSResolveMethod));
+  // auto autoredirect_ipfs_resources_enabled =
+  //     pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
 
-  return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED) &&
-         autoredirect_ipfs_resources_enabled;
+  // return (resolve_method != ipfs::IPFSResolveMethodTypes::IPFS_DISABLED) &&
+  //        autoredirect_ipfs_resources_enabled;
+  return false;
 }
 
 void IPFSTabHelper::UpdateDnsLinkButtonState() {
@@ -436,14 +346,6 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
   auto possible_redirect = ResolveIPFSUrlFromGatewayLikeUrl(current_url);
   if (possible_redirect && IsIPFSScheme(possible_redirect.value())) {
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
-#if !BUILDFLAG(IS_ANDROID)
-      LoadUrlForAutoRedirect(possible_redirect.value());
-      if (IsResolveMethod(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL)) {
-        global_infobar_service_->ShowAlwaysStartInfobar();
-      }
-#else
-      LoadUrl(possible_redirect.value());
-#endif  // !BUILDFLAG(IS_ANDROID)
     } else {
       IPFSResourceLinkResolved(possible_redirect.value());
     }
@@ -510,25 +412,6 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), false);
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
-
-#if !BUILDFLAG(IS_ANDROID)
-void IPFSTabHelper::ShowBraveIPFSFallbackInfoBar(
-    const GURL& initial_navigation_url) {
-  if (show_fallback_infobar_callback_for_testing_) {
-    show_fallback_infobar_callback_for_testing_.Run(initial_navigation_url);
-    return;
-  }
-  auto* content_infobar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents());
-  if (content_infobar_manager) {
-    BraveIPFSFallbackInfoBarDelegate::Create(
-        content_infobar_manager,
-        std::make_unique<BraveIPFSFallbackInfoBarDelegateObserverImpl>(
-            weak_ptr_factory_.GetWeakPtr(), initial_navigation_url),
-        pref_service_);
-  }
-}
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper);
 

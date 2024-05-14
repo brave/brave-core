@@ -44,7 +44,7 @@ class FakeIpfsService : public ipfs::IpfsService {
             user_dir,
             channel,
             std::make_unique<ipfs::IpfsDnsResolverImpl>(),
-            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs, nullptr)) {}
+            std::make_unique<ipfs::IpfsServiceImplDelegate>(prefs)) {}
   ~FakeIpfsService() override = default;
   void ImportTextToIpfs(const std::string& text,
                         const std::string& host,

@@ -112,8 +112,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                   ->GetPrefs()
                   ->GetFilePath(kIPFSBinaryPath)
                   .empty());
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kIPFSAutoRedirectToConfiguredGateway));
 #endif
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
