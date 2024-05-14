@@ -120,13 +120,12 @@ export const ExploreWeb3View = () => {
       return [categoriesList, categoriesMap, visibleCategories]
     }, [filteredOutCategories, topDapps])
 
-  const [visibleNetworks, filteredOutNetworks] = React.useMemo(() => {
+  const [visibleNetworks] = React.useMemo(() => {
     if (!networksRegistry) {
       return [[] as BraveWallet.NetworkInfo[], [] as BraveWallet.NetworkInfo[]]
     }
 
     const visibleNetworks: BraveWallet.NetworkInfo[] = []
-    const filteredOutNetworks: BraveWallet.NetworkInfo[] = []
 
     networksRegistry.visibleIds.forEach((id) => {
       const network = networksRegistry.entities[id]
@@ -134,18 +133,12 @@ export const ExploreWeb3View = () => {
         return
       }
 
-      if (filteredOutNetworkKeys.includes(id)) {
-        filteredOutNetworks.push(network)
-      } else {
+      if (!filteredOutNetworkKeys.includes(id)) {
         visibleNetworks.push(network)
       }
     })
 
-    return [
-      visibleNetworks,
-      visibleNetworks.map(networkEntityAdapter.selectId),
-      filteredOutNetworks
-    ]
+    return [visibleNetworks, visibleNetworks.map(networkEntityAdapter.selectId)]
   }, [networksRegistry, filteredOutNetworkKeys])
 
   const filterVisibleDapps = React.useCallback(
@@ -198,6 +191,24 @@ export const ExploreWeb3View = () => {
   const selectedCategoryDapps = React.useMemo(() => {
     return selectedCategory ? visibleDappsMap.get(selectedCategory) : []
   }, [selectedCategory, visibleDappsMap])
+
+  const showFiltersRow = React.useMemo(() => {
+    const allCategoriesVisible =
+      visibleCategories.length === dappCategories.length
+    const allNetworksVisible =
+      visibleNetworks.length === networksRegistry?.visibleIds.length
+
+    return (
+      (!allCategoriesVisible || !allNetworksVisible) &&
+      selectedCategory === null
+    )
+  }, [
+    dappCategories.length,
+    networksRegistry?.visibleIds.length,
+    selectedCategory,
+    visibleCategories.length,
+    visibleNetworks.length
+  ])
 
   // methods
   const onDappClick = React.useCallback(
@@ -323,8 +334,7 @@ export const ExploreWeb3View = () => {
           onClickBackButton={selectedCategory ? onCategoryBack : undefined}
         />
 
-        {(filteredOutCategories.length > 0 ||
-          filteredOutNetworks.length > 0) && (
+        {showFiltersRow && (
           <Row
             justifyContent='flex-start'
             alignItems='center'

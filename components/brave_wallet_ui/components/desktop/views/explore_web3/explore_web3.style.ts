@@ -59,10 +59,11 @@ export const FilterClose = styled(Icon).attrs({
 `
 
 export const FilterButton = styled(Button).attrs({
-  kind: 'plain',
-  size: 'small'
+  kind: 'plain-faint',
+  size: 'tiny'
 })`
   --leo-button-padding: 0;
   --leo-button-radius: 4px;
   flex-grow: 0;
+  height: 20px;
 `
