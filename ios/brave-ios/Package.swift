@@ -593,7 +593,7 @@ if isNativeTalkEnabled {
     .testTarget(
       name: "BraveTalkTests",
       dependencies: [
-        "BraveTalk", "Shared",
+        "BraveTalk", "Shared", "TestHelpers",
         .product(name: "Collections", package: "swift-collections"),
       ]
     ),

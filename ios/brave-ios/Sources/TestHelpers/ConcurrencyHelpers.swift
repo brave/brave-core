@@ -35,3 +35,13 @@ public func XCTAssertAsyncNoThrow<T>(
     XCTFail(message(), file: file, line: line)
   }
 }
+
+// swift-format-ignore
+public func XCTunwrapAsync<T>(
+  _ expression: @autoclosure @escaping () async throws -> T?,
+  file: StaticString = #file,
+  line: UInt = #line
+) async throws -> T {
+  let result = try await expression()
+  return try XCTUnwrap(result, file: file, line: line)
+}
