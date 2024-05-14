@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/onboarding/domain_map.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
@@ -178,22 +177,10 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
     return std::string();
   }
 
-  auto [company_names, total_companies_blocked] =
-      onboarding::GetCompanyNamesAndCountFromAdsList(
-          shields_data_controller->GetBlockedAdsList());
-
-  const int others_blocked =
-      shields_data_controller->GetTotalBlockedCount() - total_companies_blocked;
-
   std::vector<std::string> replacements;
   std::string label_text = l10n_util::GetPluralStringFUTF8(
-      company_names.empty()
-          ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES
-          : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES,
-      others_blocked);
-  if (!company_names.empty()) {
-    replacements.push_back(company_names);
-  }
+      IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES,
+      shields_data_controller->GetTotalBlockedCount());
   replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 
   return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);
