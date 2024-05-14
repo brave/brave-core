@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
@@ -330,3 +331,32 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   chrome::ExecuteCommand(browser_instance, IDC_CLOSE_TAB);
   EXPECT_EQ(browser_instance->tab_strip_model()->count(), 2);
 }
+
+#if !BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       CloseTabShortCutShouldBeDisabled) {
+  auto* browser = CreateNewBrowser();
+  chrome::NewTab(browser);
+
+  EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+  EXPECT_EQ(browser->tab_strip_model()->active_index(), 1);
+
+  EXPECT_EQ(browser->tab_strip_model()->SetTabPinned(1, true), 0);
+  EXPECT_EQ(browser->tab_strip_model()->active_index(), 0);
+
+  auto* browser_view = static_cast<BrowserView*>(browser->window());
+
+  // When Command + w is pressed
+  browser_view->AcceleratorPressed(
+      ui::Accelerator(ui::VKEY_W, ui::EF_CONTROL_DOWN));
+
+  // Then the tab should not be closed.
+  EXPECT_EQ(browser->tab_strip_model()->count(), 2);
+
+  // When other ways to close the tab are tried
+  chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);
+
+  // Then tabs should be closed
+  EXPECT_EQ(browser->tab_strip_model()->count(), 1);
+}
+#endif  // !BUILDFLAG(IS_MAC)

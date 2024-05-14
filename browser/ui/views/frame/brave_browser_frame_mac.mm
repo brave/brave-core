@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 
+#include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -62,17 +63,18 @@ bool BraveBrowserFrameMac::ExecuteCommand(
     int32_t command,
     WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
-  // is_before_first_responder tells whether or not the app/window was in focus
-  // while the keyboard command was fired. In current method, it helps in
-  // distinguishing the 'file -> close tab' (false, as toolbar was in focus)
-  // command from 'ctrl + w' (true, as tab was in focus) command.
-  Browser* browser = browser_view_->browser();
-  int active_tab_index = browser->tab_strip_model()->active_index();
-  if (command == IDC_CLOSE_TAB && is_before_first_responder &&
-      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
-      browser->tab_strip_model()->IsTabPinned(active_tab_index)) {
-    // Ignoring the ctrl+w command when the active tab is shared pinned
-    return true;
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    // is_before_first_responder tells whether or not the app/window was in
+    // focus while the keyboard command was fired. In current method, it helps
+    // in distinguishing the 'file -> close tab' (false, as toolbar was in
+    // focus) command from 'ctrl + w' (true, as tab was in focus) command.
+    Browser* browser = browser_view_->browser();
+    int active_tab_index = browser->tab_strip_model()->active_index();
+    if (command == IDC_CLOSE_TAB && is_before_first_responder &&
+        browser->tab_strip_model()->IsTabPinned(active_tab_index)) {
+      // Ignoring the ctrl+w command when the active tab is shared pinned
+      return true;
+    }
   }
 
   return BrowserFrameMac::ExecuteCommand(command, window_open_disposition,

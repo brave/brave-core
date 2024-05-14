@@ -51,6 +51,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -1040,6 +1041,22 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     // Setting nullptr doesn't detach the previous contents.
     UpdateContentsWebViewVisual();
   }
+}
+
+bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
+                        command_id == IDC_CLOSE_TAB) {
+      auto* tab_strip_model = browser()->tab_strip_model();
+      if (tab_strip_model->IsTabPinned(tab_strip_model->active_index())) {
+        // Ignore CLOSE TAB command via accelerator if the tab is shared/dummy
+        // pinned tab.
+        return true;
+      }
+    }
+  }
+
+  return BrowserView::AcceleratorPressed(accelerator);
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {
