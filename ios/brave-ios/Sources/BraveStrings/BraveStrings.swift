@@ -2502,7 +2502,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "On your second mobile device, navigate to Sync in the Settings panel and tap the button \"Scan Sync Code\". Use your camera to scan the QR Code below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
+      "On your second mobile device, navigate to Sync in the Settings panel and tap the button \"Scan Sync Code\". Use your camera to scan the QR Code below.\n\nTreat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
     comment: "Sync add device description"
   )
   public static let syncSwitchBackToCameraButton = NSLocalizedString(
@@ -2517,7 +2517,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "On your device, navigate to Sync in the Settings panel and tap the button \"%@\". Enter the sync chain code words shown below.\n\n Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
+      "On your device, navigate to Sync in the Settings panel and tap the button \"%@\". Enter the sync chain code words shown below.\n\nTreat this code like a password. If someone gets hold of it, they can read and modify your synced data.",
     comment: "Sync add device description"
   )
   public static let syncNoConnectionTitle = NSLocalizedString(
@@ -2866,6 +2866,20 @@ extension Strings {
     bundle: .module,
     value: "Invalid sync code, please check and try again.",
     comment: "Generic error message for when the sync code is invalid"
+  )
+  public static let syncCodeExpirationTitleLabel = NSLocalizedString(
+    "SyncCodeExpirationTitleLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Code expired. Generate a new one by clicking the button below.",
+    comment: "Error title explaining the sync code is expired and it must be genrated all over again."
+  )
+  public static let syncCodeTimeRemainingTitleLabel = NSLocalizedString(
+    "SyncCodeTimeRemainingTitleLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "This temporary code is valid for the next %@",
+    comment: "Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second"
   )
 }
 

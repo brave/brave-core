@@ -6,6 +6,11 @@ import Foundation
 
 extension Int {
 
+  /// TimeInterval is always defined with seconds
+  public var seconds: TimeInterval {
+    return TimeInterval(self)
+  }
+
   /// Return number of minutes in seconds.
   public var minutes: TimeInterval {
     return TimeInterval(self * 60)

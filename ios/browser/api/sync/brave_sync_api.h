@@ -116,6 +116,8 @@ OBJC_EXPORT
 
 - (NSString*)getTimeLimitedWordsFromWords:(NSString*)words;
 
+- (NSDate*)getExpirationFromTimeLimitedWords:(NSString*)timeLimitedWords;
+
 - (NSString*)getHexSeedFromQrCodeJson:(NSString*)json;
 
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
