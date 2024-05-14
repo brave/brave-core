@@ -102,11 +102,13 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   BraveTranslateBrowserTest() = default;
 
   void SetUp() override {
+    InProcessBrowserTest::SetUp();
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
   }
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir;
     CHECK(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
