@@ -122,7 +122,11 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void isWalletCreated(@NonNull final KeyringService.IsWalletCreated_Response callback) {
-        mKeyringService.isWalletCreated(callback);
+        if (mKeyringService == null) {
+            callback.call(false);
+        } else {
+            mKeyringService.isWalletCreated(callback);
+        }
     }
 
     private void addAccountInternal(
