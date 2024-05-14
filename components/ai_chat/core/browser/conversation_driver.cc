@@ -467,9 +467,11 @@ void ConversationDriver::MaybeSeedOrClearSuggestions() {
           mojom::SuggestionGenerationStatus::HasGenerated) {
     // TODO(petemill): ask content fetcher if it knows whether current page is a
     // video.
-    suggestions_.emplace_back(
-        is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
-                  : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    if (!has_summarized_) {
+      suggestions_.emplace_back(
+          is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                    : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    }
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
     OnSuggestedQuestionsChanged();
@@ -619,6 +621,7 @@ void ConversationDriver::CleanUp() {
   on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
   is_video_ = false;
   suggestions_.clear();
+  has_summarized_ = false;
   pending_conversation_entry_.reset();
   is_page_text_fetch_in_progress_ = false;
   is_print_preview_fallback_requested_ = false;
@@ -871,11 +874,13 @@ void ConversationDriver::SubmitHumanConversationEntry(
       turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+      has_summarized_ = true;
     } else if (turn->text ==
                l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
       turn->action_type = mojom::ActionType::SUMMARIZE_VIDEO;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+      has_summarized_ = true;
     } else {
       turn->action_type = mojom::ActionType::QUERY;
     }
