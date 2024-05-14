@@ -13,6 +13,7 @@ import { MediumIcon } from './SearchEngineIcon';
 import { useSearchContext } from './SearchContext';
 import { braveSearchHost } from './config';
 import Button from '@brave/leo/react/button';
+import { getLocale } from '$web-common/locale';
 
 const SearchInput = styled(Input)`
   --leo-control-focus-effect: none;
@@ -68,8 +69,8 @@ export const Backdrop = styled.div`
 export default function SearchBox() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery, setOpen } = useSearchContext()
   const placeholderText = searchEngine?.host === braveSearchHost
-    ? 'Search the web privately'
-    : 'Search the web'
+    ? getLocale('searchBravePlaceholder')
+    : getLocale('searchNonBravePlaceholder')
   const searchInput = React.useRef<HTMLElement>()
   return <Container>
     <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
@@ -86,15 +87,15 @@ export default function SearchBox() {
             </Option>
           </leo-option>)}
           <CustomizeButton kind="plain-faint" size="small" onClick={() => {
-          history.pushState(undefined, '', '?openSettings=Search')
+            history.pushState(undefined, '', '?openSettings=Search')
 
-          // For now, close the search box - the Settings dialog doesn't use a
-          // dialog, so it gets rendered underneath.
-          setOpen(false)
-        }}>
-          Customize list
-        </CustomizeButton>
-      </EnginePicker>
+            // For now, close the search box - the Settings dialog doesn't use a
+            // dialog, so it gets rendered underneath.
+            setOpen(false)
+          }}>
+            {getLocale('searchCustomizeList')}
+          </CustomizeButton>
+        </EnginePicker>
       </Flex>
       <SearchIconContainer slot="right-icon">
         <Icon name="search" />

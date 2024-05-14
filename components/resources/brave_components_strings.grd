@@ -234,6 +234,25 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
 
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_LIST" desc="Label for the customize list">
+        Customize list
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is the selected search engine">
+        Search the web privately
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is not the selected search engine">
+        Search the web
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_SHOW_SETTING" desc="Setting for enabling the searchbox on the NTP">
+        Show search widget on the new tab page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_ENGINES_TITLE" desc="Title above the list of search engines">
+        Enable search engines on the New Tab Page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
+        Customize available engines
+      </message>
+
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
         Want even better privacy?
       </message>
