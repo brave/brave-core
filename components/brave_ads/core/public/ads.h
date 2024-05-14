@@ -83,7 +83,8 @@ class ADS_EXPORT Ads {
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::InlineContentAdEventType::target_url` landing page is opened.
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -101,7 +102,8 @@ class ADS_EXPORT Ads {
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::NewTabPageAdEventType::target_url` landing page is opened.
   virtual void TriggerNewTabPageAdEvent(const std::string& placement_id,
                                         const std::string& creative_instance_id,
                                         mojom::NewTabPageAdEventType event_type,
@@ -118,7 +120,8 @@ class ADS_EXPORT Ads {
   // of version 4. See RFC 4122, section 4.4. The same `placement_id` generated
   // for the viewed impression event should be used for all other events for the
   // same ad placement. The callback takes one argument - `bool` is set to
-  // `true` if successful otherwise `false`.
+  // `true` if successful otherwise `false`. Must be called before the
+  // `mojom::NotificationAdEventType::target_url` landing page is opened.
   virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType event_type,
@@ -130,7 +133,8 @@ class ADS_EXPORT Ads {
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // is set to `true` if successful otherwise `false`. Must be called before the
+  // `mojom::PromotedContentAdEventType::target_url` landing page is opened.
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -140,6 +144,8 @@ class ADS_EXPORT Ads {
   // Called when a user views or interacts with a search result ad to trigger an
   // `event_type` event for the ad specified in `ad_mojom`. The callback takes
   // one argument - `bool` is set to `true` if successful otherwise `false`.
+  // Must be called before the `mojom::SearchResultAdInfo::target_url` landing
+  // page is opened.
   virtual void TriggerSearchResultAdEvent(
       mojom::SearchResultAdInfoPtr ad_mojom,
       mojom::SearchResultAdEventType event_type,
