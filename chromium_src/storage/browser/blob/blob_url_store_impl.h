@@ -40,6 +40,9 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
       const GURL& url,
       mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
       ResolveForNavigationCallback callback) override;
+
+ private:
+  bool IsBlobResolvable(const GURL& url) const;
 };
 
 }  // namespace storage
