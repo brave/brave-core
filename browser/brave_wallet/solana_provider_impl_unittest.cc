@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -94,8 +95,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   SolanaProviderImplUnitTest()
       : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {
-  }
+                &url_loader_factory_)) {}
   ~SolanaProviderImplUnitTest() override = default;
 
   void TearDown() override {
@@ -189,14 +189,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void CreateWallet() {
-    base::RunLoop run_loop;
-    keyring_service_->CreateWallet(
-        "brave",
-        base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
-          EXPECT_FALSE(mnemonic.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    AccountUtils(keyring_service_)
+        .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
   }
 
   mojom::AccountInfoPtr AddAccount() {

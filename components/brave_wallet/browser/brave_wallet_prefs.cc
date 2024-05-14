@@ -206,6 +206,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kBraveWalletTransactionSimulationOptInStatus,
       static_cast<int>(brave_wallet::mojom::BlowfishOptInStatus::kUnset));
+  registry->RegisterStringPref(kBraveWalletEncryptorSalt, "");
+  registry->RegisterDictionaryPref(kBraveWalletMnemonic);
+  registry->RegisterBooleanPref(kBraveWalletLegacyEthSeedFormat, false);
+  registry->RegisterBooleanPref(kBraveWalletMnemonicBackedUp, false);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -274,6 +278,10 @@ void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
 void ClearKeyringServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletKeyrings);
+  prefs->ClearPref(kBraveWalletEncryptorSalt);
+  prefs->ClearPref(kBraveWalletMnemonic);
+  prefs->ClearPref(kBraveWalletLegacyEthSeedFormat);
+  prefs->ClearPref(kBraveWalletMnemonicBackedUp);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
   prefs->ClearPref(kBraveWalletSelectedWalletAccount);
   prefs->ClearPref(kBraveWalletSelectedEthDappAccount);

@@ -6,7 +6,7 @@
 import { mockRecoveryPhrase } from '../stories/mock-data/user-accounts'
 import { getWordIndicesToVerify } from './ordinal-utils'
 
-describe('getWordIndicesToVerfy', () => {
+describe('getWordIndicesToVerify', () => {
   it('creates a list 3 of unique numbers', () => {
     const indices = getWordIndicesToVerify(mockRecoveryPhrase.length)
     expect(new Set(indices).size).toBe(3)

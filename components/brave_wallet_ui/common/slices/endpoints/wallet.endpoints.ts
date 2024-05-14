@@ -131,6 +131,9 @@ export const walletEndpoints = ({
           const { keyringService } = api
 
           const result = await keyringService.createWallet(arg.password)
+          if (!result.mnemonic) {
+            throw new Error('Unable to create wallet')
+          }
 
           dispatch(
             WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
@@ -239,9 +242,14 @@ export const walletEndpoints = ({
           const { password } = arg
 
           if (password) {
-            const { mnemonic } =
-              await keyringService.getMnemonicForDefaultKeyring(password)
-            dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
+            const { mnemonic } = await keyringService.getWalletMnemonic(
+              password
+            )
+            dispatch(
+              WalletPageActions.recoveryWordsAvailable({
+                mnemonic: mnemonic ?? ''
+              })
+            )
             return {
               data: true
             }

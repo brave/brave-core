@@ -583,7 +583,7 @@ export class MockedWalletApiProxy {
       password === 'password'
         ? { privateKey: 'secret-private-key' }
         : { privateKey: '' },
-    getMnemonicForDefaultKeyring: async (password) => {
+    getWalletMnemonic: async (password) => {
       return password === 'password'
         ? { mnemonic: mockedMnemonic }
         : { mnemonic: '' }

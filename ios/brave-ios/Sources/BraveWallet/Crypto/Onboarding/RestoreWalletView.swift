@@ -18,7 +18,7 @@ struct RestoreWalletView: View {
 
   @Environment(\.sizeCategory) private var sizeCategory
 
-  @State private var isBraveLegacyWallet: Bool = false
+  @State private var isLegacyEthSeedFormat: Bool = false
   @State private var isRevealRecoveryWords: Bool = true
   @State private var recoveryWords: [String] = .init(repeating: "", count: 12)
   @State private var newPassword: String?
@@ -156,7 +156,7 @@ struct RestoreWalletView: View {
               // to the other type, meaning:
               // regular(12) to legacy(24)
               // or legacy(24) to regular(12)
-              isBraveLegacyWallet = false
+              isLegacyEthSeedFormat = false
               resignFirstResponder()
               recoveryWords = .init(
                 repeating: "",
@@ -182,7 +182,7 @@ struct RestoreWalletView: View {
             }
           }
           if !isTwelvePhrase {
-            Toggle(isOn: $isBraveLegacyWallet) {
+            Toggle(isOn: $isLegacyEthSeedFormat) {
               Text(Strings.Wallet.restoreLegacyBraveWalletToggleLabel)
                 .fontWeight(.medium)
                 .foregroundColor(Color(.braveBlurpleTint))
@@ -196,7 +196,7 @@ struct RestoreWalletView: View {
             keyringStore.restoreWallet(
               words: recoveryWords,
               password: newPassword,
-              isLegacyBraveWallet: isBraveLegacyWallet
+              isLegacyEthSeedFormat: isLegacyEthSeedFormat
             ) { isMnemonicValid in
               if isMnemonicValid {
                 isShowingPhraseError = false
@@ -282,7 +282,7 @@ struct RestoreWalletView: View {
     keyringStore.restoreWallet(
       words: recoveryWords,
       password: password,
-      isLegacyBraveWallet: isBraveLegacyWallet
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat
     ) { success in
       if success {
         isShowingPhraseError = false

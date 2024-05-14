@@ -47,8 +47,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   base::DoNothing());
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
     bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
 

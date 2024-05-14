@@ -8,12 +8,17 @@
 #include <optional>
 #include <utility>
 
+#include "base/base64.h"
 #include "brave/components/brave_wallet/common/mem_utils.h"
 #include "crypto/aead.h"
 #include "crypto/openssl_util.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
 namespace brave_wallet {
+namespace {
+constexpr char kCiphertextKey[] = "ciphertext";
+constexpr char kNonceKey[] = "nonce";
+}  // namespace
 
 PasswordEncryptor::PasswordEncryptor(const std::vector<uint8_t> key)
     : key_(key) {}
@@ -53,12 +58,44 @@ std::vector<uint8_t> PasswordEncryptor::Encrypt(
   return aead.Seal(plaintext, nonce, std::vector<uint8_t>());
 }
 
+base::Value::Dict PasswordEncryptor::EncryptToDict(
+    base::span<const uint8_t> plaintext,
+    base::span<const uint8_t> nonce) {
+  base::Value::Dict result;
+  result.Set(kCiphertextKey, base::Base64Encode(Encrypt(plaintext, nonce)));
+  result.Set(kNonceKey, base::Base64Encode(nonce));
+  return result;
+}
+
 std::optional<std::vector<uint8_t>> PasswordEncryptor::Decrypt(
     base::span<const uint8_t> ciphertext,
     base::span<const uint8_t> nonce) {
   crypto::Aead aead(crypto::Aead::AES_256_GCM_SIV);
   aead.Init(key_);
   return aead.Open(ciphertext, nonce, std::vector<uint8_t>());
+}
+
+std::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptFromDict(
+    const base::Value::Dict& encrypted_value) {
+  auto* ciphertext_encoded = encrypted_value.FindString(kCiphertextKey);
+  if (!ciphertext_encoded) {
+    return std::nullopt;
+  }
+  auto ciphertext = base::Base64Decode(*ciphertext_encoded);
+  if (!ciphertext) {
+    return std::nullopt;
+  }
+
+  auto* nonce_encoded = encrypted_value.FindString(kNonceKey);
+  if (!nonce_encoded) {
+    return std::nullopt;
+  }
+  auto nonce = base::Base64Decode(*nonce_encoded);
+  if (!nonce) {
+    return std::nullopt;
+  }
+
+  return Decrypt(*ciphertext, *nonce);
 }
 
 std::optional<std::vector<uint8_t>> PasswordEncryptor::DecryptForImporter(

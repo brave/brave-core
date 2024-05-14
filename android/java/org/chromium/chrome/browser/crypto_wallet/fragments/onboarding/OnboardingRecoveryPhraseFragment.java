@@ -120,7 +120,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(
+            keyringService.getWalletMnemonic(
                     mOnboardingViewModel.getPassword(),
                     result -> {
                         mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);

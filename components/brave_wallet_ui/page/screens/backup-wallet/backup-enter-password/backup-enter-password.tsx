@@ -77,9 +77,7 @@ export const BackupEnterPassword: React.FC = () => {
     setPassword('')
     setIsCorrectPassword(true)
 
-    const { mnemonic } = await keyringService.getMnemonicForDefaultKeyring(
-      password
-    )
+    const { mnemonic } = await keyringService.getWalletMnemonic(password)
     if (mnemonic) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
       history.push(WalletRoutes.BackupExplainRecoveryPhrase)
@@ -114,7 +112,7 @@ export const BackupEnterPassword: React.FC = () => {
           />
 
           <div>
-            <Title>{getLocale('braveWalletEnterAPassswordToContinue')}</Title>
+            <Title>{getLocale('braveWalletEnterAPasswordToContinue')}</Title>
             <Description>
               {getLocale('braveWalletEnterYourPasswordToStartBackup')}
             </Description>

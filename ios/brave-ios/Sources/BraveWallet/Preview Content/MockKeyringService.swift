@@ -87,7 +87,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
-  func createWallet(password: String, completion: @escaping (String) -> Void) {
+  func createWallet(password: String, completion: @escaping (String?) -> Void) {
     isLocked = false
     self.password = password
     addAccount(
@@ -118,7 +118,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(isBackedUp)
   }
 
-  func mnemonicForDefaultKeyring(password: String, completion: @escaping (String) -> Void) {
+  func walletMnemonic(password: String, completion: @escaping (String?) -> Void) {
     completion(mnemonic)
   }
 
@@ -147,7 +147,7 @@ class MockKeyringService: BraveWalletKeyringService {
   func restoreWallet(
     mnemonic: String,
     password: String,
-    isLegacyBraveWallet: Bool,
+    isLegacyEthSeedFormat: Bool,
     completion: @escaping (Bool) -> Void
   ) {
     self.password = password

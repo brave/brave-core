@@ -96,10 +96,10 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                                 mPasswordFromBiometric.isEmpty()
                                         ? mBackupWalletPassword.getText().toString()
                                         : mPasswordFromBiometric;
-                        keyringService.getMnemonicForDefaultKeyring(
+                        keyringService.getWalletMnemonic(
                                 passwordToUse,
                                 result -> {
-                                    if (!result.isEmpty()) {
+                                    if (result != null && !result.isEmpty()) {
                                         mOnboardingViewModel.setPassword(passwordToUse);
                                         if (mOnNextPage != null) {
                                             mOnNextPage.gotoNextPage();

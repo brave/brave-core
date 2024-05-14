@@ -1034,18 +1034,16 @@ interface KeyringService {
   IsWalletCreated() => (bool isCreated);
 
   // Creates a new wallet and encrypts it using the specified password
-  CreateWallet(string password) => (string mnemonic);
+  CreateWallet(string password) => (string? mnemonic);
 
   // Obtains the mnemonic code words for an already existing wallet
-  // TODO(darkdh): make result optional instead of using empty string indicated
-  // failure
-  GetMnemonicForDefaultKeyring(string password) => (string mnemonic);
+  GetWalletMnemonic(string password) => (string? mnemonic);
 
   // Restores a wallet with the specified mnemonic and encrypts it with the
-  // new password provided. isLegacyBraveWallet can be used to restore the
+  // new password provided. `is_legacy_eth_seed_format` can be used to restore the
   // wallet using Brave's legacy derivation paths.
-  RestoreWallet(string mnemonic, string password, bool isLegacyBraveWallet)
-    => (bool isValidMnemonic);
+  RestoreWallet(string mnemonic, string password, bool is_legacy_eth_seed_format)
+    => (bool is_valid_mnemonic);
 
   // Locks the keyring.
   Lock();

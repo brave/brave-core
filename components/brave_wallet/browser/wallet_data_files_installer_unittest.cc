@@ -149,11 +149,13 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   void CreateWallet() {
     base::RunLoop run_loop;
     keyring_service_->CreateWallet(
-        kMnemonicDivideCruise, kTestWalletPassword,
-        base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
-          ASSERT_FALSE(mnemonic.empty());
-          run_loop.Quit();
-        }));
+        kTestWalletPassword,
+        base::BindLambdaForTesting(
+            [&run_loop](const std::optional<std::string>& mnemonic) {
+              ASSERT_TRUE(mnemonic);
+              ASSERT_FALSE(mnemonic->empty());
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 

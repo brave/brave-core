@@ -77,7 +77,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                         KeyringService keyringService = getKeyringService();
                         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
                         if (keyringService != null) {
-                            keyringService.getMnemonicForDefaultKeyring(
+                            keyringService.getWalletMnemonic(
                                     mOnboardingViewModel.getPassword(),
                                     result -> {
                                         String recoveryPhraseToVerify =
@@ -119,7 +119,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
 
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getMnemonicForDefaultKeyring(
+            keyringService.getWalletMnemonic(
                     mOnboardingViewModel.getPassword(),
                     result -> {
                         mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);

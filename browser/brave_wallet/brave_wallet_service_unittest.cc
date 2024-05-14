@@ -455,8 +455,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   void SetupWallet() {
-    keyring_service_->CreateWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   base::DoNothing());
+    keyring_service_->CreateWalletInternal(kMnemonicDivideCruise,
+                                           kTestWalletPassword, false, false);
   }
 
   void SetInterceptors(std::map<GURL, std::string> responses) {
@@ -722,12 +722,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     *valid_password = keyring_service_->ValidatePasswordInternal(new_password);
 
     base::RunLoop run_loop;
-    keyring_service_->GetMnemonicForDefaultKeyring(
-        new_password,
-        base::BindLambdaForTesting([&](const std::string& mnemonic) {
-          *valid_mnemonic = (mnemonic == in_mnemonic);
-          run_loop.Quit();
-        }));
+    keyring_service_->GetWalletMnemonic(
+        new_password, base::BindLambdaForTesting(
+                          [&](const std::optional<std::string>& mnemonic) {
+                            *valid_mnemonic = (mnemonic == in_mnemonic);
+                            run_loop.Quit();
+                          }));
     run_loop.Run();
   }
 
