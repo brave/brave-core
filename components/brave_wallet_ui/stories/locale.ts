@@ -1044,6 +1044,9 @@ provideStrings({
   braveWalletTransactionSubmittedDescription:
     'Transaction has been successfully sent ' +
     'to the network and awaits confirmation.',
+  braveWalletTransactionSignedTitle: 'Transaction signed',
+  braveWalletTransactionSignedDescription:
+    'The transaction has been signed and will be sent to network by the DApp',
 
   // Failed
   braveWalletTransactionFailedHeaderTitle: '$1 was returned to your wallet',
