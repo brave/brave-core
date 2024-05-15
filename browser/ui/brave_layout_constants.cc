@@ -61,6 +61,9 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
     }
+    case TOOLBAR_CORNER_RADIUS: {
+      return 0;
+    }
     case LOCATION_BAR_HEIGHT:
       // Consider adjust below element padding also when this height is changed.
       return 32;
