@@ -88,7 +88,7 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
     return std::move(callback).Run({});
   }
 
-  auto urls = web_contents()->GetLoadedUrlByMediaPlayer();
+  auto urls = web_contents()->GetMediaMetadataByMediaPlayerIds();
   if (!urls.contains(*player_id)) {
     return std::move(callback).Run({});
   }

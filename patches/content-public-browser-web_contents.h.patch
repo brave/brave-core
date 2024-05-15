@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/web_contents.h b/content/public/browser/web_contents.h
-index 811fde7ff7d9eea62a368606bbfb646552e66793..0cd725c5dc89efe117a3233070083c9639ff5ed3 100644
+index 811fde7ff7d9eea62a368606bbfb646552e66793..f3090ebca03269fd9037dd95f2ac74acafe5c1db 100644
 --- a/content/public/browser/web_contents.h
 +++ b/content/public/browser/web_contents.h
 @@ -28,6 +28,7 @@
@@ -15,7 +15,7 @@ index 811fde7ff7d9eea62a368606bbfb646552e66793..0cd725c5dc89efe117a3233070083c96
    GetBackForwardTransitionAnimationManager() = 0;
  
 +  virtual base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
-+  GetLoadedUrlByMediaPlayer() = 0;
++  GetMediaMetadataByMediaPlayerIds() = 0;
 +
   private:
    // This interface should only be implemented inside content.

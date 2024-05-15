@@ -1,35 +1,46 @@
 diff --git a/content/browser/media/media_web_contents_observer.h b/content/browser/media/media_web_contents_observer.h
-index 30dc069777641ecaafdab9d694e3cf440f7f35c3..51317762accbe46322189c3d89f055803cac6d60 100644
+index 30dc069777641ecaafdab9d694e3cf440f7f35c3..d92e3bd9ea58fd3e23db0b60759b314bfee45fd7 100644
 --- a/content/browser/media/media_web_contents_observer.h
 +++ b/content/browser/media/media_web_contents_observer.h
-@@ -73,6 +73,9 @@ class CONTENT_EXPORT MediaWebContentsObserver
+@@ -37,6 +37,8 @@
+ #include "ui/android/view_android.h"
+ #endif  // BUILDFLAG(IS_ANDROID)
  
-   ~MediaWebContentsObserver() override;
++class GURL;
++
+ namespace blink {
+ enum class WebFullscreenVideoStatus;
+ }  // namespace blink
+@@ -143,6 +145,9 @@ class CONTENT_EXPORT MediaWebContentsObserver
+   // be suspended.
+   void SuspendAllMediaPlayers();
  
 +  base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
-+  GetLoadedUrlByMediaPlayer() const;
++  GetMediaMetadataByMediaPlayerIds() const;
 +
-   // Called by WebContentsImpl when the audible state may have changed.
-   void MaybeUpdateAudibleState();
- 
-@@ -216,6 +219,11 @@ class CONTENT_EXPORT MediaWebContentsObserver
+  protected:
+   MediaSessionControllersManager* session_controllers_manager() {
+     return session_controllers_manager_.get();
+@@ -216,6 +221,13 @@ class CONTENT_EXPORT MediaWebContentsObserver
          media_session::mojom::RemotePlaybackMetadataPtr
              remote_playback_metadata) override;
      void OnVideoVisibilityChanged(bool meets_visibility_threshold) override;
-+    void OnMediaLoaded(const GURL& url, bool is_mse, double duration) override;
++    void OnMediaLoaded(const GURL& url,
++                       bool is_media_source,
++                       double duration) override;
 +
-+    const GURL& GetLoadedUrl() const;
-+    bool IsMse() const;
++    const GURL& GetUrl() const;
++    bool GetIsMediaSource() const;
 +    double GetDuration() const;
  
     private:
      PlayerInfo* GetPlayerInfo();
-@@ -238,6 +246,10 @@ class CONTENT_EXPORT MediaWebContentsObserver
+@@ -238,6 +250,10 @@ class CONTENT_EXPORT MediaWebContentsObserver
      std::unique_ptr<AudioStreamMonitor::AudibleClientRegistration>
          audio_client_registration_;
  
 +    GURL url_;
-+    bool is_mse_ = false;
++    bool is_media_source_ = false;
 +    double duration_ = 0.0;
 +
      base::WeakPtrFactory<MediaPlayerObserverHostImpl> weak_factory_{this};
