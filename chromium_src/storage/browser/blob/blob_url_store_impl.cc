@@ -5,6 +5,8 @@
 
 #include "storage/browser/blob/blob_url_store_impl.h"
 
+#include "storage/browser/blob/blob_url_utils.h"
+
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
 
 #include "src/storage/browser/blob/blob_url_store_impl.cc"
@@ -51,7 +53,10 @@ void BlobURLStoreImpl::ResolveForNavigation(
 bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {
   // Check if the URL is mapped to a BlobURLStore with the current
   // `storage_key_` or if it's an extension-generated blob.
-  return (registry_ && registry_->IsUrlMapped(url, storage_key_)) ||
+  const GURL& clean_url = BlobUrlUtils::UrlHasFragment(url)
+                              ? BlobUrlUtils::ClearUrlFragment(url)
+                              : url;
+  return (registry_ && registry_->IsUrlMapped(clean_url, storage_key_)) ||
          (url.SchemeIsBlob() &&
           url::Origin::Create(url).scheme() == "chrome-extension");
 }

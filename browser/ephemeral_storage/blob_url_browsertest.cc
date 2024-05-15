@@ -300,6 +300,22 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
   TestBlobsArePartitioned();
 }
 
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
+                       BlobsWithFragmentAreAccessible) {
+  FramesWithRegisteredBlobs a_com_registered_blobs =
+      RegisterBlobs(a_site_ephemeral_storage_url_);
+
+  for (auto& registered_blob : a_com_registered_blobs) {
+    registered_blob.blob_url = GURL(registered_blob.blob_url.spec() + "#test");
+  }
+
+  // Expect blob created from a.com is available in iframe and vice versa.
+  EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 0, 3);
+  // Expect blob created from b.com iframe is available in another b.com
+  // iframe and vice versa.
+  EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 1, 2);
+}
+
 class BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest
     : public BlobUrlPartitionEnabledBrowserTest {
  public:
