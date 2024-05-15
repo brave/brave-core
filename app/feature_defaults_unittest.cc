@@ -91,7 +91,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kClientHintsFormFactors,
-      &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
       &blink::features::kFencedFramesM120FeaturesPart2,
