@@ -18,4 +18,12 @@ MediaSessionImpl::GetMediaPositionFromNormalPlayerIfPossible() {
   return std::nullopt;
 }
 
+std::optional<MediaPlayerId> MediaSessionImpl::GetActiveMediaPlayerId() const {
+  if (normal_players_.size() != 1) {
+    return std::nullopt;
+  }
+
+  return normal_players_.begin()->first.observer->GetMediaPlayerId();
+}
+
 }  // namespace content
