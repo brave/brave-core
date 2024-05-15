@@ -673,20 +673,27 @@ void ConversationDriver::CleanUp() {
   pending_conversation_entry_.reset();
   is_page_text_fetch_in_progress_ = false;
   is_print_preview_fallback_requested_ = false;
-  is_request_in_progress_ = false;
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_send_page_contents_ = true;
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
-  engine_->ClearAllQueries();
+  ClearAllQueries();
 
   MaybeSeedOrClearSuggestions();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
-    obs.OnAPIRequestInProgress(false);
     obs.OnPageHasContent(BuildSiteInfo());
+  }
+}
+
+void ConversationDriver::ClearAllQueries() {
+  is_request_in_progress_ = false;
+  engine_->ClearAllQueries();
+
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(false);
   }
 }
 
@@ -712,8 +719,8 @@ bool ConversationDriver::GetShouldSendPageContents() {
 
 void ConversationDriver::ClearConversationHistory() {
   chat_history_.clear();
-  engine_->ClearAllQueries();
   current_error_ = mojom::APIError::None;
+  ClearAllQueries();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -1098,6 +1105,15 @@ void ConversationDriver::SetAPIError(const mojom::APIError& error) {
 
 bool ConversationDriver::HasPendingConversationEntry() {
   return !pending_conversation_entry_.is_null();
+}
+
+void ConversationDriver::StopGeneration() {
+  ClearAllQueries();
+
+  // Trigger an observer update to refresh the UI.
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(false);
+  }
 }
 
 int ConversationDriver::GetContentUsedPercentage() {

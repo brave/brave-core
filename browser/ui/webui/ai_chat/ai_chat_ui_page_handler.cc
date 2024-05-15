@@ -488,6 +488,14 @@ void AIChatUIPageHandler::OpenModelSupportUrl() {
   OpenURL(GURL(kLeoModelSupportUrl));
 }
 
+void AIChatUIPageHandler::StopGeneration() {
+  if (!active_chat_tab_helper_) {
+    return;
+  }
+
+  active_chat_tab_helper_->StopGeneration();
+}
+
 void AIChatUIPageHandler::OnGetPremiumStatus(
     GetPremiumStatusCallback callback,
     ai_chat::mojom::PremiumStatus status,
