@@ -17,13 +17,15 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kAdEventFeature);
 
-// Set to 0 to always debounce viewed ad events.
-inline constexpr base::FeatureParam<base::TimeDelta> kDebounceViewedAdEventFor{
-    &kAdEventFeature, "debounce_viewed_ad_event_for", base::Seconds(0)};
+// Set to 0 to always deduplicate viewed ad events.
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kDeduplicateViewedAdEventFor{
+        &kAdEventFeature, "deduplicate_viewed_ad_event_for", base::Seconds(0)};
 
-// Set to 0 to always debounce clicked ad events.
-inline constexpr base::FeatureParam<base::TimeDelta> kDebounceClickedAdEventFor{
-    &kAdEventFeature, "debounce_clicked_ad_event_for", base::Seconds(0)};
+// Set to 0 to always deduplicate clicked ad events.
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kDeduplicateClickedAdEventFor{
+        &kAdEventFeature, "deduplicate_clicked_ad_event_for", base::Seconds(0)};
 
 }  // namespace brave_ads
 

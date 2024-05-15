@@ -26,52 +26,54 @@ TEST(BraveAdsAdEventFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kAdEventFeature));
 }
 
-TEST(BraveAdsAdEventFeatureTest, DebounceViewedAdEventFor) {
+TEST(BraveAdsAdEventFeatureTest, DeduplicateViewedAdEventFor) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_viewed_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(5), kDebounceViewedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(5), kDeduplicateViewedAdEventFor.Get());
 }
 
-TEST(BraveAdsAdEventFeatureTest, DefaultDebounceViewedAdEventFor) {
+TEST(BraveAdsAdEventFeatureTest, DefaultDeduplicateViewedAdEventFor) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDebounceViewedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(0), kDeduplicateViewedAdEventFor.Get());
 }
 
-TEST(BraveAdsAdEventFeatureTest, DefaultDebounceViewedAdEventForWhenDisabled) {
+TEST(BraveAdsAdEventFeatureTest,
+     DefaultDeduplicateViewedAdEventForWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAdEventFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDebounceViewedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(0), kDeduplicateViewedAdEventFor.Get());
 }
 
-TEST(BraveAdsAdEventFeatureTest, DebounceClickedAdEventFor) {
+TEST(BraveAdsAdEventFeatureTest, DeduplicateClickedAdEventFor) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_clicked_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(5), kDebounceClickedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(5), kDeduplicateClickedAdEventFor.Get());
 }
 
-TEST(BraveAdsAdEventFeatureTest, DefaultDebounceClickedAdEventFor) {
+TEST(BraveAdsAdEventFeatureTest, DefaultDeduplicateClickedAdEventFor) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDebounceClickedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(0), kDeduplicateClickedAdEventFor.Get());
 }
 
-TEST(BraveAdsAdEventFeatureTest, DefaultDebounceClickedAdEventForWhenDisabled) {
+TEST(BraveAdsAdEventFeatureTest,
+     DefaultDeduplicateClickedAdEventForWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAdEventFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDebounceClickedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(0), kDeduplicateClickedAdEventFor.Get());
 }
 
 }  // namespace brave_ads

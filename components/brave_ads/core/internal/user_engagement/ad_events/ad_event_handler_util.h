@@ -37,31 +37,31 @@ bool WasAdServed(const AdInfo& ad,
 }
 
 template <typename T>
-bool ShouldDebounceViewedAdEvent(const AdInfo& ad,
-                                 const AdEventList& ad_events,
-                                 const T event_type) {
+bool ShouldDeduplicateViewedAdEvent(const AdInfo& ad,
+                                    const AdEventList& ad_events,
+                                    const T event_type) {
   return event_type == T::kViewedImpression &&
          HasFiredAdEventWithinTimeWindow(
              ad, ad_events, ConfirmationType::kViewedImpression,
-             /*time_window=*/kDebounceViewedAdEventFor.Get());
+             /*time_window=*/kDeduplicateViewedAdEventFor.Get());
 }
 
 template <typename T>
-bool ShouldDebounceClickedAdEvent(const AdInfo& ad,
-                                  const AdEventList& ad_events,
-                                  const T event_type) {
+bool ShouldDeduplicateClickedAdEvent(const AdInfo& ad,
+                                     const AdEventList& ad_events,
+                                     const T event_type) {
   return event_type == T::kClicked &&
          HasFiredAdEventWithinTimeWindow(
              ad, ad_events, ConfirmationType::kClicked,
-             /*time_window=*/kDebounceClickedAdEventFor.Get());
+             /*time_window=*/kDeduplicateClickedAdEventFor.Get());
 }
 
 template <typename T>
-bool ShouldDebounceAdEvent(const AdInfo& ad,
-                           const AdEventList& ad_events,
-                           const T event_type) {
-  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
-         ShouldDebounceClickedAdEvent(ad, ad_events, event_type);
+bool ShouldDeduplicateAdEvent(const AdInfo& ad,
+                              const AdEventList& ad_events,
+                              const T event_type) {
+  return ShouldDeduplicateViewedAdEvent(ad, ad_events, event_type) ||
+         ShouldDeduplicateClickedAdEvent(ad, ad_events, event_type);
 }
 
 }  // namespace brave_ads
