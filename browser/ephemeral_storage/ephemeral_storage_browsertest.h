@@ -112,8 +112,6 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   std::vector<net::CanonicalCookie> GetAllCookies();
 
  protected:
-  void SetUpHttpsServer();
-
   net::test_server::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   GURL a_site_ephemeral_storage_url_;
