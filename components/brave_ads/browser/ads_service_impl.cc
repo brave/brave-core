@@ -826,13 +826,11 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
   }
 #endif
 
-  const int timeout_in_seconds = kNotificationAdTimeout.Get();
-  if (timeout_in_seconds == 0) {
-    // Never time out
+  const base::TimeDelta timeout = kNotificationAdTimeout.Get();
+  if (timeout.is_zero()) {
+    // Never time out.
     return;
   }
-
-  const base::TimeDelta timeout = base::Seconds(timeout_in_seconds);
 
   notification_ad_timers_[placement_id] =
       std::make_unique<base::OneShotTimer>();

@@ -8,6 +8,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
 
 namespace brave_ads {
@@ -16,7 +17,7 @@ BASE_DECLARE_FEATURE(kNotificationAdFeature);
 BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature);
 
 // Ad notification timeout in seconds. Set to 0 to never time out
-inline constexpr base::FeatureParam<int> kNotificationAdTimeout{
+inline constexpr base::FeatureParam<base::TimeDelta> kNotificationAdTimeout{
     &kNotificationAdFeature, "notification_ad_timeout",
     kDefaultNotificationAdTimeout};
 
