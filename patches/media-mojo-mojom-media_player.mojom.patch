@@ -1,5 +1,5 @@
 diff --git a/media/mojo/mojom/media_player.mojom b/media/mojo/mojom/media_player.mojom
-index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..a1599d83144ee0d69819f9bf4c564c277e3bcfb1 100644
+index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..3710fe345d7fa66160effc2ac8b2a8ab12dba1ea 100644
 --- a/media/mojo/mojom/media_player.mojom
 +++ b/media/mojo/mojom/media_player.mojom
 @@ -8,6 +8,7 @@ import "media/mojo/mojom/media_types.mojom";
@@ -10,12 +10,13 @@ index e742b4ffafd56c645bce7c2b36e9068e0f6eecf6..a1599d83144ee0d69819f9bf4c564c27
  
  // Implemented by HTMLMediaElement in the renderer process to allow the
  // browser to control media playback.
-@@ -114,6 +115,8 @@ interface MediaPlayerObserver {
+@@ -114,6 +115,9 @@ interface MediaPlayerObserver {
  
    // Notifies that the video visibility has changed.
    OnVideoVisibilityChanged(bool meets_visibility_threshold);
 +
-+  OnMediaLoaded(url.mojom.Url url, bool is_mse, double duration);
++  // Notifies that the player has loaded the media.
++  OnMediaLoaded(url.mojom.Url url, bool is_media_source, double duration);
  };
  
  // Implemented by MediaWebContentsObserver::MediaPlayerHostImpl in the browser

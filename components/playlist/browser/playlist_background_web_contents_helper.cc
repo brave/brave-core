@@ -65,7 +65,7 @@ void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
 }
 
 void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
-  for (const auto& [_, url] : web_contents()->GetLoadedUrlByMediaPlayer()) {
+  for (const auto& [_, url] : web_contents()->GetMediaMetadataByMediaPlayerIds()) {
     const auto duration = base::Seconds(std::get<2>(url));
     if (std::abs((duration_ - duration).InSeconds()) < 5) {
       DVLOG(-1) << "URL extracted from the background: " << std::get<0>(url);

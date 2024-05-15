@@ -1,5 +1,5 @@
 diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
-index faaa0345e58baadb8d94a11cf9e28bd11adc0536..8af3ca34ea5a3f487fcce989f72fbff40a6c453c 100644
+index faaa0345e58baadb8d94a11cf9e28bd11adc0536..0a494d3e720ce50717f8b9cee8ed771e3114fe99 100644
 --- a/content/browser/web_contents/web_contents_impl.h
 +++ b/content/browser/web_contents/web_contents_impl.h
 @@ -51,6 +51,7 @@
@@ -15,7 +15,7 @@ index faaa0345e58baadb8d94a11cf9e28bd11adc0536..8af3ca34ea5a3f487fcce989f72fbff4
        base::OnceCallback<void(std::vector<std::string>)> callback) override;
  
 +  base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
-+  GetLoadedUrlByMediaPlayer() override;
++  GetMediaMetadataByMediaPlayerIds() override;
 +
    // NavigatorDelegate ---------------------------------------------------------
  

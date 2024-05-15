@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/media/html_media_element.cc b/third_party/blink/renderer/core/html/media/html_media_element.cc
-index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..8405adf42da3190dc69f109e85842121459ebb24 100644
+index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..9392e438693a5e0a4ecd43a5922b6f0bbfaeaee6 100644
 --- a/third_party/blink/renderer/core/html/media/html_media_element.cc
 +++ b/third_party/blink/renderer/core/html/media/html_media_element.cc
-@@ -2232,6 +2232,13 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
+@@ -2232,6 +2232,12 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
      SetShouldDelayLoadEvent(false);
  
      OnLoadFinished();
@@ -10,8 +10,7 @@ index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..8405adf42da3190dc69f109e85842121
 +    for (auto& observer : media_player_observer_remote_set_->Value()) {
 +      observer->OnMediaLoaded(
 +          current_src_.GetSource(),
-+          GetLoadType() == WebMediaPlayer::kLoadTypeMediaSource,
-+          duration_);
++          GetLoadType() == WebMediaPlayer::kLoadTypeMediaSource, duration_);
 +    }
    }
  
