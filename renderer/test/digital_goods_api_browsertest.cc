@@ -72,19 +72,6 @@ IN_PROC_BROWSER_TEST_P(DigitalGoodsAPIBrowserTest, DISABLED_DigitalGoods) {
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  //   "Uncaught TypeError: window.getDigitalGoodsService is not a function",
-  //   source: __const_std::string&_script__ (1)
-  // ../../brave/renderer/test/digital_goods_api_browsertest.cc:79: Failure
-  // Value of: result.error.find( "Failed to execute 'getDigitalGoodsService' on
-  // " "'Window': 1 argument required, but only 0 present.") !=
-  // std::string::npos
-  //   Actual: false
-  // Expected: true
-  // a JavaScript error: "TypeError: window.getDigitalGoodsService is not a
-  // function
-  //     at __const_std::string&_script__:1:9):
-  //         {window.getDigitalGoodsService()
-  //                 ^^^^^
   auto result =
       content::EvalJs(primary_main_frame(), "window.getDigitalGoodsService()");
   if (IsDigitalGoodsAPIEnabled()) {

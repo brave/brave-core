@@ -138,7 +138,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     };
 
     https_server_.RegisterDefaultHandler(base::BindRepeating(redirector));
-    https_server_.ServeFilesFromDirectory(base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    https_server_.ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     https_server_.StartAcceptingConnections();
     host_resolver()->AddRule("*", "127.0.0.1");
   }
