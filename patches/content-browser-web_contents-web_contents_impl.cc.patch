@@ -1,5 +1,5 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index c455f395b3d89293569fa359ae6aaf4f7e679843..0ccbbae2431ac41d9e0abc9d4c5d4c1b818d3c15 100644
+index c455f395b3d89293569fa359ae6aaf4f7e679843..b75484e903af88e60fcb19cdd9a86c0bf467f6b3 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
 @@ -4630,7 +4630,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
@@ -16,7 +16,7 @@ index c455f395b3d89293569fa359ae6aaf4f7e679843..0ccbbae2431ac41d9e0abc9d4c5d4c1b
  }
  
 +base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
-+WebContentsImpl::GetMediaMetadataByMediaPlayerIds() {
++WebContentsImpl::GetMediaMetadataByMediaPlayerIds() const {
 +  return media_web_contents_observer()->GetMediaMetadataByMediaPlayerIds();
 +}
 +

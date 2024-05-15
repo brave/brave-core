@@ -1,13 +1,8 @@
 diff --git a/content/browser/media/media_web_contents_observer.cc b/content/browser/media/media_web_contents_observer.cc
-index 8800516e7f5c65be740445cb1d324b49b029c798..7a86efdbc59e35e93fcad0b20e700d77096f88ab 100644
+index 8800516e7f5c65be740445cb1d324b49b029c798..fe8a571ab8c7c241b09fa304b2a41b041ebb1a21 100644
 --- a/content/browser/media/media_web_contents_observer.cc
 +++ b/content/browser/media/media_web_contents_observer.cc
-@@ -7,10 +7,12 @@
- #include <memory>
- #include <tuple>
- 
-+#include "base/containers/contains.h"
- #include "base/debug/crash_logging.h"
+@@ -11,6 +11,7 @@
  #include "base/debug/dump_without_crashing.h"
  #include "base/functional/bind.h"
  #include "base/memory/raw_ptr.h"
@@ -15,7 +10,7 @@ index 8800516e7f5c65be740445cb1d324b49b029c798..7a86efdbc59e35e93fcad0b20e700d77
  #include "base/task/sequenced_task_runner.h"
  #include "build/build_config.h"
  #include "content/browser/media/audible_metrics.h"
-@@ -27,6 +29,7 @@
+@@ -27,6 +28,7 @@
  #include "third_party/blink/public/common/mediastream/media_devices.h"
  #include "third_party/blink/public/platform/web_fullscreen_video_status.h"
  #include "ui/gfx/geometry/size.h"
@@ -23,7 +18,7 @@ index 8800516e7f5c65be740445cb1d324b49b029c798..7a86efdbc59e35e93fcad0b20e700d77
  
  namespace content {
  
-@@ -577,6 +580,30 @@ void MediaWebContentsObserver::MediaPlayerObserverHostImpl::
+@@ -577,6 +579,30 @@ void MediaWebContentsObserver::MediaPlayerObserverHostImpl::
        ->OnVideoVisibilityChanged(media_player_id_, meets_visibility_threshold);
  }
  
@@ -54,7 +49,7 @@ index 8800516e7f5c65be740445cb1d324b49b029c798..7a86efdbc59e35e93fcad0b20e700d77
  bool MediaWebContentsObserver::IsMediaPlayerRemoteAvailable(
      const MediaPlayerId& player_id) {
    return media_player_remotes_.contains(player_id);
-@@ -681,6 +708,23 @@ void MediaWebContentsObserver::SuspendAllMediaPlayers() {
+@@ -681,6 +707,23 @@ void MediaWebContentsObserver::SuspendAllMediaPlayers() {
    }
  }
  
