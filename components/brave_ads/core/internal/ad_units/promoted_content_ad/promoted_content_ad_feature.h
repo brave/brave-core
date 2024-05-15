@@ -13,9 +13,11 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPromotedContentAdFeature);
 
+// Set to 0 to never cap.
 inline constexpr base::FeatureParam<int> kMaximumPromotedContentAdsPerHour{
     &kPromotedContentAdFeature, "maximum_ads_per_hour", 4};
 
+// Set to 0 to never cap.
 inline constexpr base::FeatureParam<int> kMaximumPromotedContentAdsPerDay{
     &kPromotedContentAdFeature, "maximum_ads_per_day", 20};
 

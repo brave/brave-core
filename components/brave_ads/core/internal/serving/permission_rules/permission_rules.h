@@ -9,27 +9,42 @@
 namespace brave_ads {
 
 bool HasFullScreenModePermission();
+
 bool HasIssuersPermission();
+
 bool HasCommandLinePermission();
+
 bool HasConfirmationTokensPermission();
+
 bool HasUserActivityPermission();
-bool HasSearchResultAdsPerDayPermission();
+
 bool HasSearchResultAdsPerHourPermission();
+bool HasSearchResultAdsPerDayPermission();
+
+bool HasNewTabPageAdsPerHourPermission();
 bool HasNewTabPageAdsPerDayPermission();
 bool HasNewTabPageAdMinimumWaitTimePermission();
-bool HasNewTabPageAdsPerHourPermission();
+
 bool HasNotificationAdsPerHourPermission();
 bool HasNotificationAdsPerDayPermission();
 bool HasNotificationAdMinimumWaitTimePermission();
+
 bool HasNetworkConnectionPermission();
+
 bool HasMediaPermission();
+
 bool HasDoNotDisturbPermission();
+
 bool HasAllowNotificationsPermission();
+
 bool HasCatalogPermission();
+
 bool HasInlineContentAdsPerDayPermission();
 bool HasInlineContentAdsPerHourPermission();
-bool HasPromotedContentAdsPerDayPermission();
+
 bool HasPromotedContentAdsPerHourPermission();
+bool HasPromotedContentAdsPerDayPermission();
+
 bool HasBrowserIsActivePermission();
 
 }  // namespace brave_ads
