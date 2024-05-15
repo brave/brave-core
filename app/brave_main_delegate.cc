@@ -183,8 +183,9 @@ std::optional<int> BraveMainDelegate::BasicStartupComplete() {
       disabled_features = base::StrCat(
           {command_line->GetSwitchValueASCII(switches::kDisableFeatures), ","});
     }
-    command_line->AppendSwitchASCII(switches::kDisableFeatures,
-                                    base::StrCat({disabled_features, features::kDnsOverHttps.name}));
+    command_line->AppendSwitchASCII(
+        switches::kDisableFeatures,
+        base::StrCat({disabled_features, features::kDnsOverHttps.name}));
   }
 
   return ChromeMainDelegate::BasicStartupComplete();
