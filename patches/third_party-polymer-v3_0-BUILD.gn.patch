@@ -1,8 +1,8 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 92661994042e56c968a5f205778e4fdd43921bbb..3c765c41f4b2e949e4ac4128860626323911349f 100644
+index b3360d53fde11c1629c515a38f443efcb1df5c82..58bd5b48d9ff2d35049506064ec6663fceba1cef 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -44,6 +44,7 @@ js_files = [
+@@ -43,6 +43,7 @@ js_files = [
  ]
  
  if (is_chromeos_ash) {
@@ -10,7 +10,15 @@ index 92661994042e56c968a5f205778e4fdd43921bbb..3c765c41f4b2e949e4ac412886062632
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-dropdown/iron-dropdown.js",
-@@ -170,6 +171,7 @@ ts_library("library") {
+@@ -182,6 +183,7 @@ ts_library("library") {
+     "//ui/webui/resources/cr_components/history_embeddings:build_ts",
+     "//ui/webui/resources/cr_components/searchbox:build_ts",
+     "//ui/webui/resources/cr_elements:build_ts",
++    "//brave/ui/webui/resources:build_ts",
+   ]
+ 
+   if (is_chromeos) {
+@@ -286,6 +288,7 @@ ts_library("library") {
    ]
  
    if (is_chromeos_ash) {
