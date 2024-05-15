@@ -37,15 +37,18 @@ import {
   Button,
   IconsWrapper,
   ButtonWrapper,
-  IconAndName,
-  NameAndBalanceText,
-  NetworkAndFiatText,
   DisabledLabel,
   PercentChangeText,
   PercentChangeIcon,
   AccountsIcon,
   InfoButton,
-  InfoIcon
+  InfoIcon,
+  TokenBalanceText,
+  FiatBalanceText,
+  TokenNameText,
+  TokenNameRow,
+  LeftSide,
+  NameAndBalanceColumn
 } from './token_list_item.style'
 import {
   Column,
@@ -107,13 +110,8 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
           : ''
         return `${token.name} ${id}`
       }
-      if (disabledText) {
-        return token.name.length > 12
-          ? `${token.name.substring(0, 10)}...`
-          : token.name
-      }
       return token.name
-    }, [token, disabledText])
+    }, [token])
 
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
@@ -169,7 +167,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
             onClick={onClick}
             disabled={!!disabledText}
           >
-            <IconAndName justifyContent='flex-start'>
+            <LeftSide justifyContent='flex-start'>
               <IconsWrapper>
                 {token.isNft || token.isErc721 || token.isErc1155 ? (
                   <NftIconWithPlaceholder asset={token} />
@@ -183,40 +181,52 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   />
                 </NetworkIconWrapper>
               </IconsWrapper>
-              <Column alignItems='flex-start'>
-                <Row width='unset'>
-                  <NameAndBalanceText
+              <NameAndBalanceColumn
+                alignItems='flex-start'
+                width='100%'
+              >
+                <TokenNameRow
+                  justifyContent='flex-start'
+                  width='100%'
+                  padding='0px 8px 0px 0px'
+                >
+                  <TokenNameText
                     textSize='14px'
                     isBold={true}
                     textAlign='left'
+                    textColor='primary'
                   >
                     {tokenDisplayName}
-                  </NameAndBalanceText>
+                  </TokenNameText>
                   {disabledText && (
                     <>
                       <HorizontalSpace space='8px' />
                       <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
                     </>
                   )}
-                </Row>
-                <NetworkAndFiatText
+                </TokenNameRow>
+                <TokenBalanceText
                   textSize='12px'
                   isBold={false}
                   textAlign='left'
+                  textColor='secondary'
                 >
                   {formatTokenBalanceWithSymbol(
                     balance ?? '',
                     token.decimals,
                     token.symbol
                   )}
-                </NetworkAndFiatText>
-              </Column>
-            </IconAndName>
+                </TokenBalanceText>
+              </NameAndBalanceColumn>
+            </LeftSide>
             {!token.isNft &&
               !token.isErc721 &&
               !token.isErc1155 &&
               tokenHasBalance && (
-                <Column alignItems='flex-end'>
+                <Column
+                  alignItems='flex-end'
+                  width='25%'
+                >
                   {isLoadingSpotPrice ? (
                     <>
                       <LoadingSkeleton
@@ -233,13 +243,14 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                     <>
                       <Row width='unset'>
                         {tokenHasMultipleAccounts && <AccountsIcon />}
-                        <NameAndBalanceText
+                        <FiatBalanceText
                           textSize='14px'
                           isBold={true}
                           textAlign='right'
+                          textColor='primary'
                         >
                           {formattedFiatBalance}
-                        </NameAndBalanceText>
+                        </FiatBalanceText>
                       </Row>
                       <Row width='unset'>
                         <PercentChangeIcon

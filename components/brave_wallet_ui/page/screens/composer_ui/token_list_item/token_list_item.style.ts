@@ -13,7 +13,8 @@ import {
   AssetIconFactory,
   Row,
   WalletButton,
-  Text
+  Text,
+  Column
 } from '../../../../components/shared/style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
@@ -70,22 +71,35 @@ export const IconsWrapper = styled.div`
   margin-right: 16px;
 `
 
-export const IconAndName = styled(Row)`
-  width: 80%;
-  white-space: pre-line;
+export const NameAndBalanceColumn = styled(Column)`
+  overflow: hidden;
 `
 
-export const NameAndBalanceText = styled(Text)`
+export const TokenNameRow = styled(Row)`
+  overflow: hidden;
+`
+
+export const LeftSide = styled(TokenNameRow)`
+  max-width: 100%;
+`
+
+export const TokenNameText = styled(Text)`
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   line-height: 22px;
-  color: ${leo.color.text.primary};
+  white-space: nowrap;
 `
 
-export const NetworkAndFiatText = styled(Text)`
+export const FiatBalanceText = styled(Text)`
+  line-height: 22px;
+`
+
+export const TokenBalanceText = styled(Text)`
   line-height: 20px;
-  color: ${leo.color.text.secondary};
 `
 
-export const PercentChangeText = styled(NetworkAndFiatText)<{
+export const PercentChangeText = styled(TokenBalanceText)<{
   isDown: boolean
 }>`
   color: ${(p) =>
