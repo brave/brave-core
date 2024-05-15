@@ -3,25 +3,25 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import { color, font } from '@brave/leo/tokens/css/variables'
 
 export const SiteRemovalNotification = styled('header')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font: ${font.default.regular};
   border-radius: 8px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-  background-color: #fff;
-  height: 100px;
+  background-color: ${color.container.background};
+  color: ${color.text.primary};
   align-items: center;
-  padding: 30px 60px;
+  padding: 30px;
   display: grid;
- grid-auto-flow: column;
- grid-auto-columns: auto;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
   grid-gap: 15px;
 `
 
 export const SiteRemovalText = styled('span')<{}>`
   box-sizing: border-box;
   user-select: none;
-  font-size: 18px;
 `
 
 interface SiteRemovalActionProps {
@@ -29,9 +29,8 @@ interface SiteRemovalActionProps {
 }
 
 export const SiteRemovalAction = styled('a')<SiteRemovalActionProps>`
-  font-size: 16px;
   cursor: pointer;
-  color: #fb542b;
+  color: ${color.icon.interactive};
   width: ${p => p.iconOnly && '16px'};
-  line-height: 1;
+  text-decoration: underline;
 `
