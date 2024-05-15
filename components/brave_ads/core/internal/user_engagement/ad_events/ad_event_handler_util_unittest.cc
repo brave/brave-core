@@ -127,11 +127,11 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldDebounceViewedAdEventWithinTimeWindow) {
+       ShouldDeduplicateViewedAdEventWithinTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_viewed_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -144,19 +144,19 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
   ad_events.push_back(ad_event_2);
 
-  AdvanceClockBy(kDebounceViewedAdEventFor.Get());
+  AdvanceClockBy(kDeduplicateViewedAdEventFor.Get());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDebounceAdEvent(
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldNotDebounceViewedAdEventOutOfTimeWindow) {
+       ShouldNotDeduplicateViewedAdEventOutOfTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_viewed_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -169,18 +169,18 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
   ad_events.push_back(ad_event_2);
 
-  AdvanceClockBy(kDebounceViewedAdEventFor.Get() + base::Seconds(1));
+  AdvanceClockBy(kDeduplicateViewedAdEventFor.Get() + base::Seconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(ShouldDebounceAdEvent(
+  EXPECT_FALSE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
 }
 
-TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDebounceViewedAdEvent) {
+TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateViewedAdEvent) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_viewed_ad_event_for", "0s"}});
+      kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "0s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -196,16 +196,16 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDebounceViewedAdEvent) {
   AdvanceClockTo(DistantFuture());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDebounceAdEvent(
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldNotDebounceViewedAdEventIfAdWasNeverViewed) {
+       ShouldNotDeduplicateViewedAdEventIfAdWasNeverViewed) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_viewed_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -216,16 +216,16 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
   ad_events.push_back(ad_event);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldDebounceAdEvent(
+  EXPECT_FALSE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldDebounceClickedAdEventWithinTimeWindow) {
+       ShouldDeduplicateClickedAdEventWithinTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_clicked_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -241,46 +241,46 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       BuildAdEvent(ad, ConfirmationType::kClicked, Now());
   ad_events.push_back(ad_event_3);
 
-  AdvanceClockBy(kDebounceClickedAdEventFor.Get());
+  AdvanceClockBy(kDeduplicateClickedAdEventFor.Get());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
-                                    mojom::InlineContentAdEventType::kClicked));
-}
-
-TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldNotDebounceClickedAdEventOutOfTimeWindow) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_clicked_ad_event_for", "5s"}});
-
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
-
-  AdEventList ad_events;
-  const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression, Now());
-  ad_events.push_back(ad_event_1);
-  const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
-  ad_events.push_back(ad_event_2);
-  const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, Now());
-  ad_events.push_back(ad_event_3);
-
-  AdvanceClockBy(kDebounceClickedAdEventFor.Get() + base::Seconds(1));
-
-  // Act & Assert
-  EXPECT_FALSE(ShouldDebounceAdEvent(
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kClicked));
 }
 
-TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDebounceClickedAdEvent) {
+TEST_F(BraveAdsAdEventHandlerUtilTest,
+       ShouldNotDeduplicateClickedAdEventOutOfTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_clicked_ad_event_for", "0s"}});
+      kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
+
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
+
+  AdEventList ad_events;
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad, ConfirmationType::kServedImpression, Now());
+  ad_events.push_back(ad_event_1);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
+  ad_events.push_back(ad_event_2);
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(ad, ConfirmationType::kClicked, Now());
+  ad_events.push_back(ad_event_3);
+
+  AdvanceClockBy(kDeduplicateClickedAdEventFor.Get() + base::Seconds(1));
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldDeduplicateAdEvent(
+      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
+}
+
+TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateClickedAdEvent) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "0s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -299,16 +299,16 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDebounceClickedAdEvent) {
   AdvanceClockTo(DistantFuture());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
-                                    mojom::InlineContentAdEventType::kClicked));
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(
+      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
-       ShouldNotDebounceClickedAdEventIfAdWasNeverClicked) {
+       ShouldNotDeduplicateClickedAdEventIfAdWasNeverClicked) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAdEventFeature, {{"debounce_clicked_ad_event_for", "5s"}});
+      kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -322,7 +322,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
   ad_events.push_back(ad_event_2);
 
   // Act & Assert
-  EXPECT_FALSE(ShouldDebounceAdEvent(
+  EXPECT_FALSE(ShouldDeduplicateAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kClicked));
 }
 
