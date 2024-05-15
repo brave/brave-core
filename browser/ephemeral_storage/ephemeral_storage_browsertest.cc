@@ -183,10 +183,13 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       &HandleFileRequestWithCustomHeaders,
       base::Unretained(&http_request_monitor_), test_data_dirs));
   https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+  content::SetupCrossSiteRedirector(&https_server_);
   https_server_.StartAcceptingConnections();
 
-  content::SetupCrossSiteRedirector(&https_server_);
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+
+  ASSERT_TRUE(embedded_test_server()->Start());
+  host_resolver()->AddRule("*", "127.0.0.1");
 
   a_site_ephemeral_storage_url_ =
       https_server_.GetURL("a.com", "/ephemeral_storage.html");
@@ -202,6 +205,7 @@ void EphemeralStorageBrowserTest::SetUpCommandLine(
     base::CommandLine* command_line) {
   InProcessBrowserTest::SetUpCommandLine(command_line);
   mock_cert_verifier_.SetUpCommandLine(command_line);
+
   // Backgrounded renderer processes run at a lower priority, causing the
   // JS events to slow down. Disable backgrounding so that the tests work
   // properly.
