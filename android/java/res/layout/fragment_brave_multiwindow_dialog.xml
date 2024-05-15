@@ -39,13 +39,15 @@
 
     <android.widget.Button
         android:id="@+id/btn_merge"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/tv_summary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_close"
         android:background="@android:color/transparent"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textAllCaps="false"
         android:text="@string/merge_windows"
         android:textColor="@color/bookmark_import_export_dialog_button_color"
@@ -54,7 +56,7 @@
 
     <android.widget.Button
         android:id="@+id/btn_close"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
@@ -62,6 +64,8 @@
         app:layout_constraintStart_toEndOf="@id/btn_merge"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/transparent"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textAllCaps="false"
         android:text="@string/close_windows"
         android:textColor="@color/bookmark_import_export_dialog_button_color"
