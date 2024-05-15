@@ -1,0 +1,3 @@
+include_rules = [
+  "+brave/components/constants/brave_services_key.h",
+]
