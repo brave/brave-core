@@ -3232,13 +3232,6 @@ extension Strings {
     value: "Show History",
     comment: "Button to show the history list"
   )
-  public static let addBookmark = NSLocalizedString(
-    "AddBookmark",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add Bookmark",
-    comment: "Button to add a bookmark"
-  )
   public static let editBookmark = NSLocalizedString(
     "EditBookmark",
     tableName: "BraveShared",

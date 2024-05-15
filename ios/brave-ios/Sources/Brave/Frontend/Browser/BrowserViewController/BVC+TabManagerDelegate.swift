@@ -311,7 +311,7 @@ extension BrowserViewController: TabManagerDelegate {
       bookmarkMenuChildren.append(bookmarkActiveTab)
     }
 
-    if tabManager.tabsForCurrentMode.count > 1 {
+    if tabManager.tabsForCurrentMode.count > 1, containsWebPage {
       let bookmarkAllTabs = UIAction(
         title: String.localizedStringWithFormat(
           Strings.bookmarkAllTabsTitle,
