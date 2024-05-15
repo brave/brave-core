@@ -10,13 +10,12 @@
 
 #include "content/public/browser/media_player_id.h"
 
-#define DidReceiveAction                                                   \
-  DidReceiveAction_Unused() {}                                             \
-  virtual std::optional<MediaPlayerId> GetActiveMediaPlayerId() const = 0; \
-  virtual void DidReceiveAction
+#define SetAudioFocusGroupId(param) \
+  SetAudioFocusGroupId(param) = 0;  \
+  virtual std::optional<MediaPlayerId> GetActiveMediaPlayerId() const
 
 #include "src/content/public/browser/media_session.h"
 
-#undef DidReceiveAction
+#undef SetAudioFocusGroupId
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_MEDIA_SESSION_H_

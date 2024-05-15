@@ -9,17 +9,23 @@
 #include <optional>
 
 #include "content/public/browser/media_player_id.h"
+#include "content/public/browser/media_session.h"
 #include "services/media_session/public/cpp/media_position.h"
 
-#define NotifyMediaSessionMetadataChange                                \
-  NotifyMediaSessionMetadataChange_Unused();                            \
-  std::optional<media_session::MediaPosition>                           \
-  GetMediaPositionFromNormalPlayerIfPossible();                         \
-  std::optional<MediaPlayerId> GetActiveMediaPlayerId() const override; \
+// Add a new method for video_picture_in_picture_window_controller_impl
+#define NotifyMediaSessionMetadataChange        \
+  NotifyMediaSessionMetadataChange_Unused();    \
+  std::optional<media_session::MediaPosition>   \
+  GetMediaPositionFromNormalPlayerIfPossible(); \
   void NotifyMediaSessionMetadataChange
+
+#define SetAudioFocusGroupId(param)     \
+  SetAudioFocusGroupId(param) override; \
+  std::optional<MediaPlayerId> GetActiveMediaPlayerId() const
 
 #include "src/content/browser/media/session/media_session_impl.h"  // IWYU pragma: export
 
+#undef SetAudioFocusGroupId
 #undef NotifyMediaSessionMetadataChange
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_MEDIA_SESSION_MEDIA_SESSION_IMPL_H_
