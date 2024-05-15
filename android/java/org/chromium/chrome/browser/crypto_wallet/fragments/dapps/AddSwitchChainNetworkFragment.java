@@ -74,7 +74,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         mDetails = new ArrayList<>();
     }
 
-    public AddSwitchChainNetworkFragment(ActivityType panelType,
+    public AddSwitchChainNetworkFragment(
+            ActivityType panelType,
             AddSwitchRequestProcessListener addSwitchRequestProcessListener) {
         this(panelType);
         mAddSwitchRequestProcessListener = addSwitchRequestProcessListener;
@@ -83,8 +84,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTabTitles.add(new NavigationItem(
-                getString(R.string.network_text), new TwoLineItemFragment(mNetworks)));
+        mTabTitles.add(
+                new NavigationItem(
+                        getString(R.string.network_text), new TwoLineItemFragment(mNetworks)));
         mTabTitles.add(
                 new NavigationItem(getString(R.string.details), new TwoLineItemFragment(mDetails)));
     }
@@ -108,11 +110,14 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
             TextView tvAddChainTitle = view.findViewById(R.id.fragment_add_switch_chain_tv_title);
             tvAddChainTitle.setText(R.string.brave_wallet_allow_add_network_heading);
             TextView addChainDesc = view.findViewById(R.id.fragment_add_switch_chain_tv_text);
-            Spanned spannedDescriptionText = Utils.createSpanForSurroundedPhrase(
-                    requireContext(), R.string.brave_wallet_allow_add_network_description, (v) -> {
-                        TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
-                        TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
-                    });
+            Spanned spannedDescriptionText =
+                    Utils.createSpanForSurroundedPhrase(
+                            requireContext(),
+                            R.string.brave_wallet_allow_add_network_description,
+                            (v) -> {
+                                TabUtils.openUrlInNewTab(false, Utils.BRAVE_SUPPORT_URL);
+                                TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
+                            });
             addChainDesc.setMovementMethod(LinkMovementMethod.getInstance());
             addChainDesc.setText(spannedDescriptionText);
 
@@ -155,7 +160,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), url, 0, imageCallback);
 
-        } catch (Exception ignored) { /* Ignored. */ }
+        } catch (Exception ignored) {
+            /* Ignored. */
+        }
     }
 
     private void setBitmapOnImageView(GURL pageUrl, Bitmap iconBitmap) {
@@ -273,28 +280,43 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void addDetailsTabInfo(NetworkInfo networkInfo) {
         mNetworks.clear();
-        mNetworks.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
-        mNetworks.add(new TwoLineItemText(getString(R.string.brave_wallet_allow_add_network_url),
-                getActiveRpcEndpointUrl(networkInfo)));
+        mNetworks.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_allow_add_network_name),
+                        networkInfo.chainName));
+        mNetworks.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_allow_add_network_url),
+                        getActiveRpcEndpointUrl(networkInfo)));
     }
 
     private void addNetworkTabInfo(NetworkInfo networkInfo) {
         mDetails.clear();
-        mDetails.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_allow_add_network_name), networkInfo.chainName));
-        mDetails.add(new TwoLineItemText(getString(R.string.brave_wallet_allow_add_network_url),
-                getActiveRpcEndpointUrl(networkInfo)));
-        mDetails.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_chain_id), networkInfo.chainId));
-        mDetails.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_allow_add_network_currency_symbol),
-                networkInfo.symbol));
-        mDetails.add(new TwoLineItemText(getString(R.string.wallet_add_custom_asset_decimals),
-                String.valueOf(networkInfo.decimals)));
-        mDetails.add(new TwoLineItemText(
-                getString(R.string.brave_wallet_add_network_block_explorer_urls),
-                networkInfo.blockExplorerUrls.length > 0 ? networkInfo.blockExplorerUrls[0] : ""));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_allow_add_network_name),
+                        networkInfo.chainName));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_allow_add_network_url),
+                        getActiveRpcEndpointUrl(networkInfo)));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_chain_id), networkInfo.chainId));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_allow_add_network_currency_symbol),
+                        networkInfo.symbol));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.wallet_add_custom_asset_decimals),
+                        String.valueOf(networkInfo.decimals)));
+        mDetails.add(
+                new TwoLineItemText(
+                        getString(R.string.brave_wallet_add_network_block_explorer_urls),
+                        networkInfo.blockExplorerUrls.length > 0
+                                ? networkInfo.blockExplorerUrls[0]
+                                : ""));
     }
 
     public interface AddSwitchRequestProcessListener {
