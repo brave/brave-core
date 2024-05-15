@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { TextDecoder, TextEncoder } from 'util'
 import { BraveWallet } from '../../../constants/types'
 import { SignHardwareOperationResult } from '../types'
 import {
@@ -16,8 +15,6 @@ import {
 import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
 import { LedgerCommand, UnlockResponse } from './ledger-messages'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
-global.TextDecoder = TextDecoder
-global.TextEncoder = TextEncoder
 
 // To use the MockLedgerTransport, we must overwrite
 // the protected `transport` attribute, which yields a typescript

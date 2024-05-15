@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -166,6 +167,26 @@ export const getMockChrome = () => {
     }
   }
   return mock
+}
+
+export const getMockLoadTimeData = () => {
+  return {
+    getString(key) {
+      if (key === 'braveWalletLedgerBridgeUrl') {
+        return 'chrome-untrusted://ledger-bridge'
+      }
+      return key
+    },
+    getBoolean() {
+      return true
+    },
+    getInteger() {
+      return 2
+    },
+    getStringF(key) {
+      return key
+    }
+  }
 }
 
 export const window = () => {
