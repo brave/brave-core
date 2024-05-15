@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/html_media_element.cc b/third_party/blink/renderer/core/html/media/html_media_element.cc
-index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..5921dccc3e53ff98eb6fb479d02920bbf67353ad 100644
+index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..8405adf42da3190dc69f109e85842121459ebb24 100644
 --- a/third_party/blink/renderer/core/html/media/html_media_element.cc
 +++ b/third_party/blink/renderer/core/html/media/html_media_element.cc
 @@ -2232,6 +2232,13 @@ void HTMLMediaElement::SetReadyState(ReadyState state) {
@@ -16,16 +16,3 @@ index 35bd4055e1ee3906e3f344582d8c4c9cbd863887..5921dccc3e53ff98eb6fb479d02920bb
    }
  
    if (ready_state_ == kHaveFutureData && old_state <= kHaveCurrentData &&
-@@ -4884,6 +4891,12 @@ void HTMLMediaElement::SuspendForFrameClosed() {
-     web_media_player_->SuspendForFrameClosed();
- }
- 
-+void HTMLMediaElement::GetLoadedUrl(GetLoadedUrlCallback callback) {
-+  std::move(callback).Run(
-+      web_media_player_ ? KURL(web_media_player_->GetLoadedUrl()) : KURL(),
-+      GetLoadType() == WebMediaPlayer::kLoadTypeMediaSource);
-+}
-+
- bool HTMLMediaElement::MediaShouldBeOpaque() const {
-   return !IsMediaDataCorsSameOrigin() && ready_state_ < kHaveMetadata &&
-          EffectivePreloadType() != WebMediaPlayer::kPreloadNone;
