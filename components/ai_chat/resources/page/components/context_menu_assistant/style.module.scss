@@ -13,6 +13,14 @@
   }
 }
 
+.moreButton {
+  color: var(--leo-color-gray-30);
+}
+
+.moreButtonActive {
+  color: var(--leo-color-icon-interactive);
+}
+
 .moreButtonHide {
   display: none;
 }

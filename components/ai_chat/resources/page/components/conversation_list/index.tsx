@@ -18,6 +18,7 @@ import ActionTypeLabel from '../action_type_label'
 import LongPageInfo from '../alerts/long_page_info'
 import AssistantResponse from '../assistant_response'
 import styles from './style.module.scss'
+import CopyButton from '../copy_button'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -150,13 +151,7 @@ function ConversationList(props: ConversationListProps) {
                   </div>
                   {isAIAssistant && (
                     <div className={styles.turnActions}>
-                      <Button
-                        size='tiny'
-                        kind='plain-faint'
-                        onClick={handleCopyText}
-                      >
-                        <Icon name='copy' />
-                      </Button>
+                      <CopyButton onClick={handleCopyText} />
                       <ContextMenuAssistant
                         ref={portalRefs}
                         turnId={id}

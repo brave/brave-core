@@ -144,11 +144,14 @@ function ContextMenuAssistant_(
         onClose={props.onClose}
       >
         <Button
+          fab
           slot='anchor-content'
           size="tiny"
           kind="plain-faint"
           onClick={props.onClick}
           className={classnames({
+            [styles.moreButton]: true,
+            [styles.moreButtonActive]: props.isOpen,
             [styles.moreButtonHide]: context.isMobile
           })}
         >

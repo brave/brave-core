@@ -10,7 +10,7 @@
   gap: var(--leo-spacing-m);
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
-  padding: var(--leo-spacing-2xl);
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   letter-spacing: -0.1px;
 }
 
@@ -77,7 +77,6 @@
 
 .message {
   margin: 0;
-  padding-top: 5px;
   width: 100%;
 }
 
@@ -92,9 +91,11 @@
 .turnHeader {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .turnActions {
   display: flex;
+  gap: 12px;
 }
