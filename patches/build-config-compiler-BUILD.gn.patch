@@ -10,19 +10,18 @@ index 973d8bcbd2f1fa714ecd6f2752efde6e6770f5d8..644a484dde2cf20dd3a11e5ba4ad476f
      if (save_reproducers_on_lld_crash && use_lld) {
        ldflags += [
          "-fcrash-diagnostics=all",
-@@ -2428,14 +2427,7 @@ config("default_stack_frames") {
- # [1]: https://pinpoint-dot-chromeperf.appspot.com/job/132bc772be0000
- # [2]: https://crrev.com/c/5447532
- config("optimize") {
--  if (is_win) {
--    cflags = [ "/O2" ] + common_optimize_on_cflags
--
+@@ -2431,10 +2430,10 @@ config("optimize") {
+   if (is_win) {
+     cflags = [ "/O2" ] + common_optimize_on_cflags
+ 
 -    # https://doc.rust-lang.org/rustc/profile-guided-optimization.html#usage
 -    # suggests not using an explicit `-Copt-level` at all, and the default is
 -    # to optimize for performance like `/O2` for clang.
 -    rustflags = []
--  } else if (optimize_for_size || is_chromeos) {
-+  if (optimize_for_size || is_chromeos) {
++    # The `-O3` for clang turns on extra optimizations compared to the standard
++    # `-O2`. But for rust, `-Copt-level=3` is the default and is thus reliable
++    # to use.
++    rustflags = [ "-Copt-level=3" ]
+   } else if (optimize_for_size || is_chromeos) {
      # Favor size over speed.
      # -Os in clang is more of a size-conscious -O2 than "size at any cost"
-     # (AKA -Oz).
