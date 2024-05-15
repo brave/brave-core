@@ -83,11 +83,6 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
@@ -177,10 +172,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   tor::TorTabHelper::MaybeCreateForWebContents(
       web_contents, web_contents->GetBrowserContext()->IsTor());
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);

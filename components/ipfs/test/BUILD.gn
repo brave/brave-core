@@ -13,7 +13,6 @@ source_set("brave_ipfs_unit_tests") {
     sources = [
       "//brave/components/ipfs/ipfs_cookie_store_unittest.cc",
       "//brave/components/ipfs/ipfs_json_parser_unittest.cc",
-      "//brave/components/ipfs/ipfs_p3a_unittest.cc",
       "//brave/components/ipfs/ipfs_ports_unittest.cc",
       "//brave/components/ipfs/ipfs_utils_unittest.cc",
       "//brave/components/ipfs/keys/ipns_keys_manager_unittest.cc",

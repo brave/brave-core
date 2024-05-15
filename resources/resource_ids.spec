@@ -105,11 +105,6 @@
     "includes": [61980],
   },
   # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ipfs/ipfs.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [61990],
-  },
-  # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-cosmetic_filters/cosmetic_filters.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [62000],

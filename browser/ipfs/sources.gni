@@ -13,8 +13,6 @@ if (enable_ipfs) {
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/content_browser_client_helper.cc",
     "//brave/browser/ipfs/content_browser_client_helper.h",
-    "//brave/browser/ipfs/import/ipfs_import_controller.cc",
-    "//brave/browser/ipfs/import/ipfs_import_controller.h",
     "//brave/browser/ipfs/import/save_package_observer.cc",
     "//brave/browser/ipfs/import/save_package_observer.h",
     "//brave/browser/ipfs/ipfs_blob_context_getter_factory.cc",
@@ -29,8 +27,6 @@ if (enable_ipfs) {
     "//brave/browser/ipfs/ipfs_service_impl_delegate.h",
     "//brave/browser/ipfs/ipfs_subframe_navigation_throttle.cc",
     "//brave/browser/ipfs/ipfs_subframe_navigation_throttle.h",
-    "//brave/browser/ipfs/ipfs_tab_helper.cc",
-    "//brave/browser/ipfs/ipfs_tab_helper.h",
   ]
 
   brave_browser_ipfs_deps += [

@@ -32,6 +32,7 @@
 #include "brave/components/ipfs/service_sandbox_type.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
@@ -136,7 +137,7 @@ std::vector<std::string> GetBlessedExtensionListForChannel(
 
 namespace ipfs {
 
-IpfsService::IpfsService() : ipfs_p3a_(nullptr, nullptr), weak_factory_(this) {}
+IpfsService::IpfsService() : weak_factory_(this) {}
 
 IpfsService::IpfsService(
     PrefService* prefs,
@@ -157,7 +158,6 @@ IpfsService::IpfsService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a_(this, prefs),
       ipfs_service_delegate_(std::move(ipfs_service_delegate)) {
   DCHECK(!user_data_dir.empty());
 
@@ -232,12 +232,6 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (ipfs_service_.is_bound())
     return;
-
-  content::ServiceProcessHost::Launch(
-      ipfs_service_.BindNewPipeAndPassReceiver(),
-      content::ServiceProcessHost::Options()
-          .WithDisplayName(IDS_UTILITY_PROCESS_IPFS_NAME)
-          .Pass());
 
   ipfs_service_.set_disconnect_handler(
       base::BindOnce(&IpfsService::OnIpfsCrashed, weak_factory_.GetWeakPtr()));

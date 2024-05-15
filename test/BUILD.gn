@@ -407,7 +407,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/frame/brave_contents_layout_manager_unittest.cc",
       "//brave/browser/ui/views/wallet_bubble_focus_observer_unittest.cc",
       "//brave/browser/ui/webui/brave_wallet/wallet_common_ui_unittest.cc",
-      "//brave/browser/ui/webui/ipfs_dom_handler_unittest.cc",
       "//brave/browser/ui/webui/settings/brave_wallet_handler_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",

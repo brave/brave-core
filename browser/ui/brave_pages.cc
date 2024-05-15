@@ -85,8 +85,4 @@ void ShowWalletSettings(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
 }
 
-void ShowIPFS(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kIPFSWebUIURL));
-}
-
 }  // namespace brave

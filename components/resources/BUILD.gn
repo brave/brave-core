@@ -32,7 +32,6 @@ brave_grit("static_resources") {
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
-    "//brave/components/ipfs/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
 
@@ -47,7 +46,6 @@ brave_grit("static_resources") {
   defines = [
     "enable_brave_player=$enable_brave_player",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_playlist=$enable_playlist",
@@ -118,13 +116,6 @@ repack("resources") {
     sources += [ "$root_gen_dir/brave/components/ai_rewriter/resources/page/ai_rewriter_ui_generated.pak" ]
   }
 
-  if (enable_ipfs_internals_webui) {
-    deps += [ "//brave/components/ipfs_ui:generated_resources" ]
-    sources += [
-      "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
-    ]
-  }
-
   if (!is_ios) {
     deps += [ "//brave/components/brave_wallet_ui:resources" ]
     sources += [
@@ -180,7 +171,6 @@ brave_grit("strings") {
   defines = [
     "enable_speedreader=$enable_speedreader",
     "enable_ipfs=$enable_ipfs",
-    "enable_ipfs_internals_webui=$enable_ipfs_internals_webui",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",

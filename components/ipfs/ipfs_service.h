@@ -27,11 +27,12 @@
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_dns_resolver.h"
-#include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/ipfs/node_info.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
@@ -250,7 +251,6 @@ class IpfsService : public KeyedService {
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
 #endif
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
-  IpfsP3A ipfs_p3a_;
   std::unique_ptr<IpfsServiceDelegate> ipfs_service_delegate_;
   base::WeakPtrFactory<IpfsService> weak_factory_{this};
 };

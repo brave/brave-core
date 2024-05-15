@@ -69,14 +69,6 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
        base::EndsWith(url->host_piece(), kIpnsLocalhost))) {
     return true;
   }
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-  if (url->SchemeIs(content::kChromeUIScheme) && url->DomainIs(kIPFSScheme)) {
-    GURL::Replacements host_replacements;
-    host_replacements.SetHostStr(kIPFSWebUIHost);
-    *url = url->ReplaceComponents(host_replacements);
-    return true;
-  }
-#endif
   PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
   if (!IsIpfsResolveMethodDisabled(prefs) &&
       // When it's not the local gateway we don't want to show a ipfs:// URL.
@@ -121,13 +113,6 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 bool HandleIPFSURLReverseRewrite(GURL* url,
                                  content::BrowserContext* browser_context) {
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->DomainIs(kIPFSWebUIHost)) {
-    return true;
-  }
-#endif
-
   std::size_t ipfs_pos = url->host_piece().find(kIpfsLocalhost);
   std::size_t ipns_pos = url->host_piece().find(kIpnsLocalhost);
 

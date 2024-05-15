@@ -13,10 +13,6 @@ inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";
 inline constexpr char kSkusInternalsHost[] = "skus-internals";
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-inline constexpr char kIPFSWebUIHost[] = "ipfs-internals";
-inline constexpr char kIPFSWebUIURL[] = "chrome://ipfs-internals/";
-#endif
 inline constexpr char kWebcompatReporterHost[] = "webcompat";
 inline constexpr char kRewardsPageHost[] = "rewards";
 inline constexpr char kRewardsInternalsHost[] = "rewards-internals";

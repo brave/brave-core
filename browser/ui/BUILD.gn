@@ -72,12 +72,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_ipfs_internals_webui) {
-    sources += [
-      "webui/ipfs_ui.cc",
-      "webui/ipfs_ui.h",
-    ]
-  }
+
 
   if (enable_ai_chat) {
     sources += [
@@ -933,10 +928,6 @@ source_set("ui") {
       "//brave/components/ipfs",
       "//components/component_updater",
     ]
-
-    if (enable_ipfs_internals_webui) {
-      deps += [ "//brave/components/ipfs_ui:generated_resources" ]
-    }
   }
 
   if (enable_speedreader && !is_android) {
@@ -1111,13 +1102,6 @@ source_set("ui") {
         "//brave/components/tor",
         "//brave/components/tor:pref_names",
         "//brave/components/tor/resources",
-      ]
-    }
-
-    if (enable_ipfs) {
-      sources += [
-        "views/location_bar/ipfs_location_view.cc",
-        "views/location_bar/ipfs_location_view.h",
       ]
     }
 

@@ -11,6 +11,5 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_IPFS=$enable_ipfs",
     "ENABLE_IPFS_LOCAL_NODE=$enable_ipfs_local_node",
-    "ENABLE_IPFS_INTERNALS_WEBUI=$enable_ipfs_internals_webui",
   ]
 }

@@ -1,45 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <if expr="enable_ipfs">
-    <if expr="enable_ipfs_internals_webui">
-      <message name="IDS_IPFS_CONNECTED_PEERS_TITLE" desc="Number of peers connected">Connected peers:</message>
-      <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses</message>
-      <message name="IDS_IPFS_REPO_STATS_TITLE" desc="Title of repo stats section">Repo Stats</message>
-      <message name="IDS_IPFS_NODE_INFO_TITLE" desc="Title of node info section">Node info</message>
-      <message name="IDS_IPFS_DAEMON_STATUS_TITLE" desc="Title of daemon status section">IPFS node status</message>
-      <message name="IDS_IPFS_API" desc="Title of the API config">API</message>
-      <message name="IDS_IPFS_GATEWAY" desc="Title of the gateway config">Gateway</message>
-      <message name="IDS_IPFS_SWARM" desc="Title of the swarm config">Swarm</message>
-      <message name="IDS_IPFS_REPO_OBJECTS" desc="Title of the objects repo stats section">Objects</message>
-      <message name="IDS_IPFS_REPO_SIZE" desc="Title of the size repo stats section">Size</message>
-      <message name="IDS_IPFS_REPO_STORAGE" desc="Title of the storage repo stats section">StorageMax</message>
-      <message name="IDS_IPFS_REPO_PATH" desc="Title of the path repo stats section">Path</message>
-      <message name="IDS_IPFS_REPO_VERSION" desc="Title of the version repo stats section">Version</message>
-      <message name="IDS_IPFS_NODE_INFO_ID" desc="Title of the id node info section">Peer ID</message>
-      <message name="IDS_IPFS_NODE_INFO_VERSION" desc="Title of the version node info section">Agent version</message>
-      <message name="IDS_IPFS_LAUNCHED" desc="Title of the launched status">Node is running</message>
-      <message name="IDS_IPFS_NOT_LAUNCHED" desc="Title of not launched status">Node is not running</message>
-      <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Start</message>
-      <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Stop</message>
-      <message name="IDS_IPFS_RESTART" desc="Text of shutdown action">Restart</message>
-      <message name="IDS_IPFS_NOT_INSTALLED" desc="Text of not installed state">Not Installed</message>
-      <message name="IDS_IPFS_INSTALLING" desc="Text of installing state">Installing IPFS...</message>
-      <message name="IDS_IPFS_RUN_GC_BUTTON" desc="Text of garbage collection button on state">Perform a garbage collection sweep</message>
-      <message name="IDS_IPFS_GC_ERROR" desc="Text of garbage collection error">Garbage collection error</message>
-      <message name="IDS_IPFS_PEERS_DETAILS_LINK" desc="Link to open details about peers on brave://ipfs.">
-        (details)
-      </message>
-      <message name="IDS_IPFS_INSTALL_AND_LAUNCH" desc="Title of brave://ipfs install and launch button.">
-        Install and start
-      </message>
-      <message name="IDS_IPFS_LEARN_MORE" desc="Link to open infromation about IPFS on brave://ipfs.">
-        Learn more about IPFS and privacy
-      </message>
-      <message name="IDS_IPFS_ROTATE_IDENTITY_TITLE" desc="The title for the link to rotate identity on ipfs diagnostic page.">
-        Manage Peer ID and IPNS keys
-      </message>
-      <message name="IDS_IPFS_OPEN_WEBUI" desc="Title of brave://ipfs webui button">My Node</message>
-    </if>
     <message name="IDS_IPFS_NODE_LAUNCH_ERROR" desc="Text of node launch error">An error occurred, please try to launch again</message>
     <message name="IDS_IPFS_NODE_INSTALLATION_ERROR" desc="Text of node installation error">An error occurred, please try to install the node again</message>
     <message name="IDS_UTILITY_PROCESS_IPFS_NAME" desc="The utility process which manages IPFS daemon">IPFS Service</message>

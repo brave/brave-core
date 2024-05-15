@@ -8,12 +8,9 @@ import("//testing/test.gni")
 source_set("unittests") {
   testonly = true
   sources = [
-    "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
     "//brave/browser/ipfs/ipfs_blob_context_getter_factory_unittest.cc",
     "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
-    "//brave/browser/ipfs/ipfs_tab_helper_unittest.cc",
     "//brave/browser/ipfs/test/ipfs_dns_resolver_impl_unittest.cc",
-    "//brave/browser/ipfs/test/ipfs_navigation_throttle_unittest.cc",
     "//brave/browser/ipfs/test/ipfs_network_utils_unittest.cc",
     "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
   ]
@@ -41,13 +38,7 @@ source_set("browsertests") {
   testonly = true
   if (!is_android) {
     sources = [
-      "//brave/browser/ipfs/import/ipfs_import_controller_browsertest.cc",
       "//brave/browser/ipfs/import/save_package_observer_browsertest.cc",
-      "//brave/browser/ipfs/ipfs_policy_browsertest.cc",
-      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
-      "//brave/browser/ipfs/test/ipfs_navigation_throttle_browsertest.cc",
-      "//brave/browser/ipfs/test/ipfs_not_connected_page_browsertest.cc",
-      "//brave/browser/ipfs/test/ipfs_onboarding_page_browsertest.cc",
       "//brave/browser/ipfs/test/ipfs_service_browsertest.cc",
       "//brave/browser/ipfs/test/ipns_keys_manager_browsertest.cc",
       "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
