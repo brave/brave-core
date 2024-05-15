@@ -113,7 +113,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
   ~SpeedReaderBrowserTest() override = default;
 
-  void SetUpOnMainThread() override {
+  void SetUpHttpsServer() {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -143,10 +143,11 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    SetUpHttpsServer();
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
         "MAP *:443 " + https_server_.host_port_pair().ToString());
-    InProcessBrowserTest::SetUpCommandLine(command_line);
   }
 
   content::WebContents* ActiveWebContents() {

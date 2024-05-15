@@ -102,16 +102,19 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   BraveTranslateBrowserTest()
       : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {}
 
+  void SetUp() override {
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    InProcessBrowserTest::SetUp();
+  }
+
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir;
     CHECK(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    CHECK(embedded_test_server()->Start());
-
     https_server_.RegisterRequestHandler(base::BindRepeating(
         &BraveTranslateBrowserTest::HandleRequest, base::Unretained(this)));
-    CHECK(https_server_.Start());
+    https_server_.StartAcceptingConnections();
+
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     ResetObserver();
   }

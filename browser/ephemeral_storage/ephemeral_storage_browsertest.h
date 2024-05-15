@@ -61,6 +61,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
       delete;
   ~EphemeralStorageBrowserTest() override;
 
+  void SetUp() override;
   void SetUpOnMainThread() override;
   void SetUpCommandLine(base::CommandLine* command_line) override;
   void SetUpInProcessBrowserTestFixture() override;

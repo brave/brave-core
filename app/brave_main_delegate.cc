@@ -9,8 +9,10 @@
 #include <optional>
 #include <string>
 
+#include "base/base_switches.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/resource_bundle_helper.h"
@@ -174,6 +176,16 @@ std::optional<int> BraveMainDelegate::BasicStartupComplete() {
   command_line->AppendSwitchASCII(
       variations::switches::kVariationsInsecureServerURL,
       BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+
+  if (command_line->HasSwitch(switches::kDisableDnsOverHttps)) {
+    std::string disabled_features = "";
+    if (command_line->HasSwitch(switches::kDisableFeatures)) {
+      disabled_features = base::StrCat(
+          {command_line->GetSwitchValueASCII(switches::kDisableFeatures), ","});
+    }
+    command_line->AppendSwitchASCII(switches::kDisableFeatures,
+                                    base::StrCat({disabled_features, features::kDnsOverHttps.name}));
+  }
 
   return ChromeMainDelegate::BasicStartupComplete();
 }
