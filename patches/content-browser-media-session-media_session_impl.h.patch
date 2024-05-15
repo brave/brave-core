@@ -1,13 +1,11 @@
 diff --git a/content/browser/media/session/media_session_impl.h b/content/browser/media/session/media_session_impl.h
-index c6e8baf22837b35359334d9c96ed912d7eea22da..fb875e5719b80396449c81e630e023656a64803d 100644
+index c6e8baf22837b35359334d9c96ed912d7eea22da..667d2ce9804f73fc728b29f838087ab0b7723311 100644
 --- a/content/browser/media/session/media_session_impl.h
 +++ b/content/browser/media/session/media_session_impl.h
-@@ -87,6 +87,10 @@ class MediaSessionImpl : public MediaSession,
+@@ -87,6 +87,8 @@ class MediaSessionImpl : public MediaSession,
  
    ~MediaSessionImpl() override;
  
-+  void GetLoadedUrl(base::OnceCallback<void(const GURL&, bool)> callback) override;
-+
 +  std::optional<MediaPlayerId> GetActivePlayerId() const override;
 +
    CONTENT_EXPORT void SetDelegateForTests(

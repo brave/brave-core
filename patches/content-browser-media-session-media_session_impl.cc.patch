@@ -1,5 +1,5 @@
 diff --git a/content/browser/media/session/media_session_impl.cc b/content/browser/media/session/media_session_impl.cc
-index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..c9507cfaa4b8ccd9ed4142314e5334bb6aea5700 100644
+index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..71e2d2eddd1eeeb5668324083be89ce832b04746 100644
 --- a/content/browser/media/session/media_session_impl.cc
 +++ b/content/browser/media/session/media_session_impl.cc
 @@ -6,6 +6,7 @@
@@ -10,20 +10,10 @@ index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..c9507cfaa4b8ccd9ed4142314e5334bb
  #include <utility>
  
  #include "base/containers/contains.h"
-@@ -838,6 +839,24 @@ bool MediaSessionImpl::HasOnlyOneShotPlayers() const {
+@@ -838,6 +839,14 @@ bool MediaSessionImpl::HasOnlyOneShotPlayers() const {
           pepper_players_.empty();
  }
  
-+void MediaSessionImpl::GetLoadedUrl(
-+    base::OnceCallback<void(const GURL&, bool)> callback) {
-+  if (normal_players_.size() != 1) {
-+    return std::move(callback).Run({}, {});
-+  }
-+
-+  normal_players_.begin()->first.observer->OnGetLoadedUrl(
-+      normal_players_.begin()->first.player_id, std::move(callback));
-+}
-+
 +std::optional<MediaPlayerId> MediaSessionImpl::GetActivePlayerId() const {
 +  if (normal_players_.size() != 1) {
 +    return std::nullopt;

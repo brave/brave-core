@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/media_session.h b/content/public/browser/media_session.h
-index fca03cc5765027c5e25dc20d309540550e29cc96..fff613b6da621c225b318766d09aee9771aeab02 100644
+index fca03cc5765027c5e25dc20d309540550e29cc96..8f7a2b7f096639f335885744ee75c2447562d054 100644
 --- a/content/public/browser/media_session.h
 +++ b/content/public/browser/media_session.h
 @@ -10,6 +10,7 @@
@@ -10,12 +10,10 @@ index fca03cc5765027c5e25dc20d309540550e29cc96..fff613b6da621c225b318766d09aee97
  #include "services/media_session/public/mojom/media_session.mojom.h"
  
  namespace content {
-@@ -55,6 +56,10 @@ class MediaSession : public media_session::mojom::MediaSession {
+@@ -55,6 +56,8 @@ class MediaSession : public media_session::mojom::MediaSession {
    // tests.  Static so that it can be optimized away outside of tests.
    CONTENT_EXPORT static void FlushObserversForTesting(WebContents* contents);
  
-+  virtual void GetLoadedUrl(base::OnceCallback<void(const GURL&, bool)> callback) = 0;
-+
 +  virtual std::optional<MediaPlayerId> GetActivePlayerId() const = 0;
 +
    // Tell the media session a user action has performed.
