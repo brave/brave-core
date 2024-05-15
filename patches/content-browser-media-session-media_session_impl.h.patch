@@ -1,13 +1,21 @@
 diff --git a/content/browser/media/session/media_session_impl.h b/content/browser/media/session/media_session_impl.h
-index c6e8baf22837b35359334d9c96ed912d7eea22da..667d2ce9804f73fc728b29f838087ab0b7723311 100644
+index c6e8baf22837b35359334d9c96ed912d7eea22da..677407dc935b784e679879c1e3bfd6cc8f596cff 100644
 --- a/content/browser/media/session/media_session_impl.h
 +++ b/content/browser/media/session/media_session_impl.h
-@@ -87,6 +87,8 @@ class MediaSessionImpl : public MediaSession,
+@@ -22,6 +22,7 @@
+ #include "content/browser/media/session/audio_focus_delegate.h"
+ #include "content/browser/media/session/media_session_uma_helper.h"
+ #include "content/common/content_export.h"
++#include "content/public/browser/media_player_id.h"
+ #include "content/public/browser/media_session.h"
+ #include "content/public/browser/page_user_data.h"
+ #include "content/public/browser/presentation_observer.h"
+@@ -202,6 +203,8 @@ class MediaSessionImpl : public MediaSession,
+   // Seek the media session.
+   CONTENT_EXPORT void Seek(base::TimeDelta seek_time) override;
  
-   ~MediaSessionImpl() override;
- 
-+  std::optional<MediaPlayerId> GetActivePlayerId() const override;
++  std::optional<MediaPlayerId> GetActiveMediaPlayerId() const override;
 +
-   CONTENT_EXPORT void SetDelegateForTests(
-       std::unique_ptr<AudioFocusDelegate> delegate);
- 
+   // Called when a MediaSessionAction is received. The action will be forwarded
+   // to blink::MediaSession corresponding to the current routed service.
+   void DidReceiveAction(

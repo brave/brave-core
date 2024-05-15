@@ -1,5 +1,5 @@
 diff --git a/content/browser/media/session/media_session_impl.cc b/content/browser/media/session/media_session_impl.cc
-index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..71e2d2eddd1eeeb5668324083be89ce832b04746 100644
+index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..bf4b03635009a8f657c5cefab4a20442aec757d5 100644
 --- a/content/browser/media/session/media_session_impl.cc
 +++ b/content/browser/media/session/media_session_impl.cc
 @@ -6,6 +6,7 @@
@@ -10,11 +10,11 @@ index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..71e2d2eddd1eeeb5668324083be89ce8
  #include <utility>
  
  #include "base/containers/contains.h"
-@@ -838,6 +839,14 @@ bool MediaSessionImpl::HasOnlyOneShotPlayers() const {
-          pepper_players_.empty();
+@@ -1565,6 +1566,14 @@ void MediaSessionImpl::OnMediaSessionInfoChanged(
+   RebuildAndNotifyMediaSessionInfoChanged();
  }
  
-+std::optional<MediaPlayerId> MediaSessionImpl::GetActivePlayerId() const {
++std::optional<MediaPlayerId> MediaSessionImpl::GetActiveMediaPlayerId() const {
 +  if (normal_players_.size() != 1) {
 +    return std::nullopt;
 +  }
@@ -22,6 +22,6 @@ index 3703599cd3c7816f7e820d4128b0c1de3f5207c5..71e2d2eddd1eeeb5668324083be89ce8
 +  return normal_players_.begin()->first.observer->GetMediaPlayerId();
 +}
 +
- void MediaSessionImpl::SetDelegateForTests(
-     std::unique_ptr<AudioFocusDelegate> delegate) {
-   delegate_ = std::move(delegate);
+ void MediaSessionImpl::DidReceiveAction(
+     media_session::mojom::MediaSessionAction action) {
+   DidReceiveAction(action, nullptr /* details */);

@@ -83,7 +83,8 @@ void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   auto callback =
       base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this));
 
-  auto player_id = content::MediaSession::Get(web_contents())->GetActivePlayerId();
+  auto player_id =
+      content::MediaSession::Get(web_contents())->GetActiveMediaPlayerId();
   if (!player_id) {
     return std::move(callback).Run({});
   }

@@ -1,15 +1,13 @@
 diff --git a/content/browser/media/session/media_session_controller.cc b/content/browser/media/session/media_session_controller.cc
-index cc0af430e6162d75b702383e467bc521e1fa8ac9..7654b276f646909431b6577e4e74d1bbe8ac1547 100644
+index cc0af430e6162d75b702383e467bc521e1fa8ac9..ee9a0d1d6555e85ca01f0bb4faa53e3ace9fe4f2 100644
 --- a/content/browser/media/session/media_session_controller.cc
 +++ b/content/browser/media/session/media_session_controller.cc
-@@ -160,6 +160,10 @@ void MediaSessionController::OnRequestMediaRemoting(int player_id) {
-       ->RequestMediaRemoting();
+@@ -318,4 +318,8 @@ media::MediaContentType MediaSessionController::GetMediaContentType() const {
+   return media_content_type_;
  }
  
 +MediaPlayerId MediaSessionController::GetMediaPlayerId() const {
 +  return id_;
 +}
 +
- RenderFrameHost* MediaSessionController::render_frame_host() const {
-   return RenderFrameHost::FromID(id_.frame_routing_id);
- }
+ }  // namespace content
