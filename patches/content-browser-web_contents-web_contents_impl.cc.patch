@@ -1,5 +1,5 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index c455f395b3d89293569fa359ae6aaf4f7e679843..b75484e903af88e60fcb19cdd9a86c0bf467f6b3 100644
+index c455f395b3d89293569fa359ae6aaf4f7e679843..0918fa737f6fa208bd46d097922d6eb02fb36200 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
 @@ -4630,7 +4630,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
@@ -11,13 +11,3 @@ index c455f395b3d89293569fa359ae6aaf4f7e679843..b75484e903af88e60fcb19cdd9a86c0b
      if (!is_guest) {
        WebContentsView* new_view = new_contents_impl->view_.get();
  
-@@ -10886,4 +10886,9 @@ void WebContentsImpl::GetMediaCaptureRawDeviceIdsOpened(
-                      base::BindPostTaskToCurrentDefault(std::move(callback))));
- }
- 
-+base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>>
-+WebContentsImpl::GetMediaMetadataByMediaPlayerIds() const {
-+  return media_web_contents_observer()->GetMediaMetadataByMediaPlayerIds();
-+}
-+
- }  // namespace content
