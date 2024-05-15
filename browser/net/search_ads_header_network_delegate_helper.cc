@@ -38,6 +38,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
 
   // The Brave-Search-Ads header should be added with a negative value when all
   // of the following conditions are met:
+  //   - The current tab is not in a Private browser window.
   //   - Brave Rewards is enabled for the profile.
   //   - The "Search Ads" option is not enabled for the profile.
   //   - The requested URL host is one of the Brave Search domains.

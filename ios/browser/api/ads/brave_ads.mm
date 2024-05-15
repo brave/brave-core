@@ -211,6 +211,11 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return brave_ads::ShouldSupportSearchResultAds();
 }
 
+- (BOOL)isOptedInToSearchResultAds {
+  return self.profilePrefService->GetBoolean(
+      brave_ads::prefs::kOptedInToSearchResultAds);
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
