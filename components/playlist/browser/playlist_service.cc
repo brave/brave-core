@@ -316,6 +316,9 @@ void PlaylistService::AddMediaFilesFromItems(
 
   CHECK(items.size() == 1);
   if (items[0]->is_blob_from_media_source) {
+    if (!url.is_valid() || is_mse) {
+      return std::move(callback).Run({});
+    }
     items[0]->media_path = items[0]->media_source = url;
     items[0]->is_blob_from_media_source = is_mse;
   }

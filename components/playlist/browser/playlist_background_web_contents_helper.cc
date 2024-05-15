@@ -44,10 +44,6 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
   DVLOG(2) << __FUNCTION__;
 
   DCHECK(navigation_handle);
-  if (!navigation_handle->IsInPrimaryMainFrame()) {
-    return;
-  }
-
   const GURL url = navigation_handle->GetURL();
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return;
@@ -71,24 +67,11 @@ void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
 void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
   for (const auto& [_, url] : web_contents()->GetLoadedUrlByMediaPlayer()) {
     const auto duration = base::Seconds(std::get<2>(url));
-    if (std::abs((duration_ - duration).InSeconds()) < 3) {
+    if (std::abs((duration_ - duration).InSeconds()) < 5) {
       DVLOG(-1) << "URL extracted from the background: " << std::get<0>(url);
       return std::move(callback_).Run(std::get<0>(url), std::get<1>(url));
     }
   }
-
-  // const auto url_it = std::max_element(
-  //     urls.begin(), urls.end(), [](const auto& e1, const auto& e2) {
-  //       return std::get<0>(e1.second).spec().size() <
-  //       std::get<0>(e2.second).spec().size();
-  //     });
-
-  // // TODO(sszaloki): do url.is_valid() check here!!!
-  // DVLOG(-1) << "URL extracted from the background: " <<
-  // std::get<0>(url_it->second);
-
-  // std::move(callback_).Run(std::get<0>(url_it->second),
-  // std::get<1>(url_it->second));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);

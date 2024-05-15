@@ -18,14 +18,6 @@ class WebContents;
 
 namespace playlist {
 
-class PlaylistService;
-
-// `PlaylistBackgroundWebContentsHelper` is attached to a background
-// `WebContents` (see `PlaylistBackgroundWebContentses`). It's responsible for
-// setting up the `PlaylistMediaHandler` for the background `WebContents`, and
-// initializing renderer-side state (i.e. the scripts that
-// `PlaylistRenderFrameObserver` injects into the page) via
-// `WebContentsObserver::ReadyToCommitNavigation()`.
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
