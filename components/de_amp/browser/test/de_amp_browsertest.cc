@@ -119,16 +119,20 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+  }
+
+  void SetUp() override {
     EXPECT_TRUE(https_server_->InitializeAndListen());
+    InProcessBrowserTest::SetUp();
   }
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     prefs_ = browser()->profile()->GetPrefs();
 
     content::SetupCrossSiteRedirector(https_server_.get());
-    InProcessBrowserTest::SetUpOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {

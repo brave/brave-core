@@ -113,11 +113,13 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
   ~SpeedReaderBrowserTest() override = default;
 
-  void SetUpHttpsServer() {
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  void SetUp() override {
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    InProcessBrowserTest::SetUp();
+  }
 
+  void SetUpOnMainThread() override {
     auto redirector = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
       if (request.GetURL().path_piece() != kTestPageRedirect) {
@@ -136,15 +138,13 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     };
 
     https_server_.RegisterDefaultHandler(base::BindRepeating(redirector));
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-
-    EXPECT_TRUE(https_server_.Start());
+    https_server_.ServeFilesFromDirectory(base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    https_server_.StartAcceptingConnections();
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    SetUpHttpsServer();
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
         "MAP *:443 " + https_server_.host_port_pair().ToString());
