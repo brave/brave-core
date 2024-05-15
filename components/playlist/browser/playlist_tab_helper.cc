@@ -283,8 +283,6 @@ void PlaylistTabHelper::OnFocusGained(
     return;
   }
 
-  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
-
   if (!media_session_observer_receiver_.is_bound()) {
     content::MediaSession::Get(contents)->AddObserver(
         media_session_observer_receiver_.BindNewPipeAndPassRemote());
@@ -308,8 +306,6 @@ void PlaylistTabHelper::OnFocusLost(
     return;
   }
 
-  DVLOG(-1) << contents->GetLastCommittedURL() << ": " << __FUNCTION__;
-
   CHECK(media_session_observer_receiver_.is_bound());
   media_session_observer_receiver_.reset();
 
@@ -319,30 +315,8 @@ void PlaylistTabHelper::OnFocusLost(
   }
 }
 
-void PlaylistTabHelper::OnRequestIdReleased(
-    const base::UnguessableToken& request_id) {
-  auto* contents = web_contents();
-  if (!contents) {
-    return;
-  }
-
-  if (contents !=
-      content::MediaSession::GetWebContentsFromRequestId(request_id)) {
-    return;
-  }
-
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
-}
-
-void PlaylistTabHelper::MediaSessionInfoChanged(
-    media_session::mojom::MediaSessionInfoPtr session_info) {
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
-}
-
 void PlaylistTabHelper::MediaSessionMetadataChanged(
     const std::optional<media_session::MediaMetadata>& metadata) {
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
-
   if (!metadata) {
     return;
   }
@@ -357,16 +331,9 @@ void PlaylistTabHelper::MediaSessionMetadataChanged(
   }
 }
 
-void PlaylistTabHelper::MediaSessionActionsChanged(
-    const std::vector<media_session::mojom::MediaSessionAction>& action) {
-  // DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
-}
-
 void PlaylistTabHelper::MediaSessionImagesChanged(
     const base::flat_map<media_session::mojom::MediaSessionImageType,
                          std::vector<media_session::MediaImage>>& images) {
-  DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
-
   media_session::MediaImageManager manager(
       global_media_controls::kMediaItemArtworkMinSize,
       global_media_controls::kMediaItemArtworkDesiredSize);
@@ -386,11 +353,6 @@ void PlaylistTabHelper::MediaSessionImagesChanged(
       observer.OnFoundItemsChanged(found_items_);
     }
   }
-}
-
-void PlaylistTabHelper::MediaSessionPositionChanged(
-    const std::optional<media_session::MediaPosition>& position) {
-  // DVLOG(-1) << web_contents()->GetLastCommittedURL() << ": " << __FUNCTION__;
 }
 
 void PlaylistTabHelper::ResetData() {
