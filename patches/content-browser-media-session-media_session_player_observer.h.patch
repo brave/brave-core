@@ -1,24 +1,21 @@
 diff --git a/content/browser/media/session/media_session_player_observer.h b/content/browser/media/session/media_session_player_observer.h
-index 4d5e6d64f308154358d46926b983e081777eace8..97b10fdd0d95bf3dfca510d23d2c1d67c8978da4 100644
+index 4d5e6d64f308154358d46926b983e081777eace8..3f87d57d5ec558f9d05fe06f829d8d7b1fd01e09 100644
 --- a/content/browser/media/session/media_session_player_observer.h
 +++ b/content/browser/media/session/media_session_player_observer.h
-@@ -7,7 +7,10 @@
- 
+@@ -8,6 +8,7 @@
  #include <optional>
  
-+#include "base/functional/callback_forward.h"
  #include "base/time/time.h"
 +#include "content/public/browser/media_player_id.h"
-+#include "url/gurl.h"
  
  namespace media {
  enum class MediaContentType;
-@@ -91,6 +94,8 @@ class MediaSessionPlayerObserver {
+@@ -88,6 +89,8 @@ class MediaSessionPlayerObserver {
+ 
+   virtual media::MediaContentType GetMediaContentType() const = 0;
+ 
++  virtual MediaPlayerId GetMediaPlayerId() const = 0;
++
    // Returns the RenderFrameHost this player observer belongs to. Returns
    // nullptr if unavailable.
    virtual RenderFrameHost* render_frame_host() const = 0;
-+
-+  virtual MediaPlayerId GetMediaPlayerId() const = 0;
- };
- 
- }  // namespace content
