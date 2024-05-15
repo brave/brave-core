@@ -12,7 +12,6 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
@@ -99,13 +98,8 @@ const char kXhrPromiseTemplate[] = R"(
 
 class BraveTranslateBrowserTest : public InProcessBrowserTest {
  public:
-  BraveTranslateBrowserTest() = default;
-
-  void SetUp() override {
-    InProcessBrowserTest::SetUp();
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-  }
+  BraveTranslateBrowserTest()
+      : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -114,9 +108,9 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
     CHECK(embedded_test_server()->Start());
 
-    https_server_->RegisterRequestHandler(base::BindRepeating(
+    https_server_.RegisterRequestHandler(base::BindRepeating(
         &BraveTranslateBrowserTest::HandleRequest, base::Unretained(this)));
-    CHECK(https_server_->Start());
+    CHECK(https_server_.Start());
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     ResetObserver();
   }
@@ -131,7 +125,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.SetUpCommandLine(command_line);
 
     // Remap translate.brave.com requests to the https test server.
-    const std::string host_port = https_server_->host_port_pair().ToString();
+    const std::string host_port = https_server_.host_port_pair().ToString();
     command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
                                     "MAP translate.brave.com:443 " + host_port +
                                         ", MAP translate.google.com:443 " +
@@ -242,7 +236,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     return ::testing::AssertionSuccess();
   }
 
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  net::EmbeddedTestServer https_server_;
   MockFunction<std::tuple<net::HttpStatusCode, std::string, std::string>(
       std::string)>
       backend_request_;
@@ -340,7 +334,7 @@ class BraveTranslateBrowserGoogleRedirectTest
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
     BraveTranslateBrowserTest::SetUpCommandLine(command_line);
-    const std::string host_port = https_server_->host_port_pair().ToString();
+    const std::string host_port = https_server_.host_port_pair().ToString();
     // Add translate.google.com redirection to the https test server.
     command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
                                     "MAP translate.brave.com:443 " + host_port +

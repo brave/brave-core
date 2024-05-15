@@ -70,11 +70,14 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   BraveWalletServiceTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+  void SetUp() override {
+    InProcessBrowserTest::SetUp();
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kNativeBraveWalletFeature);
+  }
 
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
