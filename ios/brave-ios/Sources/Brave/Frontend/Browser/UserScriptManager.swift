@@ -113,6 +113,7 @@ class UserScriptManager {
     case searchResultAd
     case youtubeQuality
     case braveLeoAIChat
+    case requestIdleCallback
 
     fileprivate var script: WKUserScript? {
       switch self {
@@ -137,6 +138,7 @@ class UserScriptManager {
       case .readyStateHelper: return ReadyStateScriptHandler.userScript
       case .youtubeQuality: return YoutubeQualityScriptHandler.userScript
       case .braveLeoAIChat: return BraveLeoScriptHandler.userScript
+      case .requestIdleCallback: return RequestIdleCallbackScriptHandler.userScript
       }
     }
 

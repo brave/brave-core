@@ -532,6 +532,9 @@ var braveTarget: PackageDescription.Target = .target(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestBlockingScript.js"
     ),
     .copy(
+      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestIdleCallback.js"
+    ),
+    .copy(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/TrackingProtectionStats.js"
     ),
     .copy(

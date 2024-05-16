@@ -363,6 +363,8 @@ extension BrowserViewController: WKNavigationDelegate {
       // Set some additional user scripts
       if navigationAction.targetFrame?.isMainFrame == true {
         tab?.setScripts(scripts: [
+          // Always add this script
+          .requestIdleCallback: true,
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
           .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,

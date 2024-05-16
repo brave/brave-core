@@ -2691,6 +2691,7 @@ extension BrowserViewController: TabDelegate {
 
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
+      tab.requestIdleCallbackScriptHandler,
     ]
 
     if #unavailable(iOS 16.0) {

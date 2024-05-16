@@ -335,6 +335,8 @@ class Tab: NSObject {
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: self)
   lazy var requestBlockingContentHelper = RequestBlockingContentScriptHandler(tab: self)
+  /// A handler that handles a monkey patched `requestIdleCallback` implementation
+  lazy var requestIdleCallbackScriptHandler = RequestIdleCallbackScriptHandler()
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
