@@ -1133,4 +1133,8 @@
   <message name="IDS_BRAVE_WALLET_NO_CHANGES_DETECTED" desc="Text to display when no changes were detected during transaction simulation">No changes detected</message>
   <message name="IDS_BRAVE_WALLET_OWNERSHIP_CHANGE" desc="Grouping header for estimated account ownership changes">Account ownership change</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_FEATURE_DESCRIPTION" desc="Description of the purpose of the transaction simulation feature ">Simulate how a transaction will behave before authorizing it</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_NOT_AVAILABLE_FOR_NETWORK" desc="Title text for explaining that simulation of the transaction is not available for the current network">Transaction preview is not supported on this network.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_OPTED_IN_NOTICE" desc="An explaination that the displayed message is shown only because the user is opted in to the transaction simulation service">You're seeing this message because you opted into the transaction preview service.</message>
+  <message name="IDS_BRAVE_WALLET_SEE_AVAILABLE_NETWORKS" desc="Text for a link to view the available networks for a given feature">See available networks</message>
+  <message name="IDS_BRAVE_WALLET_DO_NOT_SHOW_THIS_MESSAGE_AGAIN_FOR_NETWORK" desc="Checkbox text to avoid displaying a message again for a network">Do not show this message again for this network.</message>
 </grit-part>

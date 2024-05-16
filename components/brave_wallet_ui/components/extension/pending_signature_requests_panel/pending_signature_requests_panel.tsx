@@ -14,6 +14,7 @@ import {
   useSignSolanaTransactionsQueue //
 } from '../../../common/hooks/use_sign_solana_tx_queue'
 import {
+  useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetSolanaTransactionSimulationQuery
 } from '../../../common/slices/api.slice'
@@ -51,16 +52,36 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   } = useSignSolanaTransactionsQueue(signMode)
 
   // queries
-  const { data: txSimulationOptIn } = useGetIsTxSimulationOptInStatusQuery()
+  const {
+    data: txSimulationOptIn, //
+    isLoading: isLoadingSimulationOptInStatus
+  } = useGetIsTxSimulationOptInStatusQuery()
+  const isSimulationPermitted =
+    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
+
+  const {
+    data: networkHasTxSimulationSupport,
+    isLoading: isCheckingSimulationNetworkSupport
+  } = useGetHasTransactionSimulationSupportQuery(
+    network
+      ? {
+          chainId: network.chainId,
+          coinType: network.coin
+        }
+      : skipToken
+  )
+
   const {
     data: solanaSimulation,
     isLoading: isLoadingSolanaSimulation,
     isFetching: isFetchingSolanaSimulation,
-    isError: hasSimulationError
+    isError: hasSimulationError,
+    refetch: retrySimulation
   } = useGetSolanaTransactionSimulationQuery(
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed &&
-      selectedQueueData?.id !== undefined &&
-      network
+    isSimulationPermitted &&
+      network &&
+      networkHasTxSimulationSupport &&
+      selectedQueueData?.id !== undefined
       ? {
           chainId: network.chainId,
           id: selectedQueueData.id,
@@ -75,18 +96,25 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
   // render
 
   // Simulations Opt-in screen
-  if (txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset) {
+  if (
+    networkHasTxSimulationSupport &&
+    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset
+  ) {
     return <EnableTransactionSimulations />
   }
 
-  // Loading/Fetching network
-  if (!network) {
+  // Loading
+  if (
+    !network ||
+    isLoadingSimulationOptInStatus ||
+    isCheckingSimulationNetworkSupport
+  ) {
     return <LoadingPanel />
   }
 
-  // Loading/Fetching Simulation or network
+  // Simulating
   if (
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed &&
+    isSimulationPermitted &&
     (isLoadingSolanaSimulation || isFetchingSolanaSimulation)
   ) {
     return <LoadingSimulation />
@@ -94,7 +122,8 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
 
   // Simulated Signature Request
   if (
-    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed &&
+    isSimulationPermitted &&
+    networkHasTxSimulationSupport &&
     !hasSimulationError &&
     solanaSimulation
   ) {
@@ -128,6 +157,16 @@ export const PendingSignatureRequestsPanel: React.FC<Props> = ({
         queueNumber={queueNumber}
         selectedQueueData={selectedQueueData}
         signingAccount={signingAccount}
+        showSimulationNotSupportedMessage={
+          isSimulationPermitted && !networkHasTxSimulationSupport
+        }
+        retrySimulation={
+          isSimulationPermitted &&
+          networkHasTxSimulationSupport &&
+          hasSimulationError
+            ? retrySimulation
+            : undefined
+        }
       />
     </LongWrapper>
   )

@@ -65,7 +65,7 @@ export const _ConfirmSwapTransaction = {
                 keyringId: BraveWallet.KeyringId.kDefault,
                 kind: BraveWallet.AccountKind.kDerived,
                 uniqueKey: '',
-                bitcoinAccountIndex: 0
+                accountIndex: 0,
               },
               address: mockTransactionInfo.fromAddress || '',
               hardware: undefined,
@@ -76,11 +76,7 @@ export const _ConfirmSwapTransaction = {
       >
         <PanelWrapper isLonger={true}>
           <LongWrapper>
-            <ConfirmSwapTransaction
-              retrySimulation={() => {
-                alert('not implemented')
-              }}
-            />
+            <ConfirmSwapTransaction />
           </LongWrapper>
         </PanelWrapper>
       </WalletPanelStory>

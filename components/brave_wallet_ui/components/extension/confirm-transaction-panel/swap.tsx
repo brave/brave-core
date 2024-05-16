@@ -11,7 +11,7 @@ import { isBridgeTransaction } from '../../../utils/tx-utils'
 
 // Styled components
 import { HeaderTitle } from './swap.style'
-import { Column, VerticalSpace } from '../../shared/style'
+import { Column } from '../../shared/style'
 import { NetworkText, StyledWrapper, TopRow } from './style'
 
 // Components
@@ -26,18 +26,13 @@ import {
   PendingTransactionNetworkFeeAndSettings //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import { SwapBase } from '../swap'
-import { TxWarningBanner } from './common/tx_warnings'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
-interface Props {
-  readonly retrySimulation?: () => void
-}
-
-export function ConfirmSwapTransaction({ retrySimulation }: Props) {
+export function ConfirmSwapTransaction() {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -46,8 +41,6 @@ export function ConfirmSwapTransaction({ retrySimulation }: Props) {
     React.useState<boolean>(false)
   const [isEditingGas, setIsEditingGas] = React.useState<boolean>(false)
   const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
-  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
-    React.useState(false)
 
   // hooks
   const {
@@ -158,16 +151,6 @@ export function ConfirmSwapTransaction({ retrySimulation }: Props) {
         alignItems='flex-end'
         alignSelf='flex-end'
       >
-        {retrySimulation && !isSimulationWarningDismissed && (
-          <>
-            <VerticalSpace space='16px' />
-            <TxWarningBanner
-              retrySimulation={retrySimulation}
-              onDismiss={() => setIsSimulationWarningDismissed(true)}
-            />
-          </>
-        )}
-
         <PendingTransactionActionsFooter
           onConfirm={onConfirm}
           onReject={onReject}

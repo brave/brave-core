@@ -564,6 +564,9 @@ provideStrings({
   braveWalletChooseChainsToUse:
     'Choose which blockchains to use in your wallet.',
   braveWalletShowTestnets: 'Show testnets',
+  braveWalletSeeAvailableNetworks: 'See available networks',
+  braveWalletDoNotShowThisMessageAgainForNetwork:
+    'Do not show this message again for this network.',
 
   // Grouping Labels
   braveWalletFeatured: 'Featured',
@@ -934,6 +937,11 @@ provideStrings({
     ' where they’ll be lost forever.',
   braveWalletSimulationWarningUserAccountOwnerChange:
     'This transfers ownership of your account and balances to someone else.',
+  braveWalletTransactionSimulationNotAvailableForNetwork:
+    'Transaction preview is not supported on this network.',
+  braveWalletTransactionSimulationOptedInNotice:
+    "You're seeing this message because " +
+    'you opted into the transaction preview service.',
 
   // Transaction Simulation Errors
   braveWalletSimulationErrorInsufficientFundsForFee:

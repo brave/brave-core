@@ -32,6 +32,7 @@ import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 
 import {
   useGetEVMTransactionSimulationQuery,
+  useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetSolanaTransactionSimulationQuery
 } from '../../../common/slices/api.slice'
@@ -53,8 +54,20 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     selectedPendingTransaction.txDataUnion
   )
 
-  const { data: txSimulationOptIn } = useGetIsTxSimulationOptInStatusQuery()
-  const isSimulationPermitted = BraveWallet.BlowfishOptInStatus.kAllowed
+  const {
+    data: txSimulationOptIn, //
+    isLoading: isLoadingSimulationOptInStatus
+  } = useGetIsTxSimulationOptInStatusQuery()
+  const isSimulationPermitted =
+    txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
+
+  const {
+    data: networkHasTxSimulationSupport,
+    isLoading: isCheckingSimulationNetworkSupport
+  } = useGetHasTransactionSimulationSupportQuery({
+    chainId: selectedPendingTransaction.chainId,
+    coinType: selectedPendingTxCoinType
+  })
 
   const {
     data: evmTxSimulation,
@@ -64,6 +77,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     refetch: retryEvmSimulation
   } = useGetEVMTransactionSimulationQuery(
     isSimulationPermitted &&
+      networkHasTxSimulationSupport &&
       selectedPendingTxCoinType === CoinTypes.ETH &&
       // skip simulating in favor of "safer-sign" UI for Brave and COW Swaps
       selectedPendingTransaction.txType !== BraveWallet.TransactionType.ETHSwap
@@ -81,7 +95,9 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     isError: hasSolanaSimulationError,
     refetch: retrySolanaSimulation
   } = useGetSolanaTransactionSimulationQuery(
-    isSimulationPermitted && selectedPendingTxCoinType === CoinTypes.SOL
+    isSimulationPermitted &&
+      networkHasTxSimulationSupport &&
+      selectedPendingTxCoinType === CoinTypes.SOL
       ? {
           chainId: selectedPendingTransaction.chainId,
           id: selectedPendingTransaction.id,
@@ -94,20 +110,22 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Simulations Opt-in screen
   if (
+    networkHasTxSimulationSupport &&
     txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kUnset &&
     selectedPendingTransaction.txType !== BraveWallet.TransactionType.ETHSwap
   ) {
     return <EnableTransactionSimulations />
   }
 
-  // Loading/Fetching
-  if (!selectedPendingTransaction) {
+  // Loading
+  if (isLoadingSimulationOptInStatus || isCheckingSimulationNetworkSupport) {
     return <LoadingPanel />
   }
 
-  // Loading/Fetching Simulation
+  // Simulating
   if (
     isSimulationPermitted &&
+    networkHasTxSimulationSupport &&
     (isLoadingEvmTxSimulation ||
       isFetchingEvmTxSimulation ||
       isFetchingSolanaTxSimulation ||
@@ -119,6 +137,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   // Simulated EVM Transaction
   if (
     isSimulationPermitted &&
+    networkHasTxSimulationSupport &&
     // has valid EVM pending transaction simulation
     selectedPendingTxCoinType === CoinTypes.ETH &&
     !hasEvmSimulationError &&
@@ -140,6 +159,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   // Simulated Solana Transaction
   if (
     isSimulationPermitted &&
+    networkHasTxSimulationSupport &&
     selectedPendingTxCoinType === CoinTypes.SOL &&
     !hasSolanaSimulationError &&
     !isLoadingSolanaTxSimulation &&
@@ -163,13 +183,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   ) {
     return (
       <LongWrapper>
-        <ConfirmSwapTransaction
-          retrySimulation={
-            isSimulationPermitted && hasEvmSimulationError
-              ? retryEvmSimulation
-              : undefined
-          }
-        />
+        <ConfirmSwapTransaction />
       </LongWrapper>
     )
   }
@@ -178,8 +192,11 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   return (
     <LongWrapper>
       <ConfirmTransactionPanel
+        showSimulationNotSupportedMessage={
+          isSimulationPermitted && !networkHasTxSimulationSupport
+        }
         retrySimulation={
-          isSimulationPermitted
+          isSimulationPermitted && networkHasTxSimulationSupport
             ? selectedPendingTxCoinType === CoinTypes.SOL &&
               hasSolanaSimulationError
               ? retrySolanaSimulation
