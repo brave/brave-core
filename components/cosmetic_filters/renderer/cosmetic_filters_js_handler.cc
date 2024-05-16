@@ -118,24 +118,20 @@ const char kHideSelectorsInjectScript[] =
 
 const char kRemovalsInjectScript[] =
     R"((function() {
-          const pollingIntervalMs = 500;
           const selectorsToRemove = %s;
           const classesToRemoveBySelector = %s;
           const attributesToRemoveBySelector = %s;
-          var needsExecution = true;
           const onMutation = (mutationList) => {
-            if (mutationList && mutationList.find(
+            if (mutationList.find(
                 mutation => (
-                  (mutation.type == "attributes")
-                  || (mutation.addedNodes.length !== 0 && mutation.addedNodes.values().find(node => node.nodeType == 1))
+                  mutation.addedNodes.length !== 0 && mutation.addedNodes.values().find(node => node.nodeType == 1)
                 )
               )
             ) {
-              needsExecution = true;
+              execute();
             }
           };
           const execute = () => {
-              needsExecution = false;
               selectorsToRemove.forEach(
                 selector => document.querySelectorAll(selector).forEach(elem => elem.remove())
               );
@@ -156,18 +152,13 @@ const char kRemovalsInjectScript[] =
                 );
               }
           };
-          const maybeExecute = () => {
-            if (needsExecution) {
-              execute();
-            }
-          };
           const observer = new MutationObserver(onMutation);
           observer.observe(document.documentElement, {
             subtree: true,
             childList: true,
-            attributes: true,
-          })
-          window.setInterval(maybeExecute, pollingIntervalMs);
+            attributes: false,
+          });
+          execute();
         })();)";
 
 std::string LoadDataResource(const int id) {
