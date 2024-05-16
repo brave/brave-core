@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.playlist;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.playlist.hls_content.HlsUtils;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
@@ -80,26 +81,21 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemCached(PlaylistItem playlistItem) {
         if (mDelegate == null) return;
         mDelegate.onItemCached(playlistItem);
-
+        Log.e(TAG, "onItemCached 1");
+        Log.e(
+                TAG,
+                "onItemCached 1 : "
+                        + playlistItem.mediaPath.url
+                        + " : "
+                        + MediaUtils.isHlsFile(playlistItem.mediaPath.url));
+        Log.e(
+                TAG,
+                "onItemCached 1 : HlsUtils.isVideoPlaybackServiceRunning() :"
+                        + HlsUtils.isVideoPlaybackServiceRunning());
         if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)
                 && HlsUtils.isVideoPlaybackServiceRunning()) {
-            PlaylistItemModel playlistItemModel =
-                    new PlaylistItemModel(
-                            playlistItem.id,
-                            ConstantUtils.DEFAULT_PLAYLIST,
-                            playlistItem.name,
-                            playlistItem.pageSource.url,
-                            playlistItem.mediaPath.url,
-                            playlistItem.hlsMediaPath.url,
-                            playlistItem.mediaSource.url,
-                            playlistItem.thumbnailPath.url,
-                            playlistItem.author,
-                            playlistItem.duration,
-                            playlistItem.lastPlayedPosition,
-                            playlistItem.mediaFileBytes,
-                            playlistItem.cached,
-                            false);
-            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+            Log.e(TAG, "onItemCached 2");
+            VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItem);
         }
     }
 

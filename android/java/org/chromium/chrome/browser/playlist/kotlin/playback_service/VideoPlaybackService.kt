@@ -50,6 +50,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistService
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
+import org.chromium.base.ContextUtils
+import org.chromium.base.Log
 
 @UnstableApi
 class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
@@ -70,9 +79,10 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
 
         private var mediaItemsInPlayer: ArrayList<MediaItem> = ArrayList()
 
-        @Suppress("unused")
-        fun addNewPlaylistItemModel(newPlaylistItemModel: PlaylistItemModel) {
-            if (newPlaylistItemModel.playlistId == currentPlaylistId) {
+        fun addNewPlaylistItemModel(newPlaylistItem: PlaylistItem) {
+            Log.e("playlist", "addNewPlaylistItemModel 1");
+            if (ConstantUtils.DEFAULT_PLAYLIST == currentPlaylistId) {
+                Log.e("playlist", "addNewPlaylistItemModel 2");
                 val mediaItem = MediaItemUtil.buildMediaItem(
                     newPlaylistItemModel,
                     newPlaylistItemModel.playlistId,
@@ -83,8 +93,8 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
             }
         }
 
-        @Suppress("unused")
-        fun removePlaylistItemModel(playlistItemModelId: String) {
+        fun removePlaylistItemModel(playlistItemId: String) {
+            Log.e("playlist", "removePlaylistItemModel 1");
             mediaItemsInPlayer.forEachIndexed { index, mediaItem ->
                 if (mediaItem.mediaId == playlistItemModelId && mediaItem.mediaId != currentPlaylistId) {
                     mPlayer.removeMediaItem(index)
@@ -93,8 +103,8 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
             }
         }
 
-        @Suppress("unused")
-        fun reorderPlaylistItemModel(playlistItemModelList : List<PlaylistItemModel>) {
+        fun reorderPlaylistItemModel(playlistItemList : List<PlaylistItem>) {
+            Log.e("playlist", "reorderPlaylistItemModel 1");
             mediaItemsInPlayer.forEachIndexed { oldIndex, mediaItem ->
                val newIndex = playlistItemModelList.indexOfFirst{ it.id == mediaItem.mediaId }
                 mPlayer.moveMediaItem(oldIndex, newIndex)

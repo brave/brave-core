@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.playlist.PlaylistStreamingObserverImpl;
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
 import org.chromium.chrome.browser.playlist.kotlin.util.HLSParsingUtil;
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
+import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
@@ -229,7 +229,9 @@ public class HlsUtils {
     }
 
     public static boolean isVideoPlaybackServiceRunning() {
-        return PlaylistUtils.isServiceRunning(
+        // return PlaylistUtils.isServiceRunning(
+        //         ContextUtils.getApplicationContext(), VideoPlaybackService.class);
+        return WireguardUtils.isServiceRunningInForeground(
                 ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }
