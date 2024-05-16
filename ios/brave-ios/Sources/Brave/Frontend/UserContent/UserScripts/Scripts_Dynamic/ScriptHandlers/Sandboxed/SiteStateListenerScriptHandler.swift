@@ -70,8 +70,8 @@ class SiteStateListenerScriptHandler: TabContentScript {
         return
       }
 
-      if let pageData = tab.currentPageData {
-        Task { @MainActor in
+      Task { @MainActor in
+        if let pageData = tab.currentPageData {
           let domain = pageData.domain(persistent: !tab.isPrivate)
           guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
             return
