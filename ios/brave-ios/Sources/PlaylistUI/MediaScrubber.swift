@@ -80,17 +80,14 @@ struct MediaScrubber<Label: View>: View {
               Circle()
                 .foregroundStyle(.tint)
                 .frame(width: thumbSize, height: thumbSize)
+                .contentShape(.rect)
                 .scaleEffect(isScrubbing ? 1.5 : 1)
                 .animation(.spring(response: 0.2, dampingFraction: 0.7), value: isScrubbing)
-                .offset(
-                  x: min(
-                    proxy.size.width,
-                    (CGFloat(currentTime / duration) * proxy.size.width)
-                  ) - (thumbSize / 2)
-                )
-                .animation(.linear(duration: 0.1), value: currentTime)
+                // The gesture needs to be added prior to the `offset` modifier due to a SwiftUI bug
+                // but because the offset affects the coordinate space, we need to make sure we use
+                // the offsetted coordinate space when doing calculations
                 .gesture(
-                  DragGesture(minimumDistance: 0)
+                  DragGesture(minimumDistance: 0, coordinateSpace: .named("MediaScrubber"))
                     .updating(
                       $isScrubbingState,
                       body: { _, state, _ in
@@ -108,6 +105,14 @@ struct MediaScrubber<Label: View>: View {
                       currentTime = seconds
                     }
                 )
+                .offset(
+                  x: min(
+                    proxy.size.width,
+                    (CGFloat(currentTime / duration) * proxy.size.width)
+                  ) - (thumbSize / 2)
+                )
+                .coordinateSpace(name: "MediaScrubber")
+                .animation(.linear(duration: 0.1), value: currentTime)
             }
           }
         }
