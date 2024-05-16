@@ -30,7 +30,7 @@ SplitViewTabStripModelAdapter::~SplitViewTabStripModelAdapter() = default;
 void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(
     const SplitViewBrowserData::Tile& tile,
     bool move_right_tab) {
-  auto [tab1, tab2] = tile;
+  auto [tab1, tab2, _] = tile;
   auto index1 = model_->GetIndexOfTab(tab1);
   auto index2 = model_->GetIndexOfTab(tab2);
 
@@ -81,7 +81,7 @@ bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
 bool SplitViewTabStripModelAdapter::SynchronizePinnedState(
     const SplitViewBrowserData::Tile& tile,
     const tabs::TabHandle& source) {
-  auto [tab1, tab2] = tile;
+  auto [tab1, tab2, _] = tile;
   if (tab1 != source) {
     std::swap(tab1, tab2);
     CHECK(tab1 == source);
@@ -104,7 +104,7 @@ void SplitViewTabStripModelAdapter::TabDragEnded() {
   // the tiles.
   std::vector<SplitViewBrowserData::Tile> tiles_to_break;
   for (const auto& tile : split_view_browser_data_->tiles()) {
-    auto [tab1, tab2] = tile;
+    auto [tab1, tab2, _] = tile;
     int index1 = model_->GetIndexOfTab(tab1);
     int index2 = model_->GetIndexOfTab(tab2);
     if (index2 - index1 == 1) {
@@ -163,7 +163,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
   }
 
   std::vector<int> indices_to_be_moved;
-  for (const auto& [tab1, tab2] : split_view_browser_data_->tiles()) {
+  for (const auto& [tab1, tab2, _] : split_view_browser_data_->tiles()) {
     auto lower_index = model_->GetIndexOfTab(tab1);
     auto higher_index = model_->GetIndexOfTab(tab2);
     CHECK_LT(lower_index, higher_index);
@@ -234,7 +234,7 @@ void SplitViewTabStripModelAdapter::OnTabWillBeRemoved(
   // In case a tiled tab is removed, we need to remove the corresponding tile
   if (auto tab = model_->GetTabHandleAt(index);
       split_view_browser_data_->IsTabTiled(tab)) {
-    auto [tab1, tab2] = *split_view_browser_data_->GetTile(tab);
+    auto [tab1, tab2, _] = *split_view_browser_data_->GetTile(tab);
 
     tiled_tabs_scheduled_to_be_removed_.emplace_back(
         get_web_contents_from_tab_handle(tab1),

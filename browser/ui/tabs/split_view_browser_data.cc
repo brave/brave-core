@@ -91,7 +91,7 @@ void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
   }
 }
 
-std::vector<SplitViewBrowserData::Tile>::const_iterator
+std::vector<SplitViewBrowserData::Tile>::iterator
 SplitViewBrowserData::FindTile(const tabs::TabHandle& tab) {
   if (IsTabTiled(tab)) {
     return tiles_.begin() + tile_index_for_tab_[tab];
@@ -123,6 +123,20 @@ std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
     return std::nullopt;
   }
   return *iter;
+}
+
+void SplitViewBrowserData::SetSizeDelta(const tabs::TabHandle& tab,
+                                        int size_delta) {
+  auto iter = FindTile(tab);
+  CHECK(iter != tiles_.end());
+
+  iter->split_view_size_delta = size_delta;
+}
+
+int SplitViewBrowserData::GetSizeDelta(const tabs::TabHandle& tab) {
+  auto iter = FindTile(tab);
+  CHECK(iter != tiles_.end());
+  return iter->split_view_size_delta;
 }
 
 void SplitViewBrowserData::AddObserver(SplitViewBrowserDataObserver* observer) {
@@ -218,7 +232,11 @@ void SplitViewBrowserData::TabsWillBeAttachedToNewBrowser(
   if (tiles_to_be_attached_to_new_window_.size() > 1) {
     base::ranges::sort(tiles_to_be_attached_to_new_window_);
     tiles_to_be_attached_to_new_window_.erase(
-        base::ranges::unique(tiles_to_be_attached_to_new_window_),
+        base::ranges::unique(tiles_to_be_attached_to_new_window_,
+                             [](auto& a, auto& b) {
+                               return a.first == b.first &&
+                                      a.second == b.second;
+                             }),
         tiles_to_be_attached_to_new_window_.end());
   }
 }

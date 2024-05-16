@@ -185,6 +185,8 @@ class BraveBrowserView : public BrowserView,
 
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
+  void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
+                                content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
   void UpdateContentsWebViewBorder();
   void UpdateSecondaryContentsWebViewVisibility();

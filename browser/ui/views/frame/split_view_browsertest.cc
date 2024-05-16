@@ -10,6 +10,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -142,4 +143,25 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   EXPECT_EQ(tab_strip_model().GetWebContentsAt(
                 tab_strip_model().GetIndexOfTab(tile.first)),
             secondary_contents_view().web_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
+  // Given there are two tiles
+  brave::NewSplitViewForTab(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  brave::NewSplitViewForTab(browser());
+
+  // When size delta is set
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+      browser_view->contents_container()->GetLayoutManager());
+  constexpr int kSizeDelta = 100;
+  contents_layout_manager->set_split_view_size_delta(kSizeDelta);
+
+  // Then these should be persisted during tab activation.
+  tab_strip_model().ActivateTabAt(0);
+  EXPECT_EQ(0, contents_layout_manager->split_view_size_delta());
+
+  tab_strip_model().ActivateTabAt(3);
+  EXPECT_EQ(kSizeDelta, contents_layout_manager->split_view_size_delta());
 }

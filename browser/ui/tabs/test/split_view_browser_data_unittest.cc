@@ -63,7 +63,7 @@ TEST_F(SplitViewBrowserDataUnitTest, TileTabs_AddsTile) {
   EXPECT_FALSE(data().IsTabTiled(tab_1.GetHandle()));
   EXPECT_FALSE(data().IsTabTiled(tab_2.GetHandle()));
 
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
 
   EXPECT_TRUE(data().IsTabTiled(tab_1.GetHandle()));
   EXPECT_TRUE(data().IsTabTiled(tab_2.GetHandle()));
@@ -76,21 +76,21 @@ TEST_F(SplitViewBrowserDataUnitTest, TileTabs_WithAlreadyTiledTabIsError) {
   EXPECT_FALSE(data().IsTabTiled(tab_1.GetHandle()));
   EXPECT_FALSE(data().IsTabTiled(tab_2.GetHandle()));
 
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
 
   ASSERT_TRUE(data().IsTabTiled(tab_1.GetHandle()));
   ASSERT_TRUE(data().IsTabTiled(tab_2.GetHandle()));
 
   auto tab_3 = CreateTabModel();
-  EXPECT_DEATH_IF_SUPPORTED(
-      data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_3.GetHandle())),
-      "");
+  EXPECT_DEATH_IF_SUPPORTED(data().TileTabs({.first = tab_1.GetHandle(),
+                                             .second = tab_3.GetHandle()}),
+                            "");
 }
 
 TEST_F(SplitViewBrowserDataUnitTest, BreakTile_RemovesTile) {
   auto tab_1 = CreateTabModel();
   auto tab_2 = CreateTabModel();
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
 
   ASSERT_TRUE(data().IsTabTiled(tab_1.GetHandle()));
   ASSERT_TRUE(data().IsTabTiled(tab_2.GetHandle()));
@@ -99,7 +99,7 @@ TEST_F(SplitViewBrowserDataUnitTest, BreakTile_RemovesTile) {
   EXPECT_FALSE(data().IsTabTiled(tab_1.GetHandle()));
   EXPECT_FALSE(data().IsTabTiled(tab_2.GetHandle()));
 
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
   data().BreakTile(tab_2.GetHandle());
   EXPECT_FALSE(data().IsTabTiled(tab_1.GetHandle()));
   EXPECT_FALSE(data().IsTabTiled(tab_2.GetHandle()));
@@ -114,11 +114,11 @@ TEST_F(SplitViewBrowserDataUnitTest, BreakTile_WithNonExistingTabIsError) {
 TEST_F(SplitViewBrowserDataUnitTest, FindTile) {
   auto tab_1 = CreateTabModel();
   auto tab_2 = CreateTabModel();
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
 
-  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_1.GetHandle())));
-  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_2.GetHandle())));
 
   data().BreakTile(tab_2.GetHandle());
@@ -127,16 +127,16 @@ TEST_F(SplitViewBrowserDataUnitTest, FindTile) {
 
   auto tab_3 = CreateTabModel();
   auto tab_4 = CreateTabModel();
-  data().TileTabs(std::make_pair(tab_1.GetHandle(), tab_2.GetHandle()));
-  data().TileTabs(std::make_pair(tab_3.GetHandle(), tab_4.GetHandle()));
-  EXPECT_EQ(1, std::distance(data().tiles_.cbegin(),
+  data().TileTabs({.first = tab_1.GetHandle(), .second = tab_2.GetHandle()});
+  data().TileTabs({.first = tab_3.GetHandle(), .second = tab_4.GetHandle()});
+  EXPECT_EQ(1, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_3.GetHandle())));
-  EXPECT_EQ(1, std::distance(data().tiles_.cbegin(),
+  EXPECT_EQ(1, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_4.GetHandle())));
 
   data().BreakTile(tab_1.GetHandle());
-  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_3.GetHandle())));
-  EXPECT_EQ(0, std::distance(data().tiles_.cbegin(),
+  EXPECT_EQ(0, std::distance(data().tiles_.begin(),
                              data().FindTile(tab_4.GetHandle())));
 }

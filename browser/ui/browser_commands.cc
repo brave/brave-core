@@ -24,6 +24,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -940,8 +941,8 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
 
   chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
                    /*foreground*/ true);
-  split_view_data->TileTabs(std::make_pair(
-      model->GetTabHandleAt(tab_index), model->GetTabHandleAt(new_tab_index)));
+  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab_index),
+                             .second = model->GetTabHandleAt(new_tab_index)});
 }
 
 void TileTabs(Browser* browser, const std::vector<int>& indices) {
@@ -976,8 +977,8 @@ void TileTabs(Browser* browser, const std::vector<int>& indices) {
     std::swap(tab1, tab2);
   }
 
-  split_view_data->TileTabs(
-      std::make_pair(model->GetTabHandleAt(tab1), model->GetTabHandleAt(tab2)));
+  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab1),
+                             .second = model->GetTabHandleAt(tab2)});
 }
 
 void BreakTiles(Browser* browser, const std::vector<int>& indices) {
