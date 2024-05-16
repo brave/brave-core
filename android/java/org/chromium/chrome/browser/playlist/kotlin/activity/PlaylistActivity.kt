@@ -581,10 +581,10 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
         mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
     }
 
-    // override fun onItemUpdated(playlistItem:PlaylistItem) {
-    //     Log.e(TAG, "onItemUpdated")
-    //     mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
-    // }
+    override fun onItemUpdated(playlistItem:PlaylistItem) {
+        Log.e(TAG, "onItemUpdated")
+        mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
+    }
 
     override fun onPlaylistUpdated(playlist:Playlist) {
         Log.e(TAG, "onPlaylistUpdated")

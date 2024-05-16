@@ -594,9 +594,6 @@ void PlaylistService::UpdateItemHlsMediaFilePath(
       {url::kFileScheme, url::kStandardSchemeSeparator, hls_media_file_path}));
   item->media_file_bytes = updated_file_size;
   UpdateItem(std::move(item));
-  for (auto& observer : observers_) {
-    observer->OnItemCached(item.Clone());
-  }
 }
 
 void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,

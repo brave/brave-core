@@ -1694,10 +1694,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;
         }
-        mShouldShowPlaylistMenu = true;
-        if (ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
-            showPlaylistButton(items);
+        if (items.length > 0 && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+            mShouldShowPlaylistMenu = true;
+            if (ChromeSharedPreferences.getInstance()
+                    .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+                showPlaylistButton(items);
+            }
         }
     }
 }

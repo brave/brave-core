@@ -52,6 +52,7 @@ import org.chromium.playlist.mojom.PlaylistService
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 import org.chromium.base.ContextUtils
+import org.chromium.base.Log
 
 @UnstableApi
 class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
@@ -73,7 +74,9 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         private var mediaItemsInPlayer: ArrayList<MediaItem> = ArrayList()
 
         fun addNewPlaylistItemModel(newPlaylistItem: PlaylistItem) {
+            Log.e("playlist", "addNewPlaylistItemModel 1");
             if (ConstantUtils.DEFAULT_PLAYLIST == currentPlaylistId) {
+                Log.e("playlist", "addNewPlaylistItemModel 2");
                 val mediaItem = MediaItemUtil.buildMediaItem(
                     newPlaylistItem,
                     ConstantUtils.DEFAULT_PLAYLIST,
@@ -85,6 +88,7 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         }
 
         fun removePlaylistItemModel(playlistItemId: String) {
+            Log.e("playlist", "removePlaylistItemModel 1");
             mediaItemsInPlayer.forEachIndexed { index, mediaItem ->
                 if (mediaItem.mediaId == playlistItemId && mediaItem.mediaId != currentPlaylistId) {
                     mPlayer.removeMediaItem(index)
@@ -94,6 +98,7 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         }
 
         fun reorderPlaylistItemModel(playlistItemList : List<PlaylistItem>) {
+            Log.e("playlist", "reorderPlaylistItemModel 1");
             mediaItemsInPlayer.forEachIndexed { oldIndex, mediaItem ->
                val newIndex = playlistItemList.indexOfFirst{ it.id == mediaItem.mediaId }
                 mPlayer.moveMediaItem(oldIndex, newIndex)
