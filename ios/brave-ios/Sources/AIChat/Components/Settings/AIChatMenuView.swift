@@ -147,7 +147,7 @@ struct AIChatMenuView: View {
               subtitle: modelPurpose(for: model),
               isSelected: model.key == currentModel.key
             ) {
-              if model.access == .basicAndPremium || model.access == .premium {
+              if model.access == .basicAndPremium {
                 Text(
                   premiumStatus == .active || premiumStatus == .activeDisconnected
                     ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
@@ -161,12 +161,13 @@ struct AIChatMenuView: View {
                   RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                     .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                 )
-              } else if model.access == .premium
-                && (premiumStatus == .inactive || premiumStatus == .unknown)
-              {
-                Image(braveSystemName: "leo.lock.plain")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .opacity(model.access == .premium ? 1.0 : 0.0)
+              } else {
+                Image(
+                  braveSystemName: premiumStatus != .active && premiumStatus != .activeDisconnected
+                    ? "leo.lock.plain" : "leo.lock.open"
+                )
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .opacity(model.access == .premium ? 1.0 : 0.0)
               }
             }
           }
