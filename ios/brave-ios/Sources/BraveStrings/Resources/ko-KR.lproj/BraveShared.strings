@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "페이지를 로드할 수 없습니다.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "프로모션";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "App Store에서 Brave 평가하기";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "숨기기";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "빛처럼 빠른 속도, 최대 100Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store 영수증";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "앱 버전";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "어제";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "고품질 YouTube 동영상 활성화";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "이 실험 기능을 활성화하면 동영상을 가능한 최대 품질로 재생하고 더 많은 데이터를 사용합니다.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "켬";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube 재생 품질";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi 연결 시 허용";

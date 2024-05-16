@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "毎日の使用状況のpingをBraveに自動送信する";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "プロモーション";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "App StoreでBraveを評価";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "隠す";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "最高100 Mbps、超高速のパフォーマンス";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "AppStoreレシート";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "アプリバージョン";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "昨日";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "YouTube動画の高画質再生を有効にする";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "この機能は試験運用中です。有効にすると、利用可能な最大画質で動画を再生します。追加のデータ量を使用しますのでご了承ください。";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "オン";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube再生品質";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Wi-Fi経由で許可";

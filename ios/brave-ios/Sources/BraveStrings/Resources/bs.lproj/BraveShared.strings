@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatski šalji ping dnevne uporabe Braveu";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nije moguće učitati stranicu.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promovirano";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Ocjenjivanje preglednika Brave u trgovini App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sakrij";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Munjevito brzo, do 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Potvrda trgovine App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Inačica aplikacije";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Danas";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Omogući visokokvalitetne videozapise na usluzi Youtube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Omogućivanjem ove eksperimentalne značajke videozapis se reproducira pri maksimalnoj dostupnoj kvaliteti i upotrebljavaju se dodatni podatci.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Uključi";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kvaliteta reprodukcije na usluzi Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Dopusti putem mreže Wi-Fi";

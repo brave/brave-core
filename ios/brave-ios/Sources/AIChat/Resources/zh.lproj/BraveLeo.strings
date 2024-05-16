@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo 是采用 AI 技术的智慧助理，内置于浏览器中。";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "将您在 App Store 的购买链接到您的 Brave 账户，以便在其他设备上使用 Leo。";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "将购买交易连接至您的 Brave 帐户";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "状态";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "无法连接 App Store，请稍后再试。";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Store 错误";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "你有什么反馈意见？";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "不正确";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "没有帮助";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "其他";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "不安全/有害";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo 高级版提供更丰富的语言模型和更高的回答准确性。[了解更多](https://brave.com/) - [关闭](braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "解锁您的创意";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "优先访问具有不同技能的强大模型。";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "探索不同的人工智能模型";
