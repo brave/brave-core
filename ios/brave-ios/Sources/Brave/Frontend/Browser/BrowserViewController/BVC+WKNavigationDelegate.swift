@@ -687,6 +687,7 @@ extension BrowserViewController: WKNavigationDelegate {
       InternalURL(responseURL)?.isSessionRestore == true
     {
       tab.shouldNotifyAdsServiceTabDidChange = false
+      tab.shouldNotifyAdsServiceTabContentDidChange = false
     }
 
     var request: URLRequest?
@@ -1003,18 +1004,23 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if tab.shouldNotifyAdsServiceTabDidChange, tab.navigationType != WKNavigationType.backForward
-      {
-        rewards.reportTabUpdated(
-          tab: tab,
-          isSelected: tabManager.selectedTab == tab,
-          isPrivate: privateBrowsingManager.isPrivateBrowsing
-        )
-        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+      if tab.navigationType != WKNavigationType.backForward {
+        if tab.shouldNotifyAdsServiceTabDidChange {
+          rewards.reportTabUpdated(
+            tab: tab,
+            isSelected: tabManager.selectedTab == tab,
+            isPrivate: privateBrowsingManager.isPrivateBrowsing
+          )
+        }
+        if tab.shouldNotifyAdsServiceTabContentDidChange {
+          tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+        }
       }
-      // Set `shouldNotifyAdsServiceTabDidChange` to `true` so that listeners
+      // Set `shouldNotifyAdsServiceTabDidChange` and
+      // `shouldNotifyAdsServiceTabContentDidChange` to `true` so that listeners
       // are notified of tab changes after the tab is restored.
       tab.shouldNotifyAdsServiceTabDidChange = true
+      tab.shouldNotifyAdsServiceTabContentDidChange = true
 
       Task {
         await tab.updateEthereumProperties()
