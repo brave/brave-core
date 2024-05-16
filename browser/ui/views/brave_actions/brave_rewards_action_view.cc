@@ -293,6 +293,11 @@ void BraveRewardsActionView::OnThemeChanged() {
 
   // Apply same ink drop effect with location bar's other icon views.
   auto* ink_drop = views::InkDrop::Get(this);
+
+  // It's based on Toolbar so need to clear toolbar's inkdrop config.
+  ink_drop->SetCreateRippleCallback(base::NullCallback());
+  ink_drop->SetCreateHighlightCallback(base::NullCallback());
+
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetVisibleOpacity(kOmniboxOpacitySelected);
   ink_drop->SetHighlightOpacity(kOmniboxOpacityHovered);

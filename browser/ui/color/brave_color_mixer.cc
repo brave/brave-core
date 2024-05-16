@@ -311,6 +311,17 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
       base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
   mixer[kColorToolbarInkDropRipple] = {
       base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
+
+  if (key.custom_theme) {
+    return;
+  }
+
+  mixer[kColorLocationBarBackground] = {kColorToolbarBackgroundSubtleEmphasis};
+  mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
+
+  // We don't show border when omnibox doesn't have focus but still
+  // contains in-progress user input.
+  mixer[kColorLocationBarBorderOnMismatch] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
@@ -800,6 +811,7 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kLight)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -844,6 +856,7 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kDark)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
@@ -864,6 +877,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ true)};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
