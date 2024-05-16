@@ -8,12 +8,12 @@
 package org.chromium.chrome.browser.playlist.kotlin
 
 import androidx.recyclerview.widget.DiffUtil
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.playlist.mojom.PlaylistItem
 
 class PlaylistItemDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
         var value = false
-        if (oldItem is PlaylistItemModel && newItem is PlaylistItemModel) {
+        if (oldItem is PlaylistItem && newItem is PlaylistItem) {
             value = oldItem.id == newItem.id
         }
         return value
@@ -21,9 +21,9 @@ class PlaylistItemDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
         var value = false
-        if (oldItem is PlaylistItemModel && newItem is PlaylistItemModel) {
+        if (oldItem is PlaylistItem && newItem is PlaylistItem) {
             value =
-                (oldItem.id == newItem.id && oldItem.hlsMediaPath == newItem.hlsMediaPath && oldItem.isCached == newItem.isCached)
+                (oldItem.id == newItem.id && oldItem.hlsMediaPath.url == newItem.hlsMediaPath.url && oldItem.cached == newItem.cached)
         }
         return value
     }
