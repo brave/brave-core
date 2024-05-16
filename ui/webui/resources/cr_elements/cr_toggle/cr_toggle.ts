@@ -47,7 +47,7 @@ export class CrToggleElement extends PolymerElement {
   // convert it.
   private onChange_(e: CustomEvent<{ checked: boolean }>) {
     this.checked = e.detail.checked
-    this.dispatchEvent(new CustomEvent('change', { detail: e.detail.checked }))
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true, detail: e.detail.checked }))
   }
 }
 
