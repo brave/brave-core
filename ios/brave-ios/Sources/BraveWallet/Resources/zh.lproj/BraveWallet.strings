@@ -236,7 +236,7 @@
 "wallet.braveSwapFree" = "免费";
 
 /* A description of an Bitcoin account, displayed in Accounts tab. */
-"wallet.btcAccountDescription" = "比特幣";
+"wallet.btcAccountDescription" = "比特币";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "购买";
@@ -275,7 +275,7 @@
 "wallet.coinMarketRank" = "排名";
 
 /* One of the coin types for users to create an account to store BTC assets */
-"wallet.coinTypeBitcoin" = "比特幣";
+"wallet.coinTypeBitcoin" = "比特币";
 
 /* A description for Bitcoin coin type. */
 "wallet.coinTypeBitcoinDescription" = "存储 BTC 资产";
@@ -1295,7 +1295,7 @@
 "wallet.restoreWalletTitle" = "汇入一个现有的钱包";
 
 /* The title for the button to retry a failed transaction. */
-"wallet.retryTransactionButtonTitle" = "重試交易";
+"wallet.retryTransactionButtonTitle" = "重试交易";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";

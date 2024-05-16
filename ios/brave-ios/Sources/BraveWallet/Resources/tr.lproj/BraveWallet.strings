@@ -581,7 +581,7 @@
 "wallet.depositDescription" = "Varlıkları yatırın";
 
 /* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
-"wallet.depositEthDisclosure" = "Bu, Ethereum Ağını ve %@ gibi 2. seviye ağlarını destekleyen Ethereum cüzdanıdır";
+"wallet.depositEthDisclosure" = "Bu, Ethereum Ağını ve %@ gibi 2. seviye ağları destekleyen Ethereum cüzdanıdır";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Tüm Seçimleri Kaldır";
@@ -1751,7 +1751,7 @@
 "wallet.sortAssetsTitle" = "Varlıkları Sırala";
 
 /* The title for the button to speed up a submitted transaction. */
-"wallet.speedUpTransactionButtonTitle" = "Speed Up";
+"wallet.speedUpTransactionButtonTitle" = "Hızlandır";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Kredi kartı, banka kartı veya banka hesabıyla ödeyin.";
