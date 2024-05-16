@@ -15,21 +15,21 @@
 
 namespace web_discovery {
 
-using EVPKey = bssl::UniquePtr<EVP_PKEY>;
+using EVPKeyPtr = bssl::UniquePtr<EVP_PKEY>;
 
 struct RSAKeyInfo {
   RSAKeyInfo();
   ~RSAKeyInfo();
-  EVPKey key_pair;
+  EVPKeyPtr key_pair;
   std::string private_key_b64;
   std::string public_key_b64;
 };
 
 std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair();
 
-EVPKey ImportRSAKeyPair(const std::string& private_key_b64);
+EVPKeyPtr ImportRSAKeyPair(const std::string& private_key_b64);
 
-std::optional<std::string> RSASign(const EVPKey& key,
+std::optional<std::string> RSASign(const EVPKeyPtr& key,
                                    base::span<uint8_t> message);
 
 }  // namespace web_discovery
