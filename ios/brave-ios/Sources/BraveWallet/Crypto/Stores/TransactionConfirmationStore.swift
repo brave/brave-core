@@ -72,7 +72,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   }
   @Published var activeTxStatus: BraveWallet.TransactionStatus = .unapproved {
     didSet {
-      if isTxSubmitting == true, oldValue == .approved, activeTxStatus != .approved {
+      if isTxSubmitting == true, activeTxStatus != .approved {
         isTxSubmitting = false
       }
     }
