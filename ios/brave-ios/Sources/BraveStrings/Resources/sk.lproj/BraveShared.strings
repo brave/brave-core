@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automaticky odoslať správu o dennom využívaní službe Brave";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Stránku sa nepodarilo načítať.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Propagovaný";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Ohodnotiť Brave v obchode App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Skrýt";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Blesková rýchlosť až 100 Mb/s";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Potvrdenie z obchodu App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Verzia aplikácie";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Včera";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Povoliť videá YouTube vo vysokej kvalite";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Povolenie tejto experimentálnej funkcie prehrá video v maximálnej dostupnej kvalite a použije ďalšie údaje.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Zapnuté";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kvalita prehrávania na YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Povoliť cez Wi-Fi";

@@ -1453,6 +1453,9 @@
 /* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
 "p3a.continue" = "Fortsett";
 
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Disse private svarene bidrar til å la Brave anslå den generelle bruken av visse funksjoner og forbedre dem for deg.";
+
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillat personvernbevarende produktanalyse (P3A)";
 
@@ -2665,8 +2668,14 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Innstillinger for kvalitet";
 
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Denne private pingen lar Brave anslå aktive brukere.";
+
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Send automatisk ping om daglig bruk til Brave";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunne ikke laste inn side.";
@@ -3430,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Reklamert";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Vurder Brave i App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Skjul";
 
@@ -3576,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Lynrask, opptil 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store-kvittering";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Appversjon";
@@ -3994,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "I går";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Aktiver YouTube-videoer av høy kvalitet";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Hvis du slår på denne eksperimentelle funksjonen, spilles videoer av med den høyeste tilgjengelige kvaliteten – med tilhørende databruk.";
 
@@ -4002,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "På";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube-avspillingskvalitet";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Tillat over wi-fi";

@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo er en AI-basert smart assistent – bygget inn i nettleseren.";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Koble App Store-kjøpet ditt til Brave-kontoen din for å bruke Leo på andre enheter.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Koble kjøpet til Brave-kontoen din";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Kunne ikke koble til App Store. Prøv igjen senere.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Feil i App Store";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Hva handler tilbakemeldingen om?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Feil";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Ikke nyttig";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Annet";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Utrygt/skadelig";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Med Leo Premium får du tilgang til et større sett med språkmodeller for enda mer nyanserte svar. [Les mer](https://brave.com/) - [Avvis](braveai://dismiss)";
@@ -196,6 +211,9 @@
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Få utløp for kreativiteten";
 
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Prioritert tilgang til kraftige modeller med forskjellige evner.";
+
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Utforsk ulike AI-modeller";
 
@@ -282,6 +300,9 @@
 
 /* The title of the menu where user can change the default model */
 "wallet.defaultModelViewTitle" = "Standardmodell";
+
+/* The title of the badge where a model which can be used limited */
+"wallet.limitedModelStatusTitle" = "Begrenset";
 
 /* The title of action for quick menu which displaying advanced settings */
 "wallet.quickMenuAdvancedSettingsActionTitle" = "Avanserte innstillinger";

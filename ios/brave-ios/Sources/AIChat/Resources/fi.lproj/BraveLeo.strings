@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo on suoraan selaimeen integroitu tekoälyperusteinen älyavustaja.";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Linkitä App Store -ostoksesi Brave-tiliisi, jotta voit käyttää Leoa muilla laitteilla.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Brave-tiliisi";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Tila";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Yhteyttä App Storeen ei voitu muodostaa, yritä myöhemmin uudelleen.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Store -virhe";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Mitä palautteesi koskee?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Virheellinen";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Ei auta";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Muu";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Vaarallinen/haitallinen";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium tarjoaa laajennetun valikoiman kielimalleja ja sitä myötä entistä enemmän vastauksia. [Lue lisää](https://brave.com/) – [Ohita](braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Vapauta luovuutesi";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Ensisijainen pääsy tehokkaisiin malleihin, joilla on erilaisia taitoja.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Tutustu erilaisiin tekoälymalleihin";

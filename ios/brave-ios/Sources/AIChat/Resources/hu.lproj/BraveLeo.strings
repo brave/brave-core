@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo egy mesterséges intelligencián alapuló, intelligens asszisztens. Közvetlenül a böngészőbe építve.";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Kapcsolja össze App Store-vásárlását a Brave-fiókjával, hogy más eszközökön is használni tudja a Leót.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Kapcsolja a vásárlást a Brave-fiókjához";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Állapot";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Nem sikerült csatlakozni az App Store-hoz, próbálja újra később.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Store-hiba";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Mihez kapcsolódik a visszajelzése?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Helytelen";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Nem hasznos";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Egyéb";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Nem biztonságos/ártalmas";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "A Leo Premium nyelvi modellek bővített készletéhez biztosít hozzáférést a még árnyaltabb válaszok érdekében. [További tudnivalók](https://brave.com/) - [Elvetés] (braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Engedje szabadjára kreativitását";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Kiemelt hozzáférés a különböző képességekkel rendelkező, nagy teljesítményű modellekhez.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Fedezze fel a különböző MI-modelleket";

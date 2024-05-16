@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Το Leo είναι ένας έξυπνος βοηθός που υποστηρίζεται από AI. Ενσωματωμένος απευθείας στο πρόγραμμα περιήγησης.";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Leo σε άλλες συσκευές.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Συνδέστε την αγορά στον λογαριασμό σας Brave";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Κατάσταση";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Δεν ήταν δυνατή η σύνδεση στο App Store, δοκιμάστε ξανά αργότερα.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Σφάλμα App Store";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Τι αφορούν τα σχόλιά σας;";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Εσφαλμένο";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Μη χρήσιμο";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Άλλο";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Μη ασφαλές/Επιβλαβές";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Το Leo Premium παρέχει πρόσβαση σε ένα διευρυμένο σύνολο μοντέλων γλώσσας για ακόμη μεγαλύτερη διαφοροποίηση απαντήσεων. [Μάθετε περισσότερα](https://brave.com/) - [Παράβλεψη] (braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Ξεκλειδώστε τη δημιουργικότητά σας";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Πρόσβαση κατά προτεραιότητα σε ισχυρά μοντέλα με διαφορετικές δεξιότητες.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Εξερευνήστε διαφορετικά μοντέλα AI";

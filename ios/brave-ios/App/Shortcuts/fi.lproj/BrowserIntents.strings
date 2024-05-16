@@ -56,6 +56,9 @@
 "Paq749" = "Verkkosivusto URL-osoite";
 
 /* (No Comment) */
+"pvi3Ug" = "Tämä avaa osoitteen ${websiteURL} kirjanmerkeistä.";
+
+/* (No Comment) */
 "t7aARA" = "Osoitetta ${websiteURL} ei voi avata uudessa välilehdessä.";
 
 /* (No Comment) */
