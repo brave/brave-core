@@ -246,9 +246,16 @@ std::optional<std::vector<std::string>> DecodeEthCallResponse(
     return std::nullopt;
   }
 
-  const auto& args = std::get<1>(*decoded);
-  if (args.size() != abi_types.size()) {
+  if (decoded->size() != abi_types.size()) {
     return std::nullopt;
+  }
+
+  std::vector<std::string> args;
+  for (const auto& arg : *decoded) {
+    // Ignore non-string values
+    if (arg.is_string()) {
+      args.push_back(arg.GetString());
+    }
   }
 
   return args;

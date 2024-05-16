@@ -18,10 +18,9 @@ namespace brave_wallet {
 std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
     const std::string& encoded_path);
 
-std::optional<std::tuple<std::vector<std::string>,   // tx_params
-                         std::vector<std::string>>>  // tx_args
-ABIDecode(const std::vector<std::string>& types,
-          const std::vector<uint8_t>& data);
+std::optional<base::Value::List> ABIDecode(
+    const std::vector<std::string>& params,
+    const std::vector<uint8_t>& data);
 
 }  // namespace brave_wallet
 
