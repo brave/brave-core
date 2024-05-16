@@ -116,6 +116,60 @@ const char kHideSelectorsInjectScript[] =
           };
         })();)";
 
+const char kRemovalsInjectScript[] =
+    R"((function() {
+          const pollingIntervalMs = 500;
+          const selectorsToRemove = %s;
+          const classesToRemoveBySelector = %s;
+          const attributesToRemoveBySelector = %s;
+          var needsExecution = true;
+          const onMutation = (mutationList) => {
+            if (mutationList && mutationList.find(
+                mutation => (
+                  (mutation.type == "attributes")
+                  || (mutation.addedNodes.length !== 0 && mutation.addedNodes.values().find(node => node.nodeType == 1))
+                )
+              )
+            ) {
+              needsExecution = true;
+            }
+          };
+          const execute = () => {
+              needsExecution = false;
+              selectorsToRemove.forEach(
+                selector => document.querySelectorAll(selector).forEach(elem => elem.remove())
+              );
+              for (const selector in classesToRemoveBySelector) {
+                const classesToRemove = classesToRemoveBySelector[selector];
+                document.querySelectorAll(selector).forEach(elem => {
+                  const classesToActuallyRemove = classesToRemove.filter(elem.classList.contains.bind(elem.classList));
+                  if (classesToActuallyRemove.length) {
+                    elem.classList.remove(classesToActuallyRemove);
+                  }
+                });
+              }
+              for (const selector in attributesToRemoveBySelector) {
+                document.querySelectorAll(selector).forEach(elem =>
+                  attributesToRemoveBySelector[selector]
+                    .filter(elem.hasAttribute.bind(elem))
+                    .forEach(elem.removeAttribute.bind(elem))
+                );
+              }
+          };
+          const maybeExecute = () => {
+            if (needsExecution) {
+              execute();
+            }
+          };
+          const observer = new MutationObserver(onMutation);
+          observer.observe(document.documentElement, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+          })
+          window.setInterval(maybeExecute, pollingIntervalMs);
+        })();)";
+
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -434,6 +488,50 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_,
         blink::WebScriptSource(blink::WebString::FromUTF8(scriptlet_script)),
+        blink::BackForwardCacheAware::kAllow);
+  }
+
+  //:remove()
+  std::string remove_selectors_json;
+  const auto* remove_selectors_list = resources_dict_->FindList("remove_selectors");
+  if (remove_selectors_list && !remove_selectors_list->empty()) {
+    base::JSONWriter::Write(*remove_selectors_list, &remove_selectors_json);
+  }
+
+  //:remove_classes
+  std::string remove_classes_json;
+  const auto* remove_classes_dictionary =
+      resources_dict_->FindDict("remove_classes");
+  if (remove_classes_dictionary) {
+    base::JSONWriter::Write(*remove_classes_dictionary, &remove_classes_json);
+  }
+
+  //:remove_attrs
+  std::string remove_attrs_json;
+  const auto* remove_attrs_dictionary =
+      resources_dict_->FindDict("remove_attrs");
+  if (remove_attrs_dictionary) {
+    base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
+  }
+
+  if (!remove_selectors_json.empty() || !remove_classes_json.empty() || !remove_attrs_json.empty()) {
+    if (remove_selectors_json.empty()) {
+      remove_selectors_json = "[]";
+    }
+    if (remove_classes_json.empty()) {
+      remove_classes_json = "{}";
+    }
+    if (remove_attrs_json.empty()) {
+      remove_classes_json = "{}";
+    }
+
+    // Building a script for removals
+    std::string new_selectors_script = base::StringPrintf(
+        kRemovalsInjectScript, remove_selectors_json.c_str(), remove_classes_json.c_str(), remove_attrs_json.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_,
+        blink::WebScriptSource(
+            blink::WebString::FromUTF8(new_selectors_script)),
         blink::BackForwardCacheAware::kAllow);
   }
 
