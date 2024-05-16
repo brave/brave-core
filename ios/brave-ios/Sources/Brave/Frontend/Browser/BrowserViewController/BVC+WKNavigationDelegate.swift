@@ -1457,7 +1457,8 @@ extension BrowserViewController: WKUIDelegate {
       return
     }
     promptingTab.alertShownCount += 1
-    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [weak self, weak webView] suppress in
+      guard let self, let webView else { return }
       if suppress {
         func suppressDialogues(_: UIAlertAction) {
           self.suppressJSAlerts(webView: webView)
