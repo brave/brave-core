@@ -386,6 +386,9 @@ inline constexpr char kSyncGoogleDashboardURL[] = "https://support.brave.com/";
 // The URL for the "Learn more" page for sync setup on the personal stuff page.
 inline constexpr char16_t kSyncLearnMoreURL[] = u"https://support.brave.com/";
 
+// The URL for the "Learn more" page for Help me Write.
+inline constexpr char kComposeLearnMorePageURL[] = "https://support.brave.com/";
+
 // The URL for the "Learn more" link in the enterprise disclaimer for managed
 // profile in the Signin Intercept bubble.
 inline constexpr char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
