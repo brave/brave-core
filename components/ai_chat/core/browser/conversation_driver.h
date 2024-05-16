@@ -264,7 +264,6 @@ class ConversationDriver {
       mojom::SuggestionGenerationStatus::None;
   bool is_video_ = false;
   bool should_send_page_contents_ = true;
-  bool has_summarized_ = false;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from
