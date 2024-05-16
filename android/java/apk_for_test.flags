@@ -93,6 +93,11 @@
     *** createAdapterIfNecessary(...);
 }
 
+-keep class org.chromium.components.browser_ui.site_settings.SiteSettingsCategory {
+    *** contentSettingsType(...);
+    *** preferenceKey(...);
+}
+
 -keep class org.chromium.base.CommandLineInitUtil {
     *** initCommandLine(...);
 }

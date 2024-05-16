@@ -157,6 +157,7 @@ import org.chromium.url.GURL;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -859,6 +860,124 @@ public class BytecodeTest {
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
+    }
+
+    @Test
+    @SmallTest
+    public void testMethodsAreStatic() throws Exception {
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/homepage/HomepageManager",
+                        "shouldCloseAppWithZeroTabs"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/ui/appmenu/AppMenu", "getPopupPosition"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                        "addOrEditBookmark"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                        "showBookmarkManagerOnPhone"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils", "isSpecialFolder"));
+        Assert.assertTrue(
+                methodIsStatic("org/chromium/base/CommandLineInitUtil", "initCommandLine"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                        "getResourceItem"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/ui/"
+                                + "default_browser_promo/DefaultBrowserPromoUtils",
+                        "prepareLaunchPromoIfNeeded"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/homepage/HomepageManager",
+                        "shouldCloseAppWithZeroTabs"));
+        Assert.assertTrue(
+                methodIsStatic("org/chromium/chrome/browser/IntentHandler", "getUrlForCustomTab"));
+        Assert.assertTrue(
+                methodIsStatic("org/chromium/chrome/browser/IntentHandler", "getUrlForWebapp"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "isJavascriptSchemeOrInvalidUrl"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/IntentHandler", "extractUrlFromIntent"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/LaunchIntentDispatcher", "isCustomTabIntent"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/share/"
+                                + "send_tab_to_self/ManageAccountDevicesLinkView",
+                        "getSharingAccountInfo"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/download/MimeUtils", "canAutoOpenMimeType"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
+                        "shouldShowManageWindowsMenu"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/permissions/PermissionDialogModelFactory",
+                        "getModel"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "shouldShowTabSwitcher"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                        "getSearchEngineSourceType"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                        "sortAndFilterUnnecessaryTemplateUrl"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
+                        "getPreferenceKey"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/browser_ui/site_settings/SiteSettingsCategory",
+                        "contentSettingsType"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/browser_ui/site_settings/SiteSettingsCategory",
+                        "preferenceKey"));
+        Assert.assertTrue(
+                methodIsStatic("org/chromium/chrome/browser/tab/TabHelpers", "initTabHelpers"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getActionButtonTintList"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils", "getTitleTextColor"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/tab_ui/TabUiThemeUtils",
+                        "getCardViewBackgroundColor"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/chrome/browser/theme/ThemeUtils",
+                        "getTextBoxColorForToolbarBackgroundInNonNativePage"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "get"));
+        Assert.assertTrue(
+                methodIsStatic(
+                        "org/chromium/components/browser_ui/"
+                                + "site_settings/WebsitePermissionsFetcher",
+                        "getPermissionsType"));
     }
 
     @Test
@@ -1984,6 +2103,20 @@ public class BytecodeTest {
                     }
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean methodIsStatic(String className, String methodName) {
+        Class c = getClassForPath(className);
+        if (c == null) {
+            return false;
+        }
+
+        for (Method m : c.getDeclaredMethods()) {
+            if (m.getName().equals(methodName)) {
+                return Modifier.isStatic(m.getModifiers());
             }
         }
         return false;
