@@ -82,7 +82,7 @@ bool AdsTabHelper::UserHasJoinedBraveRewards() const {
 }
 
 bool AdsTabHelper::IsVisible() const {
-  return is_web_contents_visible_ && is_browser_active_;
+  return is_web_contents_visible_ && is_browser_active_.value_or(false);
 }
 
 bool AdsTabHelper::IsNewNavigation(
@@ -314,12 +314,12 @@ void AdsTabHelper::WebContentsDestroyed() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  const bool last_is_browser_active = is_browser_active_;
-  is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
-                           web_contents()) != TabStripModel::kNoTab;
-  if (last_is_browser_active == is_browser_active_) {
+  if (is_browser_active_ && *is_browser_active_) {
+    // Already active.
     return;
   }
+
+  is_browser_active_ = true;
 
   MaybeNotifyBrowserDidBecomeActive();
 
@@ -329,12 +329,12 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  const bool last_is_browser_active = is_browser_active_;
-  is_browser_active_ = browser->tab_strip_model()->GetIndexOfWebContents(
-                           web_contents()) == TabStripModel::kNoTab;
-  if (last_is_browser_active == is_browser_active_) {
+  if (is_browser_active_ && !*is_browser_active_) {
+    // Already inactive.
     return;
   }
+
+  is_browser_active_ = false;
 
   MaybeNotifyBrowserDidResignActive();
 
