@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Brave";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosi";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Berikan Penilaian dalam App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sembunyikan";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Sepantas kilat, sehingga 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Resit App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versi Aplikasi";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Semalam";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Dayakan Video YouTube Berkualiti Tinggi";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Apabila ciri percubaan ini didayakan, video akan dimainkan semula pada kualiti maksimum yang tersedia dan data tambahan akan digunakan.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Dihidupkan";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Kualiti Main Semula YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Benarkan melalui Wi-Fi";

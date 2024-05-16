@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatycznie wysyłaj pingi dziennego użycia do Brave";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nie można załadować strony.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promowane";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Oceń Brave w sklepie App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Ukryj";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Szybki jak błyskawica, do 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Potwierdzenie transakcji sklepu App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Wersja aplikacji";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Wczoraj";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Włącz odtwarzanie filmów YouTube w wysokiej jakości";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Włączenie tej eksperymentalnej funkcji spowoduje odtwarzanie filmów w najwyższej dostępnej jakości. Będzie ona wykorzystywać większość ilość danych.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Wł.";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Jakość odtwarzania w YouTube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Zezwól na odtwarzanie przez Wi-Fi";

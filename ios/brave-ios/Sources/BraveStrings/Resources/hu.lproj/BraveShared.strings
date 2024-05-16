@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Napi használatról szóló értesítések automatikus küldése a Brave-be";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nem sikerült betölteni az oldalt.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promotált";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Értékelje a Brave-et az App Store-ban";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Elrejtés";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Villámgyors, akár 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store-nyugta";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Alkalmazás verziója";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Tegnap";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Jó minőségű YouTube-videók engedélyezése";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Ha engedélyezi ezt a kísérleti funkciót, akkor a rendszer a maximális elérhető minőségben fogja lejátszani a videókat, és további adatmennyiséget fog használni.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Be";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube-lejátszási minőség";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Engedélyezés Wi-Fi esetén";
