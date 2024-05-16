@@ -570,6 +570,7 @@ brave_java_resources = [
   "java/res/drawable/ic_p3a_checkbox_filled.xml",
   "java/res/drawable/ic_p3a_checkbox_outline.xml",
   "java/res/drawable/ic_password.xml",
+  "java/res/drawable/refresh_credentials_bg.xml",
   "java/res/drawable/ic_pause_filled.xml",
   "java/res/drawable/ic_payment_methods.xml",
   "java/res/drawable/ic_payout_status_complete.xml",
