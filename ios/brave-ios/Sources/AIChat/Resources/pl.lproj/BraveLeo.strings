@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo to inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Powiąż zakup ze sklepu App Store z kontem Brave, aby używać Leo na innych urządzeniach.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Połącz zakup ze swoim kontem Brave";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Nie można połączyć się ze sklepem App Store. Spróbuj ponownie później.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Błąd App Store";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Czego dotyczy Twoja opinia?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Niepoprawna";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Nieprzydatna";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Inne";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Niebezpieczna/szkodliwa";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium zapewnia dostęp do rozszerzonego zestawu modeli językowych zapewniających jeszcze większą szczegółowość odpowiedzi. [Dowiedz się więcej](https://brave.com/) - [Odrzuć](braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Odblokuj kreatywność";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Priorytetowy dostęp do zaawansowanych modeli z różnymi umiejętnościami.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Eksploruj różne modele sztucznej inteligencji";

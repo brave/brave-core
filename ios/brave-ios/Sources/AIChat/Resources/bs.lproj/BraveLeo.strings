@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) ugrađen izravno u preglednik";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Povežite kupnju iz trgovine App Store sa svojim računom preglednika Brave za upotrebljavanje pomoćnika Lea na drugim uređajima.";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Povežite kupnju sa svojim računom Brave";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Nije moguće povezati se s trgovinom App Store. Pokušajte ponovno poslije.";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "Pogreška trgovine App Store";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "Koja je tema vaših povratnih informacija?";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Netočno";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Nije korisno";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Ostalo";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Nesigurno/štetno";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Pomoćnikom Leo Premium pruža se pristup proširenom skupu jezičnih modela za još veću nijansiranost odgovora.[Doznaj više](https://brave.com/) – [Odbaci] (braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Otključajte svoju kreativnost";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Prioritetni pristup moćnim modelima s različitim vještinama.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Istražite različite modele umjetne inteligencije";

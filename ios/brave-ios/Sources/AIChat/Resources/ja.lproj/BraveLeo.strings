@@ -10,6 +10,9 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです。";
 
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでLeoを利用できます。";
+
 /* The title for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Braveアカウントに購入情報をリンク";
 
@@ -21,6 +24,9 @@
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "稼働状況";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "App Storeに接続できませんでした。後でもう一度お試しください。";
 
 /* The title for the error showing there is an error from App Store */
 "aichat.appStoreErrorTitle" = "App Storeとの接続時にエラーが発生しました";
@@ -61,8 +67,17 @@
 /* The title for view which listsfeedback option list */
 "aichat.feedbackOptionsViewTitle" = "フィードバックのカテゴリを選択してください";
 
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "間違っていた";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "役に立たなかった";
+
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "その他";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "危険 / 危害につながるものであった";
 
 /* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premiumでは、さらに拡張された言語モデルセットを利用できるため、さらに豊かなニュアンスの回答を提供できます。[詳細はこちら](https://brave.com/) - [閉じる](braveai://dismiss)";
@@ -195,6 +210,9 @@
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "創造性を発揮";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "さまざまなスキルを持つパワフルなモデルへの優先アクセス。";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "さまざまなAIモデルを探索";
