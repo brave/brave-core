@@ -181,6 +181,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "您現在可以略過此步驟，但仍須備份復原詞句以確保帳戶安全。";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "立即備份";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "備份錢包";
 
@@ -232,11 +235,17 @@
 /* The text beside the striked-through percentage Brave would normally charge for a swap. */
 "wallet.braveSwapFree" = "免費";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "比特幣";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "購買";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "透過 Wyre 使用 Apple Pay、信用卡或金融卡購買加密資產。";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "取消交易";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "日期";
@@ -264,6 +273,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "排名";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "比特幣";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "儲存 BTC 資產";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "以太坊";
@@ -532,6 +547,9 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "解密要求";
 
+/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
+"wallet.defaultBitcoinAccountName" = "Bitcoin 帳戶 %lld";
+
 /* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
 "wallet.defaultEthAccountName" = "以太坊帳戶 %lld";
 
@@ -558,6 +576,12 @@
 
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "複製";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "存入資產";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "此為以太坊錢包，支援以太坊網路和第 2 層網路，例如 %@";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "取消選取所有項目";
@@ -699,6 +723,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "輸入代幣符號";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "錯誤";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + EVM 鏈";
@@ -1267,6 +1294,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "匯入現有錢包";
 
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "重試交易";
+
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "使用您的銀行帳戶即時購買。手續費較低。";
 
@@ -1711,11 +1741,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "升級隨機帳戶";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "自隨機帳戶提款";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "依法定貨幣值或名稱排序";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "排序資產";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "加速";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "使用信用卡、簽帳金融卡或銀行帳戶支付。";

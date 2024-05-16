@@ -235,11 +235,17 @@
 /* The text beside the striked-through percentage Brave would normally charge for a swap. */
 "wallet.braveSwapFree" = "無料";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "ビットコイン";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "購入する";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Wyreを通じて暗号資産をApple Pay、クレジットカード、デビットカードで購入します。";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "トランザクションをキャンセル";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "日";
@@ -267,6 +273,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "ランク";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "ビットコイン";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "BTCアセットを保管";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "イーサリアム";
@@ -535,6 +547,9 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "復号化要求";
 
+/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
+"wallet.defaultBitcoinAccountName" = "ビットコインアカウント %lld";
+
 /* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
 "wallet.defaultEthAccountName" = "イーサリアムアカウント %lld";
 
@@ -708,6 +723,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "トークンシンボルを入力する";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "エラー";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "イーサリアム + EVMチェーン";
@@ -1276,6 +1294,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "既存のウォレットをインポート";
 
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "トランザクションを再試行";
+
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "銀行口座で即座に購入。手数料を抑えられます。";
 
@@ -1720,11 +1741,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "ノンスアカウントをアップグレード";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "ノンスアカウントから引き出し";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "法定通貨の価値または名前で並べ替え";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "アセットを並べ替え";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Speed Up";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "クレジットカード、デビットカード、銀行口座で支払い。";
