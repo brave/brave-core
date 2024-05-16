@@ -22,32 +22,44 @@ BraveTabStripRegionView::~BraveTabStripRegionView() = default;
 
 void BraveTabStripRegionView::Layout(PassKey) {
   UpdateTabStripMargin();
-
   LayoutSuperclass<TabStripRegionView>(this);
 
   // Ensure that the new tab button is positioned after the last tab, with the
   // correct amount of padding.
-  new_tab_button_->SetX(tab_strip_container_->bounds().right() +
-                        GetLayoutConstant(TAB_STRIP_PADDING));
+  if (new_tab_button_) {
+    new_tab_button_->SetX(tab_strip_container_->bounds().right() +
+                          GetLayoutConstant(TAB_STRIP_PADDING));
+  }
 }
 
 void BraveTabStripRegionView::UpdateTabStripMargin() {
   TabStripRegionView::UpdateTabStripMargin();
+
+  gfx::Insets margins;
+  bool vertical_tabs =
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser());
+
+  // In horizontal mode, take the current right margin. It is required so that
+  // the new tab button will not be covered by the frame grab handle.
+  if (!vertical_tabs) {
+    if (auto* current = tab_strip_container_->GetProperty(views::kMarginsKey)) {
+      margins.set_right(current->right());
+    }
+  }
 
   // Ensure that the correct amount of left margin is applied to the tabstrip.
   // When we are in a fullscreen/condensed mode, we want the tabstrip to meet
   // the frame edge so that the leftmost tab can be selected at the edge of the
   // screen.
   if (tabs::features::HorizontalTabsUpdateEnabled()) {
-    gfx::Insets* margins =
-        tab_strip_container_->GetProperty(views::kMarginsKey);
-    if (!tab_strip_->controller()->IsFrameCondensed() &&
-        !tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
-      margins->set_left(brave_tabs::kHorizontalTabStripLeftMargin);
+    if (!tab_strip_->controller()->IsFrameCondensed() && !vertical_tabs) {
+      margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin);
     } else {
-      margins->set_left(0);
+      margins.set_left(0);
     }
   }
+
+  tab_strip_container_->SetProperty(views::kMarginsKey, margins);
 }
 
 void BraveTabStripRegionView::Initialize() {
@@ -55,7 +67,6 @@ void BraveTabStripRegionView::Initialize() {
   if (auto* ntb = views::AsViewClass<TabStripControlButton>(new_tab_button_)) {
     ntb->SetVectorIcon(kLeoPlusAddIcon);
   }
-
 }
 
 BEGIN_METADATA(BraveTabStripRegionView)
