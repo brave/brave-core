@@ -43,9 +43,7 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 void WDPService::Start() {
   credential_manager_ = std::make_unique<CredentialManager>(
       profile_prefs_, shared_url_loader_factory_.get(),
-      &last_loaded_server_config_,
-      base::BindRepeating(&WDPService::OnCredentialsLoaded,
-                          base::Unretained(this)));
+      &last_loaded_server_config_);
   server_config_loader_ = std::make_unique<ServerConfigLoader>(
       shared_url_loader_factory_.get(),
       base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)));
@@ -69,11 +67,6 @@ void WDPService::OnEnabledChange() {
 void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
   last_loaded_server_config_ = std::move(config);
   credential_manager_->JoinGroups();
-}
-
-void WDPService::OnCredentialsLoaded() {
-  // TODO(djandries): send queued messages if any, or remove this method
-  // if not needed
 }
 
 }  // namespace web_discovery

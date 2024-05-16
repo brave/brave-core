@@ -77,7 +77,7 @@ std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair() {
   return info;
 }
 
-EVPKey ImportRSAKeyPair(const std::string& private_key_b64) {
+EVPKeyPtr ImportRSAKeyPair(const std::string& private_key_b64) {
   std::string decoded_key;
   if (!base::Base64Decode(private_key_b64, &decoded_key)) {
     return nullptr;
@@ -85,11 +85,11 @@ EVPKey ImportRSAKeyPair(const std::string& private_key_b64) {
 
   const unsigned char* pkey_data =
       reinterpret_cast<const unsigned char*>(decoded_key.data());
-  return EVPKey(
+  return EVPKeyPtr(
       d2i_PrivateKey(EVP_PKEY_RSA, nullptr, &pkey_data, decoded_key.length()));
 }
 
-std::optional<std::string> RSASign(const EVPKey& key,
+std::optional<std::string> RSASign(const EVPKeyPtr& key,
                                    base::span<uint8_t> message) {
   CHECK(key);
   bssl::ScopedEVP_MD_CTX ctx;

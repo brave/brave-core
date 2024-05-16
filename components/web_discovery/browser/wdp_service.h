@@ -42,7 +42,6 @@ class WDPService : public KeyedService {
   void OnEnabledChange();
 
   void OnConfigChange(std::unique_ptr<ServerConfig> config);
-  void OnCredentialsLoaded();
 
   raw_ptr<PrefService> profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
