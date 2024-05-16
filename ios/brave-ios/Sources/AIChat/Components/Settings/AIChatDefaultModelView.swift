@@ -70,9 +70,13 @@ struct AIChatDefaultModelView: View {
                           .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                       )
                   } else if model.access == .premium {
-                    Image(braveSystemName: "leo.lock.plain")
-                      .foregroundStyle(Color(braveSystemName: .iconDefault))
-                      .padding(.horizontal, 4.0)
+                    Image(
+                      braveSystemName: aiModel.premiumStatus != .active
+                        && aiModel.premiumStatus != .activeDisconnected
+                        ? "leo.lock.plain" : "leo.lock.open"
+                    )
+                    .foregroundStyle(Color(braveSystemName: .iconDefault))
+                    .padding(.horizontal, 4.0)
                   }
                 }
               }
