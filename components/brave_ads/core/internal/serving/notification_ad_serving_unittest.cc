@@ -25,6 +25,7 @@ class BraveAdsNotificationAdServingTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     NotifyDidInitializeAds();
+    NotifyBrowserDidBecomeActive();
   }
 
   void MaybeServeAd() {

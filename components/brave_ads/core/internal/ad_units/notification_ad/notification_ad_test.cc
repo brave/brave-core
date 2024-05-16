@@ -48,7 +48,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   ServeAd();
 }
 
-TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
+TEST_F(BraveAdsNotificationAdIntegrationTest,
+       DoNotServeIfPermissionRulesAreDenied) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
