@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Brave";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Реклама";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Оцінити Brave у App Store";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Приховати";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Блискавична швидкість до 100 Мбіт/с";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Квитанція від App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Версія програми";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Учора";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Увімкнути високоякісні відео Youtube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Ця експериментальна функція відтворюватиме відео з максимальною доступною якістю, що призведе до збільшення використовуваних даних.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Увімк.";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Якість відео Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Дозволити через мережі Wi-Fi";

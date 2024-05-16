@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Trimite automat către Brave ping-ul de utilizare zilnică";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nu s-a putut încărca pagina.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promovat";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Evaluați Brave în AppStore";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Ascunde";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Super viteze de până la 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Chitanță AppStore";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versiunea aplicației";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Ieri";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Activați calitate înaltă pentru videoclipurile de pe Youtube";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Activarea acestei funcții experimentale va reda imagini video la calitatea maximă disponibilă și va utiliza date suplimentare.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Pornit";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Calitatea redării pe Youtube";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Permite pe Wi-Fi";

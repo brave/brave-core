@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "推廣內容";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "在 App Store 為 Brave 評分";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "隱藏";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store 收據";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "應用程式版本";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "昨天";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "啟用高畫質 YouTube 影片";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "啟用此實驗性功能將以可用的最高畫質播放影片，並將使用額外的數據流量。";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "開啟";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube 播放品質";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "允許透過 Wi-Fi";

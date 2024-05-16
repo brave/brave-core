@@ -181,6 +181,9 @@
 /* The title on the pop up when user decides to skip backup recovery phrases. */
 "wallet.backupSkipPromptTitle" = "Sie können diesen Schritt jetzt überspringen, aber Sie müssen trotzdem eine Sicherungskopie Ihrer Wiederherstellungsphrase erstellen, um die Sicherheit Ihres Kontos zu gewährleisten.";
 
+/* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.backUpWallet" = "Jetzt sichern";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar */
 "wallet.backupWalletBackButtonTitle" = "Sicherungs-Wallet";
 
@@ -232,11 +235,17 @@
 /* The text beside the striked-through percentage Brave would normally charge for a swap. */
 "wallet.braveSwapFree" = "Kostenlos";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Kaufen";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Kaufen Sie über Wyre Kryptowährung mit Apple Pay, Kredit- oder Debitkarte.";
+
+/* The title for the button to cancel a submitted transaction. */
+"wallet.cancelTransactionButtonTitle" = "Transaktion abbrechen";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Datum";
@@ -264,6 +273,12 @@
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Rang";
+
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
+/* A description for Bitcoin coin type. */
+"wallet.coinTypeBitcoinDescription" = "BTC-Asset speichern";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -532,6 +547,9 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Anfrage entschlüsseln";
 
+/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
+"wallet.defaultBitcoinAccountName" = "Bitcoin-Konto %lld";
+
 /* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
 "wallet.defaultEthAccountName" = "Ethereum-Konto %lld";
 
@@ -558,6 +576,12 @@
 
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Kopieren";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.depositDescription" = "Assets einzahlen";
+
+/* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
+"wallet.depositEthDisclosure" = "Dies ist eine Ethereum-Wallet, die das Ethereum-Netzwerk und Level-2-Netzwerke wie %@ unterstützt.";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Gesamte Auswahl aufheben";
@@ -699,6 +723,9 @@
 
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Tokensymbol eingeben";
+
+/* A title displayed in an alert above the error message or description. */
+"wallet.errorAlertTitle" = "Fehler";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
 "wallet.ethAccountDescription" = "Ethereum + EVM-Ketten";
@@ -1267,6 +1294,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Vorhandene Wallet importieren";
 
+/* The title for the button to retry a failed transaction. */
+"wallet.retryTransactionButtonTitle" = "Transaktion erneut versuchen";
+
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Sofortkauf mit Ihrem Bankkonto. Niedrigere Gebühren.";
 
@@ -1711,11 +1741,17 @@
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Nonce-Konto hochstufen";
 
+/* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Von Nonce-Konto abheben";
+
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "Sortieren Sie nach Fiat-Wert oder Name";
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sortieren Sie Vermögenswerte";
+
+/* The title for the button to speed up a submitted transaction. */
+"wallet.speedUpTransactionButtonTitle" = "Beschleunigen";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Bezahlen Sie per Kreditkarte, Lastschrift oder Bankkonto.";

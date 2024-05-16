@@ -2674,6 +2674,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöping Bravelle";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Sivun lataaminen epäonnistui.";
 
@@ -3436,6 +3439,9 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promootio";
 
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Arvioi Brave App Storessa";
+
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Piilota";
 
@@ -3582,6 +3588,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Valonnopea, jopa 100 Mb/s";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store -kuitti";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Sovellusversio";
@@ -4000,6 +4009,9 @@
 /* History tableview section header */
 "Yesterday" = "Eilen";
 
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Ota korkealaatuiset YouTube-videot käyttöön";
+
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Jos tämä kokeellinen ominaisuus otetaan käyttöön, videot toistetaan parhaalla mahdollisella saatavilla olevalla laadulla. Lisädataa käytetään.";
 
@@ -4008,6 +4020,9 @@
 
 /* Setting that enables high quality playback always */
 "YoutubeMediaQualityOn" = "Käytössä";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube-videoiden toistolaatu";
 
 /* Setting that enables high quality playback on wifi only */
 "YoutubeMediaQualityWifi" = "Salli Wi-Fin kautta";
