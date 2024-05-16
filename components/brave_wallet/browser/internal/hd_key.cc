@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include <optional>
+#include <utility>
 
 #include "base/check.h"
 #include "base/containers/span.h"
@@ -155,7 +156,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
   }
 
   SecureVector buf(decoded_key.begin(), decoded_key.end());
-  SecureZeroData(decoded_key.data(), decoded_key.size());
+  SecureZeroData(base::as_writable_byte_span(decoded_key));
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   const uint8_t* ptr = buf.data();

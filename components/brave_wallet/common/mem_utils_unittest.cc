@@ -13,13 +13,10 @@ namespace brave_wallet {
 
 TEST(MemUtilsUnitTest, SecureZeroData) {
   int a = 123;
-  SecureZeroData(&a, sizeof(a));
+  SecureZeroData(base::byte_span_from_ref(a));
   EXPECT_EQ(a, 0);
-  std::string b = "brave";
-  SecureZeroData(&b, sizeof(b));
-  EXPECT_TRUE(b.empty());
   std::vector<uint8_t> c = {0xde, 0xad, 0xbe, 0xef};
-  SecureZeroData(&c, sizeof(c));
+  SecureZeroData(base::as_writable_byte_span(c));
   for (const auto& byte : c) {
     EXPECT_EQ(byte, 0);
   }
