@@ -269,11 +269,11 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   PrefService* local_state = g_browser_process->local_state();
-  auto* service = new PlaylistService(
-      context, local_state,
-      std::make_unique<PlaylistServiceDelegateImpl>(
-          Profile::FromBrowserContext(context)),
-      brave_stats::GetFirstRunTime(local_state));
+  auto* service =
+      new PlaylistService(context, local_state,
+                          std::make_unique<PlaylistServiceDelegateImpl>(
+                              Profile::FromBrowserContext(context)),
+                          brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(

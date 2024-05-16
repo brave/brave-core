@@ -13,7 +13,7 @@
   GetMediaContentType() const override; \
   MediaPlayerId GetMediaPlayerId
 
-#include "src/content/browser/media/session/media_session_controller.h"
+#include "src/content/browser/media/session/media_session_controller.h"  // IWYU pragma: export
 
 #undef GetMediaContentType
 

@@ -14,7 +14,7 @@
   SetAudioFocusGroupId(param) = 0;  \
   virtual std::optional<MediaPlayerId> GetActiveMediaPlayerId() const
 
-#include "src/content/public/browser/media_session.h"
+#include "src/content/public/browser/media_session.h"  // IWYU pragma: export
 
 #undef SetAudioFocusGroupId
 

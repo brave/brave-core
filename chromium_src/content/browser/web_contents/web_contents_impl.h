@@ -30,7 +30,7 @@ class MediaWebContentsObserver;
   }                                                          \
   const MediaWebContentsObserver* media_web_contents_observer() const
 
-#include "src/content/browser/web_contents/web_contents_impl.h"
+#include "src/content/browser/web_contents/web_contents_impl.h"  // IWYU pragma: export
 
 #undef media_web_contents_observer
 #undef GetBackForwardTransitionAnimationManager

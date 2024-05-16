@@ -12,7 +12,7 @@
   GetMediaContentType() const = 0; \
   virtual MediaPlayerId GetMediaPlayerId
 
-#include "src/content/browser/media/session/media_session_player_observer.h"
+#include "src/content/browser/media/session/media_session_player_observer.h"  // IWYU pragma: export
 
 #undef GetMediaContentType
 

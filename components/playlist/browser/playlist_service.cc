@@ -300,11 +300,10 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
   return true;
 }
 
-void PlaylistService::AddMediaFileFromItem(
-    const std::string& playlist_id,
-    bool cache,
-    AddMediaFilesCallback callback,
-    mojom::PlaylistItemPtr item) {
+void PlaylistService::AddMediaFileFromItem(const std::string& playlist_id,
+                                           bool cache,
+                                           AddMediaFilesCallback callback,
+                                           mojom::PlaylistItemPtr item) {
   if (!item) {
     return std::move(callback).Run({});
   }

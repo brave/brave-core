@@ -50,8 +50,7 @@ std::vector<mojom::PlaylistItemPtr> ExtractPlaylistItems(
     auto* src = media_dict.FindString("src");
     auto is_blob_from_media_source =
         media_dict.FindBool("srcIsMediaSourceObjectURL");
-    if (!name || !page_source || !src ||
-        !is_blob_from_media_source) {
+    if (!name || !page_source || !src || !is_blob_from_media_source) {
       LOG(ERROR) << __FUNCTION__ << ": media is missing required fields";
       continue;
     }

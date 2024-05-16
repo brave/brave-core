@@ -17,7 +17,7 @@
   virtual base::flat_map<MediaPlayerId, std::tuple<GURL, bool, double>> \
   GetMediaMetadataByMediaPlayerIds() const
 
-#include "src/content/public/browser/web_contents.h"
+#include "src/content/public/browser/web_contents.h"  // IWYU pragma: export
 
 #undef GetBackForwardTransitionAnimationManager
 

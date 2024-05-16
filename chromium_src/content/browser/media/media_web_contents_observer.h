@@ -33,7 +33,7 @@
   double GetDuration() const;               \
   void OnMediaLoaded(const GURL& url, bool is_media_source, double duration)
 
-#include "src/content/browser/media/media_web_contents_observer.h"
+#include "src/content/browser/media/media_web_contents_observer.h"  // IWYU pragma: export
 
 #undef OnVideoVisibilityChanged
 #undef SuspendAllMediaPlayers

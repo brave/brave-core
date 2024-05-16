@@ -15,10 +15,9 @@
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
-#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
@@ -447,8 +446,7 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
 void PlaylistTabHelper::OnGetLoadedUrl(
     std::vector<mojom::PlaylistItemPtr> items,
     const GURL& url,
-    bool is_media_source) {
-}
+    bool is_media_source) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
 
