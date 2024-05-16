@@ -43,6 +43,7 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
+#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -131,6 +132,7 @@ class ContentsBackground : public views::View {
  public:
   ContentsBackground() {
     SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+    SetEnabled(false);
   }
 };
 BEGIN_METADATA(ContentsBackground)
@@ -313,6 +315,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         contents_container_->AddChildView(std::move(devtools_web_view));
     secondary_contents_web_view_ =
         contents_container_->AddChildView(std::move(contents_web_view));
+    split_view_separator_ = contents_container_->AddChildView(
+        std::make_unique<SplitViewSeparator>());
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
@@ -320,6 +324,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         secondary_contents_web_view_);
     contents_layout_manager->set_secondary_devtools_view(
         secondary_devtools_web_view_);
+    contents_layout_manager->SetSplitViewSeparator(split_view_separator_);
 
     auto* split_view_browser_data =
         SplitViewBrowserData::FromBrowser(browser_.get());
@@ -497,6 +502,8 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     secondary_devtools_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetVisible(false);
   }
+
+  split_view_separator_->SetVisible(secondary_contents_web_view_->GetVisible());
 
   contents_container()->DeprecatedLayoutImmediately();
 }
