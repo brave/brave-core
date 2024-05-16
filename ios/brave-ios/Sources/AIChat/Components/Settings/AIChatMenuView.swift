@@ -59,6 +59,7 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
+      .multilineTextAlignment(.leading)
       .frame(maxWidth: .infinity, alignment: .leading)
 
       rightAccessoryView
@@ -146,7 +147,7 @@ struct AIChatMenuView: View {
               subtitle: modelPurpose(for: model),
               isSelected: model.key == currentModel.key
             ) {
-              if model.access == .basicAndPremium {
+              if model.access == .basicAndPremium || model.access == .premium {
                 Text(
                   premiumStatus == .active || premiumStatus == .activeDisconnected
                     ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
@@ -160,7 +161,9 @@ struct AIChatMenuView: View {
                   RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                     .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                 )
-              } else {
+              } else if model.access == .premium
+                && (premiumStatus == .inactive || premiumStatus == .unknown)
+              {
                 Image(braveSystemName: "leo.lock.plain")
                   .foregroundStyle(Color(braveSystemName: .iconDefault))
                   .opacity(model.access == .premium ? 1.0 : 0.0)
