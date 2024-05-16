@@ -91,7 +91,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
-            boolean shouldCreateLogoInStartToolbar,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
             @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
@@ -125,7 +124,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 constraintsSupplier,
                 compositorInMotionSupplier,
                 browserStateBrowserControlsVisibilityDelegate,
-                shouldCreateLogoInStartToolbar,
                 fullscreenManager,
                 tabObscuringHandler,
                 desktopWindowStateProvider);
