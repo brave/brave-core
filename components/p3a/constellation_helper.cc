@@ -32,8 +32,8 @@ constexpr double kNebulaScramblingRate = 0.05;
 
 bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
   bool should_participate = base::RandDouble() < kNebulaParticipationRate;
-  if (!should_participate) {
-    return false;
+  if (should_participate) {
+    return true;
   }
   bool should_scramble = base::RandDouble() < kNebulaScramblingRate;
   if (should_scramble) {
@@ -41,8 +41,9 @@ bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
     base::RandBytes(random_buffer);
 
     (*layers)[0] = base::Base64Encode(random_buffer);
+    return true;
   }
-  return true;
+  return false;
 }
 
 }  // namespace
