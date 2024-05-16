@@ -198,7 +198,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
             if (!success) {
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
             } else {
-              BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
+              BLOG(1, "Purged orphaned ad events for " << ad_type);
             }
 
             std::move(callback).Run(success);
