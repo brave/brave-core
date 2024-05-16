@@ -45,9 +45,8 @@ class PlaylistBackgroundWebContentses final {
       const PlaylistBackgroundWebContentses&) = delete;
   ~PlaylistBackgroundWebContentses();
 
-  void Add(const GURL& url,
-           std::string duration,
-           base::OnceCallback<void(GURL, bool)> callback,
+  void Add(mojom::PlaylistItemPtr item,
+           base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
            base::TimeDelta timeout = base::Seconds(10));
 
   void Reset();
@@ -61,9 +60,10 @@ class PlaylistBackgroundWebContentses final {
                            UserAgentOverride);
 
   void Remove(content::WebContents* web_contents,
-              base::OnceCallback<void(GURL, bool)> callback,
+              mojom::PlaylistItemPtr item,
+              base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
               GURL url,
-              bool is_mse);
+              bool is_media_source);
 
   // used by
   // PlaylistBackgroundWebContentsTest.ExtractPlaylistItemsInTheBackground, and

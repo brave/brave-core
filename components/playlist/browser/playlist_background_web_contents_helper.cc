@@ -7,17 +7,12 @@
 
 #include <utility>
 
-#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
-#include "content/public/browser/media_player_id.h"
-#include "content/public/browser/media_session.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "services/media_session/public/mojom/media_session.mojom.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "url/gurl.h"
 
@@ -28,24 +23,20 @@ PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
-    std::string duration,
+    base::TimeDelta duration,
     base::OnceCallback<void(GURL, bool)> callback)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      duration_(*base::ValueToTimeDelta(base::Value(duration))),
-      callback_(std::move(callback)) {
-  timer_.Start(FROM_HERE, base::Milliseconds(500), this,
-               &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
-}
+      duration_(std::move(duration)),
+      callback_(std::move(callback)) {}
 
 void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
 
   DCHECK(navigation_handle);
-  const GURL url = navigation_handle->GetURL();
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+  if (!navigation_handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     return;
   }
 
@@ -55,21 +46,22 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
   frame_observer_config->EnableMediaSourceAPISuppressor();
+
+  timer_.Start(FROM_HERE, base::Milliseconds(500), this,
+               &PlaylistBackgroundWebContentsHelper::GetMediaMetadata);
 }
 
-void PlaylistBackgroundWebContentsHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  // // TODO: use heuristics on when the site finished loading the page
-  // timer_.Start(FROM_HERE, base::Seconds(2), this,
-  //              &PlaylistBackgroundWebContentsHelper::GetLoadedUrl);
-}
-
-void PlaylistBackgroundWebContentsHelper::GetLoadedUrl() {
-  for (const auto& [_, url] : web_contents()->GetMediaMetadataByMediaPlayerIds()) {
-    const auto duration = base::Seconds(std::get<2>(url));
-    if (std::abs((duration_ - duration).InSeconds()) < 5) {
-      DVLOG(-1) << "URL extracted from the background: " << std::get<0>(url);
-      return std::move(callback_).Run(std::get<0>(url), std::get<1>(url));
+void PlaylistBackgroundWebContentsHelper::GetMediaMetadata() {
+  for (auto&& [media_player_id, metadata] :
+       GetWebContents().GetMediaMetadataByMediaPlayerIds()) {
+    auto [url, is_media_source, duration] = std::move(metadata);
+    DVLOG(-1) << "Media player (" << media_player_id.frame_routing_id << ", "
+              << media_player_id.delegate_id
+              << ") URL: " << (!url.is_valid() ? "not set" : url.spec())
+              << " (duration: " << base::Seconds(duration) << ')';
+    if (std::abs((duration_ - base::Seconds(duration)).InSeconds()) < 5) {
+      DVLOG(-1) << "URL extracted from the background: " << url;
+      return std::move(callback_).Run(std::move(url), is_media_source);
     }
   }
 }

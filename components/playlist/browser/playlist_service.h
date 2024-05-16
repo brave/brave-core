@@ -249,12 +249,10 @@ class PlaylistService : public KeyedService,
       bool cache,
       base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)> callback);
 
-  void AddMediaFilesFromItems(const std::string& playlist_id,
-                              bool cache,
-                              AddMediaFilesCallback callback,
-                              std::vector<mojom::PlaylistItemPtr> items,
-                              GURL url,
-                              bool is_mse);
+  void AddMediaFileFromItem(const std::string& playlist_id,
+                            bool cache,
+                            AddMediaFilesCallback callback,
+                            mojom::PlaylistItemPtr items);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

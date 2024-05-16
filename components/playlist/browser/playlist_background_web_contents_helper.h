@@ -34,16 +34,14 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
-      std::string duration,
+      base::TimeDelta duration,
       base::OnceCallback<void(GURL, bool)> callback);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
 
-  void GetLoadedUrl();
+  void GetMediaMetadata();
 
   base::TimeDelta duration_;
   base::OnceCallback<void(GURL, bool)> callback_;

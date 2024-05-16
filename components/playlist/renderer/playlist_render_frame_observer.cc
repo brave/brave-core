@@ -60,18 +60,7 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
     v8::Isolate::Scope isolate_scope(isolate);
     v8::HandleScope handle_scope(isolate);
 
-    Inject(R"(
-      (function () {
-        if (
-          window.MediaSource ||
-          window.WebKitMediaSource ||
-          window.HTMLMediaElement && HTMLMediaElement.prototype.webkitSourceAddId
-        ) {
-          delete window.MediaSource
-          delete window.WebKitMediaSource
-        }
-      })
-      )",
+    Inject("(function () { delete window.MediaSource })",
            render_frame()->GetWebFrame()->MainWorldScriptContext());
   }
 }

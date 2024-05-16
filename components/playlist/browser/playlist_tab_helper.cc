@@ -77,30 +77,30 @@ void PlaylistTabHelper::RemoveObserver(PlaylistTabHelperObserver* observer) {
 void PlaylistTabHelper::AddItems(std::vector<mojom::PlaylistItemPtr> items) {
   CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
   DCHECK(!is_adding_items_);
-  DCHECK(items.size());
+  CHECK(items.size() == 1);
   is_adding_items_ = true;
 
   auto callback =
       base::BindOnce(&PlaylistTabHelper::OnAddedItems, base::Unretained(this));
 
-  auto player_id =
+  auto media_player_id =
       content::MediaSession::Get(web_contents())->GetActiveMediaPlayerId();
-  if (!player_id) {
+  if (!media_player_id) {
     return std::move(callback).Run({});
   }
 
-  auto urls = web_contents()->GetMediaMetadataByMediaPlayerIds();
-  if (!urls.contains(*player_id)) {
+  auto metadata = GetWebContents().GetMediaMetadataByMediaPlayerIds();
+  if (!metadata.contains(*media_player_id)) {
     return std::move(callback).Run({});
   }
 
-  auto& url = urls.at(*player_id);
-  CHECK(items.size() == 1);
-  items[0]->media_path = items[0]->media_source = std::get<0>(url);
-  items[0]->is_blob_from_media_source = std::get<1>(url);
-  items[0]->duration = base::TimeDeltaToValue(base::Seconds(std::get<2>(url))).GetString();
+  auto [url, is_media_source, duration] =
+      std::move(metadata.at(*media_player_id));
+  items[0]->media_path = items[0]->media_source = std::move(url);
+  items[0]->is_blob_from_media_source = is_media_source;
+  items[0]->duration =
+      base::TimeDeltaToValue(base::Seconds(duration)).GetString();
 
-  CHECK(service_);
   service_->AddMediaFiles(std::move(items), kDefaultPlaylistID,
                           /* can_cache= */ true, std::move(callback));
 }

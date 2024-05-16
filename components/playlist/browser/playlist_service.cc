@@ -300,31 +300,14 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
   return true;
 }
 
-void PlaylistService::AddMediaFilesFromItems(
+void PlaylistService::AddMediaFileFromItem(
     const std::string& playlist_id,
     bool cache,
     AddMediaFilesCallback callback,
-    std::vector<mojom::PlaylistItemPtr> items,
-    GURL url,
-    bool is_mse) {
-  if (items.empty()) {
-    if (callback) {
-      std::move(callback).Run({});
-    }
-    return;
+    mojom::PlaylistItemPtr item) {
+  if (!item) {
+    return std::move(callback).Run({});
   }
-
-  CHECK(items.size() == 1);
-  if (items[0]->is_blob_from_media_source) {
-    if (!url.is_valid() || is_mse) {
-      return std::move(callback).Run({});
-    }
-    items[0]->media_path = items[0]->media_source = url;
-    items[0]->is_blob_from_media_source = is_mse;
-  }
-
-  auto target_playlist_id =
-      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id;
 
   base::flat_set<GURL> already_added_media;
   base::ranges::transform(
@@ -332,39 +315,22 @@ void PlaylistService::AddMediaFilesFromItems(
       std::inserter(already_added_media, already_added_media.end()),
       [](const auto& item) { return item->media_source; });
 
-  std::vector<mojom::PlaylistItemPtr> filtered_items;
-  base::ranges::for_each(
-      items, [&already_added_media, &filtered_items](auto& item) {
-        if (already_added_media.count(item->media_source)) {
-          DVLOG(2) << "Skipping creating item: [id] " << item->id
-                   << " [media url]:" << item->media_source
-                   << " - The media source is already added";
-          return;
-        }
-        filtered_items.push_back(std::move(item));
-      });
-  if (filtered_items.empty()) {
-    if (callback) {
-      std::move(callback).Run({});
-    }
-    return;
+  if (already_added_media.contains(item->media_source)) {
+    DVLOG(2) << "Skipping creating item: [id] " << item->id
+             << " [media url]:" << item->media_source
+             << " - The media source is already added";
+    return std::move(callback).Run({});
   }
 
-  base::ranges::for_each(filtered_items, [this, cache](auto& item) {
-    CreatePlaylistItem(item, cache);
-  });
+  CreatePlaylistItem(item, cache);
+  auto target_playlist_id =
+      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id;
+  AddItemsToPlaylist(target_playlist_id, {item->id});
+  item->parents.push_back(std::move(target_playlist_id));
 
-  std::vector<std::string> ids;
-  base::ranges::transform(filtered_items, std::back_inserter(ids),
-                          [](const auto& item) { return item->id; });
-  AddItemsToPlaylist(target_playlist_id, ids);
-  base::ranges::for_each(filtered_items, [&target_playlist_id](auto& item) {
-    item->parents.push_back(target_playlist_id);
-  });
-
-  if (callback) {
-    std::move(callback).Run(std::move(filtered_items));
-  }
+  std::vector<mojom::PlaylistItemPtr> items;
+  items.push_back(std::move(item));
+  std::move(callback).Run(std::move(items));
 }
 
 void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
@@ -527,24 +493,21 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     const std::string& playlist_id,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
+  // TODO(sszaloki):
+  // fix any affected functions to expect a single mojom::PlaylistItemPtr
   CHECK(items.size() == 1);
 
-  const bool needs_background = items[0]->is_blob_from_media_source;
-  const GURL url = items[0]->page_source;
-  std::string duration = items[0]->duration;
-
-  auto add_media_files_from_items = base::BindOnce(
-      &PlaylistService::AddMediaFilesFromItems, GetWeakPtr(), playlist_id,
+  auto add_media_file_from_item = base::BindOnce(
+      &PlaylistService::AddMediaFileFromItem, GetWeakPtr(), playlist_id,
       can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-      std::move(callback), std::move(items));
+      std::move(callback));
 
-  if (needs_background) {
-    background_web_contentses_->Add(url,
-                                    std::move(duration),
-                                    std::move(add_media_files_from_items));
-  } else {
-    std::move(add_media_files_from_items).Run(GURL(), false);
+  if (items[0]->is_blob_from_media_source) {
+    return background_web_contentses_->Add(std::move(items[0]),
+                                           std::move(add_media_file_from_item));
   }
+
+  std::move(add_media_file_from_item).Run(std::move(items[0]));
 }
 
 void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,

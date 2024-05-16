@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/no_destructor.h"
 #include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/common/features.h"
@@ -50,23 +51,25 @@ PlaylistBackgroundWebContentses::PlaylistBackgroundWebContentses(
 PlaylistBackgroundWebContentses::~PlaylistBackgroundWebContentses() = default;
 
 void PlaylistBackgroundWebContentses::Add(
-    const GURL& url,
-    std::string duration,
-    base::OnceCallback<void(GURL, bool)> callback,
+    mojom::PlaylistItemPtr item,
+    base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
     base::TimeDelta timeout) {
+  CHECK(item);
+  const auto url = item->page_source;
+  auto duration = base::ValueToTimeDelta(base::Value(item->duration));
+  CHECK(duration);
+
   auto web_contents = content::WebContents::Create(
       content::WebContents::CreateParams(context_));
   web_contents->SetAudioMuted(true);
 
-  auto [callback_for_media_handler, callback_for_timer] =
+  auto [callback_for_helper, callback_for_timer] =
       base::SplitOnceCallback(base::BindOnce(
           &PlaylistBackgroundWebContentses::Remove, weak_factory_.GetWeakPtr(),
-          web_contents.get(), std::move(callback)));
+          web_contents.get(), std::move(item), std::move(callback)));
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents.get(),
-      std::move(duration),
-      std::move(callback_for_media_handler));
+      web_contents.get(), *std::move(duration), std::move(callback_for_helper));
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);
   if (auto* ua_override = GetUserAgentOverride(url)) {
@@ -89,15 +92,22 @@ void PlaylistBackgroundWebContentses::Reset() {
 
 void PlaylistBackgroundWebContentses::Remove(
     content::WebContents* web_contents,
-    base::OnceCallback<void(GURL, bool)> callback,
+    mojom::PlaylistItemPtr item,
+    base::OnceCallback<void(mojom::PlaylistItemPtr)> callback,
     GURL url,
-    bool is_mse) {
+    bool is_media_source) {
   const auto it = background_web_contentses_.find(web_contents);
   CHECK(it != background_web_contentses_.cend());
   it->second.Stop();  // no-op if called by the timer
   background_web_contentses_.erase(it);
 
-  std::move(callback).Run(std::move(url), is_mse);
+  if (!url.is_valid() || is_media_source) {
+    return std::move(callback).Run(nullptr);
+  }
+
+  item->media_path = item->media_source = std::move(url);
+  item->is_blob_from_media_source = is_media_source;
+  std::move(callback).Run(std::move(item));
 }
 
 }  // namespace playlist
