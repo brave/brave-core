@@ -446,6 +446,12 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
     CHECK(index);
     RemoveItemAt(*index);
+
+    // Upstream uses spacing separator after profile menu but we don't use
+    // profile menu here. Spacing separator just adds unnecessary space.
+    if (GetSeparatorTypeAt(*index) == ui::SPACING_SEPARATOR) {
+      RemoveItemAt(*index);
+    }
   }
 
   // Remove upstream's dev tools menu and associated separator.
