@@ -38,6 +38,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 #error "This file requires ARC support."
 #endif
 
+@implementation BraveWallet
+@end
+
 @implementation BraveWalletAPI {
   ChromeBrowserState* _mainBrowserState;  // NOT OWNED
   NSMutableDictionary<NSNumber* /* BraveWalletCoinType */,

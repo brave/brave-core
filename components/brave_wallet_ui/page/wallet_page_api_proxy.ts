@@ -34,7 +34,8 @@ export class WalletPageApiProxy extends WalletApiProxy {
       this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
       this.braveWalletPinService.$.bindNewPipeAndPassReceiver(),
       this.braveWalletAutoPinService.$.bindNewPipeAndPassReceiver(),
-      this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver()
+      this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver(),
+      this.meldIntegrationService.$.bindNewPipeAndPassReceiver()
     )
   }
 }

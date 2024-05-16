@@ -17,6 +17,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
@@ -149,7 +150,9 @@ void WalletPanelUI::CreatePanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
         brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-        brave_wallet_ipfs_service_receiver) {
+        brave_wallet_ipfs_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+        meld_integration_service) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -172,6 +175,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(simulation_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
+  brave_wallet::MeldIntegrationServiceFactory::BindForContext(
+      profile, std::move(meld_integration_service));
   brave_wallet::KeyringServiceFactory::BindForContext(
       profile, std::move(keyring_service_receiver));
   brave_wallet::TxServiceFactory::BindForContext(

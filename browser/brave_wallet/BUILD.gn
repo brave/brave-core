@@ -26,6 +26,8 @@ source_set("brave_wallet") {
     "json_rpc_service_factory.h",
     "keyring_service_factory.cc",
     "keyring_service_factory.h",
+    "meld_integration_service_factory.cc",
+    "meld_integration_service_factory.h",
     "simulation_service_factory.cc",
     "simulation_service_factory.h",
     "swap_service_factory.cc",

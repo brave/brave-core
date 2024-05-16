@@ -5,6 +5,7 @@
 
 module brave_wallet.mojom;
 
+import "brave/components/brave_wallet/common/meld_integration.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
@@ -363,7 +364,9 @@ interface PanelHandlerFactory {
                      pending_receiver<WalletAutoPinService>
                          brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
-                         brave_wallet_ipfs_service_receiver);
+                         brave_wallet_ipfs_service_receiver,
+                     pending_receiver<MeldIntegrationService>
+                         meld_integration_service);
 };
 
 interface PageHandlerFactory {
@@ -387,7 +390,9 @@ interface PageHandlerFactory {
                     pending_receiver<WalletPinService> brave_wallet_pin_service,
                     pending_receiver<WalletAutoPinService>
                         brave_wallet_auto_pin_service,
-                    pending_receiver<IpfsService> brave_wallet_ipfs_service);
+                    pending_receiver<IpfsService> brave_wallet_ipfs_service,
+                    pending_receiver<MeldIntegrationService>
+                        meld_integration_service);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()
@@ -1150,6 +1155,40 @@ interface AssetRatioService {
 
   // Obtain list of top currencies and their market data
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
+};
+
+interface MeldIntegrationService {
+  // Obtains the list of Service Providers
+  // All parameters are optional
+  GetServiceProviders(MeldFilter filter)
+    => (array<MeldServiceProvider>? service_providers, array<string>? error);
+
+  // Obtains the crypto quotes
+  // Note that next parameters are mandatory:
+  // destination_currency_code, country, source_amount, source_currency_code
+  GetCryptoQuotes(string country, string source_currency_code,
+    string destination_currency_code, double source_amount, string? account)
+    => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
+
+  // Obtains the list of payment methods
+  // All parameters are optional
+  GetPaymentMethods(MeldFilter filter)
+    => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
+
+  // Obtains the list of fiat currencies
+  // All parameters are optional
+  GetFiatCurrencies(MeldFilter filter)
+    => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
+
+  // Obtains the list of crypto currencies
+  // All parameters are optional
+  GetCryptoCurrencies(MeldFilter filter)
+    => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
+
+  // Obtains the list of countries
+  // All parameters are optional
+  GetCountries(MeldFilter filter)
+    => (array<MeldCountry>? countries, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs

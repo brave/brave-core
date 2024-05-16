@@ -612,4 +612,50 @@ TEST(JsonParser, ConvertAllNumbersToString) {
   }
 }
 
+TEST(JsonParser, ConvertAllNumbersToStringAndRemoveNullValues) {
+  // OK: convert u64, f64, and i64 values to string
+  std::string json(
+      R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14},
+      {"key":null}]})");
+  EXPECT_EQ(
+      std::string(
+          json::convert_all_numbers_to_string_and_remove_null_values(json, "")),
+      R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
+
+  json =
+      R"({"some":[{"deeply":{"nested":[{"path":123, "nullprop1": null}]}}],
+       "nullprop2": null})";
+  EXPECT_EQ(
+      std::string(
+          json::convert_all_numbers_to_string_and_remove_null_values(json, "")),
+      R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
+
+  // OK: remove null values, empty strings, arrays, null values in array
+  json = R"({"a":1,"outer":{"inner":2,"nullprop1":null,"arr_with_nulls":[null],
+    "empty_string":"","empty_array":[]},"nulprop2":null})";
+  EXPECT_EQ(
+      std::string(
+          json::convert_all_numbers_to_string_and_remove_null_values(json, "")),
+      R"({"a":"1","outer":{"inner":"2"}})");
+
+  // OK: convert under specified JSON path only
+  json = R"({"a":1,"outer":{"inner": 2, "nullprop1": null}, "nulprop2": null})";
+
+  EXPECT_EQ(
+      std::string(json::convert_all_numbers_to_string_and_remove_null_values(
+          json, "/outer")),
+      R"({"a":1,"nulprop2":null,"outer":{"inner":"2"}})");
+
+  // OK: invalid path has no effect on the JSON
+  json = R"({"a":1,"outer":{"inner":2}})";
+  EXPECT_EQ(
+      std::string(json::convert_all_numbers_to_string_and_remove_null_values(
+          json, "/invalid")),
+      json);
+  EXPECT_EQ(
+      std::string(json::convert_all_numbers_to_string_and_remove_null_values(
+          json, "/")),
+      json);
+}
+
 }  // namespace brave_wallet
