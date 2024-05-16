@@ -134,7 +134,7 @@ extension BrowserViewController: TabManagerDelegate {
     selected?.updatePullToRefreshVisibility()
 
     topToolbar.locationView.loading = selected?.loading ?? false
-    navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
+    updateForwardStatusIfNeeded(webView: selected?.webView)
     navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
 
     let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
