@@ -83,10 +83,6 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_service.h"
-#endif
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
@@ -262,10 +258,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService::RegisterProfilePrefs(registry);
-#endif
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

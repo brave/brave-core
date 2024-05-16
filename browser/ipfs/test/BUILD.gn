@@ -8,10 +8,7 @@ import("//testing/test.gni")
 source_set("unittests") {
   testonly = true
   sources = [
-    "//brave/browser/ipfs/ipfs_blob_context_getter_factory_unittest.cc",
     "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
-    "//brave/browser/ipfs/test/ipfs_dns_resolver_impl_unittest.cc",
-    "//brave/browser/ipfs/test/ipfs_network_utils_unittest.cc",
     "//brave/browser/net/ipfs_redirect_network_delegate_helper_unittest.cc",
   ]
 
@@ -39,8 +36,6 @@ source_set("browsertests") {
   if (!is_android) {
     sources = [
       "//brave/browser/ipfs/import/save_package_observer_browsertest.cc",
-      "//brave/browser/ipfs/test/ipfs_service_browsertest.cc",
-      "//brave/browser/ipfs/test/ipns_keys_manager_browsertest.cc",
       "//brave/browser/net/ipfs_redirect_network_delegate_helper_browsertest.cc",
     ]
 

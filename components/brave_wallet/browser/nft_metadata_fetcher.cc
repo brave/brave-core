@@ -23,11 +23,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
 namespace {
 
 std::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
@@ -178,12 +173,7 @@ void NftMetadataFetcher::FetchMetadata(
   // IPFS and HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
-#if BUILDFLAG(ENABLE_IPFS)
-  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
-      scheme != ipfs::kIPFSScheme) {
-#else
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
-#endif
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kInternalError),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -205,17 +195,6 @@ void NftMetadataFetcher::FetchMetadata(
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  if (scheme == ipfs::kIPFSScheme &&
-      !ipfs::TranslateIPFSURI(url, &url, ipfs::GetDefaultNFTIPFSGateway(prefs_),
-                              false)) {
-    std::move(callback).Run(
-        "", static_cast<int>(mojom::JsonRpcError::kParsingError),
-        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    return;
-  }
-#endif
 
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::OnGetTokenMetadataPayload,

@@ -15,10 +15,60 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "chrome/browser/browser_process.h"
+#include "components/base32/base32.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
+
+namespace {
+  // Ipfs codes from multicodec table
+// https://github.com/multiformats/multicodec/blob/master/table.csv
+const int64_t kIpfsNSCodec = 0xE3;
+const int64_t kIpnsNSCodec = 0xE5;
+
+// Decodes a varint from the given string piece into the given int64_t. Returns
+// remaining span if the string had a valid varint (where a byte was found with
+// it's top bit set).
+base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
+                                       int64_t* into) {
+  auto it = from.begin();
+  int shift = 0;
+  uint64_t ret = 0;
+  do {
+    if (it == from.end())
+      return {};
+
+    // Shifting 64 or more bits is undefined behavior.
+    DCHECK_LT(shift, 64);
+    unsigned char c = *it;
+    ret |= static_cast<uint64_t>(c & 0x7f) << shift;
+    shift += 7;
+  } while (*it++ & 0x80);
+  *into = static_cast<int64_t>(ret);
+  return from.subspan(it - from.begin());
+}
+
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
+  int64_t code = 0;
+  contenthash = DecodeVarInt(contenthash, &code);
+  if (contenthash.empty())
+    return GURL();
+  if (code != kIpnsNSCodec && code != kIpfsNSCodec)
+    return GURL();
+  std::string encoded = base32::Base32Encode(contenthash);
+  if (encoded.empty())
+    return GURL();
+  std::string trimmed;
+  base::TrimString(encoded, "=", &trimmed);
+  std::string lowercase = base::ToLowerASCII(trimmed);
+  // multibase format <base-encoding-character><base-encoded-data>
+  // https://github.com/multiformats/multibase/blob/master/multibase.csv
+  std::string cidv1 = "b" + lowercase;
+  std::string scheme = (code == kIpnsNSCodec) ? ipfs::kIPNSScheme : ipfs::kIPFSScheme;
+  return GURL(scheme + "://" + cidv1);
+}
+}
 
 namespace decentralized_dns {
 
@@ -96,7 +146,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
     return;
   }
 
-  GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(content_hash);
+  GURL ipfs_uri = ContentHashToCIDv1URL(content_hash);
   if (ipfs_uri.is_valid()) {
     ctx->new_url_spec = ipfs_uri.spec();
   }

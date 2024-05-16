@@ -34,7 +34,6 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
-void OpenIpfsFilesWebUI(Browser* browser);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(Browser* browser, const GURL& url);
 // Copies an url cleared through:

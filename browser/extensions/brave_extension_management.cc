@@ -32,7 +32,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "components/user_prefs/user_prefs.h"
 #endif
 

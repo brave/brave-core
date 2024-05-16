@@ -108,10 +108,6 @@ if (enable_extensions) {
 }
 
 if (enable_ipfs) {
-  brave_browser_net_sources += [
-    "//brave/browser/net/ipfs_redirect_network_delegate_helper.cc",
-    "//brave/browser/net/ipfs_redirect_network_delegate_helper.h",
-  ]
   brave_browser_net_deps += [
     "//brave/components/ipfs",
     "//chrome/common:channel_info",

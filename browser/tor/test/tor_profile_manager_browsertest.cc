@@ -48,10 +48,6 @@
 #include "extensions/common/extension_id.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#endif
-
 #include <algorithm>
 
 namespace {

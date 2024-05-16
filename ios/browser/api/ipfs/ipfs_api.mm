@@ -7,7 +7,6 @@
 
 #import "brave/base/mac/conversions.h"
 #include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"

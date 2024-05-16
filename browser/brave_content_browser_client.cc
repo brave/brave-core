@@ -178,13 +178,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/content_browser_client_helper.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
@@ -507,10 +500,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                          &ipfs::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);

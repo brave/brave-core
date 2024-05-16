@@ -58,8 +58,6 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"

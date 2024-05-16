@@ -24,7 +24,6 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -37,11 +36,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/net/ipfs_redirect_network_delegate_helper.h"
-#include "brave/components/ipfs/features.h"
 #endif
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -82,13 +76,6 @@ void BraveRequestHandler::SetupCallbacks() {
         base::BindRepeating(brave::OnBeforeURLRequest_LocalhostPermissionWork);
     before_url_request_callbacks_.push_back(callback);
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
-    before_url_request_callbacks_.push_back(callback);
-  }
-#endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);

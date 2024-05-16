@@ -28,8 +28,6 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/features.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)

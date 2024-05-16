@@ -73,12 +73,6 @@
 #include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/features.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif  // BUILDFLAG(ENABLE_IPFS)
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif

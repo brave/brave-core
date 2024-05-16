@@ -92,10 +92,6 @@
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
 #include "brave/browser/ui/commander/commander_service_factory.h"
@@ -199,19 +195,6 @@ void ToggleBraveVPNButton(Browser* browser) {
   auto* prefs = browser->profile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
-#endif
-}
-
-void OpenIpfsFilesWebUI(Browser* browser) {
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  auto* prefs = browser->profile()->GetPrefs();
-  DCHECK(ipfs::IsLocalGatewayConfigured(prefs));
-  GURL gateway = ipfs::GetAPIServer(chrome::GetChannel());
-  GURL::Replacements replacements;
-  replacements.SetPathStr("/webui/");
-  replacements.SetRefStr("/files");
-  auto target_url = gateway.ReplaceComponents(replacements);
-  chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
 

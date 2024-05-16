@@ -10,25 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-
-namespace chrome {
-std::string GetIPFSLearnMoreURL(const GURL& url) {
-  if (ipfs::IsIPFSScheme(url))
-    return ipfs::kIPFSLearnMoreURL;
-  return std::string(chrome::kPageInfoHelpCenterURL);
-}
-}  // namespace chrome
-
-#define kPageInfoHelpCenterURL GetIPFSLearnMoreURL(web_contents_->GetURL())
-#endif  // BUILDFLAG(ENABLE_IPFS)
-
 #include "src/chrome/browser/ui/page_info/chrome_page_info_delegate.cc"
-#if BUILDFLAG(ENABLE_IPFS)
-#undef kPageInfoHelpCenterURL
-#endif  // BUILDFLAG(ENABLE_IPFS)
 
 bool ChromePageInfoDelegate::BraveShouldShowPermission(
     ContentSettingsType type) {
