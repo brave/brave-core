@@ -7,7 +7,16 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "url/gurl.h"
+
+namespace content {
+namespace google_apis {
+std::string GetAPIKey() {
+  return BUILDFLAG(BRAVE_SERVICES_KEY);
+}
+}  // namespace google_apis
+}  // namespace content
 
 namespace {
 
