@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import AlertReact from '@brave/leo/react/alert'
 
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 import { WalletButton } from '../../../shared/style'
@@ -13,46 +14,16 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 20px 15px 20px 15px;
+  width: 250px;
+  padding: 20px 0px;
   height: 100%;
-  min-height: 320px;
+  min-height: 200px;
 `
 
-export const Input = styled.input`
-  outline: none;
-  width: 250px;
-  background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
-  box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  padding: 10px;
-  margin-bottom: 16px;
-  color: ${(p) => p.theme.color.text01};
-  ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
-  }
-  :focus {
-    outline: none;
-  }
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+export const EditWrapper = styled(StyledWrapper)`
+  gap: 14px;
+  & > * {
+    width: 250px;
   }
 `
 
@@ -94,11 +65,8 @@ export const AddressButton = styled(WalletButton)`
 `
 
 export const ButtonRow = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 `
 
 export const CopyIcon = styled.div`
@@ -118,31 +86,6 @@ export const PrivateKeyWrapper = styled.div`
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-`
-
-export const WarningWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
-  border-radius: 16px;
-  padding: 10px;
-  margin-bottom: 40px;
-`
-
-export const WarningText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: ${(p) => p.theme.color.text02};
-  a {
-    color: inherit;
-    text-decoration: underline;
-  }
 `
 
 export const PrivateKeyBubble = styled(WalletButton)`
@@ -169,10 +112,15 @@ export const PrivateKeyBubble = styled(WalletButton)`
 
 export const ButtonWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+
+  & > * {
+    width: 100%;
+  }
 `
 
 export const ErrorText = styled.span`
@@ -216,4 +164,12 @@ export const AccountName = styled.span`
   letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+`
+
+export const Alert = styled(AlertReact)`
+  margin-bottom: 15px;
+
+  &:first-of-type {
+    margin: 15px 0px;
+  }
 `

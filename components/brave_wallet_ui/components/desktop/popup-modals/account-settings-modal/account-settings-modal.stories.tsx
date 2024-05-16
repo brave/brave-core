@@ -7,6 +7,9 @@ import * as React from 'react'
 import { mockAccount } from '../../../../common/constants/mocks'
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AccountSettingsModal } from './account-settings-modal'
+import {
+  RemoveAccountModal //
+} from '../confirm-password-modal/remove-account-modal'
 
 export const _AccountSettingsModalPrivateKey: React.FC = () => {
   return (
@@ -56,10 +59,11 @@ export const _AccountSettingsModalRemove: React.FC = () => {
       apiOverrides={{ selectedAccountId: mockAccount.accountId }}
       accountTabStateOverride={{
         selectedAccount: mockAccount,
-        accountModalType: 'remove'
+        accountModalType: 'remove',
+        accountToRemove: mockAccount
       }}
     >
-      <AccountSettingsModal />
+      <RemoveAccountModal />
     </WalletPageStory>
   )
 }

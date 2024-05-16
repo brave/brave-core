@@ -399,7 +399,7 @@ provideStrings({
   braveWalletAddAccountImportHardware: 'Import from hardware wallet',
   braveWalletAddAccountHardware: 'Hardware',
   braveWalletAddAccountConnect: 'Connect',
-  braveWalletAddAccountPlaceholder: 'Account name',
+  braveWalletAddAccountPlaceholder: 'Name this account',
   braveWalletCreateAccountButton: 'Create account',
   braveWalletCreateAccountImportAccount: 'Import $1 account',
   braveWalletCreateAccountTitle: 'Select one of the following account types',
@@ -408,8 +408,15 @@ provideStrings({
     '(ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription:
     'Supports SPL compatible assets on the Solana blockchain',
+  braveWalletCreateAccountBitcoinDescription: 'Store BTC assets',
+  braveWalletCreateAccountZCashDescription: 'Store ZEC assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
+  braveWalletEnterPasswordIfApplicable: 'Enter password (if applicable)',
+  braveWalletPrivateKeyImportType: 'Import type',
+  braveWalletFilImportPrivateKeyFormatDescription:
+    'NOTE: Private key must be provided as a hex-encoded JSON that contains ' +
+    'private key and protocol information. $1Learn more$2.',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
@@ -494,6 +501,8 @@ provideStrings({
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
   braveWalletAccountSettings: 'Account settings',
+  braveWalletAccountNameTooLongError:
+    'Account name must be $1 characters or less',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',

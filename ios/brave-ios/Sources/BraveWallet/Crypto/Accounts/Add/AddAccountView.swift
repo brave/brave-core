@@ -318,7 +318,12 @@ struct AddAccountView: View {
       },
       footer: {
         SectionFooterErrorView(
-          errorMessage: name.isValidAccountName ? nil : Strings.Wallet.accountNameLengthError
+          errorMessage: name.isValidAccountName
+            ? nil
+            : String.localizedStringWithFormat(
+              Strings.Wallet.accountNameLengthError,
+              BraveWallet.AccountNameMaxCharacterLength
+            )
         )
       }
     )

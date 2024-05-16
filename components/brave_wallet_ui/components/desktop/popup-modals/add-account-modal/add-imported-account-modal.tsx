@@ -6,6 +6,11 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
+import Dropdown from '@brave/leo/react/dropdown'
+import {
+  SelectItemEventDetail //
+} from '@brave/leo/types/src/components/menu/menu.svelte'
 
 // utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -29,28 +34,21 @@ import {
 import { PanelActions } from '../../../../panel/actions'
 
 // components
-import { Select } from 'brave-ui/components'
-import { NavButton } from '../../../extension/buttons/nav-button/index'
 import { DividerLine } from '../../../extension/divider/index'
 import { PopupModal } from '../index'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style
+import { LeoSquaredButton } from '../../../shared/style'
 import {
+  CreateAccountStyledWrapper,
   DisclaimerText,
   ErrorText,
   ImportButton,
-  ImportDisclaimer,
   ImportRow,
-  Input,
-  SelectWrapper,
-  StyledWrapper
+  StyledWrapper,
+  Alert
 } from './style'
-
-import {
-  WarningText,
-  WarningWrapper
-} from '../account-settings-modal/account-settings-modal.style'
 
 // selectors
 import { UISelectors } from '../../../../common/selectors'
@@ -114,6 +112,23 @@ export const ImportAccountModal = () => {
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
   const [password, setPassword] = React.useState<string>('')
 
+  // computed
+  const isAccountNameTooLong =
+    accountName.length > BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH
+  const hasAccountNameError = accountName === '' || isAccountNameTooLong
+  const hasImportTypeError = importOption === 'key' ? !privateKey : !file
+  const isDisabled = hasAccountNameError || hasImportTypeError
+  const modalTitle = selectedAccountType
+    ? getLocale('braveWalletCreateAccountImportAccount').replace(
+        '$1',
+        selectedAccountType.name
+      )
+    : getLocale('braveWalletAddAccountImport')
+
+  const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
+    'braveWalletFilImportPrivateKeyFormatDescription'
+  )
+
   // methods
   const onClickClose = React.useCallback(() => {
     setHasImportError(false)
@@ -121,31 +136,39 @@ export const ImportAccountModal = () => {
   }, [history])
 
   const handleAccountNameChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setAccountName(event.target.value)
+    (detail: InputEventDetail) => {
+      setAccountName(detail.value)
       setHasImportError(false)
     },
     []
   )
 
   const onChangeFilecoinNetwork = React.useCallback(
-    (network: FilecoinNetwork) => {
-      setFilecoinNetwork(network)
+    (detail: SelectItemEventDetail) => {
+      setFilecoinNetwork(detail.value as FilecoinNetwork)
     },
     []
   )
 
-  const handlePrivateKeyChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPrivateKey(event.target.value)
-      setHasImportError(false)
+  const onChangeImportOption = React.useCallback(
+    (detail: SelectItemEventDetail) => {
+      setImportOption(detail.value as string)
     },
     []
   )
 
-  const onClearClipboard = React.useCallback(() => {
+  const clearClipboard = React.useCallback(() => {
     copyToClipboard('')
   }, [])
+
+  const handlePrivateKeyChanged = React.useCallback(
+    (detail: InputEventDetail) => {
+      clearClipboard()
+      setPrivateKey(detail.value)
+      setHasImportError(false)
+    },
+    [clearClipboard]
+  )
 
   const onClickFileUpload = () => {
     // To prevent panel from being closed when file chooser is open
@@ -175,11 +198,12 @@ export const ImportAccountModal = () => {
   )
 
   const handlePasswordChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(event.target.value)
+    (detail: InputEventDetail) => {
+      setPassword(detail.value)
       setHasImportError(false)
+      clearClipboard()
     },
-    []
+    [clearClipboard]
   )
 
   const onClickCreateAccount = React.useCallback(async () => {
@@ -245,12 +269,15 @@ export const ImportAccountModal = () => {
   ])
 
   const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
+    (detail: InputEventDetail) => {
+      if (isDisabled) {
+        return
+      }
+      if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
         onClickCreateAccount()
       }
     },
-    [onClickCreateAccount]
+    [isDisabled, onClickCreateAccount]
   )
 
   const onSelectAccountType = React.useCallback(
@@ -263,19 +290,6 @@ export const ImportAccountModal = () => {
       )
     },
     [history]
-  )
-
-  // computed
-  const isDisabled = accountName === ''
-  const modalTitle = selectedAccountType
-    ? getLocale('braveWalletCreateAccountImportAccount').replace(
-        '$1',
-        selectedAccountType.name
-      )
-    : getLocale('braveWalletAddAccountImport')
-
-  const filPrivateKeyFormatDescriptionTextParts = getLocaleWithTag(
-    'braveWalletFilImportPrivateKeyFormatDescription'
   )
 
   // render
@@ -296,124 +310,185 @@ export const ImportAccountModal = () => {
 
       {selectedAccountType && (
         <StyledWrapper>
-          <ImportDisclaimer>
-            <DisclaimerText>
-              {getLocale('braveWalletImportAccountDisclaimer')}
-            </DisclaimerText>
-          </ImportDisclaimer>
+          <Alert type='warning'>
+            {getLocale('braveWalletImportAccountDisclaimer')}
+          </Alert>
 
           {selectedAccountType?.coin === BraveWallet.CoinType.FIL && (
-            <>
-              <WarningWrapper>
-                <WarningText>
-                  {filPrivateKeyFormatDescriptionTextParts.beforeTag}
-                  <a
-                    target='_blank'
-                    href={FILECOIN_FORMAT_DESCRIPTION_URL}
-                  >
-                    {filPrivateKeyFormatDescriptionTextParts.duringTag}
-                  </a>
-                  {filPrivateKeyFormatDescriptionTextParts.afterTag}
-                </WarningText>
-              </WarningWrapper>
-
-              <SelectWrapper>
-                <Select
-                  value={filecoinNetwork}
-                  onChange={onChangeFilecoinNetwork}
-                >
-                  {FilecoinNetworkTypes.map((network, index) => {
-                    const networkLocale = FilecoinNetworkLocaleMapping[network]
-                    return (
-                      <div
-                        data-value={network}
-                        key={index}
-                      >
-                        {networkLocale}
-                      </div>
-                    )
-                  })}
-                </Select>
-              </SelectWrapper>
-            </>
-          )}
-
-          {selectedAccountType?.coin === BraveWallet.CoinType.ETH && (
-            <SelectWrapper>
-              <Select
-                value={importOption}
-                onChange={setImportOption}
+            <Alert type='warning'>
+              {filPrivateKeyFormatDescriptionTextParts.beforeTag}
+              <a
+                target='_blank'
+                href={FILECOIN_FORMAT_DESCRIPTION_URL}
+                rel='noopener noreferrer'
               >
-                <div data-value='key'>
+                {filPrivateKeyFormatDescriptionTextParts.duringTag}
+              </a>
+              {filPrivateKeyFormatDescriptionTextParts.afterTag}
+            </Alert>
+          )}
+
+          <CreateAccountStyledWrapper>
+            {selectedAccountType?.coin === BraveWallet.CoinType.FIL && (
+              <Dropdown
+                value={filecoinNetwork}
+                onChange={onChangeFilecoinNetwork}
+              >
+                <div slot='label'>
+                  {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
+                </div>
+
+                <div slot='value'>
+                  {FilecoinNetworkLocaleMapping[filecoinNetwork]}
+                </div>
+
+                {FilecoinNetworkTypes.map((network, index) => {
+                  const networkLocale = FilecoinNetworkLocaleMapping[network]
+                  return (
+                    <leo-option
+                      key={index}
+                      value={network}
+                    >
+                      {networkLocale}
+                    </leo-option>
+                  )
+                })}
+              </Dropdown>
+            )}
+
+            {selectedAccountType?.coin === BraveWallet.CoinType.ETH && (
+              <Dropdown
+                value={importOption}
+                onChange={onChangeImportOption}
+              >
+                <div slot='label'>
+                  {getLocale('braveWalletPrivateKeyImportType')}
+                </div>
+
+                <div slot='value'>
+                  {getLocale(
+                    importOption === 'key'
+                      ? 'braveWalletImportAccountKey'
+                      : 'braveWalletImportAccountFile'
+                  )}
+                </div>
+
+                <leo-option
+                  key={'key'}
+                  value='key'
+                >
                   {getLocale('braveWalletImportAccountKey')}
-                </div>
-                <div data-value='file'>
+                </leo-option>
+
+                <leo-option
+                  key={'file'}
+                  value='file'
+                >
                   {getLocale('braveWalletImportAccountFile')}
-                </div>
-              </Select>
-            </SelectWrapper>
-          )}
+                </leo-option>
+              </Dropdown>
+            )}
 
-          {hasImportError && (
-            <ErrorText>{getLocale('braveWalletImportAccountError')}</ErrorText>
-          )}
+            {hasImportError && (
+              <ErrorText>
+                {getLocale('braveWalletImportAccountError')}
+              </ErrorText>
+            )}
 
-          {importOption === 'key' && (
-            <Input
-              placeholder={getLocale('braveWalletImportAccountPlaceholder')}
-              onChange={handlePrivateKeyChanged}
-              type='password'
-              autoFocus={true}
-              autoComplete='off'
-              onPaste={onClearClipboard}
-            />
-          )}
-
-          {importOption !== 'key' && (
-            <>
-              <ImportRow>
-                <ImportButton htmlFor='recoverFile'>
-                  {getLocale('braveWalletImportAccountUploadButton')}
-                </ImportButton>
-                <DisclaimerText>
-                  {file
-                    ? reduceFileName(file[0].name)
-                    : getLocale('braveWalletImportAccountUploadPlaceholder')}
-                </DisclaimerText>
-              </ImportRow>
-              <input
-                type='file'
-                id='recoverFile'
-                name='recoverFile'
-                style={{ display: 'none' }}
-                onChange={onFileUpload}
-                onClick={onClickFileUpload}
-              />
+            {importOption === 'key' ? (
               <Input
-                placeholder={`Origin ${getLocale(
-                  'braveWalletCreatePasswordInput'
-                )}`}
-                onChange={handlePasswordChanged}
+                placeholder={getLocale('braveWalletImportAccountPlaceholder')}
+                onBlur={clearClipboard}
                 type='password'
-                ref={passwordInputRef}
-              />
-            </>
-          )}
+                onInput={handlePrivateKeyChanged}
+                onKeyDown={handleKeyDown}
+              >
+                {
+                  // Label
+                  getLocale('braveWalletImportAccountKey')
+                }
+              </Input>
+            ) : (
+              <>
+                <ImportRow>
+                  <ImportButton htmlFor='recoverFile'>
+                    {getLocale('braveWalletImportAccountUploadButton')}
+                  </ImportButton>
+                  <DisclaimerText>
+                    {file
+                      ? reduceFileName(file[0].name)
+                      : getLocale('braveWalletImportAccountUploadPlaceholder')}
+                  </DisclaimerText>
+                </ImportRow>
+                <input
+                  type='file'
+                  id='recoverFile'
+                  name='recoverFile'
+                  style={{ display: 'none' }}
+                  onChange={onFileUpload}
+                  onClick={onClickFileUpload}
+                />
+                <Input
+                  placeholder={getLocale('braveWalletInputLabelPassword')}
+                  onInput={handlePasswordChanged}
+                  onKeyDown={handleKeyDown}
+                  onBlur={clearClipboard}
+                  type='password'
+                  ref={passwordInputRef}
+                >
+                  {
+                    // Label
+                    getLocale('braveWalletEnterPasswordIfApplicable')
+                  }
+                </Input>
+              </>
+            )}
 
-          <Input
-            value={accountName}
-            placeholder={getLocale('braveWalletAddAccountPlaceholder')}
-            onKeyDown={handleKeyDown}
-            onChange={handleAccountNameChanged}
-            autoFocus={true}
-          />
+            <Input
+              value={accountName}
+              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+              onInput={handleAccountNameChanged}
+              onKeyDown={handleKeyDown}
+              showErrors={hasAccountNameError}
+            >
+              {
+                // Label
+                getLocale('braveWalletAddAccountPlaceholder')
+              }
 
-          <NavButton
-            onSubmit={onClickCreateAccount}
-            disabled={isDisabled}
-            text={getLocale('braveWalletAddAccountImport')}
-            buttonType='primary'
-          />
+              <div slot='errors'>
+                <ErrorText>
+                  {isAccountNameTooLong
+                    ? getLocale('braveWalletAccountNameTooLongError').replace(
+                        '$1',
+                        BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH.toString()
+                      )
+                    : ''}
+                </ErrorText>
+              </div>
+              <div slot='extra'>
+                {isAccountNameTooLong ? (
+                  <ErrorText>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </ErrorText>
+                ) : (
+                  <span>
+                    {accountName.length}/
+                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+                  </span>
+                )}
+              </div>
+            </Input>
+
+            <LeoSquaredButton
+              onClick={onClickCreateAccount}
+              isDisabled={isDisabled}
+              kind='filled'
+            >
+              {getLocale('braveWalletAddAccountImport')}
+            </LeoSquaredButton>
+          </CreateAccountStyledWrapper>
         </StyledWrapper>
       )}
     </PopupModal>
