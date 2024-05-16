@@ -105,9 +105,8 @@ extension View {
   /// `requestGeometryUpdate` or `interfaceOrientation` in a SwiftUI Preview
   func preparePlaylistEnvironment() -> some View {
     self
-      .observingInterfaceOrientation()
-      .creatingRequestGeometryUpdateAction()
-      .setUpFullScreenEnvironment()
+      .prepareEffectiveGeometryEnvironment()
+      .prepareFullScreenEnvironment()
   }
 }
 

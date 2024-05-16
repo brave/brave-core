@@ -8,7 +8,8 @@ import DesignSystem
 import Foundation
 import SwiftUI
 
-// FIXME: Add doc
+/// This view displays the main video player along with controls on top of it when the player is
+/// being displayed full screen.
 @available(iOS 16.0, *)
 struct PlayerView: View {
   @ObservedObject var playerModel: PlayerModel

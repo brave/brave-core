@@ -180,15 +180,15 @@ extension MediaContentView {
             Button {
               model.repeatMode.cycle()
             } label: {
-              // FIXME: Switch to Label's for VoiceOver
+              // FIXME: Better accessibility labels
               Group {
                 switch model.repeatMode {
                 case .none:
-                  Image(braveSystemName: "leo.loop.off")
+                  Label("Repeat Mode: Off", braveSystemImage: "leo.loop.off")
                 case .one:
-                  Image(braveSystemName: "leo.loop.1")
+                  Label("Repeat Mode: One", braveSystemImage: "leo.loop.1")
                 case .all:
-                  Image(braveSystemName: "leo.loop.all")
+                  Label("Repeat Mode: All", braveSystemImage: "leo.loop.all")
                 }
               }
               .transition(.opacity.animation(.linear(duration: 0.1)))

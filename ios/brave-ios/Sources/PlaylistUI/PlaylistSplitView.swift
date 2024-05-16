@@ -325,9 +325,8 @@ private struct UIKitDragGestureValue: Equatable {
 /// This is currently used because there is no way in SwiftUI right now to control a ScrollView's
 /// built-in pan gesture (aside from introspection to grab the actual underlying UIScrollView, but
 /// even at that point you can't set the delegate since it has to be the UIScrollView)
-// FIXME: This needs to be a UIViewControllerRepresentable instead so that the underlying UIHostingController can be added to the controller chain
 @available(iOS 16.0, *)
-private struct PlaylistDrawerScrollView<Content: View>: UIViewRepresentable {
+private struct PlaylistDrawerScrollView<Content: View>: UIViewControllerRepresentable {
   @Binding var dragState: UIKitDragGestureValue
   var content: Content
 
@@ -339,19 +338,21 @@ private struct PlaylistDrawerScrollView<Content: View>: UIViewRepresentable {
     self.content = content()
   }
 
-  func makeUIView(context: Context) -> PlaylistSidebarScrollViewRepresentable<Content> {
+  func makeUIViewController(context: Context) -> PlaylistSidebarScrollViewRepresentable<Content> {
     PlaylistSidebarScrollViewRepresentable(rootView: content, dragState: $dragState)
   }
 
-  func updateUIView(_ uiView: PlaylistSidebarScrollViewRepresentable<Content>, context: Context) {
-    uiView.rootView = content
+  func updateUIViewController(
+    _ uiViewController: PlaylistSidebarScrollViewRepresentable<Content>,
+    context: Context
+  ) {
+    uiViewController.rootView = content
   }
 
-  class PlaylistSidebarScrollViewRepresentable<Root: View>: UIScrollView,
-    UIGestureRecognizerDelegate
-  {
+  class PlaylistSidebarScrollViewRepresentable<Root: View>: UIViewController {
     @Binding var dragState: UIKitDragGestureValue
     private let hostingController: UIHostingController<Root>
+    private let scrollView = PlaylistSidebarScrollView()
 
     var rootView: Root {
       get { hostingController.rootView }
@@ -370,27 +371,62 @@ private struct PlaylistDrawerScrollView<Content: View>: UIViewRepresentable {
     init(rootView: Root, dragState: Binding<UIKitDragGestureValue>) {
       self._dragState = dragState
       hostingController = .init(rootView: rootView)
-      super.init(frame: .zero)
-      backgroundColor = .clear
-      automaticallyAdjustsScrollIndicatorInsets = false
-      alwaysBounceVertical = true
-      hostingController.view.backgroundColor = .clear
-      addSubview(hostingController.view)
+      super.init(nibName: nil, bundle: nil)
+    }
 
-      contentLayoutGuide.snp.makeConstraints {
-        $0.width.equalTo(self)
+    override func viewDidLoad() {
+      super.viewDidLoad()
+
+      view.addSubview(scrollView)
+      scrollView.addSubview(hostingController.view)
+      addChild(hostingController)
+      hostingController.didMove(toParent: self)
+
+      view.backgroundColor = .clear
+      scrollView.backgroundColor = .clear
+      scrollView.automaticallyAdjustsScrollIndicatorInsets = false
+      scrollView.alwaysBounceVertical = true
+      hostingController.view.backgroundColor = .clear
+
+      scrollView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      scrollView.contentLayoutGuide.snp.makeConstraints {
+        $0.width.equalTo(view)
         $0.top.bottom.equalTo(hostingController.view)
       }
       hostingController.view.snp.makeConstraints {
-        $0.leading.trailing.equalTo(self)
+        $0.leading.trailing.equalTo(view)
       }
 
       let pan = UIPanGestureRecognizer(target: self, action: #selector(drawerPan(_:)))
-      pan.delegate = self
-      addGestureRecognizer(pan)
-      pan.require(toFail: panGestureRecognizer)
+      pan.delegate = scrollView
+      scrollView.addGestureRecognizer(pan)
+      pan.require(toFail: scrollView.panGestureRecognizer)
     }
 
+    private var startLocation: CGPoint = .zero
+    @objc private func drawerPan(_ pan: UIPanGestureRecognizer) {
+      // We get the velocity & location based on the window coordinate system since the local
+      // coordinate system will be shifted based on this gesture
+      let location = pan.location(in: scrollView.window)
+      if pan.state == .began {
+        startLocation = location
+        scrollView.showsVerticalScrollIndicator = false
+      }
+      dragState = .init(
+        state: pan.state,
+        location: location,
+        startLocation: startLocation,
+        velocity: pan.velocity(in: scrollView.window)
+      )
+      if pan.state == .ended || pan.state == .cancelled {
+        scrollView.showsVerticalScrollIndicator = true
+      }
+    }
+  }
+
+  class PlaylistSidebarScrollView: UIScrollView, UIGestureRecognizerDelegate {
     override func safeAreaInsetsDidChange() {
       super.safeAreaInsetsDidChange()
       // For some reason the vertical idicator insets are messed up when the
@@ -425,26 +461,6 @@ private struct PlaylistDrawerScrollView<Content: View>: UIViewRepresentable {
         return false
       }
       return true
-    }
-
-    private var startLocation: CGPoint = .zero
-    @objc private func drawerPan(_ pan: UIPanGestureRecognizer) {
-      // We get the velocity & location based on the window coordinate system since the local
-      // coordinate system will be shifted based on this gesture
-      let location = pan.location(in: window)
-      if pan.state == .began {
-        startLocation = location
-        showsVerticalScrollIndicator = false
-      }
-      dragState = .init(
-        state: pan.state,
-        location: location,
-        startLocation: startLocation,
-        velocity: pan.velocity(in: window)
-      )
-      if pan.state == .ended || pan.state == .cancelled {
-        showsVerticalScrollIndicator = true
-      }
     }
   }
 }

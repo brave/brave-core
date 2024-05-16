@@ -480,10 +480,6 @@ public final class PlayerModel: ObservableObject {
     playImmediately: Bool
   ) async {
     guard let item = selectedItem else { return }
-    // FIXME: Need a possible loading state here
-    // Loading a media streaming asset may take time, need some sort of intermediate state where
-    // we stop the current playback and show a loader even if the selected item is not fully ready
-    // yet
     var playerItemToReplace: AVPlayerItem?
     if let cachedData = item.cachedData {
       do {

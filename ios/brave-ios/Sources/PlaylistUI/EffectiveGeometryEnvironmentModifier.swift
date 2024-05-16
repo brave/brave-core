@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Combine
 import Foundation
 import SwiftUI
 import UIKit
@@ -72,7 +73,7 @@ extension EnvironmentValues {
   /// The action to allow you to request geometry updates to the window scene of this environment
   ///
   /// - Note: This environment value will not work unless a parent View uses
-  ///         the `creatingRequestGeometryUpdateAction` modifier.
+  ///         the `prepareEffectiveGeometryEnvironment` modifier.
   var requestGeometryUpdate: RequestGeometryUpdateAction {
     self[RequestGeometryUpdateActionKey.self]
   }
@@ -82,26 +83,64 @@ extension EnvironmentValues {
     get { self[RequestGeometryUpdateActionKey.self] }
     set { self[RequestGeometryUpdateActionKey.self] = newValue }
   }
+
+  private struct InterfaceOrientationKey: EnvironmentKey {
+    static var defaultValue: UIInterfaceOrientation = .unknown
+  }
+
+  /// The interface orientation of this environment
+  ///
+  /// The value will be the current orientation of the View that reads it, regardless of horizontal
+  /// and vertical size classes. Use this in conjunction with size classes to update UI accordingly.
+  ///
+  /// Use size classes if possible before reaching for this API.
+  ///
+  /// - Note: This environment value will be `UIInterfaceOrientation.unknown` and receive no changes
+  ///         unless a parent View uses the `prepareEffectiveGeometryEnvironment` modifier.
+  var interfaceOrientation: UIInterfaceOrientation {
+    self[InterfaceOrientationKey.self]
+  }
+
+  /// Writable reference to `interfaceOrientation`
+  fileprivate var _interfaceOrientation: UIInterfaceOrientation {
+    get { self[InterfaceOrientationKey.self] }
+    set { self[InterfaceOrientationKey.self] = newValue }
+  }
 }
 
 @available(iOS 16.0, *)
 extension View {
-  /// Allows the view access to the `requestGeometryUpdate` environement value
-  func creatingRequestGeometryUpdateAction() -> some View {
-    modifier(RequestGeometryUpdateModifier())
+  /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environement
+  /// values.
+  func prepareEffectiveGeometryEnvironment() -> some View {
+    modifier(EffectiveGeometryEnvironmentModifier())
   }
 }
 
-// FIXME: Consider combining InterfaceOrientationModifier and RequestGeometryUpdateModifier
-// Could use `UIWindowScene.effectiveGeometry` to fetch the interface orientation which is KVO-compliant
+/// A modifier that injects a `UIViewControllerRepresentable` into the SwiftUI hierarchy to obtain
+/// the underlying `UIWindowScene` associated with this UI and then uses that scene to inject
+/// various related values into the SwiftUI environment.
 @available(iOS 16.0, *)
-private struct RequestGeometryUpdateModifier: ViewModifier {
+private struct EffectiveGeometryEnvironmentModifier: ViewModifier {
   // FIXME: May have to be a weak box
   @State private var windowScene: UIWindowScene?
+  @State private var orientation: UIInterfaceOrientation = .unknown
+
+  private var interfaceOrientationPublisher: some Publisher<UIInterfaceOrientation, Never> {
+    if let windowScene {
+      return windowScene.publisher(for: \.effectiveGeometry).map(\.interfaceOrientation)
+        .eraseToAnyPublisher()
+    }
+    return Just(UIInterfaceOrientation.unknown).eraseToAnyPublisher()
+  }
 
   func body(content: Content) -> some View {
     content
       .environment(\._requestGeometryUpdate, .init(windowScene: windowScene))
+      .environment(\._interfaceOrientation, orientation)
+      .onReceive(interfaceOrientationPublisher) { orientation in
+        self.orientation = orientation
+      }
       .background {
         _Representable(windowScene: $windowScene)
           // Can't use the `hidden` modifier or the VC isn't added at all and can't receive updates
@@ -141,7 +180,6 @@ private struct RequestGeometryUpdateModifier: ViewModifier {
 
     override func viewDidDisappear(_ animated: Bool) {
       super.viewDidDisappear(animated)
-      // FIXME: Probably redundant
       windowScene = nil
     }
   }

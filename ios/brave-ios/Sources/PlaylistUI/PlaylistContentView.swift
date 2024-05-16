@@ -108,7 +108,6 @@ struct PlaylistContentView: View {
     } content: {
       ZStack {
         if let selectedItem {
-          // FIXME: Swap out for some sort of container for the selected item (shows different views if its webpage TTS for instance)
           MediaContentView(model: playerModel, selectedItem: selectedItem)
             .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
         } else {

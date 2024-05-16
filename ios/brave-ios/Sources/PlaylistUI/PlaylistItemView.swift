@@ -6,8 +6,7 @@
 import Foundation
 import SwiftUI
 
-// FIXME: Move to item view model
-enum DownloadState {
+enum ItemDownloadState {
   case downloading(percentComplete: Double)
   case completed
 }
@@ -15,14 +14,12 @@ enum DownloadState {
 @available(iOS 16.0, *)
 struct PlaylistItemView: View {
   var title: String
-  // FIXME: We'd need to support non-video specific entries as well eventually such as webpage TTS
-  // those pages won't have duration, and they'll show a simple favicon in the center of the thumbnail
   var assetURL: URL?
   var pageURL: URL?
   var duration: Duration
   var isSelected: Bool
   var isPlaying: Bool
-  var downloadState: DownloadState?
+  var downloadState: ItemDownloadState?
 
   @ScaledMetric private var progressViewSize = 16
   // Don't need to scale the guage line width, but it looks better when it does
@@ -54,10 +51,7 @@ struct PlaylistItemView: View {
             LeoPlayingSoundView(isAnimating: isPlaying)
               // FIXME: Should this scale? Its just cosmetic
               .frame(width: 16, height: 16)
-              .foregroundStyle(
-                isPlaying
-                  ? Color(braveSystemName: .primary50) : Color(braveSystemName: .iconDisabled)
-              )
+              .tint(Color(braveSystemName: .primary50))
           }
         }
         HStack(alignment: .firstTextBaseline) {
@@ -96,7 +90,11 @@ struct PlaylistItemView: View {
   }
 }
 
-// FIXME: Replace with a TimelineView variant if possible
+/// A custom View that displays the `leo.playing.sound` icon but is animatable & customizable
+///
+/// While `isAnimating` is true, the bars of the icon will continuously randomize and use the `tint`
+/// foreground style. If `isAnimating` is false then bars will revert to 10% of total height and
+/// greyscale.
 struct LeoPlayingSoundView: View {
   var isAnimating: Bool
 
@@ -113,6 +111,8 @@ struct LeoPlayingSoundView: View {
 
   var body: some View {
     LeoPlayingSoundShape(barHeights: barHeights)
+      .foregroundStyle(.tint)
+      .grayscale(isAnimating ? 0 : 1)
       .animation(.linear(duration: 0.3), value: barHeights)
       .onReceive(
         Timer.publish(every: 0.3, on: .main, in: .default).autoconnect(),
@@ -140,7 +140,9 @@ struct LeoPlayingSoundView: View {
       }
   }
 
-  // FIXME: Add doc
+  /// The underlying shape that renders the glyph with varying bar heights
+  ///
+  /// We use a custom shape so that we can animate the shape using `Animatable`/`animatableData`
   struct LeoPlayingSoundShape: Shape {
     var animatableData:
       AnimatablePair<AnimatablePair<CGFloat, CGFloat>, AnimatablePair<CGFloat, CGFloat>>
@@ -154,6 +156,7 @@ struct LeoPlayingSoundView: View {
       }
     }
 
+    // SIMD4 only being used here as a 4-value container
     var barHeights: SIMD4<Double> = .init(x: 0.45, y: 1, z: 0.6, w: 0.8)
 
     func path(in rect: CGRect) -> Path {
