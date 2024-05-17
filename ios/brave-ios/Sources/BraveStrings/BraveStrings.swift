@@ -489,6 +489,13 @@ extension Strings {
     value: "Close All %i Tabs",
     comment: ""
   )
+  public static let closeAllOtherTabsTitle = NSLocalizedString(
+    "closeAllOtherTabsTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Close All Other Tabs",
+    comment: "Title for asking user to close all tabs except the active tab."
+  )
   public static let closeAllTabsPrompt =
     NSLocalizedString(
       "closeAllTabsPrompt",
@@ -496,6 +503,14 @@ extension Strings {
       bundle: .module,
       value: "Are you sure you want to close all open tabs?",
       comment: "We ask users this prompt before attempting to close multiple tabs via context menu"
+    )
+  public static let closeAllOtherTabsPrompt =
+    NSLocalizedString(
+      "closeAllOtherTabsPrompt",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Are you sure you want to close all other open tabs?",
+      comment: "We ask users this prompt before attempting to close all tabs except active one via context menu"
     )
   public static let savedTabsFolderTitle = NSLocalizedString(
     "SavedTabsFolderTitle",
@@ -3231,13 +3246,6 @@ extension Strings {
     bundle: .module,
     value: "Show History",
     comment: "Button to show the history list"
-  )
-  public static let addBookmark = NSLocalizedString(
-    "AddBookmark",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Add Bookmark",
-    comment: "Button to add a bookmark"
   )
   public static let editBookmark = NSLocalizedString(
     "EditBookmark",
