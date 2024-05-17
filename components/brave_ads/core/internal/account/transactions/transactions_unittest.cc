@@ -45,20 +45,20 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   AdvanceClockTo(TimeFromString("31 August 2019"));  //
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(
       TimeFromUTCString("11 September 2019"));  // A legendary moment.
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, ConfirmationType::kDismissed,
+      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kDismissed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, ConfirmationType::kClicked,
+      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
@@ -76,12 +76,12 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, ConfirmationType::kDismissed,
+      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kDismissed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 

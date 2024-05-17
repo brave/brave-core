@@ -64,8 +64,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
@@ -117,8 +117,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,
@@ -129,8 +129,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
        DISABLED_DoNotBuildRewardConfirmationWithInvalidTokenGenerator) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(
@@ -157,8 +157,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(

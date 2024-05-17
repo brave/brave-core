@@ -35,8 +35,8 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*reconciled_at=*/Now(),
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -76,8 +76,8 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*reconciled_at=*/Now(),
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
