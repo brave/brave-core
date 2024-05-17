@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -141,9 +142,16 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
+
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  enabled_features.emplace_back(
       kExclusionRulesFeature,
-      {{"should_exclude_ad_if_landed_on_page_within_time_window", "2d"}});
+      base::FieldTrialParams(
+          {{"should_exclude_ad_if_landed_on_page_within_time_window", "2d"}}));
+  enabled_features.emplace_back(
+      kSiteVisitFeature, base::FieldTrialParams({{"page_land_cap", "1"}}));
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    /*disabled_features=*/{});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;

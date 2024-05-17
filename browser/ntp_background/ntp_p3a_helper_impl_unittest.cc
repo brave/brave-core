@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
+
 #include <memory>
 #include <string>
 #include <utility>
@@ -10,8 +12,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
@@ -170,6 +173,10 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
 }
 
 TEST_F(NTPP3AHelperImplTest, LandCountReported) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      brave_ads::kSiteVisitFeature, {{"page_land_after", "10s"}});
+
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
   const std::string clicks_histogram_name =
