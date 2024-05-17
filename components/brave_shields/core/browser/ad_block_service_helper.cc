@@ -63,30 +63,36 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  base::Value::Dict* resources_style_selectors =
-      into.FindDict("style_selectors");
-  base::Value::Dict* from_resources_style_selectors =
-      from.FindDict("style_selectors");
-  if (resources_style_selectors && from_resources_style_selectors) {
-    for (auto [key, value] : *from_resources_style_selectors) {
-      base::Value::List* resources_entry =
-          resources_style_selectors->FindList(key);
-      if (resources_entry) {
-        DCHECK(value.is_list());
-        for (auto& item : value.GetList()) {
-          resources_entry->Append(std::move(item));
+  std::vector<std::string> dict_list_keys = {"style_selectors", "remove_classes", "remove_attrs"};
+  for (const auto& key_ : dict_list_keys) {
+    base::Value::Dict* resources =
+        into.FindDict(key_);
+    base::Value::Dict* from_resources =
+        from.FindDict(key_);
+    if (resources && from_resources) {
+      for (auto [key, value] : *from_resources) {
+        base::Value::List* resources_entry =
+            resources->FindList(key);
+        if (resources_entry) {
+          DCHECK(value.is_list());
+          for (auto& item : value.GetList()) {
+            resources_entry->Append(std::move(item));
+          }
+        } else {
+          resources->Set(key, std::move(value));
         }
-      } else {
-        resources_style_selectors->Set(key, std::move(value));
       }
     }
   }
 
-  base::Value::List* resources_exceptions = into.FindList("exceptions");
-  base::Value::List* from_resources_exceptions = from.FindList("exceptions");
-  if (resources_exceptions && from_resources_exceptions) {
-    for (auto& exception : *from_resources_exceptions) {
-      resources_exceptions->Append(std::move(exception));
+  std::vector<std::string> list_keys = {"exceptions", "remove_selectors"};
+  for (const auto& key_ : list_keys) {
+    base::Value::List* resources = into.FindList(key_);
+    base::Value::List* from_resources = from.FindList(key_);
+    if (resources && from_resources) {
+      for (auto& exception : *from_resources) {
+        resources->Append(std::move(exception));
+      }
     }
   }
 
