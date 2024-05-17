@@ -2011,7 +2011,6 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-//      navigationToolbar.updateBackStatus(canGoBack)
       updateForwardStatusIfNeeded(webView: webView)
     case .hasOnlySecureContent:
       Task {
