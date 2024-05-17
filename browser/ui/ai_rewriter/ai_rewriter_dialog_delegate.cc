@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 
-#include <cstddef>
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -20,6 +20,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/tab_contents/web_contents_collection.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/focused_node_details.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -87,10 +88,15 @@ class AIRewriterDialogDelegate::DialogContentsObserver
 
 // static
 AIRewriterDialogDelegate* AIRewriterDialogDelegate::Show(
-    WebContents* contents) {
+    WebContents* contents,
+    std::string initial_text) {
   DCHECK(features::IsAIRewriterEnabled());
   AIRewriterDialogDelegate* dialog = new AIRewriterDialogDelegate(contents);
   dialog->ShowDialog();
+
+  if (auto* ui = dialog->GetRewriterUI()) {
+    ui->set_initial_text(initial_text);
+  }
   return dialog;
 }
 
@@ -118,6 +124,10 @@ void AIRewriterDialogDelegate::DidFinishNavigation(
   CloseDialog();
 }
 
+void AIRewriterDialogDelegate::OnFocusChangedInPage(
+    content::FocusedNodeDetails* focused_node) {
+  CloseDialog();
+}
 void AIRewriterDialogDelegate::ShowDialog() {
   ConstrainedWebDialogDelegate* dialog_delegate =
       ShowConstrainedWebDialog(target_contents_->GetBrowserContext(),
@@ -159,22 +169,9 @@ void AIRewriterDialogDelegate::ShowDialog() {
 }
 
 void AIRewriterDialogDelegate::CloseDialog() {
-  auto* dialog_contents = GetDialogWebContents();
-  if (!dialog_contents) {
-    return;
+  if (auto* ui = GetRewriterUI()) {
+    ui->Close();
   }
-
-  auto* webui = dialog_contents->GetWebUI();
-  if (!webui) {
-    return;
-  }
-
-  auto* ui = webui->GetController()->GetAs<AIRewriterUI>();
-  if (!ui) {
-    return;
-  }
-
-  ui->Close();
 }
 
 content::WebContents* AIRewriterDialogDelegate::GetDialogWebContents() {
@@ -183,6 +180,20 @@ content::WebContents* AIRewriterDialogDelegate::GetDialogWebContents() {
 
 void AIRewriterDialogDelegate::ResetDialogObserver() {
   dialog_observer_.reset();
+}
+
+AIRewriterUI* AIRewriterDialogDelegate::GetRewriterUI() {
+  auto* dialog_contents = GetDialogWebContents();
+  if (!dialog_contents) {
+    return nullptr;
+  }
+
+  auto* webui = dialog_contents->GetWebUI();
+  if (!webui) {
+    return nullptr;
+  }
+
+  return webui->GetController()->GetAs<AIRewriterUI>();
 }
 
 }  // namespace ai_rewriter

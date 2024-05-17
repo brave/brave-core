@@ -59,7 +59,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
-#include "third_party/re2/src/re2/re2.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -195,8 +194,6 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
-constexpr char kResponseTagPattern[] =
-    "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
 
 struct AIChatRewriteData : public base::SupportsUserData::Data {
   bool has_data_received = false;
@@ -265,24 +262,8 @@ GetActionTypeAndP3A(int command) {
 
 void OnRewriteSuggestionDataReceived(
     base::WeakPtr<content::WebContents> web_contents,
-    ai_chat::mojom::ConversationEntryEventPtr rewrite_event) {
+    const std::string& suggestion) {
   if (!web_contents) {
-    return;
-  }
-
-  if (!rewrite_event->is_completion_event()) {
-    return;
-  }
-
-  std::string suggestion = rewrite_event->get_completion_event()->completion;
-
-  base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
-  if (suggestion.empty()) {
-    return;
-  }
-
-  // Avoid showing the ending tag.
-  if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
     return;
   }
 
@@ -543,7 +524,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
     case IDC_AI_CHAT_CONTEXT_REWRITE:
-      ai_rewriter::AIRewriterDialogDelegate::Show(source_web_contents_);
+      ai_rewriter::AIRewriterDialogDelegate::Show(
+          source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
     default:

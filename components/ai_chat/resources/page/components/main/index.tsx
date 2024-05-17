@@ -210,8 +210,8 @@ function Main() {
             <PageContextToggle />
           </div>
         )}
-        <ToolsButtonMenu>
-          <InputBox />
+        <ToolsButtonMenu {...context}>
+          <InputBox {...context} />
         </ToolsButtonMenu>
       </div>
     </main>

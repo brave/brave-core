@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_AI_REWRITER_AI_REWRITER_DIALOG_DELEGATE_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -15,9 +16,12 @@
 namespace content {
 class WebContents;
 class NavigationHandle;
+struct FocusedNodeDetails;
 }  // namespace content
 
 namespace ai_rewriter {
+
+class AIRewriterUI;
 
 class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
                                  public content::WebContentsObserver {
@@ -26,13 +30,15 @@ class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
   AIRewriterDialogDelegate& operator=(const AIRewriterDialogDelegate&) = delete;
   ~AIRewriterDialogDelegate() override;
 
-  static AIRewriterDialogDelegate* Show(content::WebContents* contents);
+  static AIRewriterDialogDelegate* Show(content::WebContents* contents,
+                                        std::string initial_text);
 
   void CloseDialog();
   content::WebContents* GetDialogWebContents();
 
   // content::WebContentsObserver:
   void DidFinishNavigation(content::NavigationHandle* handle) override;
+  void OnFocusChangedInPage(content::FocusedNodeDetails* details) override;
 
  private:
   class DialogContentsObserver;
@@ -41,6 +47,8 @@ class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
 
   void ResetDialogObserver();
   void ShowDialog();
+
+  AIRewriterUI* GetRewriterUI();
 
   base::WeakPtr<content::WebContents> target_contents_;
   std::unique_ptr<DialogContentsObserver> dialog_observer_;

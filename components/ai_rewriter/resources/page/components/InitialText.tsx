@@ -12,8 +12,8 @@ const StyledInput = styled(Input)`
 `
 
 export default function InitialText() {
-  const { initialText, setInitialText } = useRewriterContext()
-  return <StyledInput placeholder="Enter text to rewrite" value={initialText} onChange={({ value }) => setInitialText(value)}>
+  const { initialText, setInitialText, isGenerating } = useRewriterContext()
+  return <StyledInput disabled={isGenerating} placeholder="Enter text to rewrite" value={initialText} onInput={({ value }) => setInitialText(value)}>
     Initial text
   </StyledInput>
 }

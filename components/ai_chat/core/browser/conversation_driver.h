@@ -33,6 +33,11 @@ FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 namespace ai_chat {
 class AIChatMetrics;
 
+const std::string& GetActionTypeQuestion(mojom::ActionType action_type);
+
+using GeneratedTextCallback =
+    base::RepeatingCallback<void(const std::string& text)>;
+
 class ConversationDriver {
  public:
   // |invalidation_token| is an optional parameter that will be passed back on
@@ -109,8 +114,7 @@ class ConversationDriver {
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
   mojom::ConversationTurnPtr ClearErrorAndGetFailedMessage();
-  void GetPremiumStatus(
-      mojom::PageHandler::GetPremiumStatusCallback callback);
+  void GetPremiumStatus(mojom::PageHandler::GetPremiumStatusCallback callback);
   bool GetCanShowPremium();
   void DismissPremiumPrompt();
   bool HasUserOptedIn();
@@ -127,10 +131,16 @@ class ConversationDriver {
   void SubmitSelectedText(
       const std::string& selected_text,
       mojom::ActionType action_type,
-      EngineConsumer::GenerationDataCallback received_callback =
-          base::NullCallback(),
+      GeneratedTextCallback received_callback = base::NullCallback(),
       EngineConsumer::GenerationCompletedCallback completed_callback =
           base::NullCallback());
+
+  void SubmitSelectedTextWithQuestion(
+      const std::string& selected_text,
+      const std::string& question,
+      mojom::ActionType action_type,
+      GeneratedTextCallback received_callback,
+      EngineConsumer::GenerationCompletedCallback completed_callback);
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -205,12 +215,11 @@ class ConversationDriver {
   bool MaybePopPendingRequests();
   void MaybeSeedOrClearSuggestions();
 
-  void PerformAssistantGeneration(
-      const std::string& input,
-      int64_t current_navigation_id,
-      std::string page_content = "",
-      bool is_video = false,
-      std::string invalidation_token = "");
+  void PerformAssistantGeneration(const std::string& input,
+                                  int64_t current_navigation_id,
+                                  std::string page_content = "",
+                                  bool is_video = false,
+                                  std::string invalidation_token = "");
 
   void GeneratePageContent(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(int64_t navigation_id,

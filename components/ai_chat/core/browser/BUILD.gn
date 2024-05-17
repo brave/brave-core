@@ -70,6 +70,7 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//third_party/re2",
     "//ui/base",
     "//url",
   ]

@@ -8,17 +8,33 @@
 #include <string>
 #include <utility>
 
+#include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/notimplemented.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/conversation_driver.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "brave/components/ai_rewriter/resources/page/grit/ai_rewriter_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
@@ -38,6 +54,11 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
       web_ui, kRewriterUIHost, kAiRewriterUiGenerated,
       kAiRewriterUiGeneratedSize, IDR_REWRITER_UI_HTML);
   DCHECK(source);
+
+  for (const auto& str : ai_chat::GetLocalizedStrings()) {
+    source->AddString(str.name,
+                      brave_l10n::GetLocalizedResourceUTF16String(str.id));
+  }
 }
 
 AIRewriterUI::~AIRewriterUI() = default;
@@ -45,6 +66,11 @@ AIRewriterUI::~AIRewriterUI() = default;
 void AIRewriterUI::BindInterface(
     mojo::PendingReceiver<mojom::AIRewriterPageHandler> service) {
   receiver_.Bind(std::move(service));
+}
+
+void AIRewriterUI::SetPage(mojo::PendingRemote<mojom::AIRewriterPage> page) {
+  page_.reset();
+  page_.Bind(std::move(page));
 }
 
 void AIRewriterUI::Close() {
@@ -68,7 +94,81 @@ void AIRewriterUI::OpenSettings() {
 }
 
 void AIRewriterUI::GetInitialText(GetInitialTextCallback callback) {
-  std::move(callback).Run("Message from WebUI");
+  std::move(callback).Run(initial_text_);
+}
+
+void AIRewriterUI::RewriteText(const std::string& text,
+                               ai_chat::mojom::ActionType action,
+                               const std::string& instructions,
+                               RewriteTextCallback callback) {
+  // Stop any pending rewrite requests.
+  weak_ptr_factory_.InvalidateWeakPtrs();
+
+  auto* target = GetTargetContents();
+  if (!target) {
+    std::move(callback).Run();
+    return;
+  }
+
+  auto* helper = ai_chat::AIChatTabHelper::FromWebContents(target);
+  if (!helper) {
+    return;
+  }
+
+  helper->SubmitSelectedTextWithQuestion(
+      text, instructions, action,
+      base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
+                          weak_ptr_factory_.GetWeakPtr()),
+      base::BindOnce(
+          [](RewriteTextCallback callback,
+             ai_chat::EngineConsumer::GenerationResult result) {
+            std::move(callback).Run();
+          },
+          std::move(callback)));
+}
+
+void AIRewriterUI::InsertTextAndClose(const std::string& text,
+                                      InsertTextAndCloseCallback callback) {
+  if (auto* contents = GetTargetContents()) {
+    contents->Replace(base::UTF8ToUTF16(text));
+  }
+  std::move(callback).Run();
+  Close();
+}
+
+AIRewriterDialogDelegate* AIRewriterUI::GetDialogDelegate() {
+  auto* delegate = GetConstrainedDelegate();
+  if (!delegate) {
+    return nullptr;
+  }
+  auto* web_delegate = delegate->GetWebDialogDelegate();
+  if (!web_delegate) {
+    return nullptr;
+  }
+
+  return static_cast<AIRewriterDialogDelegate*>(
+      GetConstrainedDelegate()->GetWebDialogDelegate());
+}
+
+content::WebContents* AIRewriterUI::GetTargetContents() {
+  auto* delegate = GetDialogDelegate();
+
+  // If we aren't being shown in a Dialog, then we're in a tab.
+  if (!delegate) {
+    return web_ui()->GetWebContents();
+  }
+
+  return delegate->web_contents();
+}
+
+void AIRewriterUI::GetActionMenuList(GetActionMenuListCallback callback) {
+  std::move(callback).Run(ai_chat::GetActionMenuList());
+}
+
+void AIRewriterUI::OnRewriteSuggestionGenerated(const std::string& data) {
+  if (page_.is_bound()) {
+    page_->OnUpdatedGeneratedText(data);
+  }
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIRewriterUI)

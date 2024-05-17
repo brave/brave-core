@@ -15,6 +15,7 @@ mojom_component("mojom") {
   sources = [ "ai_rewriter.mojom" ]
 
   deps = [
+    "//brave/components/ai_chat/core/common/mojom",
     "//mojo/public/mojom/base",
     "//ui/gfx/geometry/mojom",
     "//url/mojom:url_mojom_gurl",
