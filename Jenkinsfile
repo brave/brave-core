@@ -45,6 +45,19 @@ pipeline {
                     if (SKIP && PLATFORM != 'noplatform') {
                         echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
+
+                        // Yeah, that's pretty terrible, but getting this sha without a checkout doesn't seem possible
+                        def logFile = Jenkins.instance.getItemByFullName(JOB_NAME).getBuildByNumber(Integer.parseInt(BUILD_NUMBER)).logFile
+                        def sha = (logFile.text =~ /.*Obtained Jenkinsfile from ([0-9a-f]{40}).*/)[0][1]
+                        step([
+                            $class: "GitHubCommitStatusSetter",
+                            reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/brave/brave-core.git"],
+                            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: sha],
+                            contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "continuous-integration/${PLATFORM}/pr-head"],
+                            errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "FAILURE"]],
+                            statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "Skipped", state: "SUCCESS"]]]
+                        ])
+
                         return
                     }
 
