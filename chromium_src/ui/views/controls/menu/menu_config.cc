@@ -27,6 +27,7 @@ const MenuConfig& MenuConfig::instance() {
       mutable_config.item_vertical_margin = 4;
       mutable_config.item_horizontal_padding =
           16 - config.item_horizontal_border_padding;
+      mutable_config.corner_radius = 8;
     }
   } const run_once(config);
 
