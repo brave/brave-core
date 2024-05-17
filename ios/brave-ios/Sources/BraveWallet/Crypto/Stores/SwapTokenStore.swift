@@ -367,7 +367,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       toToken: buyAddress,
       toAmount: buyAmountInWei,
       slippagePercentage: "\(slippagePercentage)",
-      routePriority: .recommended
+      routePriority: .recommended,
+      provider: .auto
     )
 
     return swapQuoteParams

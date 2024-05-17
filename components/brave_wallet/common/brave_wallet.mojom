@@ -494,6 +494,13 @@ enum RoutePriority {
   kSafest
 };
 
+enum SwapProvider {
+  kAuto,
+  kLiFi,
+  kZeroEx,
+  kJupiter
+};
+
 struct SwapQuoteParams {
   AccountId from_account_id;
   string from_chain_id;
@@ -513,6 +520,8 @@ struct SwapQuoteParams {
   // This is primarily used for LiFi swaps. For every other case, this should
   // be set to kRecommended.
   RoutePriority route_priority;
+
+  SwapProvider provider;
 };
 
 union SwapTransactionParamsUnion {
