@@ -5,7 +5,10 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
-mojom("mojom") {
+mojom_component("mojom") {
+  output_prefix = "ai_rewriter_mojom"
+  macro_prefix = "AI_REWRITER_MOJOM"
+
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 
@@ -16,4 +19,6 @@ mojom("mojom") {
     "//ui/gfx/geometry/mojom",
     "//url/mojom:url_mojom_gurl",
   ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
 }

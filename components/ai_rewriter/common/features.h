@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_AI_REWRITER_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_AI_REWRITER_COMMON_FEATURES_H_
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 
 namespace ai_rewriter::features {
 
-BASE_DECLARE_FEATURE(kAIRewriter);
+COMPONENT_EXPORT(AI_REWRITER_COMMON) BASE_DECLARE_FEATURE(kAIRewriter);
 
-bool IsAIRewriterEnabled();
+COMPONENT_EXPORT(AI_REWRITER_COMMON) bool IsAIRewriterEnabled();
 
 }  // namespace ai_rewriter::features
 

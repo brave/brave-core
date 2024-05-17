@@ -657,7 +657,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
     registry.ForWebUI<ai_rewriter::AIRewriterUI>()
-        .Add<ai_rewriter::mojom::AIRewriterService>();
+        .Add<ai_rewriter::mojom::AIRewriterPageHandler>();
   }
 #endif
 

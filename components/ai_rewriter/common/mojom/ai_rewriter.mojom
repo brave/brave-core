@@ -11,7 +11,7 @@ interface AIRewriterAgent {
 };
 
 // Interface that the Rewriter page uses to communicate with the browser process.
-interface AIRewriterService {
+interface AIRewriterPageHandler {
   Close();
   OpenSettings();
   GetInitialText() => (string initialText);

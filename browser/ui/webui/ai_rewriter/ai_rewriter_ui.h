@@ -23,7 +23,7 @@ class Profile;
 namespace ai_rewriter {
 
 class AIRewriterUI : public ConstrainedWebDialogUI,
-                     public mojom::AIRewriterService {
+                     public mojom::AIRewriterPageHandler {
  public:
   static constexpr std::string GetWebUIName() { return "AIRewriterPanel"; }
 
@@ -32,9 +32,10 @@ class AIRewriterUI : public ConstrainedWebDialogUI,
   AIRewriterUI& operator=(const AIRewriterUI&) = delete;
   ~AIRewriterUI() override;
 
-  void BindInterface(mojo::PendingReceiver<mojom::AIRewriterService> service);
+  void BindInterface(
+      mojo::PendingReceiver<mojom::AIRewriterPageHandler> service);
 
-  // mojom::AIRewriterService:
+  // mojom::AIRewriterPageHandler:
   void Close() override;
   void OpenSettings() override;
   void GetInitialText(GetInitialTextCallback callback) override;
@@ -43,7 +44,7 @@ class AIRewriterUI : public ConstrainedWebDialogUI,
   raw_ptr<Profile> profile_ = nullptr;
   bool dialog_closed_ = false;
 
-  mojo::Receiver<mojom::AIRewriterService> receiver_{this};
+  mojo::Receiver<mojom::AIRewriterPageHandler> receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

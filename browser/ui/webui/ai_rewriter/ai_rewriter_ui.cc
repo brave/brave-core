@@ -45,7 +45,7 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
 AIRewriterUI::~AIRewriterUI() = default;
 
 void AIRewriterUI::BindInterface(
-    mojo::PendingReceiver<mojom::AIRewriterService> service) {
+    mojo::PendingReceiver<mojom::AIRewriterPageHandler> service) {
   receiver_.Bind(std::move(service));
 }
 

@@ -9,11 +9,13 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
-#include "chrome/browser/tab_contents/web_contents_collection.h"
-#include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
+
+namespace content {
+class WebContents;
+class NavigationHandle;
+}  // namespace content
 
 namespace ai_rewriter {
 

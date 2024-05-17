@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_REWRITER_RENDERER_AI_REWRITER_AGENT_H_
 #define BRAVE_COMPONENTS_AI_REWRITER_RENDERER_AI_REWRITER_AGENT_H_
 
+#include "base/component_export.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -16,7 +17,8 @@ class RenderFrame;
 }
 
 namespace ai_rewriter {
-class AIRewriterAgent : public mojom::AIRewriterAgent {
+class COMPONENT_EXPORT(AI_REWRITER_RENDERER) AIRewriterAgent
+    : public mojom::AIRewriterAgent {
  public:
   AIRewriterAgent(content::RenderFrame* render_frame,
                   service_manager::BinderRegistry* registry);

@@ -18,6 +18,8 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "ui/gfx/geometry/rect_f.h"
 
+namespace ai_rewriter {
+namespace {
 gfx::RectF GetBounds(content::RenderFrame* frame) {
   auto document = frame->GetWebFrame()->GetDocument();
 
@@ -28,8 +30,7 @@ gfx::RectF GetBounds(content::RenderFrame* frame) {
 
   return frame->ElementBoundsInWindow(focused);
 }
-
-namespace ai_rewriter {
+}  // namespace
 
 AIRewriterAgent::AIRewriterAgent(content::RenderFrame* render_frame,
                                  service_manager::BinderRegistry* registry)

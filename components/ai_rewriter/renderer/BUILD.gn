@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("renderer") {
+component("renderer") {
+  output_name = "ai_rewriter_renderer"
+  defines = [ "IS_AI_REWRITER_RENDERER_IMPL" ]
+
   sources = [
     "ai_rewriter_agent.cc",
     "ai_rewriter_agent.h",
@@ -14,7 +17,7 @@ static_library("renderer") {
   deps = [
     "//content/public/renderer",
     "//mojo/public/cpp/bindings",
-    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
     "//url",
   ]
