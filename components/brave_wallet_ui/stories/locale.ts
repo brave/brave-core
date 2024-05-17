@@ -64,6 +64,7 @@ provideStrings({
   braveWalletEnterAPasswordToContinue: 'Enter a password to continue',
   braveWalletEnterYourPasswordToStartBackup:
     'Enter your Brave Wallet password to start backing up wallet.',
+  braveWalletDoNotShowThisMessageAgain: 'Do not show this message again.',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
@@ -953,6 +954,18 @@ provideStrings({
     'Attempting will still incur gas costs.',
   braveWalletSimulationUnexpectedError:
     'Unexpected error with transaction preview. ' + 'Approving may be unsafe.',
+
+  // Sign Message Simulation/Scanning
+  braveWalletEvmMessageScanningNotSupported:
+    'EVM message scanning is not currently supported',
+  braveWalletWhatIsMessageScanning: "What's EVM message scanning?",
+  braveWalletEvmMessageScanningFeatureSafetyExplanation:
+    'It ensures safety and accuracy by examining ' +
+    'the messages sent from the Ethereum Virtual Machine ' +
+    'that interact with your smart contract or any actions.',
+  braveWalletEvmMessageScanningFeatureAccuracyExplanation:
+    "It's like double-checking a letter " +
+    "to make sure it's just right before signing it.",
 
   // Asset Detail Accounts (Empty)
   braveWalletNoAccountsWithABalance: 'No available accounts',
