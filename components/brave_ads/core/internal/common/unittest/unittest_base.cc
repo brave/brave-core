@@ -286,6 +286,8 @@ void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
 
   NotifyDidInitializeAds();
 
+  NotifyBrowserDidBecomeActive();
+
   task_environment_.RunUntilIdle();
 }
 
