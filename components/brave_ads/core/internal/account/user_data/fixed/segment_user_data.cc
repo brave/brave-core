@@ -21,7 +21,8 @@ base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
     return user_data;
   }
 
-  if (!transaction.segment.empty()) {
+  if (transaction.ad_type != AdType::kSearchResultAd &&
+      !transaction.segment.empty()) {
     user_data.Set(kSegmentKey, transaction.segment);
   }
 
