@@ -213,7 +213,7 @@ export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidd
 export const GridItemNotification = styled('section')`
   position: fixed;
   left: 50%;
-  top: 0;
+  top: 50px;
   transform: translateX(-50%);
 `
 

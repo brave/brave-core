@@ -5,15 +5,14 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 // Feature-specific components
 import {
   SiteRemovalNotification,
   SiteRemovalAction,
   SiteRemovalText
 } from '../../components/default'
-
-// Icons
-import { CloseStrokeIcon } from 'brave-ui/components/icons'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -65,7 +64,7 @@ export default class Notification extends React.Component<Props, {}> {
             iconOnly={true}
             title={getLocale('close')}
           >
-            <CloseStrokeIcon />
+            <Icon name='close' />
           </SiteRemovalAction>
        </SiteRemovalNotification>
     )
