@@ -35,7 +35,6 @@ module.exports = {
   resetMocks: true,
   resetModules: true,
   coverageProvider: 'v8',
-  collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/build/commands/lib/*',
     '<rootDir>/components/**/**/*.ts',
@@ -53,13 +52,16 @@ module.exports = {
     '<rootDir>/**/*.test.{js,ts,tsx}',
     '<rootDir>/components/test/**/*_test.{ts,tsx}'
   ],
-  testPathIgnorePatterns: ['lib/test.js'],
+  testPathIgnorePatterns: [
+    '<rootDir>/build/commands/lib/test.js',
+    '<rootDir>/build/rustup',
+    '<rootDir>/third_party',
+  ],
   testTimeout: 30000,
   transformIgnorePatterns: [
     '<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)'
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
-  setupFiles: ['<rootDir>/components/test/testPolyfills.ts'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$':
       '<rootDir>/components/test/fileMock.ts',
