@@ -46,18 +46,10 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
   }
 
   void SetUpFeatures() {
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-    enabled_features.emplace_back(kPurchaseIntentFeature,
-                                  base::FieldTrialParams({}));
-
-    enabled_features.emplace_back(kTextClassificationFeature,
-                                  base::FieldTrialParams({}));
-
-    const std::vector<base::test::FeatureRef> disabled_features;
-
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                       disabled_features);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{kPurchaseIntentFeature,
+                              kTextClassificationFeature},
+        /*disabled_features=*/{});
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

@@ -73,6 +73,7 @@ HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
 void HistoryManager::Add(const InlineContentAdInfo& ad,
                          const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 
@@ -84,6 +85,7 @@ void HistoryManager::Add(const InlineContentAdInfo& ad,
 void HistoryManager::Add(const NewTabPageAdInfo& ad,
                          const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 
@@ -95,6 +97,7 @@ void HistoryManager::Add(const NewTabPageAdInfo& ad,
 void HistoryManager::Add(const NotificationAdInfo& ad,
                          const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 
@@ -106,6 +109,7 @@ void HistoryManager::Add(const NotificationAdInfo& ad,
 void HistoryManager::Add(const PromotedContentAdInfo& ad,
                          const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 
@@ -117,6 +121,7 @@ void HistoryManager::Add(const PromotedContentAdInfo& ad,
 void HistoryManager::Add(const SearchResultAdInfo& ad,
                          const ConfirmationType confirmation_type) const {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 

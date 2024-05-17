@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"

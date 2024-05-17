@@ -253,7 +253,8 @@ bool HasMediaPermission() {
     return true;
   }
 
-  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetVisible();
   if (!tab) {
     return true;
   }

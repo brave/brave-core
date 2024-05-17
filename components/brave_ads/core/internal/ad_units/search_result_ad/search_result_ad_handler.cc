@@ -55,6 +55,7 @@ void SearchResultAd::TriggerEvent(
 
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerSearchResultAdEvents()) {
+    // No-op if we should not trigger events for non-Rewards users.
     return std::move(callback).Run(/*success=*/false);
   }
 

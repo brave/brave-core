@@ -103,7 +103,7 @@ class AdsService : public KeyedService {
 
   // Called to get the prefetched new tab page ad for display.
   virtual std::optional<NewTabPageAdInfo>
-  GetPrefetchedNewTabPageAdForDisplay() = 0;
+  MaybeGetPrefetchedNewTabPageAdForDisplay() = 0;
 
   // Called when failing to prefetch a new tab page ad for the specified
   // `placement_id` and `creative_instance_id`.

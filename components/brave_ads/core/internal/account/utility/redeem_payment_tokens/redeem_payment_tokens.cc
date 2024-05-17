@@ -70,17 +70,11 @@ void RedeemPaymentTokens::Redeem() {
 
   is_redeeming_ = true;
 
-  BuildRedeemPaymentTokensUserData(
-      GetAllPaymentTokens(),
-      base::BindOnce(&RedeemPaymentTokens::BuildUserDataCallback,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void RedeemPaymentTokens::BuildUserDataCallback(base::Value::Dict user_data) {
   const PaymentTokenList& payment_tokens = GetAllPaymentTokens();
 
   RedeemPaymentTokensUrlRequestBuilder url_request_builder(
-      wallet_, payment_tokens, std::move(user_data));
+      wallet_, payment_tokens,
+      BuildRedeemPaymentTokensUserData(payment_tokens));
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));

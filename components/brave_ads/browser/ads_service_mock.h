@@ -61,7 +61,7 @@ class AdsServiceMock : public AdsService {
                TriggerAdEventCallback));
 
   MOCK_METHOD(std::optional<NewTabPageAdInfo>,
-              GetPrefetchedNewTabPageAdForDisplay,
+              MaybeGetPrefetchedNewTabPageAdForDisplay,
               ());
   MOCK_METHOD(void, PrefetchNewTabPageAd, ());
   MOCK_METHOD(void,

@@ -29,32 +29,6 @@ class BraveAdsTabManagerTest : public UnitTestBase {
   ::testing::StrictMock<TabManagerObserverMock> observer_mock_;
 };
 
-TEST_F(BraveAdsTabManagerTest, IsVisible) {
-  // Arrange
-  EXPECT_CALL(observer_mock_, OnDidOpenNewTab);
-  EXPECT_CALL(observer_mock_, OnTabDidChangeFocus);
-  NotifyTabDidChange(/*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")},
-                     /*is_error_page=*/false,
-                     /*is_visible=*/true);
-
-  // Act & Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*tab_id=*/1));
-}
-
-TEST_F(BraveAdsTabManagerTest, IsOccluded) {
-  // Arrange
-  EXPECT_CALL(observer_mock_, OnDidOpenNewTab);
-  EXPECT_CALL(observer_mock_, OnTabDidChangeFocus);
-  NotifyTabDidChange(/*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")},
-                     /*is_error_page=*/false,
-                     /*is_visible=*/false);
-
-  // Act & Assert
-  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*tab_id=*/1));
-}
-
 TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
   // Act & Assert
   EXPECT_CALL(
@@ -294,12 +268,12 @@ TEST_F(BraveAdsTabManagerTest, GetVisibleTab) {
                     /*redirect_chain=*/{GURL("https://brave.com")},
                     /*is_error_page=*/false,
                     /*is_playing_media=*/false};
-  EXPECT_EQ(tab, TabManager::GetInstance().GetVisible());
+  EXPECT_EQ(tab, TabManager::GetInstance().MaybeGetVisible());
 }
 
 TEST_F(BraveAdsTabManagerTest, DoNotGetVisibleTabIfNoTabs) {
   // Act & Assert
-  EXPECT_FALSE(TabManager::GetInstance().GetVisible());
+  EXPECT_FALSE(TabManager::GetInstance().MaybeGetVisible());
 }
 
 TEST_F(BraveAdsTabManagerTest, GetTabForId) {

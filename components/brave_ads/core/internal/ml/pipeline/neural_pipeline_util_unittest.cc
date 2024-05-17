@@ -28,9 +28,13 @@ TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
       MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
   ASSERT_TRUE(contents);
 
-  // Act & Assert
-  EXPECT_TRUE(pipeline::LoadNeuralPipeline(
-      reinterpret_cast<const uint8_t*>(contents->data()), contents->size()));
+  // Act
+  const std::optional<pipeline::PipelineInfo> pipeline =
+      pipeline::LoadNeuralPipeline(
+          reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
+
+  // Assert
+  EXPECT_TRUE(pipeline);
 }
 
 }  // namespace brave_ads::ml

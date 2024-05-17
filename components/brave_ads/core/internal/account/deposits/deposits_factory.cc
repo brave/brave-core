@@ -17,6 +17,7 @@ namespace brave_ads {
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
     const ConfirmationType confirmation_type) {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so desposits should be non-cash.
     return std::make_unique<NonCashDeposit>();
   }
 

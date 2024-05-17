@@ -49,7 +49,8 @@ void InlineContentAdServing::MaybeServeAd(
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetVisible();
   if (!tab) {
     return FailedToServeAd(dimensions, std::move(callback));
   }

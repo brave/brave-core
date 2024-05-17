@@ -5,23 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/user_data/redeem_payment_tokens_user_data_builder.h"
 
-#include <utility>
-
-#include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data.h"
 
 namespace brave_ads {
 
-void BuildRedeemPaymentTokensUserData(const PaymentTokenList& payment_tokens,
-                                      BuildUserDataCallback callback) {
+base::Value::Dict BuildRedeemPaymentTokensUserData(
+    const PaymentTokenList& payment_tokens) {
   base::Value::Dict user_data;
 
   user_data.Merge(BuildPlatformUserData());
   user_data.Merge(BuildSummaryUserData(payment_tokens));
 
-  std::move(callback).Run(std::move(user_data));
+  return user_data;
 }
 
 }  // namespace brave_ads

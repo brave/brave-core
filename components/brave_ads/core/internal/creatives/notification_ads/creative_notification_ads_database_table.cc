@@ -410,6 +410,7 @@ void CreativeNotificationAds::MigrateToV35(
   Create(transaction);
 }
 
+// static
 void CreativeNotificationAds::MigrateToV37(
     mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);

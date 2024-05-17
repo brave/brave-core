@@ -54,7 +54,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertInlineContentAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CannotConvertInlineContentAdEventIfBraveNewsAdsAreDisabled) {
+       CannotConvertInlineContentAdEventIfOptedOutOfBraveNewsAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
 
@@ -101,7 +101,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertPromotedContentAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CannotConvertPromotedContentAdEventIfBraveNewsAdsAreDisabled) {
+       CannotConvertPromotedContentAdEventIfOptedOutOfBraveNewsAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
 
@@ -195,7 +195,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertNewTabPageAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CannotConvertNewTabPageAdEventIfNewTabPageAdsAreDisabled) {
+       CannotConvertNewTabPageAdEventIfOptedOutOfNewTabPageAds) {
   // Arrange
   test::OptOutOfNewTabPageAds();
 
@@ -242,7 +242,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertSearchResultAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CanConvertSearchResultAdEventIfAdsAreDisabled) {
+       CanConvertSearchResultAdEventIfOptedOutOfAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
   test::OptOutOfNotificationAds();

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_PAYMENT_TOKENS_USER_DATA_REDEEM_PAYMENT_TOKENS_USER_DATA_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_PAYMENT_TOKENS_USER_DATA_REDEEM_PAYMENT_TOKENS_USER_DATA_BUILDER_H_
 
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
 
 namespace brave_ads {
 
-void BuildRedeemPaymentTokensUserData(const PaymentTokenList& payment_tokens,
-                                      BuildUserDataCallback callback);
+base::Value::Dict BuildRedeemPaymentTokensUserData(
+    const PaymentTokenList& payment_tokens);
 
 }  // namespace brave_ads
 
