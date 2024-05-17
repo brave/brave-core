@@ -29,9 +29,7 @@ import com.wireguard.crypto.KeyPair;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -219,12 +217,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
-                        intent.putExtra(BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        intent.setAction(Intent.ACTION_VIEW);
-                        getActivity().finish();
-                        startActivity(intent);
+                        BraveVpnUtils.startActivityBraveAccount(
+                                getActivity(), BraveVpnUtils.getBraveAccountLinkUrl());
                         return true;
                     }
                 });

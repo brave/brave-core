@@ -45,7 +45,7 @@ public class LinkVpnSubscriptionDialogFragment
         if (view.getId() == R.id.btn_done) {
             try {
                 BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                braveActivity.openNewOrSelectExistingTab(BraveVpnUtils.getBraveAccountUrl());
+                braveActivity.openNewOrSelectExistingTab(BraveVpnUtils.getBraveAccountLinkUrl());
             } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "onClick btn_done " + e);
             }

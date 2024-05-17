@@ -128,6 +128,13 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         mYearlyText = findViewById(R.id.yearly_text);
 
+        TextView refreshCredentialsButton = findViewById(R.id.refresh_credentials_button);
+        refreshCredentialsButton.setOnClickListener(
+                v -> {
+                    BraveVpnUtils.startActivityBraveAccount(
+                            BraveVpnPlansActivity.this, BraveVpnUtils.getBraveAccountRecoverUrl());
+                });
+
         mBtnVpnPlanAction = findViewById(R.id.vpn_plan_action_button);
         mBtnVpnPlanAction.setOnClickListener(
                 v -> {
