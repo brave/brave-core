@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react'
 import {
   useCopyToClipboard,
   useTemporaryCopyToClipboard
@@ -36,8 +36,8 @@ describe('useTemporaryCopyToClipboard Hook', () => {
 
     await act(async () => {
       await result.current.temporaryCopyToClipboard('some text')
-      expect(result.current.isCopied).toBe(true)
     })
+    expect(result.current.isCopied).toBe(true)
 
     await act(async () => {
       jest.advanceTimersByTime(timeoutTime - 100)

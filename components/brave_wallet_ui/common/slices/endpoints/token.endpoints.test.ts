@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook, waitFor } from '@testing-library/react'
 
 // types
 import { BraveWallet } from '../../../constants/types'
@@ -37,7 +37,7 @@ const fetchTokensAndSetupStore = async () => {
     }
   )
 
-  const { result, waitForValueToChange, rerender } = renderHook(
+  const hook = renderHook(
     () =>
       useGetUserTokensRegistryQuery(undefined, {
         selectFromResult: (res) => ({
@@ -49,26 +49,31 @@ const fetchTokensAndSetupStore = async () => {
     renderHookOptionsWithMockStore(store)
   )
 
-  await waitForValueToChange(() => result.current.isLoading)
-  const { visibleTokens, isLoading, error } = result.current
+  // load
+  await waitFor(() => !hook.result.current.isLoading)
+  await waitFor(() => hook.result.current.visibleTokens.length)
 
+  const { visibleTokens, error, isLoading } = hook.result.current
   expect(isLoading).toBe(false)
   expect(error).not.toBeDefined()
   expect(visibleTokens.length).toBeTruthy()
 
-  return { result, rerender, store, waitForValueToChange }
+  return { hook, store }
 }
 
 describe('token endpoints', () => {
   it('it should fetch tokens', async () => {
-    const { result } = await fetchTokensAndSetupStore()
-    const visibleTokens = result.current.visibleTokens
-    expect(visibleTokens).toHaveLength(mockNewAssetOptions.length)
+    const { hook } = await fetchTokensAndSetupStore()
+
+    expect(hook.result.current.visibleTokens).toHaveLength(
+      mockNewAssetOptions.length
+    )
   })
 
   it('it should delete tokens', async () => {
-    const { result, store, rerender } = await fetchTokensAndSetupStore()
-    const visibleTokens = result.current.visibleTokens
+    const { hook, store } = await fetchTokensAndSetupStore()
+
+    const { visibleTokens } = hook.result.current
 
     const { result: mutationHook } = renderHook(
       () => useRemoveUserTokenMutation(),
@@ -83,16 +88,16 @@ describe('token endpoints', () => {
     await act(async () => {
       await removeToken(getAssetIdKey(tokenToRemove)).unwrap()
     })
-    act(rerender)
+    act(hook.rerender)
 
-    const { visibleTokens: newTokens } = result.current
+    const { visibleTokens: newTokens } = hook.result.current
 
     expect(newTokens).toHaveLength(visibleTokens.length - 1)
   })
 
   it('it should add tokens to the registry', async () => {
-    const { result, store, rerender } = await fetchTokensAndSetupStore()
-    const visibleTokens = result.current.visibleTokens
+    const { hook, store } = await fetchTokensAndSetupStore()
+    const visibleTokens = hook.result.current.visibleTokens
 
     const { result: mutationHook } = renderHook(
       () => useAddUserTokenMutation(),
@@ -116,8 +121,8 @@ describe('token endpoints', () => {
     expect(res).toEqual({ id: tokenToAddId })
 
     // get updated list
-    act(rerender)
-    const { visibleTokens: newTokens } = result.current
+    act(hook.rerender)
+    const { visibleTokens: newTokens } = hook.result.current
 
     // check new list
     expect(

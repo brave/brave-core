@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import { useGetTransactionsQuery } from './api.slice'
 
@@ -27,7 +27,7 @@ import {
 
 function renderHookOptionsWithCustomStore(store: any) {
   return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
       <Provider store={store}>{children}</Provider>
     )
   }
@@ -87,7 +87,7 @@ describe('api slice: useGetTransactionsQuery', () => {
       }
     )
 
-    const { result, waitForValueToChange } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTransactionsQuery({
           accountId: mockEthErc20SendTx.fromAccountId,
@@ -97,7 +97,8 @@ describe('api slice: useGetTransactionsQuery', () => {
       renderHookOptionsWithCustomStore(store)
     )
 
-    await waitForValueToChange(() => result.current.isLoading)
+    await waitFor(() => !result.current.isLoading)
+    await waitFor(() => result.current.data)
     const { data: txs, isLoading, error } = result.current
 
     expect(isLoading).toBe(false)
@@ -123,7 +124,7 @@ describe('api slice: useGetTransactionsQuery', () => {
       }
     )
 
-    const { result, waitForValueToChange } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTransactionsQuery({
           accountId: null,
@@ -133,7 +134,8 @@ describe('api slice: useGetTransactionsQuery', () => {
       renderHookOptionsWithCustomStore(store)
     )
 
-    await waitForValueToChange(() => result.current.isLoading)
+    await waitFor(() => !result.current.isLoading)
+    await waitFor(() => result.current.data)
     const { data: txs = [], isLoading, error } = result.current
 
     const txIds = txs?.map(({ id }) => id)
