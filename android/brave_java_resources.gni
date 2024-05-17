@@ -854,7 +854,6 @@ brave_java_resources = [
   "java/res/layout/brave_wallet_reset_content.xml",
   "java/res/layout/brave_wallet_toolbar.xml",
   "java/res/layout/brave_webrtc_policy_preference.xml",
-  "java/res/layout/bre_bottom_banner.xml",
   "java/res/layout/connect_account_layout.xml",
   "java/res/layout/custom_layout_preference.xml",
   "java/res/layout/dapps_dialog.xml",

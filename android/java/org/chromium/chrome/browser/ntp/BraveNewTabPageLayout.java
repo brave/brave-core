@@ -204,8 +204,6 @@ public class BraveNewTabPageLayout
         super.onFinishInflate();
 
         mComesFromNewTab = false;
-
-        NTPUtil.showBREBottomBanner(this);
         mFeedHash = "";
         initBraveNewsController();
         try {
@@ -1263,15 +1261,15 @@ public class BraveNewTabPageLayout
 
     private void checkForNonDisruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDisruptiveBanner(ntpImage, mSponsoredTab);
-        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()
-                && ((BraveRewardsHelper.isRewardsEnabled()
-                        || BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()))
-                && (!ContextUtils.getAppSharedPreferences().getBoolean(
-                            BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
-                        && !BravePrefServiceBridge.getInstance().getShowNews())) {
+        // if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()
+        //         && ((BraveRewardsHelper.isRewardsEnabled()
+        //                 || BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()))
+        //         && (!ContextUtils.getAppSharedPreferences().getBoolean(
+        //                     BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
+        //                 && !BravePrefServiceBridge.getInstance().getShowNews())) {
             NTPUtil.showNonDisruptiveBanner(
-                    (BraveActivity) mActivity, this, brOption, mSponsoredTab, mNewTabPageListener);
-        }
+                    (BraveActivity) mActivity, this, SponsoredImageUtil.BR_ON_ADS_ON, mSponsoredTab, mNewTabPageListener);
+        // }
     }
 
     private void checkAndShowNTPImage(boolean isReset) {

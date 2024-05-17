@@ -1907,12 +1907,6 @@ Are you sure you want to do this?
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>
-      <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
-        Need a refresher on Rewards?
-      </message>
-      <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
-        Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
-      </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
       </message>

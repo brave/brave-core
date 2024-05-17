@@ -77,39 +77,6 @@ public class NTPUtil {
         return SponsoredImageUtil.BR_INVALID_OPTION;
     }
 
-    public static void showBREBottomBanner(View view) {
-        Context context = ContextUtils.getApplicationContext();
-        if (!PackageUtils.isFirstInstall(context) && BraveRewardsHelper.isRewardsEnabled()
-                && ContextUtils.getAppSharedPreferences().getBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_BRE_BANNER, true)) {
-            final ViewGroup breBottomBannerLayout = (ViewGroup) view.findViewById(R.id.bre_banner);
-            breBottomBannerLayout.setVisibility(View.VISIBLE);
-            BackgroundImagesPreferences.setOnPreferenceValue(
-                    BackgroundImagesPreferences.PREF_SHOW_BRE_BANNER, false);
-            ImageView bannerClose = breBottomBannerLayout.findViewById(R.id.bre_banner_close);
-            bannerClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    breBottomBannerLayout.setVisibility(View.GONE);
-                }
-            });
-
-            Button takeTourButton = breBottomBannerLayout.findViewById(R.id.btn_take_tour);
-            takeTourButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
-                        BraveActivity.getBraveActivity().openRewardsPanel();
-                    } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "showBREBottomBanner takeTourButton click " + e);
-                    }
-                    breBottomBannerLayout.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
-
     public static void showNonDisruptiveBanner(ChromeActivity chromeActivity, View view, int ntpType, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
         final ViewGroup nonDisruptiveBannerLayout = (ViewGroup) view.findViewById(R.id.non_disruptive_banner);
         nonDisruptiveBannerLayout.setOnClickListener(new View.OnClickListener() {
