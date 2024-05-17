@@ -36,6 +36,9 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
     split_view_browser_data_ = split_view_browser_data;
   }
 
+  int split_view_size_delta() const { return split_view_size_delta_; }
+  void set_split_view_size_delta(int delta) { split_view_size_delta_ = delta; }
+
   // When tile's second tab is the active web contents, we need to show the
   // tab after the first tab.
   void show_main_web_contents_at_tail(bool tail) {

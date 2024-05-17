@@ -30,6 +30,7 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
@@ -67,9 +68,11 @@
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
@@ -394,6 +397,46 @@ bool BraveBrowserView::IsActiveWebContentsTiled(
 
   auto active_tab_handle = GetActiveTabHandle();
   return tile.first == active_tab_handle || tile.second == active_tab_handle;
+}
+
+void BraveBrowserView::UpdateSplitViewSizeDelta(
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  auto get_index_of = [this](content::WebContents* contents) {
+    return browser()->tab_strip_model()->GetIndexOfWebContents(contents);
+  };
+  if (get_index_of(old_contents) == TabStripModel::kNoTab ||
+      get_index_of(new_contents) == TabStripModel::kNoTab) {
+    // This can happen on start-up or closing a tab.
+    return;
+  }
+
+  auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser());
+  auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
+    return browser()->tab_strip_model()->GetTabHandleAt(get_index_of(contents));
+  };
+  auto old_tab_handle = get_tab_handle(old_contents);
+  auto new_tab_handle = get_tab_handle(new_contents);
+
+  auto old_tab_tile = split_view_browser_data->GetTile(old_tab_handle);
+  auto new_tab_tile = split_view_browser_data->GetTile(new_tab_handle);
+  if ((!old_tab_tile && !new_tab_tile) || old_tab_tile == new_tab_tile) {
+    // Both tabs are not tiled, or in a same tile. So we don't need to update
+    // size delta
+    return;
+  }
+
+  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+      contents_container()->GetLayoutManager());
+  if (old_tab_tile) {
+    split_view_browser_data->SetSizeDelta(
+        old_tab_handle, contents_layout_manager->split_view_size_delta());
+  }
+
+  if (new_tab_tile) {
+    contents_layout_manager->set_split_view_size_delta(
+        split_view_browser_data->GetSizeDelta(new_tab_handle));
+  }
 }
 
 void BraveBrowserView::UpdateContentsWebViewVisual() {
@@ -1047,6 +1090,8 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
   if (supports_split_view) {
+    UpdateSplitViewSizeDelta(old_contents, new_contents);
+
     // Setting nullptr doesn't detach the previous contents.
     UpdateContentsWebViewVisual();
   }
