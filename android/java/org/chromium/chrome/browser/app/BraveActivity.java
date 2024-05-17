@@ -1990,6 +1990,19 @@ public abstract class BraveActivity extends ChromeActivity
         throw new BraveActivityNotFoundException("BraveActivity Not Found");
     }
 
+    @NonNull
+    public static BraveActivity getBraveActivityFromTaskId(int taskId)
+            throws BraveActivityNotFoundException {
+
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!BraveActivity.class.isInstance(ref) || ref.getTaskId() != taskId) continue;
+
+            return (BraveActivity) ref;
+        }
+
+        throw new BraveActivityNotFoundException("BraveActivity Not Found");
+    }
+
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
