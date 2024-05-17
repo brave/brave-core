@@ -38,7 +38,7 @@ TEST(BraveAdsSiteVisitFeatureTest, PageLandAfter) {
 
 TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandAfter) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(10), kPageLandAfter.Get());
+  EXPECT_EQ(base::Seconds(5), kPageLandAfter.Get());
 }
 
 TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandAfterWhenDisabled) {
@@ -47,7 +47,7 @@ TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandAfterWhenDisabled) {
   scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(10), kPageLandAfter.Get());
+  EXPECT_EQ(base::Seconds(5), kPageLandAfter.Get());
 }
 
 TEST(BraveAdsSiteVisitFeatureTest, PageLandCap) {
@@ -62,7 +62,7 @@ TEST(BraveAdsSiteVisitFeatureTest, PageLandCap) {
 
 TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCap) {
   // Act & Assert
-  EXPECT_EQ(1, kPageLandCap.Get());
+  EXPECT_EQ(0, kPageLandCap.Get());
 }
 
 TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCapWhenDisabled) {
@@ -71,7 +71,7 @@ TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCapWhenDisabled) {
   scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
 
   // Act & Assert
-  EXPECT_EQ(1, kPageLandCap.Get());
+  EXPECT_EQ(0, kPageLandCap.Get());
 }
 
 }  // namespace brave_ads
