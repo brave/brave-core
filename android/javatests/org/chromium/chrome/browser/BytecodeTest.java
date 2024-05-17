@@ -511,15 +511,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         false,
                         null));
-
-        // Why do we have this below? we can guarantee whatever we need at Brave code
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils",
-                        "prepareLaunchPromoIfNeeded",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -569,16 +560,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         false,
                         null));
-
-        // The same. Why we do test Brave's method?
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
-                        "addOrEditBookmark",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
@@ -586,23 +567,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         false,
                         null));
-
-        // Why we do test Brave's method?
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
-                        "showBookmarkManagerOnPhone",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
-                        "isSpecialFolder",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
@@ -610,16 +574,6 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         false,
                         null));
-
-        // Test for Brave's code?
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/permissions/BravePermissionDialogModel",
-                        "getModel",
-                        MethodModifier.STATIC,
-                        false,
-                        null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -818,16 +772,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         false,
                         null));
-
-        // Brave's method?
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl",
-                        "isVisibleToUser",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/logo/LogoMediator",
@@ -967,15 +911,6 @@ public class BytecodeTest {
                         boolean.class));
 
         // Check for method type declaration changes here
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources",
-                        "getResourceItem",
-                        MethodModifier.STATIC,
-                        true,
-                        getClassForPath(
-                                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
