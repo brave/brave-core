@@ -33,8 +33,8 @@ class BraveAdsFixedUserDataBuilderTest : public UnitTestBase {
 TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
@@ -63,8 +63,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildFixedUserData(transaction);

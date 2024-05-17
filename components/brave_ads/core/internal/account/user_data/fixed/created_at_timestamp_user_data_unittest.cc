@@ -29,8 +29,8 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
@@ -47,8 +47,8 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());

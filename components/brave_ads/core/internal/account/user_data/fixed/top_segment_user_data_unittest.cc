@@ -43,8 +43,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
   task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
@@ -68,8 +68,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
   task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
@@ -82,7 +82,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
   task_environment_.RunUntilIdle();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kClicked,
+      /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -93,8 +93,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
        DoNotBuildTopSegmentUserDataIfNoTargeting) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(

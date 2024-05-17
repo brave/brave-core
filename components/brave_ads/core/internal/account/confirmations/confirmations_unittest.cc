@@ -42,8 +42,8 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction, /*user_data=*/{});
@@ -60,8 +60,8 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction, /*user_data=*/{});
