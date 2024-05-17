@@ -161,6 +161,4 @@
 
         </LinearLayout>
 
-    <include layout="@layout/ntp_non_disruptive_banner"/>
-
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>
