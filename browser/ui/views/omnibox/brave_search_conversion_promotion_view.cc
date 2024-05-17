@@ -408,7 +408,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       std::make_unique<CustomMdTextButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
                               base::Unretained(this)))));
-  try_button->SetKind(views::MdTextButton::Kind::kPrimary);
+  try_button->SetStyle(ui::ButtonStyle::kProminent);
   try_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
@@ -421,7 +421,7 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       std::make_unique<CustomMdTextButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::MaybeLater,
                               base::Unretained(this)))));
-  maybe_later_button->SetKind(views::MdTextButton::Kind::kQuaternary);
+  maybe_later_button->SetStyle(ui::ButtonStyle::kText);
   maybe_later_button->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
