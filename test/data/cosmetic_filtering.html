@@ -26,16 +26,10 @@ function addElementsDynamically() {
 
 let didWait = false;
 
-function checkSelector(selector, property, expected) {
+function checkSelector(selector, predicate) {
   const checkSelectorInner = () => {
     let elements = [].slice.call(document.querySelectorAll(selector));
-    if (elements.length === 0)
-      return false
-    let result = elements.every(e => {
-      let style = window.getComputedStyle(e);
-      return style[property] === expected;
-    })
-    return result;
+    return predicate(elements);
   };
 
   // The first selector check must occur after the page has had time to load,
@@ -52,17 +46,55 @@ function checkSelector(selector, property, expected) {
   }
 }
 
-async function waitCSSSelector(selector, property, expected) {
-  if (await checkSelector(selector, property, expected)) {
+async function waitSelector(selector, predicate) {
+  if (await checkSelector(selector, predicate)) {
     return true;
   } else {
     console.log('still waiting for css selector');
     return new Promise(resolve => {
       setTimeout(function () {
-        resolve(waitCSSSelector(selector, property, expected));
+        resolve(waitSelector(selector, predicate));
       }, 200);
     });
   }
+}
+
+async function waitCSSSelector(selector, property, expected) {
+  return await waitSelector(selector, (elements) => {
+    if (elements.length === 0)
+      return false
+    let result = elements.every(e => {
+      let style = window.getComputedStyle(e);
+      return style[property] === expected;
+    })
+    return result;
+  });
+}
+
+async function waitSelectorExistence(selector, expectedToHaveElements) {
+  return await waitSelector(selector, (elements) => {
+    return !!elements.length === expectedToHaveElements;
+  });
+}
+
+async function waitSelectorAttributes(selector, expectedAttributes) {
+  return await waitSelector(selector, (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.attributes.length === expectedAttributes.length && expectedAttributes.every(a => e.hasAttribute(a));
+    });
+  });
+}
+
+async function waitSelectorClasses(selector, expectedClasses) {
+  return await waitSelector(selector, (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.classList.length === expectedClasses.length && expectedClasses.every(c => e.classList.contains(c));
+    });
+  });
 }
 
 </script>
@@ -70,10 +102,10 @@ async function waitCSSSelector(selector, property, expected) {
 <body>
     <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
-        <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+        <div class="ad abc def" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
     </div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad ghi jkl" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad mno pqr" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
     <iframe id="iframe" src="about:blank"></iframe>
 
     <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->
