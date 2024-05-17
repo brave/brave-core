@@ -33,7 +33,7 @@ class ThumbnailProvider final {
                     base::OnceCallback<void(const gfx::Image&)> callback);
 
  private:
-  void OnGotThumbnail(const std::string& id,
+  void OnGotThumbnail(const GURL& thumbnail_source,
                       bool from_network,
                       base::OnceCallback<void(const gfx::Image&)> callback,
                       gfx::Image thumbnail);
