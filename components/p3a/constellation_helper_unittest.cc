@@ -248,7 +248,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
     task_environment_.RunUntilIdle();
 
     MessageMetainfo meta_info;
-    meta_info.Init(&local_state_, "release", "2022-01-01");
+    meta_info.Init(&local_state_, version_info::Channel::STABLE, "2022-01-01");
 
     helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
@@ -269,7 +269,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
 
 TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   MessageMetainfo meta_info;
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, version_info::Channel::STABLE, "2022-01-01");
 
   std::string message_with_no_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, false);
@@ -293,7 +293,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
 
 #if !BUILDFLAG(IS_IOS)
   local_state_.SetString(kReferralPromoCode, "BRV003");
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, version_info::Channel::STABLE, "2022-01-01");
 
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, true);
@@ -306,7 +306,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   EXPECT_EQ(refcode_layers.at(8), "ref|BRV003");
 
   local_state_.SetString(kReferralPromoCode, "ZRK009");
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, version_info::Channel::STABLE, "2022-01-01");
 
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, true);

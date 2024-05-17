@@ -17,6 +17,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/ref_counted.h"
 #include "base/timer/timer.h"
+#include "base/version_info/channel.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_message.h"
@@ -65,7 +66,7 @@ class MessageManager : public MetricLogStore::Delegate {
   MessageManager(PrefService& local_state,
                  const P3AConfig* config,
                  Delegate& delegate,
-                 std::string channel,
+                 version_info::Channel channel,
                  std::string week_of_install);
   ~MessageManager() override;
 

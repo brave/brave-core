@@ -1,0 +1,21 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("deprecated_channel_name") {
+  sources = [
+    "channel_name.cc",
+    "channel_name.h",
+  ]
+
+  deps = [ "//base/version_info:channel" ]
+
+  # Please do not add anything to this list
+  visibility = [
+    "//brave/browser/ui",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/p3a",
+    "//chrome/browser",
+  ]
+}

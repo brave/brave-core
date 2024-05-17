@@ -19,8 +19,8 @@
 #include "base/task/thread_pool.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/constants/brave_switches.h"
+#include "brave/components/deprecated_channel_name/channel_name.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
 
@@ -31,7 +31,8 @@
 namespace {
 
 std::string GetUpdateChannel() {
-  std::string channel_name = brave::GetChannelName();
+  std::string channel_name =
+      deprecated_channel_name::GetChannelName(chrome::GetChannel());
   if (channel_name == "release")
     channel_name = "stable";
   return base::SysInfo::OperatingSystemArchitecture() == "x86_64"

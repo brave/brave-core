@@ -17,16 +17,17 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
-#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/deprecated_channel_name/channel_name.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -105,7 +106,8 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
       profile_prefs->GetString(language::prefs::kAcceptLanguages);
   pending_report_.language_farbling =
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled);
-  pending_report_.channel = brave::GetChannelName();
+  pending_report_.channel =
+      deprecated_channel_name::GetChannelName(chrome::GetChannel());
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;

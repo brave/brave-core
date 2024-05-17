@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "brave_stats_updater.cc": [
+    "+brave/components/deprecated_channel_name",
+  ]
+}

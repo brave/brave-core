@@ -17,6 +17,7 @@
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/channel_info.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -77,7 +78,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
   std::unique_ptr<AdsServiceImpl> ads_service =
       std::make_unique<AdsServiceImpl>(
-          profile, g_browser_process->local_state(),
+          profile, g_browser_process->local_state(), chrome::GetChannel(),
           brave_adaptive_captcha_service, CreateAdsTooltipsDelegate(profile),
           std::make_unique<DeviceIdImpl>(),
           std::make_unique<BatAdsServiceFactoryImpl>(), history_service,

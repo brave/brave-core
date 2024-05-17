@@ -153,6 +153,7 @@ include_rules = [
   "-brave/app",
   "-brave/browser",
   "-brave/common",
+  "-brave/components/deprecated_channel_name",
   "-brave/renderer",
   "-brave/services",
   "-ios",

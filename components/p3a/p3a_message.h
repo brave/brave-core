@@ -12,6 +12,7 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
+#include "base/version_info/channel.h"
 #include "brave/components/p3a/metric_log_type.h"
 
 class PrefService;
@@ -27,7 +28,7 @@ class MessageMetainfo {
   ~MessageMetainfo();
 
   void Init(PrefService* local_state,
-            std::string brave_channel,
+            version_info::Channel channel,
             std::string week_of_install);
 
   void Update();

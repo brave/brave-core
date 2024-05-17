@@ -10,6 +10,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/version_info/channel.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -61,8 +62,9 @@ class NTPP3AHelperImplTest : public testing::Test {
     config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
     config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
     config.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
-    p3a_service_ = scoped_refptr(new p3a::P3AService(
-        local_state_, "release", "2049-01-01", std::move(config)));
+    p3a_service_ = scoped_refptr(
+        new p3a::P3AService(local_state_, version_info::Channel::STABLE,
+                            "2049-01-01", std::move(config)));
 
     ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
         &local_state_, p3a_service_.get(), &prefs_, true);

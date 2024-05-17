@@ -18,6 +18,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/version_info/channel.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -43,7 +44,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                    public MessageManager::Delegate {
  public:
   P3AService(PrefService& local_state,
-             std::string channel,
+             version_info::Channel channel,
              std::string week_of_install,
              P3AConfig config);
 
