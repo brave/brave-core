@@ -58,6 +58,9 @@ pipeline {
                             statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "Skipped", state: "SUCCESS"]]]
                         ])
 
+                        // Testing
+                        sleep(30)
+
                         return
                     }
 
