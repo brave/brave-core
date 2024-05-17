@@ -523,7 +523,7 @@ Config.prototype.buildArgs = function () {
     args.android_channel = this.channel
     if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
-      args.chrome_public_manifest_package = 'com.brave.browser_default'
+      args.chrome_public_manifest_package = 'com.ping.browser_default'
     } else if (this.channel === '') {
       args.android_channel = 'stable'
       args.chrome_public_manifest_package = 'com.brave.browser'
