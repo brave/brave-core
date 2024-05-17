@@ -7,8 +7,8 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- The application name displayed to the user. -->
-    <string name="app_name" translatable="false">Brave - Nightly</string>
-    <string name="bookmark_widget_title" translatable="false">Brave bookmarks</string>
-    <string name="search_widget_title" translatable="false">Brave search</string>
-    <string name="quick_action_search_widget_title" translatable="false">Brave quick action search</string>
+    <string name="app_name" translatable="false">Ping - Nightly</string>
+    <string name="bookmark_widget_title" translatable="false">Ping bookmarks</string>
+    <string name="search_widget_title" translatable="false">Ping search</string>
+    <string name="quick_action_search_widget_title" translatable="false">Ping quick action search</string>
 </resources>
