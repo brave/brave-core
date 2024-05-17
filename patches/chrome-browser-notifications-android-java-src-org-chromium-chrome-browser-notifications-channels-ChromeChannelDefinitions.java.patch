@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index ecf1232e7808b0b136af7194615c1a65acbccead..74ef53079bcb47525e1c5f9f301553b0f886ee2b 100644
+index db8a455317571040a4b8fbedd778398bb967c556..37cfa8ffd7c56e8c85908b3cb5d63bedc3f2a5fc 100644
 --- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 @@ -78,6 +78,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
@@ -28,7 +28,7 @@ index ecf1232e7808b0b136af7194615c1a65acbccead..74ef53079bcb47525e1c5f9f301553b0
              map.put(
                      ChannelId.BROWSER,
                      PredefinedChannel.create(
-@@ -390,6 +393,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -391,6 +394,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
  
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();

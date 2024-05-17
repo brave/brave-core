@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/lint.py b/build/android/gyp/lint.py
-index 691a0e38ebc2816496d478a3f59621767b526366..80b2f9b4a622d712708731fb0b403330a8853fca 100755
+index dc20d135e8033862aad40675553c4c96394f6c43..adbe8cb6fdcdc6a378572a47939a2341e575a47c 100755
 --- a/build/android/gyp/lint.py
 +++ b/build/android/gyp/lint.py
 @@ -550,5 +550,6 @@ def main():
