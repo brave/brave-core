@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_brave_news_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_new_tab_page_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_search_result_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
@@ -30,6 +31,7 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<OptedInToBraveNewsAdsDiagnosticEntry>());
   SetEntry(std::make_unique<OptedInToNewTabPageAdsDiagnosticEntry>());
   SetEntry(std::make_unique<OptedInToNotificationAdsDiagnosticEntry>());
+  SetEntry(std::make_unique<OptedInToSearchResultAdsDiagnosticEntry>());
 }
 
 DiagnosticManager::~DiagnosticManager() = default;

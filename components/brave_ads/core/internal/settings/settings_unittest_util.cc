@@ -39,4 +39,8 @@ void SetMaximumNotificationAdsPerHour(const int max_ads_per_hour) {
                            max_ads_per_hour);
 }
 
+void OptOutOfSearchResultAds() {
+  SetProfileBooleanPrefValue(prefs::kOptedInToSearchResultAds, false);
+}
+
 }  // namespace brave_ads::test
