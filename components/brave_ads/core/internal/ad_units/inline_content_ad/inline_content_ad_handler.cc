@@ -90,6 +90,8 @@ void InlineContentAdHandler::TriggerEvent(
          "when calling MaybeServe";
 
   if (creative_instance_id.empty()) {
+    // No-op if `creative_instance_id` is empty. This should only occur for
+    // super referrals.
     return std::move(callback).Run(/*success=*/false);
   }
 

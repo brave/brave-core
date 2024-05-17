@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 

@@ -1198,7 +1198,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 }
 
 std::optional<NewTabPageAdInfo>
-AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
+AdsServiceImpl::MaybeGetPrefetchedNewTabPageAdForDisplay() {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::nullopt;
   }
@@ -1625,7 +1625,7 @@ void AdsServiceImpl::LoadComponentResource(
     const int version,
     LoadComponentResourceCallback callback) {
   std::optional<base::FilePath> file_path =
-      g_brave_browser_process->resource_component()->GetPath(id, version);
+      g_brave_browser_process->resource_component()->MaybeGetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});
   }

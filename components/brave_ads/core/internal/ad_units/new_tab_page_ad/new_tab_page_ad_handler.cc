@@ -67,8 +67,9 @@ void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
-  if (!ShouldAlwaysTriggerNewTabPageAdEvents() &&
-      !UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewards() &&
+      !ShouldAlwaysTriggerNewTabPageAdEvents()) {
+    // No-op if we should not trigger events for non-Rewards users.
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
@@ -83,6 +84,8 @@ void NewTabPageAdHandler::TriggerEvent(
     const mojom::NewTabPageAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (creative_instance_id.empty()) {
+    // No-op if `creative_instance_id` is empty. This should only occur for
+    // super referrals.
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -92,12 +95,13 @@ void NewTabPageAdHandler::TriggerEvent(
 
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerNewTabPageAdEvents()) {
+    // No-op if we should not trigger events for non-Rewards users.
     return std::move(callback).Run(/*success=*/false);
   }
 
   if (!UserHasJoinedBraveRewards() &&
       event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
-    // `MaybeServe()` will trigger a `kServedImpression` event if the user has
+    // `MaybeServe` will trigger a `kServedImpression` event if the user has
     // joined Brave Rewards; otherwise, we need to trigger a `kServedImpression`
     // event when triggering a `kViewedImpression` event for non-Brave-Rewards
     // users.

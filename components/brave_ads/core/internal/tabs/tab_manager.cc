@@ -38,17 +38,7 @@ void TabManager::RemoveObserver(TabManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-bool TabManager::IsVisible(const int32_t tab_id) const {
-  if (!visible_tab_id_) {
-    // `OnNotifyTabDidChange` was not invoked for a tab that is currently
-    // visible in the browsing session.
-    return false;
-  }
-
-  return visible_tab_id_ == tab_id;
-}
-
-std::optional<TabInfo> TabManager::GetVisible() const {
+std::optional<TabInfo> TabManager::MaybeGetVisible() const {
   if (!visible_tab_id_) {
     // `OnNotifyTabDidChange` was not invoked for a tab that is currently
     // visible in the browsing session.

@@ -448,7 +448,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
 
   prefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
-  EXPECT_CALL(ads_service_mock_, GetPrefetchedNewTabPageAdForDisplay())
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAdForDisplay())
       .Times(0);
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd()).Times(0);
 
@@ -469,7 +469,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
 
   prefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(ads_service_mock_, GetPrefetchedNewTabPageAdForDisplay())
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAdForDisplay())
       .WillOnce(Return(std::nullopt));
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd())
       .Times(GetInitialCountToBrandedWallpaper());
@@ -493,7 +493,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
 
   prefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(ads_service_mock_, GetPrefetchedNewTabPageAdForDisplay())
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAdForDisplay())
       .WillOnce(Return(ad_info));
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd())
       .Times(GetInitialCountToBrandedWallpaper());
@@ -522,7 +522,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
 
   prefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(ads_service_mock_, GetPrefetchedNewTabPageAdForDisplay())
+  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAdForDisplay())
       .WillOnce(Return(ad_info));
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd())
       .Times(GetInitialCountToBrandedWallpaper());
