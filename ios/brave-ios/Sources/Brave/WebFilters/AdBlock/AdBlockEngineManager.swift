@@ -224,7 +224,7 @@ import os
     ContentBlockerManager.log.debug(
       """
       Compiling `\(self.cacheFolderName)` engine from \(group.infos.count) sources:
-      \(group.debugDescription)"
+      \(group.debugDescription)
       """
     )
 

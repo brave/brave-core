@@ -158,9 +158,11 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   NSMutableArray* lists = [[NSMutableArray alloc] init];
 
   for (const auto& entry : catalog) {
-    [lists addObject:[[AdblockFilterListCatalogEntry alloc]
-                         initWithFilterListCatalogEntry:
-                             brave_shields::FilterListCatalogEntry(entry)]];
+    if (entry.SupportsCurrentPlatform()) {
+      [lists addObject:[[AdblockFilterListCatalogEntry alloc]
+                           initWithFilterListCatalogEntry:
+                               brave_shields::FilterListCatalogEntry(entry)]];
+    }
   }
 
   return lists;
