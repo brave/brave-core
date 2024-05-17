@@ -43,6 +43,7 @@ export function defaultState (): Rewards.State {
       notificationAdsEnabled: false,
       newTabAdsEnabled: false,
       newsAdsEnabled: false,
+      searchAdsEnabled: false,
       adsNextPaymentDate: 0,
       adsReceivedThisMonth: 0,
       adTypesReceivedThisMonth: {},

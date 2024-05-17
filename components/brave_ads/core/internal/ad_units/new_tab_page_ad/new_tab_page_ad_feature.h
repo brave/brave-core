@@ -17,12 +17,15 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
+// Set to 0 to never cap.
 inline constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};
 
+// Set to 0 to never cap.
 inline constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerDay{
     &kNewTabPageAdFeature, "maximum_ads_per_day", 20};
 
+// Set to 0 to never cap.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kNewTabPageAdMinimumWaitTime{&kNewTabPageAdFeature, "minimum_wait_time",
                                  base::Minutes(5)};

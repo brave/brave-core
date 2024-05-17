@@ -106,6 +106,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
+  bool UserHasOptedInToSearchResultAds() const;
 
   void InitializeNotificationsForCurrentProfile();
 

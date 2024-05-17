@@ -63,6 +63,9 @@ OBJC_EXPORT
 /// Returns `true` if search result ads are supported.
 + (BOOL)shouldSupportSearchResultAds;
 
+/// Returns `true` if the user opted-in to search result ads.
+- (BOOL)isOptedInToSearchResultAds;
+
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
 @property(nonatomic, assign, getter=isEnabled)

@@ -17,6 +17,8 @@ bool UserHasOptedInToNewTabPageAds();
 bool UserHasOptedInToNotificationAds();
 int GetMaximumNotificationAdsPerHour();
 
+bool UserHasOptedInToSearchResultAds();
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SETTINGS_SETTINGS_H_

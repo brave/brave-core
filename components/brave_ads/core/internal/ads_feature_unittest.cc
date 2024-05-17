@@ -56,15 +56,16 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerNewTabPageAdEvents) {
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldSupportSearchResultAds) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldSupportSearchResultAdsFeature);
-
   // Act & Assert
   EXPECT_TRUE(ShouldSupportSearchResultAds());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotSupportSearchResultAds) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      kShouldSupportSearchResultAdsFeature);
+
   // Act & Assert
   EXPECT_FALSE(ShouldSupportSearchResultAds());
 }

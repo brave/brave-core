@@ -9,18 +9,22 @@ import Icon from '@brave/leo/react/icon'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { AdType } from '../lib/types'
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { adsPerHourOptions } from '../../shared/lib/ads_options'
 import { ToggleButton } from '../../shared/components/toggle_button'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 
 import * as style from './ads_control_view.style'
+
+const searchURL = 'https://search.brave.com'
 
 export function AdsControlView () {
   const { getString } = React.useContext(LocaleContext)
   const actions = useActions()
 
-  const { adsData } = useRewardsData((state) => ({
-    adsData: state.adsData
+  const { adsData, userType } = useRewardsData((state) => ({
+    adsData: state.adsData,
+    userType: state.userType
   }))
 
   const adCount = (type: AdType, enabled: boolean) => {
@@ -37,6 +41,10 @@ export function AdsControlView () {
 
   const onNotificationsEnabledChange = (enabled: boolean) => {
     actions.onAdsSettingSave('notificationAdsEnabled', enabled)
+  }
+
+  const onSearchAdsEnabledChange = (enabled: boolean) => {
+    actions.onAdsSettingSave('searchAdsEnabled', enabled)
   }
 
   const onAdsPerHourChange = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -101,11 +109,51 @@ export function AdsControlView () {
       <style.adTypeRow>
         <style.adTypeControls>
           <style.adTypeLabel>
+            <div>{getString('searchAdCountLabel')}</div>
+            <style.adTypeInfo>
+              <Icon name='info-outline' />
+              <div className='tooltip'>
+                <style.infoTooltip className='search-ads'>
+                  {
+                    userType === 'connected' &&
+                      getString('searchAdConnectedInfo') + ' '
+                  }
+                  {
+                    formatMessage(getString('searchAdInfo'), {
+                      tags: {
+                        $1: (content) => (
+                          <NewTabLink key='link' href={searchURL}>
+                            {content}
+                          </NewTabLink>
+                        )
+                      }
+                    })
+                  }
+                </style.infoTooltip>
+              </div>
+            </style.adTypeInfo>
+          </style.adTypeLabel>
+          <style.adTypeToggle>
+            <ToggleButton
+              checked={adsData.searchAdsEnabled}
+              onChange={onSearchAdsEnabledChange}
+            />
+          </style.adTypeToggle>
+          <style.adTypeConfig />
+        </style.adTypeControls>
+        <style.adTypeCount>
+          {adCount('search_result_ad', adsData.searchAdsEnabled)}
+        </style.adTypeCount>
+      </style.adTypeRow>
+
+      <style.adTypeRow>
+        <style.adTypeControls>
+          <style.adTypeLabel>
             <div>{getString('newsAdCountLabel')}</div>
             <style.adTypeInfo>
               <Icon name='info-outline' />
               <div className='tooltip'>
-                <style.infoTooltip>
+                <style.infoTooltip className='news-ads'>
                   {
                     adsData.newsAdsEnabled
                       ? getString('newsAdInfo')

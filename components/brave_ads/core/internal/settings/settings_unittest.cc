@@ -92,4 +92,17 @@ TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
   EXPECT_EQ(2, GetMaximumNotificationAdsPerHour());
 }
 
+TEST_F(BraveAdsSettingsTest, UserHasOptedInToSearchResultAds) {
+  // Act & Assert
+  EXPECT_TRUE(UserHasOptedInToSearchResultAds());
+}
+
+TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToSearchResultAds) {
+  // Arrange
+  test::OptOutOfSearchResultAds();
+
+  // Act & Assert
+  EXPECT_FALSE(UserHasOptedInToSearchResultAds());
+}
+
 }  // namespace brave_ads

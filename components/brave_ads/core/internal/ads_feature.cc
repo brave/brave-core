@@ -35,7 +35,7 @@ bool ShouldAlwaysTriggerNewTabPageAdEvents() {
 
 BASE_FEATURE(kShouldSupportSearchResultAdsFeature,
              "ShouldSupportSearchResultAds",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool ShouldSupportSearchResultAds() {
   return base::FeatureList::IsEnabled(kShouldSupportSearchResultAdsFeature);

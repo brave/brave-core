@@ -32,6 +32,8 @@ void RegisterProfilePrefs() {
   RegisterProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
   RegisterProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
+  RegisterProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+
   RegisterProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
   RegisterProfileStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
   RegisterProfileStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,

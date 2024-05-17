@@ -410,12 +410,18 @@ extension BrowserViewController: WKNavigationDelegate {
         braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
         tab?.braveSearchResultAdManager = nil
       } else {
-        // Add Brave Search headers if Rewards is enabled
+        // The Brave-Search-Ads header should be added with a negative value when all
+        // of the following conditions are met:
+        //   - The current tab is not a Private tab
+        //   - Brave Rewards is enabled.
+        //   - The "Search Ads" is opted-out.
+        //   - The requested URL host is one of the Brave Search domains.
         if !isPrivateBrowsing && rewards.isEnabled
-          && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
+          && !rewards.ads.isOptedInToSearchResultAds()
+          && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
         {
           var modifiedRequest = URLRequest(url: requestURL)
-          modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
+          modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
           tab?.loadRequest(modifiedRequest)
           ContentBlockerManager.signpost.endInterval(
             "decidePolicyFor",

@@ -646,6 +646,8 @@ static_library("internal") {
     "diagnostics/entries/opted_in_to_new_tab_page_ads_diagnostic_entry.h",
     "diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.cc",
     "diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h",
+    "diagnostics/entries/opted_in_to_search_result_ads_diagnostic_entry.cc",
+    "diagnostics/entries/opted_in_to_search_result_ads_diagnostic_entry.h",
     "flags/debug/debug_command_line_switch_parser_util.cc",
     "flags/debug/debug_command_line_switch_parser_util.h",
     "flags/debug/debug_flag_util.cc",

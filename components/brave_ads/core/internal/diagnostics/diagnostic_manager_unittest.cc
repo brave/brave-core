@@ -61,6 +61,10 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "true"
             },
             {
+              "name": "Opted-in to search result ads",
+              "value": "true"
+            },
+            {
               "name": "Locale",
               "value": "en_KY"
             },

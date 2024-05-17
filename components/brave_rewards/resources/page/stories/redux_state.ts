@@ -118,6 +118,7 @@ export const reduxState: Rewards.ApplicationState = {
       notificationAdsEnabled: false,
       newTabAdsEnabled: false,
       newsAdsEnabled: true,
+      searchAdsEnabled: true,
       adsNextPaymentDate: 0,
       adsReceivedThisMonth: 4,
       adTypesReceivedThisMonth: {

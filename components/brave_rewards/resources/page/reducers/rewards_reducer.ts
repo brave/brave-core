@@ -238,6 +238,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.notificationAdsEnabled = adsData.notificationAdsEnabled
       state.adsData.newTabAdsEnabled = adsData.newTabAdsEnabled
       state.adsData.newsAdsEnabled = adsData.newsAdsEnabled
+      state.adsData.searchAdsEnabled = adsData.searchAdsEnabled
       break
     }
     case types.GET_ADS_HISTORY: {
