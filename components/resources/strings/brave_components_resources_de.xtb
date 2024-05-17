@@ -2021,11 +2021,6 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="4986297793092101884">Brave blockiert bereits Cookies von Drittanbietern. Wir können auch Cookie-Einwilligungshinweise blockieren.</translation>
 <translation id="535688588637568715">Ja, Cookie-Einwilligungshinweise blockieren</translation>
 <translation id="2808175374672429053">Wildcards sind für Brave-Schutz nicht erlaubt.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave-Schutz hat <ph name="COMPANY_LIST"/>-Tracker auf <ph name="SITE_URL"/> blockiert}
-      =1 {Brave-Schutz hat <ph name="COMPANY_LIST"/> und 1 weiteren Tracker auf <ph name="SITE_URL"/> blockiert}
-      other {Brave-Schutz hat <ph name="COMPANY_LIST"/> und {BLOCKED_COUNT} weitere Tracker auf <ph name="SITE_URL"/> blockiert}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave-Schutz hat 1 Tracker auf <ph name="SITE_URL"/> blockiert}
       other {Brave-Schutz hat {BLOCKED_COUNT} Tracker auf <ph name="SITE_URL"/> blockiert}

@@ -483,7 +483,7 @@ Controlla le password in qualsiasi momento in <ph name="GOOGLE_PASSWORD_MANAGER"
 <translation id="1367817137674340530"><ph name="COUNT"/> immagini generate</translation>
 <translation id="1368603372088757436">Linux non è supportato su <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="799844208112570829">Per usarle sugli altri tuoi dispositivi, salvale nel tuo Account Brave</translation>
-<translation id="1370384480654163477">Visualizza e modifica i file dall'ultima visita al sito:</translation>
+<translation id="1370384480654163477">Visualizzare e modificare i file dall'ultima visita al sito:</translation>
 <translation id="1372841398847029212">Sincronizza con il tuo account</translation>
 <translation id="1373176046406139583">L'impostazione Visibilità del dispositivo ti consente di stabilire chi può condividere file con te mentre il tuo schermo è sbloccato. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="1374844444528092021">Il certificato richiesto dalla rete "<ph name="NETWORK_NAME"/>" non è installato o non è più valido. Richiedi un nuovo certificato e riprova a connetterti.</translation>
@@ -884,7 +884,7 @@ A questo account potrebbero essere applicate le autorizzazioni già concesse all
 <translation id="1647408325348388858">Aprire e modificare <ph name="FILE_NAME"/> in questa app web?</translation>
 <translation id="1647986356840967552">Pagina precedente</translation>
 <translation id="1648439345221797326">Ctrl + Maiusc + <ph name="TOP_ROW_KEY"/></translation>
-<translation id="1648528859488547844">Usa reti mobili o Wi-Fi per stabilire la posizione</translation>
+<translation id="1648528859488547844">Usa reti mobile o Wi-Fi per stabilire la posizione</translation>
 <translation id="164936512206786300">Disaccoppiare dispositivo Bluetooth</translation>
 <translation id="1650407365859096313">Si apre in una nuova scheda, l'autorizzazione è <ph name="PERMISSION_STATE"/></translation>
 <translation id="1650801028905250434">I tuoi file in Il mio Drive verranno sincronizzati automaticamente con Chromebook in modo da aprirli senza connessione a internet. Puoi modificare questa preferenza in qualsiasi momento in Impostazioni &gt; File.</translation>
@@ -3388,6 +3388,7 @@ Puoi gestire le impostazioni dell'account installando l'app Family Link su quest
 <translation id="3566325075220776093">Da questo dispositivo</translation>
 <translation id="3566721612727112615">Nessun sito aggiunto</translation>
 <translation id="356738834800832239">La password è stata salvata</translation>
+<translation id="3568431410312984116">Consenti l'apertura automatica di "Aiutami a scrivere"</translation>
 <translation id="3569382839528428029">Vuoi consentire a <ph name="APP_NAME"/> di condividere il tuo schermo?</translation>
 <translation id="3569614820047645079">I tuoi file in Il mio Drive verranno sincronizzati automaticamente con Chromebook per potervi accedere senza connessione a internet.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> può visualizzare i file e le cartelle indicati di seguito</translation>
@@ -4411,7 +4412,7 @@ Potrebbero essere incluse informazioni su software installati, file, browser e s
 <translation id="4341577178275615435">Per attivare o disattivare la navigazione con cursore, utilizza la scorciatoia F7</translation>
 <translation id="4341905082470253054">Verifica dello stato TPM in corso…</translation>
 <translation id="434198521554309404">Veloce. Sicuro. Semplice.</translation>
-<translation id="4342417854108207000">Non autorizzati a modificare file o cartelle sul dispositivo</translation>
+<translation id="4342417854108207000">Autorizzati a modificare file o cartelle sul dispositivo</translation>
 <translation id="3147982553903764426">Per eseguire ricerche in un sito o una parte specifici di Brave, digita la relativa scorciatoia nella barra degli indirizzi, seguita dalla tua scorciatoia da tastiera preferita.</translation>
 <translation id="4343283008857332996">L'accesso alla fotocamera è consentito alle app, ai siti web che dispongono dell'autorizzazione di accesso alla fotocamera e ai servizi di sistema. Per usare la fotocamera, potrebbe essere necessario riavviare l'app o aggiornare la pagina.</translation>
 <translation id="4345457680916430965">&amp;Apri in <ph name="APP"/></translation>
@@ -5491,7 +5492,7 @@ Premi Ctrl + Alt + Diminuisci luminosità per diminuire lo zoom.</translation>
 <translation id="5197255632782567636">Internet</translation>
 <translation id="5198430103906431024">Invia dati diagnostici e sull'utilizzo. Attualmente, questo dispositivo invia a Brave dati diagnostici e sull'utilizzo delle app e del dispositivo. Tali dati contribuiranno alla stabilità delle app e del sistema, nonché ad altri miglioramenti. Alcuni dati aggregati saranno utili anche alle app e ai partner di Brave, come ad esempio agli sviluppatori Android. Se hai attivato l'impostazione Attività web e app aggiuntiva, queste informazioni potrebbero essere salvate nel tuo Account Brave.</translation>
 <translation id="5199729219167945352">Esperimenti</translation>
-<translation id="5203035663139409780">Possono modificare file o cartelle sul dispositivo</translation>
+<translation id="5203035663139409780">Può modificare file o cartelle sul dispositivo</translation>
 <translation id="5203920255089865054">{NUM_EXTENSIONS,plural, =1{Fai clic per visualizzare l'estensione}other{Fai clic per visualizzare queste estensioni}}</translation>
 <translation id="5204673965307125349">Esegui il powerwash del dispositivo e riprova.</translation>
 <translation id="5204967432542742771">Inserisci la password</translation>
@@ -5837,6 +5838,7 @@ A questo account potrebbero essere applicate le autorizzazioni già concesse a s
 <translation id="5474859849784484111"><ph name="MANAGER"/> richiede l'immediata connessione a una rete Wi-Fi per scaricare un aggiornamento. In alternativa, puoi eseguire il download tramite una connessione a consumo (potrebbero essere applicati costi).</translation>
 <translation id="5477089831058413614">Configura l'hotspot di <ph name="DEVICE_TYPE"/></translation>
 <translation id="5481273127572794904">Non possono scaricare automaticamente più file</translation>
+<translation id="5481682542063333508">Offri aiuto con la scrittura</translation>
 <translation id="5481941284378890518">Aggiungi stampanti nelle vicinanze</translation>
 <translation id="3389019465696070233">Accedi per consentire a Brave di suggerire gruppi di schede e mantenere organizzate le tue schede</translation>
 <translation id="8126971123326806277">Se attivate, le passkey vengono create nel portachiavi iCloud e sono disponibili su tutti i tuoi dispositivi Apple. Se l'opzione è disattivata, le passkey vengono create nel tuo profilo Brave su questo dispositivo.</translation>
@@ -6641,7 +6643,7 @@ A questo account potrebbero essere applicate le autorizzazioni già concesse a s
 <translation id="610487644502954950">Riquadro laterale sbloccato</translation>
 <translation id="6104929924898022309">Utilizza il tasto Ricerca per modificare il comportamento dei tasti funzione</translation>
 <translation id="6106167152849320869">Se hai anche scelto di inviare dati diagnostici e sull'utilizzo nel passaggio precedente, questi dati verranno raccolti per le app installate.</translation>
-<translation id="6108952804512516814">Crea con l'IA</translation>
+<translation id="6108952804512516814">Crea con l'AI</translation>
 <translation id="6111718295497931251">Rimuovi l'accesso a Google Drive</translation>
 <translation id="2150860531873558613">Abilitare l'Assistente Brave</translation>
 <translation id="6112727384379533756">Aggiungi una richiesta</translation>
@@ -9478,7 +9480,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8291942417224950075">Per uso personale</translation>
 <translation id="8293206222192510085">Aggiunta preferito</translation>
 <translation id="8294431847097064396">Origine</translation>
-<translation id="8294476140219241086">Organizzatore di schede</translation>
+<translation id="8294476140219241086">Organizza schede</translation>
 <translation id="9088868963268236508">Apri le impostazioni per consentire a Brave di suggerire gruppi di schede</translation>
 <translation id="8295449579927246485">Traduzione dal Vivo</translation>
 <translation id="8295450130892483256">Installa Microsoft 365</translation>
@@ -9991,6 +9993,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="869167754614449887"><ph name="FILE_NAME"/> eliminato dalla cronologia dei download</translation>
 <translation id="8692107307702113268">La password contiene più di 1000 caratteri</translation>
 <translation id="8693639060656817812">Scopri di più sulla disponibilità della Protezione antitracciamento</translation>
+<translation id="8693862390730570097">Non consentire l'apertura automatica di "Aiutami a scrivere"</translation>
 <translation id="8694596275649352090">Blocca quando sospeso o alla chiusura del coperchio</translation>
 <translation id="8695139659682234808">Aggiungi la funzionalità Controllo genitori dopo la configurazione</translation>
 <translation id="8695825812785969222">Apri &amp;percorso...</translation>
@@ -10568,6 +10571,7 @@ A questo account potrebbero essere applicate le autorizzazioni già concesse a s
 <translation id="9112987648460918699">Trova...</translation>
 <translation id="9113240369465613386">Solo pagine dispari</translation>
 <translation id="9113469270512809735">Visualizza/nascondi elementi chiusi di recente</translation>
+<translation id="9113529408970052045">"Aiutami a scrivere" può aprirsi automaticamente quando una casella di testo su un sito può essere riempita con contenuti brevi</translation>
 <translation id="9114663181201435112">Accedi facilmente</translation>
 <translation id="9115675100829699941">&amp;Preferiti</translation>
 <translation id="916115484239820348">Questa impostazione non modifica la disponibilità di Brave Traduttore o Lens</translation>

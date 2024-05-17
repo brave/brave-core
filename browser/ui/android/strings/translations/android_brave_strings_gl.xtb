@@ -639,7 +639,7 @@ Seguro que queres facelo?</translation>
 <translation id="2502258949541727762">Antes de comezar</translation>
 <translation id="4303748097351941030">Redes compatibles</translation>
 <translation id="4204268048253692928">Podes engadir redes en calquera momento en Configuración.</translation>
-<translation id="2523174693142405417">Redes de busca</translation>
+<translation id="2523174693142405417">Buscar redes</translation>
 <translation id="1164748583090434571">Mostrar redes de proba</translation>
 <translation id="935220650946301698">Continuar con <ph name="NUMBER"/> redes</translation>
 <translation id="8248460961680233459">Crea un contrasinal</translation>
@@ -700,7 +700,7 @@ Seguro que queres facelo?</translation>
 <translation id="6748319398471481216">Renóvase mensualmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> ao mes</translation>
 <translation id="1163809943099641131">Un ano</translation>
-<translation id="6277055349883621705">Renova anualmente e aforra un 16 %</translation>
+<translation id="7574007394522199115">Renova anualmente e aforra un <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> ao ano.</translation>
 <translation id="2655185358771731232">Próbao gratis durante 7 días. Despois deses 7 días, cobraráseche o prezo do plan. Todas as subscricións renóvanse automaticamente, pero poden cancelarse antes da renovación.</translation>
 <translation id="6053992191006521518">Próbao GRATIS</translation>

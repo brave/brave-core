@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">O Brave já bloqueia os cookies de terceiros. Também podemos bloquear os avisos de consentimento para cookies.</translation>
 <translation id="535688588637568715">Sim, bloquear os avisos de consentimento de cookies</translation>
 <translation id="2808175374672429053">Os caracteres universais não são permitidos para as Proteções Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {As Proteções Brave bloquearam <ph name="COMPANY_LIST"/> rastreadores em <ph name="SITE_URL"/>}
-      =1 {As Proteções Brave bloquearam <ph name="COMPANY_LIST"/> e mais 1 rastreador em <ph name="SITE_URL"/>}
-      other {As Proteções Brave bloquearam <ph name="COMPANY_LIST"/> e mais {BLOCKED_COUNT} rastreadores em <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {As Proteções Brave bloquearam 1 rastreador em <ph name="SITE_URL"/>}
       other {As Proteções Brave bloquearam {BLOCKED_COUNT} rastreadores em <ph name="SITE_URL"/>}

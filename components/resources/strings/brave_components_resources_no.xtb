@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave blokkerer allerede informasjonskapsler fra tredjepart. Vi kan blokkere meldinger om å godta informasjonskapsler også.</translation>
 <translation id="535688588637568715">Ja, blokker meldinger om å godta informasjonskapsler</translation>
 <translation id="2808175374672429053">Wildcards er ikke tillatt for Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields har blokkert <ph name="COMPANY_LIST"/> sporere på <ph name="SITE_URL"/>}
-      =1 {Brave Shields har blokkert <ph name="COMPANY_LIST"/> og 1 annen sporer på <ph name="SITE_URL"/>}
-      other {Brave Shields har blokkert <ph name="COMPANY_LIST"/> og {BLOCKED_COUNT} andre sporere på <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields har blokkert 1 sporer på <ph name="SITE_URL"/>}
       other {Brave Shields har blokkert {BLOCKED_COUNT} sporere på <ph name="SITE_URL"/>}

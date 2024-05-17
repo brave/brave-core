@@ -700,7 +700,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6748319398471481216">Nagre-renew buwan-buwan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / buwan</translation>
 <translation id="1163809943099641131">Isang Taon</translation>
-<translation id="6277055349883621705">Makakatipid ng 16% ang pag-renew taon-taon</translation>
+<translation id="7574007394522199115">Makakatipid ng <ph name="PERCENTAGE_AMOUNT"/>%% ang pag-renew taon-taon</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / taon</translation>
 <translation id="2655185358771731232">Libreng subukan sa loob ng 7 araw. Makalipas ang 7 araw, sisingilin ka para sa presyo ng plano. Awtomatikong nare-renew ang mga subscription pero pwede itong kanselahin bago ma-renew.</translation>
 <translation id="6053992191006521518">Subukan nang LIBRE</translation>

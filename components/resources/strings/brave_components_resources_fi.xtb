@@ -1818,7 +1818,7 @@
 <translation id="9210143726807220086">Vaihda laajennettuja pystysuoria välilehtiä</translation>
 <translation id="684629111155788563">Lisää kaikki välilehdet uuteen ryhmään</translation>
 <translation id="9106013521852824634">Lähetä välilehti itsellesi</translation>
-<translation id="6973516366678963184">Näytä Wayback Machine -kupla</translation>
+<translation id="6973516366678963184">Näytä Wayback Machine -ikkuna</translation>
 <translation id="1926106318101432555">Avaa kirjanmerkki...</translation>
 <translation id="6118819645013156507">Vaihda ikkunaan...</translation>
 <translation id="1623204575967809688">Yhdistä nykyinen ikkuna ikkunaan...</translation>
@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave estää jo kolmannen osapuolen evästeet. Voimme myös estää evästeiden suostumusilmoitukset.</translation>
 <translation id="535688588637568715">Kyllä, estä evästeiden suostumusilmoitukset</translation>
 <translation id="2808175374672429053">Brave-suojaus ei salli jokerimerkkejä.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave-suojat esti <ph name="COMPANY_LIST"/> jäljitintä kohteessa  <ph name="SITE_URL"/>}
-      =1 {Brave-suojat esti <ph name="COMPANY_LIST"/> ja 1 muun jäljittimen kohteessa <ph name="SITE_URL"/>}
-      other {Brave-suojat esti <ph name="COMPANY_LIST"/> ja {BLOCKED_COUNT} muuta jäljitintä kohteessa <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave-suojat esti 1 jäljittimen kohteessa <ph name="SITE_URL"/>}
       other {Brave-suojat esti {BLOCKED_COUNT} jäljitintä kohteessa <ph name="SITE_URL"/>}

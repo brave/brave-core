@@ -2025,11 +2025,6 @@ other {# источника}
 <translation id="4986297793092101884">Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.</translation>
 <translation id="535688588637568715">Да, блокировать уведомления о согласии на использование файлов cookie</translation>
 <translation id="2808175374672429053">Шаблоны подстановки не разрешены для Brave Щита.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {щиты Brave заблокировали трекеры<ph name="COMPANY_LIST"/> на сайте <ph name="SITE_URL"/>}
-      =1 {щиты Brave заблокировали<ph name="COMPANY_LIST"/> и 1 другой трекер на сайте <ph name="SITE_URL"/>}
-      other {щиты Brave заблокировали <ph name="COMPANY_LIST"/> и {BLOCKED_COUNT} другие трекеры на сайте <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {щиты Brave заблокировали 1 трекер на сайте <ph name="SITE_URL"/>}
       other {щиты Brave заблокировали {BLOCKED_COUNT} трекеры на сайте <ph name="SITE_URL"/>}

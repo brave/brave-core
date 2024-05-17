@@ -216,7 +216,7 @@
 <translation id="5268098808165185458">从图像中复制文本……</translation>
 <translation id="4046485130884276245">文本已从图像中复制成功</translation>
 <translation id="3639779775496569782">文本复制失败</translation>
-<translation id="3960619311638643872">Brave 的 VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2506438154311626334">在 Brave VPN 中使用 WireGuard 协议</translation>
 <translation id="8519170191215826548">连接 Brave VPN 时无法更改此设置。</translation>
 <translation id="4235920711083356755">显示 VPN 按钮</translation>
@@ -364,7 +364,7 @@
 <translation id="5581036754486769849">允许在无痕式窗口中自动填充</translation>
 <translation id="2262012219398520969">常规窗口中的信息可以在无痕式窗口中读取/自动填充</translation>
 <translation id="7781069478569868053">新标签页</translation>
-<translation id="1988804048511540801">新标签页随及会显示</translation>
+<translation id="1988804048511540801">新标签页显示</translation>
 <translation id="2970343821770026391">仪表板</translation>
 <translation id="3719826155360621982">主页</translation>
 <translation id="5448570825852364919">空白页面</translation>
@@ -577,7 +577,7 @@
 <translation id="6421218422395686663">允许 ENS 链下查找。</translation>
 <translation id="4608449984413688436">解析 Solana Name Service（SNS）域名</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>进一步了解<ph name="END_LINK"/>关于 DNS 链下查找方面的隐私注意事项。</translation>
-<translation id="6241402707160226266">带 Tor 的私人窗户</translation>
+<translation id="6241402707160226266">带 Tor 的私人窗口</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="951983619130191090">自愿帮助他人连接到 Tor 网络</translation>
 <translation id="2223668809371912019">启用 Snowflake extension，允许用户在审查国家通过您的网络连接到 Tor 网络。</translation>

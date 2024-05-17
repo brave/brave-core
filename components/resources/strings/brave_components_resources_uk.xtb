@@ -2021,13 +2021,6 @@
 <translation id="4986297793092101884">У Brave вже заблоковано сторонні файли cookie. Ми також можемо блокувати повідомлення про згоду на використання файлів cookie.</translation>
 <translation id="535688588637568715">Так, блокувати повідомлення про згоду на блокування файлів cookie</translation>
 <translation id="2808175374672429053">Символи узагальнення заборонені для Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Щити Brave заблокували <ph name="COMPANY_LIST"/> вистежувачів на <ph name="SITE_URL"/>}
-      =1 {Щити Brave заблокували <ph name="COMPANY_LIST"/> і ще 1 вистежувач на <ph name="SITE_URL"/>}
-      few {Щити Brave заблокували <ph name="COMPANY_LIST"/> і ще {BLOCKED_COUNT} вистежувачі на <ph name="SITE_URL"/>}
-      many {Щити Brave заблокували <ph name="COMPANY_LIST"/> і ще {BLOCKED_COUNT} вистежувачів на <ph name="SITE_URL"/>}
-    other {Щити Brave заблокували <ph name="COMPANY_LIST"/> і ще {BLOCKED_COUNT} вистежувачів на <ph name="SITE_URL"/>}
-}</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Щити Brave заблокували 1 вистежувач на <ph name="SITE_URL"/>}
       few {Щити Brave заблокували {BLOCKED_COUNT} вистежувачі на <ph name="SITE_URL"/>}

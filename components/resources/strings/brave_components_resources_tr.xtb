@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave, üçüncü taraf çerezlerini zaten engelliyor. Çerez onay bildirimlerini de engelleyebiliriz.</translation>
 <translation id="535688588637568715">Evet, çerez onay bildirimlerini engelle</translation>
 <translation id="2808175374672429053">Brave Kalkanları için Wildcards'a izin verilmez.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Kalkanları, <ph name="SITE_URL"/> sitesinde <ph name="COMPANY_LIST"/> izleyicilerini engelledi}
-      =1 {Brave Kalkanları, <ph name="SITE_URL"/> sitesinde <ph name="COMPANY_LIST"/> ve 1 diğer izleyiciyi engelledi}
-      other {Brave Kalkanları, <ph name="SITE_URL"/> sitesinde <ph name="COMPANY_LIST"/> ve {BLOCKED_COUNT} diğer izleyiciyi engelledi}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Kalkanları <ph name="SITE_URL"/> sitesinde 1 izleyici engelledi}
       other {Brave Kalkanları <ph name="SITE_URL"/> sitesinde {BLOCKED_COUNT}  izleyici engelledi}

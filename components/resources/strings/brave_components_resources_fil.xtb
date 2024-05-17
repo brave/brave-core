@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Bina-block na ng Brave ang mga third-party na cookies. Kaya rin naming mag-block ng mga abiso sa pahintulot.</translation>
 <translation id="535688588637568715">Oo, i-block ang mga abiso sa pahintulot ng cookie</translation>
 <translation id="2808175374672429053">Hindi pinapahintulutan ang mga wildcard sa Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Na-block ng Brave Shields ang <ph name="COMPANY_LIST"/> tracker sa <ph name="SITE_URL"/>}
-      =1 {Na-block ng Brave Shields ang <ph name="COMPANY_LIST"/> at 1 pang tracker sa <ph name="SITE_URL"/>}
-      other {Na-block ng Brave Shields ang <ph name="COMPANY_LIST"/> at {BLOCKED_COUNT} pang tracker sa <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Na-block ng Brave Shields ang 1 tracker sa <ph name="SITE_URL"/>}
       other {Na-block ng Brave Shields ang {BLOCKED_COUNT} tracker sa <ph name="SITE_URL"/>}
