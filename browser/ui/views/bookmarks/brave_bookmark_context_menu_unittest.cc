@@ -97,7 +97,7 @@ TEST_F(BraveBookmarkContextMenuTest, AddShowAllBookmarksButtonMenu) {
 
   EXPECT_TRUE(bookmark_context_menu->IsCommandEnabled(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
-  EXPECT_TRUE(bookmark_context_menu->IsCommandVisible(
+  EXPECT_FALSE(bookmark_context_menu->IsCommandVisible(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
   EXPECT_TRUE(bookmark_context_menu->IsItemChecked(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
