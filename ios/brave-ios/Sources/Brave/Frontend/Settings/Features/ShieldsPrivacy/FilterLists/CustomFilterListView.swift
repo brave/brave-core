@@ -125,30 +125,28 @@ struct CustomFilterListView: View {
   }
 
   var body: some View {
-    NavigationView {
-      filterListEditor
-        .osAvailabilityModifiers({ view in
-          if #available(iOS 16.4, *) {
-            view
-              .scrollContentBackground(.hidden)
-              .scrollDismissesKeyboard(.interactively)
-          } else {
-            view.introspectTextView { textView in
-              textView.backgroundColor = .clear
-            }
+    filterListEditor
+      .osAvailabilityModifiers({ view in
+        if #available(iOS 16.4, *) {
+          view
+            .scrollContentBackground(.hidden)
+            .scrollDismissesKeyboard(.interactively)
+        } else {
+          view.introspectTextView { textView in
+            textView.backgroundColor = .clear
           }
-        })
-        .background(
-          Color(.secondaryBraveBackground)
-            .edgesIgnoringSafeArea(.all)
-        )
-        .navigationTitle(Text(Strings.Shields.customFilters))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          cancelToolbarItem
-          saveToolbarItem
         }
-    }
+      })
+      .background(
+        Color(.secondaryBraveBackground)
+          .edgesIgnoringSafeArea(.all)
+      )
+      .navigationTitle(Text(Strings.Shields.customFilters))
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        cancelToolbarItem
+        saveToolbarItem
+      }
   }
 
   private func saveCustomRules() {

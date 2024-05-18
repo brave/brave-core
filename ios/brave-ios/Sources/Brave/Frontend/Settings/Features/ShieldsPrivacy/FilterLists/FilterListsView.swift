@@ -26,60 +26,20 @@ struct FilterListsView: View {
   var body: some View {
     List {
       Section {
-        customFilterListView
-
-        Button {
-          showingAddSheet = true
-        } label: {
-          Text(Strings.Shields.addCustomFilterList)
-            .foregroundColor(Color(.braveBlurpleTint))
-        }
-        .disabled(editMode?.wrappedValue.isEditing == true)
-        .popover(
-          isPresented: $showingAddSheet,
-          content: {
-            FilterListAddURLView()
-          }
-        )
+        externalFilterListRows
       } header: {
-        Text(Strings.Shields.customFilterLists)
+        VStack(alignment: .leading, spacing: 4) {
+          Text(Strings.Shields.externalFilterLists)
+            .textCase(.uppercase)
+          Text(Strings.Shields.addCustomFilterListDescription)
+            .textCase(.none)
+        }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
 
       Section {
-        filterListView
-      } header: {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.Shields.defaultFilterLists)
-            .textCase(.uppercase)
-          Text(Strings.Shields.filterListsDescription)
-            .textCase(.none)
-        }
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-
-      Section {
-        Button {
-          showingCustomFiltersSheet = true
-        } label: {
-          if let customRules = customRules {
-            VStack(alignment: .leading) {
-              Text(customRules)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(Color(.braveLabel))
-                .font(.system(size: 14, weight: .regular, design: .monospaced))
-            }
-          } else if let error = rulesError {
-            Text(error.localizedDescription)
-              .foregroundStyle(Color(.braveErrorLabel))
-              .font(.subheadline)
-          } else {
-            Text(Strings.Shields.customFiltersPlaceholder)
-              .foregroundStyle(Color(.secondaryBraveLabel))
-              .font(.subheadline)
-          }
-        }
+        customFiltersRows
       } header: {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.Shields.customFilters)
@@ -89,11 +49,24 @@ struct FilterListsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+      Section {
+        defaultFilterListRows
+      } header: {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(Strings.Shields.defaultFilterLists)
+            .textCase(.uppercase)
+          Text(Strings.Shields.filterListsDescription)
+            .textCase(.none)
+        }
+      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .fullScreenCover(
       isPresented: $showingCustomFiltersSheet,
       content: {
-        CustomFilterListView(customRules: $customRules)
+        NavigationView {
+          CustomFilterListView(customRules: $customRules)
+        }
       }
     )
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -111,7 +84,49 @@ struct FilterListsView: View {
     })
   }
 
-  @ViewBuilder private var filterListView: some View {
+  private var customFiltersAccessibilityLabel: Text {
+    if let customRules = customRules {
+      Text(customRules)
+    } else if let error = rulesError {
+      Text(error.localizedDescription)
+    } else {
+      Text(Strings.Shields.customFiltersPlaceholder)
+    }
+  }
+
+  @ViewBuilder private var customFiltersRows: some View {
+    Button {
+      showingCustomFiltersSheet = true
+    } label: {
+      HStack(alignment: .center) {
+        if let customRules = customRules {
+          Text(customRules)
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+            .foregroundStyle(Color(.braveLabel))
+            .font(.system(size: 14, weight: .regular, design: .monospaced))
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else if let error = rulesError {
+          Text(error.localizedDescription)
+            .foregroundStyle(Color(.braveErrorLabel))
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+          Text(Strings.Shields.customFiltersPlaceholder)
+            .foregroundStyle(Color(.secondaryBraveLabel))
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        Image(systemName: "chevron.right")
+          .font(.body.weight(.semibold))
+          .foregroundColor(Color(.separator))
+      }
+      .accessibilityElement()
+      .accessibilityLabel(customFiltersAccessibilityLabel)
+    }
+  }
+
+  @ViewBuilder private var defaultFilterListRows: some View {
     #if DEBUG
     let allEnabled = Binding {
       filterListStorage.filterLists.allSatisfy({ $0.isEnabled })
@@ -144,7 +159,7 @@ struct FilterListsView: View {
     }
   }
 
-  @ViewBuilder private var customFilterListView: some View {
+  @ViewBuilder private var externalFilterListRows: some View {
     ForEach($customFilterListStorage.filterListsURLs) { $filterListURL in
       VStack(alignment: .leading, spacing: 4) {
         Toggle(isOn: $filterListURL.setting.isEnabled) {
@@ -188,6 +203,20 @@ struct FilterListsView: View {
       }
     }
     .onDelete(perform: onDeleteHandling)
+
+    Button {
+      showingAddSheet = true
+    } label: {
+      Text(Strings.Shields.addFilterByURL)
+        .foregroundColor(Color(.braveBlurpleTint))
+    }
+    .disabled(editMode?.wrappedValue.isEditing == true)
+    .popover(
+      isPresented: $showingAddSheet,
+      content: {
+        FilterListAddURLView()
+      }
+    )
   }
 
   private func onDeleteHandling(offsets: IndexSet) {

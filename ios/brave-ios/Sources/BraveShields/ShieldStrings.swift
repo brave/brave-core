@@ -360,11 +360,11 @@ extension Strings.Shields {
       "Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.",
     comment: "A description on the content filtering screen for the filter lists section."
   )
-  public static let addCustomFilterList = NSLocalizedString(
-    "AddCustomFilterList",
+  public static let addFilterByURL = NSLocalizedString(
+    "AddFilterByURL",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Add Custom Filter List",
+    value: "Add Filter By URL",
     comment: "A title within a cell where a user can navigate to an add screen."
   )
   public static let customFilterList = NSLocalizedString(
@@ -374,12 +374,12 @@ extension Strings.Shields {
     value: "Custom Filter List",
     comment: "Title for the custom filter list add screen found in the navigation bar."
   )
-  public static let customFilterLists = NSLocalizedString(
-    "CustomFilterLists",
+  public static let externalFilterLists = NSLocalizedString(
+    "ExternalFilterLists",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Custom Filter Lists",
-    comment: "A title for a section that contains all custom filter lists"
+    value: "External Filter Lists",
+    comment: "A title for a section that contains all external filter lists"
   )
   public static let customFilterListURL = NSLocalizedString(
     "CustomFilterListsURL",
@@ -491,15 +491,15 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Add custom filters you've created, one per line, in the field below. Be sure to use the Adblock filter syntax.",
-    comment: "A description of what to enter in the create custom filters text field"
+      "Add custom filters here. Be sure to use the Adblock filter syntax.",
+    comment: "A description of the custom filters section"
   )
   /// A placeholder when custom filter lists are empty
   public static let customFiltersPlaceholder = NSLocalizedString(
     "CustomFiltersPlaceholder",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Add your custom filters here",
+    value: "Add your custom filters here, one per line.",
     comment: "A placeholder when custom filter lists are empty"
   )
   /// An error message telling the user that they crossed the line limit
