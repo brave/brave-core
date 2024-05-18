@@ -8,8 +8,8 @@
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
-    <color name="baseline_primary_90">#5B2A23</color>
-    <color name="baseline_primary_80">#F35333</color>
+    <color name="baseline_primary_90">#235B47</color>
+    <color name="baseline_primary_80">#33F3AD</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
 
