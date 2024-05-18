@@ -156,34 +156,32 @@ extension BrowserViewController {
 extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
     guard let webView = webView, let url = webView.url else { return }
-    if url.isLocal || self.isPrivate { return }
 
-    var htmlBlob: String?
-    var classifierText: String?
+    if url.isLocal || self.isPrivate || !shouldNotifyAdsServiceTabContentDidChange { return }
 
     let group = DispatchGroup()
-    group.enter()
 
+    group.enter()
+    var htmlContent: String?
     webView.evaluateSafeJavaScript(
       functionName: "new XMLSerializer().serializeToString",
       args: ["document"],
       contentWorld: WKContentWorld.defaultClient,
       escapeArgs: false
     ) { html, _ in
-      htmlBlob = html as? String
+      htmlContent = html as? String
       group.leave()
     }
 
-    if shouldNotifyAdsServiceTabDidChange {
-      group.enter()
-      webView.evaluateSafeJavaScript(
-        functionName: "document?.body?.innerText",
-        contentWorld: .defaultClient,
-        asFunction: false
-      ) { text, _ in
-        classifierText = text as? String
-        group.leave()
-      }
+    group.enter()
+    var textContent: String?
+    webView.evaluateSafeJavaScript(
+      functionName: "document?.body?.innerText",
+      contentWorld: .defaultClient,
+      asFunction: false
+    ) { text, _ in
+      textContent = text as? String
+      group.leave()
     }
 
     group.notify(queue: .main) {
@@ -193,8 +191,8 @@ extension Tab {
       rewards.reportLoadedPage(
         redirectChain: urls.isEmpty ? [url] : urls,
         tabId: Int(self.rewardsId),
-        html: htmlBlob ?? "",
-        adsInnerText: classifierText
+        html: htmlContent ?? "",
+        adsInnerText: textContent
       )
     }
   }
