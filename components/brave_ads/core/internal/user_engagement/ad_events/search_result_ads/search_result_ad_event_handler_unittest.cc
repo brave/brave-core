@@ -14,6 +14,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
@@ -26,7 +27,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

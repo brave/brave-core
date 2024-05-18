@@ -77,8 +77,11 @@ class ScopedTestingAdsServiceSetter {
 class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldSupportSearchResultAdsFeature);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/
+        {kShouldSupportSearchResultAdsFeature,
+         kShouldAlwaysTriggerBraveSearchResultAdEventsFeature},
+        /*disabled_features=*/{});
   }
 
   void SetUpOnMainThread() override {
@@ -153,12 +156,13 @@ class SearchResultAdTest : public InProcessBrowserTest {
   AdsServiceMock ads_service_mock_;
 };
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
+IN_PROC_BROWSER_TEST_F(SearchResultAdTest,
+                       ShouldAlwaysTriggerAdEventsForNonRewardsUser) {
   browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
                                                false);
 
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent).Times(0);
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent).Times(2);
 
   GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));

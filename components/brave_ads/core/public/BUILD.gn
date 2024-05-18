@@ -20,7 +20,6 @@ source_set("headers") {
     "ad_units/notification_ad/notification_ad_feature.h",
     "ad_units/notification_ad/notification_ad_info.h",
     "ad_units/notification_ad/notification_ad_value_util.h",
-    "ad_units/search_result_ad/search_result_ad_feature.h",
     "ads.h",
     "ads_callback.h",
     "ads_constants.h",
