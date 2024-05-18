@@ -13,10 +13,12 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/bookmarks/bookmark_context_menu_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -43,6 +45,12 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
   }
   AddBraveBookmarksSubmenu(profile);
   AddShowAllBookmarksButtonMenu();
+
+  if (bookmarks::BookmarkModel* model =
+          BookmarkModelFactory::GetForBrowserContext(profile)) {
+    is_other_bookmark_node_empty =
+        (model->other_node()->GetTotalNodeCount() == 1);
+  }
 }
 
 BraveBookmarkContextMenuController::~BraveBookmarkContextMenuController() =
@@ -102,7 +110,10 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
   }
 
   if (command_id == IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY) {
-    return true;
+    // If the 'Other Bookmarks' node has no children, then hiding the 'Show all
+    // bookmarks button' option from drop down as showing the option and the
+    // 'All Bookmarks' button serves no purpose
+    return (!is_other_bookmark_node_empty);
   }
 
   return BookmarkContextMenuController::IsCommandIdVisible(command_id);
