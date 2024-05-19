@@ -59,6 +59,7 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
+      .multilineTextAlignment(.leading)
       .frame(maxWidth: .infinity, alignment: .leading)
 
       rightAccessoryView
@@ -161,9 +162,12 @@ struct AIChatMenuView: View {
                     .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                 )
               } else {
-                Image(braveSystemName: "leo.lock.plain")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .opacity(model.access == .premium ? 1.0 : 0.0)
+                Image(
+                  braveSystemName: premiumStatus != .active && premiumStatus != .activeDisconnected
+                    ? "leo.lock.plain" : "leo.lock.open"
+                )
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .opacity(model.access == .premium ? 1.0 : 0.0)
               }
             }
           }
