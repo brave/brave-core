@@ -313,6 +313,10 @@ bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
   return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
+bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
+  return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToSearchResultAds);
+}
+
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
   NotificationHelper::GetInstance()->InitForProfile(profile_);
 
@@ -339,7 +343,8 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
          (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
-                                          UserHasOptedInToNewTabPageAds()));
+                                          UserHasOptedInToNewTabPageAds() ||
+                                          UserHasOptedInToSearchResultAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -826,13 +831,11 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
   }
 #endif
 
-  const int timeout_in_seconds = kNotificationAdTimeout.Get();
-  if (timeout_in_seconds == 0) {
-    // Never time out
+  const base::TimeDelta timeout = kNotificationAdTimeout.Get();
+  if (timeout.is_zero()) {
+    // Never time out.
     return;
   }
-
-  const base::TimeDelta timeout = base::Seconds(timeout_in_seconds);
 
   notification_ad_timers_[placement_id] =
       std::make_unique<base::OneShotTimer>();
@@ -1195,7 +1198,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
 }
 
 std::optional<NewTabPageAdInfo>
-AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
+AdsServiceImpl::MaybeGetPrefetchedNewTabPageAdForDisplay() {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::nullopt;
   }
@@ -1622,7 +1625,7 @@ void AdsServiceImpl::LoadComponentResource(
     const int version,
     LoadComponentResourceCallback callback) {
   std::optional<base::FilePath> file_path =
-      g_brave_browser_process->resource_component()->GetPath(id, version);
+      g_brave_browser_process->resource_component()->MaybeGetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});
   }

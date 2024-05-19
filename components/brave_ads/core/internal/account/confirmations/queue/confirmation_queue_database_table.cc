@@ -483,8 +483,8 @@ void ConfirmationQueue::MigrateToV36(
   CreateTableIndex(transaction, GetTableName(), /*columns=*/{"process_at"});
 }
 
-void ConfirmationQueue::MigrateToV38(
-    mojom::DBTransactionInfo* transaction) const {
+// static
+void ConfirmationQueue::MigrateToV38(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
   // The conversion queue is deprecated since all confirmations are now being

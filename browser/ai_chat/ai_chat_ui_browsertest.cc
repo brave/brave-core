@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -15,6 +16,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -208,7 +210,15 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
   print_preview_observer.WaitUntilPreviewIsReady();
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewFallback) {
+// Disable flaky test on ASAN windows 64-bit
+// https://github.com/brave/brave-browser/issues/37969
+#if BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) && defined(ARCH_CPU_64_BITS)
+#define MAYBE_PrintPreviewFallback DISABLED_PrintPreviewFallback
+#else
+#define MAYBE_PrintPreviewFallback PrintPreviewFallback
+#endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
+        // defined(ARCH_CPU_64_BITS)
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"));
 
   auto run_loop = std::make_unique<base::RunLoop>();

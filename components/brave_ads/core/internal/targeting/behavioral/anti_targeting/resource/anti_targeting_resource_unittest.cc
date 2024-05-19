@@ -85,7 +85,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, LoadResourceWhenLocaleDidChange) {
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAdsAndBraveNewsAds) {
   // Arrange
   test::OptOutOfNotificationAds();
   test::OptOutOfBraveNewsAds();
@@ -123,7 +123,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenEnabledPrefDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenEnabledPrefDidChangeIfOptedOutOfNotificationAdsAndBraveNewsAds) {
   // Arrange
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
@@ -164,7 +164,7 @@ TEST_F(
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAdsAndBraveNewsAds) {
   // Arrange
   test::OptOutOfNotificationAds();
   test::OptOutOfBraveNewsAds();

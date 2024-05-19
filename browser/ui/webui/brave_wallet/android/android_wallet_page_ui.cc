@@ -7,16 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
-#include "brave/components/l10n/common/localization_util.h"
-
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/browser/ui/webui/brave_webui_source.h"
-
+#include "base/command_line.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
@@ -24,16 +15,22 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
-
+#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -42,8 +39,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
-
-#include "base/command_line.h"
 
 AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                                          const GURL& url)
@@ -138,7 +133,9 @@ void AndroidWalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
         brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-        ipfs_service_receiver) {
+        ipfs_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+        meld_integration_service) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -157,6 +154,8 @@ void AndroidWalletPageUI::CreatePageHandler(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(
       profile, std::move(asset_ratio_service_receiver));
+  brave_wallet::MeldIntegrationServiceFactory::BindForContext(
+      profile, std::move(meld_integration_service));
   brave_wallet::KeyringServiceFactory::BindForContext(
       profile, std::move(keyring_service_receiver));
   brave_wallet::TxServiceFactory::BindForContext(

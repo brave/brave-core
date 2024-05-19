@@ -147,6 +147,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     adEventCache = new brave_ads::AdEventCache();
 
     adsClient = new AdsClientIOS(self);
+    adsClientNotifier = new brave_ads::AdsClientNotifier();
   }
   return self;
 }
@@ -211,6 +212,11 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return brave_ads::ShouldSupportSearchResultAds();
 }
 
+- (BOOL)isOptedInToSearchResultAds {
+  return self.profilePrefService->GetBoolean(
+      brave_ads::prefs::kOptedInToSearchResultAds);
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
@@ -232,7 +238,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return completion(/*success=*/false);
   }
 
-  adsClientNotifier = new brave_ads::AdsClientNotifier();
   ads = brave_ads::Ads::CreateInstance(adsClient);
 
   auto cppSysInfo =
@@ -256,7 +261,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                     completion(success);
                     if (!success) {
                       [self deallocAds];
-                      [self deallocAdsClientNotifier];
                     }
                   }));
 }
@@ -269,10 +273,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
           // Deprecate shutdown API call.
           self->ads->Shutdown(base::BindOnce(^(bool) {
             [self deallocAds];
-            [self deallocAdsClientNotifier];
-            [self deallocAdsClient];
-
-            [self deallocAdEventCache];
 
             if (completion) {
               completion();
@@ -1817,20 +1817,20 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)notifyDidInitializeAds {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyDidInitializeAds();
   }
 }
 
 - (void)notifyPrefDidChange:(const std::string&)path {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyPrefDidChange(path);
   }
 }
 
 - (void)notifyDidUpdateResourceComponent:(NSString*)manifest_version
                                       id:(NSString*)id {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyDidUpdateResourceComponent(
         base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
   }
@@ -1838,7 +1838,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 - (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
                           base64Seed:(NSString*)base64Seed {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyRewardsWalletDidUpdate(
         base::SysNSStringToUTF8(paymentId),
         base::SysNSStringToUTF8(base64Seed));
@@ -1848,7 +1848,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 - (void)notifyTabTextContentDidChange:(NSInteger)tabId
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  text:(NSString*)text {
-  if (![self isServiceRunning]) {
+  if (adsClientNotifier == nil) {
     return;
   }
 
@@ -1861,7 +1861,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 - (void)notifyTabHtmlContentDidChange:(NSInteger)tabId
                         redirectChain:(NSArray<NSURL*>*)redirectChain
                                  html:(NSString*)html {
-  if (![self isServiceRunning]) {
+  if (adsClientNotifier == nil) {
     return;
   }
 
@@ -1872,13 +1872,13 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
   }
 }
 
 - (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
   }
 }
@@ -1887,7 +1887,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
              redirectChain:(NSArray<NSURL*>*)redirectChain
                isErrorPage:(BOOL)isErrorPage
                 isSelected:(BOOL)isSelected {
-  if (![self isServiceRunning]) {
+  if (adsClientNotifier == nil) {
     return;
   }
 
@@ -1900,31 +1900,31 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)notifyDidCloseTab:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
   }
 }
 
 - (void)notifyBrowserDidEnterForeground {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyBrowserDidEnterForeground();
   }
 }
 
 - (void)notifyBrowserDidEnterBackground {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyBrowserDidEnterBackground();
   }
 }
 
 - (void)notifyBrowserDidBecomeActive {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyBrowserDidBecomeActive();
   }
 }
 
 - (void)notifyBrowserDidResignActive {
-  if ([self isServiceRunning]) {
+  if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyBrowserDidResignActive();
   }
 }

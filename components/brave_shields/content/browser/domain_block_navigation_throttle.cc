@@ -149,6 +149,7 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   // Since the call to the ad block service is asynchronous, we defer the final
   // decision of whether to allow or block this navigation. The callback from
   // the task runner will call a method to give our final answer.
+  is_deferred_ = true;
   return content::NavigationThrottle::DEFER;
 }
 
@@ -179,26 +180,29 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     if (tab_storage) {
       tab_storage->DropBlockedDomain1PESLifetime();
     }
-    // Navigation was deferred while we called the ad block service on a task
-    // runner, but now we know that we want to allow navigation to continue.
-    Resume();
-    return;
+    if (is_deferred_) {
+      is_deferred_ = false;
+      // Navigation was deferred while we called the ad block service on a task
+      // runner, but now we know that we want to allow navigation to continue.
+      Resume();
+      // DO NOT ADD CODE AFTER THIS, as the NavigationThrottle might have been
+      // deleted by the previous call.
+    }
   } else if (new_url.is_valid()) {
     RestartNavigation(new_url);
-    return;
-  }
-
-  switch (domain_blocking_type_) {
-    case DomainBlockingType::kNone:
-      NOTREACHED();
-      Resume();
-      break;
-    case DomainBlockingType::k1PES:
-      Enable1PESAndResume();
-      break;
-    case DomainBlockingType::kAggressive:
-      ShowInterstitial();
-      break;
+  } else {
+    switch (domain_blocking_type_) {
+      case DomainBlockingType::kNone:
+        NOTREACHED();
+        Resume();
+        break;
+      case DomainBlockingType::k1PES:
+        Enable1PESAndResume();
+        break;
+      case DomainBlockingType::kAggressive:
+        ShowInterstitial();
+        break;
+    }
   }
 }
 

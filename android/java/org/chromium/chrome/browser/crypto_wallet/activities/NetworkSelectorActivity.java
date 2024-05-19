@@ -24,40 +24,36 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
+import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class NetworkSelectorActivity extends BraveWalletBaseActivity
         implements NetworkSelectorAdapter.NetworkClickListener {
-    public static String NETWORK_SELECTOR_TYPE = "network_selector_type";
     private static final String TAG = "NetworkSelector";
-    private NetworkSelectorModel.SelectionMode mSelectionMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter mNetworkSelectorAdapter;
     private MaterialToolbar mToolbar;
-    private String mSelectedNetwork;
     private SettingsLauncher mSettingsLauncher;
     private WalletModel mWalletModel;
-    private NetworkSelectorModel mNetworkSelectorModel;
+    private NetworkModel mNetworkModel;
 
     /**
-     * Create and return an Intent object to open network selector activity with key as an
-     * identifier to show the previously selected local network (if available otherwise All Networks
-     * as default) on {@link NetworkSelectorActivity}.
+     * Creates an Intent object to open network selector activity.
      *
-     * @return Intent object to open NetworkSelectorActivity in given mode <b>Note:</b>: It should
-     *     only be called if the wallet is set up and unlocked
+     * @return Intent object to open network selector activity.
+     *     <p><b>Note:</b>: It should only be called if the wallet is set up and unlocked.
      */
-    public static Intent createIntent(@NonNull Context context) {
+    @NonNull
+    public static Intent createIntent(@NonNull final Context context) {
         Intent braveNetworkSelectionIntent = new Intent(context, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return braveNetworkSelectionIntent;
@@ -92,25 +88,53 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "initState " + e);
+            Log.e(TAG, "initState", e);
+            return;
         }
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
-        NetworkSelectorModel.SelectionMode selectionMode =
-                NetworkSelectorModel.SelectionMode.SINGLE;
-        mNetworkSelectorModel =
-                new NetworkSelectorModel(
-                        selectionMode, mWalletModel.getCryptoModel().getNetworkModel());
-        mSelectionMode = mNetworkSelectorModel.getSelectionType();
+        mNetworkModel = mWalletModel.getCryptoModel().getNetworkModel();
+        NetworkModel.NetworkLists networkLists = mNetworkModel.mNetworkLists.getValue();
+        NetworkInfo selectedNetwork =
+                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        // See GitHub issue https://github.com/brave/brave-browser/issues/37399.
+        // When live data will be refactored this check can be removed.
+        if (networkLists == null || selectedNetwork == null) {
+            Log.w(TAG, "Network lists and selected network must not be null.");
+            assert false;
+            return;
+        }
+
         mNetworkSelectorAdapter =
-                new NetworkSelectorAdapter(this, new ArrayList<>(), mSelectionMode);
+                new NetworkSelectorAdapter(
+                        this,
+                        filterSupportedDapp(networkLists),
+                        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue(),
+                        this);
         mRVNetworkSelector.setAdapter(mNetworkSelectorAdapter);
-        mNetworkSelectorAdapter.setOnNetworkItemSelected(this);
-        mNetworkSelectorModel.mNetworkListsLd.observe(this, networkLists -> {
-            if (networkLists == null) return;
-            mNetworkSelectorAdapter.addNetworks(networkLists);
-        });
-        setSelectedNetworkObserver();
+    }
+
+    @NonNull
+    private NetworkModel.NetworkLists filterSupportedDapp(
+            @NonNull final NetworkModel.NetworkLists networkLists) {
+        final Predicate<NetworkInfo> supportedNetworkFilter =
+                networkInfo ->
+                        WalletConstants.SUPPORTED_COIN_TYPES_ON_DAPPS.contains(networkInfo.coin);
+
+        final List<NetworkInfo> filteredPrimaryNetworkList =
+                networkLists.mPrimaryNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        final List<NetworkInfo> filteredSecondaryNetworkList =
+                networkLists.mSecondaryNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        final List<NetworkInfo> filteredTestNetworkList =
+                networkLists.mTestNetworkList.stream()
+                        .filter(supportedNetworkFilter)
+                        .collect(Collectors.toList());
+        return new NetworkModel.NetworkLists(
+                filteredPrimaryNetworkList, filteredSecondaryNetworkList, filteredTestNetworkList);
     }
 
     private void launchAddNetwork() {
@@ -122,33 +146,10 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
         startActivity(intent);
     }
 
-    private void setSelectedNetworkObserver() {
-        if (NetworkSelectorModel.SelectionMode.MULTI == mSelectionMode) {
-            LiveDataUtil.observeOnce(mNetworkSelectorModel.mSelectedNetworks,
-                    networkInfoList -> { updateNetworkSelection(networkInfoList); });
-            return;
-        }
-        mWalletModel
-                .getCryptoModel()
-                .getNetworkModel()
-                .mDefaultNetwork
-                .observe(
-                        this,
-                        networkInfoList -> {
-                            updateNetworkSelection(Collections.singletonList(networkInfoList));
-                        });
-    }
-
-    private void updateNetworkSelection(List<NetworkInfo> networkInfoList) {
-        if (!networkInfoList.isEmpty()) {
-            mNetworkSelectorAdapter.setSelectedNetwork(networkInfoList);
-        }
-    }
-
     @Override
-    public void onNetworkItemSelected(NetworkInfo networkInfo) {
-        mNetworkSelectorModel.setNetworkWithAccountCheck(
-                networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
+    public void onNetworkItemSelected(@NonNull final NetworkInfo networkInfo) {
+        mNetworkModel.setNetworkWithAccountCheck(
+                networkInfo, false, isSelected -> updateNetworkUi(networkInfo, isSelected));
     }
 
     private void updateNetworkUi(NetworkInfo networkInfo, boolean isSelected) {
@@ -170,11 +171,5 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
                     }
                 },
                 200);
-    }
-
-    @Override
-    public void onDestroy() {
-        mNetworkSelectorModel.setSelectedNetworks(mNetworkSelectorAdapter.getSelectedNetworks());
-        super.onDestroy();
     }
 }

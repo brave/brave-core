@@ -25,6 +25,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
+  registry->RegisterBooleanPref(prefs::kOptedInToSearchResultAds, true);
+
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
   registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);

@@ -239,7 +239,7 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
   DCHECK(ads_service_);
 
   const std::optional<brave_ads::NewTabPageAdInfo> ad =
-      ads_service_->GetPrefetchedNewTabPageAdForDisplay();
+      ads_service_->MaybeGetPrefetchedNewTabPageAdForDisplay();
   if (!ad) {
     return std::nullopt;
   }

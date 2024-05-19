@@ -369,4 +369,19 @@ class P3ATimedStorageTests: XCTestCase {
     // 2 low values added in one day are higher than the high value
     XCTAssertEqual(storage.maximumDaysCombinedValue, lowValue * 2)
   }
+
+  func testCombinedValueInDateRange() {
+    var storage = P3ATimedStorage<Int>(name: "testCombinedValueInDateRange", lifetimeInDays: 14)
+    storage.reset()
+
+    storage.replaceTodaysRecordsIfLargest(value: 1)
+    storage.date = { Date().addingTimeInterval(1.days) }
+    storage.replaceTodaysRecordsIfLargest(value: 1)
+    storage.date = { Date().addingTimeInterval(2.days) }
+    storage.replaceTodaysRecordsIfLargest(value: 1)
+
+    let startOfDay = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    XCTAssertEqual(storage.combinedValue(in: startOfDay..<startOfDay.addingTimeInterval(2.days)), 2)
+    XCTAssertEqual(storage.combinedValue(in: startOfDay...startOfDay.addingTimeInterval(2.days)), 3)
+  }
 }

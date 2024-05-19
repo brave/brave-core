@@ -154,7 +154,7 @@ void SiteVisit::StopPageLand(const int32_t tab_id) {
 
 void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
   if (const std::optional<TabInfo> tab =
-          TabManager::GetInstance().GetVisible()) {
+          TabManager::GetInstance().MaybeGetVisible()) {
     MaybeSuspendOrResumePageLand(tab->id);
   }
 }

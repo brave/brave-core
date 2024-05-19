@@ -65,7 +65,7 @@ class CreativeNotificationAds final : public TableInterface {
 
  private:
   void MigrateToV35(mojom::DBTransactionInfo* transaction);
-  void MigrateToV37(mojom::DBTransactionInfo* transaction);
+  static void MigrateToV37(mojom::DBTransactionInfo* transaction);
 
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNotificationAdList& creative_ads);

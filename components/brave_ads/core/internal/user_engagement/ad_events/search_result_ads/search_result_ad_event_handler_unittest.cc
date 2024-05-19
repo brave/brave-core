@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -306,6 +307,10 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_hour", "3"}});
+
   const mojom::SearchResultAdInfoPtr ad_mojom =
       test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
@@ -327,6 +332,10 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_hour", "3"}});
+
   mojom::SearchResultAdInfoPtr ad_mojom =
       test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
@@ -350,6 +359,10 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_day", "3"}});
+
   const mojom::SearchResultAdInfoPtr ad_mojom =
       test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
@@ -371,6 +384,10 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_day", "3"}});
+
   mojom::SearchResultAdInfoPtr ad_mojom =
       test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);

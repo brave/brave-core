@@ -10,7 +10,7 @@ import XCTest
 
 @testable import BraveWallet
 
-@MainActor class TransactionConfirmationStoreTests: XCTestCase {
+class TransactionConfirmationStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
@@ -97,6 +97,9 @@ import XCTest
       }
       completion(filteredTransactions)
     }
+    txService._approveTransaction = { _, _, _, completion in
+      completion(true, .init(providerError: .success), "")
+    }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._allTokens = { _, _, completion in
       completion(allTokens)
@@ -148,7 +151,7 @@ import XCTest
   }
 
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
-  func testPrepareSolSystemTransfer() async {
+  @MainActor func testPrepareSolSystemTransfer() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedSolSystemTransfer
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -207,7 +210,7 @@ import XCTest
   }
 
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
-  func testPrepareSolTokenTransfer() async {
+  @MainActor func testPrepareSolTokenTransfer() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedSolTokenTransfer
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -266,7 +269,7 @@ import XCTest
   }
 
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
-  func testPrepareERC20Approve() async {
+  @MainActor func testPrepareERC20Approve() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -327,7 +330,7 @@ import XCTest
   }
 
   /// Test that `nextTransaction` will update `activeTransactionId` property in order of transaction created time.
-  func testNextTransaction() async {
+  @MainActor func testNextTransaction() async {
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let sendCopy =
@@ -386,7 +389,7 @@ import XCTest
   }
 
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceFailMakeERC20ApproveData() async {
+  @MainActor func testEditAllowanceFailMakeERC20ApproveData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -427,7 +430,7 @@ import XCTest
   }
 
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to set new ERC20 Approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceFailSetData() async {
+  @MainActor func testEditAllowanceFailSetData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -469,7 +472,7 @@ import XCTest
   }
 
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return true if we suceed in creating and setting ERC20 Approve data with `BraveWalletEthTxManagerProxy`
-  func testEditAllowanceSuccess() async {
+  @MainActor func testEditAllowanceSuccess() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
     let mockTransaction: BraveWallet.TransactionInfo = .previewConfirmedERC20Approve
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -510,7 +513,7 @@ import XCTest
     await fulfillment(of: [editExpectation], timeout: 1)
   }
 
-  func testPrepareFilSend() async {
+  @MainActor func testPrepareFilSend() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockFilToken]
     let mockTransaction: BraveWallet.TransactionInfo = .mockFilUnapprovedSend
     let mockTransactions: [BraveWallet.TransactionInfo] = [mockTransaction].map { tx in
@@ -556,7 +559,55 @@ import XCTest
       .store(in: &cancellables)
 
     await fulfillment(of: [prepareExpectation], timeout: 1)
+  }
 
+  private let isTxSubmittingMockTransaction: BraveWallet.TransactionInfo = .previewConfirmedSend
+    .then { $0.txStatus = .unapproved }
+  private func setupStoreForTxSubmitting() async -> TransactionConfirmationStore {
+    let store = setupStore(
+      accountInfos: [.mockEthAccount],
+      allTokens: [.previewToken],
+      transactions: [isTxSubmittingMockTransaction],
+      gasEstimation: .init()
+    )
+    await store.prepare()
+    return store
+  }
+
+  /// Test `isTxSubmitting` happy path (unapproved -> approved -> submitted)
+  @MainActor func testIsTxSubmittingHappyPath() async {
+    let store = await setupStoreForTxSubmitting()
+    XCTAssertFalse(store.isTxSubmitting)
+    let error = await store.confirm(transaction: isTxSubmittingMockTransaction)
+    XCTAssertNil(error)
+    XCTAssertTrue(store.isTxSubmitting)
+    // simulate transaction status moved to approved
+    let mockTransactionApproved = isTxSubmittingMockTransaction.then {
+      $0.txStatus = .approved
+    }
+    store.onTransactionStatusChanged(mockTransactionApproved)
+    XCTAssertTrue(store.isTxSubmitting)  // waiting for submitted state
+    // simulate transaction status moved to submitted
+    let mockTransactionSubmitted = isTxSubmittingMockTransaction.then {
+      $0.txStatus = .submitted
+    }
+    store.onTransactionStatusChanged(mockTransactionSubmitted)
+    XCTAssertFalse(store.isTxSubmitting)
+  }
+
+  /// Test `isTxSubmitting` will correctly update to false when transaction moves to error tx status. brave-browser#38375
+  @MainActor func testIsTxSubmittingError() async {
+    let store = await setupStoreForTxSubmitting()
+    XCTAssertFalse(store.isTxSubmitting)
+    let error = await store.confirm(transaction: isTxSubmittingMockTransaction)
+    XCTAssertNil(error)
+    XCTAssertTrue(store.isTxSubmitting)
+    // simulate transaction status moved directly to error
+    let mockTransactionSubmitted = isTxSubmittingMockTransaction.then {
+      $0.txStatus = .error
+    }
+    store.onTransactionStatusChanged(mockTransactionSubmitted)
+    XCTAssertFalse(store.isTxSubmitting)
   }
 }
 

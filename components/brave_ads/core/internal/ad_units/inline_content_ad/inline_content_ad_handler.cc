@@ -90,6 +90,8 @@ void InlineContentAdHandler::TriggerEvent(
          "when calling MaybeServe";
 
   if (creative_instance_id.empty()) {
+    // No-op if `creative_instance_id` is empty. This should only occur for
+    // super referrals.
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -128,11 +130,14 @@ void InlineContentAdHandler::CacheAdPlacement(const int32_t tab_id,
 
 void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
     const int32_t tab_id) {
-  if (placement_ids_[tab_id].empty()) {
-    return;
-  }
+  BLOG(1,
+       "Purging orphaned inline content ad placements for tab id " << tab_id);
 
-  BLOG(1, "Purged orphaned inline content ad placements for tab id " << tab_id);
+  if (placement_ids_[tab_id].empty()) {
+    return BLOG(1,
+                "There are no orphaned inline content ad placements for tab id "
+                    << tab_id);
+  }
 
   PurgeOrphanedAdEvents(
       placement_ids_[tab_id],
@@ -148,7 +153,7 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
                          << joined_placement_ids << " placement ids");
             }
 
-            BLOG(1, "Successfully purged orphaned inline content ad events for "
+            BLOG(1, "Purged orphaned inline content ad events for "
                         << joined_placement_ids << " placement ids");
           },
           placement_ids_[tab_id]));

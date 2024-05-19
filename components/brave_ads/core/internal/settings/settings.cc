@@ -43,4 +43,8 @@ int GetMaximumNotificationAdsPerHour() {
   return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
 }
 
+bool UserHasOptedInToSearchResultAds() {
+  return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
+}
+
 }  // namespace brave_ads

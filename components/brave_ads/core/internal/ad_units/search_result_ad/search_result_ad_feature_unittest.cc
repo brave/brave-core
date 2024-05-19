@@ -38,7 +38,7 @@ TEST(BraveAdsSearchResultAdFeatureTest, MaximumSearchResultAdsPerHour) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumSearchResultAdsPerHour) {
   // Act & Assert
-  EXPECT_EQ(10, kMaximumSearchResultAdsPerHour.Get());
+  EXPECT_EQ(0, kMaximumSearchResultAdsPerHour.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest,
@@ -48,7 +48,7 @@ TEST(BraveAdsSearchResultAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(10, kMaximumSearchResultAdsPerHour.Get());
+  EXPECT_EQ(0, kMaximumSearchResultAdsPerHour.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, MaximumSearchResultAdsPerDay) {
@@ -63,7 +63,7 @@ TEST(BraveAdsSearchResultAdFeatureTest, MaximumSearchResultAdsPerDay) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumSearchResultAdsPerDay) {
   // Act & Assert
-  EXPECT_EQ(40, kMaximumSearchResultAdsPerDay.Get());
+  EXPECT_EQ(0, kMaximumSearchResultAdsPerDay.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest,
@@ -73,7 +73,7 @@ TEST(BraveAdsSearchResultAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(40, kMaximumSearchResultAdsPerDay.Get());
+  EXPECT_EQ(0, kMaximumSearchResultAdsPerDay.Get());
 }
 
 }  // namespace brave_ads

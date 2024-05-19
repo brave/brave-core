@@ -99,7 +99,7 @@ export const infoTooltip = styled.div.attrs({
   width: 274px;
   padding: 16px;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   color: ${leo.color.text.primary};
   border-radius: 8px;
   box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
@@ -116,6 +116,10 @@ export const infoTooltip = styled.div.attrs({
     top: -4px;
     left: 82px;
     padding-left: 0;
+  }
+
+  &.search-ads {
+    width: 380px;
   }
 `
 

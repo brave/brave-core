@@ -23,7 +23,25 @@ class SplitViewBrowserDataObserver;
 
 class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
  public:
-  using Tile = std::pair<tabs::TabHandle, tabs::TabHandle>;
+  struct Tile {
+    tabs::TabHandle first;
+    tabs::TabHandle second;
+
+    // A absolute value means that the split view for |first| and |second|
+    // should be resized by in pixel. When it's 0, the ratio between |first| and
+    // |second| would be 0.5.
+    int split_view_size_delta = 0;
+
+    bool operator<(const Tile& other) const {
+      return std::tie(first, second) < std::tie(other.first, other.second);
+    }
+    bool operator==(const Tile& other) const {
+      return std::tie(first, second) == std::tie(other.first, other.second);
+    }
+    bool operator!=(const Tile& other) const {
+      return std::tie(first, second) != std::tie(other.first, other.second);
+    }
+  };
 
   ~SplitViewBrowserData() override;
 
@@ -38,6 +56,9 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
 
   const std::vector<Tile>& tiles() const { return tiles_; }
+
+  void SetSizeDelta(const tabs::TabHandle& tab, int size_delta);
+  int GetSizeDelta(const tabs::TabHandle& tab);
 
   void AddObserver(SplitViewBrowserDataObserver* observer);
   void RemoveObserver(SplitViewBrowserDataObserver* observer);
@@ -78,7 +99,7 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   explicit SplitViewBrowserData(Browser* browser);
 
-  std::vector<Tile>::const_iterator FindTile(const tabs::TabHandle& tab);
+  std::vector<Tile>::iterator FindTile(const tabs::TabHandle& tab);
   std::vector<Tile>::const_iterator FindTile(const tabs::TabHandle& tab) const;
 
   void Transfer(SplitViewBrowserData* other, std::vector<Tile> tiles);

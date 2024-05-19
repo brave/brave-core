@@ -5,9 +5,17 @@
 
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile.h"
+#include "chrome/test/base/testing_profile_manager.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace {
 
@@ -46,5 +54,50 @@ TEST(ProfileUtilTest, RandomIconNeverFirstIcon) {
   size_t random_start_index = profiles::GetModernAvatarIconStartIndex();
   EXPECT_GT(random_start_index, placeholder_index);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+class ProfileAvatarSelectorTest : public testing::Test {
+ public:
+  ProfileAvatarSelectorTest() = default;
+  ~ProfileAvatarSelectorTest() override = default;
+
+  void SetUp() override {
+    TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
+    profile_manager_ = std::make_unique<TestingProfileManager>(browser_process);
+    ASSERT_TRUE(profile_manager_->SetUp());
+    profile_ = profile_manager_->CreateTestingProfile("TestProfile");
+  }
+
+  void TearDown() override {
+    profile_ = nullptr;
+    profile_manager_->DeleteTestingProfile("TestProfile");
+  }
+
+  Profile* profile() { return profile_; }
+
+ private:
+  content::BrowserTaskEnvironment task_environment_;
+  raw_ptr<Profile> profile_;
+  std::unique_ptr<TestingProfileManager> profile_manager_;
+};
+
+TEST_F(ProfileAvatarSelectorTest, ProfileAvatarSelectorPlaceholder) {
+  // Test that the default avatar presented to the user in the profile
+  // customiztion UI is Brave's.
+  base::Value::List avatars =
+      profiles::GetIconsAndLabelsForProfileAvatarSelector(profile()->GetPath());
+  const base::Value::Dict* default_avatar = avatars[0].GetIfDict();
+  EXPECT_NE(nullptr, default_avatar);
+
+  const std::string* label = default_avatar->FindString("label");
+  EXPECT_NE(nullptr, label);
+
+  const std::string expected_label =
+      ui::ResourceBundle::GetSharedInstance().LoadLocalizedResourceString(
+          IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER);
+
+  EXPECT_EQ(expected_label, *label);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace

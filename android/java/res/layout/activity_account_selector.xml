@@ -23,7 +23,6 @@
         android:background="@color/wallet_toolbar_bg_color"
         android:gravity="center_vertical"
         app:titleCentered="true"
-        app:menu="@menu/menu_account_selector"
         android:translationZ="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

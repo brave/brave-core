@@ -161,7 +161,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndRewardsAreDisabled) {
+    DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -218,7 +218,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
-    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
+    DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 

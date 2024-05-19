@@ -1,0 +1,88 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+
+struct MeldLogoImages {
+  string? dark_url;
+  string? dark_short_url;
+  string? light_url;
+  string? light_short_url;
+};
+
+struct MeldServiceProvider {
+  string? name;
+  string? service_provider;
+  string? status;
+  string? web_site_url;
+  array<string>? categories;
+  map<string, string>? category_statuses;
+  MeldLogoImages? logo_images;
+};
+
+struct MeldCryptoQuote {
+  string? transaction_type;
+  string? exchange_rate;
+  string? transaction_fee;
+  string? source_currency_code;
+  string? source_amount;
+  string? source_amount_without_fee;
+  string? fiat_amount_without_fees;
+  string? total_fee;
+  string? network_fee;
+  string? payment_method;
+  string? destination_currency_code;
+  string? destination_amount;
+  string? destination_amount_without_fees;
+  string? customer_score;
+  string? service_provider;
+  string? country_code;
+};
+
+struct MeldPaymentMethod {
+  string? payment_method;
+  string? name;
+  string? payment_type;
+  MeldLogoImages? logo_images;
+};
+
+struct MeldFiatCurrency {
+  string? currency_code;
+  string? name;
+  string? symbol_image_url;
+};
+
+struct MeldCryptoCurrency {
+  string? currency_code;
+  string? name;
+  string? chain_code;
+  string? chain_name;
+  string? chain_id;
+  string? contract_address;
+  string? symbol_image_url;
+};
+
+struct MeldRegion {
+  string? region_code;
+  string? name;
+};
+
+struct MeldCountry {
+  string? country_code;
+  string? name;
+  string? flag_image_url;
+  array<MeldRegion>? regions;
+};
+
+struct MeldFilter {
+  string? countries;
+  string? fiat_currencies;
+  string? crypto_currencies;
+  string? service_providers;
+  string? payment_method_types;
+  string? statuses;
+};

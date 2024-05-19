@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
@@ -44,7 +43,6 @@ class RedeemPaymentTokens final {
  private:
   void RedeemAfterDelay();
   void Redeem();
-  void BuildUserDataCallback(base::Value::Dict user_data);
   void RedeemCallback(const PaymentTokenList& payment_tokens,
                       const mojom::UrlResponseInfo& url_response);
 

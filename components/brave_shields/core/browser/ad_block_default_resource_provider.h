@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "base/timer/timer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
 namespace component_updater {
@@ -46,12 +45,9 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   void OnComponentReady(const base::FilePath&);
 
   base::FilePath component_path_;
-  base::RepeatingTimer update_check_timer_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };
-
-void CheckAdBlockExceptionComponentsUpdate();
 
 }  // namespace brave_shields
 

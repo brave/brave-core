@@ -657,7 +657,7 @@ extension String {
 
   /// Returns true if `Self` is a valid account name
   public var isValidAccountName: Bool {
-    self.count <= 30
+    self.count <= BraveWallet.AccountNameMaxCharacterLength
   }
 }
 

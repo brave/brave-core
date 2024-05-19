@@ -38,7 +38,7 @@ export interface DetailRow {
   adDetailRows: AdDetailRow[]
 }
 
-export type AdType = '' | 'ad_notification' | 'new_tab_page_ad' | 'promoted_content_ad' | 'inline_content_ad'
+export type AdType = '' | 'ad_notification' | 'new_tab_page_ad' | 'promoted_content_ad' | 'inline_content_ad' | 'search_result_ad'
 
 export type AdAction = 'view' | 'click' | 'dismiss' | 'landed'
 

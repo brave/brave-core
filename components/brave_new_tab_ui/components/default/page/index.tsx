@@ -213,7 +213,7 @@ export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidd
 export const GridItemNotification = styled('section')`
   position: fixed;
   left: 50%;
-  top: 0;
+  top: 50px;
   transform: translateX(-50%);
 `
 
@@ -269,7 +269,7 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveNews = styled('div') <{}>`
+export const GridItemPageFooter = styled('div') <{}>`
   position: absolute;
   bottom: 20px;
   left: 50%;

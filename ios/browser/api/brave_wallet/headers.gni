@@ -1,9 +1,15 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 brave_wallet_public_headers = [
   "//brave/ios/browser/api/brave_wallet/brave_wallet_api.h",
   "//brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h",
   "//brave/ios/browser/api/brave_wallet/brave_wallet_solana_utils.h",
   "//brave/ios/browser/api/brave_wallet/token_registry_utils.h",
   "$root_gen_dir/brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc.h",
+  "$root_gen_dir/brave/ios/browser/api/brave_wallet/meld_integration.mojom.objc.h",
 ]
 brave_wallet_public_deps =
     [ "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers" ]

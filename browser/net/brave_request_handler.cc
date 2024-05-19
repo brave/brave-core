@@ -12,7 +12,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
@@ -21,6 +20,7 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
+#include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -113,7 +113,7 @@ void BraveRequestHandler::SetupCallbacks() {
   }
 
   start_transaction_callback =
-      base::BindRepeating(brave::OnBeforeStartTransaction_AdsStatusHeader);
+      base::BindRepeating(brave::OnBeforeStartTransaction_SearchAdsHeader);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

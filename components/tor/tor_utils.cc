@@ -173,7 +173,7 @@ std::optional<BridgesConfig> BridgesConfig::FromValue(const base::Value* v) {
   return FromDict(v->GetDict());
 }
 
-base::Value::Dict BridgesConfig::ToDict() const {
+base::Value::Dict BridgesConfig::ToDict(bool include_builtin) const {
   base::Value::Dict result;
   result.Set(kUseBridgesKey, static_cast<int>(use_bridges));
   result.Set(kUseBuiltinBridgesKey, static_cast<int>(use_builtin));
@@ -186,20 +186,22 @@ base::Value::Dict BridgesConfig::ToDict() const {
     return list;
   };
 
-  base::Value::Dict builtin;
-  for (const auto& v : builtin_bridges) {
-    builtin.Set(GetBuiltinTypeName(v.first), save_list(v.second));
+  if (include_builtin) {
+    base::Value::Dict builtin;
+    for (const auto& v : builtin_bridges) {
+      builtin.Set(GetBuiltinTypeName(v.first), save_list(v.second));
+    }
+    result.Set(kBuiltinBridgesKey, std::move(builtin));
   }
 
-  result.Set(kBuiltinBridgesKey, std::move(builtin));
   result.Set(kProvidedBridgesKey, save_list(provided_bridges));
   result.Set(kRequestedBrigesKey, save_list(requested_bridges));
 
   return result;
 }
 
-base::Value BridgesConfig::ToValue() const {
-  return base::Value(ToDict());
+base::Value BridgesConfig::ToValue(bool include_builtin) const {
+  return base::Value(ToDict(include_builtin));
 }
 
 void MigrateLastUsedProfileFromLocalStatePrefs(PrefService* local_state) {

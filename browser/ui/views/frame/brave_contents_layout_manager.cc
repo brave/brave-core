@@ -11,6 +11,12 @@
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
+void BraveContentsLayoutManager::SetSplitViewSeparator(
+    SplitViewSeparator* split_view_separator) {
+  split_view_separator_ = split_view_separator;
+  split_view_separator_->set_delegate(this);
+}
+
 void BraveContentsLayoutManager::SetSecondaryContentsResizingStrategy(
     const DevToolsContentsResizingStrategy& strategy) {
   if (secondary_strategy_.Equals(strategy)) {
@@ -21,6 +27,22 @@ void BraveContentsLayoutManager::SetSecondaryContentsResizingStrategy(
   if (host_view()) {
     host_view()->InvalidateLayout();
   }
+}
+
+void BraveContentsLayoutManager::OnDoubleClicked() {
+  split_view_size_delta_ = ongoing_split_view_size_delta_ = 0;
+  LayoutImpl();
+}
+
+void BraveContentsLayoutManager::OnResize(int resize_amount,
+                                          bool done_resizing) {
+  ongoing_split_view_size_delta_ = resize_amount;
+  if (done_resizing) {
+    split_view_size_delta_ += ongoing_split_view_size_delta_;
+    ongoing_split_view_size_delta_ = 0;
+  }
+
+  LayoutImpl();
 }
 
 void BraveContentsLayoutManager::LayoutImpl() {
@@ -51,7 +73,8 @@ void BraveContentsLayoutManager::LayoutImpl() {
       };
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
-  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2);
+  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
+                   split_view_size_delta_ + ongoing_split_view_size_delta_);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
@@ -61,11 +84,12 @@ void BraveContentsLayoutManager::LayoutImpl() {
                                      strategy_);
   }
 
-  // In case of odd width, give the remaining
-  // width to the secondary contents view.
-  bounds.set_x(bounds.width() + kSpacingBetweenContentsWebViews);
-  bounds.set_width(host_view()->width() - bounds.width() -
-                   kSpacingBetweenContentsWebViews);
+  bounds.set_x(bounds.right());
+  bounds.set_width(kSpacingBetweenContentsWebViews);
+  split_view_separator_->SetBoundsRect(bounds);
+
+  bounds.set_x(bounds.right());
+  bounds.set_width(host_view()->width() - bounds.x());
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
                                      strategy_);

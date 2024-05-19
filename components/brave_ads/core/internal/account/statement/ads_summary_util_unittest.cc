@@ -24,20 +24,20 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, ConfirmationType::kClicked,
+      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.03, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const base::Time from_time = Now();
@@ -45,19 +45,19 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   AdvanceClockTo(TimeFromString("1 January 2021"));
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.02, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.02, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transaction_5.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_5);
 
   TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.02, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transaction_6.ad_type = AdType::kInlineContentAd;
   transactions.push_back(transaction_6);
 
@@ -76,12 +76,12 @@ TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/true);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, ConfirmationType::kClicked,
+      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 

@@ -12,6 +12,7 @@ import UIKit
 struct BravePopoverViewModifier<PopoverContent>: ViewModifier
 where PopoverContent: View & PopoverContentComponent {
   @Binding var isPresented: Bool
+  var arrowDirection: PopoverController.ArrowDirectionBehavior = .automatic
   let content: () -> PopoverContent
 
   func body(content: Content) -> some View {
@@ -19,6 +20,7 @@ where PopoverContent: View & PopoverContentComponent {
       .background(
         BravePopoverView(
           isPresented: self.$isPresented,
+          arrowDirection: arrowDirection,
           content: self.content
         )
       )
@@ -28,11 +30,13 @@ where PopoverContent: View & PopoverContentComponent {
 extension View {
   func bravePopover<Content>(
     isPresented: Binding<Bool>,
+    arrowDirection: PopoverController.ArrowDirectionBehavior = .automatic,
     @ViewBuilder content: @escaping () -> Content
   ) -> some View where Content: View & PopoverContentComponent {
     self.modifier(
       BravePopoverViewModifier(
         isPresented: isPresented,
+        arrowDirection: arrowDirection,
         content: content
       )
     )
@@ -41,10 +45,17 @@ extension View {
 
 struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControllerRepresentable {
   @Binding var isPresented: Bool
+
+  private var arrowDirection: PopoverController.ArrowDirectionBehavior
   private var content: Content
 
-  init(isPresented: Binding<Bool>, @ViewBuilder content: () -> Content) {
+  init(
+    isPresented: Binding<Bool>,
+    arrowDirection: PopoverController.ArrowDirectionBehavior,
+    @ViewBuilder content: () -> Content
+  ) {
     self._isPresented = isPresented
+    self.arrowDirection = arrowDirection
     self.content = content()
   }
 
@@ -70,6 +81,7 @@ struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControll
       if let parent = uiViewController.parent, !parent.isBeingDismissed {
         let controller = PopoverController(content: content)
         context.coordinator.presentedViewController = .init(controller)
+        controller.arrowDirectionBehavior = arrowDirection
         controller.popoverDidDismiss = { _ in
           self.isPresented = false
         }

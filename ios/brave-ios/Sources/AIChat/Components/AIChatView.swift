@@ -85,7 +85,6 @@ public struct AIChatView: View {
                       upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
                       upgradeAction: {
                         isPremiumPaywallPresented = true
-
                       },
                       dismissAction: {
                         if model.apiError == .rateLimitReached {
@@ -146,18 +145,11 @@ public struct AIChatView: View {
                       }
                     }
 
-                    apiErrorViews(for: model.apiError)
+                    apiErrorViews(for: model)
 
                     if model.shouldShowSuggestions && !model.requestInProgress
                       && model.apiError == .none
                     {
-                      if model.conversationHistory.isEmpty {
-                        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
-                          .font(.callout)
-                          .frame(maxWidth: .infinity, alignment: .leading)
-                          .padding([.horizontal, .bottom])
-                      }
-
                       if model.suggestionsStatus != .isGenerating
                         && !model.suggestedQuestions.isEmpty
                       {
@@ -403,18 +395,13 @@ public struct AIChatView: View {
   }
 
   @ViewBuilder
-  private func apiErrorViews(for error: AiChat.APIError) -> some View {
-    switch error {
-    case .connectionIssue:
-      AIChatNetworkErrorView {
-        if !model.conversationHistory.isEmpty {
-          model.retryLastRequest()
-        }
-      }
-      .padding()
-    case .rateLimitReached:
+  private func apiErrorViews(for model: AIChatViewModel) -> some View {
+    let isPremiumAccess = model.currentModel.access == .premium
+    let isPremium = model.premiumStatus == .active || model.premiumStatus == .activeDisconnected
+
+    if isPremiumAccess && !isPremium {
       AIChatPremiumUpsellView(
-        upsellType: .rateLimit,
+        upsellType: .premium,
         upgradeAction: {
           isPremiumPaywallPresented = true
         },
@@ -432,13 +419,43 @@ public struct AIChatView: View {
         }
       )
       .padding()
-    case .contextLimitReached:
-      AIChatContextLimitErrorView()
+    } else {
+      switch model.apiError {
+      case .connectionIssue:
+        AIChatNetworkErrorView {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
         .padding()
-    case .none:
-      EmptyView()
-    @unknown default:
-      EmptyView()
+      case .rateLimitReached:
+        AIChatPremiumUpsellView(
+          upsellType: .rateLimit,
+          upgradeAction: {
+            isPremiumPaywallPresented = true
+          },
+          dismissAction: {
+            Task { @MainActor in
+              await model.refreshPremiumStatus()
+
+              if let basicModel = model.models.first(where: { $0.access == .basic }) {
+                model.changeModel(modelKey: basicModel.key)
+                model.retryLastRequest()
+              } else {
+                Logger.module.error("No basic models available")
+              }
+            }
+          }
+        )
+        .padding()
+      case .contextLimitReached:
+        AIChatContextLimitErrorView()
+          .padding()
+      case .none:
+        EmptyView()
+      @unknown default:
+        EmptyView()
+      }
     }
   }
 

@@ -59,6 +59,7 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
+      .multilineTextAlignment(.leading)
       .frame(maxWidth: .infinity, alignment: .leading)
 
       rightAccessoryView
@@ -143,7 +144,7 @@ struct AIChatMenuView: View {
           label: {
             AIChatMenuItemView(
               title: model.displayName,
-              subtitle: model.displayMaker,
+              subtitle: modelPurpose(for: model),
               isSelected: model.key == currentModel.key
             ) {
               if model.access == .basicAndPremium {
@@ -161,9 +162,12 @@ struct AIChatMenuView: View {
                     .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                 )
               } else {
-                Image(braveSystemName: "leo.lock.plain")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .opacity(model.access == .premium ? 1.0 : 0.0)
+                Image(
+                  braveSystemName: premiumStatus != .active && premiumStatus != .activeDisconnected
+                    ? "leo.lock.plain" : "leo.lock.open"
+                )
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .opacity(model.access == .premium ? 1.0 : 0.0)
               }
             }
           }
@@ -223,7 +227,30 @@ struct AIChatMenuView: View {
     }
   }
 
-  func menuActionItems(for menuOption: AIChatMenuOptionTypes) -> some View {
+  private func modelPurpose(for model: AiChat.Model) -> String {
+    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
+      return model.displayMaker
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaModelPurposeDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralModelPurposeDescription
+
+    case .chatClaudeInstant:
+      return Strings.AIChat.introMessageClaudeInstantModelPurposeDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+    }
+  }
+
+  private func menuActionItems(for menuOption: AIChatMenuOptionTypes) -> some View {
     Button {
       if menuOption == .goPremium, !BraveStoreSDK.shared.isLeoProductsLoaded {
         appStoreConnectionErrorPresented = true

@@ -18,6 +18,7 @@ mod ffi {
             json: &str,
         ) -> String;
         fn convert_all_numbers_to_string(json: &str, path: &str) -> String;
+        fn convert_all_numbers_to_string_and_remove_null_values(json: &str, path: &str) -> String;
     }
 }
 
@@ -320,6 +321,79 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
             Value::Object(o) => o.values_mut().for_each(convert_recursively),
             _ => (),
         }
+    }
+
+    serde_json::from_str::<Value>(json)
+        .map(|mut v| {
+            v.pointer_mut(path).map(convert_recursively);
+            v.to_string()
+        })
+        .unwrap_or_else(|_| "".into())
+}
+
+/// Parses and re-serializes json with all numbers (`u64`/`i64`/`f64`),
+/// converted to strings and empty arrays [], `null` values in array
+/// or `null` valued properties removed, applied recursively
+/// at the specified path.
+///
+/// Non `null` and other than `u64`/`i64`/`f64` values are unchanged.
+/// The fields could be arbitrarily nested, as the conversion is applied
+/// to the entire JSON recursively. Returns an empty String if such
+/// conversion is not possible.
+///
+/// # Arguments
+/// * `json` - A arbitrary JSON string
+/// * `path` - A JSON pointer path to the field where the conversion is applied
+///   recursively. An empty string indicates the root of the JSON.
+///
+/// # Examples
+///
+/// ```js
+/// json={"a":1,"b":null,"c":"string","d":[],"e":[1,null],"f":[null]}, path=""
+///  -> {"a":"1","c":"string","e":["1"]}
+///
+/// json={"a":1,"b":[{"bai1":1},{"bai2":null},{"bai3":"3"}],"c":"string",
+/// "d": null}, path="/b" -> {"a":"1","b":[{"bai1":"1"},{"bai3":"3"}],
+/// "c":"string","d":null}
+/// ```
+pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str,
+    path: &str) -> String {
+    use serde_json::Value;
+    fn convert_recursively(value: &mut Value) -> bool {
+        let mut result = true;
+        match value {
+            Value::Number(n) if n.is_u64() || n.is_i64() || n.is_f64() => {
+                *value = Value::String(n.to_string());
+            }
+            Value::Object(map) => {
+                map.retain(|_, val| {
+                    if !val.is_null() {
+                        return convert_recursively(val);
+                    }
+                    return false;
+                });
+            },
+            Value::Array(vec) => {
+                for vec_item in vec.iter_mut() {
+                    convert_recursively(vec_item);
+                }
+                vec.retain(|vec_item| {
+                    if let Some(object) = vec_item.as_object() {
+                        !object.is_empty()
+                    } else {
+                        !vec_item.is_null()
+                    }
+                });
+                if vec.is_empty() {
+                    result = false;
+                }
+            },
+            Value::String(s) => { result = !s.is_empty(); }
+            Value::Null => { result = false; }
+            _ => ()
+        };
+
+        result
     }
 
     serde_json::from_str::<Value>(json)

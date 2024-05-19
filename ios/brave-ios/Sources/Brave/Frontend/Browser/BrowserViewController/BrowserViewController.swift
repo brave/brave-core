@@ -619,6 +619,7 @@ public class BrowserViewController: UIViewController {
     PlaylistP3A.recordHistogram()
     recordAdsUsageType()
     recordDefaultBrowserLikelyhoodP3A()
+    recordWeeklyUsage()
 
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)

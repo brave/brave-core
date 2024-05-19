@@ -16,8 +16,8 @@ export const mockWalletState: WalletState = {
   },
   addUserAssetError: false,
   hasInitialized: true,
-  isBitcoinEnabled: false,
-  isZCashEnabled: false,
+  isBitcoinEnabled: true,
+  isZCashEnabled: true,
   isAnkrBalancesFeatureEnabled: false,
   allowedNewWalletAccountTypeNetworkIds: [
     networkEntityAdapter.selectId({

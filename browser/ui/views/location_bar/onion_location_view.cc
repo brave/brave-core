@@ -125,13 +125,7 @@ class OnionLocationButtonView : public views::LabelButton {
   }
 
   void ButtonPressed() {
-    if (Browser* tor_browser =
-            TorProfileManager::SwitchToTorProfile(profile_)) {
-      content::OpenURLParams open_tor(onion_location_, content::Referrer(),
-                                      WindowOpenDisposition::SWITCH_TO_TAB,
-                                      ui::PAGE_TRANSITION_TYPED, false);
-      tor_browser->OpenURL(open_tor, /*navigation_handle_callback=*/{});
-    }
+    TorProfileManager::SwitchToTorProfile(profile_, onion_location_);
   }
 
   GURL onion_location_;
@@ -160,8 +154,9 @@ OnionLocationView::~OnionLocationView() = default;
 
 void OnionLocationView::Update(content::WebContents* web_contents,
                                bool show_page_actions) {
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
   tor::OnionLocationTabHelper* helper =
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
   const bool show_icon =

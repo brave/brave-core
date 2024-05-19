@@ -402,12 +402,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         public List<NetworkInfo> mSecondaryNetworkList;
         public List<NetworkInfo> mTestNetworkList;
 
-        public NetworkLists() {
-            mPrimaryNetworkList = Collections.emptyList();
-            mSecondaryNetworkList = Collections.emptyList();
-            mTestNetworkList = Collections.emptyList();
-        }
-
         public NetworkLists(
                 List<NetworkInfo> mPrimaryNetworkList,
                 List<NetworkInfo> mSecondaryNetworkList,
@@ -415,12 +409,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
             this.mPrimaryNetworkList = mPrimaryNetworkList;
             this.mSecondaryNetworkList = mSecondaryNetworkList;
             this.mTestNetworkList = mTestNetworkList;
-        }
-
-        public NetworkLists(@NonNull NetworkLists networkLists) {
-            this.mPrimaryNetworkList = new ArrayList<>(networkLists.mPrimaryNetworkList);
-            this.mSecondaryNetworkList = new ArrayList<>(networkLists.mSecondaryNetworkList);
-            this.mTestNetworkList = new ArrayList<>(networkLists.mTestNetworkList);
         }
     }
 }

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import {
   createMockStore,
@@ -30,7 +30,7 @@ describe('useGetTokenInfo hook', () => {
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
-    const { result, ...hook } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTokenInfo({
           contractAddress: mockErc20TokensList[0].contractAddress,
@@ -45,7 +45,8 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await hook.waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() => !result.current.isLoading)
 
     // done loading
     expect(result.current.isLoading).toBe(false)
@@ -62,7 +63,7 @@ describe('useGetTokenInfo hook', () => {
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
 
-    const { result, ...hook } = renderHook(
+    const { result } = renderHook(
       () =>
         useGetTokenInfo({
           contractAddress: '0xdeadbeef',
@@ -77,7 +78,8 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await hook.waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() => !result.current.isLoading)
+    await waitFor(() => result.current.tokenInfo !== undefined)
 
     // done loading
     expect(result.current.isLoading).toBe(false)

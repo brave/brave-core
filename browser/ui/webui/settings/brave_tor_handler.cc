@@ -327,7 +327,7 @@ void BraveTorHandler::GetBridgesConfig(const base::Value::List& args) {
   CHECK_EQ(1u, args.size());
   const auto bridges_config = TorProfileServiceFactory::GetTorBridgesConfig();
 
-  ResolveJavascriptCallback(args[0], bridges_config.ToValue());
+  ResolveJavascriptCallback(args[0], bridges_config.ToValue(false));
 }
 
 void BraveTorHandler::SetBridgesConfig(const base::Value::List& args) {

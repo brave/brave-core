@@ -77,6 +77,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       ephemeral_storage_service_ = nullptr;
   const raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   std::string locale_;
+  bool is_deferred_ = false;
 
   DomainBlockingType domain_blocking_type_ = DomainBlockingType::kNone;
 

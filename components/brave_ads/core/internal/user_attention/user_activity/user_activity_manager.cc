@@ -63,6 +63,8 @@ UserActivityManager& UserActivityManager::GetInstance() {
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
   if (!UserHasJoinedBraveRewards()) {
+    // User has not joined Brave Rewards, so we don't need to track user
+    // activity.
     return;
   }
 

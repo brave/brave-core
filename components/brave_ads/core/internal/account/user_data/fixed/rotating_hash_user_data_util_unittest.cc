@@ -23,8 +23,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(BuildRotatingHash(transaction));
@@ -37,8 +37,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
   AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ("j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk=",
@@ -51,8 +51,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
 
@@ -72,8 +72,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
 
@@ -93,8 +93,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);

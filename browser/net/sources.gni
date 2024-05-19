@@ -14,8 +14,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_ad_block_csp_network_delegate_helper.h",
   "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.cc",
   "//brave/browser/net/brave_ad_block_tp_network_delegate_helper.h",
-  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.cc",
-  "//brave/browser/net/brave_ads_status_header_network_delegate_helper.h",
   "//brave/browser/net/brave_block_safebrowsing_urls.cc",
   "//brave/browser/net/brave_block_safebrowsing_urls.h",
   "//brave/browser/net/brave_common_static_redirect_network_delegate_helper.cc",
@@ -46,6 +44,8 @@ brave_browser_net_sources = [
   "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
   "//brave/browser/net/resource_context_data.cc",
   "//brave/browser/net/resource_context_data.h",
+  "//brave/browser/net/search_ads_header_network_delegate_helper.cc",
+  "//brave/browser/net/search_ads_header_network_delegate_helper.h",
   "//brave/browser/net/url_context.cc",
   "//brave/browser/net/url_context.h",
 ]

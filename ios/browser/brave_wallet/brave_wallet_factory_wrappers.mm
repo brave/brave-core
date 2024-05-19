@@ -12,6 +12,7 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/brave_wallet/zcash_wallet_service_factory.h"
@@ -105,6 +106,19 @@
   }
   return [[BraveWalletKeyringServiceMojoImpl alloc]
       initWithKeyringService:std::move(service)];
+}
+@end
+
+@implementation BraveWalletMeldIntegrationServiceFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto service =
+      brave_wallet::MeldIntegrationServiceFactory::GetForBrowserState(
+          browserState);
+  if (!service) {
+    return nil;
+  }
+  return [[BraveWalletMeldIntegrationServiceMojoImpl alloc]
+      initWithMeldIntegrationService:std::move(service)];
 }
 @end
 

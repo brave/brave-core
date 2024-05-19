@@ -311,7 +311,7 @@ extension BrowserViewController: TabManagerDelegate {
       bookmarkMenuChildren.append(bookmarkActiveTab)
     }
 
-    if tabManager.tabsForCurrentMode.count > 1 {
+    if tabManager.tabsForCurrentMode.count > 1, containsWebPage {
       let bookmarkAllTabs = UIAction(
         title: String.localizedStringWithFormat(
           Strings.bookmarkAllTabsTitle,
@@ -433,47 +433,76 @@ extension BrowserViewController: TabManagerDelegate {
 
     closeTabMenuChildren.append(closeActiveTab)
 
+    var closeAllTabMenuChildren: [UIAction] = []
+
     if tabManager.tabsForCurrentMode.count > 1 {
+
+      func showCloseTabWarning(isActiveTabIncluded: Bool, _ completion: @escaping () -> Void) {
+        let alert = UIAlertController(
+          title: nil,
+          message: isActiveTabIncluded
+            ? Strings.closeAllTabsPrompt : Strings.closeAllOtherTabsPrompt,
+          preferredStyle: .actionSheet
+        )
+        let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
+        let closedTabsTitle =
+          isActiveTabIncluded
+          ? String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
+          : Strings.closeAllOtherTabsTitle
+        let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
+          completion()
+        }
+        alert.addAction(closeAllAction)
+        alert.addAction(cancelAction)
+
+        if let popoverPresentation = alert.popoverPresentationController {
+          let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
+          popoverPresentation.sourceView = tabsButton
+          popoverPresentation.sourceRect =
+            .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
+        }
+
+        present(alert, animated: true)
+      }
+
+      let closeAllOtherTabs = UIAction(
+        title: Strings.closeAllOtherTabsTitle,
+        image: UIImage(systemName: "xmark"),
+        attributes: .destructive,
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          guard let self = self else { return }
+
+          showCloseTabWarning(isActiveTabIncluded: false) {
+            if !self.privateBrowsingManager.isPrivateBrowsing {
+              // Add the tab information to recently closed before removing
+              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: false)
+            }
+
+            self.tabManager.removeAllForCurrentMode(isActiveTabIncluded: false)
+          }
+        }
+      )
+
       let closeAllTabs = UIAction(
         title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
         image: UIImage(systemName: "xmark"),
         attributes: .destructive,
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
+        handler: UIAction.deferredActionHandler { [weak self] _ in
+          guard let self = self else { return }
 
-          let alert = UIAlertController(
-            title: nil,
-            message: Strings.closeAllTabsPrompt,
-            preferredStyle: .actionSheet
-          )
-          let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
-          let closedTabsTitle = String(
-            format: Strings.closeAllTabsTitle,
-            tabManager.tabsForCurrentMode.count
-          )
-          let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) {
-            [unowned self] _ in
-            if !privateBrowsingManager.isPrivateBrowsing {
+          showCloseTabWarning(isActiveTabIncluded: true) {
+            if !self.privateBrowsingManager.isPrivateBrowsing {
               // Add the tab information to recently closed before removing
-              tabManager.addAllTabsToRecentlyClosed()
+              self.tabManager.addAllTabsToRecentlyClosed(isActiveTabIncluded: true)
             }
 
-            tabManager.removeAllForCurrentMode()
+            self.tabManager.removeAllForCurrentMode()
           }
-          alert.addAction(closeAllAction)
-          alert.addAction(cancelAction)
-
-          if let popoverPresentation = alert.popoverPresentationController {
-            let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
-            popoverPresentation.sourceView = tabsButton
-            popoverPresentation.sourceRect =
-              .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
-          }
-
-          self.present(alert, animated: true)
         }
       )
 
-      closeTabMenuChildren.append(closeAllTabs)
+      closeAllTabMenuChildren.append(closeAllOtherTabs)
+      closeAllTabMenuChildren.append(closeAllTabs)
     }
 
     let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
@@ -489,10 +518,15 @@ extension BrowserViewController: TabManagerDelegate {
       options: .displayInline,
       children: recentlyClosedMenuChildren
     )
+    let closeAllTabMenu = UIMenu(
+      title: "",
+      options: .displayInline,
+      children: closeAllTabMenuChildren
+    )
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
     let tabButtonMenuActionList = [
-      closeTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
+      closeTabMenu, closeAllTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
     ]
     let addTabMenuActionList = [addTabMenu]
 

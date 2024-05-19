@@ -58,7 +58,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
-       DoNotServeWhenUserBecomesActive) {
+       DoNotServeWhenUserBecomesActiveIfPermissionRulesAreDenied) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 

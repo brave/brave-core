@@ -69,6 +69,7 @@ void Account::SetWallet(const std::string& payment_id,
 // static
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!UserHasJoinedBraveRewards()) {
+    // No-op if the user has not joined Brave Rewards.
     return std::move(callback).Run(/*statement*/ nullptr);
   }
 
@@ -130,6 +131,8 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const ConfirmationType confirmation_type,
                              base::Value::Dict user_data) const {
   if (!UserHasJoinedBraveRewards()) {
+    // If the user has not joined Brave Rewards, there's no need to record
+    // transactions.
     return SuccessfullyProcessedDeposit(
         BuildTransaction(creative_instance_id, segment, value, ad_type,
                          confirmation_type),

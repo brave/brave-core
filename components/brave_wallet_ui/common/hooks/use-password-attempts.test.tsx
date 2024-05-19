@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react'
 
 import { usePasswordAttempts } from './use-password-attempts'
 import { ApiProxyContext } from '../context/api-proxy.context'

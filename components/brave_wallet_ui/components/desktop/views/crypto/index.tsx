@@ -52,7 +52,9 @@ import { MarketView } from '../market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
-import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
+import {
+  RemoveAccountModal //
+} from '../../popup-modals/confirm-password-modal/remove-account-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
@@ -413,7 +415,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         </Route>
       </Switch>
 
-      {accountToRemove !== undefined && <ConfirmPasswordModal />}
+      {accountToRemove !== undefined && <RemoveAccountModal />}
 
       {showAccountModal && selectedAccount && <AccountSettingsModal />}
     </>

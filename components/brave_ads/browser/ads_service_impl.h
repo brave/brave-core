@@ -106,6 +106,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
+  bool UserHasOptedInToSearchResultAds() const;
 
   void InitializeNotificationsForCurrentProfile();
 
@@ -225,7 +226,7 @@ class AdsServiceImpl : public AdsService,
                                    mojom::InlineContentAdEventType event_type,
                                    TriggerAdEventCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
       override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(

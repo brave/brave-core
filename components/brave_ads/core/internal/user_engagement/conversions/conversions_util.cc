@@ -10,7 +10,6 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 
 namespace brave_ads {
 
@@ -36,8 +35,7 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kSearchResultAd: {
-      // Always.
-      return true;
+      return UserHasOptedInToSearchResultAds();
     }
 
     case AdType::kUndefined: {

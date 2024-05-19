@@ -27,6 +27,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -132,6 +133,10 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
 
     ui_test_utils::BrowserChangeObserver browser_creation_observer(
         nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+
+    content::TestNavigationObserver navigation_observer(
+        url, content::MessageLoopRunner::QuitMode::IMMEDIATE, false);
+    navigation_observer.StartWatchingNewWebContents();
     ui::MouseEvent pressed(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
                            ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
                            ui::EF_LEFT_MOUSE_BUTTON);
@@ -149,6 +154,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(tor_browser->profile()->IsTor());
     content::WebContents* tor_web_contents =
         tor_browser->tab_strip_model()->GetActiveWebContents();
+    navigation_observer.Wait();
     EXPECT_EQ(tor_web_contents->GetVisibleURL(), url);
     // We don't close the original tab
     EXPECT_EQ(browser->tab_strip_model()->count(), is_tor ? 2 : 1);
@@ -165,30 +171,37 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> test_http_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionLocationHeader) {
-  auto* tor_browser = OpenTorWindow();
-  for (auto* browser : {browser(), tor_browser}) {
-    GURL url1 = test_server()->GetURL("/onion");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url1));
-    content::WebContents* web_contents =
-        browser->tab_strip_model()->GetActiveWebContents();
-    tor::OnionLocationTabHelper* helper =
-        tor::OnionLocationTabHelper::FromWebContents(web_contents);
-    EXPECT_TRUE(helper->should_show_icon());
-    EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
-    CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
+class OnionLocationHeaderNavigationThrottleBrowserTest
+    : public OnionLocationNavigationThrottleBrowserTest,
+      public testing::WithParamInterface<bool> {};
 
-    GURL url2 = test_server()->GetURL("/no_onion");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
-    web_contents = browser->tab_strip_model()->GetActiveWebContents();
-    helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
-    EXPECT_FALSE(helper->should_show_icon());
-    EXPECT_TRUE(helper->onion_location().is_empty());
-    auto* onion_location_view = GetOnionLocationView(browser);
-    ASSERT_TRUE(onion_location_view);
-    EXPECT_FALSE(onion_location_view->GetVisible());
-  }
+INSTANTIATE_TEST_SUITE_P(,
+                         OnionLocationHeaderNavigationThrottleBrowserTest,
+                         testing::Bool());
+
+IN_PROC_BROWSER_TEST_P(OnionLocationHeaderNavigationThrottleBrowserTest,
+                       OnionLocationHeader) {
+  auto* browser = GetParam() ? OpenTorWindow() : this->browser();
+
+  GURL url1 = test_server()->GetURL("/onion");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url1));
+  content::WebContents* web_contents =
+      browser->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_TRUE(helper->should_show_icon());
+  EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
+  CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
+
+  GURL url2 = test_server()->GetURL("/no_onion");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
+  web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+  auto* onion_location_view = GetOnionLocationView(browser);
+  ASSERT_TRUE(onion_location_view);
+  EXPECT_FALSE(onion_location_view->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,

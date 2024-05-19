@@ -109,7 +109,7 @@ std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
   const std::string default_language_code =
       brave_l10n::GetISOLanguageCode(brave_l10n::GetDefaultLocaleString());
   const auto* locale = model->locale();
-  if (!locale ||
+  if (locale == nullptr ||
       !base::EqualsCaseInsensitiveASCII(locale->str(), default_language_code)) {
     return std::nullopt;
   }

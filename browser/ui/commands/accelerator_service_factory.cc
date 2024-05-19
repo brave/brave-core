@@ -39,7 +39,6 @@ AcceleratorServiceFactory::AcceleratorServiceFactory()
           "AcceleratorServiceFactory",
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kRedirectedToOriginal)
-              .WithGuest(ProfileSelection::kRedirectedToOriginal)
               .Build()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;

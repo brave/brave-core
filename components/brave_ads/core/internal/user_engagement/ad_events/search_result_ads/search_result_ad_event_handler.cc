@@ -209,8 +209,8 @@ void SearchResultAdEventHandler::MaybeFireEventCallback(
     return FailedToFireEvent(ad, event_type, std::move(callback));
   }
 
-  if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-    BLOG(1, "Search result ad: Not allowed as debounced "
+  if (ShouldDeduplicateAdEvent(ad, ad_events, event_type)) {
+    BLOG(1, "Search result ad: Not allowed as deduplicated "
                 << event_type << " event for placement id " << ad.placement_id);
     return FailedToFireEvent(ad, event_type, std::move(callback));
   }

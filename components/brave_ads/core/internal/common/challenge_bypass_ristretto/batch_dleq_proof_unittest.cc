@@ -10,9 +10,9 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_unittest_util.h"

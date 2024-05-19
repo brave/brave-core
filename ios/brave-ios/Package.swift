@@ -107,6 +107,7 @@ var package = Package(
       name: "Growth",
       dependencies: [
         "BraveVPN", "Shared", "BraveShared", "Strings", "SnapKit", "CertificateUtilities",
+        .product(name: "OrderedCollections", package: "swift-collections"),
       ],
       plugins: ["LoggerPlugin"]
     ),

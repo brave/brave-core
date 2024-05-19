@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -36,8 +35,8 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   ConfirmationInfo expected_confirmation;
@@ -68,8 +67,8 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
        DISABLED_DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(

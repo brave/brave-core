@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, waitFor } from '@testing-library/react'
 
 // utils
 import {
@@ -30,7 +30,7 @@ describe('useCombinedTokensList', () => {
       }
     )
     const renderOptions = renderHookOptionsWithMockStore(store)
-    const { result, ...hook } = renderHook(
+    const { result } = renderHook(
       () => useGetCombinedTokensListQuery(),
       renderOptions
     )
@@ -41,7 +41,8 @@ describe('useCombinedTokensList', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await hook.waitFor(() => result.all.length > 3)
+    await waitFor(() => !result.current.isLoading)
+    await waitFor(() => result.current.data)
 
     // done loading
     expect(result.current.isLoading).toBe(false)

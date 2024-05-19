@@ -10,6 +10,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/views/controls/webview/webview.h"
@@ -42,11 +43,14 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
         std::make_unique<views::WebView>(nullptr));
     secondary_devtools_view_ = contents_container_->AddChildView(
         std::make_unique<views::WebView>(nullptr));
+    split_view_separator_ = contents_container_->AddChildView(
+        std::make_unique<SplitViewSeparator>());
 
     auto layout_manager = std::make_unique<BraveContentsLayoutManager>(
         contents_view_, devtools_view_);
     layout_manager->set_secondary_contents_view(secondary_contents_view_);
     layout_manager->set_secondary_devtools_view(secondary_devtools_view_);
+    layout_manager->SetSplitViewSeparator(split_view_separator_);
     layout_manager_ = layout_manager.get();
 
     contents_container_->SetLayoutManager(std::move(layout_manager));
@@ -62,6 +66,7 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
   raw_ptr<views::WebView> devtools_view_ = nullptr;
   raw_ptr<views::WebView> secondary_contents_view_ = nullptr;
   raw_ptr<views::WebView> secondary_devtools_view_ = nullptr;
+  raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
   raw_ptr<BraveContentsLayoutManager> layout_manager_ = nullptr;
 };
 

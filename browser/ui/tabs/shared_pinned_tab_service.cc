@@ -75,7 +75,13 @@ class SharedContentsData
  public:
   SharedContentsData(const SharedContentsData&) = delete;
   SharedContentsData& operator=(const SharedContentsData&) = delete;
-  ~SharedContentsData() override = default;
+  ~SharedContentsData() override {
+    while (!dummy_contentses_.empty()) {
+      auto* dummy_contents = *dummy_contentses_.begin();
+      dummy_contentses_.erase(dummy_contents);
+      DummyContentsData::RemoveFromWebContents(dummy_contents);
+    }
+  }
 
   static void RemoveFromWebContents(content::WebContents* contents) {
     DCHECK(contents);
@@ -662,15 +668,6 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
     auto* model = browser->tab_strip_model();
     if (model == change_source_model_) {
       continue;
-    }
-
-    auto* contents = model->GetWebContentsAt(index);
-    if (auto* dummy_web_contents =
-            DummyContentsData::FromWebContents(contents)) {
-      dummy_web_contents->stop_propagation();
-    } else {
-      DCHECK(SharedContentsData::FromWebContents(contents));
-      SharedContentsData::RemoveFromWebContents(contents);
     }
 
     // We may not want to keep history for dummy pinned tabs, so pass 0 for

@@ -323,7 +323,8 @@ public class KeyringModel implements KeyringServiceObserver {
                                         countCreatedAccounts++;
                                         if (countCreatedAccounts == createAccounts.size()) {
                                             createAccountsLiveData.removeObserver(this);
-                                            callback.call(recoveryPhrases);
+                                            // Set ETH account by default as initial state.
+                                            selectEthAccount(recoveryPhrases, callback);
                                         }
                                     }
                                 });
@@ -347,6 +348,16 @@ public class KeyringModel implements KeyringServiceObserver {
                                 });
                     }
                 });
+    }
+
+    private void selectEthAccount(
+            @NonNull final String recoveryPhrases,
+            @NonNull final Callbacks.Callback1<String> callback) {
+        mKeyringService.getAllAccounts(
+                allAccounts ->
+                        mKeyringService.setSelectedAccount(
+                                allAccounts.ethDappSelectedAccount.accountId,
+                                success -> callback.call(recoveryPhrases)));
     }
 
     @Override

@@ -32,8 +32,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
@@ -52,8 +52,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(BuildRotatingHashUserData(transaction).empty());
@@ -63,8 +63,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
        DoNotBuildRotatingHashUserDataIfMissingDeviceId) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewedImpression,
-      /*should_use_random_uuids=*/false);
+      /*value=*/0.01, AdType::kNotificationAd,
+      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_EQ(base::Value::Dict(), BuildRotatingHashUserData(transaction));

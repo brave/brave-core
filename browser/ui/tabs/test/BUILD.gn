@@ -20,8 +20,15 @@ source_set("browser_tests") {
   ]
 
   if (!is_android) {
-    sources += [ "shared_pinned_tab_service_browsertest.cc" ]
+    sources += [
+      "shared_pinned_tab_service_browsertest.cc",
+      "shared_pinned_tab_service_browsertest.h",
+    ]
     deps += [ "//chrome/test:test_support_ui" ]
+  }
+
+  if (is_mac) {
+    sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
   }
 }
 

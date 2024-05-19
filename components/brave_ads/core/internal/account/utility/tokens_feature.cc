@@ -8,7 +8,7 @@
 namespace brave_ads {
 
 BASE_FEATURE(kAccountTokensFeature,
-             "AccountTokensFeature",
+             "AccountTokens",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

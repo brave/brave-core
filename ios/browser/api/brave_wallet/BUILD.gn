@@ -50,7 +50,11 @@ source_set("brave_wallet") {
 
 ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
   mojom_target = "//brave/components/brave_wallet/common:mojom"
-  sources = [ "//brave/components/brave_wallet/common/brave_wallet.mojom" ]
+  sources = [
+    "//brave/components/brave_wallet/common/brave_wallet.mojom",
+    "//brave/components/brave_wallet/common/meld_integration.mojom",
+  ]
+  generate_namespace = false
   exclude_types = [
     "PageHandlerFactory",
     "PanelHandlerFactory",

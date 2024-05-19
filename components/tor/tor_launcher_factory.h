@@ -8,8 +8,8 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -40,6 +40,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory& operator=(const TorLauncherFactory&) = delete;
 
   static TorLauncherFactory* GetInstance();
+  static void SetTorLauncherFactoryForTesting(TorLauncherFactory*);
 
   virtual void Init();
   virtual void LaunchTorProcess(const tor::mojom::TorConfig& config);
@@ -111,6 +112,12 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   std::unique_ptr<tor::TorControl, base::OnTaskRunnerDeleter> control_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+
+  struct InitializationMessage {
+    std::string percentage;
+    std::string summary;
+  };
+  std::optional<InitializationMessage> last_init_message_;
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 };

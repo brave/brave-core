@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

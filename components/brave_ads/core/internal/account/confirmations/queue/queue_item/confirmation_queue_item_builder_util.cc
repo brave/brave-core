@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 
 namespace brave_ads {
 

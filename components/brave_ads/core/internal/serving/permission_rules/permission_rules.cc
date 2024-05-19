@@ -40,12 +40,14 @@ namespace {
 // before an ad is served.
 constexpr size_t kMinimumConfirmationTokenThreshold = 10;
 
-// Set a required minimum time gap before the next ad can be displayed.
-constexpr int kMinimumWaitTimeCap = 1;
-
 bool IsAdTypeWithinRollingTimeConstraint(const AdType type,
                                          const base::TimeDelta time_constraint,
                                          const size_t cap) {
+  if (cap == 0) {
+    // If the cap is set to 0, then there is no time constraint.
+    return true;
+  }
+
   const std::vector<base::Time> history =
       GetCachedAdEvents(type, ConfirmationType::kServedImpression);
 
@@ -128,6 +130,17 @@ bool HasUserActivityPermission() {
   return false;
 }
 
+bool HasSearchResultAdsPerHourPermission() {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kSearchResultAd, /*time_constraint=*/base::Hours(1),
+          /*cap=*/kMaximumSearchResultAdsPerHour.Get())) {
+    BLOG(2, "You have exceeded the allowed search result ads per hour");
+    return false;
+  }
+
+  return true;
+}
+
 bool HasSearchResultAdsPerDayPermission() {
   if (!IsAdTypeWithinRollingTimeConstraint(
           AdType::kSearchResultAd, /*time_constraint=*/base::Days(1),
@@ -139,11 +152,11 @@ bool HasSearchResultAdsPerDayPermission() {
   return true;
 }
 
-bool HasSearchResultAdsPerHourPermission() {
+bool HasNewTabPageAdsPerHourPermission() {
   if (!IsAdTypeWithinRollingTimeConstraint(
-          AdType::kSearchResultAd, /*time_constraint=*/base::Hours(1),
-          /*cap=*/kMaximumSearchResultAdsPerHour.Get())) {
-    BLOG(2, "You have exceeded the allowed search result ads per hour");
+          AdType::kNewTabPageAd, /*time_constraint=*/base::Hours(1),
+          /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
+    BLOG(2, "You have exceeded the allowed new tab page ads per hour");
     return false;
   }
 
@@ -165,20 +178,9 @@ bool HasNewTabPageAdMinimumWaitTimePermission() {
   if (!IsAdTypeWithinRollingTimeConstraint(
           AdType::kNewTabPageAd,
           /*time_constraint=*/kNewTabPageAdMinimumWaitTime.Get(),
-          kMinimumWaitTimeCap)) {
+          /*cap=*/1)) {
     BLOG(2,
          "New tab page ad cannot be shown as minimum wait time has not passed");
-    return false;
-  }
-
-  return true;
-}
-
-bool HasNewTabPageAdsPerHourPermission() {
-  if (!IsAdTypeWithinRollingTimeConstraint(
-          AdType::kNewTabPageAd, /*time_constraint=*/base::Hours(1),
-          /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
-    BLOG(2, "You have exceeded the allowed new tab page ads per hour");
     return false;
   }
 
@@ -224,7 +226,7 @@ bool HasNotificationAdMinimumWaitTimePermission() {
           AdType::kNotificationAd,
           /*time_constraint=*/base::Hours(1) /
               GetMaximumNotificationAdsPerHour(),
-          kMinimumWaitTimeCap)) {
+          /*cap=*/1)) {
     BLOG(2,
          "Notification ad cannot be shown as minimum wait time has not passed");
     return false;
@@ -251,7 +253,8 @@ bool HasMediaPermission() {
     return true;
   }
 
-  const std::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  const std::optional<TabInfo> tab =
+      TabManager::GetInstance().MaybeGetVisible();
   if (!tab) {
     return true;
   }
@@ -309,17 +312,6 @@ bool HasCatalogPermission() {
   return true;
 }
 
-bool HasInlineContentAdsPerDayPermission() {
-  if (!IsAdTypeWithinRollingTimeConstraint(
-          AdType::kInlineContentAd, /*time_constraint=*/base::Days(1),
-          /*cap=*/kMaximumInlineContentAdsPerDay.Get())) {
-    BLOG(2, "You have exceeded the allowed inline content ads per day");
-    return false;
-  }
-
-  return true;
-}
-
 bool HasInlineContentAdsPerHourPermission() {
   if (!IsAdTypeWithinRollingTimeConstraint(
           AdType::kInlineContentAd, /*time_constraint=*/base::Hours(1),
@@ -331,11 +323,11 @@ bool HasInlineContentAdsPerHourPermission() {
   return true;
 }
 
-bool HasPromotedContentAdsPerDayPermission() {
+bool HasInlineContentAdsPerDayPermission() {
   if (!IsAdTypeWithinRollingTimeConstraint(
-          AdType::kPromotedContentAd, /*time_constraint=*/base::Days(1),
-          /*cap=*/kMaximumPromotedContentAdsPerDay.Get())) {
-    BLOG(2, "You have exceeded the allowed promoted content ads per day");
+          AdType::kInlineContentAd, /*time_constraint=*/base::Days(1),
+          /*cap=*/kMaximumInlineContentAdsPerDay.Get())) {
+    BLOG(2, "You have exceeded the allowed inline content ads per day");
     return false;
   }
 
@@ -347,6 +339,17 @@ bool HasPromotedContentAdsPerHourPermission() {
           AdType::kPromotedContentAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/kMaximumPromotedContentAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed promoted content ads per hour");
+    return false;
+  }
+
+  return true;
+}
+
+bool HasPromotedContentAdsPerDayPermission() {
+  if (!IsAdTypeWithinRollingTimeConstraint(
+          AdType::kPromotedContentAd, /*time_constraint=*/base::Days(1),
+          /*cap=*/kMaximumPromotedContentAdsPerDay.Get())) {
+    BLOG(2, "You have exceeded the allowed promoted content ads per day");
     return false;
   }
 

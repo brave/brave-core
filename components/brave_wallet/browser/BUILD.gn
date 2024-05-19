@@ -132,6 +132,10 @@ static_library("browser") {
     "keyring_service.cc",
     "keyring_service.h",
     "keyring_service_observer_base.h",
+    "meld_integration_response_parser.cc",
+    "meld_integration_response_parser.h",
+    "meld_integration_service.cc",
+    "meld_integration_service.h",
     "nft_metadata_fetcher.cc",
     "nft_metadata_fetcher.h",
     "nonce_tracker.cc",
@@ -247,6 +251,7 @@ static_library("browser") {
     ":generated_simulation_responses",
     ":generated_swap_responses",
     ":hd_keyring",
+    ":meld_integration_responses",
     ":pref_names",
     ":transaction",
     ":utils",
@@ -502,5 +507,15 @@ config("sardine_config") {
   defines = [
     "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
     "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
+  ]
+}
+
+generated_types("meld_integration_responses") {
+  sources = [ "meld_integration_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
   ]
 }

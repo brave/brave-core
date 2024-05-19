@@ -28,9 +28,13 @@ TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
       MaybeReadFileToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(contents);
 
-  // Act & Assert
-  EXPECT_TRUE(pipeline::LoadLinearPipeline(
-      reinterpret_cast<const uint8_t*>(contents->data()), contents->size()));
+  // Act
+  const std::optional<pipeline::PipelineInfo> pipeline =
+      pipeline::LoadLinearPipeline(
+          reinterpret_cast<const uint8_t*>(contents->data()), contents->size());
+
+  // Assert
+  EXPECT_TRUE(pipeline);
 }
 
 }  // namespace brave_ads::ml

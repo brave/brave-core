@@ -130,5 +130,4 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 
   return *blockchains;
 }
-
 }  // namespace brave_wallet

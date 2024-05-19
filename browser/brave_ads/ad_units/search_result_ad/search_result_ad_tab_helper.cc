@@ -99,6 +99,15 @@ AdsService* SearchResultAdTabHelper::GetAdsService() {
   return AdsServiceFactory::GetForProfile(profile);
 }
 
+void SearchResultAdTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+
+  MaybeProcessSearchResultAdClickedEvent(navigation_handle);
+}
+
 void SearchResultAdTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInPrimaryMainFrame() ||
@@ -106,8 +115,6 @@ void SearchResultAdTabHelper::DidFinishNavigation(
       navigation_handle->IsSameDocument()) {
     return;
   }
-
-  MaybeProcessSearchResultAdClickedEvent(navigation_handle);
 
   if (!ShouldHandleSearchResultAdEvents()) {
     return;
@@ -146,6 +153,10 @@ void SearchResultAdTabHelper::WebContentsDestroyed() {
 void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     content::NavigationHandle* navigation_handle) {
   CHECK(navigation_handle);
+
+  if (!ShouldHandleSearchResultAdEvents()) {
+    return;
+  }
 
   const auto& initiator_origin = navigation_handle->GetInitiatorOrigin();
   if (!navigation_handle->IsInPrimaryMainFrame() ||

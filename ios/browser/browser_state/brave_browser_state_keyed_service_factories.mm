@@ -9,6 +9,7 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
@@ -23,6 +24,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   brave_wallet::JsonRpcServiceFactory::GetInstance();
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::KeyringServiceFactory::GetInstance();
+  brave_wallet::MeldIntegrationServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
   skus::SkusServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();

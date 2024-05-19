@@ -132,7 +132,10 @@ preprocess_if_expr("preprocess_mojo") {
 
 mojom("mojom") {
   generate_java = true
-  sources = [ "brave_wallet.mojom" ]
+  sources = [
+    "brave_wallet.mojom",
+    "meld_integration.mojom",
+  ]
   public_deps = [
     "//mojo/public/mojom/base",
     "//url/mojom:url_mojom_gurl",

@@ -8,14 +8,18 @@ package org.chromium.components.language;
 import android.app.LocaleManager;
 import android.os.Build;
 import android.os.LocaleList;
+import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 
 import java.util.Locale;
 
 public class BraveLocaleManagerDelegateImpl extends LocaleManagerDelegateImpl {
+    private static final String TAG = "in_app_language";
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Override
     public Locale getApplicationLocale() {
@@ -32,8 +36,14 @@ public class BraveLocaleManagerDelegateImpl extends LocaleManagerDelegateImpl {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Override
     public void setApplicationLocale(String languageName) {
-        ContextUtils.getApplicationContext()
-                .getSystemService(LocaleManager.class)
-                .setApplicationLocales(new LocaleList(Locale.forLanguageTag(languageName)));
+        try {
+            if (languageName != null && !TextUtils.isEmpty(languageName)) {
+                ContextUtils.getApplicationContext()
+                        .getSystemService(LocaleManager.class)
+                        .setApplicationLocales(new LocaleList(Locale.forLanguageTag(languageName)));
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "setApplicationLocale : " + ex.getMessage());
+        }
     }
 }

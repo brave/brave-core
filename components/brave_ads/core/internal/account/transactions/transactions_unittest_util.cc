@@ -24,6 +24,7 @@ void SaveTransactions(const TransactionList& transactions) {
 }
 
 TransactionInfo BuildTransaction(const double value,
+                                 const AdType ad_type,
                                  const ConfirmationType confirmation_type,
                                  const base::Time reconciled_at,
                                  const bool should_use_random_uuids) {
@@ -33,9 +34,9 @@ TransactionInfo BuildTransaction(const double value,
   transaction.created_at = Now();
   transaction.creative_instance_id =
       GetConstantId(should_use_random_uuids, kCreativeInstanceId);
-  transaction.value = value;
   transaction.segment = kSegment;
-  transaction.ad_type = AdType::kNotificationAd;
+  transaction.value = value;
+  transaction.ad_type = ad_type;
   transaction.confirmation_type = confirmation_type;
   if (!reconciled_at.is_null()) {
     transaction.reconciled_at = reconciled_at;
@@ -46,10 +47,11 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildUnreconciledTransaction(
     const double value,
+    const AdType ad_type,
     const ConfirmationType confirmation_type,
     const bool should_use_random_uuids) {
-  return BuildTransaction(value, confirmation_type, /*reconciled_at=*/{},
-                          should_use_random_uuids);
+  return BuildTransaction(value, ad_type, confirmation_type,
+                          /*reconciled_at=*/{}, should_use_random_uuids);
 }
 
 }  // namespace brave_ads::test

@@ -412,12 +412,18 @@ extension BrowserViewController: WKNavigationDelegate {
         braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
         tab?.braveSearchResultAdManager = nil
       } else {
-        // Add Brave Search headers if Rewards is enabled
+        // The Brave-Search-Ads header should be added with a negative value when all
+        // of the following conditions are met:
+        //   - The current tab is not a Private tab
+        //   - Brave Rewards is enabled.
+        //   - The "Search Ads" is opted-out.
+        //   - The requested URL host is one of the Brave Search domains.
         if !isPrivateBrowsing && rewards.isEnabled
-          && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil
+          && !rewards.ads.isOptedInToSearchResultAds()
+          && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
         {
           var modifiedRequest = URLRequest(url: requestURL)
-          modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
+          modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
           tab?.loadRequest(modifiedRequest)
           ContentBlockerManager.signpost.endInterval(
             "decidePolicyFor",
@@ -687,6 +693,7 @@ extension BrowserViewController: WKNavigationDelegate {
       InternalURL(responseURL)?.isSessionRestore == true
     {
       tab.shouldNotifyAdsServiceTabDidChange = false
+      tab.shouldNotifyAdsServiceTabContentDidChange = false
     }
 
     var request: URLRequest?
@@ -1003,18 +1010,23 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if tab.shouldNotifyAdsServiceTabDidChange, tab.navigationType != WKNavigationType.backForward
-      {
-        rewards.reportTabUpdated(
-          tab: tab,
-          isSelected: tabManager.selectedTab == tab,
-          isPrivate: privateBrowsingManager.isPrivateBrowsing
-        )
-        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+      if tab.navigationType != WKNavigationType.backForward {
+        if tab.shouldNotifyAdsServiceTabDidChange {
+          rewards.reportTabUpdated(
+            tab: tab,
+            isSelected: tabManager.selectedTab == tab,
+            isPrivate: privateBrowsingManager.isPrivateBrowsing
+          )
+        }
+        if tab.shouldNotifyAdsServiceTabContentDidChange {
+          tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+        }
       }
-      // Set `shouldNotifyAdsServiceTabDidChange` to `true` so that listeners
+      // Set `shouldNotifyAdsServiceTabDidChange` and
+      // `shouldNotifyAdsServiceTabContentDidChange` to `true` so that listeners
       // are notified of tab changes after the tab is restored.
       tab.shouldNotifyAdsServiceTabDidChange = true
+      tab.shouldNotifyAdsServiceTabContentDidChange = true
 
       Task {
         await tab.updateEthereumProperties()
@@ -1457,7 +1469,8 @@ extension BrowserViewController: WKUIDelegate {
       return
     }
     promptingTab.alertShownCount += 1
-    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [weak self, weak webView] suppress in
+      guard let self, let webView else { return }
       if suppress {
         func suppressDialogues(_: UIAlertAction) {
           self.suppressJSAlerts(webView: webView)

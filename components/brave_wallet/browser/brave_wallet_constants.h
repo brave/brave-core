@@ -47,6 +47,12 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNoRoutesFound", IDS_BRAVE_WALLET_NO_ROUTES_FOUND},
+    {"braveWalletPrivateKeyImportType",
+     IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE},
+    {"braveWalletEnterPasswordIfApplicable",
+     IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE},
+    {"braveWalletAccountNameTooLongError",
+     IDS_BRAVE_WALLET_ACCOUNT_NAME_TOO_LONG_ERROR},
     {"braveWalletFoundIssues", IDS_BRAVE_WALLET_FOUND_ISSUES},
     {"braveWalletContract", IDS_BRAVE_WALLET_CONTRACT},
     {"braveWalletFoundRisks", IDS_BRAVE_WALLET_FOUND_RISKS},
@@ -687,6 +693,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPermissionForever", IDS_BRAVE_WALLET_PERMISSION_FOREVER},
     {"braveWalletCryptoWalletsDetected",
      IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED},
+    {"braveWalletLegacyWalletDetected",
+     IDS_BRAVE_WALLET_LEGACY_WALLET_DETECTED},
     {"braveWalletCryptoWalletsDescriptionTwo",
      IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO},
     {"braveWalletImportBraveLegacyDescription",
@@ -1150,8 +1158,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletImportWithRecoveryPhrase",
      IDS_BRAVE_WALLET_IMPORT_WITH_RECOVERY_PHRASE},
     {"braveWalletMetamaskDetected", IDS_BRAVE_WALLET_METAMASK_DETECTED},
-    {"braveWalletMetamaskImportUsePassword",
-     IDS_BRAVE_WALLET_METAMASK_IMPORT_USE_PASSWORD},
+    {"braveWalletUsePassword", IDS_BRAVE_WALLET_USE_PASSWORD},
     {"braveWalletRecoveryPhraseWord", IDS_BRAVE_WALLET_RECOVERY_PHRASE_WORD},
     {"braveWalletImportPasswordError", IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR},
     {"braveWalletMetaMaskExtensionDetected",
@@ -1549,6 +1556,11 @@ inline constexpr char kBitcoinMainnetRpcEndpoint[] =
 inline constexpr char kBitcoinTestnetRpcEndpoint[] =
     "https://blockstream.info/testnet/api/";
 
+inline constexpr char kMeldRpcEndpoint[] =
+    "https://api-meld.wallet.brave.software";
+inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
+inline constexpr char kMeldRpcVersion[] = "2023-05-26";
+
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&
@@ -1558,7 +1570,6 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_
