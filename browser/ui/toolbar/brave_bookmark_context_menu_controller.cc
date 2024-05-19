@@ -48,8 +48,8 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
 
   if (bookmarks::BookmarkModel* model =
           BookmarkModelFactory::GetForBrowserContext(profile)) {
-    is_other_bookmark_node_empty =
-        (model->other_node()->GetTotalNodeCount() == 1);
+    is_other_bookmark_node_empty_ =
+        model->other_node()->children().empty();
   }
 }
 
@@ -113,7 +113,7 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
     // If the 'Other Bookmarks' node has no children, then hiding the 'Show all
     // bookmarks button' option from drop down as showing the option and the
     // 'All Bookmarks' button serves no purpose
-    return (!is_other_bookmark_node_empty);
+    return !is_other_bookmark_node_empty_;
   }
 
   return BookmarkContextMenuController::IsCommandIdVisible(command_id);
