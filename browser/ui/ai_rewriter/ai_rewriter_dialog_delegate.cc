@@ -32,7 +32,6 @@
 #include "content/public/browser/web_ui.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "ui/aura/window_delegate.h"
 #include "ui/base/ui_base_types.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"

@@ -5,14 +5,15 @@
 
 component("common") {
   output_name = "ai_rewriter_common"
-  defines = [ "IS_AI_REWRITER_COMMON_IMPL" ]
 
   sources = [
     "features.cc",
     "features.h",
   ]
 
-  deps = [ "//brave/components/ai_chat/core/common" ]
+  defines = [ "IS_AI_REWRITER_COMMON_IMPL" ]
 
   public_deps = [ "//brave/components/ai_rewriter/common/mojom" ]
+
+  deps = [ "//brave/components/ai_chat/core/common" ]
 }

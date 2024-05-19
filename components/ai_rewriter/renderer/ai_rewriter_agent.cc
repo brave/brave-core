@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_element.h"
@@ -34,15 +35,19 @@ gfx::RectF GetBounds(content::RenderFrame* frame) {
 
 AIRewriterAgent::AIRewriterAgent(content::RenderFrame* render_frame,
                                  service_manager::BinderRegistry* registry)
-    : render_frame_(render_frame) {
+    : content::RenderFrameObserver(render_frame) {
   registry->AddInterface(base::BindRepeating(&AIRewriterAgent::BindReceiver,
                                              base::Unretained(this)));
 }
 
 AIRewriterAgent::~AIRewriterAgent() = default;
 
+void AIRewriterAgent::OnDestruct() {
+  delete this;
+}
+
 void AIRewriterAgent::GetFocusBounds(GetFocusBoundsCallback callback) {
-  std::move(callback).Run(GetBounds(render_frame_));
+  std::move(callback).Run(GetBounds(render_frame()));
 }
 
 void AIRewriterAgent::BindReceiver(

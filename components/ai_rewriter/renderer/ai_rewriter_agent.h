@@ -9,6 +9,7 @@
 #include "base/component_export.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "content/public/browser/content_browser_client.h"
+#include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
@@ -18,7 +19,8 @@ class RenderFrame;
 
 namespace ai_rewriter {
 class COMPONENT_EXPORT(AI_REWRITER_RENDERER) AIRewriterAgent
-    : public mojom::AIRewriterAgent {
+    : public content::RenderFrameObserver,
+      public mojom::AIRewriterAgent {
  public:
   AIRewriterAgent(content::RenderFrame* render_frame,
                   service_manager::BinderRegistry* registry);
@@ -26,12 +28,15 @@ class COMPONENT_EXPORT(AI_REWRITER_RENDERER) AIRewriterAgent
   AIRewriterAgent& operator=(const AIRewriterAgent&) = delete;
   ~AIRewriterAgent() override;
 
+  // content::RenderFrameObserver:
+  void OnDestruct() override;
+
+  // mojom::AIRewriterAgent:
   void GetFocusBounds(GetFocusBoundsCallback callback) override;
 
  private:
   void BindReceiver(mojo::PendingReceiver<mojom::AIRewriterAgent> receiver);
 
-  raw_ptr<content::RenderFrame> render_frame_;
   mojo::Receiver<mojom::AIRewriterAgent> receiver_{this};
 };
 }  // namespace ai_rewriter

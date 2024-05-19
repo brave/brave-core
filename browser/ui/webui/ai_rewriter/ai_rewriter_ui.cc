@@ -19,7 +19,6 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
@@ -39,7 +38,6 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
       web_ui, kRewriterUIHost, kAiRewriterUiGenerated,
       kAiRewriterUiGeneratedSize, IDR_REWRITER_UI_HTML);
   DCHECK(source);
-  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
 }
 
 AIRewriterUI::~AIRewriterUI() = default;
