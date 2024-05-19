@@ -58,9 +58,8 @@ class BraveBookmarkContextMenuController
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
-
+  raw_ptr<bookmarks::BookmarkModel> model_ = nullptr;
   std::unique_ptr<BookmarkBarSubMenuModel> brave_bookmarks_submenu_model_;
-  bool is_other_bookmark_node_empty_ = true;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_BOOKMARK_CONTEXT_MENU_CONTROLLER_H_

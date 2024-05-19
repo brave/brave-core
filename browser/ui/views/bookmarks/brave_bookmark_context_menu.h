@@ -28,6 +28,7 @@ class BraveBookmarkContextMenu : public BookmarkContextMenu {
   BraveBookmarkContextMenu& operator=(const BraveBookmarkContextMenu&) = delete;
 
   ~BraveBookmarkContextMenu() override;
+  bool IsCommandVisible(int command_id) const override;
 
  private:
   friend class BraveBookmarkContextMenuTest;

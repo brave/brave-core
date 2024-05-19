@@ -46,3 +46,8 @@ BraveBookmarkContextMenu::GetControllerForTesting() {
   return static_cast<BraveBookmarkContextMenuController*>(
       controller_.get());  // IN-TEST
 }
+
+bool BraveBookmarkContextMenu::IsCommandVisible(int command_id) const {
+  return static_cast<BraveBookmarkContextMenuController*>(controller_.get())
+      ->IsCommandIdVisible(command_id);
+}
