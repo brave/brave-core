@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/feed_generation_info.h"
 
+#include <algorithm>
 #include <numeric>
 #include <optional>
 #include <string>
@@ -102,7 +103,8 @@ ArticleMetadata GetArticleMetadata(const mojom::FeedItemMetadataPtr& article,
   metadata.visited = signals.at(0)->visit_weight != 0;
   metadata.subscribed = subscribed_weight != 0,
   metadata.discoverable = discoverable;
-  metadata.channels = base::flat_set<std::string>(std::move(publisher_channels));
+  metadata.channels =
+      base::flat_set<std::string>(std::move(publisher_channels));
   return metadata;
 }
 
@@ -353,6 +355,13 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
 
     content_groups_.value().erase(it);
   }
+}
+
+ArticleInfos GetArticleInfosForTesting(const std::string& locale,  // IN-TEST
+                                       const FeedItems& feed_items,
+                                       const Publishers& publishers,
+                                       const Signals& signals) {
+  return GetArticleInfos(locale, feed_items, publishers, signals);
 }
 
 }  // namespace brave_news

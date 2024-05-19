@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_GENERATION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_GENERATION_INFO_H_
 
-#include <glob.h>
-
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -92,6 +90,11 @@ class FeedGenerationInfo {
   std::optional<std::vector<ContentGroup>> content_groups_;
   base::flat_map<std::string, size_t> available_counts_;
 };
+
+ArticleInfos GetArticleInfosForTesting(const std::string& locale,
+                                       const FeedItems& feed_items,
+                                       const Publishers& publishers,
+                                       const Signals& signals);
 
 }  // namespace brave_news
 

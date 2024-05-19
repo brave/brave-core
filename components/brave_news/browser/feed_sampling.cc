@@ -11,7 +11,10 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/rand_util.h"
+#include "base/ranges/algorithm.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
 

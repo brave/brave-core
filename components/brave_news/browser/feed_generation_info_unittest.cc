@@ -199,4 +199,75 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   EXPECT_TRUE(base::Contains(channels, kFooChannel));
 }
 
+TEST(BraveNewsFeedSampling, GetArticleInfosSkipsNull) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+  items.push_back(nullptr);
+
+  EXPECT_EQ(
+      0u, GetArticleInfosForTesting(locale, items, publishers, signals).size());
+}
+
+TEST(BraveNewsFeedSampling, GetArticleInfosSkipsNonArticles) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+
+  items.push_back(MakeArticleItem("one"));
+  items.push_back(MakeArticleItem("two"));
+  items.push_back(mojom::FeedItem::NewDeal(mojom::Deal::New()));
+
+  EXPECT_EQ(
+      2u, GetArticleInfosForTesting(locale, items, publishers, signals).size());
+}
+
+TEST(BraveNewsFeedSampling, GetArticleInfosDuplicatesExcluded) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+
+  auto item = MakeArticleItem("one");
+  items.push_back(item->Clone());
+  items.push_back(std::move(item));
+
+  EXPECT_EQ(
+      1u, GetArticleInfosForTesting(locale, items, publishers, signals).size());
+}
+TEST(BraveNewsFeedSampling, GetArticleInfosUnknownPublishersSkipped) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+
+  items.push_back(MakeArticleItem("one"));
+  items.push_back(MakeArticleItem("not-a-real-publisher"));
+
+  EXPECT_EQ(
+      1u, GetArticleInfosForTesting(locale, items, publishers, signals).size());
+}
+
+TEST(BraveNewsFeedSampling, GetArticleInfosDisabledArticlesExcluded) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+
+  items.push_back(MakeArticleItem("disabled"));
+  items.push_back(MakeArticleItem("one"));
+
+  EXPECT_EQ(
+      1u, GetArticleInfosForTesting(locale, items, publishers, signals).size());
+}
+
+TEST(BraveNewsFeedSampling, GetArticleInfosUsesCorrectSignals) {
+  auto [locale, items, publishers, signals, topics] = MockFetchedData();
+
+  items.push_back(MakeArticleItem("disabled"));
+  items.push_back(MakeArticleItem("one"));
+  items.push_back(MakeArticleItem("two"));
+  items.push_back(MakeArticleItem("not-a-real-publisher"));
+
+  auto infos = GetArticleInfosForTesting(locale, items, publishers, signals);
+  EXPECT_EQ(2u, infos.size());
+
+  auto& [article0, weight0] = infos.at(0);
+  EXPECT_EQ("one", article0->publisher_id);
+  EXPECT_TRUE(weight0.visited);
+  EXPECT_TRUE(weight0.subscribed);
+
+  auto& [article1, weight1] = infos.at(1);
+  EXPECT_EQ("two", article1->publisher_id);
+  EXPECT_FALSE(weight1.visited);
+  EXPECT_TRUE(weight1.subscribed);
+}
+
 }  // namespace brave_news

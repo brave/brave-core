@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback_forward.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
