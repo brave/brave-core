@@ -45,7 +45,7 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
   }
   AddBraveBookmarksSubmenu(profile);
   AddShowAllBookmarksButtonMenu();
-  model_ = BookmarkModelFactory::GetForBrowserContext(profile);
+  bookmark_model_ = BookmarkModelFactory::GetForBrowserContext(profile);
 }
 
 BraveBookmarkContextMenuController::~BraveBookmarkContextMenuController() =
@@ -109,7 +109,7 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
     // bookmarks button' option from drop down as showing the option and the
     // 'All Bookmarks' button serves no purpose.
     // returning false if other bookmark node is empty, else true.
-    return !model_->other_node()->children().empty();
+    return !bookmark_model_->other_node()->children().empty();
   }
 
   return BookmarkContextMenuController::IsCommandIdVisible(command_id);
