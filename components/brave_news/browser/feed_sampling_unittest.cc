@@ -118,13 +118,13 @@ TEST(BraveNewsFeedSampling, PickFirstIndexPicksFirstUnlessArticlesAreEmpty) {
   ArticleInfos infos;
   EXPECT_EQ(std::nullopt, PickFirstIndex(infos));
 
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
 
   EXPECT_EQ(0u, PickFirstIndex(infos).value());
 
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
 
   EXPECT_EQ(0u, PickFirstIndex(infos).value());
 }
@@ -137,16 +137,16 @@ TEST(BraveNewsFeedSampling, PickRouletteDoesntBreakOnEmptyList) {
 
 TEST(BraveNewsFeedSampling, PickRouletteWithWeighting) {
   ArticleInfos infos;
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
-  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetaData()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
+  infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
 
   // No positively weighted items, so we shouldn't pick anything.
   EXPECT_EQ(std::nullopt,
             PickRouletteWithWeighting(
                 infos, base::BindRepeating(
                            [](const mojom::FeedItemMetadataPtr& item,
-                              const ArticleMetaData& meta) { return 0.0; })));
+                              const ArticleMetadata& meta) { return 0.0; })));
   auto& first = std::get<0>(infos.at(0));
   auto& second = std::get<0>(infos.at(1));
   auto& third = std::get<0>(infos.at(2));

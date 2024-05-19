@@ -129,7 +129,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
             return PickRouletteWithWeighting(
                 articles,
                 base::BindRepeating([](const mojom::FeedItemMetadataPtr& data,
-                                       const ArticleMetaData& meta) {
+                                       const ArticleMetadata& meta) {
                   if (!meta.discoverable) {
                     return 0.0;
                   }
@@ -198,7 +198,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                    publisher_id_to_channels,
                const std::string& locale,
                const mojom::FeedItemMetadataPtr& article,
-               const ArticleMetaData& meta) {
+               const ArticleMetadata& meta) {
               if (is_hero) {
                 auto image_url = article->image->is_padded_image_url()
                                      ? article->image->get_padded_image_url()

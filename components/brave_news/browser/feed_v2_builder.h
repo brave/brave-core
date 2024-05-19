@@ -23,7 +23,6 @@
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -34,7 +33,7 @@ namespace brave_news {
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
 
-struct FeedGenerationInfo;
+class FeedGenerationInfo;
 
 class FeedV2Builder {
  public:

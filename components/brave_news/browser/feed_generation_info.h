@@ -23,7 +23,8 @@
 
 namespace brave_news {
 
-struct FeedGenerationInfo {
+class FeedGenerationInfo {
+ public:
   FeedGenerationInfo(const std::string& locale,
                      const FeedItems& feed_items,
                      const Publishers& publishers,
@@ -71,7 +72,7 @@ struct FeedGenerationInfo {
 
   void GenerateAvailableCounts();
   void ReduceCounts(const mojom::FeedItemMetadataPtr& article,
-                    const ArticleMetaData& meta);
+                    const ArticleMetadata& meta);
 
   std::string locale_;
   std::vector<std::string> channels_;
