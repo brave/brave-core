@@ -48,8 +48,8 @@ struct BridgesConfig {
 
   static std::optional<BridgesConfig> FromDict(const base::Value::Dict& dict);
   static std::optional<BridgesConfig> FromValue(const base::Value* v);
-  base::Value::Dict ToDict() const;
-  base::Value ToValue() const;
+  base::Value::Dict ToDict(bool include_builtin = true) const;
+  base::Value ToValue(bool include_builtin = true) const;
 
   Usage use_bridges = Usage::kNotUsed;
   BuiltinType use_builtin = BuiltinType::kObfs4;
