@@ -12,7 +12,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
@@ -156,19 +155,6 @@
   }
   return [[BraveWalletSwapServiceMojoImpl alloc]
       initWithSwapService:std::move(service)];
-}
-@end
-
-@implementation BraveWalletIpfsServiceFactory
-+ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::BraveWalletIpfsServiceFactory::GetForBrowserState(
-          browserState);
-  if (!service) {
-    return nil;
-  }
-  return [[BraveWalletIpfsServiceMojoImpl alloc]
-      initWithIpfsService:std::move(service)];
 }
 @end
 

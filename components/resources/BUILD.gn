@@ -8,7 +8,6 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -46,7 +45,6 @@ brave_grit("static_resources") {
   defines = [
     "enable_brave_player=$enable_brave_player",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
@@ -170,7 +168,6 @@ brave_grit("strings") {
 
   defines = [
     "enable_speedreader=$enable_speedreader",
-    "enable_ipfs=$enable_ipfs",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",

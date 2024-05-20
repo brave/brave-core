@@ -9,8 +9,6 @@ source_set("brave_wallet") {
     "asset_ratio_service_factory.h",
     "brave_wallet_factory_wrappers.h",
     "brave_wallet_factory_wrappers.mm",
-    "brave_wallet_ipfs_service_factory.h",
-    "brave_wallet_ipfs_service_factory.mm",
     "brave_wallet_service_factory.h",
     "brave_wallet_service_factory.mm",
     "meld_integration_service_factory.cc",

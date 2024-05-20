@@ -231,45 +231,6 @@ export const nftsEndpoints = ({
         { type: 'NftMetadata', id: 'COLLECTION_NAMES_REGISTRY' }
       ]
     }),
-    getIPFSUrlFromGatewayLikeUrl: query<string | null, string>({
-      queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { cache } = baseQuery(undefined)
-          const ipfsUrl = await cache.getExtractedIPFSUrlFromGatewayLikeUrl(
-            urlArg
-          )
-          return {
-            data: ipfsUrl || null
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Failed to get IPFS URL from gateway-like URL',
-            error
-          )
-        }
-      }
-    }),
-    getIpfsGatewayTranslatedNftUrl: query<string | null, string>({
-      queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { cache } = baseQuery(undefined)
-          const translatedUrl = await cache.getIpfsGatewayTranslatedNftUrl(
-            urlArg || ''
-          )
-
-          return {
-            data: translatedUrl || urlArg.trim()
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Failed to translate NFT IPFS gateway URL',
-            error
-          )
-        }
-      }
-    }),
 
     /** will get spam for all accounts if accounts arg is not provided */
     getSimpleHashSpamNfts: query<
@@ -305,23 +266,6 @@ export const nftsEndpoints = ({
         }
       },
       providesTags: ['SimpleHashSpamNFTs']
-    }),
-    getIsImagePinnable: query<boolean, string>({
-      queryFn: async (imageUrlArg, { endpoint }, extraOptions, baseQuery) => {
-        try {
-          const { cache } = baseQuery(undefined)
-          const isPinnable = await cache.getIsImagePinnable(imageUrlArg)
-          return {
-            data: isPinnable
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            `Unable to check if image URL (${imageUrlArg}) is pinnable`,
-            error
-          )
-        }
-      }
     })
   }
 }

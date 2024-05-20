@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -77,7 +76,6 @@ brave_browser_net_deps = [
   "//brave/components/constants:brave_service_key_helper",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
-  "//brave/components/ipfs/buildflags",
   "//brave/components/localhost_permission",
   "//brave/components/query_filter",
   "//brave/components/update_client:buildflags",
@@ -105,13 +103,6 @@ brave_browser_net_deps = [
 
 if (enable_extensions) {
   brave_browser_net_deps += [ "//extensions/common:common_constants" ]
-}
-
-if (enable_ipfs) {
-  brave_browser_net_deps += [
-    "//brave/components/ipfs",
-    "//chrome/common:channel_info",
-  ]
 }
 
 if (enable_brave_webtorrent) {

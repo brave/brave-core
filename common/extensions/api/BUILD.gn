@@ -5,7 +5,6 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -27,10 +26,6 @@ json_features("permission_features") {
   feature_type = "PermissionFeature"
   method_name = "AddBravePermissionFeatures"
   sources = [ "_permission_features.json" ]
-
-  if (enable_ipfs) {
-    sources += [ "_ipfs_permission_features.json" ]
-  }
 }
 
 json_features("manifest_features") {

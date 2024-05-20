@@ -16,7 +16,7 @@ import {
 
 // hooks
 import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
+  useGetIpfsGatewayTranslatedNftUrlQuery
 } from '../../../common/slices/api.slice'
 
 // styles

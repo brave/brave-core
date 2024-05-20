@@ -343,16 +343,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Check details
       </message>
 
-      <!-- IPFS -->
-      <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
-        IPFS
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS" desc="Permisson string for access to ipfs api.">
-        Publish and retrieve files from IPFS
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WARNING_IPFS_PRIVATE" desc="Permisson string for access to private ipfs api.">
-        Read and modify IPFS settings
-      </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         .onion
       </message>
@@ -362,37 +352,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_CONTENT_CONTEXT_FORCE_PASTE" desc="The name of the context menu item to paste without triggering onpaste handlers">
         Force Paste
       </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS" desc="The name of the IPFS context menu item for renderer">
-        Import to IPFS
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE" desc="The name of the IPFS context menu item to import current page using IPFS">
-        This page
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE" desc="The name of the IPFS context menu item to import selected image using IPFS">
-        Selected image
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO" desc="The name of the IPFS context menu item to import selected video using IPFS">
-        Selected video
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO" desc="The name of the IPFS context menu item to import selected audio using IPFS">
-        Selected audio
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK" desc="The name of the IPFS context menu item to import linked content using IPFS">
-        Linked content
-      </message>
-      <message name="IDS_IMPORT_USING_IPNS_KEYS_TITLE" desc="The name of the IPFS import menu item to publish content using IPNS keys">
-        Publish with IPNS key
-      </message>
-      <message name="IDS_APP_MENU_IPFS" desc="The text label of a menu item to open a new app menu ipfs item.">
-        IPFS
-      </message>
+
       <if expr="use_titlecase">
-        <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
-          Import Selected Text to IPFS
-        </message>
-        <message name="IDS_IMPORT_WITHOUT_PUBLISHING" desc="The name of the IPFS context menu item to import content without publishing">
-          Import and Copy Link to IPFS Snapshot
-        </message>
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
           New Private Window with Tor
         </message>
@@ -402,41 +363,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
           Open Link in Brave Private Window with Tor
         </message>
-        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
-          Import and Share a File
-        </message>
-        <message name="IDS_APP_MENU_IPFS_OPEN_FILES" desc="Title case: The text label of a menu item to open IPFS webui files page.">
-          Open Files
-        </message>
-        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
-          Import and Share a Directory
-        </message>
-        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE" desc="Title case: The text label of a menu item to publish local file under IPFS key.">
-          With a File
-        </message>
-        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER" desc="Title case: The text label of a menu item to publish local fodler under IPFS key.">
-          With a Directory
-        </message>
-        <message name="IDS_APP_MENU_IPFS_UPDATE_IPNS" desc="Title case: The text label of a menu item to update IPNS.">
-          Update IPNS
-        </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
-          Import selected text to IPFS
-        </message>
-        <message name="IDS_IMPORT_WITHOUT_PUBLISHING" desc="The name of the IPFS context menu item to import content without publishing">
-          Import and copy link to IPFS snapshot
-        </message>
-        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE" desc="The text label of a menu item to share local file using IPFS.">
-          Import and share a file
-        </message>
-        <message name="IDS_APP_MENU_IPFS_OPEN_FILES" desc="Title case: The text label of a menu item to open IPFS webui files page.">
-          Open files
-        </message>
-        <message name="IDS_APP_MENU_IPFS_UPDATE_IPNS" desc="Title case: The text label of a menu item to update IPNS.">
-          Update IPNS
-        </message>
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
           New private window with Tor
         </message>
@@ -445,15 +373,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
-        </message>
-        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
-          Import and share a directory
-        </message>
-        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE" desc="Title case: The text label of a menu item to publish local file under IPFS key.">
-          With a File
-        </message>
-        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER" desc="Title case: The text label of a menu item to publish local fodler under IPFS key.">
-          With a Directory
         </message>
       </if>
       <!-- Dev channel deprecation infobar -->
@@ -907,54 +826,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_CRYPTO_WALLETS_DONT_ASK" desc="Sets provider to none">
         Don't ask again
       </message>
-      <!-- IPFS -->
       <message name="IDS_BRAVE_WALLET_SETTINGS_SECTION" desc="Open Wallet settings section">
         Wallet
-      </message>
-      <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
-        IPFS
       </message>
       <message name="IDS_BRAVE_WEB3_SETTINGS_SECTION" desc="Open Web3 settings section">
         Web3
       </message>
       <message name="IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION" desc="Open Web3 Domains settings section">
         Web3 Domains
-      </message>
-      <message name="IDS_BRAVE_IPFS_LEARN_MORE">
-        Learn more about IPFS and privacy
-      </message>
-      <message name="IDS_BRAVE_IPFS_INFOBAR_TEXT" desc="Text that promotes turning on autoredirect to the configured gateway setting">
-        This page is available on the IPFS network. Would you like to load IPFS pages using Brave's built-in support (via ipfs:// or ipns://)?
-      </message>
-      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE" desc="Turns on promoted setting">
-        Always
-      </message>
-      <message name="IDS_BRAVE_IPFS_INFOBAR_APPROVE_ONCE" desc="Redirects to the ipfs:// or ipns:// resource for once">
-        Only This Time
-      </message>
-      <message name="IDS_BRAVE_IPFS_INFOBAR_NEVER" desc="Closed infobar and disables it showing">
-        No Thanks
-      </message>
-      <message name="IDS_BRAVE_IPFS_INFOBAR_LINK" desc="Link redirects to the privacy description article">
-        Learn how this affects my privacy
-      </message>
-      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_TEXT" desc="Prompt, asking the user whether they'd like to load the original URL rather than the resolved one when the page load fails">
-        There was an error loading the IPFS URL. Would you like to redirect to the original URL?
-      </message>
-      <message name="IDS_BRAVE_IPFS_FALLBACK_REDIRECT" desc="Redirect to the original url">
-        Redirect
-      </message>
-      <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
-        No thanks
-      </message>
-      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_TEXT" desc="Text that proposes to the user to enable always starting an IPFS node with the browser">
-        Would you like to always start an IPFS node on browser startup?
-      </message>
-      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_OK" desc="Enable IPFS always start mode">
-        Enable
-      </message>
-      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
-        Cancel
       </message>
       <!-- Brave Wallet -->
       <message name="IDS_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The utility process running wallet utils">

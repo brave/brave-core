@@ -14,7 +14,7 @@
     BraveWalletJsonRpcService, BraveWalletEthTxManagerProxy,
     BraveWalletSolanaTxManagerProxy, BraveWalletTxService,
     BraveWalletKeyringService, BraveWalletMeldIntegrationService,
-    BraveWalletSwapService, BraveWalletIpfsService,
+    BraveWalletSwapService,
     BraveWalletZCashWalletService;
 
 OBJC_EXPORT
@@ -75,12 +75,6 @@ OBJC_EXPORT
 NS_SWIFT_NAME(BraveWallet.SwapServiceFactory)
 @interface BraveWalletSwapServiceFactory
     : KeyedServiceFactoryWrapper <id <BraveWalletSwapService>>
-@end
-
-OBJC_EXPORT
-NS_SWIFT_NAME(BraveWallet.IpfsServiceFactory)
-@interface BraveWalletIpfsServiceFactory
-    : KeyedServiceFactoryWrapper <id <BraveWalletIpfsService>>
 @end
 
 OBJC_EXPORT

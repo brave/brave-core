@@ -5,7 +5,6 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/common/config.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_wallet_unit_tests") {
@@ -135,7 +134,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",
     "//brave/components/filecoin/rs:rust_lib",
-    "//brave/components/ipfs",
     "//brave/components/json/rs:rust_lib",
     "//brave/components/resources:strings_grit",
     "//brave/components/services/brave_wallet/public/cpp/utils",

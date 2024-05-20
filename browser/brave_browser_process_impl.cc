@@ -37,7 +37,6 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -143,12 +142,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-#if BUILDFLAG(ENABLE_IPFS)
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPFSScheme);
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPNSScheme);
-#endif
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,

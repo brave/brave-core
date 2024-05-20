@@ -256,8 +256,6 @@ interface PanelHandlerFactory {
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service,
                      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                     pending_receiver<IpfsService>
-                         brave_wallet_ipfs_service_receiver,
                      pending_receiver<MeldIntegrationService>
                          meld_integration_service);
 };

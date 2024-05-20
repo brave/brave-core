@@ -43,8 +43,7 @@ export function getIsBraveWalletOrigin({
 export const isRemoteImageURL = (url?: string) =>
   url?.startsWith('http://') ||
   url?.startsWith('https://') ||
-  url?.startsWith('data:image/') ||
-  isIpfs(url)
+  url?.startsWith('data:image/')
 
 export const isValidIconExtension = (url?: string) =>
   url?.endsWith('.jpg') ||
@@ -173,14 +172,4 @@ export const isComponentInStorybook = () => {
   return (
     nftDisplayOrigin === 'braveWalletNftBridgeUrl' || nftDisplayOrigin === ''
   )
-}
-
-export const IPFS_PROTOCOL = 'ipfs://'
-
-export const isIpfs = (url?: string) => {
-  return url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
-}
-
-export const getCid = (ipfsUrl: string) => {
-  return ipfsUrl.replace(IPFS_PROTOCOL, '')
 }

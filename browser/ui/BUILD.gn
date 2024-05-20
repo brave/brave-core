@@ -12,7 +12,6 @@ import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -747,7 +746,6 @@ source_set("ui") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/google_sign_in_permission",
     "//brave/components/infobars/core",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/common",
     "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
@@ -921,13 +919,6 @@ source_set("ui") {
         "views/wayback_machine_bubble_view.h",
       ]
     }
-  }
-
-  if (enable_ipfs) {
-    deps += [
-      "//brave/components/ipfs",
-      "//components/component_updater",
-    ]
   }
 
   if (enable_speedreader && !is_android) {
