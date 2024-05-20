@@ -16,6 +16,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_news/browser/direct_feed_controller_unittest.cc",
     "//brave/components/brave_news/browser/direct_feed_fetcher_unittest.cc",
     "//brave/components/brave_news/browser/feed_building_unittest.cc",
+    "//brave/components/brave_news/browser/feed_generation_info_unittest.cc",
     "//brave/components/brave_news/browser/feed_sampling_unittest.cc",
     "//brave/components/brave_news/browser/html_parsing_unittest.cc",
     "//brave/components/brave_news/browser/initialization_promise_unittest.cc",
