@@ -201,6 +201,8 @@ public class BraveRewards: NSObject {
       ads.notifyTabDidChange(
         tabId,
         redirectChain: tab.redirectChain,
+        isNewNavigation: true,
+        isRestoring: InternalURL(url)?.isSessionRestore ?? false,
         isErrorPage: InternalURL(url)?.isErrorPage ?? false,
         isSelected: isSelected
       )
