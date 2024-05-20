@@ -2257,8 +2257,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveStatic) {
 
   content::WebContents* contents = web_contents();
   
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('#ad-banner', existence(false))"));
+  auto result =
+      EvalJs(contents,
+             "wait('#ad-banner', existence(false))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
@@ -2292,8 +2295,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
   content::WebContents* contents = web_contents();
 
   
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('.ad img', attributes(['alt']))"));
+  auto result =
+      EvalJs(contents,
+             "wait('.ad img', attributes(['alt']))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
 
   // Sanity check selector
   EXPECT_EQ(true, EvalJs(contents,

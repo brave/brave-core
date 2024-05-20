@@ -75,9 +75,7 @@ function checkSelector(selector, property, expected) {
   return check(selector, cssSelector(property, expected));
 }
 
-async function waitCSSSelector(selector, property, expected) {
-  return await wait(selector, cssSelector(property, expected));
-}
+const waitCSSSelector = async (selector, property, expected) => wait(selector, cssSelector(property, expected));
 
 // true if the selector matches some elements or no elements
 const existence = (expectedToHaveElements) =>
