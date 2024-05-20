@@ -211,7 +211,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
-      &metrics::structured::kNearbyShareMetrics,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,
