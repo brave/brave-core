@@ -26,7 +26,7 @@ function addElementsDynamically() {
 
 let didWait = false;
 
-function checkSelector(selector, predicate) {
+function check(selector, predicate) {
   const checkSelectorInner = () => {
     let elements = [].slice.call(document.querySelectorAll(selector));
     return predicate(elements);
@@ -46,21 +46,22 @@ function checkSelector(selector, predicate) {
   }
 }
 
-async function waitSelector(selector, predicate) {
-  if (await checkSelector(selector, predicate)) {
+async function wait(selector, predicate) {
+  if (await check(selector, predicate)) {
     return true;
   } else {
     console.log('still waiting for css selector');
     return new Promise(resolve => {
       setTimeout(function () {
-        resolve(waitSelector(selector, predicate));
+        resolve(wait(selector, predicate));
       }, 200);
     });
   }
 }
 
-async function waitCSSSelector(selector, property, expected) {
-  return await waitSelector(selector, (elements) => {
+// true if matches and the CSS style of every matched element has the expected value for the property
+const cssSelector = (property, expected) =>
+  (elements) => {
     if (elements.length === 0)
       return false
     let result = elements.every(e => {
@@ -68,34 +69,41 @@ async function waitCSSSelector(selector, property, expected) {
       return style[property] === expected;
     })
     return result;
-  });
+  };
+
+function checkSelector(selector, property, expected) {
+  return check(selector, cssSelector(property, expected));
 }
 
-async function waitSelectorExistence(selector, expectedToHaveElements) {
-  return await waitSelector(selector, (elements) => {
+async function waitCSSSelector(selector, property, expected) {
+  return await wait(selector, cssSelector(property, expected));
+}
+
+// true if the selector matches some elements or no elements
+const existence = (expectedToHaveElements) =>
+  (elements) => {
     return !!elements.length === expectedToHaveElements;
-  });
-}
+  };
 
-async function waitSelectorAttributes(selector, expectedAttributes) {
-  return await waitSelector(selector, (elements) => {
+// true if matched and every matched element has exactly the specified named attributes
+const attributes = (expectedAttributes) =>
+  (elements) => {
     if (elements.length === 0)
       return false;
     return elements.every(e => {
       return e.attributes.length === expectedAttributes.length && expectedAttributes.every(a => e.hasAttribute(a));
     });
-  });
-}
+  };
 
-async function waitSelectorClasses(selector, expectedClasses) {
-  return await waitSelector(selector, (elements) => {
+// true if matches and every matched element has exactly the specified classes
+const classes = (expectedClasses) =>
+  (elements) => {
     if (elements.length === 0)
       return false;
     return elements.every(e => {
       return e.classList.length === expectedClasses.length && expectedClasses.every(c => e.classList.contains(c));
     });
-  });
-}
+  };
 
 </script>
 </head>

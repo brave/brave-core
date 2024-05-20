@@ -2256,10 +2256,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveStatic) {
   NavigateToURL(tab_url);
 
   content::WebContents* contents = web_contents();
-
-  auto result = EvalJs(contents, "waitSelectorExistence('#ad-banner', false)");
-  ASSERT_TRUE(result.error.empty());
-  EXPECT_EQ(base::Value(true), result.value);
+  
+  EXPECT_EQ(true, EvalJs(contents,
+                         "check('#ad-banner', existence(false))"));
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
@@ -2275,14 +2274,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
   auto result =
       EvalJs(contents,
              "addElementsDynamically();\n"
-             "waitSelectorExistence('.blockme', false)");
+             "wait('.dontblockme', existence(true)).then(() =>"
+             "wait('.blockme', existence(false)))");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
-
-  // Sanity check selector
-  auto resultTwo = EvalJs(contents, "waitSelectorExistence('.dontblockme', true)");
-  ASSERT_TRUE(resultTwo.error.empty());
-  EXPECT_EQ(base::Value(true), resultTwo.value);
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
@@ -2296,14 +2291,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
 
   content::WebContents* contents = web_contents();
 
-  auto result = EvalJs(contents, "waitSelectorAttributes('.ad img', ['alt'])");
-  ASSERT_TRUE(result.error.empty());
-  EXPECT_EQ(base::Value(true), result.value);
+  
+  EXPECT_EQ(true, EvalJs(contents,
+                         "check('.ad img', attributes(['alt']))"));
 
   // Sanity check selector
-  auto resultTwo = EvalJs(contents, "waitSelectorAttributes('.relative-url-div img', ['src'])");
-  ASSERT_TRUE(resultTwo.error.empty());
-  EXPECT_EQ(base::Value(true), resultTwo.value);
+  EXPECT_EQ(true, EvalJs(contents,
+                         "check('.relative-url-div img', attributes(['src']))"));
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttributeDynamic) {
@@ -2318,7 +2312,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttributeDynam
 
   auto result = EvalJs(contents,
                        "addElementsDynamically();\n"
-                       "waitSelectorAttributes('img.blockme', ['class'])");
+                       "wait('img.blockme', attributes(['class']))");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }
@@ -2334,13 +2328,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveClass) {
 
   content::WebContents* contents = web_contents();
 
-  auto result = EvalJs(contents, "waitSelectorExistence('.ghi', false)");
-  ASSERT_TRUE(result.error.empty());
-  EXPECT_EQ(base::Value(true), result.value);
-
-  auto resultTwo = EvalJs(contents, "waitSelectorClasses('.ad.jkl', ['ad', 'jkl'])");
-  ASSERT_TRUE(resultTwo.error.empty());
-  EXPECT_EQ(base::Value(true), resultTwo.value);
+  EXPECT_EQ(true, EvalJs(contents,
+                         "check('.ghi', existence(false))"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "check('.ad.jkl', classes(['ad', 'jkl']))"));
 }
 
 // Test rules overridden by hostname-specific exception rules
