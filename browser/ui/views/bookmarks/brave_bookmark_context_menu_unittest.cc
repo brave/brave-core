@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/metrics/user_metrics.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/toolbar/brave_bookmark_context_menu_controller.h"
