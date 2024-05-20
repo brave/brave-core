@@ -13,6 +13,7 @@
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
 #define ShouldDisplayFavicon virtual ShouldDisplayFavicon
 #define TryToCloseWindow virtual TryToCloseWindow
+#define OnTabClosing virtual OnTabClosing
 #define TabStripEmpty virtual TabStripEmpty
 #define ResetTryToCloseWindow virtual ResetTryToCloseWindow
 #define FullscreenControllerInteractiveTest \
@@ -26,6 +27,7 @@
 #undef ResetTryToCloseWindow
 #undef TryToCloseWindow
 #undef TabStripEmpty
+#undef OnTabClosing
 #undef ShouldDisplayFavicon
 #undef ScheduleUIUpdate
 #undef FinishWarnBeforeClosing

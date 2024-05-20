@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -50,7 +51,9 @@ class BraveBrowser : public Browser {
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
   void ResetTryToCloseWindow() override;
 
+  void OnTabClosing(content::WebContents* contents) override;
   void TabStripEmpty() override;
+
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
@@ -73,11 +76,15 @@ class BraveBrowser : public Browser {
   // static
   static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
 
+  bool AreAllTabsSharedPinnedTabs();
+
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.
   bool confirmed_to_close_ = false;
+
+  base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
