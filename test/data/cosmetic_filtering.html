@@ -50,7 +50,7 @@ async function wait(selector, predicate) {
   if (await check(selector, predicate)) {
     return true;
   } else {
-    console.log('still waiting for css selector');
+    console.log('still waiting for css selector ' + selector);
     return new Promise(resolve => {
       setTimeout(function () {
         resolve(wait(selector, predicate));
