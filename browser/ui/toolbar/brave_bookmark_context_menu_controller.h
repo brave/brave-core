@@ -58,7 +58,7 @@ class BraveBookmarkContextMenuController
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
-
+  raw_ptr<bookmarks::BookmarkModel> bookmark_model_ = nullptr;
   std::unique_ptr<BookmarkBarSubMenuModel> brave_bookmarks_submenu_model_;
 };
 
