@@ -24,24 +24,25 @@ BASE_FEATURE(kSttFeature, "speech_to_text", base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kSttUrl{&kSttFeature, "web_service_url",
                                               ""};
 
-std::string GetWebServiceBaseUrl(const char* web_service_base_url) {
+std::string GetWebServiceBaseUrl(const char* web_service_base_url_for_tests) {
   if (base::FeatureList::IsEnabled(kSttFeature)) {
     return kSttUrl.Get();
   }
-  // Fallback to Google's url.
-  return web_service_base_url;
+  // Fallback to for-tests URL.
+  return web_service_base_url_for_tests;
 }
 
 }  // namespace
 
-#define downstream_url(arg)                                   \
-  downstream_url(GetWebServiceBaseUrl(web_service_base_url) + \
-                 std::string(kDownstreamUrl) +                \
-                 base::JoinString(downstream_args, "&"));
+#define downstream_url(arg)                                             \
+  downstream_url(GetWebServiceBaseUrl(web_service_base_url_for_tests) + \
+                 std::string(kDownstreamUrl) +                          \
+                 base::JoinString(downstream_args, "&"));               \
+  web_service_base_url;  // Google service is unused.
 
-#define upstream_url(arg)                                   \
-  upstream_url(GetWebServiceBaseUrl(web_service_base_url) + \
-               std::string(kUpstreamUrl) +                  \
+#define upstream_url(arg)                                             \
+  upstream_url(GetWebServiceBaseUrl(web_service_base_url_for_tests) + \
+               std::string(kUpstreamUrl) +                            \
                base::JoinString(upstream_args, "&"))
 
 #include "src/content/browser/speech/network_speech_recognition_engine_impl.cc"
