@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import os
+import re
 import subprocess
 
 BRAVE_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -31,10 +32,10 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
-        # These have auto-generated license files and
-        # GetThirdPartyDepsFromGNDepsOutput causes strange license errors
-        # unless the this entire directory is excluded.
-        os.path.join('brave', 'third_party', 'rust'),
+        # Metadata files for Rust crates are located in the subfolders of
+        # brave/third_party/rust/<crate_name>/<v>, the crates themselves in
+        # brave/third_party/rust/chromium_crates_io can be skipped.
+        os.path.join('brave', 'third_party', 'rust', 'chromium_crates_io'),
 
         # No third-party code directly under android_deps. It's all under
         # android_deps/libs instead and it's special-cased further down.
@@ -148,20 +149,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License": "Apache-2.0",
             "License File": ["/brave/third_party/reclient_configs/src/LICENSE"],
         },
-        os.path.join('brave', 'third_party', 'rust'): {
-            "Name": "rust-cxx",
-            "URL": "https://crates.io/crates/cxx",
-            "License": "Apache-2.0",
-            "License File": \
-                ["/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE"],
-        },
-        os.path.join('brave', 'third_party', 'rust'): {
-            "Name": "rust-cxx",
-            "URL": "https://crates.io/crates/either",
-            "License": "MIT",
-            "License File": \
-                ["/brave/third_party/rust/either/v1/crate/LICENSE-MIT"],
-        },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
             "URL": "https://github.com/brave/python-patch",
@@ -231,6 +218,10 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
+        # brave/third_party/rust itself doesn't need to have a license, but
+        # all subfolders in it should.
+        if path == os.path.join('brave', 'third_party', 'rust'):
+            return
         output = subprocess.check_output(
             [
                 'git', 'status', '-z',
@@ -268,3 +259,34 @@ def ContainsFiles(path):
             return True
 
     return False
+
+
+def IsBraveRustCrate(path):
+    if not path:
+        return False
+    sep = re.escape(os.path.sep)
+    path_regex = re.compile(
+        r'''^brave{sep}third_party{sep}rust{sep}{nonsep}+'''.format(
+            sep=sep, nonsep=f'[^{sep}]'))
+    return path_regex.fullmatch(path) != None
+
+
+def ReportBraveIncompleteMetadataFile(path):
+    if path.startswith('brave'):
+        raise ValueError(
+            '\n\nMETADATA ERROR: missing required fields in README.chromium in '
+            f'{path}\nIf this is code you added, then these metadata fields '
+            'in generated README.chromium are required: Name, URL, Shipped, '
+            'License File. You can fix it in one of these ways:'
+            '\n* If this is a Rust crate that you added and it has a custom '
+            'License File name, you can configure the custom name in '
+            '//brave/third_party/rust/chromium_crates_io/gnrt_config.toml.'
+            '\n* If this is a Rust crate that does not have a LICENSE file, '
+            'then either add LICENSE file in the same folder where the '
+            'README.chromium file is if the code has MIT license, or configure '
+            'the custom relative path to shared Apache-2.0 or MPL-2.0 licenses '
+            '(in //brave/commone/licenses) in '
+            '//brave/third_party/rust/chromium_crates_io/gnrt_config.toml'
+            '\n* If this is a Rust crate that is just a reference to an '
+            'upstream crate, then add it as an exception to prune_paths in '
+            '//brave/script/brave_license_helper.py.\n')
