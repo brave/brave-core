@@ -209,8 +209,9 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
@@ -236,7 +237,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate"));
+                        "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout"));
         Assert.assertTrue(
@@ -271,7 +272,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView"));
+                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
         Assert.assertTrue(
@@ -282,10 +283,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder"));
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager"));
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/LocationBarCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarLayout"));
@@ -293,7 +294,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarTablet"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/searchwidget/SearchActivityLocationBarLayout"));
+                        "org/chromium/chrome/browser/searchwidget/SearchActivityLocationBarLayout")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
@@ -305,10 +306,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator"));
+                        "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator"));
+                        "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/firstrun/FreIntentCreator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl"));
@@ -424,8 +425,7 @@ public class BytecodeTest {
                         null));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ui/"
-                                + "default_browser_promo/DefaultBrowserPromoUtils",
+                        "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
                         "prepareLaunchPromoIfNeeded",
                         MethodModifier.STATIC,
                         false,
@@ -517,8 +517,7 @@ public class BytecodeTest {
                         null));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/components/browser_ui/"
-                                + "site_settings/WebsitePermissionsFetcher",
+                        "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line
                         "getPermissionsType",
                         MethodModifier.STATIC,
                         false,
@@ -723,8 +722,7 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/share/"
-                                + "send_tab_to_self/ManageAccountDevicesLinkView",
+                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
                         "getSharingAccountInfo",
                         MethodModifier.STATIC,
                         true,
@@ -1553,10 +1551,8 @@ public class BytecodeTest {
                         SharedPreferencesManager.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/customtabs/features/"
-                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
-                        "org/chromium/chrome/browser/customtabs/features/"
-                                + "partialcustomtab/BravePartialCustomTabBottomSheetStrategy",
+                        "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/customtabs/features/partialcustomtab/BravePartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
                         Activity.class,
                         BrowserServicesIntentDataProvider.class,
                         Supplier.class,
@@ -1956,13 +1952,11 @@ public class BytecodeTest {
 
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/customtabs/features/"
-                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
                         "mStopShowingSpinner"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/customtabs/features/"
-                                + "partialcustomtab/PartialCustomTabBottomSheetStrategy",
+                        "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
                         "mTab"));
         Assert.assertTrue(
                 fieldExists(
