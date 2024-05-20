@@ -78,6 +78,27 @@ TEST_F(BraveAdsTabManagerTest, DoNotChangeVisibleTabIfMatchingRedirectChain) {
       /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 }
+
+TEST_F(BraveAdsTabManagerTest, DoNotNotifyForRestoredTabs) {
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnDidOpenNewTab).Times(0);
+  EXPECT_CALL(observer_mock_, OnTabDidChange).Times(0);
+  EXPECT_CALL(observer_mock_, OnTabDidChangeFocus).Times(0);
+
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/true,
+      /*is_error_page=*/false, /*is_visible=*/true);
+}
+
+TEST_F(BraveAdsTabManagerTest,
+       DoNotNotifyTabDidChangeIfReturningToPreviouslyCommittedNavigation) {
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnTabDidChange).Times(0);
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/false, /*is_restoring=*/true,
+      /*is_error_page=*/false, /*is_visible=*/true);
 }
 
 TEST_F(BraveAdsTabManagerTest, ChangeTabFocusToOccluded) {
