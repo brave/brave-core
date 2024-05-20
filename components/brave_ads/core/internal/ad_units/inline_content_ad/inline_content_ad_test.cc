@@ -34,6 +34,7 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
 
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
+        /*is_new_navigation=*/true, /*is_restoring=*/false,
         /*is_error_page=*/false, /*is_visible=*/true);
   }
 

@@ -201,6 +201,8 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 
 void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
+                                      const bool is_new_navigation,
+                                      const bool is_restoring,
                                       const bool is_error_page,
                                       const bool is_visible) {
   CHECK(!redirect_chain.empty());
@@ -210,7 +212,8 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   TabInfo& tab = GetOrCreateForId(tab_id);
 
   // Check if the tab changed.
-  const bool did_change = does_exist && tab.redirect_chain != redirect_chain;
+  const bool did_change =
+      does_exist && is_new_navigation && tab.redirect_chain != redirect_chain;
 
   // Check if the tab changed focus.
   const bool did_change_focus = !does_exist || tab.is_visible != is_visible;
@@ -223,6 +226,11 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   if (is_visible) {
     // Update the visible tab id.
     visible_tab_id_ = tab_id;
+  }
+
+  if (is_restoring) {
+    return BLOG(2, "Restored " << (is_visible ? "focused" : "occluded")
+                               << " tab with id " << tab_id);
   }
 
   // Notify observers.

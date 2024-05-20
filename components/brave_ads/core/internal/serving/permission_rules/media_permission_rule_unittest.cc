@@ -27,6 +27,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -42,6 +43,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -59,6 +61,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -75,6 +78,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -94,6 +98,7 @@ TEST_F(
 
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -107,6 +112,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
@@ -121,6 +127,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
