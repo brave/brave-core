@@ -67,6 +67,9 @@ extension URL {
     public static let braveLeoLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=link-order&product=leo"
     )!
+    public static let braveLeoRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=leo&ux=mobile"
+    )!
     public static let braveLeoModelCategorySupport = URL(
       string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
     )!

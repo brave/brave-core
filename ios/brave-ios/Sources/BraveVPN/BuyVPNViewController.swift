@@ -276,13 +276,13 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
 extension BuyVPNViewController: BuyVPNView.ActionDelegate {
 
   func refreshSiteCredentials() {
-    let p3aLearnMoreController = SFSafariViewController(
+    let vpnRefreshSafariController = SFSafariViewController(
       url: .brave.braveVPNRefreshCredentials,
       configuration: .init()
     )
-    p3aLearnMoreController.modalPresentationStyle = .currentContext
+    vpnRefreshSafariController.modalPresentationStyle = .currentContext
 
-    present(p3aLearnMoreController, animated: true)
+    present(vpnRefreshSafariController, animated: true)
   }
 }
 

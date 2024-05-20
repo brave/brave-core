@@ -119,7 +119,7 @@ struct AIChatPaywallView: View {
       }
       .sheet(isPresented: $shouldRefreshCredentials) {
         if shouldRefreshCredentials {
-          AIChatSafariControllerView(url: .brave.braveVPNRefreshCredentials)
+          AIChatSafariControllerView(url: .brave.braveLeoRefreshCredentials)
             .edgesIgnoringSafeArea(.all)
         }
       }
