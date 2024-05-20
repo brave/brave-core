@@ -6,14 +6,23 @@
 package org.chromium.chrome.browser.vpn;
 
 public interface BraveVpnObserver {
-    default public void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess){};
-    default public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess){};
-    default public void onGetHostnamesForRegion(String jsonHostnames, boolean isSuccess){};
-    default public void onGetWireguardProfileCredentials(
-            String jsonWireguardProfileCredentials, boolean isSuccess){};
-    default public void onVerifyCredentials(String jsonVerifyCredentials, boolean isSuccess){};
+    public default void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {}
+    ;
 
-    default public void onInvalidateCredentials(
+    public default void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {}
+    ;
+
+    public default void onGetHostnamesForRegion(String jsonHostnames, boolean isSuccess) {}
+    ;
+
+    public default void onGetWireguardProfileCredentials(
+            String jsonWireguardProfileCredentials, boolean isSuccess) {}
+    ;
+
+    public default void onVerifyCredentials(String jsonVerifyCredentials, boolean isSuccess) {}
+    ;
+
+    public default void onInvalidateCredentials(
             String jsonInvalidateCredentials, boolean isSuccess) {}
     ;
 

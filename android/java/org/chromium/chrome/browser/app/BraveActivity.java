@@ -471,7 +471,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
-            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+            mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
         super.onDestroyInternal();
         cleanUpBraveNewsController();
@@ -1276,7 +1276,7 @@ public abstract class BraveActivity extends ChromeActivity
                                         if (mAppUpdateManager != null) {
                                             mAppUpdateManager.completeUpdate();
                                             mAppUpdateManager.unregisterListener(
-                                                    installStateUpdatedListener);
+                                                    mInstallStateUpdatedListener);
                                         }
                                     }
                                 },
@@ -1290,7 +1290,7 @@ public abstract class BraveActivity extends ChromeActivity
         snackbarManager.showSnackbar(snackbar);
     }
 
-    private final InstallStateUpdatedListener installStateUpdatedListener =
+    private final InstallStateUpdatedListener mInstallStateUpdatedListener =
             installState -> {
                 if (installState.installStatus() == InstallStatus.DOWNLOADED) {
                     completeUpdateSnackbar();
@@ -1299,7 +1299,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void checkAppUpdate() {
         mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
-        mAppUpdateManager.registerListener(installStateUpdatedListener);
+        mAppUpdateManager.registerListener(mInstallStateUpdatedListener);
 
         Task<AppUpdateInfo> appUpdateInfoTask = mAppUpdateManager.getAppUpdateInfo();
 
