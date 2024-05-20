@@ -73,6 +73,8 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidChange(int32_t tab_id,
                             const std::vector<GURL>& redirect_chain,
+                            bool is_new_navigation,
+                            bool is_restoring,
                             bool is_error_page,
                             bool is_visible) override;
   void OnNotifyDidCloseTab(int32_t tab_id) override;

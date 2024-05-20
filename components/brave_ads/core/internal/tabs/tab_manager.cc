@@ -201,6 +201,8 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 
 void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
+                                      const bool is_new_navigation,
+                                      const bool is_restoring,
                                       const bool is_error_page,
                                       const bool is_visible) {
   CHECK(!redirect_chain.empty());
