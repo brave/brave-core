@@ -1,9 +1,0 @@
-Name: psl-types
-URL: https://crates.io/crates/psl-types
-Description: Common types for the public suffix implementation crates
-Version: 2.0.11
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/psl-types-2.0.11/LICENSE-APACHE,//brave/third_party/rust/chromium_crates_io/vendor/psl-types-2.0.11/LICENSE
-Revision: c0b9c35c4cc306c4f8a888814a68e652571e2730
