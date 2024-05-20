@@ -161,13 +161,13 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  if (is_restoring_ || !is_new_navigation_) {
-    // Don't notify content changes if the tab was restored or was a previously
-    // committed navigation.
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes if the tab redirect chain is empty.
     return;
   }
 
   ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
+                                   is_new_navigation_, is_restoring_,
                                    is_error_page_, IsVisible());
 }
 
