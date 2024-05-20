@@ -288,6 +288,7 @@ static_library("internal") {
     "ad_units/promoted_content_ad/promoted_content_ad_info.cc",
     "ad_units/promoted_content_ad/promoted_content_ad_info.h",
     "ad_units/search_result_ad/search_result_ad_feature.cc",
+    "ad_units/search_result_ad/search_result_ad_feature.h",
     "ad_units/search_result_ad/search_result_ad_handler.cc",
     "ad_units/search_result_ad/search_result_ad_handler.h",
     "ads.cc",
