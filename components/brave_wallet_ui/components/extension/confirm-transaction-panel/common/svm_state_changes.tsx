@@ -35,6 +35,7 @@ import {
   NftAssetIconWithPlaceholder,
   NFT_ICON_STYLE
 } from './state_change_asset_icons'
+import { CopyLabel } from '../../../shared/copy_label/copy_label'
 
 // style
 import {
@@ -105,12 +106,24 @@ export const SOLTransfer = ({
       padding={0}
       margin={'0px 0px 8px 0px'}
     >
-      <Text
-        textSize='12px'
-        color={color.text.secondary}
+      <Row
+        alignItems='center'
+        justifyContent='space-between'
       >
-        {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
-      </Text>
+        <Text
+          textSize='12px'
+          color={color.text.secondary}
+        >
+          {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
+        </Text>
+        {/* TODO: counterparty not available */}
+        {/* {transfer.counterparty?.address && (
+          <CopyLabel textToCopy={transfer.counterparty.address}>
+            {getLocale('braveWalletSwapTo')}{' '}
+            <strong>{reduceAddress(transfer.counterparty.address)}</strong>
+          </CopyLabel>
+        )} */}
+      </Row>
       <Row
         margin={'4px 0px 0px 0px'}
         alignItems='center'
@@ -201,12 +214,23 @@ export const SPLTokenTransfer = ({
       padding={0}
       margin={'0px 0px 8px 0px'}
     >
-      <Text
-        textSize='12px'
-        color={color.text.secondary}
+      <Row
+        alignItems='center'
+        justifyContent='space-between'
       >
-        {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
-      </Text>
+        <Text
+          textSize='12px'
+          color={color.text.secondary}
+        >
+          {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
+        </Text>
+        {transfer.counterparty && (
+          <CopyLabel textToCopy={transfer.counterparty}>
+            {getLocale('braveWalletSwapTo')}{' '}
+            <strong>{reduceAddress(transfer.counterparty)}</strong>
+          </CopyLabel>
+        )}
+      </Row>
       <Row
         margin={'4px 0px 0px 0px'}
         alignItems='center'
