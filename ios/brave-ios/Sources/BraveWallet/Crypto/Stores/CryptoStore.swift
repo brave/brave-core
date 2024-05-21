@@ -427,6 +427,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
       prefilledToken: prefilledToken,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
@@ -573,6 +574,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
     )

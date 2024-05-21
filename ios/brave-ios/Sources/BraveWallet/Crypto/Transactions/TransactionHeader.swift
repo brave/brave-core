@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TransactionHeader: View {
 
-  let fromAccountAddress: String
+  let fromAccountInfo: BraveWallet.AccountInfo
   let fromAccountName: String
   let toAccountAddress: String
   let toAccountName: String
@@ -25,25 +25,25 @@ struct TransactionHeader: View {
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        if fromAccountAddress == toAccountAddress || toAccountAddress.isEmpty {
-          Blockie(address: fromAccountAddress)
+        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty {
+          Blockie(address: fromAccountInfo.address)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)
             )
-          AddressView(address: fromAccountAddress) {
+          AddressView(address: fromAccountInfo.address) {
             Text(fromAccountName)
           }
         } else {
           BlockieGroup(
-            fromAddress: fromAccountAddress,
+            fromAddress: fromAccountInfo.blockieSeed,
             toAddress: toAccountAddress,
             size: min(blockieSize, maxBlockieSize)
           )
           Group {
             if sizeCategory.isAccessibilityCategory {
               VStack {
-                AddressView(address: fromAccountAddress) {
+                AddressView(address: fromAccountInfo.address) {
                   Text(fromAccountName)
                 }
                 Image(systemName: "arrow.down")
@@ -53,13 +53,13 @@ struct TransactionHeader: View {
               }
             } else {
               HStack {
-                AddressView(address: fromAccountAddress) {
+                AddressView(address: fromAccountInfo.address) {
                   Text(fromAccountName)
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)
                 Image(systemName: "arrow.right")
                 AddressView(address: toAccountAddress) {
-                  Text(toAccountName)
+                  Text(toAccountName.isEmpty ? toAccountAddress.truncatedAddress : toAccountName)
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)
               }

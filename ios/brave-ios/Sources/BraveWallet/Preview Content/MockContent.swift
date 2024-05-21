@@ -467,6 +467,36 @@ extension BraveWallet.TransactionInfo {
     effectiveRecipient: nil,
     isRetriable: false
   )
+  /// Bitcoin Unapproved Send
+  static let mockBTCUnapprovedSend = BraveWallet.TransactionInfo(
+    id: "9",
+    fromAddress: BraveWallet.AccountInfo.mockBtcAccount.address,
+    from: BraveWallet.AccountInfo.mockBtcAccount.accountId,
+    txHash: "",
+    txDataUnion:
+      .init(
+        btcTxData:
+          .init(
+            to: "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+            amount: 5000,
+            sendingMaxAmount: false,
+            fee: 2544,
+            inputs: [],
+            outputs: []
+          )
+      ),
+    txStatus: .unapproved,
+    txType: .other,
+    txParams: [],
+    txArgs: [],
+    createdTime: Date(timeIntervalSince1970: 1_715_280_785),  // Thursday, May 9, 2024 6:53:05 PM
+    submittedTime: Date(timeIntervalSince1970: 1_715_280_790),  // Thursday, May 9, 2024 6:53:10 PM
+    confirmedTime: Date(timeIntervalSince1970: 1_715_281_790),  // Thursday, May 9, 2024 7:09:50 PM
+    originInfo: nil,
+    chainId: BraveWallet.BitcoinMainnet,
+    effectiveRecipient: nil,
+    isRetriable: false
+  )
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {
     guard let data = Data(base64Encoded: base64String) else { return [] }
     return Array(data).map(NSNumber.init(value:))
@@ -490,27 +520,6 @@ extension BraveWallet.SignMessageRequest {
       ),
       coin: .eth,
       chainId: BraveWallet.MainnetChainId
-    )
-  }
-}
-
-extension TransactionSummary {
-
-  static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
-  static var previewConfirmedSwap = previewSummary(from: .previewConfirmedSwap)
-  static var previewConfirmedERC20Approve = previewSummary(from: .previewConfirmedERC20Approve)
-
-  static func previewSummary(from txInfo: BraveWallet.TransactionInfo) -> Self {
-    TransactionParser.transactionSummary(
-      from: txInfo,
-      network: .mockMainnet,
-      accountInfos: [.previewAccount],
-      userAssets: [.previewToken, .previewDaiToken],
-      allTokens: [],
-      assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
-      nftMetadata: [:],
-      solEstimatedTxFee: nil,
-      currencyFormatter: .usdCurrencyFormatter
     )
   }
 }
