@@ -293,13 +293,13 @@ export const getToAddressesFromSolanaTransaction = (
   tx: SolanaTransactionInfo
 ) => {
   const { solanaTxData } = tx.txDataUnion
-  const instructions = getTypedSolanaTxInstructions(solanaTxData)
   const to = solanaTxData?.toWalletAddress ?? ''
 
   if (to) {
     return [to]
   }
 
+  const instructions = getTypedSolanaTxInstructions(solanaTxData)
   const addresses = instructions.map(getTypedSolanaInstructionToAddress(to))
 
   // unique, non empty addresses
@@ -1712,7 +1712,7 @@ export const parseTransactionWithoutPrices = ({
     isEIP1559Transaction,
     isFilecoinTransaction: isFilecoinTransaction(tx),
     isSendingToZeroXExchangeProxy,
-    isSolanaDappTransaction: isSolanaTransaction(tx),
+    isSolanaDappTransaction: isSolanaDappTransaction(tx),
     isSolanaSPLTransaction: isSolanaSplTransaction(tx),
     isSolanaTransaction: isSolanaTransaction(tx),
     isSwap: isSwapTransaction(tx),

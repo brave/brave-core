@@ -105,12 +105,13 @@ export const ConfirmSimulatedTransactionPanel = ({
     rejectAllTransactions,
     insufficientFundsForGasError,
     insufficientFundsError,
-    onConfirm
+    onConfirm,
+    isSolanaDappTransaction
   } = usePendingTransactions()
 
   // queries
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
-    transactionDetails
+    transactionDetails && simulationType === 'EVM'
       ? {
           address: transactionDetails.recipient ?? '',
           coin: transactionDetails.coinType ?? -1,
@@ -123,7 +124,8 @@ export const ConfirmSimulatedTransactionPanel = ({
   )
 
   // computed
-  const isContract = !isLoading && byteCode !== '0x'
+  const isContract =
+    isSolanaDappTransaction || (!isLoading && byteCode && byteCode !== '0x')
   const contractAddress =
     transactionDetails?.recipient && isContract
       ? transactionDetails.recipient
@@ -313,6 +315,7 @@ export const ConfirmSimulatedTransactionPanel = ({
               <SimulatedTxMessageBox isDetails={selectedTab === 'details'}>
                 <TransactionDetailBox
                   transactionInfo={selectedPendingTransaction}
+                  instructions={transactionDetails.instructions}
                 />
               </SimulatedTxMessageBox>
             )}
