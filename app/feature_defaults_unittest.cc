@@ -307,7 +307,3 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature)) << feature->name;
   }
 }
-
-TEST(FeatureDefaultsTest, ParamStates) {
-  EXPECT_TRUE(features::kDnsOverHttpsShowUiParam.default_value);
-}

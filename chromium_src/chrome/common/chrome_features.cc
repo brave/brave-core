@@ -5,9 +5,7 @@
 
 #include "chrome/common/chrome_features.h"
 
-#define kDnsOverHttpsShowUiParam kDnsOverHttpsShowUiParamDisabled
 #include "src/chrome/common/chrome_features.cc"
-#undef kDnsOverHttpsShowUiParam
 
 #include "base/feature_override.h"
 
@@ -36,9 +34,5 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kWebAppUniversalInstall, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});
-
-// Enable the DoH settings UI in chrome://settings/security on all platforms.
-const base::FeatureParam<bool> kDnsOverHttpsShowUiParam{&kDnsOverHttps,
-                                                        "ShowUi", true};
 
 }  // namespace features
