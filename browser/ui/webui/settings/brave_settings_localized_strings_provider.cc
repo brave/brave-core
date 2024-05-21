@@ -58,8 +58,6 @@ const char16_t kBraveReleaseTagPrefix[] =
 const char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
-const char16_t kDNSLinkLearnMoreURL[] =
-    u"https://docs.ipfs.io/concepts/dnslink/";
 const char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Resolve-Methods-for-Unstoppable-Domains";
@@ -734,7 +732,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
-  html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",

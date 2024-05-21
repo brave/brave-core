@@ -9,18 +9,3 @@ index e9e83637f2a462ef7ddb502f854e8dc7770eaa4c..cd474d6e8e9a45a6b6eca6fa72c65443
 +  BRAVE_CHROME_BROWSING_DATA_REMOVER_DELEGATE_H
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
- 
-@@ -152,11 +153,12 @@ class ChromeBrowsingDataRemoverDelegate
-     kMediaDeviceSalts = 45,
-     // See also kDisableAutoSigninForProfilePasswords.
-     kDisableAutoSigninForAccountPasswords = 46,
-+    kIPFSCache = 47,
- 
-     // Please update ChromeBrowsingDataRemoverTasks in enums.xml and
-     // History.ClearBrowsingData.Duration.ChromeTask.{Task}
-     // in histograms/metadata/history/histograms.xml when adding entries!
--    kMaxValue = kDisableAutoSigninForAccountPasswords,
-+    kMaxValue = kIPFSCache,
-   };
- 
-   // Returns the suffix for the

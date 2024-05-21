@@ -30,7 +30,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
