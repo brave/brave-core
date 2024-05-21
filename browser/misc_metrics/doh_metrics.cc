@@ -38,11 +38,30 @@ using net::DohFallbackEndpointType;
 using net::features::kBraveFallbackDoHProvider;
 using net::features::kBraveFallbackDoHProviderEndpoint;
 
-DohMetrics::DohMetrics(PrefService* local_state)
-    : total_request_storage_(local_state, kMiscMetricsTotalDnsRequestStorage),
-      upgraded_request_storage_(local_state,
-                                kMiscMetricsUpgradedDnsRequestStorage),
-      local_state_(local_state) {
+DohMetrics::DohMetrics(PrefService* local_state) : local_state_(local_state) {
+  int current_fallback_int = static_cast<int>(DohFallbackEndpointType::kNone);
+  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
+    current_fallback_int =
+        static_cast<int>(kBraveFallbackDoHProviderEndpoint.Get());
+  }
+  int last_fallback_int = local_state->GetInteger(kMiscMetricsLastDohFallback);
+  if (current_fallback_int != last_fallback_int) {
+    local_state->SetInteger(kMiscMetricsLastDohFallback, current_fallback_int);
+    if (last_fallback_int != -1) {
+      // New users, and users that upgraded to a client version
+      // that introduced this pref should not clear the collected stats.
+      // Only users that we're suddenly included in a DoH fallback study should
+      // clear existing stats, so we can collect fresh stats.
+      local_state->ClearPref(kMiscMetricsTotalDnsRequestStorage);
+      local_state->ClearPref(kMiscMetricsUpgradedDnsRequestStorage);
+    }
+  }
+
+  total_request_storage_ = std::make_unique<WeeklyStorage>(
+      local_state, kMiscMetricsTotalDnsRequestStorage);
+  upgraded_request_storage_ = std::make_unique<WeeklyStorage>(
+      local_state, kMiscMetricsUpgradedDnsRequestStorage);
+
   pref_change_registrar_.Init(local_state_);
   pref_change_registrar_.Add(
       prefs::kDnsOverHttpsMode,
@@ -58,6 +77,7 @@ DohMetrics::~DohMetrics() {
 void DohMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsTotalDnsRequestStorage);
   registry->RegisterListPref(kMiscMetricsUpgradedDnsRequestStorage);
+  registry->RegisterIntegerPref(kMiscMetricsLastDohFallback, -1);
 }
 
 void DohMetrics::HandleDnsOverHttpsMode() {
@@ -78,14 +98,14 @@ void DohMetrics::HandleDnsOverHttpsMode() {
 void DohMetrics::OnDnsRequestCounts(
     network::mojom::DnsRequestCountsPtr counts) {
   if (counts->upgraded_count > 0) {
-    upgraded_request_storage_.AddDelta(counts->upgraded_count);
+    upgraded_request_storage_->AddDelta(counts->upgraded_count);
   }
   if (counts->total_count > 0) {
-    total_request_storage_.AddDelta(counts->total_count);
+    total_request_storage_->AddDelta(counts->total_count);
   }
   double percentage =
-      static_cast<double>(upgraded_request_storage_.GetWeeklySum()) /
-      std::max(total_request_storage_.GetWeeklySum(), uint64_t(1u)) * 100.0;
+      static_cast<double>(upgraded_request_storage_->GetWeeklySum()) /
+      std::max(total_request_storage_->GetWeeklySum(), uint64_t(1u)) * 100.0;
   if (percentage == 0.0) {
     UMA_HISTOGRAM_EXACT_LINEAR(kAutoSecureRequestsHistogramName, INT_MAX - 1,
                                4);

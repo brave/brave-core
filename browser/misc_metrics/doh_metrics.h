@@ -6,10 +6,11 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_DOH_METRICS_H_
 #define BRAVE_BROWSER_MISC_METRICS_DOH_METRICS_H_
 
-#include "base/timer/timer.h"
+#include <memory>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/network/public/mojom/network_service.mojom.h"
@@ -54,8 +55,8 @@ class DohMetrics {
   void StopListeningToDnsRequests();
   void OnDnsRequestCounts(network::mojom::DnsRequestCountsPtr counts);
 
-  WeeklyStorage total_request_storage_;
-  WeeklyStorage upgraded_request_storage_;
+  std::unique_ptr<WeeklyStorage> total_request_storage_;
+  std::unique_ptr<WeeklyStorage> upgraded_request_storage_;
 
   PrefChangeRegistrar pref_change_registrar_;
   raw_ptr<PrefService> local_state_;
