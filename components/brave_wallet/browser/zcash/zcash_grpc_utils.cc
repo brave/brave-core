@@ -14,7 +14,7 @@
 namespace brave_wallet {
 
 namespace {
-constexpr size_t kMaxMessageSizeBytes = 10000;
+constexpr size_t kMaxMessageSizeBytes = 100000;
 constexpr size_t kGrpcHeaderSize = 5;
 constexpr char kNoCompression = 0;
 }  // namespace

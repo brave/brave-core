@@ -20,9 +20,110 @@
 namespace brave_wallet {
 
 namespace {
+
 std::vector<uint8_t> ToBytes(const std::string& str) {
   return std::vector<uint8_t>(str.begin(), str.end());
 }
+
+std::string GetHeader(size_t seed) {
+  return "header" + base::NumberToString(seed);
+}
+
+std::string GetPrevHash(size_t seed) {
+  return "prevhash" + base::NumberToString(seed);
+}
+
+std::string GetHash(size_t seed) {
+  return "hash" + base::NumberToString(seed);
+}
+
+std::string GetCipherText(size_t seed) {
+  return "ciphertext" + base::NumberToString(seed);
+}
+
+std::string GetCmx(size_t seed) {
+  return "cmx" + base::NumberToString(seed);
+}
+
+std::string GetEphemeralKey(size_t seed) {
+  return "ek" + base::NumberToString(seed);
+}
+
+std::string GetNullifier(size_t seed) {
+  return "nullifier" + base::NumberToString(seed);
+}
+
+void GenerateOrchardAction(::zcash::CompactOrchardAction* action, size_t seed) {
+  action->set_ciphertext(GetCipherText(seed));
+  action->set_cmx(GetCmx(seed));
+  action->set_ephemeralkey(GetEphemeralKey(seed));
+  action->set_nullifier(GetNullifier(seed));
+}
+
+void GenerateTransaction(::zcash::CompactTx* tx, size_t seed) {
+  tx->set_hash(GetHash(seed));
+  tx->set_index(seed);
+  tx->set_fee(seed);
+  for (size_t i = 0; i < 5; i++) {
+    auto* action = tx->add_actions();
+    GenerateOrchardAction(action, seed + i);
+  }
+}
+
+void GenerateBlock(::zcash::CompactBlock* block, size_t seed) {
+  for (size_t i = 0; i < 5; i++) {
+    auto* tx = block->add_vtx();
+    GenerateTransaction(tx, seed + i);
+  }
+  block->set_height(seed);
+  block->set_hash(GetHash(seed));
+  block->set_prevhash(GetPrevHash(seed));
+  block->set_header(GetHeader(seed));
+  block->set_time(seed);
+  block->mutable_chainmetadata()->set_orchardcommitmenttreesize(1);
+}
+
+std::vector<::zcash::CompactBlock> GenerateBlocks() {
+  std::vector<::zcash::CompactBlock> result;
+  for (size_t i = 0; i < 5; i++) {
+    ::zcash::CompactBlock block;
+    GenerateBlock(&block, i);
+    result.push_back(std::move(block));
+  }
+  return result;
+}
+
+zcash::mojom::CompactBlockPtr GenerateMojoBlock(size_t seed) {
+  std::vector<zcash::mojom::CompactTxPtr> transactions;
+  for (size_t i = 0; i < 5; i++) {
+    std::vector<zcash::mojom::CompactOrchardActionPtr> orchard_actions;
+    for (size_t j = 0; j < 5; j++) {
+      orchard_actions.push_back(zcash::mojom::CompactOrchardAction::New(
+          ToBytes(GetNullifier(seed + i + j)), ToBytes(GetCmx(seed + i + j)),
+          ToBytes(GetEphemeralKey(seed + i + j)),
+          ToBytes(GetCipherText(seed + i + j))));
+    }
+    zcash::mojom::CompactTxPtr tx =
+        zcash::mojom::CompactTx::New(seed + i, ToBytes(GetHash(seed + i)),
+                                     seed + i, std::move(orchard_actions));
+    transactions.push_back(std::move(tx));
+  }
+  auto chain_metadata = zcash::mojom::ChainMetadata::New(1);
+  return zcash::mojom::CompactBlock::New(
+      0, seed, ToBytes(GetHash(seed)), ToBytes(GetPrevHash(seed)), seed,
+      ToBytes(GetHeader(seed)), std::move(transactions),
+      std::move(chain_metadata));
+}
+
+std::vector<zcash::mojom::CompactBlockPtr> GenerateMojoBlocks() {
+  std::vector<zcash::mojom::CompactBlockPtr> result;
+  for (size_t i = 0; i < 5; i++) {
+    zcash::mojom::CompactBlockPtr block = GenerateMojoBlock(i);
+    result.push_back(std::move(block));
+  }
+  return result;
+}
+
 }  // namespace
 
 class ZCashDecoderUnitTest : public testing::Test {
@@ -309,6 +410,79 @@ TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
     base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
     EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::TreeStatePtr())));
     decoder()->ParseTreeState("", callback.Get());
+  }
+}
+
+TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
+  std::vector<::zcash::CompactBlock> blocks = GenerateBlocks();
+  std::vector<zcash::mojom::CompactBlockPtr> expected_blocks =
+      GenerateMojoBlocks();
+
+  // Correct input
+  {
+    std::vector<std::string> input;
+    for (const auto& block : blocks) {
+      input.push_back(GetPrefixedProtobuf(block.SerializeAsString()));
+    }
+
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::_))
+        .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
+                          blocks) {
+          EXPECT_EQ(expected_blocks.size(), blocks->size());
+          for (size_t i = 0; i < expected_blocks.size(); i++) {
+            EXPECT_TRUE(mojo::Equals(expected_blocks[i], blocks.value()[i]));
+          }
+        });
+    decoder()->ParseCompactBlocks(input, callback.Get());
+  }
+  // Missed protobuf prefix is incorrect
+  {
+    std::vector<std::string> input;
+    for (size_t i = 0; i < blocks.size(); i++) {
+      input.push_back(blocks[i].SerializeAsString());
+    }
+
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Eq(std::nullopt)));
+    decoder()->ParseCompactBlocks(input, callback.Get());
+  }
+  // Protobuf prefix exists but data format is wrong
+  {
+    std::vector<std::string> input;
+    for (size_t i = 0; i < blocks.size(); i++) {
+      input.push_back(GetPrefixedProtobuf(""));
+    }
+
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Eq(std::nullopt)));
+    decoder()->ParseCompactBlocks(input, callback.Get());
+  }
+  // Corrupted input
+  {
+    std::vector<std::string> input;
+    for (const auto& block : blocks) {
+      input.push_back(
+          GetPrefixedProtobuf(block.SerializeAsString()).substr(0, 5));
+    }
+
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Eq(std::nullopt)));
+    decoder()->ParseCompactBlocks(input, callback.Get());
+  }
+  // Random string as input
+  {
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Eq(std::nullopt)));
+    decoder()->ParseCompactBlocks({"123"}, callback.Get());
+  }
+  // Empty input
+  {
+    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+    EXPECT_CALL(callback, Run(testing::_))
+        .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
+                          blocks) { EXPECT_EQ(0u, blocks->size()); });
+    decoder()->ParseCompactBlocks({}, callback.Get());
   }
 }
 

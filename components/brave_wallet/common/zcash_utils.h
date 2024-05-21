@@ -17,12 +17,24 @@ namespace brave_wallet {
 
 inline constexpr size_t kZCashDigestSize = 32;
 inline constexpr size_t kOrchardRawBytesSize = 43;
+inline constexpr size_t kOrchardFullViewKeySize = 96;
 inline constexpr uint32_t kZip32Purpose = 32u;
 inline constexpr uint32_t kTestnetCoinType = 1u;
 inline constexpr uint32_t kDefaultZCashBlockHeightDelta = 20;
 inline constexpr uint32_t kDefaultTransparentOutputsCount = 2;
 inline constexpr uint32_t kGraceActionsCount = 2;
 inline constexpr uint64_t kMarginalFee = 5000;
+// Parts of compact orchard compact action
+// https://github.com/zcash/lightwalletd/blob/6e3816b5834583c492c37ce05b0faaf9fe12c87f/walletrpc/compact_formats.proto#L75
+inline constexpr size_t kOrchardNullifierSize = 32u;
+inline constexpr size_t kOrchardCmxSize = 32u;
+inline constexpr size_t kOrchardEphemeralKeySize = 32u;
+inline constexpr size_t kOrchardCipherTextSize = 52u;
+
+// Reduce current scanning position on this value if reorg is found
+inline constexpr size_t kChainReorgBlockDelta = 150;
+// Number of blocks downloaded by a single request
+inline constexpr size_t kScanBatchSize = 10;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
 enum ZCashAddrType {
@@ -55,9 +67,28 @@ struct DecodedZCashAddress {
 };
 
 struct OrchardOutput {
-  uint64_t value = 0;
+  uint32_t value = 0;
   std::array<std::uint8_t, ::brave_wallet::kOrchardRawBytesSize> addr;
-  auto operator<=>(const OrchardOutput&) const = default;
+
+  bool operator==(const OrchardOutput& other) const = default;
+};
+
+// Structure describes note nullifier that marks some note as spent
+struct OrchardNullifier {
+  // Block id where spent nullifier was met
+  uint32_t block_id = 0;
+  std::array<uint8_t, kOrchardNullifierSize> nullifier;
+
+  bool operator==(const OrchardNullifier& other) const = default;
+};
+
+// Structure describes found spendable note
+struct OrchardNote {
+  uint32_t block_id = 0;
+  std::array<uint8_t, kOrchardNullifierSize> nullifier;
+  uint32_t amount = 0;
+
+  bool operator==(const OrchardNote& other) const = default;
 };
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);

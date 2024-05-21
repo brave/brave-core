@@ -16,11 +16,21 @@ use orchard::{
     zip32::ChildIndex as OrchardChildIndex,
     keys::Scope as OrchardScope,
     keys::FullViewingKey as OrchardFVK,
+    keys::PreparedIncomingViewingKey,
     zip32::Error as Zip32Error,
     zip32::ExtendedSpendingKey,
-    tree::MerkleHashOrchard
+    tree::MerkleHashOrchard,
+    note_encryption:: {
+        OrchardDomain,
+        CompactAction
+    },
+    note:: {
+        Nullifier,
+        ExtractedNoteCommitment
+    }
 };
 
+use zcash_note_encryption::EphemeralKeyBytes;
 use zcash_primitives::transaction::components::amount::Amount;
 
 use ffi::OrchardOutput;
@@ -32,6 +42,12 @@ use rand::CryptoRng;
 use brave_wallet::{
   impl_error
 };
+
+use zcash_note_encryption::{
+    batch, BatchDomain, Domain, ShieldedOutput, COMPACT_NOTE_SIZE, ENC_CIPHERTEXT_SIZE,
+};
+
+use crate::ffi::OrchardCompactAction;
 
 // The rest of the wallet code should be updated to use this version of unwrap
 // and then this code can be removed
@@ -122,10 +138,18 @@ impl RngCore for MockRng {
 mod ffi {
     struct OrchardOutput {
         // Amount of zashi being spend
-        value: u64,
+        value: u32,
         // Recipient raw Orchard address.
         // Array size should match kOrchardRawBytesSize
         addr: [u8; 43]
+    }
+
+    // Encoded orchard output extracted from the transaction
+    struct OrchardCompactAction {
+        nullifier: [u8; 32],
+        ephemeral_key: [u8; 32],
+        cmx: [u8; 32],
+        enc_cipher_text : [u8; 52]
     }
 
     extern "Rust" {
@@ -133,9 +157,13 @@ mod ffi {
         type OrchardUnauthorizedBundle;
         type OrchardAuthorizedBundle;
 
+        type BatchOrchardDecodeBundle;
+
         type OrchardExtendedSpendingKeyResult;
         type OrchardUnauthorizedBundleResult;
         type OrchardAuthorizedBundleResult;
+
+        type BatchOrchardDecodeBundleResult;
 
         // OsRng is used
         fn create_orchard_bundle(
@@ -159,6 +187,11 @@ mod ffi {
         fn error_message(self: &OrchardExtendedSpendingKeyResult) -> String;
         fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
 
+        fn batch_decode(
+            fvk_bytes: &[u8; 96],
+            actions: Vec<OrchardCompactAction>
+        ) -> Box<BatchOrchardDecodeBundleResult>;
+
         fn derive(
             self: &OrchardExtendedSpendingKey,
             index: u32
@@ -175,6 +208,9 @@ mod ffi {
             self: &OrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
+        fn full_view_key(
+            self: &OrchardExtendedSpendingKey
+        ) -> [u8; 96];
 
         fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
@@ -183,6 +219,14 @@ mod ffi {
         fn is_ok(self: &OrchardUnauthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardUnauthorizedBundleResult) -> String;
         fn unwrap(self: &OrchardUnauthorizedBundleResult) -> Box<OrchardUnauthorizedBundle>;
+
+        fn is_ok(self: &BatchOrchardDecodeBundleResult) -> bool;
+        fn error_message(self: &BatchOrchardDecodeBundleResult) -> String;
+        fn unwrap(self: &BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
+
+        fn size(self :&BatchOrchardDecodeBundle) -> u64;
+        fn note_value(self :&BatchOrchardDecodeBundle, index: u64) -> u32;
+        fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: u64) -> [u8; 32];
 
         // Orchard digest is desribed here https://zips.z.cash/zip-0244#t-4-orchard-digest
         // Used in constructing signature digest and tx id
@@ -203,6 +247,8 @@ pub enum Error {
     OrchardBuilder(OrchardBuildError),
     WrongOutputError,
     BuildError,
+    FvkError,
+    OrchardActionFormatError,
 }
 
 impl_error!(Zip32Error, Zip32);
@@ -215,6 +261,8 @@ impl fmt::Display for Error {
             Error::OrchardBuilder(e) => write!(f, "Error: {}", e.to_string()),
             Error::WrongOutputError => write!(f, "Error: Can't parse output"),
             Error::BuildError => write!(f, "Error, build error"),
+            Error::OrchardActionFormatError => write!(f, "Error, orchard action format error"),
+            Error::FvkError => write!(f, "Error, fvk format error")
         }
     }
 }
@@ -244,19 +292,33 @@ pub struct OrchardAuthorizedBundleValue {
 }
 
 #[derive(Clone)]
+pub struct DecryptedOrchardOutput {
+    note: <OrchardDomain as Domain>::Note
+}
+#[derive(Clone)]
+pub struct BatchOrchardDecodeBundleValue {
+    outputs: Vec<DecryptedOrchardOutput>
+}
+
+#[derive(Clone)]
 struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
 #[derive(Clone)]
 struct OrchardAuthorizedBundle(OrchardAuthorizedBundleValue);
 #[derive(Clone)]
 struct OrchardUnauthorizedBundle(OrchardUnauthorizedBundleValue);
+#[derive(Clone)]
+struct BatchOrchardDecodeBundle(BatchOrchardDecodeBundleValue);
 
 struct OrchardExtendedSpendingKeyResult(Result<OrchardExtendedSpendingKey, Error>);
 struct OrchardAuthorizedBundleResult(Result<OrchardAuthorizedBundle, Error>);
 struct OrchardUnauthorizedBundleResult(Result<OrchardUnauthorizedBundle, Error>);
+struct BatchOrchardDecodeBundleResult(Result<BatchOrchardDecodeBundle, Error>);
 
 impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
 impl_result!(OrchardAuthorizedBundle, OrchardAuthorizedBundleResult, OrchardAuthorizedBundleValue);
 impl_result!(OrchardUnauthorizedBundle, OrchardUnauthorizedBundleResult, OrchardUnauthorizedBundleValue);
+
+impl_result!(BatchOrchardDecodeBundle, BatchOrchardDecodeBundleResult, BatchOrchardDecodeBundleValue);
 
 fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
@@ -294,6 +356,13 @@ impl OrchardExtendedSpendingKey {
             diversifier_index, OrchardScope::Internal);
         address.to_raw_address_bytes()
     }
+
+    fn full_view_key(
+        self: &OrchardExtendedSpendingKey
+    ) -> [u8; 96] {
+        let fvk = OrchardFVK::from(&self.0);
+        return fvk.to_bytes();
+    }
 }
 
 impl OrchardAuthorizedBundle {
@@ -330,7 +399,7 @@ fn create_orchard_builder_internal(
         let _ = match Option::from(orchard::Address::from_raw_address_bytes(&out.addr)) {
             Some(addr) => {
                 builder.add_output(None, addr,
-                    orchard::value::NoteValue::from_raw(out.value), None)
+                    orchard::value::NoteValue::from_raw(u64::from(out.value)), None)
             },
             None => return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongOutputError)))
         };
@@ -409,5 +478,92 @@ impl OrchardUnauthorizedBundle {
             Ok(result)
         })))
     }
+}
+
+impl ShieldedOutput<OrchardDomain, COMPACT_NOTE_SIZE> for OrchardCompactAction {
+    fn ephemeral_key(&self) -> EphemeralKeyBytes {
+        EphemeralKeyBytes(self.ephemeral_key)
+    }
+
+    fn cmstar_bytes(&self) -> [u8; 32] {
+        self.cmx
+    }
+
+    fn enc_ciphertext(&self) -> &[u8; COMPACT_NOTE_SIZE] {
+        &self.enc_cipher_text
+    }
+}
+
+fn batch_decode(
+    fvk_bytes: &[u8; 96],
+    actions: Vec<OrchardCompactAction>
+) -> Box<BatchOrchardDecodeBundleResult> {
+    let fvk = match OrchardFVK::from_bytes(fvk_bytes) {
+        Some(fvk) => fvk,
+        None => return Box::new(BatchOrchardDecodeBundleResult::from(Err(Error::FvkError)))
+    };
+
+    let ivks = [
+        PreparedIncomingViewingKey::new(&fvk.to_ivk(OrchardScope::External)),
+        PreparedIncomingViewingKey::new(&fvk.to_ivk(OrchardScope::Internal))
+    ];
+
+    let input_actions: Result<Vec<(OrchardDomain, OrchardCompactAction)>, Error> = actions
+        .into_iter()
+        .map(|v| {
+            let nullifier_ctopt = Nullifier::from_bytes(&v.nullifier);
+            let nullifier = if nullifier_ctopt.is_none().into() {
+                Err(Error::OrchardActionFormatError)
+            } else {
+                Ok(nullifier_ctopt.unwrap())
+            }?;
+
+            let cmx_ctopt = ExtractedNoteCommitment::from_bytes(&v.cmx);
+            let cmx = if cmx_ctopt.is_none().into() {
+                Err(Error::OrchardActionFormatError)
+            } else {
+                Ok(cmx_ctopt.unwrap())
+            }?;
+
+            let ephemeral_key = EphemeralKeyBytes(v.ephemeral_key);
+            let enc_cipher_text = v.enc_cipher_text;
+
+            let compact_action = CompactAction::from_parts(nullifier, cmx, ephemeral_key, enc_cipher_text);
+            let orchard_domain = OrchardDomain::for_compact_action(&compact_action);
+
+            Ok((orchard_domain, v))
+        })
+        .collect();
+
+    let input_actions = match input_actions {
+        Ok(actions) => actions,
+        Err(e) => return Box::new(BatchOrchardDecodeBundleResult::from(Err(e.into())))
+    };
+
+    let decrypted_outputs = batch::try_compact_note_decryption(&ivks, &input_actions.as_slice())
+    .into_iter()
+    .map(|res| {
+        res.map(|((note, _recipient), _ivk_idx)| DecryptedOrchardOutput {
+            note: note
+        })
+    })
+    .filter_map(|x| x)
+    .collect::<Vec<_>>();
+
+    Box::new(BatchOrchardDecodeBundleResult::from(Ok(BatchOrchardDecodeBundleValue { outputs: decrypted_outputs })))
+}
+
+impl BatchOrchardDecodeBundle {
+    fn size(self :&BatchOrchardDecodeBundle) -> u64 {
+        return self.0.outputs.len() as u64;
+      }
+
+      fn note_value(self :&BatchOrchardDecodeBundle, index: u64) -> u32 {
+        return u32::try_from(self.0.outputs[index as usize].note.value().inner()).unwrap();
+      }
+
+      fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: u64) -> [u8; 32] {
+       return self.0.outputs[index as usize].note.nullifier(&OrchardFVK::from_bytes(fvk).unwrap()).to_bytes();
+      }
 }
 

@@ -32,6 +32,8 @@ class ExtendedSpendingKey {
   // in transactions
   virtual std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) = 0;
+
+  virtual std::array<uint8_t, kOrchardFullViewKeySize> GetFullViewKey() = 0;
 };
 
 }  // namespace brave_wallet::orchard
