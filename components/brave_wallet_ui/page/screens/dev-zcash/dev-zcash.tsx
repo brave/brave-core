@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import {
   LoadingSkeleton //
 } from '../../../components/shared/loading-skeleton/index'
-import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { CoinType, ZCashShieldSyncStatus } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const StyledWrapper = styled.div`
@@ -60,10 +60,51 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     BraveWallet.ZCashBalance | undefined
   >()
   const [shieldResult, setShieldResult] = useState<string>()
+  const [makeAccountShieldableResult, setMakeAccountShieldableResult] = useState<string>()
+  const [syncStatusResult, setSyncStatusResult] = useState<string>();
+  const [shieldedBalanceValue, setShieldedBalanceValue] = useState<string>();
 
   React.useEffect(() => {
     fetchBalance()
   })
+
+  const makeAccountShielded = async() => {
+    const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
+        props.accountId);
+    setMakeAccountShieldableResult(result.errorMessage || '');
+  }
+
+  const startOrchardSync = async() => {
+    const syncObserver = new BraveWallet.ZCashSyncObserverReceiver({
+      onStart: () => {
+        setSyncStatusResult("Started");
+      },
+      onStop: () => {
+        setSyncStatusResult("Stopped");
+      },
+      onUpdateSyncStatus: (status: ZCashShieldSyncStatus) => {
+        setSyncStatusResult("Current block " + status.currentBlock + "/" + status.chainTip);
+        setShieldedBalanceValue("" + status.spendableBalance);
+      },
+      onError: (error: string) => {
+        setSyncStatusResult("Error : " + error);
+      }
+    });
+
+    const result = await getAPIProxy().zcashWalletService.startShieldSync(
+      props.accountId, syncObserver.$.bindNewPipeAndPassRemote());
+
+    if (result.errorMessage) {
+      setSyncStatusResult("Sync error " + result.errorMessage);
+    }
+  }
+
+  const stopOrchardSync = async() => {
+    const result = await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
+    if (result.errorMessage) {
+      setSyncStatusResult("Stop error " + result.errorMessage);
+    }
+  }
 
   const fetchBalance = async () => {
     setLoading(true)
@@ -97,10 +138,18 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
         />
       ) : (
         <>
+          <button onClick={makeAccountShielded}>Upgrade to shielded</button>
+          <button onClick={startOrchardSync}>Start orchard sync</button>
+          <button onClick={stopOrchardSync}>Stop orchard sync</button>
+
           <button onClick={fetchBalance}>Reload</button>
           <button onClick={shieldFunds}>Shield</button>
+          <h3>make account shieldable result: {makeAccountShieldableResult}</h3>
+          <h3>sync status: {syncStatusResult}</h3>
           <h3>shield result: {shieldResult}</h3>
           <h3>balance: {balance?.totalBalance.toString()}</h3>
+          <h3>shielded balance: {shieldedBalanceValue}</h3>
+
           <ul>
             {balance?.balances &&
               Object.entries(balance.balances as { [key: string]: BigInt }).map(

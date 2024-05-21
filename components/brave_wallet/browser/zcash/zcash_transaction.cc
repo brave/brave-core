@@ -120,6 +120,8 @@ ZCashTransaction::OrchardPart::~OrchardPart() = default;
 ZCashTransaction::OrchardPart::OrchardPart(OrchardPart&& other) = default;
 ZCashTransaction::OrchardPart& ZCashTransaction::OrchardPart::operator=(
     OrchardPart&& other) = default;
+ZCashTransaction::OrchardPart& ZCashTransaction::OrchardPart::operator=(
+    const OrchardPart& other) = default;
 bool ZCashTransaction::OrchardPart::operator==(const OrchardPart& other) const {
   return std::tie(this->digest, this->outputs, this->raw_tx) ==
          std::tie(other.digest, other.outputs, other.raw_tx);
@@ -338,6 +340,7 @@ ZCashTransaction ZCashTransaction::Clone() const {
   result.to_ = to_;
   result.amount_ = amount_;
   result.fee_ = fee_;
+  result.orchard_part_ = orchard_part_;
 
   return result;
 }
@@ -354,6 +357,7 @@ base::Value::Dict ZCashTransaction::ToValue() const {
   for (auto& output : transparent_part_.outputs) {
     outputs_value.Append(output.ToValue());
   }
+  // TODO(cypt4): Add orchard part serialization\deserialization
 
   dict.Set("locktime", base::NumberToString(locktime_));
   dict.Set("to", to_);
