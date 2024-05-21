@@ -1215,7 +1215,7 @@
 <translation id="1901303067676059328">選取全部(&amp;A)</translation>
 <translation id="6893464351226208429">系統會將你造訪的網址儲存到 Brave 帳戶</translation>
 <translation id="7537444825255698750">在 Brave 中管理網站的攝影機權限</translation>
-<translation id="1906181697255754968">網站通常會存取裝置上的檔案和資料夾，以提供自動儲存作業等功能</translation>
+<translation id="1906181697255754968">網站通常會存取裝置上的檔案和資料夾，以提供自動儲存等功能</translation>
 <translation id="1907044622262489040">使用語音輸入。按下搜尋鍵 + D 鍵，然後開始說話。</translation>
 <translation id="1907659324308286326">某些 Thunderbolt 或 USB4 配件必須存取記憶體，才能正常運作。</translation>
 <translation id="1908591798274282246">重新開啟先前關閉的群組</translation>
@@ -3389,6 +3389,7 @@
 <translation id="3566325075220776093">從這部裝置</translation>
 <translation id="3566721612727112615">未新增任何網站</translation>
 <translation id="356738834800832239">已儲存密碼</translation>
+<translation id="3568431410312984116">允許「幫我寫」功能自動開啟</translation>
 <translation id="3569382839528428029">你想讓 <ph name="APP_NAME"/> 共用你的畫面嗎？</translation>
 <translation id="3569614820047645079">「我的雲端硬碟」中的檔案會自動同步至 Chromebook，這樣你就能在沒有網際網路連線的情況下存取檔案。</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> 可以檢視下列檔案和資料夾</translation>
@@ -4125,7 +4126,7 @@
 <translation id="4102906002417106771">重新啟動以執行 Powerwash</translation>
 <translation id="4103644672850109428">螢幕閱讀器、放大</translation>
 <translation id="4104163789986725820">匯出(&amp;X)...</translation>
-<translation id="4104944259562794668">你之後可以前往「設定」&gt;「安全性與隱私權」&gt;「螢幕鎖定和登入」加以啟用</translation>
+<translation id="4104944259562794668">你之後可以前往「設定」&gt;「安全性和隱私權」&gt;「螢幕鎖定和登入」加以啟用</translation>
 <translation id="4106054677122819586">現在就開始整理分頁</translation>
 <translation id="4107048419833779140">識別並退出儲存裝置</translation>
 <translation id="4107522742068568249">前往安全檢查頁面</translation>
@@ -4798,7 +4799,7 @@
 <translation id="4642587497923912728">Steam for Chromebook (Beta 版) 僅供第一個登入這部 Chromebook 的帳戶使用。</translation>
 <translation id="4643612240819915418">在新分頁中開啟影片(&amp;O)</translation>
 <translation id="4643833688073835173">Chromebook 會使用內建感應器偵測裝置前方的人員。所有資料都會立即在這部裝置上處理，完成後便會全數刪除。感應器資料絕不會傳送給 Brave。</translation>
-<translation id="4645575059429386691">你的家長已停用這項功能</translation>
+<translation id="4645575059429386691">這個瀏覽器是由家長管理</translation>
 <translation id="4645676300727003670">保留(&amp;K)</translation>
 <translation id="4646675363240786305">連接埠</translation>
 <translation id="4647090755847581616">關閉分頁(&amp;C)</translation>
@@ -4836,7 +4837,7 @@
 <translation id="4666472247053585787">在 <ph name="DEVICE_TYPE"/> 上查看手機的通知</translation>
 <translation id="4666911709726371538">更多應用程式</translation>
 <translation id="4668279686271488041">定期刪除裝置上的廣告評估資料</translation>
-<translation id="4668929960204016307">，</translation>
+<translation id="4668929960204016307">、</translation>
 <translation id="4670909875730475086">恭喜！「<ph name="APP_NAME"/>」已成功安裝在裝置上</translation>
 <translation id="4672759829555593783">立即開啟「<ph name="FILE_NAME"/>」</translation>
 <translation id="4673442866648850031">移除觸控筆時取出觸控筆工具</translation>
@@ -5837,6 +5838,7 @@
 <translation id="5474859849784484111"><ph name="MANAGER"/> 要求你立即連線到 Wi-Fi 下載更新，或使用計量付費連線下載更新 (可能要支付流量費用)。</translation>
 <translation id="5477089831058413614">設定 <ph name="DEVICE_TYPE"/> 無線基地台</translation>
 <translation id="5481273127572794904">不得自動下載多個檔案</translation>
+<translation id="5481682542063333508">提供寫作輔助</translation>
 <translation id="5481941284378890518">新增附近的印表機</translation>
 <translation id="3389019465696070233">登入帳戶，允許 Brave 提供分頁群組建議及整理分頁</translation>
 <translation id="8126971123326806277">開啟之後，系統會在 iCloud 鑰匙圈中建立密碼金鑰，方便你在 Apple 裝置上使用。如果關閉，系統會在這部裝置的 Brave 設定檔中建立密碼金鑰。</translation>
@@ -5911,7 +5913,7 @@
 <translation id="5528295196101251711">VM 名稱</translation>
 <translation id="5529554942700688235">記憶體用量節省摘要，已釋出 <ph name="MEMORY_VALUE"/></translation>
 <translation id="5532223876348815659">通用</translation>
-<translation id="5533001281916885985"><ph name="SITE_NAME"/>要求下列權限：</translation>
+<translation id="5533001281916885985"><ph name="SITE_NAME"/> 要求下列權限</translation>
 <translation id="5533343601674003130">PDF 服務</translation>
 <translation id="5537725057119320332">投放</translation>
 <translation id="5539070192556911367">無法連上 Brave</translation>
@@ -9990,6 +9992,7 @@
 <translation id="869167754614449887">已從下載記錄中刪除「<ph name="FILE_NAME"/>」</translation>
 <translation id="8692107307702113268">密碼長度超過 1000 個半形字元</translation>
 <translation id="8693639060656817812">進一步瞭解追蹤保護功能的適用情形</translation>
+<translation id="8693862390730570097">不允許自動開啟「幫我寫」</translation>
 <translation id="8694596275649352090">在休眠或機蓋蓋上時鎖定</translation>
 <translation id="8695139659682234808">在設定完成後新增家長監護功能</translation>
 <translation id="8695825812785969222">開啟位置(&amp;L)...</translation>
@@ -10567,6 +10570,7 @@
 <translation id="9112987648460918699">尋找...</translation>
 <translation id="9113240369465613386">僅限奇數頁</translation>
 <translation id="9113469270512809735">顯示/隱藏最近關閉的項目</translation>
+<translation id="9113529408970052045">當網站上的文字方塊可填入簡短內容時，「幫我寫」功能會自動開啟</translation>
 <translation id="9114663181201435112">輕鬆登入</translation>
 <translation id="9115675100829699941">書籤(&amp;B)</translation>
 <translation id="916115484239820348">這項設定不會影響 Brave 翻譯或智慧鏡頭的可用性</translation>

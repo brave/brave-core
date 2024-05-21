@@ -2022,11 +2022,6 @@
 <translation id="4986297793092101884">يقوم Brave بالفعل بحظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية. يمكننا حظر إشعارات الموافقة على ملفات تعريف الارتباط أيضا.</translation>
 <translation id="535688588637568715">نعم، حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
 <translation id="2808175374672429053">غير مسموح باستخدام أحرف البدل في Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields حظر <ph name="COMPANY_LIST"/> أدوات تتبع على <ph name="SITE_URL"/>}
-      =1 {Brave Shields حظر <ph name="COMPANY_LIST"/> و 1 أداة تتبع أخرى على <ph name="SITE_URL"/>}
-      other {Brave Shields حظر <ph name="COMPANY_LIST"/> و {BLOCKED_COUNT} أدوات تتبع أخرى على <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields حظر 1 أداة تتبع على <ph name="SITE_URL"/>}
       other {Brave Shields حظر {BLOCKED_COUNT} أداة تتبع أخرى على <ph name="SITE_URL"/>}

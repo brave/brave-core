@@ -486,7 +486,7 @@ Du kan til enhver tid tjekke dine adgangskoder i <ph name="GOOGLE_PASSWORD_MANAG
 <translation id="1367817137674340530"><ph name="COUNT"/> billeder blev genereret</translation>
 <translation id="1368603372088757436">Linux understøttes ikke på din <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="799844208112570829">Hvis du vil bruge dem på dine andre enheder, skal du gemme dem på din Brave-konto</translation>
-<translation id="1370384480654163477">Se og rediger filer fra sidste gang, du besøgte dette website:</translation>
+<translation id="1370384480654163477">Se og redigere filer fra sidste gang, du besøgte dette website:</translation>
 <translation id="1372841398847029212">Synkroniser med din konto</translation>
 <translation id="1373176046406139583">Din enheds synlighed styrer, hvem der kan dele indhold med dig, når din skærm er låst op. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="1374844444528092021">Det certifikat, som netværket "<ph name="NETWORK_NAME"/>" kræver, er enten ikke installeret eller ikke længere gyldigt.  Få fat i et nyt certifikat, og prøv at oprette forbindelse igen.</translation>
@@ -3405,6 +3405,7 @@ Du kan administrere indstillingerne for denne konto ved at installere Family Lin
 <translation id="3566325075220776093">Fra denne enhed</translation>
 <translation id="3566721612727112615">Der er ikke tilføjet nogen websites</translation>
 <translation id="356738834800832239">Din adgangskode er gemt</translation>
+<translation id="3568431410312984116">Tillad, at "Hjælp mig med at skrive" åbnes automatisk</translation>
 <translation id="3569382839528428029">Vil du acceptere, at <ph name="APP_NAME"/> deler din skærm?</translation>
 <translation id="3569614820047645079">Dine filer i Mit drev synkroniseres automatisk med din Chromebook, så du kan få adgang til dem uden en internetforbindelse.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> kan se følgende filer og mapper</translation>
@@ -5855,6 +5856,7 @@ De tilladelser, du har givet til websites og apps, gælder muligvis for denne ko
 <translation id="5474859849784484111"><ph name="MANAGER"/> kræver, at du opretter forbindelse til Wi-Fi nu og downloader en opdatering. Du kan også downloade via en forbrugsafregnet forbindelse (du opkræves muligvis et gebyr).</translation>
 <translation id="5477089831058413614">Konfigurer <ph name="DEVICE_TYPE"/>-hotspot</translation>
 <translation id="5481273127572794904">Har ikke tilladelse til at downloade flere filer automatisk</translation>
+<translation id="5481682542063333508">Tilbyd hjælp til at skrive</translation>
 <translation id="5481941284378890518">Tilføj printere i nærheden</translation>
 <translation id="3389019465696070233">Log ind for at få Brave til at foreslå fanegrupper og holde dine faner organiseret</translation>
 <translation id="8126971123326806277">Når denne indstilling er aktiveret, oprettes der adgangsnøgler i iCloud-nøglering, og nøglerne vil være tilgængelige på dine Apple-enheder. Når denne indstilling er deaktiveret, oprettes der adgangsnøgler på din Brave-profil på denne enhed.</translation>
@@ -8036,7 +8038,7 @@ Du har # andre kompromitterede adgangskoder. Brave Adgangs­kode­admin­istrato
 <translation id="7199452998289813782">Sæt casting til <ph name="DEVICE_NAME"/> på pause</translation>
 <translation id="720110658997053098">Lad kiosktilstand forblive aktiveret på denne enhed</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" er slettet</translation>
-<translation id="7201420661433230412">Få vist filer</translation>
+<translation id="7201420661433230412">Se filer</translation>
 <translation id="7201535955609308429">Vent, mens verificeringen er i gang</translation>
 <translation id="7202337678781136582">Scan QR-koden med din Android-telefon</translation>
 <translation id="7203150201908454328">Udvidet</translation>
@@ -10013,6 +10015,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="869167754614449887"><ph name="FILE_NAME"/> er blevet slettet fra downloadhistorikken</translation>
 <translation id="8692107307702113268">Adgangskoden er på mere end 1.000 tegn</translation>
 <translation id="8693639060656817812">Få flere oplysninger om tilgængeligheden af Sporingsbeskyttelse</translation>
+<translation id="8693862390730570097">Tillad ikke, at "Hjælp mig med at skrive" åbnes automatisk</translation>
 <translation id="8694596275649352090">Lås, når enheden skifter til dvaletilstand, eller låget lukkes</translation>
 <translation id="8695139659682234808">Tilføj indstillinger for børnesikring efter konfigurationen</translation>
 <translation id="8695825812785969222">Åbn &amp;placering...</translation>
@@ -10592,6 +10595,7 @@ De tilladelser, du har givet til websites og apps, gælder muligvis for denne ko
 <translation id="9112987648460918699">Find...</translation>
 <translation id="9113240369465613386">Kun ulige sider</translation>
 <translation id="9113469270512809735">Slå nyligt lukkede elementer til/fra</translation>
+<translation id="9113529408970052045">"Hjælp mig med at skrive" kan åbnes automatisk, når et tekstfelt på et website kan udfyldes med indhold i kort format</translation>
 <translation id="9114663181201435112">Log nemt ind</translation>
 <translation id="9115675100829699941">&amp;Bogmærker</translation>
 <translation id="916115484239820348">Denne indstilling ændrer ikke tilgængeligheden af Brave Oversæt eller Lens</translation>

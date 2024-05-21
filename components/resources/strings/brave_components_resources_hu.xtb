@@ -1889,8 +1889,8 @@
 <translation id="2505565639170795978">Üdv, Leo vagyok, egy teljes körűen a Brave által üzemeltetett MI-segéd. A működésem alapja a Llama 13B, egy nagy teljesítményű, számos használati esetben alkalmazható modell, amelyet a Meta fejlesztett ki.</translation>
 <translation id="8030558642460377506">Üdvözlöm, Leo vagyok! A Brave MI-asszisztense vagyok. Mixtral 8x7B motorral működöm, ami egy, a Mistral AI által kifejezetten az összetett feladatok végrehajtására kifejlesztett modell.</translation>
 <translation id="2489317965865266353">Üdv, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
-<translation id="8583558415545871403">Üdv, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
-<translation id="4147243042852964992">Üdv, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude 3 Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
+<translation id="8583558415545871403">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
+<translation id="4147243042852964992">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, a(z) <ph name="COMPANY_NAME"/> által</translation>
 <translation id="8944485226638699751">Korlátozott</translation>
 <translation id="6187065185557150870">Csevegés</translation>
@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">A Brave alapértelmezés szerint blokkolja a harmadik féltől származó cookie-kat. Letilthatjuk a cookie-khoz való hozzájárulással kapcsolatos értesítéseket is.</translation>
 <translation id="535688588637568715">Igen, letiltom a cookie-khoz való hozzájárulással kapcsolatos értesítéseket</translation>
 <translation id="2808175374672429053">A Brave Pajzsok esetében nem engedélyezett a helyettesítő karakterek használata.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {A Brave Pajzsok <ph name="COMPANY_LIST"/> követőt blokkolt itt: <ph name="SITE_URL"/>}
-=1 {A Brave Pajzsok  <ph name="COMPANY_LIST"/> és 1 további követőt blokkolt itt: <ph name="SITE_URL"/>}
-other {A Brave Pajzsok <ph name="COMPANY_LIST"/> és {BLOCKED_COUNT} további követőt blokkolt itt: <ph name="SITE_URL"/>}
-}</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
 =1 {A Brave Pajzsok 1 követőt blokkolt itt: <ph name="SITE_URL"/>}
 other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_URL"/>}

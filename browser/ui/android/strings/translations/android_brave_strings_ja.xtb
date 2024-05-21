@@ -700,7 +700,7 @@
 <translation id="6748319398471481216">毎月更新</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
-<translation id="6277055349883621705">年間更新で 16% オフ</translation>
+<translation id="7574007394522199115">年間更新で <ph name="PERCENTAGE_AMOUNT"/>%% オフ</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
 <translation id="6053992191006521518">無料で試す</translation>

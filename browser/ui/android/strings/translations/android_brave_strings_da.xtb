@@ -639,7 +639,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2502258949541727762">Inden vi begynder</translation>
 <translation id="4303748097351941030">Understøttede netværk</translation>
 <translation id="4204268048253692928">Du kan altid tilføje netværk i Indstillinger</translation>
-<translation id="2523174693142405417">Søg netværk</translation>
+<translation id="2523174693142405417">Søg netværker</translation>
 <translation id="1164748583090434571">Vis testnets</translation>
 <translation id="935220650946301698">Fortsæt med <ph name="NUMBER"/>-netværk</translation>
 <translation id="8248460961680233459">Opret adgangskode</translation>
@@ -700,7 +700,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="6748319398471481216">Forny månedlig</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / md.</translation>
 <translation id="1163809943099641131">Et år</translation>
-<translation id="6277055349883621705">Forny årligt, og spar 16 %</translation>
+<translation id="7574007394522199115">Forny årligt, og spar <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / år.</translation>
 <translation id="2655185358771731232">Prøv gratis i 7 dage. Efter 7 dage vil du blive opkrævet abonnementsprisen. Alle abonnementer fornyes automatisk, men kan annulleres inden fornyelse.</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>

@@ -2025,11 +2025,6 @@
 <translation id="4986297793092101884">„Brave“ jau blokuoja trečiųjų šalių slapukus. Taip pat galime blokuoti pranešimus sutikti su slapukais.</translation>
 <translation id="535688588637568715">Taip, blokuoti pranešimus sutikti su slapukais</translation>
 <translation id="2808175374672429053">„Brave“ skydams pakaitiniai simboliai neleidžiami.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> sekikliai įjungti <ph name="SITE_URL"/>}
-      =1 {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> ir 1 kitas sekiklis įjungtas <ph name="SITE_URL"/>}
-      other {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> ir {BLOCKED_COUNT} kiti sekikliai įjungti <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields blokuojamas 1 sekiklis įjungtas <ph name="SITE_URL"/>}
       other {Brave Shields blokuojamas {BLOCKED_COUNT} sekikliai įjungti <ph name="SITE_URL"/>}

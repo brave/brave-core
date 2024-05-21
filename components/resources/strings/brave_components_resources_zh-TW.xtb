@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave 已經封鎖了第三方 Cookie。我們也可以封鎖 Cookie 同意通知。</translation>
 <translation id="535688588637568715">是，封鎖 Cookie 同意通知</translation>
 <translation id="2808175374672429053">Brave Shields 不允許使用萬用字元。</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields 已在 <ph name="SITE_URL"/> 封鎖多個 <ph name="COMPANY_LIST"/> 追蹤器}
-      =1 {Brave Shields 已在 <ph name="SITE_URL"/> 封鎖 <ph name="COMPANY_LIST"/> 和其他 1 個追蹤器}
-      other {Brave Shields 已在 <ph name="SITE_URL"/> 封鎖 <ph name="COMPANY_LIST"/> 和其他 {BLOCKED_COUNT} 個追蹤器}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields 已在 <ph name="SITE_URL"/> 封鎖 1 個追蹤器}
       other {Brave Shields 已在 <ph name="SITE_URL"/> 封鎖 {BLOCKED_COUNT} 個追蹤器}

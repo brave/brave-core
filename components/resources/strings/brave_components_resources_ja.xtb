@@ -2024,11 +2024,6 @@
 <translation id="4986297793092101884">Braveはすでにサードパーティーのクッキーをブロックしています。クッキーの同意通知もブロックすることができます。</translation>
 <translation id="535688588637568715">はい、Cookieの同意通知をブロックします。</translation>
 <translation id="2808175374672429053">Braveシールドにワイルドカードを使用することはできません。</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shieldsが<ph name="SITE_URL"/>で<ph name="COMPANY_LIST"/>のトラッカーをブロックしました}
-      =1 {Brave Shieldsが<ph name="SITE_URL"/>で<ph name="COMPANY_LIST"/>および他1件のトラッカーをブロックしました}
-      other {Brave Shieldsが<ph name="SITE_URL"/>で<ph name="COMPANY_LIST"/>および他{BLOCKED_COUNT}件のトラッカーをブロックしました}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shieldsが<ph name="SITE_URL"/>で1件のトラッカーをブロックしました}
       other {Brave Shieldsが<ph name="SITE_URL"/>で{BLOCKED_COUNT}件のトラッカーをブロックしました}
