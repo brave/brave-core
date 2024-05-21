@@ -74,7 +74,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
     public static void mergeWindows(Activity activity) {
         try {
             MultiInstanceManager multiInstanceManager =
-                    BraveActivity.getBraveActivity().getMultiInstanceManager();
+                    BraveActivity.getBraveActivityFromTaskId(activity.getTaskId())
+                            .getMultiInstanceManager();
             if (multiInstanceManager != null) {
                 multiInstanceManager.handleMenuOrKeyboardAction(
                         org.chromium.chrome.R.id.move_to_other_window_menu_id, false);
