@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ipfs/ipfs_service_delegate.h"
+#include "build/build_config.h"
 
 class PrefService;
 #if !BUILDFLAG(IS_ANDROID)
