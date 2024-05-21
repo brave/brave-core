@@ -23,7 +23,6 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -140,21 +139,21 @@ jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(JNIEnv* env) {
 jlong JNI_BravePrefServiceBridge_GetTrackersBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kTrackersBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
 }
@@ -166,7 +165,7 @@ void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kTrackersBlocked,
       count + profile->GetPrefs()->GetUint64(kTrackersBlocked));
@@ -179,7 +178,7 @@ void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kAdsBlocked, count + profile->GetPrefs()->GetUint64(kAdsBlocked));
 }
@@ -191,7 +190,7 @@ void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
   if (count <= 0) {
     return;
   }
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  Profile* profile = Profile::FromJavaObject(j_profile);
   profile->GetPrefs()->SetUint64(
       kHttpsUpgrades, count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
 }
