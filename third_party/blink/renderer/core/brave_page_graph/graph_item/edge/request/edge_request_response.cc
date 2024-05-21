@@ -37,10 +37,6 @@ GraphNode* EdgeRequestResponse::GetRequestingNode() const {
   return GetInNode();
 }
 
-ItemName EdgeRequestResponse::GetItemName() const {
-  return "request response";
-}
-
 void EdgeRequestResponse::AddGraphMLAttributes(xmlDocPtr doc,
                                                xmlNodePtr parent_node) const {
   EdgeRequest::AddGraphMLAttributes(doc, parent_node);
