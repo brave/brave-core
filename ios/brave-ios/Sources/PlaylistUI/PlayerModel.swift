@@ -25,7 +25,6 @@ public final class PlayerModel: ObservableObject {
     self.mediaStreamer = mediaStreamer
     self.initialPlaybackInfo = initialPlaybackInfo
 
-    // FIXME: Consider moving this to a setUp method and call explicitly from UI
     player.seek(to: .zero)
     player.actionAtItemEnd = .none
 
@@ -41,7 +40,11 @@ public final class PlayerModel: ObservableObject {
     setupPlayerNotifications()
     setupPictureInPictureKeyPathObservation()
     setupRemoteCommandCenterHandlers()
-    updateSystemPlayer()
+    Task { @MainActor in
+      updateSystemPlayer()
+    }
+
+    UIApplication.shared.beginReceivingRemoteControlEvents()
 
     // FIXME: Maybe only set this before first playback
     DispatchQueue.global().async {
@@ -57,6 +60,8 @@ public final class PlayerModel: ObservableObject {
       stop()
     }
     try? AVAudioSession.sharedInstance().setActive(false)
+    MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+    UIApplication.shared.endReceivingRemoteControlEvents()
   }
 
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PlayerModel")
@@ -152,6 +157,7 @@ public final class PlayerModel: ObservableObject {
       toleranceBefore: accurately ? .zero : .positiveInfinity,
       toleranceAfter: accurately ? .zero : .positiveInfinity
     )
+    await updateSystemPlayer()
   }
 
   // MARK: - Playback Extras
@@ -170,12 +176,13 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @Published var repeatMode: RepeatMode = .none
+  @MainActor @Published var repeatMode: RepeatMode = .none
 
-  @Published var isShuffleEnabled: Bool = false {
+  @MainActor @Published var isShuffleEnabled: Bool = false {
     didSet {
       if oldValue != isShuffleEnabled {
         makeItemQueue(selectedItemID: selectedItemID)
+        updateSystemPlayer()
       }
     }
   }
@@ -198,7 +205,7 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @Published var playbackSpeed: PlaybackSpeed = .normal {
+  @MainActor @Published var playbackSpeed: PlaybackSpeed = .normal {
     didSet {
       player.defaultRate = playbackSpeed.rate
       if isPlaying {
@@ -208,7 +215,7 @@ public final class PlayerModel: ObservableObject {
   }
 
   private var sleepTimer: Timer?
-  @Published var sleepTimerFireDate: Date? {
+  @MainActor @Published var sleepTimerFireDate: Date? {
     didSet {
       sleepTimer?.invalidate()
       if let sleepTimerFireDate {
@@ -335,7 +342,7 @@ public final class PlayerModel: ObservableObject {
   public let mediaStreamer: PlaylistMediaStreamer?
   public let initialPlaybackInfo: InitialPlaybackInfo?
 
-  @Published var selectedItemID: PlaylistItem.ID? {
+  @MainActor @Published var selectedItemID: PlaylistItem.ID? {
     willSet {
       if let selectedItem {
         let currentTime = currentTime
@@ -346,23 +353,26 @@ public final class PlayerModel: ObservableObject {
         )
       }
     }
+    didSet {
+      updateSystemPlayer()
+    }
   }
 
-  @Published var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
-  @Published var isLoadingStreamingURL: Bool = false
+  @MainActor @Published var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
+  @MainActor @Published var isLoadingStreamingURL: Bool = false
 
   var itemQueue: OrderedSet<PlaylistItem.ID> = []
   var seekToInitialTimestamp: TimeInterval?
 
-  private var selectedFolder: PlaylistFolder? {
+  @MainActor private var selectedFolder: PlaylistFolder? {
     PlaylistFolder.getFolder(uuid: selectedFolderID)
   }
 
-  private var selectedItem: PlaylistItem? {
+  @MainActor private var selectedItem: PlaylistItem? {
     selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
   }
 
-  public func prepareItemQueue() {
+  @MainActor public func prepareItemQueue() {
     let firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay.value
     let lastPlayedItemURL = Preferences.Playlist.lastPlayedItemUrl.value
     let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
@@ -418,7 +428,7 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
+  @MainActor func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
     var queue: OrderedSet<PlaylistItem.ID> = []
     var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
     if isShuffleEnabled {
@@ -437,7 +447,7 @@ public final class PlayerModel: ObservableObject {
     itemQueue = queue
   }
 
-  func playNextItem() {
+  @MainActor func playNextItem() {
     pause()
 
     let repeatMode = repeatMode
@@ -537,6 +547,9 @@ public final class PlayerModel: ObservableObject {
       player.replaceCurrentItem(with: newValue)
       setupPlayerItemKeyPathObservation()
       newValue?.add(videoDecorationOutput)
+      Task { @MainActor in
+        updateSystemPlayer()
+      }
     }
   }
   private(set) var playerLayer: AVPlayerLayer = .init()
@@ -551,7 +564,9 @@ public final class PlayerModel: ObservableObject {
       object: nil,
       queue: .main
     ) { [weak self] _ in
-      self?.playNextItem()
+      MainActor.assumeIsolated {
+        self?.playNextItem()
+      }
     }
     cancellables.insert(
       .init {
@@ -565,21 +580,31 @@ public final class PlayerModel: ObservableObject {
     func subscriber<Value>(for keyPath: KeyPath<AVPlayer, Value>) -> AnyCancellable {
       objectWillChangeSubscriber(on: player, for: keyPath)
     }
+    let timeControlStatusObservable = player.observe(\.timeControlStatus, options: [.new]) {
+      [weak self] _, _ in
+      self?.updateSystemPlayer()
+    }
     cancellables.formUnion([
       subscriber(for: \.timeControlStatus),
       subscriber(for: \.allowsExternalPlayback),
+      .init { timeControlStatusObservable.invalidate() },
     ])
   }
 
-  /// Sets up KVO observations for AVPlayerItem properties which trigger the `objectWillChange` publisher
+  /// Sets up KVO observations for AVPlayerItem properties which may trigger the `objectWillChange`
+  /// publisher
   private func setupPlayerItemKeyPathObservation() {
     itemCancellables.removeAll()
     guard let item = currentItem else { return }
     func subscriber<Value>(for keyPath: KeyPath<AVPlayerItem, Value>) -> AnyCancellable {
       objectWillChangeSubscriber(on: item, for: keyPath)
     }
+    let statusObservable = item.observe(\.status) { [weak self] _, _ in
+      self?.updateSystemPlayer()
+    }
     itemCancellables.formUnion([
-      subscriber(for: \.presentationSize)
+      subscriber(for: \.presentationSize),
+      .init { statusObservable.invalidate() },
     ])
   }
 
@@ -619,23 +644,43 @@ extension AVPlayer {
 
 @available(iOS 16.0, *)
 extension PlayerModel {
-  private func updateSystemPlayer() {
-    let center: MPRemoteCommandCenter = .shared()
-    center.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
-    center.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
-    center.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
-    center.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
-    center.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
-      NSNumber(value: $0.rate)
+  @MainActor private func updateSystemPlayer() {
+    guard let selectedItem else {
+      MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+      return
     }
-    center.ratingCommand.isEnabled = false
-    center.dislikeCommand.isEnabled = false
-    center.likeCommand.isEnabled = false
-    center.bookmarkCommand.isEnabled = false
 
-    let nowPlayingCenter: MPNowPlayingInfoCenter = .default()
-    // FIXME: Check if this is enough
-    nowPlayingCenter.nowPlayingInfo = player.currentItem?.nowPlayingInfo
+    let mediaType: MPNowPlayingInfoMediaType =
+      currentItem?.isVideoTracksAvailable() == true ? .video : .audio
+    let nowPlayingInfo: [String: Any] = [
+      MPNowPlayingInfoPropertyAssetURL: selectedItem.pageSrc.asURL as Any,
+      MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime,
+      MPNowPlayingInfoPropertyMediaType: mediaType.rawValue,
+      MPNowPlayingInfoPropertyPlaybackRate: playbackSpeed.rate,
+      MPMediaItemPropertyArtist: selectedItem.pageSrc.asURL?.baseDomain ?? selectedItem.pageSrc,
+      MPMediaItemPropertyPlaybackDuration: duration,
+      MPMediaItemPropertyTitle: selectedItem.name,
+    ]
+
+    MPRemoteCommandCenter.shared().do {
+      $0.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
+      $0.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
+      $0.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
+      $0.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
+      $0.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
+        NSNumber(value: $0.rate)
+      }
+      $0.ratingCommand.isEnabled = false
+      $0.dislikeCommand.isEnabled = false
+      $0.likeCommand.isEnabled = false
+      $0.bookmarkCommand.isEnabled = false
+    }
+
+    MPNowPlayingInfoCenter.default().do {
+      $0.nowPlayingInfo = ($0.nowPlayingInfo ?? [:])
+        .merging(nowPlayingInfo, uniquingKeysWith: { $1 })
+      $0.playbackState = isPlaying ? .playing : currentItem != nil ? .paused : .stopped
+    }
   }
 
   private func setupRemoteCommandCenterHandlers() {
@@ -685,17 +730,23 @@ extension PlayerModel {
       if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
         let repeatMode = RepeatMode(repeatType: repeatType)
       {
-        self.repeatMode = repeatMode
+        Task(priority: .userInitiated) { @MainActor in
+          self.repeatMode = repeatMode
+        }
       }
     case center.changeShuffleModeCommand:
       if let shuffleType = (event as? MPChangeShuffleModeCommandEvent)?.shuffleType {
-        isShuffleEnabled = shuffleType != .off
+        Task(priority: .userInitiated) { @MainActor in
+          isShuffleEnabled = shuffleType != .off
+        }
       }
     case center.changePlaybackRateCommand:
       if let playbackRate = (event as? MPChangePlaybackRateCommandEvent)?.playbackRate,
         let supportedSpeed = PlaybackSpeed.supportedSpeeds.first(where: { $0.rate == playbackRate })
       {
-        playbackSpeed = supportedSpeed
+        Task(priority: .userInitiated) { @MainActor in
+          playbackSpeed = supportedSpeed
+        }
       }
     default:
       break

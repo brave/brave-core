@@ -20,19 +20,23 @@ private class MediaThumbnailLoader: ObservableObject {
     case assetGenerationFailed
   }
 
-  @MainActor func loadThumbnail(assetURL: URL, cacheKey: String) async throws {
+  func loadThumbnail(assetURL: URL, cacheKey: String) async throws {
     if assetURL.scheme == "blob" {
       throw MediaThumbnailError.invalidURL
     }
     if let cachedImage = SDImageCache.shared.imageFromCache(forKey: cacheKey) {
-      image = cachedImage
+      await MainActor.run {
+        image = cachedImage
+      }
       return
     }
-    // FIXME: Figure out if we still need to use something else to deal with HLS
-    let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
-    image = UIImage(
-      cgImage: try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
-    )
+    try await Task { @MainActor in
+      // FIXME: Figure out if we still need to use something else to deal with HLS
+      let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
+      image = UIImage(
+        cgImage: try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
+      )
+    }.value
     await SDImageCache.shared.store(image, forKey: cacheKey)
   }
 }
