@@ -45,4 +45,8 @@ public final class SessionTabGroup: NSManagedObject, CRUD {
     self.groupId = groupId
     self.title = title
   }
+
+  public static var tabGroupCount: Int {
+    count() ?? -1
+  }
 }
