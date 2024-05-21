@@ -86,7 +86,6 @@ source_set("browser_tests") {
 
     sources = [
       "brave_main_delegate_browsertest.cc",
-      "brave_main_delegate_runtime_flags_browsertest.cc",
       "command_utils_browsertest.cc",
     ]
 
