@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave blockerar redan tredjepartscookies. Vi kan också blockera meddelanden om samtycke till cookies.</translation>
 <translation id="535688588637568715">Ja, blockera meddelanden om samtycke till cookies</translation>
 <translation id="2808175374672429053">Jokertecken tillåts inte för Sköldar i Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields blockerade <ph name="COMPANY_LIST"/> spårare på <ph name="SITE_URL"/>}
-      =1 {Brave Shields blockerade <ph name="COMPANY_LIST"/> och 1 annan spårare på <ph name="SITE_URL"/>}
-      other {Brave Shields blockerade <ph name="COMPANY_LIST"/> and {BLOCKED_COUNT} andra spårare på <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields blockerade 1 spårare på <ph name="SITE_URL"/>}
       other {Brave Shields blockerade {BLOCKED_COUNT} spårare på <ph name="SITE_URL"/>}

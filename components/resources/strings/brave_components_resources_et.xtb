@@ -2020,11 +2020,6 @@
 <translation id="4986297793092101884">Brave blokeerib juba kolmandate osaliste küpsised. Võime blokeerida ka küpsistega nõustumise teated.</translation>
 <translation id="535688588637568715">Jah, blokeeri küpsistega nõustumise teated</translation>
 <translation id="2808175374672429053">Brave'i kaitsete korral ei ole metamärgid lubatud.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave'i Kaitsed blokeeris <ph name="COMPANY_LIST"/> jälgijat veebisaidil <ph name="SITE_URL"/>}
-      =1 {Brave'i Kaitsed blokeeris <ph name="COMPANY_LIST"/> ja 1 muu jälgija veebisaidil <ph name="SITE_URL"/>}
-      other {Brave'i Kaitsed blokeeris <ph name="COMPANY_LIST"/> ja {BLOCKED_COUNT} muud jälgijat veebisaidil <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave'i Kaitsed blokeeris 1 jälgija veebisaidil <ph name="SITE_URL"/>}
       other {Brave'i Kaitsed blokeeris {BLOCKED_COUNT} jälgija veebisaidil <ph name="SITE_URL"/>}

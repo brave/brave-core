@@ -639,7 +639,7 @@ Segur que vols continuar?</translation>
 <translation id="2502258949541727762">Abans de començar</translation>
 <translation id="4303748097351941030">Xarxes compatibles</translation>
 <translation id="4204268048253692928">Pots afegir xarxes en qualsevol moment des de Configuració</translation>
-<translation id="2523174693142405417">Cerca xarxes</translation>
+<translation id="2523174693142405417">Cerca a les xarxes</translation>
 <translation id="1164748583090434571">Mostra les xarxes de prova</translation>
 <translation id="935220650946301698">Continua amb <ph name="NUMBER"/> xarxes</translation>
 <translation id="8248460961680233459">Crea una contrasenya</translation>
@@ -700,7 +700,7 @@ Segur que vols continuar?</translation>
 <translation id="6748319398471481216">Es renova mensualment</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mes.</translation>
 <translation id="1163809943099641131">Un any</translation>
-<translation id="6277055349883621705">Renova-la anualment per estalviar-te un 16%</translation>
+<translation id="7574007394522199115">Renova-la anualment per estalviar-te un <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
 <translation id="2655185358771731232">Prova-ho de franc durant 7 dies. Passats aquests 7 dies, se't cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
 <translation id="6053992191006521518">Proveu-lo GRATIS</translation>

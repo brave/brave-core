@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave вече блокира бисквитките на трети страни. Можем също да блокираме известия за съгласие за бисквитки.</translation>
 <translation id="535688588637568715">Да, да се блокират известията за съгласие за бисквитки</translation>
 <translation id="2808175374672429053">Заместващите символи не са разрешени за Brave Щит.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {Щитовете на Brave блокираха <ph name="COMPANY_LIST"/> тракери от <ph name="SITE_URL"/>}
-=1 {Щитовете на Brave блокираха <ph name="COMPANY_LIST"/> и още 1 тракер от <ph name="SITE_URL"/>}
-other {Щитовете на Brave блокираха <ph name="COMPANY_LIST"/>и {BLOCKED_COUNT} други тракери от <ph name="SITE_URL"/>}
-  }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
 =1 {Щитовете на Brave блокираха 1 тракер от<ph name="SITE_URL"/>}
  other {Щитовете на Brave блокираха {BLOCKED_COUNT} тракера от<ph name="SITE_URL"/>}

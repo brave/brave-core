@@ -1996,11 +1996,6 @@
 <translation id="4986297793092101884">Brave አስቀድሞ የሶስተኛ ወገን ኩኪዎችን አግዷል። የኩኪ ፈቃድ ማስታወቂያዎችንም ማገድ እንችላለን።</translation>
 <translation id="535688588637568715">አዎ፣ የኩኪ ፈቃድ ማስታወቂያዎችን አግድ</translation>
 <translation id="2808175374672429053">Wildcards  ለBrave ጋሻዎች አይፈቀዱም።</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields blocked <ph name="COMPANY_LIST"/> መከታተያ በ <ph name="SITE_URL"/>}
-      =1 {Brave Shields blocked <ph name="COMPANY_LIST"/> እና 1 ሌላ መከታተያ በ <ph name="SITE_URL"/>}
-      other {Brave Shields blocked <ph name="COMPANY_LIST"/> እና {BLOCKED_COUNT} ሌሎች መከታተያዎች ነ <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL"/>}
       other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}

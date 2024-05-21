@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave ইতিমধ্যে তৃতীয় পক্ষের কুকিগুলি ব্লক করে। আমরা কুকি সম্মতি বিজ্ঞপ্তিগুলিও ব্লক করতে পারি।</translation>
 <translation id="535688588637568715">হ্যাঁ, কুকি সম্মতি নোটিশগুলি ব্লক করুন</translation>
 <translation id="2808175374672429053">Brave শিল্ডের জন্য ওয়াইল্ডকার্ড অনুমোদিত নয়।</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave শিল্ডস <ph name="COMPANY_LIST"/>-এ <ph name="SITE_URL"/>টি ট্র্যাকারকে ব্লক করেছে}
-      =1 {Brave শিল্ডস <ph name="COMPANY_LIST"/> <ph name="SITE_URL"/>-এ এবং আরও 1টি ট্র্যাকারকে ব্লক করেছে}
-      other {Brave শিল্ডস <ph name="COMPANY_LIST"/>-এ {BLOCKED_COUNT}<ph name="SITE_URL"/> টি ট্র্যাকারকে ব্লক করেছে}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave শিল্ডস <ph name="SITE_URL"/>-এ 1টি ট্র্যাকারকে ব্লক করেছে}
       other {Brave শিল্ডস <ph name="SITE_URL"/>-এ {BLOCKED_COUNT}টি ট্র্যাকারকে ব্লক করেছে}

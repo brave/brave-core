@@ -2022,11 +2022,6 @@ other {# surse}
 <translation id="4986297793092101884">Brave blochează deja cookie-urile terților. De asemenea, putem bloca notificările privind consimțământul pentru cookie-uri.</translation>
 <translation id="535688588637568715">Da, blocați notificările privind consimțământul pentru cookie-uri</translation>
 <translation id="2808175374672429053">Metacaracterele nu sunt permise pentru Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Scuturile Brave au blocat <ph name="COMPANY_LIST"/>  trackere pe <ph name="SITE_URL"/>}
-      =1 {Scuturile Brave au blocat <ph name="COMPANY_LIST"/> și încă 1 tracker pe  <ph name="SITE_URL"/>}
-      other {Scuturile Brave au blocat  <ph name="COMPANY_LIST"/> și încă {BLOCKED_COUNT} trackere pe <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Scuturile Brave au blocat 1 tracker pe <ph name="SITE_URL"/>}
       other {Scuturile Brave a blocat {BLOCKED_COUNT} trackere pe <ph name="SITE_URL"/>}
