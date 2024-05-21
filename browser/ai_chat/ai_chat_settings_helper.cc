@@ -169,9 +169,10 @@ void AIChatSettingsHelper::CreateOrderId(CreateOrderIdCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AIChatSettingsHelper::OnCreateOrderId(CreateOrderIdCallback callback,
-                                           const std::string& response) {
-  std::move(callback).Run(response);
+void AIChatSettingsHelper::OnCreateOrderId(
+    CreateOrderIdCallback callback,
+    skus::mojom::SkusResultPtr response) {
+  std::move(callback).Run(response->message);
 }
 
 void AIChatSettingsHelper::FetchOrderCredentials(
@@ -186,8 +187,8 @@ void AIChatSettingsHelper::FetchOrderCredentials(
 void AIChatSettingsHelper::OnFetchOrderCredentials(
     FetchOrderCredentialsCallback callback,
     const std::string& order_id,
-    const std::string& response) {
-  std::move(callback).Run(response);
+    skus::mojom::SkusResultPtr response) {
+  std::move(callback).Run(response->message);
 }
 
 void AIChatSettingsHelper::RefreshOrder(const std::string& order_id,
@@ -200,8 +201,8 @@ void AIChatSettingsHelper::RefreshOrder(const std::string& order_id,
 
 void AIChatSettingsHelper::OnRefreshOrder(RefreshOrderCallback callback,
                                           const std::string& order_id,
-                                          const std::string& response) {
-  std::move(callback).Run(response);
+                                          skus::mojom::SkusResultPtr response) {
+  std::move(callback).Run(response->message);
 }
 #endif
 

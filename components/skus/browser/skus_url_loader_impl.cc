@@ -11,6 +11,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -106,8 +107,14 @@ void SkusUrlLoaderImpl::OnFetchComplete(
     headers.push_back(std::move(new_header_value));
   }
 
+  skus::SkusResult result = {
+      success ? skus::mojom::SkusResultCode::Ok
+              : skus::mojom::SkusResultCode::RequestFailed,
+      body,
+  };
+
   skus::HttpResponse resp = {
-      success ? skus::SkusResult::Ok : skus::SkusResult::RequestFailed,
+      result,
       response_code,
       headers,
       body_bytes,

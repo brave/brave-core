@@ -12,6 +12,7 @@
 #include "base/task/bind_post_task.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 
 namespace {
 
@@ -44,9 +45,14 @@ logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
 }  // namespace
 
 namespace skus {
+skus::mojom::SkusResultPtr make_skus_result(
+    const skus::mojom::SkusResultCode code,
+    const std::string& message) {
+  return skus::mojom::SkusResult::New(code, message);
+}
 
 RustBoundPostTask::RustBoundPostTask(
-    base::OnceCallback<void(const std::string&)> callback)
+    base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback)
     : callback_(base::BindPostTaskToCurrentDefault(std::move(callback))) {}
 
 RustBoundPostTask::~RustBoundPostTask() = default;
@@ -54,12 +60,8 @@ RustBoundPostTask::~RustBoundPostTask() = default;
 void RustBoundPostTask::Run(SkusResult result) {
   if (callback_) {
     // Call the bound callback with the result from Rust
-    std::string error_message;
-    if (result != skus::SkusResult::Ok) {
-      error_message = std::string{skus::result_to_string(result)};
-    }
-
-    std::move(callback_).Run(error_message);
+    std::move(callback_).Run(
+        make_skus_result(result.code, static_cast<std::string>(result.msg)));
   }
 }
 
@@ -67,7 +69,13 @@ void RustBoundPostTask::RunWithResponse(SkusResult result,
                                         rust::cxxbridge1::Str response) {
   if (callback_) {
     // Call the bound callback with the response from Rust
-    std::move(callback_).Run(static_cast<std::string>(response));
+    if (result.code == skus::mojom::SkusResultCode::Ok) {
+      std::move(callback_).Run(make_skus_result(
+          skus::mojom::SkusResultCode::Ok, static_cast<std::string>(response)));
+    } else {
+      std::move(callback_).Run(
+          make_skus_result(result.code, static_cast<std::string>(result.msg)));
+    }
   }
 }
 
