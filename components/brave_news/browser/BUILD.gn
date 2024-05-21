@@ -65,6 +65,7 @@ static_library("browser") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_news/api",
     "//brave/components/brave_private_cdn",
+    "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
