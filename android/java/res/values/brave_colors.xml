@@ -13,13 +13,13 @@
 
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_90">#F9C3B6</color>
-    <color name="baseline_primary_80">#FF7654</color>
-    <color name="baseline_primary_40">#EA3A0D</color>
+    <color name="baseline_primary_80">#0BDB8B</color>
+    <color name="baseline_primary_40">#06BA75</color>
     <color name="baseline_primary_20">@color/modern_blue_600</color>
     <color name="baseline_primary_10">@color/modern_blue_700</color>
     <color name="black_alpha_30">#4D000000</color>
     <color name="black_alpha_50">#80000000</color>
-    <color name="modern_blue_300">#FF7654</color>
+    <color name="modern_blue_300">#0BDB8B</color>
     <color name="modern_blue_600">#EA3A0D</color>
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
@@ -55,7 +55,7 @@
     <color name="brave_text_button_color">#4C54D2</color>
 
     <!-- Onboarding colors -->
-    <color name="onboarding_orange">#fb542b</color>
+    <color name="onboarding_orange">#07F5A2</color>
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
     <color name="onboarding_radio_button_active">#f0f1ff</color>
@@ -103,7 +103,8 @@
     <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
 
     <!-- Theme colors -->
-    <color name="brave_theme_color">#fb542b</color>
+    <color name="brave_theme_color">#23DE99</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_add_widget_button_pressed">#737ADE</color>
     <color name="brave_button_pressed">#7278C5</color>
 

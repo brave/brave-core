@@ -355,11 +355,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
+<<<<<<< HEAD
         updateShieldsLayoutBackground(
                 isIncognito()
                         || !ChromeSharedPreferences.getInstance()
                                 .readBoolean(
                                         AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
+=======
+        updateShieldsLayoutBackground(isIncognito()
+                || !ContextUtils.getAppSharedPreferences().getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false));
+>>>>>>> e43f0b49dba584114515c9caa4c4882aafe6da32
     }
 
     @Override
@@ -412,8 +418,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
+                && sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
@@ -1346,8 +1352,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+<<<<<<< HEAD
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
+=======
+                && sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)) {
+>>>>>>> e43f0b49dba584114515c9caa4c4882aafe6da32
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }
