@@ -13,6 +13,7 @@ import Shared
 public enum DeepLink: String {
   case vpnCrossPlatformPromo = "vpn_promo"
   case braveLeo = "brave_leo"
+  case playlist
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -89,6 +90,9 @@ public enum NavigationPath: Equatable {
       bvc.presentVPNInAppEventCallout()
     case .braveLeo:
       bvc.presentBraveLeoDeepLink()
+    case .playlist:
+      let helper = BrowserNavigationHelper(bvc)
+      helper.openPlaylist()
     }
   }
 
