@@ -451,17 +451,21 @@ struct PendingTransactionView: View {
 
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button {
-      confirmationStore.reject(transaction: confirmationStore.activeParsedTransaction.transaction) {
-        _ in
+      Task {
+        await confirmationStore.reject(
+          transaction: confirmationStore.activeParsedTransaction.transaction
+        )
       }
     } label: {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button {
-      confirmationStore.isTxSubmitting = true
-      confirmationStore.confirm(transaction: confirmationStore.activeParsedTransaction.transaction)
-      { _ in }
+      Task {
+        await confirmationStore.confirm(
+          transaction: confirmationStore.activeParsedTransaction.transaction
+        )
+      }
     } label: {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
@@ -508,7 +512,8 @@ struct PendingTransactionView: View {
         // Cancel / Confirm buttons
         if confirmationStore.unapprovedTxs.count > 1 {
           Button {
-            confirmationStore.rejectAllTransactions { success in
+            Task {
+              let success = await confirmationStore.rejectAllTransactions()
               if success {
                 onDismiss()
               }
