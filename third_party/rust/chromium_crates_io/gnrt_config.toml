@@ -105,8 +105,19 @@ license_files = ['LICENSE']
 
 [crate.aes]
 extra_kv = { raw_gn = '''
+if (target_os == "android" && target_cpu == "arm64") {
+      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+# gnrt conditional for this dep is merely if (target_cpu == "arm64")
+[crate.keccak]
+extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+if (target_os == "android" && target_cpu == "arm64") {
+      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
 }
 ''' }
 
@@ -127,6 +138,13 @@ extra_input_roots = [ "../README.md" ]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.cpufeatures]
+extra_kv = { raw_gn = '''
+if (is_apple && target_cpu == "arm64") {
+      deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
 }
 ''' }
 
@@ -161,6 +179,9 @@ if (target_cpu == "x64") {
     ]
   }
 ''' }
+
+[crate.curve25519-dalek-derive]
+extra_input_roots = [ "../README.md" ]
 
 [crate.derivation-path]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -318,10 +339,8 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.sha2]
 extra_kv = { raw_gn = '''
-if ((target_cpu == "arm64" &&
-    (target_os == "mac" || target_os == "linux" || target_os == "ios")) ||
-    target_cpu == "x64" || target_cpu == "x86") {
-      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+if (target_os == "android" && target_cpu == "arm64") {
+      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
 }
 ''' }
 

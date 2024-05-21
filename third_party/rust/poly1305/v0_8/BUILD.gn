@@ -45,4 +45,7 @@ cargo_crate("lib") {
   if (target_cpu == "x64" || target_cpu == "x86") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }
+  if (target_cpu == "x64" || target_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+  }
 }
