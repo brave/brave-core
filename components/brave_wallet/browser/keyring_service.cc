@@ -1120,7 +1120,7 @@ bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
     return true;
   }
 
-  Reset();
+  Reset(false);
   return CreateWalletInternal(mnemonic, password, is_legacy_eth_seed_format,
                               true);
 }
