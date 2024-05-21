@@ -85,7 +85,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         mRecoveryPhraseText.addTextChangedListener(
                 new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    public void beforeTextChanged(
+                            CharSequence charSequence, int i, int i1, int i2) {
                         /* Unused. */
                     }
 
@@ -114,7 +115,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(
                 v -> {
-
                     String passwordInput = mPasswordEdittext.getText().toString();
                     String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
                     String recoverPhrase = mRecoveryPhraseText.getText().toString().trim();
@@ -130,7 +130,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                 });
     }
 
-    private void proceedWithStrongPassword(@NonNull final String password, @NonNull final String recoveryPhrase) {
+    private void proceedWithStrongPassword(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
         if (Utils.isBiometricAvailable(requireContext())) {
             // Clear previously set bio-metric credentials
             KeystoreHelper.resetBiometric();
@@ -143,7 +144,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private void setUpBiometric(@NonNull final String password, @NonNull final String recoveryPhrase) {
+    private void setUpBiometric(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     @Override
@@ -159,7 +161,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                         super.onAuthenticationError(errorCode, errString);
                         // Even though we have an error, we still let to proceed
                         if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(ContextUtils.getApplicationContext(),
+                            Toast.makeText(
+                                            ContextUtils.getApplicationContext(),
                                             errString,
                                             Toast.LENGTH_SHORT)
                                     .show();
@@ -171,15 +174,18 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         new BiometricPrompt.Builder(getActivity())
                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
-                        (dialog, which)
-                                -> authenticationCallback.onAuthenticationError(
-                                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .setNegativeButton(
+                        getResources().getString(android.R.string.cancel),
+                        executor,
+                        (dialog, which) ->
+                                authenticationCallback.onAuthenticationError(
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 
-    private void goToTheNextPage(@NonNull final String password, @NonNull final String recoveryPhrase) {
+    private void goToTheNextPage(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
         keyringService.restoreWallet(
