@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Data
 import Foundation
+import Preferences
 import UIKit
 import os.log
-import Data
-import Preferences
 
 struct AppDebugComposer {
 
@@ -20,7 +20,7 @@ struct AppDebugComposer {
 
     return "Setup: \(model), \(iOSVersion), Brave \(appVersion)"
   }
-  
+
   /// This function prepares data to help us identify any app storage problems users may have.
   static func composeAppSize() -> String {
     var printFolderTreeStructure: String {
@@ -75,30 +75,36 @@ struct AppDebugComposer {
 
     return result
   }
-  
+
   static func composeTabDebug(_ tabManager: TabManager) -> String {
     let storageTabs = SessionTab.all()
-    
-    let windowUUIDs = Set<String>(storageTabs.compactMap { $0.sessionWindow?.windowId.uuidString })
-    
+    let windows = SessionWindow.all()
+
+    // We want to catch if there's disprepancy between ids of windows and tab's windows.
+    let windowUniqueUUIDs = Set<String>(windows.compactMap { $0.windowId.uuidString })
+    let tabWindowUUIDs = Set<String>(
+      storageTabs.compactMap { $0.sessionWindow?.windowId.uuidString }
+    )
+
     let result =
-    """
-    \(printDeviceInfo)
-    \("Managed tabs: \(tabManager.allTabs.count)")
-    \("Managed regular tabs: \(tabManager.tabsCountForMode(isPrivate: false))")
-    \("Managed private tabs: \(tabManager.tabsCountForMode(isPrivate: true))")
-    \("Storage Tabs: \(storageTabs.count)")
-    \("Storage Regular Tabs: \(storageTabs.filter { !$0.isPrivate }.count)")
-    \("Storage Private Tabs: \(storageTabs.filter { $0.isPrivate }.count)")
-    \("Storage TabGroup: \(SessionTabGroup.tabGroupCount)")
-    \("Storage Window: \(SessionWindow.all().count)")
-    \("Recently Closed tabs: \(RecentlyClosed.all().count)")
-    \("Tab sync enabled: \(Preferences.Chromium.syncOpenTabsEnabled.value)")
-    \("Window IDs: \(windowUUIDs.map { $0.prefix(8) })")
-    \("Tabs without window: \(storageTabs.filter { $0.sessionWindow == nil }.count)")
-    \("Tabs without group: \(storageTabs.filter { $0.sessionTabGroup == nil }.count)")
-    """
-    
+      """
+      \(printDeviceInfo)
+      \("Managed tabs: \(tabManager.allTabs.count)")
+      \("Managed regular tabs: \(tabManager.tabsCountForMode(isPrivate: false))")
+      \("Managed private tabs: \(tabManager.tabsCountForMode(isPrivate: true))")
+      \("Storage Tabs: \(storageTabs.count)")
+      \("Storage Regular Tabs: \(storageTabs.filter { !$0.isPrivate }.count)")
+      \("Storage Private Tabs: \(storageTabs.filter { $0.isPrivate }.count)")
+      \("Storage TabGroup: \(SessionTabGroup.tabGroupCount)")
+      \("Storage Window: \(windows.count)")
+      \("Recently Closed tabs: \(RecentlyClosed.all().count)")
+      \("Tab sync enabled: \(Preferences.Chromium.syncOpenTabsEnabled.value)")
+      \("Window IDs of Tabs: \(tabWindowUUIDs.map { $0.prefix(8) })")
+      \("Unique Window IDs: \(windowUniqueUUIDs.map { $0.prefix(8) })")
+      \("Tabs without window: \(storageTabs.filter { $0.sessionWindow == nil }.count)")
+      \("Tabs without group: \(storageTabs.filter { $0.sessionTabGroup == nil }.count)")
+      """
+
     print("bxx: \(result)")
     return result
   }
