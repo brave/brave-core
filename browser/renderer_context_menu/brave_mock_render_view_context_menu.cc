@@ -5,6 +5,7 @@
 
 #include "brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h"
 
+#include <iomanip>
 #include <string>
 
 #include "base/strings/string_number_conversions.h"
