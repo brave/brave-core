@@ -6,18 +6,16 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_RENDERER_PLAYLIST_RENDER_FRAME_OBSERVER_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "v8/include/v8.h"
 
 namespace playlist {
 

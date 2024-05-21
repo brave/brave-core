@@ -252,7 +252,7 @@ class PlaylistService : public KeyedService,
   void AddMediaFileFromItem(const std::string& playlist_id,
                             bool cache,
                             AddMediaFilesCallback callback,
-                            mojom::PlaylistItemPtr items);
+                            mojom::PlaylistItemPtr item);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

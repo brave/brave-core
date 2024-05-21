@@ -8,17 +8,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/values.h"
-#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
-#include "brave/gin/converter_specializations.h"
 #include "content/public/renderer/render_frame.h"
-#include "gin/function_template.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "gin/converter.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "v8/include/v8.h"
 
 namespace playlist {
 

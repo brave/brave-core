@@ -830,13 +830,13 @@ void PlaylistService::RecoverLocalDataForItem(
       [](base::WeakPtr<PlaylistService> service,
          mojom::PlaylistItemPtr old_item,
          RecoverLocalDataForItemCallback callback,
-         std::vector<mojom::PlaylistItemPtr> found_items) {
+         mojom::PlaylistItemPtr found_item) {
         if (!service) {
           return;
         }
 
         DCHECK(old_item);
-        if (found_items.empty()) {
+        if (!found_item) {
           // In this case, just try recovering with existing data.
           service->RecoverLocalDataForItemImpl(
               std::move(old_item),
@@ -845,14 +845,6 @@ void PlaylistService::RecoverLocalDataForItem(
           return;
         }
 
-#if DCHECK_IS_ON()
-        if (found_items.size() > 1u) {
-          DLOG(ERROR)
-              << "We don't expect this as we can't decide which one can "
-                 "replace the existing one.";
-        }
-#endif  // DCHECK_IS_ON()
-
         // The item's other data could have been updated.
         mojom::PlaylistItemPtr new_item =
             service->GetPlaylistItem(old_item->id);
@@ -860,7 +852,7 @@ void PlaylistService::RecoverLocalDataForItem(
         DCHECK(!new_item->cached);
         DCHECK_EQ(new_item->media_source, old_item->media_source);
         DCHECK_EQ(new_item->media_path, old_item->media_path);
-        new_item->media_source = found_items.front()->media_source;
+        new_item->media_source = found_item->media_source;
         new_item->media_path = new_item->media_path;
         service->UpdatePlaylistItemValue(
             new_item->id, base::Value(ConvertPlaylistItemToValue(new_item)));
@@ -871,10 +863,8 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  // TODO(sszaloki): fix this use-case
-  // background_web_contentses_->Add(
-  //     item->page_source,
-  //     base::IgnoreArgs<GURL>(std::move(update_media_src_and_recover)));
+  background_web_contentses_->Add(std::move(item),
+                                  std::move(update_media_src_and_recover));
 }
 
 void PlaylistService::RemoveLocalDataForItemsInPlaylist(

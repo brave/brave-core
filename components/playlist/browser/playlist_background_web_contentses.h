@@ -8,7 +8,6 @@
 
 #include <map>
 #include <memory>
-#include <vector>
 
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/functional/callback_forward.h"
@@ -29,13 +28,6 @@ class WebContents;
 
 namespace playlist {
 
-// `PlaylistBackgroundWebContentses` fulfills background `WebContents` requests.
-// After creating the background `WebContents`, it waits 10 seconds for the
-// first non-empty media list to arrive. On receiving the media, or if the timer
-// goes off (whichever happens first), it destructs the background
-// `WebContents`, and calls the provided callback with the result.
-// It overrides the user agent if `features::kPlaylistFakeUA` is enabled,
-// or uses a static look-up table to decide if it has to otherwise.
 class PlaylistBackgroundWebContentses final {
  public:
   explicit PlaylistBackgroundWebContentses(content::BrowserContext* context);

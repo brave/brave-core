@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "base/logging.h"
-#include "base/time/time.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -35,7 +35,7 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
 
-  DCHECK(navigation_handle);
+  CHECK(navigation_handle);
   if (!navigation_handle->GetURL().SchemeIsHTTPOrHTTPS()) {
     return;
   }
@@ -55,10 +55,16 @@ void PlaylistBackgroundWebContentsHelper::GetMediaMetadata() {
   for (auto&& [media_player_id, metadata] :
        GetWebContents().GetMediaMetadataByMediaPlayerIds()) {
     auto [url, is_media_source, duration] = std::move(metadata);
+
     DVLOG(-1) << "Media player (" << media_player_id.frame_routing_id << ", "
               << media_player_id.delegate_id
               << ") URL: " << (!url.is_valid() ? "not set" : url.spec())
               << " (duration: " << base::Seconds(duration) << ')';
+
+    if (!url.is_valid()) {
+      continue;
+    }
+
     if (std::abs((duration_ - base::Seconds(duration)).InSeconds()) < 5) {
       DVLOG(-1) << "URL extracted from the background: " << url;
       return std::move(callback_).Run(std::move(url), is_media_source);

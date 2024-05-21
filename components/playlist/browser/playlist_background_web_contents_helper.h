@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
+#include "base/functional/callback_forward.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/web_contents_observer.h"

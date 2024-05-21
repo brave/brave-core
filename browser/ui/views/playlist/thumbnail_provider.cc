@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/containers/flat_map.h"
@@ -20,6 +21,7 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "net/base/filename_util.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -136,7 +138,8 @@ void ThumbnailProvider::OnGotThumbnail(
     auto& in_memory_cache = GetInMemoryCache(std::to_address(service_));
     if (from_network) {
       in_memory_cache.Put({thumbnail_source, thumbnail});
-    } else if (in_memory_cache.Peek(thumbnail_source) != in_memory_cache.end()) {
+    } else if (in_memory_cache.Peek(thumbnail_source) !=
+               in_memory_cache.end()) {
       in_memory_cache.Erase(in_memory_cache.Get(thumbnail_source));
     }
   }
