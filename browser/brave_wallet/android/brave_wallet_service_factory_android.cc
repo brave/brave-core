@@ -8,7 +8,6 @@
 #include "brave/build/android/jni_headers/BraveWalletServiceFactory_jni.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_android.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
@@ -16,7 +15,7 @@ namespace android {
 static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
       brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
           profile);
@@ -27,7 +26,7 @@ static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
 static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto* profile = Profile::FromJavaObject(profile_android);
   auto pending = brave_wallet::BraveWalletServiceFactory::GetInstance()
                      ->GetServiceForContext(profile)
                      ->GetBraveWalletP3A()
