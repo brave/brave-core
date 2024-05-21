@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.ntp_background_images.util;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -59,13 +58,22 @@ public class NTPUtil {
             NewTabPageListener newTabPageListener) {
         String bannerText = "";
         if (ntpType == SponsoredImageUtil.BR_ON_ADS_ON) {
-            bannerText = String.format(chromeActivity.getResources().getString(R.string.you_are_earning_tokens),
-                                       chromeActivity.getResources().getString(R.string.learn_more));
+            bannerText =
+                    String.format(
+                            chromeActivity
+                                    .getResources()
+                                    .getString(R.string.you_are_earning_tokens),
+                            chromeActivity.getResources().getString(R.string.learn_more));
         } else if (ntpType == SponsoredImageUtil.BR_ON_ADS_OFF) {
-            bannerText = String.format(chromeActivity.getResources().getString(R.string.earn_tokens_for_viewing),
-                                       chromeActivity.getResources().getString(R.string.learn_more));
+            bannerText =
+                    String.format(
+                            chromeActivity
+                                    .getResources()
+                                    .getString(R.string.earn_tokens_for_viewing),
+                            chromeActivity.getResources().getString(R.string.learn_more));
         }
-        int learnMoreIndex = bannerText.indexOf(chromeActivity.getResources().getString(R.string.learn_more));
+        int learnMoreIndex =
+                bannerText.indexOf(chromeActivity.getResources().getString(R.string.learn_more));
         Spanned learnMoreSpanned = BraveRewardsHelper.spannedFromHtmlString(bannerText);
         SpannableString learnMoreTextSS = new SpannableString(learnMoreSpanned.toString());
 
