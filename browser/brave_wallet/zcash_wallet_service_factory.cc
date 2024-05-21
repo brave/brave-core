@@ -81,7 +81,7 @@ KeyedService* ZCashWalletServiceFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new ZCashWalletService(
-      KeyringServiceFactory::GetServiceForContext(context),
+      context, KeyringServiceFactory::GetServiceForContext(context),
       user_prefs::UserPrefs::Get(context), shared_url_loader_factory);
 }
 

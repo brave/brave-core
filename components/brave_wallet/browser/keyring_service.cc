@@ -150,6 +150,9 @@ const char kHardwareAccounts[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
 const char kBitcoinNextReceiveIndex[] = "bitcoin.next_receive";
 const char kBitcoinNextChangeIndex[] = "bitcoin.next_change";
+const char kZcashAccountBirthdayBlockId[] = "zcash.account_birthday.block_id";
+const char kZcashAccountBirthdayBlockHash[] =
+    "zcash.account_birthday.block_hash";
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
   switch (keyring_id) {
@@ -457,6 +460,13 @@ struct DerivedAccountInfo {
           kBitcoinNextChangeIndex,
           base::NumberToString(*bitcoin_next_change_address_index));
     }
+    if (zcash_account_birthday) {
+      derived_account.SetByDottedPath(
+          kZcashAccountBirthdayBlockId,
+          base::NumberToString(zcash_account_birthday->first));
+      derived_account.SetByDottedPath(kZcashAccountBirthdayBlockHash,
+                                      zcash_account_birthday->second);
+    }
     return base::Value(std::move(derived_account));
   }
 
@@ -499,6 +509,20 @@ struct DerivedAccountInfo {
       account_info.bitcoin_next_change_address_index = bitcoin_change_value;
     }
 
+    auto* zcash_account_birthday_block_id =
+        value_dict->FindStringByDottedPath(kZcashAccountBirthdayBlockId);
+    auto* zcash_account_birthday_hash =
+        value_dict->FindStringByDottedPath(kZcashAccountBirthdayBlockHash);
+    if (zcash_account_birthday_block_id && zcash_account_birthday_hash) {
+      uint64_t zcash_account_birthday_value = 0;
+      if (!base::StringToUint64(*zcash_account_birthday_block_id,
+                                &zcash_account_birthday_value)) {
+        return std::nullopt;
+      }
+      account_info.zcash_account_birthday = {zcash_account_birthday_value,
+                                             *zcash_account_birthday_hash};
+    }
+
     return account_info;
   }
 
@@ -507,6 +531,7 @@ struct DerivedAccountInfo {
   std::string account_address;
   std::optional<uint32_t> bitcoin_next_receive_address_index;
   std::optional<uint32_t> bitcoin_next_change_address_index;
+  std::optional<std::pair<uint64_t, std::string>> zcash_account_birthday;
 };
 
 // Gets all hd account from prefs.
@@ -1353,7 +1378,10 @@ BitcoinKeyring* KeyringService::GetBitcoinKeyringById(
 
 ZCashKeyring* KeyringService::GetZCashKeyringById(
     mojom::KeyringId keyring_id) const {
+  LOG(ERROR) << "XXXZZZ keyring id " << keyring_id;
   if (!IsZCashKeyring(keyring_id)) {
+    LOG(ERROR) << "XXXZZZ keyring id fial";
+
     return nullptr;
   }
 
@@ -2534,6 +2562,17 @@ KeyringService::GetOrchardRawBytes(const mojom::AccountIdPtr& account_id,
   return zcash_keyring->GetOrchardRawBytes(*key_id);
 }
 
+std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
+KeyringService::GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id) {
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
+  if (!zcash_keyring) {
+    return std::nullopt;
+  }
+
+  return zcash_keyring->GetOrchardFullViewKey(
+      account_id->bitcoin_account_index);
+}
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> next_receive_index,
@@ -2564,6 +2603,31 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
       }
     }
   }
+}
+
+bool KeyringService::SetZCashAccountBirthday(
+    const mojom::AccountIdPtr& account_id,
+    mojom::ZCashAccountBirthdayPtr account_birthday) {
+  CHECK(account_id);
+  CHECK(IsZCashAccount(*account_id));
+
+  ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
+  base::Value::List& account_metas = GetListPrefForKeyringUpdate(
+      keyrings_update, kAccountMetas, account_id->keyring_id);
+  for (auto& item : account_metas) {
+    if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
+      if (*account_id == *MakeAccountIdForDerivedAccount(
+                             *derived_account, account_id->keyring_id)) {
+        derived_account->zcash_account_birthday = {account_birthday->value,
+                                                   account_birthday->hash};
+
+        item = derived_account->ToValue();
+        NotifyAccountsChanged();
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 void KeyringService::UpdateNextUnusedAddressForZCashAccount(
@@ -2763,8 +2827,12 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
   CHECK(IsZCashAccount(*account_id));
 
   auto keyring_id = account_id->keyring_id;
+  LOG(ERROR) << "XXXZZZ GetZCashAccountInfo " << keyring_id;
+
   auto* zcash_keyring = GetZCashKeyringById(keyring_id);
   if (!zcash_keyring) {
+    LOG(ERROR) << "XXXZZZ 0";
+
     return {};
   }
 
@@ -2795,9 +2863,15 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     }
 
     result->next_transparent_change_address = std::move(change_address);
+
+    if (derived_account_info.zcash_account_birthday) {
+      result->account_birthday = mojom::ZCashAccountBirthday::New(
+          derived_account_info.zcash_account_birthday->first,
+          derived_account_info.zcash_account_birthday->second);
+    }
+
     return result;
   }
-
   return {};
 }
 

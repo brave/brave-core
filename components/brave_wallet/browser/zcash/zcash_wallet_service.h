@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_scanning_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -51,6 +52,7 @@ class ZCashWalletService : public KeyedService,
       base::expected<mojom::ZCashAddressPtr, std::string>)>;
 
   ZCashWalletService(
+      content::BrowserContext* context,
       KeyringService* keyring_service,
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -69,6 +71,19 @@ class ZCashWalletService : public KeyedService,
 
   void GetZCashAccountInfo(mojom::AccountIdPtr account_id,
                            GetZCashAccountInfoCallback callback) override;
+
+  void MakeAccountShieldable(mojom::AccountIdPtr account_id,
+                             MakeAccountShieldableCallback callback) override;
+
+  void GetAccountBirthday(mojom::AccountIdPtr account_id,
+                          GetAccountBirthdayCallback callback) override;
+  void GetSyncStatus(mojom::AccountIdPtr account_id,
+                     GetSyncStatusCallback callback) override;
+  void StartOrchardSync(mojom::AccountIdPtr account_id,
+                        mojo::PendingRemote<mojom::ZCashSyncObserver> observer,
+                        StartOrchardSyncCallback callback) override;
+  void StopOrchardSync(mojom::AccountIdPtr account_id,
+                       StopOrchardSyncCallback callback) override;
 
   /**
    * Used for internal transfers between own accounts
@@ -191,6 +206,18 @@ class ZCashWalletService : public KeyedService,
                                    std::string tx_id,
                                    ZCashTransaction transaction,
                                    std::string error);
+
+  void GetLatestBlockForAccountBirthday(mojom::AccountIdPtr account_id,
+                                        MakeAccountShieldableCallback callback);
+  void OnGetLatestBlockForAccountBirthday(
+      mojom::AccountIdPtr account_id,
+      MakeAccountShieldableCallback callback,
+      base::expected<mojom::BlockIDPtr, std::string> result);
+
+  mojom::ZCashAccountBirthdayPtr GetAccountBirthday(
+      const mojom::AccountIdPtr& account_id);
+  bool SetAccountBirthday(std::string network_id,
+                          mojom::AccountIdPtr account_id);
 #endif
 
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
@@ -199,6 +226,7 @@ class ZCashWalletService : public KeyedService,
   ZCashRpc* zcash_rpc();
   KeyringService* keyring_service();
 
+  raw_ptr<content::BrowserContext> context_;
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
 
@@ -208,6 +236,8 @@ class ZCashWalletService : public KeyedService,
 #if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<uint64_t> random_seed_for_testing_;
   std::unique_ptr<CreateShieldAllTransactionTask> shield_funds_task_;
+  std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashScanService>>
+      scan_services_;
 #endif
 
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;

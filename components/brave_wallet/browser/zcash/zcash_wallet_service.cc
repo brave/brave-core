@@ -35,10 +35,11 @@ void ZCashWalletService::Bind(
 }
 
 ZCashWalletService::ZCashWalletService(
+    content::BrowserContext* context,
     KeyringService* keyring_service,
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : keyring_service_(keyring_service) {
+    : context_(context), keyring_service_(keyring_service) {
   zcash_rpc_ = std::make_unique<ZCashRpc>(prefs, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -82,6 +83,81 @@ void ZCashWalletService::GetZCashAccountInfo(
     mojom::AccountIdPtr account_id,
     GetZCashAccountInfoCallback callback) {
   std::move(callback).Run(keyring_service_->GetZCashAccountInfo(account_id));
+}
+
+void ZCashWalletService::MakeAccountShieldable(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldableCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    // auto account_infos =
+    // keyring_service_->GetAccountInfosForKeyring(account_id->keyring_id); for
+    // (const auto& info : account_infos) {
+    //   if (info->)
+    // }
+    GetLatestBlockForAccountBirthday(account_id.Clone(), std::move(callback));
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
+}
+
+void ZCashWalletService::GetSyncStatus(mojom::AccountIdPtr account_id,
+                                       GetSyncStatusCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto it = scan_services_.find(account_id);
+    if (it != scan_services_.end()) {
+      std::move(callback).Run(it->second->GetSyncStatus(), std::nullopt);
+    }
+  }
+#endif
+  std::move(callback).Run(nullptr, "Not supported");
+}
+
+void ZCashWalletService::StartOrchardSync(
+    mojom::AccountIdPtr account_id,
+    mojo::PendingRemote<mojom::ZCashSyncObserver> observer,
+    StartOrchardSyncCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto account_birthday = GetAccountBirthday(account_id);
+    if (!account_birthday) {
+      std::move(callback).Run("Account not supported");
+      return;
+    }
+
+    auto it = scan_services_.find(account_id);
+    if (it == scan_services_.end()) {
+      scan_services_[account_id.Clone()] = std::make_unique<ZCashScanService>(
+          zcash_rpc(), account_id, account_birthday,
+          keyring_service_->GetOrchardFullViewKey(account_id).value(),
+          context_->GetPath());
+    }
+
+    scan_services_[account_id.Clone()]->StartSyncing(std::move(observer));
+
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
+}
+
+void ZCashWalletService::StopOrchardSync(mojom::AccountIdPtr account_id,
+                                         StopOrchardSyncCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto it = scan_services_.find(account_id);
+    if (it != scan_services_.end()) {
+      it->second->PauseSyncing();
+      scan_services_.erase(it);
+    }
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
 }
 
 void ZCashWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
@@ -473,6 +549,53 @@ void ZCashWalletService::OnPostShieldTransactionDone(
     std::move(callback).Run(tx_id, std::nullopt);
   } else {
     std::move(callback).Run(std::nullopt, error);
+  }
+}
+
+void ZCashWalletService::GetLatestBlockForAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldableCallback callback) {
+  zcash_rpc_->GetLatestBlock(
+      GetNetworkForZCashKeyring(account_id->keyring_id),
+      base::BindOnce(&ZCashWalletService::OnGetLatestBlockForAccountBirthday,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     std::move(callback)));
+}
+
+void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldableCallback callback,
+    base::expected<mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
+    std::move(callback).Run("Failed to retrieve latest block");
+    return;
+  }
+
+  auto block = std::move(result.value());
+
+  keyring_service_->SetZCashAccountBirthday(
+      account_id,
+      mojom::ZCashAccountBirthday::New(block->height, ToHex(block->hash)));
+  std::move(callback).Run(std::nullopt);
+}
+
+mojom::ZCashAccountBirthdayPtr ZCashWalletService::GetAccountBirthday(
+    const mojom::AccountIdPtr& account_id) {
+  auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
+  if (!account_info || !account_info->account_birthday) {
+    return nullptr;
+  }
+  return account_info->account_birthday.Clone();
+}
+
+void ZCashWalletService::GetAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    GetAccountBirthdayCallback callback) {
+  auto birthday = GetAccountBirthday(account_id);
+  if (!birthday) {
+    std::move(callback).Run(nullptr, "Account not upgraded");
+  } else {
+    std::move(callback).Run(std::move(birthday), std::nullopt);
   }
 }
 

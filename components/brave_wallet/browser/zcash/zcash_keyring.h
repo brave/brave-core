@@ -17,6 +17,8 @@
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 #endif
 
 namespace brave_wallet {
@@ -43,6 +45,8 @@ class ZCashKeyring : public Secp256k1HDKeyring {
   mojom::ZCashAddressPtr GetShieldedAddress(const mojom::ZCashKeyId& key_id);
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::ZCashKeyId& key_id);
+  std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
+  GetOrchardFullViewKey(const size_t& account_id);
 #endif
 
   std::optional<std::vector<uint8_t>> SignMessage(

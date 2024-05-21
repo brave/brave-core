@@ -516,7 +516,7 @@ GURL ZCashMainnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL("https://mainnet.lightwalletd.com:9067/");
+  return GURL("https://zec.rocks:443/");
 }
 
 GURL ZCashTestnetRpcUrl() {
@@ -526,7 +526,7 @@ GURL ZCashTestnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL("https://testnet.lightwalletd.com:9067/");
+  return GURL("https://zec.rocks:443/");
 }
 
 const mojom::NetworkInfo* GetBitcoinMainnet() {
@@ -576,7 +576,7 @@ const mojom::NetworkInfo* GetZCashMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Zcash Mainnet",
-       {"https://zcashblockexplorer.com/transactions"},
+       {"https://3xpl.com/zcash/transaction"},
        {},
        0,
        {ZCashMainnetRpcUrl()},
@@ -596,7 +596,7 @@ const mojom::NetworkInfo* GetZCashTestnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Zcash Testnet",
-       {"https://testnet.zcashblockexplorer.com/transactions"},
+       {"https://blockexplorer.one/zcash/testnet/tx"},
        {},
        0,
        {ZCashTestnetRpcUrl()},

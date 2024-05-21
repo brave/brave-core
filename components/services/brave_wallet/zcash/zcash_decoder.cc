@@ -96,4 +96,57 @@ void ZCashDecoder::ParseTreeState(const std::string& data,
       result.saplingtree(), result.orchardtree()));
 }
 
+void ZCashDecoder::ParseCompactBlocks(const std::vector<std::string>& data,
+                                      ParseCompactBlocksCallback callback) {
+  std::vector<mojom::CompactBlockPtr> parsed_blocks;
+  for (const auto& data_block : data) {
+    zcash::CompactBlock result;
+    auto serialized_message = ResolveSerializedMessage(data_block);
+    if (!serialized_message ||
+        !result.ParseFromString(serialized_message.value())) {
+      LOG(ERROR) << "XXXZZZ 1";
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+
+    std::vector<mojom::CompactTxPtr> transactions;
+    for (int i = 0; i < result.vtx_size(); i++) {
+      const auto& vtx = result.vtx(i);
+      std::vector<mojom::CompactOrchardActionPtr> orchard_actions;
+      for (int j = 0; j < vtx.actions_size(); j++) {
+        const auto& action = vtx.actions(j);
+        orchard_actions.push_back(mojom::CompactOrchardAction::New(
+            std::vector<uint8_t>(action.nullifier().begin(),
+                                 action.nullifier().end()),
+            std::vector<uint8_t>(action.cmx().begin(), action.cmx().end()),
+            std::vector<uint8_t>(action.ephemeralkey().begin(),
+                                 action.ephemeralkey().end()),
+            std::vector<uint8_t>(action.ciphertext().begin(),
+                                 action.ciphertext().end())));
+      }
+      auto tx = mojom::CompactTx::New(
+          vtx.index(),
+          std::vector<uint8_t>(vtx.hash().begin(), vtx.hash().end()), vtx.fee(),
+          std::vector<mojom::CompactSaplingSpendPtr>(),
+          std::vector<mojom::CompactSaplingOutputPtr>(),
+          std::move(orchard_actions));
+      transactions.push_back(std::move(tx));
+    }
+
+    parsed_blocks.push_back(mojom::CompactBlock::New(
+        result.protoversion(), result.height(),
+        std::vector<uint8_t>(result.hash().begin(), result.hash().end()),
+        std::vector<uint8_t>(result.prevhash().begin(),
+                             result.prevhash().end()),
+        result.time(),
+        std::vector<uint8_t>(result.header().begin(), result.header().end()),
+        std::move(transactions),
+        mojom::ChainMetadata::New(
+            result.chainmetadata().saplingcommitmenttreesize(),
+            result.chainmetadata().orchardcommitmenttreesize())));
+  }
+
+  std::move(callback).Run(std::move(parsed_blocks));
+}
+
 }  // namespace brave_wallet

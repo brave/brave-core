@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
 
@@ -37,6 +39,8 @@ class HDKeyZip32 {
   // in transactions
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
+
+  std::array<uint8_t, kOrchardFullViewKeySize> GetFullViewKey();
 
  private:
   explicit HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> key);

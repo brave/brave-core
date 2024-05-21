@@ -641,7 +641,7 @@ const util = {
 
     if (shouldRunGnGen) {
       gnGenGuard.run(() => {
-        util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
+        util.run('gn', ['gen', '--ide=qtcreator',outputDir, ...extraGnGenOpts], options)
       })
     }
   },

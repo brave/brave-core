@@ -12,5 +12,5 @@ declare_args() {
   enable_zcash_by_default = !is_ios && !is_android
 
   # Flag is used to allow future size difference calculation
-  enable_orchard = false
+  enable_orchard = true
 }

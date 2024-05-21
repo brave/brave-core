@@ -30,8 +30,8 @@ class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
   using ResultCallback =
       base::OnceCallback<void(base::expected<bool, std::string>)>;
 
-  IsKnownAddressTxStreamHandler() {}
-  ~IsKnownAddressTxStreamHandler() override {}
+  IsKnownAddressTxStreamHandler() = default;
+  ~IsKnownAddressTxStreamHandler() override = default;
 
   void set_callback(ResultCallback callback) {
     callback_ = std::move(callback);
@@ -56,6 +56,40 @@ class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
 
  private:
   bool tx_found_ = false;
+  ResultCallback callback_;
+};
+
+class GetCompactBlocksGrpcStreamHandler : public GRrpcMessageStreamHandler {
+ public:
+  using ResultCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, std::string>)>;
+
+  GetCompactBlocksGrpcStreamHandler() = default;
+  ~GetCompactBlocksGrpcStreamHandler() override = default;
+
+  void set_callback(ResultCallback callback) {
+    callback_ = std::move(callback);
+  }
+
+ private:
+  bool ProcessMessage(std::string_view message) override {
+    // LOG(ERROR) << "XXXZZZ message " << message;
+    messages_.push_back(std::string(message));
+    return true;
+  }
+
+  void OnComplete(bool success) override {
+    if (!success) {
+      LOG(ERROR) << "XXXZZZ not success";
+      std::move(callback_).Run(base::unexpected(
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+      return;
+    }
+    std::move(callback_).Run(std::move(messages_));
+  }
+
+ private:
+  std::vector<std::string> messages_;
   ResultCallback callback_;
 };
 
@@ -206,6 +240,23 @@ const GURL MakeGetTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+const GURL MakeGetCompactBlocksURL(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  std::string path =
+      base::StrCat({base_url.path(),
+                    "cash.z.wallet.sdk.rpc.CompactTxStreamer/GetBlockRange"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 std::string MakeGetTreeStateURLParams(const mojom::BlockIDPtr& block_id) {
   zcash::BlockID request;
   auto hash = block_id->hash;
@@ -264,6 +315,22 @@ std::string MakeGetAddressTxParams(const std::string& address,
   range.mutable_end()->CopyFrom(top);
   request.mutable_range()->CopyFrom(range);
   return GetPrefixedProtobuf(request.SerializeAsString());
+}
+
+std::string MakeGetCompactBlocksParams(uint64_t block_start,
+                                       uint64_t block_end) {
+  zcash::BlockRange range;
+
+  zcash::BlockID bottom;
+  zcash::BlockID top;
+
+  bottom.set_height(block_start);
+  top.set_height(block_end);
+
+  range.mutable_start()->CopyFrom(bottom);
+  range.mutable_end()->CopyFrom(top);
+
+  return GetPrefixedProtobuf(range.SerializeAsString());
 }
 
 std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
@@ -418,6 +485,59 @@ void ZCashRpc::GetTransaction(const std::string& chain_id,
       5000);
 }
 
+void ZCashRpc::GetCompactBlocks(const std::string& chain_id,
+                                uint64_t from,
+                                uint64_t to,
+                                GetCompactBlocksCallback callback) {
+  LOG(ERROR) << "XXXZZZ GetCompactBlocks " << from << " " << to;
+  GURL request_url = MakeGetCompactBlocksURL(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+
+  if (!request_url.is_valid()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  auto url_loader =
+      MakeGRPCLoader(request_url, MakeGetCompactBlocksParams(from, to));
+
+  UrlLoadersList::iterator it = url_loaders_list_.insert(
+      url_loaders_list_.begin(), std::move(url_loader));
+
+  StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
+      stream_handlers_list_.begin(),
+      std::make_unique<GetCompactBlocksGrpcStreamHandler>());
+
+  static_cast<GetCompactBlocksGrpcStreamHandler*>(handler_it->get())
+      ->set_callback(base::BindOnce(&ZCashRpc::OnGetCompactBlocksResponse,
+                                    weak_ptr_factory_.GetWeakPtr(),
+                                    std::move(callback), it, handler_it));
+
+  (*it)->DownloadAsStream(url_loader_factory_.get(), handler_it->get());
+}
+
+void ZCashRpc::OnGetCompactBlocksResponse(
+    ZCashRpc::GetCompactBlocksCallback callback,
+    UrlLoadersList::iterator it,
+    StreamHandlersList::iterator handler_it,
+    base::expected<std::vector<std::string>, std::string> result) {
+  LOG(ERROR) << "XXXZZZ OnGetCompactBlocksResponse " << result.has_value();
+  url_loaders_list_.erase(it);
+  stream_handlers_list_.erase(handler_it);
+
+  if (!result.has_value()) {
+    std::move(callback).Run(
+        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  GetDecoder()->ParseCompactBlocks(
+      *result,
+      base::BindOnce(&ZCashRpc::OnParseCompactBlocks,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
 void ZCashRpc::OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
                                   UrlLoadersList::iterator it,
                                   std::unique_ptr<std::string> response_body) {
@@ -442,6 +562,16 @@ void ZCashRpc::OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
+void ZCashRpc::OnParseCompactBlocks(
+    GetCompactBlocksCallback callback,
+    std::optional<std::vector<mojom::CompactBlockPtr>> compact_blocks) {
+  if (compact_blocks) {
+    std::move(callback).Run(std::move(compact_blocks.value()));
+  } else {
+    std::move(callback).Run(base::unexpected("Cannot parse blocks"));
+  }
+}
+
 template <typename T>
 void ZCashRpc::OnParseResult(
     base::OnceCallback<void(base::expected<T, std::string>)> callback,
@@ -459,6 +589,7 @@ void ZCashRpc::OnGetLatestBlockResponse(
     ZCashRpc::GetLatestBlockCallback callback,
     UrlLoadersList::iterator it,
     std::unique_ptr<std::string> response_body) {
+  // LOG(ERROR) << "XXXZZZ OnGetLatestBlockResponse " << *response_body;
   auto current_loader = std::move(*it);
   url_loaders_list_.erase(it);
   if (current_loader->NetError()) {

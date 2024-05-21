@@ -10,7 +10,9 @@
 #include <optional>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::orchard {
 
@@ -32,6 +34,8 @@ class ExtendedSpendingKey {
   // in transactions
   virtual std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) = 0;
+
+  virtual std::array<uint8_t, kOrchardFullViewKeySize> GetFullViewKey() = 0;
 };
 
 }  // namespace brave_wallet::orchard

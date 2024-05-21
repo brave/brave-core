@@ -71,6 +71,7 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/nonempty/v0_7:lib",
     "//brave/third_party/rust/orchard/v0_7:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
     "//third_party/rust/rand_core/v0_6:lib",
   ]
 }

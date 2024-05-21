@@ -9,12 +9,13 @@
 
 #include "base/containers/span.h"
 #include "base/functional/callback.h"
+#include "base/logging.h"
 #include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {
 
 namespace {
-constexpr size_t kMaxMessageSizeBytes = 10000;
+constexpr size_t kMaxMessageSizeBytes = 100000;
 constexpr size_t kGrpcHeaderSize = 5;
 constexpr char kNoCompression = 0;
 }  // namespace

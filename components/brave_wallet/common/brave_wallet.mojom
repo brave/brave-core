@@ -1606,9 +1606,15 @@ struct ZCashAddress {
   ZCashKeyId key_id;
 };
 
+struct ZCashAccountBirthday {
+  uint64 value;
+  string hash;
+};
+
 struct ZCashAccountInfo {
   ZCashAddress next_transparent_receive_address;
   ZCashAddress next_transparent_change_address;
+  ZCashAccountBirthday? account_birthday;
 };
 
 enum ZCashAddressValidationResult {
@@ -1617,6 +1623,20 @@ enum ZCashAddressValidationResult {
   InvalidTransparent = 2,
   InvalidUnified = 3,
   NetworkMismatch = 4
+};
+
+struct ZCashSyncStatus {
+  uint64 current_block;
+  uint64 chain_tip;
+  uint32 notes_found;
+  uint64 spendable_balance;
+};
+
+interface ZCashSyncObserver {
+  OnStart();
+  OnUpdateSyncStatus(ZCashSyncStatus status);
+  OnStop();
+  OnError(string error);
 };
 
 interface ZCashWalletService {
@@ -1630,6 +1650,13 @@ interface ZCashWalletService {
       (ZCashAddressValidationResult result);
   ShieldFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
+
+  MakeAccountShieldable(AccountId account_id) => (string? error_message);
+  GetAccountBirthday(AccountId account_id) => (ZCashAccountBirthday? birthday, string? error_message);
+
+  GetSyncStatus(AccountId account_id) => (ZCashSyncStatus? status, string? error);
+  StartOrchardSync(AccountId account_id, pending_remote<ZCashSyncObserver> observer) => (string? error_message);
+  StopOrchardSync(AccountId account_id) => (string? error_message);
 };
 
 enum TransactionStatus {

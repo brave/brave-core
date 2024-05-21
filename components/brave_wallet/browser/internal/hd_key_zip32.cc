@@ -34,4 +34,8 @@ HDKeyZip32::GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) {
   return extended_spending_key_->GetDiversifiedAddress(div_index, kind);
 }
 
+std::array<uint8_t, kOrchardFullViewKeySize> HDKeyZip32::GetFullViewKey() {
+  return extended_spending_key_->GetFullViewKey();
+}
+
 }  // namespace brave_wallet

@@ -237,6 +237,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       base::span<const uint8_t, 32> message);
 
   /* ZCash */
+  bool SetZCashAccountBirthday(const mojom::AccountIdPtr& account_id,
+                               mojom::ZCashAccountBirthdayPtr account_birthday);
   void UpdateNextUnusedAddressForZCashAccount(
       const mojom::AccountIdPtr& account_id,
       std::optional<uint32_t> next_receive_index,
@@ -257,6 +259,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
+  std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
+  GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr GetSelectedWalletAccount();

@@ -297,6 +297,12 @@ static_library("browser") {
   }
 
   if (enable_orchard) {
+    sources += [
+      "zcash/orchard_storage.cc",
+      "zcash/orchard_storage.h",
+      "zcash/zcash_scanning_service.cc",
+      "zcash/zcash_scanning_service.h",
+    ]
     deps += [ "//brave/components/brave_wallet/browser/zcash/rust:rust_lib" ]
   }
 
