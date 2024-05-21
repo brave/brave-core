@@ -59,7 +59,7 @@ void RefillConfirmationTokens::MaybeRefill(const WalletInfo& wallet) {
 
   if (!HasIssuers()) {
     BLOG(0, "Failed to refill confirmation tokens due to missing issuers");
-    return FailedToRefill(/*should_retry=*/false);
+    return FailedToRefill();
   }
 
   if (!ShouldRefillConfirmationTokens()) {
@@ -99,6 +99,7 @@ bool RefillConfirmationTokens::ShouldRequestSignedTokens() const {
 }
 
 void RefillConfirmationTokens::RequestSignedTokens() {
+  CHECK(tokens_);
   CHECK(blinded_tokens_);
 
   BLOG(1, "Request signed tokens");
@@ -125,7 +126,8 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
     const auto& [failure, should_retry] = result.error();
 
     BLOG(0, failure);
-    return FailedToRefill(should_retry);
+
+    return should_retry ? FailedToRefillAndRetry() : FailedToRefill();
   }
 
   GetSignedTokens();
@@ -195,7 +197,7 @@ void RefillConfirmationTokens::GetSignedTokensCallback(
 
     BLOG(0, failure);
 
-    return FailedToRefill(should_retry);
+    return should_retry ? FailedToRefillAndRetry() : FailedToRefill();
   }
 
   SuccessfullyRefilled();
@@ -272,29 +274,21 @@ void RefillConfirmationTokens::ParseAndRequireCaptcha(
 }
 
 void RefillConfirmationTokens::SuccessfullyRefilled() {
-  is_refilling_ = false;
-
-  StopRetrying();
-
   Reset();
 
   NotifyDidRefillConfirmationTokens();
 }
 
-void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
-  is_refilling_ = false;
-
-  if (!should_retry) {
-    StopRetrying();
-
-    Reset();
-  }
-
+void RefillConfirmationTokens::FailedToRefillAndRetry() {
   NotifyFailedToRefillConfirmationTokens();
 
-  if (should_retry) {
-    Retry();
-  }
+  Retry();
+}
+
+void RefillConfirmationTokens::FailedToRefill() {
+  Reset();
+
+  NotifyFailedToRefillConfirmationTokens();
 }
 
 void RefillConfirmationTokens::Retry() {
@@ -326,10 +320,14 @@ void RefillConfirmationTokens::StopRetrying() {
 }
 
 void RefillConfirmationTokens::Reset() {
+  StopRetrying();
+
   nonce_.reset();
 
   tokens_.reset();
   blinded_tokens_.reset();
+
+  is_refilling_ = false;
 }
 
 void RefillConfirmationTokens::NotifyWillRefillConfirmationTokens() const {
