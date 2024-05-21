@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
@@ -66,9 +66,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         mRestoreLegacyWalletCheckbox = view.findViewById(R.id.restore_legacy_wallet_checkbox);
 
         ImageView restoreWalletCopyImage = view.findViewById(R.id.restore_wallet_copy_image);
-        assert getActivity() != null;
         restoreWalletCopyImage.setOnClickListener(
-                v -> mRecoveryPhraseText.setText(Utils.getTextFromClipboard(getActivity())));
+                v -> mRecoveryPhraseText.setText(Utils.getTextFromClipboard(requireContext())));
 
         mShowRecoveryPhraseCheckbox.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
@@ -87,16 +86,20 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(
-                            CharSequence charSequence, int i, int i1, int i2) {}
+                            CharSequence charSequence, int i, int i1, int i2) {
+                        /* Unused. */
+                    }
 
                     @Override
-                    public void afterTextChanged(Editable editable) {}
+                    public void afterTextChanged(Editable editable) {
+                        /* Unused. */
+                    }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         String recoveryPhrase = charSequence.toString().trim();
 
-                        // validate recoveryPhrase contains only string. not JSON and length is 24
+                        // Recovery phrase contains only strings, not JSON and length is 24.
                         if (recoveryPhrase.matches("[a-zA-Z\\s]+")
                                 && recoveryPhrase.split("\\s+").length == 24) {
                             mRestoreLegacyWalletCheckbox.setVisibility(View.VISIBLE);
@@ -113,123 +116,107 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         secureCryptoButton.setOnClickListener(
                 v -> {
                     String passwordInput = mPasswordEdittext.getText().toString();
-
-                    KeyringService keyringService = getKeyringService();
-                    assert keyringService != null;
-                    keyringService.isStrongPassword(
-                            passwordInput,
-                            result -> {
-                                if (!result) {
-                                    mPasswordEdittext.setError(
-                                            getResources().getString(R.string.password_text));
-                                    return;
-                                }
-
-                                proceedWithStrongPassword(passwordInput, mRecoveryPhraseText);
-                            });
+                    String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
+                    String recoverPhrase = mRecoveryPhraseText.getText().toString().trim();
+                    if (TextUtils.isEmpty(passwordInput) || passwordInput.length() < 8) {
+                        mPasswordEdittext.setError(
+                                getResources().getString(R.string.password_text));
+                    } else if (!passwordInput.equals(retypePasswordInput)) {
+                        mRetypePasswordEdittext.setError(
+                                getResources().getString(R.string.retype_password_error));
+                    } else {
+                        proceedWithStrongPassword(passwordInput, recoverPhrase);
+                    }
                 });
     }
 
+    private void proceedWithStrongPassword(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
+        if (Utils.isBiometricSupported(requireContext())) {
+            // Clear previously set bio-metric credentials
+            KeystoreHelper.resetBiometric();
+            // noinspection NewApi
+            setUpBiometric(password, recoveryPhrase);
+        } else {
+            goToTheNextPage(password, recoveryPhrase);
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private void enableBiometricLogin(String passwordInput) {
+    private void setUpBiometric(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
-                    private void onNextPage() {
-                        if (mOnNextPage != null) {
-                            mOnNextPage.onboardingCompleted();
-                        }
-                    }
-
                     @Override
                     public void onAuthenticationSucceeded(
                             BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        KeystoreHelper.useBiometricOnUnlock(passwordInput);
-                        onNextPage();
+                        KeystoreHelper.useBiometricOnUnlock(password);
+                        goToTheNextPage(password, recoveryPhrase);
                     }
 
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-
-                        final Context context = getContext();
                         // Even though we have an error, we still let to proceed
-                        if (!TextUtils.isEmpty(errString) && context != null) {
-                            Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
-                        }
-                        onNextPage();
-                    }
-                };
-        showFingerprintDialog(authenticationCallback);
-    }
-
-    private void proceedWithStrongPassword(@NonNull String password, EditText recoveryPhrase) {
-        String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
-
-        if (!password.equals(retypePasswordInput)) {
-            mRetypePasswordEdittext.setError(
-                    getResources().getString(R.string.retype_password_error));
-        } else {
-            KeyringService keyringService = getKeyringService();
-            assert keyringService != null;
-            keyringService.restoreWallet(
-                    recoveryPhrase.getText().toString().trim(),
-                    password,
-                    mIsLegacyWalletRestoreEnable,
-                    result -> {
-                        if (result) {
-                            Utils.hideKeyboard(requireActivity());
-                            keyringService.notifyWalletBackupComplete();
-                            if (Utils.isBiometricSupported(getContext())) {
-                                // Clear previously set bio-metric credentials
-                                KeystoreHelper.resetBiometric();
-                                // noinspection NewApi
-                                enableBiometricLogin(retypePasswordInput);
-                            } else if (mOnNextPage != null) {
-                                mOnNextPage.onboardingCompleted();
-                            }
-                            Utils.setCryptoOnboarding(false);
-                            Utils.clearClipboard(recoveryPhrase.getText().toString().trim());
-                            Utils.clearClipboard(password);
-                            Utils.clearClipboard(retypePasswordInput);
-
-                            cleanUp();
-                        } else {
+                        if (!TextUtils.isEmpty(errString)) {
                             Toast.makeText(
-                                            requireActivity(),
-                                            R.string.account_recovery_failed,
+                                            ContextUtils.getApplicationContext(),
+                                            errString,
                                             Toast.LENGTH_SHORT)
                                     .show();
                         }
-                    });
-            if (mOnNextPage != null) {
-                mOnNextPage.gotoNextPage();
-            }
-        }
-    }
-
-    private void cleanUp() {
-        mRecoveryPhraseText.getText().clear();
-        mPasswordEdittext.getText().clear();
-        mRetypePasswordEdittext.getText().clear();
-        mShowRecoveryPhraseCheckbox.setChecked(false);
-        mRestoreLegacyWalletCheckbox.setChecked(false);
-    }
-
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private void showFingerprintDialog(
-            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
-        assert getActivity() != null;
-        Executor executor = ContextCompat.getMainExecutor(getActivity());
+                        goToTheNextPage(password, recoveryPhrase);
+                    }
+                };
+        Executor executor = ContextCompat.getMainExecutor(requireContext());
         new BiometricPrompt.Builder(getActivity())
                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
-                        (dialog, which)
-                                -> authenticationCallback.onAuthenticationError(
+                .setNegativeButton(
+                        getResources().getString(android.R.string.cancel),
+                        executor,
+                        (dialog, which) ->
+                                authenticationCallback.onAuthenticationError(
                                         BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
+    }
+
+    private void goToTheNextPage(
+            @NonNull final String password, @NonNull final String recoveryPhrase) {
+        KeyringService keyringService = getKeyringService();
+        assert keyringService != null;
+        keyringService.restoreWallet(
+                recoveryPhrase,
+                password,
+                mIsLegacyWalletRestoreEnable,
+                result -> {
+                    if (result) {
+                        Utils.hideKeyboard(requireActivity());
+                        keyringService.notifyWalletBackupComplete();
+
+                        Utils.setCryptoOnboarding(false);
+                        Utils.clearClipboard(recoveryPhrase);
+                        Utils.clearClipboard(password);
+
+                        mRecoveryPhraseText.getText().clear();
+                        mPasswordEdittext.getText().clear();
+                        mRetypePasswordEdittext.getText().clear();
+                        mShowRecoveryPhraseCheckbox.setChecked(false);
+                        mRestoreLegacyWalletCheckbox.setChecked(false);
+
+                        if (mOnNextPage != null) {
+                            mOnNextPage.onboardingCompleted();
+                        }
+                    } else {
+                        Toast.makeText(
+                                        requireActivity(),
+                                        R.string.account_recovery_failed,
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
     }
 }
