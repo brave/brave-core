@@ -1,8 +1,10 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
 # Do not edit!
 
 import("//build/rust/cargo_crate.gni")
@@ -11,21 +13,10 @@ cargo_crate("lib") {
   crate_name = "curve25519_dalek_derive"
   epoch = "0.1"
   crate_type = "proc-macro"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
   crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs"
-  sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/tests/tests.rs",
-  ]
-  inputs = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/CHANGELOG.md",
-    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/README.md",
-  ]
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs" ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/../README.md" ]
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2021"
   cargo_pkg_version = "0.1.1"
@@ -35,9 +26,11 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//third_party/rust/proc_macro2/v1:lib",
-    "//third_party/rust/quote/v1:lib",
-    "//third_party/rust/syn/v2:lib",
+    "//brave/third_party/rust/proc_macro2/v1:lib",
+    "//brave/third_party/rust/quote/v1:lib",
+    "//brave/third_party/rust/syn/v2:lib",
   ]
 }
