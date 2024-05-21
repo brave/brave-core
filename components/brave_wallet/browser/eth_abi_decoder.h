@@ -12,15 +12,15 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 namespace brave_wallet {
 
 std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
     const std::string& encoded_path);
 
-std::optional<base::Value::List> ABIDecode(
-    const std::vector<std::string>& params,
-    const std::vector<uint8_t>& data);
+std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
+                                           const std::vector<uint8_t>& data);
 
 }  // namespace brave_wallet
 

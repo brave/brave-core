@@ -568,4 +568,72 @@ void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
   }
 }
 
+Type::Type(TypeKind kind)
+    : kind(kind), m(std::nullopt), array_type(nullptr), tuple_types() {}
+Type::Type(TypeKind kind, size_t m)
+    : kind(kind), m(m), array_type(nullptr), tuple_types() {}
+Type::~Type() = default;
+Type::Type(Type&& other) noexcept
+    : kind(other.kind),
+      m(other.m),
+      array_type(std::move(other.array_type)),
+      tuple_types(std::move(other.tuple_types)) {}
+
+TypeBuilder::TypeBuilder(TypeKind kind) : type_{kind} {}
+TypeBuilder::TypeBuilder(TypeKind kind, size_t m) : type_{kind, m} {}
+
+TypeBuilder& TypeBuilder::setArrayType(Type array_type) {
+  type_.array_type = std::make_unique<Type>(std::move(array_type));
+  return *this;
+}
+
+TypeBuilder& TypeBuilder::addTupleType(Type tuple_type) {
+  type_.tuple_types.push_back(std::move(tuple_type));
+  return *this;
+}
+
+Type TypeBuilder::build() {
+  return std::move(type_);
+}
+
+TypeBuilder Array(size_t m) {
+  return TypeBuilder(TypeKind::kArray, m);
+}
+
+Type Address() {
+  return Type{TypeKind::kAddress};
+}
+
+Type UintM(size_t m) {
+  return Type{TypeKind::kUintM, m};
+}
+
+Type Uint() {
+  return Type{TypeKind::kUintM, 256};
+}
+
+Type Bool() {
+  return Type{TypeKind::kBool};
+}
+
+Type Bytes() {
+  return Type{TypeKind::kBytes};
+}
+
+Type Bytes(size_t m) {
+  return Type{TypeKind::kBytes, m};
+}
+
+Type String() {
+  return Type{TypeKind::kString};
+}
+
+TypeBuilder Array() {
+  return TypeBuilder(TypeKind::kArray);
+}
+
+TypeBuilder Tuple() {
+  return TypeBuilder(TypeKind::kTuple);
+}
+
 }  // namespace brave_wallet::eth_abi

@@ -235,18 +235,18 @@ std::optional<std::string> ParseEthCall(const base::Value& json_value) {
 
 std::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::string& data,
-    const std::vector<std::string>& abi_types) {
+    const eth_abi::Type& abi_type) {
   std::vector<uint8_t> response_bytes;
   if (!PrefixedHexStringToBytes(data, &response_bytes)) {
     return std::nullopt;
   }
 
-  auto decoded = ABIDecode(abi_types, response_bytes);
+  auto decoded = ABIDecode(abi_type, response_bytes);
   if (decoded == std::nullopt) {
     return std::nullopt;
   }
 
-  if (decoded->size() != abi_types.size()) {
+  if (decoded->size() != abi_type.tuple_types.size()) {
     return std::nullopt;
   }
 

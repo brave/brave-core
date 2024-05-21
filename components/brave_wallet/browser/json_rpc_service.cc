@@ -1221,7 +1221,9 @@ void JsonRpcService::OnGetERC20TokenBalance(
     return;
   }
 
-  const auto& args = eth::DecodeEthCallResponse(*result, {"uint256"});
+  // (uint256)
+  auto type = eth_abi::Tuple().addTupleType(eth_abi::UintM(256)).build();
+  const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -1295,7 +1297,9 @@ void JsonRpcService::OnGetERC20TokenAllowance(
     return;
   }
 
-  const auto& args = eth::DecodeEthCallResponse(*result, {"uint256"});
+  // (uint256)
+  auto type = eth_abi::Tuple().addTupleType(eth_abi::UintM(256)).build();
+  const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -2620,7 +2624,9 @@ void JsonRpcService::OnGetEthTokenDecimals(
     return;
   }
 
-  const auto& args = eth::DecodeEthCallResponse(*result, {"uint8"});
+  // (uint8)
+  auto type = eth_abi::Tuple().addTupleType(eth_abi::UintM(8)).build();
+  const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run("", mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));

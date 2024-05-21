@@ -7,15 +7,15 @@
 
 #include <limits>
 #include <map>
+#include <memory>
 #include <optional>
-#include <stack>
 #include <tuple>
 #include <utility>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 // This file implements decoding rules of calldata according to the EVM
@@ -60,7 +60,7 @@ using DecoderResult = std::tuple<T, ByteArray, size_t>;
 constexpr size_t kWordSize = 32;
 constexpr size_t kAddressSize = 20;
 
-// GetSubByteArray returns a subarray of the input starting from the specified
+// GetSubByteArray returns a subarray of the input stas rting from the specified
 // offset. If the offset is out of bounds, an empty ByteArray is returned.
 //
 // It mimics the behavior of JavaScript's Uint8Array.prototype.subarray.
@@ -162,19 +162,16 @@ std::optional<DecoderResult<base::Value>> GetBoolFromData(
 // head-tail encoding mechanism. bytes are packed in chunks of 32 bytes, with
 // the first 32 bytes encoding the length, followed by the actual content.
 //
-// The param argument indicates the type of the bytes value to be extracted.
-// `bytes` indicates a dynamic type, while `bytes<M>` indicates a fixed-size
-// type, where 0 < M <= 32.
+// The first argument indicates the type of the bytes value to be extracted.
+// If the Type::m property is set, it indicates a fixed-size bytes<M> type,
+// where 0 < M <= 32, otherwise it indicates a dynamic bytes type.
 //
 // The result is serialized as a hex string prefixed by "0x".
 std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
-    const std::string& param,
+    const eth_abi::Type& type,
     const ByteArray& input) {
-  std::vector<std::string> param_parts = base::SplitString(
-      param, "bytes", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  size_t size = 0;
-  if (param_parts.size() == 1 && !base::StringToSizeT(param_parts[0], &size)) {
+  size_t size = type.m.value_or(0);
+  if (size > kWordSize) {
     return std::nullopt;
   }
 
@@ -182,7 +179,8 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
   size_t parts_count = 1;
   size_t consumed = 0;
 
-  if (size == 0) {
+  // dynamic bytes
+  if (!type.m.has_value()) {
     // Extract the length of the bytes since it is a dynamic type
     auto length_result = GetUintFromData<size_t>(remaining);
     if (!length_result) {
@@ -211,7 +209,8 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
 // with the first 32 bytes encoding the length, followed by the actual content.
 std::optional<DecoderResult<base::Value>> GetStringFromData(
     const ByteArray& input) {
-  auto bytes_result = GetBytesHexFromData("bytes", input);
+  // Extract the string value from the calldata as dynamic bytes
+  auto bytes_result = GetBytesHexFromData(eth_abi::Bytes(), input);
   if (!bytes_result) {
     return std::nullopt;
   }
@@ -230,197 +229,115 @@ std::optional<DecoderResult<base::Value>> GetStringFromData(
   return std::nullopt;
 }
 
-bool IsTuple(const std::string& param) {
-  return param.length() > 2 && param.front() == '(' && param.back() == ')';
-}
-
 // Forward declarations for recursive functions.
 std::optional<DecoderResult<base::Value>> GetTupleFromData(
-    const std::string& param,
+    const eth_abi::Type& type,
     const ByteArray& input);
 std::optional<DecoderResult<base::Value>> GetArrayFromData(
-    const std::string& param,
+    const eth_abi::Type& type,
     const ByteArray& input);
 
-std::optional<DecoderResult<base::Value>> DecodeParam(const std::string& param,
+std::optional<DecoderResult<base::Value>> DecodeParam(const eth_abi::Type& type,
                                                       const ByteArray& input) {
-  if (param == "address") {
+  if (type.kind == eth_abi::TypeKind::kAddress) {
     return GetAddressFromData(input);
   }
 
-  // Handle all unsigned integers of M bits,
-  // where 0 < M <= 256 and M % 8 == 0.
-  if (param == "uint8") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 8) {
     return GetUintHexFromData<uint8_t>(input);
   }
 
-  if (param == "uint16") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 16) {
     return GetUintHexFromData<uint16_t>(input);
   }
 
-  if (param == "uint32") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 32) {
     return GetUintHexFromData<uint32_t>(input);
   }
 
-  if (param == "uint64") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 64) {
     return GetUintHexFromData<uint64_t>(input);
   }
 
-  if (param == "uint128") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 128) {
     return GetUintHexFromData<uint128_t>(input);
   }
 
-  if (param == "uint256" || param == "uint") {
+  if (type.kind == eth_abi::TypeKind::kUintM && type.m == 256) {
     return GetUintHexFromData<uint256_t>(input);
   }
 
-  if (param == "bool") {
+  if (type.kind == eth_abi::TypeKind::kBool) {
     return GetBoolFromData(input);
   }
 
-  if (base::StartsWith(param, "bytes")) {
-    return GetBytesHexFromData(param, input);
+  if (type.kind == eth_abi::TypeKind::kBytes) {
+    return GetBytesHexFromData(type, input);
   }
 
-  if (param == "string") {
+  if (type.kind == eth_abi::TypeKind::kString) {
     return GetStringFromData(input);
   }
 
-  if (base::EndsWith(param, "]")) {
-    return GetArrayFromData(param, input);
+  if (type.kind == eth_abi::TypeKind::kArray) {
+    return GetArrayFromData(type, input);
   }
 
-  if (IsTuple(param)) {
-    return GetTupleFromData(param, input);
+  if (type.kind == eth_abi::TypeKind::kTuple) {
+    return GetTupleFromData(type, input);
   }
 
   // Unrecognized types are considered errors.
   return std::nullopt;
 }
 
-// Function to trim spaces from both ends of a string
-std::string Trim(const std::string& str) {
-  size_t start = str.find_first_not_of(' ');
-  size_t end = str.find_last_not_of(' ');
-  if (start == std::string::npos || end == std::string::npos) {
-    return "";
-  }
-  return str.substr(start, end - start + 1);
-}
-
-// ExtractTupleComponents parses a tuple string and returns a vector of its
-// components. The tuple string should be enclosed in parentheses and
-// separated by commas.
-std::vector<std::string> ExtractTupleComponents(const std::string& param) {
-  std::vector<std::string> components;
-
-  // Check if the input string is a valid tuple
-  if (IsTuple(param)) {
-    // Remove the enclosing parentheses
-    std::string trimmed_param = param.substr(1, param.length() - 2);
-
-    std::stack<char> parentheses_stack;
-    std::string component;
-    for (char ch : trimmed_param) {
-      if (ch == ',' && parentheses_stack.empty()) {
-        // If we encounter a comma at the top level, it signifies the end of a
-        // component
-        components.push_back(Trim(component));
-        component.clear();
-      } else {
-        if (ch == '(') {
-          parentheses_stack.push(ch);
-        } else if (ch == ')') {
-          if (!parentheses_stack.empty()) {
-            parentheses_stack.pop();
-          }
-        }
-        component += ch;
-      }
-    }
-    // Add the last component
-    if (!component.empty()) {
-      components.push_back(Trim(component));
-    }
-  }
-
-  return components;
-}
-
-// ExtractArrayType parses an array type string and returns a pair of its size
-// and element type. The array type string should be suffixed with "[]" or [M],
-// where M is the size of the fixed array.
-//
-// A size of 0 indicates a dynamic array.
-std::optional<std::pair<size_t, std::string>> ExtractArrayType(
-    const std::string& param) {
-  size_t array_paranthesis_start = param.find_last_of('[');
-  if (array_paranthesis_start == std::string::npos) {
-    return std::nullopt;
-  }
-
-  auto array_param_type = param.substr(0, array_paranthesis_start);
-  if (array_param_type.empty()) {
-    return std::nullopt;
-  }
-
-  auto size_str = param.substr(array_paranthesis_start);
-
-  if (size_str != "[]") {
-    // Extract the size of the fixed array
-    size_t size;
-    if (base::StringToSizeT(size_str.substr(1, size_str.size() - 2), &size)) {
-      return std::make_pair(size, array_param_type);
-    }
-
-    return std::nullopt;
-  }
-
-  return std::make_pair(0, array_param_type);
+std::optional<DecoderResult<base::Value>> DecodeParam(
+    const std::unique_ptr<eth_abi::Type>& type_ptr,
+    const ByteArray& input) {
+  return DecodeParam(*type_ptr, input);
 }
 
 // IsDynamicType checks if a parameter is a dynamic type or contains dynamic
 // types within it. Dynamic types include bytes, string, and dynamic-sized
 // arrays.
-bool IsDynamicType(const std::string& param) {
-  if (param == "bytes" || param == "string" || base::EndsWith(param, "[]")) {
+bool IsDynamicType(const eth_abi::Type& type) {
+  if ((type.kind == eth_abi::TypeKind::kBytes && !type.m.has_value()) ||
+      type.kind == eth_abi::TypeKind::kString ||
+      (type.kind == eth_abi::TypeKind::kArray && !type.m.has_value())) {
     return true;
   }
 
-  if (base::EndsWith(param, "]")) {
-    auto array_type_result = ExtractArrayType(param);
-    if (!array_type_result) {
-      return false;
-    }
-
-    return IsDynamicType(array_type_result->second);
+  if (type.kind == eth_abi::TypeKind::kArray && type.m.has_value()) {
+    return IsDynamicType(*type.array_type);
   }
 
-  auto tuple_components = ExtractTupleComponents(param);
-  for (const auto& component : tuple_components) {
-    if (IsDynamicType(component)) {
-      return true;
+  if (type.kind == eth_abi::TypeKind::kTuple) {
+    for (const auto& component_type : type.tuple_types) {
+      if (IsDynamicType(component_type)) {
+        return true;
+      }
     }
   }
 
   return false;
 }
 
-// GetTupleFromData extracts a tuple value from the calldata segment. The tuple
-// is represented as a list of parameters, each of which is extracted according
-// to its type.
+// GetTupleFromData extracts a tuple value from the calldata segment. A tuple
+// is represented as a sequence of parameters, each of which is extracted
+// according to its type.
 //
 // Dynamic types within the tuple are extracted using head-tail encoding.
 //
-// The result is a base::Value object containing a list of the extracted values.
+// The result is a base::Value object containing a list of the extracted
+// values.
 std::optional<DecoderResult<base::Value>> GetTupleFromData(
-    const std::vector<std::string>& params,
+    const eth_abi::Type& type,
     const ByteArray& input) {
   base::Value::List result;
   size_t consumed = 0;
   size_t dynamic_consumed = 0;
-  for (const auto& child_param : params) {
-    if (IsDynamicType(child_param)) {
+  for (const auto& child_type : type.tuple_types) {
+    if (IsDynamicType(child_type)) {
       auto offset_result =
           GetUintFromData<size_t>(GetSubByteArray(input, consumed));
       if (!offset_result) {
@@ -428,7 +345,7 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
       }
 
       auto decoded_result = DecodeParam(
-          child_param, GetSubByteArray(input, std::get<0>(*offset_result)));
+          child_type, GetSubByteArray(input, std::get<0>(*offset_result)));
       if (!decoded_result) {
         return std::nullopt;
       }
@@ -439,7 +356,7 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
     } else {
       // static type
       auto decoded_result =
-          DecodeParam(child_param, GetSubByteArray(input, consumed));
+          DecodeParam(child_type, GetSubByteArray(input, consumed));
       if (!decoded_result) {
         return std::nullopt;
       }
@@ -454,39 +371,25 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
                          consumed + dynamic_consumed);
 }
 
-// GetTupleFromData extracts a tuple value from the calldata segment. The tuple
-// type is represented as a string enclosed in parentheses, with each component
-// separated by commas.
-std::optional<DecoderResult<base::Value>> GetTupleFromData(
-    const std::string& param,
-    const ByteArray& input) {
-  auto child_params = ExtractTupleComponents(param);
-  return GetTupleFromData(child_params, input);
-}
-
 // GetArrayFromData parses a calldata segment to iterate over an array of
-// elements. The array type is represented as a string suffixed with "[]" or
-// "[M]", where M is the size of the fixed array.
+// elements. The array type could be <type>[] indicating a dynamic array, or
+// <type>[M] where M is the size of the fixed array.
 //
-// The underlying elements of the array can be both dynamic, or fixed-size
-// types. If the array contains at least one dynamic type, the entire array
-// is encoded using head-tail encoding, otherwise, the array is encoded as a
-// contiguous sequence of elements.
+// The underlying elements of the array can be a mix of both dynamic and
+// fixed-size types. If the array contains at least one dynamic type, the
+// entire array is encoded using head-tail encoding, otherwise, the array
+// is encoded as a contiguous sequence of elements.
 std::optional<DecoderResult<base::Value>> GetArrayFromData(
-    const std::string& param,
+    const eth_abi::Type& type,
     const ByteArray& input) {
-  auto array_type_result = ExtractArrayType(param);
-  if (!array_type_result) {
-    return std::nullopt;
-  }
-
-  auto array_type = array_type_result->second;
-  size_t size = array_type_result->first;
-  bool is_dynamic = size == 0;
+  // Extract the array length. If the array is dynamic, the length is
+  // temporarily set to 0, which is later overwritten by the actual length.
+  size_t size = type.m.value_or(0);
   size_t consumed = 0;
   ByteArray remaining(input.begin(), input.end());
 
-  if (is_dynamic) {
+  // dynamic array
+  if (!type.m.has_value()) {
     // Extract the array length since it is a dynamic array
     auto length_result = GetUintFromData<size_t>(input);
     if (!length_result) {
@@ -498,7 +401,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
     consumed = std::get<2>(*length_result);
   }
 
-  auto has_dynamic_child = IsDynamicType(array_type);
+  auto has_dynamic_child = IsDynamicType(*type.array_type);
   base::Value::List result;
 
   if (has_dynamic_child) {
@@ -511,8 +414,9 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
 
       consumed += std::get<2>(*offset_result);
 
-      auto decoded_child_result = DecodeParam(
-          array_type, GetSubByteArray(remaining, std::get<0>(*offset_result)));
+      auto decoded_child_result =
+          DecodeParam(type.array_type,
+                      GetSubByteArray(remaining, std::get<0>(*offset_result)));
       if (!decoded_child_result) {
         return std::nullopt;
       }
@@ -527,7 +431,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
 
   for (size_t i = 0; i < size; i++) {
     auto decoded_child_result =
-        DecodeParam(array_type, GetSubByteArray(input, consumed));
+        DecodeParam(type.array_type, GetSubByteArray(input, consumed));
     if (!decoded_child_result) {
       return std::nullopt;
     }
@@ -603,10 +507,9 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   return path;
 }
 
-std::optional<base::Value::List> ABIDecode(
-    const std::vector<std::string>& params,
-    const ByteArray& data) {
-  auto result = GetTupleFromData(params, data);
+std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
+                                           const ByteArray& data) {
+  auto result = DecodeParam(type, data);
   if (!result) {
     return std::nullopt;
   }

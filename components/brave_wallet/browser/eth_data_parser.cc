@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -62,7 +63,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   std::string selector = "0x" + HexEncodeLower(data.data(), 4);
   std::vector<uint8_t> calldata(data.begin() + 4, data.end());
   if (selector == kFilForwarderTransferSelector) {
-    auto decoded = ABIDecode({"bytes"}, calldata);
+    auto type = eth_abi::Tuple().addTupleType(eth_abi::Bytes()).build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -73,7 +75,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{decoded.value()[0].GetString()});
 
   } else if (selector == kERC20TransferSelector) {
-    auto decoded = ABIDecode({"address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -85,7 +91,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString()});
   } else if (selector == kERC20ApproveSelector) {
-    auto decoded = ABIDecode({"address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -97,7 +107,12 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString()});
   } else if (selector == kERC721TransferFromSelector) {
-    auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -111,7 +126,12 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  decoded.value()[1].GetString(),
                                  decoded.value()[2].GetString()});
   } else if (selector == kERC721SafeTransferFromSelector) {
-    auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -132,8 +152,12 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L29-L41
-    auto decoded_calldata =
-        ABIDecode({"bytes", "uint256", "address"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Bytes())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::Address())
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -177,8 +201,13 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L58-L71
-    auto decoded_calldata =
-        ABIDecode({"bytes", "uint256", "uint256", "address"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Bytes())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::Address())
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -210,8 +239,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/8d6f6e76e053f7b065d3315ddb31d2c35caddca7/contracts/zero-ex/contracts/src/features/UniswapFeature.sol#L93-L104
-    auto decoded_calldata =
-        ABIDecode({"address[]", "uint256", "uint256", "bool"}, calldata);
+    auto type =
+        eth_abi::Tuple()
+            .addTupleType(
+                eth_abi::Array().setArrayType(eth_abi::Address()).build())
+            .addTupleType(eth_abi::UintM(256))
+            .addTupleType(eth_abi::UintM(256))
+            .addTupleType(eth_abi::Bool())
+            .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -243,9 +279,20 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/ITransformERC20Feature.sol#L113-L134
-    auto decoded_calldata = ABIDecode(
-        {"address", "address", "uint256", "uint256", "(uint32,bytes)[]"},
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(
+                        eth_abi::Array()
+                            .setArrayType(eth_abi::Tuple()
+                                              .addTupleType(eth_abi::UintM(32))
+                                              .addTupleType(eth_abi::Bytes())
+                                              .build())
+                            .build())
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -331,14 +378,13 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // For the purpose of parsing transaction data corresponding to ETHSwap, we
     // are only interested in the first four fields. Ignore the rest of the
     // arguments as extraneous data.
-    auto decoded_calldata = ABIDecode(
-        {
-            "address",  // buyToken
-            "address",  // sellToken
-            "uint128",  // buyAmount
-            "uint128",  // sellAmount
-        },
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(128))
+                    .addTupleType(eth_abi::UintM(128))
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -406,14 +452,13 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // For the purpose of parsing transaction data corresponding to ETHSwap, we
     // are only interested in the first four fields. Ignore the rest of the
     // arguments as extraneous data.
-    auto decoded_calldata = ABIDecode(
-        {
-            "address",  // buyToken
-            "address",  // receiver
-            "uint256",  // sellAmount
-            "uint256",  // buyAmount
-        },
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::UintM(256))
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
@@ -448,16 +493,26 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/lifinance/contracts/blob/fe89ad34a9d2bff4dbf27c2d09b71363c282cd0b/src/Facets/GenericSwapFacet.sol#L207-L221
-    auto decoded = ABIDecode(
-        {
-            "bytes32",  // transactionId
-            "string",   // integrator
-            "string",   // referrer
-            "address",  // receiver
-            "uint256",  // minAmountOut
-            "(address,address,address,address,uint256,bytes,bool)[]",
-        },
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Bytes(32))
+                    .addTupleType(eth_abi::String())
+                    .addTupleType(eth_abi::String())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(
+                        eth_abi::Array()
+                            .setArrayType(eth_abi::Tuple()
+                                              .addTupleType(eth_abi::Address())
+                                              .addTupleType(eth_abi::Address())
+                                              .addTupleType(eth_abi::Address())
+                                              .addTupleType(eth_abi::Address())
+                                              .addTupleType(eth_abi::UintM(256))
+                                              .addTupleType(eth_abi::Bytes())
+                                              .addTupleType(eth_abi::Bool())
+                                              .build())
+                            .build())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
@@ -493,8 +548,14 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                sending_asset_id + receiving_asset_id.substr(2),
                                from_amount, min_amount_out});
   } else if (selector == kERC1155SafeTransferFromSelector) {
-    auto decoded = ABIDecode(
-        {"address", "address", "uint256", "uint256", "bytes"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::Address())
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::UintM(256))
+                    .addTupleType(eth_abi::Bytes())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
