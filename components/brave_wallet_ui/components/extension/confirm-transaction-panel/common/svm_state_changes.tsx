@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { color } from '@brave/leo/tokens/css/variables'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // types & magics
 import { BraveWallet } from '../../../../constants/types'
@@ -50,6 +51,7 @@ import {
   UnverifiedTokenIndicator,
   StateChangeText
 } from './state_changes.styles'
+import { ParsedTransaction } from '../../../../utils/tx-utils'
 
 type BlockchainInfo = Pick<
   BraveWallet.NetworkInfo,
@@ -69,9 +71,11 @@ const METAPLEX_NFT_KINDS = [
 
 export const SOLTransfer = ({
   network,
-  transfer
+  transfer,
+  transactionDetails
 }: {
   transfer: BraveWallet.BlowfishSOLTransferData
+  transactionDetails?: ParsedTransaction
   network: Pick<
     BraveWallet.NetworkInfo,
     'chainId' | 'symbol' | 'iconUrls' | 'chainName' | 'blockExplorerUrls'
@@ -116,13 +120,21 @@ export const SOLTransfer = ({
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
-        {/* TODO: counterparty not available */}
-        {/* {transfer.counterparty?.address && (
-          <CopyLabel textToCopy={transfer.counterparty.address}>
-            {getLocale('braveWalletSwapTo')}{' '}
-            <strong>{reduceAddress(transfer.counterparty.address)}</strong>
-          </CopyLabel>
-        )} */}
+
+        {/**
+         * counterparty not currently provided by Blowfish
+         * show the account/address only if it is a simple transfer TX type
+         */}
+        {transactionDetails?.txType ===
+          BraveWallet.TransactionType.SolanaSystemTransfer &&
+          transactionDetails?.recipient && (
+            <Tooltip text={transactionDetails.recipient}>
+              <CopyLabel textToCopy={transactionDetails.recipient}>
+                {getLocale('braveWalletSwapTo')}{' '}
+                <strong>{transactionDetails.recipientLabel}</strong>
+              </CopyLabel>
+            </Tooltip>
+          )}
       </Row>
       <Row
         margin={'4px 0px 0px 0px'}
@@ -225,10 +237,12 @@ export const SPLTokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty && (
-          <CopyLabel textToCopy={transfer.counterparty}>
-            {getLocale('braveWalletSwapTo')}{' '}
-            <strong>{reduceAddress(transfer.counterparty)}</strong>
-          </CopyLabel>
+          <Tooltip text={transfer.counterparty}>
+            <CopyLabel textToCopy={transfer.counterparty}>
+              {getLocale('braveWalletSwapTo')}{' '}
+              <strong>{reduceAddress(transfer.counterparty)}</strong>
+            </CopyLabel>
+          </Tooltip>
         )}
       </Row>
       <Row
@@ -489,7 +503,8 @@ export const SolAccountOwnershipChange = ({
 
 export function getComponentForSvmTransfer(
   transfer: BraveWallet.BlowfishSolanaStateChange,
-  network: ChainInfo
+  network: ChainInfo,
+  transactionDetails?: ParsedTransaction
 ) {
   const { data } = transfer.rawInfo
 
@@ -499,6 +514,7 @@ export function getComponentForSvmTransfer(
         key={transfer.humanReadableDiff}
         transfer={data.solTransferData}
         network={network}
+        transactionDetails={transactionDetails}
       />
     )
   }

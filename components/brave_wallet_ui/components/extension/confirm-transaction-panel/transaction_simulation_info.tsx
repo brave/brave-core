@@ -9,6 +9,7 @@ import * as React from 'react'
 
 // types
 import { BraveWallet } from '../../../constants/types'
+import type { ParsedTransaction } from '../../../utils/tx-utils'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -59,12 +60,14 @@ type TransactionInfoProps = (
     }
 ) & {
   network: ChainInfo
+  transactionDetails?: ParsedTransaction
 }
 
 export const TransactionSimulationInfo = ({
   simulation,
   simulationType,
-  network
+  network,
+  transactionDetails
 }: TransactionInfoProps) => {
   // computed
   const { expectedStateChanges } = simulation
@@ -203,7 +206,11 @@ export const TransactionSimulationInfo = ({
 
             {svmChanges?.svmTransfers.map((transfer, i, arr) => (
               <React.Fragment key={'SVM-Transfer' + i}>
-                {getComponentForSvmTransfer(transfer, network)}
+                {getComponentForSvmTransfer(
+                  transfer,
+                  network,
+                  transactionDetails
+                )}
                 {i < arr.length - 1 ? <Divider /> : null}
               </React.Fragment>
             ))}

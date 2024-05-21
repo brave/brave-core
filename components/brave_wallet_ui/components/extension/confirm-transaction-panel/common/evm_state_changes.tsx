@@ -7,6 +7,7 @@
 
 import * as React from 'react'
 import { color } from '@brave/leo/tokens/css/variables'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // magics
 import {
@@ -59,7 +60,6 @@ import {
   StateChangeText,
   ArrowRightIcon
 } from './state_changes.styles'
-import TooltipReact from '@brave/leo/react/tooltip'
 
 type EVMApprovalData =
   | BraveWallet.BlowfishERC20ApprovalData
@@ -137,7 +137,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <TooltipReact text={transfer.counterparty.address}>
+          <Tooltip text={transfer.counterparty.address}>
             <CopyLabel textToCopy={transfer.counterparty.address}>
               {getLocale('braveWalletSwapTo')}{' '}
               <strong>
@@ -147,7 +147,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
                 )}
               </strong>
             </CopyLabel>
-          </TooltipReact>
+          </Tooltip>
         )}
       </Row>
       <Row
@@ -272,12 +272,12 @@ export const NonFungibleErcTokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <TooltipReact text={transfer.counterparty.address}>
+          <Tooltip text={transfer.counterparty.address}>
             <CopyLabel textToCopy={transfer.counterparty.address}>
               {getLocale('braveWalletSwapTo')}{' '}
               <strong>{reduceAddress(transfer.counterparty.address)}</strong>
             </CopyLabel>
-          </TooltipReact>
+          </Tooltip>
         )}
       </Row>
 

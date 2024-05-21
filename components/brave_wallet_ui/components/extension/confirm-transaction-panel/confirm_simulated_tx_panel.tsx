@@ -301,6 +301,7 @@ export const ConfirmSimulatedTransactionPanel = ({
                     simulation={txSimulation}
                     simulationType={simulationType}
                     network={transactionsNetwork}
+                    transactionDetails={transactionDetails}
                   />
                 ) : (
                   <TransactionSimulationInfo
@@ -308,6 +309,7 @@ export const ConfirmSimulatedTransactionPanel = ({
                     simulation={txSimulation}
                     simulationType={simulationType}
                     network={transactionsNetwork}
+                    transactionDetails={transactionDetails}
                   />
                 )
               ) : null
