@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -169,8 +168,8 @@ void NftMetadataFetcher::FetchMetadata(
     GURL url,
     GetTokenMetadataIntermediateCallback callback) {
   // Obtain JSON from the URL depending on the scheme.
-  // IPFS, HTTPS, and data URIs are supported.
-  // IPFS and HTTPS URIs require an additional request to fetch the metadata.
+  // HTTPS, and data URIs are supported.
+  // HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
