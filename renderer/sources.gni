@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -62,7 +63,7 @@ if (enable_playlist) {
   brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
 
-if (enable_ai_chat) {
+if (enable_ai_rewriter) {
   brave_chrome_renderer_deps += [ "//brave/components/ai_rewriter/renderer" ]
 }
 

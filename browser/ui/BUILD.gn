@@ -122,6 +122,11 @@ source_set("ui") {
       "webui/ai_rewriter/ai_rewriter_ui.cc",
       "webui/ai_rewriter/ai_rewriter_ui.h",
     ]
+
+    deps += [
+      "//brave/components/ai_rewriter/common",
+      "//brave/components/ai_rewriter/resources/page:generated_resources",
+    ]
   }
 
   if (!is_android) {
@@ -1013,13 +1018,6 @@ source_set("ui") {
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/ai_chat/resources/page:generated_resources",
-    ]
-  }
-
-  if (enable_ai_rewriter) {
-    deps += [
-      "//brave/components/ai_rewriter/common",
-      "//brave/components/ai_rewriter/resources/page:generated_resources",
     ]
   }
 
