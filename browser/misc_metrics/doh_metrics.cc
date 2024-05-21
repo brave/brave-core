@@ -19,6 +19,10 @@
 
 namespace misc_metrics {
 
+using net::DohFallbackEndpointType;
+using net::features::kBraveFallbackDoHProvider;
+using net::features::kBraveFallbackDoHProviderEndpoint;
+
 namespace {
 
 const int kAutoSecureRequestsBuckets[] = {5, 50, 90};
@@ -32,11 +36,30 @@ constexpr char kQuad9Suffix[] = ".Quad9";
 constexpr char kWikimediaSuffix[] = ".Wikimedia";
 constexpr char kCloudflareSuffix[] = ".Cloudflare";
 
-}  // namespace
+std::string GetAutoSecureRequestsHistogramName() {
+  std::string histogram_name = kAutoSecureRequestsHistogramName;
 
-using net::DohFallbackEndpointType;
-using net::features::kBraveFallbackDoHProvider;
-using net::features::kBraveFallbackDoHProviderEndpoint;
+  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
+    auto endpoint_type = kBraveFallbackDoHProviderEndpoint.Get();
+
+    switch (endpoint_type) {
+      case DohFallbackEndpointType::kQuad9:
+        histogram_name += kQuad9Suffix;
+        break;
+      case DohFallbackEndpointType::kWikimedia:
+        histogram_name += kWikimediaSuffix;
+        break;
+      case DohFallbackEndpointType::kCloudflare:
+        histogram_name += kCloudflareSuffix;
+        break;
+      default:
+        break;
+    }
+  }
+  return histogram_name;
+}
+
+}  // namespace
 
 DohMetrics::DohMetrics(PrefService* local_state)
     : total_request_storage_(local_state, kMiscMetricsTotalDnsRequestStorage),
@@ -77,39 +100,25 @@ void DohMetrics::HandleDnsOverHttpsMode() {
 
 void DohMetrics::OnDnsRequestCounts(
     network::mojom::DnsRequestCountsPtr counts) {
+  std::string mode = local_state_->GetString(prefs::kDnsOverHttpsMode);
+  if (!mode.empty() && mode != kDohModeAutomatic) {
+    return;
+  }
   if (counts->upgraded_count > 0) {
     upgraded_request_storage_.AddDelta(counts->upgraded_count);
   }
   if (counts->total_count > 0) {
     total_request_storage_.AddDelta(counts->total_count);
   }
+
+  std::string histogram_name = GetAutoSecureRequestsHistogramName();
+
   double percentage =
       static_cast<double>(upgraded_request_storage_.GetWeeklySum()) /
       std::max(total_request_storage_.GetWeeklySum(), uint64_t(1u)) * 100.0;
   if (percentage == 0.0) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kAutoSecureRequestsHistogramName, INT_MAX - 1,
-                               4);
+    UMA_HISTOGRAM_EXACT_LINEAR(histogram_name, INT_MAX - 1, 4);
     return;
-  }
-
-  std::string histogram_name = kAutoSecureRequestsHistogramName;
-
-  if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
-    auto endpoint_type = kBraveFallbackDoHProviderEndpoint.Get();
-
-    switch (endpoint_type) {
-      case DohFallbackEndpointType::kQuad9:
-        histogram_name += kQuad9Suffix;
-        break;
-      case DohFallbackEndpointType::kWikimedia:
-        histogram_name += kWikimediaSuffix;
-        break;
-      case DohFallbackEndpointType::kCloudflare:
-        histogram_name += kCloudflareSuffix;
-        break;
-      default:
-        break;
-    }
   }
 
   p3a_utils::RecordToHistogramBucket(histogram_name.c_str(),
@@ -140,7 +149,8 @@ void DohMetrics::OnAutoUpgradeReportTimer() {
 void DohMetrics::StopListeningToDnsRequests() {
   init_timer_.Stop();
   report_interval_timer_.Stop();
-  UMA_HISTOGRAM_EXACT_LINEAR(kAutoSecureRequestsHistogramName, INT_MAX - 1, 4);
+  UMA_HISTOGRAM_EXACT_LINEAR(GetAutoSecureRequestsHistogramName(), INT_MAX - 1,
+                             4);
 }
 
 }  // namespace misc_metrics
