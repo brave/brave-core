@@ -135,7 +135,7 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
         Intent intent =
                 mSettingsLauncher.createSettingsActivityIntent(
                         requireContext(),
-                        BraveWalletAddNetworksFragment.class.getName(),
+                        BraveWalletAddNetworksFragment.class,
                         fragmentArgs);
         mAddNetworkActivityResultLauncher.launch(intent);
     }
