@@ -295,9 +295,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
-      &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
-      &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
-      &net::features::kSplitHostCacheByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
