@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 inline constexpr char kAdblockHost[] = "adblock";

@@ -50,6 +50,10 @@ base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
   return from.subspan(it - from.begin());
 }
 
+}
+
+namespace decentralized_dns {
+
 GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
   int64_t code = 0;
   contenthash = DecodeVarInt(contenthash, &code);
@@ -69,9 +73,6 @@ GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
   std::string scheme = (code == kIpnsNSCodec) ? kIPNSScheme : kIPFSScheme;
   return GURL(scheme + "://" + cidv1);
 }
-}
-
-namespace decentralized_dns {
 
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,

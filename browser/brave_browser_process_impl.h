@@ -13,7 +13,6 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"

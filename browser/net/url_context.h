@@ -104,8 +104,6 @@ struct BraveRequestInfo {
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
-  GURL ipfs_gateway_url;
-  bool ipfs_auto_fallback = false;
 
   bool ShouldMockRequest() const {
     return blocked_by == kAdBlocked && !mock_data_url.empty();

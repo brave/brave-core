@@ -31,6 +31,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
+#include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -80,7 +81,7 @@ using testing::Eq;
 using testing::Not;
 
 MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
-  return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
+  return decentralized_dns::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
 }
 
 namespace brave_wallet {
@@ -814,7 +815,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
     decentralized_dns::RegisterLocalStatePrefs(local_state_prefs_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
-    ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, &prefs_, &local_state_prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt);

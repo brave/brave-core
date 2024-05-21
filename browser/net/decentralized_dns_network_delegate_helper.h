@@ -45,6 +45,7 @@ void OnBeforeURLRequest_SnsRedirectWork(
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message);
 
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_
