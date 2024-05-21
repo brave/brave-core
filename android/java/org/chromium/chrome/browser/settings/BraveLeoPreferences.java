@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -117,7 +118,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         manageSubscription.setVisible(true);
         linkSubscription.setOnPreferenceClickListener(
                 preference -> {
-                    BraveLeoUtils.openURL(getLinkURL());
+                    TabUtils.openURLWithBraveActivity(getLinkURL());
                     return true;
                 });
         manageSubscription.setOnPreferenceClickListener(

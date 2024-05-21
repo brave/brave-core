@@ -91,16 +91,6 @@ public class BraveLeoUtils {
         }
     }
 
-    public static void openURL(String url) {
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNewOrSelectExistingTab(url, true);
-            TabUtils.bringChromeTabbedActivityToTheTop(activity);
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openURL error", e);
-        }
-    }
-
     public static void goPremium(Activity activity) {
         Intent braveLeoPlansIntent = new Intent(activity, BraveLeoPlansActivity.class);
         braveLeoPlansIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

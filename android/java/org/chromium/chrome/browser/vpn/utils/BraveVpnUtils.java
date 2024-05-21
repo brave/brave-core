@@ -25,8 +25,6 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -53,33 +51,11 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
-    private static final String BRAVE_ACCOUNT_LINK_PROD_PAGE_URL =
-            "https://account.brave.com?intent=connect-receipt&product=vpn&ux=mobile";
-    private static final String BRAVE_ACCOUNT_LINK_STAGING_PAGE_URL =
-            "https://account.bravesoftware.com?intent=connect-receipt&product=vpn&ux=mobile";
-
-    private static final String BRAVE_ACCOUNT_RECOVER_PROD_PAGE_URL =
-            "https://account.brave.com?intent=recover&product=vpn&ux=mobile";
-    private static final String BRAVE_ACCOUNT_RECOVER_STAGING_PAGE_URL =
-            "https://account.bravesoftware.com?intent=recover&product=vpn&ux=mobile";
-
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
     private static ProgressDialog sProgressDialog;
 
     public static String IS_KILL_SWITCH = "is_kill_switch";
-
-    public static String getBraveAccountLinkUrl() {
-        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging()
-                ? BRAVE_ACCOUNT_LINK_STAGING_PAGE_URL
-                : BRAVE_ACCOUNT_LINK_PROD_PAGE_URL;
-    }
-
-    public static String getBraveAccountRecoverUrl() {
-        return BraveVpnPrefUtils.isLinkSubscriptionOnStaging()
-                ? BRAVE_ACCOUNT_RECOVER_STAGING_PAGE_URL
-                : BRAVE_ACCOUNT_RECOVER_PROD_PAGE_URL;
-    }
 
     public static void openBraveVpnPlansActivity(Activity activity) {
         if (activity == null) {
@@ -144,18 +120,6 @@ public class BraveVpnUtils {
         }
         Intent vpnServerSelectionIntent = new Intent(activity, VpnServerSelectionActivity.class);
         activity.startActivity(vpnServerSelectionIntent);
-    }
-
-    public static void startActivityBraveAccount(Activity activity, String url) {
-        if (activity == null) {
-            return;
-        }
-        Intent intent = new Intent(activity, ChromeTabbedActivity.class);
-        intent.putExtra(BraveActivity.OPEN_URL, url);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        intent.setAction(Intent.ACTION_VIEW);
-        activity.finish();
-        activity.startActivity(intent);
     }
 
     public static void showProgressDialog(Activity activity, String message) {
