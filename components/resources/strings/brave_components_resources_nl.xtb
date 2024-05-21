@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave blokkeert al cookies van derden. We kunnen ook de kennisgevingen over cookietoestemming blokkeren.</translation>
 <translation id="535688588637568715">Ja, kennisgevingen over cookietoestemming blokkeren</translation>
 <translation id="2808175374672429053">Wildcards zijn niet beschikbaar in Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields heeft trackers van<ph name="COMPANY_LIST"/> geblokkeerd op <ph name="SITE_URL"/>}
-      =1 {Brave Shields heeft trackers van <ph name="COMPANY_LIST"/> en 1 andere tracker geblokkeerd op <ph name="SITE_URL"/>}
-      other {Brave Shields heeft trackers van<ph name="COMPANY_LIST"/> en {BLOCKED_COUNT} andere trackers geblokkeerd op <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields heeft 1 tracker geblokkeerd op <ph name="SITE_URL"/>}
       other {Brave Shields heeft {BLOCKED_COUNT} trackers geblokkeerd op <ph name="SITE_URL"/>}

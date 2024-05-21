@@ -2021,11 +2021,6 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="4986297793092101884">Brave blocca già i cookie di terze parti. Possiamo bloccare anche le notifiche di consenso ai cookie.</translation>
 <translation id="535688588637568715">Sì, blocca le notifiche di consenso ai cookie</translation>
 <translation id="2808175374672429053">I caratteri jolly non sono consentiti per Protezioni Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Protezioni Brave ha bloccato i tracker di <ph name="COMPANY_LIST"/> su <ph name="SITE_URL"/>}
-      =1 {Protezioni Brave ha bloccato i tracker di <ph name="COMPANY_LIST"/> e 1 altro su <ph name="SITE_URL"/>}
-      other {Protezioni Brave ha bloccato i tracker di <ph name="COMPANY_LIST"/> e altri {BLOCKED_COUNT} su <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Protezioni Brave ha bloccato 1 tracker su <ph name="SITE_URL"/>}
       other {Protezioni Brave ha bloccato {BLOCKED_COUNT} tracker su <ph name="SITE_URL"/>}

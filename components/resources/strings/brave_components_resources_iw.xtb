@@ -1104,7 +1104,7 @@
 <translation id="2115100722958448834">לא תקף <ph name="COIN_TYPE_SYMBOL"/> כתובת.</translation>
 <translation id="240219768078450165">לדומיין אין כתובת <ph name="COIN_TYPE_SYMBOL"/> מקושרת.</translation>
 <translation id="4932382283590063268">כתובת הקבלה היא הכתובת שלך.</translation>
-<translation id="3124753063207986114">כתובת הקבלה היא כתובת החוזה של האסימון.</translation>
+<translation id="3124753063207986114">הכתובת המקבלת היא כתובת הקשר של האסימון.</translation>
 <translation id="7029817408221097939">כתובת מאוחדת לא חוקית</translation>
 <translation id="6370376419663123629">הכתובת לא נראית נכונה</translation>
 <translation id="3767148796886402380">בדוק את הכתובת שלך כדי לוודא שזו הכתובת הנכונה (למשל, אותיות קטנות או רישיות).</translation>
@@ -2034,11 +2034,6 @@ CoinGecko</translation>
 <translation id="4986297793092101884">Brave כבר חוסם קובצי Cookie של צד שלישי. אנחנו יכולים לחסום גם הודעות הסכמה לקובצי Cookie.</translation>
 <translation id="535688588637568715">כן, חסום הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2808175374672429053">תווים כלליים אינם מותרים עבור Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields חסמו עוקבים של <ph name="COMPANY_LIST"/> ב-<ph name="SITE_URL"/>}
-      =1 {Brave Shields חסמו את <ph name="COMPANY_LIST"/> ועוקב אחד נוסף ב-<ph name="SITE_URL"/>}
-      other {Brave Shields חסמו את <ph name="COMPANY_LIST"/> וגם {BLOCKED_COUNT} עוקבים נוספים ב-<ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields חסמו עוקב אחד ב-<ph name="SITE_URL"/>}
       other {Brave Shields חסמו {BLOCKED_COUNT} עוקבים ב-<ph name="SITE_URL"/>}

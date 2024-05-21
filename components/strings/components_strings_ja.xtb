@@ -216,7 +216,7 @@
 <translation id="139305205187523129"><ph name="HOST_NAME"/> からデータが送信されませんでした。</translation>
 <translation id="1405567553485452995">ライトグリーン</translation>
 <translation id="1406500794671479665">確認中...</translation>
-<translation id="1406812885827747674">今回は許可</translation>
+<translation id="1406812885827747674">今回のみ許可</translation>
 <translation id="1407135791313364759">すべて開く</translation>
 <translation id="1408787208417187241">3 か所のステープル（上）</translation>
 <translation id="5488251800208457874">あなたのアクティビティはこのデバイスを使用する他のユーザーに表示されないため、プライバシーを守りながらブラウジングできます。アクセスしたウェブサイトと、そのウェブサイトが使用するサービス（Brave を含む）のデータ収集方法は変更されません。ダウンロードしたファイル、ブックマーク、リーディング リストは保存されます。</translation>
@@ -1978,6 +1978,7 @@
 <translation id="4930153903256238152">大容量</translation>
 <translation id="4930714375720679147">ON にする</translation>
 <translation id="4932035752129140860">貼り付けまたは添付したテキストは分析のため Google Cloud または第三者に送信されます。たとえば、機密データがないかスキャンされ、会社のポリシーに基づいて保存され、管理者に公開されます。</translation>
+<translation id="4933468175699107356">フォームを右クリックすると、名前や住所などの保存済みの情報が自動入力されます</translation>
 <translation id="4934780484581617878">ウィンドウ管理</translation>
 <translation id="4936134414789135531">挿入された <ph name="VALUE_NAME"/> が見つかりませんでした。</translation>
 <translation id="4936675324097895694">金融</translation>
@@ -2241,6 +2242,7 @@
 <translation id="5470861586879999274">編集のやり直し（&amp;R）</translation>
 <translation id="547963486735802022">ファイルをもう一度転送してみてください</translation>
 <translation id="5481076368049295676">アクセス先のコンテンツによって、個人情報を入手したり削除したりする危険なソフトウェアがインストールされる可能性があります。<ph name="BEGIN_LINK"/>危険性を理解したうえで表示する<ph name="END_LINK"/></translation>
+<translation id="5481682542063333508">文書作成をサポートする</translation>
 <translation id="54817484435770891">有効なアドレスを追加</translation>
 <translation id="5483838506518938965">以上で完了です</translation>
 <translation id="5485973315555778056">クラウドマシン</translation>
@@ -2391,7 +2393,6 @@
 <translation id="5765072501007116331">配達方法と要件を確認するには、住所を選択してください</translation>
 <translation id="57689295674415555">仮想カード番号が入力されない場合</translation>
 <translation id="5772086939108830423">別のデバイスのパスキーを使用する</translation>
-<translation id="5775734789739406956">右クリックすると、他のフォームに保存した情報を追加できます</translation>
 <translation id="5776313857861697733">優先度</translation>
 <translation id="5776574724412881956">仮想カードが入力されない場合は、仮想カードの詳細をクリックして、クリップボードにコピーしてください。<ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">テスト機能を有効にしました</translation>
@@ -3914,7 +3915,7 @@
 <translation id="8705331520020532516">シリアル番号</translation>
 <translation id="8708134712139312373">Bluetooth デバイスへの接続を要求できる</translation>
 <translation id="8710842507289500830">フォント スタイル</translation>
-<translation id="8712637175834984815">OK</translation>
+<translation id="8712637175834984815">理解した</translation>
 <translation id="8713438021996895321">詩</translation>
 <translation id="8718314106902482036">支払い処理を完了できませんでした</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>、<ph name="DESCRIPTION"/>、検索候補</translation>

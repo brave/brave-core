@@ -640,7 +640,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2502258949541727762">Başlamadan önce</translation>
 <translation id="4303748097351941030">Desteklenen ağlar</translation>
 <translation id="4204268048253692928">Ayarlar bölümünden istediğiniz zaman ağ ekleyebilirsiniz.</translation>
-<translation id="2523174693142405417">Arama ağları</translation>
+<translation id="2523174693142405417">Ağları ara</translation>
 <translation id="1164748583090434571">Testnet'leri göster</translation>
 <translation id="935220650946301698"><ph name="NUMBER"/> ağ ile devam edin</translation>
 <translation id="8248460961680233459">Bir şifre oluşturun</translation>
@@ -701,7 +701,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6748319398471481216">Aylık olarak yenilenir</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ay</translation>
 <translation id="1163809943099641131">Bir Yıl</translation>
-<translation id="6277055349883621705">Yıllık olarak yenileyerek %16 tasarruf edin</translation>
+<translation id="7574007394522199115">Yıllık olarak yenileyerek %%<ph name="PERCENTAGE_AMOUNT"/> tasarruf edin</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yıl</translation>
 <translation id="2655185358771731232">7 günlüğüne ücretsiz deneyin. 7 gün sonra plan ücreti hesabınıza yansıtılır. Tüm abonelikler otomatik olarak yenilenir fakat yenilemeden önce iptal edilebilir.</translation>
 <translation id="6053992191006521518">ÜCRETSİZ olarak deneyin</translation>

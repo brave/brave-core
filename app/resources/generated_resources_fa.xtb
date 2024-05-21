@@ -531,7 +531,7 @@
 <translation id="1403222014593521787">امکان اتصال به پراکسی وجود ندارد</translation>
 <translation id="1405779994569073824">خراب.</translation>
 <translation id="1406500794671479665">در حال تأیید...</translation>
-<translation id="1407069428457324124">زمینه تیره</translation>
+<translation id="1407069428457324124">زمینه تاریک</translation>
 <translation id="1407135791313364759">باز کردن همه</translation>
 <translation id="140723521119632973">فعال‌سازی شبکه داده تلفن همراه</translation>
 <translation id="1408504635543854729">‏محتوای دستگاه را در برنامه Files کاوش کنید. محتوا توسط سرپرست محدود شده است و قابل ویرایش نیست.</translation>
@@ -2311,7 +2311,7 @@
 <translation id="2710507903599773521">اکنون <ph name="DEVICE_TYPE"/> شما قفل شده است</translation>
 <translation id="2713106313042589954">خاموش کردن دوربین</translation>
 <translation id="2713444072780614174">سفید</translation>
-<translation id="2714180132046334502">پس‌زمینه تیره</translation>
+<translation id="2714180132046334502">پس‌زمینه تاریک</translation>
 <translation id="2714393097308983682">‏فروشگاه Google Play</translation>
 <translation id="2714926041741472174">گذرکلیدی برای <ph name="APP_NAME"/> انتخاب کنید</translation>
 <translation id="2715640894224696481">درخواست کلید ایمنی</translation>
@@ -3293,7 +3293,7 @@
 <translation id="348247802372410699">سبکی را انتخاب کنید</translation>
 <translation id="348268549820508141">تشخیص گفتار</translation>
 <translation id="3482719661246593752"><ph name="ORIGIN"/> می‌تواند فایل‌های زیر را مشاهده کند</translation>
-<translation id="3484595034894304035">شخصی‌سازی کاغذدیواری، محافظ صفحه، زمینه تیره، و موارد دیگر</translation>
+<translation id="3484595034894304035">شخصی‌سازی کاغذدیواری، محافظ صفحه، زمینه تاریک، و موارد دیگر</translation>
 <translation id="3484869148456018791">دریافت گواهی‌نامه جدید</translation>
 <translation id="3486950712960783074">سفر شما</translation>
 <translation id="3487007233252413104">تابع ناشناس</translation>
@@ -3401,6 +3401,7 @@
 <translation id="3566325075220776093">از این دستگاه</translation>
 <translation id="3566721612727112615">سایتی اضافه نشده است</translation>
 <translation id="356738834800832239">گذرواژه شما ذخیره شد</translation>
+<translation id="3568431410312984116">«کمک گرفتن در نوشتن» اجازه دارد به‌طور خودکار باز شود</translation>
 <translation id="3569382839528428029">آیا می‌خواهید <ph name="APP_NAME"/> صفحه شما را به اشتراک بگذارد؟</translation>
 <translation id="3569614820047645079">‏فایل‌های شما در My Drive به‌طور خودکار با Chromebook همگام‌سازی می‌شود تا بتوانید بدون اتصال اینترنت به آن‌ها دسترسی داشته باشید.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> می‌تواند فایل‌ها و پوشه‌های زیر را مشاهده کند</translation>
@@ -4888,7 +4889,7 @@
 <translation id="4694024090038830733">سرپرست سیستم، پیکربندی چاپگر را انجام می‌دهد.</translation>
 <translation id="4694604912444486114">میمون</translation>
 <translation id="4694820450536519583">اجازه‌ها</translation>
-<translation id="4695318956047767909">زمینه تیره، محافظ صفحه</translation>
+<translation id="4695318956047767909">زمینه تاریک، محافظ صفحه</translation>
 <translation id="4697071790493980729">هیچ نتیجه‌ای یافت نشد</translation>
 <translation id="4697551882387947560">هنگام پایان جلسه مرور</translation>
 <translation id="469838979880025581">سایت‌ها می‌توانند استفاده از میکروفون را درخواست کنند</translation>
@@ -5851,6 +5852,7 @@
 <translation id="5474859849784484111">‏<ph name="MANAGER"/> از شما می‌خواهد اکنون به Wi-Fi متصل شوید و به‌روزرسانی را بارگیری کنید. یا آن را ازطریق اتصال محدود بارگیری کنید (ممکن است هزینه اعمال شود).</translation>
 <translation id="5477089831058413614">پیکربندی نقطه اتصال <ph name="DEVICE_TYPE"/></translation>
 <translation id="5481273127572794904">اجازه ندارد چند فایل را به‌طور خودکار بارگیری کند</translation>
+<translation id="5481682542063333508">ارائه کمک در نوشتن</translation>
 <translation id="5481941284378890518">افزودن چاپگرهای اطراف</translation>
 <translation id="3389019465696070233">‏به سیستم وارد شوید تا به Brave اجازه دهید گروه‌های برگه پیشنهاد دهد و برگه‌های شما را مرتب نگه دارد</translation>
 <translation id="8126971123326806277">‏وقتی روشن باشد، گذرکلیدها در iCloud Keychain ایجاد می‌شود و در دستگاه‌های Apple شما دردسترس قرار می‌گیرد. وقتی خاموش باشد، گذرکلیدها در نمایه Brave شما در این دستگاه ایجاد می‌شود.</translation>
@@ -6757,7 +6759,7 @@
 <translation id="6180510783007738939">ابزار خط</translation>
 <translation id="6180550893222597997">می‌خواهید از کدام گذرکلید برای <ph name="APP_NAME"/> استفاده کنید؟</translation>
 <translation id="6181431612547969857">بارگیری مسدود شد</translation>
-<translation id="6183369864942961155">زمینه تیره/روشن خودکار</translation>
+<translation id="6183369864942961155">زمینه تاریک/روشن خودکار</translation>
 <translation id="6184099524311454384">جستجوی برگه‌ها</translation>
 <translation id="1713601041945301465">‏‫Brave کوکی‌های شخص ثالث را به‌طور خودکار محدود می‌کند</translation>
 <translation id="6185132558746749656">مکان دستگاه</translation>
@@ -9496,7 +9498,7 @@
 <translation id="8291942417224950075">برای استفاده شخصی</translation>
 <translation id="8293206222192510085">افزودن نشانک</translation>
 <translation id="8294431847097064396">منبع</translation>
-<translation id="8294476140219241086">سازمان‌دهنده برگه</translation>
+<translation id="8294476140219241086">سازمان‌دهنده برگه‌ها</translation>
 <translation id="9088868963268236508">‏تنظیمات را باز کنید تا به Brave اجازه دهید گروه‌های برگه پیشنهاد دهد</translation>
 <translation id="8295449579927246485">ترجمه زنده</translation>
 <translation id="8295450130892483256">‏نصب Microsoft 365</translation>
@@ -9974,7 +9976,7 @@
 <translation id="8669284339312441707">گرم‌تر</translation>
 <translation id="8670537393737592796">برای اینکه سریع به اینجا برگردید، روی دکمه نصب کلیک کنید و برنامه <ph name="APP_NAME"/> را نصب کنید</translation>
 <translation id="867085395664725367">خطای موقت سرور رخ داد.</translation>
-<translation id="86716700541305908">شخصی‌سازی کاغذدیواری، زمینه تیره، و موارد دیگر</translation>
+<translation id="86716700541305908">شخصی‌سازی کاغذدیواری، زمینه تاریک، و موارد دیگر</translation>
 <translation id="8673026256276578048">جستجوی وب…</translation>
 <translation id="867329473311423817">اجازه دارند پنجره‌های همه نمایشگرهایتان را مدیریت کند</translation>
 <translation id="8673383193459449849">مشکل سرور</translation>
@@ -10009,6 +10011,7 @@
 <translation id="869167754614449887"><ph name="FILE_NAME"/> از سابقه بارگیری حذف شد</translation>
 <translation id="8692107307702113268">گذرواژه بیش‌از ۱۰۰۰ نویسه دارد</translation>
 <translation id="8693639060656817812">درباره دردسترس بودن «محافظت دربرابر ردیابی» بیشتر بدانید</translation>
+<translation id="8693862390730570097">«کمک گرفتن در نوشتن» اجازه ندارد به‌طور خودکار باز شود</translation>
 <translation id="8694596275649352090">قفل شدن دستگاه وقتی در حالت خواب است یا در آن بسته است</translation>
 <translation id="8695139659682234808">افزودن کنترل‌های والدین بعد از راه‌اندازی</translation>
 <translation id="8695825812785969222">باز کردن &amp;مکان...</translation>
@@ -10587,6 +10590,7 @@
 <translation id="9112987648460918699">یافتن...</translation>
 <translation id="9113240369465613386">فقط صفحه‌های فرد</translation>
 <translation id="9113469270512809735">پنهان/ نمایان کردن موارد اخیراً بسته‌شده</translation>
+<translation id="9113529408970052045">وقتی چارگوش نوشتاری در سایتی می‌تواند با محتوای کوتاه پر شود، «کمک گرفتن در نوشتن» می‌تواند به‌طور خودکار باز شود</translation>
 <translation id="9114663181201435112">ورود به سیستم آسان</translation>
 <translation id="9115675100829699941">&amp;نشانک ها</translation>
 <translation id="916115484239820348">‏این تنظیم دردسترس بودن «ترجمه Brave» یا «لنز» را تغییر نمی‌دهد</translation>

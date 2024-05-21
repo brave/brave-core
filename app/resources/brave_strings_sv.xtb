@@ -89,7 +89,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8372880274820509128">Din data krypteras i Brave för att öka säkerheten.</translation>
 <translation id="2738871930057338499">Det går inte att ansluta till internet. HTTP 403 Förbjuden. Kontrollera proxykonfigurationen.</translation>
 <translation id="2770231113462710648">Ändra standardwebbläsare till:</translation>
-<translation id="1187986649024576560">Tillägget innehåller skadlig programvara och är osäkert. Ta bort det från Brave så att det inte längre kan se och ändra data, inklusive dina personliga uppgifter, på webbplatser du besöker.</translation>
+<translation id="1187986649024576560">Tillägget innehåller skadlig kod och är osäkert. Ta bort det från Brave så att det inte längre kan se och ändra data, inklusive dina personliga uppgifter, på webbplatser du besöker.</translation>
 <translation id="2799223571221894425">Starta om</translation>
 <translation id="3783547330001921298">En ny Brave-profil skapas för <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="2846251086934905009">Installationsfel: Installationsprogrammet slutfördes inte. Installationen har avbrutits.</translation>
@@ -181,7 +181,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="9183662282810237335">Vill du avsluta Brave ändå?</translation>
 <translation id="4065288863231444640">Låt Brave köras i bakgrunden</translation>
 <translation id="8148611988012584308">Anpassa och kontrollera Brave</translation>
-<translation id="4427306783828095590">Förbättrat skydd är bättre på att blockera nätfiske och skadlig programvara</translation>
+<translation id="4427306783828095590">Förbättrat skydd är bättre på att blockera nätfiske och skadlig kod</translation>
 <translation id="6786534271003695094">Om Brave for Testing</translation>
 <translation id="4501471624619070934">Installationen misslyckades eftersom åtkomsten är begränsad i det här landet.</translation>
 <translation id="7084397798469173252">Välkommen till Brave, ett nytt webbläsarfönster har öppnats</translation>
@@ -243,7 +243,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="82926023981336111">Anpassa och kontrollera Brave. Ställ in Brave som standardwebbläsare.</translation>
 <translation id="5809516625706423866">Det går inte att ansluta till internet. HTTP 401 Åtkomst nekad. Kontrollera proxykonfigurationen.</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
-<translation id="8054200348483755053">Brave har upptäckt att dessa objekt innehåller skadlig programvara:</translation>
+<translation id="8054200348483755053">Brave har upptäckt att dessa objekt innehåller skadlig kod:</translation>
 <translation id="3955583201925082436">Brave kontrollerar regelbundet att webbläsaren har de säkraste inställningarna. Vi meddelar dig om du behöver granska något.</translation>
 <translation id="5895138241574237353">Starta om</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – nätverksinloggning</translation>
@@ -275,7 +275,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="6685697979743742605">Den här filen kan vara farlig<ph name="LINE_BREAK"/>Brave kan kontrollera den här nedladdningen åt dig om du anger lösenordet. Information om filen skickas till Brave Säker webbsökning, men filinnehållet och lösenordet lämnar inte enheten.</translation>
 <translation id="6182736845697986886">Installationen misslyckades på grund av ett internt fel på uppdateringsservern.</translation>
 <translation id="4368341489795135329">Se till att du är inloggad i Brave på <ph name="TARGET_DEVICE_NAME"/> och försök skicka igen.</translation>
-<translation id="8320964054148936490">Det finns redan en nyare version av Brave på den här datorn. Avinstallera Brave och försök igen om programvaran inte fungerar.</translation>
+<translation id="8320964054148936490">Det finns redan en nyare version av Brave på den här datorn. Avinstallera Brave och försök igen om mjukvaran inte fungerar.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave startas om nu}=1{Om en sekund startas Brave om}other{Om # sekunder startas Brave om}}</translation>
 <translation id="5980269616827212166">Du behöver ge Brave åtkomst till lagringsutrymmet om det ska gå att ladda ned filer</translation>
 <translation id="7651600795135059130">Kontrollera webbadresser mot en lista över osäkra webbplatser i Brave</translation>
@@ -329,7 +329,7 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="8211837073776713955">Om dina lösenord någonsin skulle läcka ut får du veta det i Brave</translation>
 <translation id="684888714667046800">Det går inte att ansluta till internet. Om du använder en brandvägg kontrollerar du att <ph name="PRODUCT_EXE_NAME"/> finns med i godkännandelistan.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="3028928628792374067">Brave har upptäckt att <ph name="EXTENSION_NAME"/> innehåller skadlig programvara</translation>
+<translation id="3028928628792374067">Brave har upptäckt att <ph name="EXTENSION_NAME"/> innehåller skadlig kod</translation>
 <translation id="2301993384336631869">Brave har uppdaterats men du har inte använt det på över 30 dagar.</translation>
 <translation id="8828443087767259398">Brave behöver åtkomst för Bluetooth för att fortsätta 
  parkoppla. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -446,7 +446,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8986207147630327271">Du lägger till en jobbprofil i den här webbläsaren och ger administratören kontrollen enbart över jobbprofilen.</translation>
 <translation id="3424657754843264466">Hantera Brave-profiler</translation>
 <translation id="82609232232243542">Logga in i Brave</translation>
-<translation id="7055223246119657449">Den här nedladdningen blockerades av Brave eftersom arkivfilen innehåller andra filer som kan dölja skadlig programvara</translation>
+<translation id="7055223246119657449">Den här nedladdningen blockerades av Brave eftersom arkivfilen innehåller andra filer som kan dölja skadlig kod</translation>
 <translation id="3273774796888928550">Logga in i Brave. Om du bara vill logga in en gång med ett konto kan du <ph name="GUEST_LINK_BEGIN"/>använda enheten som gäst<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave avslutades automatiskt</translation>
 <translation id="5173820533850252773">Den här versionen av Brave är inaktuell</translation>

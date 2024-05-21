@@ -2023,12 +2023,6 @@ other {# zdrojů}
 <translation id="4986297793092101884">Brave již blokuje soubory cookie třetích stran. Stejně tak můžeme zablokovat oznámení o souhlasu s cookies.</translation>
 <translation id="535688588637568715">Ano, blokovat oznámení o souhlasu s cookies</translation>
 <translation id="2808175374672429053">Zástupné znaky nejsou pro štíty Brave povoleny.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Štíty Brave na <ph name="SITE_URL"/> zablokovaly tracker <ph name="COMPANY_LIST"/>}
-      =1 {Štíty Brave na <ph name="SITE_URL"/> zablokovaly <ph name="COMPANY_LIST"/> a 1 další tracker}
-      few {Štíty Brave na <ph name="SITE_URL"/> zablokovaly <ph name="COMPANY_LIST"/> a {BLOCKED_COUNT} další trackery}
-      other {Štíty Brave na <ph name="SITE_URL"/> zablokovaly <ph name="COMPANY_LIST"/> a {BLOCKED_COUNT} dalších trackerů}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Na <ph name="SITE_URL"/> štíty Brave zablokovaly jeden tracker}
       few {Na <ph name="SITE_URL"/> štíty Brave zablokovaly # trackery}

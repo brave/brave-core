@@ -1818,7 +1818,7 @@
 <translation id="9210143726807220086">Pārslēgt vertikālās cilnes izvērstas</translation>
 <translation id="684629111155788563">Pievienot visas cilnes jaunai grupai</translation>
 <translation id="9106013521852824634">Nosūtīt cilni sev</translation>
-<translation id="6973516366678963184">Rādīt Wayback Machine burbuli</translation>
+<translation id="6973516366678963184">Rādīt Tīmekļa vietnes iepriekšējās versijas meklēšanas funkcijas dialoglogu</translation>
 <translation id="1926106318101432555">Atvērt grāmatzīmi...</translation>
 <translation id="6118819645013156507">Pārslēgties uz logu...</translation>
 <translation id="1623204575967809688">Pievienot pašreizējo logu...</translation>
@@ -2021,11 +2021,6 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="4986297793092101884">Brave jau bloķē trešo personu sīkfailus. Mēs varam bloķēt arī paziņojumus par piekrišanu sīkfailiem.</translation>
 <translation id="535688588637568715">Jā, bloķēt paziņojumus par piekrišanu sīkfailiem</translation>
 <translation id="2808175374672429053">Brave aizsargos aizstājējzīmes nav atļautas.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields bloķēja <ph name="COMPANY_LIST"/> izsekotājus <ph name="SITE_URL"/>}
-      =1 {Brave Shields bloķēja <ph name="COMPANY_LIST"/> un 1 citu izsekotāju <ph name="SITE_URL"/>}
-      other {Brave Shields bloķēja <ph name="COMPANY_LIST"/> un {BLOCKED_COUNT} citus izsekotājus <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields bloķēja 1 izsekotāju<ph name="SITE_URL"/>}
       other {Brave Shields bloķēja {BLOCKED_COUNT} izsekotājus <ph name="SITE_URL"/>}

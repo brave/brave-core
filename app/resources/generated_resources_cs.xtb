@@ -3391,6 +3391,7 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="3566325075220776093">Z tohoto zařízení</translation>
 <translation id="3566721612727112615">Nebyly přidány žádné weby</translation>
 <translation id="356738834800832239">Heslo je uloženo</translation>
+<translation id="3568431410312984116">Povolit automatické otevírání funkce Pomozte mi psát</translation>
 <translation id="3569382839528428029">Chcete, aby aplikace <ph name="APP_NAME"/> sdílela vaši obrazovku?</translation>
 <translation id="3569614820047645079">Vaše soubory ve složce Můj disk se automaticky synchronizují s Chromebookem, takže k nim máte přístup bez připojení k internetu.</translation>
 <translation id="3569682580018832495">Web <ph name="ORIGIN"/> může číst následující soubory a složky</translation>
@@ -5839,6 +5840,7 @@ Na tento účet se mohou vztahovat oprávnění, která jste již udělili webů
 <translation id="5474859849784484111">Doména <ph name="MANAGER"/> vyžaduje, abyste se připojili k síti Wi-Fi a stáhli aktualizaci. Případně ji můžete stáhnout přes měřené připojení (mohou být účtovány poplatky).</translation>
 <translation id="5477089831058413614">Konfigurace hotspotu zařízení <ph name="DEVICE_TYPE"/></translation>
 <translation id="5481273127572794904">Zákaz stahovat automaticky několik souborů</translation>
+<translation id="5481682542063333508">Nabízet pomoc při psaní</translation>
 <translation id="5481941284378890518">Přidat tiskárny v okolí</translation>
 <translation id="3389019465696070233">Pokud chcete, aby vám Brave navrhoval skupiny karet a uspořádával karty, přihlaste se</translation>
 <translation id="8126971123326806277">Když je tato funkce zapnutá, přístupové klíče se vytvářejí v Klíčence na Cloudu a jsou dostupné ve všech vašich zařízeních Apple. Když je tato možnost vypnutá, přístupové klíče se vytvářejí ve vašem profilu Brave na tomto zařízení.</translation>
@@ -6802,7 +6804,7 @@ Na tento účet se mohou vztahovat oprávnění, která jste již udělili webů
 <translation id="6231881193380278751">Přidejte do adresy URL parametr dotazu pro automatickou aktualizaci stránky: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="6232017090690406397">Baterie</translation>
 <translation id="6232116551750539448">Připojení k síti <ph name="NAME"/> bylo ztraceno</translation>
-<translation id="623261264391834964">Klepněte pravým tlačítkem do textového pole a využijte funkci Pomozte mi s psaním</translation>
+<translation id="623261264391834964">Klepněte pravým tlačítkem do textového pole a využijte funkci Pomoz mi psát</translation>
 <translation id="6233154960150021497">Ve výchozím nastavení používat místo klávesnice hlas</translation>
 <translation id="7946072537360476411">Smluvní podmínky prohlížeče Brave se 31. března změní</translation>
 <translation id="6234474535228214774">Čeká se na instalaci</translation>
@@ -9121,7 +9123,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8022466874160067884">Zadejte svůj účet Brave a heslo</translation>
 <translation id="8023133589013344428">Spravovat jazyky v nastavení ChromeOS Flex</translation>
 <translation id="8023801379949507775">Aktualizovat rozšíření</translation>
-<translation id="8025151549289123443">Zámek obrazovky a přihlášení</translation>
+<translation id="8025151549289123443">Obrazovka uzamčení a přihlašování</translation>
 <translation id="8025291188699172126">Informace o aktualizacích</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
 <translation id="8026471514777758216">Všechna vaše zařízení</translation>
@@ -9996,6 +9998,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="869167754614449887">Soubor <ph name="FILE_NAME"/> byl smazán z historie stahování</translation>
 <translation id="8692107307702113268">Heslo má víc než 1000 znaků</translation>
 <translation id="8693639060656817812">Další informace o dostupnosti ochrany před sledováním</translation>
+<translation id="8693862390730570097">Nepovolovat automatické otevírání funkce Pomozte mi psát</translation>
 <translation id="8694596275649352090">Zamknout v režimu spánku nebo při zavřeném víku</translation>
 <translation id="8695139659682234808">Přidejte rodičovskou kontrolu po dokončení nastavení</translation>
 <translation id="8695825812785969222">&amp;Otevřít umístění...</translation>
@@ -10574,6 +10577,7 @@ Informace o tom, jaká data Brave shromažďuje a proč je shromažďuje, najd
 <translation id="9112987648460918699">Najít...</translation>
 <translation id="9113240369465613386">Pouze liché stránky</translation>
 <translation id="9113469270512809735">Přepnout nedávno zavřené položky</translation>
+<translation id="9113529408970052045">Když lze textové pole na webu vyplnit krátkým obsahem, může se automaticky otevřít funkce Pomozte mi psát</translation>
 <translation id="9114663181201435112">Snadné přihlášení</translation>
 <translation id="9115675100829699941">&amp;Záložky</translation>
 <translation id="916115484239820348">Toto nastavení nemění dostupnost Překladače Brave ani funkce Lens</translation>

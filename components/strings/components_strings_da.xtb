@@ -1912,7 +1912,7 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="4800132727771399293">Kontrollér, om din CVC og udløbsdato er korrekte, og prøv igen.</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="4809079943450490359">Vejledninger fra din enhedsadministrator:</translation>
-<translation id="4811450222531576619">Få flere oplysninger om sidens kilde og emne</translation>
+<translation id="4811450222531576619">Få oplysninger om sidens kilde og emne</translation>
 <translation id="4813512666221746211">Netværksfejl</translation>
 <translation id="4816492930507672669">Tilpas til siden</translation>
 <translation id="4819347708020428563">Vil du redigere annoteringer i standardvisningen?</translation>
@@ -1978,6 +1978,7 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="4930153903256238152">Stor kapacitet</translation>
 <translation id="4930714375720679147">Aktivér</translation>
 <translation id="4932035752129140860">Tekst, du indsætter eller vedhæfter, sendes til Google Cloud eller tredjeparter, hvor den analyseres. Tekst kan f.eks. blive scannet for følsomme oplysninger, og det kan blive gemt i henhold til virksomhedspolitikker og være synligt for din administrator.</translation>
+<translation id="4933468175699107356">Højreklik for at udfylde gemte oplysninger automatisk, f.eks. dit navn eller din adresse, i en hvilken som helst formular</translation>
 <translation id="4934780484581617878">Vinduesstyring</translation>
 <translation id="4936134414789135531">Den indsatte <ph name="VALUE_NAME"/> blev ikke fundet.</translation>
 <translation id="4936675324097895694">Økonomi</translation>
@@ -2241,6 +2242,7 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="5470861586879999274">&amp;Annuller fortryd redigering</translation>
 <translation id="547963486735802022">Prøv at overføre dine filer igen</translation>
 <translation id="5481076368049295676">Dette indhold forsøger muligvis at installere farlig software på din enhed, der kan stjæle eller slette dine oplysninger. <ph name="BEGIN_LINK"/>Vis alligevel<ph name="END_LINK"/></translation>
+<translation id="5481682542063333508">Tilbyd hjælp til at skrive</translation>
 <translation id="54817484435770891">Tilføj gyldig adresse</translation>
 <translation id="5483838506518938965">Så er du klar</translation>
 <translation id="5485973315555778056">Maskine i skyen</translation>
@@ -2391,7 +2393,6 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="5765072501007116331">Vælg en adresse for at se leveringsmetoder og -krav</translation>
 <translation id="57689295674415555">Er det virtuelle kortnummer ikke udfyldt?</translation>
 <translation id="5772086939108830423">Brug en adgangsnøgle på en anden enhed</translation>
-<translation id="5775734789739406956">Højreklik for at angive dine gemte oplysninger i en formular</translation>
 <translation id="5776313857861697733">Prioritet</translation>
 <translation id="5776574724412881956">Er det virtuelle kort ikke udfyldt? Klik på oplysninger om det virtuelle kort for at kopiere dem til udklipsholderen. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Eksperimentet er aktiveret</translation>

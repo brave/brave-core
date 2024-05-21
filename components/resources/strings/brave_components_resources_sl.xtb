@@ -2033,11 +2033,6 @@
 <translation id="4986297793092101884">Brave že blokira piškotke tretjih oseb. Prav tako lahko blokiramo obvestila o soglasju za piškotke.</translation>
 <translation id="535688588637568715">Da, blokiraj obvestila o soglasju za piškotke</translation>
 <translation id="2808175374672429053">Nadomestni znaki za Brave Shields niso dovoljeni.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {Brave ščiti so blokirali <ph name="COMPANY_LIST"/> sledilca na <ph name="SITE_URL"/> }
-=1 {Brave ščiti so blokirali <ph name="COMPANY_LIST"/> in 1 drugega sledilca na <ph name="SITE_URL"/>}
- other {Brave ščiti so blokirali <ph name="COMPANY_LIST"/> in {BLOCKED_COUNT} druge sledilce na <ph name="SITE_URL"/>}
- }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
 =1 {Brave ščiti so blokirali 1 sledilca na <ph name="SITE_URL"/> }
 other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL"/>}

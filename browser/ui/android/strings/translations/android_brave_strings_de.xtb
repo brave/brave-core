@@ -639,7 +639,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2502258949541727762">Bevor es losgeht</translation>
 <translation id="4303748097351941030">Unterstützte Netzwerke</translation>
 <translation id="4204268048253692928">Sie können in den Einstellungen jederzeit Netzwerke hinzufügen.</translation>
-<translation id="2523174693142405417">Suchnetzwerke</translation>
+<translation id="2523174693142405417">Netzwerke suchen</translation>
 <translation id="1164748583090434571">Testnetze anzeigen</translation>
 <translation id="935220650946301698">Weiter mit <ph name="NUMBER"/> Netzwerken</translation>
 <translation id="8248460961680233459">Passwort erstellen</translation>
@@ -700,7 +700,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6748319398471481216">Wird monatlich erneuert</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / Mo.</translation>
 <translation id="1163809943099641131">Ein Jahr</translation>
-<translation id="6277055349883621705">Jährlich erneuern, 16 % sparen</translation>
+<translation id="7574007394522199115">Jährlich erneuern, <ph name="PERCENTAGE_AMOUNT"/> %% sparen</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Sieben Tage kostenlos ausprobieren. Nach sieben Tagen wird Ihnen der Abopreis in Rechnung gestellt. Alle Abonnements werden automatisch verlängert, können aber vor der Verlängerung gekündigt werden.</translation>
 <translation id="6053992191006521518">KOSTENLOS testen</translation>

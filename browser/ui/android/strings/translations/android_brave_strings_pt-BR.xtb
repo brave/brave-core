@@ -700,7 +700,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="6748319398471481216">Renova mensalmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/mês</translation>
 <translation id="1163809943099641131">Um ano</translation>
-<translation id="6277055349883621705">Renove anualmente e economize 16%</translation>
+<translation id="7574007394522199115">Renove anualmente e economize <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/ano</translation>
 <translation id="2655185358771731232">Teste gratuitamente por 7 dias. Depois desse período, o preço do plano será cobrado. Todas as assinaturas são renovadas automaticamente, mas podem ser canceladas antes da renovação.</translation>
 <translation id="6053992191006521518">Testar GRATUITAMENTE</translation>

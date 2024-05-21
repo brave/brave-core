@@ -3381,6 +3381,7 @@
 <translation id="3566325075220776093">保存在此设备上的密码</translation>
 <translation id="3566721612727112615">未添加任何网站</translation>
 <translation id="356738834800832239">您的密码已保存</translation>
+<translation id="3568431410312984116">允许自动打开“帮我写”功能</translation>
 <translation id="3569382839528428029">您允许 <ph name="APP_NAME"/> 共享您的屏幕吗？</translation>
 <translation id="3569614820047645079">您在“我的云端硬盘”中保存的文件会自动同步到 Chromebook，以供您在未联网的情况下访问。</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> 可查看以下文件和文件夹</translation>
@@ -4828,7 +4829,7 @@
 <translation id="4666472247053585787">在 <ph name="DEVICE_TYPE"/> 上查看手机中的通知</translation>
 <translation id="4666911709726371538">更多应用</translation>
 <translation id="4668279686271488041">系统会定期从您的设备中删除广告衡量数据</translation>
-<translation id="4668929960204016307">,</translation>
+<translation id="4668929960204016307">、</translation>
 <translation id="4670909875730475086">恭喜！您已成功在设备上安装“<ph name="APP_NAME"/>”</translation>
 <translation id="4672759829555593783">立即打开“<ph name="FILE_NAME"/>”文件</translation>
 <translation id="4673442866648850031">取出触控笔时打开触控笔工具</translation>
@@ -5050,7 +5051,7 @@
 <translation id="485053257961878904">无法设置通知同步</translation>
 <translation id="4850548109381269495">在这两台设备上，检查您的互联网连接并开启蓝牙。然后，再试一次。</translation>
 <translation id="4850669014075537160">滚动</translation>
-<translation id="4850886885716139402">视图</translation>
+<translation id="4850886885716139402">查看</translation>
 <translation id="485088796993065002">网站可能会播放声音来为音乐、视频和其他媒体提供音频</translation>
 <translation id="4852383141291180386">管理应用通知</translation>
 <translation id="4852916668365817106">鼠标光标颜色</translation>
@@ -5829,6 +5830,7 @@
 <translation id="5474859849784484111"><ph name="MANAGER"/> 要求您立即连接到 Wi-Fi 并下载更新。您也可使用按流量计费的网络连接进行下载（可能需要支付相应费用）。</translation>
 <translation id="5477089831058413614">配置 <ph name="DEVICE_TYPE"/> 热点</translation>
 <translation id="5481273127572794904">不允许自动下载多个文件</translation>
+<translation id="5481682542063333508">提供写作帮助</translation>
 <translation id="5481941284378890518">添加附近的打印机</translation>
 <translation id="3389019465696070233">登录账号，以便 Brave 提供标签页分组建议并使标签页井然有序</translation>
 <translation id="8126971123326806277">当此选项处于开启状态时，通行密钥会在 iCloud 钥匙串中创建，并可在各部 Apple 设备上使用。当此选项处于关闭状态时，通行密钥会在该设备上您的 Brave 个人资料中创建。</translation>
@@ -9983,6 +9985,7 @@
 <translation id="869167754614449887">“<ph name="FILE_NAME"/>”已从下载记录中删除</translation>
 <translation id="8692107307702113268">密码长度超过了 1,000 个字符</translation>
 <translation id="8693639060656817812">详细了解“跟踪保护”功能的适用范围</translation>
+<translation id="8693862390730570097">不允许自动打开“帮我写”功能</translation>
 <translation id="8694596275649352090">在休眠或合盖时锁定</translation>
 <translation id="8695139659682234808">在完成设置后添加家长控制功能</translation>
 <translation id="8695825812785969222">打开位置(&amp;L)...</translation>
@@ -10481,7 +10484,7 @@
 <translation id="9062468308252555888">14 倍</translation>
 <translation id="9063208415146866933">第 <ph name="ERROR_LINE_START"/> 行到第 <ph name="ERROR_LINE_END"/> 行存在错误</translation>
 <translation id="9064275926664971810">启用自动填充功能后，只需点击一次即可填写多个表单</translation>
-<translation id="9065203028668620118">编辑</translation>
+<translation id="9065203028668620118">修改</translation>
 <translation id="1028914248002145111">这项内容是系统根据您以前使用 Brave 服务的活动记录向您显示的。您可在 <ph name="BEGIN_LINK1"/>myactivity.google.com<ph name="END_LINK1"/> 上查看/删除您的数据以及更改您的设置。
         <ph name="BREAK"/>
         <ph name="BREAK"/>
@@ -10560,6 +10563,7 @@
 <translation id="9112987648460918699">查找...</translation>
 <translation id="9113240369465613386">仅限页码为奇数的页面</translation>
 <translation id="9113469270512809735">显示/隐藏最近关闭的项</translation>
+<translation id="9113529408970052045">当网站上的文本框可以填充简短内容时，“帮我写”功能会自动打开</translation>
 <translation id="9114663181201435112">轻松登录</translation>
 <translation id="9115675100829699941">书签(&amp;B)</translation>
 <translation id="916115484239820348">此设置不会影响谷歌翻译或智能镜头的可用性</translation>

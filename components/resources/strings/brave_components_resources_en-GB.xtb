@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave already blocks third-party cookies. We can block cookie consent notices, too.</translation>
 <translation id="535688588637568715">Yes, block cookie consent notices</translation>
 <translation id="2808175374672429053">Wildcards are not allowed for Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields blocked <ph name="COMPANY_LIST"/> trackers on <ph name="SITE_URL"/>}
-      =1 {Brave Shields blocked <ph name="COMPANY_LIST"/> and 1 other tracker on <ph name="SITE_URL"/>}
-      other {Brave Shields blocked <ph name="COMPANY_LIST"/> and {BLOCKED_COUNT} other trackers on <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields blocked 1 tracker on <ph name="SITE_URL"/>}
       other {Brave Shields blocked {BLOCKED_COUNT} trackers on <ph name="SITE_URL"/>}

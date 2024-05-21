@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave đã chặn cookie của bên thứ ba. Chúng tôi cũng có thể chặn thông báo chấp thuận cookie.</translation>
 <translation id="535688588637568715">Có, chặn thông báo chấp thuận cookie</translation>
 <translation id="2808175374672429053">Ký tự đại diện không được phép dùng cho Brave Khiên.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Khiên chặn <ph name="COMPANY_LIST"/> trình theo dõi trên <ph name="SITE_URL"/>}
-      =1 {Brave Khiên chặn <ph name="COMPANY_LIST"/> và 1 trình theo dõi khác trên <ph name="SITE_URL"/>}
-      other {Brave Khiên chặn <ph name="COMPANY_LIST"/> và {BLOCKED_COUNT} trình theo dõi khác trên <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Khiên chặn 1 trình theo dõi trên <ph name="SITE_URL"/>}
       other {Brave Khiên chặn {BLOCKED_COUNT} trình theo dõi trên <ph name="SITE_URL"/>}

@@ -2022,11 +2022,6 @@
 <translation id="4986297793092101884">Brave पहले से ही थर्ड-पार्टी कुकीज़ को ब्लॉक कर देता है. हम कुकी कंसेंट नोटिस को भी ब्लॉक कर सकते हैं.</translation>
 <translation id="535688588637568715">हाँ, कुकी कंसेंट नोटिस को ब्लॉक करें</translation>
 <translation id="2808175374672429053">Brave शील्ड के लिए वाइल्डकार्ड की मंज़ूरी नहीं है.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave शील्ड्स ने <ph name="SITE_URL"/> पर <ph name="COMPANY_LIST"/> ट्रैकर को ब्लॉक कर दिया }
-      =1 {Brave शील्ड्स ने <ph name="COMPANY_LIST"/> और 1 दूसरे ट्रैकर को <ph name="SITE_URL"/> पर ब्लॉक कर दिया}
-      other {Brave शील्ड्स ने <ph name="COMPANY_LIST"/> और {BLOCKED_COUNT} दूसरे ट्रैकर्स को <ph name="SITE_URL"/> पर ब्लॉक कर दिया}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave शील्ड्स ने <ph name="SITE_URL"/> पर 1 ट्रैकर को ब्लॉक कर दिया }
       other {Brave शील्ड्स ने <ph name="SITE_URL"/> पर {BLOCKED_COUNT} ट्रैकर्स को ब्लॉक कर दिया }
