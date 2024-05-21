@@ -28,6 +28,10 @@ import {
 import {
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'
+import { getAddressLabel } from '../../../../utils/account-utils'
+import {
+  useGetAccountInfosRegistryQuery //
+} from '../../../../common/slices/api.slice'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
@@ -55,6 +59,7 @@ import {
   StateChangeText,
   ArrowRightIcon
 } from './state_changes.styles'
+import TooltipReact from '@brave/leo/react/tooltip'
 
 type EVMApprovalData =
   | BraveWallet.BlowfishERC20ApprovalData
@@ -73,6 +78,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
 }): JSX.Element => {
   // queries
   const { data: tokensRegistry } = useGetCombinedTokensRegistryQuery()
+  const { data: accountsRegistry } = useGetAccountInfosRegistryQuery()
 
   // memos
   const asset: IconAsset = React.useMemo(() => {
@@ -131,10 +137,17 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <CopyLabel textToCopy={transfer.counterparty.address}>
-            {getLocale('braveWalletSwapTo')}{' '}
-            <strong>{reduceAddress(transfer.counterparty.address)}</strong>
-          </CopyLabel>
+          <TooltipReact text={transfer.counterparty.address}>
+            <CopyLabel textToCopy={transfer.counterparty.address}>
+              {getLocale('braveWalletSwapTo')}{' '}
+              <strong>
+                {getAddressLabel(
+                  transfer.counterparty.address,
+                  accountsRegistry
+                )}
+              </strong>
+            </CopyLabel>
+          </TooltipReact>
         )}
       </Row>
       <Row
@@ -259,10 +272,12 @@ export const NonFungibleErcTokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <CopyLabel textToCopy={transfer.counterparty.address}>
-            {getLocale('braveWalletSwapTo')}{' '}
-            <strong>{reduceAddress(transfer.counterparty.address)}</strong>
-          </CopyLabel>
+          <TooltipReact text={transfer.counterparty.address}>
+            <CopyLabel textToCopy={transfer.counterparty.address}>
+              {getLocale('braveWalletSwapTo')}{' '}
+              <strong>{reduceAddress(transfer.counterparty.address)}</strong>
+            </CopyLabel>
+          </TooltipReact>
         )}
       </Row>
 
