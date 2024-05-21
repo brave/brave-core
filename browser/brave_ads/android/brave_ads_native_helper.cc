@@ -12,7 +12,7 @@
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "chrome/browser/profiles/profile_android.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
@@ -21,7 +21,7 @@ namespace brave_ads {
 jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   return profile->GetPrefs()->GetBoolean(
       brave_ads::prefs::kOptedInToNotificationAds);
 }
@@ -31,7 +31,7 @@ void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     jboolean should_enable_ads) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
                                   should_enable_ads);
 }
@@ -40,7 +40,7 @@ void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
 jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return false;
@@ -54,7 +54,7 @@ void JNI_BraveAdsNativeHelper_OnNotificationAdShown(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;
@@ -71,7 +71,7 @@ void JNI_BraveAdsNativeHelper_OnNotificationAdClosed(
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id,
     jboolean j_by_user) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;
@@ -87,7 +87,7 @@ void JNI_BraveAdsNativeHelper_OnNotificationAdClicked(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
     const base::android::JavaParamRef<jstring>& j_notification_id) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;

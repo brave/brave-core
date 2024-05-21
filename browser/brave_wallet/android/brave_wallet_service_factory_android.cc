@@ -9,7 +9,7 @@
 #include "brave/build/android/jni_headers/BraveWalletServiceFactory_jni.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "chrome/browser/profiles/profile_android.h"
+#include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
@@ -20,7 +20,7 @@ template <class T>
 jlong BindWalletService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto* profile = Profile::FromJavaObject(profile_android);
   if (auto* brave_wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
               profile)) {
