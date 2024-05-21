@@ -132,7 +132,6 @@ class SkusServiceImpl : public KeyedService, public mojom::SkusService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_
       GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<base::SingleThreadTaskRunner> sdk_task_runner_;
-  scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
   std::unordered_map<std::string, ::rust::Box<skus::CppSDK>> sdks_
       GUARDED_BY_CONTEXT(sequence_checker_);
   mojo::ReceiverSet<mojom::SkusService> receivers_;
