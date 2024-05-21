@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Parental Control",
+  "version": "1.0",
+  "description": "Parental Control extension - by Ping.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "windows",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+  "background": {
+    "service_worker": "extension/out/parental_control_background.bundle.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "/content/ui/popup.tsx",
+    "default_position": "center",
+    "default_icon": {
+      "16": "/assets/Logo.png",
+      "48": "/assets/Logo.png",
+      "128": "/assets/Logo.png"
+    }
+  },
+
+  "icons": {
+    "16": "/assets/Logo.png",
+    "48": "/assets/Logo.png",
+    "128": "/assets/Logo.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk+K9Q6i+GL6jiWFr2hWOueyuXU749A49QC6jB6edPOMY3EzZTCLVQQ80I+YmltS7Ijb4YUAQpEe3cQN3rcQK0Vti+DalT9fT+jY+XXFyhHrQJ0u6uIRB6B2CNPf5NptQKF3OoUXbKt3Qj4Di/Rqhqs3UsU8ujBr0iBhyKZAiGHswfcwG8DcP99Uewf1ekma8dNK19t8JGpUbCXAw0Df3YtEO4kU4dlITmdae7v/3fdA5jICVRNB+DGvTukNlINeFBIR/4YsZvG2sFxWYUA+ckWfJjq/cfiI3nDVB2Iv1EHgtz1TXNG/KtSMLoxSyw/5Q3VvaMQ52JhGI4O7Aaxa80QIDAQAB"
+}

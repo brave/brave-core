@@ -15,6 +15,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/parental_control/grit/parental_control_resources.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -122,6 +123,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSION, brave_extension_path);
   }
+  base::FilePath parental_control_path(FILE_PATH_LITERAL(""));
+    parental_control_path =
+        parental_control_path.Append(FILE_PATH_LITERAL("parental_control"));
+    Add(IDR_PARENTAL_CONTROL, parental_control_path);
 }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
