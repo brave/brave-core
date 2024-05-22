@@ -34,7 +34,7 @@ module.exports = async function (env, argv) {
       "Entry point(s) must be provided via env.brave_entries param."
     )
   }
-  const entryInput = env.brave_entries.split(',')
+  const entryInput = env.brave_entries.split(',').sort()
   for (const entryInputItem of entryInput) {
     const entryInputItemParts = entryInputItem.split('=')
     if (entryInputItemParts.length !== 2) {
@@ -49,6 +49,7 @@ module.exports = async function (env, argv) {
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
+    symlinks: false, // If symlinks are used, don't use different IDs for them
     alias: pathMap,
     modules: ['node_modules'],
     fallback
@@ -69,7 +70,7 @@ module.exports = async function (env, argv) {
   const output = {
     path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
-    chunkFilename: '[id].chunk.js'
+    chunkFilename: '[name].chunk.js'
   }
   if (env.output_public_path) {
     output.publicPath = env.output_public_path
@@ -81,6 +82,9 @@ module.exports = async function (env, argv) {
     output,
     resolve,
     optimization: {
+      // We are providing chunk and module IDs via a plugin instead of a default
+      chunkIds: false,
+      moduleIds: false,
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE
     },
@@ -91,6 +95,27 @@ module.exports = async function (env, argv) {
       process.env.DEPFILE_SOURCE_NAME && new GenerateDepfilePlugin({
         depfilePath: process.env.DEPFILE_PATH,
         depfileSourceName: process.env.DEPFILE_SOURCE_NAME
+      }),
+      // Generate module IDs relative to the gen dir since we want identical
+      // output per-platform for mac Universal builds. If they remain relative
+      // to the src/brave working directory then the paths could include the
+      // platform architecture and therefore be different,
+      // e.g. ../out/Release_arm64/gen
+      // We can't use DeterministicModuleIdsPlugin because the
+      // concatenated modules still use a relative path from the source module
+      // it will be concatenated with, which will result in file content
+      // differing with different build configurations. Webpack's
+      // ConcatenatedModule class doesn't use this context configuration for
+      // it's identifier construction.
+      new webpack.ids.NamedModuleIdsPlugin({
+        context: process.env.ROOT_GEN_DIR,
+      }),
+      // NamedChunkIdsPlugin doesn't seem to care if we don't give a common
+      // context - it might if the chunk is directly loaded from the an output
+      // path, so it's being provided anyway. Otherwise, it relies on the IDs of
+      // the chunk's included modules.
+      new webpack.ids.NamedChunkIdsPlugin({
+        context: process.env.ROOT_GEN_DIR,
       }),
       provideNodeGlobals,
       ...Object.keys(pathMap)
