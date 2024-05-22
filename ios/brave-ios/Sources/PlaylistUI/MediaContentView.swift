@@ -24,6 +24,8 @@ struct MediaContentView: View {
   @Environment(\.toggleFullScreen) private var toggleFullScreen
   @Environment(\.requestGeometryUpdate) private var requestGeometryUpdate
 
+  @State private var ignoreFollowingFullScreenOrientationChange: Bool = false
+
   var body: some View {
     VStack {
       PlayerView(playerModel: model)
@@ -53,25 +55,76 @@ struct MediaContentView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
     .background(isFullScreen ? .black : Color(braveSystemName: .containerBackground))
     .onChange(of: isFullScreen) { newValue in
-      // Automatically rotate the device orientation on iPhones when the video is not portrait
-      if UIDevice.current.userInterfaceIdiom == .phone, !model.isPortraitVideo {
-        requestGeometryUpdate(orientation: newValue ? .landscapeLeft : .portrait)
-      }
+      handleFullScreenOrientationChanges(
+        expectedFullScreen: newValue,
+        expectedOrientation: interfaceOrientation
+      )
     }
     .onChange(of: interfaceOrientation) { newValue in
-      if UIDevice.current.userInterfaceIdiom == .phone {
-        if newValue.isLandscape {
-          // Always toggle fullscreen on landscape iPhone
-          toggleFullScreen(explicitFullScreenMode: true)
-        } else {
-          toggleFullScreen(explicitFullScreenMode: model.isPortraitVideo)
-        }
-      }
+      handleFullScreenOrientationChanges(
+        expectedFullScreen: isFullScreen,
+        expectedOrientation: newValue
+      )
     }
     .persistentSystemOverlays(isFullScreen ? .hidden : .automatic)
     .defersSystemGestures(on: isFullScreen ? .all : [])
     .ignoresSafeArea(.keyboard, edges: .bottom)
   }
+
+  private func handleFullScreenOrientationChanges(
+    expectedFullScreen: Bool,
+    expectedOrientation: UIInterfaceOrientation
+  ) {
+    if UIDevice.current.userInterfaceIdiom != .phone {
+      // Full screen and orientations don't affect iPads
+      return
+    }
+
+    // Orientation and full screen mode are linked, in the sense that changing one may trigger a
+    // change in the other so we need to make sure that we ignore the follow-up change that would
+    // trigger this method.
+    defer { ignoreFollowingFullScreenOrientationChange = false }
+    if ignoreFollowingFullScreenOrientationChange {
+      return
+    }
+
+    let isPortraitVideo = model.isPortraitVideo
+    let isFullScreenModeChanging = expectedFullScreen != isFullScreen
+    let isOrientationChanging = expectedOrientation != interfaceOrientation
+
+    if !isFullScreenModeChanging && !isOrientationChanging {
+      // Nothing to do
+      return
+    }
+
+    switch (expectedFullScreen, expectedOrientation.isLandscape) {
+    case (true, false):
+      // When a user taps full screen mode we specifically want to shift into landscape orientation
+      // Likewise if the user was in full screen mode already and is no longer in landscape
+      // orientation we want to _exit_ full screen mode. This is all explicit to non-portrait video
+      // since potrait video can display fullscreen without being in landscape
+      if !isPortraitVideo {
+        ignoreFollowingFullScreenOrientationChange = true
+        if isFullScreenModeChanging {
+          requestGeometryUpdate(orientation: .landscapeLeft)
+        } else {  // isOrientationChanging
+          toggleFullScreen(explicitFullScreenMode: false)
+        }
+      }
+    case (false, true):
+      // When a user is exiting full screen we always want to shift back to portrait orientation.
+      // Likewise if the user is shifting into landscape orientation we want to enter full screen mode
+      ignoreFollowingFullScreenOrientationChange = true
+      if isFullScreenModeChanging {
+        requestGeometryUpdate(orientation: .portrait)
+      } else {  // isOrientationChanging
+        toggleFullScreen(explicitFullScreenMode: true)
+      }
+    default:
+      break
+    }
+  }
+
 }
 
 @available(iOS 16.0, *)
