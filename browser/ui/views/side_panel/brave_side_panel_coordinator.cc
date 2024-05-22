@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/debug/dump_without_crashing.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -66,6 +67,23 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
   const bool active_tab_changed = selection.active_tab_changed();
   if (active_tab_changed) {
     brave_browser_view->SetSidePanelOperationByActiveTabChange(true);
+  }
+
+  // Code for prevent weird crash.
+  // https://github.com/brave/brave-browser/issues/38331#issuecomment-2119901610
+  if (active_tab_changed) {
+    auto* old_contextual_registry =
+        SidePanelRegistry::Get(selection.old_contents);
+    // If old tab's WebContents has contextual registry, it should be in
+    // observed list. If not, start observe as it's removed from base class'
+    // method right after. Otherwise, we get crash.
+    if (old_contextual_registry &&
+        !registry_observations_.IsObservingSource(old_contextual_registry)) {
+      LOG(ERROR) << __func__
+                 << " de-activated tab's registry should be observed already!";
+      registry_observations_.AddObservation(old_contextual_registry);
+      base::debug::DumpWithoutCrashing();
+    }
   }
 
   SidePanelCoordinator::OnTabStripModelChanged(tab_strip_model, change,
