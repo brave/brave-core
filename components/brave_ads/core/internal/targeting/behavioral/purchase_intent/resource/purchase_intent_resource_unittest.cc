@@ -84,12 +84,10 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResourceWhenLocaleDidChange) {
   EXPECT_TRUE(resource_->IsInitialized());
 }
 
-TEST_F(
-    BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAdsAndBraveNewsAds) {
+TEST_F(BraveAdsPurchaseIntentResourceTest,
+       DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
   test::OptOutOfNotificationAds();
-  test::OptOutOfBraveNewsAds();
 
   ASSERT_FALSE(LoadResource(kCountryComponentId));
 
@@ -126,12 +124,11 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAdsAndBraveNewsAds) {
+    DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   test::OptOutOfNotificationAds();
-  test::OptOutOfBraveNewsAds();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
@@ -167,10 +164,9 @@ TEST_F(
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
-    DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAdsAndBraveNewsAds) {
+    DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
   test::OptOutOfNotificationAds();
-  test::OptOutOfBraveNewsAds();
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
