@@ -1891,6 +1891,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 - (void)notifyTabDidChange:(NSInteger)tabId
              redirectChain:(NSArray<NSURL*>*)redirectChain
+           isNewNavigation:(BOOL)isNewNavigation
+               isRestoring:(BOOL)isRestoring
                isErrorPage:(BOOL)isErrorPage
                 isSelected:(BOOL)isSelected {
   if (![self isServiceRunning]) {
@@ -1901,8 +1903,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
   const bool isVisible = isSelected && [self isBrowserActive];
 
-  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isErrorPage,
-                                        isVisible);
+  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isNewNavigation,
+                                        isRestoring, isErrorPage, isVisible);
 }
 
 - (void)notifyDidCloseTab:(NSInteger)tabId {

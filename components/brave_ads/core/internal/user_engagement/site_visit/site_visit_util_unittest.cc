@@ -17,6 +17,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnClosedTab) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyDidCloseTab(/*tab_id=*/1);
@@ -29,6 +30,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabIfMismatchingDomainOrHost) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://foo.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
@@ -39,6 +41,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
