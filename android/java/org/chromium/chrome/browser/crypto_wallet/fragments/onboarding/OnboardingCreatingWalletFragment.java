@@ -57,7 +57,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
             keyringModel.isWalletCreated(
                     isCreated -> {
                         if (isCreated) {
-                            requireActivity().finish();
+                            goToNextPage();
                             return;
                         }
                         createWallet(keyringModel);
@@ -83,21 +83,24 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                         }
 
                         Utils.setCryptoOnboarding(false);
-
-                        // Go to the next page after wallet creation is done.
-                        if (mOnNextPage != null) {
-                            // Add small delay if the Wallet creation completes faster than {@code
-                            // NEXT_PAGE_DELAY_MS}.
-                            if (mAddTransitionDelay) {
-                                PostTask.postDelayedTask(
-                                        TaskTraits.USER_BLOCKING,
-                                        () -> mOnNextPage.gotoNextPage(),
-                                        NEXT_PAGE_DELAY_MS);
-                            } else {
-                                mOnNextPage.gotoNextPage();
-                            }
-                        }
+                        goToNextPage();
                     });
+        }
+    }
+
+    private void goToNextPage() {
+        // Go to the next page after wallet creation is done.
+        if (mOnNextPage != null) {
+            // Add small delay if the Wallet creation completes faster than {@code
+            // NEXT_PAGE_DELAY_MS}.
+            if (mAddTransitionDelay) {
+                PostTask.postDelayedTask(
+                        TaskTraits.USER_BLOCKING,
+                        () -> mOnNextPage.gotoNextPage(),
+                        NEXT_PAGE_DELAY_MS);
+            } else {
+                mOnNextPage.gotoNextPage();
+            }
         }
     }
 
