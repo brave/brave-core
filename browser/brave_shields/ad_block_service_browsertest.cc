@@ -2256,14 +2256,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveStatic) {
   NavigateToURL(tab_url);
 
   content::WebContents* contents = web_contents();
-  
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('#ad-banner', existence(false))"));
+
+  EXPECT_EQ(true, EvalJs(contents, "check('#ad-banner', existence(false))"));
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
-  UpdateAdBlockInstanceWithRules(
-      "b.com##.blockme:remove()");
+  UpdateAdBlockInstanceWithRules("b.com##.blockme:remove()");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2271,18 +2269,19 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveDynamic) {
 
   content::WebContents* contents = web_contents();
 
-  auto result =
-      EvalJs(contents,
-             "addElementsDynamically();\n"
-             "wait('.dontblockme', existence(true)).then(() =>"
-             "wait('.blockme', existence(false)))");
+  auto result = EvalJs(contents,
+                       "addElementsDynamically();\n"
+                       "wait('.dontblockme', existence(true)).then(() =>"
+                       "wait('.blockme', existence(false)))");
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
   UpdateAdBlockInstanceWithRules(
+      "b.com##.ad img:remove-attr(something)\n"
       "b.com##.ad img:remove-attr(src)\n"
+      "b.com##.ad img:remove-attr(nothing)\n"
       "b.com##img:remove-attr(whatever)");
 
   GURL tab_url =
@@ -2290,18 +2289,18 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttribute) {
   NavigateToURL(tab_url);
 
   content::WebContents* contents = web_contents();
-  
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('.ad img', attributes(['alt']))"));
+
+  EXPECT_EQ(true, EvalJs(contents, "check('.ad img', attributes(['alt']))"));
 
   // Sanity check selector
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('#relative-url-div img', attributes(['src']))"));
+  EXPECT_EQ(
+      true,
+      EvalJs(contents, "check('#relative-url-div img', attributes(['src']))"));
 }
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveAttributeDynamic) {
-  UpdateAdBlockInstanceWithRules(
-      "b.com##img.blockme:remove-attr(src)");
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringRemoveAttributeDynamic) {
+  UpdateAdBlockInstanceWithRules("b.com##img.blockme:remove-attr(src)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2327,10 +2326,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveClass) {
 
   content::WebContents* contents = web_contents();
 
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('.ghi', existence(false))"));
-  EXPECT_EQ(true, EvalJs(contents,
-                         "check('.ad.jkl', classes(['ad', 'jkl']))"));
+  EXPECT_EQ(true, EvalJs(contents, "check('.ghi', existence(false))"));
+  EXPECT_EQ(true, EvalJs(contents, "check('.ad.jkl', classes(['ad', 'jkl']))"));
 }
 
 // Test rules overridden by hostname-specific exception rules

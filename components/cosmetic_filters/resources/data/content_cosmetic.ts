@@ -76,6 +76,8 @@ CC.switchToSelectorsPollingThreshold =
 CC.fetchNewClassIdRulesThrottlingMs =
   CC.fetchNewClassIdRulesThrottlingMs || undefined
 
+CC.hasRemovals = CC.hasRemovals || false
+
 /**
  * Provides a new function which can only be scheduled once at a time.
  *
@@ -281,6 +283,18 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
 
   if (!ShouldThrottleFetchNewClassIdsRules()) {
     fetchNewClassIdRules()
+  }
+
+  if (CC.hasRemovals) {
+    const addedElements : Element[] = [];
+    mutations.forEach(mutation =>
+      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
+        n.nodeType === Node.ELEMENT_NODE && addedElements.push(n as Element)
+      )
+    )
+    if (addedElements.length !== 0) {
+      executeRemovals(addedElements);
+    }
   }
 
   if (eventId) {
@@ -629,6 +643,8 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
 
   fetchNewClassIdRules()
 
+  if (CC.hasRemovals) executeRemovals();
+
   if (eventId) {
     // Callback to c++ renderer process
     // @ts-expect-error
@@ -692,3 +708,38 @@ const tryScheduleQueuePump = () => {
 CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
 
 tryScheduleQueuePump()
+
+const executeRemovals = (added?: Element[]) => {
+  // If passed a list of added elements, do not query the entire document
+  const findMatchingElements =
+    (added === undefined)
+    ? (selector : string) => document.querySelectorAll(selector)
+    : (selector : string) => added.filter(elem => elem.matches(selector));
+  if (CC.selectorsToRemove !== undefined) {
+    CC.selectorsToRemove.forEach(
+      selector => findMatchingElements(selector).forEach(elem => elem.remove())
+    );
+  }
+  if (CC.classesToRemoveBySelector !== undefined) {
+    for (const [selector, classesToRemove] of CC.classesToRemoveBySelector) {
+      findMatchingElements(selector).forEach((elem : Element) => {
+        // Check if the element has any classes to remove because
+        // classList.remove(tokens...) always triggers another mutation
+        // even if nothing was removed.
+        if(classesToRemove.find(c => elem.classList.contains(c))) {
+          elem.classList.remove.apply(elem.classList, classesToRemove);
+        }
+      });
+    }
+  }
+  if (CC.attributesToRemoveBySelector !== undefined) {
+    for (const [selector, attributes] of CC.attributesToRemoveBySelector) {
+      // We can remove attributes without checking if they exist
+      findMatchingElements(selector).forEach(elem =>
+        attributes.forEach(elem.removeAttribute.bind(elem))
+      );
+    }
+  }
+};
+
+if (CC.hasRemovals) executeRemovals();

@@ -118,47 +118,16 @@ const char kHideSelectorsInjectScript[] =
 
 const char kRemovalsInjectScript[] =
     R"((function() {
-          const selectorsToRemove = %s;
-          const classesToRemoveBySelector = %s;
-          const attributesToRemoveBySelector = %s;
-          const onMutation = (mutationList) => {
-            if (mutationList.find(
-                mutation => (
-                  mutation.addedNodes.length !== 0 && mutation.addedNodes.values().find(node => node.nodeType == 1)
-                )
-              )
-            ) {
-              execute();
-            }
-          };
-          const execute = () => {
-              selectorsToRemove.forEach(
-                selector => document.querySelectorAll(selector).forEach(elem => elem.remove())
-              );
-              for (const selector in classesToRemoveBySelector) {
-                const classesToRemove = classesToRemoveBySelector[selector];
-                document.querySelectorAll(selector).forEach(elem => {
-                  const classesToActuallyRemove = classesToRemove.filter(elem.classList.contains.bind(elem.classList));
-                  if (classesToActuallyRemove.length) {
-                    elem.classList.remove(classesToActuallyRemove);
-                  }
-                });
-              }
-              for (const selector in attributesToRemoveBySelector) {
-                document.querySelectorAll(selector).forEach(elem =>
-                  attributesToRemoveBySelector[selector]
-                    .filter(elem.hasAttribute.bind(elem))
-                    .forEach(elem.removeAttribute.bind(elem))
-                );
-              }
-          };
-          const observer = new MutationObserver(onMutation);
-          observer.observe(document.documentElement, {
-            subtree: true,
-            childList: true,
-            attributes: false,
-          });
-          execute();
+          const CC = window.content_cosmetic;
+          CC.selectorsToRemove = %s;
+          const dictToMap = (d) => d === undefined ? d : new Map(Object.entries(d));
+          CC.classesToRemoveBySelector = dictToMap(%s);
+          CC.attributesToRemoveBySelector = dictToMap(%s);
+          CC.hasRemovals = (
+            CC.selectorsToRemove !== undefined
+            || CC.classesToRemoveBySelector !== undefined
+            || CC.attributesToRemoveBySelector !== undefined
+          );
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -482,50 +451,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         blink::BackForwardCacheAware::kAllow);
   }
 
-  //:remove()
-  std::string remove_selectors_json;
-  const auto* remove_selectors_list = resources_dict_->FindList("remove_selectors");
-  if (remove_selectors_list && !remove_selectors_list->empty()) {
-    base::JSONWriter::Write(*remove_selectors_list, &remove_selectors_json);
-  }
-
-  //:remove_classes
-  std::string remove_classes_json;
-  const auto* remove_classes_dictionary =
-      resources_dict_->FindDict("remove_classes");
-  if (remove_classes_dictionary) {
-    base::JSONWriter::Write(*remove_classes_dictionary, &remove_classes_json);
-  }
-
-  //:remove_attrs
-  std::string remove_attrs_json;
-  const auto* remove_attrs_dictionary =
-      resources_dict_->FindDict("remove_attrs");
-  if (remove_attrs_dictionary) {
-    base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
-  }
-
-  if (!remove_selectors_json.empty() || !remove_classes_json.empty() || !remove_attrs_json.empty()) {
-    if (remove_selectors_json.empty()) {
-      remove_selectors_json = "[]";
-    }
-    if (remove_classes_json.empty()) {
-      remove_classes_json = "{}";
-    }
-    if (remove_attrs_json.empty()) {
-      remove_classes_json = "{}";
-    }
-
-    // Building a script for removals
-    std::string new_selectors_script = base::StringPrintf(
-        kRemovalsInjectScript, remove_selectors_json.c_str(), remove_classes_json.c_str(), remove_attrs_json.c_str());
-    web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_,
-        blink::WebScriptSource(
-            blink::WebString::FromUTF8(new_selectors_script)),
-        blink::BackForwardCacheAware::kAllow);
-  }
-
   // Working on css rules
   generichide_ = resources_dict_->FindBool("generichide").value_or(false);
   namespace bf = brave_shields::features;
@@ -548,6 +473,48 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   ExecuteObservingBundleEntryPoint();
 
   CSSRulesRoutine(*resources_dict_);
+
+  bool has_removals = false;
+  //: remove()
+  std::string remove_selectors_json;
+  const auto* remove_selectors_list =
+      resources_dict_->FindList("remove_selectors");
+  if (remove_selectors_list && !remove_selectors_list->empty()) {
+    base::JSONWriter::Write(*remove_selectors_list, &remove_selectors_json);
+    has_removals = true;
+  } else {
+    remove_selectors_json = "undefined";
+  }
+
+  //: remove_classes
+  std::string remove_classes_json;
+  const auto* remove_classes_dictionary =
+      resources_dict_->FindDict("remove_classes");
+  if (remove_classes_dictionary && !remove_classes_dictionary->empty()) {
+    base::JSONWriter::Write(*remove_classes_dictionary, &remove_classes_json);
+    has_removals = true;
+  }
+
+  //: remove_attrs
+  std::string remove_attrs_json;
+  const auto* remove_attrs_dictionary =
+      resources_dict_->FindDict("remove_attrs");
+  if (remove_attrs_dictionary && !remove_attrs_dictionary->empty()) {
+    base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
+    has_removals = true;
+  }
+
+  if (has_removals) {
+    // Building a script for removals
+    std::string new_selectors_script = base::StringPrintf(
+        kRemovalsInjectScript, remove_selectors_json.c_str(),
+        remove_classes_json.c_str(), remove_attrs_json.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_,
+        blink::WebScriptSource(
+            blink::WebString::FromUTF8(new_selectors_script)),
+        blink::BackForwardCacheAware::kAllow);
+  }
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(

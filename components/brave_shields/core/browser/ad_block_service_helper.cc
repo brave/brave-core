@@ -63,16 +63,14 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  std::vector<std::string> dict_list_keys = {"style_selectors", "remove_classes", "remove_attrs"};
+  std::vector<std::string> dict_list_keys = {"style_selectors",
+                                             "remove_classes", "remove_attrs"};
   for (const auto& key_ : dict_list_keys) {
-    base::Value::Dict* resources =
-        into.FindDict(key_);
-    base::Value::Dict* from_resources =
-        from.FindDict(key_);
+    base::Value::Dict* resources = into.FindDict(key_);
+    base::Value::Dict* from_resources = from.FindDict(key_);
     if (resources && from_resources) {
       for (auto [key, value] : *from_resources) {
-        base::Value::List* resources_entry =
-            resources->FindList(key);
+        base::Value::List* resources_entry = resources->FindList(key);
         if (resources_entry) {
           DCHECK(value.is_list());
           for (auto& item : value.GetList()) {
