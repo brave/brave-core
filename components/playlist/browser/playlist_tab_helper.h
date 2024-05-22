@@ -16,7 +16,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "services/media_session/public/mojom/audio_focus.mojom.h"
 #include "services/media_session/public/mojom/media_session.mojom.h"
 
@@ -128,10 +127,6 @@ class PlaylistTabHelper
 
   void OnPlaylistEnabledPrefChanged();
 
-  void OnGetLoadedUrl(std::vector<mojom::PlaylistItemPtr> items,
-                      const GURL& url,
-                      bool is_media_source);
-
   raw_ptr<PlaylistService> service_;
 
   bool is_adding_items_ = false;
@@ -147,7 +142,6 @@ class PlaylistTabHelper
 
   BooleanPrefMember playlist_enabled_pref_;
 
-  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager_;
   mojo::Receiver<media_session::mojom::AudioFocusObserver>
       audio_focus_observer_receiver_{this};
   mojo::Receiver<media_session::mojom::MediaSessionObserver>

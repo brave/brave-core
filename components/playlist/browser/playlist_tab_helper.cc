@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
@@ -18,7 +17,6 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
-#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
@@ -28,9 +26,8 @@
 #include "content/public/browser/media_session_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/media_session/public/cpp/media_image_manager.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace playlist {
@@ -49,9 +46,10 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
+  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager;
   content::GetMediaSessionService().BindAudioFocusManager(
-      audio_focus_manager_.BindNewPipeAndPassReceiver());
-  audio_focus_manager_->AddObserver(
+      audio_focus_manager.BindNewPipeAndPassReceiver());
+  audio_focus_manager->AddObserver(
       audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
@@ -287,7 +285,7 @@ void PlaylistTabHelper::OnFocusGained(
 void PlaylistTabHelper::OnFocusLost(
     media_session::mojom::AudioFocusRequestStatePtr state) {
   CHECK(state);
-  if (!state->request_id.has_value()) {
+  if (!state->request_id) {
     return;
   }
 
@@ -296,7 +294,6 @@ void PlaylistTabHelper::OnFocusLost(
     return;
   }
 
-  CHECK(media_session_observer_receiver_.is_bound());
   media_session_observer_receiver_.reset();
 
   found_item_ = mojom::PlaylistItem::New();
@@ -339,7 +336,7 @@ void PlaylistTabHelper::MediaSessionImagesChanged(
   }
 
   if (image) {
-    found_item_->thumbnail_source = found_item_->thumbnail_path =
+    found_item_->thumbnail_path = found_item_->thumbnail_source =
         std::move(image->src);
     found_items_.clear();
     found_items_.push_back(found_item_->Clone());
@@ -437,11 +434,6 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     ResetData();
   }
 }
-
-void PlaylistTabHelper::OnGetLoadedUrl(
-    std::vector<mojom::PlaylistItemPtr> items,
-    const GURL& url,
-    bool is_media_source) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
 
