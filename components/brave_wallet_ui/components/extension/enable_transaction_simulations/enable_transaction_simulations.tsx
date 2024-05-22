@@ -91,9 +91,12 @@ export const EnableTransactionSimulations: React.FC = () => {
                   //
                   ' '
                 }
-                <u onClick={openTxSimulationLearnMoreUrl}>
+                <a
+                  href='#'
+                  onClick={openTxSimulationLearnMoreUrl}
+                >
                   {getLocale('braveWalletLearnMore')}
-                </u>
+                </a>
               </li>
             </BulletPoints>
 
@@ -106,12 +109,13 @@ export const EnableTransactionSimulations: React.FC = () => {
                   3
                 ).map((text, index) => {
                   return (
-                    <span key={text.duringTag || index}>
+                    <a key={text.duringTag || index}>
                       {text.beforeTag}
                       {index === 0 ? (
                         <strong>{text.duringTag}</strong>
                       ) : (
-                        <u
+                        <a
+                          href='#'
                           onClick={() =>
                             index === 1
                               ? openTab(BLOWFISH_TERMS_URL)
@@ -119,10 +123,10 @@ export const EnableTransactionSimulations: React.FC = () => {
                           }
                         >
                           {text.duringTag}
-                        </u>
+                        </a>
                       )}
                       {text.afterTag}
-                    </span>
+                    </a>
                   )
                 })}
               </span>

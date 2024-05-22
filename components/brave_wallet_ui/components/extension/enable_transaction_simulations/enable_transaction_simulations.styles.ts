@@ -70,8 +70,9 @@ export const BulletPoints = styled.ul`
     color: ${leo.color.text.secondary};
     font: ${leo.font.default.regular};
   }
-  & u {
-    cursor: pointer;
+  & a {
+    color: ${leo.color.text.secondary};
+    font: ${leo.font.default.regular};
   }
 `
 
@@ -92,8 +93,9 @@ export const TermsText = styled.p`
     font-weight: 600;
   }
 
-  & u {
-    cursor: pointer;
+  & a {
+    color: ${leo.color.text.tertiary};
+    font: ${leo.font.small.regular};
   }
 `
 
