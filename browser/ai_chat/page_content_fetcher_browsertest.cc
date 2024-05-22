@@ -12,8 +12,8 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
-#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
+#include "base/threading/platform_thread.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
@@ -215,11 +215,8 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
       }));
   // Tab load stop doesn't mean pdf a11y info is loaded and we have to activate
   // the tab after the info is loaded to test the pulling scenario.
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, base::BindLambdaForTesting([this]() {
-        browser()->tab_strip_model()->ActivateTabAt(1);
-        EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-      }),
-      base::Seconds(5));
+  base::PlatformThread::Sleep(base::Seconds(5));
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
   run_loop->Run();
 }
