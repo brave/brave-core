@@ -29,6 +29,7 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -1098,7 +1099,9 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser()->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
                         command_id == IDC_CLOSE_TAB) {
       auto* tab_strip_model = browser()->tab_strip_model();

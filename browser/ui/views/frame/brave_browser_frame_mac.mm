@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -69,9 +70,11 @@ bool BraveBrowserFrameMac::ExecuteCommand(
     // in distinguishing the 'file -> close tab' (false, as toolbar was in
     // focus) command from 'ctrl + w' (true, as tab was in focus) command.
     Browser* browser = browser_view_->browser();
-    int active_tab_index = browser->tab_strip_model()->active_index();
-    if (command == IDC_CLOSE_TAB && is_before_first_responder &&
-        browser->tab_strip_model()->IsTabPinned(active_tab_index)) {
+    if (browser->profile()->GetPrefs()->GetBoolean(
+            brave_tabs::kSharedPinnedTab) &&
+        command == IDC_CLOSE_TAB && is_before_first_responder &&
+        browser->tab_strip_model()->IsTabPinned(
+            browser->tab_strip_model()->active_index())) {
       // Ignoring the ctrl+w command when the active tab is shared pinned
       return true;
     }

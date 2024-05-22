@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_member.h"
 
 class Profile;
 class BrowserList;
@@ -107,6 +108,10 @@ class SharedPinnedTabService : public KeyedService,
                                       int index,
                                       bool is_last_closing_browser = false);
 
+  void OnSharedPinnedTabPrefChanged();
+  void OnSharedPinnedTabEnabled();
+  void OnSharedPinnedTabDisabled();
+
   std::unique_ptr<content::WebContents> CreateDummyWebContents(
       content::WebContents* shared_contents);
 
@@ -130,6 +135,8 @@ class SharedPinnedTabService : public KeyedService,
 
   base::ScopedObservation<BrowserList, BrowserListObserver>
       browser_list_observation_{this};
+
+  BooleanPrefMember shared_pinned_tab_enabled_;
 
   base::WeakPtrFactory<SharedPinnedTabService> weak_ptr_factory_{this};
 };

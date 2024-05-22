@@ -14,6 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
@@ -249,6 +250,10 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
   }
 
   if (!is_type_normal()) {
+    return false;
+  }
+
+  if (!profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab)) {
     return false;
   }
 

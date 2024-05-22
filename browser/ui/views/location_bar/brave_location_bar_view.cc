@@ -14,6 +14,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
@@ -384,7 +385,9 @@ int BraveLocationBarView::GetBorderRadius() const {
 }
 
 void BraveLocationBarView::FocusLocation(bool is_user_initiated) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser_->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     // When updating dummy contents, this could be called even when the widget
     // is inactive. We shouldn't focus the omnibox in that case.
     if (auto* widget = GetWidget(); !widget || !widget->IsActive()) {
