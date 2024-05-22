@@ -78,6 +78,15 @@ class BrowserNavigationHelper {
 
   func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+    vc.openAuthenticationVPNInNewTab = { [weak bvc] in
+      guard let bvc = bvc else { return }
+
+      bvc.openURLInNewTab(
+        .brave.braveVPNRefreshCredentials,
+        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+        isPrivileged: false
+      )
+    }
 
     open(vc, doneButton: DoneButton(style: .done, position: .left))
   }

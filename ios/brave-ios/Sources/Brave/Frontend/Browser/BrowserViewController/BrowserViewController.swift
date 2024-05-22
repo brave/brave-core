@@ -1659,6 +1659,16 @@ public class BrowserViewController: UIViewController {
     }
 
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+    vc.openAuthenticationVPNInNewTab = { [weak self] in
+      guard let self = self else { return }
+
+      self.openURLInNewTab(
+        .brave.braveVPNRefreshCredentials,
+        isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+        isPrivileged: false
+      )
+    }
+
     let navigationController = SettingsNavigationController(rootViewController: vc)
     navigationController.navigationBar.topItem?.leftBarButtonItem =
       .init(

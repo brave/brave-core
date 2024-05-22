@@ -255,7 +255,13 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
           }
-        })
+        },
+        openPrivacyReportsUrl: {
+          openURL(.brave.braveLeoRefreshCredentials)
+
+          dismiss()
+        }
+      )
     }
     .sheet(isPresented: $isAdvancedSettingsPresented) {
       AIChatAdvancedSettingsView(

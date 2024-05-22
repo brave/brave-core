@@ -54,6 +54,8 @@ struct AIChatPaywallView: View {
 
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
+  var openPrivacyReportsUrl: (() -> Void)?
+
   var body: some View {
     NavigationView {
       VStack(spacing: 8.0) {
@@ -117,12 +119,6 @@ struct AIChatPaywallView: View {
         paywallActionView
           .padding(.bottom, 16.0)
       }
-      .sheet(isPresented: $shouldRefreshCredentials) {
-        if shouldRefreshCredentials {
-          AIChatSafariControllerView(url: .brave.braveLeoRefreshCredentials)
-            .edgesIgnoringSafeArea(.all)
-        }
-      }
       .background(
         Color(braveSystemName: .primitivePrimary90)
           .edgesIgnoringSafeArea(.all)
@@ -144,6 +140,9 @@ struct AIChatPaywallView: View {
         if shouldDismiss {
           dismiss()
         }
+      }
+      .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
+        openPrivacyReportsUrl?()
       }
     }
     .navigationViewStyle(.stack)
@@ -394,16 +393,6 @@ private struct AIChatRefreshCredentialsView: View {
       .padding([.horizontal], 16.0)
     }
   }
-}
-
-private struct AIChatSafariControllerView: UIViewControllerRepresentable {
-  let url: URL
-
-  func makeUIViewController(context: Context) -> SFSafariViewController {
-    return SFSafariViewController(url: url)
-  }
-
-  func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
 }
 
 #if DEBUG

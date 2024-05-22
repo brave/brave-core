@@ -11,7 +11,7 @@ import StoreKit
 import UIKit
 import os.log
 
-class BuyVPNViewController: VPNSetupLoadingController {
+public class BuyVPNViewController: VPNSetupLoadingController {
 
   let iapObserver: BraveVPNInAppPurchaseObserver
   private var iapRestoreTimer: Timer?
@@ -21,6 +21,8 @@ class BuyVPNViewController: VPNSetupLoadingController {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
     }
   }
+
+  public var openAuthenticationVPNInNewTab: (() -> Void)?
 
   init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
@@ -32,7 +34,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
 
   private var buyVPNView = BuyVPNView(with: .yearly)
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName
@@ -124,7 +126,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
     Preferences.VPN.popupShowed.value = true
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     // navigationItem.standardAppearance does not support tinting the back button for some
@@ -132,7 +134,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
     navigationController?.navigationBar.tintColor = .white
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
     // Reset styling set above
@@ -205,7 +207,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
 // MARK: - IAPObserverDelegate
 
 extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
-  func purchasedOrRestoredProduct(validateReceipt: Bool) {
+  public func purchasedOrRestoredProduct(validateReceipt: Bool) {
     DispatchQueue.main.async {
       self.isLoading = false
     }
@@ -223,7 +225,7 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
     }
   }
 
-  func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // Handle Transaction or Restore error
     guard isLoading else {
       return
@@ -232,7 +234,7 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
     handleTransactionError(error: error)
   }
 
-  func handlePromotedInAppPurchase() {
+  public func handlePromotedInAppPurchase() {
     // No-op In app purchase promotion is handled on bvc
   }
 
@@ -276,17 +278,13 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
 extension BuyVPNViewController: BuyVPNView.ActionDelegate {
 
   func refreshSiteCredentials() {
-    let vpnRefreshSafariController = SFSafariViewController(
-      url: .brave.braveVPNRefreshCredentials,
-      configuration: .init()
-    )
-    vpnRefreshSafariController.modalPresentationStyle = .currentContext
+    openAuthenticationVPNInNewTab?()
 
-    present(vpnRefreshSafariController, animated: true)
+    dismiss(animated: true)
   }
 }
 
-class VPNSetupLoadingController: UIViewController {
+public class VPNSetupLoadingController: UIViewController {
 
   private var overlayView: UIView?
 
