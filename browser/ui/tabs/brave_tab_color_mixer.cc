@@ -9,7 +9,6 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
@@ -42,11 +41,12 @@ std::optional<ChromeColorIds> GetMappedChromeColorId(
                kColorTabBackgroundInactiveFrameActive},
           });
 
-  if (base::Contains(kChromiumColorMap, brave_color_id)) {
-    return kChromiumColorMap.at(brave_color_id);
+  auto iter = kChromiumColorMap.find(brave_color_id);
+  if (iter == kChromiumColorMap.end()) {
+    return std::nullopt;
   }
 
-  return std::nullopt;
+  return iter->second;
 }
 
 ui::ColorTransform GetCustomColorOrDefaultColor(
