@@ -488,6 +488,7 @@ public class BraveToolbarManager extends ToolbarManager {
         return null;
     }
 
+    @Override
     public LocationBar getLocationBar() {
         return mLocationBar;
     }
