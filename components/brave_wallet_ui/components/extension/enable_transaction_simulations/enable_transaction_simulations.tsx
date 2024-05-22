@@ -109,7 +109,7 @@ export const EnableTransactionSimulations: React.FC = () => {
                   3
                 ).map((text, index) => {
                   return (
-                    <a key={text.duringTag || index}>
+                    <a key={text.duringTag ?? index}>
                       {text.beforeTag}
                       {index === 0 ? (
                         <strong>{text.duringTag}</strong>
