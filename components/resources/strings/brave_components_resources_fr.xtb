@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave bloque déjà les cookies de tiers. Nous pouvons également bloquer les avis de consentement aux cookies.</translation>
 <translation id="535688588637568715">Oui, bloquer les avis de consentement aux cookies</translation>
 <translation id="2808175374672429053">Les caractères de remplacement ne sont pas autorisés pour les boucliers Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields a bloqué des traqueurs <ph name="COMPANY_LIST"/> sur <ph name="SITE_URL"/>}
-      =1 {Brave Shields a bloqué <ph name="COMPANY_LIST"/> et 1 autre traqueur sur <ph name="SITE_URL"/>}
-      other {Brave Shields a bloqué <ph name="COMPANY_LIST"/> et {BLOCKED_COUNT} autres traqueurs sur <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields a bloqué 1 traqueur sur <ph name="SITE_URL"/>}
       other {Brave Shields a bloqué {BLOCKED_COUNT} traqueurs sur <ph name="SITE_URL"/>}

@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave قبلاً کوکی‌های شخص ثالث را مسدود می‌کند. همچنین می‌توانیم اعلامیه‌های رضایت کوکی را مسدود کنیم.</translation>
 <translation id="535688588637568715">بله، اعلامیه‌های رضایت کوکی را مسدود کنید</translation>
 <translation id="2808175374672429053">Wildcardها اجازه دسترسی به Brave Shieldها را ندارند.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {Brave Shields ردیاب‌های <ph name="COMPANY_LIST"/> را در <ph name="SITE_URL"/> مسدود کردند }
-=1 {Brave Shields <ph name="COMPANY_LIST"/> و 1 ردیاب دیگر را در <ph name="SITE_URL"/> مسدود کردند}
-other {Brave Shields <ph name="COMPANY_LIST"/> و {BLOCKED_COUNT} ردیاب دیگر را در <ph name="SITE_URL"/> مسدود کردند}
-}</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields یک ردیاب را در <ph name="SITE_URL"/> مسدود کردند}
       other {Brave Shields  تعداد  {BLOCKED_COUNT} ردیاب را در <ph name="SITE_URL"/> مسدود کردند}

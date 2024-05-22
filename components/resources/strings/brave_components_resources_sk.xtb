@@ -2022,11 +2022,6 @@
 <translation id="4986297793092101884">Brave už blokuje súbory cookie tretích strán. Môžeme tiež zablokovať oznámenia o súhlase so súbormi cookie.</translation>
 <translation id="535688588637568715">Áno, blokovať upozornenia na súhlas so súbormi cookie</translation>
 <translation id="2808175374672429053">Divoké karty nie sú pre Brave Štíty povolené.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {Štíty Brave zablokovali <ph name="COMPANY_LIST"/> sledovacie zariadenia na <ph name="SITE_URL"/>}
-=1 {Štíty Brave zablokovali <ph name="COMPANY_LIST"/> a 1 ďalšie sledovacie zariadenie <ph name="SITE_URL"/>}
-other {Štíty Brave zablokovali <ph name="COMPANY_LIST"/> a {BLOCKED_COUNT} ostatné sledovacie zariadenia na <ph name="SITE_URL"/>}
-}</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
 =1 {Štíty Brave zablokovali 1 sledovacie zariadenie na <ph name="SITE_URL"/>}
 other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph name="SITE_URL"/>}

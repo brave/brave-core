@@ -606,7 +606,7 @@ To će u suprotnom biti onemogućeno na temelju vaših postavki privatnosti. To 
 <translation id="2126374524350484896">Alat za izradu PDF-a:</translation>
 <translation id="2130448033692577677">Predlošci koje ste naveli ne mogu se primijeniti jer nije postavljeno pravilo DnsOverHttpsMode.</translation>
 <translation id="2130699163006053678">A3x7</translation>
-<translation id="2132825047782982803">Prikazuju se nasumičnim redoslijedom. Zadani preglednik uvijek možete promijeniti.</translation>
+<translation id="2132825047782982803">Prikazuju se nasumičnim redoslijedom. Zadanu tražilicu uvijek možete promijeniti.</translation>
 <translation id="2137891579555018930">Čekanje na dopuštenje...</translation>
 <translation id="213826338245044447">Mobilne oznake</translation>
 <translation id="2141000681034340397">Uredite unos</translation>
@@ -1977,6 +1977,7 @@ To će u suprotnom biti onemogućeno na temelju vaših postavki privatnosti. To 
 <translation id="4930153903256238152">Veliki kapacitet</translation>
 <translation id="4930714375720679147">Uključi</translation>
 <translation id="4932035752129140860">Tekst koji zalijepite ili priložite šalje se Google Cloudu ili trećim stranama na analizu. Na primjer, može se pregledavati radi otkrivanja osjetljivih podataka, pohranjivati na temelju pravila tvrtke i biti vidljiv vašem administratoru.</translation>
+<translation id="4933468175699107356">Kliknite desnom tipkom da biste automatski popunili spremljene podatke, na primjer svoje ime ili adresu, u bilo kojem obrascu</translation>
 <translation id="4934780484581617878">Upravljanje prozorima</translation>
 <translation id="4936134414789135531">Nije moguće pronaći umetnutu vrijednost <ph name="VALUE_NAME"/>.</translation>
 <translation id="4936675324097895694">Financije</translation>
@@ -2240,6 +2241,7 @@ To će u suprotnom biti onemogućeno na temelju vaših postavki privatnosti. To 
 <translation id="5470861586879999274">&amp;Ponovi uređivanje</translation>
 <translation id="547963486735802022">Pokušajte ponovno prenijeti datoteke</translation>
 <translation id="5481076368049295676">Ovaj sadržaj može pokušati na vaš uređaj instalirati opasan softver koji krade ili briše podatke. <ph name="BEGIN_LINK"/>Ipak prikaži<ph name="END_LINK"/></translation>
+<translation id="5481682542063333508">Ponuda pomoći pri pisanju</translation>
 <translation id="54817484435770891">Dodajte važeću adresu</translation>
 <translation id="5483838506518938965">Spremni ste za rad</translation>
 <translation id="5485973315555778056">Stroj u oblaku</translation>
@@ -2390,7 +2392,6 @@ To će u suprotnom biti onemogućeno na temelju vaših postavki privatnosti. To 
 <translation id="5765072501007116331">Odaberite adresu za prikaz načina dostave i zahtjeva za dostavu.</translation>
 <translation id="57689295674415555">Broj virtualne kartice nije ispunjen?</translation>
 <translation id="5772086939108830423">Upotrijebi pristupni ključ na drugom uređaju</translation>
-<translation id="5775734789739406956">Kliknite desnom tipkom da biste dodali spremljene podatke u bilo koji obrazac</translation>
 <translation id="5776313857861697733">Prioritet</translation>
 <translation id="5776574724412881956">Virtualna kartica nije unesena? Kliknite podatke o virtualnoj kartici radi kopiranja u međuspremnik. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Eksperiment omogućen</translation>

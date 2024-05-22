@@ -2024,11 +2024,6 @@
 <translation id="4986297793092101884">Brave već blokira kolačiće treće strane. Pored toga, možemo da blokiramo obaveštenja o davanju saglasnosti za kolačiće.</translation>
 <translation id="535688588637568715">Da, blokiraj obaveštenja o davanju saglasnosti za kolačiće</translation>
 <translation id="2808175374672429053">Vajldkards nisu dozvoljeni za Brave štitove.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave štitovi su blokirali <ph name="COMPANY_LIST"/> praćenja na <ph name="SITE_URL"/>}
-      =1 {Brave štitovi su blokirali <ph name="COMPANY_LIST"/> i još 1 praćenje na <ph name="SITE_URL"/>}
-      other {Brave štitovi su blokirali <ph name="COMPANY_LIST"/> i još {BLOCKED_COUNT} praćenja <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave štitovi su blokirali 1 praćanje na <ph name="SITE_URL"/>}
       other {Brave štitovi su blokirali {BLOCKED_COUNT} praćenja na <ph name="SITE_URL"/>}

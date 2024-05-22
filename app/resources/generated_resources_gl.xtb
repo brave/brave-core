@@ -691,7 +691,7 @@ Pode que se lle apliquen a esta conta os permisos que xa lles concedeses ás apl
 <translation id="1525740877599838384">Utilizar só a wifi para determinar a localización</translation>
 <translation id="152629053603783244">Reiniciar Linux</translation>
 <translation id="1526560967942511387">Documento sen título</translation>
-<translation id="1527336312600375509">Taxa de actualización do monitor</translation>
+<translation id="1527336312600375509">Frecuencia de actualización do monitor</translation>
 <translation id="152913213824448541">Contactos de Compartir por Nearby</translation>
 <translation id="1529769834253316556">Altura das liñas</translation>
 <translation id="1529891865407786369">Fonte de alimentación</translation>
@@ -1689,7 +1689,7 @@ https://www.chromium.org/chromium-os/how-tos-and-troubleshooting/debugging-featu
 <translation id="22614517036276112">Este documento ou o teu dispositivo non cumpre algunhas das políticas de seguranza da túa organización. Consulta o administrador para saber o que debes corrixir.</translation>
 <translation id="2262477216570151239">Tempo antes da repetición</translation>
 <translation id="2263189956353037928">Pechar sesión e volver iniciala</translation>
-<translation id="2263371730707937087">Taxa de actualización da pantalla</translation>
+<translation id="2263371730707937087">Frecuencia de actualización da pantalla</translation>
 <translation id="7829329302663082098">Valoramos moito os teus comentarios, que nos axudan a mellorar Brave Cast. Se queres axuda para solucionar problemas relacionados coa emisión, consulta o <ph name="BEGIN_LINK"/>Centro de Axuda<ph name="END_LINK"/>.</translation>
 <translation id="22649924370461580">Grupos de pestanas gardados</translation>
 <translation id="2266957463645820432">Protocolo IPP por USB (IPPUSB)</translation>
@@ -3388,6 +3388,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="3566325075220776093">Deste dispositivo</translation>
 <translation id="3566721612727112615">Non se engadiu ningún sitio</translation>
 <translation id="356738834800832239">Gardouse o teu contrasinal</translation>
+<translation id="3568431410312984116">Permítese que a función Axúdame a escribir se abra automaticamente</translation>
 <translation id="3569382839528428029">Queres que <ph name="APP_NAME"/> comparta a túa pantalla?</translation>
 <translation id="3569614820047645079">Os ficheiros de A miña unidade sincronízanse co teu Chromebook automaticamente para que poidas acceder a eles sen conexión a Internet.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> pode ver os seguintes ficheiros e cartafoles</translation>
@@ -5840,6 +5841,7 @@ Pódense aplicar a esta conta os permisos que xa lles concedeses aos sitios web 
 <translation id="5474859849784484111"><ph name="MANAGER"/> require que te conectes agora á wifi e descargues unha actualización. Tamén podes descargala desde unha conexión de pago por consumo (pódense aplicar cargos).</translation>
 <translation id="5477089831058413614">Configurar a zona wifi do dispositivo <ph name="DEVICE_TYPE"/></translation>
 <translation id="5481273127572794904">Permiso denegado para descargar automaticamente varios ficheiros</translation>
+<translation id="5481682542063333508">Ofrecer axuda para escribir</translation>
 <translation id="5481941284378890518">Engadir impresoras que estean cerca</translation>
 <translation id="3389019465696070233">Se inicias sesión, Brave pode suxerir grupos de pestanas para ter as pestanas organizadas</translation>
 <translation id="8126971123326806277">Se activas esta opción, as claves de acceso crearanse no chaveiro de iCloud (iCloud Keychain) e estarán dispoñibles nos diferentes dispositivos de Apple. Se non a activas, crearanse no teu perfil de Brave deste dispositivo.</translation>
@@ -8557,7 +8559,7 @@ Podes xestionar a configuración desde o menú da tarxeta ou ver máis opcións 
 <translation id="7625025537587898155">Engadir perfil novo</translation>
 <translation id="7625568159987162309">Ver permisos e datos almacenados dos sitios</translation>
 <translation id="7625823789272218216">Pestana nova á esquerda</translation>
-<translation id="7628201176665550262">Taxa de actualización</translation>
+<translation id="7628201176665550262">Frecuencia de actualización</translation>
 <translation id="7628392600831846024">Estilo de símbolos</translation>
 <translation id="7628927569678398026"><ph name="LOCALE"/> (<ph name="VARIANT"/>), grao <ph name="GRADE"/></translation>
 <translation id="762917478230183172">Seleccionar unha acción para cada tecla</translation>
@@ -9250,7 +9252,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8118276691321086429">O <ph name="PASSWORD_MANAGER_BRAND"/> lembrará a forma na que accedes e iniciará a túa sesión automaticamente cando sexa posible. Se esta opción está desactivada, pediráseche sempre unha confirmación.</translation>
 <translation id="177808131755847449">Brave desactivou esta extensión porque é posible que non sexa segura.</translation>
 <translation id="8118488170956489476">A túa organización <ph name="BEGIN_LINK"/>xestiona o teu navegador<ph name="END_LINK"/></translation>
-<translation id="8118515372935001629">Taxa de actualización da pantalla</translation>
+<translation id="8118515372935001629">Frecuencia de actualización da pantalla</translation>
 <translation id="8118860139461251237">Xestionar as túas descargas</translation>
 <translation id="8119438628456698432">Xerando ficheiros de rexistro…</translation>
 <translation id="811994229154425014">Escribir punto ao poñer dous espazos</translation>
@@ -9992,6 +9994,7 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="869167754614449887">Eliminouse <ph name="FILE_NAME"/> do historial de descargas</translation>
 <translation id="8692107307702113268">O contrasinal ten máis de 1000 caracteres</translation>
 <translation id="8693639060656817812">Máis información sobre a dispoñibilidade da protección contra o seguimento</translation>
+<translation id="8693862390730570097">Non se permite que a función Axúdame a escribir se abra automaticamente</translation>
 <translation id="8694596275649352090">Bloquear cando estea en suspensión ou cando se peche a tapa</translation>
 <translation id="8695139659682234808">Engadir controis parentais despois da configuración</translation>
 <translation id="8695825812785969222">Abrir &amp;localización...</translation>
@@ -10569,6 +10572,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="9112987648460918699">Buscar...</translation>
 <translation id="9113240369465613386">Só páxinas impares</translation>
 <translation id="9113469270512809735">Ocultar ou mostrar elementos pechados recentemente</translation>
+<translation id="9113529408970052045">A función Axúdame a escribir poderá abrirse automaticamente cando haxa unha caixa de texto nun sitio que se poida completar con contido breve</translation>
 <translation id="9114663181201435112">Iniciar sesión facilmente</translation>
 <translation id="9115675100829699941">&amp;Marcadores</translation>
 <translation id="916115484239820348">Esta opción de configuración non modifica a dispoñibilidade do Tradutor de Brave nin de Lens</translation>

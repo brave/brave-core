@@ -3389,6 +3389,7 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="3566325075220776093">D'aquest dispositiu</translation>
 <translation id="3566721612727112615">No s'ha afegit cap lloc</translation>
 <translation id="356738834800832239">La contrasenya s'ha desat</translation>
+<translation id="3568431410312984116">Permet que la funció Ajuda'm a escriure s'obri automàticament</translation>
 <translation id="3569382839528428029">Voleu que <ph name="APP_NAME"/> comparteixi la vostra pantalla?</translation>
 <translation id="3569614820047645079">Els fitxers de La meva unitat se sincronitzaran automàticament amb el Chromebook perquè hi puguis accedir sense connexió a Internet.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> pot veure els fitxers i les carpetes següents</translation>
@@ -3872,7 +3873,7 @@ que pot incloure dades del programari instal·lat, de fitxers, del navegador i d
 <translation id="3917644013202553949">No hi ha prou emmagatzematge per sincronitzar els fitxers. Prova d'alliberar espai.</translation>
 <translation id="3919145445993746351">Per accedir a les extensions des de tots els ordinadors, activa la sincronització</translation>
 <translation id="3919229493046408863">Desactiva la notificació quan hi hagi dispositius a prop</translation>
-<translation id="3937043680469836680">Passat desembre de 2022, les versions anteriors d'Aplicacions de Brave no s'obriran en dispositius Mac. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
+<translation id="3937043680469836680">Passat desembre de 2022, les versions anteriors de les Aplicacions de Brave no s'obriran en dispositius Mac. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
 <translation id="3919376399641777316">Utilitza l'emmagatzematge de Google Drive</translation>
 <translation id="3919798653937160644">Les pàgines que visualitzis en aquesta finestra no es mostraran a l'historial del navegador i no deixaran cap rastre a l'ordinador, com ara galetes, després de tancar totes les finestres obertes de la sessió de convidat. Tanmateix, es conservaran tots els fitxers que baixis.</translation>
 <translation id="3920504717067627103">Normes de certificats</translation>
@@ -5838,6 +5839,7 @@ Pots assignar diferents interruptors a aquesta acció.</translation>
 <translation id="5474859849784484111"><ph name="MANAGER"/> requereix que et connectis a la Wi-Fi ara i que baixis una actualització. També pots baixar-la amb una connexió d'ús mesurat, però és possible que s'apliquin càrrecs.</translation>
 <translation id="5477089831058413614">Configura el punt d'accés Wi‐Fi del dispositiu (<ph name="DEVICE_TYPE"/>)</translation>
 <translation id="5481273127572794904">Sense permís per baixar automàticament diversos fitxers</translation>
+<translation id="5481682542063333508">Ofereix ajuda per escriure</translation>
 <translation id="5481941284378890518">Afegeix impressores properes</translation>
 <translation id="3389019465696070233">Inicia la sessió perquè Brave et suggereixi grups de pestanyes i mantén les pestanyes organitzades</translation>
 <translation id="8126971123326806277">Quan aquesta opció està activada, les claus d'accés es creen al clauer de l'iCloud i estan disponibles en tots els teus dispositius Apple. Quan està desactivada, les claus d'accés es creen al teu perfil de Brave en aquest dispositiu.</translation>
@@ -6983,7 +6985,7 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="6374077068638737855">Iceweasel</translation>
 <translation id="6374469231428023295">Torna-ho a provar</translation>
 <translation id="6374635887697228982">Vols obtenir descomptes?</translation>
-<translation id="3816315808514424202">Passat desembre de 2022, les versions anteriors d'Aplicacions de Brave no s'obriran en dispositius Linux. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
+<translation id="3816315808514424202">Passat desembre de 2022, les versions anteriors de les aplicacions de Brave no s'obriran en dispositius Linux. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
 <translation id="6377268785556383139">1 resultat per a "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="6378392501584240055">Obre en xarxes Wi-Fi</translation>
 <translation id="6379533146645857098">Selecciona un interval de temps</translation>
@@ -7561,7 +7563,7 @@ Tens # contrasenyes més en perill. El gestor de contrasenyes de Brave recomana 
 <translation id="6827121912381363404">Permet que totes les extensions llegeixin i canviïn <ph name="PERMITTED_SITE"/></translation>
 <translation id="6827422464708099620">Selecciona per veure més opcions</translation>
 <translation id="4109630956174373924">Les teves aplicacions i opcions de configuració se sincronitzaran en tots els dispositius amb Chrome OS en què tinguis la sessió iniciada amb el teu Compte de Brave. Per accedir a les opcions de sincronització del navegador, ves a la <ph name="LINK_BEGIN"/>configuració de Brave<ph name="LINK_END"/>.</translation>
-<translation id="8295391943105726234">Passat desembre de 2022, les versions anteriors d'Aplicacions de Brave no s'obriran en dispositius Windows. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
+<translation id="8295391943105726234">Passat desembre de 2022, les versions anteriors de le aplicacions de Brave no s'obriran en dispositius Windows. Contacta amb l'administrador perquè actualitzi l'aplicació a una versió nova o perquè la suprimeixi.</translation>
 <translation id="6828153365543658583">Restringeix l'inici de sessió als usuaris següents:</translation>
 <translation id="6828182567531805778">Introdueix la teva frase de contrasenya per sincronitzar les dades</translation>
 <translation id="682871081149631693">QuickFix</translation>
@@ -9698,7 +9700,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8459333762072051247">Estat d'inici de sessió</translation>
 <translation id="8460448946170646641">Revisa els controls principals de privadesa i seguretat</translation>
 <translation id="2380462972976700566">Per estalviar memòria, Brave ha suprimit algun contingut</translation>
-<translation id="8460932807646981183">Gestiona els motors de cerca i cerca de llocs</translation>
+<translation id="8460932807646981183">Gestiona els motors de cerca i la cerca al lloc</translation>
 <translation id="84613761564611563">La interfície d'usuari per configurar la xarxa s'ha sol·licitat. Espera…</translation>
 <translation id="8461914792118322307">Servidor intermediari</translation>
 <translation id="8461973047386722744">No s'ha trobat cap contrasenya</translation>
@@ -9902,7 +9904,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8631032106121706562">Flor</translation>
 <translation id="8632104508818855045">Havies triat l'opció de no permetre cap extensió a <ph name="ORIGIN"/></translation>
 <translation id="8633025649649592204">Activitat recent</translation>
-<translation id="423702950449472136">Passat desembre de 2022, les versions anteriors d'Aplicacions de Brave no s'obriran en dispositius Linux. Pots comprovar si hi ha una nova versió disponible.</translation>
+<translation id="423702950449472136">Passat desembre de 2022, les versions anteriors de les aplicacions de Brave no s'obriran en dispositius Linux. Pots comprovar si hi ha una nova versió disponible.</translation>
 <translation id="8634348081024879304">Ja no podràs utilitzar la teva targeta virtual amb Google Pay. <ph name="BEGIN_LINK"/>Informació sobre les targetes virtuals<ph name="END_LINK"/></translation>
 <translation id="8634703204743010992">Teclat virtual de ChromeOS</translation>
 <translation id="8635628933471165173">S'està tornant a carregar...</translation>
@@ -9994,6 +9996,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="869167754614449887">S'ha suprimit <ph name="FILE_NAME"/> de l'historial de baixades</translation>
 <translation id="8692107307702113268">La contrasenya té més de 1.000 caràcters</translation>
 <translation id="8693639060656817812">Més informació sobre la disponibilitat de Protecció antiseguiment</translation>
+<translation id="8693862390730570097">No permetis que la funció Ajuda'm a escriure s'obri automàticament</translation>
 <translation id="8694596275649352090">Bloqueja quan està en repòs o es tanca la tapa</translation>
 <translation id="8695139659682234808">Afegeix controls parentals després de la configuració</translation>
 <translation id="8695825812785969222">Obre la &amp;ubicació...</translation>
@@ -10571,6 +10574,7 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
 <translation id="9112987648460918699">Cerca...</translation>
 <translation id="9113240369465613386">Només pàgines senars</translation>
 <translation id="9113469270512809735">Commuta els elements tancats recentment</translation>
+<translation id="9113529408970052045">La funció Ajuda'm a escriure es pot obrir automàticament quan un quadre de text d'un lloc web es pot emplenar amb contingut breu</translation>
 <translation id="9114663181201435112">Inicia la sessió fàcilment</translation>
 <translation id="9115675100829699941">&amp;Adreces d'interès</translation>
 <translation id="916115484239820348">Aquesta opció de configuració no canvia la disponibilitat del Traductor de Brave ni de Lens</translation>

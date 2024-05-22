@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Το Brave αποκλείει ήδη τα cookies τρίτων. Μπορούμε επίσης να αποκλείσουμε τις ειδοποιήσεις συναίνεσης για cookie.</translation>
 <translation id="535688588637568715">Ναι, να αποκλείονται οι ειδοποιήσεις συναίνεσης για cookie</translation>
 <translation id="2808175374672429053">Δεν επιτρέπονται οι χαρακτήρες μπαλαντέρ για τις Ασπίδες Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Οι Ασπίδες Brave απέκλεισαν προγράμματα παρακολούθησης <ph name="COMPANY_LIST"/> στη διεύθυνση <ph name="SITE_URL"/>}
-      =1 {Οι Ασπίδες Brave απέκλεισαν το<ph name="COMPANY_LIST"/> και 1 άλλο πρόγραμμα παρακολούθησης στη διεύθυνση <ph name="SITE_URL"/>}
-      other {Οι Ασπίδες Brave απέκλεισαν το <ph name="COMPANY_LIST"/> και {BLOCKED_COUNT} άλλα προγράμματα παρακολούθησης στη διεύθυνση <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Οι Ασπίδες Brave απέκλεισαν 1 ιχνηλάτη στη διεύθυνση <ph name="SITE_URL"/>}
       other {Οι Ασπίδες Brave απέκλεισαν {BLOCKED_COUNT} ιχνηλάτες στη διεύθυνση <ph name="SITE_URL"/>}

@@ -700,7 +700,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> per maand.</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
-<translation id="6277055349883621705">Verleng jaarlijks, bespaar 16%</translation>
+<translation id="7574007394522199115">Verleng jaarlijks, bespaar <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Probeer 7 dagen gratis uit. Na 7 dagen wordt de abonnementsprijs in rekening gebracht. Alle abonnementen worden automatisch verlengd, maar kunnen voor verlenging worden geannuleerd.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>

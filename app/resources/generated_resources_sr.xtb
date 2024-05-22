@@ -1115,7 +1115,7 @@
 <translation id="1828240307117314415">овим управља <ph name="VALUE"/></translation>
 <translation id="1828378091493947763">Ова додатна компонента није подржана на овом уређају</translation>
 <translation id="1828879788654007962">{COUNT,plural, =0{&amp;Отвори све}=1{&amp;Отвори обележивач}one{&amp;Отвори све ({COUNT})}few{&amp;Отвори све ({COUNT})}other{&amp;Отвори све ({COUNT})}}</translation>
-<translation id="1828901632669367785">Одштампај помоћу системског дијалога...</translation>
+<translation id="1828901632669367785">Штампај помоћу системског дијалога...</translation>
 <translation id="1829129547161959350">Пингвин</translation>
 <translation id="1829192082282182671">Zoom &amp;Out (Умањи)</translation>
 <translation id="1830550083491357902">Нисте пријављени</translation>
@@ -3387,6 +3387,7 @@
 <translation id="3566325075220776093">Са овог уређаја</translation>
 <translation id="3566721612727112615">Ниједан сајт није додат</translation>
 <translation id="356738834800832239">Лозинка је сачувана</translation>
+<translation id="3568431410312984116">Дозволи да се Помоћ при писању аутоматски отвара</translation>
 <translation id="3569382839528428029">Да ли желите да <ph name="APP_NAME"/> дели екран?</translation>
 <translation id="3569614820047645079">Фајлови на Мом диску се аутоматски синхронизују са Chromebook-ом, па можете да им приступате без интернет везе.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> може да прегледа датотеке и директоријуме у наставку</translation>
@@ -5835,6 +5836,7 @@
 <translation id="5474859849784484111"><ph name="MANAGER"/> захтева да се одмах повежете на WiFi и да преузмете ажурирање. Или преузмите помоћу везе са ограничењем (можда се наплаћују трошкови).</translation>
 <translation id="5477089831058413614">Конфигуришите <ph name="DEVICE_TYPE"/> хотспот</translation>
 <translation id="5481273127572794904">Није им дозвољено да аутоматски преузимају више фајлова</translation>
+<translation id="5481682542063333508">Понуди помоћ за писање</translation>
 <translation id="5481941284378890518">Додај оближње штампаче</translation>
 <translation id="3389019465696070233">Пријавите се да бисте омогућили Brave-у да предлаже групе картица и организује картице</translation>
 <translation id="8126971123326806277">Када је ово укључено, приступни кодови се праве у iCloud Keychain-у и доступни су на свим Apple уређајима. Када је искључено, приступни кодови се праве у Brave профилу на овом уређају.</translation>
@@ -9189,7 +9191,7 @@
 <translation id="8066444921260601116">Дијалог за повезивање</translation>
 <translation id="8070572887926783747">Дозвола за локацију за: <ph name="APP_NAME"/></translation>
 <translation id="8070662218171013510">Тактилни одзив</translation>
-<translation id="8071432093239591881">Одштампај као слику</translation>
+<translation id="8071432093239591881">Штампај као слику</translation>
 <translation id="8073499153683482226"><ph name="BEGIN_PARAGRAPH1"/>Подаци апликација могу да буду било који подаци које је апликација сачувала (на основу подешавања програмера), укључујући податке као што су контакти, поруке и слике.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Резервне копије података се не рачунају у односу на квоту меморијског простора на Диску детета.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>Ову услугу можете да искључите у Подешавањима.<ph name="END_PARAGRAPH3"/></translation>
@@ -9997,6 +9999,7 @@
 <translation id="869167754614449887">Фајл <ph name="FILE_NAME"/> је избрисан из историје преузимања</translation>
 <translation id="8692107307702113268">Лозинка премашује 1000 знакова</translation>
 <translation id="8693639060656817812">Сазнајте више о доступности Заштите од праћења</translation>
+<translation id="8693862390730570097">Не дозволи да се Помоћ при писању аутоматски отвара</translation>
 <translation id="8694596275649352090">Закључај током спавања или када је поклопац затворен</translation>
 <translation id="8695139659682234808">Додајте родитељски надзор после подешавања</translation>
 <translation id="8695825812785969222">Open &amp;Location... (Отвори локацију)</translation>
@@ -10576,6 +10579,7 @@
 <translation id="9112987648460918699">Пронађи...</translation>
 <translation id="9113240369465613386">Само странице са непарним бројевима</translation>
 <translation id="9113469270512809735">Укључи/искључи недавно затворене ставке</translation>
+<translation id="9113529408970052045">Помоћ при писању може аутоматски да се отвори када оквир за текст на сајту може да се попуни садржајем кратког формата</translation>
 <translation id="9114663181201435112">Лако се пријављујте</translation>
 <translation id="9115675100829699941">&amp;Обележивачи</translation>
 <translation id="916115484239820348">Ово подешавање не мења доступност Brave преводиоца или Објектива</translation>

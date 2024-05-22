@@ -514,7 +514,7 @@
 <translation id="139085829239861233">또는 나중에 다시 시도해 주세요.</translation>
 <translation id="1390907927270446471"><ph name="PROFILE_USERNAME"/>님은 <ph name="PRINTER_NAME"/> 프린터로 인쇄할 권한이 없습니다. 관리자에게 문의해 주세요.</translation>
 <translation id="1392047138650695757">사용자 사전</translation>
-<translation id="139300021892314943">로그인할 수 있는 사용자 제한하기</translation>
+<translation id="139300021892314943">로그인할 수 있는 사용자 제한</translation>
 <translation id="1393283411312835250">태양과 구름</translation>
 <translation id="1395730723686586365">업데이터 시작됨</translation>
 <translation id="1395832189806039783">키보드 포커스로 항목 강조표시</translation>
@@ -1080,7 +1080,7 @@
 <translation id="1802624026913571222">커버를 닫으면 절전 모드 진입</translation>
 <translation id="1802687198411089702">페이지가 응답하지 않습니다. 페이지가 응답할 때까지 기다리거나 종료할 수 있습니다.</translation>
 <translation id="1803531841600994172">번역 타겟 언어</translation>
-<translation id="1803545009660609783">재교육</translation>
+<translation id="1803545009660609783">다시 학습시키기</translation>
 <translation id="5111958118389067813">Brave 검색 측면 패널과 같은 기능에 더 유용한 정보나 추천이 표시됩니다.</translation>
 <translation id="1805545709333681504">이전 비밀번호 입력</translation>
 <translation id="1805738995123446102">배경 탭에서 마이크를 사용 중입니다.</translation>
@@ -3406,6 +3406,7 @@
 <translation id="3566325075220776093">이 기기에서 삭제</translation>
 <translation id="3566721612727112615">추가된 사이트 없음</translation>
 <translation id="356738834800832239">비밀번호가 저장됨</translation>
+<translation id="3568431410312984116">'작성 지원 기능'이 자동으로 열리도록 허용</translation>
 <translation id="3569382839528428029"><ph name="APP_NAME"/>에서 내 화면을 공유하도록 허용하시겠습니까?</translation>
 <translation id="3569614820047645079">내 드라이브에 있는 파일이 Chromebook에 자동으로 동기화되므로 인터넷에 연결되지 않은 상태에서도 파일에 액세스할 수 있습니다</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/>에서 다음 파일과 폴더를 볼 수 있습니다.</translation>
@@ -4427,7 +4428,7 @@
 <translation id="4341577178275615435">캐럿 브라우징을 사용 설정하거나 중지하려면 F7 단축키를 사용합니다.</translation>
 <translation id="4341905082470253054">TPM 상태 확인 중...</translation>
 <translation id="434198521554309404">빠르고 안전하며 편리한 브라우저</translation>
-<translation id="4342417854108207000">기기의 파일 또는 폴더 수정이 허용되지 않음</translation>
+<translation id="4342417854108207000">기기의 파일 또는 폴더 수정이 허용됨</translation>
 <translation id="3147982553903764426">특정 사이트 또는 Brave의 일부를 검색하려면 주소 표시줄에 바로가기를 입력한 다음 원하는 단축키를 누르세요.</translation>
 <translation id="4343283008857332996">앱, 카메라 권한이 있는 웹사이트, 시스템 서비스에 카메라 액세스가 허용됩니다. 카메라를 사용하려면 앱을 다시 시작하거나 페이지를 새로고침해야 할 수 있습니다.</translation>
 <translation id="4345457680916430965"><ph name="APP"/>에서 열기(O)</translation>
@@ -5854,6 +5855,7 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="5474859849784484111"><ph name="MANAGER"/>에서 지금 Wi-Fi에 연결하여 업데이트를 다운로드할 것을 요청합니다. 종량제 연결(요금이 부과될 수 있음)을 통해 업데이트를 다운로드할 것을 요청합니다.</translation>
 <translation id="5477089831058413614"><ph name="DEVICE_TYPE"/> 핫스팟 구성</translation>
 <translation id="5481273127572794904">여러 파일 자동 다운로드가 허용되지 않음</translation>
+<translation id="5481682542063333508">작성 도움 제공</translation>
 <translation id="5481941284378890518">주변 프린터 추가</translation>
 <translation id="3389019465696070233">로그인하면 Brave에서 탭 그룹을 추천하고 탭을 깔끔하게 정리할 수 있습니다.</translation>
 <translation id="8126971123326806277">사용 설정하면 iCloud 키체인에서 패스키가 생성되고 Apple 기기에서 사용할 수 있습니다. 사용 중지하면 이 기기의 Brave 프로필에서 패스키가 생성됩니다.</translation>
@@ -8574,7 +8576,7 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="7625025537587898155">새 프로필 추가</translation>
 <translation id="7625568159987162309">사이트 전체에 저장된 권한 및 데이터 보기</translation>
 <translation id="7625823789272218216">새 좌측 탭</translation>
-<translation id="7628201176665550262">새로고침 빈도</translation>
+<translation id="7628201176665550262">화면 재생 빈도</translation>
 <translation id="7628392600831846024">기호 스타일</translation>
 <translation id="7628927569678398026"><ph name="LOCALE"/>(<ph name="VARIANT"/>), <ph name="GRADE"/>등급</translation>
 <translation id="762917478230183172">키별로 작업 선택</translation>
@@ -10011,6 +10013,7 @@ https://support.google.com/chromebook/?p=sm</translation>
 <translation id="869167754614449887">다운로드 기록에서 <ph name="FILE_NAME"/> 파일이 삭제되었습니다.</translation>
 <translation id="8692107307702113268">비밀번호가 1,000자(영문 기준)를 초과합니다.</translation>
 <translation id="8693639060656817812">추적 보호 사용 가능 여부에 관해 자세히 알아보기</translation>
+<translation id="8693862390730570097">'작성 지원 기능'이 자동으로 열리도록 허용하지 않음</translation>
 <translation id="8694596275649352090">절전 모드일 때 또는 덮개가 닫힌 경우 잠금</translation>
 <translation id="8695139659682234808">설정 완료 후 자녀 보호 기능 추가</translation>
 <translation id="8695825812785969222">위치 열기(&amp;L)...</translation>
@@ -10588,6 +10591,7 @@ https://support.google.com/chromebook/?p=sm</translation>
 <translation id="9112987648460918699">찾기...</translation>
 <translation id="9113240369465613386">홀수 페이지만</translation>
 <translation id="9113469270512809735">최근에 닫은 항목 전환</translation>
+<translation id="9113529408970052045">사이트의 텍스트 상자에 짧은 형식의 콘텐츠를 입력할 수 있을 때 '작성 지원 기능'이 자동으로 열릴 수 있습니다.</translation>
 <translation id="9114663181201435112">간편한 로그인</translation>
 <translation id="9115675100829699941">북마크(&amp;B)</translation>
 <translation id="916115484239820348">이 설정을 사용해도 Brave 번역 또는 렌즈 사용 가능 여부는 변경되지 않습니다.</translation>
@@ -10806,7 +10810,7 @@ https://support.google.com/chromebook/?p=sm</translation>
 <translation id="992653586748191655">추천 탭 그룹 <ph name="NUM"/>개</translation>
 <translation id="992778845837390402">현재 Linux 백업이 진행 중입니다.</translation>
 <translation id="993540765962421562">설치 진행 중</translation>
-<translation id="994289308992179865">루프(&amp;L)</translation>
+<translation id="994289308992179865">연속 재생(&amp;L)</translation>
 <translation id="995755448277384931">IBAN 추가</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">안전한 연결 설정 중...</translation>
