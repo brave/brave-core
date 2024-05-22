@@ -17,7 +17,13 @@ struct PlaylistContentView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.isFullScreen) private var isFullScreen
 
-  @FetchRequest(sortDescriptors: []) private var folders: FetchedResults<PlaylistFolder>
+  @FetchRequest(
+    sortDescriptors: [
+      .init(keyPath: \PlaylistFolder.order, ascending: true),
+      .init(keyPath: \PlaylistFolder.dateAdded, ascending: false),
+    ],
+    predicate: .init(format: "sharedFolderUrl == nil")
+  ) private var folders: FetchedResults<PlaylistFolder>
 
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
