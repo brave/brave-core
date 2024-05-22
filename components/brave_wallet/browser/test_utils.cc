@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ref.h"
 #include "base/notreached.h"
@@ -14,6 +15,7 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -22,13 +24,6 @@
 
 namespace brave_wallet {
 namespace {
-
-constexpr char kMockBtcMainnetImport[] =
-    "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqWvGp42t42"
-    "nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE";
-constexpr char kMockBtcTestnetImport[] =
-    "vprv9K7GLAaERuM58PVvbk1sMo7wzVCoPwzZpVXLRBmum93gL5pSqQCAAvZjtmz93nnnYMr9i2"
-    "FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H";
 
 std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
   auto prefix = [&keyring_id]() -> std::string {
@@ -127,8 +122,8 @@ mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
       keyring_service_
           ->ImportBitcoinAccountSync(name,
                                      (network == mojom::kBitcoinMainnet)
-                                         ? kMockBtcMainnetImport
-                                         : kMockBtcTestnetImport,
+                                         ? kBtcMainnetImportAccount0
+                                         : kBtcTestnetImportAccount0,
                                      GetNetworkForBitcoinKeyring(keyring_id))
           ->Clone();
   EXPECT_TRUE(acc);
@@ -272,9 +267,14 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
     mojom::KeyringId keyring_id) {
+  return AllAccounts(std::vector<mojom::KeyringId>{keyring_id});
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
+    const std::vector<mojom::KeyringId>& keyring_ids) {
   std::vector<mojom::AccountInfoPtr> result;
   for (auto& acc : keyring_service_->GetAllAccountInfos()) {
-    if (acc->account_id->keyring_id == keyring_id) {
+    if (base::Contains(keyring_ids, acc->account_id->keyring_id)) {
       result.push_back(acc->Clone());
     }
   }
@@ -298,11 +298,13 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilTestAccounts() {
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
-  return AllAccounts(mojom::KeyringId::kBitcoin84);
+  return AllAccounts(
+      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
-  return AllAccounts(mojom::KeyringId::kBitcoin84Testnet);
+  return AllAccounts({mojom::KeyringId::kBitcoin84Testnet,
+                      mojom::KeyringId::kBitcoinImportTestnet});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {

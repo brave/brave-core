@@ -562,7 +562,7 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
   // Added 06/2023
   MaybeMigrateSelectedAccountPrefs(profile_prefs_, GetAllAccountInfos());
-  ResetAllAccountInfosCache();
+  ResetAllAccountInfosCache();  // Reset cache state after migration above.
 
   MaybeUnlockWithCommandLine();
 }
@@ -734,6 +734,10 @@ void KeyringService::LoadAccountsFromPrefs(mojom::KeyringId keyring_id) {
 
   for (const auto& imported_account_info :
        GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
+    if (!imported_account_info.account_address) {
+      continue;
+    }
+
     auto private_key =
         encryptor_->DecryptFromDict(imported_account_info.imported_private_key);
     if (!private_key) {

@@ -177,6 +177,7 @@ source_set("test_support") {
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:generated_bitcoin_rpc_responses",
+    "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:mojom",
     "//services/network:test_support",

@@ -58,8 +58,7 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
 
-    bitcoin_test_rpc_server_ =
-        std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -76,7 +75,7 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 
     task_environment_.RunUntilIdle();
 
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc(BtcAcc(0));
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
   }
 
   AccountUtils GetAccountUtils() {

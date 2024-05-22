@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -59,8 +60,7 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    bitcoin_test_rpc_server_ =
-        std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -71,7 +71,7 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     btc_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoin84, 0);
     ASSERT_TRUE(btc_account_);
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_account_->account_id);
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
     keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
         btc_account_->account_id, 5, 5);
   }
@@ -437,7 +437,7 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
 
 TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
   base::MockCallback<BitcoinWalletService::DiscoverAccountCallback> callback;
-  bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
   // By default discovered receive and change indexes are zero.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
@@ -524,6 +524,35 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
                                            callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, BitcoinImportRunsDiscovery) {
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicAbandonAbandon, 0);
+
+  auto account = keyring_service_->ImportBitcoinAccountSync(
+      "acc", kBtcMainnetImportAccount0, mojom::kBitcoinMainnet);
+
+  auto acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(0u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(0u, acc_info->next_change_address->key_id->index);
+
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, 4)));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinChangeIndex, 7)));
+
+  task_environment_.RunUntilIdle();
+
+  // Discovery finishes and account's address indexes get updated.
+  acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(5u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(8u, acc_info->next_change_address->key_id->index);
 }
 
 }  // namespace brave_wallet

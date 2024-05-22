@@ -107,6 +107,8 @@ class AccountUtils {
   mojom::AccountIdPtr FindAccountIdByAddress(const std::string& address);
 
   std::vector<mojom::AccountInfoPtr> AllAccounts(mojom::KeyringId keyring_id);
+  std::vector<mojom::AccountInfoPtr> AllAccounts(
+      const std::vector<mojom::KeyringId>& keyring_ids);
   std::vector<mojom::AccountInfoPtr> AllEthAccounts();
   std::vector<mojom::AccountInfoPtr> AllSolAccounts();
   std::vector<mojom::AccountInfoPtr> AllFilAccounts();

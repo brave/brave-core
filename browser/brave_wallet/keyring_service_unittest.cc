@@ -2755,6 +2755,60 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
             imported_testnet_accounts.size() - 1);
 }
 
+TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  EXPECT_FALSE(service.ImportBitcoinAccountSync("", kBtcMainnetImportAccount0,
+                                                mojom::kBitcoinMainnet));
+  EXPECT_FALSE(service.ImportBitcoinAccountSync(
+      "Btc import", kBtcMainnetImportAccount0, mojom::kMainnetChainId));
+  EXPECT_FALSE(service.ImportBitcoinAccountSync(
+      "Btc import", kBtcMainnetImportAccount0, mojom::kBitcoinTestnet));
+  EXPECT_FALSE(service.ImportBitcoinAccountSync(
+      "Btc import", kBtcTestnetImportAccount0, mojom::kBitcoinMainnet));
+
+  EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcAccounts().size());
+  EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcTestAccounts().size());
+
+  auto acc1 = service.ImportBitcoinAccountSync(
+      "Btc import 1", kBtcMainnetImportAccount0, mojom::kBitcoinMainnet);
+  auto acc2 = service.ImportBitcoinAccountSync(
+      "Btc import 2", kBtcMainnetImportAccount1, mojom::kBitcoinMainnet);
+  auto acc3 = service.ImportBitcoinAccountSync(
+      "Btc import 3", kBtcTestnetImportAccount0, mojom::kBitcoinTestnet);
+  ASSERT_TRUE(acc1);
+  ASSERT_TRUE(acc2);
+  ASSERT_TRUE(acc3);
+
+  EXPECT_EQ(2u, GetAccountUtils(&service).AllBtcAccounts().size());
+  EXPECT_EQ(1u, GetAccountUtils(&service).AllBtcTestAccounts().size());
+
+  EXPECT_EQ(GetAccountUtils(&service).AllBtcAccounts()[0], acc1);
+  EXPECT_EQ(GetAccountUtils(&service).AllBtcAccounts()[1], acc2);
+  EXPECT_EQ(GetAccountUtils(&service).AllBtcTestAccounts()[0], acc3);
+
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(RemoveAccount(&service, acc1->account_id, kPasswordBrave));
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(RemoveAccount(&service, acc2->account_id, kPasswordBrave));
+  observer.WaitAndVerify();
+
+  EXPECT_CALL(observer, AccountsChanged());
+  EXPECT_TRUE(RemoveAccount(&service, acc3->account_id, kPasswordBrave));
+  observer.WaitAndVerify();
+
+  EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcAccounts().size());
+  EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcTestAccounts().size());
+}
+
 TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
@@ -3113,7 +3167,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   auto tx_service = MakeTxService(&service);
 
-  BitcoinTestRpcServer bitcoin_test_rpc_server(&service, GetPrefs());
+  BitcoinTestRpcServer bitcoin_test_rpc_server;
   BitcoinWalletService bitcoin_wallet_service(
       &service, GetPrefs(), bitcoin_test_rpc_server.GetURLLoaderFactory());
 
@@ -3122,7 +3176,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       &tx_service, &bitcoin_wallet_service, nullptr, GetPrefs(),
       GetLocalState(), false);
 
-  bitcoin_test_rpc_server.SetUpBitcoinRpc({});
+  bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
   BitcoinHDKeyring keyring_84(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
   BitcoinHDKeyring keyring_84_test(*MnemonicToSeed(kMnemonicAbandonAbandon),
                                    true);

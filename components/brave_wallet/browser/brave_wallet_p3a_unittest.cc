@@ -66,8 +66,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    bitcoin_test_rpc_server_ =
-        std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -697,10 +696,10 @@ TEST_F(BraveWalletP3AUnitTest, FilTransactionSentObservation) {
 
 TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
   histogram_tester_->ExpectTotalCount(kBtcTransactionSentHistogramName, 0);
+  AccountUtils(keyring_service_.get())
+      .CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
-  keyring_service_->CreateWallet("testing123", base::DoNothing());
-
-  bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_from());
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
 
   auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
                                        std::vector<mojom::BtcTxInputPtr>(),

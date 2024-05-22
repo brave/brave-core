@@ -26,24 +26,46 @@ namespace brave_wallet {
 
 namespace {
 
+std::string ExtractApiRequestPath(const GURL& request_url) {
+  std::string spec = request_url.spec();
+
+  auto mainnet_url_spec =
+      GetKnownChain(nullptr, mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+          ->rpc_endpoints[0]
+          .spec();
+  auto testnet_url_spec =
+      GetKnownChain(nullptr, mojom::kBitcoinTestnet, mojom::CoinType::BTC)
+          ->rpc_endpoints[0]
+          .spec();
+
+  if (base::StartsWith(spec, mainnet_url_spec)) {
+    return spec.substr(mainnet_url_spec.size());
+  }
+  if (base::StartsWith(spec, testnet_url_spec)) {
+    return spec.substr(testnet_url_spec.size());
+  }
+
+  return spec;
+}
+
 bool IsTxPostRequest(const network::ResourceRequest& request) {
   if (request.method != net::HttpRequestHeaders::kPostMethod) {
     return false;
   }
 
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   return parts.size() == 1 && parts[0] == "tx";
 }
 
 std::optional<std::string> IsTxStatusRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "tx") {
-    return std::string(parts[1]);
+    return parts[1];
   }
 
   return std::nullopt;
@@ -52,10 +74,10 @@ std::optional<std::string> IsTxStatusRequest(
 std::optional<std::string> IsAddressStatsRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "address") {
-    return std::string(parts[1]);
+    return parts[1];
   }
 
   return std::nullopt;
@@ -64,10 +86,10 @@ std::optional<std::string> IsAddressStatsRequest(
 std::optional<std::string> IsAddressUtxoRequest(
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitStringPiece(request.url.path_piece(), "/",
-                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(request.url), "/",
+                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 3 && parts[0] == "address" && parts[2] == "utxo") {
-    return std::string(parts[1]);
+    return parts[1];
   }
 
   return std::nullopt;
@@ -75,9 +97,7 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer(KeyringService* keyring_service,
-                                           PrefService* prefs)
-    : keyring_service_(keyring_service), prefs_(prefs) {
+BitcoinTestRpcServer::BitcoinTestRpcServer() {
   shared_url_loader_factory_ =
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &url_loader_factory_);
@@ -179,28 +199,6 @@ void BitcoinTestRpcServer::RequestInterceptor(
       return;
     }
 
-    if (account_id_) {
-      auto addresses = keyring_service_->GetBitcoinAddresses(account_id_);
-      auto bitcoin_acc_info =
-          keyring_service_->GetBitcoinAccountInfo(account_id_);
-      ASSERT_TRUE(bitcoin_acc_info);
-
-      for (const auto& item : *addresses) {
-        // Assume next change and receive addresses are not transacted.
-        if (item == bitcoin_acc_info->next_change_address ||
-            item == bitcoin_acc_info->next_receive_address) {
-          continue;
-        }
-
-        if (item->address_string == *address) {
-          url_loader_factory_.AddResponse(
-              request.url.spec(),
-              base::ToString(TransactedAddressStats(*address).ToValue()));
-          return;
-        }
-      }
-    }
-
     url_loader_factory_.AddResponse(
         request.url.spec(),
         base::ToString(EmptyAddressStats(*address).ToValue()));
@@ -225,27 +223,21 @@ void BitcoinTestRpcServer::RequestInterceptor(
 }
 
 void BitcoinTestRpcServer::SetUpBitcoinRpc(
-    const mojom::AccountIdPtr& account_id) {
-  auto btc_mainnet =
-      GetKnownChain(prefs_, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
-  btc_mainnet->rpc_endpoints[0] = GURL(mainnet_rpc_url_);
-  AddCustomNetwork(prefs_, *btc_mainnet);
-  auto btc_testnet =
-      GetKnownChain(prefs_, mojom::kBitcoinTestnet, mojom::CoinType::BTC);
-  btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
-  AddCustomNetwork(prefs_, *btc_testnet);
-
+    const std::optional<std::string>& mnemonic,
+    std::optional<uint32_t> account_index) {
   address_0_.reset();
   address_6_.reset();
   address_stats_map_.clear();
   utxos_map_.clear();
 
-  account_id_ = account_id.Clone();
+  account_index_ = account_index;
 
-  if (account_id_) {
+  if (mnemonic && account_index) {
+    keyring_ =
+        std::make_unique<BitcoinHDKeyring>(*MnemonicToSeed(*mnemonic), false);
+
     address_0_ =
-        keyring_service_
-            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(0, 0))
+        keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(0, 0))
             .Clone();
     auto& stats_0 = address_stats_map_[address_0_->address_string];
     stats_0.address = address_0_->address_string;
@@ -257,8 +249,7 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
     stats_0.mempool_stats.tx_count = "1";
 
     address_6_ =
-        keyring_service_
-            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(1, 0))
+        keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(1, 0))
             .Clone();
     auto& stats_6 = address_stats_map_[address_6_->address_string];
     stats_6.address = address_6_->address_string;

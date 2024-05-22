@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"

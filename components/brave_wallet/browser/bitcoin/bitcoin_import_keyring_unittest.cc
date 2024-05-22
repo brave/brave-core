@@ -9,25 +9,10 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-// Accounts generated from kMnemonicAbandonAbandon mnemonic.
-constexpr char kMainnetAccount0[] =
-    "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqWvGp42t42"
-    "nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE";
-constexpr char kMainnetAccount1[] =
-    "zprvAdG4iTXWBoAS2cCGuaGevCvH54GCunrvLJb2hoWCSuE3D9LS42XVg3c6sPm64w6VMq3w18"
-    "vJf8nF3cBA2kUMkyWHsq6enWVXivzw42UrVHG";
-constexpr char kTestnetAccount0[] =
-    "vprv9K7GLAaERuM58PVvbk1sMo7wzVCoPwzZpVXLRBmum93gL5pSqQCAAvZjtmz93nnnYMr9i2"
-    "FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H";
-constexpr char kTestnetAccount1[] =
-    "vprv9K7GLAaERuM5CAKPEd5qaDFXn67e95YPxcSUXpD7A1dvei4bQLCuH8DDz2RjtR5bS6nHyo"
-    "SXbaMZ2K2DzVUrZ9SAYjwuZV39iTyRsiQG7N9";
-}  // namespace
 
 namespace brave_wallet {
 using mojom::BitcoinKeyId;
@@ -35,8 +20,8 @@ using mojom::BitcoinKeyId;
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinImportKeyringUnitTest, TestVectors) {
   BitcoinImportKeyring keyring(false);
-  EXPECT_TRUE(keyring.AddAccount(0, kMainnetAccount0));
-  EXPECT_TRUE(keyring.AddAccount(1, kMainnetAccount1));
+  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -56,10 +41,30 @@ TEST(BitcoinImportKeyringUnitTest, TestVectors) {
             "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
 }
 
+TEST(BitcoinImportKeyringUnitTest, AddAccountFails) {
+  BitcoinImportKeyring keyring(false);
+
+  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+
+  // Index already used.
+  EXPECT_FALSE(keyring.AddAccount(0, kBtcMainnetImportAccount1));
+
+  // Wrong network.
+  EXPECT_FALSE(keyring.AddAccount(1, kBtcTestnetImportAccount0));
+
+  BitcoinImportKeyring testnet_keyring(true);
+  EXPECT_FALSE(testnet_keyring.AddAccount(0, kBtcMainnetImportAccount0));
+}
+
 TEST(BitcoinImportKeyringUnitTest, GetAddress) {
   BitcoinImportKeyring keyring(false);
-  EXPECT_TRUE(keyring.AddAccount(0, kMainnetAccount0));
-  EXPECT_TRUE(keyring.AddAccount(1, kMainnetAccount1));
+  EXPECT_FALSE(keyring.GetAddress(0, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(keyring.GetAddress(1, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(keyring.GetAddress(2, BitcoinKeyId(0, 0)));
+
+  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
+  EXPECT_FALSE(keyring.GetAddress(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(keyring.GetAddress(0, BitcoinKeyId(0, 0))->address_string,
             "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
@@ -76,8 +81,13 @@ TEST(BitcoinImportKeyringUnitTest, GetAddress) {
             "bc1qt0x83f5vmnapgl2gjj9r3d67rcghvjaqrvgpck");
 
   BitcoinImportKeyring testnet_keyring(true);
-  EXPECT_TRUE(testnet_keyring.AddAccount(0, kTestnetAccount0));
-  EXPECT_TRUE(testnet_keyring.AddAccount(1, kTestnetAccount1));
+  EXPECT_FALSE(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(testnet_keyring.GetAddress(1, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(testnet_keyring.GetAddress(2, BitcoinKeyId(0, 0)));
+
+  EXPECT_TRUE(testnet_keyring.AddAccount(0, kBtcTestnetImportAccount0));
+  EXPECT_TRUE(testnet_keyring.AddAccount(1, kBtcTestnetImportAccount1));
+  EXPECT_FALSE(testnet_keyring.GetAddress(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0))->address_string,
             "tb1q6rz28mcfaxtmd6v789l9rrlrusdprr9pqcpvkl");
@@ -96,8 +106,13 @@ TEST(BitcoinImportKeyringUnitTest, GetAddress) {
 
 TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
   BitcoinImportKeyring keyring(false);
-  EXPECT_TRUE(keyring.AddAccount(0, kMainnetAccount0));
-  EXPECT_TRUE(keyring.AddAccount(1, kMainnetAccount1));
+  EXPECT_FALSE(keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
+
+  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
+  EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -120,8 +135,13 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
   BitcoinImportKeyring testnet_keyring(true);
-  EXPECT_TRUE(testnet_keyring.AddAccount(0, kTestnetAccount0));
-  EXPECT_TRUE(testnet_keyring.AddAccount(1, kTestnetAccount1));
+  EXPECT_FALSE(testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
+  EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
+
+  EXPECT_TRUE(testnet_keyring.AddAccount(0, kBtcTestnetImportAccount0));
+  EXPECT_TRUE(testnet_keyring.AddAccount(1, kBtcTestnetImportAccount1));
+  EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(
       base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -146,13 +166,16 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
 
 TEST(BitcoinImportKeyringUnitTest, SignMessage) {
   BitcoinImportKeyring keyring(false);
-  EXPECT_TRUE(keyring.AddAccount(0, kMainnetAccount0));
+  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
   std::vector<uint8_t> message(32, 0);
   EXPECT_EQ(
       base::HexEncode(*keyring.SignMessage(0, BitcoinKeyId(0, 0),
                                            base::make_span<32>(message))),
       "3044022009271D760CD433185513A7702C8D3BDB70B0FA1832AECFE19E43AB698C801966"
       "0220113A39099493C8DEE6E4735E89F3AD6D3C3382E3E61DBAA961390B0253DE6FAF");
+
+  EXPECT_FALSE(
+      keyring.SignMessage(1, BitcoinKeyId(0, 0), base::make_span<32>(message)));
 }
 
 }  // namespace brave_wallet

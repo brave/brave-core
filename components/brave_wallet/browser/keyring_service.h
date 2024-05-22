@@ -13,10 +13,6 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
-#include "brave/components/brave_wallet/browser/ethereum_keyring.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -33,17 +29,22 @@ class OneShotTimer;
 
 namespace brave_wallet {
 
-class BitcoinHDKeyring;
 class AccountDiscoveryManager;
-class EthTransaction;
-class FilTransaction;
-class KeyringServiceUnitTest;
-class EthereumProviderImplUnitTest;
-class SolanaProviderImplUnitTest;
-class SolanaKeyring;
-class FilecoinKeyring;
-class JsonRpcService;
 class AssetDiscoveryManagerUnitTest;
+class BitcoinBaseKeyring;
+class BitcoinHDKeyring;
+class BitcoinImportKeyring;
+class EthereumKeyring;
+class EthereumProviderImplUnitTest;
+class EthTransaction;
+class FilecoinKeyring;
+class FilTransaction;
+class HDKeyring;
+class JsonRpcService;
+class KeyringServiceUnitTest;
+class PasswordEncryptor;
+class SolanaKeyring;
+class SolanaProviderImplUnitTest;
 class ZCashKeyring;
 struct KeyringSeed;
 

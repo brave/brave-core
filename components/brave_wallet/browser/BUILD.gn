@@ -447,6 +447,7 @@ source_set("test_support") {
 
   deps = [
     ":browser",
+    "//brave/components/brave_wallet/browser/test:test_support",
     "//brave/components/brave_wallet/common",
     "//testing/gmock",
     "//testing/gtest",

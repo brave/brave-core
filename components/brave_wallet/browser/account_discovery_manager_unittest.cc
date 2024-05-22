@@ -40,8 +40,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
 
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    bitcoin_test_rpc_server_ =
-        std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -49,7 +48,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
     keyring_ = std::make_unique<BitcoinHDKeyring>(
         *MnemonicToSeed(kMnemonicDivideCruise), false);

@@ -10,6 +10,7 @@
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -316,10 +317,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
   EXPECT_EQ(hdkey_from_pub->GetPath(), "");
 
-  // m/84'/0'/0' from kMnemonicAbandonAbandon on mainnet
-  auto parsed_zprv = HDKey::GenerateFromExtendedKey(
-      "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqWvGp42t"
-      "42nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE");
+  auto parsed_zprv = HDKey::GenerateFromExtendedKey(kBtcMainnetImportAccount0);
   EXPECT_EQ(parsed_zprv->version, ExtendedKeyVersion::kZprv);
   auto* hdkey_from_zprv = parsed_zprv->hdkey.get();
   EXPECT_EQ(hdkey_from_zprv->depth_, 3u);
@@ -337,10 +335,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
   EXPECT_EQ(hdkey_from_zprv->GetPath(), "");
 
-  // m/84'/1'/0' from kMnemonicAbandonAbandon on testnet
-  auto parsed_vprv = HDKey::GenerateFromExtendedKey(
-      "vprv9K7GLAaERuM58PVvbk1sMo7wzVCoPwzZpVXLRBmum93gL5pSqQCAAvZjtmz93nnnYMr9"
-      "i2FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H");
+  auto parsed_vprv = HDKey::GenerateFromExtendedKey(kBtcTestnetImportAccount0);
   EXPECT_EQ(parsed_vprv->version, ExtendedKeyVersion::kVprv);
   auto* hdkey_from_vprv = parsed_vprv->hdkey.get();
   EXPECT_EQ(hdkey_from_vprv->depth_, 3u);

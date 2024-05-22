@@ -241,6 +241,15 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(nil)
   }
 
+  func importBitcoinAccount(
+    accountName: String,
+    payload: String,
+    network: String,
+    completion: @escaping (BraveWallet.AccountInfo?) -> Void
+  ) {
+    completion(nil)
+  }
+
   func importAccount(
     accountName: String,
     privateKey: String,
