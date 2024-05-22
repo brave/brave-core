@@ -50,16 +50,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Settings fragment containing preferences for QA team.
- */
+/** Settings fragment containing preferences for QA team. */
 public class BraveQAPreferences extends BravePreferenceFragment
-    implements OnPreferenceChangeListener, BraveRewardsObserver {
+        implements OnPreferenceChangeListener, BraveRewardsObserver {
     private static final String PREF_USE_REWARDS_STAGING_SERVER = "use_rewards_staging_server";
     private static final String PREF_USE_SYNC_STAGING_SERVER = "use_sync_staging_server";
-    private static final String PREF_USE_LEO_STAGING_SERVER = "use_leo_staging_server";
     private static final String PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER =
-        "qa_maximize_initial_ads_number";
+            "qa_maximize_initial_ads_number";
     private static final String PREF_QA_DEBUG_NTP = "qa_debug_ntp";
     private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
     private static final String PREF_QA_COMMAND_LINE = "qa_command_line";
@@ -73,10 +70,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final int MAX_ADS = 10;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
-    private ChromeSwitchPreference mVpnLinkSubscriptionOnDev;
+    private ChromeSwitchPreference mLinkSubscriptionOnStaging;
     private ChromeSwitchPreference mBraveDormantFeatureEngagement;
     private ChromeSwitchPreference mIsStagingServer;
-    private ChromeSwitchPreference mIsLeoStagingServer;
     private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
@@ -94,16 +90,16 @@ public class BraveQAPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         SettingsUtils.addPreferencesFromResource(this, R.xml.qa_preferences);
 
-        mVpnLinkSubscriptionOnDev =
+        mLinkSubscriptionOnStaging =
                 (ChromeSwitchPreference)
-                        findPreference(
-                                LinkSubscriptionUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING);
-        if (mVpnLinkSubscriptionOnDev != null) {
-            mVpnLinkSubscriptionOnDev.setOnPreferenceChangeListener(this);
+                        findPreference(LinkSubscriptionUtils.PREF_LINK_SUBSCRIPTION_ON_STAGING);
+        if (mLinkSubscriptionOnStaging != null) {
+            mLinkSubscriptionOnStaging.setOnPreferenceChangeListener(this);
         }
 
-        mBraveDormantFeatureEngagement = (ChromeSwitchPreference) findPreference(
-                OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT);
+        mBraveDormantFeatureEngagement =
+                (ChromeSwitchPreference)
+                        findPreference(OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT);
         if (mBraveDormantFeatureEngagement != null) {
             mBraveDormantFeatureEngagement.setOnPreferenceChangeListener(this);
         }
@@ -123,14 +119,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
         }
         mIsSyncStagingServer.setChecked(isSyncStagingUsed());
 
-        mIsLeoStagingServer = (ChromeSwitchPreference) findPreference(PREF_USE_LEO_STAGING_SERVER);
-        if (mIsLeoStagingServer != null) {
-            mIsLeoStagingServer.setOnPreferenceChangeListener(this);
-        }
-        mIsLeoStagingServer.setChecked(isLeoStagingUsed());
-
         mMaximizeAdsNumber =
-            (ChromeSwitchPreference) findPreference(PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER);
+                (ChromeSwitchPreference) findPreference(PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER);
         if (mMaximizeAdsNumber != null) {
             mMaximizeAdsNumber.setEnabled(mIsStagingServer.isChecked());
             mMaximizeAdsNumber.setOnPreferenceChangeListener(this);
@@ -267,9 +257,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
             enableMaximumAdsNumber((boolean) newValue);
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
-                || PREF_USE_LEO_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
-                || LinkSubscriptionUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING.equals(
+                || LinkSubscriptionUtils.PREF_LINK_SUBSCRIPTION_ON_STAGING.equals(
                         preference.getKey())
                 || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
                         preference.getKey())) {
@@ -306,10 +295,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @CalledByNative
     public static boolean isSyncStagingUsed() {
         return getPreferenceValue(PREF_USE_SYNC_STAGING_SERVER);
-    }
-
-    public static boolean isLeoStagingUsed() {
-        return getPreferenceValue(PREF_USE_LEO_STAGING_SERVER);
     }
 
     public static boolean shouldVlogRewards() {

@@ -8,10 +8,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="true">
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_vpn_link_subscription_on_staging"
-        android:title="Link VPN subscription on Staging"
+        android:key="link_subscription_on_staging"
+        android:title="Link subscription on Staging"
         android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+        android:summaryOff="@string/text_off"
+        android:defaultValue="false" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="dormant_users_engagement"
@@ -28,12 +29,6 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_sync_staging_server"
         android:title="Use Sync staging server"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="use_leo_staging_server"
-        android:title="Use Leo staging server"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 

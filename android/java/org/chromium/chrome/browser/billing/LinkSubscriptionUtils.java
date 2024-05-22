@@ -5,25 +5,23 @@
 
 package org.chromium.chrome.browser.billing;
 
-
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper.SubscriptionProduct;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 import java.util.Locale;
 
 public class LinkSubscriptionUtils {
-    private static final String BRAVE_ACCOUNT_URL_STAGING = "account.brave.com";
-    private static final String BRAVE_ACCOUNT_URL = "account.bravesoftware.com";
+    private static final String BRAVE_ACCOUNT_URL_STAGING = "account.bravesoftware.com";
+    private static final String BRAVE_ACCOUNT_URL = "account.brave.com";
 
-    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
-            "brave_vpn_link_subscription_on_staging";
+    public static final String PREF_LINK_SUBSCRIPTION_ON_STAGING = "link_subscription_on_staging";
 
     public static String getBraveAccountLinkUrl(SubscriptionProduct subscriptionProduct) {
         String braveAccountUrl =
                 isLinkSubscriptionOnStaging() ? BRAVE_ACCOUNT_URL_STAGING : BRAVE_ACCOUNT_URL;
         String linkType =
                 (SubscriptionProduct.LEO == subscriptionProduct) ? "link-order" : "connect-receipt";
-        String baseUrl = "https://%s?intent=%s&product=%s&ux=mobile";
+        String baseUrl = "https://%s?intent=%s&product=%s";
         return String.format(
                 baseUrl,
                 braveAccountUrl,
@@ -41,11 +39,6 @@ public class LinkSubscriptionUtils {
 
     public static boolean isLinkSubscriptionOnStaging() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
-    }
-
-    public static void setLinkSubscriptionOnStaging(boolean newValue) {
-        ChromeSharedPreferences.getInstance()
-                .writeBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
+                .readBoolean(PREF_LINK_SUBSCRIPTION_ON_STAGING, false);
     }
 }
