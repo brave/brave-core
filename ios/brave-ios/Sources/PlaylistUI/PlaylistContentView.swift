@@ -108,8 +108,12 @@ struct PlaylistContentView: View {
     } content: {
       ZStack {
         if let selectedItem {
-          MediaContentView(model: playerModel, selectedItem: selectedItem)
-            .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
+          MediaContentView(
+            model: playerModel,
+            selectedItem: selectedItem,
+            selectedDetent: $selectedDetent
+          )
+          .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
         } else {
           PlaylistContentUnavailableView(isPlaylistEmpty: PlaylistItem.count() == 0)
             .playlistSheetDetents([.anchor(.emptyPlaylistContent), .large])

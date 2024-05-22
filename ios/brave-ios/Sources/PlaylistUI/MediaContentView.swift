@@ -17,6 +17,7 @@ extension PlaylistSheetDetent.DetentAnchorID {
 struct MediaContentView: View {
   @ObservedObject var model: PlayerModel
   var selectedItem: PlaylistItem
+  @Binding var selectedDetent: PlaylistSheetDetent
 
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.isFullScreen) private var isFullScreen
@@ -35,6 +36,15 @@ struct MediaContentView: View {
               .transition(.opacity.animation(.default))
           }
         }
+        .gesture(
+          isFullScreen
+            ? nil
+            : TapGesture().onEnded {
+              withAnimation(.snappy) {
+                selectedDetent = .small
+              }
+            }
+        )
       if !isFullScreen {
         PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)
@@ -285,7 +295,8 @@ extension MediaContentView {
       duration: 100,
       mimeType: "",
       mediaSrc: ""
-    )
+    ),
+    selectedDetent: .constant(.small)
   )
   .environment(\.managedObjectContext, DataController.swiftUIContext)
   .preparePlaylistEnvironment()
