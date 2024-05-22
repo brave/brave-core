@@ -9,25 +9,37 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_extensions.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
 EdgeExecute::EdgeExecute(GraphItemContext* context,
                          NodeHTMLElement* out_node,
-                         NodeScript* in_node)
-    : GraphEdge(context, out_node, in_node) {}
+                         NodeScript* in_node,
+                         const FrameId& frame_id)
+    : GraphEdge(context, out_node, in_node), frame_id_(frame_id) {}
 
 EdgeExecute::EdgeExecute(GraphItemContext* context,
                          NodeExtensions* out_node,
-                         NodeScript* in_node)
-    : GraphEdge(context, out_node, in_node) {}
+                         NodeScript* in_node,
+                         const FrameId& frame_id)
+    : GraphEdge(context, out_node, in_node), frame_id_(frame_id) {}
 
 EdgeExecute::EdgeExecute(GraphItemContext* context,
                          NodeActor* out_node,
-                         NodeScript* in_node)
-    : GraphEdge(context, out_node, in_node) {}
+                         NodeScript* in_node,
+                         const FrameId& frame_id)
+    : GraphEdge(context, out_node, in_node), frame_id_(frame_id) {}
 
 EdgeExecute::~EdgeExecute() = default;
+
+void EdgeExecute::AddGraphMLAttributes(xmlDocPtr doc,
+                                       xmlNodePtr parent_node) const {
+  GraphEdge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefEdgeFrameId)
+      ->AddValueNode(doc, parent_node, frame_id_);
+}
 
 ItemName EdgeExecute::GetItemName() const {
   return "execute";

@@ -7,6 +7,7 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EXECUTE_EDGE_EXECUTE_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace brave_page_graph {
@@ -20,21 +21,30 @@ class EdgeExecute : public GraphEdge {
  public:
   EdgeExecute(GraphItemContext* context,
               NodeHTMLElement* out_node,
-              NodeScript* in_node);
+              NodeScript* in_node,
+              const FrameId& frame_id);
   EdgeExecute(GraphItemContext* context,
               NodeExtensions* out_node,
-              NodeScript* in_node);
+              NodeScript* in_node,
+              const FrameId& frame_id);
   // Used by imported module scripts and eval
   EdgeExecute(GraphItemContext* context,
               NodeActor* out_node,
-              NodeScript* in_node);
+              NodeScript* in_node,
+              const FrameId& frame_id);
   ~EdgeExecute() override;
 
   ItemName GetItemName() const override;
 
+  void AddGraphMLAttributes(xmlDocPtr doc,
+                            xmlNodePtr parent_node) const override;
+
   bool IsEdgeExecute() const override;
 
   virtual bool IsEdgeExecuteAttr() const;
+
+ private:
+  const FrameId frame_id_;
 };
 
 }  // namespace brave_page_graph

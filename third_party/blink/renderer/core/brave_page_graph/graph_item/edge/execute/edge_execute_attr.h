@@ -7,6 +7,7 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EXECUTE_EDGE_EXECUTE_ATTR_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -20,6 +21,7 @@ class EdgeExecuteAttr : public EdgeExecute {
   EdgeExecuteAttr(GraphItemContext* context,
                   NodeHTMLElement* out_node,
                   NodeScript* in_node,
+                  const FrameId& frame_id,
                   const String& attribute_name);
 
   ~EdgeExecuteAttr() override;

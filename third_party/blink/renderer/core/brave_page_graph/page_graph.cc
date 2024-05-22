@@ -184,7 +184,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.6.2";
+constexpr char kPageGraphVersion[] = "0.6.3";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -1679,8 +1679,9 @@ void PageGraph::RegisterScriptCompilation(
     blink::ExecutionContext* execution_context,
     const ScriptId script_id,
     const ScriptData& script_data) {
+  FrameId frame_id = GetFrameId(execution_context);
   VLOG(1) << "RegisterScriptCompilation) script id: " << script_id
-          << ", location: "
+          << ", frame id: " << frame_id << ", location: "
           << static_cast<int>(script_data.source.location_type)
           << ", script: \n"
           << (VLOG_IS_ON(2) ? script_data.code : String("<VLOG(2)>"));
@@ -1692,13 +1693,13 @@ void PageGraph::RegisterScriptCompilation(
     if (script_data.source.parent_script_id) {
       NodeScript* const parent_node = script_tracker_.GetScriptNode(
           execution_context->GetIsolate(), script_data.source.parent_script_id);
-      AddEdge<EdgeExecute>(parent_node, code_node);
+      AddEdge<EdgeExecute>(parent_node, code_node, frame_id);
     } else if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
       // If this is a root-level module script, it can still be associated with
       // an HTML script element
       NodeHTMLElement* const script_elm_node =
           GetHTMLElementNode(script_data.source.dom_node_id);
-      AddEdge<EdgeExecute>(script_elm_node, code_node);
+      AddEdge<EdgeExecute>(script_elm_node, code_node, frame_id);
     }
     return;
   }
@@ -1706,14 +1707,14 @@ void PageGraph::RegisterScriptCompilation(
   if (script_data.source.parent_script_id) {
     NodeScript* const parent_node = script_tracker_.GetScriptNode(
         execution_context->GetIsolate(), script_data.source.parent_script_id);
-    AddEdge<EdgeExecute>(parent_node, code_node);
+    AddEdge<EdgeExecute>(parent_node, code_node, frame_id);
   } else if (script_data.source.dom_node_id != blink::kInvalidDOMNodeId) {
     NodeHTMLElement* const script_elm_node =
         GetHTMLElementNode(script_data.source.dom_node_id);
-    AddEdge<EdgeExecute>(script_elm_node, code_node);
+    AddEdge<EdgeExecute>(script_elm_node, code_node, frame_id);
   } else {
     NodeActor* const acting_node = GetCurrentActingNode(execution_context);
-    AddEdge<EdgeExecute>(acting_node, code_node);
+    AddEdge<EdgeExecute>(acting_node, code_node, frame_id);
   }
 }
 
@@ -1721,15 +1722,17 @@ void PageGraph::RegisterScriptCompilationFromAttr(
     blink::ExecutionContext* execution_context,
     const ScriptId script_id,
     const ScriptData& script_data) {
+  FrameId frame_id = GetFrameId(execution_context);
   String attr_name = script_data.source.function_name;
   VLOG(1) << "RegisterScriptCompilationFromAttr) script id: " << script_id
+          << ", frame id: " << frame_id
           << ", node id: " << script_data.source.dom_node_id
           << ", attr name: " << attr_name;
   NodeScript* const code_node = script_tracker_.AddScriptNode(
       execution_context->GetIsolate(), script_id, script_data);
   NodeHTMLElement* const html_node =
       GetHTMLElementNode(script_data.source.dom_node_id);
-  AddEdge<EdgeExecuteAttr>(html_node, code_node, attr_name);
+  AddEdge<EdgeExecuteAttr>(html_node, code_node, frame_id, attr_name);
 }
 
 // Functions for handling storage read, write, and deletion
