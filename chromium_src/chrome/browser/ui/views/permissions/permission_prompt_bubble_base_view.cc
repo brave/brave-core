@@ -258,8 +258,6 @@ std::unique_ptr<views::View> CreateGeolocationDescLabel(
   contents_label->AddStyleRange(
       gfx::Range(offsets[learn_more_offset], offsets[learn_more_offset + 1]),
       learn_more_style);
-  constexpr int kFixedLabelWidth = 290;
-  contents_label->SizeToFit(kFixedLabelWidth);
   return contents_label;
 }
 
