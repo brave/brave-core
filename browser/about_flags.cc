@@ -458,11 +458,14 @@
 #define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
-#define BRAVE_AI_REWRITER                                                  \
-  EXPAND_FEATURE_ENTRIES(                                                  \
-      {"brave-ai-rewriter", "Brave AI Rewriter",                           \
-       "Enables the Brave AI rewriter dialog", kOsWin | kOsMac | kOsLinux, \
-       FEATURE_VALUE_TYPE(ai_rewriter::features::kAIRewriter)})
+#define BRAVE_AI_REWRITER                                     \
+  EXPAND_FEATURE_ENTRIES({                                    \
+      "brave-ai-rewriter",                                    \
+      "Brave AI Rewriter",                                    \
+      "Enables the Brave AI rewriter dialog",                 \
+      kOsWin | kOsMac | kOsLinux,                             \
+      FEATURE_VALUE_TYPE(ai_rewriter::features::kAIRewriter), \
+  })
 #else
 #define BRAVE_AI_REWRITER
 #endif

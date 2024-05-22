@@ -319,10 +319,7 @@ if (enable_ai_chat) {
 }
 
 if (enable_ai_rewriter) {
-  brave_chrome_browser_deps += [
-    "//brave/components/ai_rewriter/common",
-    "//brave/components/ai_rewriter/common/buildflags",
-  ]
+  brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
 }
 
 if (enable_brave_vpn) {
