@@ -175,6 +175,7 @@ public class PlaylistCarplayManager: NSObject {
             guard let self else { return }
             self.isPlaylistControllerPresented = false
             if let player, !player.isPictureInPictureActive, !isPiPStarting {
+              player.stop()
               self.playerModelBox = nil
             }
             isPiPStarting = false

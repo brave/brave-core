@@ -126,7 +126,7 @@ public final class PlayerModel: ObservableObject {
     player.pause()
   }
 
-  func stop() {
+  public func stop() {
     if !isPlaying {
       return
     }
@@ -547,8 +547,8 @@ public final class PlayerModel: ObservableObject {
       player.replaceCurrentItem(with: newValue)
       setupPlayerItemKeyPathObservation()
       newValue?.add(videoDecorationOutput)
-      Task { @MainActor in
-        updateSystemPlayer()
+      Task { @MainActor [weak self] in
+        self?.updateSystemPlayer()
       }
     }
   }
