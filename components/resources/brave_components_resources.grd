@@ -62,6 +62,13 @@
         <include name="IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML" file="../brave_wallet_ui/page/screens/fund-wallet/android/deposit-funds.html" type="BINDATA" />
         <include name="IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/screens/android-buy/android/fund-wallet.html" type="BINDATA" />
       </if>
+
+      <!-- WebUI swap and send page resources for iOS -->
+      <if expr="is_ios">
+        <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/ios/swap.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_SEND_PAGE_HTML" file="../brave_wallet_ui/page/screens/send/ios/send.html" type="BINDATA" />
+      </if>
+
       <!-- WebUI vpn resources -->
       <if expr="not is_android">
         <if expr="enable_brave_vpn">
