@@ -16,7 +16,6 @@
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/global_media_controls/public/constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
@@ -37,6 +36,12 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
     : WebContentsUserData(*contents), service_(service) {
   CHECK(service_);
 
+  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager;
+  content::GetMediaSessionService().BindAudioFocusManager(
+      audio_focus_manager.BindNewPipeAndPassReceiver());
+  audio_focus_manager->AddObserver(
+      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
+
   Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
 
@@ -45,12 +50,6 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
       user_prefs::UserPrefs::Get(contents->GetBrowserContext()),
       base::BindRepeating(&PlaylistTabHelper::OnPlaylistEnabledPrefChanged,
                           weak_ptr_factory_.GetWeakPtr()));
-
-  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager;
-  content::GetMediaSessionService().BindAudioFocusManager(
-      audio_focus_manager.BindNewPipeAndPassReceiver());
-  audio_focus_manager->AddObserver(
-      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistTabHelper::~PlaylistTabHelper() {
@@ -190,78 +189,6 @@ void PlaylistTabHelper::DidFinishNavigation(
   UpdateSavedItemFromCurrentContents();
 }
 
-void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
-  DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec();
-  if (item->page_source != GetWebContents().GetLastCommittedURL()) {
-    return;
-  }
-
-  if (base::ranges::find_if(saved_items_, [&item](const auto& i) {
-        return i->id == item->id;
-      }) != saved_items_.end()) {
-    // We might have already added the item from OnAddedItem().
-    return;
-  }
-
-  saved_items_.push_back(std::move(item));
-  for (auto& observer : observers_) {
-    observer.OnSavedItemsChanged(saved_items_);
-  }
-}
-
-void PlaylistTabHelper::OnItemAddedToList(const std::string& playlist_id,
-                                          const std::string& item_id) {
-  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
-    return item->id == item_id;
-  });
-
-  if (iter == saved_items_.end()) {
-    return;
-  }
-
-  (*iter)->parents.push_back(playlist_id);
-
-  for (auto& observer : observers_) {
-    observer.OnSavedItemsChanged(saved_items_);
-  }
-}
-
-void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
-                                              const std::string& item_id) {
-  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
-    return item->id == item_id;
-  });
-
-  if (iter == saved_items_.end()) {
-    return;
-  }
-
-  auto& parents = (*iter)->parents;
-  parents.erase(base::ranges::remove(parents, playlist_id), parents.end());
-
-  for (auto& observer : observers_) {
-    observer.OnSavedItemsChanged(saved_items_);
-  }
-}
-
-void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
-  DVLOG(2) << __FUNCTION__ << " " << id;
-  auto iter = base::ranges::find_if(
-      saved_items_, [&id](const auto& item) { return id == item->id; });
-  if (iter == saved_items_.end()) {
-    return;
-  }
-
-  saved_items_.erase(iter);
-  for (auto& observer : observers_) {
-    observer.OnSavedItemsChanged(saved_items_);
-  }
-}
-
-void PlaylistTabHelper::OnMediaFilesUpdated(
-    const GURL& url,
-    std::vector<mojom::PlaylistItemPtr> items) {}
-
 void PlaylistTabHelper::OnFocusGained(
     media_session::mojom::AudioFocusRequestStatePtr state) {
   CHECK(state);
@@ -345,6 +272,78 @@ void PlaylistTabHelper::MediaSessionImagesChanged(
     }
   }
 }
+
+void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
+  DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec();
+  if (item->page_source != GetWebContents().GetLastCommittedURL()) {
+    return;
+  }
+
+  if (base::ranges::find_if(saved_items_, [&item](const auto& i) {
+        return i->id == item->id;
+      }) != saved_items_.end()) {
+    // We might have already added the item from OnAddedItem().
+    return;
+  }
+
+  saved_items_.push_back(std::move(item));
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnItemAddedToList(const std::string& playlist_id,
+                                          const std::string& item_id) {
+  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+    return item->id == item_id;
+  });
+
+  if (iter == saved_items_.end()) {
+    return;
+  }
+
+  (*iter)->parents.push_back(playlist_id);
+
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
+                                              const std::string& item_id) {
+  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+    return item->id == item_id;
+  });
+
+  if (iter == saved_items_.end()) {
+    return;
+  }
+
+  auto& parents = (*iter)->parents;
+  parents.erase(base::ranges::remove(parents, playlist_id), parents.end());
+
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
+  DVLOG(2) << __FUNCTION__ << " " << id;
+  auto iter = base::ranges::find_if(
+      saved_items_, [&id](const auto& item) { return id == item->id; });
+  if (iter == saved_items_.end()) {
+    return;
+  }
+
+  saved_items_.erase(iter);
+  for (auto& observer : observers_) {
+    observer.OnSavedItemsChanged(saved_items_);
+  }
+}
+
+void PlaylistTabHelper::OnMediaFilesUpdated(
+    const GURL& url,
+    std::vector<mojom::PlaylistItemPtr> items) {}
 
 void PlaylistTabHelper::ResetData() {
   found_item_ = mojom::PlaylistItem::New();
