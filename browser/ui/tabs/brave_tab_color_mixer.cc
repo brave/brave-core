@@ -5,10 +5,10 @@
 
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
@@ -18,7 +18,8 @@
 
 namespace {
 
-ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
+std::optional<ChromeColorIds> GetMappedChromeColorId(
+    BraveColorIds brave_color_id) {
   static constexpr const auto kChromiumColorMap =
       base::MakeFixedFlatMap<BraveColorIds, ChromeColorIds>(
           // Note that we mapped inactive tab to active tab background and
@@ -39,7 +40,13 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
               {kColorBraveSplitViewTileBackground,
                kColorTabBackgroundInactiveFrameActive},
           });
-  return kChromiumColorMap.at(brave_color_id);
+
+  auto iter = kChromiumColorMap.find(brave_color_id);
+  if (iter == kChromiumColorMap.end()) {
+    return std::nullopt;
+  }
+
+  return iter->second;
 }
 
 ui::ColorTransform GetCustomColorOrDefaultColor(
@@ -52,15 +59,19 @@ ui::ColorTransform GetCustomColorOrDefaultColor(
   }
 
   auto chrome_color_id = GetMappedChromeColorId(color_id);
-  if (custom_theme->GetColor(chrome_color_id, &color)) {
+  if (!chrome_color_id) {
     return {color};
   }
 
-  if (color_utils::HSL hsl; custom_theme->GetTint(chrome_color_id, &hsl)) {
+  if (custom_theme->GetColor(*chrome_color_id, &color)) {
+    return {color};
+  }
+
+  if (color_utils::HSL hsl; custom_theme->GetTint(*chrome_color_id, &hsl)) {
     return {ui::HSLShift(color, hsl)};
   }
 
-  return {chrome_color_id};
+  return {*chrome_color_id};
 }
 
 }  // namespace
@@ -85,6 +96,15 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x85, 0x89, 0x89)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xE1)},
+          {kColorBraveSharedPinnedTabDummyViewBackground,
+           leo::GetColor(leo::Color::kColorContainerBackgroundDesktop,
+                         leo::Theme::kLight)},
+          {kColorBraveSharedPinnedTabDummyViewTitle,
+           leo::GetColor(leo::Color::kColorTextPrimary, leo::Theme::kLight)},
+          {kColorBraveSharedPinnedTabDummyViewDescription,
+           leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)},
+          {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     mixer[color_id] =
@@ -113,6 +133,15 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x0D, 0x12, 0x14)},
+          {kColorBraveSharedPinnedTabDummyViewBackground,
+           leo::GetColor(leo::Color::kColorContainerBackgroundDesktop,
+                         leo::Theme::kDark)},
+          {kColorBraveSharedPinnedTabDummyViewTitle,
+           leo::GetColor(leo::Color::kColorTextPrimary, leo::Theme::kDark)},
+          {kColorBraveSharedPinnedTabDummyViewDescription,
+           leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)},
+          {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     auto color =

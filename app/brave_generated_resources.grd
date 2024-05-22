@@ -659,6 +659,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM" desc="Text for the download bubble context menu item for removing item from the list">
           Remove from list
         </message>
+
+        <!-- Shared Pinned Tabs -->
+        <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_TITLE" desc="A title for a page that shows up when a dummy tab is visible">
+          This tab is active in another window
+        </message>
+        <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION" desc="The description explaning how to bring the tab to this window when dummy tab is visible"> 
+          Clicking this tab will bring its contents to this window
+        </message>
       </if>
 
       <!-- Brave Ads -->
