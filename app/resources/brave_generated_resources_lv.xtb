@@ -192,7 +192,7 @@
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
 <translation id="7299769530898469069">Nevarēja ielādēt saglabāto versiju</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
-<translation id="8010675257566903381">Wayback Machine nevarēja atrast šīs vietnes saglabāto versiju.</translation>
+<translation id="8010675257566903381">Tīmekļa vietnes iepriekšējās versijas meklēšanas funkcija nevarēja atrast šīs vietnes saglabāto versiju.</translation>
 <translation id="1207694258341311738">Pārbaudīt saglabāto versiju</translation>
 <translation id="191143826155037518">Brave pieejamu padarījusi <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0 (Mozilla publiskā licence 2.0)<ph name="END_LINK_MPL"/> (MPL) un tā ietver <ph name="BEGIN_LINK_OSS"/>atklātā pirmkoda programmatūras<ph name="END_LINK_OSS"/> ar daudzām citām licencēm.
         Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkrēto<ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>

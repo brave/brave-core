@@ -543,24 +543,24 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="7456398316301207582">Error intern en suprimir el compte</translation>
 <translation id="859506441384380749">Aquest codi s'ha generat amb una versió obsoleta de Brave, actualitza primer l'altre dispositiu</translation>
 <translation id="3132642509209154999">Aquest codi ha caducat. Genera'n un de nou a l'altre dispositiu i torna-ho a provar.</translation>
-<translation id="2859229680945501779">Aquest codi no és vàlid. Comproveu que l'hora i la zona horària s'han establert correctament al vostre dispositiu.</translation>
+<translation id="2859229680945501779">Aquest codi no és vàlid. Comprova que l'hora i la zona horària s'han establert correctament al teu dispositiu.</translation>
 <translation id="2339730291919608488">Deixa la cadena de sincronització</translation>
-<translation id="115699408012835975">Si restabliu la sincronització, haureu de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Esteu segurs que voleu continuar?</translation>
+<translation id="115699408012835975">Si restableixes la sincronització, hauràs de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Estàs segur que vols continuar?</translation>
 <translation id="6092564993102418148">Estàs segur que vols eliminar el dispositiu seleccionat de la cadena de sincronització?</translation>
 <translation id="4400414577602898435">Avís: amb això es compartiran les teves dades de Brave, incloses les teves contrasenyes, amb el dispositiu que ha generat aquestes paraules de codi.
 
 Revisa que aquests codis de paraules s'hagin generat a partir d'un dels teus dispositius.
 
 Segur que vols continuar?</translation>
-<translation id="7443185843787879670">Brave no ha pogut accedir a l'emmagatzematge segur del vostre sistema operatiu. Això és el que s'utilitza per protegir dades com ara contrasenyes i galetes; també és necessari perquè Brave Sync connecti el perfil del navegador entre dispositius. Això vol dir que Brave Sync no s'està executant. Per resoldre aquest problema, consulteu la <ph name="BEGIN_LINK_SYNC_GUIDE"/>Guia de resolució de problemes de Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
-<translation id="6802736947576520626">Sembla que la clau de xifratge sincronitzada és diferent de la utilitzada la primera vegada que es va configurar la sincronització de Brave. La solució més fàcil aquí és restablir i tornar a unir-se a la cadena de sincronització utilitzant la contrasenya d'un dels vostres altres dispositius sincronitzats.</translation>
-<translation id="4889767840132638381">Reinicieu i torneu a unir-vos a la cadena de sincronització</translation>
+<translation id="7443185843787879670">Brave no ha pogut accedir a l'emmagatzematge segur del teu sistema operatiu. Això és el que s'utilitza per protegir dades com ara contrasenyes i galetes; també és necessari perquè Brave Sync connecti el perfil del navegador entre dispositius. Això vol dir que Brave Sync no s'està executant. Per resoldre aquest problema, consulta la <ph name="BEGIN_LINK_SYNC_GUIDE"/>Guia de resolució de problemes de Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">Sembla que la clau de xifratge sincronitzada és diferent de la utilitzada la primera vegada que es va configurar la sincronització de Brave. La solució més fàcil aquí és restablir i tornar a unir-se a la cadena de sincronització utilitzant la contrasenya d'un dels teus altres dispositius sincronitzats.</translation>
+<translation id="4889767840132638381">Reinicia i torna a unir-te a la cadena de sincronització</translation>
 <translation id="1680065323266179640">Suprimeix el compte de Sync</translation>
 <translation id="9064376100690171155">Suprimeix el compte permanentment</translation>
-<translation id="228906529296554286">Si suprimiu el vostre compte, se suprimiran les vostres dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.</translation>
+<translation id="228906529296554286">Si suprimeixes el teu compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.</translation>
 <translation id="7578652532113583362">No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.</translation>
-<translation id="2516405584294312544">Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decidiu
-    començar a utilitzar Sync de nou, haureu de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
+<translation id="2516405584294312544">Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes
+    començar a utilitzar Sync de nou, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
 <translation id="4860996720371753023">La supressió del compte està en curs...</translation>
 <translation id="4094590686212463338">No s'ha pogut unir a aquesta cadena de sincronització. S'ha suprimit la cadena de sincronització.</translation>
 <translation id="4908081302669157000">Números de telèfon, correus electrònics i adreces</translation>
@@ -570,58 +570,58 @@ Segur que vols continuar?</translation>
 <translation id="842628013524824194">Finestra normal - Motor de cerca utilitzat a la barra d'adreces</translation>
 <translation id="5324939009884545145">Finestra d'incògnit - Motor de cerca utilitzat a la barra d'adreces</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
-<translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
+<translation id="6554397389149987360">Utilitza un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
-<translation id="2707635989000984973">Resol els noms dels dominis de Unstoppable Domains</translation>
-<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre les consideracions de privadesa de Unstoppable Domains.</translation>
+<translation id="2707635989000984973">Resol els noms dels dominis d'Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/>sobre les consideracions de privadesa d'Unstoppable Domains.</translation>
 <translation id="641308776160806829">Resol els noms de domini del Servei de noms Ethereum (ENS)</translation>
 <translation id="6421218422395686663">Permet la cerca fora de cadena ENS.</translation>
 <translation id="4608449984413688436">Resol els noms de domini del Servei de noms Solana (SNS)</translation>
-<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Saber-ne més<ph name="END_LINK"/> sobre les consideracions de privacitat de la cerca dfora de cadena ENS.</translation>
-<translation id="6241402707160226266">Finestra Privada amb Tor</translation>
-<translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Saber-ne més<ph name="END_LINK"/> sobre les consideracions de privacitat de la cerca fora de cadena ENS.</translation>
+<translation id="6241402707160226266">Finestra d'incògnit amb Tor</translation>
+<translation id="8762452230727230396">Tor amaga la teva adreça IP dels llocs que visites.</translation>
 <translation id="951983619130191090">Ofereix-te voluntari per ajudar els altres a connectar-se a la xarxa Tor</translation>
-<translation id="2223668809371912019">Habiliteu l'extensió Snowflake per permetre als usuaris dels països censurats connectar-se a la xarxa Tor a través de la vostra connexió de xarxa.</translation>
-<translation id="2959986444009520721">Utilitzeu ponts</translation>
-<translation id="8416750895933172460">Els ponts us ajuden a accedir a la xarxa Tor al lloc on Tor està bloquejat. Depenent d'on estigueu situats, un pont pot funcionar millor que un altre.</translation>
+<translation id="2223668809371912019">Habilita l'extensió Snowflake per permetre als usuaris dels països censurats connectar-se a la xarxa Tor a través de la teva connexió de xarxa.</translation>
+<translation id="2959986444009520721">Utilitza un Pont</translation>
+<translation id="8416750895933172460">Els ponts ajuden a accedir a la xarxa Tor al lloc on Tor està bloquejat. Depenent d'on estiguis situat, un pont pot funcionar millor que un altre.</translation>
 <translation id="7206799843254049470">Configuració de connexió Tor</translation>
-<translation id="3194502271166340944">Controla com Windows privat amb Tor es connecta a la xarxa Tor</translation>
-<translation id="3717364961460790491">No s'ha pogut baixar l'extensió Snowflake necessària per a aquesta funcionalitat. Comproveu la connexió a Internet i torneu-ho a provar.</translation>
-<translation id="4859228830700205299">Seleccioneu un pont integrat</translation>
-<translation id="3233137871426528317">Sol·liciteu un pont a torproject.org</translation>
-<translation id="5701503934456421898">Demaneu un pont nou...</translation>
-<translation id="8149806369020180959">Proporcionar un pont</translation>
-<translation id="454073978993625597">Introduïu la informació del pont d'una font de confiança.</translation>
-<translation id="4425607417590286548">Aplicar canvis</translation>
-<translation id="2128143836897950793">Feu clic a "Demanar un pont nou..." per obtenir ponts</translation>
-<translation id="3314921753580327793">Tipus d'adreça: port (un per línia)</translation>
-<translation id="3755189300481406891">Sol·licitud de pont</translation>
-<translation id="6924425739431382319">Contactant amb BridgeDB. Si us plau, espereu.</translation>
+<translation id="3194502271166340944">Controla com Windows d'incògnit amb Tor es connecta a la xarxa Tor</translation>
+<translation id="3717364961460790491">No s'ha pogut baixar l'extensió Snowflake necessària per a aquesta funcionalitat. Comprova la connexió a Internet i torna-ho a provar.</translation>
+<translation id="4859228830700205299">Selecciona un pont integrat</translation>
+<translation id="3233137871426528317">Sol·licita un pont a torproject.org</translation>
+<translation id="5701503934456421898">Demana un pont nou...</translation>
+<translation id="8149806369020180959">Proporciona un pont</translation>
+<translation id="454073978993625597">Introdueix la informació del pont d'una font de confiança.</translation>
+<translation id="4425607417590286548">Aplica canvis</translation>
+<translation id="2128143836897950793">Feu clic a 'Demanar un pont nou...' per obtenir ponts</translation>
+<translation id="3314921753580327793">Tipus adreça:port (un per línia)</translation>
+<translation id="3755189300481406891">Sol·licita pont</translation>
+<translation id="6924425739431382319">Contactant amb BridgeDB. Si us plau, espera.</translation>
 <translation id="811745063252080651">Resol el CAPTCHA per sol·licitar un pont.</translation>
-<translation id="6936835573742749135">No es pot sol·licitar un CAPTCHA. Torneu-ho a provar més tard.</translation>
+<translation id="6936835573742749135">No es pot sol·licitar un CAPTCHA. Torna-ho a provar més tard.</translation>
 <translation id="2653659639078652383">Envia</translation>
-<translation id="1294350054292274934">Resoldre només direccions .onion a finestres Tor</translation>
+<translation id="1294350054292274934">Resol només direccions .onion a finestres Tor</translation>
 <translation id="1258903596167452221">Els serveis Onion no estaran disponibles fora de les finestres Tor.</translation>
-<translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
+<translation id="2896916411183256228">Utilitza WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i enllaços magnet.</translation>
 <translation id="5249433283143453448">Utilitza el component Widevine de gestió de drets digitals (DRM) per visualitzar vídeo en streaming protegit i altres continguts al navegador.</translation>
 <translation id="1314131187310290315">Extensions Manifest V2</translation>
-<translation id="2488433650767270565">Les següents extensions de Manifest V2 s'eliminaran de Chrome Web Store, però encara són compatibles amb Brave. Commuta per baixar i instal·lar, o per desinstal·lar.</translation>
+<translation id="2488433650767270565">Les següents extensions del Manifest V2 s'eliminaran de la Botiga Web Chrome, però encara són compatibles amb Brave. Commuta per baixar i instal·lar, o per desinstal·lar.</translation>
 <translation id="578671172657727816">Activa NoScript™</translation>
 <translation id="9068475464170522036">NoScript és una extensió del Manifest V2 que permet bloquejar i desbloquejar scripts individuals que s'executin o intentin executar-se en una pàgina determinada.</translation>
 <translation id="1394592156621788100">Activa uBlock Origin™</translation>
-<translation id="2638983091068889519">uBlock Origin és una extensió de Manifest V2 que proporciona potents eines de bloqueig de contingut amb moltes opcions per a usuaris avançats.</translation>
+<translation id="2638983091068889519">uBlock Origin és una extensió del Manifest V2 que proporciona potents eines de bloqueig de contingut amb moltes opcions per a usuaris avançats.</translation>
 <translation id="3909078036552544838">Activa uMatrix™</translation>
-<translation id="8796148218203577506">uMatrix és una extensió de Manifest V2 que proporciona un tallafoc basat en matrius punt i clic, amb moltes eines per millorar la privadesa.</translation>
+<translation id="8796148218203577506">uMatrix és una extensió del Manifest V2 que proporciona un tallafoc basat en matrius punt i clic, amb moltes eines per millorar la privadesa.</translation>
 <translation id="2385774023523989298">Activa AdGuard™</translation>
 <translation id="188228077840632890">AdGuard és una extensió del Manifest V2 que proporciona bloqueig d'anuncis, opcions de control parental i integració amb altres ofertes de servei d'AdGuard.</translation>
 <translation id="8137559199583651773">Gestiona les extensions</translation>
-<translation id="7013485839273047434">Obteniu més extensions</translation>
-<translation id="5840822070878669614">Obre Brave Web Store</translation>
+<translation id="7013485839273047434">Obtingues més extensions</translation>
+<translation id="5840822070878669614">Obre la Botiga Web de Brave</translation>
 <translation id="4954512758656527938">Cartera Ethereum predeterminada</translation>
 <translation id="7701023802820268122">Cartera Solana predeterminada</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="6942354363301686374">Extensions (sense reserva)</translation>
-<translation id="1274962333945373242">Moneders de criptomoneda (obsolets)</translation>
+<translation id="1274962333945373242">Carteres de criptomoneda (obsolets)</translation>
 <translation id="702381242110464396">Extensions (reserva de la cartera de Brave)</translation>
 <translation id="4718664830805652430">Moneda base predeterminada</translation>
 <translation id="7992507032049865603">Criptomoneda base predeterminada</translation>
@@ -630,20 +630,20 @@ Segur que vols continuar?</translation>
 <translation id="970496996377628529">Afegeix automàticament els teu NFT a la cartera usant les API de tercers.</translation>
 <translation id="4898839076551703154">Habilita la Cartera de Brave a les finestres d'incògnit</translation>
 <translation id="1550684990179058322">Alerta: reutilitzar l'adreça d'una cartera a una sessió de finestra d'incògnit pot permetre que un lloc enllaci una sessió de finestra d'incògnit a una sessió de finestra que no sigui d'incògnit.</translation>
-<translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
+<translation id="8239147115686034860">Bloqueja la cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
-<translation id="856371974127598760">Xarxes del moneder</translation>
-<translation id="5975930666279943472">Esborreu la transacció de la cartera i la informació del nonce</translation>
+<translation id="856371974127598760">Xarxes de la cartera</translation>
+<translation id="5975930666279943472">Esborra la transacció de la cartera i la informació del nonce</translation>
 <translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
 <translation id="4440478655766953083">Fixa automàticament els NFT</translation>
 <translation id="464460032678285850">Els NFT que s'afegeixen a la cartera de Brave es poden fixar automàticament al node local IPFS.
     Nota: el dimoni IPFS es pot iniciar amb la finalitat de fixar, de manera que el node local compartirà les dades de memòria cau i els NFT fixats a la xarxa IPFS.</translation>
-<translation id="2326850911705720398">Reinicia i neteja les dades del moneder</translation>
+<translation id="2326850911705720398">Reinicia i neteja les dades de la cartera</translation>
 <translation id="5887022857624190239">Neteja els NFT fixats</translation>
 <translation id="204584113330893805">Els NFT fixats s'hostatgen a la xarxa IPFS quan es llança el node local IPFS.
     En aquest moment tens <ph name="NFT_COUNT"/> NFT fixats.</translation>
-<translation id="9216386092464743272">Confirmeu que voleu restablir totes les vostres transaccions de la cartera i la informació nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriviu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
-<translation id="6369495274982305511">Segur que vols restablir el teu moneder? Si no en tens una còpia de seguretat, amb el restabliment perdràs totes les dades del compte (inclosos els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
+<translation id="9216386092464743272">Confirma que vols restablir totes les teves transaccions de la cartera i la informació nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
+<translation id="6369495274982305511">Segur que vols restablir la teva cartera? Si no en tens una còpia de seguretat, amb el restabliment perdràs totes les dades del compte (inclosos els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
 <translation id="4248533222660842025">Estàs segur que vols netejar els teus NFT fixats? Alguns NFT es poden perdre per sempre si no hi ha altres hosters a la xarxa IPFS. Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
 <translation id="3752403403443723332">S'ha restablert la cartera.</translation>
 <translation id="594766067816395072">S'ha restablert la informació de les transaccions de la cartera.</translation>
@@ -653,7 +653,7 @@ Segur que vols continuar?</translation>
 <translation id="3504157706952484145">Xarxes Filecoin</translation>
 <translation id="1561541094377237745">Xarxes Solana</translation>
 <translation id="7141438739990875547">Xarxes Bitcoin</translation>
-<translation id="1077567586443625607">Xarxes de Zcash</translation>
+<translation id="1077567586443625607">Xarxes Zcash</translation>
 <translation id="3159419679550543837">Mostra les xarxes de prova</translation>
 <translation id="3215569562674795548">Edita o afegeix una xarxa nova</translation>
 <translation id="4418993400653250511">La ID de la cadena</translation>
@@ -665,51 +665,51 @@ Segur que vols continuar?</translation>
 <translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
 <translation id="4652114030688989556">Introdueix el nom de la moneda</translation>
 <translation id="1079960017149736097">Símbol de la moneda de la cadena</translation>
-<translation id="1288105009659846362">Introduir el símbol de la moneda</translation>
+<translation id="1288105009659846362">Introdueix el símbol de la moneda</translation>
 <translation id="665660671251623018">Decimals de la moneda de la cadena</translation>
 <translation id="2978054488731497946">Introdueix els decimals de la moneda</translation>
-<translation id="2727514928168763432">URL d'RPC</translation>
-<translation id="7059127752542505809">Introdueix URL</translation>
+<translation id="2727514928168763432">URL de l'RPC</translation>
+<translation id="7059127752542505809">Introdueix l'URL</translation>
 <translation id="3047726704186619366">URL d'icona</translation>
-<translation id="2487558607408469181">Bloquejar URL de l'explorador</translation>
+<translation id="2487558607408469181">Bloqueja l'URL de l'explorador</translation>
 <translation id="2156993118928861787">Adreça no vàlida</translation>
 <translation id="6301398959353668507">Aquest camp no pot estar buit.</translation>
 <translation id="7504462451153306677">Format no vàlid, l'ID de la cadena és un número positiu</translation>
 <translation id="650071759190249039">Error intern, no s'ha pogut afegir la xarxa.</translation>
 <translation id="336035846712292194">Emplena tota la informació sobre la moneda nativa</translation>
-<translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
+<translation id="1062463687579789365">Personalització de les xarxes de la cartera</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="8996633027318264334">Realment vols eliminar <ph name="KEY_NAME"/>?</translation>
-<translation id="8633484167132172058">La xarxa predeterminada sempre és visible a la llista de xarxes del moneder</translation>
-<translation id="232693303726691609">Mostra/Amaga la xarxa a la llista de xarxes del moneder</translation>
+<translation id="8633484167132172058">La xarxa predeterminada sempre és visible a la llista de xarxes de la cartera</translation>
+<translation id="232693303726691609">Mostra/Amaga la xarxa a la llista de xarxes de la cartera</translation>
 <translation id="7893578599666249602">Segur que vols restablir <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
 <translation id="9170907049676078643">Mètode per a resoldre els recursos IPFS</translation>
 <translation id="1327977588028644528">Passarel·la</translation>
-<translation id="1195880978080389104">Node local IPFS Brave</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS Brave i les consideracions de privacitat de la passarel·la.</translation>
+<translation id="1195880978080389104">Node local IPFS de Brave</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS de Brave i les consideracions de privacitat de la passarel·la.</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
 <translation id="3707431725427930007">Adreça d'entrada IPFS pública per a NFT</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="585868419599255817">Tornar a la passarel·la pública IPFS</translation>
-<translation id="2618080188892567155">Tornar automàticament a la passarel·la pública IPFS quan no es pot accedir al node local IPFS Brave.</translation>
-<translation id="8956391206920485238">Iniciar sempre un node IPFS en iniciar el navegador?</translation>
-<translation id="6789104345873307368">Redirigiu les sol·licituds de recursos de la xarxa IPFS automàticament a la passarel·la configurada.</translation>
+<translation id="2618080188892567155">Tornar automàticament a la passarel·la pública IPFS quan no es pugui accedir al node local IPFS de Brave.</translation>
+<translation id="8956391206920485238">Vols que sempre s'iniciï un node IPFS cada vegada que s'obri el navegador?</translation>
+<translation id="6789104345873307368">Redirigeix les sol·licituds de recursos de la xarxa IPFS automàticament a la passarel·la configurada.</translation>
 <translation id="4138306018048329894">Les sol·licituds de recursos d'IPFS allotjats en passarel·les IPFS de tercers o en recursos DNSLINK s'encaminaran a través de la passarel·la local o remota seleccionada.
-    Nota: si se selecciona un node local, el recurs se sol·licitarà directament des del vostre ordinador i és possible que les dades de la memòria cau es proporcionin a la xarxa IFPS durant un temps.</translation>
-<translation id="8068526464562249859">Fa servir l'extensió d'IPFS Companion per a una ajuda millorada a Brave, incloent-hi accés a tasques comunes d'IPFS des de la vostra barra de navegació.</translation>
+    Nota: si se selecciona un node local, el recurs se sol·licitarà directament des del teu ordinador i és possible que les dades de la memòria cau es proporcionin a la xarxa IFPS durant un temps.</translation>
+<translation id="8068526464562249859">Utilitza l'extensió d'IPFS Companion per a una ajuda millorada a Brave, incloent-hi accés a tasques comunes d'IPFS des de la teva barra de navegació.</translation>
 <translation id="1251574393468476924">Mida màxima de memòria cau IPFS (GB)</translation>
 <translation id="2503497578400410320">Un límit superior suau per a la mida del magatzem de dades del repositori IPFS.</translation>
 <translation id="6758961763875471084">Modifica la llista de parells</translation>
-<translation id="5761731140570209168">Afegir una nova cadena de connexió de parells</translation>
+<translation id="5761731140570209168">Afegeix una nova cadena de connexió de parells</translation>
 <translation id="7024553202001112871">Configura les teves claus IPNS</translation>
 <translation id="951216659045543447">Signa contingut mitjançant la clau privada corresponent i publica'l a IPNS</translation>
 <translation id="7611728475758612204">Claus disponibles per a publicar</translation>
 <translation id="911363100236037920">Introdueix un nom per a la nova clau</translation>
 <translation id="6358469157239228181">Aquest nom no es pot utilitzar</translation>
 <translation id="2082206983920804886">Gira la clau</translation>
-<translation id="5078501082919354191">No s'ha pogut aturar el node local IPFS Brave</translation>
-<translation id="5687424953196903465">No s'ha pogut iniciar el node local IPFS Brave</translation>
+<translation id="5078501082919354191">No s'ha pogut aturar el node local IPFS de Brave</translation>
+<translation id="5687424953196903465">No s'ha pogut iniciar el node local IPFS de Brave</translation>
 <translation id="6476061084931271248">Reinicia el node per aplicar els canvis</translation>
 <translation id="3754226427671882382">Reinicia el node</translation>
 <translation id="949667118776341807">Gira</translation>
@@ -726,63 +726,63 @@ Segur que vols continuar?</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Node d'inici</translation>
-<translation id="557281710253742286">Configureu l'entrada IPFS</translation>
+<translation id="557281710253742286">Configura l'entrada IPFS</translation>
 <translation id="8571837315037233299">Adreça d'entrada</translation>
-<translation id="7703184801853248830">Direcció d'entrada no vàlida</translation>
+<translation id="7703184801853248830">Adreça d'entrada no vàlida</translation>
 <translation id="7690058578502751948">A Brave només es pot utilitzar una passarel·la IPFS vàlida amb l’aïllament d’origen activat</translation>
-<translation id="1643029991199044105">Cerqueu per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
+<translation id="1643029991199044105">Cerca per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
 <translation id="2775956301559569472">Mostra el missatge de la Wayback Machine a 404 pàgines</translation>
 <translation id="3095201688102519917">Avisa abans de tancar una finestra amb múltiples pestanyes</translation>
-<translation id="7120553802660696133">Tanca la finestra en tancar l'última pestanya</translation>
+<translation id="7120553802660696133">Tanca la finestra amb el tancament de l'última pestanya</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Mostra la icona de Leo a la barra lateral</translation>
 <translation id="8055509865174199683">Mostra Leo al menú contextual dels llocs webs</translation>
-<translation id="1529674267267221673">Leo es mostrarà al menú contextual quan feu clic amb el botó dret en un lloc web. D'aquesta manera, s'enviarà context a Leo des d'aquesta pàgina web.</translation>
+<translation id="1529674267267221673">Leo es mostrarà al menú contextual quan cliquis amb el botó dret en un lloc web. D'aquesta manera, s'enviarà context a Leo des d'aquesta pàgina web.</translation>
 <translation id="8172263161008556851">Mostra suggeriments de missatges en la conversa</translation>
 <translation id="1014480593522400586">Esborra les dades de Leo</translation>
-<translation id="8681157601856387010">Per restablir l'assistent Leo, haureu d'acceptar la utilització futura de Brave
-Leo i també esborrar l'historial de xat. Quan esborreu l'historial de xat
+<translation id="8681157601856387010">Per restablir l'assistent Leo, hauràs d'acceptar la utilització futura de Brave
+Leo i també esborrar l'historial de xat. Quan esborris l'historial de xat
 se suprimiran també totes les converses anteriors amb Brave
 Leo. Aquesta acció no es pot desfer.</translation>
-<translation id="5574059574002819179">Configurar els suggeriments d'autocompletar</translation>
+<translation id="5574059574002819179">Configura els suggeriments d'autocompletar</translation>
 <translation id="8157373421434119674">Dades i historial de xat</translation>
 <translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
-<translation id="8826914609353373601">Gestiona la subscripció premium</translation>
+<translation id="8826914609353373601">Gestiona la subscripció prèmium</translation>
 <translation id="349846214503465941">Activa la llista de reproducció</translation>
-<translation id="7903608716704052878">Afegir automàticament arxius per a veure'ls sense connexió</translation>
-<translation id="4193768184502613558">Aquesta opció emmagatzemarà automàticament a la memòria cau els arxius multimèdia perquè pugueu reproduir-los sense connexió a Internet.</translation>
+<translation id="7903608716704052878">Afegeix automàticament arxius per a veure'ls sense connexió</translation>
+<translation id="4193768184502613558">Aquesta opció emmagatzemarà automàticament a la memòria cau els arxius multimèdia perquè puguis reproduir-los sense connexió a Internet.</translation>
 <translation id="8950562208228589873">Sistema operatiu predeterminat o Quad9</translation>
 <translation id="5646330590189545860">Sistema operatiu predeterminat o Wikimedia</translation>
 <translation id="2026075482948458926">Sistema operatiu predeterminat o Cloudflare</translation>
-<translation id="6624718837376802990">Avatar Provocador Recompenses</translation>
+<translation id="6624718837376802990">Recompenses d'Avatar Provocador</translation>
 <translation id="6617313057407561765">Avatar Provocador Brave</translation>
 <translation id="6754445808455578019">Avatar Provocador Oceà</translation>
 <translation id="1202230982786524987">Avatar Provocador Gespa</translation>
 <translation id="5795513892420634319">Avatar Provocador Dacsa</translation>
 <translation id="3561521017993720050">Avatar Provocador Reial</translation>
 <translation id="1235866128911626592">Avatar Provocador Ninja</translation>
-<translation id="2090755120827623384">Avatar Paladí Recompenses</translation>
+<translation id="2090755120827623384">Recompenses d'Avatar Paladí</translation>
 <translation id="2018119859356143702">Avatar Paladí Brave</translation>
 <translation id="4740488466586929481">Avatar Paladí Oceà</translation>
 <translation id="5006207620676644913">Avatar Paladí Gespa</translation>
 <translation id="3989232963815817109">Avatar Paladí Dacsa</translation>
 <translation id="4594102608669574640">Avatar Paladí Reial</translation>
 <translation id="2183738260538789532">Avatar Paladí Ninja</translation>
-<translation id="1364533449989493534">Avatar Resplendor Recompenses</translation>
+<translation id="1364533449989493534">Recompenses d'Avatar Resplendor</translation>
 <translation id="7885078296101135895">Avatar Resplendor Brave</translation>
 <translation id="5569105529336093187">Avatar Resplendor Oceà</translation>
 <translation id="8905105122495847950">Avatar Resplendor Gespa</translation>
 <translation id="5118043134512650846">Avatar Resplendor Dacsa</translation>
 <translation id="7054896317531348319">Avatar Resplendor Reial</translation>
 <translation id="5493441852328628982">Avatar Resplendor Ninja</translation>
-<translation id="2752844432779340213">Avatar Oval Recompenses</translation>
+<translation id="2752844432779340213">Recompenses d'Avatar Oval</translation>
 <translation id="3981340065784739675">Avatar Oval Brave</translation>
 <translation id="8950124663623888116">Avatar Oval Oceà</translation>
 <translation id="1029136880675307651">Avatar Oval Gespa</translation>
 <translation id="3285059582709531888">Avatar Oval Dacsa</translation>
 <translation id="8540390244071055918">Avatar Oval Reial</translation>
 <translation id="3435440003463944104">Avatar Oval Ninja</translation>
-<translation id="4222150638283443362">Avatar Bombó Recompenses</translation>
+<translation id="4222150638283443362">Recompenses d'Avatar Bombó</translation>
 <translation id="8888471219870198387">Avatar Bombó Brave</translation>
 <translation id="2883756935342108947">Avatar Bombó Oceà</translation>
 <translation id="6280956561199400472">Avatar Bombó Gespa</translation>

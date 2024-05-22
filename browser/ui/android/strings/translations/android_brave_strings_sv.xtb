@@ -700,7 +700,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6748319398471481216">Förnyas varje månad</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">Ett år</translation>
-<translation id="6277055349883621705">Förnya årligen spara 16 %</translation>
+<translation id="7574007394522199115">Förnya årligen spara <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Prova gratis i 7 dagar. Efter 7 dagar kommer du att debiteras abonnemangets pris. Alla prenumerationer förnyas automatiskt men kan avbrytas för förnyelse.</translation>
 <translation id="6053992191006521518">Testa GRATIS</translation>

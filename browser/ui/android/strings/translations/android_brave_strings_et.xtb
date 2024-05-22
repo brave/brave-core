@@ -639,7 +639,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2502258949541727762">Enne kui me alustame</translation>
 <translation id="4303748097351941030">Toetatud võrk</translation>
 <translation id="4204268048253692928">Võrke saab seadetes igal ajal lisada.</translation>
-<translation id="2523174693142405417">Otsinguvõrgud</translation>
+<translation id="2523174693142405417">Võrgu otsing</translation>
 <translation id="1164748583090434571">Kuva testvõrgud</translation>
 <translation id="935220650946301698">Jätkake <ph name="NUMBER"/> võrkudega</translation>
 <translation id="8248460961680233459">Looge parool</translation>
@@ -700,7 +700,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6748319398471481216">Uuendatakse igakuiselt</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> kuus</translation>
 <translation id="1163809943099641131">Üks aasta</translation>
-<translation id="6277055349883621705">Uuendatakse kord aastas, kokkuhoid 16%</translation>
+<translation id="7574007394522199115">Uuendatakse kord aastas, kokkuhoid <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> aastas</translation>
 <translation id="2655185358771731232">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaani hind. Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab need tühistada.</translation>
 <translation id="6053992191006521518">Proovige TASUTA</translation>

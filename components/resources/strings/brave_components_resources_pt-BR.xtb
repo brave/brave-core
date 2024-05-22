@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">O Brave já bloqueia cookies de terceiros. Podemos bloquear também os avisos de consentimento para cookies.</translation>
 <translation id="535688588637568715">Sim, bloquear os avisos de consentimento para cookies</translation>
 <translation id="2808175374672429053">Curingas não são permitidos nas Proteções Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields blocked <ph name="COMPANY_LIST"/> rastreadores ativados <ph name="SITE_URL"/>}
-      =1 {Brave Shields blocked <ph name="COMPANY_LIST"/> e 1 outro rastreador ativado <ph name="SITE_URL"/>}
-      other {Brave Shields bloqueado <ph name="COMPANY_LIST"/> e {BLOCKED_COUNT} outros rastreadores ativados <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields bloquearam 1 rastreador em <ph name="SITE_URL"/>}
       other {Brave Shields bloqueados {BLOCKED_COUNT} rastreadores ativados <ph name="SITE_URL"/>}

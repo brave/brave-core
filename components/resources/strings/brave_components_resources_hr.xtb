@@ -1820,7 +1820,7 @@
 <translation id="9210143726807220086">Prebaci proširene okomite kartice</translation>
 <translation id="684629111155788563">Dodaj sve kartice u novu grupu</translation>
 <translation id="9106013521852824634">Pošalji karticu sebi</translation>
-<translation id="6973516366678963184">Pokaži mjehurić Wayback Machine</translation>
+<translation id="6973516366678963184">Pokaži mjehurić značajke Wayback Machine</translation>
 <translation id="1926106318101432555">Otvorite oznaku...</translation>
 <translation id="6118819645013156507">Prebacite u prozor...</translation>
 <translation id="1623204575967809688">Spojite trenutačni prozor u...</translation>
@@ -2023,11 +2023,6 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="4986297793092101884">Brave već blokira kolačiće trećih strana. Također možemo blokirati obavijesti o pristanku na kolačiće.</translation>
 <translation id="535688588637568715">Da, blokiraj obavijesti o pristanku na kolačiće</translation>
 <translation id="2808175374672429053">Zamjenski znakovi nisu dopušteni za značajku Štitovi Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Štit blokirao je<ph name="COMPANY_LIST"/> elemente za praćenje na <ph name="SITE_URL"/>}
-      =1 {Brave Štit blokirao je <ph name="COMPANY_LIST"/> i 1 drugi element za praćenje <ph name="SITE_URL"/>}
-      other {Brave Štit blokirao je<ph name="COMPANY_LIST"/> i {BLOCKED_COUNT} druge elemente za praćenje na <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Štit blokirao je 1 element za praćenje na<ph name="SITE_URL"/>}
       other {Brave Štit blokirao je {BLOCKED_COUNT} elemente za praćenje na <ph name="SITE_URL"/>}

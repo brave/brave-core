@@ -781,7 +781,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4853960199138416955">La Cartera de Brave no és compatible actualment amb bitcoin NFT (ordinals). Enviar BTC des d'una adreça que té ordinals pot provocar que els teus ordinals es transfereixin de manera involuntària.</translation>
 <translation id="29976300677902325">Tria el destinatari</translation>
 <translation id="7231620608040154667">Les meves adreces</translation>
-<translation id="4504682768625050939">Introdueix una adreça pública o domini.</translation>
+<translation id="4504682768625050939">Introdueix una adreça pública o domini.</translation>
 <translation id="5292796745632149097">Envia a</translation>
 <translation id="7022684620581223496">Extensió de domini no vàlida.</translation>
 <translation id="9209024278910716955">No s'admet la compra per a la xarxa seleccionada</translation>
@@ -2022,11 +2022,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4986297793092101884">Brave ja bloqueja les galetes de tercers. També podem bloquejar els avisos de consentiment de galetes.</translation>
 <translation id="535688588637568715">Sí, bloqueja els avisos de consentiment de galetes</translation>
 <translation id="2808175374672429053">No es permeten comodins per a Escuts de Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-=0 {Escuts de Brave ha bloquejat rastrejadors de <ph name="COMPANY_LIST"/> a <ph name="SITE_URL"/>}
-=1 {Escuts de Brave ha bloquejat <ph name="COMPANY_LIST"/> i 1 altre rastrejador a <ph name="SITE_URL"/>}
-other {Escuts de Brave ha bloquejat <ph name="COMPANY_LIST"/> i {BLOCKED_COUNT} altres rastrejadors a <ph name="SITE_URL"/>}
-}</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
 =1 {Escuts de Brave ha bloquejat 1 rastrejador a <ph name="SITE_URL"/>}
 other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SITE_URL"/>}

@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.</translation>
 <translation id="535688588637568715">Ya, blokir pemberitahuan persetujuan kuki</translation>
 <translation id="2808175374672429053">Wildcards tidak diizinkan untuk Perisai Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Perisai Brave memblokir <ph name="COMPANY_LIST"/> pelacak di <ph name="SITE_URL"/>}
-      =1 {Perisai Brave memblokir <ph name="COMPANY_LIST"/> dan 1 pelacak lagi di <ph name="SITE_URL"/>}
-      other {Perisai Brave memblokir <ph name="COMPANY_LIST"/> dan {BLOCKED_COUNT} pelacak lainnya di <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Perisai Brave memblokir 1 pelacak di <ph name="SITE_URL"/>}
       other {Perisai Brave memblokir {BLOCKED_COUNT} pelacak di <ph name="SITE_URL"/>}

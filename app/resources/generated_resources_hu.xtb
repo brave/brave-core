@@ -3403,6 +3403,7 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
 <translation id="3566325075220776093">Erről az eszközről</translation>
 <translation id="3566721612727112615">Nincsenek hozzáadva webhelyek</translation>
 <translation id="356738834800832239">Sikerült a jelszó mentése</translation>
+<translation id="3568431410312984116">A „Segítség az íráshoz” funkció automatikus megnyitásának engedélyezése</translation>
 <translation id="3569382839528428029">Szeretné, ha a(z) <ph name="APP_NAME"/> megosztaná az Ön képernyőjét?</translation>
 <translation id="3569614820047645079">A Saját meghajtón lévő fájljai automatikusan szinkronizálódnak a Chromebookkal, így internetkapcsolat nélkül is hozzájuk férhet.</translation>
 <translation id="3569682580018832495">A(z) <ph name="ORIGIN"/> megtekintheti a következő fájlokat és mappákat</translation>
@@ -5852,6 +5853,7 @@ A webhelyek és alkalmazások számára már megadott engedélyek erre a fiókra
 <translation id="5474859849784484111">A(z) <ph name="MANAGER"/> megköveteli, hogy eszközével most Wi-Fi-hálózathoz csatlakozzon, és letöltse a szükséges frissítést. A letöltés forgalomkorlátos kapcsolaton is végrehajtható (ez esetben a szolgáltató díjat számíthat fel).</translation>
 <translation id="5477089831058413614">A(z) <ph name="DEVICE_TYPE"/> hotspotjának konfigurálása</translation>
 <translation id="5481273127572794904">Nem tölthetnek le automatikusan egyszerre több fájlt</translation>
+<translation id="5481682542063333508">Íráshoz való segítség felajánlása</translation>
 <translation id="5481941284378890518">Közeli nyomtatók hozzáadása</translation>
 <translation id="3389019465696070233">Jelentkezzen be, hogy a Brave lapcsoportokat javasolhasson, és rendezetten tarthassa a lapokat.</translation>
 <translation id="8126971123326806277">Ha be van kapcsolva, az azonosítókulcsokat az iCloud-kulcskarikában hozza létre a rendszer, és hozzáférhetők az Apple-eszközökön. Ha ki van kapcsolva, a rendszer az Ön Brave-profiljában hozza létre az azonosítókulcsokat ezen az eszközön.</translation>
@@ -10009,6 +10011,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="869167754614449887"><ph name="FILE_NAME"/> törölve a letöltési előzmények közül</translation>
 <translation id="8692107307702113268">A jelszó több mint 1000 karakterből áll</translation>
 <translation id="8693639060656817812">További információ a Követés elleni védelem rendelkezésre állásáról</translation>
+<translation id="8693862390730570097">A „Segítség az íráshoz” funkció nem nyílik meg automatikusan</translation>
 <translation id="8694596275649352090">Zárolás alvó üzemmódban és a fedél lecsukásakor</translation>
 <translation id="8695139659682234808">Szülői felügyelet hozzáadása beállítás után</translation>
 <translation id="8695825812785969222">&amp;Hely megnyitása...</translation>
@@ -10586,6 +10589,7 @@ A webhelyek és alkalmazások számára már megadott engedélyek erre a fiókra
 <translation id="9112987648460918699">Keresés...</translation>
 <translation id="9113240369465613386">Csak páratlan oldalak</translation>
 <translation id="9113469270512809735">Váltás a nemrégiben bezárt elemek között</translation>
+<translation id="9113529408970052045">A „Segítség az íráshoz” funkció automatikusan megnyílik, ha a webhely szövegmezője kitölthető rövid formátumú tartalommal</translation>
 <translation id="9114663181201435112">Egyszerű bejelentkezés</translation>
 <translation id="9115675100829699941">&amp;Könyvjelzők</translation>
 <translation id="916115484239820348">Ez a beállítás nincs hatással a Brave Fordító és a Lens hozzáférhetőségére</translation>

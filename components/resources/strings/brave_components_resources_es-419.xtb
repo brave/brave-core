@@ -2021,11 +2021,6 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="4986297793092101884">Brave ya bloquea las cookies de terceros. También podemos bloquear los avisos de consentimiento de cookies.</translation>
 <translation id="535688588637568715">Sí, bloquear los avisos de consentimiento de cookies</translation>
 <translation id="2808175374672429053">No se admiten comodines en los escudos de Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Escudos de Brave ha bloqueado rastreadores de <ph name="COMPANY_LIST"/> en <ph name="SITE_URL"/>}
-      =1 {Escudos de Brave ha bloqueado rastreadores de <ph name="COMPANY_LIST"/> y uno más en <ph name="SITE_URL"/>}
-      other {Escudos de Brave ha bloqueado rastreadores de <ph name="COMPANY_LIST"/> y {BLOCKED_COUNT} más en <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Escudos de Brave ha bloqueado un rastreador en <ph name="SITE_URL"/>}
       other {Escudos de Brave ha bloqueado {BLOCKED_COUNT} rastreadores en <ph name="SITE_URL"/>}

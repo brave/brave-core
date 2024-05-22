@@ -700,7 +700,7 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="6748319398471481216">Se renueva mensualmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> al mes</translation>
 <translation id="1163809943099641131">Un año</translation>
-<translation id="6277055349883621705">Renueva anualmente y ahórrate un 16 %</translation>
+<translation id="7574007394522199115">Renueva anualmente y ahórrate un <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> al año</translation>
 <translation id="2655185358771731232">Pruébalo gratis durante 7 días. Después de esos 7 días, se te cobrará el precio del plan. Todas las suscripciones se renuevan automáticamente, pero es posible cancelarlas antes de la renovación.</translation>
 <translation id="6053992191006521518">Probar GRATIS</translation>
