@@ -3,6 +3,11 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.6.3
+
+Add `frame id` attribute to `EdgeExecute` and `EdgeExecuteAttr` edges too.
+
+
 ## Version 0.6.2
 
 Fix error where for JS calls, we were recording the script's execution context
