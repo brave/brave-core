@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "components/content_settings/browser/ui/cookie_controls_controller.h"
+
 #include "components/content_settings/browser/ui/cookie_controls_view.h"
 
 #define OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON,      \

@@ -47,7 +47,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
             keyringModel.isWalletCreated(
                     isCreated -> {
                         if (isCreated) {
-                            requireActivity().finish();
+                            goToNextPage();
                             return;
                         }
 
@@ -71,15 +71,17 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                                         }
 
                                         Utils.setCryptoOnboarding(false);
-
-                                        // Go to the next page after wallet creation is
-                                        // done
-                                        if (mOnNextPage != null) {
-                                            mOnNextPage.gotoNextPage();
-                                        }
+                                        goToNextPage();
                                     });
                         }
                     });
+        }
+    }
+
+    private void goToNextPage() {
+        // Go to the next page after wallet creation is done.
+        if (mOnNextPage != null) {
+            mOnNextPage.gotoNextPage();
         }
     }
 
