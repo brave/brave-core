@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_APPLICATION_STATE_BROWSER_MANAGER_H_
 
+#include <optional>
+
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
@@ -29,9 +31,9 @@ class BrowserManager final : public AdsClientNotifierObserver {
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  bool IsActive() const { return is_active_; }
+  bool IsActive() const { return is_active_.value_or(false); }
 
-  bool IsInForeground() const { return is_in_foreground_; }
+  bool IsInForeground() const { return is_in_foreground_.value_or(false); }
 
  private:
   void NotifyBrowserDidBecomeActive() const;
@@ -40,7 +42,8 @@ class BrowserManager final : public AdsClientNotifierObserver {
 
   void NotifyBrowserDidEnterForeground() const;
   void NotifyBrowserDidEnterBackground() const;
-  void LogBrowserForegroundState() const;
+  void InitializeBrowserBackgroundState();
+  void LogBrowserBackgroundState() const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
@@ -51,9 +54,9 @@ class BrowserManager final : public AdsClientNotifierObserver {
 
   base::ObserverList<BrowserManagerObserver> observers_;
 
-  bool is_active_ = false;
+  std::optional<bool> is_active_;
 
-  bool is_in_foreground_ = false;
+  std::optional<bool> is_in_foreground_;
 };
 
 }  // namespace brave_ads

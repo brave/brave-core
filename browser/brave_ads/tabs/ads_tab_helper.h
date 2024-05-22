@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -48,6 +49,9 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool UserHasJoinedBraveRewards() const;
 
   bool IsVisible() const;
+
+  void MaybeSetBrowserIsActive();
+  void MaybeSetBrowserIsNoLongerActive();
 
   bool IsNewNavigation(content::NavigationHandle* navigation_handle);
 
@@ -110,7 +114,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
 
-  bool is_browser_active_ = false;
+  std::optional<bool> is_browser_active_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
 

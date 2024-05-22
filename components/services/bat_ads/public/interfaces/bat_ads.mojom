@@ -43,6 +43,8 @@ interface BatAdsClientNotifier {
   NotifyTabDidStopPlayingMedia(int32 tab_id);
   NotifyTabDidChange(int32 tab_id,
                      array<url.mojom.Url> redirect_chain,
+                     bool is_new_navigation,
+                     bool is_restoring,
                      bool is_error_page,
                      bool is_visible);
   NotifyDidCloseTab(int32 tab_id);
