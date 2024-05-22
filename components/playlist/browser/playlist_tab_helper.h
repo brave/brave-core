@@ -105,7 +105,6 @@ class PlaylistTabHelper
   void OnPlaylistUpdated(mojom::PlaylistPtr playlist) override {}
   void OnItemCached(mojom::PlaylistItemPtr item) override {}
   void OnItemUpdated(mojom::PlaylistItemPtr item) override {}
-
   void OnMediaFileDownloadScheduled(const std::string& id) override {}
   void OnMediaFileDownloadProgressed(
       const std::string& id,
@@ -114,7 +113,7 @@ class PlaylistTabHelper
       int8_t percent_complete,
       const std::string& time_remaining) override {}
   void OnMediaFilesUpdated(const GURL& url,
-                           std::vector<mojom::PlaylistItemPtr> items) override;
+                           std::vector<mojom::PlaylistItemPtr> items) override {}
 
  private:
   friend class content::WebContentsUserData<PlaylistTabHelper>;
