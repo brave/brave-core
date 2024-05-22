@@ -16,7 +16,7 @@ import SwiftUI
 /// `sidebar` and be pinned to the top. It will always be draggable by the user to adjust the
 /// visiblity of the bottom sheet.
 @available(iOS 16.0, *)
-struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: View {
+struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Toolbar: View>: View {
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @Environment(\.isFullScreen) private var isFullScreen
@@ -25,17 +25,20 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
   var sidebar: Sidebar
   var sidebarHeader: SidebarHeader
   var content: Content
+  var toolbar: Toolbar
 
   init(
     selectedDetent: Binding<PlaylistSheetDetent>,
     @ViewBuilder sidebar: () -> Sidebar,
     @ViewBuilder sidebarHeader: () -> SidebarHeader,
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: () -> Content,
+    @ViewBuilder toolbar: () -> Toolbar
   ) {
     self._selectedDetent = selectedDetent
     self.sidebar = sidebar()
     self.sidebarHeader = sidebarHeader()
     self.content = content()
+    self.toolbar = toolbar()
   }
 
   private enum SidebarLayoutMode {
@@ -233,6 +236,19 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View>: Vie
         .coordinateSpace(name: "PlaylistSplitView.Content")
     }
     .background(Color(braveSystemName: .pageBackground))
+    .safeAreaInset(edge: .top, spacing: 0) {
+      if !isFullScreen {
+        HStack {
+          toolbar
+        }
+        .padding(.horizontal)
+        .tint(Color.primary)
+        // Mimic an actual navigation bar re: sizing/layout
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        .frame(height: 44)
+        // --
+      }
+    }
     .overlay(alignment: .bottom) {
       if sidebarLayoutMode == .bottomSheet {
         VStack(spacing: 0) {

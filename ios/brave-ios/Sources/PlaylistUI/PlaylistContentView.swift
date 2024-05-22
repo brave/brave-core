@@ -115,30 +115,19 @@ struct PlaylistContentView: View {
             .playlistSheetDetents([.anchor(.emptyPlaylistContent), .large])
         }
       }
-    }
-    .safeAreaInset(edge: .top, spacing: 0) {
-      if !isFullScreen {
-        HStack {
-          Button("Done") {
-            dismiss()
-          }
-          .fontWeight(.semibold)
-          Spacer()
-          if playerModel.isPictureInPictureSupported {
-            Button {
-              playerModel.startPictureInPicture()
-            } label: {
-              Image(braveSystemName: "leo.picture.in-picture")
-            }
-            .transition(.opacity.animation(.default))
-          }
+    } toolbar: {
+      Button("Done") {
+        dismiss()
+      }
+      .fontWeight(.semibold)
+      Spacer()
+      if playerModel.isPictureInPictureSupported {
+        Button {
+          playerModel.startPictureInPicture()
+        } label: {
+          Image(braveSystemName: "leo.picture.in-picture")
         }
-        .padding(.horizontal)
-        .tint(Color.primary)
-        // Mimic an actual navigation bar re: sizing/layout
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-        .frame(height: 44)
-        // --
+        .transition(.opacity.animation(.default))
       }
     }
     .onAppear {
