@@ -1,0 +1,147 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import Data
+import Foundation
+import Playlist
+import SwiftUI
+
+@available(iOS 16.0, *)
+struct EditFolderView: View {
+  @ObservedObject var folder: PlaylistFolder
+  var folders: [PlaylistFolder]
+
+  @FetchRequest private var items: FetchedResults<PlaylistItem>
+
+  @State private var selectedItems: Set<PlaylistItem.ID> = []
+  @State private var isDeletePlaylistConfirmationActive: Bool = false
+  @State private var isRenamePlaylistAlertPresented: Bool = false
+
+  @Environment(\.dismiss) private var dismiss
+
+  init(folder: PlaylistFolder, folders: [PlaylistFolder]) {
+    self.folder = folder
+    self.folders = folders
+    self._items = FetchRequest<PlaylistItem>(
+      sortDescriptors: [
+        .init(keyPath: \PlaylistItem.order, ascending: true),
+        .init(keyPath: \PlaylistItem.dateAdded, ascending: false),
+      ],
+      predicate: .init(format: "playlistFolder.uuid == %@", folder.uuid ?? ""),
+      animation: .default
+    )
+  }
+
+  private func deleteSelectedItems() {
+    let items = selectedItems.compactMap { id in self.items.first(where: { $0.id == id }) }
+    for item in items {
+      PlaylistManager.shared.delete(item: .init(item: item))
+    }
+    selectedItems = []
+  }
+
+  var body: some View {
+    NavigationStack {
+      List(selection: $selectedItems) {
+        ForEach(items) { item in
+          PlaylistItemView(
+            title: item.name,
+            assetURL: URL(string: item.mediaSrc),
+            pageURL: URL(string: item.pageSrc),
+            duration: .seconds(item.duration),
+            isSelected: false,
+            isPlaying: false,
+            downloadState: nil
+          )
+        }
+        .onMove { indexSet, offset in
+          PlaylistManager.shared.reorderItems(fromOffsets: indexSet, toOffset: offset)
+        }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+      }
+      .listStyle(.plain)
+      .environment(\.editMode, .constant(.active))
+      .scrollContentBackground(.hidden)
+      .background(Color(braveSystemName: .gray10))
+      .toolbarBackground(
+        Color(braveSystemName: .containerBackground),
+        for: .navigationBar,
+        .bottomBar
+      )
+      .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
+      .navigationTitle(folder.title ?? "Edit Playlist")
+      .toolbar {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button {
+            dismiss()
+          } label: {
+            Text("Done")
+              .fontWeight(.semibold)
+          }
+          .tint(Color(braveSystemName: .textInteractive))
+        }
+        ToolbarItemGroup(placement: .topBarTrailing) {
+          if folder.uuid != PlaylistFolder.savedFolderUUID {
+            Menu {
+              Button {
+                isRenamePlaylistAlertPresented = true
+              } label: {
+                Label("Rename…", braveSystemImage: "leo.edit.pencil")
+              }
+              Button(role: .destructive) {
+                isDeletePlaylistConfirmationActive = true
+              } label: {
+                Label("Delete Playlist…", braveSystemImage: "leo.trash")
+              }
+            } label: {
+              Label("More", systemImage: "ellipsis.circle.fill")
+            }
+            .tint(Color(braveSystemName: .textInteractive))
+          }
+        }
+        ToolbarItemGroup(placement: .bottomBar) {
+          Menu {
+            Picker(
+              "",
+              selection: Binding(
+                get: { folder.id },
+                set: {
+                  PlaylistItem.moveItems(items: Array(selectedItems), to: $0)
+                  selectedItems = []
+                }
+              )
+            ) {
+              ForEach(folders, id: \.objectID) { folder in
+                Label(folder.title ?? "", braveSystemImage: "leo.product.playlist")
+                  .tag(folder.id)
+              }
+            }
+            .pickerStyle(.inline)
+          } label: {
+            Text("Move")
+          }
+          .tint(Color(braveSystemName: .textInteractive))
+          .disabled(selectedItems.isEmpty || folders.count < 2)
+          Spacer()
+          Button(role: .destructive) {
+            deleteSelectedItems()
+          } label: {
+            Text("Delete")
+          }
+          .tint(Color(braveSystemName: .textInteractive))
+          .disabled(selectedItems.isEmpty)
+        }
+      }
+    }
+    .preferredColorScheme(.dark)
+    .environment(\.colorScheme, .dark)
+    .editActions(
+      for: folder,
+      isDeletePlaylistConfirmationPresented: $isDeletePlaylistConfirmationActive,
+      isRenamePlaylistAlertPresented: $isRenamePlaylistAlertPresented
+    )
+  }
+}

@@ -27,6 +27,7 @@ struct PlaylistContentView: View {
 
   @State private var selectedDetent: PlaylistSheetDetent = .small
   @State private var isNewPlaylistAlertPresented: Bool = false
+  @State private var isEditModePresented: Bool = false
   @State private var newPlaylistName: String = ""
   @State private var isPopulatingNewPlaylist: Bool = false
 
@@ -108,7 +109,8 @@ struct PlaylistContentView: View {
               }
             }
           ),
-          isNewPlaylistAlertPresented: $isNewPlaylistAlertPresented
+          isNewPlaylistAlertPresented: $isNewPlaylistAlertPresented,
+          isEditModePresented: $isEditModePresented
         )
       }
     } content: {
@@ -154,6 +156,11 @@ struct PlaylistContentView: View {
           item: .init(item: selectedItem),
           playTime: playerModel.currentTime
         )
+      }
+    }
+    .sheet(isPresented: $isEditModePresented) {
+      if let selectedFolder {
+        EditFolderView(folder: selectedFolder, folders: Array(folders))
       }
     }
     .alert("New Playlist", isPresented: $isNewPlaylistAlertPresented) {

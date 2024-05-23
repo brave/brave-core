@@ -10,6 +10,7 @@ import Data
 import Foundation
 import Preferences
 import Shared
+import SwiftUI
 import UIKit
 import os.log
 
@@ -175,6 +176,30 @@ public class PlaylistManager: NSObject {
 
   public func index(of itemId: String) -> Int? {
     frc.fetchedObjects?.firstIndex(where: { $0.uuid == itemId })
+  }
+
+  public func reorderItems(
+    fromOffsets indexSet: IndexSet,
+    toOffset offset: Int
+  ) {
+    guard var objects = frc.fetchedObjects else {
+      return
+    }
+    frc.managedObjectContext.perform { [weak self] in
+      guard let self = self else { return }
+
+      objects.move(fromOffsets: indexSet, toOffset: offset)
+
+      for (order, item) in objects.enumerated().reversed() {
+        item.order = Int32(order)
+      }
+
+      do {
+        try self.frc.managedObjectContext.save()
+      } catch {
+        Logger.module.error("\(error.localizedDescription)")
+      }
+    }
   }
 
   public func reorderItems(

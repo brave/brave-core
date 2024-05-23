@@ -74,6 +74,8 @@ struct PlaylistSidebarList: View {
                 return nil
               }()
             )
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
           }
           .onAppear {
             // FIXME: Move this logic out of the UI and into PlaylistManager on item add
@@ -167,9 +169,11 @@ struct PlaylistSidebarListHeader: View {
   var selectedItemID: PlaylistItem.ID?
   @Binding var isPlaying: Bool
   @Binding var isNewPlaylistAlertPresented: Bool
+  @Binding var isEditModePresented: Bool
 
   @State private var totalSizeOnDisk = Measurement<UnitInformationStorage>(value: 0, unit: .bytes)
   @State private var isDeletePlaylistConfirmationActive: Bool = false
+  @State private var isRenamePlaylistAlertPresented: Bool = false
 
   @MainActor private func calculateTotalSizeOnDisk(for folder: PlaylistFolder) async {
     // Since we're consuming CoreData we need to make sure those accesses happen on main
@@ -258,6 +262,11 @@ struct PlaylistSidebarListHeader: View {
       Spacer()
       Menu {
         if selectedFolder.uuid != PlaylistFolder.savedFolderUUID {
+          Button {
+            isRenamePlaylistAlertPresented = true
+          } label: {
+            Label("Rename…", braveSystemImage: "leo.edit.pencil")
+          }
           Button(role: .destructive) {
             isDeletePlaylistConfirmationActive = true
           } label: {
@@ -268,7 +277,9 @@ struct PlaylistSidebarListHeader: View {
         Text("Edit")
           .fontWeight(.semibold)
       } primaryAction: {
-        // FIXME: Show edit UI
+        // Stop playing when edit mode is brought up
+        isPlaying = false
+        isEditModePresented = true
       }
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       .disabled(
@@ -286,22 +297,11 @@ struct PlaylistSidebarListHeader: View {
         await calculateTotalSizeOnDisk(for: newValue)
       }
     }
-    .confirmationDialog(
-      "All videos on this playlist will be removed",
-      isPresented: $isDeletePlaylistConfirmationActive,
-      titleVisibility: .visible
-    ) {
-      Button(role: .destructive) {
-        PlaylistManager.shared.delete(folder: selectedFolder)
-      } label: {
-        Text("Delete Playlist")
-      }
-      Button(role: .cancel) {
-      } label: {
-        Text("Cancel")
-      }
-      .keyboardShortcut(.cancelAction)
-    }
+    .editActions(
+      for: selectedFolder,
+      isDeletePlaylistConfirmationPresented: $isDeletePlaylistConfirmationActive,
+      isRenamePlaylistAlertPresented: $isRenamePlaylistAlertPresented
+    )
   }
 }
 
