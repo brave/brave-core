@@ -69,7 +69,7 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   ~EngineConsumerConversationAPIUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = GetModel("chat-claude-instant");
+    auto* model = GetModel("chat-leo-expanded");
     ASSERT_TRUE(model);
     engine_ = std::make_unique<EngineConsumerConversationAPI>(*model, nullptr,
                                                               nullptr);
