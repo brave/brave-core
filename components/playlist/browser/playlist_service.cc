@@ -1072,9 +1072,14 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::OnMediaDetected(
-    GURL url,
-    std::vector<mojom::PlaylistItemPtr> items) {
+void PlaylistService::PlaylistTabHelperWillBeDestroyed(
+    PlaylistTabHelper* tab_helper) {
+  tab_helper_observations_.RemoveObservation(tab_helper);
+}
+
+void PlaylistService::OnFoundItemsChanged(
+    const GURL& url,
+    const std::vector<mojom::PlaylistItemPtr>& items) {
   if (!*enabled_pref_) {
     return;
   }
@@ -1085,6 +1090,10 @@ void PlaylistService::OnMediaDetected(
                             &mojom::PlaylistItemPtr::Clone);
     observer->OnMediaFilesUpdated(url, std::move(cloned_items));
   }
+}
+
+void PlaylistService::AddObservation(PlaylistTabHelper* tab_helper) {
+  tab_helper_observations_.AddObservation(tab_helper);
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

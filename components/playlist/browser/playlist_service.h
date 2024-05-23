@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/scoped_multi_source_observation.h"
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
@@ -19,6 +20,7 @@
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
+#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -51,6 +53,7 @@ class Image;
 namespace playlist {
 
 class PlaylistBackgroundWebContentses;
+class PlaylistTabHelper;
 
 // This class is key interface for playlist. Client will ask any playlist
 // related requests to this class. This handles youtube playlist download
@@ -79,7 +82,8 @@ class PlaylistBackgroundWebContentses;
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
-                        public mojom::PlaylistService {
+                        public mojom::PlaylistService,
+                        public PlaylistTabHelperObserver {
  public:
   class Delegate {
    public:
@@ -195,8 +199,13 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  // TODO(sszaloki): that's no longer called, fix Android!
-  void OnMediaDetected(GURL url, std::vector<mojom::PlaylistItemPtr> items);
+  // PlaylistTabHelperObserver:
+  void PlaylistTabHelperWillBeDestroyed(PlaylistTabHelper* tab_helper) override;
+  void OnFoundItemsChanged(
+      const GURL& url,
+      const std::vector<mojom::PlaylistItemPtr>& items) override;
+
+  void AddObservation(PlaylistTabHelper* tab_helper);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -377,6 +386,9 @@ class PlaylistService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;
 
   BooleanPrefMember enabled_pref_;
+
+  base::ScopedMultiSourceObservation<PlaylistTabHelper, PlaylistTabHelperObserver>
+      tab_helper_observations_{this};
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

@@ -44,6 +44,7 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
 
   Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
+  service_->AddObservation(this);
 
   playlist_enabled_pref_.Init(
       kPlaylistEnabledPref,
@@ -54,7 +55,7 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
 
 PlaylistTabHelper::~PlaylistTabHelper() {
   for (auto& observer : observers_) {
-    observer.PlaylistTabHelperWillBeDestroyed();
+    observer.PlaylistTabHelperWillBeDestroyed(this);
   }
 }
 
@@ -227,7 +228,8 @@ void PlaylistTabHelper::OnFocusLost(
   found_item_ = mojom::PlaylistItem::New();
   found_items_.clear();
   for (auto& observer : observers_) {
-    observer.OnFoundItemsChanged(found_items_);
+    observer.OnFoundItemsChanged(GetWebContents().GetLastCommittedURL(),
+                                 found_items_);
   }
 }
 
@@ -242,7 +244,8 @@ void PlaylistTabHelper::MediaSessionMetadataChanged(
     found_items_.clear();
     found_items_.push_back(found_item_->Clone());
     for (auto& observer : observers_) {
-      observer.OnFoundItemsChanged(found_items_);
+      observer.OnFoundItemsChanged(GetWebContents().GetLastCommittedURL(),
+                                   found_items_);
     }
   }
 }
@@ -267,7 +270,8 @@ void PlaylistTabHelper::MediaSessionImagesChanged(
     found_items_.clear();
     found_items_.push_back(found_item_->Clone());
     for (auto& observer : observers_) {
-      observer.OnFoundItemsChanged(found_items_);
+      observer.OnFoundItemsChanged(GetWebContents().GetLastCommittedURL(),
+                                   found_items_);
     }
   }
 }
@@ -348,7 +352,8 @@ void PlaylistTabHelper::ResetData() {
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
-    observer.OnFoundItemsChanged(found_items_);
+    observer.OnFoundItemsChanged(GetWebContents().GetLastCommittedURL(),
+                                 found_items_);
   }
 }
 

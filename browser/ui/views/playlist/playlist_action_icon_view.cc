@@ -66,7 +66,8 @@ void PlaylistActionIconView::UpdateImpl() {
   UpdateState();
 }
 
-void PlaylistActionIconView::PlaylistTabHelperWillBeDestroyed() {
+void PlaylistActionIconView::PlaylistTabHelperWillBeDestroyed(playlist::PlaylistTabHelper* tab_helper) {
+  CHECK_EQ(tab_helper_observation_.GetSource(), tab_helper);
   tab_helper_observation_.Reset();
 }
 
@@ -76,6 +77,7 @@ void PlaylistActionIconView::OnSavedItemsChanged(
 }
 
 void PlaylistActionIconView::OnFoundItemsChanged(
+    const GURL&,
     const std::vector<playlist::mojom::PlaylistItemPtr>&) {
   UpdateState();
 }
