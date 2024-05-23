@@ -12,7 +12,9 @@ namespace web_discovery {
 
 namespace {
 constexpr char kCollectorHostPrefix[] = "collector.wdp";
+constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kVersionHeader[] = "Version";
+constexpr char kPatternsPath[] = "/patterns.gz";
 }  // namespace
 
 std::string GetCollectorHost() {
@@ -22,6 +24,12 @@ std::string GetCollectorHost() {
   }
   return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
                        brave_domains::GetServicesDomain(kCollectorHostPrefix)});
+}
+
+GURL GetPatternsEndpoint() {
+  return GURL(base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator,
+       brave_domains::GetServicesDomain(kPatternsHostPrefix), kPatternsPath}));
 }
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {

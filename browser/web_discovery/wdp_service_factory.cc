@@ -5,7 +5,10 @@
 
 #include "brave/browser/web_discovery/wdp_service_factory.h"
 
+#include "base/path_service.h"
 #include "brave/components/web_discovery/browser/wdp_service.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -30,7 +33,10 @@ KeyedService* WDPServiceFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-  return new WDPService(user_prefs::UserPrefs::Get(context),
+  base::FilePath user_data_dir;
+  CHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+  return new WDPService(g_browser_process->local_state(),
+                        user_prefs::UserPrefs::Get(context), user_data_dir,
                         shared_url_loader_factory);
 }
 

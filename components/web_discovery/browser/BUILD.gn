@@ -7,6 +7,8 @@ static_library("browser") {
   sources = [
     "credential_manager.cc",
     "credential_manager.h",
+    "patterns.cc",
+    "patterns.h",
     "pref_names.h",
     "rsa.cc",
     "rsa.h",
@@ -27,6 +29,7 @@ static_library("browser") {
     "//net",
     "//services/network/public/cpp",
     "//third_party/boringssl",
+    "//third_party/zlib/google:compression_utils",
     "//url",
   ]
 }

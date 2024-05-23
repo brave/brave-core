@@ -13,6 +13,8 @@ source_set("web_discovery") {
   deps = [
     "//base",
     "//brave/components/web_discovery/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/common:constants",
     "//components/keyed_service/content",
     "//components/user_prefs",
     "//content/public/browser",

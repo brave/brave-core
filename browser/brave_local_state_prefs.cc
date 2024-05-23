@@ -38,6 +38,7 @@
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/browser/wdp_service.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
@@ -169,6 +170,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
+  web_discovery::WDPService::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

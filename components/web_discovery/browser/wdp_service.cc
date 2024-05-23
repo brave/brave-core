@@ -18,9 +18,13 @@
 namespace web_discovery {
 
 WDPService::WDPService(
+    PrefService* local_state,
     PrefService* profile_prefs,
+    base::FilePath user_data_dir,
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory)
-    : profile_prefs_(profile_prefs),
+    : local_state_(local_state),
+      profile_prefs_(profile_prefs),
+      user_data_dir_(user_data_dir),
       shared_url_loader_factory_(shared_url_loader_factory) {
   pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(kWebDiscoveryEnabled,
@@ -34,6 +38,10 @@ WDPService::WDPService(
 
 WDPService::~WDPService() = default;
 
+void WDPService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kPatternsRetrievalTime, {});
+}
+
 void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
@@ -45,8 +53,10 @@ void WDPService::Start() {
       profile_prefs_, shared_url_loader_factory_.get(),
       &last_loaded_server_config_);
   server_config_loader_ = std::make_unique<ServerConfigLoader>(
-      shared_url_loader_factory_.get(),
-      base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)));
+      local_state_, user_data_dir_, shared_url_loader_factory_.get(),
+      base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)),
+      base::BindRepeating(&WDPService::OnPatternsLoaded,
+                          base::Unretained(this)));
   server_config_loader_->Load();
 }
 
@@ -67,6 +77,10 @@ void WDPService::OnEnabledChange() {
 void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
   last_loaded_server_config_ = std::move(config);
   credential_manager_->JoinGroups();
+}
+
+void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
+  last_loaded_patterns_ = std::move(patterns);
 }
 
 }  // namespace web_discovery
