@@ -290,9 +290,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
       &features::kCertificateTransparencyAskBeforeEnabling,
-#if BUILDFLAG(IS_WIN)
-      &features::kWinrtGeolocationImplementation,
-#endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
