@@ -159,6 +159,22 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 config = GroupConfig.getDefaultInstance();
             }
 
+            // Handle rounded corners for leo and previous item.
+            if (viewInfoList.size() > 0) {
+                viewInfoList
+                        .get(viewInfoList.size() - 1)
+                        .model
+                        .set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
+                viewInfoList
+                        .get(viewInfoList.size() - 1)
+                        .model
+                        .set(DropdownCommonProperties.SHOW_DIVIDER, true);
+            }
+
+            leoModel.set(DropdownCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
+            leoModel.set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
+            leoModel.set(DropdownCommonProperties.SHOW_DIVIDER, false);
+
             viewInfoList.add(
                     tileNavSuggestPosition,
                     new DropdownItemViewInfo(mBraveLeoSuggestionProcessor, leoModel, config));
