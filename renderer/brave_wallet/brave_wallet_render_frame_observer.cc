@@ -53,6 +53,11 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
     return false;
   }
 
+  // Scripts can't be executed on provisional frames
+  if (render_frame()->GetWebFrame()->IsProvisional()) {
+    return false;
+  }
+
   return true;
 }
 
