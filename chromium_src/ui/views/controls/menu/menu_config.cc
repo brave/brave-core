@@ -28,6 +28,7 @@ const MenuConfig& MenuConfig::instance() {
       mutable_config.item_horizontal_padding =
           16 - config.item_horizontal_border_padding;
       mutable_config.corner_radius = 8;
+      mutable_config.use_bubble_border = true;
     }
   } const run_once(config);
 
