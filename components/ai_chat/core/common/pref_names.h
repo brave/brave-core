@@ -63,6 +63,7 @@ inline constexpr char kBraveAIChatContextMenuEnabled[] =
     "brave.ai_chat.context_menu_enabled";
 // Used to indicate whether the feature is enabled by group policy.
 inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";
+inline constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

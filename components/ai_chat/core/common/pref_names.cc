@@ -38,6 +38,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
+  registry->RegisterListPref(kCustomModelsList, {});
 }
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {

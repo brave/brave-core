@@ -21,7 +21,6 @@
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -73,15 +72,24 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   ~EngineConsumerConversationAPIUnitTest() override = default;
 
   void SetUp() override {
-    model_ = mojom::Model::New(
-        "test_model_key", "test-model-name", "Test Model Display Name",
-        "Test Maker", mojom::ModelEngineType::BRAVE_CONVERSATION_API,
-        mojom::ModelCategory::CHAT, mojom::ModelAccess::BASIC,
-        kTestingMaxPageContentLength, 1000);
-    engine_ = std::make_unique<EngineConsumerConversationAPI>(*model_, nullptr,
-                                                              nullptr);
-    engine_->SetAPIForTesting(
-        std::make_unique<MockConversationAPIClient>(model_->name));
+    auto options = mojom::LeoModelOptions::New();
+    options->display_maker = "Test Maker";
+    options->name = "test-model-name";
+    options->category = mojom::ModelCategory::CHAT;
+    options->access = mojom::ModelAccess::BASIC;
+    options->max_page_content_length = kTestingMaxPageContentLength;
+    options->long_conversation_warning_character_limit = 1000;
+
+    model_ = mojom::Model::New();
+    model_->key = "test_model_key";
+    model_->display_name = "Test Model Display Name";
+    model_->options =
+        mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+    engine_ = std::make_unique<EngineConsumerConversationAPI>(
+        *model_->options->get_leo_model_options(), nullptr, nullptr);
+    engine_->SetAPIForTesting(std::make_unique<MockConversationAPIClient>(
+        model_->options->get_leo_model_options()->name));
   }
 
   MockConversationAPIClient* GetMockConversationAPIClient() {

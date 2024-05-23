@@ -18,7 +18,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
-#include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -43,12 +43,15 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
   ~EngineConsumerClaudeUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = GetModel("chat-claude-haiku");
+    auto* model = ModelService::GetModelForTesting("chat-claude-haiku");
     ASSERT_TRUE(model);
-    engine_ =
-        std::make_unique<EngineConsumerClaudeRemote>(*model, nullptr, nullptr);
+
+    const mojom::LeoModelOptionsPtr& options =
+        model->options->get_leo_model_options();
+    engine_ = std::make_unique<EngineConsumerClaudeRemote>(*options, nullptr,
+                                                           nullptr);
     engine_->SetAPIForTesting(
-        std::make_unique<MockRemoteCompletionClient>(model->name));
+        std::make_unique<MockRemoteCompletionClient>(options->name));
   }
 
   MockRemoteCompletionClient* GetMockRemoteCompletionClient() {

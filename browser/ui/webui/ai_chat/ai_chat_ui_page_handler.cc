@@ -15,7 +15,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -121,7 +120,12 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
     return;
   }
 
-  std::move(callback).Run(active_chat_tab_helper_->GetModels(),
+  const auto& models = active_chat_tab_helper_->GetModels();
+  std::vector<mojom::ModelPtr> models_copy(models.size());
+  std::transform(models.cbegin(), models.cend(), models_copy.begin(),
+                 [](auto& model) { return model.Clone(); });
+
+  std::move(callback).Run(std::move(models_copy),
                           active_chat_tab_helper_->GetCurrentModel().key);
 }
 
@@ -373,9 +377,15 @@ void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
   }
 }
 
-void AIChatUIPageHandler::OnModelChanged(const std::string& model_key) {
+void AIChatUIPageHandler::OnModelChanged(
+    const std::string& model_key,
+    const std::vector<mojom::ModelPtr>& model_list) {
   if (page_.is_bound()) {
-    page_->OnModelChanged(model_key);
+    std::vector<mojom::ModelPtr> models_copy(model_list.size());
+    std::transform(model_list.cbegin(), model_list.cend(), models_copy.begin(),
+                   [](auto& model) { return model.Clone(); });
+
+    page_->OnModelChanged(model_key, std::move(models_copy));
   }
 }
 

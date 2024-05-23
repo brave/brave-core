@@ -7,10 +7,21 @@ module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
 
+enum OperationResult {
+  Success,
+  InvalidUrl,
+};
+
 interface AIChatSettingsHelper {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
   GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
   GetManageUrl() => (string url);
+  GetCustomModels() => (array<Model> models);
+  AddCustomModel(Model model) => (OperationResult result);
+  SaveCustomModel(uint32 index, Model model) => (OperationResult result);
+  DeleteCustomModel(uint32 index);
+  ChangeDefaultModel(string key);
+  SetClientPage(pending_remote<SettingsPage> page);
 
   [EnableIf=is_android]
   CreateOrderId() => (string order_id);
@@ -20,4 +31,9 @@ interface AIChatSettingsHelper {
 
   [EnableIf=is_android]
   RefreshOrder(string order_id) => (string response);
+};
+
+interface SettingsPage {
+  OnModelListChanged(array<Model> models);
+  OnDefaultModelChanged(string key);
 };

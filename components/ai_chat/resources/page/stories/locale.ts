@@ -98,4 +98,5 @@ provideStrings({
   toolsMenuButtonLabel: 'Leo tools',
   sendChatButtonLabel: 'Send message to Leo',
   useMicButtonLabel: 'Use microphone',
+  menuTitleCustomModels: 'Custom models',
 })

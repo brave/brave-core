@@ -42,48 +42,58 @@ export default function ModelIntro() {
         <Icon name='product-brave-leo' />
       </div>
       <div className={styles.meta}>
-        <h4 className={styles.category}>{getCategoryName(model.category)}</h4>
+        <h4 className={styles.category}>
+          {model.options.leoModelOptions
+            ? getCategoryName(model.options.leoModelOptions.category)
+            : model.displayName}
+        </h4>
         <h3 className={styles.name}>
-          {formatMessage(getLocale('modelNameSyntax'), {
-            placeholders: {
-              $1: model.displayName,
-              $2: model.displayMaker
-            }
-          })}
-          <Tooltip
-            mode='default'
-            className={styles.tooltip}
-            offset={4}
-          >
-            <div
-              slot='content'
-              className={styles.tooltipContent}
+          {model.options.leoModelOptions
+            ? formatMessage(getLocale('modelNameSyntax'), {
+                placeholders: {
+                  $1: model.displayName,
+                  $2: model.options.leoModelOptions.displayMaker
+                }
+              })
+            : `${model.options.customModelOptions?.modelRequestName}`}
+          {model.options.leoModelOptions && (
+            <Tooltip
+              mode='default'
+              className={styles.tooltip}
+              offset={4}
             >
-              {formatMessage(getIntroMessage(model), {
-                tags: {
-                  $1: (content) => {
-                    return (
+              <div
+                slot='content'
+                className={styles.tooltipContent}
+              >
+                {formatMessage(getIntroMessage(model), {
+                  tags: {
+                    $1: (content) => {
+                      return (
                         <a
                           key={content}
-                          onClick={() => getPageHandlerInstance().pageHandler.openModelSupportUrl()}
-                          href="#"
+                          onClick={() =>
+                            getPageHandlerInstance().pageHandler.openModelSupportUrl()
+                          }
+                          href='#'
                           target='_blank'
                         >
                           {content}
                         </a>
-                    )
+                      )
+                    }
                   }
-                }
-              })}
-            </div>
-            <Button
-              fab
-              kind='plain-faint'
-              className={styles.tooltipButton}
-            >
-              <Icon name='info-outline' />
-            </Button>
-          </Tooltip>
+                })}
+              </div>
+              <Button
+                fab
+                kind='plain-faint'
+                className={styles.tooltipButton}
+              >
+                <Icon name='info-outline' />
+              </Button>
+            </Tooltip>
+          )}
         </h3>
       </div>
     </div>

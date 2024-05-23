@@ -155,13 +155,9 @@ struct ConversationTurn {
 // We use a key in case there are minor changes to model name for a purpose and
 // we want to respect the user's intent (e.g. claude increases version or llama2
 // default model changes parameter size).
-struct Model {
-  // unique key across all models
-  string key;
+struct LeoModelOptions {
   // exact name to provide to API
   string name;
-  // display name, for users
-  string display_name;
   // maker, for users
   string display_maker;
   // how to run this model
@@ -174,6 +170,25 @@ struct Model {
   uint32 max_page_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
   uint32 long_conversation_warning_character_limit;
+};
+
+struct CustomModelOptions {
+  string model_request_name;
+  url.mojom.Url endpoint;
+  string api_key;
+};
+
+union ModelOptions {
+  LeoModelOptions leo_model_options;
+  CustomModelOptions custom_model_options;
+};
+
+struct Model {
+  ModelOptions options;
+  // unique key across all models
+  string key;
+  // display name, for users
+  string display_name;
 };
 
 struct ModelWithSubtitle {
@@ -257,7 +272,8 @@ interface ChatUIPage {
   OnAPIResponseError(APIError error);
   // Usually the model is changed from the UI client, but occassionally
   // it could be changed from the browser.
-  OnModelChanged(string model_key);
+  // Occassionally, when the browser changes the model, it will also provide a new list of models.
+  OnModelChanged(string model_key, array<Model> models);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

@@ -46,7 +46,7 @@ function Main() {
     hasAcceptedAgreement &&
     !context.isPremiumStatusFetching && // Avoid flash of content
     !context.isPremiumUser &&
-    context.currentModel?.access === mojom.ModelAccess.PREMIUM
+    context.currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM
 
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement &&

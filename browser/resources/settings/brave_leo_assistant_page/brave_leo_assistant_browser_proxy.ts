@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
  import {sendWithPromise} from 'chrome://resources/js/cr.js';
- import { AIChatSettingsHelper, AIChatSettingsHelperRemote } from '../settings_helper.mojom-webui.js'
+ import * as mojom from '../settings_helper.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
 
@@ -12,17 +12,23 @@
   resetLeoData(): void
   getLeoIconVisibility(): Promise<boolean>
   toggleLeoIcon(): void
-  getSettingsHelper(): AIChatSettingsHelperRemote
+  getSettingsHelper(): mojom.AIChatSettingsHelperRemote
+  getCallbackRouter(): mojom.SettingsPageCallbackRouter
  }
 
- let settingsHelper: AIChatSettingsHelperRemote
+ let settingsHelper: mojom.AIChatSettingsHelperRemote
+ let callbackRouter: mojom.SettingsPageCallbackRouter
+
  export class BraveLeoAssistantBrowserProxyImpl
     implements BraveLeoAssistantBrowserProxy {
 
    static getInstance(): BraveLeoAssistantBrowserProxyImpl {
-    if (settingsHelper === undefined) {
-      settingsHelper = AIChatSettingsHelper.getRemote()
+    if (settingsHelper === undefined && callbackRouter === undefined) {
+      settingsHelper = mojom.AIChatSettingsHelper.getRemote()
+      callbackRouter = new mojom.SettingsPageCallbackRouter()
+      settingsHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
     }
+
      return instance || (instance = new BraveLeoAssistantBrowserProxyImpl())
    }
 
@@ -40,6 +46,10 @@
 
   getSettingsHelper() {
     return settingsHelper
+  }
+
+  getCallbackRouter() {
+    return callbackRouter
   }
  }
 
