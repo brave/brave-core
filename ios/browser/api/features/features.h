@@ -64,7 +64,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
-@property(class, nonatomic, readonly) Feature* kIpfsFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
 @property(class, nonatomic, readonly) Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kOtherJSONDeprecation;

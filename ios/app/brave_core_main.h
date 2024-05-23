@@ -28,7 +28,6 @@
 @class AIChat;
 @class HTTPSUpgradeExceptionsService;
 @protocol AIChatDelegate;
-@protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -91,8 +90,6 @@ OBJC_EXPORT
 @property(readonly) BraveStats* braveStats;
 
 @property(readonly) AdblockService* adblockService;
-
-@property(readonly) id<IpfsAPI> ipfsAPI;
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall;
