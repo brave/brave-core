@@ -264,7 +264,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
-    private static final boolean ENABLE_IN_APP_UPDATE = false;
+    private static final boolean ENABLE_IN_APP_UPDATE =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
 
     /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
