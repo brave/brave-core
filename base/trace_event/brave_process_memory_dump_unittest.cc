@@ -1,14 +1,15 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/base/trace_event/process_memory_dump_unittest.cc"
+#include "base/trace_event/memory_infra_background_allowlist.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace base {
 namespace trace_event {
 
-TEST(ProcessMemoryDumpTest, IsMemoryAllocatorDumpNameInAllowlist) {
+TEST(BraveProcessMemoryDumpTest, IsMemoryAllocatorDumpNameInAllowlist) {
   // reset the test allow list leftover from other suites
   SetAllocatorDumpNameAllowlistForTesting(nullptr);
   // This is to ensure we capture upstream name pattern changes in

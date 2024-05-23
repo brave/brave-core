@@ -270,7 +270,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
     let parsedTransaction: ParsedTransaction = .init(
       transaction: transaction,
       namedFromAddress: "Ethereum Account 1",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.address,
+      fromAccountInfo: BraveWallet.AccountInfo.previewAccount,
       namedToAddress: "0x Exchange",
       toAddress: "0x1111111111222222222233333333334444444444",
       network: .mockMainnet,
@@ -293,7 +293,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
         ScrollView {
           SaferSignTransactionView(
             network: parsedTransaction.network,
-            fromAddress: parsedTransaction.fromAddress,
+            fromAddress: parsedTransaction.fromAccountInfo.address,
             namedFromAddress: parsedTransaction.namedFromAddress,
             receiverAddress: nil,
             namedReceiverAddress: nil,

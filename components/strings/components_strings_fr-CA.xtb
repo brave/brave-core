@@ -1978,6 +1978,7 @@
 <translation id="4930153903256238152">Grande capacité</translation>
 <translation id="4930714375720679147">Activer</translation>
 <translation id="4932035752129140860">Le texte que vous collez ou que vous joignez est envoyé à Google Cloud ou à des tiers afin d'être analysé. Par exemple, il peut être analysé pour déterminer s'il contient des données confidentielles et peut être stocké en fonction des politiques de l'entreprise et être visible pour votre administrateur.</translation>
+<translation id="4933468175699107356">Faites un clic droit pour remplir automatiquement les informations enregistrées, comme votre nom ou votre adresse, sur n'importe quel formulaire</translation>
 <translation id="4934780484581617878">Gestion des fenêtres</translation>
 <translation id="4936134414789135531">Impossible de trouver le <ph name="VALUE_NAME"/> inséré.</translation>
 <translation id="4936675324097895694">Finance</translation>
@@ -2241,6 +2242,7 @@
 <translation id="5470861586879999274">&amp;Rétablir la modification</translation>
 <translation id="547963486735802022">Réessayez de transférer vos fichiers</translation>
 <translation id="5481076368049295676">Ce contenu pourrait tenter d'installer des logiciels dangereux sur votre appareil afin de voler ou de supprimer vos données. <ph name="BEGIN_LINK"/>Afficher quand même<ph name="END_LINK"/></translation>
+<translation id="5481682542063333508">Offrir l'aide à la rédaction</translation>
 <translation id="54817484435770891">Ajouter une adresse valide</translation>
 <translation id="5483838506518938965">Tout est prêt</translation>
 <translation id="5485973315555778056">Appareil infonuagique</translation>
@@ -2391,7 +2393,6 @@
 <translation id="5765072501007116331">Pour voir les exigences et les modes de livraison, sélectionnez une adresse</translation>
 <translation id="57689295674415555">Numéro de carte virtuelle non rempli?</translation>
 <translation id="5772086939108830423">Utiliser une clé d'accès sur un autre appareil</translation>
-<translation id="5775734789739406956">Faire un clic droit pour ajouter vos informations enregistrées dans n'importe quel formulaire</translation>
 <translation id="5776313857861697733">Priorité</translation>
 <translation id="5776574724412881956">Carte virtuelle sans contenu? Cliquez sur les détails de la carte virtuelle pour les copier dans le presse-papiers. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Expérience activée</translation>

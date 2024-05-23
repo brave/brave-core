@@ -18,7 +18,6 @@ import FeedbackForm from '../feedback_form'
 import DataContext from '../../state/context'
 
 interface ContextMenuAssistantProps {
-  turnText: string
   turnId: number
   isOpen: boolean
   onClick: () => void
@@ -44,10 +43,6 @@ function ContextMenuAssistant_(
   const formContainerElement = ref.current?.get(props.turnId)
 
   const hasSentRating = currentRatingStatus !== RatingStatus.None
-
-  const handleCopyText = () => {
-    navigator.clipboard.writeText(props.turnText)
-  }
 
   const handleLikeAnswer = () => {
     if (hasSentRating) return
@@ -149,21 +144,19 @@ function ContextMenuAssistant_(
         onClose={props.onClose}
       >
         <Button
+          fab
           slot='anchor-content'
-          size="small"
+          size="tiny"
           kind="plain-faint"
           onClick={props.onClick}
           className={classnames({
             [styles.moreButton]: true,
+            [styles.moreButtonActive]: props.isOpen,
             [styles.moreButtonHide]: context.isMobile
           })}
         >
-          <Icon name='more-horizontal' />
+          <Icon name='more-vertical' />
         </Button>
-        <leo-menu-item onClick={handleCopyText}>
-          <Icon name='copy' />
-          <span>{getLocale('copyButtonLabel')}</span>
-        </leo-menu-item>
         <leo-menu-item
           class={classnames({
             [styles.liked]: currentRatingStatus === RatingStatus.Liked

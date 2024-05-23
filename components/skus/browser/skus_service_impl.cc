@@ -16,71 +16,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-namespace {
-
-void OnRefreshOrder(skus::RefreshOrderCallbackState* callback_state,
-                    skus::SkusResult result,
-                    rust::cxxbridge1::Str order) {
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(order));
-  }
-  delete callback_state;
-}
-
-void OnFetchOrderCredentials(
-    skus::FetchOrderCredentialsCallbackState* callback_state,
-    skus::SkusResult result) {
-  if (callback_state->cb) {
-    std::string error_message;
-    if (result != skus::SkusResult::Ok) {
-      error_message = std::string{skus::result_to_string(result)};
-    }
-
-    std::move(callback_state->cb).Run(error_message);
-  }
-
-  delete callback_state;
-}
-
-void OnPrepareCredentialsPresentation(
-    skus::PrepareCredentialsPresentationCallbackState* callback_state,
-    skus::SkusResult result,
-    rust::cxxbridge1::Str presentation) {
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(presentation));
-  }
-  delete callback_state;
-}
-
-void OnCredentialSummary(skus::CredentialSummaryCallbackState* callback_state,
-                         skus::SkusResult result,
-                         rust::cxxbridge1::Str summary) {
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(summary));
-  }
-  delete callback_state;
-}
-
-void OnSubmitReceipt(skus::SubmitReceiptCallbackState* callback_state,
-                     skus::SkusResult result) {
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run("");
-  }
-  delete callback_state;
-}
-
-void OnCreateOrderFromReceipt(
-    skus::CreateOrderFromReceiptCallbackState* callback_state,
-    skus::SkusResult result,
-    rust::cxxbridge1::Str order_id) {
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run(static_cast<std::string>(order_id));
-  }
-  delete callback_state;
-}
-
-}  // namespace
-
 namespace skus {
 
 SkusServiceImpl::SkusServiceImpl(
@@ -89,7 +24,6 @@ SkusServiceImpl::SkusServiceImpl(
     : prefs_(prefs), url_loader_factory_(url_loader_factory) {
   sdk_task_runner_ = base::ThreadPool::CreateSingleThreadTaskRunner(
       {base::TaskPriority::USER_BLOCKING});
-  ui_task_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
 }
 
 SkusServiceImpl::~SkusServiceImpl() = default;
@@ -123,26 +57,16 @@ void SkusServiceImpl::RefreshOrder(
     const std::string& order_id,
     mojom::SkusService::RefreshOrderCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::RefreshOrderCallbackState> cbs(
-      new skus::RefreshOrderCallbackState);
 
-  cbs->cb = base::BindOnce(
-      [](mojom::SkusService::RefreshOrderCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
-
-  PostTaskWithSDK(domain,
-                  base::BindOnce(
-                      [](std::unique_ptr<skus::RefreshOrderCallbackState> cbs,
-                         const std::string& order_id, skus::CppSDK* sdk) {
-                        sdk->refresh_order(OnRefreshOrder, std::move(cbs),
-                                           order_id);
-                      },
-                      std::move(cbs), order_id));
+  PostTaskWithSDK(
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
+             const std::string& order_id, skus::CppSDK* sdk) {
+            sdk->refresh_order(std::move(callback), order_id);
+          },
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          order_id));
 }
 
 void SkusServiceImpl::FetchOrderCredentials(
@@ -150,26 +74,16 @@ void SkusServiceImpl::FetchOrderCredentials(
     const std::string& order_id,
     mojom::SkusService::FetchOrderCredentialsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs(
-      new skus::FetchOrderCredentialsCallbackState);
-  cbs->cb = base::BindOnce(
-      [](mojom::SkusService::FetchOrderCredentialsCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
       domain,
       base::BindOnce(
-          [](std::unique_ptr<skus::FetchOrderCredentialsCallbackState> cbs,
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
              const std::string& order_id, skus::CppSDK* sdk) {
-            sdk->fetch_order_credentials(OnFetchOrderCredentials,
-                                         std::move(cbs), order_id);
+            sdk->fetch_order_credentials(std::move(callback), order_id);
           },
-          std::move(cbs), order_id));
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          order_id));
 }
 
 void SkusServiceImpl::PrepareCredentialsPresentation(
@@ -177,55 +91,34 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& path,
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState> cbs(
-      new skus::PrepareCredentialsPresentationCallbackState);
-
-  cbs->cb = base::BindOnce(
-      [](mojom::SkusService::PrepareCredentialsPresentationCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
       domain,
       base::BindOnce(
-          [](std::unique_ptr<skus::PrepareCredentialsPresentationCallbackState>
-                 cbs,
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
              const std::string& domain, const std::string& path,
              skus::CppSDK* sdk) {
-            sdk->prepare_credentials_presentation(
-                OnPrepareCredentialsPresentation, std::move(cbs), domain, path);
+            sdk->prepare_credentials_presentation(std::move(callback), domain,
+                                                  path);
           },
-          std::move(cbs), domain, path));
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          domain, path));
 }
 
 void SkusServiceImpl::CredentialSummary(
     const std::string& domain,
     mojom::SkusService::CredentialSummaryCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::CredentialSummaryCallbackState> cbs(
-      new skus::CredentialSummaryCallbackState);
-
-  cbs->cb = base::BindOnce(
-      [](mojom::SkusService::CredentialSummaryCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
-      domain, base::BindOnce(
-                  [](std::unique_ptr<skus::CredentialSummaryCallbackState> cbs,
-                     const std::string& domain, skus::CppSDK* sdk) {
-                    sdk->credential_summary(OnCredentialSummary, std::move(cbs),
-                                            domain);
-                  },
-                  std::move(cbs), domain));
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
+             const std::string& domain, skus::CppSDK* sdk) {
+            sdk->credential_summary(std::move(callback), domain);
+          },
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          domain));
 }
 
 void SkusServiceImpl::SubmitReceipt(
@@ -234,27 +127,17 @@ void SkusServiceImpl::SubmitReceipt(
     const std::string& receipt,
     skus::mojom::SkusService::SubmitReceiptCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::SubmitReceiptCallbackState> cbs(
-      new skus::SubmitReceiptCallbackState);
-
-  cbs->cb = base::BindOnce(
-      [](skus::mojom::SkusService::SubmitReceiptCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
-      domain, base::BindOnce(
-                  [](std::unique_ptr<skus::SubmitReceiptCallbackState> cbs,
-                     const std::string& order_id, const std::string& receipt,
-                     skus::CppSDK* sdk) {
-                    sdk->submit_receipt(OnSubmitReceipt, std::move(cbs),
-                                        order_id, receipt);
-                  },
-                  std::move(cbs), order_id, receipt));
+      domain,
+      base::BindOnce(
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
+             const std::string& order_id, const std::string& receipt,
+             skus::CppSDK* sdk) {
+            sdk->submit_receipt(std::move(callback), order_id, receipt);
+          },
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          order_id, receipt));
 }
 
 void SkusServiceImpl::CreateOrderFromReceipt(
@@ -262,27 +145,16 @@ void SkusServiceImpl::CreateOrderFromReceipt(
     const std::string& receipt,
     skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs(
-      new skus::CreateOrderFromReceiptCallbackState);
-
-  cbs->cb = base::BindOnce(
-      [](skus::mojom::SkusService::CreateOrderFromReceiptCallback cb,
-         scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-         const std::string& result) {
-        ui_task_runner->PostTask(FROM_HERE,
-                                 base::BindOnce(std::move(cb), result));
-      },
-      std::move(callback), ui_task_runner_);
 
   PostTaskWithSDK(
       domain,
       base::BindOnce(
-          [](std::unique_ptr<skus::CreateOrderFromReceiptCallbackState> cbs,
+          [](std::unique_ptr<skus::RustBoundPostTask> callback,
              const std::string& receipt, skus::CppSDK* sdk) {
-            sdk->create_order_from_receipt(OnCreateOrderFromReceipt,
-                                           std::move(cbs), receipt);
+            sdk->create_order_from_receipt(std::move(callback), receipt);
           },
-          std::move(cbs), receipt));
+          std::make_unique<skus::RustBoundPostTask>(std::move(callback)),
+          receipt));
 }
 
 void SkusServiceImpl::PurgeStore(
@@ -375,7 +247,7 @@ void SkusServiceImpl::PostTaskWithSDK(
               return sdk;
             },
             env, weak_factory_.GetWeakPtr(), url_loader_factory_->Clone(),
-            ui_task_runner_),
+            base::SequencedTaskRunner::GetCurrentDefault()),
         base::BindOnce(&SkusServiceImpl::OnSDKInitialized,
                        weak_factory_.GetWeakPtr(), env, std::move(cb)));
   }

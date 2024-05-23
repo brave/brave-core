@@ -1,13 +1,16 @@
 .modelInfo {
-  margin: 24px 16px;
+  margin: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   display: flex;
-  flex-direction: row;
-  gap: 16px;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
   align-items: start;
 }
 
 .modelIcon {
   --leo-icon-color: white;
+  --leo-icon-width: 18px;
+  width: 32px;
+  height: 32px;
   background: var(--leo-gradient-icons-active);
   padding: 9px;
   border-radius: 100%;
@@ -17,8 +20,6 @@
 }
 
 .meta {
-  padding-top: 4px;
-
   .category {
     margin: 0;
     font: var(--leo-font-heading-h4);

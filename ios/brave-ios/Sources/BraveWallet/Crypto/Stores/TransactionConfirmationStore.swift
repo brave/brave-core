@@ -109,6 +109,22 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         Strings.Wallet.inputDataPlaceholderSolana,
         activeParsedTransaction.transaction.txType.rawValue
       )
+    } else if activeParsedTransaction.transaction.coin == .btc,
+      let btcTxData = activeParsedTransaction.transaction.txDataUnion.btcTxData
+    {
+      let inputs = btcTxData.inputs.enumerated().map { (index, input) in
+        let inputLine = "\(Strings.Wallet.inputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(input.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(input.address)"
+        return [inputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      let outputs = btcTxData.outputs.enumerated().map { (index, output) in
+        let outputLine = "\(Strings.Wallet.outputLabel): \(index)"
+        let valueLine = "\(Strings.Wallet.valueLabel): \(output.value)"
+        let addressLines = "\(Strings.Wallet.addressLabel):\n\(output.address)"
+        return [outputLine, valueLine, addressLines].joined(separator: "\n")
+      }.joined(separator: "\n\n")
+      return inputs + "\n\n" + outputs
     } else {
       if activeParsedTransaction.transaction.txArgs.isEmpty {
         let data = activeParsedTransaction.transaction.ethTxData
@@ -143,6 +159,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let keyringService: BraveWalletKeyringService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
@@ -162,6 +179,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     keyringService: BraveWalletKeyringService,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
@@ -173,6 +191,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.ethTxManagerProxy = ethTxManagerProxy
     self.keyringService = keyringService
     self.solTxManagerProxy = solTxManagerProxy
+    self.bitcoinWalletService = bitcoinWalletService
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
@@ -366,7 +385,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   private var assetRatios: [String: Double] = [:]
   private var currentAllowanceCache: [String: String] = [:]
-  private var gasTokenBalanceCache: [String: Double] = [:]
+  /// Cache of gas token balance for each chainId (in pending transactions) for each account.
+  /// Outer key is the `NetworkInfo.chainId`, inner key is the `AccountInfo.id`.
+  private var gasTokenBalanceCache: [String: [String: Double]] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
@@ -401,9 +422,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
 
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let ownerAddress = parsedTransaction.fromAccountInfo.address
     let (allowance, _, _) = await rpcService.erc20TokenAllowance(
       contract: details.token?.contractAddress(in: selectedChain) ?? "",
-      ownerAddress: parsedTransaction.fromAddress,
+      ownerAddress: ownerAddress,
       spenderAddress: details.spenderAddress,
       chainId: parsedTransaction.transaction.chainId
     )
@@ -426,14 +448,25 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     account: BraveWallet.AccountInfo,
     network: BraveWallet.NetworkInfo
   ) async {
-    if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
-      gasTokenBalanceCache["\(token.symbol)\(account.address)"] = gasTokenBalance
-      updateTransaction(
-        with: activeTransaction,
-        shouldFetchCurrentAllowance: false,
-        shouldFetchGasTokenBalance: false
-      )
+    var gasBalancesForChain = gasTokenBalanceCache[network.chainId, default: [:]]
+    if token.coin == .btc {
+      if let availableBTCBalance = await bitcoinWalletService.fetchBTCBalance(
+        accountId: account.accountId,
+        type: .available
+      ) {
+        gasBalancesForChain[account.id] = availableBTCBalance
+      }
+    } else {
+      if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
+        gasBalancesForChain[account.id] = gasTokenBalance
+      }
     }
+    gasTokenBalanceCache[network.chainId] = gasBalancesForChain
+    updateTransaction(
+      with: activeTransaction,
+      shouldFetchCurrentAllowance: false,
+      shouldFetchGasTokenBalance: false
+    )
   }
 
   @MainActor private func fetchUnknownTokens(
@@ -495,7 +528,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""
@@ -510,8 +544,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -522,7 +556,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -555,8 +589,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -567,7 +601,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -597,8 +631,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -609,7 +643,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -638,8 +672,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -650,7 +684,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -682,8 +716,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -694,7 +728,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,
@@ -719,8 +753,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[
-          "\(network.nativeToken.symbol)\(activeParsedTransaction.fromAddress)"
+        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+          activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
             BDouble(gasBalance) > gasValue
@@ -731,7 +765,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         } else if shouldFetchGasTokenBalance {
           if let account = accounts.first(where: {
-            $0.address == activeParsedTransaction.fromAddress
+            $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
             await fetchGasTokenBalance(
               token: network.nativeToken,

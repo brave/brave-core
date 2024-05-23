@@ -14,15 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveDialogFragment;
-import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
-public class LinkVpnSubscriptionDialogFragment
-        extends BraveDialogFragment implements View.OnClickListener {
+public class LinkVpnSubscriptionDialogFragment extends BraveDialogFragment
+        implements View.OnClickListener {
     private static final String TAG = "LinkVpnSubscription";
 
     @Override
@@ -43,12 +43,9 @@ public class LinkVpnSubscriptionDialogFragment
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_done) {
-            try {
-                BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                braveActivity.openNewOrSelectExistingTab(BraveVpnUtils.getBraveAccountUrl());
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onClick btn_done " + e);
-            }
+            TabUtils.openURLWithBraveActivity(
+                    LinkSubscriptionUtils.getBraveAccountLinkUrl(
+                            InAppPurchaseWrapper.SubscriptionProduct.VPN));
         }
         dismiss();
     }

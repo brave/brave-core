@@ -5,11 +5,9 @@
 
 package org.chromium.chrome.browser.ntp_background_images.model;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 public class SponsoredTab {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
@@ -22,7 +20,6 @@ public class SponsoredTab {
         if (NTPUtil.shouldEnableNTPFeature()) {
             ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
             tabIndex = SponsoredImageUtil.getTabIndex();
-            updateBannerPref();
         }
     }
 
@@ -43,13 +40,5 @@ public class SponsoredTab {
 
     public void setTanIndex(int tabIndex) {
         this.tabIndex = tabIndex;
-    }
-
-    public boolean shouldShowBanner() {
-        return mShouldShowBanner;
-    }
-
-    public void updateBannerPref() {
-        mShouldShowBanner = ContextUtils.getAppSharedPreferences().getBoolean(BackgroundImagesPreferences.PREF_SHOW_NON_DISRUPTIVE_BANNER, true);
     }
 }

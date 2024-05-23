@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave ಈಗಾಗಲೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತದೆ. ನಾವು ಕುಕೀ ಸಮ್ಮತಿ ಸೂಚನೆಗಳನ್ನು ಸಹ ನಿರ್ಬಂಧಿಸಬಹುದು.</translation>
 <translation id="535688588637568715">ಹೌದು, ಕುಕೀ ಸಮ್ಮತಿ ಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="2808175374672429053">Brave ಶೀಲ್ಡ್‌ಗಳಿಗೆ ವೈಲ್ಡ್‌ಕಾರ್ಡ್‌ಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave ಶೀಲ್ಡ್ಸ್ <ph name="COMPANY_LIST"/> ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು <ph name="SITE_URL"/> ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಿದೆ}
-      =1 {Brave ಶೀಲ್ಡ್ಸ್ <ph name="COMPANY_LIST"/> ಮತ್ತು ಇನ್ನೂ 1 ಇತರ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು <ph name="SITE_URL"/> ಅನ್ನು ನಿರ್ಬಂಧಿಸಿದೆ}
-      other {Brave ಶೀಲ್ಡ್ಸ್ 1 ಟ್ರ್ಯಾಕರ್ ಅನ್ನು <ph name="COMPANY_LIST"/> ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಿದೆ {BLOCKED_COUNT} ಇತರ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು <ph name="SITE_URL"/> ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಿದೆ}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave ಶೀಲ್ಡ್ಸ್ 1 ಟ್ರ್ಯಾಕರ್ ಅನ್ನು <ph name="SITE_URL"/> ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಿದೆ}
       other {Brave ಶೀಲ್ಡ್ಸ್ {BLOCKED_COUNT} ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು <ph name="SITE_URL"/> ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಿದೆ}

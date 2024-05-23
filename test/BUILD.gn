@@ -99,7 +99,7 @@ test("brave_unit_tests") {
   ]
 
   sources = [
-    "//base/trace_event/process_memory_dump_unittest.cc",
+    "//brave/base/trace_event/brave_process_memory_dump_unittest.cc",
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
     "//brave/browser/brave_stats/first_run_util_unittest.cc",

@@ -49,4 +49,6 @@
     <dimen name="default_regular">14sp</dimen>
     <dimen name="large_regular">16sp</dimen>
     <dimen name="default_semibold">14sp</dimen>
+    <dimen name="small_regular">12sp</dimen>
+    <dimen name="heading_h4">16sp</dimen>
 </resources>

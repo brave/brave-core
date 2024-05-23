@@ -15,7 +15,7 @@ export const BuyButtonOption: AccountButtonOptionsObjectType = {
 export const DepositButtonOption: AccountButtonOptionsObjectType = {
   id: 'deposit',
   name: 'braveWalletAccountsDeposit',
-  icon: 'qr-code'
+  icon: 'money-bag-coins'
 }
 
 export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [

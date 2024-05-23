@@ -65,7 +65,8 @@ class RefillConfirmationTokens final {
   void ParseAndRequireCaptcha(const base::Value::Dict& dict) const;
 
   void SuccessfullyRefilled();
-  void FailedToRefill(bool should_retry);
+  void FailedToRefillAndRetry();
+  void FailedToRefill();
 
   void Retry();
   void RetryCallback();

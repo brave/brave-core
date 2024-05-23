@@ -48,8 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="@dimen/vpn_plan_margin"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="#1AFFFFFF"/>
+                    android:background="@color/primitive_primary_80"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -242,19 +241,47 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginHorizontal="16dp"
+                    style="@style/SmallRegular"
+                    android:layout_margin="16dp"
                     android:text="@string/brave_vpn_renewal_text"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primitive_primary_30"
+                    android:textAlignment="textStart"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:alpha="0.6"
                     android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/HeadingH4"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/already_purchased"
+                    android:textColor="@color/primitive_primary_20"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/refresh_credentials_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/HeadingH4"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/refresh_credentials_bg"
+                    android:text="@string/refresh_your_credentials"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
     </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primitive_primary_70"/>
 
     <android.widget.Button
         android:id="@+id/vpn_plan_action_button"

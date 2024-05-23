@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.68.28",
+  "version": "1.68.39",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -66,7 +66,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "125.0.6422.60",
+        "tag": "125.0.6422.76",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -161,7 +161,7 @@
     "ts-loader": "8.4.0",
     "typesafe-actions": "2.2.0",
     "typescript": "4.9.4",
-    "typescript-plugin-css-modules": "3.4.0",
+    "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "2.0.0",
     "url-loader": "4.1.1",
     "webpack": "5.89.0",

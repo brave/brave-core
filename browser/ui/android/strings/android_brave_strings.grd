@@ -1418,14 +1418,8 @@ Are you sure you want to do this?
       <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
         By tapping Start using Brave Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>.
       </message>
-      <message name="IDS_GET_PAID_TO_SEE_IMAGE" desc="Text description for NTP banner.">
-        Get paid to see this background image.
-      </message>
       <message name="IDS_HIDE_SPONSORED_IMAGES" desc="Text for hide sponsored images button">
         Hide Sponsored Images
-      </message>
-      <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
-        You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
       </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
         Open external links in Brave
@@ -1907,12 +1901,6 @@ Are you sure you want to do this?
       <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
         Some search engines protect your privacy better than others when you search the web.
       </message>
-      <message name="IDS_BRE_BANNER_TITLE_TEXT" desc="BRE banner title text">
-        Need a refresher on Rewards?
-      </message>
-      <message name="IDS_BRE_BANNER_TEXT" desc="BRE banner text">
-        Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
-      </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
       </message>
@@ -2311,7 +2299,13 @@ Are you sure you want to do this?
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
-      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
+      Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\nBy using Brave, you agree to the Terms of Use and Privacy Policy.
+    </message>
+    <message name="IDS_ALREADY_PURCHASED" desc="Brave subscription plan page already purchased text">
+      Already purchased on brave.com?
+    </message>
+    <message name="IDS_REFRESH_YOUR_CREDENTIALS" desc="Brave subscription plan page refresh your credentials action text">
+      Refresh your credentials
     </message>
     <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
       Try for FREE

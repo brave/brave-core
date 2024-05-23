@@ -38,5 +38,8 @@ module.exports = function (genPath) {
     // TODO(petemill): Rename 'brave/components/common' dir to
     // 'brave/components/web-common'
     '$web-common': path.resolve(__dirname, '../common'),
+    // react-markdown uses this deep in its tree, and the browser variant uses innerHTML, conflicting with WebUIs that requires Trusted Types
+    // We redirect to an alternative implementation that uses a lookup table to decode named chars instead of innerHTML
+    'decode-named-character-reference': path.resolve(__dirname, '../../node_modules/decode-named-character-reference/index.js'),
   }
 }

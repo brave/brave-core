@@ -74,10 +74,10 @@ struct PendingTransactionView: View {
     }
   }
 
-  /// View showing the currently selected account with a blockie
-  @ViewBuilder private var accountView: some View {
+  /// View showing the currently selected account with a blockie. Used for `erc20Approve` txType only.
+  @ViewBuilder private var erc20ApproveAccountView: some View {
     HStack {
-      let address = confirmationStore.activeParsedTransaction.fromAddress
+      let address = confirmationStore.activeParsedTransaction.fromAccountInfo.blockieSeed
       AddressView(address: address) {
         Text(address.truncatedAddress)
           .fontWeight(.semibold)
@@ -243,7 +243,7 @@ struct PendingTransactionView: View {
         erc20ApproveHeader
       } else {
         TransactionHeader(
-          fromAccountAddress: confirmationStore.activeParsedTransaction.fromAddress,
+          fromAccountInfo: confirmationStore.activeParsedTransaction.fromAccountInfo,
           fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
@@ -488,7 +488,8 @@ struct PendingTransactionView: View {
           VStack(alignment: .trailing) {
             transactionsButton
             if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-              accountView  // for other txTypes, account is shown in `TransactionHeader`
+              // for other txTypes, account is shown in `TransactionHeader`
+              erc20ApproveAccountView
             }
           }
         }

@@ -2022,11 +2022,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4986297793092101884">Brave บล็อกคุกกี้ของบุคคลที่สามแล้ว เราสามารถบล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้ได้เช่นกัน</translation>
 <translation id="535688588637568715">ใช่ บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้</translation>
 <translation id="2808175374672429053">ไม่สามารถใช้ Wildcard ได้กับ Brave Shields</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {เกราะป้องกันของ Brave บล็อก <ph name="COMPANY_LIST"/> ตัวติดตามบน <ph name="SITE_URL"/>}
-      =1 {เกราะป้องกันของ Brave บล็อก <ph name="COMPANY_LIST"/> และอีก 1 ตัวติดตามบน <ph name="SITE_URL"/>}
-      other {เกราะป้องกันของ Brave บล็อก <ph name="COMPANY_LIST"/> และอีก {BLOCKED_COUNT} ตัวติดตามบน <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {เกราะป้องกันของ Brave บล็อก 1 ตัวติดตามบน <ph name="SITE_URL"/>}
       other {เกราะป้องกันของ Brave บล็อกอีก {BLOCKED_COUNT} ตัวติดตามบน <ph name="SITE_URL"/>}

@@ -1097,7 +1097,7 @@
 <translation id="2115100722958448834">Ugyldig <ph name="COIN_TYPE_SYMBOL"/>-adresse.</translation>
 <translation id="240219768078450165">Domænet er ikke linked til en <ph name="COIN_TYPE_SYMBOL"/>-adresse.</translation>
 <translation id="4932382283590063268">Modtageradressen er din egen adresse.</translation>
-<translation id="3124753063207986114">Modtageradressen er en tokens kontraktadresse.</translation>
+<translation id="3124753063207986114">Modtageradressen er en tokens kontaktadresse.</translation>
 <translation id="7029817408221097939">Ugyldig forenet adresse</translation>
 <translation id="6370376419663123629">Adressen ser forkert ud</translation>
 <translation id="3767148796886402380">Tjek din adresse for at sikre dig, at den er korrekt (tjek især små og store bogstaver).</translation>
@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave blokerer allerede tredjepartscookies. Vi kan også blokere meddelelser om samtykke til cookies.</translation>
 <translation id="535688588637568715">Ja, bloker meddelelser om samtykke til cookies</translation>
 <translation id="2808175374672429053">Wildcards er ikke tilladt til Brave Shields.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave-skjolde blokerede <ph name="COMPANY_LIST"/> trackere på <ph name="SITE_URL"/>}
-      =1 {Brave-skjolde blokerede <ph name="COMPANY_LIST"/> og 1 anden tracker på <ph name="SITE_URL"/>}
-      other {Brave-skjolde blokerede <ph name="COMPANY_LIST"/> og {BLOCKED_COUNT} andre trackere på <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave-skjolde blokerede 1 tracker på <ph name="SITE_URL"/>}
       other {Brave-skjolde blokerede {BLOCKED_COUNT} trackere på <ph name="SITE_URL"/>}

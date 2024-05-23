@@ -10,7 +10,7 @@ import XCTest
 
 @testable import BraveWallet
 
-@MainActor class SelectAccountTokenStoreTests: XCTestCase {
+class SelectAccountTokenStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
@@ -92,7 +92,7 @@ import XCTest
 
   /// Test `update()` will update `accountSections` for each account, and verify
   /// `filteredAccountSections` displays non-zero balance by default.
-  func testUpdate() async {
+  @MainActor func testUpdate() async {
     let mockETHBalance: Double = 0.896
     let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
     let mockUSDCBalance: Double = 4
@@ -239,12 +239,15 @@ import XCTest
       )
     }
 
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+
     let store = SelectAccountTokenStore(
       didSelect: { _, _ in },
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
+      bitcoinWalletService: bitcoinWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )

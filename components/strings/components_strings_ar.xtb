@@ -786,7 +786,7 @@
 <translation id="2491120439723279231">تحتوي شهادة الخادم على أخطاء.</translation>
 <translation id="2491414235131909199">تم حظر هذه الصفحة بواسطة إحدى الإضافات.</translation>
 <translation id="2495083838625180221">‏محلل JSON اللغوي</translation>
-<translation id="2498091847651709837">فحص بطاقة جديدة</translation>
+<translation id="2498091847651709837">مسح بطاقة جديدة ضوئيًا</translation>
 <translation id="2501270939904835585">تصنيفات (برّاقة)</translation>
 <translation id="2501278716633472235">الرجوع</translation>
 <translation id="250346157641628208">ورق (نفث الحبر)</translation>
@@ -1910,7 +1910,7 @@
 <translation id="4792686369684665359">المعلومات التي تريد إرسالها غير محمية</translation>
 <translation id="4793219378458250238">11 × 12 بوصة</translation>
 <translation id="4796594887379589189">رقم تعريف حساب المهمة</translation>
-<translation id="7110430050177876111">‏يمكنك إدخال تاريخ انتهاء الصلاحية ورمز التحقّق (CVC) لبطاقة <ph name="CREDIT_CARD"/> لتحديث تفاصيلها. وبعد التأكيد، ستتم مشاركة تفاصيل البطاقة من حسابك على Brave مع هذا الموقع الإلكتروني.</translation>
+<translation id="7110430050177876111">‏أدخِل تاريخ انتهاء الصلاحية ورمز التحقّق (CVC) لبطاقة <ph name="CREDIT_CARD"/> لتحديث تفاصيلها. وبعد التأكيد، ستتم مشاركة تفاصيل البطاقة من حسابك على Brave مع هذا الموقع الإلكتروني.</translation>
 <translation id="4798269756263412078">يمكنك الحصول على تنبيهات في حال انخفاض السعر على أي موقع إلكتروني. سيتم إرسال التنبيهات إلى عنوان بريدك الإلكتروني.</translation>
 <translation id="4800132727771399293">‏تحقق من تاريخ انتهاء الصلاحية ورمز التحقق من البطاقة (CVC) وأعد المحاولة مرة أخرى.</translation>
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
@@ -1981,6 +1981,7 @@
 <translation id="4930153903256238152">سِعة كبيرة</translation>
 <translation id="4930714375720679147">تفعيل</translation>
 <translation id="4932035752129140860">‏يتم إرسال النص الذي تلصقه أو ترفقه إلى Google Cloud أو جهات خارجية لتحليله. على سبيل المثال، قد يتم فحص هذا النص بحثًا عن بيانات حسّاسة وتخزينه استنادًا إلى سياسات الشركة، وقد يظهر للمشرف.</translation>
+<translation id="4933468175699107356">انقر بزر الماوس الأيمن لملء المعلومات المحفوظة تلقائيًا، مثل اسمك أو عنوانك، في أي نموذج</translation>
 <translation id="4934780484581617878">إدارة النوافذ</translation>
 <translation id="4936134414789135531">تعذَّر العثور على قيمة <ph name="VALUE_NAME"/> التي تم إدراجها.</translation>
 <translation id="4936675324097895694">خدمات مالية</translation>
@@ -2097,7 +2098,7 @@
 <translation id="5164798890604758545">تم إدخال نص</translation>
 <translation id="5507530832404660443">‏قد تكون هذه الأداة التجريبية المستندة إلى الذكاء الاصطناعي غير دقيقة في بعض الأحيان. وللمساعدة في تحسينها، يتم إرسال محتواك إلى Brave.
     <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
-<translation id="2996889577833788807">‏يمكنك إدخال رمز التحقّق (CVC) لبطاقة <ph name="CREDIT_CARD"/>. وبعد التأكيد، ستتم مشاركة تفاصيل البطاقة من حسابك على Brave مع هذا الموقع الإلكتروني.</translation>
+<translation id="2996889577833788807">‏أدخِل رمز التحقّق (CVC) لبطاقة <ph name="CREDIT_CARD"/>. وبعد التأكيد، ستتم مشاركة تفاصيل البطاقة من حسابك على Brave مع هذا الموقع الإلكتروني.</translation>
 <translation id="8515152881111950319">‏قد تفقد إمكانية الوصول إلى حساب مؤسستك أو تتعرَّض لسرقة هويتك. لذا، يوصي Brave بتغيير كلمة مرورك الآن.</translation>
 <translation id="5171045022955879922">‏البحث أو إدخال عنوان URL</translation>
 <translation id="5172758083709347301">الجهاز</translation>
@@ -2244,6 +2245,7 @@
 <translation id="5470861586879999274">إعادة الت&amp;حرير</translation>
 <translation id="547963486735802022">حاوِل نقل ملفاتك مرة أخرى.</translation>
 <translation id="5481076368049295676">قد يحاول هذا المحتوى تثبيت برامج خطيرة على جهازك تسرق معلوماتك أو تحذفها. <ph name="BEGIN_LINK"/>عرض على أي حال<ph name="END_LINK"/></translation>
+<translation id="5481682542063333508">عرض مساعدة في الكتابة</translation>
 <translation id="54817484435770891">إضافة عنوان صالح</translation>
 <translation id="5483838506518938965">اكتملت المهمة</translation>
 <translation id="5485973315555778056">جهاز على السحابة الإلكترونية</translation>
@@ -2394,7 +2396,6 @@
 <translation id="5765072501007116331">لعرض طرق التسليم ومتطلباته، اختَر عنوانًا</translation>
 <translation id="57689295674415555">ألم تتم تعبئة الحقل برقم البطاقة الافتراضية؟</translation>
 <translation id="5772086939108830423">استخدام مفتاح مرور على جهاز آخر</translation>
-<translation id="5775734789739406956">انقر بزر الماوس الأيمن لإضافة معلوماتك المحفوظة إلى أي نموذج</translation>
 <translation id="5776313857861697733">الأولوية</translation>
 <translation id="5776574724412881956">ألم يتم إدخال بيانات البطاقة الافتراضية؟ انقر على تفاصيل البطاقة الافتراضية لنسخها إلى الحافظة. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">تم تفعيل التجربة.</translation>
@@ -3211,7 +3212,7 @@
 <translation id="7380398842872229465">10 × 15 بوصة</translation>
 <translation id="7388380253839603603">أسعار الوقود وخدمات تزويد السيارات بالوقود</translation>
 <translation id="7388594495505979117">{0,plural, =1{ستتم إعادة تشغيل جهازك بعد دقيقة واحدة}zero{ستتم إعادة تشغيل جهازك بعد # دقيقة}two{ستتم إعادة تشغيل جهازك بعد دقيقتين}few{ستتم إعادة تشغيل جهازك بعد # دقائق}many{ستتم إعادة تشغيل جهازك بعد # دقيقة}other{ستتم إعادة تشغيل جهازك بعد # دقيقة}}</translation>
-<translation id="7390545607259442187">التأكد من البطاقة</translation>
+<translation id="7390545607259442187">تأكيد البطاقة</translation>
 <translation id="7392089738299859607">تعديل العنوان</translation>
 <translation id="7393161616326137353">ألعاب مغامرات</translation>
 <translation id="739728382607845710">رمز معالج الدفع</translation>
@@ -3398,7 +3399,7 @@
 <translation id="7682451652090915298">رغبي</translation>
 <translation id="7684683146428206649">معدن</translation>
 <translation id="7684928361160505327">{0,plural, =1{تم حظر <ph name="FILE_NAME"/> بسبب السياسة.}zero{تم حظر <ph name="FILE_COUNT"/> ملف بسبب السياسة.}two{تم حظر ملفَين (<ph name="FILE_COUNT"/>) بسبب السياسة.}few{تم حظر <ph name="FILE_COUNT"/> ملفات بسبب السياسة.}many{تم حظر <ph name="FILE_COUNT"/> ملفًا بسبب السياسة.}other{تم حظر <ph name="FILE_COUNT"/> ملف بسبب السياسة.}}</translation>
-<translation id="7687186412095877299">تعبئة نماذج الدفع باستخدام طرق الدفع المحفوظة</translation>
+<translation id="7687186412095877299">تتم تعبئة نماذج الدفع باستخدام طرق الدفع المحفوظة</translation>
 <translation id="7687305263118037187">انتهاء مهلة إعادة المحاولة</translation>
 <translation id="7690647519407127574">‏بطاقة بريدية Oufuku Hagaki</translation>
 <translation id="7693583928066320343">تم استلام ترتيب الصفحة</translation>
@@ -3437,7 +3438,7 @@
 <translation id="7752995774971033316">غير مُدار</translation>
 <translation id="7753769899818674547">‏‫‎<ph name="KEYWORD"/>: بدء الدردشة مع "<ph name="KEYWORD_SHORT_NAME"/>"</translation>
 <translation id="1771750053794015966">‏سيتم إغلاق علامات تبويب Brave وتطبيقاته عند بدء التحديث</translation>
-<translation id="7755287808199759310">قد يلغي والداك الحظر لك</translation>
+<translation id="7755287808199759310">يمكن لأحد والديك إزالة الحظر لك</translation>
 <translation id="7755624218968747854">اللفافة الأساسية</translation>
 <translation id="7758069387465995638">ربما حظر جدار الحماية أو برامج مكافحة الفيروسات الاتصال.</translation>
 <translation id="7759147511335618829">‏التحكّم في أجهزة MIDI وإعادة برمجتها</translation>
@@ -3622,7 +3623,7 @@
 <translation id="8118489163946903409">طريقة الدفع</translation>
 <translation id="8118506371121007279">تقديم ملاحظات</translation>
 <translation id="8127301229239896662">لم يتم تثبيت "<ph name="SOFTWARE_NAME"/>" بطريقة صحيحة على جهاز الكمبيوتر أو الشبكة. اطلب من مشرف تقنية المعلومات حل هذه المشكلة.</translation>
-<translation id="8131740175452115882">التأكيد</translation>
+<translation id="8131740175452115882">تأكيد</translation>
 <translation id="8133495915926741232">اختَر فئات المواضيع العامة التي يمكن استخدامها للمساعدة في تخصيص الإعلانات، مع العِلم بأنّ إيقاف إحدى الفئات العامة سيؤدي أيضًا إلى حظر المواضيع ذات الصلة بها. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="8134058435519644366">توظيف وعمالة</translation>
 <translation id="8135546115396015134">السهم المتجّه لليسار</translation>

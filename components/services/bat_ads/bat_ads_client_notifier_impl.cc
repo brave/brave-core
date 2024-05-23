@@ -89,10 +89,12 @@ void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
+    const bool is_new_navigation,
+    const bool is_restoring,
     const bool is_error_page,
     const bool is_visible) {
-  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_error_page,
-                               is_visible);
+  notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_new_navigation,
+                               is_restoring, is_error_page, is_visible);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {

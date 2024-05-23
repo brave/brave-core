@@ -19,13 +19,17 @@ class TransactionConfirmationStoreTests: XCTestCase {
       .eth: BraveWallet.NetworkInfo.mockMainnet,
       .sol: BraveWallet.NetworkInfo.mockSolana,
       .fil: BraveWallet.NetworkInfo.mockFilecoinMainnet,
+      .btc: BraveWallet.NetworkInfo.mockBitcoinMainnet,
     ],
     allNetworksForCoinType: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
       .eth: [.mockMainnet, .mockGoerli],
       .sol: [.mockSolana, .mockSolanaTestnet],
       .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
+      .btc: [.mockBitcoinMainnet, .mockBitcoinTestnet],
     ],
-    accountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount, .mockSolAccount, .mockFilAccount],
+    accountInfos: [BraveWallet.AccountInfo] = [
+      .mockEthAccount, .mockSolAccount, .mockFilAccount, .mockBtcAccount,
+    ],
     allTokens: [BraveWallet.BlockchainToken] = [],
     transactions: [BraveWallet.TransactionInfo] = [],
     gasEstimation: BraveWallet.GasEstimation1559 = .init(),
@@ -50,13 +54,22 @@ class TransactionConfirmationStoreTests: XCTestCase {
       price: "4.0",
       assetTimeframeChange: "-57.23"
     )
+    let mockBtcAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "btc",
+      toAsset: "usd",
+      price: "62117.0",
+      assetTimeframeChange: "-57.23"
+    )
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
     // setup test services
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
-      completion(true, [mockEthAssetPrice, mockSolAssetPrice, mockFilAssetPrice])
+      completion(
+        true,
+        [mockEthAssetPrice, mockSolAssetPrice, mockFilAssetPrice, mockBtcAssetPrice]
+      )
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._chainIdForOrigin = { coin, origin, completion in
@@ -136,6 +149,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
 
+    let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
       rpcService: rpcService,
@@ -145,6 +160,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       keyringService: keyringService,
       solTxManagerProxy: solTxManagerProxy,
+      bitcoinWalletService: bitcoinWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
@@ -608,6 +624,51 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
     store.onTransactionStatusChanged(mockTransactionSubmitted)
     XCTAssertFalse(store.isTxSubmitting)
+  }
+
+  func testPrepareBTCSend() async {
+    let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockBTCToken]
+    let mockTransaction: BraveWallet.TransactionInfo = .mockBTCUnapprovedSend
+    let store = setupStore(
+      accountInfos: [.mockBtcAccount],
+      allTokens: mockAllTokens,
+      transactions: [mockTransaction]
+    )
+    let prepareExpectation = expectation(description: "prepare")
+    await store.prepare()
+    store.$activeTransactionId
+      .sink { id in
+        defer { prepareExpectation.fulfill() }
+        XCTAssertEqual(id, mockTransaction.id)
+      }
+      .store(in: &cancellables)
+    store.$gasValue
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0.00002544")
+      }
+      .store(in: &cancellables)
+    store.$gasSymbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockBTCToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$symbol
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, BraveWallet.BlockchainToken.mockBTCToken.symbol)
+      }
+      .store(in: &cancellables)
+    store.$value
+      .dropFirst()
+      .sink { value in
+        XCTAssertEqual(value, "0.00005")
+      }
+      .store(in: &cancellables)
+
+    await fulfillment(of: [prepareExpectation], timeout: 1)
+
   }
 }
 

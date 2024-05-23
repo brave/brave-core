@@ -17,7 +17,7 @@
 
 .searchSummary {
   --leo-icon-size: 18px;
-  margin-top: 16px;
+  margin-top: var(--leo-spacing-m);
   display: flex;
   flex-direction: row;
   gap: 6px;

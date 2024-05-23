@@ -17,10 +17,12 @@ import com.android.billingclient.api.ProductDetails;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
 
 /** Brave's Activity for AI Chat Plans */
 public class BraveLeoPlansActivity extends AsyncInitializationActivity {
@@ -47,6 +49,14 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
         mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
         mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
         mUpgradeButton = findViewById(R.id.tv_upgrade_now);
+
+        TextView refreshCredentialsButton = findViewById(R.id.refresh_credentials_button);
+        refreshCredentialsButton.setOnClickListener(
+                v -> {
+                    TabUtils.openURLWithBraveActivity(
+                            LinkSubscriptionUtils.getBraveAccountRecoverUrl(
+                                    InAppPurchaseWrapper.SubscriptionProduct.LEO));
+                });
 
         onInitialLayoutInflationComplete();
     }

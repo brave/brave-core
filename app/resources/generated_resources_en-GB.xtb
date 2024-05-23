@@ -2116,7 +2116,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="2541706104884128042">New bedtime set</translation>
 <translation id="2542050502251273923">Sets the debugging level of the network connection manager and other services using ff_debug.</translation>
 <translation id="2543780089903485983">{NUM_SUB_APP_INSTALLS,plural, =1{Permissions that you allow for "<ph name="APP_NAME"/>' will also be allowed for this app. <ph name="MANAGE_LINK"/>}other{Permissions that you allow for ‘<ph name="APP_NAME"/>' will also be allowed for these apps. <ph name="MANAGE_LINK"/>}}</translation>
-<translation id="2544352060595557290">This Tab</translation>
+<translation id="2544352060595557290">This tab</translation>
 <translation id="2546302722632337735">Don't allow sites to use identifiers to play protected content</translation>
 <translation id="2546991196809436099">Zoom in to make items on the screen bigger. Use Search + Ctrl + M to turn the magnifier on and off.</translation>
 <translation id="2548347166720081527">Allowed <ph name="PERMISSION"/></translation>
@@ -3404,6 +3404,7 @@ You can manage this account’s settings by installing the Family Link app on yo
 <translation id="3566325075220776093">From this device</translation>
 <translation id="3566721612727112615">No sites added</translation>
 <translation id="356738834800832239">Your password is saved</translation>
+<translation id="3568431410312984116">Allow 'Help me write' to automatically open</translation>
 <translation id="3569382839528428029">Do you want <ph name="APP_NAME"/> to share your screen?</translation>
 <translation id="3569614820047645079">Your files in My Drive sync to your Chromebook automatically so that you can access them without an Internet connection.</translation>
 <translation id="3569682580018832495"><ph name="ORIGIN"/> can view the following files and folders</translation>
@@ -4427,7 +4428,7 @@ This can include information about installed software, files, your browser and t
 <translation id="4341577178275615435">To turn caret browsing on or off, use the shortcut F7</translation>
 <translation id="4341905082470253054">Checking TPM status…</translation>
 <translation id="434198521554309404">Fast. Secure. Effortless.</translation>
-<translation id="4342417854108207000">Not allowed to edit files or folders on your device</translation>
+<translation id="4342417854108207000">Allowed to edit files or folders on your device</translation>
 <translation id="3147982553903764426">To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut.</translation>
 <translation id="4343283008857332996">Camera access is allowed for apps, websites with the camera permission and system services. To use the camera, you may need to restart the app or refresh the page.</translation>
 <translation id="4345457680916430965">&amp;Open in <ph name="APP"/></translation>
@@ -5854,6 +5855,7 @@ Permissions that you've already given to websites and apps may apply to this acc
 <translation id="5474859849784484111"><ph name="MANAGER"/> requires you to connect to Wi-Fi now and download an update. Or, download from a metered connection (charges may apply).</translation>
 <translation id="5477089831058413614">Configure <ph name="DEVICE_TYPE"/> hotspot</translation>
 <translation id="5481273127572794904">Not allowed to automatically download multiple files</translation>
+<translation id="5481682542063333508">Offer writing help</translation>
 <translation id="5481941284378890518">Add Nearby Printers</translation>
 <translation id="3389019465696070233">Sign in to let Brave suggest tab groups and keep your tabs organised</translation>
 <translation id="8126971123326806277">When on, passkeys are created in iCloud Keychain and are available across your Apple devices. When off, passkeys are created in your Brave profile on this device.</translation>
@@ -7509,7 +7511,7 @@ You have # more compromised passwords. Brave Password Manager recommends checkin
 <translation id="6785915470941880363">Reverse scrolling <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="67862343314499040">Violet</translation>
 <translation id="6786747875388722282">Extensions</translation>
-<translation id="6787097042755590313">Other Tab</translation>
+<translation id="6787097042755590313">Other tab</translation>
 <translation id="6787531944787756058">username <ph name="USER_EMAIL"/> is saved only to this device. See details</translation>
 <translation id="6787839852456839824">Keyboard shortcuts</translation>
 <translation id="6788210894632713004">Unpacked extension</translation>
@@ -10011,6 +10013,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="869167754614449887">Deleted <ph name="FILE_NAME"/> from download history</translation>
 <translation id="8692107307702113268">Password is more than 1,000 characters</translation>
 <translation id="8693639060656817812">Learn more about Tracking Protection availability</translation>
+<translation id="8693862390730570097">Don't allow 'Help me write' to automatically open</translation>
 <translation id="8694596275649352090">Lock when sleeping or lid is closed</translation>
 <translation id="8695139659682234808">Add parental controls after setup</translation>
 <translation id="8695825812785969222">Open &amp;Location...</translation>
@@ -10588,6 +10591,7 @@ Permissions that you've already given to websites and apps may apply to this acc
 <translation id="9112987648460918699">Find...</translation>
 <translation id="9113240369465613386">Odd pages only</translation>
 <translation id="9113469270512809735">Toggle recently closed items</translation>
+<translation id="9113529408970052045">'Help me write' can automatically open when a text box on a site can be filled with short-form content</translation>
 <translation id="9114663181201435112">Sign in easily</translation>
 <translation id="9115675100829699941">&amp;Bookmarks</translation>
 <translation id="916115484239820348">This setting doesn't change the availability of Brave Translate or Lens</translation>

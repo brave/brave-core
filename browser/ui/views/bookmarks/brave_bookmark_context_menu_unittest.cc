@@ -18,6 +18,7 @@
 #include "chrome/browser/bookmarks/managed_bookmark_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/test/bookmark_test_helpers.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -97,7 +98,7 @@ TEST_F(BraveBookmarkContextMenuTest, AddShowAllBookmarksButtonMenu) {
 
   EXPECT_TRUE(bookmark_context_menu->IsCommandEnabled(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
-  EXPECT_TRUE(bookmark_context_menu->IsCommandVisible(
+  EXPECT_FALSE(bookmark_context_menu->IsCommandVisible(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
   EXPECT_TRUE(bookmark_context_menu->IsItemChecked(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
@@ -114,5 +115,23 @@ TEST_F(BraveBookmarkContextMenuTest, ShowAllBookmarksButtonMenuCheckedState) {
 
   prefs_->SetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton, true);
   EXPECT_TRUE(bookmark_context_menu->IsItemChecked(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+}
+
+TEST_F(BraveBookmarkContextMenuTest,
+       ShowAllBookmarksButtonMenuVisibilityState) {
+  auto bookmark_context_menu = CreateBookmarkContextMenu();
+  EXPECT_FALSE(bookmark_context_menu->IsCommandVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  std::u16string title = u"xyz";
+  GURL url("https://www.xyz.com");
+  const BookmarkNode* node =
+      model_->AddNewURL(model_->other_node(), 0, title, url);
+  EXPECT_TRUE(bookmark_context_menu->IsCommandVisible(
+      IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
+
+  model_->Remove(node, bookmarks::metrics::BookmarkEditSource::kOther);
+  EXPECT_FALSE(bookmark_context_menu->IsCommandVisible(
       IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY));
 }

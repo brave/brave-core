@@ -5,6 +5,7 @@
 
 brave_app_billing_sources = [
   "//brave/android/java/org/chromium/chrome/browser/billing/InAppPurchaseWrapper.java",
+  "//brave/android/java/org/chromium/chrome/browser/billing/LinkSubscriptionUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/billing/PurchaseModel.java",
 ]
 

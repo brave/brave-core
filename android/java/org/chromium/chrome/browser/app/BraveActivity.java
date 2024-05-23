@@ -264,7 +264,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
-    private static final boolean ENABLE_IN_APP_UPDATE = false;
+    private static final boolean ENABLE_IN_APP_UPDATE =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
 
     /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
@@ -276,8 +277,6 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
-    private String mPurchaseToken = "";
-    private String mProductId = "";
     private boolean mIsVerification;
     private boolean mIsDefaultCheckOnResume;
     private boolean mIsSetDefaultBrowserNotification;
@@ -473,7 +472,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
-            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+            mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
         super.onDestroyInternal();
         cleanUpBraveNewsController();
@@ -706,13 +705,15 @@ public abstract class BraveActivity extends ChromeActivity
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
         LiveDataUtil.observeOnce(
-                activePurchases, activePurchaseModel -> {
+                activePurchases,
+                activePurchaseModel -> {
                     if (activePurchaseModel != null) {
-                        mPurchaseToken = activePurchaseModel.getPurchaseToken();
-                        mProductId = activePurchaseModel.getProductId();
-                        BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken,
-                                mProductId, BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
-                                getPackageName());
+                        BraveVpnNativeWorker.getInstance()
+                                .verifyPurchaseToken(
+                                        activePurchaseModel.getPurchaseToken(),
+                                        activePurchaseModel.getProductId(),
+                                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
+                                        getPackageName());
                     } else {
                         BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
                         if (!mIsVerification) {
@@ -740,13 +741,14 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+    public void onVerifyPurchaseToken(
+            String jsonResponse, String purchaseToken, String productId, boolean isSuccess) {
         if (isSuccess) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             int paymentState = BraveVpnUtils.getPaymentState(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
-                BraveVpnPrefUtils.setProductId(mProductId);
+                BraveVpnPrefUtils.setPurchaseToken(purchaseToken);
+                BraveVpnPrefUtils.setProductId(productId);
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 BraveVpnPrefUtils.setPaymentState(paymentState);
@@ -780,8 +782,6 @@ public abstract class BraveActivity extends ChromeActivity
                 }
                 mIsVerification = false;
             }
-            mPurchaseToken = "";
-            mProductId = "";
         } else {
             BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
             if (!mIsVerification) {
@@ -1277,7 +1277,7 @@ public abstract class BraveActivity extends ChromeActivity
                                         if (mAppUpdateManager != null) {
                                             mAppUpdateManager.completeUpdate();
                                             mAppUpdateManager.unregisterListener(
-                                                    installStateUpdatedListener);
+                                                    mInstallStateUpdatedListener);
                                         }
                                     }
                                 },
@@ -1291,7 +1291,7 @@ public abstract class BraveActivity extends ChromeActivity
         snackbarManager.showSnackbar(snackbar);
     }
 
-    private final InstallStateUpdatedListener installStateUpdatedListener =
+    private final InstallStateUpdatedListener mInstallStateUpdatedListener =
             installState -> {
                 if (installState.installStatus() == InstallStatus.DOWNLOADED) {
                     completeUpdateSnackbar();
@@ -1300,7 +1300,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void checkAppUpdate() {
         mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
-        mAppUpdateManager.registerListener(installStateUpdatedListener);
+        mAppUpdateManager.registerListener(mInstallStateUpdatedListener);
 
         Task<AppUpdateInfo> appUpdateInfoTask = mAppUpdateManager.getAppUpdateInfo();
 

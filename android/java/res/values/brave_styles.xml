@@ -358,6 +358,13 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="SmallRegular">
+        <item name="android:textSize">@dimen/small_regular</item>
+        <item name="lineHeight">16sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
+      </style>
+
     <style name="LargeRegular">
         <!-- Default browser size for fonts -->
         <item name="android:textSize">@dimen/large_regular</item>
@@ -373,4 +380,11 @@
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
     </style>
+
+    <style name="HeadingH4">
+        <item name="android:textSize">@dimen/heading_h4</item>
+        <item name="lineHeight">24sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+      </style>
 </resources>

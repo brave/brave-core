@@ -701,7 +701,7 @@
 <translation id="6748319398471481216">מתחדש מדי חודש</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">שנה אחת</translation>
-<translation id="6277055349883621705">חידוש שנתי חוסך 16%</translation>
+<translation id="7574007394522199115">חידוש שנתי חוסך <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">נסה בחינם במשך 7 ימים. לאחר 7 ימים, תחויב במחיר התוכנית. כל המנויים מתחדשים אוטומטית אך ניתן לבטל אותם לפני חידושם.</translation>
 <translation id="6053992191006521518">נסה בחינם</translation>

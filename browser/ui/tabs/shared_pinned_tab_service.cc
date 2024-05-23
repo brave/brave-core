@@ -11,6 +11,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -52,6 +53,8 @@ class DummyContentsData
   void stop_propagation() { stop_propagation_ = true; }
   bool propagation_stopped() const { return stop_propagation_; }
 
+  void ShowDummyView();
+
  private:
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
@@ -63,6 +66,8 @@ class DummyContentsData
   raw_ptr<content::WebContents> shared_contents_ = nullptr;
 
   bool stop_propagation_ = false;
+
+  std::unique_ptr<SharedPinnedTabDummyView> dummy_view_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +177,15 @@ void DummyContentsData::SynchronizeURL() {
   const auto visible_url = shared_contents_->GetVisibleURL();
   dummy_contents_->GetController().GetVisibleEntry()->SetVirtualURL(
       visible_url);
+}
+
+void DummyContentsData::ShowDummyView() {
+  if (!dummy_view_) {
+    dummy_view_ =
+        SharedPinnedTabDummyView::Create(shared_contents_, dummy_contents_);
+  }
+
+  dummy_view_->Install();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DummyContentsData);
@@ -769,13 +783,22 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
 
   auto& pinned_tab_data = pinned_tab_data_.at(index);
   if (pinned_tab_data.contents_owner_model) {
-    std::unique_ptr<content::WebContents> unique_shared_contents;
-    unique_shared_contents =
+    // Detach shared pinned tab from the current owner model.
+    std::unique_ptr<content::WebContents> unique_shared_contents =
         pinned_tab_data.contents_owner_model->ReplaceWebContentsAt(
             index, CreateDummyWebContents(pinned_tab_data.shared_contents));
     DCHECK_EQ(pinned_tab_data.shared_contents, unique_shared_contents.get());
+
+    // Install DummyView to the dummy contents.
+    DummyContentsData::FromWebContents(
+        pinned_tab_data.contents_owner_model->GetWebContentsAt(index))
+        ->ShowDummyView();
+
+    // Replace owner model
     pinned_tab_data.contents_owner_model = tab_strip_model;
 
+    // Suppress events from dummy contents that is about to be replaced with
+    // the shared pinned tab.
     auto* dummy_contents =
         pinned_tab_data.contents_owner_model->GetWebContentsAt(index);
     auto* dummy_contents_data =

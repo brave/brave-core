@@ -68,24 +68,32 @@ struct TransactionDetailsView: View {
           HStack {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoFromTitle)
-              AddressView(address: parsedTransaction.fromAddress) {
-                // zwspOutput to avoid hyphen when wrapped
-                Text(parsedTransaction.fromAddress.zwspOutput)
+              if !parsedTransaction.fromAccountInfo.address.isEmpty {
+                AddressView(address: parsedTransaction.fromAccountInfo.address) {
+                  // zwspOutput to avoid hyphen when wrapped
+                  Text(parsedTransaction.fromAccountInfo.address.zwspOutput)
+                    .font(.callout)
+                    .foregroundColor(Color(braveSystemName: .textPrimary))
+                  if isLocalAccount(
+                    address: parsedTransaction.fromAccountInfo.address,
+                    namedAddress: parsedTransaction.namedFromAddress
+                  ) {  // only show named address if its actual name, not truncated address.
+                    Text(parsedTransaction.namedFromAddress)
+                      .font(.footnote)
+                      .foregroundColor(Color(braveSystemName: .textTertiary))
+                  }
+                }
+              } else {  // Show account name only (no address for Bitcoin).
+                Text(parsedTransaction.namedFromAddress)
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
-                if isLocalAccount(
-                  address: parsedTransaction.fromAddress,
-                  namedAddress: parsedTransaction.namedFromAddress
-                ) {  // only show named address if its actual name, not truncated address.
-                  Text(parsedTransaction.namedFromAddress)
-                    .font(.footnote)
-                    .foregroundColor(Color(braveSystemName: .textTertiary))
-                }
               }
             }
             Spacer()
-            WalletIconButton(braveSystemName: "leo.copy") {
-              UIPasteboard.general.string = parsedTransaction.fromAddress
+            if !parsedTransaction.fromAccountInfo.address.isEmpty {
+              WalletIconButton(braveSystemName: "leo.copy") {
+                UIPasteboard.general.string = parsedTransaction.fromAccountInfo.address
+              }
             }
           }
 
@@ -213,6 +221,7 @@ struct TransactionDetailsView: View {
   private func isLocalAccount(address: String, namedAddress: String) -> Bool {
     if namedAddress.caseInsensitiveCompare(address) == .orderedSame
       || namedAddress.caseInsensitiveCompare(address.truncatedAddress) == .orderedSame
+      || namedAddress.isEmpty
     {
       return false
     }
@@ -296,7 +305,8 @@ private struct TransactionDetailsSendContent: View {
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       if let fromToken = details.fromToken {
         if fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155 {
           return fromToken.name
@@ -332,7 +342,8 @@ private struct TransactionDetailsSendContent: View {
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       if let fromToken = details.fromToken,
         fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155
       {
@@ -353,7 +364,8 @@ private struct TransactionDetailsSendContent: View {
     case .ethSend(let details),
       .erc20Transfer(let details),
       .solSystemTransfer(let details),
-      .solSplTokenTransfer(let details):
+      .solSplTokenTransfer(let details),
+      .btcSend(let details):
       return details.fromToken
     case .filSend(let details):
       return details.sendToken

@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/containers/contains.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -39,12 +40,12 @@ const base::FilePath::StringPieceType kShowIncludesFlag =
 
 class RedirectCC {
  public:
-  RedirectCC(int argc, const base::FilePath::CharType* const* argv)
-      : argc_(argc), argv_(argv) {}
+  explicit RedirectCC(base::span<const base::FilePath::CharType* const> args)
+      : args_(args) {}
 
   base::FilePath::StringType GetCompilerExecutable(
-      int* first_compiler_arg_idx) const {
-    if (argc_ < 2) {
+      size_t* first_compiler_arg_idx) const {
+    if (args_.size() < 2) {
       return base::FilePath::StringType();
     }
 
@@ -67,14 +68,14 @@ class RedirectCC {
     }
 
     *first_compiler_arg_idx = 2;
-    return argv_[1];
+    return args_[1];
 #endif  // defined(REDIRECT_CC_AS_REWRAPPER)
   }
 
   int Run() {
     // Get compiler executable. It can be a first arg to redirect_cc, a
     // REAL_REWRAPPER buildflag or a CC_WRAPPER env variable.
-    int first_compiler_arg_idx = 0;
+    size_t first_compiler_arg_idx = 0;
     const base::FilePath::StringType& compiler_executable =
         GetCompilerExecutable(&first_compiler_arg_idx);
     if (compiler_executable.empty() || first_compiler_arg_idx == 0) {
@@ -84,7 +85,7 @@ class RedirectCC {
 
     // Prepare argv to launch.
     std::vector<base::FilePath::StringType> launch_argv;
-    launch_argv.reserve(argc_);
+    launch_argv.reserve(args_.size());
     launch_argv.push_back(compiler_executable);
 
     // Path to `src/brave/chromium_src`.
@@ -93,8 +94,8 @@ class RedirectCC {
     base::FilePath::StringType chromium_src_dir_with_slash;
 
     // Find directories to work with first.
-    for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
-      base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
+    for (const auto* arg : args_.subspan(first_compiler_arg_idx)) {
+      base::FilePath::StringPieceType arg_piece(arg);
       if (base::StartsWith(arg_piece, kIncludeFlag) &&
           base::EndsWith(arg_piece, kBraveChromiumSrc)) {
         arg_piece.remove_prefix(kIncludeFlag.size());
@@ -108,8 +109,8 @@ class RedirectCC {
     if (chromium_src_dir_with_slash.empty()) {
 #if defined(REDIRECT_CC_AS_REWRAPPER)
       // We're called to execute a non-clang action. Just launch it as is.
-      for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
-        launch_argv.emplace_back(argv_[arg_idx]);
+      for (const auto* arg : args_.subspan(first_compiler_arg_idx)) {
+        launch_argv.emplace_back(arg);
       }
       return Launch(launch_argv);
 #else   // defined(REDIRECT_CC_AS_REWRAPPER)
@@ -122,18 +123,19 @@ class RedirectCC {
     base::FilePath::StringType brave_path;
     bool has_show_includes_flag = false;
 
-    for (int arg_idx = first_compiler_arg_idx; arg_idx < argc_; ++arg_idx) {
-      const base::FilePath::StringPieceType arg_piece = argv_[arg_idx];
+    for (size_t arg_idx = first_compiler_arg_idx; arg_idx < args_.size();
+         ++arg_idx) {
+      const base::FilePath::StringPieceType arg_piece = args_[arg_idx];
       if (!compile_file_found && base::Contains(kCompileFileFlags, arg_piece)) {
         compile_file_found = true;
-        if (arg_idx + 1 >= argc_) {
+        if (arg_idx + 1 >= args_.size()) {
           LOG(ERROR) << "No arg after compile flag " << arg_piece;
           return -1;
         }
 
         // Trim a file path to look for a similar file in
         // brave/chromium_src.
-        base::FilePath::StringPieceType path_cc = argv_[arg_idx + 1];
+        base::FilePath::StringPieceType path_cc = args_[arg_idx + 1];
         if (!path_cc.empty() && path_cc[0] == arg_piece[0]) {
           // That's not a file path, but another compiler parameter. This syntax
           // is used by asm compiler. We can safely ignore this, becaused we
@@ -292,14 +294,14 @@ class RedirectCC {
   }
 #endif  // BUILDFLAG(IS_WIN)
 
-  const int argc_;
-  const base::FilePath::CharType* const* argv_;
+  const base::span<const base::FilePath::CharType* const> args_;
 };
 
 #if BUILDFLAG(IS_WIN)
 #define main wmain
 #endif  // BUILDFLAG(IS_WIN)
 int main(int argc, base::FilePath::CharType* argv[]) {
-  RedirectCC redirect_cc(argc, argv);
+  RedirectCC redirect_cc(
+      UNSAFE_BUFFERS(base::make_span(argv, static_cast<size_t>(argc))));
   return redirect_cc.Run();
 }

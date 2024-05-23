@@ -38,8 +38,6 @@ public class BraveVpnPrefUtils {
     private static final String PREF_EXCLUDED_PACKAGES = "excluded_packages";
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
-    public static final String PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING =
-            "brave_vpn_link_subscription_on_staging";
     public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
 
     public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
@@ -60,16 +58,6 @@ public class BraveVpnPrefUtils {
 
     public static void setIsoCodeUpgrade(boolean newValue) {
         ChromeSharedPreferences.getInstance().writeBoolean(PREF_VPN_ISO_CODE_UPGRADE, newValue);
-    }
-
-    public static boolean isLinkSubscriptionOnStaging() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, false);
-    }
-
-    public static void setLinkSubscriptionOnStaging(boolean newValue) {
-        ChromeSharedPreferences.getInstance()
-                .writeBoolean(PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING, newValue);
     }
 
     public static boolean isLinkSubscriptionDialogShown() {

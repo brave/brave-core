@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include <memory>
+
+#include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -12,6 +15,7 @@
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -315,6 +319,26 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, SynchronizeURL) {
                 ->GetController()
                 .GetVisibleEntry()
                 ->GetVirtualURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       CloseWindowWhenAllTabsAreSharedPinnedTabs) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* browser_2 = CreateNewBrowser();
+
+  // When all unpinned tabs are closed in a window,
+  while (browser_2->tab_strip_model()->count() >
+         browser_2->tab_strip_model()->IndexOfFirstNonPinnedTab()) {
+    browser_2->tab_strip_model()->CloseWebContentsAt(
+        browser_2->tab_strip_model()->count() - 1, /*close_types*/ 0);
+  }
+
+  // Then the window should be closed
+  WaitUntil(base::BindRepeating(
+      []() { return BrowserList::GetInstance()->size() == 1; }));
 }
 
 #if !BUILDFLAG(IS_MAC)

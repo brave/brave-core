@@ -236,8 +236,11 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->VerifyPurchaseToken(
-        base::BindOnce(&BraveVpnNativeWorker::OnVerifyPurchaseToken,
-                       weak_factory_.GetWeakPtr()),
+        base::BindOnce(
+            &BraveVpnNativeWorker::OnVerifyPurchaseToken,
+            weak_factory_.GetWeakPtr(),
+            base::android::ConvertJavaStringToUTF8(env, purchase_token),
+            base::android::ConvertJavaStringToUTF8(env, product_id)),
         base::android::ConvertJavaStringToUTF8(env, purchase_token),
         base::android::ConvertJavaStringToUTF8(env, product_id),
         base::android::ConvertJavaStringToUTF8(env, product_type),
@@ -246,12 +249,16 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
 }
 
 void BraveVpnNativeWorker::OnVerifyPurchaseToken(
+    const std::string& purchase_token,
+    const std::string& product_id,
     const std::string& json_response,
     bool success) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, json_response), success);
+      base::android::ConvertUTF8ToJavaString(env, json_response),
+      base::android::ConvertUTF8ToJavaString(env, purchase_token),
+      base::android::ConvertUTF8ToJavaString(env, product_id), success);
 }
 
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {

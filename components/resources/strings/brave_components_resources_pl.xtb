@@ -1822,7 +1822,7 @@
 <translation id="9210143726807220086">Włącz rozwinięte karty pionowe</translation>
 <translation id="684629111155788563">Dodaj wszystkie karty do nowej grupy</translation>
 <translation id="9106013521852824634">Wyślij kartę do siebie</translation>
-<translation id="6973516366678963184">Pokaż bańkę Wayback Machine</translation>
+<translation id="6973516366678963184">Pokaż skrót do Wayback Machine</translation>
 <translation id="1926106318101432555">Otwórz zakładkę...</translation>
 <translation id="6118819645013156507">Przełącz do okna...</translation>
 <translation id="1623204575967809688">Scal bieżące okno z...</translation>
@@ -2025,11 +2025,6 @@
 <translation id="4986297793092101884">Brave już blokuje pliki cookie innych firm. Możemy również blokować powiadomienia o wyrażeniu zgody na pliki cookie.</translation>
 <translation id="535688588637568715">Tak, blokuj powiadomienia o wyrażeniu zgody na pliki cookie</translation>
 <translation id="2808175374672429053">Symbole wieloznaczne nie są dozwolone w przypadku Tarcz Brave.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Tarcze Brave zablokowały<ph name="COMPANY_LIST"/> programów śledzących na <ph name="SITE_URL"/>}
-      =1 {Tarcze Brave zablokowały <ph name="COMPANY_LIST"/> i 1 inny program śledzący na <ph name="SITE_URL"/>}
-      other {Tarcze Brave zablokowały <ph name="COMPANY_LIST"/> i {BLOCKED_COUNT} innych programów śledzących na <ph name="SITE_URL"/>}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Tarcze Brave zablokowały 1 program śledzący na<ph name="SITE_URL"/>}
       other {Tarcze Brave zablokowały {BLOCKED_COUNT} programów śledzących na <ph name="SITE_URL"/>}

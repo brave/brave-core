@@ -50,6 +50,9 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   bool IsVisible() const;
 
+  void MaybeSetBrowserIsActive();
+  void MaybeSetBrowserIsNoLongerActive();
+
   bool IsNewNavigation(content::NavigationHandle* navigation_handle);
 
   bool IsErrorPage(content::NavigationHandle* navigation_handle);

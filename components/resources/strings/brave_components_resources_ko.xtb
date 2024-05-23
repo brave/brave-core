@@ -2021,11 +2021,6 @@
 <translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
 <translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
 <translation id="2808175374672429053">Brave Shields에는 와일드카드가 허용되지 않습니다.</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields가 <ph name="SITE_URL"/>에서 <ph name="COMPANY_LIST"/> 트래커 차단함}
-      =1 {Brave Shields가 <ph name="SITE_URL"/>에서 <ph name="COMPANY_LIST"/> 외 트래커 1개 차단함}
-      other {Brave Shields가 <ph name="SITE_URL"/>에서 <ph name="COMPANY_LIST"/> 외 트래커 {BLOCKED_COUNT}개 차단함}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 1개 차단함}
       other {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 {BLOCKED_COUNT}개 차단함}

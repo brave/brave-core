@@ -13,6 +13,71 @@ import Shared
 import os.log
 
 extension BrowserViewController {
+  enum CreateTabActionLocation {
+    case toolbar
+    case tabTray
+  }
+
+  func recordCreateTabAction(location: CreateTabActionLocation?) {
+    var tabCreationTotalStorage = P3ATimedStorage<Int>.tabCreationTotalStorage
+    var tabCreationFromToolbarStorage = P3ATimedStorage<Int>.tabCreationFromToolbarStorage
+
+    if let location, !privateBrowsingManager.isPrivateBrowsing {
+      tabCreationTotalStorage.add(value: 1, to: Date())
+      if location == .toolbar {
+        tabCreationFromToolbarStorage.add(value: 1, to: Date())
+      }
+    }
+
+    let toolbarCount = tabCreationFromToolbarStorage.combinedValue
+    let total = tabCreationTotalStorage.combinedValue
+
+    if total == 0 {
+      return
+    }
+
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.NewTabMethods",
+      buckets: [
+        .r(0..<25),
+        .r(25..<50),
+        .r(50..<75),
+        .r(75...),
+      ],
+      value: Int((Double(toolbarCount) / Double(total)) * 100)
+    )
+  }
+
+  func recordURLBarSubmitLocationP3A(from tab: Tab?) {
+    var urlSubmissionTotalStorage = P3ATimedStorage<Int>.urlSubmissionTotalStorage
+    var urlSubmissionNewTabStorage = P3ATimedStorage<Int>.urlSubmissionNewTabStorage
+
+    if let tab, !tab.isPrivate {
+      let isNewTab = tab.url.flatMap { InternalURL($0) }?.isAboutHomeURL == true
+      if isNewTab {
+        urlSubmissionNewTabStorage.add(value: 1, to: Date())
+      }
+      urlSubmissionTotalStorage.add(value: 1, to: Date())
+    }
+
+    let newTabCount = urlSubmissionNewTabStorage.combinedValue
+    let total = urlSubmissionTotalStorage.combinedValue
+
+    if total == 0 {
+      return
+    }
+
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.LocationNewEntries",
+      buckets: [
+        .r(0..<25),
+        .r(25..<50),
+        .r(50..<75),
+        .r(75...),
+      ],
+      value: Int((Double(newTabCount) / Double(total)) * 100)
+    )
+  }
 
   func recordWeeklyUsage() {
     var weeklyUsage = P3ATimedStorage<Int>.weeklyUsage
@@ -342,5 +407,17 @@ extension P3ATimedStorage where Value == Int {
   }
   fileprivate static var weeklyUsage: Self {
     .init(name: "browser-weekly-usage", lifetimeInDays: 14)
+  }
+  fileprivate static var urlSubmissionTotalStorage: Self {
+    .init(name: "url-bar-existing-tabs", lifetimeInDays: 7)
+  }
+  fileprivate static var urlSubmissionNewTabStorage: Self {
+    .init(name: "url-bar-new-tabs", lifetimeInDays: 7)
+  }
+  fileprivate static var tabCreationTotalStorage: Self {
+    .init(name: "tabs-created-total", lifetimeInDays: 7)
+  }
+  fileprivate static var tabCreationFromToolbarStorage: Self {
+    .init(name: "tabs-created-from-toolbar", lifetimeInDays: 7)
   }
 }

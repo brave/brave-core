@@ -13,16 +13,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback_forward.h"
 #include "base/rand_util.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 
 namespace brave_news {
 
-// An ArticleWeight has a few different components
-struct ArticleWeight {
+struct ArticleMetadata {
   // The pop_recency of the article. This is used for discover cards, where we
   // don't consider the subscription status or visit_weighting.
   double pop_recency = 0;
@@ -43,16 +41,26 @@ struct ArticleWeight {
   // selection of articles outside the user's explicit interests. Sensitive
   // content should not be used for discovery.
   bool discoverable = false;
+
+  // All the channels this Article belongs to.
+  base::flat_set<std::string> channels;
+
+  ArticleMetadata();
+  ArticleMetadata(const ArticleMetadata&) = delete;
+  ArticleMetadata& operator=(const ArticleMetadata&) = delete;
+  ArticleMetadata& operator=(ArticleMetadata&&);
+  ArticleMetadata(ArticleMetadata&&);
+  ~ArticleMetadata();
 };
 
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleMetadata>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
 // Gets a weighting for a specific article. This determines how likely an
 // article is to be chosen.
 using GetWeighting =
-    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& metadata,
-                                   const ArticleWeight& weight)>;
+    base::RepeatingCallback<double(const mojom::FeedItemMetadataPtr& data,
+                                   const ArticleMetadata& meta)>;
 
 // PickArticles is a strategy used to pick articles (for example, taking the
 // first article). Different feeds use different strategies for picking
@@ -96,20 +104,8 @@ std::optional<size_t> PickFirstIndex(const ArticleInfos& articles);
 std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting);
 std::optional<size_t> PickRoulette(const ArticleInfos& articles);
-
-mojom::FeedItemMetadataPtr PickAndRemove(ArticleInfos& articles,
-                                         PickArticles picker);
-
-// Picks an article with a probability article_weight/sum(article_weights).
-mojom::FeedItemMetadataPtr PickRouletteAndRemove(ArticleInfos& articles);
-
-mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
-    ArticleInfos& articles);
-
-ArticleInfos GetArticleInfos(const std::string& locale,
-                             const FeedItems& feed_items,
-                             const Publishers& publishers,
-                             const Signals& signals);
+std::optional<size_t> PickChannelRoulette(const std::string& channel,
+                                          const ArticleInfos& articles);
 
 }  // namespace brave_news
 

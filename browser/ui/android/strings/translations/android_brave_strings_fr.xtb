@@ -700,7 +700,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="6748319398471481216">Renouvellement mensuel</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/mois.</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="6277055349883621705">Économisez 16 % avec le renouvellement annuel</translation>
+<translation id="7574007394522199115">Économisez <ph name="PERCENTAGE_AMOUNT"/> %% avec le renouvellement annuel</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/an.</translation>
 <translation id="2655185358771731232">Faites un essai gratuit pendant 7 jours. Après 7 jours, le prix du forfait vous sera facturé. Tous les abonnements sont renouvelés automatiquement, mais peuvent être annulés avant le renouvellement.</translation>
 <translation id="6053992191006521518">Faites un essai GRATUIT</translation>

@@ -35,8 +35,6 @@ class EdgeRequestResponse : public EdgeRequest {
   NodeResource* GetResourceNode() const override;
   GraphNode* GetRequestingNode() const override;
 
-  ItemName GetItemName() const override;
-
   void AddGraphMLAttributes(xmlDocPtr doc,
                             xmlNodePtr parent_node) const override;
 

@@ -55,13 +55,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
 #if !BUILDFLAG(IS_ANDROID)
   // See "background_helper_android.h" for Android.
   BrowserList::AddObserver(this);
-
-  OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
-#else
-  // Set `is_browser_active_` to `true` because `BrowserList` class is not
-  // available on Android.
-  is_browser_active_ = true;
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  MaybeSetBrowserIsActive();
 
   OnVisibilityChanged(web_contents->GetVisibility());
 }
@@ -83,6 +79,36 @@ bool AdsTabHelper::UserHasJoinedBraveRewards() const {
 
 bool AdsTabHelper::IsVisible() const {
   return is_web_contents_visible_ && is_browser_active_.value_or(false);
+}
+
+void AdsTabHelper::MaybeSetBrowserIsActive() {
+  if (is_browser_active_ && *is_browser_active_) {
+    // Already active.
+    return;
+  }
+
+  is_browser_active_ = true;
+
+  MaybeNotifyBrowserDidBecomeActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  MaybeNotifyTabDidChange();
+}
+
+void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
+  if (is_browser_active_ && !*is_browser_active_) {
+    // Already inactive.
+    return;
+  }
+
+  is_browser_active_ = false;
+
+  MaybeNotifyBrowserDidResignActive();
+
+  // Maybe notify tab change after the browser active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  MaybeNotifyTabDidChange();
 }
 
 bool AdsTabHelper::IsNewNavigation(
@@ -161,13 +187,13 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty()) {
-    // Don't notify content changes if the tab was restored, was a previously
-    // committed navigation or if the tab redirect chain is empty.
+  if (redirect_chain_.empty()) {
+    // Don't notify content changes if the tab redirect chain is empty.
     return;
   }
 
   ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
+                                   is_new_navigation_, is_restoring_,
                                    is_error_page_, IsVisible());
 }
 
@@ -313,34 +339,12 @@ void AdsTabHelper::WebContentsDestroyed() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (is_browser_active_ && *is_browser_active_) {
-    // Already active.
-    return;
-  }
-
-  is_browser_active_ = true;
-
-  MaybeNotifyBrowserDidBecomeActive();
-
-  // Maybe notify tab change after the browser active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
-  MaybeNotifyTabDidChange();
+void AdsTabHelper::OnBrowserSetLastActive(Browser* /*browser*/) {
+  MaybeSetBrowserIsActive();
 }
 
-void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
-  if (is_browser_active_ && !*is_browser_active_) {
-    // Already inactive.
-    return;
-  }
-
-  is_browser_active_ = false;
-
-  MaybeNotifyBrowserDidResignActive();
-
-  // Maybe notify tab change after the browser active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
-  MaybeNotifyTabDidChange();
+void AdsTabHelper::OnBrowserNoLongerActive(Browser* /*browser*/) {
+  MaybeSetBrowserIsNoLongerActive();
 }
 #endif
 

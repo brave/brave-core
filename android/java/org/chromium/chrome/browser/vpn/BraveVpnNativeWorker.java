@@ -123,9 +123,10 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
-    public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
+    public void onVerifyPurchaseToken(
+            String jsonResponse, String purchaseToken, String productId, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
-            observer.onVerifyPurchaseToken(jsonResponse, isSuccess);
+            observer.onVerifyPurchaseToken(jsonResponse, purchaseToken, productId, isSuccess);
         }
     }
 

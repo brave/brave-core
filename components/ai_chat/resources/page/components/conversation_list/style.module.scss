@@ -6,11 +6,11 @@
 .turn {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
-  padding: 16px;
-  position: relative;
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   letter-spacing: -0.1px;
 }
 
@@ -46,10 +46,21 @@
   gap: var(--leo-spacing-m);
 }
 
+.avatarContainer {
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+
+  span {
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
 .avatar {
   --leo-icon-size: 18px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: var(--leo-color-container-highlight);
   border-radius: 100px;
   flex-shrink: 0;
@@ -66,7 +77,6 @@
 
 .message {
   margin: 0;
-  padding-top: 5px;
   width: 100%;
 }
 
@@ -74,18 +84,18 @@
   padding: 0 16px;
 }
 
-.asistantMenu {
-  position: absolute;
-  right: 16px;
-  z-index: inherit;
-}
-
-@media (pointer: fine) {
-  .turn:not(:hover) > .asistantMenu {
-    display: none;
-  }
-}
-
 .siteTitleContainer {
   margin-top: var(--leo-spacing-m);
+}
+
+.turnHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.turnActions {
+  display: flex;
+  gap: 12px;
 }

@@ -125,7 +125,7 @@
 <translation id="1700746046668116047">请注意，您的网络服务提供商、被动网络观察员或您的雇主（如果您正在使用工作机器或网络）仍然可以看到您的活动。为了更多的隐私，打开 Tor 无痕窗口。</translation>
 <translation id="8759753423332885148">了解详情。</translation>
 <translation id="8611976753572844841">带有 Tor 连接的私人窗口</translation>
-<translation id="1645589858096839236">Brave 不会存储来自私人窗户的浏览活动。如果使用 Tor 连接，站点更难查看您的真实 IP 地址；网络观察者也更难查看您访问的站点。但是，如果您的人身安全取决于保持匿名状态，请改用 Tor 浏览器。</translation>
+<translation id="1645589858096839236">Brave 不会存储来自私人窗口的浏览活动。如果使用 Tor 连接，站点更难查看您的真实 IP 地址；网络观察者也更难查看您访问的站点。但是，如果您的人身安全取决于保持匿名状态，请改用 Tor 浏览器。</translation>
 <translation id="7919374705736538787">私密搜索</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">’进行私人搜索时，Brave将使用DuckDuckGo在私人窗口中进行搜索。DuckDuckGo不会跟踪您的搜索历史记录，因此您的搜索操作具有私密性。</translation>
@@ -1698,7 +1698,7 @@ other {# 个来源}
 <translation id="2459110391933057855">选择标签页6</translation>
 <translation id="4916571615731762008">选择标签页7</translation>
 <translation id="5632464557946437728">选择最后一个标签页</translation>
-<translation id="3480357196232712255">“复制”标签页</translation>
+<translation id="3480357196232712255">复制标签页</translation>
 <translation id="1137110118182796989">下一个移动标签页</translation>
 <translation id="229140155637338506">上一个移动标签页</translation>
 <translation id="4841735924729216702">窗口菜单</translation>
@@ -1715,9 +1715,9 @@ other {# 个来源}
 <translation id="6674128381307353306">将所有标签页静音</translation>
 <translation id="1815548596883953231">将其他标签页静音</translation>
 <translation id="926046137238708033">将所有标签页取消静音</translation>
-<translation id="855081842937141170">“固定”标签页</translation>
+<translation id="855081842937141170">固定标签页</translation>
 <translation id="2805351816064694332">关闭未固定标签页</translation>
-<translation id="8657641252283410630">“组”标签页</translation>
+<translation id="8657641252283410630">组标签页</translation>
 <translation id="8908724110993882115">切换已展开的群组</translation>
 <translation id="8813600493701436462">从当前群组中删除标签页</translation>
 <translation id="3170171381379098900">取消当前标签页群组的分组</translation>
@@ -1789,15 +1789,15 @@ other {# 个来源}
 <translation id="6938154350999993769">调试切换平板模式</translation>
 <translation id="5854741377790551127">调试打印视图树</translation>
 <translation id="8199130368328220410">切换实时字幕</translation>
-<translation id="9055778350624039365">显示 Brave 的钱包面板</translation>
-<translation id="2548853975094084059">关闭 Brave 的钱包面板</translation>
-<translation id="3765209580429944524">显示 Brave 的 VPN 面板</translation>
+<translation id="9055778350624039365">显示 Brave 钱包面板</translation>
+<translation id="2548853975094084059">关闭 Brave 钱包面板</translation>
+<translation id="3765209580429944524">显示 Brave VPN 面板</translation>
 <translation id="5989009326527614692">切换 Brave VPN 工具栏按钮</translation>
 <translation id="7334332308395652803">切换 Brave VPN 托盘图标</translation>
-<translation id="4326011033480357140">发送Brave 的 VPN 反馈</translation>
+<translation id="4326011033480357140">发送Brave VPN 反馈</translation>
 <translation id="2345974803401546682">关于 Brave VPN</translation>
-<translation id="8934783170241943640">管理 Brave 的VPN 计划</translation>
-<translation id="6332027154313182926">切换 Brave 的 VPN</translation>
+<translation id="8934783170241943640">管理 Brave VPN 计划</translation>
+<translation id="6332027154313182926">切换 Brave VPN</translation>
 <translation id="6539014233195996894">切换标签页静音</translation>
 <translation id="2682865834956428001">切换侧边栏位置</translation>
 <translation id="6105745639559695088">切换侧边栏</translation>
@@ -2021,11 +2021,6 @@ other {# 个来源}
 <translation id="4986297793092101884">Brave 已经阻止了第三方 cookie。我们也可以阻止 cookie 同意通知。</translation>
 <translation id="535688588637568715">是的，阻止 cookie 同意通知</translation>
 <translation id="2808175374672429053">Brave Shields 不允许使用通配符。</translation>
-<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
-      =0 {Brave Shields 已禁用 <ph name="COMPANY_LIST"/> 在 <ph name="SITE_URL"/> 上的追踪器}
-      =1 {Brave Shields 已禁用 <ph name="COMPANY_LIST"/> 及其他 1 个在 <ph name="SITE_URL"/> 上的追踪器}
-      other {Brave Shields 已禁用 <ph name="COMPANY_LIST"/> 及 {BLOCKED_COUNT}  在<ph name="SITE_URL"/> 上的追踪器}
-    }</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields 已禁用 1 个在 <ph name="SITE_URL"/> 上的追踪器}
       other {Brave Shields 已禁用 {BLOCKED_COUNT} 在 <ph name="SITE_URL"/> 上的追踪器}
@@ -2069,7 +2064,7 @@ other {# 个来源}
 <translation id="8703188411226330709">开始免费试用</translation>
 <translation id="1024255913009642477">已经购买了 VPN？</translation>
 <translation id="8814357473522731680">技术支持：</translation>
-<translation id="3960619311638643872">Brave 的 VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7805768142964895445">状态</translation>
 <translation id="5747552184818312860">到期时间</translation>
 <translation id="8421945428836418371">自动恢复连接</translation>
