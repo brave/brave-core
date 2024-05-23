@@ -130,7 +130,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser:generated_json_rpc_responses",
     "//brave/components/brave_wallet/browser:generated_swap_responses",
     "//brave/components/brave_wallet/browser:hd_keyring",
-    "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:transaction",
@@ -150,17 +149,24 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
     "//components/component_updater:test_support",
-    "//components/permissions",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
-    "//content/test:test_support",
     "//net:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
+    "//ui/base:base",
     "//url",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//brave/components/brave_wallet/browser:permission_utils",
+      "//components/permissions",
+      "//content/test:test_support",
+    ]
+  }
 }  # source_set("brave_wallet_unit_tests")
 
 source_set("test_support") {
