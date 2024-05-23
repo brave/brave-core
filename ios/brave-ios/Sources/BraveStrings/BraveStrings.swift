@@ -3630,6 +3630,14 @@ extension Strings {
       value: "Copy app size info to clipboard.",
       comment: "Copy app info to clipboard action sheet action."
     )
+  public static let copyTabsDebugToClipboard =
+    NSLocalizedString(
+      "copyTabsDebugToClipboard",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Copy Tabs info to clipboard.",
+      comment: "Copy Tabs info to clipboard action sheet action."
+    )
   public static let blockThirdPartyCookies = NSLocalizedString(
     "Block3rdPartyCookies",
     tableName: "BraveShared",
