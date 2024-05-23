@@ -9,7 +9,6 @@
 #include <optional>
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace brave_rewards {
