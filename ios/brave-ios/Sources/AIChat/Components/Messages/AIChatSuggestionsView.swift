@@ -76,7 +76,7 @@ struct WrappingHStack: Layout {
   }
 }
 
-@available(iOS, introduced: 15.0, obsoleted: 16.0)
+@available(iOS, introduced: 15.0, deprecated: 16.0)
 struct WrappingHStackOld<Model, V>: View where Model: Hashable, V: View {
   typealias ViewGenerator = (Model) -> V
 
