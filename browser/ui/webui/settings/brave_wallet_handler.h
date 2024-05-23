@@ -55,7 +55,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
 
   PrefService* GetPrefs();
-  
+
   void OnAddChain(base::Value javascript_callback,
                   const std::string& chain_id,
                   brave_wallet::mojom::ProviderError error,

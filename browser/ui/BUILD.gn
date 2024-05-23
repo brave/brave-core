@@ -71,8 +71,6 @@ source_set("ui") {
     ]
   }
 
-
-
   if (enable_ai_chat) {
     sources += [
       "webui/ai_chat/ai_chat_ui.cc",
