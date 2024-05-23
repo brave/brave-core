@@ -367,6 +367,16 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
 void SharedPinnedTabService::OnBrowserRemoved(Browser* browser) {
   DVLOG(2) << __FUNCTION__;
   closing_browsers_.erase(browser);
+
+  // On Mac, even after the last browser is closed, the app could be still alive
+  // on background. We should clean up the data in this case.
+  if (last_active_browser_ == browser) {
+    last_active_browser_ = nullptr;
+  }
+
+  if (browsers_.empty()) {
+    pinned_tab_data_.clear();
+  }
 }
 
 void SharedPinnedTabService::OnTabStripModelChanged(
