@@ -7,12 +7,15 @@
 
 #include <memory>
 
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "ui/base/models/menu_model.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 
@@ -22,6 +25,18 @@
 #endif
 
 using views::MenuItemView;
+
+namespace {
+
+// Copied from app_menu.cc to dump w/o crashing
+bool IsBookmarkCommand(int command_id) {
+  return command_id >= IDC_FIRST_UNBOUNDED_MENU &&
+         ((command_id - IDC_FIRST_UNBOUNDED_MENU) %
+              AppMenuModel::kNumUnboundedMenuTypes ==
+          0);
+}
+
+}  // namespace
 
 BraveAppMenu::BraveAppMenu(Browser* browser,
                            ui::MenuModel* model,
@@ -41,6 +56,18 @@ void BraveAppMenu::RunMenu(views::MenuButtonController* host) {
 }
 
 void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
+  // Suspect that the entry is null but can't imagine which command causes it.
+  // See
+  // https://github.com/brave/brave-browser/issues/37862#issuecomment-2078553575
+  if (!IsBookmarkCommand(command_id) && command_id != IDC_EDIT_MENU &&
+      command_id != IDC_ZOOM_MENU &&
+      command_id_to_entry_.find(command_id) == command_id_to_entry_.end()) {
+    LOG(ERROR) << __func__ << " entry should be exsit for " << command_id;
+    SCOPED_CRASH_KEY_NUMBER("BraveAppMenu", "command_id", command_id);
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
+
   AppMenu::ExecuteCommand(command_id, mouse_event_flags);
   RecordMenuUsage(command_id);
 }
