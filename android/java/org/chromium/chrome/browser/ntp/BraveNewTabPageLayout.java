@@ -63,7 +63,6 @@ import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -204,8 +203,6 @@ public class BraveNewTabPageLayout
         super.onFinishInflate();
 
         mComesFromNewTab = false;
-
-        NTPUtil.showBREBottomBanner(this);
         mFeedHash = "";
         initBraveNewsController();
         try {
@@ -929,7 +926,6 @@ public class BraveNewTabPageLayout
                     mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
                 }
             }
-            checkForNonDisruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
 
@@ -1248,30 +1244,21 @@ public class BraveNewTabPageLayout
         mBgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
         ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                mWorkerTask =
-                        new FetchWallpaperWorkerTask(ntpImage, mBgImageView.getMeasuredWidth(),
-                                mBgImageView.getMeasuredHeight(), mWallpaperRetrievedCallback);
-                mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        observer.addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mWorkerTask =
+                                new FetchWallpaperWorkerTask(
+                                        ntpImage,
+                                        mBgImageView.getMeasuredWidth(),
+                                        mBgImageView.getMeasuredHeight(),
+                                        mWallpaperRetrievedCallback);
+                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-    }
-
-    private void checkForNonDisruptiveBanner(NTPImage ntpImage) {
-        int brOption = NTPUtil.checkForNonDisruptiveBanner(ntpImage, mSponsoredTab);
-        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()
-                && ((BraveRewardsHelper.isRewardsEnabled()
-                        || BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()))
-                && (!ContextUtils.getAppSharedPreferences().getBoolean(
-                            BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true)
-                        && !BravePrefServiceBridge.getInstance().getShowNews())) {
-            NTPUtil.showNonDisruptiveBanner(
-                    (BraveActivity) mActivity, this, brOption, mSponsoredTab, mNewTabPageListener);
-        }
+                        mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
     }
 
     private void checkAndShowNTPImage(boolean isReset) {
@@ -1284,7 +1271,6 @@ public class BraveNewTabPageLayout
                 mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             }
         }
-        checkForNonDisruptiveBanner(ntpImage);
         showNTPImage(ntpImage);
     }
 

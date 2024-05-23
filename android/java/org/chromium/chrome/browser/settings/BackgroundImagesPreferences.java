@@ -32,8 +32,6 @@ public class BackgroundImagesPreferences
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
-    public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
-    public static final String PREF_SHOW_BRE_BANNER = "show_bre_banner";
     public static final String PREF_BACKGROUND_IMAGES_CATEGORY = "background_images";
 
     private ChromeSwitchPreference mShowBackgroundImagesPref;
