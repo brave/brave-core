@@ -253,11 +253,17 @@ class ChromiumSrcOverridesChecker:
 
         display_override_filepath = os.path.join('chromium_src',
                                                  override_filepath)
+        is_brave_symbol = target.startswith('BRAVE_')
         if found['def_position'] == -1:
             self.AddError(
                 f"  SCRIPT ERROR. Expected to find #define {target} " +
                 f"in {display_override_filepath}.")
-        if not found['undef']:
+        if found['undef']:
+            if is_brave_symbol:
+                self.AddError(
+                    f"  Do not #undef patch-like defines {target} in " +
+                    f"{display_override_filepath}.")
+        elif not is_brave_symbol:
             message = (f"  Expected to find #undef {target} in " +
                        f"{display_override_filepath}.")
             if override_filepath.endswith('.h'):
