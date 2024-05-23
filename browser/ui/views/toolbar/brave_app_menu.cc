@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
@@ -62,6 +63,7 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
       command_id != IDC_ZOOM_MENU &&
       command_id_to_entry_.find(command_id) == command_id_to_entry_.end()) {
     LOG(ERROR) << __func__ << " entry should be exsit for " << command_id;
+    SCOPED_CRASH_KEY_NUMBER("BraveAppMenu", "command_id", command_id);
     base::debug::DumpWithoutCrashing();
     return;
   }
