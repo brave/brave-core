@@ -13,10 +13,6 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h"
 
-namespace base {
-class Process;
-}  // namespace base
-
 namespace content_settings {
 class BravePrefProvider;
 }  // namespace content_settings
