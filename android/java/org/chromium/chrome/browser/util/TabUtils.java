@@ -283,8 +283,19 @@ public class TabUtils {
         TabUtils.bringChromeTabbedActivityToTheTop(activity);
     }
 
+    public static void openURLWithBraveActivity(String url) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openNewOrSelectExistingTab(url, true);
+            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "openURLWithBraveActivity error", e);
+        }
+    }
+
     /**
      * Open link in a custom tab
+     *
      * @param context packageContext/source of the intent
      * @param url to be opened
      */

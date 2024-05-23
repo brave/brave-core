@@ -29,7 +29,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -127,6 +129,14 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         mYearlyText = findViewById(R.id.yearly_text);
+
+        TextView refreshCredentialsButton = findViewById(R.id.refresh_credentials_button);
+        refreshCredentialsButton.setOnClickListener(
+                v -> {
+                    TabUtils.openURLWithBraveActivity(
+                            LinkSubscriptionUtils.getBraveAccountRecoverUrl(
+                                    InAppPurchaseWrapper.SubscriptionProduct.VPN));
+                });
 
         mBtnVpnPlanAction = findViewById(R.id.vpn_plan_action_button);
         mBtnVpnPlanAction.setOnClickListener(

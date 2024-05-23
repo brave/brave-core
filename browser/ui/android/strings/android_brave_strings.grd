@@ -2299,7 +2299,13 @@ Are you sure you want to do this?
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
-      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
+      Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\nBy using Brave, you agree to the Terms of Use and Privacy Policy.
+    </message>
+    <message name="IDS_ALREADY_PURCHASED" desc="Brave subscription plan page already purchased text">
+      Already purchased on brave.com?
+    </message>
+    <message name="IDS_REFRESH_YOUR_CREDENTIALS" desc="Brave subscription plan page refresh your credentials action text">
+      Refresh your credentials
     </message>
     <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
       Try for FREE

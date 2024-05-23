@@ -15,11 +15,13 @@ import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -33,10 +35,6 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_AUTOCOMPLETE = "autocomplete_switch";
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
-    private static final String LINK_SUBSCRIPTION_URL =
-            "https://account.brave.com?intent=link-order&product=leo";
-    private static final String LINK_SUBSCRIPTION_URL_STAGING =
-            "https://account.bravesoftware.com?intent=link-order&product=leo";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -117,7 +115,9 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         manageSubscription.setVisible(true);
         linkSubscription.setOnPreferenceClickListener(
                 preference -> {
-                    BraveLeoUtils.openURL(getLinkURL());
+                    TabUtils.openURLWithBraveActivity(
+                            LinkSubscriptionUtils.getBraveAccountLinkUrl(
+                                    InAppPurchaseWrapper.SubscriptionProduct.LEO));
                     return true;
                 });
         manageSubscription.setOnPreferenceClickListener(
@@ -143,13 +143,5 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         super.onResume();
         setModel();
         checkLinkPurchase();
-    }
-
-    private String getLinkURL() {
-        if (BraveQAPreferences.isLeoStagingUsed()) {
-            return LINK_SUBSCRIPTION_URL_STAGING;
-        }
-
-        return LINK_SUBSCRIPTION_URL;
     }
 }

@@ -29,15 +29,15 @@ import com.wireguard.crypto.KeyPair;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
@@ -219,12 +219,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
-                        intent.putExtra(BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        intent.setAction(Intent.ACTION_VIEW);
-                        getActivity().finish();
-                        startActivity(intent);
+                        TabUtils.openURLWithBraveActivity(
+                                LinkSubscriptionUtils.getBraveAccountLinkUrl(
+                                        InAppPurchaseWrapper.SubscriptionProduct.VPN));
                         return true;
                     }
                 });

@@ -13,6 +13,7 @@ import org.jni_zero.CalledByNative;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
@@ -41,13 +42,13 @@ public class BraveLeoSettingsLauncherHelper {
         if (BraveLeoPrefUtils.getIsSubscriptionActive(Profile.fromWebContents(webContents))) {
             BraveLeoUtils.openManageSubscription();
         } else {
-            BraveLeoUtils.openURL(ACCOUNT_PAGE_URL);
+            TabUtils.openURLWithBraveActivity(ACCOUNT_PAGE_URL);
         }
     }
 
     @CalledByNative
     private static void openURL(String url) {
-        BraveLeoUtils.openURL(url);
+        TabUtils.openURLWithBraveActivity(url);
     }
 
     @CalledByNative

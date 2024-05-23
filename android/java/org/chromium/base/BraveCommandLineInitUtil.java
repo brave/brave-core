@@ -23,7 +23,7 @@ public abstract class BraveCommandLineInitUtil {
     // Duplicate constant to avoid pull dependency into base
     private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
     private static final String PREF_QA_COMMAND_LINE = "qa_command_line";
-    private static final String PREF_USE_LEO_STAGING_SERVER = "use_leo_staging_server";
+    private static final String PREF_LINK_SUBSCRIPTION_ON_STAGING = "link_subscription_on_staging";
     private static final String TEST_VARIATIONS_SERVER_URL_FILE =
             "/data/local/tmp/brave-test-variations-server-url";
 
@@ -60,7 +60,7 @@ public abstract class BraveCommandLineInitUtil {
             }
         }
 
-        if (sharedPreferences.getBoolean(PREF_USE_LEO_STAGING_SERVER, false)) {
+        if (sharedPreferences.getBoolean(PREF_LINK_SUBSCRIPTION_ON_STAGING, false)) {
             qaCommandLine +=
                     " --env-leo=staging --env-ai-chat.bsg=dev --env-ai-chat-premium.bsg=dev";
         }

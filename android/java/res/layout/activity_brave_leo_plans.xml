@@ -325,6 +325,30 @@
                         android:textSize="11sp"
                         app:drawableTint="@android:color/white"/>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/HeadingH4"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/already_purchased"
+                        android:textColor="@color/primitive_primary_20"
+                        android:textAlignment="center"/>
+
+                    <TextView
+                        android:id="@+id/refresh_credentials_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/HeadingH4"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/refresh_credentials_bg"
+                        android:text="@string/refresh_your_credentials"
+                        android:textAlignment="center"/>
+
                 </LinearLayout>
             </ScrollView>
 
