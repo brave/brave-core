@@ -15,6 +15,9 @@ inline constexpr char kCredentialRSAPublicKey[] =
 inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
 
+inline constexpr char kPatternsRetrievalTime[] =
+    "brave.web_discovery.patterns_retrieval_time";
+
 }  // namespace web_discovery
 
 #endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_

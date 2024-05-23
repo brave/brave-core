@@ -11,10 +11,14 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/web_discovery/browser/patterns.h"
 #include "net/base/backoff_entry.h"
 #include "url/gurl.h"
+
+class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -37,10 +41,15 @@ class ServerConfigLoader {
  public:
   using ConfigCallback =
       base::RepeatingCallback<void(std::unique_ptr<ServerConfig>)>;
+  using PatternsCallback =
+      base::RepeatingCallback<void(std::unique_ptr<PatternsGroup>)>;
 
   explicit ServerConfigLoader(
+      PrefService* local_state,
+      base::FilePath user_data_dir,
       network::SharedURLLoaderFactory* shared_url_loader_factory,
-      ConfigCallback config_callback);
+      ConfigCallback config_callback,
+      PatternsCallback patterns_callback);
   ~ServerConfigLoader();
 
   ServerConfigLoader(const ServerConfigLoader&) = delete;
@@ -52,15 +61,38 @@ class ServerConfigLoader {
   void OnConfigResponse(std::optional<std::string> response_body);
   bool ProcessConfigResponse(const std::optional<std::string>& response_body);
 
+  void LoadStoredPatterns();
+  void OnPatternsFileLoaded(std::optional<std::string> patterns_json);
+  void SchedulePatternsRequest();
+  void RequestPatterns();
+  void OnPatternsResponse(std::optional<std::string> response_body);
+  void OnPatternsGunzip(std::optional<std::string> patterns_json);
+  void OnPatternsWritten(std::unique_ptr<PatternsGroup> parsed_group,
+                         bool result);
+  void HandlePatternsStatus(bool result);
+
+  raw_ptr<PrefService> local_state_;
+
+  scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
+
   GURL config_url_;
+  GURL patterns_url_;
+  base::FilePath patterns_path_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   ConfigCallback config_callback_;
+  PatternsCallback patterns_callback_;
 
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
-  net::BackoffEntry backoff_entry_;
+  std::unique_ptr<network::SimpleURLLoader> config_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> patterns_url_loader_;
+  net::BackoffEntry config_backoff_entry_;
+  net::BackoffEntry patterns_backoff_entry_;
 
-  base::WallClockTimer update_timer_;
+  base::WallClockTimer config_update_timer_;
+  base::WallClockTimer patterns_update_timer_;
+  bool patterns_first_request_made_ = false;
+
+  base::WeakPtrFactory<ServerConfigLoader> weak_ptr_factory_{this};
 };
 
 }  // namespace web_discovery

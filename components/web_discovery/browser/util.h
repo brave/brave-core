@@ -20,6 +20,7 @@ inline constexpr char kCollectorHostSwitch[] = "wdp-collector-host";
 inline constexpr int kCurrentVersion = 1;
 
 std::string GetCollectorHost();
+GURL GetPatternsEndpoint();
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url);
 
