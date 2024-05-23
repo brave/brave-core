@@ -5,5 +5,5 @@ Version: 0.6.0
 Security Critical: yes
 Shipped: yes
 License: Mozilla Public License 2.0
-License File:
+License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/LICENSE
 Revision: 65d6c3e0a5dc222f745dbc7bc16c92a49e3d2aff

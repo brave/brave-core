@@ -81,8 +81,18 @@ root = "chromium"
 # feature (and dependency) do not get added to the build anyway
 remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
 
+[crate.adss]
+license_files = ['LICENSE']
+
+[crate.ansi_term]
+license_files = ['LICENCE']
+
+[crate.arrayref]
+license_files = ['LICENSE']
+
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
+license_files = ['LICENSE.txt']
 
 [crate.crunchy]
 build_script_outputs = [ "lib.rs" ]
@@ -90,6 +100,19 @@ build_script_outputs = [ "lib.rs" ]
 [crate.cssparser]
 build_script_outputs = [ "tokenizer.rs" ]
 extra_build_script_src_roots = [ "../build" ]
+license_files = ['LICENSE']
+
+[crate.cssparser-macros]
+license_files = ['LICENSE']
+
+[crate.dtoa-short]
+license_files = ['LICENSE']
+
+[crate.encoding_rs]
+license_files = ['LICENSE-APACHE']
+
+[crate.funty]
+license_files = ['LICENSE.txt']
 
 [crate.num-bigint]
 extra_input_roots = [ "../README.md" ]
@@ -131,9 +154,53 @@ extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
 
 [crate.challenge-bypass-ristretto]
 extra_input_roots = [ "../docs", "../README.md" ]
+license_files = ['LICENSE']
+
+[crate.chrono]
+license_files = ['LICENSE.txt']
+
+[crate.getrandom]
+license_files = ['LICENSE-APACHE']
+
+[crate.itoa]
+license_files = ['LICENSE-APACHE']
+
+[crate.ppoprf]
+license_files = ['LICENSE']
+
+[crate.radium]
+license_files = ['LICENSE.txt']
+
+[crate.rand]
+license_files = ['LICENSE-APACHE']
+
+[crate.rand_core]
+license_files = ['LICENSE-APACHE']
+
+[crate.reddsa]
+extra_input_roots = [ "../README.md" ]
+license_files = ['LICENSE.Apache-2.0']
 
 [crate.signature]
 extra_input_roots = [ "../README.md" ]
+
+[crate.sta-rs]
+license_files = ['LICENSE']
+
+[crate.star-constellation]
+license_files = ['LICENSE']
+
+[crate.tap]
+license_files = ['LICENSE.txt']
+
+[crate.time]
+license_files = ['LICENSE-Apache']
+
+[crate.time-core]
+license_files = ['LICENSE-Apache']
+
+[crate.time-macros]
+license_files = ['LICENSE-Apache']
 
 [crate.typenum]
 extra_build_script_src_roots = [ "../build" ]
@@ -200,6 +267,7 @@ if (is_ios) {
     deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
   }
 '''}
+license_files = ['LICENSE']
 
 [crate.aes]
 extra_kv = { raw_gn = '''
@@ -225,9 +293,38 @@ if (target_cpu == "x64" || target_cpu == "x86") {
 [crate.chacha20poly1305]
 extra_input_roots = [ "../README.md" ]
 
-[crate.reddsa]
-extra_input_roots = [ "../README.md" ]
-
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
 
+[crate.windows]
+license_files = ['license-apache-2.0']
+
+[crate.windows_aarch64_gnullvm]
+license_files = ['license-apache-2.0']
+
+[crate.windows_aarch64_msvc]
+license_files = ['license-apache-2.0']
+
+[crate.windows_i686_gnu]
+license_files = ['license-apache-2.0']
+
+[crate.windows_i686_msvc]
+license_files = ['license-apache-2.0']
+
+[crate.windows_x86_64_gnu]
+license_files = ['license-apache-2.0']
+
+[crate.windows_x86_64_gnullvm]
+license_files = ['license-apache-2.0']
+
+[crate.windows_x86_64_msvc]
+license_files = ['license-apache-2.0']
+
+[crate.windows-sys]
+license_files = ['license-apache-2.0']
+
+[crate.windows-targets]
+license_files = ['license-apache-2.0']
+
+[crate.wyz]
+license_files = ['LICENSE.txt']
