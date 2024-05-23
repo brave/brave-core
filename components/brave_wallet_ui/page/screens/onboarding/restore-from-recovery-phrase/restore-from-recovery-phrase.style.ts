@@ -5,7 +5,7 @@
 
 import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import Alert from '@brave/leo/react/alert'
+import Alert, { AlertProps } from '@brave/leo/react/alert'
 
 import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { Text } from '../../../../components/shared/style'
@@ -91,13 +91,18 @@ export const RecoveryTextInput = styled.input`
 `
 
 export const InfoAlert = styled(Alert).attrs({
-  kind: 'error',
-  mode: 'simple'
-})`
+  mode: 'simple',
+  hasActions: true
+})<{ padding?: string } & AlertProps>`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
   width: 100%;
+  padding: ${(p) => p.padding || 'unset'};
 `
+
+InfoAlert.defaultProps = {
+  type: 'info'
+}
 
 export const InputLabel = styled(Text)`
   line-height: 18px;
