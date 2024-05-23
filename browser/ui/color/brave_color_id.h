@@ -18,6 +18,7 @@
     E_CPONLY(kColorIconBase)                         \
     E_CPONLY(kColorMenuItemSubText)                  \
     E_CPONLY(kColorBookmarkBarInstructionsText)      \
+    E_CPONLY(kColorBookmarkBarInstructionsLink)      \
     E_CPONLY(kColorLocationBarFocusRing)             \
     E_CPONLY(kColorLocationBarHoveredShadow)         \
     E_CPONLY(kColorDialogDontAskAgainButton)         \

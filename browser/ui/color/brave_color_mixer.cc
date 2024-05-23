@@ -396,6 +396,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorBookmarkBarInstructionsLink] = {PickColorContrastingToToolbar(
+      key, mixer, leo::light::kColorTextInteractive,
+      leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
@@ -511,6 +514,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorBookmarkBarInstructionsLink] = {PickColorContrastingToToolbar(
+      key, mixer, leo::light::kColorTextInteractive,
+      leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};

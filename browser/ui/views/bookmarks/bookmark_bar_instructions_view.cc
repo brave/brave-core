@@ -127,7 +127,8 @@ void BookmarkBarInstructionsView::UpdateColors() {
 
   const ui::ColorProvider* cp = GetColorProvider();
   if (cp && import_link_) {
-    import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
+    import_link_->SetEnabledColor(
+        cp->GetColor(kColorBookmarkBarInstructionsLink));
   }
 }
 
