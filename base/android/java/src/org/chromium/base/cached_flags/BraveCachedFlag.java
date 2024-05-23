@@ -31,6 +31,16 @@ public class BraveCachedFlag extends CachedFlag {
     // Will be deleted in bytecode. Variable from the parent class will be used instead.
     private boolean mDefaultValue;
 
+    public BraveCachedFlag(
+            FeatureMap featureMap,
+            String featureName,
+            boolean defaultValue,
+            boolean defaultValueInTests) {
+        super(featureMap, featureName, defaultValue, defaultValueInTests);
+
+        maybeOverrideDefaultValue(featureName, defaultValue);
+    }
+
     public BraveCachedFlag(FeatureMap featureMap, String featureName, boolean defaultValue) {
         super(featureMap, featureName, defaultValue);
 

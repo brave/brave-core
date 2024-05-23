@@ -1402,6 +1402,14 @@ public class BytecodeTest {
                         FeatureMap.class,
                         String.class,
                         boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/base/cached_flags/CachedFlag",
+                        "org/chromium/base/cached_flags/BraveCachedFlag",
+                        FeatureMap.class,
+                        String.class,
+                        boolean.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 constructorsMatch(
