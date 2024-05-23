@@ -64,19 +64,14 @@ struct AddAccountView: View {
   }
 
   private func addAccount(for coin: BraveWallet.CoinType) {
-    let accountName =
-      name.isEmpty
-      ? defaultAccountName(
-        for: coin,
-        chainId: accountNetwork.chainId,
-        isPrimary: privateKey.isEmpty
-      )
-      : name
-    guard accountName.isValidAccountName else { return }
+    if !name.isEmpty && !name.isValidAccountName {
+      // User entered name is invalid
+      return
+    }  // else empty, KeyringStore will assign default account name
 
     if privateKey.isEmpty {
       // Add normal account
-      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: accountNetwork.chainId) {
+      keyringStore.addPrimaryAccount(name, coin: coin, chainId: accountNetwork.chainId) {
         success in
         if success {
           onCreate?()
@@ -96,14 +91,16 @@ struct AddAccountView: View {
       }
       if isJSONImported {
         keyringStore.addSecondaryAccount(
-          accountName,
+          name,
+          coin: coin,
+          chainId: accountNetwork.chainId,
           json: privateKey,
           password: originPassword,
           completion: handler
         )
       } else {
         keyringStore.addSecondaryAccount(
-          accountName,
+          name,
           coin: coin,
           chainId: accountNetwork.chainId,
           privateKey: privateKey,
@@ -399,27 +396,6 @@ struct AddAccountView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-    }
-  }
-
-  private func defaultAccountName(
-    for coin: BraveWallet.CoinType,
-    chainId: String,
-    isPrimary: Bool
-  ) -> String {
-    let accountsForCoin = keyringStore.allAccounts.filter { $0.coin == coin }
-    if isPrimary {
-      let numberOfPrimaryAccountsForCoin = accountsForCoin.filter(\.isPrimary).count
-      return String.localizedStringWithFormat(
-        coin.defaultAccountName,
-        numberOfPrimaryAccountsForCoin + 1
-      )
-    } else {
-      let numberOfImportedAccounts = accountsForCoin.filter(\.isImported).count
-      return String.localizedStringWithFormat(
-        coin.defaultSecondaryAccountName,
-        numberOfImportedAccounts + 1
-      )
     }
   }
 

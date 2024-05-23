@@ -513,10 +513,15 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     chainId: String,
     completion: ((Bool) -> Void)? = nil
   ) {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
     keyringService.addAccount(
       coin: coin,
       keyringId: BraveWallet.KeyringId.keyringId(for: coin, on: chainId),
-      accountName: name
+      accountName: accountName
     ) { accountInfo in
       self.updateInfo()
       completion?(accountInfo != nil)
@@ -531,9 +536,14 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     privateKey: String,
     completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
   ) {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
     if coin == .fil {
       keyringService.importFilecoinAccount(
-        accountName: name,
+        accountName: accountName,
         privateKey: privateKey,
         network: chainId
       ) {
@@ -541,7 +551,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         completion?(accountInfo)
       }
     } else {
-      keyringService.importAccount(accountName: name, privateKey: privateKey, coin: coin) {
+      keyringService.importAccount(accountName: accountName, privateKey: privateKey, coin: coin) {
         accountInfo in
         self.updateInfo()
         completion?(accountInfo)
@@ -551,13 +561,42 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
 
   func addSecondaryAccount(
     _ name: String,
+    coin: BraveWallet.CoinType,
+    chainId: String,
     json: String,
     password: String,
     completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
   ) {
-    keyringService.importAccountFromJson(accountName: name, password: password, json: json) {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
+    keyringService.importAccountFromJson(accountName: accountName, password: password, json: json) {
       accountInfo in
       completion?(accountInfo)
+    }
+  }
+
+  private func defaultAccountName(
+    for coin: BraveWallet.CoinType,
+    chainId: String
+  ) -> String {
+    let keyringId: BraveWallet.KeyringId = .keyringId(for: coin, on: chainId)
+    let numAccountsForKeyring = allAccounts.filter({ $0.keyringId == keyringId }).count
+    if WalletConstants.supportedTestNetworkChainIds.contains(chainId) {
+      // Testnet account
+      return String.localizedStringWithFormat(
+        Strings.Wallet.defaultTestnetAccountName,
+        coin.localizedTitle,
+        numAccountsForKeyring + 1
+      )
+    } else {
+      return String.localizedStringWithFormat(
+        Strings.Wallet.defaultAccountName,
+        coin.localizedTitle,
+        numAccountsForKeyring + 1
+      )
     }
   }
 

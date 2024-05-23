@@ -276,61 +276,21 @@ extension Strings {
       comment:
         "A button title that shows a screen that allows the user to backup their recovery phrase"
     )
-    public static let defaultEthAccountName = NSLocalizedString(
-      "wallet.defaultEthAccountName",
+    public static let defaultAccountName = NSLocalizedString(
+      "wallet.defaultAccountName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Ethereum Account %lld",
+      value: "%@ Account %lld",
       comment:
-        "The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\")"
+        "The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\")"
     )
-    public static let defaultSolAccountName = NSLocalizedString(
-      "wallet.defaultSolAccountName",
+    public static let defaultTestnetAccountName = NSLocalizedString(
+      "wallet.defaultTestnetAccountName",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Solana Account %lld",
+      value: "%@ Testnet Account %lld",
       comment:
-        "The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\")"
-    )
-    public static let defaultFilAccountName = NSLocalizedString(
-      "wallet.defaultFilAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Filecoin Account %lld",
-      comment:
-        "The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\")"
-    )
-    public static let defaultBitcoinAccountName = NSLocalizedString(
-      "wallet.defaultBitcoinAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Bitcoin Account %lld",
-      comment:
-        "The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\")"
-    )
-    public static let defaultSecondaryEthAccountName = NSLocalizedString(
-      "wallet.defaultSecondaryEthAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Ethereum Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\")"
-    )
-    public static let defaultSecondarySolAccountName = NSLocalizedString(
-      "wallet.defaultSecondarySolAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Solana Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\")"
-    )
-    public static let defaultSecondaryFilAccountName = NSLocalizedString(
-      "wallet.defaultSecondaryFilAccountName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Secondary Filecoin Account %lld",
-      comment:
-        "The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\")"
+        "The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\")"
     )
     public static let addAccountWithCoinTypeTitle = NSLocalizedString(
       "wallet.addAccountWithCoinTypeTitle",
