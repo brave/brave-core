@@ -790,9 +790,11 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     DCHECK_EQ(pinned_tab_data.shared_contents, unique_shared_contents.get());
 
     // Install DummyView to the dummy contents.
-    DummyContentsData::FromWebContents(
-        pinned_tab_data.contents_owner_model->GetWebContentsAt(index))
-        ->ShowDummyView();
+    if (pinned_tab_data.contents_owner_model->active_index() == index) {
+      DummyContentsData::FromWebContents(
+          pinned_tab_data.contents_owner_model->GetWebContentsAt(index))
+          ->ShowDummyView();
+    }
 
     // Replace owner model
     pinned_tab_data.contents_owner_model = tab_strip_model;
