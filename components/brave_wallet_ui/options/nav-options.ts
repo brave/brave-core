@@ -42,6 +42,13 @@ export const isValidPanelNavigationOption = (
   )
 }
 
+const BridgeOption: NavOption = {
+  id: 'bridge',
+  name: 'braveWalletBridge',
+  icon: 'web3-bridge',
+  route: WalletRoutes.Bridge
+}
+
 export const BuySendSwapDepositOptions: NavOption[] = [
   {
     id: 'buy',
@@ -61,6 +68,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     icon: 'currency-exchange',
     route: WalletRoutes.Swap
   },
+  BridgeOption,
   {
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',
@@ -211,26 +219,4 @@ export const AccountDetailsOptions: NavOption[] = [
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
   }
-]
-
-export const SendSwapBridgeOptions: NavOption[] = [
-  {
-    id: 'send',
-    name: 'braveWalletSend',
-    icon: 'send',
-    route: WalletRoutes.Send
-  },
-  {
-    id: 'swap',
-    name: 'braveWalletSwap',
-    icon: 'currency-exchange',
-    route: WalletRoutes.Swap
-  }
-  // Bridge is not yet implemented
-  // {
-  //   id: 'bridge',
-  //   name: 'braveWalletBridge',
-  //   icon: 'bridge',
-  //   route: WalletRoutes.Bridge
-  // }
 ]

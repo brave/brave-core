@@ -93,7 +93,8 @@ export function getZeroExQuoteOptions({
                 makeNetworkAsset(fromNetwork)
               )
             )
-            .formatAsFiat(defaultFiatCurrency)
+            .formatAsFiat(defaultFiatCurrency),
+      provider: '0x'
     }
   ]
 }
@@ -195,7 +196,8 @@ export function getJupiterQuoteOptions({
                 makeNetworkAsset(fromNetwork)
               )
             )
-            .formatAsFiat(defaultFiatCurrency)
+            .formatAsFiat(defaultFiatCurrency),
+      provider: 'Jupiter'
     }
   ]
 }
@@ -268,11 +270,14 @@ export function getLiFiQuoteOptions({
         {
           name: route.steps[0].toolDetails.name,
           // TODO: assumption
-          proportion: new Amount(1)
+          proportion: new Amount(1),
+          icon: route.steps[0].toolDetails.logo
         }
       ], // TODO
       toAmount: toAmount,
-      toToken: toToken
+      toToken: toToken,
+      executionDuration: route.steps[0].estimate.executionDuration,
+      provider: 'Li.Fi'
     }
   })
 }

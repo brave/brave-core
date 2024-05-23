@@ -183,6 +183,15 @@ export const Container = () => {
       </ProtectedRoute>
 
       <ProtectedRoute
+        path={WalletRoutes.Bridge}
+        requirement={!isWalletLocked && !walletNotYetCreated}
+        redirectRoute={defaultRedirect}
+        exact={true}
+      >
+        <Swap />
+      </ProtectedRoute>
+
+      <ProtectedRoute
         path={WalletRoutes.Send}
         requirement={!isWalletLocked && !walletNotYetCreated}
         redirectRoute={defaultRedirect}

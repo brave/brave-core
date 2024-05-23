@@ -14,22 +14,19 @@ import {
 import { Column, Text, Row } from '../../../../components/shared/style'
 
 export const Wrapper = styled(Column)`
-  padding: 32px 32px 0px 32px;
+  padding: 24px 24px 0px 24px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 16px 0px 0px 0px;
+    padding: 16px 16px 0px 16px;
   }
 `
 
-export const FromText = styled(Text)`
-  line-height: 26px;
-  color: ${leo.color.text.tertiary};
+export const BalanceText = styled(Text)`
+  line-height: 22px;
   margin-right: 4px;
 `
 
-export const BalanceText = styled(Text)`
-  line-height: 26px;
-  color: ${leo.color.text.primary};
-  margin-right: 4px;
+export const FromText = styled(BalanceText)`
+  color: ${leo.color.text.tertiary};
 `
 
 export const NetworkText = styled(Text)`

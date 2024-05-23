@@ -20,7 +20,16 @@ const monthMap = [
   'Dec'
 ]
 
-export function formatDateAsRelative(date: Date, now: Date = new Date()) {
+export function formatDateAsRelative(
+  date: Date,
+  now: Date = new Date(),
+  /**
+   * enabling `usePrecision` will return a precise relative time of
+   * (minutes:seconds) or (hours:minutes) instead of a
+   * single rounded value of seconds, minutes or hours.
+   */
+  usePrecision?: boolean
+) {
   // the difference in milliseconds
   const diff = now.getTime() - date.getTime()
 
@@ -32,14 +41,20 @@ export function formatDateAsRelative(date: Date, now: Date = new Date()) {
 
   // convert diff to minutes
   const min = Math.floor(diff / (1000 * 60))
+  const secRemaining = sec - min * 60
   if (min < 60) {
-    return `${min}m`
+    return usePrecision && secRemaining > 0
+      ? `${min}m: ${secRemaining}s`
+      : `${min}m`
   }
 
   // convert diff to hours
   const hour = Math.floor(diff / (1000 * 60 * 60))
+  const minRemaining = min - hour * 60
   if (hour < 24) {
-    return `${hour}h`
+    return usePrecision && minRemaining > 0
+      ? `${hour}h: ${minRemaining}m`
+      : `${hour}h`
   }
 
   // convert diff to days

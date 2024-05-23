@@ -27,7 +27,7 @@ import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
   makeSendRoute,
-  makeSwapRoute
+  makeSwapOrBridgeRoute
 } from '../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 
@@ -115,7 +115,13 @@ export const AssetItemMenu = (props: Props) => {
 
   const onClickSwap = React.useCallback(() => {
     if (account) {
-      history.push(makeSwapRoute({ fromToken: asset, fromAccount: account }))
+      history.push(
+        makeSwapOrBridgeRoute({
+          fromToken: asset,
+          fromAccount: account,
+          routeType: 'swap'
+        })
+      )
     }
   }, [account, history, asset])
 

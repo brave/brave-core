@@ -43,7 +43,8 @@ export function isPersistableSessionRoute(
   return (
     isPersistableInPanel ||
     route.includes(WalletRoutes.Swap) ||
-    route.includes(WalletRoutes.Send)
+    route.includes(WalletRoutes.Send) ||
+    route.includes(WalletRoutes.Bridge)
   )
 }
 
@@ -226,18 +227,20 @@ export const makeSendRoute = (
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
 }
 
-export const makeSwapRoute = ({
+export const makeSwapOrBridgeRoute = ({
   fromToken,
   fromAccount,
   toToken,
   toAddress,
-  toCoin
+  toCoin,
+  routeType
 }: {
   fromToken: BraveWallet.BlockchainToken
   fromAccount: BraveWallet.AccountInfo
   toToken?: BraveWallet.BlockchainToken
   toAddress?: string
   toCoin?: BraveWallet.CoinType
+  routeType?: 'swap' | 'bridge'
 }) => {
   const baseQueryParams = {
     fromChainId: fromToken.chainId,
@@ -258,7 +261,9 @@ export const makeSwapRoute = ({
       : baseQueryParams
   )
 
-  return `${WalletRoutes.Swap}?${params.toString()}`
+  const route = routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap
+
+  return `${route}?${params.toString()}`
 }
 
 export const makeTransactionDetailsRoute = (transactionId: string) => {
