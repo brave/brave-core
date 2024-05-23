@@ -107,6 +107,10 @@ export const PortfolioFiltersModal = (props: Props) => {
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
       false
     )
+  const [hideUnownedNfts, setHideUnownedNfts] = useSyncedLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.HIDE_UNOWNED_NFTS,
+    false
+  )
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -128,6 +132,8 @@ export const PortfolioFiltersModal = (props: Props) => {
   const [showNetworkLogo, setShowNetworkLogo] = React.useState(
     showNetworkLogoOnNfts
   )
+  const [hideUnownedNftsToggle, setHideUnownedNftsToggle] =
+    React.useState(hideUnownedNfts)
 
   // Memos
   const hideSmallBalancesDescription = React.useMemo(() => {
@@ -151,6 +157,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     setSelectedAssetFilter(selectedAssetFilterOption)
     setHidePortfolioSmallBalances(hideSmallBalances)
     setShowNetworkLogoOnNfts(showNetworkLogo)
+    setHideUnownedNfts(hideUnownedNftsToggle)
     onClose()
   }, [
     setFilteredOutPortfolioNetworkKeys,
@@ -165,6 +172,8 @@ export const PortfolioFiltersModal = (props: Props) => {
     hideSmallBalances,
     setShowNetworkLogoOnNfts,
     showNetworkLogo,
+    setHideUnownedNfts,
+    hideUnownedNftsToggle,
     onClose
   ])
 
@@ -195,6 +204,14 @@ export const PortfolioFiltersModal = (props: Props) => {
                 icon='web3'
                 isSelected={showNetworkLogo}
                 setIsSelected={() => setShowNetworkLogo((prev) => !prev)}
+              />
+
+              <FilterToggleSection
+                title={getLocale('braveWalletHideNotOwnedNfTs')}
+                description={''}
+                icon='web3'
+                isSelected={hideUnownedNftsToggle}
+                setIsSelected={() => setHideUnownedNftsToggle((prev) => !prev)}
               />
 
               {/* Disabled until Spam NFTs feature is implemented in core */}

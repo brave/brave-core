@@ -206,46 +206,25 @@ export const nftsEndpoints = ({
         }
       }
     }),
-    getSimpleHashSpamNfts: query<BraveWallet.BlockchainToken[], void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+
+    /** will get spam for all accounts if accounts arg is not provided */
+    getSimpleHashSpamNfts: query<
+      BraveWallet.BlockchainToken[],
+      void | undefined | { accounts: BraveWallet.AccountInfo[] }
+    >({
+      queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { data: api, cache } = baseQuery(undefined)
-          const { braveWalletService } = api
+          const { cache } = baseQuery(undefined)
 
-          const networksRegistry = await cache.getNetworksRegistry()
+          const lookupAccounts =
+            arg?.accounts ?? (await cache.getAllAccounts()).accounts
 
-          const chainIds = networksRegistry.ids.map(
-            (network) => networksRegistry.entities[network]!.chainId
-          )
-
-          const { accounts } = await cache.getAllAccounts()
           const spamNfts = (
             await mapLimit(
-              accounts,
+              lookupAccounts,
               10,
               async (account: BraveWallet.AccountInfo) => {
-                let currentCursor: string | null = null
-                const accountSpamNfts = []
-
-                do {
-                  const {
-                    tokens,
-                    cursor
-                  }: {
-                    tokens: BraveWallet.BlockchainToken[]
-                    cursor: string | null
-                  } = await braveWalletService.getSimpleHashSpamNFTs(
-                    account.address,
-                    chainIds,
-                    account.accountId.coin,
-                    currentCursor
-                  )
-
-                  accountSpamNfts.push(...tokens)
-                  currentCursor = cursor
-                } while (currentCursor)
-
-                return accountSpamNfts
+                return await cache.getSpamNftsForAccountId(account.accountId)
               }
             )
           ).flat(1)
