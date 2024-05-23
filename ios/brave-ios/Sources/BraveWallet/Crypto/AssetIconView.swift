@@ -37,7 +37,7 @@ struct AssetIcon: View {
 
   @State private var monogramSize: CGSize = .zero
   private var fallbackMonogram: some View {
-    BlockieMaterial(address: token.contractAddress)
+    BlockieMaterial(seed: token.contractAddress)
       .blur(radius: 8, opaque: true)
       .clipShape(Circle())
       .readSize(onChange: { newSize in

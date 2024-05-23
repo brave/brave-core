@@ -153,8 +153,8 @@ struct Blockie: View {
 
 struct BlockieMaterial: View {
 
-  init(address: String) {
-    self.blockies = Blockies(seed: address.lowercased())
+  init(seed: String) {
+    self.blockies = Blockies(seed: seed.lowercased())
   }
 
   private let blockies: Blockies
