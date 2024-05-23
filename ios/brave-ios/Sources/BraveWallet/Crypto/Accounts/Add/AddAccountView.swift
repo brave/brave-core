@@ -22,6 +22,7 @@ struct AddAccountView: View {
   @State private var failedToImport: Bool = false
   @State private var selectedCoin: BraveWallet.CoinType?
   @State private var accountNetwork: BraveWallet.NetworkInfo
+  @State private var isCreatingAccount: Bool = false
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
   @Environment(\.appRatingRequestAction) private var appRatingRequest
@@ -64,28 +65,44 @@ struct AddAccountView: View {
   }
 
   private func addAccount(for coin: BraveWallet.CoinType) {
-    let accountName =
-      name.isEmpty
-      ? defaultAccountName(
-        for: coin,
-        chainId: accountNetwork.chainId,
-        isPrimary: privateKey.isEmpty
-      )
-      : name
-    guard accountName.isValidAccountName else { return }
+    if !name.isEmpty && !name.isValidAccountName {
+      // User entered name is invalid
+      return
+    }  // else empty, KeyringStore will assign default account name
 
-    if privateKey.isEmpty {
-      // Add normal account
-      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: accountNetwork.chainId) {
-        success in
+    Task { @MainActor in
+      self.isCreatingAccount = true
+      defer { self.isCreatingAccount = false }
+      if privateKey.isEmpty {
+        // Add normal account
+        let success = await keyringStore.addPrimaryAccount(
+          name,
+          coin: coin,
+          chainId: accountNetwork.chainId
+        )
         if success {
           onCreate?()
           appRatingRequest?()
           presentationMode.dismiss()
         }
-      }
-    } else {
-      let handler: (BraveWallet.AccountInfo?) -> Void = { accountInfo in
+      } else {
+        let accountInfo: BraveWallet.AccountInfo?
+        if isJSONImported {
+          accountInfo = await keyringStore.addSecondaryAccount(
+            name,
+            coin: coin,
+            chainId: accountNetwork.chainId,
+            json: privateKey,
+            password: originPassword
+          )
+        } else {
+          accountInfo = await keyringStore.addSecondaryAccount(
+            name,
+            coin: coin,
+            chainId: accountNetwork.chainId,
+            privateKey: privateKey
+          )
+        }
         if accountInfo != nil {
           onCreate?()
           appRatingRequest?()
@@ -93,22 +110,6 @@ struct AddAccountView: View {
         } else {
           failedToImport = true
         }
-      }
-      if isJSONImported {
-        keyringStore.addSecondaryAccount(
-          accountName,
-          json: privateKey,
-          password: originPassword,
-          completion: handler
-        )
-      } else {
-        keyringStore.addSecondaryAccount(
-          accountName,
-          coin: coin,
-          chainId: accountNetwork.chainId,
-          privateKey: privateKey,
-          completion: handler
-        )
       }
     }
   }
@@ -188,10 +189,16 @@ struct AddAccountView: View {
       trailing: Button {
         addAccount(for: preSelectedCoin ?? (selectedCoin ?? .eth))
       } label: {
-        Text(Strings.Wallet.add)
+        ZStack {  // maintain button size
+          ProgressView()
+            .progressViewStyle(.braveCircular(size: .small))
+            .hidden(isHidden: !isCreatingAccount)
+          Text(Strings.Wallet.add)
+            .hidden(isHidden: isCreatingAccount)
+        }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
-      .disabled(!name.isValidAccountName)
+      .disabled(!name.isValidAccountName || isCreatingAccount)
     )
     .alert(isPresented: $failedToImport) {
       Alert(
@@ -399,27 +406,6 @@ struct AddAccountView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-    }
-  }
-
-  private func defaultAccountName(
-    for coin: BraveWallet.CoinType,
-    chainId: String,
-    isPrimary: Bool
-  ) -> String {
-    let accountsForCoin = keyringStore.allAccounts.filter { $0.coin == coin }
-    if isPrimary {
-      let numberOfPrimaryAccountsForCoin = accountsForCoin.filter(\.isPrimary).count
-      return String.localizedStringWithFormat(
-        coin.defaultAccountName,
-        numberOfPrimaryAccountsForCoin + 1
-      )
-    } else {
-      let numberOfImportedAccounts = accountsForCoin.filter(\.isImported).count
-      return String.localizedStringWithFormat(
-        coin.defaultSecondaryAccountName,
-        numberOfImportedAccounts + 1
-      )
     }
   }
 

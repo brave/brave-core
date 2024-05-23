@@ -10,11 +10,9 @@ import UIKit
 extension View {
   /// Helper for `hidden()` modifier that accepts a boolean determining if we should hide the view or not.
   @ViewBuilder public func hidden(isHidden: Bool) -> some View {
-    if isHidden {
-      self.hidden()
-    } else {
-      self
-    }
+    self  // use opacity to avoid identity resets when not required
+      .opacity(isHidden ? 0 : 1)
+      .accessibilityHidden(isHidden)
   }
 
   /// This function will use the help from `introspectViewController` to find the

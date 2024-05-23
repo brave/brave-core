@@ -301,7 +301,14 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     rpcServiceObserver = nil
   }
 
-  private func updateInfo() {
+  func updateInfo(completion: (() -> Void)? = nil) {
+    Task { @MainActor in
+      await updateInfo()
+      completion?()
+    }
+  }
+
+  @MainActor func updateInfo() async {
     if UIApplication.shared.applicationState != .active {
       // Changes made in the backgroud due to timers going off at launch don't
       // re-render things properly.
@@ -309,22 +316,20 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       // This function is called again on `didBecomeActiveNotification` anyways.
       return
     }
-    Task { @MainActor in  // fetch all KeyringInfo for all coin types
-      let allAccounts = await keyringService.allAccounts()
-      self.allAccounts = allAccounts.accounts
-      if let selectedAccount = allAccounts.selectedAccount {
-        self.selectedAccount = selectedAccount
-      }
-      self.isWalletCreated = await keyringService.isWalletCreated()
-      // fallback case where user completed front-end onboarding, but has no keyring created/accounts.
-      // this can occur if we crash prior to saving, ex. brave-ios #8291
-      if !isWalletCreated && Preferences.Wallet.isOnboardingCompleted.value {
-        Preferences.Wallet.isOnboardingCompleted.reset()
-      }
-      self.isWalletLocked = await keyringService.isLocked()
-      self.isWalletBackedUp = await keyringService.isWalletBackedUp()
-      self.isLoaded = true
+    let allAccounts = await keyringService.allAccounts()
+    self.allAccounts = allAccounts.accounts
+    if let selectedAccount = allAccounts.selectedAccount {
+      self.selectedAccount = selectedAccount
     }
+    self.isWalletCreated = await keyringService.isWalletCreated()
+    // fallback case where user completed front-end onboarding, but has no keyring created/accounts.
+    // this can occur if we crash prior to saving, ex. brave-ios #8291
+    if !isWalletCreated && Preferences.Wallet.isOnboardingCompleted.value {
+      Preferences.Wallet.isOnboardingCompleted.reset()
+    }
+    self.isWalletLocked = await keyringService.isLocked()
+    self.isWalletBackedUp = await keyringService.isWalletBackedUp()
+    self.isLoaded = true
   }
 
   private func setSelectedAccount(to account: BraveWallet.AccountInfo) {
@@ -507,57 +512,95 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
 
   /// `chainId` is only for .fil or .btc coin type
   /// correct `BraveWallet.KeyringId` will be returned from `keyringIdForNewAccount`
-  func addPrimaryAccount(
+  @MainActor func addPrimaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,
-    chainId: String,
-    completion: ((Bool) -> Void)? = nil
-  ) {
-    keyringService.addAccount(
+    chainId: String
+  ) async -> Bool {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
+    let accountInfo = await keyringService.addAccount(
       coin: coin,
       keyringId: BraveWallet.KeyringId.keyringId(for: coin, on: chainId),
-      accountName: name
-    ) { accountInfo in
-      self.updateInfo()
-      completion?(accountInfo != nil)
-    }
+      accountName: accountName
+    )
+    await updateInfo()
+    return accountInfo != nil
   }
 
   /// `chainId` is only for .fil or .btc coin type
-  func addSecondaryAccount(
+  @MainActor func addSecondaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,
     chainId: String,
-    privateKey: String,
-    completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
-  ) {
+    privateKey: String
+  ) async -> BraveWallet.AccountInfo? {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
+    let accountInfo: BraveWallet.AccountInfo?
     if coin == .fil {
-      keyringService.importFilecoinAccount(
-        accountName: name,
+      accountInfo = await keyringService.importFilecoinAccount(
+        accountName: accountName,
         privateKey: privateKey,
         network: chainId
-      ) {
-        accountInfo in
-        completion?(accountInfo)
-      }
+      )
     } else {
-      keyringService.importAccount(accountName: name, privateKey: privateKey, coin: coin) {
-        accountInfo in
-        self.updateInfo()
-        completion?(accountInfo)
-      }
+      accountInfo = await keyringService.importAccount(
+        accountName: accountName,
+        privateKey: privateKey,
+        coin: coin
+      )
     }
+    await updateInfo()
+    return accountInfo
   }
 
-  func addSecondaryAccount(
+  @MainActor func addSecondaryAccount(
     _ name: String,
+    coin: BraveWallet.CoinType,
+    chainId: String,
     json: String,
-    password: String,
-    completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
-  ) {
-    keyringService.importAccountFromJson(accountName: name, password: password, json: json) {
-      accountInfo in
-      completion?(accountInfo)
+    password: String
+  ) async -> BraveWallet.AccountInfo? {
+    var accountName = name
+    if accountName.isEmpty {
+      // assign default name
+      accountName = defaultAccountName(for: coin, chainId: chainId)
+    }
+    let accountInfo = await keyringService.importAccountFromJson(
+      accountName: accountName,
+      password: password,
+      json: json
+    )
+    await updateInfo()
+    return accountInfo
+  }
+
+  private func defaultAccountName(
+    for coin: BraveWallet.CoinType,
+    chainId: String
+  ) -> String {
+    let keyringId: BraveWallet.KeyringId = .keyringId(for: coin, on: chainId)
+    let numAccountsForKeyring = allAccounts.filter({ $0.keyringId == keyringId }).count
+    if WalletConstants.supportedTestNetworkChainIds.contains(chainId) {
+      // Testnet account
+      return String.localizedStringWithFormat(
+        Strings.Wallet.defaultTestnetAccountName,
+        coin.localizedTitle,
+        numAccountsForKeyring + 1
+      )
+    } else {
+      return String.localizedStringWithFormat(
+        Strings.Wallet.defaultAccountName,
+        coin.localizedTitle,
+        numAccountsForKeyring + 1
+      )
     }
   }
 

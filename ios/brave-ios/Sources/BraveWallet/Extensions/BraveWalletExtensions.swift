@@ -280,39 +280,6 @@ extension BraveWallet.CoinType {
     }
   }
 
-  var defaultAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSolAccountName
-    case .fil:
-      return Strings.Wallet.defaultFilAccountName
-    case .btc:
-      return Strings.Wallet.defaultBitcoinAccountName
-    case .zec:
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
-  var defaultSecondaryAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultSecondaryEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSecondarySolAccountName
-    case .fil:
-      return Strings.Wallet.defaultSecondaryFilAccountName
-    case .btc, .zec:
-      // no secondary/import account for bitcoin
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
   /// Sort order used when sorting by coin types
   var sortOrder: Int {
     switch self {

@@ -264,22 +264,7 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
       origin: .init(url: URL(string: "https://app.uniswap.org")!),
       accounts: [BraveWallet.AccountInfo.previewAccount.address],
       coin: .eth,
-      keyringStore: {
-        let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount(
-          "Account 2",
-          coin: .eth,
-          chainId: BraveWallet.MainnetChainId,
-          completion: nil
-        )
-        store.addPrimaryAccount(
-          "Account 3",
-          coin: .eth,
-          chainId: BraveWallet.MainnetChainId,
-          completion: nil
-        )
-        return store
-      }(),
+      keyringStore: .previewStoreWithWalletCreated,
       onConnect: { _ in },
       onDismiss: {}
     )
