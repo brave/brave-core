@@ -742,6 +742,15 @@ class SettingsViewController: TableViewController {
         let vc = { () -> UIViewController? in
           switch BraveVPN.vpnState {
           case .notPurchased, .expired:
+            guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else {
+              return nil
+            }
+            vc.openAuthenticationVPNInNewTab = { [weak self] in
+              guard let self = self else { return }
+
+              self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+            }
+
             return BraveVPN.vpnState.enableVPNDestinationVC
           case .purchased:
             let vc = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
@@ -1314,6 +1323,11 @@ class SettingsViewController: TableViewController {
     switch state {
     case .notPurchased, .expired:
       guard let vc = state.enableVPNDestinationVC else { return }
+      vc.openAuthenticationVPNInNewTab = { [weak self] in
+        guard let self = self else { return }
+
+        self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+      }
       navigationController?.pushViewController(vc, animated: true)
     case .purchased:
       BraveVPN.reconnect()

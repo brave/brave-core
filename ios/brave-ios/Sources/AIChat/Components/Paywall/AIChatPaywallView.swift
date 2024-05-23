@@ -6,6 +6,7 @@
 import BraveStrings
 import BraveUI
 import DesignSystem
+import SafariServices
 import StoreKit
 import SwiftUI
 import Then
@@ -44,28 +45,33 @@ struct AIChatPaywallView: View {
   @State
   private var shouldDismiss: Bool = false
 
+  @State
+  private var shouldRefreshCredentials = false
+
   // Timer used for resetting the restore action to prevent infinite loading
   @State
   private var iapRestoreTimer: Task<Void, Error>?
 
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
+  var openPrivacyReportsUrl: (() -> Void)?
+
   var body: some View {
     NavigationView {
       VStack(spacing: 8.0) {
         ScrollView {
-          VStack(spacing: 0.0) {
+          VStack(spacing: 16.0) {
             PremiumUpsellTitleView(
               upsellType: .premium,
               isPaywallPresented: true
             )
-            .padding(16.0)
-
             PremiumUpsellDetailView(isPaywallPresented: true)
               .padding([.top, .horizontal], 8.0)
-              .padding(.bottom, 24.0)
+              .padding(.bottom, 8.0)
             tierSelection
-              .padding([.bottom, .horizontal], 8.0)
+              .padding(.horizontal, 8.0)
+            AIChatRefreshCredentialsView(shouldRefreshCredentials: $shouldRefreshCredentials)
+              .padding(.bottom, 8.0)
           }
           .navigationTitle(Strings.AIChat.paywallViewTitle)
           .navigationBarTitleDisplayMode(.inline)
@@ -134,6 +140,9 @@ struct AIChatPaywallView: View {
         if shouldDismiss {
           dismiss()
         }
+      }
+      .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
+        openPrivacyReportsUrl?()
       }
     }
     .navigationViewStyle(.stack)
@@ -348,3 +357,67 @@ private struct AIChatPremiumTierSelectionView: View {
     .buttonStyle(.plain)
   }
 }
+
+private struct AIChatRefreshCredentialsView: View {
+  @Binding var shouldRefreshCredentials: Bool
+
+  var body: some View {
+    VStack(spacing: 8) {
+      Text(Strings.Paywall.alreadyPurchasedTitle)
+        .font(.callout.weight(.semibold))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary20))
+
+      Button(
+        action: {
+          shouldRefreshCredentials = true
+        },
+        label: {
+          HStack {
+            Text(Strings.Paywall.refreshCredentialsButtonTitle)
+              .font(.subheadline.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
+          }
+          .frame(maxWidth: .infinity)
+          .contentShape(ContainerRelativeShape())
+        }
+      )
+      .overlay(
+        ContainerRelativeShape()
+          .strokeBorder(
+            Color(braveSystemName: .dividerInteractive),
+            lineWidth: 1.0
+          )
+      )
+      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      .padding([.horizontal], 16.0)
+    }
+  }
+}
+
+#if DEBUG
+#Preview("LeoPaywall") {
+  AIChatPaywallView()
+}
+
+#Preview("LeoPremiumTier") {
+  VStack {
+    AIChatPremiumTierSelectionView(
+      title: "Monthly",
+      description: nil,
+      product: nil,
+      type: .yearly,
+      selectedTierType: Binding.constant(.yearly)
+    )
+
+    AIChatPremiumTierSelectionView(
+      title: "Yearly",
+      description: "%17 Discount",
+      product: nil,
+      type: .monthly,
+      selectedTierType: Binding.constant(.yearly)
+    )
+
+  }
+}
+#endif

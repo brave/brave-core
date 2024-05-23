@@ -67,6 +67,9 @@ struct VPNMenuButton: View {
       BraveVPN.disconnect(skipChecks: true)
 
       guard let vc = vpnState.enableVPNDestinationVC else { return }
+      vc.openAuthenticationVPNInNewTab = {
+        openURL(.brave.braveVPNRefreshCredentials)
+      }
       displayVPNDestination(vc)
     case .purchased:
       isVPNStatusChanging = true
