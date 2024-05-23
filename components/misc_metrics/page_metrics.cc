@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -48,10 +49,12 @@ using HttpsEvent = security_interstitials::https_only_mode::Event;
 PageMetrics::PageMetrics(PrefService* local_state,
                          HostContentSettingsMap* host_content_settings_map,
                          history::HistoryService* history_service,
-                         bookmarks::BookmarkModel* bookmark_model)
+                         bookmarks::BookmarkModel* bookmark_model,
+                         base::RepeatingClosure brave_query_callback)
     : local_state_(local_state),
       host_content_settings_map_(host_content_settings_map),
-      history_service_(history_service) {
+      history_service_(history_service),
+      brave_query_callback_(brave_query_callback) {
   DCHECK(local_state);
   DCHECK(history_service);
 
@@ -298,6 +301,10 @@ void PageMetrics::ReportBookmarkCount() {
     return;
   }
   bookmark_counter_->Restart();
+}
+
+void PageMetrics::OnBraveQuery() {
+  brave_query_callback_.Run();
 }
 
 }  // namespace misc_metrics

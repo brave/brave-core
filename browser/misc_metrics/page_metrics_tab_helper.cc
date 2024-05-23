@@ -15,6 +15,11 @@
 
 namespace misc_metrics {
 
+namespace {
+constexpr char kBraveSearchHost[] = "search.brave.com";
+constexpr char kBraveSearchPath[] = "/search";
+}  // namespace
+
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<PageMetricsTabHelper>(*web_contents) {
@@ -42,6 +47,10 @@ void PageMetricsTabHelper::DidFinishNavigation(
     is_reload = true;
   }
   page_metrics_->IncrementPagesLoadedCount(is_reload);
+  if (navigation_handle->GetURL().host_piece() == kBraveSearchHost &&
+      navigation_handle->GetURL().path_piece() == kBraveSearchPath) {
+    page_metrics_->OnBraveQuery();
+  }
 }
 
 bool PageMetricsTabHelper::CheckNavigationEvent(
