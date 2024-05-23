@@ -65,22 +65,7 @@ struct AccountSelectionView: View {
 struct AccountSelectionView_Previews: PreviewProvider {
   static var previews: some View {
     AccountSelectionView(
-      keyringStore: {
-        let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount(
-          "Account 2",
-          coin: .eth,
-          chainId: BraveWallet.MainnetChainId,
-          completion: nil
-        )
-        store.addPrimaryAccount(
-          "Account 3",
-          coin: .eth,
-          chainId: BraveWallet.MainnetChainId,
-          completion: nil
-        )
-        return store
-      }(),
+      keyringStore: .previewStoreWithWalletCreated,
       networkStore: .previewStore,
       onDismiss: {}
     )

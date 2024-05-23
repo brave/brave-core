@@ -22,6 +22,7 @@ struct AddAccountView: View {
   @State private var failedToImport: Bool = false
   @State private var selectedCoin: BraveWallet.CoinType?
   @State private var accountNetwork: BraveWallet.NetworkInfo
+  @State private var isCreatingAccount: Bool = false
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
   @Environment(\.appRatingRequestAction) private var appRatingRequest
@@ -69,18 +70,39 @@ struct AddAccountView: View {
       return
     }  // else empty, KeyringStore will assign default account name
 
-    if privateKey.isEmpty {
-      // Add normal account
-      keyringStore.addPrimaryAccount(name, coin: coin, chainId: accountNetwork.chainId) {
-        success in
+    Task { @MainActor in
+      self.isCreatingAccount = true
+      defer { self.isCreatingAccount = false }
+      if privateKey.isEmpty {
+        // Add normal account
+        let success = await keyringStore.addPrimaryAccount(
+          name,
+          coin: coin,
+          chainId: accountNetwork.chainId
+        )
         if success {
           onCreate?()
           appRatingRequest?()
           presentationMode.dismiss()
         }
-      }
-    } else {
-      let handler: (BraveWallet.AccountInfo?) -> Void = { accountInfo in
+      } else {
+        let accountInfo: BraveWallet.AccountInfo?
+        if isJSONImported {
+          accountInfo = await keyringStore.addSecondaryAccount(
+            name,
+            coin: coin,
+            chainId: accountNetwork.chainId,
+            json: privateKey,
+            password: originPassword
+          )
+        } else {
+          accountInfo = await keyringStore.addSecondaryAccount(
+            name,
+            coin: coin,
+            chainId: accountNetwork.chainId,
+            privateKey: privateKey
+          )
+        }
         if accountInfo != nil {
           onCreate?()
           appRatingRequest?()
@@ -88,24 +110,6 @@ struct AddAccountView: View {
         } else {
           failedToImport = true
         }
-      }
-      if isJSONImported {
-        keyringStore.addSecondaryAccount(
-          name,
-          coin: coin,
-          chainId: accountNetwork.chainId,
-          json: privateKey,
-          password: originPassword,
-          completion: handler
-        )
-      } else {
-        keyringStore.addSecondaryAccount(
-          name,
-          coin: coin,
-          chainId: accountNetwork.chainId,
-          privateKey: privateKey,
-          completion: handler
-        )
       }
     }
   }
@@ -185,7 +189,13 @@ struct AddAccountView: View {
       trailing: Button {
         addAccount(for: preSelectedCoin ?? (selectedCoin ?? .eth))
       } label: {
-        Text(Strings.Wallet.add)
+        ZStack {  // maintain button size
+          ProgressView()
+            .progressViewStyle(.braveCircular(size: .small))
+            .hidden(isHidden: !isCreatingAccount)
+          Text(Strings.Wallet.add)
+            .hidden(isHidden: isCreatingAccount)
+        }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
       .disabled(!name.isValidAccountName)
