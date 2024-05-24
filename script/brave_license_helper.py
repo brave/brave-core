@@ -238,8 +238,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "/brave/vendor/omaha/third_party/breakpad/LICENSE"
             ],
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
-                     'src', 'third_party', 'musl'): {
+        # Unclear why, but presumbit wants this line formatted this way, while
+        # at the same time complaining it's too long when it is formatted so.
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad', 'src', 'third_party', 'musl'): {  # pylint: disable=line-too-long
             "Name": "musl",
             "URL": "https://musl.libc.org/",
             "License File": [
@@ -247,13 +248,13 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "musl/COPYRIGHT"
             ],
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'):
-        {
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
-            "License File":
-                ["/brave/vendor/omaha/third_party/googletest/LICENSE"],
+            "License File": [
+                "/brave/vendor/omaha/third_party/googletest/LICENSE"
+            ],
         },
         os.path.join('brave', 'third_party', 'rapidjson'): {
             "Name": "RapidJSON",
