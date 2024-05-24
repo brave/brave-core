@@ -7,7 +7,7 @@
 
 #include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 
-#define PERMISSION_UTIL_GET_PERMISSION_STRING           \
+#define BRAVE_PERMISSION_UTIL_GET_PERMISSION_STRING     \
   case PermissionType::BRAVE_ADS:                       \
     return "BraveAds";                                  \
   case PermissionType::BRAVE_COSMETIC_FILTERING:        \
@@ -57,4 +57,3 @@
 #include "src/third_party/blink/common/permissions/permission_utils.cc"
 
 #undef kDisplayCapture
-#undef PERMISSION_UTIL_GET_PERMISSION_STRING

@@ -25,4 +25,3 @@ void BraveAddBookmarksResources(content::WebUIDataSource* source,
 
 #include "src/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
 
-#undef BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE

@@ -24,7 +24,6 @@
   }
 
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
-#undef BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
 #undef outerHeight
 #undef outerWidth
 #undef screenX

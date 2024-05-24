@@ -27,5 +27,4 @@ void BraveCustomizeDownloadsDataSource(content::WebUIDataSource* source,
   BraveCustomizeDownloadsDataSource(source, profile);
 
 #include "src/chrome/browser/ui/webui/downloads/downloads_ui.cc"
-#undef BRAVE_CREATE_DOWNLOADS_UI_HTML_SOURCE
 #undef IDS_DOWNLOAD_HISTORY_TITLE

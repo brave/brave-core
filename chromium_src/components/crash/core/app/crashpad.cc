@@ -26,6 +26,3 @@ constexpr char kBraveWireguardProcessType[] = "brave-vpn-wireguard-service";
 #endif
 
 #include "src/components/crash/core/app/crashpad.cc"
-#if BUILDFLAG(IS_WIN)
-#undef BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
-#endif

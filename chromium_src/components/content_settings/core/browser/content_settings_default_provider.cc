@@ -19,4 +19,3 @@
 
 #include "src/components/content_settings/core/browser/content_settings_default_provider.cc"
 
-#undef BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES

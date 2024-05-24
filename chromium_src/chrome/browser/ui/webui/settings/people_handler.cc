@@ -26,4 +26,3 @@
   }
 
 #include "src/chrome/browser/ui/webui/settings/people_handler.cc"
-#undef BRAVE_GET_SYNC_STATUS_DICTIONARY

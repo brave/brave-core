@@ -21,6 +21,5 @@
 #undef BuildIdentity
 #undef BuildAutofillButtons
 #undef OnExitProfileButtonClicked
-#undef BRAVE_PROFILE_MENU_VIEW_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_PROFILE_MENU_VIEW_H_

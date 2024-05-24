@@ -11,7 +11,6 @@
   friend void UpdateDarkModeStatus();
 
 #include "src/ui/native_theme/native_theme_win.h"  // IWYU pragma: export
-#undef BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
 
 namespace ui {
 

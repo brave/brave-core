@@ -21,4 +21,3 @@ void BraveCustomizeHistoryDataSource(content::WebUIDataSource* source,
   BraveCustomizeHistoryDataSource(source, profile);
 
 #include "src/chrome/browser/ui/webui/history/history_ui.cc"
-#undef BRAVE_CREATE_HISTORY_UI_HTML_SOURCE

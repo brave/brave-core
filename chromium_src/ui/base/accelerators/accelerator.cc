@@ -59,4 +59,3 @@ std::u16string BraveApplyLongFormModifiers(const std::u16string& shortcut,
 
 #include "src/ui/base/accelerators/accelerator.cc"
 
-#undef BRAVE_UI_BASE_ACCELERATOR_APPLY_LONG_FORM_MODIFIERS_

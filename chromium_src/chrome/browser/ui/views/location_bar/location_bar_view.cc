@@ -37,8 +37,6 @@
 #undef PageActionIconContainerView
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews
-#undef BRAVE_LAYOUT_TRAILING_DECORATIONS
-#undef BRAVE_LAYOUT_LEADING_DECORATIONS
 
 std::vector<views::View*> LocationBarView::GetTrailingViews() {
   return std::vector<views::View*>();

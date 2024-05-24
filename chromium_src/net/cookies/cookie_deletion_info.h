@@ -13,6 +13,5 @@
 
 #include "src/net/cookies/cookie_deletion_info.h"  // IWYU pragma: export
 
-#undef BRAVE_COOKIE_DELETION_INFO_H
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_DELETION_INFO_H_

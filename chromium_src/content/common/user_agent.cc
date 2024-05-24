@@ -18,4 +18,3 @@ std::string BuildModelInfo() {
 
 #include "src/content/common/user_agent.cc"
 #undef BuildModelInfo
-#undef BRAVE_GET_ANDROID_OS_INFO

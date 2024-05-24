@@ -33,7 +33,6 @@
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif  // defined(OFFICIAL_BUILD)
-#undef BRAVE_RUN_SETUP
 
 namespace mini_installer {
 

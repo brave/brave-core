@@ -15,4 +15,3 @@
   } else /* NOLINT */
 
 #include "src/services/network/cors/cors_url_loader.cc"
-#undef BRAVE_CORS_URL_LOADER_START_REQUEST

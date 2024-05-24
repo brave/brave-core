@@ -46,7 +46,6 @@
 
 #include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_unittest.cc"
 
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
 #undef RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
 #undef MaxTabsPerSessionAndRecency

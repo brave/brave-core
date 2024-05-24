@@ -39,7 +39,6 @@ void BraveAdjustTextForCopy(GURL* url) {
 #include "src/components/omnibox/browser/omnibox_edit_model.cc"
 #undef CanPasteAndGo
 #undef PasteAndGo
-#undef BRAVE_ADJUST_TEXT_FOR_COPY
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
 #if BUILDFLAG(ENABLE_COMMANDER)

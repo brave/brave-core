@@ -10,6 +10,5 @@
 
 #include "src/chrome/browser/shell_integration.h"  // IWYU pragma: export
 
-#undef BRAVE_DEFAULT_BROWSER_WORKER_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SHELL_INTEGRATION_H_

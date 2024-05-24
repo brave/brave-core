@@ -41,6 +41,3 @@
 #include "src/chrome/browser/ui/views/tabs/tab.cc"
 
 #undef GetLayoutConstant
-#undef BRAVE_TAB_LAYOUT
-#undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
-#undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION

@@ -20,6 +20,5 @@
 
 #include "src/third_party/blink/renderer/core/html/canvas/html_canvas_element.h"  // IWYU pragma: export
 
-#undef BRAVE_HTML_CANVAS_ELEMENT_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_HTML_CANVAS_HTML_CANVAS_ELEMENT_H_

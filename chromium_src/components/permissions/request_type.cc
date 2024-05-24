@@ -72,7 +72,6 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 #undef IsRequestablePermissionType
 #undef RequestTypeToContentSettingsType
 #undef ContentSettingsTypeToRequestType
-#undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
 #undef kMicIcon
 #undef IDR_ANDROID_STORAGE_ACCESS
 

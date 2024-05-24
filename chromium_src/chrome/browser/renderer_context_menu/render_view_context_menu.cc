@@ -129,7 +129,6 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
-#undef BRAVE_APPEND_SEARCH_PROVIDER
 
 namespace {
 

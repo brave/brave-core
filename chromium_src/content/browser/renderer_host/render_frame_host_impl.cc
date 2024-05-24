@@ -15,8 +15,6 @@
 
 #include "src/content/browser/renderer_host/render_frame_host_impl.cc"
 
-#undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
-#undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_NONCE
 
 namespace content {
 

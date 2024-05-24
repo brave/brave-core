@@ -89,8 +89,6 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #undef MigrateObsoleteLocalStatePrefs
 #undef MigrateObsoleteBrowserStatePrefs
-#undef BRAVE_REGISTER_LOCAL_STATE_PREFS
-#undef BRAVE_REGISTER_BROWSER_STATE_PREFS
 
 void MigrateObsoleteBrowserStatePrefs(const base::FilePath& state_path,
                                       PrefService* prefs) {

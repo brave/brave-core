@@ -11,4 +11,3 @@
 #endif
 
 #include "src/components/crash/core/app/crash_reporter_client.cc"
-#undef BRAVE_CRASH_REPORTER_CLIENT_GET_UPLOAD_URL

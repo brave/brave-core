@@ -24,7 +24,6 @@
   }
 
 #include "src/components/content_settings/core/browser/content_settings_utils.cc"
-#undef BRAVE_CAN_TRACK_LAST_VISIT
 #undef GetRendererContentSettingRules
 
 namespace content_settings {

@@ -11,4 +11,3 @@
   return;
 
 #include "src/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc"
-#undef BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL

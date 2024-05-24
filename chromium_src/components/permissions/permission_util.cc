@@ -4,42 +4,42 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/permissions/permission_util.h"
+
 #include "components/permissions/permission_uma_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
-#define PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE \
-  case PermissionType::BRAVE_ADS:                                \
-    return ContentSettingsType::BRAVE_ADS;                       \
-  case PermissionType::BRAVE_COSMETIC_FILTERING:                 \
-    return ContentSettingsType::BRAVE_COSMETIC_FILTERING;        \
-  case PermissionType::BRAVE_TRACKERS:                           \
-    return ContentSettingsType::BRAVE_TRACKERS;                  \
-  case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:          \
-    return ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES; \
-  case PermissionType::BRAVE_FINGERPRINTING_V2:                  \
-    return ContentSettingsType::BRAVE_FINGERPRINTING_V2;         \
-  case PermissionType::BRAVE_SHIELDS:                            \
-    return ContentSettingsType::BRAVE_SHIELDS;                   \
-  case PermissionType::BRAVE_REFERRERS:                          \
-    return ContentSettingsType::BRAVE_REFERRERS;                 \
-  case PermissionType::BRAVE_COOKIES:                            \
-    return ContentSettingsType::BRAVE_COOKIES;                   \
-  case PermissionType::BRAVE_SPEEDREADER:                        \
-    return ContentSettingsType::BRAVE_SPEEDREADER;               \
-  case PermissionType::BRAVE_ETHEREUM:                           \
-    return ContentSettingsType::BRAVE_ETHEREUM;                  \
-  case PermissionType::BRAVE_SOLANA:                             \
-    return ContentSettingsType::BRAVE_SOLANA;                    \
-  case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
-    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
+#define BRAVE_PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE \
+  case PermissionType::BRAVE_ADS:                                      \
+    return ContentSettingsType::BRAVE_ADS;                             \
+  case PermissionType::BRAVE_COSMETIC_FILTERING:                       \
+    return ContentSettingsType::BRAVE_COSMETIC_FILTERING;              \
+  case PermissionType::BRAVE_TRACKERS:                                 \
+    return ContentSettingsType::BRAVE_TRACKERS;                        \
+  case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:                \
+    return ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES;       \
+  case PermissionType::BRAVE_FINGERPRINTING_V2:                        \
+    return ContentSettingsType::BRAVE_FINGERPRINTING_V2;               \
+  case PermissionType::BRAVE_SHIELDS:                                  \
+    return ContentSettingsType::BRAVE_SHIELDS;                         \
+  case PermissionType::BRAVE_REFERRERS:                                \
+    return ContentSettingsType::BRAVE_REFERRERS;                       \
+  case PermissionType::BRAVE_COOKIES:                                  \
+    return ContentSettingsType::BRAVE_COOKIES;                         \
+  case PermissionType::BRAVE_SPEEDREADER:                              \
+    return ContentSettingsType::BRAVE_SPEEDREADER;                     \
+  case PermissionType::BRAVE_ETHEREUM:                                 \
+    return ContentSettingsType::BRAVE_ETHEREUM;                        \
+  case PermissionType::BRAVE_SOLANA:                                   \
+    return ContentSettingsType::BRAVE_SOLANA;                          \
+  case PermissionType::BRAVE_GOOGLE_SIGN_IN:                           \
+    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;                  \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:                         \
     return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
-#undef PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
 
 namespace permissions {
 
@@ -133,8 +133,9 @@ GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
                                         const GURL& embedding_origin) {
   // Use requesting_origin which will have ethereum or solana address info.
   if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
-      permission == ContentSettingsType::BRAVE_SOLANA)
+      permission == ContentSettingsType::BRAVE_SOLANA) {
     return requesting_origin;
+  }
 
   return PermissionUtil_ChromiumImpl::GetCanonicalOrigin(
       permission, requesting_origin, embedding_origin);

@@ -10,5 +10,3 @@
   show_simplified_flow = false;
 
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc"
-#undef BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SHOW_SIMPLIFIED
-#undef BRAVE_BOOKMARK_BUBBLE_VIEW_SHOW_BUBBLE_SET_ARROW

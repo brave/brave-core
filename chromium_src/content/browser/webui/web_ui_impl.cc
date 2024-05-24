@@ -5,4 +5,3 @@
 
 #define BRAVE_WEB_UI_IMPL AddRequestableScheme(kBraveUIScheme);
 #include "src/content/browser/webui/web_ui_impl.cc"
-#undef BRAVE_WEB_UI_IMPL

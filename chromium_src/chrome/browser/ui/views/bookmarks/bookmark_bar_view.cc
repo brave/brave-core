@@ -67,4 +67,3 @@ void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
 #define BookmarkContextMenu BraveBookmarkContextMenu
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
 #undef BookmarkContextMenu
-#undef BRAVE_LAYOUT

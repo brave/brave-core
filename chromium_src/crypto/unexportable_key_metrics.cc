@@ -12,6 +12,3 @@
 
 #include "src/crypto/unexportable_key_metrics.cc"
 
-#undef BRAVE_ALL_ALGORITHMS
-#undef BRAVE_MEASURE_VIRTUAL_TMP_OPERATIONS
-#undef BRAVE_MEASURE_TMP_OPERATIONS_INTERNAL

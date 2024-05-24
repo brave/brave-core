@@ -17,7 +17,6 @@ const char* GetApplicationName();
   } else  // NOLINT
 
 #include "src/components/os_crypt/sync/key_storage_libsecret.cc"
-#undef BRAVE_KEY_STORAGE_LIBSECRET_GET_KEY_IMPL
 namespace {
 
 const char* GetApplicationName() {

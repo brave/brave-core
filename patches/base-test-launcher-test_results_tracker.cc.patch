@@ -1,12 +1,12 @@
 diff --git a/base/test/launcher/test_results_tracker.cc b/base/test/launcher/test_results_tracker.cc
-index 2b113168a53e25e6e5c1540c268913a5e2e62f8f..75011e6f5e92931eab13106f5863172fbbad5f60 100644
+index 2b113168a53e25e6e5c1540c268913a5e2e62f8f..b8648c32fbe287f55d163e16e91e4b127ecbe1ab 100644
 --- a/base/test/launcher/test_results_tracker.cc
 +++ b/base/test/launcher/test_results_tracker.cc
 @@ -144,6 +144,7 @@ TestResultsTracker::~TestResultsTracker() {
                     : ""),
                result.GetTestCaseName().c_str());
        if (result.status != TestResult::TEST_SUCCESS) {
-+        TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS
++        BRAVE_TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS
          // The actual failure message is not propagated up to here, as it's too
          // much work to escape it properly, and in case of failure, almost
          // always one needs to look into full log anyway.

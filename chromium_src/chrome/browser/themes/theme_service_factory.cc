@@ -20,7 +20,6 @@
 #endif
 
 #include "src/chrome/browser/themes/theme_service_factory.cc"
-#undef BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
 
 content::BrowserContext* ThemeServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {

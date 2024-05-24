@@ -14,7 +14,6 @@
 
 #include "src/chrome/browser/ui/webui/settings/import_data_handler.h"  // IWYU pragma: export
 
-#undef BRAVE_IMPORT_DATA_HANDLER_H
 #undef StartImport
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_IMPORT_DATA_HANDLER_H_

@@ -14,7 +14,6 @@ bool ContentSettingsAgentImpl::IsAllowlistedForContentSettings(               \
 // #define BRAVE_CONTENT_SETTINGS_AGENT_IMPL_IS_WHITELISTED_FOR_CONTENT_SETTINGS
 
 #include "src/components/content_settings/renderer/content_settings_agent_impl.cc"
-#undef BRAVE_CONTENT_SETTINGS_AGENT_IMPL_IS_WHITELISTED_FOR_CONTENT_SETTINGS
 
 namespace content_settings {
 

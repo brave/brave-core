@@ -52,7 +52,6 @@
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"
 #undef kForceWebContentsDarkMode
-#undef BRAVE_AI_CHAT_FLAG
 
 namespace chrome {
 namespace android {

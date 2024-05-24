@@ -19,6 +19,5 @@
 
 #include "src/services/network/public/cpp/network_param_mojom_traits.h"  // IWYU pragma: export
 
-#undef BRAVE_STRUCT_TRAITS_HOST_PORT_PAIR
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_PUBLIC_CPP_NETWORK_PARAM_MOJOM_TRAITS_H_

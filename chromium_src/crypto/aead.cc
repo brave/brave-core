@@ -8,4 +8,3 @@
     return nonce_length_;
 
 #include "src/crypto/aead.cc"
-#undef BRAVE_NONCE_LENGTH

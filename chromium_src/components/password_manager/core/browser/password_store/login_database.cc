@@ -9,4 +9,3 @@
 
 #include "src/components/password_manager/core/browser/password_store/login_database.cc"
 
-#undef BRAVE_STATEMENT_TO_FORMS

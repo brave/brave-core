@@ -26,7 +26,6 @@
 #include "src/third_party/blink/renderer/modules/scheduler/scheduled_action.cc"
 
 #undef ScriptFetchOptions
-#undef BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR
 
 namespace blink {
 

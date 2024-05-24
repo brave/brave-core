@@ -19,7 +19,6 @@
   if (false)
 
 #include "src/chrome/browser/ui/views/toolbar/toolbar_view.cc"
-#undef BRAVE_TOOLBAR_VIEW_INIT
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #undef LocationBarView
 #endif

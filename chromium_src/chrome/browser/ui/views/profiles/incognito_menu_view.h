@@ -14,6 +14,5 @@
 #define OnExitButtonClicked virtual OnExitButtonClicked
 #include "src/chrome/browser/ui/views/profiles/incognito_menu_view.h"  // IWYU pragma: export
 #undef OnExitButtonClicked
-#undef BRAVE_INCOGNITO_MENU_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_INCOGNITO_MENU_VIEW_H_

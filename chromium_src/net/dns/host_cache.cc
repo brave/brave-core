@@ -12,4 +12,3 @@
   }
 
 #include "src/net/dns/host_cache.cc"
-#undef BRAVE_COPY_WITH_DEFAULT_PORT

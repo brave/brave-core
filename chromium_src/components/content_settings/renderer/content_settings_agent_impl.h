@@ -17,7 +17,6 @@
 
 #include "src/components/content_settings/renderer/content_settings_agent_impl.h"  // IWYU pragma: export
 #undef IsAllowlistedForContentSettings
-#undef BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
 
 namespace content_settings {
 

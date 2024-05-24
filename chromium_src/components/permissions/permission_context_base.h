@@ -27,7 +27,6 @@ class PermissionLifetimeManager;
 
 #include "src/components/permissions/permission_context_base.h"  // IWYU pragma: export
 
-#undef BRAVE_PERMISSION_CONTEXT_BASE_H_
 #undef CleanUpRequest
 #undef PermissionDecided
 #undef PermissionContextBase

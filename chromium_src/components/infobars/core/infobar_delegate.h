@@ -28,6 +28,5 @@
 
 #include "src/components/infobars/core/infobar_delegate.h"  // IWYU pragma: export
 
-#undef BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_INFOBARS_CORE_INFOBAR_DELEGATE_H_

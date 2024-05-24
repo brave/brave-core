@@ -38,7 +38,6 @@ std::u16string GetFailedUrlString(GURL failed_url);
 #include "src/components/error_page/common/localized_error.cc"
 
 #undef failed_url_string
-#undef BRAVE_LOOKUP_ERROR_MAP
 
 namespace error_page {
 namespace {

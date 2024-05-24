@@ -20,6 +20,5 @@
 #undef RefreshBackground
 #undef GetBorderRadius
 #undef OnOmniboxBlurred
-#undef BRAVE_LOCATION_BAR_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_

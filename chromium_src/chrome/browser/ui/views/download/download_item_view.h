@@ -45,6 +45,5 @@
 #include "src/chrome/browser/ui/views/download/download_item_view.h"  // IWYU pragma: export
 #undef SetMode
 #undef UpdateLabels
-#undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

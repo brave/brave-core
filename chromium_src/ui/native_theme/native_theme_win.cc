@@ -13,7 +13,6 @@ bool s_ignore_system_dark_mode_change = false;
   }
 
 #include "src/ui/native_theme/native_theme_win.cc"
-#undef BRAVE_NATIVETHEMEWIN_UPDATEDARKMODESTATUS
 
 namespace ui {
 

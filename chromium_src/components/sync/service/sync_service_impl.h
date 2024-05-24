@@ -37,6 +37,5 @@
 #undef ResetEngine
 #undef Initialize
 
-#undef BRAVE_SYNC_SERVICE_IMPL_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_H_

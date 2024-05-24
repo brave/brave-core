@@ -11,7 +11,6 @@
 
 #define NotifyImportEnded virtual NotifyImportEnded
 #include "src/chrome/browser/importer/external_process_importer_host.h"  // IWYU pragma: export
-#undef BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H
 #undef NotifyImportEnded
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_

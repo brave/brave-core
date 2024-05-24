@@ -18,7 +18,6 @@
 
 #include "src/chrome/browser/importer/external_process_importer_client.h"  // IWYU pragma: export
 
-#undef BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H
 #undef Start
 #undef Cancel
 #undef CloseMojoHandles

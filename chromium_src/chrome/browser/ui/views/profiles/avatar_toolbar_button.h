@@ -9,7 +9,6 @@
 #define BRAVE_AVATAR_BUTTON_H friend class BraveAvatarToolbarButton;
 #define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
 #include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button.h"  // IWYU pragma: export
-#undef BRAVE_AVATAR_BUTTON_H
 #undef AvatarToolbarButtonDelegate
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_AVATAR_TOOLBAR_BUTTON_H_

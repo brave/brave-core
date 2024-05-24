@@ -9,4 +9,3 @@
     *error = "Unsupported"; return nullptr;
 
 #include "src/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc"
-#undef BRAVE_DISABLE_RPH_FROM_REQUEST

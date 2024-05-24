@@ -12,7 +12,6 @@
     return false;
 
 #include "src/components/page_info/page_info.cc"
-#undef BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
 #undef PageInfo
 
 std::set<net::SchemefulSite> PageInfo::GetTwoSitePermissionRequesters(

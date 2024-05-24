@@ -9,7 +9,6 @@
 #include "src/components/sync/engine/sync_scheduler_impl.cc"
 #include "base/functional/callback_forward.h"
 
-#undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
 
 #include "brave/components/sync/engine/brave_sync_server_commands.h"
 

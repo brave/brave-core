@@ -25,6 +25,5 @@
 //  #define BRAVE_CONTEXT_FEATURE_SETTINGS_H_
 
 #include "src/third_party/blink/renderer/core/context_features/context_feature_settings.h"  // IWYU pragma: export
-#undef BRAVE_CONTEXT_FEATURE_SETTINGS_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_CONTEXT_FEATURES_CONTEXT_FEATURE_SETTINGS_H_

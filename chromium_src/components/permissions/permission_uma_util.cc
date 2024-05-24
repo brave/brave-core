@@ -26,5 +26,4 @@
   PermissionsClient::Get()->GetUkmSourceId
 
 #include "src/components/permissions/permission_uma_util.cc"
-#undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
 #undef GetUkmSourceId

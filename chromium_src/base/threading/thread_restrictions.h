@@ -21,6 +21,5 @@ class ProcessLauncher;
 
 #include "src/base/threading/thread_restrictions.h"  // IWYU pragma: export
 
-#undef BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_

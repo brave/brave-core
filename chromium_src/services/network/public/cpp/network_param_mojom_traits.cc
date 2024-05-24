@@ -18,4 +18,3 @@
 
 #include "src/services/network/public/cpp/network_param_mojom_traits.cc"
 
-#undef BRAVE_STRUCT_TRAITS_HOST_PORT_PAIR_READ

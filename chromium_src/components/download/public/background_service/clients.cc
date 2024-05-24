@@ -8,4 +8,3 @@
     return "CustomListSubscriptions";
 
 #include "src/components/download/public/background_service/clients.cc"
-#undef BRAVE_BACKGROUND_DOWNLOAD_CLIENT_TO_STRING

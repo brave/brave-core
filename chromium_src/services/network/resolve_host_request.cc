@@ -10,4 +10,3 @@
   }
 
 #include "src/services/network/resolve_host_request.cc"
-#undef BRAVE_RESOLVE_HOST_REQUEST_START

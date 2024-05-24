@@ -15,4 +15,3 @@
 }; \
 const uint8_t kPublicKey_ChromiumImpl[] = {
 #include "src/components/variations/variations_seed_store.cc"
-#undef BRAVE_K_PUBLIC_KEY

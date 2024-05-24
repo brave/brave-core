@@ -27,6 +27,5 @@ struct BraveNavigatorAttributeInstallerTrait;
       base::span<const AttributeConfig> configs);
 
 #include "src/third_party/blink/renderer/platform/bindings/idl_member_installer.h"  // IWYU pragma: export
-#undef BRAVE_IDL_MEMBER_INSTALLER_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_BINDINGS_IDL_MEMBER_INSTALLER_H_

@@ -27,7 +27,6 @@ class TabHoverCardBubbleView;
 #undef SetTargetTabImage
 #undef UpdateCardContent
 #undef TabHoverCardBubbleView
-#undef BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
 
 class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
  public:

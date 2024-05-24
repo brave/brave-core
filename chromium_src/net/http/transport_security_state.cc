@@ -18,7 +18,6 @@
 
 #include "src/net/http/transport_security_state.cc"
 
-#undef BRAVE_ENABLE_STATIC_PINS
 
 #undef TransportSecurityState
 

@@ -24,8 +24,6 @@
 #include "src/third_party/blink/renderer/core/dom/events/event_target.cc"
 
 #undef SetAttributeEventListener
-#undef BRAVE_EVENT_TARGET_REMOVE_EVENT_LISTENER_INTERNAL
-#undef BRAVE_EVENT_TARGET_ADD_EVENT_LISTENER_INTERNAL
 
 namespace blink {
 

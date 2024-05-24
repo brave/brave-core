@@ -45,5 +45,3 @@ bool IsAutoplayAllowedForElement(Member<HTMLMediaElement> element) {
 
 #include "src/third_party/blink/renderer/core/html/media/autoplay_policy.cc"
 
-#undef BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
-#undef BRAVE_GET_AUTOPLAY_POLICY_FOR_DOCUMENT

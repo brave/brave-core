@@ -18,4 +18,3 @@
 
 #include "src/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc"
 
-#undef BRAVE_MODULE_SCRIPT_LOADER_FETCH_INTERNAL

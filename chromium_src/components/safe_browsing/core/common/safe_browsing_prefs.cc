@@ -7,4 +7,3 @@
 
 #define BRAVE_IS_ENHANCED_PROTECTION_ENABLED return false;
 #include "src/components/safe_browsing/core/common/safe_browsing_prefs.cc"
-#undef BRAVE_IS_ENHANCED_PROTECTION_ENABLED

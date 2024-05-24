@@ -18,5 +18,3 @@
   }
 
 #include "src/chrome/browser/download/download_target_determiner.cc"
-#undef BRAVE_DOWNLOAD_TARGET_DETERMINER_GET_DANGER_LEVEL
-#undef BRAVE_DOWNLOAD_TARGET_DETERMINER_GET_DANGER_LEVEL2

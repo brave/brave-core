@@ -20,4 +20,3 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #include "src/chrome/browser/resources_util.cc"
-#undef BRAVE_RESOURCES_UTIL

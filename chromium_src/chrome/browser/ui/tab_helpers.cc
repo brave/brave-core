@@ -36,5 +36,4 @@ class NoTabHelper {
 #undef NetErrorTabHelper
 #undef FontPrewarmerTabHelper
 #undef chrome_browser_net
-#undef BRAVE_TAB_HELPERS
 #undef kWebUITabStrip

@@ -20,4 +20,3 @@
 
 #include "src/third_party/blink/renderer/core/script/dynamic_module_resolver.cc"
 
-#undef BRAVE_DYNAMIC_MODULE_RESOLVER_RESOLVE_DYNAMICALLY

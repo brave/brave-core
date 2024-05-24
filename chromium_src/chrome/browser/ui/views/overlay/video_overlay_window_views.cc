@@ -12,4 +12,3 @@
 #include "src/chrome/browser/ui/views/overlay/video_overlay_window_views.cc"
 
 #undef BackToTabLabelButton
-#undef BRAVE_UPDATE_MAX_SIZE

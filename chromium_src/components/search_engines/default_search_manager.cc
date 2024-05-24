@@ -53,11 +53,9 @@ bool IsDefaultSearchProviderByExtension(PrefService* pref_service) {
 // extension controlled prefs.
 
 // clang-format off
-#define LOADDEFAULTSEARCHENGINEFROMPREFS_BRAVE                      \
+#define BRAVE_DEFAULT_SEARCH_MANAGER_LOAD_DEFAULT_SEARCH_ENGINE_FROM_PREFS                      \
   } else if (IsDefaultSearchProviderByExtension(pref_service_))  {  \
     extension_default_search_ = std::move(turl_data);
 // clang-format on
 
 #include "src/components/search_engines/default_search_manager.cc"
-
-#undef LOADDEFAULTSEARCHENGINEFROMPREFS_BRAVE

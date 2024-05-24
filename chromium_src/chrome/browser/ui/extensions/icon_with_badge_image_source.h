@@ -27,6 +27,5 @@ class BraveIconWithBadgeImageSource;
 #include "src/chrome/browser/ui/extensions/icon_with_badge_image_source.h"  // IWYU pragma: export
 #undef GetIconAreaRect
 #undef PaintBadge
-#undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_EXTENSIONS_ICON_WITH_BADGE_IMAGE_SOURCE_H_

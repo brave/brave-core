@@ -12,4 +12,3 @@
   ss
 
 #include "src/content/browser/zygote_host/zygote_host_impl_linux.cc"
-#undef BRAVE_ZYGOTE_HOST_IMPL_LINUX_ZYGOTE_HOST_IMPL_INIT

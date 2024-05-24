@@ -15,4 +15,3 @@
 
 #include "src/chrome/browser/content_settings/page_specific_content_settings_delegate.cc"
 
-#undef BRAVE_GET_GUEST_VIEW_DEFAULT_CONTENT_SETTING_RULES

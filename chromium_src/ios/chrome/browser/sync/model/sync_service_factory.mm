@@ -18,4 +18,3 @@
 
 #include "src/ios/chrome/browser/sync/model/sync_service_factory.mm"
 
-#undef BRAVE_BUILD_SERVICE_INSTANCE_FOR

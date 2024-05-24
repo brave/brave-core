@@ -28,6 +28,5 @@ FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
 #include "src/components/sync/engine/model_type_worker.h"  // IWYU pragma: export
 
 #undef OnCommitResponse
-#undef BRAVE_MODEL_TYPE_WORKER_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_MODEL_TYPE_WORKER_H_

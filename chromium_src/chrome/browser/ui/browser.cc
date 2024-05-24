@@ -32,7 +32,6 @@
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
-#undef BRAVE_BROWSER_CREATE
 
 #if !BUILDFLAG(IS_ANDROID)
 #undef BookmarkTabHelper

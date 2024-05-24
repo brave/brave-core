@@ -28,11 +28,7 @@
 
 #include "src/components/sync_device_info/device_info_sync_bridge.cc"
 
-#undef BRAVE_ON_READ_ALL_METADATA_CLEAR_PROGRESS_TOKEN
-#undef BRAVE_SKIP_EXPIRE_OLD_ENTRIES
-#undef BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
 #undef RefreshLocalDeviceInfoIfNeeded
-#undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 
 #include "base/containers/contains.h"
 #include "base/task/sequenced_task_runner.h"

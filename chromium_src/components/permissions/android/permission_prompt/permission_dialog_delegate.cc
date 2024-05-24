@@ -116,5 +116,3 @@ void PermissionDialogJavaDelegate::
 #include "src/components/permissions/android/permission_prompt/permission_dialog_delegate.cc"
 
 #undef Java_PermissionDialogController_createDialog
-#undef BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL
-#undef BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT

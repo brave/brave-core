@@ -10,4 +10,3 @@
       Profile::FromBrowserContext(context));
 
 #include "src/chrome/browser/extensions/extension_management.cc"
-#undef BRAVE_EXTENSION_MANAGEMENT_FACTORY_BUILD_SERVICE_INSTANCE_FOR

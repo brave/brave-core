@@ -143,8 +143,6 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 
 #include "src/components/omnibox/browser/autocomplete_controller.cc"
 
-#undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
-#undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 #undef ShortcutsProvider
 #undef BookmarkProvider
 #undef LocalHistoryZeroSuggestProvider

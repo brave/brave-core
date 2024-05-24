@@ -8,7 +8,6 @@
 
 #include "src/components/sync/engine/syncer_proto_util.cc"
 
-#undef BRAVE_SYNCER_PROTO_UTIL_POST_CLIENT_TO_SERVER_MESSAGE
 
 namespace syncer {
 

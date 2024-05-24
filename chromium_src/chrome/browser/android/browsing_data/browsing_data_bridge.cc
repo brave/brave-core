@@ -19,4 +19,3 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/chrome/browser/android/browsing_data/browsing_data_bridge.cc"
-#undef BRAVE_CLEAR_BROWSING_DATA

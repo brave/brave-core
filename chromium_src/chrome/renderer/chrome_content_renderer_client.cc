@@ -45,5 +45,4 @@ void RenderFrameWithBinderRegistryCreated(
 
 #include "src/chrome/renderer/chrome_content_renderer_client.cc"
 
-#undef BRAVE_RENDER_FRAME_CREATED
 #undef DistillabilityAgent

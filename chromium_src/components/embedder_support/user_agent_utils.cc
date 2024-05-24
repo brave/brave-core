@@ -21,4 +21,3 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 #define BRAVE_GET_USER_AGENT_BRAND_LIST brand = kBraveBrandNameForCHUA;
 
 #include "src/components/embedder_support/user_agent_utils.cc"
-#undef BRAVE_GET_USER_AGENT_BRAND_LIST

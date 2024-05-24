@@ -33,7 +33,6 @@ bool IsOnion(const T& obj) {
 
 #undef UpgradeInsecureRequest
 
-#undef BRAVE_MIXED_CONTENT_CHECKER_IS_MIXED_CONTENT
 
 namespace blink {
 // static

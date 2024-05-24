@@ -26,4 +26,3 @@ base::Time BraveCanonExpiration(const base::Time& expiry_date,
     return BraveCanonExpiration(expiry_date, fixed_creation_date);
 
 #include "src/net/cookies/canonical_cookie.cc"
-#undef BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE

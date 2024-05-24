@@ -10,4 +10,3 @@
     return base::StrCat({kSystemSettingsDefaultAppsPrefix, L"IPNS"});
 
 #include "src/base/win/default_apps_util.cc"
-#undef BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS

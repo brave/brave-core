@@ -48,8 +48,6 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 #include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc"
 
 #undef GetAllForeignSessions
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
 
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
 

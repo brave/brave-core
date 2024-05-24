@@ -12,4 +12,3 @@
 
 #include "src/extensions/browser/api/web_request/extension_web_request_event_router.cc"
 
-#undef BRAVE_EXTENSION_WEB_REQUEST_EVENT_ROUTER_ON_AUTH_REQUIRED

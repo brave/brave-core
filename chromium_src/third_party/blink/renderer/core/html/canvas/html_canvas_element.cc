@@ -41,4 +41,3 @@ String HTMLCanvasElement::toDataURL(ScriptState* script_state,
 
 }  // namespace blink
 
-#undef BRAVE_TO_DATA_URL_INTERNAL

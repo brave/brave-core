@@ -7,4 +7,3 @@
   welcome_enabled = true;
 
 #include "src/chrome/browser/ui/startup/startup_browser_creator_impl.cc"
-#undef BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH

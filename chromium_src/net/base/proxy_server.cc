@@ -53,5 +53,3 @@ void ParseAuthInfoAndHostname(std::string_view* hostname,
 
 #include "src/net/base/proxy_server.cc"
 
-#undef BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_RETURN_HOST_PORT_PAIR
-#undef BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_EXTRACT_AUTH_INFO

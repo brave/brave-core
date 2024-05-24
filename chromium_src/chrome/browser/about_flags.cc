@@ -13,4 +13,3 @@
   }
 
 #include "src/chrome/browser/about_flags.cc"
-#undef BRAVE_SHOULD_SKIP_CONDITIONAL_FEATURE_ENTRY

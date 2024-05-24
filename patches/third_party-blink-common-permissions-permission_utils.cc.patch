@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/common/permissions/permission_utils.cc b/third_party/blink/common/permissions/permission_utils.cc
-index 9b7c4524480fc54c6cf86027e69ac8784f1e310f..4e2722ad001540352d4cf71e0def8d2ae8c3f057 100644
+index 9b7c4524480fc54c6cf86027e69ac8784f1e310f..26575c8a36e0497692827b4797226f883f2404f4 100644
 --- a/third_party/blink/common/permissions/permission_utils.cc
 +++ b/third_party/blink/common/permissions/permission_utils.cc
 @@ -28,6 +28,7 @@ mojom::PermissionStatus ToPermissionStatus(const std::string& status) {
  
  std::string GetPermissionString(PermissionType permission) {
    switch (permission) {
-+    PERMISSION_UTIL_GET_PERMISSION_STRING
++    BRAVE_PERMISSION_UTIL_GET_PERMISSION_STRING
      case PermissionType::GEOLOCATION:
        return "Geolocation";
      case PermissionType::NOTIFICATIONS:

@@ -37,4 +37,3 @@ const char kAltPublisherKeySwitch[] = "brave-extension-publisher-key-alt";
 
 #include "src/extensions/browser/extension_creator.cc"
 
-#undef BRAVE_CREATE_CRX

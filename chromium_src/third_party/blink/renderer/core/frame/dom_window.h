@@ -12,6 +12,5 @@
 
 #include "src/third_party/blink/renderer/core/frame/dom_window.h"  // IWYU pragma: export
 
-#undef BRAVE_DOM_WINDOW_H
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_DOM_WINDOW_H_
