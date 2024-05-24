@@ -27,7 +27,7 @@ enum PlaylistCarplayError: Error {
   case itemExpired(id: String)
 }
 
-class PlaylistCarplayController: NSObject {
+class PlaylistLegacyCarplayController: NSObject {
   private let player: MediaPlayer
   private let mediaStreamer: PlaylistMediaStreamer
   private let interfaceController: CPInterfaceController
@@ -550,7 +550,7 @@ class PlaylistCarplayController: NSObject {
   }
 }
 
-extension PlaylistCarplayController: CPInterfaceControllerDelegate {
+extension PlaylistLegacyCarplayController: CPInterfaceControllerDelegate {
   func templateWillAppear(_ aTemplate: CPTemplate, animated: Bool) {
     Logger.module.debug("Template \(aTemplate.classForCoder) will appear.")
   }
@@ -568,7 +568,7 @@ extension PlaylistCarplayController: CPInterfaceControllerDelegate {
   }
 }
 
-extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
+extension PlaylistLegacyCarplayController: NSFetchedResultsControllerDelegate {
   func controller(
     _ controller: NSFetchedResultsController<NSFetchRequestResult>,
     didChange anObject: Any,
@@ -585,7 +585,7 @@ extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension PlaylistCarplayController {
+extension PlaylistLegacyCarplayController {
 
   func loadThumbnail(
     for mediaItem: PlaylistInfo,
@@ -658,7 +658,7 @@ extension PlaylistCarplayController {
   }
 }
 
-extension PlaylistCarplayController {
+extension PlaylistLegacyCarplayController {
   func onPreviousTrack(isUserInitiated: Bool) {
     if PlaylistCarplayManager.shared.currentlyPlayingItemIndex <= 0 {
       return
@@ -897,7 +897,7 @@ extension PlaylistCarplayController {
     // Maybe in the future, check if the phone is open, if it is, display the alert there.
     // and the user can "open" the item in the webView/browser.
 
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       // Some cars do NOT support CPActionSheetTemplate,
       // So we MUST use CPAlertTemplate
       let alert = CPAlertTemplate(
@@ -964,7 +964,7 @@ extension PlaylistCarplayController {
   }
 
   func displayLoadingResourceError() {
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       // Some cars do NOT support CPActionSheetTemplate,
       // So we MUST use CPAlertTemplate
       let alert = CPAlertTemplate(
@@ -1034,7 +1034,7 @@ extension PlaylistCarplayController {
   private func displayErrorAlert(error: Error) {
     // Some cars do NOT support CPActionSheetTemplate
     // So we MUST use CPAlertTemplate
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       let alert = CPAlertTemplate(
         titleVariants: [error.localizedDescription],
         actions: [

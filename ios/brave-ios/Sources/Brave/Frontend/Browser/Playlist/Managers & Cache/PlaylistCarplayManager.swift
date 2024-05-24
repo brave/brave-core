@@ -23,7 +23,7 @@ public class PlaylistCarplayManager: NSObject {
   private(set) weak var mediaPlayer: MediaPlayer?
   private(set) var isCarPlayAvailable = false
 
-  private var carPlayController: PlaylistCarplayController?
+  private var carPlayController: Any?
   private var carplayInterface: CPInterfaceController?
   private var carplaySessionConfiguration: CPSessionConfiguration?
   let onCarplayUIChangedToRoot = PassthroughSubject<Void, Never>()
@@ -82,7 +82,7 @@ public class PlaylistCarplayManager: NSObject {
   // in use at any given moment
   public static let shared = PlaylistCarplayManager()
 
-  func getCarPlayController() -> PlaylistCarplayController? {
+  func getCarPlayController() -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
     // We control what gets displayed
     guard let carplayInterface = carplayInterface else {
@@ -105,16 +105,28 @@ public class PlaylistCarplayManager: NSObject {
       .first?.windows
       .filter({ $0.isKeyWindow }).first
 
-    // If there is no media player, create one,
-    // pass it to the car-play controller
-    let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: currentWindow ?? UIView(),
       webLoaderFactory: LivePlaylistWebLoaderFactory()
     )
 
+    if FeatureList.kNewPlaylistUI.enabled {
+      let player =
+        self.playerModel
+        ?? PlayerModel(
+          mediaStreamer: mediaStreamer,
+          initialPlaybackInfo: nil
+        )
+      self.playerModel = player
+      return CarPlayController(player: player, interface: carplayInterface)
+    }
+
+    // If there is no media player, create one,
+    // pass it to the car-play controller
+    let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
+
     // Construct the CarPlay UI
-    let carPlayController = PlaylistCarplayController(
+    let carPlayController = PlaylistLegacyCarplayController(
       mediaStreamer: mediaStreamer,
       player: mediaPlayer,
       interfaceController: carplayInterface
@@ -161,8 +173,7 @@ public class PlaylistCarplayManager: NSObject {
             guard let self else { return }
             self.isPlaylistControllerPresented = false
             if let player, !player.isPictureInPictureActive, !isPiPStarting {
-              player.stop()
-              self.playerModel = nil
+              self.destroyPlayerModelIfUnused()
             }
             isPiPStarting = false
           }
@@ -220,6 +231,18 @@ public class PlaylistCarplayManager: NSObject {
     }
   }
 
+  private func destroyPlayerModelIfUnused() {
+    guard let playerModel else { return }
+    // The player model should stay alive if any of these are true:
+    // - Playlist UI is visible
+    // - Picture in picture is active
+    // - CarPlay is connected
+    if !isPlaylistControllerPresented, !playerModel.isPictureInPictureActive, !isCarPlayAvailable {
+      playerModel.stop()
+      self.playerModel = nil
+    }
+  }
+
   private func attemptInterfaceConnection(isCarPlayAvailable: Bool) {
     self.isCarPlayAvailable = isCarPlayAvailable
 
@@ -233,6 +256,7 @@ public class PlaylistCarplayManager: NSObject {
     } else {
       carPlayController = nil
       mediaPlayer = nil
+      destroyPlayerModelIfUnused()
     }
 
     // Sometimes the `endpointAvailable` WILL RETURN TRUE!
@@ -255,8 +279,8 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
 
   public func disconnect(interfaceController: CPInterfaceController) {
     isCarPlayAvailable = false
-    carplayInterface = nil
     carplayInterface?.delegate = nil
+    carplayInterface = nil
 
     DispatchQueue.main.async {
       self.attemptInterfaceConnection(isCarPlayAvailable: false)
@@ -295,7 +319,7 @@ extension PlaylistCarplayManager: AVPictureInPictureControllerDelegate {
       // Already restoring by opening playlist
       return
     }
-    playerModel = nil
+    destroyPlayerModelIfUnused()
   }
 
   public func pictureInPictureControllerWillStartPictureInPicture(

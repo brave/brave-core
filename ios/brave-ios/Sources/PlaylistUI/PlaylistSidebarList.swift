@@ -51,7 +51,7 @@ struct PlaylistSidebarList: View {
           } label: {
             PlaylistItemView(
               title: item.name,
-              assetURL: URL(string: item.mediaSrc),
+              assetURL: item.assetURL,
               pageURL: URL(string: item.pageSrc),
               duration: .seconds(item.duration),
               isSelected: selectedItemID == item.id,

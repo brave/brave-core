@@ -175,7 +175,11 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  @MainActor @Published var repeatMode: RepeatMode = .none
+  @MainActor @Published var repeatMode: RepeatMode = .none {
+    didSet {
+      updateSystemPlayer()
+    }
+  }
 
   @MainActor @Published var isShuffleEnabled: Bool = false {
     didSet {
@@ -210,6 +214,7 @@ public final class PlayerModel: ObservableObject {
       if isPlaying {
         player.rate = playbackSpeed.rate
       }
+      updateSystemPlayer()
     }
   }
 
@@ -353,7 +358,7 @@ public final class PlayerModel: ObservableObject {
       }
     }
     didSet {
-      updateSystemPlayer()
+      updateSystemPlayer(loadArtwork: true)
     }
   }
 
@@ -378,10 +383,13 @@ public final class PlayerModel: ObservableObject {
 
     defer {
       Task { @MainActor in
-        await self.prepareToPlaySelectedItem(
-          initialOffset: seekToInitialTimestamp,
-          playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay
-        )
+        if !isPlaying {
+          await self.prepareToPlaySelectedItem(
+            initialOffset: seekToInitialTimestamp,
+            playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay
+          )
+        }
+        seekToInitialTimestamp = nil
       }
     }
 
@@ -428,8 +436,12 @@ public final class PlayerModel: ObservableObject {
   }
 
   @MainActor func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
+    let folder =
+      selectedItemID.flatMap {
+        PlaylistItem.getItem(id: $0)?.playlistFolder
+      } ?? selectedFolder
     var queue: OrderedSet<PlaylistItem.ID> = []
-    var items = PlaylistItem.getItems(parentFolder: selectedFolder).map(\.id)
+    var items = PlaylistItem.getItems(parentFolder: folder).map(\.id)
     if isShuffleEnabled {
       if let selectedItemID {
         items.removeAll(where: { $0 == selectedItemID })
@@ -437,13 +449,27 @@ public final class PlayerModel: ObservableObject {
       }
       queue.append(contentsOf: items.shuffled())
     } else {
-      // FIXME: We should leave prior items in to allow playing previous item instead of just next
-      if let selectedItemID {
-        items = Array(items.drop(while: { $0 != selectedItemID }))
-      }
       queue = OrderedSet(items)
     }
     itemQueue = queue
+  }
+
+  @MainActor func playPreviousItem() {
+    guard let currentItem = selectedItem, currentItem.id != itemQueue.first,
+      let currentItemIndex = itemQueue.firstIndex(of: currentItem.id)
+    else {
+      return
+    }
+
+    // This should be safe as we've already checked if the selected item is the first in the queue
+    selectedItemID = itemQueue[currentItemIndex - 1]
+
+    Task {
+      await self.prepareToPlaySelectedItem(
+        initialOffset: seekToInitialTimestamp,
+        playImmediately: true
+      )
+    }
   }
 
   @MainActor func playNextItem() {
@@ -490,16 +516,8 @@ public final class PlayerModel: ObservableObject {
   ) async {
     guard let item = selectedItem else { return }
     var playerItemToReplace: AVPlayerItem?
-    if let cachedData = item.cachedData {
-      do {
-        var isStale: Bool = false
-        let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-        if FileManager.default.fileExists(atPath: url.path) {
-          playerItemToReplace = .init(url: url)
-        }
-      } catch {
-        // FIXME: Should the cached data be deleted at this point?
-      }
+    if let cachedDataURL = item.cachedDataURL {
+      playerItemToReplace = .init(url: cachedDataURL)
     }
     if playerItemToReplace == nil, let mediaStreamer {
       if !isPictureInPictureActive {
@@ -563,8 +581,16 @@ public final class PlayerModel: ObservableObject {
       object: nil,
       queue: .main
     ) { [weak self] _ in
+      guard let self else { return }
       MainActor.assumeIsolated {
-        self?.playNextItem()
+        if let selectedItem = self.selectedItem {
+          // Reset the play time of the item that just finished
+          PlaylistManager.shared.updateLastPlayed(
+            item: .init(item: selectedItem),
+            playTime: 0
+          )
+        }
+        self.playNextItem()
       }
     }
     cancellables.insert(
@@ -581,7 +607,9 @@ public final class PlayerModel: ObservableObject {
     }
     let timeControlStatusObservable = player.observe(\.timeControlStatus, options: [.new]) {
       [weak self] _, _ in
-      self?.updateSystemPlayer()
+      DispatchQueue.main.async {
+        self?.updateSystemPlayer()
+      }
     }
     cancellables.formUnion([
       subscriber(for: \.timeControlStatus),
@@ -599,7 +627,9 @@ public final class PlayerModel: ObservableObject {
       objectWillChangeSubscriber(on: item, for: keyPath)
     }
     let statusObservable = item.observe(\.status) { [weak self] _, _ in
-      self?.updateSystemPlayer()
+      DispatchQueue.main.async {
+        self?.updateSystemPlayer()
+      }
     }
     itemCancellables.formUnion([
       subscriber(for: \.presentationSize),
@@ -620,6 +650,8 @@ public final class PlayerModel: ObservableObject {
       observation.invalidate()
     }
   }
+
+  private var systemPlayerArtworkFetchTask: Task<Void, Error>?
 }
 
 extension AVPlayer {
@@ -639,10 +671,34 @@ extension AVPlayer {
   }
 }
 
+// MARK: -
+
+extension PlaylistItem {
+  fileprivate var cachedDataURL: URL? {
+    guard let cachedData else { return nil }
+    do {
+      var isStale: Bool = false
+      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+      if FileManager.default.fileExists(atPath: url.path) {
+        return url
+      }
+    } catch {
+      return nil
+    }
+    return nil
+  }
+
+  /// The URL you would attempt to load in an AVAsset or fetch metadata from. This URL may be
+  /// the cached file url or the video url found on the webpage
+  var assetURL: URL? {
+    cachedDataURL ?? URL(string: mediaSrc)
+  }
+}
+
 // MARK: - System Media Player
 
 extension PlayerModel {
-  @MainActor private func updateSystemPlayer() {
+  @MainActor private func updateSystemPlayer(loadArtwork: Bool = false) {
     guard let selectedItem else {
       MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
       return
@@ -663,6 +719,8 @@ extension PlayerModel {
     MPRemoteCommandCenter.shared().do {
       $0.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
       $0.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
+      $0.seekBackwardCommand.isEnabled = itemQueue.first != selectedItem.id
+      $0.seekForwardCommand.isEnabled = itemQueue.last != selectedItem.id || repeatMode != .none
       $0.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
       $0.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
       $0.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
@@ -679,6 +737,28 @@ extension PlayerModel {
         .merging(nowPlayingInfo, uniquingKeysWith: { $1 })
       $0.playbackState = isPlaying ? .playing : currentItem != nil ? .paused : .stopped
     }
+
+    // We only need to load artwork when the selected item changes
+    if loadArtwork, let assetURL = selectedItem.assetURL,
+      let pageURL = URL(string: selectedItem.pageSrc)
+    {
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = nil
+      systemPlayerArtworkFetchTask?.cancel()
+      systemPlayerArtworkFetchTask = Task { [weak self, id = selectedItem.id] in
+        let thumbnailLoader = MediaThumbnailLoader()
+        try await thumbnailLoader.loadThumbnail(assetURL: assetURL, pageURL: pageURL)
+        try Task.checkCancellation()
+        guard id == self?.selectedItemID else { return }
+        if let image = thumbnailLoader.image {
+          let artwork = MPMediaItemArtwork(boundsSize: image.size) { _ in
+            image
+          }
+          MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+        } else {
+          MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = nil
+        }
+      }
+    }
   }
 
   private func setupRemoteCommandCenterHandlers() {
@@ -690,6 +770,8 @@ extension PlayerModel {
       center.togglePlayPauseCommand,
       center.skipBackwardCommand,
       center.skipForwardCommand,
+      center.seekBackwardCommand,
+      center.seekForwardCommand,
       center.changeRepeatModeCommand,
       center.changeShuffleModeCommand,
       center.changePlaybackRateCommand,
@@ -724,6 +806,10 @@ extension PlayerModel {
       Task { await seekBackwards() }
     case center.skipForwardCommand:
       Task { await seekForwards() }
+    case center.seekBackwardCommand:
+      Task { await playPreviousItem() }
+    case center.seekForwardCommand:
+      Task { await playNextItem() }
     case center.changeRepeatModeCommand:
       if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
         let repeatMode = RepeatMode(repeatType: repeatType)

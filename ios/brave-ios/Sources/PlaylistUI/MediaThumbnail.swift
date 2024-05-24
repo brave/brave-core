@@ -11,7 +11,7 @@ import SDWebImage
 import SwiftUI
 
 /// Loads a thumbnail for media assets
-private class MediaThumbnailLoader: ObservableObject {
+class MediaThumbnailLoader: ObservableObject {
   @Published var image: UIImage?
 
   enum MediaThumbnailError: Error {
@@ -19,23 +19,26 @@ private class MediaThumbnailLoader: ObservableObject {
     case assetGenerationFailed
   }
 
-  func loadThumbnail(assetURL: URL, cacheKey: String) async throws {
+  func loadThumbnail(assetURL: URL, pageURL: URL) async throws {
     if assetURL.scheme == "blob" {
       throw MediaThumbnailError.invalidURL
     }
+    // The page URL is more stable than the asset URL for most sites, but we don't want to
+    // pick up favicons so prefix the cache key.
+    let cacheKey = "playlist-\(pageURL.absoluteString)"
     if let cachedImage = SDImageCache.shared.imageFromCache(forKey: cacheKey) {
       await MainActor.run {
         image = cachedImage
       }
       return
     }
-    try await Task { @MainActor in
-      // FIXME: Figure out if we still need to use something else to deal with HLS
-      let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
-      image = UIImage(
-        cgImage: try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
-      )
-    }.value
+    // FIXME: Figure out if we still need to use something else to deal with HLS
+    let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
+    let cgImage = try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
+    try Task.checkCancellation()
+    await MainActor.run {
+      image = UIImage(cgImage: cgImage)
+    }
     await SDImageCache.shared.store(image, forKey: cacheKey)
   }
 }
@@ -67,9 +70,7 @@ struct MediaThumbnail: View {
         do {
           try await thumbnailLoader.loadThumbnail(
             assetURL: assetURL,
-            // The page URL is more stable than the asset URL for most sites, but we don't want to
-            // pick up favicons so prefix theh cache key.
-            cacheKey: "playlist-\(pageURL.absoluteString)"
+            pageURL: pageURL
           )
           displayFavicon = false
         } catch {
