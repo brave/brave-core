@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
@@ -22,51 +23,57 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragment
-        implements FragmentSettingsLauncher, BraveWalletAddNetworksFragment.Launcher {
+        implements FragmentSettingsLauncher, BraveWalletAddNetworksFragment.Listener {
+    // Preference key from R.xml.brave_wallet_networks_preference.
     private static final String PREF_BRAVE_WALLET_NETWORKS_ADD = "pref_brave_wallet_networks_add";
 
     // SettingsLauncher injected from main Settings Activity.
     private SettingsLauncher mSettingsLauncher;
-    private BraveWalletAddNetworksFragment.Refresher mRefresher;
     private ActivityResultLauncher<Intent> mAddNetworkActivityResultLauncher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
+        requireActivity().setTitle(R.string.brave_wallet_networks_title);
+
+        // Pass {@code ActivityResultRegistry} reference explicitly to avoid crash
         // https://github.com/brave/brave-browser/issues/31882
         mAddNetworkActivityResultLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartActivityForResult(),
                         requireActivity().getActivityResultRegistry(),
                         result -> {
-                            if (result.getResultCode() != Activity.RESULT_OK) return;
-                            if (mRefresher != null) {
-                                mRefresher.refreshNetworksList();
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                BraveWalletNetworksPreference addNetworkPreference =
+                                        findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
+                                if (addNetworkPreference != null) {
+                                    addNetworkPreference.updateNetworks();
+                                }
                             }
                         });
     }
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
-        requireActivity().setTitle(R.string.brave_wallet_networks_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_wallet_networks_preference);
 
-        BraveWalletNetworksPreference mNetworksAddPref =
+        BraveWalletNetworksPreference braveWalletNetworksPreference =
                 findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
-        if (mNetworksAddPref != null) {
-            mNetworksAddPref.registerActivityLauncher(this);
+        if (braveWalletNetworksPreference != null) {
+            braveWalletNetworksPreference.setListener(this);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BraveWalletNetworksPreference mNetworksAddPref =
+        BraveWalletNetworksPreference braveWalletNetworksPreference =
                 findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
-        if (mNetworksAddPref != null) {
-            mNetworksAddPref.destroy();
+        if (braveWalletNetworksPreference != null) {
+            // It's important to close the JSON RPC service inside
+            // the preference screen otherwise it may generate memory leaks.
+            braveWalletNetworksPreference.destroy();
         }
     }
 
@@ -76,17 +83,26 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     }
 
     @Override
-    public void launchAddNetwork(String chainId, boolean activeNetwork) {
-        Bundle fragmentArgs = new Bundle();
-        fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, chainId);
-        fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, activeNetwork);
-        Intent intent = mSettingsLauncher.createSettingsActivityIntent(
-                getActivity(), BraveWalletAddNetworksFragment.class.getName(), fragmentArgs);
-        mAddNetworkActivityResultLauncher.launch(intent);
+    public void addNewNetwork() {
+        launchIntent(null, false);
     }
 
     @Override
-    public void setRefresher(BraveWalletAddNetworksFragment.Refresher refresher) {
-        mRefresher = refresher;
+    public void modifyNetwork(@NonNull final String chainId, boolean activeNetwork) {
+        launchIntent(chainId, activeNetwork);
+    }
+
+    private void launchIntent(@Nullable final String chainId, boolean activeNetwork) {
+        final Bundle fragmentArgs;
+        if (chainId != null) {
+            fragmentArgs = new Bundle();
+            fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, chainId);
+            fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, activeNetwork);
+        } else {
+            fragmentArgs = null;
+        }
+        Intent intent = mSettingsLauncher.createSettingsActivityIntent(
+                requireContext(), BraveWalletAddNetworksFragment.class.getName(), fragmentArgs);
+        mAddNetworkActivityResultLauncher.launch(intent);
     }
 }

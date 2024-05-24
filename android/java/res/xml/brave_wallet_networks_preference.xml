@@ -4,11 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.chromium.chrome.browser.settings.BraveWalletNetworksPreference
         android:key="pref_brave_wallet_networks_add"
         android:layout="@layout/brave_wallet_networks_preference_layout" />
-
 </PreferenceScreen>
