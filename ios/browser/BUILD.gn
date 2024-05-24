@@ -28,7 +28,6 @@ source_set("browser") {
     "api/favicon",
     "api/features",
     "api/history",
-    "api/ipfs",
     "api/net",
     "api/ntp_background_images",
     "api/opentabs",
