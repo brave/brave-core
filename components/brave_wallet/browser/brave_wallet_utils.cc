@@ -1100,7 +1100,7 @@ std::string GenerateMnemonic(size_t entropy_size) {
   }
 
   std::vector<uint8_t> entropy(entropy_size);
-  crypto::RandBytes(&entropy[0], entropy.size());
+  crypto::RandBytes(entropy);
 
   return GenerateMnemonicInternal(entropy.data(), entropy.size());
 }

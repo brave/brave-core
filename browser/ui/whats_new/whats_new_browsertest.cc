@@ -14,6 +14,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -36,6 +37,13 @@ class BraveWhatsNewBrowserTest : public InProcessBrowserTest {
   }
 
   ~BraveWhatsNewBrowserTest() override = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpDefaultCommandLine(command_line);
+    if (GetTestPreCount() > 0) {
+      command_line->RemoveSwitch(switches::kNoFirstRun);
+    }
+  }
 
   void PrepareValidFieldTrialParams() {
     constexpr char kWhatsNewTrial[] = "WhatsNewStudy";

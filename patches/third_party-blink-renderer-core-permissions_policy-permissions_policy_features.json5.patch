@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index 427c10cb4bde95d951eb54983dff1f3e773ed695..dac68b9d7a7f7caa98c05909dcbaecf93c7b73b8 100644
+index e808f502fb0cdcbd823698e97d3657f1357f2d0e..c06ba6c07e169a917a8814f45b8a08784473ba9b 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-@@ -454,5 +454,13 @@
-       // Parser also accepts "window-placement" alias (crbug.com/1328581).
+@@ -453,5 +453,13 @@
+       name: "WindowManagement",
        permissions_policy_name: "window-management",
      },
 +    {

@@ -15,8 +15,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kResourceTimingForCancelledNavigationInFrame,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSignedExchangeReportingForDistributors,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kServiceWorkerAutoPreload, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

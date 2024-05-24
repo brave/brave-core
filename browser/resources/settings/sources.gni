@@ -80,6 +80,7 @@ brave_settings_non_web_component_files = [
   "brave_overrides/clear_browsing_data_dialog.ts",
   "brave_overrides/config.ts",
   "brave_overrides/cookies_page.ts",
+  "brave_overrides/cr_icon.ts",
   "brave_overrides/default_browser_page.ts",
   "brave_overrides/icons.ts",
   "brave_overrides/import_data_dialog.ts",
@@ -166,4 +167,7 @@ brave_settings_mojo_files = [
 brave_settings_mojo_files_deps =
     [ "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator" ]
 
-brave_settings_ts_deps = [ "//ui/webui/resources/mojo:build_ts" ]
+brave_settings_ts_deps = [
+  "//third_party/lit/v3_0:build_ts",
+  "//ui/webui/resources/mojo:build_ts",
+]

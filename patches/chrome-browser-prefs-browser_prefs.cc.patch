@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 934683953cd7de68e8695bffbec9fbf0cba82f86..eee0e704d2f5d30d798a44f8eb0c8a659c6f71ad 100644
+index 750d634f641b1695f44f7d52188a8e3ad642fb48..820655af37bc66ff0d862104e60c65eda439348f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1754,6 +1754,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1832,6 +1832,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index 934683953cd7de68e8695bffbec9fbf0cba82f86..eee0e704d2f5d30d798a44f8eb0c8a65
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2206,6 +2208,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_FUCHSIA)
-   registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
- #endif
+@@ -2307,6 +2309,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+                                 false);
+   registry->RegisterBooleanPref(prefs::kTabGroupsDeletionSkipDialogOnCloseTab,
+                                 false);
 +  brave::RegisterProfilePrefs(registry);
  }
  

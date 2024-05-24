@@ -15,15 +15,19 @@ class BraveTabStripRegionView : public TabStripRegionView {
   METADATA_HEADER(BraveTabStripRegionView, TabStripRegionView)
 
  public:
-  using TabStripRegionView::TabStripRegionView;
-  BraveTabStripRegionView(const BraveTabStripRegionView&) = delete;
-  BraveTabStripRegionView& operator=(const BraveTabStripRegionView&) = delete;
+  template <typename... Args>
+  explicit BraveTabStripRegionView(Args&&... args)
+      : TabStripRegionView(std::forward<Args>(args)...) {
+    Initialize();
+  }
+
   ~BraveTabStripRegionView() override;
 
   void Layout(PassKey) override;
 
  private:
-  void UpdateBraveTabStripMargins();
+  void UpdateTabStripMargin() override;
+  void Initialize();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_TAB_STRIP_REGION_VIEW_H_

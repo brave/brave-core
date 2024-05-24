@@ -510,10 +510,8 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
                     return;
                   }
 
-                  auto bytes = result.bitmap_data;
-                  std::vector<uint8_t> bytes_vec(
-                      bytes->front_as<uint8_t>(),
-                      bytes->front_as<uint8_t>() + bytes->size());
+                  std::vector<uint8_t> bytes_vec(result.bitmap_data->begin(),
+                                                 result.bitmap_data->end());
                   std::move(callback).Run(std::move(bytes_vec));
                 },
                 std::move(callback)),

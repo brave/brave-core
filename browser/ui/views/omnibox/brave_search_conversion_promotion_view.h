@@ -41,7 +41,8 @@ class BraveSearchConversionPromotionView : public views::View {
   void OnSelectionStateChanged(bool selected);
 
   // views::View overrides:
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
  private:

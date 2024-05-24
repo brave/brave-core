@@ -17,9 +17,9 @@
 
 namespace {
 
-scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap* image) {
-  base::RefCountedBytes* image_bytes = new base::RefCountedBytes;
-  gfx::PNGCodec::EncodeBGRASkBitmap(*image, false, &image_bytes->data());
+scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap& image) {
+  scoped_refptr<base::RefCountedBytes> image_bytes(new base::RefCountedBytes());
+  gfx::PNGCodec::EncodeBGRASkBitmap(image, false, &image_bytes->as_vector());
   return image_bytes;
 }
 
@@ -121,7 +121,7 @@ void BraveRewardsSource::OnBitmapFetched(
     return;
   }
 
-  std::move(got_data_callback).Run(BitmapToMemory(&bitmap).get());
+  std::move(got_data_callback).Run(BitmapToMemory(bitmap).get());
 
   auto it_url =
       find(resource_fetchers_.begin(), resource_fetchers_.end(), url);

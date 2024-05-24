@@ -70,7 +70,8 @@ class SidebarAddItemButton : public views::LabelButton {
                                    : gfx::Font::Weight::NORMAL));
   }
 
-  gfx::Size CalculatePreferredSize() const override {
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
     return kAddItemBubbleEntrySize;
   }
 

@@ -9,6 +9,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.UsedByReflection;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
+import org.chromium.components.content_settings.ProviderType;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("Website")
@@ -40,7 +41,7 @@ public class BraveWebsite {
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
                 BraveReflectionUtil.InvokeMethod(
                         Website.class,
@@ -61,7 +62,7 @@ public class BraveWebsite {
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
                 BraveReflectionUtil.InvokeMethod(
                         Website.class,
@@ -82,7 +83,7 @@ public class BraveWebsite {
                                                         Website.class, this, "getAddress"))
                                         .getHost(),
                                 value,
-                                "",
+                                ProviderType.NONE,
                                 false);
                 BraveReflectionUtil.InvokeMethod(
                         Website.class,

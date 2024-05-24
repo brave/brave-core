@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings.html b/chrome/browser/resources/settings/settings.html
-index 5c8aeeb8e3621058bd233499e3b555e991d08c72..c45edab8b9bc6cf703523847e4386eab68ab8bda 100644
+index 6af2c41d1842fca98a5b64f6ebddf17a595b15a0..4c0a2331b13254e311bf23a43d29555c4ecd1219 100644
 --- a/chrome/browser/resources/settings/settings.html
 +++ b/chrome/browser/resources/settings/settings.html
-@@ -6,6 +6,7 @@
+@@ -5,6 +5,7 @@
    <meta name="color-scheme" content="light dark">
    <title>$i18n{settings}</title>
    <base href="chrome://settings">

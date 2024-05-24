@@ -103,12 +103,13 @@ SidebarItemsContentsView::SidebarItemsContentsView(
 
 SidebarItemsContentsView::~SidebarItemsContentsView() = default;
 
-gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
+gfx::Size SidebarItemsContentsView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   if (children().empty()) {
     return {0, 0};
   }
 
-  return views::View::CalculatePreferredSize();
+  return views::View::CalculatePreferredSize(available_size);
 }
 
 void SidebarItemsContentsView::OnThemeChanged() {

@@ -47,7 +47,8 @@ class SidebarItemsContentsView : public views::View,
   SidebarItemsContentsView operator=(const SidebarItemsContentsView&) = delete;
 
   // views::View overrides:
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:

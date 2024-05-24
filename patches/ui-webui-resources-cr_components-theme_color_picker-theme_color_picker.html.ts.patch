@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
-index c041589e048eba5c3dc2595ddf9a076a52822f5d..ac2e97c82ccc0903c93130a40a04af21b30357f5 100644
+index ca3a7a919ad7b67e615d85daea47354a12aeb69f..3cef0b74c170adb37503bf675e6b39c15b9fd5f6 100644
 --- a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
 +++ b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
 @@ -27,21 +27,6 @@ export function getHtml(this: ThemeColorPickerElement) {

@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
-index a3b39667cf27b8ba9ac5fd35444570036abd3bbb..d7433958e1de7c85711c9489e3d0747e86f3798a 100644
+index e5527c1d9c33b85726ff8d09ac32d2d76de4a787..8a818b5c107470812dde9e0203ea8b7d02f60620 100644
 --- a/components/sync/service/sync_service_impl.h
 +++ b/components/sync/service/sync_service_impl.h
 @@ -262,6 +262,7 @@ class SyncServiceImpl : public SyncService,

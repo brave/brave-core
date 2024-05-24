@@ -113,6 +113,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -368,7 +369,7 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/homepage/HomepageManager",
                         "shouldCloseAppWithZeroTabs",
-                        MethodModifier.STATIC,
+                        MethodModifier.REGULAR,
                         false,
                         null));
 
@@ -379,13 +380,34 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         false,
                         null));
-
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "isScrollableMvtEnabled",
                         MethodModifier.REGULAR,
                         true,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderTopMargin",
+                        MethodModifier.REGULAR,
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "setSearchProviderBottomMargin",
+                        MethodModifier.REGULAR,
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "getLogoMargin",
+                        MethodModifier.REGULAR,
+                        true,
+                        int.class,
                         boolean.class));
 
         Assert.assertTrue(
@@ -728,7 +750,8 @@ public class BytecodeTest {
                         "getSharingAccountInfo",
                         MethodModifier.STATIC,
                         true,
-                        AccountInfo.class));
+                        AccountInfo.class,
+                        Profile.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -815,7 +838,8 @@ public class BytecodeTest {
                         true,
                         ViewProvider.class,
                         Context.class,
-                        MVCListAdapter.ModelList.class));
+                        MVCListAdapter.ModelList.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
@@ -1049,7 +1073,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         View.class,
                         ObservableSupplier.class,
-                        OneshotSupplier.class));
+                        DesktopWindowStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1100,7 +1124,8 @@ public class BytecodeTest {
                         Supplier.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        ModalDialogManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
@@ -1186,21 +1211,35 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
-                        boolean.class,
                         FullscreenManager.class,
-                        TabObscuringHandler.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
-                "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
-                OneshotSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                WindowAndroid.class, MenuButtonCoordinator.SetFocusFunction.class, Runnable.class,
-                boolean.class, Supplier.class, ThemeColorProvider.class, Supplier.class,
-                Runnable.class, int.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/share/ShareDelegateImpl",
-                "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
-                BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
-                Supplier.class, Supplier.class, ShareDelegateImpl.ShareSheetDelegate.class,
-                boolean.class));
+                        TabObscuringHandler.class,
+                        DesktopWindowStateProvider.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
+                        "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator", // presubmit: ignore-long-line
+                        OneshotSupplier.class,
+                        BrowserStateBrowserControlsVisibilityDelegate.class,
+                        WindowAndroid.class,
+                        MenuButtonCoordinator.SetFocusFunction.class,
+                        Runnable.class,
+                        boolean.class,
+                        Supplier.class,
+                        ThemeColorProvider.class,
+                        Supplier.class,
+                        Runnable.class,
+                        int.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/share/ShareDelegateImpl",
+                        "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
+                        BottomSheetController.class,
+                        ActivityLifecycleDispatcher.class,
+                        Supplier.class,
+                        Supplier.class,
+                        Supplier.class,
+                        ShareDelegateImpl.ShareSheetDelegate.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
@@ -1231,7 +1270,7 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
-                        ObservableSupplier.class));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiWindowUtils",
@@ -1363,6 +1402,14 @@ public class BytecodeTest {
                         FeatureMap.class,
                         String.class,
                         boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/base/cached_flags/CachedFlag",
+                        "org/chromium/base/cached_flags/BraveCachedFlag",
+                        FeatureMap.class,
+                        String.class,
+                        boolean.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -1379,7 +1426,6 @@ public class BytecodeTest {
                         PropertyModel.class,
                         boolean.class,
                         Callback.class,
-                        boolean.class,
                         LogoCoordinator.VisibilityObserver.class,
                         CachedTintedBitmap.class));
         Assert.assertTrue(
@@ -1404,7 +1450,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
@@ -1445,8 +1491,7 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        View.class,
-                        ObservableSupplierImpl.class));
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1754,6 +1799,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mModalDialogManagerSupplier"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",

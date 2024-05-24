@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 28b4f8022051e1e4ee4c49d57caed969068adf55..06992a466bb8d78e123071fe7b30fec1dd36a7e5 100644
+index 2bb6d397511b50cf81605b53bceb648273e6546c..2daf0eeebd105ce4a5372cf469656c60f7842f44 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -108,6 +108,7 @@ grit("generated_resources") {
+@@ -106,6 +106,7 @@ grit("generated_resources") {
    if (is_android) {
      outputs += android_generated_java_resources
    }

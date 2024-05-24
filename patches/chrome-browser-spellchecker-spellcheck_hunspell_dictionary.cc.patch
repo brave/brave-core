@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc b/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
-index ffe938282a33e18fc1fe854d9079e3a133a73ee7..9fcbe4a086e21e87a91098733f6835429df28916 100644
+index 528b6c994e66e2bf5c7652e886a057abe30877e1..380f80dda978619a06e64378cf9676a4baca885a 100644
 --- a/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
 +++ b/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
 @@ -274,7 +274,7 @@ GURL SpellcheckHunspellDictionary::GetDictionaryURL() {

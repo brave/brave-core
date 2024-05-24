@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class SplitViewBrowserDataUnitTest : public ::testing::Test {
@@ -27,7 +28,10 @@ class SplitViewBrowserDataUnitTest : public ::testing::Test {
   SplitViewBrowserData& data() { return *data_; }
 
   tabs::TabModel CreateTabModel() {
-    return tabs::TabModel(nullptr, tab_strip_model_.get());
+    auto web_contents =
+        content::WebContentsTester::CreateTestWebContents(&profile_, nullptr);
+    CHECK(web_contents);
+    return tabs::TabModel(std::move(web_contents), tab_strip_model_.get());
   }
 
   // ::testing::Test:

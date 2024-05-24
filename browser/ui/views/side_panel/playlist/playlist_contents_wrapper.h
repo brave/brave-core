@@ -34,8 +34,7 @@ class PlaylistContentsWrapper
 
   // WebUIContentsWrapperT<playlist::PlaylistUI>:
   bool CanEnterFullscreenModeForTab(
-      content::RenderFrameHost* requesting_frame,
-      const blink::mojom::FullscreenOptions& options) override;
+      content::RenderFrameHost* requesting_frame) override;
   void EnterFullscreenModeForTab(
       content::RenderFrameHost* requesting_frame,
       const blink::mojom::FullscreenOptions& options) override;

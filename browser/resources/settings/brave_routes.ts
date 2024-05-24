@@ -110,11 +110,21 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.PERFORMANCE) {
     delete r.PERFORMANCE
   }
-  // Safety check route is moved to advanced.
-  if (r.SAFETY_CHECK && r.ADVANCED) {
-    r.SAFETY_CHECK.parent = r.ADVANCED
-  } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Could not move safety check route to advanced route', r)
+  // Delete safety check
+  if (loadTimeData.getBoolean('enableSafetyHub')) {
+    if (r.SAFETY_HUB) {
+      delete r.SAFETY_HUB
+    } else if (!isGuest) {
+      console.error(
+        '[Brave Settings Overrides] Could not delete safety hub route', r)
+    }
+  } else {
+    if (r.SAFETY_CHECK && r.ADVANCED) {
+      delete r.SAFETY_CHECK
+    } else if (!isGuest) {
+      console.error(
+        '[Brave Settings Overrides] Could not delete safety check route', r)
+    }
   }
   // Delete storage access
   if (r.SITE_SETTINGS_STORAGE_ACCESS) {

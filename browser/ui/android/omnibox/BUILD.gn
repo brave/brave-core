@@ -43,6 +43,7 @@ android_library("java") {
     "//chrome/browser/ui/android/omnibox:java_resources",
     "//components/favicon/android:java",
     "//components/omnibox/browser:browser_java",
+    "//components/omnibox/common:features_java",
     "//components/permissions/android:java",
     "//components/prefs/android:java",
     "//components/search_engines/android:java",

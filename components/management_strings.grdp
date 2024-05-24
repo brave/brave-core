@@ -63,7 +63,7 @@
     <if expr="not chromeos_ash">
       <if expr="_google_chrome">
         <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (Brave-branded) Brave browser is managed, it indicates what the administrator can do on the browser.">
-        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        Your administrator can make changes to your profile and browser remotely, analyze information about the browser through reporting, and perform other necessary tasks. Activity on this device may also be managed outside of Brave.  <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
         <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (Brave-branded) Brave browser is not managed">
         This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -71,12 +71,15 @@
       </if>
       <if expr="not _google_chrome">
         <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the (non-Brave-branded) Brave browser is managed, it indicates what the administrator can do on the browser.">
-        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        Your administrator can make changes to your profile and browser remotely, analyze information about the browser through reporting, and perform other necessary tasks. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
         <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the (non-Brave-branded) Brave browser is not managed">
         This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
       </if>
+      <message name="IDS_MANAGEMENT_PROFILE_NOTICE" desc="Message shown when one profile from the Brave browser is managed, it indicates what the administrator can do for that profile.">
+        The profile you’re signed in to is a managed profile. Your administrator can make changes to your profile settings remotely, analyze information about the browser through reporting, and perform other necessary tasks. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
       <message name="IDS_MANAGEMENT_LEARN_MORE_ACCCESSIBILITY_TEXT" desc="Accessibility text for a 'Learn more' link that links to a help article about how the browser is managed.">
         Learn more about how your browser is managed
       </message>
@@ -342,7 +345,7 @@
       Applications authorized by your administrator can capture all screens attached to your device. This information can be processed locally or uploaded to your organization’s servers.
     </message>
     <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature">
-      When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Brave.
+      When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, URLs of pages you copied data from, file names or metadata, browser or tab crashes, and the username that you use to sign in to web based applications, your device and Brave.
     </message>
     <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
       URLs of pages you visit are sent to Google Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites or filter websites based on rules set by the administrator.

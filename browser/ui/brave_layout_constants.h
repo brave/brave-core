@@ -10,6 +10,7 @@
 
 #include "chrome/browser/ui/layout_constants.h"
 
+std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset);
 std::optional<int> GetBraveLayoutConstant(LayoutConstant constant);
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_LAYOUT_CONSTANTS_H_

@@ -27,11 +27,19 @@ import java.util.List;
 
 public class BraveAutocompleteCoordinator {
     public ViewProvider<SuggestionListViewHolder> createViewProvider(
-            Context context, MVCListAdapter.ModelList modelList) {
+            Context context, MVCListAdapter.ModelList modelList, boolean forcePhoneStyleOmnibox) {
         ViewProvider<SuggestionListViewHolder> provider =
-                (ViewProvider<SuggestionListViewHolder>) BraveReflectionUtil.InvokeMethod(
-                        AutocompleteCoordinator.class, this, "createViewProvider", Context.class,
-                        context, MVCListAdapter.ModelList.class, modelList);
+                (ViewProvider<SuggestionListViewHolder>)
+                        BraveReflectionUtil.InvokeMethod(
+                                AutocompleteCoordinator.class,
+                                this,
+                                "createViewProvider",
+                                Context.class,
+                                context,
+                                MVCListAdapter.ModelList.class,
+                                modelList,
+                                boolean.class,
+                                forcePhoneStyleOmnibox);
 
         return new ViewProvider<SuggestionListViewHolder>() {
             private List<Callback<SuggestionListViewHolder>> mCallbacks = new ArrayList<>();

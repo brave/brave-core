@@ -119,7 +119,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
           base::BindRepeating(&BraveNewsBubbleView::OpenManageFeeds,
                               base::Unretained(this)),
           l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS)));
-  manage_feeds_button->SetKind(views::MdTextButton::Kind::kTertiary);
+  // Use tonal style here.
+  manage_feeds_button->set_use_default_for_tonal(false);
+  manage_feeds_button->SetStyle(ui::ButtonStyle::kTonal);
   manage_feeds_button->SetProperty(views::kMarginsKey,
                                    gfx::Insets::TLBR(10, 0, 0, 0));
   manage_feeds_button->SetProperty(

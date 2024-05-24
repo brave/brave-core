@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory.mm b/ios/chrome/browser/sync/model/sync_service_factory.mm
-index 4e81035575fb2f1fb2e0a589ebd7621081b1aa90..caa6aabfb708b44a17f05d84b86950461eeb2f66 100644
+index 818bc1e15df6acaddceac2ef9e9d75dff71a4593..58d0229c409bd2a3653d0518e978d089c9069750 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory.mm
-@@ -92,7 +92,7 @@ std::unique_ptr<KeyedService> BuildSyncService(web::BrowserState* context) {
+@@ -93,7 +93,7 @@ std::unique_ptr<KeyedService> BuildSyncService(web::BrowserState* context) {
    init_params.debug_identifier = browser_state->GetDebugName();
  
    auto sync_service =
@@ -10,4 +10,4 @@ index 4e81035575fb2f1fb2e0a589ebd7621081b1aa90..caa6aabfb708b44a17f05d84b8695046
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
    sync_service->Initialize();
  
-   // TODO(crbug.com/1400663): Remove the workaround below once
+   // TODO(crbug.com/40250371): Remove the workaround below once

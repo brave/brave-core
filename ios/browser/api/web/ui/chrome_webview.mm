@@ -181,8 +181,9 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
     ios::ChromeBrowserStateManager* browser_state_manager =
         GetApplicationContext()->GetChromeBrowserStateManager();
 
-    browser_state_ = browser_state_manager->GetLastUsedBrowserState()
-                         ->GetOriginalChromeBrowserState();
+    browser_state_ =
+        browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse()
+            ->GetOriginalChromeBrowserState();
 
     if (isPrivateBrowsing) {
       browser_state_ = browser_state_->GetOffTheRecordChromeBrowserState();

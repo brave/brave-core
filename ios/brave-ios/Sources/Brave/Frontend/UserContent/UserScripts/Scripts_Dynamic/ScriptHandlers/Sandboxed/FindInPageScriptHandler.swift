@@ -7,7 +7,7 @@ import Shared
 import WebKit
 import os.log
 
-@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
+@available(iOS, deprecated: 16.0, message: "Replaced by UIFindInteraction")
 protocol FindInPageScriptHandlerDelegate: AnyObject {
   func findInPageHelper(
     _ findInPageScriptHandler: FindInPageScriptHandler,
@@ -19,7 +19,7 @@ protocol FindInPageScriptHandlerDelegate: AnyObject {
   )
 }
 
-@available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
+@available(iOS, deprecated: 16.0, message: "Replaced by UIFindInteraction")
 class FindInPageScriptHandler: TabContentScript {
   weak var delegate: FindInPageScriptHandlerDelegate?
   fileprivate weak var tab: Tab?

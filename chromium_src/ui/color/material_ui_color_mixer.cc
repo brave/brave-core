@@ -38,6 +38,16 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
   mixer[ui::kColorComboboxInkDropRipple] = {
       ui::kColorSysStateRippleNeutralOnSubtle};
+  mixer[ui::kColorToolbarSearchFieldBackground] = {
+      ui::kColorSysBaseContainerElevated};
+  mixer[ui::kColorToolbarSearchFieldBackgroundHover] = {
+      ui::kColorSysStateHoverCutout};
+  mixer[ui::kColorToolbarSearchFieldBackgroundPressed] = {
+      ui::kColorSysStateRippleNeutralOnSubtle};
+  mixer[ui::kColorToolbarSearchFieldForeground] = {ui::kColorSysOnSurface};
+  mixer[ui::kColorToolbarSearchFieldForegroundPlaceholder] = {
+      ui::kColorSysOnSurfaceSubtle};
+  mixer[ui::kColorToolbarSearchFieldIcon] = {ui::kColorSysOnSurfaceSubtle};
   mixer[ui::kColorToastBackground] = {is_dark ? gfx::kGoogleGrey800
                                               : gfx::kGoogleGrey100};
   mixer[ui::kColorToastButton] = {ui::kColorSysInversePrimary};

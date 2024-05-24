@@ -20,6 +20,8 @@ class BraveTabHoverCardController : public TabHoverCardController {
  protected:
   void UpdateHoverCardArrow();
 
+  void OnHovercardImagesEnabledChanged() override;
+
   // TabHoverCardController:
   void CreateHoverCard(Tab* tab) override;
 

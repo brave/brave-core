@@ -66,7 +66,7 @@ std::optional<Signer> Signer::FromRecoverySeed(
 
 std::vector<uint8_t> Signer::GenerateRecoverySeed() {
   std::vector<uint8_t> seed(kSeedLength);
-  crypto::RandBytes(seed.data(), kSeedLength);
+  crypto::RandBytes(seed);
   return seed;
 }
 

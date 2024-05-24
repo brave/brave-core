@@ -162,7 +162,6 @@
   // Maps BanRule.pattern -> BanRule.excluded_paths.
   "ban_rule_excluded_paths": {
     "import android.annotation.TargetApi;": [
-      "android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge\\.java",
       "android/java/org/chromium/chrome/browser/qrreader/CameraSource\\.java",
       "browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl\\.java",
     ],
