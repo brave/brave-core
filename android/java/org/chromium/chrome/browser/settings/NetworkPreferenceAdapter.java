@@ -34,9 +34,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Network preference adapter that shows all the available networks and let the user add, edit or remove
- * a specific network.
- * Used by {@link BraveWalletNetworksPreference}.
+ * Network preference adapter that shows all the available networks and let the user add, edit
+ * or remove a specific network. Used by {@link BraveWalletNetworksPreference}.
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final ItemClickListener mListener;
@@ -45,10 +44,11 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final String mActiveChainId;
 
     /**
-     * Listener implemented by {@link BraveWalletNetworksPreference} used to handles network operations.
+     * Listener implemented by {@link BraveWalletNetworksPreference}
+     * used to handles network operations.
      */
     interface ItemClickListener {
-        /** Triggered when a specific network is clicked - It will open a new activity to modify network fields. */
+        /** Triggered when a specific network is clicked to be modified. */
         void onItemClick(@NonNull final NetworkInfo chain, final boolean activeNetwork);
         /** Triggered to remove a custom network completely. */
         void onItemRemove(@NonNull final  NetworkInfo chain);
