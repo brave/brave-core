@@ -37,18 +37,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class BraveWalletAddNetworksFragment extends Fragment implements ConnectionErrorHandler {
-    private static final String TAG = "AddNetworksFragment";
 
+    /**
+     * Listener implemented by {@link BraveWalletNetworksPreferenceFragment} used to notify the
+     * fragment hosting network preference screen that a network is being added or modified.
+     */
     public interface Listener {
+        /** Adds a new network. */
         void addNewNetwork();
+
+        /** Modifies an existing network. */
         void modifyNetwork(String chainId, boolean activeNetwork);
     }
 
     private JsonRpcService mJsonRpcService;
     private boolean mIsActiveNetwork;
 
-    @Nullable
-    private String mChainId;
+    @Nullable private String mChainId;
     private EditText mChainIdEditText;
     private EditText mChainName;
     private EditText mChainCurrencyName;
@@ -318,12 +323,15 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         assert mJsonRpcService != null;
         if (!TextUtils.isEmpty(mChainId)) {
             if (mChainId.equals(chain.chainId)) {
-                mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
-                    if (!success) {
-                        return;
-                    }
-                    addChain(chain, false);
-                });
+                mJsonRpcService.removeChain(
+                        mChainId,
+                        CoinType.ETH,
+                        success -> {
+                            if (!success) {
+                                return;
+                            }
+                            addChain(chain, false);
+                        });
             } else {
                 addChain(chain, true);
             }

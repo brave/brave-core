@@ -25,9 +25,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
-import org.chromium.chrome.browser.settings.NetworkPreferenceAdapter;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
@@ -340,12 +338,18 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 });
     }
 
-    public void setDefaultNetwork(@NonNull final NetworkInfo networkInfo, @NonNull final Callbacks.Callback1<Boolean> callback) {
-        mJsonRpcService.setNetwork(networkInfo.chainId, networkInfo.coin, null, success -> {
-            callback.call(success);
-            mCryptoActions.updateCoinType();
-            init();
-        });
+    public void setDefaultNetwork(
+            @NonNull final NetworkInfo networkInfo,
+            @NonNull final Callbacks.Callback1<Boolean> callback) {
+        mJsonRpcService.setNetwork(
+                networkInfo.chainId,
+                networkInfo.coin,
+                null,
+                success -> {
+                    callback.call(success);
+                    mCryptoActions.updateCoinType();
+                    init();
+                });
     }
 
     public void clearCreateAccountState() {

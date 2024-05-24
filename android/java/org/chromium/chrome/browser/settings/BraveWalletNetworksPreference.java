@@ -27,16 +27,15 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
 /**
- * Brave Wallet network preference hosted by {@link BraveWalletNetworksPreferenceFragment}.
- * It shows all the networks available and let the user add, edit, or remove them.
+ * Brave Wallet network preference hosted by {@link BraveWalletNetworksPreferenceFragment}. It shows
+ * all the networks available and let the user add, edit, or remove them.
  */
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkPreferenceAdapter.ItemClickListener {
 
     private TextView mAddNetwork;
     private RecyclerView mRecyclerView;
-    @Nullable
-    private BraveWalletAddNetworksFragment.Listener mListener;
+    @Nullable private BraveWalletAddNetworksFragment.Listener mListener;
     private JsonRpcService mJsonRpcService;
 
     public BraveWalletNetworksPreference(Context context, AttributeSet attrs) {
@@ -53,14 +52,19 @@ public class BraveWalletNetworksPreference extends Preference
 
         if (mAddNetwork != null) {
             mAddNetwork.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    TintedDrawable.constructTintedDrawable(getContext(), R.drawable.plus,
+                    TintedDrawable.constructTintedDrawable(
+                            getContext(),
+                            R.drawable.plus,
                             R.color.default_control_color_active_baseline),
-                    null, null, null);
-            mAddNetwork.setOnClickListener(view -> {
-                if (mListener != null) {
-                    mListener.addNewNetwork();
-                }
-            });
+                    null,
+                    null,
+                    null);
+            mAddNetwork.setOnClickListener(
+                    view -> {
+                        if (mListener != null) {
+                            mListener.addNewNetwork();
+                        }
+                    });
         }
 
         if (mRecyclerView != null) {
@@ -90,23 +94,30 @@ public class BraveWalletNetworksPreference extends Preference
     @Override
     public void onItemRemove(@NonNull NetworkInfo chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.removeChain(chain.chainId, CoinType.ETH, success -> {
-            if (!success) {
-                return;
-            }
-            updateNetworks();
-        });
+        mJsonRpcService.removeChain(
+                chain.chainId,
+                CoinType.ETH,
+                success -> {
+                    if (!success) {
+                        return;
+                    }
+                    updateNetworks();
+                });
     }
 
     @Override
     public void onItemSetAsActive(@NonNull NetworkInfo chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, null, success -> {
-            if (!success) {
-                return;
-            }
-            updateNetworks();
-        });
+        mJsonRpcService.setNetwork(
+                chain.chainId,
+                CoinType.ETH,
+                null,
+                success -> {
+                    if (!success) {
+                        return;
+                    }
+                    updateNetworks();
+                });
     }
 
     public void setListener(@Nullable BraveWalletAddNetworksFragment.Listener listener) {
@@ -115,31 +126,54 @@ public class BraveWalletNetworksPreference extends Preference
 
     public void updateNetworks() {
         if (mJsonRpcService != null && mRecyclerView != null) {
-            getAvailableChainIds((defaultChainId, networks, customChainIds, hiddenChainIds) -> {
-                NetworkPreferenceAdapter adapter = new NetworkPreferenceAdapter(getContext(), defaultChainId, networks, customChainIds, hiddenChainIds, this);
-                mRecyclerView.setAdapter(adapter);
-            });
+            getAvailableChainIds(
+                    (defaultChainId, networks, customChainIds, hiddenChainIds) -> {
+                        NetworkPreferenceAdapter adapter =
+                                new NetworkPreferenceAdapter(
+                                        getContext(),
+                                        defaultChainId,
+                                        networks,
+                                        customChainIds,
+                                        hiddenChainIds,
+                                        this);
+                        mRecyclerView.setAdapter(adapter);
+                    });
         }
     }
 
     /**
-     * Gets all the available networks including default chain ID, custom chain IDs, and hidden chain IDs.
-     * The method can be called ONLY after the JSON RPC service has been correctly initialized.
+     * Gets all the available networks including default chain ID, custom chain IDs, and hidden
+     * chain IDs. The method can be called ONLY after the JSON RPC service has been correctly
+     * initialized.
      *
-     * @param callback Callback returning four parameters default chain ID, all networks available, custom chain IDs, and hidden chain IDs.
+     * @param callback Callback returning four parameters default chain ID, all networks available,
+     *     custom chain IDs, and hidden chain IDs.
      */
-    private void getAvailableChainIds(@NonNull final Callbacks.Callback4<String, NetworkInfo[], String[], String[]> callback) {
-        mJsonRpcService.getDefaultChainId(CoinType.ETH, defaultChainId ->
-                mJsonRpcService.getAllNetworks(CoinType.ETH, networks ->
-                        mJsonRpcService.getCustomNetworks(CoinType.ETH, customChainIds ->
-                                mJsonRpcService.getHiddenNetworks(CoinType.ETH, hiddenChainIds ->
-                                        callback.call(defaultChainId, networks, customChainIds, hiddenChainIds)))));
+    private void getAvailableChainIds(
+            @NonNull
+                    final Callbacks.Callback4<String, NetworkInfo[], String[], String[]> callback) {
+        mJsonRpcService.getDefaultChainId(
+                CoinType.ETH,
+                defaultChainId ->
+                        mJsonRpcService.getAllNetworks(
+                                CoinType.ETH,
+                                networks ->
+                                        mJsonRpcService.getCustomNetworks(
+                                                CoinType.ETH,
+                                                customChainIds ->
+                                                        mJsonRpcService.getHiddenNetworks(
+                                                                CoinType.ETH,
+                                                                hiddenChainIds ->
+                                                                        callback.call(
+                                                                                defaultChainId,
+                                                                                networks,
+                                                                                customChainIds,
+                                                                                hiddenChainIds)))));
     }
 
     /**
-     * Initialize JSON RPC service directly without network model
-     * as preference screen is not linked to Brave activity so it's not
-     * possible to retrieve activity models.
+     * Initialize JSON RPC service directly without network model as preference screen is not linked
+     * to Brave activity so it's not possible to retrieve activity models.
      */
     private void initJsonRpcService() {
         if (mJsonRpcService != null) {

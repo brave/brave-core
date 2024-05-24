@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils.buildMenuListItem;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +20,8 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.ui.listmenu.BasicListMenu;
 import org.chromium.ui.listmenu.ListMenu;
 import org.chromium.ui.listmenu.ListMenuButton;
@@ -38,7 +34,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * BaseAdapter for {@link RecyclerView}. It manages networks to list there.
+ * Network preference adapter that shows all the available networks and let the user add, edit or remove
+ * a specific network.
+ * Used by {@link BraveWalletNetworksPreference}.
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final ItemClickListener mListener;
@@ -46,14 +44,24 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final List<NetworkInfo> mElements;
     private final String mActiveChainId;
 
-
+    /**
+     * Listener implemented by {@link BraveWalletNetworksPreference} used to handles network operations.
+     */
     interface ItemClickListener {
+        /** Triggered when a specific network is clicked - It will open a new activity to modify network fields. */
         void onItemClick(@NonNull final NetworkInfo chain, final boolean activeNetwork);
+        /** Triggered to remove a custom network completely. */
         void onItemRemove(@NonNull final  NetworkInfo chain);
+        /** Triggered when a network has been selected as active. */
         void onItemSetAsActive(@NonNull final  NetworkInfo chain);
     }
 
-    public NetworkPreferenceAdapter(@NonNull final Context context, @NonNull final String defaultChainId, @NonNull final NetworkInfo[] networks, @NonNull final String[] customChainIds, @NonNull final String[] hiddenChainIds, @NonNull final ItemClickListener listener) {
+    public NetworkPreferenceAdapter(@NonNull final Context context,
+                                    @NonNull final String defaultChainId,
+                                    @NonNull final NetworkInfo[] networks,
+                                    @NonNull final String[] customChainIds,
+                                    @NonNull final String[] hiddenChainIds,
+                                    @NonNull final ItemClickListener listener) {
         mContext = context;
         mActiveChainId = defaultChainId;
         mElements = getNetworkInfoByChainId(customChainIds, networks);
@@ -82,7 +90,6 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    @SuppressLint("NotifyDataSetChanged")
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final NetworkInfo info = mElements.get(i);
         boolean activeNetwork = info.chainId.equals(mActiveChainId);
