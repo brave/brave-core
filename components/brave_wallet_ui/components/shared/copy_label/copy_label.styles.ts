@@ -4,6 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import { walletButtonFocusMixin } from '../style'
+
+export const LabelButton = styled.button`
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  ${walletButtonFocusMixin}
+`
 
 export const LabelText = styled.span`
   text-transform: none;

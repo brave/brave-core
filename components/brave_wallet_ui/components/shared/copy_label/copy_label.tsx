@@ -13,7 +13,7 @@ import {
 } from '../../../common/hooks/use-copy-to-clipboard'
 
 // styles
-import { LabelText } from './copy_label.styles'
+import { LabelButton, LabelText } from './copy_label.styles'
 
 export const CopyLabel = ({
   children,
@@ -27,20 +27,20 @@ export const CopyLabel = ({
 
   // render
   return (
-    <Label color={isCopied ? 'green' : 'gray'}>
-      <div
-        slot='icon-after'
-        style={{ cursor: isCopied ? 'default' : 'pointer' }}
-        onClick={() => {
-          if (!isCopied) {
-            copyToClipboard(textToCopy)
-          }
-        }}
-      >
-        <Icon name={isCopied ? 'check-normal' : 'copy'} />
-      </div>
-      <LabelText>{children}</LabelText>
-    </Label>
+    <LabelButton
+      onClick={() => {
+        if (!isCopied) {
+          copyToClipboard(textToCopy)
+        }
+      }}
+    >
+      <Label color={isCopied ? 'green' : 'gray'}>
+        <div slot='icon-after'>
+          <Icon name={isCopied ? 'check-normal' : 'copy'} />
+        </div>
+        <LabelText>{children}</LabelText>
+      </Label>
+    </LabelButton>
   )
 }
 
