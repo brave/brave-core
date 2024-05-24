@@ -114,7 +114,7 @@
     Tooltip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB" desc="The label name of a toggle button for Shared Pinned Tab feature">
-    Shared pinned tabs
+    Show pinned tabs in all windows
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
