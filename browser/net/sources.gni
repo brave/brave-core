@@ -82,6 +82,7 @@ brave_browser_net_deps = [
   "//brave/extensions:common",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles",
+  "//components/base32:base32",
   "//components/content_settings/core/browser",
   "//components/language/core/browser",
   "//components/prefs",

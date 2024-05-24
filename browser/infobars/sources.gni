@@ -30,6 +30,7 @@ if (!is_android) {
     "//brave/components/brave_sync:features",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
+    "//brave/components/infobars/core:core",
     "//brave/components/p3a",
     "//chrome/app:branded_strings",
     "//chrome/browser/ui",
