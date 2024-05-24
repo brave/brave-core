@@ -8,7 +8,6 @@ import Foundation
 import SwiftUI
 
 /// Displays controls for picking playback routes such as AirPlay
-@available(iOS 16.0, *)
 struct RoutePickerView: View {
   // FIXME: WeakBox?
   @State private var underlyingRoutePickerControl: UIControl?

@@ -11,7 +11,6 @@ enum ItemDownloadState {
   case completed
 }
 
-@available(iOS 16.0, *)
 struct PlaylistItemView: View {
   var title: String
   var assetURL: URL?
@@ -181,7 +180,6 @@ struct LeoPlayingSoundView: View {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   LazyVStack(spacing: 0) {
     Button {

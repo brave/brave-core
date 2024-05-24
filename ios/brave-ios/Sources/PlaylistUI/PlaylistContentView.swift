@@ -10,7 +10,6 @@ import Playlist
 import Preferences
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct PlaylistContentView: View {
   @ObservedObject var playerModel: PlayerModel
 
@@ -224,7 +223,6 @@ extension PlaylistSheetDetent.DetentAnchorID {
 }
 
 /// Shown when the use has no playlist item selected
-@available(iOS 16.0, *)
 struct PlaylistContentUnavailableView: View {
   var isPlaylistEmpty: Bool
 
@@ -249,7 +247,6 @@ struct PlaylistContentUnavailableView: View {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   VStack {
     PlaylistContentUnavailableView(isPlaylistEmpty: false)

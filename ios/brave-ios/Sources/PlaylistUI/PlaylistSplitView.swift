@@ -15,7 +15,6 @@ import SwiftUI
 /// will be displayed as a draggable bottom sheet. The sidebar header will be laid out on top of the
 /// `sidebar` and be pinned to the top. It will always be draggable by the user to adjust the
 /// visiblity of the bottom sheet.
-@available(iOS 16.0, *)
 struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Toolbar: View>: View {
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -341,7 +340,6 @@ private struct UIKitDragGestureValue: Equatable {
 /// This is currently used because there is no way in SwiftUI right now to control a ScrollView's
 /// built-in pan gesture (aside from introspection to grab the actual underlying UIScrollView, but
 /// even at that point you can't set the delegate since it has to be the UIScrollView)
-@available(iOS 16.0, *)
 private struct PlaylistDrawerScrollView<Content: View>: UIViewControllerRepresentable {
   @Binding var dragState: UIKitDragGestureValue
   var content: Content

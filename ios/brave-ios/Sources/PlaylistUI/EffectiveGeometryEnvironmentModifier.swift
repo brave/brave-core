@@ -29,7 +29,6 @@ import os
 ///
 /// - Note: This action will fail if used on iPad when multitasking is enabled so consider feature
 ///         blocking to only run when the interface idiom is `phone`.
-@available(iOS 16.0, *)
 struct RequestGeometryUpdateAction {
   // FIXME: May have to be weak
   fileprivate var windowScene: UIWindowScene?
@@ -64,7 +63,6 @@ struct RequestGeometryUpdateAction {
 }
 
 // FIXME: Move to BraveUI
-@available(iOS 16.0, *)
 extension EnvironmentValues {
   private struct RequestGeometryUpdateActionKey: EnvironmentKey {
     static var defaultValue: RequestGeometryUpdateAction = .init()
@@ -108,7 +106,6 @@ extension EnvironmentValues {
   }
 }
 
-@available(iOS 16.0, *)
 extension View {
   /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environement
   /// values.
@@ -120,7 +117,6 @@ extension View {
 /// A modifier that injects a `UIViewControllerRepresentable` into the SwiftUI hierarchy to obtain
 /// the underlying `UIWindowScene` associated with this UI and then uses that scene to inject
 /// various related values into the SwiftUI environment.
-@available(iOS 16.0, *)
 private struct EffectiveGeometryEnvironmentModifier: ViewModifier {
   // FIXME: May have to be a weak box
   @State private var windowScene: UIWindowScene?

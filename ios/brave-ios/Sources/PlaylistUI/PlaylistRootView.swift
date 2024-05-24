@@ -8,7 +8,6 @@ import Foundation
 import Playlist
 import SwiftUI
 
-@available(iOS 16.0, *)
 public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
   public init(
     player: PlayerModel,
@@ -43,7 +42,6 @@ public class PlaylistHostingController: UIHostingController<PlaylistRootView> {
   }
 }
 
-@available(iOS 16.0, *)
 public struct PlaylistRootView: View {
   /// Methods for handling playlist related actions that the browser should handle
   public struct Delegate {
@@ -97,7 +95,6 @@ public struct PlaylistRootView: View {
   }
 }
 
-@available(iOS 16.0, *)
 extension View {
   /// Adds playlist-specific environment variables
   ///
@@ -112,7 +109,6 @@ extension View {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   PlaylistRootView(
     player: .preview,

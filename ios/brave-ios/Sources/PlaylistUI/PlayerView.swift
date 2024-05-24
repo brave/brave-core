@@ -10,7 +10,6 @@ import SwiftUI
 
 /// This view displays the main video player along with controls on top of it when the player is
 /// being displayed full screen.
-@available(iOS 16.0, *)
 struct PlayerView: View {
   @ObservedObject var playerModel: PlayerModel
 
@@ -131,7 +130,6 @@ struct PlayerView: View {
   }
 }
 
-@available(iOS 16.0, *)
 extension PlayerView {
   /// Controls shown inside of the PlayerView, typically in fullscreen mode
   // FIXME: Find a way to share the actual control buttons?
@@ -261,7 +259,6 @@ extension PlayerView {
   }
 }
 
-@available(iOS 16.0, *)
 struct VideoAmbianceBackground: View {
   var playerModel: PlayerModel
 
@@ -287,7 +284,6 @@ struct VideoAmbianceBackground: View {
   }
 }
 
-@available(iOS 16.0, *)
 struct CompactMediaScrubberLabel: View {
   var currentTime: TimeInterval
   var duration: TimeInterval
@@ -322,7 +318,6 @@ struct CompactMediaScrubberLabel: View {
 ///
 /// This is neccessary because there is no way to conditionally apply an `aspectRatio` modifier to
 /// a `View`
-@available(iOS 16.0, *)
 private struct VideoPlayerLayout: Layout {
   var aspectRatio: CGFloat?
 
@@ -352,7 +347,6 @@ private struct VideoPlayerLayout: Layout {
   }
 }
 
-@available(iOS 16.0, *)
 private struct VideoPlayer: UIViewRepresentable {
   var playerLayer: AVPlayerLayer
 

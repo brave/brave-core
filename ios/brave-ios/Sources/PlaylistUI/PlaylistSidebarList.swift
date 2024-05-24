@@ -8,7 +8,6 @@ import Foundation
 import Playlist
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct PlaylistSidebarList: View {
   var folders: [PlaylistFolder]
   var selectedFolderID: PlaylistFolder.ID
@@ -162,7 +161,6 @@ struct PlaylistSidebarList: View {
   }
 }
 
-@available(iOS 16.0, *)
 struct PlaylistSidebarListHeader: View {
   var folders: [PlaylistFolder]
   @Binding var selectedFolder: PlaylistFolder
@@ -305,7 +303,6 @@ struct PlaylistSidebarListHeader: View {
   }
 }
 
-@available(iOS 16.0, *)
 struct PlaylistSidebarContentUnavailableView: View {
   var body: some View {
     VStack(spacing: 24) {
@@ -321,7 +318,6 @@ struct PlaylistSidebarContentUnavailableView: View {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   // FIXME: Set up CoreData mock for Previews
   PlaylistSidebarList(folders: [], folderID: "", selectedItemID: .constant(nil), isPlaying: false)

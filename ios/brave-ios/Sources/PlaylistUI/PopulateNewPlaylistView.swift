@@ -12,7 +12,6 @@ import Strings
 import SwiftUI
 
 /// A list of videos that the user can select to populate a newly created playlist
-@available(iOS 16.0, *)
 struct PopulateNewPlaylistView: View {
   var destinationFolder: PlaylistFolder.ID
 
@@ -99,7 +98,6 @@ struct PopulateNewPlaylistView: View {
   }
 }
 
-@available(iOS 16.0, *)
 private struct ItemToggle: View {
   var item: PlaylistItem
   @Binding var isSelected: Bool

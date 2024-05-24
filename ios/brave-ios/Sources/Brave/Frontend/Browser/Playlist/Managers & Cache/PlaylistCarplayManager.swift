@@ -35,23 +35,9 @@ public class PlaylistCarplayManager: NSObject {
   var isPlaylistControllerPresented = false
 
   // New UI only
-  private var playerModelBox: AnyPlayerModel?
+  private var playerModel: PlayerModel?
   private var isPiPStarting: Bool = false
   // ----
-
-  private struct AnyPlayerModel {
-    private var _playerModel: Any
-
-    @available(iOS 16.0, *)
-    init(playerModel: PlayerModel) {
-      self._playerModel = playerModel
-    }
-
-    @available(iOS 16.0, *)
-    var playerModel: PlayerModel {
-      _playerModel as! PlayerModel
-    }
-  }
 
   // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
   var playlistController: PlaylistViewController? {
@@ -149,13 +135,13 @@ public class PlaylistCarplayManager: NSObject {
     // On iPad, media will continue to play with or without the background play setting.
     tab?.stopMediaPlayback()
 
-    if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
+    if FeatureList.kNewPlaylistUI.enabled {
       let mediaStreamer = PlaylistMediaStreamer(
         playerView: browserController!.view,
         webLoaderFactory: LivePlaylistWebLoaderFactory()
       )
       let player =
-        self.playerModelBox?.playerModel
+        self.playerModel
         ?? PlayerModel(
           mediaStreamer: mediaStreamer,
           initialPlaybackInfo: initialItem.map { item in
@@ -163,7 +149,7 @@ public class PlaylistCarplayManager: NSObject {
           }
         )
       player.pictureInPictureDelegate = self
-      self.playerModelBox = .init(playerModel: player)
+      self.playerModel = player
       return PlaylistHostingController(
         player: player,
         delegate: .init(
@@ -176,7 +162,7 @@ public class PlaylistCarplayManager: NSObject {
             self.isPlaylistControllerPresented = false
             if let player, !player.isPictureInPictureActive, !isPiPStarting {
               player.stop()
-              self.playerModelBox = nil
+              self.playerModel = nil
             }
             isPiPStarting = false
           }
@@ -309,7 +295,7 @@ extension PlaylistCarplayManager: AVPictureInPictureControllerDelegate {
       // Already restoring by opening playlist
       return
     }
-    playerModelBox = nil
+    playerModel = nil
   }
 
   public func pictureInPictureControllerWillStartPictureInPicture(

@@ -13,7 +13,6 @@ extension PlaylistSheetDetent.DetentAnchorID {
 }
 
 /// The view shown when the user is playing video or audio
-@available(iOS 16.0, *)
 struct MediaContentView: View {
   @ObservedObject var model: PlayerModel
   var selectedItem: PlaylistItem
@@ -127,7 +126,6 @@ struct MediaContentView: View {
 
 }
 
-@available(iOS 16.0, *)
 extension MediaContentView {
   /// A media scrubber that controls the current player
   ///
@@ -335,7 +333,6 @@ extension MediaContentView {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   MediaContentView(
     model: .preview,

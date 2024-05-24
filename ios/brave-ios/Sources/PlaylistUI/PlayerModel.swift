@@ -15,7 +15,6 @@ import SwiftUI
 import os
 
 // FIXME: Add unit tests
-@available(iOS 16.0, *)
 public final class PlayerModel: ObservableObject {
 
   public init(
@@ -642,7 +641,6 @@ extension AVPlayer {
 
 // MARK: - System Media Player
 
-@available(iOS 16.0, *)
 extension PlayerModel {
   @MainActor private func updateSystemPlayer() {
     guard let selectedItem else {
@@ -766,7 +764,6 @@ extension MPRemoteCommand {
   }
 }
 
-@available(iOS 16.0, *)
 extension PlayerModel.RepeatMode {
   init?(repeatType: MPRepeatType) {
     switch repeatType {
@@ -785,13 +782,11 @@ extension PlayerModel.RepeatMode {
   }
 }
 
-@available(iOS 16.0, *)
 extension PlayerModel.PlaybackSpeed {
   static var supportedSpeeds: [Self] = [.normal, .fast, .faster]
 }
 
 #if DEBUG
-@available(iOS 16.0, *)
 extension PlayerModel {
   static let preview: PlayerModel = .init(mediaStreamer: nil, initialPlaybackInfo: nil)
 }

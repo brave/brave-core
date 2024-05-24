@@ -11,7 +11,6 @@ import SDWebImage
 import SwiftUI
 
 /// Loads a thumbnail for media assets
-@available(iOS 16.0, *)
 private class MediaThumbnailLoader: ObservableObject {
   @Published var image: UIImage?
 
@@ -42,7 +41,6 @@ private class MediaThumbnailLoader: ObservableObject {
 }
 
 // FIXME: Support oEmbed thumbnails
-@available(iOS 16.0, *)
 struct MediaThumbnail: View {
   @StateObject private var thumbnailLoader: MediaThumbnailLoader = .init()
   @State private var displayFavicon: Bool = false

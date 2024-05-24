@@ -123,7 +123,6 @@ extension ButtonStyle where Self == PlaybackControlButtonStyle {
 }
 
 #if DEBUG
-@available(iOS 16.0, *)
 struct PlaybackControlButtonStyle_PreviewProvider: PreviewProvider {
   static var previews: some View {
     VStack(spacing: 0) {

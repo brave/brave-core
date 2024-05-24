@@ -9,7 +9,6 @@ import SwiftUI
 
 /// FIXME: Add doc
 /// FIXME: Support RTL layout direction
-@available(iOS 16.0, *)
 struct MediaScrubber<Label: View>: View {
   @Binding var currentTime: TimeInterval
   var duration: TimeInterval
@@ -140,7 +139,6 @@ struct MediaScrubber<Label: View>: View {
   }
 }
 
-@available(iOS 16.0, *)
 extension MediaScrubber where Label == DefaultMediaScrubberLabel {
   init(
     currentTime: Binding<TimeInterval>,
@@ -157,7 +155,6 @@ extension MediaScrubber where Label == DefaultMediaScrubberLabel {
   }
 }
 
-@available(iOS 16.0, *)
 struct DefaultMediaScrubberLabel: View {
   var currentTime: TimeInterval
   var duration: TimeInterval
@@ -199,7 +196,6 @@ struct DefaultMediaScrubberLabel: View {
 }
 
 #if DEBUG
-@available(iOS 16.0, *)
 private struct MediaScrubberPreview: View {
   @State private var currentTime: TimeInterval = 0
   @State private var isScrubbing: Bool = false
@@ -234,7 +230,6 @@ private struct MediaScrubberPreview: View {
   }
 }
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   MediaScrubberPreview()
 }

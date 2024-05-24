@@ -8,7 +8,6 @@ import Foundation
 import Playlist
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct EditFolderView: View {
   @ObservedObject var folder: PlaylistFolder
   var folders: [PlaylistFolder]

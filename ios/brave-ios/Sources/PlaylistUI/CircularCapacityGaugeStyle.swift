@@ -6,7 +6,6 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct CircularCapacityGaugeStyle: GaugeStyle {
   var lineWidth: CGFloat
 
@@ -33,7 +32,6 @@ struct CircularCapacityGaugeStyle: GaugeStyle {
   }
 }
 
-@available(iOS 16.0, *)
 extension GaugeStyle where Self == CircularCapacityGaugeStyle {
   /// A gauge style that displays a closed ring that's partially filled in to
   /// indicate the gauge's current value with a line width set to 2 points.
@@ -56,7 +54,6 @@ extension GaugeStyle where Self == CircularCapacityGaugeStyle {
 
 #if DEBUG
 // swift-format-ignore
-@available(iOS 16.0, *)
 #Preview {
   HStack {
     Gauge(value: 0) { Text(verbatim: "0%") }
