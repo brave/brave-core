@@ -715,7 +715,6 @@ public class BrowserViewController: UIViewController {
       let webView = tab.webView
     {
       updateURLBar()
-      navigationToolbar.updateBackStatus(webView.canGoBack)
       updateForwardStatusIfNeeded(webView: webView)
       topToolbar.locationView.loading = tab.loading
     }
@@ -2019,18 +2018,12 @@ public class BrowserViewController: UIViewController {
         navigateInTab(tab: tab)
         tabsBar.updateSelectedTabTitle()
       }
-    case .canGoBack:
+    case .canGoBack, .canGoForward:
       guard tab === tabManager.selectedTab, let canGoBack = change?[.newKey] as? Bool else {
         break
       }
 
-      navigationToolbar.updateBackStatus(canGoBack)
-    case .canGoForward:
-      guard tab === tabManager.selectedTab, let canGoForward = change?[.newKey] as? Bool else {
-        break
-      }
-
-      navigationToolbar.updateForwardStatus(canGoForward)
+      updateForwardStatusIfNeeded(webView: webView)
     case .hasOnlySecureContent:
       Task {
         await tab.updateSecureContentState()
@@ -2077,7 +2070,9 @@ public class BrowserViewController: UIViewController {
     DebugLogger.log(for: .secureState, text: text)
   }
 
-  func updateForwardStatusIfNeeded(webView: WKWebView) {
+  func updateForwardStatusIfNeeded(webView: WKWebView?) {
+    guard let webView = webView else { return }
+
     if let forwardListItem = webView.backForwardList.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
