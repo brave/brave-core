@@ -49,7 +49,7 @@
 -ApcScrimManagerImplTest.RestoresTheOriginalHiddenStateOnWebcontentsVisibibleTransition
 -ApcScrimManagerImplTest.ShutDownDisablesAndHidesScrim
 -ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
--AudioStreamCoordinatorTest.ConnectToAudioCaptuerAndReceiveBuses
+-AudioStreamCoordinatorTest.ConnectToAudioCapturerAndReceiveBuses
 -AutofillFieldPromoControllerImplTest.CloseViewOnFailingMaybeShowPromo
 -AutofillFieldPromoControllerImplTestWithView.CloseViewOnControllerDeletion
 -AutofillFieldPromoControllerImplTestWithView.CloseViewOnFrameDeleted
@@ -88,9 +88,11 @@
 -CookieControlsContentViewUnitTest.ToggleButton_Initial
 -CookieControlsContentViewUnitTest.ToggleButton_UpdatedSites
 -CookieControlsIconViewUnitTest.*
--CookieControlsUserBypassTest.SiteCounts
+-CookieControlsUserBypassTest.*
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
 -CpuHealthTrackerBrowserTest.*
+-CreateShortcutBrowserCommandControllerTest.EnabledValidUrl
+-CreateShortcutBrowserCommandControllerTest.InvalidSchemeDisabled
 -CustomCursorSuppressorTest.*
 -CustomizeChromeFeaturePromoHelperTest.*
 -DefaultBrowserPromptManagerTest.*
@@ -183,6 +185,9 @@
 -PreRedirectionURLObserverTest.OneNavigationTwoSameDocumentNavigations
 -PreRedirectionURLObserverTest.OneNavigationTwoSubframeNavigations
 -PreRedirectionURLObserverTest.ThreeNavigations
+-ProductSpecificationsIconViewIntegrationTest.IconExecution
+-ProductSpecificationsIconViewIntegrationTest.IconVisibility
+-ProductSpecificationsIconViewIntegrationTest.TestVisualState
 -ProfileManagementNavigationThrottleRedirectTest.*
 -ProfileManagementNavigationThrottleTest.*
 -ProfileTokenNavigationThrottleTest.*
@@ -282,7 +287,7 @@
 -TabContainerTest.GroupUnderlineBasics
 
 # Test below are disabled as we have our own ink drop configs.
--ChromeRefresh2023OnOff/ToolbarInkDropUtilTest.ConfigureInkDropForToolbarTest/*
+-ToolbarInkDropUtilTest.ConfigureInkDropForToolbarTest
 
 # The following tests are disabled for BraveRenderViewContextMenu::InitMenu
 # attempting to check Tor statuses, which dereferences an uninitialised
@@ -339,8 +344,8 @@
 -DiceTabHelperTest.Initialization
 -PreconnectEnabled/SigninDiceResponseHandlerTestPreconnect.Signin/1
 
-# This test fails because we disable the privacy sandbox
--PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
+# These tests fail because we disable the privacy sandbox
+-PrivacySandboxServiceTest.*
 
 # These tests fail because we disable the
 # privacy_sandbox::kEnforcePrivacySandboxAttestations feature
@@ -430,6 +435,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveManagerTest.PrimaryUserChange
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
 -PeopleHandlerDiceTest.StoredAccountsList
@@ -527,21 +533,18 @@
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
 
-# Flaky upstream test.
+# Flaky upstream tests
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_FpsEnabled_ReturnsEmptyUntilAllSetsReady/0
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_NumQueriesRecorded_AfterConfigReady/0
 -All/FirstPartySetsPolicyServicePrefTest.FindEntry_NumQueriesRecorded_BeforeConfigReady/0
 -All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_ReturnsEmptyUntilAllSetsReady/0
 -All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_WithNonEmptyConfig/0
+-EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
+
+# These tests fail because we disable kSidePanelPinning (the /1 param in these tests)
 -All/RecentTabsSubMenuModelTest.NoTabs/1
 -All/RecentTabsSubMenuModelTest.OtherDevices/1
 -All/RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate/1
--EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
--PrivacySandboxServiceTest.FirstPartySetsEnabledMetric
--PrivacySandboxServiceTest.FpsPrefInit
--PrivacySandboxServiceTest.SampleFpsData
--PrivacySandboxServiceTest.SimulatedFpsData_FpsEnabled_WithGlobalSetsAndProfileSets
--PrivacySandboxServiceTest.UsesFpsSampleSetsWhenProvided
 
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
@@ -591,7 +594,7 @@
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.
 -All/SiteSettingsHandlerTest.NotificationPermissionRevokeUkm/*
--UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest
+-All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/*
 
 # This test fails because we disable kVisualQuerySuggestions
 -CompanionUrlBuilderTest.MsbbAndPcOn
@@ -685,6 +688,11 @@
 # These tests fail because we stub signin::ShouldShowSyncPromo to always return
 # false
 -ShowSyncPromoTest.*
+
+# These tests are disabled due to an issue related to calling
+# browsertest_util::AddTab. This problem should be investigated and these tests
+# reenabled. See https://github.com/brave/brave-browser/issues/39075
+-SavedTabGroupKeyedServiceUnitTestV2.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -928,6 +936,8 @@
 -PermissionChipUnitTest.*
 -PermissionMessageCombinationsUnittest.*
 -PermissionMessagesUnittest.*
+-PermissionsAPISiteAccessRequestsUnitTest.AddSiteAccessRequest*
+-PermissionsAPISiteAccessRequestsUnitTest.RemoveSiteAccessRequest*
 -PermissionsAPIUnitTest.*
 -PermissionsManagerUnitTest.FaviconPermissionsAreNotWithheld
 -PermissionsTest.*
