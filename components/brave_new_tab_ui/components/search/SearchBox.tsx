@@ -9,7 +9,7 @@ import Input from '@brave/leo/react/input';
 import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
-import { MediumIcon } from './SearchEngineIcon';
+import { MediumSearchEngineIcon } from './SearchEngineIcon';
 import { useSearchContext } from './SearchContext';
 import { braveSearchHost } from './config';
 import Button from '@brave/leo/react/button';
@@ -27,6 +27,7 @@ const SearchInput = styled(Input)`
 
 const EnginePicker = styled(Dropdown)`
   --leo-control-radius: ${radius.m};
+  --leo-control-text-color: ${color.text.primary};
 `
 
 const EngineValueSlot = styled.div`
@@ -82,23 +83,23 @@ export default function SearchBox() {
           setSearchEngine(e.value!)
         }}>
           <EngineValueSlot slot="value">
-            <MediumIcon src={searchEngine?.faviconUrl.url} />
+            <MediumSearchEngineIcon engine={searchEngine} />
           </EngineValueSlot>
           {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
             <Option>
-              <MediumIcon src={s.faviconUrl.url} />{s.name}
+              <MediumSearchEngineIcon engine={s} />{s.name}
             </Option>
           </leo-option>)}
           <CustomizeButton kind="plain-faint" size="small" onClick={() => {
-              history.pushState(undefined, '', '?openSettings=Search')
+            history.pushState(undefined, '', '?openSettings=Search')
 
-              // For now, close the search box - the Settings dialog doesn't use a
-              // dialog, so it gets rendered underneath.
-              setOpen(false)
-            }}>
-              {getLocale('searchCustomizeList')}
-            </CustomizeButton>
-          </EnginePicker>
+            // For now, close the search box - the Settings dialog doesn't use a
+            // dialog, so it gets rendered underneath.
+            setOpen(false)
+          }}>
+            {getLocale('searchCustomizeList')}
+          </CustomizeButton>
+        </EnginePicker>
       </Flex>
       <SearchIconContainer slot="right-icon">
         <Icon name="search" />

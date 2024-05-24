@@ -19,7 +19,7 @@ import {
   SettingsText
 } from '../../../components/default'
 import { searchEnginesPromise } from '../../../components/search/SearchContext'
-import { MediumIcon } from '../../../components/search/SearchEngineIcon'
+import { MediumSearchEngineIcon } from '../../../components/search/SearchEngineIcon'
 import { isSearchEngineEnabled, setEngineEnabled } from '../../../components/search/config'
 import { useNewTabPref } from '../../../hooks/usePref'
 import { getLocale } from '../../../../common/locale'
@@ -83,7 +83,7 @@ export default function SearchSettings() {
         {engines.map(engine => <EngineCard key={engine.keyword}>
           <EngineCheckbox checked={isSearchEngineEnabled(engine)} onChange={e => setEngineEnabled(engine, e.checked)}>
             <CheckboxText>{engine.name}</CheckboxText>
-            <MediumIcon src={engine.faviconUrl.url} />
+            <MediumSearchEngineIcon engine={engine} />
           </EngineCheckbox>
         </EngineCard>)}
       </EnginesGrid>

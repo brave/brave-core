@@ -7,9 +7,25 @@ import * as React from "react";
 import { useUnpaddedImageUrl } from "../../../brave_news/browser/resources/shared/useUnpaddedImageUrl";
 import { icon } from "@brave/leo/tokens/css/variables";
 import styled from "styled-components";
+import { SearchEngineInfo } from "../../api/background";
+import Icon from "@brave/leo/react/icon";
+
+// Mapping of search engine host to Nala icon for the icons we bundle in the browser
+const icons = {
+  // The Google search provider has the empty origin :O
+  '': 'google-color',
+  'duckduckgo.com': 'duckduckgo-color',
+  'search.brave.com': 'brave-icon-search-color',
+  'www.bing.com': 'bing-color',
+  'www.qwant.com': 'qwant-color',
+  'www.startpage.com': 'startpage-color',
+  'search.yahoo.com': 'yahoo-color',
+  'yandex.com': 'yandex-color'
+}
 
 const hide = { opacity: 0 }
-function SearchEngineIcon(props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) {
+// Component which hides the image until it successfully loads (if ever).
+function MaybeImage(props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) {
   const { src: oldSrc, ...rest } = props
   const [loaded, setLoaded] = React.useState(false)
   const onLoad = React.useCallback(() => setLoaded(true), []);
@@ -21,7 +37,19 @@ function SearchEngineIcon(props: React.DetailedHTMLProps<React.ImgHTMLAttributes
   return <img {...rest} style={loaded ? undefined : hide} src={src} />
 }
 
-export const MediumIcon = styled(SearchEngineIcon)`
+export function SearchEngineIcon(props: { engine?: SearchEngineInfo, className?: string }) {
+  if (!props.engine) return null
+
+  const nalaIcon = icons[props.engine.host]
+
+  return nalaIcon
+    ? <Icon name={nalaIcon} className={props.className} />
+    : <MaybeImage src={props.engine.faviconUrl.url} className={props.className} />
+}
+
+export const MediumSearchEngineIcon = styled(SearchEngineIcon)`
+  --leo-icon-size: ${icon.m};
+
   width: ${icon.m};
   height: ${icon.m};
 `
