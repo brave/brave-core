@@ -139,6 +139,13 @@ class TabBarCell: UICollectionViewCell {
     updateFont()
   }
 
+  func resetConfiguration() {
+    closeButton.isHidden = true
+    isSelected = false
+
+    configure()
+  }
+
   private func updateFont() {
     let clampedTraitCollection = self.traitCollection.clampingSizeCategory(
       maximum: .extraExtraLarge
