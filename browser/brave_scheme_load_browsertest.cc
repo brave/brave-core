@@ -56,11 +56,25 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  bool NavigateToURLUntilLoadStop(GURL url) {
+    ui_test_utils::UrlLoadObserver load_complete(url);
+    browser()->OpenURL(
+        content::OpenURLParams(url, content::Referrer(),
+                               WindowOpenDisposition::CURRENT_TAB,
+                               ui::PAGE_TRANSITION_TYPED, false),
+        /*navigation_handle_callback=*/{});
+    load_complete.Wait();
+    EXPECT_EQ(active_contents()->GetLastCommittedURL(), url);
+    return true;
+  }
+
   bool NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), embedded_test_server()->GetURL(origin, path)));
-    return WaitForLoadStop(active_contents());
+    // EXPECT_TRUE(ui_test_utils::NavigateToURL(
+    //     browser(), ));
+    // return WaitForLoadStop(active_contents());
+    GURL url = embedded_test_server()->GetURL(origin, path);
+    return NavigateToURLUntilLoadStop(url);
   }
 
   // Check loading |url| in guest window is not allowed for an url.
@@ -149,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -164,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -180,7 +194,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -197,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   auto* initial_active_tab = active_contents();
   content::WebContentsConsoleObserver console_observer(initial_active_tab);
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(initial_active_tab,
                               "window.domAutomationController.send("
@@ -213,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(
       content::ExecJs(active_contents(), "window.open(\"brave://settings\")"));
@@ -226,7 +240,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToBraveByClick) {
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
@@ -241,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
   content::WebContentsConsoleObserver console_observer(active_contents());
   console_observer.SetPattern(
-      "Not allowed to load local resource: brave://settings/");
+      "Not allowed to load local resource: brave://settings");
 
   ASSERT_TRUE(content::ExecJs(
       active_contents(),
