@@ -158,7 +158,7 @@ void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
 }
 
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
-  if (!kShouldSuspendAndResume.Get()) {
+  if (!kShouldSuspendAndResumePageLand.Get()) {
     return;
   }
 

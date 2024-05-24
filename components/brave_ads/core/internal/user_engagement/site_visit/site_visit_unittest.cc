@@ -233,7 +233,7 @@ TEST_F(
 TEST_F(
     BraveAdsSiteVisitTest,
     SuspendPageLandWhenBrowserEntersBackgroundThenResumePageLandWhenBrowserEntersForeground) {
-  // Tab (Start page landing)
+  // Tab 1 (Start page landing)
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
@@ -290,7 +290,7 @@ TEST_F(
 TEST_F(
     BraveAdsSiteVisitTest,
     SuspendPageLandWhenBrowserResignsActiveThenResumePageLandWhenBrowserBecomesActive) {
-  // Tab (Start page landing)
+  // Tab 1 (Start page landing)
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
@@ -347,9 +347,10 @@ TEST_F(
 TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      brave_ads::kSiteVisitFeature, {{"should_suspend_and_resume", "false"}});
+      brave_ads::kSiteVisitFeature,
+      {{"should_suspend_and_resume_page_land", "false"}});
 
-  // Tab (Start page landing)
+  // Tab 1 (Start page landing)
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
@@ -368,9 +369,9 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
   EXPECT_CALL(observer_mock_, OnDidSuspendPageLand).Times(0);
 
   NotifyBrowserDidResignActive();
-  ASSERT_FALSE(HasPendingTasks());
+  ASSERT_TRUE(HasPendingTasks());
 
-  // Tab (Visible/Resume page landing)
+  // Tab 1 (Visible/Resume page landing)
   EXPECT_CALL(observer_mock_, OnDidResumePageLand).Times(0);
 
   NotifyBrowserDidBecomeActive();
