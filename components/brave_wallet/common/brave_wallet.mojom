@@ -1469,10 +1469,6 @@ interface JsonRpcService {
   // Obtains the selected network's chain ID for origin.
   GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin) => (string chain_id);
 
-  // Obtains the current network's URL
-  GetNetworkUrl(CoinType coin, url.mojom.Origin? origin)
-    => (string network_url);
-
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
   GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
 

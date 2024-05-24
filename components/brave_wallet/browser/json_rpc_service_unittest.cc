@@ -1289,19 +1289,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
     return chain_id_out;
   }
 
-  std::string GetNetworkUrl(mojom::CoinType coin,
-                            const std::optional<::url::Origin>& origin) {
-    std::string url_out;
-    base::RunLoop run_loop;
-    json_rpc_service_->GetNetworkUrl(
-        coin, origin, base::BindLambdaForTesting([&](const std::string& url) {
-          url_out = url;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return url_out;
-  }
-
   void TestGetCode(const std::string& address,
                    mojom::CoinType coin,
                    const std::string& chain_id,
@@ -1979,14 +1966,14 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
               mojom::kGoerliChainId);
     EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_b), network->chain_id);
 
-    EXPECT_EQ(url::Origin::Create(
-                  GURL(GetNetworkUrl(mojom::CoinType::ETH, std::nullopt))),
+    EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                  mojom::CoinType::ETH, std::nullopt))),
               url::Origin::Create(GetActiveEndpointUrl(*network)));
-    EXPECT_EQ(url::Origin::Create(
-                  GURL(GetNetworkUrl(mojom::CoinType::ETH, origin_a))),
+    EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                  mojom::CoinType::ETH, origin_a))),
               url::Origin::Create(GURL("https://goerli-infura.brave.com")));
-    EXPECT_EQ(url::Origin::Create(
-                  GURL(GetNetworkUrl(mojom::CoinType::ETH, origin_b))),
+    EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                  mojom::CoinType::ETH, origin_b))),
               url::Origin::Create(GetActiveEndpointUrl(*network)));
   }
 
@@ -2009,16 +1996,15 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_a), mojom::kSolanaTestnet);
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_b), mojom::kSolanaMainnet);
 
-  EXPECT_EQ(
-      url::Origin::Create(
-          GURL(GetNetworkUrl(mojom::CoinType::SOL, std::nullopt))),
-      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
-  EXPECT_EQ(
-      url::Origin::Create(GURL(GetNetworkUrl(mojom::CoinType::SOL, origin_a))),
-      url::Origin::Create(GURL("https://api.testnet.solana.com")));
-  EXPECT_EQ(
-      url::Origin::Create(GURL(GetNetworkUrl(mojom::CoinType::SOL, origin_b))),
-      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
+  EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                mojom::CoinType::SOL, std::nullopt))),
+            url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
+  EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                mojom::CoinType::SOL, origin_a))),
+            url::Origin::Create(GURL("https://api.testnet.solana.com")));
+  EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+                mojom::CoinType::SOL, origin_b))),
+            url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
 }
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
@@ -2040,11 +2026,12 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_a), chain2.chain_id);
   EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_b), chain1.chain_id);
 
-  EXPECT_EQ(GetNetworkUrl(mojom::CoinType::ETH, std::nullopt),
-            GetActiveEndpointUrl(chain1));
-  EXPECT_EQ(GetNetworkUrl(mojom::CoinType::ETH, origin_a),
+  EXPECT_EQ(
+      json_rpc_service_->GetNetworkUrl(mojom::CoinType::ETH, std::nullopt),
+      GetActiveEndpointUrl(chain1));
+  EXPECT_EQ(json_rpc_service_->GetNetworkUrl(mojom::CoinType::ETH, origin_a),
             GetActiveEndpointUrl(chain2));
-  EXPECT_EQ(GetNetworkUrl(mojom::CoinType::ETH, origin_b),
+  EXPECT_EQ(json_rpc_service_->GetNetworkUrl(mojom::CoinType::ETH, origin_b),
             GetActiveEndpointUrl(chain1));
 }
 
@@ -2331,7 +2318,8 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainForOriginRejected) {
 TEST_F(JsonRpcServiceUnitTest, AddChain) {
   {
     mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
-    ASSERT_FALSE(GetNetworkURL(prefs(), chain.chain_id, mojom::CoinType::ETH)
+    ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), chain.chain_id,
+                                             mojom::CoinType::ETH)
                      .is_valid());
     SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), chain.chain_id);
 

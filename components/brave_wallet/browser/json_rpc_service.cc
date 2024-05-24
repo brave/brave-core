@@ -765,13 +765,6 @@ std::string JsonRpcService::GetNetworkUrl(
   return network_url.spec();
 }
 
-void JsonRpcService::GetNetworkUrl(
-    mojom::CoinType coin,
-    const std::optional<::url::Origin>& origin,
-    mojom::JsonRpcService::GetNetworkUrlCallback callback) {
-  std::move(callback).Run(GetNetworkUrl(coin, origin));
-}
-
 void JsonRpcService::GetBlockNumber(const std::string& chain_id,
                                     GetBlockNumberCallback callback) {
   auto internal_callback =

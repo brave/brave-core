@@ -289,10 +289,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            RemoveHiddenNetworkCallback callback) override;
   std::string GetNetworkUrl(mojom::CoinType coin,
                             const std::optional<::url::Origin>& origin) const;
-  void GetNetworkUrl(
-      mojom::CoinType coin,
-      const std::optional<::url::Origin>& origin,
-      mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
