@@ -5,16 +5,19 @@
 
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "components/prefs/pref_service.h"
 
 namespace chrome {
 
 bool BraveTabStripModelDelegate::CanMoveTabsToWindow(
     const std::vector<int>& indices) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) ||
+      !browser_->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     return BrowserTabStripModelDelegate::CanMoveTabsToWindow(indices);
   }
 

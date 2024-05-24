@@ -30,6 +30,8 @@ inline constexpr char kVerticalTabsOnRight[] =
 inline constexpr char kVerticalTabsShowScrollbar[] =
     "brave.tabs.vertical_tabs_show_scrollbar";
 
+inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
 

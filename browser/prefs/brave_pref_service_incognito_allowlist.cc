@@ -41,6 +41,7 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
       brave_tabs::kVerticalTabsShowTitleOnWindow,
       brave_tabs::kVerticalTabsOnRight,
       brave_tabs::kVerticalTabsShowScrollbar,
+      brave_tabs::kSharedPinnedTab,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,

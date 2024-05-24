@@ -11,11 +11,14 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -105,6 +108,9 @@ void SharedPinnedTabServiceBrowserTest::SetUpOnMainThread() {
         return response;
       }));
   ASSERT_TRUE(https_server_->Start());
+
+  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               true);
 }
 
 void SharedPinnedTabServiceBrowserTest::SetUpCommandLine(
@@ -339,6 +345,52 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   // Then the window should be closed
   WaitUntil(base::BindRepeating(
       []() { return BrowserList::GetInstance()->size() == 1; }));
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
+  // Given that there're multiple windows with shared pinned tabs
+  auto* browser_1 = browser();
+  auto* tab_strip_model_1 = browser_1->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  chrome::AddTabAt(browser_1, GURL(), /*index*/ -1, /*foreground*/ true);
+
+  auto* browser_2 = CreateNewBrowser();
+  browser_2->tab_strip_model()->SetTabPinned(1, true);
+  chrome::AddTabAt(browser_2, GURL(), /*index*/ -1, /*foreground*/ true);
+
+  ASSERT_EQ(3, browser_1->tab_strip_model()->count());
+  ASSERT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  ASSERT_TRUE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  ASSERT_EQ(3, browser_2->tab_strip_model()->count());
+  ASSERT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  ASSERT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
+
+  // When disabling the shared pinned tab preference
+  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               false);
+
+  // Then all dummy contents should be gone.
+  EXPECT_EQ(2, browser_1->tab_strip_model()->count());
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  EXPECT_FALSE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  EXPECT_EQ(2, browser_2->tab_strip_model()->count());
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  EXPECT_FALSE(browser_2->tab_strip_model()->IsTabPinned(1));
+
+  // When enabling the shared pinned tab preference
+  browser_1->profile()->GetPrefs()->SetBoolean(brave_tabs::kSharedPinnedTab,
+                                               true);
+
+  // All pinned tabs should be synchronized
+  EXPECT_EQ(3, browser_1->tab_strip_model()->count());
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(0));
+  EXPECT_TRUE(browser_1->tab_strip_model()->IsTabPinned(1));
+
+  EXPECT_EQ(3, browser_2->tab_strip_model()->count());
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(0));
+  EXPECT_TRUE(browser_2->tab_strip_model()->IsTabPinned(1));
 }
 
 #if !BUILDFLAG(IS_MAC)

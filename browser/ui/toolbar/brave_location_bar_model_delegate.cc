@@ -15,6 +15,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -23,12 +24,13 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #endif
 
 BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser)
-    : BrowserLocationBarModelDelegate(browser) {}
+    : BrowserLocationBarModelDelegate(browser), browser_(browser) {}
 
 BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() = default;
 
@@ -70,7 +72,9 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
 
 bool BraveLocationBarModelDelegate::GetURL(GURL* url) const {
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser_->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     content::NavigationEntry* entry = GetNavigationEntry();
     if (entry && entry->IsInitialEntry()) {
       auto* active_web_contents = GetActiveWebContents();
