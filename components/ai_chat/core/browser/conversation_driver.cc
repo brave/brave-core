@@ -333,7 +333,7 @@ void ConversationDriver::InitEngine() {
   model_key_ = model->key;
 
   // Engine enum on model to decide which one
-  if (features::kConversationAPIEnabled.Get()) {
+  if (model->engine_type == mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
     DVLOG(1) << "Started AI engine: conversation api";
     engine_ = std::make_unique<EngineConsumerConversationAPI>(
         *model, url_loader_factory_, credential_manager_.get());

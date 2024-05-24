@@ -39,19 +39,24 @@ const std::vector<ai_chat::mojom::Model>& GetAllModels() {
   static const auto kFreemiumAccess =
       features::kFreemiumAvailable.Get() ? mojom::ModelAccess::BASIC_AND_PREMIUM
                                          : mojom::ModelAccess::PREMIUM;
+  const bool conversation_api = features::kConversationAPIEnabled.Get();
   static const base::NoDestructor<std::vector<mojom::Model>> kModels({
       {"chat-leo-expanded", "mixtral-8x7b-instruct", "Mixtral", "Mistral AI",
-       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
-       kFreemiumAccess, 8000, 9700},
-      {"chat-claude-haiku", "claude-3-haiku", "Claude 3 Haiku",
-       "Anthropic", mojom::ModelEngineType::CLAUDE_REMOTE,
+       conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                        : mojom::ModelEngineType::LLAMA_REMOTE,
+       mojom::ModelCategory::CHAT, kFreemiumAccess, 8000, 9700},
+      {"chat-claude-haiku", "claude-3-haiku", "Claude 3 Haiku", "Anthropic",
+       conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                        : mojom::ModelEngineType::CLAUDE_REMOTE,
        mojom::ModelCategory::CHAT, kFreemiumAccess, 180000, 320000},
-      {"chat-claude-sonnet", "claude-3-sonnet", "Claude 3 Sonnet",
-       "Anthropic", mojom::ModelEngineType::CLAUDE_REMOTE,
+      {"chat-claude-sonnet", "claude-3-sonnet", "Claude 3 Sonnet", "Anthropic",
+       conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                        : mojom::ModelEngineType::CLAUDE_REMOTE,
        mojom::ModelCategory::CHAT, mojom::ModelAccess::PREMIUM, 180000, 320000},
       {"chat-basic", "llama-2-13b-chat", "Llama 2 13b", "Meta",
-       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
-       mojom::ModelAccess::BASIC, 8000, 9700},
+       conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                        : mojom::ModelEngineType::LLAMA_REMOTE,
+       mojom::ModelCategory::CHAT, mojom::ModelAccess::BASIC, 8000, 9700},
   });
   return *kModels;
 }
