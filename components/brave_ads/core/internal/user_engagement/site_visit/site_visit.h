@@ -50,7 +50,7 @@ class SiteVisit final : public BrowserManagerObserver,
   void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
  private:
-  bool IsPageLanding(int32_t tab_id) const;
+  bool IsLandingPage(int32_t tab_id) const;
 
   void MaybeLandOnPage(const TabInfo& tab);
   void MaybeLandOnPageAfter(const TabInfo& tab,
