@@ -10,8 +10,13 @@
   GetAccountsInCookieJar_Unused() const; \
   AccountsInCookieJarInfo GetAccountsInCookieJar
 
+#define PrepareForAddingNewAccount     \
+  PrepareForAddingNewAccount_Unused(); \
+  void PrepareForAddingNewAccount
+
 #include "src/components/signin/public/identity_manager/identity_manager.h"  // IWYU pragma: export
 
+#undef PrepareForAddingNewAccount
 #undef GetAccountsInCookieJar
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SIGNIN_PUBLIC_IDENTITY_MANAGER_IDENTITY_MANAGER_H_

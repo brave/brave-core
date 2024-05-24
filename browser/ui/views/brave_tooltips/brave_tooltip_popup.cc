@@ -145,7 +145,8 @@ void BraveTooltipPopup::set_display_work_area_insets(int x, int y) {
   display_work_area_inset_y_ = y;
 }
 
-void BraveTooltipPopup::OnDisplayRemoved(const display::Display& old_display) {
+void BraveTooltipPopup::OnDisplaysRemoved(
+    const display::Displays& old_displays) {
   // Called when |old_display| has been removed
   RecomputeAlignment();
 }

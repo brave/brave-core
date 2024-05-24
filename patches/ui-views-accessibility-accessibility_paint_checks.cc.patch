@@ -1,5 +1,5 @@
 diff --git a/ui/views/accessibility/accessibility_paint_checks.cc b/ui/views/accessibility/accessibility_paint_checks.cc
-index 9ef51ccbec639c2ed35d10a9007889562467965c..53115b0c8a362e920b82d165ceb01f515d482089 100644
+index 97f92310782792e22592ff8d76b58df5fe90e651..76418cee28053fec05b43218e7b93e239f6229cf 100644
 --- a/ui/views/accessibility/accessibility_paint_checks.cc
 +++ b/ui/views/accessibility/accessibility_paint_checks.cc
 @@ -33,6 +33,7 @@ void RunAccessibilityPaintChecks(View* view) {

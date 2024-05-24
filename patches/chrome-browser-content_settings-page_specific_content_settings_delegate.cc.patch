@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/content_settings/page_specific_content_settings_delegate.cc b/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
-index 59ee0ba8e711133b1e71217d6d2919358508142b..a76ad41bc191d36b30ed4362f48e080dad6e5484 100644
+index ac05c924203d27fa9218a87f84fba502c05e67f5..963544c069c1000e6e894fab2411594a2ebc90ed 100644
 --- a/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
 +++ b/chrome/browser/content_settings/page_specific_content_settings_delegate.cc
-@@ -168,6 +168,7 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -173,6 +173,7 @@ void GetGuestViewDefaultContentSettingRules(
        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
        content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
-       std::string(), incognito));
+       content_settings::ProviderType::kNone, incognito));
 +  BRAVE_GET_GUEST_VIEW_DEFAULT_CONTENT_SETTING_RULES
  }
  #endif

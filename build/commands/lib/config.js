@@ -340,6 +340,7 @@ Config.prototype.buildArgs = function () {
     safe_browsing_mode: 1,
     brave_services_key: this.braveServicesKey,
     root_extra_deps: ["//brave"],
+    clang_unsafe_buffers_paths: "//brave/build/config/unsafe_buffers_paths.txt",
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
@@ -595,8 +596,8 @@ Config.prototype.buildArgs = function () {
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.safe_browsing_mode = 2
 
-    // Feed is not used in Brave
-    args.enable_feed_v2 = false
+    // Required since cr126 to use Chrome password store
+    args.use_login_database_as_backend = true
 
     // TODO(fixme)
     args.enable_tor = false

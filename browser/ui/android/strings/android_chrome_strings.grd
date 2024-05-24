@@ -207,9 +207,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_COOKIE_CONTROLS_IPH_MESSAGE" desc="In-context Product Help - Appears right under the page info icon to highlight the Cookie Controls entrypoint.">
         Site not working? Third-party cookies are blocked
       </message>
-      <message name="IDS_COOKIE_CONTROLS_REMINDER_IPH_MESSAGE" desc="In-context Product Help - Appears right under the page info icon to highlight the Cookie Controls entrypoint. This message is a reminder.">
-        Site not working? Try temporarily allowing third-party cookies
-      </message>
 
       <!-- Main Preferences -->
       <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR_LIMIT=32]">
@@ -220,8 +217,8 @@ CHAR_LIMIT guidelines:
       </message>
 
       <!-- TODO(b/326574743): Revisit string and mark it as translateable.-->
-      <message name="IDS_PREFS_CONTROL_YOUR_DATA" desc="Title of &quot;Control your data and accounts&quot; section of preferences. [CHAR_LIMIT=32]" translateable="false">
-        Control your data &amp; accounts
+      <message name="IDS_ACCOUNT_ADVANCED_HEADER" desc="Heading of a section with settings related to the user's Brave sync chain and data. [CHAR_LIMIT=32]" translateable="false">
+        Control your data &amp; account
       </message>
 
       <!-- Notification channels -->
@@ -589,6 +586,14 @@ CHAR_LIMIT guidelines:
       <message translateable="false" name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Autofill Options
       </message>
+      <!-- TODO(crbug.com/40898980): Use finalized string.-->
+      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_CONFIRM_RESTART" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Restart now
+      </message>
+      <!-- TODO(crbug.com/40898980): Use finalized string.-->
+      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_UNDO_TOGGLE_CHANGE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Undo setting change
+      </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog where the user confirms their intention to delete their saved CVCs.">
         Delete saved security codes?
       </message>
@@ -636,7 +641,7 @@ CHAR_LIMIT guidelines:
         Passwords
       </message>
       <message name="IDS_PASSWORD_MANAGER_SETTINGS_TITLE" desc="Title for the settings menu item leading to the Password Manager UI surface. This allows users to e.g. manage their saved passwords, toggle saving and auto-sign-in on/off, etc. [CHAR_LIMIT=32]">
-        Password Manager
+        Brave Password Manager
       </message>
       <message name="IDS_PASSWORD_SAVING_ON_BY_ADMINISTRATOR" desc="Subtitle for the settings menu item leading to the Password Manager UI surface, shown when the device administrator set saving passwords to enabled.">
         Password saving is turned on by your administrator
@@ -1203,14 +1208,14 @@ For example, some websites may respond to this request by showing you ads that a
         Please verify that this is a valid provider or try again later
       </message>
 
-      <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Clear Browsing Data screen. [CHAR_LIMIT=32]">
-        Clear browsing data
+      <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Delete Browsing Data screen. [CHAR_LIMIT=32]">
+        Delete browsing data
       </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_SUMMARY" desc="Summary of the settings item that opens the Clear Browsing Data dialog.">
-        Clear history, cookies, site data, cache…
+      <message name="IDS_CLEAR_BROWSING_DATA_SUMMARY" desc="Summary of the settings item that opens the Delete Browsing Data dialog.">
+        Delete history, cookies, site data, cache…
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_DIALOG_TITLE" desc="Title of a dialog that is shown after the deletion of browsing history finished.">
-        Cleared Brave data
+        Deleted Brave data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_DIALOG_DATA_TEXT" desc="Text of the dialog that is shown after the deletion of browsing history items finished, indicating that the selected data has been removed, but there may be other forms of browsing history still present in user's Brave account.">
         The selected data has been removed from Brave and your synced devices.
@@ -1233,10 +1238,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         Signs you out of most sites. You won't be signed out of your Brave sync chain.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A text for the basic tab explaining browsing history.">
-        Clears history, including in the search box
+        Deletes history, including in the search box
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED_NO_LINK" desc="A text for the basic tab explaining browsing history for users with history sync. This version is shown when the link to MyActivity is displayed separately.">
-        Clears history from all synced devices
+        Deletes history from all synced devices
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
         <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Search history<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>other forms of activity<ph name="END_LINK2">&lt;/link2&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
@@ -1247,8 +1252,8 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGN_OUT_OF_CHROME_LINK" desc="The text is displayed in a footer in a dialog to clear browsing data. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
           To sign out of your Brave sync chain on all websites, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
       </message>
-      <message name="IDS_SIGN_OUT_OF_CHROME_LINK_ADVANCED" desc="The text is displayed in a footer in the advanced option of clear browsing data dialog. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
-          Clearing your browsing data doesn't sign you out of your Brave sync chain. To do so, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
+      <message name="IDS_SIGN_OUT_OF_CHROME_LINK_ADVANCED" desc="The text is displayed in a footer in the advanced option of delete browsing data dialog. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
+          Deleting your browsing data doesn't sign you out of your Brave sync chain. To do so, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
         Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
@@ -1263,13 +1268,16 @@ Your Brave account may have other forms of browsing history like searches and ac
         Autofill form data
       </message>
       <message name="IDS_CLEAR_TABS_TITLE" desc="Title for Clear Tabs in Clear Browsing Data preference">
-        Tabs on this device
+        Tabs
       </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_PROGRESS_TITLE" desc="Title for the progress dialog used when waiting for &quot;clear browsing data&quot; to complete.">
-        Clearing browsing data
+      <message name="IDS_CLEAR_TABS_DISABLED_SUMMARY" desc="A descriptive line that appears as a secondary text for Clear Tabs in Clear Browsing Data preference. The text explains why 'Tabs' checkbox is disabled.">
+        Can’t be closed across multiple windows
       </message>
-      <message name="IDS_CLEAR_DATA_DELETE" desc="Button that allows the user to clear their browsing data. [CHAR_LIMIT=30]">
-        Clear data
+      <message name="IDS_CLEAR_BROWSING_DATA_PROGRESS_TITLE" desc="Title for the progress dialog used when waiting for &quot;delete browsing data&quot; to complete.">
+        Deleting browsing data
+      </message>
+      <message name="IDS_CLEAR_DATA_DELETE" desc="Button that allows the user to delete their browsing data. [CHAR_LIMIT=30]">
+        Delete data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_PROGRESS_MESSAGE" desc="Message on the progress dialog used when waiting for &quot;clear browsing data&quot; to complete.">
         Please wait…
@@ -1308,10 +1316,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         These sites and apps seem important to you:
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_IMPORTANT_DIALOG_BUTTON" desc="The text of the button to perform the clear action in the dialog presenting the user with 'important' sites that they can exclude from clearing.">
-        Clear
+        Delete
       </message>
-      <message name="IDS_OPEN_CLEAR_BROWSING_DATA_DIALOG_BUTTON" desc="Title of the button that will open the clear browsing data dialog.">
-        Clear browsing data…
+      <message name="IDS_OPEN_CLEAR_BROWSING_DATA_DIALOG_BUTTON" desc="Title of the button that will open the delete browsing data dialog.">
+        Delete browsing data…
       </message>
       <message name="IDS_OPEN_FULL_CHROME_HISTORY" desc="Title of the button that will open the full history in Brave browser from CCT history page.">
               Open full Brave history
@@ -1320,13 +1328,19 @@ Your Brave account may have other forms of browsing history like searches and ac
         Basic
       </message>
       <message name="IDS_ANDROID_APP_HISTORY_OPEN_FULL" desc="The informational message at the top of the history page letting users know that app-specific history may be missing some entries.">
-        Some of your web history might not show up here. To see a full web history, tap Open full Brave history.
+        Some of your history might not show up here. To see all your Brave history, open full Brave history.
       </message>
       <message name="IDS_ANDROID_APP_HISTORY_OPEN_FULL_OTHER_FORMS" desc="The informational message at the top of the history page letting users know that app-specific history may be missing some entries, followed by the info on the other forms of browing history.">
-        Some of your web history might not show up here. If needed, tap Open full Brave history. Also, Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+        Some of your history might not show up here. To see all your Brave history, open full Brave history. Also, your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_ANDROID_HISTORY_OTHER_FORMS_OF_HISTORY" desc="The notification at the top of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
         Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
+      <message name="IDS_ANDROID_HISTORY_FROM_OTHER_APPS" desc="The notification at the top of the history page indicating that users will see the history from other apps that open links in Brave.">
+        You may see the history from other apps that open links in Brave.
+      </message>
+      <message name="IDS_ANDROID_HISTORY_FROM_OTHER_APPS_OTHER_FORMS_OF_HISTORY" desc="The notification at the top of the history page indicating that 1) users will see the history from other apps that open links in Brave 2) deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
+        You may see the history from other apps that open links in Brave. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_ANDROID_HISTORY_BLOCKED_SITE" desc="The text displayed in the history page indicating that a visit to a web site was blocked due to an administrator policy.">
         Blocked site
@@ -1713,6 +1727,23 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_LEARN_MORE_LABEL" desc="The text for a link to a help center article that gives more information about Safe Browsing.">
         Learn more about <ph name="BEGIN_LINK">&lt;link&gt;</ph>how Brave keeps your data private<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+
+      <!-- History App filter -->
+      <message name="IDS_HISTORY_FILTER_BY_APP" desc="Text used in the app filter button and in the header of app filter sheet.">
+        Filter by app
+      </message>
+      <message name="IDS_HISTORY_IPH_BUBBLE_TEXT" desc="The message on the text bubble shown to educate users about the app history filter.">
+        Search by app, date, and more.
+      </message>
+      <message name="IDS_HISTORY_APP_FILTER_SHEET_DESCRIPTION" desc="The content description of history app filter where an app id to filter the history with can be chosen.">
+        App filter sheet
+      </message>
+      <message name="IDS_HISTORY_APP_FILTER_SHEET_OPENED" desc="The accessibility string read when the app filter sheet is fully opened.">
+        App filter sheet is opened.
+      </message>
+      <message name="IDS_HISTORY_APP_FILTER_SHEET_CLOSED" desc="The accessibility string read when the app filter sheet is closed.">
+        App filter sheet is closed.
       </message>
 
       <!-- Safe Browsing standard protection preferences -->
@@ -2128,7 +2159,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Turn off sync?
       </message>
       <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_TITLE" desc="Title for sign out of Brave dialog for enterprise account [CHAR_LIMIT=40]">
-        Clear your Brave data from this device?
+        Delete your Brave data from this device?
       </message>
       <message name="IDS_SIGNOUT_MESSAGE" desc="The text is displayed as the message of a dialog to confirm whether the user wants to sign out of Brave. The dialog is titled ‘Sign out of Brave?’. The user can cancel and stay signed in, or confirm and sign out.">
         Some Brave features won\u2019t be available anymore
@@ -2140,7 +2171,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Your bookmarks, history, and other Brave data will no longer be synced to your Brave sync chain
       </message>
       <message name="IDS_REMOVE_LOCAL_DATA" desc="Checkbox to delete all existing data in local device storage">
-        Also clear your Brave data from this device
+        Also delete your Brave data from this device
       </message>
       <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_MESSAGE" desc="Message to display for sign out of Brave dialog when the account has enterprise management, and all user data will be erased">
         Because you're signing out of an account managed by <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>, your Brave data will be deleted from this device. It will remain in your Brave sync chain.
@@ -2148,6 +2179,18 @@ Your Brave account may have other forms of browsing history like searches and ac
       <!-- TODO(crbug.com/41493790): Add description and remove translateable once strings are finalized. -->
       <message name="IDS_SIGN_OUT_SNACKBAR_MESSAGE" desc="to be added" translateable="false">
           Signed out. Sign back in to use the bookmarks, passwords and more in your account.
+      </message>
+      <!-- TODO(crbug.com/41493791): Add description and remove translateable once strings are finalized. -->
+      <message name="IDS_SIGN_OUT_UNSAVED_DATA_TITLE" desc="to be added" translateable="false">
+        Unsaved data
+      </message>
+      <!-- TODO(crbug.com/41493791): Add description and remove translateable once strings are finalized. -->
+      <message name="IDS_SIGN_OUT_UNSAVED_DATA_MESSAGE" desc="to be added" translateable="false">
+        Some of your Brave data hasn\u2019t been saved in your Brave sync chain yet.\nTry waiting a few minutes before signing out. If you sign out now, this data will be deleted.
+      </message>
+      <!-- TODO(crbug.com/41493791): Add description and remove translateable once strings are finalized. -->
+      <message name="IDS_SIGN_OUT_UNSAVED_DATA_PRIMARY_BUTTON" desc="to be added" translateable="false">
+        Delete and sign out
       </message>
       <message name="IDS_SIGN_IN_GETTING_ACCOUNT_MANAGEMENT_POLICY" desc="Title of progress bar dialog for getting management policy">
         Contacting Brave. This may take a minute…
@@ -2231,8 +2274,8 @@ Your Brave account may have other forms of browsing history like searches and ac
         Apps
       </message>
       <!-- TODO(b/326574743): Revisit string and mark it as translatable.-->
-      <message name="IDS_DATA_TYPES_SWITCHES_SUMMARY" desc="Message of Brave activity controls preference in signed in accounts settings screen" translateable="false">
-        When on, data is saved in your Brave sync chain. When off, data is saved only to this device.
+      <message name="IDS_ACCOUNT_SECTION_FOOTER" desc="Footer below a section with toggles to control which types of data users can use and save in their Brave sync chain (as opposed to saving them only on the device)." translateable="false">
+        When on, use and save data in your Brave sync chain. When off, data is saved only to this device.
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
         Payment methods, offers, and addresses using Google Pay
@@ -2251,6 +2294,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGNIN_REVIEW_DATA_SUMMARY" desc="Summary for link to https://chrome.google.com/sync Dashboard to manage sync data." translateable="false">
         Review your account data
       </message>
+      <!-- TODO(b/326574743): Revisit string and mark it as translatable.-->
+      <message name="IDS_MANAGE_ACCOUNTS_ON_THIS_DEVICE" desc="Title of account management section." translateable="false">
+        Manage accounts on this device
+      </message>
       <message name="IDS_SYNC_PASSPHRASE_TYPE_TITLE" desc="Title of sync passphrase type dialog. [CHAR_LIMIT=24]">
         Encryption
       </message>
@@ -2268,7 +2315,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SYNC_ENCRYPTION_CREATE_PASSPHRASE" desc="Prompt user to create a custom sync password.">
         Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave won’t sync.
-Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
+Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
       </message>
       <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT" desc="Hint for the passphrase field when user is to type in a passphrase. [CHAR_LIMIT=30]">
         Passphrase
@@ -2286,7 +2333,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
         This field cannot be blank
       </message>
       <message name="IDS_SYNC_PASSPHRASE_RECOVER" desc="Inform the user how they can reset their passphrase if they have forgotten it." meaning="Android">
-        If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
+        If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
       </message>
       <message name="IDS_SYNC_PASSPHRASES_DO_NOT_MATCH" desc="Inform user that their sync password does not match.">
         Passphrases do not match
@@ -2294,7 +2341,7 @@ Only someone with your passphrase can read your encrypted data. The passphrase i
       <message name="IDS_SYNC_PASSPHRASE_ENCRYPTION_RESET_INSTRUCTIONS" desc="Inform user how to change their encryption setting.">
         Passphrase encryption doesn’t include payment methods and addresses from Google Pay.
 
-To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
+To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave data in your account<ph name="END_LINK">END_LINK</ph>.
       </message>
       <message name="IDS_SYNC_PASSPHRASE_INCORRECT" desc="Inform the user that the passphrase they entered for sync is incorrect. [CHAR_LIMIT=40]">
         Incorrect passphrase
@@ -2399,7 +2446,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         The service is not available; try again later.
       </message>
       <message name="IDS_WIPING_PROFILE_DATA_TITLE" desc="Title for the progress dialog shown while profile data is being wiped after signing out of an enterprise account">
-        Clearing account data
+        Deleting account data
       </message>
       <message name="IDS_WIPING_PROFILE_DATA_MESSAGE" desc="Message for the progress dialog shown while profile data is being wiped after signing out of an enterprise account">
         Please wait…
@@ -3070,8 +3117,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_HISTORY_MANAGER_EMPTY_STATE" desc="Indicates that there are no browsing history items.">
         You’ll find your history here
       </message>
-      <message name="IDS_HISTORY_MANAGER_EMPTY_STATE_VIEW_OR_CLEAR_PAGE_VISITED" desc="Indicates that users can view or clear page visited here">
-        You can see the pages you’ve visited or clear them from your history
+      <message name="IDS_HISTORY_MANAGER_EMPTY_STATE_VIEW_OR_CLEAR_PAGE_VISITED" desc="Indicates that users can view or delete page visited here">
+        You can see the pages you’ve visited or delete them from your history
       </message>
       <message name="IDS_HISTORY_MANAGER_NO_RESULTS" desc="Text explaining that no browsing history items match a search query.">
         Can’t find that page. Check your spelling or try a search on <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph>.
@@ -3079,14 +3126,31 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_HISTORY_MANAGER_NO_RESULTS_NO_DSE" desc="Text explaining that no browsing history items match a search query when the default search engine is not set.">
         Can’t find that page. Check your spelling or try a web search.
       </message>
+
+      <message name="IDS_HISTORY_MANAGER_APP_SPECIFIC_EMPTY_STATE_TITLE" desc="Title text in app-specific history zero state that indicates that there are no history items.">
+        Nothing to show yet
+      </message>
+      <message name="IDS_HISTORY_MANAGER_APP_SPECIFIC_EMPTY_STATE_DESCRIPTION" desc="Description text in app-specific history zero state that states history for a specific-app will be displayed here.">
+        The pages you've opened in Brave while using <ph name="APP_LABEL">%1$s<ex>YouTube</ex></ph> will show up here.
+      </message>
+
+      <message name="IDS_HISTORY_MANAGER_APP_SPECIFIC_HISTORY_NO_RESULTS" desc="Text explaining that no browsing history items match a search query in app-specific history.">
+        No search results found
+      </message>
+      <message name="IDS_HISTORY_MANAGER_EMPTY_STATE_VIEW_OR_OPEN_MORE_HISTORY" desc="Indicates that users can search something else or open more history">
+        Try searching for something else or open full Brave history to see more results.
+      </message>
       <message name="IDS_HISTORY_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search browsing history.">
         Search your history
+      </message>
+      <message name="IDS_HISTORY_APP_ATTRIBUTION" desc="Text showing that a history entry was generated by a certain app via a Custom Tab">
+        From <ph name="APP_LABEL">%1$s<ex>YouTube</ex></ph>
       </message>
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states sites the users visit are not saved in Private mode.">
         Sites you visit aren’t saved in Private
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to clear Private browsing history from the device, users need to close all private tabs.">
-        To clear Private browsing history from your device, close all Private tabs.
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to delete Private browsing history from the device, users need to close all private tabs.">
+        To delete Private browsing history from your device, close all Private tabs.
       </message>
 
       <!-- Close Private tabs notification messages -->
@@ -3095,6 +3159,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all Private tabs.">
         Close all Private tabs
+      </message>
+      <message name="IDS_HISTORY_OPEN_IN_CHROME" desc="App-specific history selection men item to open the selected link in Brave. [CHAR_LIMIT=30]">
+        Open in new Brave tab
+      </message>
+      <message name="IDS_HISTORY_OPEN_IN_INCOGNITO_CHROME" desc="App-specific history selection men item to open the selected link in Brave in private mode. [CHAR_LIMIT=30]">
+        Open in Private Brave tab
       </message>
 
      <!-- Private reauthentication page -->
@@ -3234,7 +3304,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         Opening Brave without a profile lock will remove your saved passwords and payment methods from the car. Using a profile lock keeps this data secure.
       </message>
       <message name="IDS_MISSING_DEVICE_LOCK_REMOVE_LOCAL_DATA" desc="Option given to the user to delete all Brave profile data, particularly mentioning bookmarks and history.">
-        Also clear bookmarks, history, and more from this car
+        Also delete bookmarks, history, and more from this car
       </message>
       <message name="IDS_DELETE_AND_CONTINUE" desc="Text for the button that will delete any sensitive data and then navigate the user back to Brave.">
         Delete &amp; continue
@@ -3393,6 +3463,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_SIGNIN_PROMO_TURN_ON" translateable="false">
         Turn on
+      </message>
+      <message name="IDS_SIGNIN_SETTINGS_TITLE" desc="Title of the sign-in row in the settings page that offers the user to sign-in to Brave.">
+        Sign in
+      </message>
+      <message name="IDS_SIGNIN_SETTINGS_SUBTITLE" desc="Subtitle of the sign-in row in the settings page that offers the user to sign-in to Brave. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.).">
+        Get your bookmarks, passwords and more on all your devices
       </message>
 
       <message name="IDS_EXTERNAL_APP_RESTRICTED_ACCESS_ERROR" desc="A message shown to the user if Brave receives a file view request to something Brave does not have access to view.">
@@ -3667,7 +3743,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         Collapse to side view
       </message>
       <message name="IDS_CUSTOM_TAB_HISTORY_IPH_BUBBLE_TEXT" desc="The message on the text bubble shown to educate the user about history in CCTs.">
-        View your web history here
+        View your Brave history here
       </message>
       <message name="IDS_CUSTOM_TAB_MINIMIZE" desc="The accessibility text for minimize button for custom tabs.">
         Minimize tab
@@ -3788,14 +3864,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
-      <message name="IDS_MENU_WEB_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
-        Web history
+      <message name="IDS_CHROME_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
+        Brave history
       </message>
       <message name="IDS_MENU_HISTORY" desc="Menu item for opening the history page. [CHAR_LIMIT=27]">
         History
       </message>
       <message name="IDS_MENU_QUICK_DELETE" desc="Menu item for quick delete functionality that allows users to delete their browsing data. [CHAR_LIMIT=27]">
-        Clear browsing data
+        Delete browsing data
       </message>
       <message name="IDS_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR_LIMIT=27]">
         Downloads
@@ -3915,9 +3991,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_BOOKMARK_SHOW_IN_FOLDER" desc="Menu item text for opening the folder which contains the bookmark of interest. [CHAR_LIMIT=24]">
         Show in folder
       </message>
-      <message name="IDS_BOOKMARK_ADD_FOLDER" desc="Title for button to add a new bookmark folder [CHAR_LIMIT=32]">
-        New folder…
-      </message>
       <message name="IDS_BOOKMARK_CHOOSE_FOLDER" desc="Title for the dialog that moves bookmarks to another folder [CHAR_LIMIT=32]">
         Choose folder
       </message>
@@ -3941,9 +4014,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR_LIMIT=30]">
         Edit bookmark
-      </message>
-      <message name="IDS_ADD_FOLDER" desc="Title of the &quot;Add Folder&quot; form dialog. [CHAR_LIMIT=30]">
-        Add folder
       </message>
       <message name="IDS_EDIT_FOLDER" desc="Title of the &quot;Edit Folder&quot; form dialog. [CHAR_LIMIT=30]">
         Edit folder
@@ -4006,9 +4076,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_PRICE_TRACKING_BOOKMARKS_FILTER_TITLE" desc="The title of the filter in the bookmarks manager.">
         Tracked products
-      </message>
-      <message name="IDS_TRACKED_PRODUCTS_EMPTY_LIST_TITLE" desc="The text on tracked products page when there are no tracked products. Informing user that tracked products is supposed to appear on this surface.">
-        You’ll find your tracked products here
       </message>
       <message name="IDS_PRICE_TRACKING_DISABLED_SNACKBAR" desc="Snackbar for when price-tracking is disabled.">
         Stopped tracking price
@@ -4479,6 +4546,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_UNDO_BAR_CLOSE_ALL_MESSAGE" desc="Message shown when you can undo a close all tabs action.">
         <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs closed
       </message>
+      <message name="IDS_UNDO_BAR_DELETE_TAB_GROUP_MESSAGE" desc="Message shown when you can undo a tab group deletion action.">
+        <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs deleted
+      </message>
+      <message name="IDS_UNDO_BAR_DELETE_SINGLE_TAB_GROUP_MESSAGE" desc="Message shown when you can undo a tab group containing a single tab.">
+        <ph name="TAB_COUNT">%1$s<ex>1</ex></ph> tab deleted
+      </message>
       <message name="IDS_CONFIRM_DELETE_MESSAGE" desc="Message shown or announced to get confirmation on whether a file should be deleted.">
         Do you want to delete <ph name="ITEM_TITLE">%1$s<ex>example.pdf</ex></ph>?
       </message>
@@ -4584,9 +4657,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         Page insights Loading Indicator
       </message>
       <message name="IDS_PAGE_INSIGHTS_HUB_PRIVACY_NOTICE" desc="Text that displays privacy notice for page insights hub">
-        Your activity in Page Insights is saved in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_PAGE_INSIGHTS_HUB_ALT_PRIVACY_NOTICE" desc="Text that displays privacy notice for page insights hub">
         Your activity in Page Insights is saved in your Brave sync chain. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn how to manage this<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PAGE_INSIGHTS_HUB_MY_ACTIVITY_LOGO" desc="Logo of privacy notice for page insights hub">
@@ -4594,6 +4664,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_PAGE_INSIGHTS_HUB_PRIVACY_NOTICE_CLOSE" desc="Close button for closing privacy notice of page insights hub">
 	Close button to close privacy notice of page insights hub.
+      </message>
+
+      <!-- BraveBottomBar -->
+      <message name="IDS_GOOGLE_BOTTOM_BAR_SAVE_DISABLED_TOOLTIP_MESSAGE" desc="Tooltip message when disabled save button is clicked">
+      Sign in to save this page
+      </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_SAVE_DISABLED_BUTTON_DESCRIPTION" desc="Content description for disabled save button">
+      Disabled save button
+      </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_SHARE_BUTTON_DESCRIPTION" desc="Content description for share button">
+      Share button
+      </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_PAGE_INSIGHTS_BUTTON_DESCRIPTION" desc="Content description for page insights button">
+      Page insights button
       </message>
 
       <!-- WebFeed -->
@@ -4737,8 +4821,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_TWA_CLEAR_DATA_DIALOG_TITLE" desc="Title of the clear data dialog showing after user uninstalls or clears data of an app hosting a Trusted Web Activity">
         <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> also has data in Brave
       </message>
-      <message name="IDS_TWA_CLEAR_DATA_DIALOG_MESSAGE" desc="Message of the clear data dialog">
-        You can clear the data in Brave Settings
+      <message name="IDS_TWA_CLEAR_DATA_DIALOG_MESSAGE" desc="Message of the delete data dialog">
+        You can delete the data in Brave Settings
       </message>
       <message name="IDS_TWA_CLEAR_DATA_DIALOG_KEEP_DATA" desc="Text on the negative button of the clear data dialog">
         Keep Data
@@ -5833,10 +5917,13 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
 
        <!-- Quick Delete strings -->
       <message name="IDS_QUICK_DELETE_DIALOG_TITLE" desc="Title of the dialog when asking users to confirm deleting browsing data.">
-        Clear browsing data
+        Delete browsing data
       </message>
       <message name="IDS_QUICK_DELETE_DIALOG_TABS_CLOSED_TEXT" desc="Text indicating that the tabs which a user recently used to visit a website within the specified time range would be closed.">
         {NUM_TABS, plural, =1 {1 tab on this device} other {# tabs on this device}}
+      </message>
+      <message name="IDS_QUICK_DELETE_TABS_TITLE" desc="Title for the tabs row in the Quick Delete dialog.">
+        Tabs on this device
       </message>
       <message name="IDS_QUICK_DELETE_DIALOG_ZERO_TABS_CLOSED_ALL_TIME_TEXT" desc="Text indicating that no tabs would be closed.">
         No tabs on this device
@@ -5867,8 +5954,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       <message name="IDS_QUICK_DELETE_DIALOG_MORE_OPTIONS_BUTTON_TEXT" desc="Text inside the more options button which redirects users to the advanced page of 'Clear Browsing Data' where the users can customize more deletion options.">
         More options
       </message>
-      <message name="IDS_QUICK_DELETE_DIALOG_MORE_OPTIONS_BUTTON_TEXT_A11Y" desc="A11y text for Talkback, in order to give more context to the button that redirects users to the advanced page of 'Clear Browsing Data'.">
-        More options to clear browsing data
+      <message name="IDS_QUICK_DELETE_DIALOG_MORE_OPTIONS_BUTTON_TEXT_A11Y" desc="A11y text for Talkback, in order to give more context to the button that redirects users to the advanced page of 'Delete Browsing Data'.">
+        More options to delete browsing data
       </message>
       <message name="IDS_QUICK_DELETE_DIALOG_DATA_PENDING" desc="Text that is shown when data in the dialog is being fetched.">
         Calculating...
@@ -5961,7 +6048,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
         Use another device
       </message>
 
-      <!-- Plus Address accessibility strings: TODO(crbug.com/1467623): Replace with final versions  -->
+      <!-- Plus Address accessibility strings: TODO(crbug.com/40276862): Replace with final versions  -->
       <message name="IDS_PLUS_ADDRESS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the plus address bottom sheet is opened." is_accessibility_with_no_ui="true">
         Lorem Ipsum
       </message>
@@ -6100,6 +6187,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>clear the Brave dat
       </message>
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_NEGATIVE_BUTTON_TEXT" translateable="false">
         Do Not Share
+      </message>
+
+      <!-- Inline PDF viewer support -->
+      <message name="IDS_PDF_TRANSIENT_TAB_TITLE" desc="This string is shown as the temporary tab title when a PDF file is loading in a tab. The tab title will be updated to the actual PDF file name once available.">
+        Loading PDF…
       </message>
     </messages>
   </release>

@@ -286,9 +286,19 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
-  feed::RegisterProfilePrefs(registry);
-  registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
-  registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
+  // On Android we want to have enable_feed_v2 parameter enabled to
+  // provide linking with feed::FetchRssLinks at
+  // BraveNewsTabHelper::DOMContentLoaded, but kEnableSnippets and
+  // kArticlesListVisible must be defaulted to false to avoid failed assertion
+  // at BraveNewTabPage.initializeMainView. So override
+  // feed::prefs::RegisterFeedSharedProfilePrefs for Android only. Related
+  // Chromium's commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
+                                base::Value(false));
 
   // Explicitly disable safe browsing extended reporting by default in case they
   // change it in upstream.

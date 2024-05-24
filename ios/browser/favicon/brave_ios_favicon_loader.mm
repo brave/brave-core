@@ -50,11 +50,12 @@ base::CancelableTaskTracker::TaskId GetIconRawBitmapForPageUrl(
        favicon_base::IconType::kFavicon, favicon_base::IconType::kTouchIcon,
        favicon_base::IconType::kTouchPrecomposedIcon});
 
-  scoped_refptr<favicon::LargeIconWorker> worker =
-      base::MakeRefCounted<favicon::LargeIconWorker>(
-          min_source_size_in_pixel, desired_size_in_pixel,
-          std::move(raw_bitmap_callback),
-          favicon_base::LargeIconImageCallback(), tracker);
+  scoped_refptr<favicon::LargeIconWorker> worker = base::MakeRefCounted<
+      favicon::LargeIconWorker>(
+      min_source_size_in_pixel, desired_size_in_pixel,
+      favicon::LargeIconService::NoBigEnoughIconBehavior::kReturnFallbackColor,
+      std::move(raw_bitmap_callback), favicon_base::LargeIconImageCallback(),
+      tracker);
 
   return favicon_service->GetRawFaviconForPageURL(
       page_url, *large_icon_types, max_size_in_pixel, /*fallback_to_host=*/true,

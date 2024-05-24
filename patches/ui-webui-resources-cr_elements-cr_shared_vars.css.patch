@@ -1,11 +1,11 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_vars.css b/ui/webui/resources/cr_elements/cr_shared_vars.css
-index c54af3a1b4b874e2c4c6c69557eda15dea60a8c4..20f0ad6f91f955d77659a1859d37e9d05aff0a3d 100644
+index 8a46bf30e78a3422c9a0e3e75b04a83243181e62..2fb34eb033aeb9f0a90be184ca56f05bfbd310b5 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_vars.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_vars.css
 @@ -4,6 +4,7 @@
  
  /* #css_wrapper_metadata_start
-  * #type=vars
+  * #type=vars-lit
 + * #import=//resources/brave/br_elements/br_shared_vars.css.js
   * #scheme=relative
   * #css_wrapper_metadata_end */

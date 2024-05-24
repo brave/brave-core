@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/bookmarks.ts b/chrome/browser/resources/bookmarks/bookmarks.ts
-index d41249c919d28e4d0d51182ab470c263759ed7a7..e297ae157825397d95f1794e6c86558289d97f17 100644
+index a16e78de66f60e0781b303efe105145bfbb9a886..83bcb0f14039f8c934c47b1537631d46db03474e 100644
 --- a/chrome/browser/resources/bookmarks/bookmarks.ts
 +++ b/chrome/browser/resources/bookmarks/bookmarks.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index d41249c919d28e4d0d51182ab470c263759ed7a7..e297ae157825397d95f1794e6c865582
 +import './brave_overrides/index.js';
  import './app.js';
  
- export {changeFolderOpen, clearSearch, createBookmark, deselectItems, editBookmark, moveBookmark, removeBookmark, reorderChildren, selectFolder, SelectFolderAction, selectItem, SelectItemsAction, setSearchResults, setSearchTerm, StartSearchAction, updateAnchor} from './actions.js';
+ export {CrRouter} from '//resources/js/cr_router.js';

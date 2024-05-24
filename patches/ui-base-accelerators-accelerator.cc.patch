@@ -1,8 +1,8 @@
 diff --git a/ui/base/accelerators/accelerator.cc b/ui/base/accelerators/accelerator.cc
-index c33829d85745e595e3da8d9913f6e75b05e6c4a9..8c5c93f773597e350dba008eb60c1fc4a90e7908 100644
+index 3094f8f1b445b639f43573af6f6b5ae5eddf7227..64eb26a2f5897857f23987d23797c1a6cd02384a 100644
 --- a/ui/base/accelerators/accelerator.cc
 +++ b/ui/base/accelerators/accelerator.cc
-@@ -380,6 +380,7 @@ std::u16string Accelerator::KeyCodeToName() const {
+@@ -388,6 +388,7 @@ std::u16string Accelerator::KeyCodeToName() const {
  
  std::u16string Accelerator::ApplyLongFormModifiers(
      const std::u16string& shortcut) const {

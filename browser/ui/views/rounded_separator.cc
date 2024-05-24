@@ -38,7 +38,8 @@ void RoundedSeparator::SetPreferredHeight(int height) {
 ////////////////////////////////////////////////////////////////////////////////
 // Separator, View overrides:
 
-gfx::Size RoundedSeparator::CalculatePreferredSize() const {
+gfx::Size RoundedSeparator::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   gfx::Size size(kThickness, preferred_height_);
   gfx::Insets insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());

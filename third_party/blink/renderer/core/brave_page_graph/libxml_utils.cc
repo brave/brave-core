@@ -50,7 +50,7 @@ XmlUtf8String::XmlUtf8String(const String& str)
           StringUTF8Adaptor(
               str,
               WTF::kStrictUTF8ConversionReplacingUnpairedSurrogatesWithFFFD)
-              .AsStringPiece()) {}
+              .AsStringView()) {}
 
 XmlUtf8String::XmlUtf8String(int value)
     : XmlUtf8String(base::NumberToString(value)) {}

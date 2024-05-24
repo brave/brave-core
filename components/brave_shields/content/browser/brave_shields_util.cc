@@ -630,7 +630,7 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   DCHECK(map);
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
+  return info.source == content_settings::SettingSource::kPolicy;
 }
 
 bool IsHttpsByDefaultFeatureEnabled() {

@@ -10,7 +10,7 @@
     }
   </message>
   <message name="IDS_AVATAR_BUTTON_GUEST_TOOLTIP" desc="Tooltip for the avatar button when the user is in Guest mode.">
-    To clear Guest mode history, close all Guest windows.
+    To delete Guest mode history, close all Guest windows.
   </message>
   <message name="IDS_GUEST_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in guest mode. The message also shows the number of open guest windows if they are more than one. [ICU Syntax]">
       {0, plural,
@@ -51,6 +51,9 @@
   <message name="IDS_AVATAR_BUTTON_SCHOOL" desc="Short label for the avatar button when the profile is a school profile." meaning="Using a school profile">
     School
   </message>
+  <message name="IDS_AVATAR_BUTTON_GREETING" desc="Greeting that appears at the top of Brave after the user signs in. It becomes part of the entrypoint for the Brave Profile Menu. The greeting is casual and friendly, and it invokes the user's name.">
+    Hi, <ph name="PROFILE_NAME">$1<ex>User</ex></ph>
+  </message>
 
   <!-- Multi-profile -->
   <message name="IDS_PROFILES_MENU_NAME" desc="The name of menu for profiles (Mac and linux) and name for the launcher menu section (Mac).">
@@ -84,9 +87,6 @@
   <message name="IDS_PROFILES_SYNC_COMPLETE_TITLE" desc="Title of the profile card when sync is complete.">
     Syncing to
   </message>
-  <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
-    Sync is on
-  </message>
   <message name="IDS_PROFILES_DICE_SIGNIN_BUTTON" desc="Button in the profile user menu to sign in and turn on Sync.">
     Turn on sync...
   </message>
@@ -117,6 +117,16 @@
   <message name="IDS_PROFILES_SIGNIN_PROMO" desc="Text describing the benefits of signing in.">
     Sign in to get your bookmarks, history, passwords, and other settings on all your devices.
   </message>
+  <if expr="use_titlecase">
+      <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
+        Verify It’s You
+      </message>
+    </if>
+    <if expr="not use_titlecase">
+      <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
+        Verify it’s you
+      </message>
+    </if>
   <message name="IDS_PROFILES_CREDIT_CARDS_LINK" desc="Text of the menu item leading to the list of saved credit cards.">
     Payment methods
   </message>
@@ -148,6 +158,12 @@
     <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
       Add new profile
     </message>
+    <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
+      Sync is on
+    </message>
+    <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="Button in the avatar menu bubble view for editing the current profile.">
+      Customize profile
+    </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
@@ -171,6 +187,12 @@
     <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
       Add New Profile
     </message>
+    <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
+      Sync Is On
+    </message>
+    <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="Button in the avatar menu bubble view for editing the current profile. ">
+      Customize Profile
+    </message>
   </if>
   <message name="IDS_PROFILES_MANAGED_BY" desc="Label shown under the avatar in the avatar menu bubble view stating that the account is managed.">
     managed by <ph name="VALUE">$1<ex>1</ex></ph>
@@ -181,7 +203,7 @@
   <message name="IDS_PROFILES_MANAGE_PROFILES_MANAGED_TOOLTIP" desc="Icon in the avatar menu bubble view explaining why selecting other profiles is disabled.">
     Your administrator has disabled other profiles
   </message>
-  <message name="IDS_PROFILES_CUSTOMIZE_PROFILE_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for editing the current profile.">
+  <message name="IDS_PROFILES_CUSTOMIZE_PROFILE_BUTTON_TOOLTIP" desc="Tooltip of the customize profile button in the avatar menu bubble view for editing the current profile. The button itself has no text, it is only the edit icon.">
     Customize profile
   </message>
   <message name="IDS_PROFILES_GUEST_PROFILE_NAME" desc="Name of the guest profile.">
@@ -683,7 +705,7 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_NOT_NOW_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
       Continue without an account
     </message>
-    <!-- TODO(crbug.com/1442940): Update the string ids for local profile
+    <!-- TODO(crbug.com/40267173): Update the string ids for local profile
          creatiom since they are now used outside the Profile Picker, in
          Profile Customization UI instead. -->
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_CUSTOMIZE_AVATAR_BUTTON_LABEL" desc="Accessibility label for edit avatar button when the pencil icon is focused that is not rendered.">
@@ -732,6 +754,8 @@
       </message>
       <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
         This will permanently delete your browsing data from this device. To recover the data, turn on sync as
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE_UNO" desc="Profile picker profile type choice subtitle"> Sign in to get your passwords and more on all your devices
       </message>
     </if>
 
@@ -796,6 +820,9 @@
       </message>
       <message name="IDS_FRE_BACKUP_CARD_DESCRIPTION" desc="This is the body text in one of three cards that represent the top benefits for why a user should sign in to Brave with a Brave sync chain. The cards appear on a full-page screen when the user launches Brave for the first time. The body is preceded by the headline 'Back up data'. This card's body means that users can back up their data (like bookmarks, history, passwords, settings) so that the data can't get lost if a device malfunctions. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb . Translate 'passwords' as the plural version of https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=281e09e1 . Translate 'and more' so that it conveys that there are additional similar items that are not listed. The tone should be informative.">
         Save your bookmarks, passwords and more with sync
+      </message>
+      <message name="IDS_UNO_FRE_BACKUP_CARD_DESCRIPTION" desc="This is the body text in one of three cards that represent the top benefits for why a user should sign in to Brave with a Brave sync chain. The cards appear on a full-page screen when the user launches Brave for the first time. The body is preceded by the headline 'Back up data'. This card's body means that users can back up their data (like bookmarks, history, settings) so that the data can't get lost if a device malfunctions. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb . Translate 'and more' so that it conveys that there are additional similar items that are not listed. The tone should be informative.">
+        Save your bookmarks and more with sync
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_FRE_DECLINE_SIGN_IN_BUTTON_TITLE" desc="The title of the button giving the users the choice not to sign in to Brave">

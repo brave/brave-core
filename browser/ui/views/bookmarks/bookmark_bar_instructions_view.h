@@ -35,7 +35,8 @@ class BookmarkBarInstructionsView : public views::View,
 
  private:
   // views::View:
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   void Layout(PassKey) override;
   void OnThemeChanged() override;
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;

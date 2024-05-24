@@ -5,14 +5,25 @@
 
 #include "brave/browser/ui/brave_layout_constants.h"
 
-#include <optional>
-
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 
 using tabs::features::HorizontalTabsUpdateEnabled;
+
+std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
+  switch (inset) {
+    case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
+      return gfx::Insets::VH(6, 6);
+
+    case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
+      return gfx::Insets::VH(4, 4);
+    default:
+      break;
+  }
+  return std::nullopt;
+}
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
 std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
@@ -50,12 +61,18 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
     }
+    case TOOLBAR_CORNER_RADIUS: {
+      return 0;
+    }
     case LOCATION_BAR_HEIGHT:
       // Consider adjust below element padding also when this height is changed.
       return 32;
     case LOCATION_BAR_TRAILING_ICON_SIZE:
       return 18;
+    case LOCATION_BAR_ICON_SIZE:
+      return 16;
     case LOCATION_BAR_ELEMENT_PADDING:
+    case LOCATION_BAR_PAGE_INFO_ICON_VERTICAL_PADDING:
       return 2;
     default:
       break;

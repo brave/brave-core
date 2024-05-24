@@ -10,7 +10,7 @@ import PackageDescription
 var package = Package(
   name: "Brave",
   defaultLocalization: "en",
-  platforms: [.iOS(.v15), .macOS(.v12)],
+  platforms: [.iOS(.v16), .macOS(.v13)],
   products: [
     .library(name: "Brave", targets: ["Brave"]),
     .library(name: "Shared", targets: ["Shared"]),

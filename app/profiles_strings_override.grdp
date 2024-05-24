@@ -23,6 +23,10 @@
     </if>
   <if expr="is_linux">
     </if>
+  <if expr="use_titlecase">
+      </if>
+    <if expr="not use_titlecase">
+      </if>
   <if expr="not use_titlecase">
     </if>
   <if expr="use_titlecase">

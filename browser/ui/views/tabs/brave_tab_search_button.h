@@ -24,7 +24,6 @@ class BraveTabSearchButton : public TabSearchButton {
 
   // TabSearchButton:
   void UpdateColors() override;
-  gfx::Size CalculatePreferredSize() const override;
   int GetCornerRadius() const override;
 };
 

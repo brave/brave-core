@@ -274,7 +274,7 @@ TorProxyMap::~TorProxyMap() {
 // static
 std::string TorProxyMap::GenerateNewPassword() {
   std::vector<uint8_t> password(kTorPasswordLength);
-  crypto::RandBytes(password.data(), password.size());
+  crypto::RandBytes(password);
   return base::HexEncode(password.data(), password.size());
 }
 

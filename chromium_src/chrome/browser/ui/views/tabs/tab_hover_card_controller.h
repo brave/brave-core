@@ -12,8 +12,13 @@
   friend class BraveTabHoverCardController; \
   virtual void CreateHoverCard
 
+#define OnHovercardImagesEnabledChanged     \
+  OnHovercardImagesEnabledChanged_Unused(); \
+  virtual void OnHovercardImagesEnabledChanged
+
 #include "src/chrome/browser/ui/views/tabs/tab_hover_card_controller.h"  // IWYU pragma: export
 
+#undef OnHovercardImagesEnabledChanged
 #undef CreateHoverCard
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_HOVER_CARD_CONTROLLER_H_

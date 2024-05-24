@@ -153,8 +153,8 @@ CHAR_LIMIT guidelines:
       <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states sites the users visit are not saved in Private mode.">
         Sites you visit aren’t saved in Private
       </message>
-      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to clear Private browsing history from the device, users need to close all private tabs.">
-        To clear Private browsing history from your device, close all Private tabs.
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to delete Private browsing history from the device, users need to close all private tabs.">
+        To delete Private browsing history from your device, close all Private tabs.
       </message>
 
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
@@ -162,6 +162,9 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all Private tabs.">
         Close all Private tabs
+      </message>
+      <message name="IDS_HISTORY_OPEN_IN_INCOGNITO_CHROME" desc="App-specific history selection men item to open the selected link in Brave in private mode. [CHAR_LIMIT=30]">
+        Open in Private Brave tab
       </message>
 
      <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">

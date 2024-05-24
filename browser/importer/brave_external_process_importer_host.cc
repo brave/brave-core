@@ -106,7 +106,7 @@ void BraveExternalProcessImporterHost::InstallExtension(const std::string& id) {
 
   scoped_refptr<WebstoreInstallerForImporting> installer =
       new WebstoreInstallerForImporting(
-          id, profile_,
+          id, profile_, /*parent_window=*/nullptr,
           base::BindOnce(
               &BraveExternalProcessImporterHost::OnExtensionInstalled,
               weak_ptr_factory_.GetWeakPtr(), id));

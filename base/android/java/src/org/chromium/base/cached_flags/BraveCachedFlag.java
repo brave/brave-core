@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 /** Class to override default cached values. */
 public class BraveCachedFlag extends CachedFlag {
+    private static final String ANDROID_HUB = "AndroidHub";
     private static final String START_SURFACE_ANDROID = "StartSurfaceAndroid";
     private static final String INCOGNITO_REAUTHENTICATION_FOR_ANDROID =
             "IncognitoReauthenticationForAndroid";
@@ -21,6 +22,7 @@ public class BraveCachedFlag extends CachedFlag {
 
     static {
         sFlags = new HashMap<String, Boolean>();
+        sFlags.put(ANDROID_HUB, false);
         sFlags.put(START_SURFACE_ANDROID, false);
         sFlags.put(SURFACE_POLISH, false);
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
@@ -28,6 +30,16 @@ public class BraveCachedFlag extends CachedFlag {
 
     // Will be deleted in bytecode. Variable from the parent class will be used instead.
     private boolean mDefaultValue;
+
+    public BraveCachedFlag(
+            FeatureMap featureMap,
+            String featureName,
+            boolean defaultValue,
+            boolean defaultValueInTests) {
+        super(featureMap, featureName, defaultValue, defaultValueInTests);
+
+        maybeOverrideDefaultValue(featureName, defaultValue);
+    }
 
     public BraveCachedFlag(FeatureMap featureMap, String featureName, boolean defaultValue) {
         super(featureMap, featureName, defaultValue);

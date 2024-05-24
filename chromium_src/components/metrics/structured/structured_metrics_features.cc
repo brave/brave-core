@@ -11,7 +11,6 @@ namespace metrics::structured {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnabledStructuredMetricsService, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kNearbyShareMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPhoneHubStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

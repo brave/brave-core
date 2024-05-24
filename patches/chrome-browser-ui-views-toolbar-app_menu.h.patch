@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index c5dd0878cd5a69edb8c2e612720ee48d2b23e58f..316195f4a62813b9825ff1b568414df2599c64c2 100644
+index 0d8614f19b9737ba49aa173aaca537ab2374eb0e..379d8459f2907a0aa08b1ab6811aae7dfd140131 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
-@@ -29,7 +29,7 @@ class MenuRunner;
+@@ -31,7 +31,7 @@ class MenuRunner;
  }
  
  // AppMenu adapts the AppMenuModel to view's menu related classes.

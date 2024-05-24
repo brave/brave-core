@@ -105,14 +105,16 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   }
 
   if (dynamic_params.install_window_brave_ethereum_provider &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "ethereum")) {
+      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
+                                                         "ethereum")) {
     JSEthereumProvider::Install(
         dynamic_params.install_window_ethereum_provider,
         dynamic_params.allow_overwrite_window_ethereum_provider,
         render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
+  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
+                                                         "solana") &&
       dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());

@@ -76,7 +76,7 @@ base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
         resource_bundle.LoadDataResourceString(
             IDR_FLAGS_UI_BRAVE_FLAGS_OVERRIDES_JS);
     base::RefCountedString* bytes = new base::RefCountedString();
-    bytes->data().assign(flags_js.data(), flags_js.length());
+    bytes->as_string().assign(flags_js.data(), flags_js.length());
     return bytes;
   }
   return ChromeContentClient::GetDataResourceBytes(resource_id);

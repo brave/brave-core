@@ -7,11 +7,11 @@
   rules->fingerprinting_rules.push_back(ContentSettingPatternSource(          \
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
       content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),         \
-      std::string(), incognito));                                             \
+      content_settings::ProviderType::kNone, incognito));                     \
   rules->brave_shields_rules.push_back(ContentSettingPatternSource(           \
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(), \
       content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),         \
-      std::string(), incognito));
+      content_settings::ProviderType::kNone, incognito));
 
 #include "src/chrome/browser/content_settings/page_specific_content_settings_delegate.cc"
 

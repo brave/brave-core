@@ -263,12 +263,14 @@ void BraveCompoundTabContainer::Layout(PassKey) {
   }
 }
 
-gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
+gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   if (!ShouldShowVerticalTabs()) {
-    return CompoundTabContainer::CalculatePreferredSize();
+    return CompoundTabContainer::CalculatePreferredSize(available_size);
   }
 
-  auto preferred_size = CompoundTabContainer::CalculatePreferredSize();
+  auto preferred_size =
+      CompoundTabContainer::CalculatePreferredSize(available_size);
 
   // Check if we can expand height to fill the entire scroll area's viewport.
   for (auto* parent_view = parent(); parent_view;

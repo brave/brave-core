@@ -16,6 +16,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/color/material_chrome_color_mixer.h"
 #include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
@@ -310,6 +311,17 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
       base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
   mixer[kColorToolbarInkDropRipple] = {
       base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
+
+  if (key.custom_theme) {
+    return;
+  }
+
+  mixer[kColorLocationBarBackground] = {kColorToolbarBackgroundSubtleEmphasis};
+  mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
+
+  // We don't show border when omnibox doesn't have focus but still
+  // contains in-progress user input.
+  mixer[kColorLocationBarBorderOnMismatch] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
@@ -371,14 +383,18 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
                                        const ui::ColorProviderKey& key) {
   AddChromeColorMixerForAllThemes(provider, key);
 
-  if (key.custom_theme) {
-    return;
-  }
-
   // This is behind features::IsChromeRefresh2023 upstream, but without it the
   // colors are not set correctly.
+  // These mixers should be called always as upstream does. Otherwise,
+  // some colors are missed for private windows because we use custom theme
+  // for private/tor window.
   if (!features::IsChromeRefresh2023()) {
+    AddMaterialChromeColorMixer(provider, key);
     AddMaterialSidePanelColorMixer(provider, key);
+  }
+
+  if (key.custom_theme) {
+    return;
   }
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
@@ -789,6 +805,7 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kLight)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -833,6 +850,7 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kDark)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
@@ -853,6 +871,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ true)};
+  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,

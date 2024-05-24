@@ -8,8 +8,9 @@ package org.chromium.chrome.browser.homepage;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 
 // see org.brave.bytecode.BraveHomepageManagerClassAdapter
-public class BraveHomepageManager {
-    public static boolean shouldCloseAppWithZeroTabs() {
+public class BraveHomepageManager extends HomepageManager {
+    @Override
+    public boolean shouldCloseAppWithZeroTabs() {
         return CloseBraveManager.shouldCloseAppWithZeroTabs();
     }
 }

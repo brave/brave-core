@@ -303,8 +303,9 @@ void BraveLocationBarView::RefreshBackground() {
   }
 }
 
-gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
-  gfx::Size min_size = LocationBarView::CalculatePreferredSize();
+gfx::Size BraveLocationBarView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  gfx::Size min_size = LocationBarView::CalculatePreferredSize(available_size);
   if (brave_actions_ && brave_actions_->GetVisible()) {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
     const int extra_width =

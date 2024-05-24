@@ -315,10 +315,11 @@ void SidebarContainerView::Layout(PassKey) {
   }
 }
 
-gfx::Size SidebarContainerView::CalculatePreferredSize() const {
+gfx::Size SidebarContainerView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   if (!initialized_ || !sidebar_control_view_->GetVisible() ||
       IsFullscreenByTab()) {
-    return View::CalculatePreferredSize();
+    return View::CalculatePreferredSize(available_size);
   }
 
   if (IsFullscreenForCurrentEntry()) {

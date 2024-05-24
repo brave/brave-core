@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
-index 5d590c48e216398490eccb5b03c01ca0b16d1d84..9982f4f4658f9f8c74eb718877a3a1260436da2f 100644
+index 69020090d2cd79935563e6737704953f760c9a7c..de91658cecdcdbfeb806d51ccc358cdbda03152b 100644
 --- a/chrome/browser/app_controller_mac.mm
 +++ b/chrome/browser/app_controller_mac.mm
-@@ -670,7 +670,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -740,7 +740,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
  
  + (AppController*)sharedController {
    static AppController* sharedController = [] {
@@ -11,7 +11,7 @@ index 5d590c48e216398490eccb5b03c01ca0b16d1d84..9982f4f4658f9f8c74eb718877a3a126
      NSApp.delegate = sharedController;
      return sharedController;
    }();
-@@ -767,6 +767,22 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -837,6 +837,22 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
  
    // Initialize the Profile menu.
    [self initProfileMenu];
@@ -34,7 +34,7 @@ index 5d590c48e216398490eccb5b03c01ca0b16d1d84..9982f4f4658f9f8c74eb718877a3a126
  }
  
  - (void)unregisterEventHandlers {
-@@ -1270,7 +1286,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
+@@ -1335,7 +1351,7 @@ class AppControllerNativeThemeObserver : public ui::NativeThemeObserver {
    }
  
    auto it = _profileBookmarkMenuBridgeMap.find(profilePath);

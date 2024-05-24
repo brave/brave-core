@@ -28,7 +28,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/ax_event_notification_details.h"
 #include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -38,6 +37,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "pdf/buildflags.h"
 #include "ui/accessibility/ax_mode.h"
+#include "ui/accessibility/ax_updates_and_events.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -56,7 +56,7 @@ AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
     : content::WebContentsObserver(web_contents), helper_(helper) {}
 
 void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
-    const content::AXEventNotificationDetails& details) {
+    const ui::AXUpdatesAndEvents& details) {
 #if BUILDFLAG(ENABLE_PDF)
   for (const auto& update : details.updates) {
     for (const auto& node : update.nodes) {
