@@ -74,15 +74,9 @@ import os
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
 
-      if #available(iOS 16.0, *) {
-        ContentBlockerManager.log.debug(
-          "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
-        )
-      } else {
-        ContentBlockerManager.log.debug(
-          "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path)`"
-        )
-      }
+      ContentBlockerManager.log.debug(
+        "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+      )
     }
   }
 
@@ -318,15 +312,9 @@ import os
       }
     }
 
-    if #available(iOS 16.0, *) {
-      ContentBlockerManager.log.debug(
-        "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
-      )
-    } else {
-      ContentBlockerManager.log.debug(
-        "Updated resources component: `\(resourcesInfo.localFileURL.path)`"
-      )
-    }
+    ContentBlockerManager.log.debug(
+      "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+    )
   }
 
   /// Checks the general and regional engines to see if the request should be blocked

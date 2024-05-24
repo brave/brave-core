@@ -51,7 +51,7 @@ extension BrowserViewController {
 
   private func presentEducationalProductNotifications(selectedTab: Tab) {
     // Data Saved Pop-Over only exist in JP locale
-    guard Locale.current.regionCode == "JP",
+    guard Locale.current.region?.identifier == "JP",
       !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
     else {
       return

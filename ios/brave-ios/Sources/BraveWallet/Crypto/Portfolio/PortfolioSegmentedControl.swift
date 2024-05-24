@@ -68,25 +68,6 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
   var body: some View {
     Capsule()
       .fill(Color(braveSystemName: .containerHighlight))
-      .osAvailabilityModifiers {
-        if #unavailable(iOS 16) {
-          $0.overlay {
-            // TapGesture does not give a location,
-            // SpatialTapGesture is iOS 16+.
-            HStack {
-              ForEach(items) { item in
-                Color.clear
-                  .contentShape(Rectangle())
-                  .onTapGesture {
-                    select(item)
-                  }
-              }
-            }
-          }
-        } else {
-          $0
-        }
-      }
       .overlay {  // selected capsule
         Capsule()
           .fill(Color(braveSystemName: .containerBackground))
@@ -126,13 +107,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
           select(selected, animated: false)
         }
       }
-      .osAvailabilityModifiers {
-        if #available(iOS 16, *) {
-          $0.simultaneousGesture(tapGesture)
-        } else {
-          $0
-        }
-      }
+      .simultaneousGesture(tapGesture)
       .accessibilityRepresentation {
         Picker(selection: $selected) {
           ForEach(items) { item in

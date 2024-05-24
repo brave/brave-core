@@ -307,14 +307,8 @@ struct AddAccountView: View {
   private var accountNameSection: some View {
     Section(
       content: {
-        Group {
-          if #available(iOS 16, *) {
-            TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
-          } else {
-            TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       },
       header: {
         WalletListHeaderView(

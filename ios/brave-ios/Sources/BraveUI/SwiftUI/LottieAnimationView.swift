@@ -59,10 +59,6 @@ public struct LottieAnimationView: View {
     }
 
     func updateUIView(_ uiView: AnimationView, context: Context) {
-      if configuration.resizable, #unavailable(iOS 16.0) {
-        uiView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-      }
       uiView.loopMode = configuration.loopMode
       if isPlaying {
         if !uiView.isAnimationPlaying {
@@ -73,7 +69,6 @@ public struct LottieAnimationView: View {
       }
     }
 
-    @available(iOS 16.0, *)
     func sizeThatFits(
       _ proposal: ProposedViewSize,
       uiView: AnimationView,

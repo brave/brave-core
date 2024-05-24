@@ -85,9 +85,6 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false)
-    }
     displayPageZoom(visible: false)
 
     // If we are going to navigate to a new page, hide the reader mode button. Unless we
@@ -1367,14 +1364,11 @@ extension BrowserViewController: WKUIDelegate {
         }
       )
     )
-    if #available(iOS 16.0, *) {
-      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
-      {
-        webView.closeAllMediaPresentations {
-          self.present(alertController, animated: true)
-        }
-        return
+    if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
+      webView.closeAllMediaPresentations {
+        self.present(alertController, animated: true)
       }
+      return
     }
     present(alertController, animated: true)
   }

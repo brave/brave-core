@@ -128,11 +128,7 @@ public class WebcompatReporter {
 
   /// Get the user's language code
   private static var currentLanguageCode: String? {
-    if #available(iOS 16, *) {
-      return Locale.current.language.languageCode?.identifier
-    } else {
-      return Locale.current.languageCode
-    }
+    return Locale.current.language.languageCode?.identifier
   }
 
   /// Report a webcompat issue on a given website

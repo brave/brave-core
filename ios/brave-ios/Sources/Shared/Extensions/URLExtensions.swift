@@ -363,7 +363,7 @@ extension URL {
     ])
 
     /// Additional sites for Japanese locale
-    if Locale.current.regionCode == "JP" {
+    if Locale.current.region?.identifier == "JP" {
       let japanList = Set<String>([
         "nicovideo.jp", "video.fc2.com", "musicpv.jp",
         "openrec.tv", "mirrativ.com", "mildom.com",

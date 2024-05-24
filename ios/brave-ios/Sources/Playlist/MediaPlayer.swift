@@ -41,7 +41,6 @@ public class MediaPlayer: NSObject {
   private(set) public var pictureInPictureController: AVPictureInPictureController?
   private(set) public var repeatState: RepeatMode = .none
   private(set) public var shuffleState: ShuffleMode = .none
-  private(set) var previousRate: Float = 0.0
 
   public var isPlaying: Bool {
     // It is better NOT to keep tracking of isPlaying OR rate > 0.0
@@ -168,19 +167,12 @@ public class MediaPlayer: NSObject {
   public func play() {
     if !isPlaying {
       player.play()
-
-      if #unavailable(iOS 16) {
-        player.rate = previousRate > 0.0 ? previousRate : 1.0
-      }
       playSubscriber.send(EventNotification(mediaPlayer: self, event: .play))
     }
   }
 
   public func pause() {
     if isPlaying {
-      if #unavailable(iOS 16) {
-        previousRate = player.rate
-      }
       player.pause()
       pauseSubscriber.send(EventNotification(mediaPlayer: self, event: .pause))
     }
@@ -188,9 +180,6 @@ public class MediaPlayer: NSObject {
 
   public func stop() {
     if isPlaying {
-      if #unavailable(iOS 16) {
-        previousRate = player.rate
-      }
       player.pause()
       player.replaceCurrentItem(with: nil)
       stopSubscriber.send(EventNotification(mediaPlayer: self, event: .stop))
@@ -350,13 +339,8 @@ public class MediaPlayer: NSObject {
   }
 
   public func setPlaybackRate(rate: Float) {
-    if #available(iOS 16, *) {
-      player.defaultRate = rate
-      player.rate = rate
-    } else {
-      previousRate = player.rate
-      player.rate = rate
-    }
+    player.defaultRate = rate
+    player.rate = rate
 
     changePlaybackRateSubscriber.send(
       EventNotification(
@@ -674,45 +658,6 @@ extension MediaPlayer {
 
       self.seek(to: event.positionTime)
     }.store(in: &notificationObservers)
-
-    // The following code is simulating on iOS <= 15: https://developer.apple.com/documentation/avfoundation/avplayer/3929373-defaultrate
-    // When entering `PictureInPicture`, we have no way of knowing if the user has PAUSED or PLAYED the video/audio while in PIP
-    // The only way to know, is to observe the `rate`.
-    // However, setting the rate back to the default rate will recursively call the observer that's observing PIP.
-    // So we need to do some weird hacks below.
-    // On iOS 16+, we can use `defaultRate` variable instead of storing `previousRate`
-    if #unavailable(iOS 16) {
-      var isRecursivelySettingRate = false
-      rateObserver = player.observe(\.rate, options: [.new, .prior]) { [weak self] player, rate in
-        guard let self = self else { return }
-
-        if !isRecursivelySettingRate {
-          if rate.isPrior {
-            if player.rate != 0 {
-              previousRate = player.rate
-            }
-            return
-          }
-
-          if self.pictureInPictureController?.isPictureInPictureActive == true {
-            if rate.newValue == 1 && self.previousRate != rate.newValue {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isRecursivelySettingRate = true
-                player.rate = self.previousRate
-                isRecursivelySettingRate = false
-              }
-            }
-          }
-        }
-
-        changePlaybackRateSubscriber.send(
-          EventNotification(
-            mediaPlayer: self,
-            event: .changePlaybackRate
-          )
-        )
-      }
-    }
   }
 
   /// Registers picture in picture notifications
@@ -816,11 +761,7 @@ extension AVAsset {
   public static var defaultOptions: [String: Any] {
     let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
     var options: [String: Any] = [:]
-    if #available(iOS 16, *) {
-      options[AVURLAssetHTTPUserAgentKey] = userAgent
-    } else {
-      options["AVURLAssetHTTPHeaderFieldsKey"] = ["User-Agent": userAgent]
-    }
+    options[AVURLAssetHTTPUserAgentKey] = userAgent
     return options
   }
 }

@@ -188,11 +188,7 @@ public class BraveStoreSDK: AppStoreSDK {
     // Retrieve the current environment from StoreKit's Renewal Information
     switch renewalInfo {
     case .verified(let renewalInfo), .unverified(let renewalInfo, _):
-      if #available(iOS 16.0, *) {
-        return .init(rawValue: renewalInfo.environment.rawValue) ?? .production
-      }
-
-      return .init(rawValue: renewalInfo.environmentStringRepresentation) ?? .production
+      return .init(rawValue: renewalInfo.environment.rawValue) ?? .production
     }
   }
 

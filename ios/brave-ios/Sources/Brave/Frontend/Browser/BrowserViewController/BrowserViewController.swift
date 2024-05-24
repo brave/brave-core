@@ -133,7 +133,6 @@ public class BrowserViewController: UIViewController {
     return alertStackView
   }()
 
-  var findInPageBar: FindInPageBar?
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
   private var openTabsModelStateListener: SendTabToSelfModelStateListener?
@@ -356,7 +355,7 @@ public class BrowserViewController: UIViewController {
       environment: BraveRewards.Configuration.current().environment
     )
 
-    if Locale.current.regionCode == "JP" {
+    if Locale.current.region?.identifier == "JP" {
       benchmarkBlockingDataSource = BlockingSummaryDataSource()
     }
 
@@ -1412,11 +1411,10 @@ public class BrowserViewController: UIViewController {
           make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
       }
 
-      let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.toolbarHeight
       if self.isUsingBottomBar {
-        make.bottom.equalTo(self.header.snp.top).offset(-findInPageHeight)
+        make.bottom.equalTo(self.header.snp.top)
       } else {
-        make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
+        make.bottom.equalTo(self.footer.snp.top)
       }
     }
 
@@ -1441,8 +1439,7 @@ public class BrowserViewController: UIViewController {
 
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil || searchEngineSettingsDismissed
-            || findInPageBar != nil)
+          && (presentedViewController == nil || searchEngineSettingsDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
@@ -2328,16 +2325,6 @@ public class BrowserViewController: UIViewController {
       self.pageZoomBar = nil
     }
 
-    if #unavailable(iOS 16.0) {
-      if let findInPageBar = findInPageBar {
-        updateFindInPageVisibility(visible: false)
-        findInPageBar.endEditing(true)
-        findInPageBar.removeFromSuperview()
-        self.findInPageBar = nil
-        updateViewConstraints()
-      }
-    }
-
     alertStackView.arrangedSubviews.forEach({
       $0.removeFromSuperview()
     })
@@ -2633,10 +2620,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
     if tab == tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false)
-    }
-
     tabManager.selectTab(tab)
   }
 
@@ -2706,10 +2689,6 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
-    if #unavailable(iOS 16.0) {
-      injectedScripts.append(FindInPageScriptHandler(tab: tab))
-    }
-
     #if canImport(BraveTalk)
     injectedScripts.append(
       BraveTalkScriptHandler(
@@ -2752,10 +2731,6 @@ extension BrowserViewController: TabDelegate {
       .delegate = self
     (tab.getContentScript(name: SessionRestoreScriptHandler.scriptName)
       as? SessionRestoreScriptHandler)?.delegate = self
-    if #unavailable(iOS 16.0) {
-      (tab.getContentScript(name: FindInPageScriptHandler.scriptName) as? FindInPageScriptHandler)?
-        .delegate = self
-    }
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?
       .delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
@@ -2808,12 +2783,9 @@ extension BrowserViewController: TabDelegate {
 
   /// Triggered when "Find in Page" is selected on selected text
   func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String) {
-    if #available(iOS 16.0, *), let findInteraction = tab.webView?.findInteraction {
+    if let findInteraction = tab.webView?.findInteraction {
       findInteraction.searchText = selectedText
       findInteraction.presentFindNavigator(showingReplace: false)
-    } else {
-      updateFindInPageVisibility(visible: true)
-      findInPageBar?.text = selectedText
     }
   }
 
@@ -3033,14 +3005,9 @@ extension BrowserViewController: SearchViewControllerDelegate {
     shouldFindInPage query: String
   ) {
     topToolbar.leaveOverlayMode()
-    if #available(iOS 16.0, *),
-      let findInteraction = tabManager.selectedTab?.webView?.findInteraction
-    {
+    if let findInteraction = tabManager.selectedTab?.webView?.findInteraction {
       findInteraction.searchText = query
       findInteraction.presentFindNavigator(showingReplace: false)
-    } else {
-      updateFindInPageVisibility(visible: true)
-      findInPageBar?.text = query
     }
   }
 
@@ -3668,10 +3635,8 @@ extension BrowserViewController {
         }
 
         await MainActor.run { [errorDescription] in
-          if #available(iOS 16.0, *) {
-            // System components sit on top so we want to dismiss it
-            webView.findInteraction?.dismissFindNavigator()
-          }
+          // System components sit on top so we want to dismiss it
+          webView.findInteraction?.dismissFindNavigator()
           let certificateViewController = CertificateViewController(
             certificate: certificate,
             evaluationError: errorDescription

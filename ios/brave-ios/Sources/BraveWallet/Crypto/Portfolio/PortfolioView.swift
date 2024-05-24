@@ -81,17 +81,10 @@ struct PortfolioView: View {
               portfolioStore.saveFilters(filters)
             }
           )
-          .osAvailabilityModifiers({ view in
-            if #available(iOS 16, *) {
-              view
-                .presentationDetents([
-                  .fraction(0.7),
-                  .large,
-                ])
-            } else {
-              view
-            }
-          })
+          .presentationDetents([
+            .fraction(0.7),
+            .large,
+          ])
         }
     )
     .background(
@@ -120,17 +113,10 @@ struct PortfolioView: View {
               cryptoStore.nftStore.saveFilters(filters)
             }
           )
-          .osAvailabilityModifiers({ view in
-            if #available(iOS 16, *) {
-              view
-                .presentationDetents([
-                  .fraction(0.6),
-                  .large,
-                ])
-            } else {
-              view
-            }
-          })
+          .presentationDetents([
+            .fraction(0.6),
+            .large,
+          ])
         }
     )
     .background(

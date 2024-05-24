@@ -90,16 +90,9 @@ struct MainMenuView: View {
       }
     }
     .background(Color(braveSystemName: .containerBackground))
-    .osAvailabilityModifiers({ view in
-      if #available(iOS 16, *) {
-        view
-          .presentationDetents([
-            .height(viewHeight)
-          ])
-      } else {
-        view
-      }
-    })
+    .presentationDetents([
+      .height(viewHeight)
+    ])
   }
 
   @ViewBuilder private var portfolioSettings: some View {

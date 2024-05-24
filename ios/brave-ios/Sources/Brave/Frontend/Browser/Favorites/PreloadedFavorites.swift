@@ -68,7 +68,7 @@ struct PreloadedFavorites {
 
     // Locale consists of language and region, region makes more sense when it comes to setting
     // preloaded websites imo. Empty string will go to the default switch case
-    let region = Locale.current.regionCode ?? ""
+    let region = Locale.current.region?.identifier ?? ""
     Logger.module.debug("Preloading favorites, current region: \(region)")
 
     switch region {

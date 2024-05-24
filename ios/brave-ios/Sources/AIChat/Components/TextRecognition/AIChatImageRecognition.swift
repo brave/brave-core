@@ -45,10 +45,7 @@ class AIChatImageRecognition {
         "fr-FR", "it-IT",
         "de-DE", "es-ES",
       ]
-
-      if #available(iOS 16.0, *) {
-        request.automaticallyDetectsLanguage = true
-      }
+      request.automaticallyDetectsLanguage = true
 
       do {
         let requestHandler = VNImageRequestHandler(cgImage: image, options: [:])

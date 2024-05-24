@@ -25,20 +25,16 @@ struct BraveTalkLogsView: View {
         }
       }
     }
-    .navigationBarItems(trailing: shareButton())
+    .toolbar {
+      ToolbarItemGroup(placement: .topBarTrailing) {
+        ShareLink(item: fileURL ?? URL(string: "disabled")!)
+          .disabled(fileURL == nil || logs.isEmpty)
+      }
+    }
     .task {
       logs = await getLogs()
       fileURL = createTemporaryLogFile()
       isLoading = false
-    }
-  }
-
-  @ViewBuilder private func shareButton() -> some View {
-    if #available(iOS 16, *) {
-      ShareLink(item: fileURL ?? URL(string: "disabled")!)
-        .disabled(fileURL == nil || logs.isEmpty)
-    } else {
-      EmptyView()
     }
   }
 
