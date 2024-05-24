@@ -39,6 +39,25 @@ using testing::WithArg;
 
 namespace brave_wallet {
 
+namespace {
+class AccountsChangedWaiter : public KeyringServiceObserverBase {
+ public:
+  explicit AccountsChangedWaiter(KeyringService& service) {
+    service.AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
+  }
+  ~AccountsChangedWaiter() override = default;
+
+  void AccountsChanged() override { run_loop_.Quit(); }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  mojo::Receiver<mojom::KeyringServiceObserver> observer_receiver_{this};
+  base::RunLoop run_loop_;
+};
+
+}  // namespace
+
 namespace bitcoin_rpc {
 bool operator==(const UnspentOutput& l, const UnspentOutput& r) {
   return l.status.confirmed == r.status.confirmed && l.txid == r.txid &&
@@ -546,7 +565,7 @@ TEST_F(BitcoinWalletServiceUnitTest, BitcoinImportRunsDiscovery) {
           account->account_id,
           mojom::BitcoinKeyId::New(kBitcoinChangeIndex, 7)));
 
-  task_environment_.RunUntilIdle();
+  AccountsChangedWaiter(*keyring_service_).Wait();
 
   // Discovery finishes and account's address indexes get updated.
   acc_info =

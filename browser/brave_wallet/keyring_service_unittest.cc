@@ -2759,8 +2759,8 @@ TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  EXPECT_CALL(observer, AccountsAdded(_)).Times(0);
 
   EXPECT_FALSE(service.ImportBitcoinAccountSync("", kBtcMainnetImportAccount0,
                                                 mojom::kBitcoinMainnet));
@@ -2770,10 +2770,12 @@ TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
       "Btc import", kBtcMainnetImportAccount0, mojom::kBitcoinTestnet));
   EXPECT_FALSE(service.ImportBitcoinAccountSync(
       "Btc import", kBtcTestnetImportAccount0, mojom::kBitcoinMainnet));
+  observer.WaitAndVerify();
 
   EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcAccounts().size());
   EXPECT_EQ(0u, GetAccountUtils(&service).AllBtcTestAccounts().size());
 
+  EXPECT_CALL(observer, AccountsAdded(_)).Times(3);
   auto acc1 = service.ImportBitcoinAccountSync(
       "Btc import 1", kBtcMainnetImportAccount0, mojom::kBitcoinMainnet);
   auto acc2 = service.ImportBitcoinAccountSync(
@@ -2783,6 +2785,7 @@ TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
   ASSERT_TRUE(acc1);
   ASSERT_TRUE(acc2);
   ASSERT_TRUE(acc3);
+  observer.WaitAndVerify();
 
   EXPECT_EQ(2u, GetAccountUtils(&service).AllBtcAccounts().size());
   EXPECT_EQ(1u, GetAccountUtils(&service).AllBtcTestAccounts().size());
@@ -2790,8 +2793,6 @@ TEST_F(KeyringServiceUnitTest, ImportBitcoinAccount) {
   EXPECT_EQ(GetAccountUtils(&service).AllBtcAccounts()[0], acc1);
   EXPECT_EQ(GetAccountUtils(&service).AllBtcAccounts()[1], acc2);
   EXPECT_EQ(GetAccountUtils(&service).AllBtcTestAccounts()[0], acc3);
-
-  observer.WaitAndVerify();
 
   EXPECT_CALL(observer, AccountsChanged());
   EXPECT_TRUE(RemoveAccount(&service, acc1->account_id, kPasswordBrave));
