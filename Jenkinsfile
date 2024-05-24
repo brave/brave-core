@@ -66,7 +66,7 @@ pipeline {
                             commitShaSource: [$class: "ManuallyEnteredShaSource", sha: sha],
                             contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "continuous-integration/${PLATFORM}/pr-head"],
                             errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "ERROR"]],
-                            statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "Building", state: "PENDING"]]]
+                            statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "Building...", state: "PENDING"]]]
                         ])
                     }
 
