@@ -52,7 +52,7 @@ pipeline {
                     if (SKIP && PLATFORM != 'noplatform') {
                         echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
-                        // The status set here gets overwritten at the end of the build, so we set this after the build finishes
+                        // The status set here gets overwritten at the end of the build, so we set it after the build finishes
                         build(job: "brave-core-pr-status-set-skipped", wait: false, propagate: false,
                               parameters: [string(name: 'PR_NUMBER', value: "${prDetails.number}"), string(name: 'SHA', value: sha), string(name: 'PLATFORM', value: PLATFORM)])
                         return
