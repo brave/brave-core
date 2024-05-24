@@ -158,6 +158,10 @@ void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
 }
 
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
+  if (!kShouldSuspendAndResume.Get()) {
+    return;
+  }
+
   if (!IsLandingPage(tab_id)) {
     return;
   }
