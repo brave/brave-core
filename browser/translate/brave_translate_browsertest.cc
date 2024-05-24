@@ -111,6 +111,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir;
     CHECK(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    CHECK(embedded_test_server()->Start());
     https_server_.RegisterRequestHandler(base::BindRepeating(
         &BraveTranslateBrowserTest::HandleRequest, base::Unretained(this)));
     https_server_.StartAcceptingConnections();
