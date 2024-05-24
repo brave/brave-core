@@ -42,6 +42,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
+#include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
@@ -488,8 +489,8 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    // Bypass BaseLocalDataFilesBrowserTest::SetUp() because we've handled
-    // everything already.
+    // Bypass BaseLocalDataFilesBrowserTest::SetUpOnMainThread() because we've
+    // handled everything already.
     ExtensionBrowserTest::SetUpOnMainThread();
   }
 
@@ -534,12 +535,15 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
 // a custom header to trigger an OTR tab.
 class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
  public:
-  void SetUp() override {
-    content::SetupCrossSiteRedirector(embedded_test_server());
+  void SetUpOnMainThread() override {
     embedded_test_server()->RegisterRequestHandler(
         base::BindRepeating(&RespondWithCustomHeader));
     ASSERT_TRUE(embedded_test_server()->Start());
-    ExtensionBrowserTest::SetUp();
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    // Bypass BaseLocalDataFilesBrowserTest::SetUpOnMainThread() because we've
+    // handled everything already.
+    ExtensionBrowserTest::SetUpOnMainThread();
   }
 };
 
