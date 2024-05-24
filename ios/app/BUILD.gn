@@ -50,7 +50,6 @@ source_set("app") {
     "//brave/ios/browser/api/de_amp",
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/https_upgrade_exceptions",
-    "//brave/ios/browser/api/ipfs",
     "//brave/ios/browser/api/ntp_background_images",
     "//brave/ios/browser/api/opentabs",
     "//brave/ios/browser/api/p3a",
