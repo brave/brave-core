@@ -670,6 +670,16 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
+  auto get_all_chains_for_coin = [&](mojom::CoinType coin) {
+    std::vector<mojom::NetworkInfoPtr> result;
+    for (auto& chain : GetAllChains(&prefs)) {
+      if (chain->coin == coin) {
+        result.push_back(std::move(chain));
+      }
+    }
+    return result;
+  };
+
   std::vector<base::Value::Dict> values;
   mojom::NetworkInfo chain1 =
       GetTestNetworkInfo1(mojom::kPolygonMainnetChainId);
@@ -691,7 +701,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   expected_chains[2] = chain1.Clone();
   expected_chains.push_back(chain2.Clone());
 
-  auto all_chains = GetAllChains(&prefs, mojom::CoinType::ETH);
+  auto all_chains = get_all_chains_for_coin(mojom::CoinType::ETH);
 
   EXPECT_EQ(expected_chains.size(), all_chains.size());
   for (size_t i = 0; i < all_chains.size(); i++) {
@@ -706,7 +716,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   UpdateCustomNetworks(&prefs, {NetworkInfoToValue(sol_main_custom)},
                        mojom::CoinType::SOL);
 
-  auto sol_chains = GetAllChains(&prefs, mojom::CoinType::SOL);
+  auto sol_chains = get_all_chains_for_coin(mojom::CoinType::SOL);
   ASSERT_EQ(sol_chains.size(), 4u);
   EXPECT_EQ(sol_chains[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(sol_chains[0]->decimals, 123);
@@ -725,7 +735,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   UpdateCustomNetworks(&prefs, NetworkInfoToValue(fil_main_custom),
                        mojom::CoinType::FIL);
 
-  auto fil_chains = GetAllChains(&prefs, mojom::CoinType::FIL);
+  auto fil_chains = get_all_chains_for_coin(mojom::CoinType::FIL);
   ASSERT_EQ(fil_chains.size(), 3u);
   EXPECT_EQ(fil_chains[0]->chain_id, mojom::kFilecoinMainnet);
   EXPECT_EQ(fil_chains[0]->decimals, 123);
@@ -744,7 +754,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   UpdateCustomNetworks(&prefs, NetworkInfoToValue(btc_main_custom),
                        mojom::CoinType::BTC);
 
-  auto btc_chains = GetAllChains(&prefs, mojom::CoinType::BTC);
+  auto btc_chains = get_all_chains_for_coin(mojom::CoinType::BTC);
   ASSERT_EQ(btc_chains.size(), 2u);
   EXPECT_EQ(btc_chains[0]->chain_id, mojom::kBitcoinMainnet);
   EXPECT_EQ(btc_chains[0]->decimals, 123);
@@ -762,7 +772,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   UpdateCustomNetworks(&prefs, NetworkInfoToValue(zec_main_custom),
                        mojom::CoinType::ZEC);
 
-  auto zec_chains = GetAllChains(&prefs, mojom::CoinType::ZEC);
+  auto zec_chains = get_all_chains_for_coin(mojom::CoinType::ZEC);
   ASSERT_EQ(zec_chains.size(), 2u);
   EXPECT_EQ(zec_chains[0]->chain_id, mojom::kZCashMainnet);
   EXPECT_EQ(zec_chains[0]->decimals, 123);
@@ -1230,8 +1240,9 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
   prefs.registry()->RegisterListPref(kBraveWalletUserAssetsList);
 
   auto get_polygon_from_all = [&] {
-    for (const auto& chain : GetAllChains(&prefs, mojom::CoinType::ETH)) {
-      if (chain->chain_id == mojom::kPolygonMainnetChainId) {
+    for (const auto& chain : GetAllChains(&prefs)) {
+      if (chain->coin == mojom::CoinType::ETH &&
+          chain->chain_id == mojom::kPolygonMainnetChainId) {
         return chain.Clone();
       }
     }
@@ -1559,7 +1570,10 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   }
 
   auto getChainIdByNetworkIdCheck = [&](const mojom::CoinType& coin_type) {
-    for (const auto& chain : GetAllChains(&prefs, coin_type)) {
+    for (const auto& chain : GetAllChains(&prefs)) {
+      if (chain->coin != coin_type) {
+        continue;
+      }
       std::string nid;
       if (chain->coin == mojom::CoinType::ETH) {
         nid = GetKnownEthNetworkId(chain->chain_id);

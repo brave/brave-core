@@ -66,8 +66,7 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
                                                      mojom::CoinType coin);
 std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
                                                       mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
-                                                mojom::CoinType coin);
+std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs);
 mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     const std::string& chain_id,
                                     mojom::CoinType coin);

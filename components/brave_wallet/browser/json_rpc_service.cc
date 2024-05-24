@@ -705,9 +705,8 @@ void JsonRpcService::GetChainIdForOrigin(
   std::move(callback).Run(GetChainIdSync(coin, origin));
 }
 
-void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
-                                    GetAllNetworksCallback callback) {
-  std::move(callback).Run(GetAllChains(prefs_, coin));
+void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
+  std::move(callback).Run(GetAllChains(prefs_));
 }
 
 void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,

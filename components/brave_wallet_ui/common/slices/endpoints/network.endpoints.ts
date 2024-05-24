@@ -46,39 +46,12 @@ export const networkEndpoints = ({
     getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api, cache } = baseQuery(undefined)
+          const { data: api } = baseQuery(undefined)
 
-          const { isBitcoinEnabled, isZCashEnabled } =
-            cache.walletInfo || (await cache.getWalletInfo())
+          const { networks } = await api.jsonRpcService.getAllNetworks()
 
-          const { networks: ethNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
-          const { networks: solNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.SOL)
-          const { networks: filNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.FIL)
-          const btcNetworks = isBitcoinEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.BTC
-                )
-              ).networks
-            : []
-          const zecNetworks = isZCashEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.ZEC
-                )
-              ).networks
-            : []
           return {
-            data: [
-              ...ethNetworks,
-              ...solNetworks,
-              ...filNetworks,
-              ...btcNetworks,
-              ...zecNetworks
-            ]
+            data: [...networks]
           }
         } catch (error) {
           return handleEndpointError(

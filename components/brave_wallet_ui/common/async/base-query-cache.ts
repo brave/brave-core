@@ -166,13 +166,13 @@ export class BaseQueryCache {
       const onRampIds: string[] = []
       const offRampIds: string[] = []
 
+      const { networks } = await jsonRpcService.getAllNetworks()
+
       // Get all networks for supported coin types
       const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
         filteredSupportedCoinTypes,
         10,
         async (coin: BraveWallet.CoinType) => {
-          const { networks } = await jsonRpcService.getAllNetworks(coin)
-
           // hidden networks for coin
           let hiddenNetworkIds: string[] = []
           try {

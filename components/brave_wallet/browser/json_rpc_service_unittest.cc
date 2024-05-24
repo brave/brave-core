@@ -2046,33 +2046,18 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   values.push_back(NetworkInfoToValue(chain2));
   UpdateCustomNetworks(prefs(), &values);
 
-  std::vector<mojom::NetworkInfoPtr> expected_chains =
-      GetAllChains(prefs(), mojom::CoinType::ETH);
+  std::vector<mojom::NetworkInfoPtr> expected_chains = GetAllChains(prefs());
   bool callback_is_called = false;
-  json_rpc_service_->GetAllNetworks(
-      mojom::CoinType::ETH,
-      base::BindLambdaForTesting(
-          [&callback_is_called,
-           &expected_chains](std::vector<mojom::NetworkInfoPtr> chains) {
-            EXPECT_EQ(expected_chains.size(), chains.size());
+  json_rpc_service_->GetAllNetworks(base::BindLambdaForTesting(
+      [&callback_is_called,
+       &expected_chains](std::vector<mojom::NetworkInfoPtr> chains) {
+        EXPECT_EQ(expected_chains.size(), chains.size());
 
-            for (size_t i = 0; i < chains.size(); i++) {
-              ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
-            }
-            callback_is_called = true;
-          }));
-  task_environment_.RunUntilIdle();
-  ASSERT_TRUE(callback_is_called);
-
-  callback_is_called = false;
-  json_rpc_service_->GetAllNetworks(
-      mojom::CoinType::SOL,
-      base::BindLambdaForTesting(
-          [&callback_is_called](std::vector<mojom::NetworkInfoPtr> chains) {
-            EXPECT_EQ(chains.size(), 4u);
-
-            callback_is_called = true;
-          }));
+        for (size_t i = 0; i < chains.size(); i++) {
+          ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
+        }
+        callback_is_called = true;
+      }));
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
 }

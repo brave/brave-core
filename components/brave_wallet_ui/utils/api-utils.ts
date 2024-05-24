@@ -88,13 +88,13 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
   const { jsonRpcService } = api
 
   const enabledCoinTypes = await getEnabledCoinTypes(api)
+  const { networks: allNetworks } = await jsonRpcService.getAllNetworks()
 
   const networks = (
     await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
-      const { networks } = await jsonRpcService.getAllNetworks(coin)
       const { chainIds: hiddenChainIds } =
         await jsonRpcService.getHiddenNetworks(coin)
-      return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
+      return allNetworks.filter((n) => !hiddenChainIds.includes(n.chainId))
     })
   ).flat(1)
 

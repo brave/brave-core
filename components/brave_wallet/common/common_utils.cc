@@ -210,6 +210,18 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   return GURL();
 }
 
+std::vector<mojom::CoinType> GetSupportedCoins() {
+  std::vector<mojom::CoinType> coins = {
+      mojom::CoinType::ETH, mojom::CoinType::SOL, mojom::CoinType::FIL};
+  if (IsBitcoinEnabled()) {
+    coins.push_back(mojom::CoinType::BTC);
+  }
+  if (IsZCashEnabled()) {
+    coins.push_back(mojom::CoinType::ZEC);
+  }
+  return coins;
+}
+
 std::vector<mojom::KeyringId> GetSupportedKeyrings() {
   std::vector<mojom::KeyringId> ids = {mojom::KeyringId::kDefault};
   ids.push_back(mojom::KeyringId::kFilecoin);

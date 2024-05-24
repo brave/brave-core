@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
+#include "base/containers/extend.h"
 #include "base/environment.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -1453,10 +1454,14 @@ GURL GetNetworkURL(PrefService* prefs,
   return GURL();
 }
 
-std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
-                                                mojom::CoinType coin) {
-  return MergeKnownAndCustomChains(GetAllKnownChains(prefs, coin),
-                                   GetAllCustomChains(prefs, coin));
+std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs) {
+  std::vector<mojom::NetworkInfoPtr> result;
+  for (auto coin : GetSupportedCoins()) {
+    base::Extend(result,
+                 MergeKnownAndCustomChains(GetAllKnownChains(prefs, coin),
+                                           GetAllCustomChains(prefs, coin)));
+  }
+  return result;
 }
 
 // DEPRECATED 01/2024. For migration only.
@@ -1603,7 +1608,10 @@ std::optional<std::string> GetChainIdByNetworkId_DEPRECATED(
   if (network_id.empty()) {
     return std::nullopt;
   }
-  for (const auto& network : GetAllChains(prefs, coin)) {
+  for (const auto& network : GetAllChains(prefs)) {
+    if (network->coin != coin) {
+      continue;
+    }
     if (network_id == GetNetworkId(prefs, coin, network->chain_id)) {
       return network->chain_id;
     }

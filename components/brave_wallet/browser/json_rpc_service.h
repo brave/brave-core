@@ -273,8 +273,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::vector<mojom::SwitchChainRequestPtr> GetPendingSwitchChainRequestsSync();
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
-  void GetAllNetworks(mojom::CoinType coin,
-                      GetAllNetworksCallback callback) override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetCustomNetworks(mojom::CoinType coin,
                          GetCustomNetworksCallback callback) override;
   void GetKnownNetworks(mojom::CoinType coin,

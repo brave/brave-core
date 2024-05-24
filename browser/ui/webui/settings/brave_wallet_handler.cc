@@ -241,25 +241,27 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
              brave_wallet::GetCurrentChainId(prefs, *coin, std::nullopt));
 
   auto& networks = result.Set("networks", base::Value::List())->GetList();
-  for (const auto& it : brave_wallet::GetAllChains(prefs, *coin)) {
-    networks.Append(brave_wallet::NetworkInfoToValue(*it));
+  for (const auto& it : brave_wallet::GetAllChains(prefs)) {
+    if (it->coin == coin) {
+      networks.Append(brave_wallet::NetworkInfoToValue(*it));
+    }
   }
-  auto& knownNetworks =
+  auto& known_networks =
       result.Set("knownNetworks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetAllKnownChains(prefs, *coin)) {
-    knownNetworks.Append(it->chain_id);
+    known_networks.Append(it->chain_id);
   }
 
-  auto& customNetworks =
+  auto& custom_networks =
       result.Set("customNetworks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetAllCustomChains(prefs, *coin)) {
-    customNetworks.Append(it->chain_id);
+    custom_networks.Append(it->chain_id);
   }
 
-  auto& hiddenNetworks =
+  auto& hidden_networks =
       result.Set("hiddenNetworks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetHiddenNetworks(prefs, *coin)) {
-    hiddenNetworks.Append(it);
+    hidden_networks.Append(it);
   }
 
   AllowJavascript();
