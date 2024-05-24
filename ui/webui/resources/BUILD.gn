@@ -305,6 +305,7 @@ leo_icons = [
   "protocol-handler-off.svg",
   "protocol-handler.svg",
   "qr-code.svg",
+  "qwant-color.svg",
   "radio-checked.svg",
   "radio-unchecked.svg",
   "refresh.svg",
@@ -336,6 +337,7 @@ leo_icons = [
   "sparkles.svg",
   "stack.svg",
   "star-outline.svg",
+  "startpage-color.svg",
   "swap-horizontal.svg",
   "swap-vertical.svg",
   "thumb-down.svg",
@@ -383,6 +385,8 @@ leo_icons = [
   "sol-color.svg",
   "filecoin-color.svg",
   "slash.svg",
+  "yahoo-color.svg",
+  "yandex-color.svg",
 ]
 
 if (enable_brave_vpn_panel) {
