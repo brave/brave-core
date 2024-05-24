@@ -211,7 +211,7 @@ var package = Package(
         "BraveUI",
         .product(name: "Lottie", package: "lottie-spm"),
       ],
-      resources: [.copy("vpncheckmark.json")],
+      resources: [.copy("Resources/vpncheckmark.json")],
       plugins: ["LoggerPlugin"]
     ),
     .target(
