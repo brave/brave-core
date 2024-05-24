@@ -166,18 +166,21 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, ToggleAdTypes) {
   TurnOnRewards();
 
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, false);
-  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName,
-                                       p3a::AdTypesEnabled::kNTP, 1);
+  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 5, 1);
 
   prefs->SetBoolean(ntp_background_images::prefs::
                         kNewTabPageShowSponsoredImagesBackgroundImage,
                     false);
-  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName,
-                                       p3a::AdTypesEnabled::kNone, 1);
+  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 4, 1);
 
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
-  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName,
-                                       p3a::AdTypesEnabled::kNotification, 1);
+  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 6, 1);
+
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 2, 1);
+
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, false);
+  histogram_tester_->ExpectBucketCount(p3a::kAdTypesEnabledHistogramName, 0, 1);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
