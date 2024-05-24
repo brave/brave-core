@@ -37,6 +37,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # brave/third_party/rust/chromium_crates_io can be skipped.
         os.path.join('brave', 'third_party', 'rust', 'chromium_crates_io'),
 
+        # Same for upstream
+        os.path.join('third_party', 'rust', 'chromium_crates_io'),
+
         # Rust code written by Brave and under the same license as the browser.
         os.path.join('brave', 'third_party', 'rust', 'adblock_cxx'),
         os.path.join('brave', 'third_party', 'rust', 'brave_news_cxx'),
@@ -381,7 +384,7 @@ def IsBraveRustCrate(path):
         return False
     sep = re.escape(os.path.sep)
     path_regex = re.compile(
-        r'''^brave{sep}third_party{sep}rust{sep}{nonsep}+'''.format(
+        r'''^(brave{sep})?third_party{sep}rust{sep}{nonsep}+'''.format(
             sep=sep, nonsep=f'[^{sep}]'))
     return path_regex.fullmatch(path) != None
 
