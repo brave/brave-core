@@ -38,7 +38,7 @@ struct NetworkIcon: View {
   }
 
   private var networkIconMonogram: some View {
-    BlockieMaterial(seed: network.chainName)
+    BlockieBackground(seed: network.chainName)
       .clipShape(Circle())
   }
 
