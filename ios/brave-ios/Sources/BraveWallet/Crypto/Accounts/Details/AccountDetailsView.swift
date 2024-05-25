@@ -49,17 +49,11 @@ struct AccountDetailsView: View {
         }
         Section(
           content: {
-            Group {
-              if #available(iOS 16, *) {
-                TextField(
-                  Strings.Wallet.accountDetailsNamePlaceholder,
-                  text: $name,
-                  axis: .vertical
-                )
-              } else {
-                TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
-              }
-            }
+            TextField(
+              Strings.Wallet.accountDetailsNamePlaceholder,
+              text: $name,
+              axis: .vertical
+            )
             .introspectTextField { tf in
               if editMode && !isFieldFocused && !tf.isFirstResponder {
                 isFieldFocused = tf.becomeFirstResponder()

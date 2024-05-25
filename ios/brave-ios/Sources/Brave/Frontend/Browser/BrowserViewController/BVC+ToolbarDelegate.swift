@@ -28,9 +28,6 @@ extension BrowserViewController: TopToolbarDelegate {
     if tabManager.tabsForCurrentMode.isEmpty {
       return
     }
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false)
-    }
     displayPageZoom(visible: false)
 
     if tabManager.selectedTab == nil {
@@ -322,22 +319,20 @@ extension BrowserViewController: TopToolbarDelegate {
     let controller = ChromeWebViewController(privateBrowsing: false)
     controller.loadURL(url.absoluteString)
     controller.title = url.host
-    if #available(iOS 16.0, *) {
-      let webView = controller.webView
-      webView.isFindInteractionEnabled = true
-      controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
-        systemItem: .search,
-        primaryAction: .init { [weak webView] _ in
-          guard let findInteraction = webView?.findInteraction,
-            !findInteraction.isFindNavigatorVisible
-          else {
-            return
-          }
-          findInteraction.searchText = ""
-          findInteraction.presentFindNavigator(showingReplace: false)
+    let webView = controller.webView
+    webView.isFindInteractionEnabled = true
+    controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      systemItem: .search,
+      primaryAction: .init { [weak webView] _ in
+        guard let findInteraction = webView?.findInteraction,
+          !findInteraction.isFindNavigatorVisible
+        else {
+          return
         }
-      )
-    }
+        findInteraction.searchText = ""
+        findInteraction.presentFindNavigator(showingReplace: false)
+      }
+    )
     let container = UINavigationController(rootViewController: controller)
     controller.navigationItem.leftBarButtonItem = .init(
       systemItem: .done,
@@ -465,10 +460,8 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
 
-    if #available(iOS 16.0, *) {
-      // System components sit on top so we want to dismiss it
-      selectedTab.webView?.findInteraction?.dismissFindNavigator()
-    }
+    // System components sit on top so we want to dismiss it
+    selectedTab.webView?.findInteraction?.dismissFindNavigator()
 
     let shields = ShieldsViewController(tab: selectedTab)
     shields.shieldsSettingsChanged = { [unowned self] _, shield in
@@ -705,10 +698,8 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let selectedTab = tabManager.selectedTab else {
       return
     }
-    if #available(iOS 16.0, *) {
-      // System components sit on top so we want to dismiss it
-      selectedTab.webView?.findInteraction?.dismissFindNavigator()
-    }
+    // System components sit on top so we want to dismiss it
+    selectedTab.webView?.findInteraction?.dismissFindNavigator()
     presentWalletPanel(from: selectedTab.getOrigin(), with: selectedTab.tabDappStore)
   }
 
@@ -1123,11 +1114,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
 
       return UIMenu(children: actionMenus.compactMap({ $0 }))
     }
-
-    if #available(iOS 16.0, *) {
-      configuration.preferredMenuElementOrder = .priority
-    }
-
+    configuration.preferredMenuElementOrder = .priority
     return configuration
   }
 
@@ -1172,10 +1159,6 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
       ),
     ]
 
-    if #unavailable(iOS 16.0), isUsingBottomBar {
-      children.reverse()
-    }
-
     return UIMenu(options: .displayInline, children: children)
   }
 
@@ -1204,10 +1187,6 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         }
       ),
     ]
-
-    if #unavailable(iOS 16.0), isUsingBottomBar {
-      children.reverse()
-    }
 
     return UIMenu(options: .displayInline, children: children)
   }

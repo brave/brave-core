@@ -10,9 +10,7 @@ class SettingsNavigationController: UINavigationController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    if #available(iOS 16.0, *) {
-      self.setNeedsUpdateOfSupportedInterfaceOrientations()
-    }
+    self.setNeedsUpdateOfSupportedInterfaceOrientations()
   }
 
   @objc func done() {

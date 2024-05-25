@@ -80,7 +80,6 @@ private struct LockScreenFavoriteProvider: IntentTimelineProvider {
   }
 }
 
-@available(iOS 16.0, *)
 private struct LockScreenFavoriteView: View {
   var entry: LockScreenFavoriteEntry
 
@@ -133,7 +132,6 @@ private struct LockScreenFavoriteView: View {
 }
 
 #if DEBUG
-@available(iOS 16.0, *)
 struct LockScreenFavoriteViewWidget_Previews: PreviewProvider {
   static var previews: some View {
     Group {

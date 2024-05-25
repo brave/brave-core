@@ -14,43 +14,15 @@ public final class DeviceOrientation {
   public static let shared: DeviceOrientation = DeviceOrientation()
 
   public func changeOrientation(_ orientationMask: UIInterfaceOrientationMask) {
-    if #available(iOS 16.0, *) {
-      windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientationMask))
-    } else {
-      var orientation: UIInterfaceOrientation?
-
-      switch orientationMask {
-      case .portrait:
-        orientation = UIInterfaceOrientation.portrait
-      case .portraitUpsideDown:
-        orientation = UIInterfaceOrientation.portraitUpsideDown
-      case .landscapeRight:
-        orientation = UIInterfaceOrientation.landscapeRight
-      case .landscapeLeft:
-        orientation = UIInterfaceOrientation.landscapeLeft
-      default:
-        orientation = UIInterfaceOrientation.unknown
-      }
-
-      if let orientation = orientation {
-        UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
-      }
-    }
+    windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientationMask))
   }
 
   private var isLandscape: Bool {
-    if #available(iOS 16.0, *) {
-      return windowScene?.interfaceOrientation.isLandscape ?? false
-    }
-
-    return UIDevice.current.orientation.isLandscape
+    return windowScene?.interfaceOrientation.isLandscape ?? false
   }
 
   private var isPortrait: Bool {
-    if #available(iOS 16.0, *) {
-      return windowScene?.interfaceOrientation.isPortrait ?? false
-    }
-    return UIDevice.current.orientation.isPortrait
+    return windowScene?.interfaceOrientation.isPortrait ?? false
   }
 
   public func changeOrientationToPortraitOnPhone() {

@@ -14,11 +14,7 @@ import os
 
 struct TopNewsWidget: Widget {
   var supportedFamilies: [WidgetFamily] {
-    if #available(iOS 16.0, *) {
-      return [.systemSmall, .accessoryRectangular]
-    } else {
-      return [.systemSmall]
-    }
+    return [.systemSmall, .accessoryRectangular]
   }
 
   var body: some WidgetConfiguration {
@@ -111,12 +107,8 @@ private struct TopNewsView: View {
   var entry: TopNewsEntry
 
   var body: some View {
-    if #available(iOS 16.0, *) {
-      if widgetFamily == .accessoryRectangular {
-        LockScreenTopNewsView(entry: entry)
-      } else {
-        WidgetTopNewsView(entry: entry)
-      }
+    if widgetFamily == .accessoryRectangular {
+      LockScreenTopNewsView(entry: entry)
     } else {
       WidgetTopNewsView(entry: entry)
     }
@@ -296,12 +288,10 @@ struct TopNewsView_PreviewProvider: PreviewProvider {
       entry: entry
     )
     .previewContext(WidgetPreviewContext(family: .systemSmall))
-    if #available(iOS 16.0, *) {
-      TopNewsView(entry: entry)
-        .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
-      TopNewsView(entry: .init(topic: nil))
-        .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
-    }
+    TopNewsView(entry: entry)
+      .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
+    TopNewsView(entry: .init(topic: nil))
+      .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
     TopNewsView(entry: .init(topic: nil))
       .previewContext(WidgetPreviewContext(family: .systemSmall))
   }

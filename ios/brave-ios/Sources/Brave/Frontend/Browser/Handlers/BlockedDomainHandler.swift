@@ -51,12 +51,10 @@ public class BlockedDomainHandler: InternalSchemeResponse {
       )
       .replacingOccurrences(of: "%security_token%", with: UserScriptManager.securityToken)
 
-    if #available(iOS 16.0, *) {
-      html = html?.replacingOccurrences(
-        of: "<html lang=\"en\">",
-        with: "<html lang=\"\(Locale.current.language.minimalIdentifier)\">"
-      )
-    }
+    html = html?.replacingOccurrences(
+      of: "<html lang=\"en\">",
+      with: "<html lang=\"\(Locale.current.language.minimalIdentifier)\">"
+    )
 
     guard let data = html?.data(using: .utf8) else {
       return nil

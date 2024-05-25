@@ -16,10 +16,6 @@ extension View {
     message: "Use `scrollContentBackground` and `background` directly"
   )
   public func listBackgroundColor(_ color: Color) -> some View {
-    if #available(iOS 16.0, *) {
-      return self.scrollContentBackground(.hidden).background(color)
-    } else {
-      return self
-    }
+    return self.scrollContentBackground(.hidden).background(color)
   }
 }

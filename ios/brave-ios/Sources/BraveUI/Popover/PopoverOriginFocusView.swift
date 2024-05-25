@@ -85,7 +85,6 @@ struct PopoverOriginFocusView_PreviewProvider: PreviewProvider {
     func updateUIView(_ uiView: PopoverOriginFocusView, context: Context) {
       uiView.beginAnimating()
     }
-    @available(iOS 16.0, *)
     func sizeThatFits(
       _ proposal: ProposedViewSize,
       uiView: PopoverOriginFocusView,

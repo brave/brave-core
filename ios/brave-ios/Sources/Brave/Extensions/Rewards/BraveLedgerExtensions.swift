@@ -12,7 +12,7 @@ import os.log
 extension BraveRewardsAPI {
 
   public var isLedgerTransferExpired: Bool {
-    if Locale.current.regionCode != "JP" {
+    if Locale.current.region?.identifier != "JP" {
       return false
     }
     let now = Date()

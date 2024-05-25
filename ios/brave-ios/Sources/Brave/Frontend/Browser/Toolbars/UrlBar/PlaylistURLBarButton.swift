@@ -32,33 +32,15 @@ class PlaylistURLBarButton: UIButton {
     attributes: UIMenuElement.Attributes = [],
     handler: @escaping () -> UIMenu
   ) -> UIAction {
-    let action: UIAction
-    if #available(iOS 16.0, *) {
-      action = UIAction(
-        title: title,
-        image: image,
-        attributes: attributes.union(.keepsMenuPresented),
-        handler: { _ in
-          let menu = handler()
-          self.menu = menu
-        }
-      )
-    } else {
-      action = UIAction(
-        title: title,
-        image: image,
-        attributes: attributes,
-        handler: UIAction.deferredActionHandler { _ in
-          let menu = handler()
-          self.menu = menu
-          self.contextMenuInteraction?.perform(
-            Selector("_pres\("entMenuAtLoca")tion:"),
-            with: CGPoint.zero
-          )
-        }
-      )
-    }
-    return action
+    return UIAction(
+      title: title,
+      image: image,
+      attributes: attributes.union(.keepsMenuPresented),
+      handler: { _ in
+        let menu = handler()
+        self.menu = menu
+      }
+    )
   }
 
   private func defaultMenu(for info: PlaylistInfo?) -> UIMenu {

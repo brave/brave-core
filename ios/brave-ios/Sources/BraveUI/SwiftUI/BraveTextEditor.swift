@@ -27,13 +27,7 @@ public struct BraveTextEditor: View {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
       }
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.scrollContentBackground(.hidden)
-        } else {
-          content
-        }
-      }
+      .scrollContentBackground(.hidden)
       .overlay(
         Text(prompt)
           .multilineTextAlignment(.leading)
