@@ -70,9 +70,6 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   bool NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    // EXPECT_TRUE(ui_test_utils::NavigateToURL(
-    //     browser(), ));
-    // return WaitForLoadStop(active_contents());
     GURL url = embedded_test_server()->GetURL(origin, path);
     return NavigateToURLUntilLoadStop(url);
   }
