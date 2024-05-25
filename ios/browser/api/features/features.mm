@@ -259,10 +259,6 @@
 }
 #endif
 
-+ (Feature*)kIpfsFeature {
-  return [[Feature alloc] initWithFeature:&ipfs::features::kIpfsFeature];
-}
-
 + (Feature*)kNTP {
   return [[Feature alloc]
       initWithFeature:&brave_search_conversion::features::kNTP];

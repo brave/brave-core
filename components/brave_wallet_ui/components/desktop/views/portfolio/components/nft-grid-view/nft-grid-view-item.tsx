@@ -26,6 +26,7 @@ import {
 import { WalletActions } from '../../../../../../common/actions'
 
 // Utils
+import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import { getLocale } from '../../../../../../../common/locale'
 import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
@@ -58,6 +59,7 @@ interface Props {
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, isTokenHidden, isTokenSpam, onSelectAsset } = props
+  const tokenImageURL = stripERC20TokenImageURL(token.logo)
   const [showRemoveNftModal, setShowRemoveNftModal] =
     React.useState<boolean>(false)
 
@@ -165,6 +167,7 @@ export const NFTGridViewItem = (props: Props) => {
         )}
         <IconWrapper>
           <DecoratedNftIcon
+            icon={tokenImageURL}
             responsive={true}
             chainId={token?.chainId}
             coinType={token?.coin}

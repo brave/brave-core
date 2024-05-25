@@ -394,43 +394,6 @@ TEST_F(NftMetadataFetcherUnitTest, GetEthTokenMetadata) {
   const std::string invalid_json =
       "It might make sense just to get some in case it catches on";
 
-  // Decoded result is
-  // `ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1817`
-  const std::string ipfs_token_uri_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003a697066733a2f2f516d65536a53696e4870506e6d586d73704d6a776958794e367a533445397a63636172694752336a7863615774712f31383137000000000000"
-  })";
-  const std::string ipfs_metadata_response = R"({
-    "attributes": [
-      {
-        "trait_type": "Mouth",
-        "value": "Bored Cigarette"
-      },
-      {
-        "trait_type": "Fur",
-        "value": "Gray"
-      },
-      {
-        "trait_type": "Background",
-        "value": "Aquamarine"
-      },
-      {
-        "trait_type": "Clothes",
-        "value": "Tuxedo Tee"
-      },
-      {
-        "trait_type": "Hat",
-        "value": "Bayc Hat Black"
-      },
-      {
-        "trait_type": "Eyes",
-        "value": "Coins"
-      }
-    ],
-    "image": "ipfs://QmQ82uDT3JyUMsoZuaFBYuEucF654CYE5ktPUrnA5d4VDH"
-  })";
-
   // Invalid inputs
   // (1/3) Invalid contract address
   TestGetEthTokenMetadata(
@@ -475,16 +438,6 @@ TEST_F(NftMetadataFetcherUnitTest, GetEthTokenMetadata) {
   TestGetEthTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
                           mojom::kMainnetChainId, kERC721MetadataInterfaceId,
                           https_metadata_response,
-                          mojom::ProviderError::kSuccess, "");
-
-  // (2/3) IPFS URI
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kLocalhostChainId,
-                              interface_supported_response,
-                              ipfs_token_uri_response, ipfs_metadata_response);
-  TestGetEthTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                          mojom::kLocalhostChainId, kERC721MetadataInterfaceId,
-                          ipfs_metadata_response,
                           mojom::ProviderError::kSuccess, "");
 
   // (3/3) Data URI
@@ -605,15 +558,6 @@ TEST_F(NftMetadataFetcherUnitTest, GetEthTokenMetadata) {
                           mojom::kMainnetChainId, kERC721MetadataInterfaceId,
                           "", mojom::ProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // (2/2) Invalid JSON
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, ipfs_token_uri_response, invalid_json);
-  TestGetEthTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                          mojom::kMainnetChainId, kERC721MetadataInterfaceId,
-                          "", mojom::ProviderError::kParsingError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // ERC1155
   SetTokenMetadataInterceptor(
