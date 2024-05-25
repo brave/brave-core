@@ -71,11 +71,7 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
-    test_data_dir_ = test_data_dir_.AppendASCII("brave/test/data");
-
-    host_resolver()->AddRule("*", "127.0.0.1");
-
+    test_data_dir_ = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     embedded_test_server()->ServeFilesFromSourceDirectory("content/test/data");
     https_server_.ServeFilesFromSourceDirectory("content/test/data");
     embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
@@ -85,6 +81,7 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
         &IpfsTabHelperBrowserTest::ResponseHandler, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
     ASSERT_TRUE(embedded_test_server()->Start());
+    host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   content::WebContents* active_contents() {
