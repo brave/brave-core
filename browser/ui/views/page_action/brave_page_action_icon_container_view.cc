@@ -11,6 +11,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -30,6 +31,11 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // |browser| is null for non-browser window. See LocationBarView::Init().
   if (!params.browser) {
     return params;
+  }
+
+  if (sharing_hub::HasPageAction(params.browser->profile(),
+                                 params.browser->is_type_popup())) {
+    params.types_enabled.push_back(PageActionIconType::kSharingHub);
   }
 
   params.types_enabled.insert(
