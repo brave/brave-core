@@ -71,7 +71,6 @@ inline constexpr const char* kAllowedUrlPrefixes[] = {
 
     // Other
     "https://brave-core-ext.s3.brave.com/",
-    "https://cdn.search.brave.com/",
     "https://dict.brave.com/",
     "https://go-updater.brave.com/",
     "https://redirector.brave.com/",
