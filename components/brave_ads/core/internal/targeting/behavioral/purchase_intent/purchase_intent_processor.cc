@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
@@ -71,6 +72,17 @@ bool PurchaseIntentProcessor::ShouldProcess(const int32_t tab_id,
   }
 
   return iter->second != url;
+}
+
+void PurchaseIntentProcessor::MaybeProcess(const int32_t tab_id,
+                                           const GURL& url) {
+  if (!ShouldProcess(tab_id, url)) {
+    return;
+  }
+
+  tabs_[tab_id] = url;
+
+  Process(url);
 }
 
 std::optional<PurchaseIntentSignalInfo>
@@ -178,20 +190,18 @@ PurchaseIntentProcessor::MaybeGetFunnelForUrl(const GURL& url) const {
   return iter->second;
 }
 
-void PurchaseIntentProcessor::OnTextContentDidChange(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& /*text*/) {
-  CHECK(!redirect_chain.empty());
+void PurchaseIntentProcessor::OnTabDidChange(const TabInfo& tab) {
+  CHECK(!tab.redirect_chain.empty());
 
-  const GURL& url = redirect_chain.back();
+  const GURL& url = tab.redirect_chain.back();
+  MaybeProcess(tab.id, url);
+}
 
-  if (!ShouldProcess(tab_id, url)) {
-    return;
-  }
-  tabs_[tab_id] = url;
+void PurchaseIntentProcessor::OnDidOpenNewTab(const TabInfo& tab) {
+  CHECK(!tab.redirect_chain.empty());
 
-  Process(url);
+  const GURL& url = tab.redirect_chain.back();
+  MaybeProcess(tab.id, url);
 }
 
 void PurchaseIntentProcessor::OnDidCloseTab(const int32_t tab_id) {
