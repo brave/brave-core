@@ -314,8 +314,17 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
         setting_info.secondary_pattern.MatchesAllHosts();                \
   }
 
+// This avoids a CHECK(!is_explicit_setting) in upstream code when allowing
+// partitioned cookies, which would fail with our current ephemeral storage
+// implementation. By default Chromimum allows all 3p cookies if applied
+// CookieSettingsPatterns for the URL is explicit. We use explicit setting to
+// enable 1PES mode.
+#define BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING \
+  if (false)
+
 #define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed
 #undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
+#undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
