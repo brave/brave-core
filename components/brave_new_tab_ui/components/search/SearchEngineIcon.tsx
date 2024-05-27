@@ -15,7 +15,7 @@ const icons = {
   // The Google search provider has the empty origin :O
   '': 'google-color',
   'duckduckgo.com': 'duckduckgo-color',
-  'search.brave.com': 'brave-icon-search-color',
+  'search.brave.com': 'brave-search-big-color',
   'www.bing.com': 'bing-color',
   'www.qwant.com': 'qwant-color',
   'www.startpage.com': 'startpage-color',
