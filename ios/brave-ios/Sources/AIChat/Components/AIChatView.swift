@@ -455,8 +455,10 @@ public struct AIChatView: View {
         )
         .padding()
       case .contextLimitReached:
-        AIChatContextLimitErrorView()
-          .padding()
+        AIChatContextLimitErrorView {
+          model.clearConversationHistory()
+        }
+        .padding()
       case .none:
         EmptyView()
       @unknown default:
