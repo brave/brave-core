@@ -303,7 +303,9 @@ public class BalanceHelper {
     }
 
     private static <T extends GetBalanceResponseBaseContext> T addBalanceResponseContext(
-            ArrayList<GetBalanceResponseBaseContext> contexts, T context, String accountAddress,
+            ArrayList<GetBalanceResponseBaseContext> contexts,
+            T context,
+            String accountAddress,
             BlockchainToken token) {
         context.accountAddress = accountAddress.toLowerCase(Locale.ENGLISH);
         if (token != null) context.userAsset = token;
