@@ -115,6 +115,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   }
 }
 
+// We use x86 builds on Android to run tests and rewards with ads
+// are off on x86 builds
+#if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        ExcludeServicesInOTRAndGuestProfiles) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -123,9 +126,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* otr_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
-// We use x86 builds on Android to run tests and rewards with ads
-// are off on x86 builds
-#if !BUILDFLAG(IS_ANDROID)
   profiles::SwitchToGuestProfile(base::DoNothing());
   ui_test_utils::WaitForBrowserToOpen();
 
@@ -141,17 +141,15 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
-  EXPECT_NE(
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile), nullptr);
-  EXPECT_EQ(
-      brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
-      nullptr);
+  EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+            nullptr);
+  EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
+            nullptr);
 
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);
-  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
-            nullptr);
-#endif
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile), nullptr);
 }
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
