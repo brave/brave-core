@@ -436,8 +436,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_DEBOUNCE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
-        } else if (PREF_IPFS_GATEWAY.equals(key)) {
-            BravePrivacySettingsIPFSUtils.setIPFSGatewayPref((boolean) newValue);
         } else if (PREF_BLOCK_COOKIE_CONSENT_NOTICES.equals(key)) {
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(

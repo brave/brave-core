@@ -54,6 +54,13 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
+constexpr char kBraveIpfsFeatureMigrated[] =
+    "brave.ipfs";
+constexpr char kBraveIpfsCompanionMigrated[] =
+    "brave.ipfs_companion_enabled";
+inline constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
+inline constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";    
+
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
   selected_networks.Set(kEthereumPrefKey, mojom::kMainnetChainId);
@@ -131,6 +138,14 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
                                 false);
 }
 
+void RegisterDeprecatedIpfsPrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterDictionaryPref(kBraveIpfsFeatureMigrated);
+  registry->RegisterBooleanPref(kBraveIpfsCompanionMigrated, false);
+  registry->RegisterDictionaryPref(kPinnedNFTAssetsMigrated);
+  registry->RegisterBooleanPref(kAutoPinEnabledMigrated, false);
+}
+
 void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetEthContractAddressMigrated);
@@ -146,6 +161,13 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
+}
+
+void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
+  prefs->ClearPref(kBraveIpfsFeatureMigrated);
+  prefs->ClearPref(kBraveIpfsCompanionMigrated);
+  prefs->ClearPref(kPinnedNFTAssetsMigrated);
+  prefs->ClearPref(kAutoPinEnabledMigrated);
 }
 
 }  // namespace
@@ -223,6 +245,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
+  RegisterDeprecatedIpfsPrefs(registry);
 
   // Added 04/2023
   p3a_utils::RegisterFeatureUsagePrefs(
@@ -311,6 +334,7 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
+  ClearDeprecatedIpfsPrefs(prefs);
 
   // Added 03/2023 to add filecoin evm support.
   BraveWalletService::MigrateHiddenNetworks(prefs);
