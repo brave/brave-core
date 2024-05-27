@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -38,23 +40,24 @@ import java.util.Locale;
 import java.util.Map;
 
 public class BalanceHelper {
-    private static String TAG = "BalanceHelper";
+    /** Get assets balances for all accounts on selected network. */
+    public static void getNativeAssetsBalances(
+            @NonNull final JsonRpcService jsonRpcService,
+            @NonNull final NetworkInfo selectedNetwork,
+            @NonNull final AccountInfo[] accounts,
+            @NonNull final Callbacks.Callback2<Integer, HashMap<String, Double>> callback) {
+        HashMap<String, Double> nativeAssetsBalances = new HashMap<>();
 
-    /**
-     * Get assets balances for all accounts on selected network.
-     */
-    public static void getNativeAssetsBalances(JsonRpcService jsonRpcService,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
-            Callbacks.Callback2<Integer, HashMap<String, Double>> callback) {
-        if (jsonRpcService == null) return;
-        HashMap<String, Double> nativeAssetsBalances = new HashMap<String, Double>();
+        MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accounts.length);
+        ArrayList<GetBalanceResponseBaseContext> contexts = new ArrayList<>();
 
-        MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accountInfos.length);
-        ArrayList<GetBalanceResponseBaseContext> contexts =
-                new ArrayList<GetBalanceResponseBaseContext>();
+        if (selectedNetwork.coin == CoinType.BTC || selectedNetwork.coin == CoinType.ZEC) {
+            callback.call(selectedNetwork.coin, nativeAssetsBalances);
+            return;
+        }
 
         // Native balances
-        for (AccountInfo accountInfo : accountInfos) {
+        for (AccountInfo accountInfo : accounts) {
             if (accountInfo.accountId.coin != selectedNetwork.coin) continue;
 
             // Get CoinType SOL balances
@@ -242,46 +245,67 @@ public class BalanceHelper {
         }
     }
 
-    private static void processP3ACoinNetworks(@CoinType.EnumType int coinType,
-            List<NetworkInfo> networks, KeyringService keyringService,
-            JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, MultiResponseHandler multiResponse,
+    private static void processP3ACoinNetworks(
+            @CoinType.EnumType int coinType,
+            List<NetworkInfo> networks,
+            KeyringService keyringService,
+            JsonRpcService jsonRpcService,
+            BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry,
+            MultiResponseHandler multiResponse,
             ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses,
             ArrayList<GetBlockchainTokensBalancesResponseContext>
                     blockchainTokensBalancesResponses) {
-        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry, jsonRpcService)) return;
 
-        keyringService.getAllAccounts(allAccounts -> {
-            for (NetworkInfo network : networks) {
-                AccountInfo[] accountInfoArray = AssetUtils.filterAccountsByNetwork(
-                        allAccounts.accounts, network.coin, network.chainId);
+        keyringService.getAllAccounts(
+                allAccounts -> {
+                    for (NetworkInfo network : networks) {
+                        AccountInfo[] accountInfoArray =
+                                AssetUtils.filterAccountsByNetwork(
+                                        allAccounts.accounts, network.coin, network.chainId);
 
-                TokenUtils.getVisibleUserAssetsFiltered(
-                        braveWalletService, network, coinType, TokenUtils.TokenType.ALL, tokens -> {
-                            // Assets balances.
-                            GetNativeAssetsBalancesResponseContext getNativeAssetsBalancesContext =
-                                    new GetNativeAssetsBalancesResponseContext(
-                                            multiResponse.singleResponseComplete);
-                            getNativeAssetsBalances(jsonRpcService, network, accountInfoArray,
-                                    getNativeAssetsBalancesContext);
-                            nativeAssetsBalancesResponses.add(getNativeAssetsBalancesContext);
+                        TokenUtils.getVisibleUserAssetsFiltered(
+                                braveWalletService,
+                                network,
+                                coinType,
+                                TokenUtils.TokenType.ALL,
+                                tokens -> {
+                                    // Assets balances.
+                                    GetNativeAssetsBalancesResponseContext
+                                            getNativeAssetsBalancesContext =
+                                                    new GetNativeAssetsBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getNativeAssetsBalances(
+                                            jsonRpcService,
+                                            network,
+                                            accountInfoArray,
+                                            getNativeAssetsBalancesContext);
+                                    nativeAssetsBalancesResponses.add(
+                                            getNativeAssetsBalancesContext);
 
-                            // Tokens balances.
-                            GetBlockchainTokensBalancesResponseContext
-                                    getBlockchainTokensBalancesContext =
-                                            new GetBlockchainTokensBalancesResponseContext(
-                                                    multiResponse.singleResponseComplete);
-                            getBlockchainTokensBalances(jsonRpcService, network, accountInfoArray,
-                                    tokens, getBlockchainTokensBalancesContext);
-                            blockchainTokensBalancesResponses.add(
-                                    getBlockchainTokensBalancesContext);
-                        });
-            }
-        });
+                                    // Tokens balances.
+                                    GetBlockchainTokensBalancesResponseContext
+                                            getBlockchainTokensBalancesContext =
+                                                    new GetBlockchainTokensBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getBlockchainTokensBalances(
+                                            jsonRpcService,
+                                            network,
+                                            accountInfoArray,
+                                            tokens,
+                                            getBlockchainTokensBalancesContext);
+                                    blockchainTokensBalancesResponses.add(
+                                            getBlockchainTokensBalancesContext);
+                                });
+                    }
+                });
     }
 
     private static <T extends GetBalanceResponseBaseContext> T addBalanceResponseContext(
-            ArrayList<GetBalanceResponseBaseContext> contexts, T context, String accountAddress,
+            ArrayList<GetBalanceResponseBaseContext> contexts,
+            T context,
+            String accountAddress,
             BlockchainToken token) {
         context.accountAddress = accountAddress.toLowerCase(Locale.ENGLISH);
         if (token != null) context.userAsset = token;
