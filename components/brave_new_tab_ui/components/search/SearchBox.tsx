@@ -31,7 +31,7 @@ const SearchInput = styled(Input)`
 
 const EnginePicker = styled(Dropdown)`
   --leo-control-radius: ${radius.m};
-  --leo-control-text-color: ${color.text.primary};
+  --leo-control-text-color: ${color.page.background};
 `
 
 const EngineValueSlot = styled.div`
@@ -46,6 +46,7 @@ const SearchIconContainer = styled.div`
 
 const Option = styled.div`
     display: flex;
+    color: ${color.black};
     gap: ${spacing.m};
 `
 
