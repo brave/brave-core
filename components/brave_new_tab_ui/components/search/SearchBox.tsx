@@ -23,6 +23,10 @@ const SearchInput = styled(Input)`
 
   display: inline-block;
   width: 540px;
+
+  leo-icon {
+    --leo-icon-color: rgba(255, 255, 255, 0.5);
+  }
 `
 
 const EnginePicker = styled(Dropdown)`
@@ -68,6 +72,7 @@ export const Backdrop = styled.div`
   position: absolute;
   inset: 0;
   backdrop-filter: blur(64px);
+  border-radius: ${radius.m};
 `
 
 export default function SearchBox() {
