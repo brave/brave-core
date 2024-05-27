@@ -129,6 +129,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private boolean mBottomControlsEnabled;
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
     private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private ObservableSupplier<Profile> mProfileSupplier;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -237,6 +238,7 @@ public class BraveToolbarManager extends ToolbarManager {
         mWindowAndroid = windowAndroid;
         mCompositorViewHolder = compositorViewHolder;
         mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
+        mProfileSupplier = profileSupplier;
 
         if (isToolbarPhone()) {
             updateBottomToolbarVisibility();
@@ -296,7 +298,8 @@ public class BraveToolbarManager extends ToolbarManager {
                             BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
                                     id ->
                                             ((ChromeActivity) mActivity)
-                                                    .onOptionsItemSelected(id, null)),
+                                                    .onOptionsItemSelected(id, null),
+                                    mProfileSupplier.get()),
                             mActivityTabProvider,
                             mToolbarTabController::openHomepage,
                             mCallbackController.makeCancelable(
