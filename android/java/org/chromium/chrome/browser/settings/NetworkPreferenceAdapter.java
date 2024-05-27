@@ -70,14 +70,20 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @NonNull
     private List<NetworkInfo> getNetworkInfoByChainId(
-            @NonNull final String[] chainId, @NonNull final NetworkInfo[] allNetworks) {
+            @NonNull final String[] customChainIds, @NonNull final NetworkInfo[] allNetworks) {
+        final List<NetworkInfo> customChains = new ArrayList<>();
+        final List<NetworkInfo> defaultChains = new ArrayList<>();
         final List<NetworkInfo> result = new ArrayList<>();
         for (NetworkInfo network : allNetworks) {
-            if (Arrays.asList(chainId).contains(network.chainId)) {
-                result.add(network);
+            if (Arrays.asList(customChainIds).contains(network.chainId)) {
+                customChains.add(network);
+            } else {
+                defaultChains.add(network);
             }
         }
 
+        result.addAll(defaultChains);
+        result.addAll(customChains);
         return result;
     }
 
