@@ -1,0 +1,26 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module web_discovery.mojom;
+
+struct SelectAttributeRequest {
+  string? sub_selector;
+  string key;
+  string attribute;
+};
+
+struct SelectRequest {
+  string root_selector;
+  array<SelectAttributeRequest> attribute_requests;
+};
+
+struct AttributeResult {
+  string key;
+  array<string> attribute_values;
+};
+
+interface DocumentExtractor {
+  QueryElementAttributes(array<SelectRequest> requests) => (array<AttributeResult> results);
+};

@@ -1,5 +1,8 @@
 include_rules = [
   "+services/network/public",
+  "+content/public/browser",
+  "+services/service_manager/public/cpp",
   "+third_party/boringssl/src/include",
+  "+third_party/re2",
   "+third_party/zlib/google",
 ]

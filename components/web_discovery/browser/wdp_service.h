@@ -10,14 +10,20 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
+
+namespace content {
+class RenderFrameHost;
+}
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -40,6 +46,9 @@ class WDPService : public KeyedService {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  void OnFinishNavigation(const GURL& url,
+                          content::RenderFrameHost* render_frame_host);
+
  private:
   void Start();
   void Stop();
@@ -48,6 +57,7 @@ class WDPService : public KeyedService {
 
   void OnConfigChange(std::unique_ptr<ServerConfig> config);
   void OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns);
+  void OnContentScraped(std::unique_ptr<PageScrapeResult> result);
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
@@ -57,10 +67,13 @@ class WDPService : public KeyedService {
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
+  mojo::RemoteSet<mojom::DocumentExtractor> document_extractor_remotes_;
+
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<ServerConfig> last_loaded_server_config_;
   std::unique_ptr<PatternsGroup> last_loaded_patterns_;
   std::unique_ptr<CredentialManager> credential_manager_;
+  std::unique_ptr<ContentScraper> content_scraper_;
 };
 
 }  // namespace web_discovery
