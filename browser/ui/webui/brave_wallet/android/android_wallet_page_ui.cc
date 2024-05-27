@@ -122,10 +122,6 @@ void AndroidWalletPageUI::CreatePageHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-        brave_wallet_pin_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         meld_integration_service) {
   auto* profile = Profile::FromWebUI(web_ui());
