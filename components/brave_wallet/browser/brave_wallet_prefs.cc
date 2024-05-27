@@ -54,12 +54,10 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
-constexpr char kBraveIpfsFeatureMigrated[] =
-    "brave.ipfs";
-constexpr char kBraveIpfsCompanionMigrated[] =
-    "brave.ipfs_companion_enabled";
-inline constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
-inline constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";    
+constexpr char kBraveIpfsFeatureMigrated[] = "brave.ipfs";
+constexpr char kBraveIpfsCompanionMigrated[] = "brave.ipfs_companion_enabled";
+constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
+constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
@@ -138,8 +136,7 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
                                 false);
 }
 
-void RegisterDeprecatedIpfsPrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
+void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveIpfsFeatureMigrated);
   registry->RegisterBooleanPref(kBraveIpfsCompanionMigrated, false);
   registry->RegisterDictionaryPref(kPinnedNFTAssetsMigrated);
