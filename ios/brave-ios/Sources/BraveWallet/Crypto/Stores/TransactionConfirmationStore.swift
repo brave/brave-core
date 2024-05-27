@@ -72,7 +72,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   }
   @Published var activeTxStatus: BraveWallet.TransactionStatus = .unapproved {
     didSet {
-      if isTxSubmitting == true, oldValue == .approved, activeTxStatus != .approved {
+      if isTxSubmitting == true, activeTxStatus != .approved {
         isTxSubmitting = false
       }
     }
@@ -197,53 +197,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         // won't have any new unapproved tx being added if you on tx confirmation panel
       },
       _onUnapprovedTxUpdated: { [weak self] txInfo in
-        Task { @MainActor [self] in
-          // refresh the unapproved transaction list, as well as tx details UI
-          // first update `allTxs` with the new updated txInfo(txStatus)
-          if let index = self?.allTxs.firstIndex(where: { $0.id == txInfo.id }) {
-            self?.allTxs[index] = txInfo
-          }
-
-          // update details UI if the current active tx is updated
-          if self?.activeTransactionId == txInfo.id {
-            self?.updateTransaction(with: txInfo)
-            self?.activeTxStatus = txInfo.txStatus
-          }
-
-          // if somehow the current active transaction no longer exists
-          // set the first `.unapproved` tx as the new `activeTransactionId`
-          if let unapprovedTxs = self?.unapprovedTxs,
-            !unapprovedTxs.contains(where: { $0.id == self?.activeTransactionId })
-          {
-            self?.activeTransactionId = self?.unapprovedTxs.first?.id ?? ""
-          }
-        }
+        self?.onUnapprovedTxUpdated(txInfo)
       },
       _onTransactionStatusChanged: { [weak self] txInfo in
-        Task { @MainActor [self] in
-          // once we come here. it means user either rejects or confirms a transaction
-
-          // first update `allTxs` with the new updated txInfo(txStatus)
-          if let index = self?.allTxs.firstIndex(where: { $0.id == txInfo.id }) {
-            self?.allTxs[index] = txInfo
-          }
-
-          // only update the `activeTransactionId` if the current active transaction status
-          // becomes `.rejected`/`.dropped`
-          if self?.activeTransactionId == txInfo.id,
-            txInfo.txStatus == .rejected || txInfo.txStatus == .dropped
-          {
-            let indexOfChangedTx =
-              self?.unapprovedTxs.firstIndex(where: { $0.id == txInfo.id }) ?? 0
-            let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
-            self?.activeTransactionId =
-              self?.unapprovedTxs[safe: newIndex]?.id ?? self?.unapprovedTxs.first?.id ?? ""
-          } else {
-            if self?.activeTransactionId == txInfo.id {
-              self?.activeTxStatus = txInfo.txStatus
-            }
-          }
-        }
+        self?.onTransactionStatusChanged(txInfo)
       }
     )
     self.walletServiceObserver = WalletServiceObserver(
@@ -266,24 +223,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
   }
 
-  func rejectAllTransactions(completion: @escaping (Bool) -> Void) {
-    let dispatchGroup = DispatchGroup()
+  @MainActor func rejectAllTransactions() async -> Bool {
     var allRejectsSucceeded = true
     for transaction in unapprovedTxs {
-      dispatchGroup.enter()
-      reject(
-        transaction: transaction,
-        completion: { success in
-          defer { dispatchGroup.leave() }
-          if !success {
-            allRejectsSucceeded = false
-          }
-        }
-      )
+      let success = await reject(transaction: transaction)
+      if !success {
+        allRejectsSucceeded = false
+      }
     }
-    dispatchGroup.notify(queue: .main) {
-      completion(allRejectsSucceeded)
-    }
+    return allRejectsSucceeded
   }
 
   @MainActor func prepare() async {
@@ -838,41 +786,35 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     .sorted(by: { $0.createdTime > $1.createdTime })
   }
 
-  func confirm(
-    transaction: BraveWallet.TransactionInfo,
-    completion: @escaping (_ error: String?) -> Void
-  ) {
-    txService.approveTransaction(
+  @MainActor func confirm(
+    transaction: BraveWallet.TransactionInfo
+  ) async -> String? {
+    isTxSubmitting = true
+    let (success, error, message) = await txService.approveTransaction(
       coinType: transaction.coin,
       chainId: transaction.chainId,
       txMetaId: transaction.id
-    ) { [weak self] success, error, message in
-      // As desktop, we only care about eth provider error or solana
-      // provider error (plus we haven't start supporting filecoin)
-      if error.tag == .providerError {
-        self?.transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(
-          code: error.providerError.rawValue,
-          message: message
-        )
-      } else if error.tag == .solanaProviderError {
-        self?.transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(
-          code: error.solanaProviderError.rawValue,
-          message: message
-        )
-      }
-
-      completion(success ? nil : message)
+    )
+    if error.tag == .providerError {
+      transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(
+        code: error.providerError.rawValue,
+        message: message
+      )
+    } else if error.tag == .solanaProviderError {
+      transactionProviderErrorRegistry[transaction.id] = TransactionProviderError(
+        code: error.solanaProviderError.rawValue,
+        message: message
+      )
     }
+    return success ? nil : message
   }
 
-  func reject(transaction: BraveWallet.TransactionInfo, completion: @escaping (Bool) -> Void) {
-    txService.rejectTransaction(
+  @MainActor func reject(transaction: BraveWallet.TransactionInfo) async -> Bool {
+    await txService.rejectTransaction(
       coinType: transaction.coin,
       chainId: transaction.chainId,
       txMetaId: transaction.id
-    ) { success in
-      completion(success)
-    }
+    )
   }
 
   func updateGasFeeAndLimits(
@@ -964,6 +906,48 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let indexOfChangedTx = unapprovedTxs.firstIndex(where: { $0.id == activeTransactionId }) ?? 0
     let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
     activeTransactionId = unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
+  }
+
+  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+    // refresh the unapproved transaction list, as well as tx details UI
+    // first update `allTxs` with the new updated txInfo(txStatus)
+    if let index = allTxs.firstIndex(where: { $0.id == txInfo.id }) {
+      allTxs[index] = txInfo
+    }
+
+    // update details UI if the current active tx is updated
+    if activeTransactionId == txInfo.id {
+      updateTransaction(with: txInfo)
+      activeTxStatus = txInfo.txStatus
+    }
+
+    // if somehow the current active transaction no longer exists
+    // set the first `.unapproved` tx as the new `activeTransactionId`
+    if !unapprovedTxs.contains(where: { $0.id == activeTransactionId }) {
+      activeTransactionId = unapprovedTxs.first?.id ?? ""
+    }
+  }
+
+  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+    // first update `allTxs` with the new updated txInfo(txStatus)
+    if let index = allTxs.firstIndex(where: { $0.id == txInfo.id }) {
+      allTxs[index] = txInfo
+    }
+
+    // only update the `activeTransactionId` if the current active transaction status
+    // becomes `.rejected`/`.dropped`
+    if activeTransactionId == txInfo.id,
+      txInfo.txStatus == .rejected || txInfo.txStatus == .dropped
+    {
+      let indexOfChangedTx = unapprovedTxs.firstIndex(where: { $0.id == txInfo.id }) ?? 0
+      let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
+      activeTransactionId =
+        unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
+    } else {
+      if activeTransactionId == txInfo.id {
+        activeTxStatus = txInfo.txStatus
+      }
+    }
   }
 }
 
