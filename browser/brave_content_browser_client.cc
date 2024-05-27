@@ -39,6 +39,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
@@ -164,6 +165,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
+#include "brave/components/ai_rewriter/common/features.h"
+#include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -644,6 +651,13 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>().Add<ai_chat::mojom::PageHandler>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  if (ai_rewriter::features::IsAIRewriterEnabled()) {
+    registry.ForWebUI<ai_rewriter::AIRewriterUI>()
+        .Add<ai_rewriter::mojom::AIRewriterPageHandler>();
   }
 #endif
 

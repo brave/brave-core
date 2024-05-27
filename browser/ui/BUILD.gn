@@ -7,6 +7,7 @@ import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -112,6 +113,20 @@ source_set("ui") {
 
       deps += [ "//brave/build/android:jni_headers" ]
     }
+  }
+
+  if (enable_ai_rewriter) {
+    sources += [
+      "ai_rewriter/ai_rewriter_dialog_delegate.cc",
+      "ai_rewriter/ai_rewriter_dialog_delegate.h",
+      "webui/ai_rewriter/ai_rewriter_ui.cc",
+      "webui/ai_rewriter/ai_rewriter_ui.h",
+    ]
+
+    deps += [
+      "//brave/components/ai_rewriter/common",
+      "//brave/components/ai_rewriter/resources/page:generated_resources",
+    ]
   }
 
   if (!is_android) {
@@ -674,6 +689,7 @@ source_set("ui") {
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",

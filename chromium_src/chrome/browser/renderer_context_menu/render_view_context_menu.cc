@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+
 #include <optional>
 
 #include "base/containers/fixed_flat_map.h"
@@ -14,11 +16,11 @@
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
-#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
@@ -58,6 +60,11 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "third_party/re2/src/re2/re2.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
+#include "brave/components/ai_rewriter/common/features.h"
 #endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
@@ -423,6 +430,10 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST:
       return IsAIChatEnabled();
 #endif
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+    case IDC_AI_CHAT_CONTEXT_REWRITE:
+      return ai_rewriter::features::IsAIRewriterEnabled();
+#endif
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -530,6 +541,11 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       ExecuteAIChatCommand(id);
       break;
 #endif
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+    case IDC_AI_CHAT_CONTEXT_REWRITE:
+      ai_rewriter::AIRewriterDialogDelegate::Show(source_web_contents_);
+      break;
+#endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -634,6 +650,14 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 
   ai_chat_submenu_model_.AddTitleWithStringId(
       IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS);
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  if (ai_rewriter::features::IsAIRewriterEnabled()) {
+    ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_REWRITE,
+                                               IDS_AI_CHAT_CONTEXT_REWRITE);
+  }
+#endif
+
   ai_chat_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT);
   ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_EXPLAIN,
