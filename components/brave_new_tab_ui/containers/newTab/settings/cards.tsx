@@ -50,7 +50,7 @@ interface Props {
 }
 
 const ToggleButton = ({ on, toggleFunc, float }: { on: boolean, toggleFunc: any, float?: boolean }) => {
-  return <StyledButton onClick={toggleFunc} kind={on ? 'outline' : 'filled'} float={float}>
+  return <StyledButton onClick={toggleFunc} kind={on ? 'outline' : 'filled'} float={!!float}>
     <div slot="icon-before">
       <Icon name={on ? 'eye-off' : 'plus-add'} />
     </div>
