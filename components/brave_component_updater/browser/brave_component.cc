@@ -79,7 +79,7 @@ void BraveComponent::OnComponentRegistered(
     Delegate* delegate,
     const std::string& component_id) {
   VLOG(2) << "component registered: " << component_id;
-  delegate->OnDemandUpdate(component_id);
+  delegate->OnDemandInstall(component_id);
 }
 
 BraveComponent::Delegate* BraveComponent::delegate() {

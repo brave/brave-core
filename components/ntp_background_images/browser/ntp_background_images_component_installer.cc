@@ -149,7 +149,7 @@ bool NTPBackgroundImagesComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegistered(const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->OnDemandInstall(component_id);
 }
 
 }  // namespace

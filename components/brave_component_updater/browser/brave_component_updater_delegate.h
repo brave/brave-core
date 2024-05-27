@@ -44,7 +44,7 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
                 base::OnceClosure registered_callback,
                 BraveComponent::ReadyCallback ready_callback) override;
   bool Unregister(const std::string& component_id) override;
-  void OnDemandUpdate(const std::string& component_id) override;
+  void OnDemandInstall(const std::string& component_id) override;
 
   void AddObserver(ComponentObserver* observer) override;
   void RemoveObserver(ComponentObserver* observer) override;

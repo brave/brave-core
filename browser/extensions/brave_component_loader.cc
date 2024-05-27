@@ -51,7 +51,7 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
 BraveComponentLoader::~BraveComponentLoader() = default;
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandInstall(
       extension_id);
 }
 

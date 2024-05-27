@@ -32,9 +32,11 @@ BraveOnDemandUpdater::RegisterOnDemandUpdater(
   return std::exchange(on_demand_updater_, on_demand_updater);
 }
 
-void BraveOnDemandUpdater::OnDemandUpdate(const std::string& id) {
-  OnDemandUpdate(id, component_updater::OnDemandUpdater::Priority::FOREGROUND,
-                 component_updater::Callback());
+void BraveOnDemandUpdater::OnDemandInstall(
+    const std::string& id,
+    component_updater::Callback callback) {
+  CHECK(on_demand_updater_);
+  on_demand_updater_->OnDemandInstall(id, std::move(callback));
 }
 
 void BraveOnDemandUpdater::OnDemandUpdate(

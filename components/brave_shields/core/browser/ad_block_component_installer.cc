@@ -136,7 +136,8 @@ bool AdBlockComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegistered(const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND);
 }
 
 }  // namespace

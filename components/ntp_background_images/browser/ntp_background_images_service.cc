@@ -167,7 +167,7 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
   DVLOG(2) << __func__ << ": Check NTP Images component update";
 
   last_update_check_time_ = base::Time::Now();
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->OnDemandInstall(component_id);
 }
 
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {

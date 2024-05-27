@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+
 #define RegisterCRLSetComponent RegisterCRLSetComponent_ChromiumImpl
 #include "src/chrome/browser/component_updater/crl_set_component_installer.cc"
 #undef RegisterCRLSetComponent
@@ -19,7 +21,8 @@ namespace component_updater {
 void OnCRLSetRegistered() {
 // https://github.com/brave/browser-android-tabs/issues/857
 #if !BUILDFLAG(IS_ANDROID)
-  component_updater::BraveOnDemandUpdate(crl_set_extension_id);
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandInstall(
+      crl_set_extension_id);
 #endif
 }
 

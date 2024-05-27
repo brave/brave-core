@@ -46,7 +46,6 @@
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
-#include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
