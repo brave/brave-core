@@ -227,20 +227,19 @@ struct TimeframeSelector: View {
   var body: some View {
     Menu(
       content: {
-        ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
-          Button {
-            selectedDateRange = range
-          } label: {
-            HStack {
-              Image(braveSystemName: "leo.check.normal")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .hidden(isHidden: selectedDateRange != range)
+        Picker(
+          selection: $selectedDateRange,
+          content: {
+            ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
               Text(verbatim: range.accessibilityLabel)
+                .tag(range)
             }
-            .tag(range)
+          },
+          label: {
+            // Menu label is used
+            EmptyView()
           }
-        }
+        )
       },
       label: {
         HStack(spacing: 4) {

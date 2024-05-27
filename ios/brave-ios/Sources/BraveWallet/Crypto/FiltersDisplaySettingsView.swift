@@ -602,19 +602,19 @@ struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View
       Spacer()
       Menu(
         content: {
-          ForEach(allOptions) { option in
-            Button {
-              selection = option
-            } label: {
-              HStack {
-                Image(braveSystemName: "leo.check.normal")
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .hidden(isHidden: selection.id != option.id)
+          Picker(
+            selection: $selection,
+            content: {
+              ForEach(allOptions) { option in
                 content(option)
+                  .tag(option)
               }
+            },
+            label: {
+              // Menu label is used
+              EmptyView()
             }
-          }
+          )
         },
         label: {
           HStack(spacing: 8) {
