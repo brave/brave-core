@@ -271,9 +271,46 @@
 
     </ScrollView>
 
-    <include layout="@layout/brave_sync_add_mobile" />
+    <ScrollView
+        android:id="@+id/view_add_device_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
 
-    <include layout="@layout/brave_sync_add_laptop" />
+        <LinearLayout android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabTextColor="@color/brave_sync_toggle_off_btn_text_color"
+                app:tabSelectedTextColor="@color/brave_sync_toggle_on_btn_text_color"
+                app:tabIndicator="@drawable/brave_sync_tab_indicator"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorColor = "@color/text_interactive"
+                android:background="@drawable/brave_sync_tab_layout_bg"
+                app:tabTextAppearance="@style/BraveSyncTabsTextAppearance"
+                app:tabRippleColor="@android:color/transparent">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brave_sync_qr_code" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brave_sync_code_words" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <include layout="@layout/brave_sync_add_mobile" />
+
+            <include layout="@layout/brave_sync_add_laptop" />
+
+            </LinearLayout>
+    </ScrollView>
 
     <include layout="@layout/brave_sync_done" />
 

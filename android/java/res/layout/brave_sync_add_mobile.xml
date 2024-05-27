@@ -18,31 +18,6 @@
         android:paddingTop="2dip"
         android:paddingEnd="2dip" >
 
-        <LinearLayout android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@android:color/transparent"
-            android:paddingTop="15dip"
-            android:paddingStart="15dip"
-            android:paddingEnd="15dip"
-            android:paddingBottom="15dip" >
-
-            <android.widget.Button android:id="@+id/brave_sync_qr_code_on_btn"
-                android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_height="30dp"
-                android:text="@string/brave_sync_qr_code"
-                style="@style/BraveSyncToggleOnButton" />
-
-            <android.widget.Button android:id="@+id/brave_sync_code_words_off_btn"
-                android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_height="30dp"
-                android:text="@string/brave_sync_code_words"
-                style="@style/BraveSyncToggleOffButton" />
-
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
