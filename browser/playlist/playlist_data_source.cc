@@ -156,7 +156,8 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   } else if (type_string == "favicon") {
     type = DataRequest::Type::kFavicon;
   } else {
-    NOTREACHED() << "type is not in {thumbnail,media,favicon}: " << type_string;
+    NOTREACHED_IN_MIGRATION()
+        << "type is not in {thumbnail,media,favicon}: " << type_string;
   }
 }
 
@@ -190,7 +191,8 @@ void PlaylistDataSource::StartDataRequest(
       GetFavicon(data_request, wc_getter, std::move(got_data_callback));
       break;
     case DataRequest::Type::kMedia:
-      NOTREACHED() << "This request should call StartRangeDataRequest()";
+      NOTREACHED_IN_MIGRATION()
+          << "This request should call StartRangeDataRequest()";
       std::move(got_data_callback).Run(nullptr);
       break;
   }

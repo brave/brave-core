@@ -194,7 +194,7 @@ void WaybackMachineActionIconView::UpdateImpl() {
       SetCommandEnabled(true);
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   // We should update icon also as each state could has different colored badge

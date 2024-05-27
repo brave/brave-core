@@ -47,7 +47,7 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
       break;
     }
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   *hardware_concurrency = farbled_value;
 }

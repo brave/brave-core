@@ -53,7 +53,7 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  private:
   bool ShouldPlayVideoInBrowser(const GURL& url) {
     if (!pref_service_) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
 

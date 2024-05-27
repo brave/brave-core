@@ -53,7 +53,7 @@ std::string GetSyncCodeValidationString(
     case ValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "";
   }
 }

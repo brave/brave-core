@@ -35,7 +35,7 @@ std::optional<std::string> ProcessLauncher::ReadAppOutput(
 
   // Create the pipe for the child process's STDOUT.
   if (!CreatePipe(&out_read, &out_write, &sa_attr, 0)) {
-    NOTREACHED() << "Failed to create pipe";
+    NOTREACHED_IN_MIGRATION() << "Failed to create pipe";
     return std::nullopt;
   }
 
@@ -45,7 +45,7 @@ std::optional<std::string> ProcessLauncher::ReadAppOutput(
 
   // Ensure the read handles to the pipes are not inherited.
   if (!SetHandleInformation(out_read, HANDLE_FLAG_INHERIT, 0)) {
-    NOTREACHED() << "Failed to disabled pipe inheritance";
+    NOTREACHED_IN_MIGRATION() << "Failed to disabled pipe inheritance";
     return std::nullopt;
   }
 

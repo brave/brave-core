@@ -46,7 +46,7 @@ std::string NEVPNStatusToString(NEVPNStatus status) {
     case NEVPNStatusDisconnecting:
       return "NEVPNStatusDisconnecting";
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   return "NEVPNStatusInvalid";
 }

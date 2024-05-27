@@ -231,7 +231,7 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     return;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -249,7 +249,7 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return false;
 }
 
@@ -443,7 +443,7 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     }
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return std::nullopt;
 }
 

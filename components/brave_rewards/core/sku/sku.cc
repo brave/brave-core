@@ -77,7 +77,7 @@ void SKU::CreateTransaction(const std::string& wallet_type,
       return engine_->Get<EnvironmentConfig>().gemini_sku_destination();
     }
 
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return "";
   }();
 

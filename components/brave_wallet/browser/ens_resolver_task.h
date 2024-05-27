@@ -200,7 +200,7 @@ class EnsResolverTaskContainer {
         return;
       }
     }
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 
   std::vector<ResultCallback> TaskDone(EnsResolverTask* task) {
