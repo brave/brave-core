@@ -1,0 +1,20 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("renderer") {
+  sources = [
+    "blink_document_extractor.cc",
+    "blink_document_extractor.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/web_discovery/common:mojom",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink",
+  ]
+}

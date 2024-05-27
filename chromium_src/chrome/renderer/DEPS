@@ -8,6 +8,7 @@ include_rules = [
   "+brave/components/content_settings/renderer",
   "+brave/components/tor/buildflags",
   "+brave/components/tor/renderer",
+  "+brave/components/web_discovery/renderer",
   "+brave/renderer",
   "+media/base/key_system_info.h",
   "+services/network/public/cpp",

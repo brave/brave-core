@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
+#include "brave/components/web_discovery/renderer/blink_document_extractor.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "components/dom_distiller/content/renderer/distillability_agent.h"
@@ -42,6 +43,8 @@ void RenderFrameWithBinderRegistryCreated(
     new ai_rewriter::AIRewriterAgent(render_frame, registry);
   }
 #endif
+
+  new web_discovery::BlinkDocumentExtractor(render_frame, registry);
 }
 
 }  // namespace

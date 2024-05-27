@@ -11,9 +11,12 @@
 
 namespace web_discovery {
 
+class WDPService;
+
 class WDPServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static WDPServiceFactory* GetInstance();
+  static WDPService* GetForBrowserContext(content::BrowserContext* context);
 
  private:
   friend base::NoDestructor<WDPServiceFactory>;

@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
 
@@ -61,6 +62,7 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
         VLOG(1) << "Attribute missing from rule";
         return std::nullopt;
       }
+      rule_it->report_key = report_key;
       rule_it->rule_type = ScrapeRuleType::kOther;
       if (rule_type_str) {
         auto rule_type_it = kRuleTypeMap.find(*rule_type_str);
@@ -103,7 +105,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
     }
     auto& details = result[i];
 
-    details.url_regex = *url_regex;
+    details.url_regex = std::make_unique<re2::RE2>(*url_regex);
 
     std::string i_str = base::NumberToString(i);
 

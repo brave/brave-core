@@ -11,6 +11,12 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+
+namespace re2 {
+class RE2;
+}  // namespace re2
+
 namespace web_discovery {
 
 enum class ScrapeRuleType { kStandard, kSearchQuery, kWidgetTitle, kOther };
@@ -20,6 +26,7 @@ struct ScrapeRule {
   ~ScrapeRule();
 
   ScrapeRule(const ScrapeRule&) = delete;
+  ScrapeRule& operator=(const ScrapeRule&) = delete;
 
   std::string report_key;
   std::string selector;
@@ -33,6 +40,7 @@ struct ScrapeRuleGroup {
   ~ScrapeRuleGroup();
 
   ScrapeRuleGroup(const ScrapeRuleGroup&) = delete;
+  ScrapeRuleGroup& operator=(const ScrapeRuleGroup&) = delete;
 
   std::string selector;
   std::vector<ScrapeRule> rules;
@@ -43,8 +51,9 @@ struct PatternsURLDetails {
   ~PatternsURLDetails();
 
   PatternsURLDetails(const PatternsURLDetails&) = delete;
+  PatternsURLDetails& operator=(const PatternsURLDetails&) = delete;
 
-  std::string url_regex;
+  std::unique_ptr<re2::RE2> url_regex;
   bool is_search_engine;
   std::string id;
   std::vector<ScrapeRuleGroup> scrape_rule_groups;
@@ -53,6 +62,9 @@ struct PatternsURLDetails {
 struct PatternsGroup {
   PatternsGroup();
   ~PatternsGroup();
+
+  PatternsGroup(const PatternsGroup&) = delete;
+  PatternsGroup& operator=(const PatternsGroup&) = delete;
 
   std::vector<PatternsURLDetails> normal_patterns;
   std::vector<PatternsURLDetails> strict_patterns;

@@ -16,6 +16,12 @@
 
 namespace web_discovery {
 
+WDPService* WDPServiceFactory::GetForBrowserContext(
+    content::BrowserContext* context) {
+  return static_cast<WDPService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
 WDPServiceFactory* WDPServiceFactory::GetInstance() {
   static base::NoDestructor<WDPServiceFactory> instance;
   return instance.get();
@@ -33,8 +39,8 @@ KeyedService* WDPServiceFactory::BuildServiceInstanceFor(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-  base::FilePath user_data_dir;
-  CHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+  base::FilePath user_data_dir =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   return new WDPService(g_browser_process->local_state(),
                         user_prefs::UserPrefs::Get(context), user_data_dir,
                         shared_url_loader_factory);

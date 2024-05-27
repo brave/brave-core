@@ -5,6 +5,8 @@
 
 static_library("browser") {
   sources = [
+    "content_scraper.cc",
+    "content_scraper.h",
     "credential_manager.cc",
     "credential_manager.h",
     "patterns.cc",
@@ -18,17 +20,22 @@ static_library("browser") {
     "util.h",
     "wdp_service.cc",
     "wdp_service.h",
+    "web_discovery_tab_helper.cc",
+    "web_discovery_tab_helper.h",
   ]
   deps = [
     "anonymous_credentials/rs:rust_lib",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",
+    "//brave/components/web_discovery/common:mojom",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
     "//third_party/boringssl",
+    "//third_party/re2",
     "//third_party/zlib/google:compression_utils",
     "//url",
   ]
