@@ -257,9 +257,7 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
 
     override fun onResumeWithNative() {
         super.onResumeWithNative();
-
         Log.e(TAG, "onResumeWithNative")
-
         mPlaylistId = intent.getStringExtra(ConstantUtils.PLAYLIST_ID)?:ConstantUtils.DEFAULT_PLAYLIST
         initializeBrowser()
 
@@ -270,6 +268,16 @@ class PlaylistActivity : PlaylistBaseActivity(), PlaylistItemClickListener,Start
         }
 
         fetchPlaylistData()
+    }
+
+    override fun finishNativeInitialization() {
+        super.finishNativeInitialization()
+        val intentAction = intent.action
+        if (!intentAction.isNullOrEmpty() && intentAction.equals(ConstantUtils.PLAYLIST_ACTION) && !TextUtils.isEmpty(VideoPlaybackService.currentPlaylistId)) {
+            val playlistPlayerActivityIntent = Intent(this@PlaylistActivity, PlaylistPlayerActivity::class.java)
+            playlistPlayerActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, VideoPlaybackService.currentPlaylistId);
+            startActivity(playlistPlayerActivityIntent)
+        }
     }
 
     private fun fetchPlaylistData() {

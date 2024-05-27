@@ -18,6 +18,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistPlayerActivity
 import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils
 import org.chromium.playlist.mojom.PlaylistItem
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
+import org.chromium.chrome.browser.ChromeTabbedActivity
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/"+this::class.java.simpleName
@@ -45,17 +47,10 @@ object PlaylistUtils {
         )
     }
 
-    fun playlistNotificationIntent(context: Context): Intent? {
-        return try {
-            val intent = Intent(
-                context, Class.forName("org.chromium.chrome.browser.playlist.PlaylistHostActivity")
-            )
+    fun playlistNotificationIntent(context: Context): Intent {
+            val intent = Intent(context, ChromeTabbedActivity::class.java)
             intent.action = ConstantUtils.PLAYLIST_ACTION
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        } catch (ex: ClassNotFoundException) {
-            Log.e(TAG, "playlistNotificationIntent" + ex.message)
-            null
-        }
+            return intent
     }
 
     fun getOnboardingItemList(context: Context): List<PlaylistOnboardingModel> {
