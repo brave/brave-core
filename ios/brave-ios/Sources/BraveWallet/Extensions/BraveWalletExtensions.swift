@@ -147,7 +147,7 @@ extension BraveWallet.AccountId {
   }
 
   var blockieSeed: String {
-    address.isEmpty ? uniqueKey.sha256 : address
+    address.isEmpty ? uniqueKey.sha256 : address.lowercased()
   }
 }
 
