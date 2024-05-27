@@ -7,8 +7,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/pattern.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -20,11 +22,16 @@
 #include "content/public/test/test_frame_navigation_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
-#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/chrome_test_extension_loader.h"
+#include "extensions/test/test_extension_dir.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
 
@@ -315,6 +322,40 @@ IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
   // iframe and vice versa.
   EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 1, 2);
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
+                       BlobsAreAccessibleFromExtension) {
+  FramesWithRegisteredBlobs a_com_registered_blobs =
+      RegisterBlobs(a_site_ephemeral_storage_url_);
+
+  extensions::TestExtensionDir test_extension_dir;
+  test_extension_dir.WriteManifest(R"({
+    "name": "Test",
+    "manifest_version": 2,
+    "version": "0.1",
+    "permissions": ["webRequest", "*://a.com/*", "*://b.com/*"],
+    "content_security_policy":
+      "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  })");
+  test_extension_dir.WriteFile(FILE_PATH_LITERAL("empty.html"), "");
+
+  extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
+  scoped_refptr<const extensions::Extension> extension =
+      extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
+  const GURL url = extension->GetResourceURL("/empty.html");
+  auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_TRUE(extension_rfh);
+
+  for (size_t idx = 0; idx < a_com_registered_blobs.size(); ++idx) {
+    SCOPED_TRACE(a_com_registered_blobs[idx].blob_url.spec());
+    EXPECT_EQ(base::NumberToString(idx),
+              FetchBlob(extension_rfh, a_com_registered_blobs[idx].blob_url));
+  }
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 class BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest
     : public BlobUrlPartitionEnabledBrowserTest {
