@@ -35,6 +35,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_news/rust:unit_tests",
+    "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/time_period_storage",
