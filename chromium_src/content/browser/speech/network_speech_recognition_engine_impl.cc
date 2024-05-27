@@ -5,31 +5,49 @@
 
 #include <string>
 
-#include "base/feature_list.h"
-#include "base/metrics/field_trial_params.h"
-#include "brave/components/constants/brave_services_key.h"
+#include "base/containers/flat_map.h"
+#include "brave/components/brave_service_keys/brave_service_key_utils.h"
+#include "brave/components/speech_to_text/buildflags.h"
+#include "brave/components/speech_to_text/features.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
-namespace content {
-namespace google_apis {
+namespace content::google_apis {
 std::string GetAPIKey() {
-  return BUILDFLAG(BRAVE_SERVICES_KEY);
+  return BUILDFLAG(SERVICE_KEY_STT);
 }
-}  // namespace google_apis
-}  // namespace content
+}  // namespace content::google_apis
 
 namespace {
 
-BASE_FEATURE(kSttFeature, "speech_to_text", base::FEATURE_DISABLED_BY_DEFAULT);
-const base::FeatureParam<std::string> kSttUrl{&kSttFeature, "web_service_url",
-                                              ""};
-
 std::string GetWebServiceBaseUrl(const char* web_service_base_url_for_tests) {
-  if (base::FeatureList::IsEnabled(kSttFeature)) {
-    return kSttUrl.Get();
+  if (base::FeatureList::IsEnabled(stt::kSttFeature)) {
+    return stt::kSttUrl.Get();
   }
   // Fallback to for-tests URL.
   return web_service_base_url_for_tests;
+}
+
+void AddBraveHeaders(network::ResourceRequest* request,
+                     const std::string& request_key) {
+  DCHECK(request && !request->method.empty() && request->url.is_valid());
+
+  const std::string brave_sticky_session_cookie =
+      "Brave-stt-sticky=" + request_key;
+  request->headers.SetHeader(net::HttpRequestHeaders::kCookie,
+                             brave_sticky_session_cookie);
+
+  constexpr const char kRequestKey[] = "request-key";
+  request->headers.SetHeader(kRequestKey, request_key);
+
+  const base::flat_map<std::string, std::string> headers{
+      {kRequestKey, request_key}};
+  const auto authorization = brave_service_keys::GetAuthorizationHeader(
+      BUILDFLAG(SERVICE_KEY_STT), headers, request->url, request->method,
+      {kRequestKey});
+  if (authorization) {
+    request->headers.SetHeader(authorization->first, authorization->second);
+  }
 }
 
 }  // namespace
@@ -45,7 +63,15 @@ std::string GetWebServiceBaseUrl(const char* web_service_base_url_for_tests) {
                std::string(kUpstreamUrl) +                            \
                base::JoinString(upstream_args, "&"))
 
+#define BRAVE_NETWORK_SPEECH_RECOGNITION_ENGINE_IMPL_BRAVE_DOWNSTREAM \
+  AddBraveHeaders(downstream_request.get(), request_key);
+
+#define BRAVE_NETWORK_SPEECH_RECOGNITION_ENGINE_IMPL_BRAVE_UPSTREAM \
+  AddBraveHeaders(upstream_request.get(), request_key);
+
 #include "src/content/browser/speech/network_speech_recognition_engine_impl.cc"
 
 #undef downstream_url
 #undef upstream_url
+#undef BRAVE_NETWORK_SPEECH_RECOGNITION_ENGINE_IMPL_BRAVE_DOWNSTREAM
+#undef BRAVE_NETWORK_SPEECH_RECOGNITION_ENGINE_IMPL_BRAVE_UPSTREAM
