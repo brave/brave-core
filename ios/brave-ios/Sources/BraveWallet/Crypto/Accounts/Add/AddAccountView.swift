@@ -176,12 +176,11 @@ struct AddAccountView: View {
       if isJSONImported {
         originPasswordSection
       }
-      if selectedCoin != .btc && preSelectedCoin != .btc {
-        privateKeySection
-      }
+      privateKeySection
     }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .listStyle(.insetGrouped)
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(navigationTitle)
     .navigationBarItems(
@@ -251,8 +250,9 @@ struct AddAccountView: View {
         }
       }
     }
-    .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .listStyle(.insetGrouped)
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
   }
@@ -348,7 +348,7 @@ struct AddAccountView: View {
     selectedCoin == nil || selectedCoin == .eth
   }
 
-  private var privateKeySection: some View {
+  @ViewBuilder private var privateKeySection: some View {
     Section(
       header: WalletListHeaderView(
         title: Text(Strings.Wallet.importAccountSectionTitle)
@@ -356,6 +356,16 @@ struct AddAccountView: View {
           .foregroundColor(Color(.bravePrimary))
       )
     ) {
+      if self.selectedCoin == .btc {
+        HStack {
+          Image(braveSystemName: "leo.warning.triangle-filled")
+            .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
+          Text(Strings.Wallet.bitcoinAccountImportWarning)
+            .font(.caption)
+            .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+        }
+        .listRowBackground(Color(braveSystemName: .systemfeedbackWarningBackground))
+      }
       Group {
         TextEditor(text: $privateKey)
           .autocapitalization(.none)
@@ -401,6 +411,7 @@ struct AddAccountView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .listRowSeparator(.hidden)
   }
 
   private var isKeyringSelectionRequired: Bool {

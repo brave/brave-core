@@ -5558,5 +5558,13 @@ extension Strings {
       comment:
         "The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address."
     )
+    public static let bitcoinAccountImportWarning = NSLocalizedString(
+      "wallet.bitcoinAccountImportWarning",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Only zprv (or vprv for Testnet) extended keys are supported.",
+      comment:
+        "The label displayed in Add Account above the private key box when adding or importing a Bitcoin account."
+    )
   }
 }
