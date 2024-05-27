@@ -366,6 +366,8 @@
 
 -keep class org.chromium.chrome.browser.app.BraveActivity
 
+-keep class org.chromium.chrome.browser.media.BravePictureInPictureActivity
+
 -keep class org.chromium.chrome.browser.suggestions.tile.SuggestionsTileView
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveTileView
