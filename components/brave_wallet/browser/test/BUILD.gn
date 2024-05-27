@@ -179,6 +179,7 @@ source_set("test_support") {
   ]
 
   deps = [
+    ":test_data",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser",
