@@ -667,6 +667,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION" desc="The description explaning how to bring the tab to this window when dummy tab is visible"> 
           Clicking this tab will bring its contents to this window
         </message>
+
+        <!-- Split View -->
+        <message name="IDS_SPLIT_VIEW_A11Y_SEPARATOR_MENU_BUTTON" desc="The a11y text for the separator menu button in split view">
+          Split view menu button
+        </message>
       </if>
 
       <!-- Brave Ads -->

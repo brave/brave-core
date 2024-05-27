@@ -320,7 +320,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     secondary_contents_web_view_ =
         contents_container_->AddChildView(std::move(contents_web_view));
     split_view_separator_ = contents_container_->AddChildView(
-        std::make_unique<SplitViewSeparator>());
+        std::make_unique<SplitViewSeparator>(browser_.get()));
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());

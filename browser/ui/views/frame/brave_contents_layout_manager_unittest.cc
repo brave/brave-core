@@ -44,7 +44,7 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
     secondary_devtools_view_ = contents_container_->AddChildView(
         std::make_unique<views::WebView>(nullptr));
     split_view_separator_ = contents_container_->AddChildView(
-        std::make_unique<SplitViewSeparator>());
+        std::make_unique<SplitViewSeparator>(nullptr));
 
     auto layout_manager = std::make_unique<BraveContentsLayoutManager>(
         contents_view_, devtools_view_);

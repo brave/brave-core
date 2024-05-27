@@ -130,6 +130,10 @@
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
     E_CPONLY(kColorBraveSplitViewTileBackground)        \
     E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder) \
+    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)        \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)  \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)      \
+    E_CPONLY(kColorBraveSplitViewMenuItemIcon)
 
 #define BRAVE_PLAYLIST_COLOR_IDS                                      \
     E_CPONLY(kColorBravePlaylistAddedIcon)                            \

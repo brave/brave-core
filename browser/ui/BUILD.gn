@@ -506,6 +506,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_utils.cc",
       "views/side_panel/brave_side_panel_view_base.cc",
       "views/side_panel/brave_side_panel_view_base.h",
+      "views/split_view/split_view_menu_bubble.cc",
+      "views/split_view/split_view_menu_bubble.h",
       "views/split_view/split_view_separator.cc",
       "views/split_view/split_view_separator.h",
       "views/split_view/split_view_separator_delegate.h",
