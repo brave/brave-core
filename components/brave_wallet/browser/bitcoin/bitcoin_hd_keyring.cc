@@ -61,29 +61,29 @@ std::optional<std::vector<uint8_t>> BitcoinHDKeyring::SignMessage(
 
 std::string BitcoinHDKeyring::ImportAccount(
     const std::vector<uint8_t>& private_key) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return "";
 }
 
 bool BitcoinHDKeyring::RemoveImportedAccount(const std::string& address) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return false;
 }
 
 std::string BitcoinHDKeyring::GetDiscoveryAddress(size_t index) const {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return "";
 }
 
 std::vector<std::string> BitcoinHDKeyring::GetImportedAccountsForTesting()
     const {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return {};
 }
 
 std::string BitcoinHDKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return "";
 }
 

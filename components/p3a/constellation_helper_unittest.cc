@@ -124,7 +124,7 @@ class P3AConstellationHelperTest : public testing::Test {
       case MetricLogType::kExpress:
         return kTestExpressEpoch;
     }
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 
   const char* GetTestNextEpochTime(MetricLogType log_type) {
@@ -136,7 +136,7 @@ class P3AConstellationHelperTest : public testing::Test {
       case MetricLogType::kExpress:
         return kTestExpressNextEpochTime;
     }
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 
   void CheckInfoRequestMade(MetricLogType log_type) {

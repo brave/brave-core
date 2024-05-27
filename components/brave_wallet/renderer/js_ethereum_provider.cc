@@ -719,7 +719,7 @@ void JSEthereumProvider::AnnounceProvider() {
            ->SetIntegrityLevel(isolate->GetCurrentContext(),
                                v8::IntegrityLevel::kFrozen)
            .ToChecked()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -729,7 +729,7 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("info"), context),
                 std::move(info_object))
           .IsNothing()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -742,7 +742,7 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("provider"), context),
                 provider)
           .IsNothing()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -750,7 +750,7 @@ void JSEthereumProvider::AnnounceProvider() {
           ->SetIntegrityLevel(isolate->GetCurrentContext(),
                               v8::IntegrityLevel::kFrozen)
           .IsNothing()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -761,7 +761,7 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("detail"), context),
                 std::move(detail))
           .IsNothing()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

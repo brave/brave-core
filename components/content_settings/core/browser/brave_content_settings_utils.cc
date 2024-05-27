@@ -83,7 +83,7 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
     case ContentSettingsType::BRAVE_COOKIES:
       return brave_shields::kCookies;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return std::string();
   }
 }

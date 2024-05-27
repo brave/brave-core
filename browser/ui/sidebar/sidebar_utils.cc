@@ -142,8 +142,9 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       [[fallthrough]];
     case BuiltInItemType::kNone:
       // Add a new case for any new types which we want to support.
-      NOTREACHED() << "Asked for a panel Id from a sidebar item which should "
-                      "not have a panel Id, sending Reading List instead.";
+      NOTREACHED_IN_MIGRATION()
+          << "Asked for a panel Id from a sidebar item which should "
+             "not have a panel Id, sending Reading List instead.";
       return SidePanelEntryId::kReadingList;
   }
 }

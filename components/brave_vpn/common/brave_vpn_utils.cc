@@ -169,7 +169,7 @@ std::string GetManageUrl(const std::string& env) {
   if (env == skus::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return brave_vpn::kManageUrlProd;
 }
 
