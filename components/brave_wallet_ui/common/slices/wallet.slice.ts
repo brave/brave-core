@@ -25,6 +25,7 @@ const defaultState: WalletState = {
   hasInitialized: false,
   allowedNewWalletAccountTypeNetworkIds: [],
   isBitcoinEnabled: false,
+  isBitcoinImportEnabled: false,
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
@@ -88,6 +89,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.hasInitialized = true
         state.isWalletCreated = payload.walletInfo.isWalletCreated
         state.isBitcoinEnabled = payload.walletInfo.isBitcoinEnabled
+        state.isBitcoinImportEnabled = payload.walletInfo.isBitcoinImportEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
         state.isNftPinningFeatureEnabled =

@@ -837,6 +837,8 @@ enum KeyringId {
   kBitcoin84Testnet = 5,
   kZCashMainnet = 6,
   kZCashTestnet = 7,
+  kBitcoinImport = 8,
+  kBitcoinImportTestnet = 9,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -877,7 +879,8 @@ struct AccountId {
   AccountKind kind;
   // TODO(apaymyshev): should be an index within keyring.
   string address;
-  uint32 bitcoin_account_index;
+  // Account index for index-based keyrings (BTC and ZEC).
+  uint32 account_index;
 
   // Two `AccountIds` equal iff their `unique_key` fields equal. Use this to
   // check AccountIds for equality or to store as string keys. Persist with
@@ -906,6 +909,7 @@ struct WalletInfo {
   bool is_wallet_locked;
   bool is_wallet_backed_up;
   bool is_bitcoin_enabled;
+  bool is_bitcoin_import_enabled;
   bool is_z_cash_enabled;
   bool is_nft_pinning_feature_enabled;
   bool is_ankr_balances_feature_enabled;
@@ -1074,18 +1078,22 @@ interface KeyringService {
   ImportAccount(string accountName, string privateKey, CoinType coin)
     => (AccountInfo? account);
 
-  // Imports a filecoin account with a specific private key and network
+  // Imports a filecoin account with a specific private key and network.
   ImportFilecoinAccount(string accountName, string privateKey, string network)
       => (AccountInfo? account);
 
-  // Imports an account via JSON
+  // Imports a bitcoin account for a network. Payload is an extended private key.
+  ImportBitcoinAccount(string accountName, string payload, string network)
+      => (AccountInfo? account);
+
+  // Imports an account via JSON.
   ImportAccountFromJson(string accountName, string password, string json)
     => (AccountInfo? account);
 
-  // Determines if the keyring has been backed up
+  // Determines if wallet's mnemonic has been backed up.
   IsWalletBackedUp() => (bool backed_up);
 
-  // Informs the keyring that the wallet has been backed up
+  // Called by UI when wallet's mnemonic passed backup check.
   NotifyWalletBackupComplete();
 
   // Adds a KeyringServiceObserver

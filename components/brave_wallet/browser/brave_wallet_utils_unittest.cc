@@ -750,9 +750,11 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_EQ(btc_chains[0]->decimals, 123);
   EXPECT_EQ(btc_chains[1]->chain_id, mojom::kBitcoinTestnet);
   EXPECT_THAT(btc_chains[0]->supported_keyrings,
-              ElementsAreArray({mojom::KeyringId::kBitcoin84}));
+              ElementsAreArray({mojom::KeyringId::kBitcoin84,
+                                mojom::KeyringId::kBitcoinImport}));
   EXPECT_THAT(btc_chains[1]->supported_keyrings,
-              ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet}));
+              ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
+                                mojom::KeyringId::kBitcoinImportTestnet}));
 
   // ZCash
   auto zec_main_custom = *GetAllKnownChains(&prefs, mojom::CoinType::ZEC)[0];
@@ -1007,7 +1009,8 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
       mojom::kBitcoinMainnet, "Bitcoin Mainnet",
       {"https://www.blockchain.com/explorer"}, {}, 0,
       {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC", "Bitcoin", 8,
-      mojom::CoinType::BTC, {mojom::KeyringId::kBitcoin84}, false);
+      mojom::CoinType::BTC,
+      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::BTC));
   EXPECT_EQ(GetChain(&prefs, "bitcoin_mainnet", mojom::CoinType::BTC),
             btc_mainnet.Clone());

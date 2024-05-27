@@ -79,7 +79,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
       keyringId: BraveWallet.KeyringId.default,
       kind: .derived,
       address: "mock_eth_id_2",
-      bitcoinAccountIndex: 0,
+      accountIndex: 0,
       uniqueKey: "mock_eth_id_2"
     ),
     address: "mock_eth_id_2",
@@ -450,7 +450,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
         )  // FIL
       }.store(in: &cancellables)
 
-    // Test with network filters applied (only Filecoin Mainnnet, Filecoin Testnet selected)
+    // Test with network filters applied (only Filecoin Mainnet, Filecoin Testnet selected)
     store.networkFilters = [
       .init(isSelected: false, model: .mockMainnet),
       .init(isSelected: false, model: .mockGoerli),

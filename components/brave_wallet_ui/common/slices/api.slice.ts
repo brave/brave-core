@@ -254,6 +254,8 @@ export const {
   useHideNetworksMutation,
   useImportAccountFromJsonMutation,
   useImportAccountMutation,
+  useImportBtcAccountMutation,
+  useImportFilAccountMutation,
   useImportFromCryptoWalletsMutation,
   useImportFromMetaMaskMutation,
   useImportHardwareAccountsMutation,

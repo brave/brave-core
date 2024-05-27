@@ -7,11 +7,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BITCOIN_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BITCOIN_UTILS_H_
 
-#include <map>
 #include <optional>
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 
 namespace brave_wallet {
 
@@ -46,7 +46,7 @@ struct DecodedBitcoinAddress {
 std::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
     const std::string& address);
 
-std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
+std::string PubkeyToSegwitAddress(base::span<const uint8_t> pubkey,
                                   bool testnet);
 
 uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes);

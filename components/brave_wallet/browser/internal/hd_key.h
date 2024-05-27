@@ -17,7 +17,8 @@
 
 namespace brave_wallet {
 
-constexpr size_t kCompactSignatureSize = 64;
+inline constexpr size_t kCompactSignatureSize = 64;
+inline constexpr size_t kSecp256k1PubkeySize = 33;
 
 using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
 
@@ -25,12 +26,16 @@ enum class ExtendedKeyVersion {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
   kXprv = 0x0488ade4,
   kXpub = 0x0488b21e,
+
   // https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki#extended-key-version
   kYprv = 0x049d7878,
   kYpub = 0x049d7cb2,
+
   // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#extended-key-version
   kZprv = 0x04b2430c,
   kZpub = 0x04b24746,
+  kVprv = 0x045f18bc,
+  kVpub = 0x045f1cf6,
 };
 
 // This class implement basic ECDSA over the Secp256k1 functionality of bip32
@@ -40,10 +45,18 @@ class HDKey {
   HDKey();
   ~HDKey();
 
+  struct ParsedExtendedKey {
+    ParsedExtendedKey();
+    ~ParsedExtendedKey();
+    ExtendedKeyVersion version;
+    std::unique_ptr<HDKey> hdkey;
+  };
+
   static std::unique_ptr<HDKey> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
-  static std::unique_ptr<HDKey> GenerateFromExtendedKey(const std::string& key);
+  static std::unique_ptr<ParsedExtendedKey> GenerateFromExtendedKey(
+      const std::string& key);
   static std::unique_ptr<HDKey> GenerateFromPrivateKey(
       const std::vector<uint8_t>& private_key);
   // https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
@@ -52,13 +65,10 @@ class HDKey {
 
   std::string GetPath() const;
 
-  std::string GetPrivateExtendedKey(
-      ExtendedKeyVersion version = ExtendedKeyVersion::kXprv) const;
+  std::string GetPrivateExtendedKey(ExtendedKeyVersion version) const;
   std::vector<uint8_t> GetPrivateKeyBytes() const;
   std::vector<uint8_t> GetPublicKeyBytes() const;
-  std::string GetPublicExtendedKey(
-      ExtendedKeyVersion version = ExtendedKeyVersion::kXpub) const;
-  std::string GetSegwitAddress(bool testnet) const;
+  std::string GetPublicExtendedKey(ExtendedKeyVersion version) const;
   std::string GetZCashTransparentAddress(bool testnet) const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
@@ -124,7 +134,7 @@ class HDKey {
   void SetPrivateKey(base::span<const uint8_t> value);
   void SetChainCode(base::span<const uint8_t> value);
   // value must be 33 bytes valid public key (compressed)
-  void SetPublicKey(const std::vector<uint8_t>& value);
+  void SetPublicKey(base::span<const uint8_t, kSecp256k1PubkeySize> value);
 
   // index should be 0 to 2^32
   // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation

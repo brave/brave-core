@@ -182,7 +182,7 @@ extension BraveWallet.AccountInfo {
         keyringId: BraveWallet.KeyringId.default,
         kind: .derived,
         address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF"
       ),
       address: "0x879240B2D6179E9EC40BC2AFFF9E9EC40BC2AFFF",

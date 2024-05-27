@@ -17,9 +17,9 @@
 namespace brave_wallet {
 
 TEST(BitcoinTxMeta, ToTransactionInfo) {
-  auto btc_account_id =
-      MakeBitcoinAccountId(mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
-                           mojom::AccountKind::kDerived, 1);
+  auto btc_account_id = MakeIndexBasedAccountId(
+      mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+      mojom::AccountKind::kDerived, 1);
 
   std::unique_ptr<BitcoinTransaction> tx =
       std::make_unique<BitcoinTransaction>();
@@ -75,9 +75,9 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
 }
 
 TEST(BitcoinTxMeta, ToValue) {
-  auto btc_account_id =
-      MakeBitcoinAccountId(mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
-                           mojom::AccountKind::kDerived, 1);
+  auto btc_account_id = MakeIndexBasedAccountId(
+      mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+      mojom::AccountKind::kDerived, 1);
 
   std::unique_ptr<BitcoinTransaction> tx =
       std::make_unique<BitcoinTransaction>();

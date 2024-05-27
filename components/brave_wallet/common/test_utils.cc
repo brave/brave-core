@@ -13,8 +13,8 @@ namespace brave_wallet {
 
 bool AllCoinsTested() {
   // Change hardcoded values here only when all failed callers have adequate
-  // testing for newly added coin.
-  return 5 == std::size(kAllCoins) && 8 == std::size(kAllKeyrings);
+  // testing for newly added coin or keyring.
+  return 5 == std::size(kAllCoins) && 10 == std::size(kAllKeyrings);
 }
 
 mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,

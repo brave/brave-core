@@ -10,7 +10,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_keyring.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -40,8 +40,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
 
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    bitcoin_test_rpc_server_ =
-        std::make_unique<BitcoinTestRpcServer>(keyring_service_.get(), &prefs_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -49,9 +48,9 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc({});
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
-    keyring_ = std::make_unique<BitcoinKeyring>(
+    keyring_ = std::make_unique<BitcoinHDKeyring>(
         *MnemonicToSeed(kMnemonicDivideCruise), false);
   }
 
@@ -59,7 +58,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     return AccountUtils(keyring_service_.get());
   }
 
-  BitcoinKeyring* keyring() { return keyring_.get(); }
+  BitcoinHDKeyring* keyring() { return keyring_.get(); }
 
  protected:
   base::test::ScopedFeatureList feature_list_{
@@ -72,17 +71,17 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
-  std::unique_ptr<BitcoinKeyring> keyring_;
+  std::unique_ptr<BitcoinHDKeyring> keyring_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      *keyring()->GetAddress(0, {0, 10}));
+      keyring()->GetAddress(0, {0, 10}));
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      *keyring()->GetAddress(0, {1, 15}));
+      keyring()->GetAddress(0, {1, 15}));
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      *keyring()->GetAddress(1, {0, 19}));
+      keyring()->GetAddress(1, {0, 19}));
 
   EXPECT_EQ(0u, GetAccountUtils().AllBtcAccounts().size());
 
@@ -112,9 +111,9 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
 
 TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      *keyring()->GetAddress(0, {0, 10}));
+      keyring()->GetAddress(0, {0, 10}));
   bitcoin_test_rpc_server_->AddTransactedAddress(
-      *keyring()->GetAddress(0, {1, 15}));
+      keyring()->GetAddress(0, {1, 15}));
 
   auto account_id = GetAccountUtils()
                         .EnsureAccount(mojom::KeyringId::kBitcoin84, 0)
