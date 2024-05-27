@@ -66,8 +66,11 @@ import com.google.android.material.card.MaterialCardView
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistItem
+import android.text.TextUtils
+import android.content.Intent
 
 class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPanelLayout.PanelSlideListener, PlaylistItemClickListener  {
     companion object {
@@ -221,11 +224,6 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         } else {
             updatePortraitView()
         }
-    }
-
-    override fun finishNativeInitialization() {
-        super.finishNativeInitialization()
-        
     }
 
     override fun onResumeWithNative() {
