@@ -48,7 +48,8 @@ void PlaylistBubblesController::ShowBubble(
         bubble_ = new PlaylistAddBubbleView(anchor_view.get(),
                                             tab_helper->GetWeakPtr());
       } else {
-        NOTREACHED() << "The action icon shouldn't be visible then.";
+        NOTREACHED_IN_MIGRATION()
+            << "The action icon shouldn't be visible then.";
       }
       break;
     case BubbleType::kAdd:

@@ -120,7 +120,7 @@ std::string URLMethodToRequestType(mojom::UrlMethod method) {
     case mojom::UrlMethod::DEL:
       return "DELETE";
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "GET";
   }
 }

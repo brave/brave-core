@@ -70,7 +70,7 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 void AdBlockFiltersProviderManager::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void AdBlockFiltersProviderManager::LoadFilterSetForEngine(

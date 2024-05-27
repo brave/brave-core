@@ -234,7 +234,7 @@ void FilTxManager::OnSendFilecoinTransaction(
     const std::string& error_message) {
   std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
-    NOTREACHED() << "Transaction should be found";
+    NOTREACHED_IN_MIGRATION() << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(

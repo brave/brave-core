@@ -744,7 +744,7 @@ bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
       return !params_.selection_text.empty() &&
              params_.media_type == ContextMenuDataMediaType::kNone;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   return false;
 }

@@ -22,21 +22,21 @@
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
   case RequestType::kBraveEthereum:                              \
   case RequestType::kBraveSolana:                                \
-    NOTREACHED();                                                \
+    NOTREACHED_IN_MIGRATION();                                   \
     return permissions::PermissionRequest::AnnotatedMessageText( \
         std::u16string(), {});                                   \
   case RequestType::kWidevine:                                   \
-    NOTREACHED();                                                \
+    NOTREACHED_IN_MIGRATION();                                   \
     return permissions::PermissionRequest::AnnotatedMessageText( \
         std::u16string(), {});
 #else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
-    NOTREACHED();                   \
+    NOTREACHED_IN_MIGRATION();      \
     return std::u16string();        \
   case RequestType::kWidevine:      \
-    NOTREACHED();                   \
+    NOTREACHED_IN_MIGRATION();      \
     return std::u16string();
 #endif
 

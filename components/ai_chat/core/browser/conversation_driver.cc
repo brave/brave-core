@@ -241,7 +241,8 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
   // Check that the key exists
   auto* new_model = GetModel(model_key);
   if (!new_model) {
-    NOTREACHED() << "No matching model found for key: " << model_key;
+    NOTREACHED_IN_MIGRATION()
+        << "No matching model found for key: " << model_key;
     return;
   }
   model_key_ = new_model->key;
@@ -257,7 +258,8 @@ void ConversationDriver::SetDefaultModel(const std::string& model_key) {
   // Check that the key exists
   auto* new_model = GetModel(model_key);
   if (!new_model) {
-    NOTREACHED() << "No matching model found for key: " << model_key;
+    NOTREACHED_IN_MIGRATION()
+        << "No matching model found for key: " << model_key;
     return;
   }
 
@@ -745,8 +747,9 @@ void ConversationDriver::GenerateQuestions() {
   // This function should not be presented in the UI if the user has not
   // opted-in yet.
   if (!HasUserOptedIn()) {
-    NOTREACHED() << "GenerateQuestions should not be called before user is "
-                 << "opted in to AI Chat";
+    NOTREACHED_IN_MIGRATION()
+        << "GenerateQuestions should not be called before user is "
+        << "opted in to AI Chat";
     return;
   }
   DCHECK(should_send_page_contents_)
@@ -763,8 +766,9 @@ void ConversationDriver::GenerateQuestions() {
           mojom::SuggestionGenerationStatus::IsGenerating ||
       suggestion_generation_status_ ==
           mojom::SuggestionGenerationStatus::HasGenerated) {
-    NOTREACHED() << "UI should not allow GenerateQuestions to be called more "
-                 << "than once";
+    NOTREACHED_IN_MIGRATION()
+        << "UI should not allow GenerateQuestions to be called more "
+        << "than once";
     return;
   }
 

@@ -86,7 +86,7 @@ void SafetyNetCheckRunner::jobFinished(SafetyNetCheck* finished_job) {
   if (it != jobs_.end()) {
     jobs_.erase(it);
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

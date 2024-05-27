@@ -303,7 +303,7 @@ std::wstring GetBrowserProgId() {
   std::wstring new_style_suffix;
   if (ShellUtil::GetUserSpecificRegistrySuffix(&new_style_suffix) &&
       suffix == new_style_suffix && brave_html.length() > 39) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     brave_html.erase(39);
   }
   return brave_html;

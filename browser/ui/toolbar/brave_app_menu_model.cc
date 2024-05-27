@@ -656,7 +656,8 @@ std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     }
   }
 
-  NOTREACHED() << "At least, a menu item for this command should exist: "
-               << commands_to_check[commands_size - 1];
+  NOTREACHED_IN_MIGRATION()
+      << "At least, a menu item for this command should exist: "
+      << commands_to_check[commands_size - 1];
   return std::nullopt;
 }
