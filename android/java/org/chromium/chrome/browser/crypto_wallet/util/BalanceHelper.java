@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -38,23 +40,24 @@ import java.util.Locale;
 import java.util.Map;
 
 public class BalanceHelper {
-    private static String TAG = "BalanceHelper";
-
     /**
      * Get assets balances for all accounts on selected network.
      */
-    public static void getNativeAssetsBalances(JsonRpcService jsonRpcService,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
-            Callbacks.Callback2<Integer, HashMap<String, Double>> callback) {
-        if (jsonRpcService == null) return;
-        HashMap<String, Double> nativeAssetsBalances = new HashMap<String, Double>();
+    public static void getNativeAssetsBalances(@NonNull final JsonRpcService jsonRpcService,
+            @NonNull final NetworkInfo selectedNetwork, @NonNull final AccountInfo[] accounts,
+            @NonNull final Callbacks.Callback2<Integer, HashMap<String, Double>> callback) {
+        HashMap<String, Double> nativeAssetsBalances = new HashMap<>();
 
-        MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accountInfos.length);
-        ArrayList<GetBalanceResponseBaseContext> contexts =
-                new ArrayList<GetBalanceResponseBaseContext>();
+        MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accounts.length);
+        ArrayList<GetBalanceResponseBaseContext> contexts = new ArrayList<>();
+
+        if (selectedNetwork.coin == CoinType.BTC || selectedNetwork.coin == CoinType.ZEC) {
+            callback.call(selectedNetwork.coin, nativeAssetsBalances);
+            return;
+        }
 
         // Native balances
-        for (AccountInfo accountInfo : accountInfos) {
+        for (AccountInfo accountInfo : accounts) {
             if (accountInfo.accountId.coin != selectedNetwork.coin) continue;
 
             // Get CoinType SOL balances
@@ -249,7 +252,7 @@ public class BalanceHelper {
             ArrayList<GetNativeAssetsBalancesResponseContext> nativeAssetsBalancesResponses,
             ArrayList<GetBlockchainTokensBalancesResponseContext>
                     blockchainTokensBalancesResponses) {
-        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry, jsonRpcService)) return;
 
         keyringService.getAllAccounts(allAccounts -> {
             for (NetworkInfo network : networks) {

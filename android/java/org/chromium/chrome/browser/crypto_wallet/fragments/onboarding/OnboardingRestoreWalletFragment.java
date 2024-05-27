@@ -207,9 +207,16 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                         mShowRecoveryPhraseCheckbox.setChecked(false);
                         mRestoreLegacyWalletCheckbox.setChecked(false);
 
-                        if (mOnNextPage != null) {
-                            mOnNextPage.onboardingCompleted();
-                        }
+                        // Set ETH account by default as initial state.
+                        keyringService.getAllAccounts(
+                                allAccounts ->
+                                        keyringService.setSelectedAccount(
+                                                allAccounts.ethDappSelectedAccount.accountId,
+                                                success -> {
+                                                    if (mOnNextPage != null) {
+                                                        mOnNextPage.onboardingCompleted();
+                                                    }
+                                                }));
                     } else {
                         Toast.makeText(
                                         requireActivity(),
