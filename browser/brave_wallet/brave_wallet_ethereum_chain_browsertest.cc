@@ -100,7 +100,7 @@ void ExtractParameters(const std::string& params,
       EXPECT_TRUE(result->find(key) == result->end());
       (*result)[key] = (key_val.size() == 2) ? key_val[1] : std::string();
     } else {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
     }
   }
 }

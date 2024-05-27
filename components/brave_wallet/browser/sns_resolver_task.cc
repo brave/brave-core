@@ -958,7 +958,7 @@ void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
       }
     }
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

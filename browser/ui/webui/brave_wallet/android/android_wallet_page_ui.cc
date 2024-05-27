@@ -62,7 +62,8 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                                                 kBraveWalletPageGeneratedSize),
                                 IDR_WALLET_PAGE_HTML);
   } else {
-    NOTREACHED() << "Failed to find page resources for:" << url.path();
+    NOTREACHED_IN_MIGRATION()
+        << "Failed to find page resources for:" << url.path();
   }
 
   source->AddBoolean("isAndroid", true);

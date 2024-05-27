@@ -91,7 +91,7 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTBOTTOM;
   }
 
-  NOTREACHED()
+  NOTREACHED_IN_MIGRATION()
       << "This shouldn't happen. Maybe due to inclusive/exclusive comparison?";
   return hit_test_result;
 }

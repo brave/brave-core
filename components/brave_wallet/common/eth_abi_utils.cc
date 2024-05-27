@@ -361,7 +361,7 @@ std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
 std::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
   if (fixed_size == 0 || fixed_size > 32) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return std::nullopt;
   }
 

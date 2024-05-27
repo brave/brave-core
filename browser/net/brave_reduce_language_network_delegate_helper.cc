@@ -127,7 +127,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     default:
       // Other cases are handled within ShouldDoReduceLanguage, so we should
       // never reach here.
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   headers->SetHeader(net::HttpRequestHeaders::kAcceptLanguage,

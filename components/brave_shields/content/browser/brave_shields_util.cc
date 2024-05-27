@@ -155,7 +155,7 @@ std::string ControlTypeToString(ControlType type) {
     case ControlType::DEFAULT:
       return "default";
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "invalid";
   }
 }
@@ -170,7 +170,7 @@ ControlType ControlTypeFromString(const std::string& string) {
   } else if (string == "default") {
     return ControlType::DEFAULT;
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return ControlType::DEFAULT;
   }
 }
@@ -489,7 +489,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
                 content_settings::CookieControlsMode::kBlockThirdParty));
         break;
       default:
-        NOTREACHED() << "Invalid ControlType for cookies";
+        NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
     }
     return;
   }
@@ -524,7 +524,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                        : CONTENT_SETTING_BLOCK);
       break;
     case ControlType::DEFAULT:
-      NOTREACHED() << "Invalid ControlType for cookies";
+      NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
   }
 }
 

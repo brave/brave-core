@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 
 #include <map>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -219,7 +220,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  NOTREACHED() << request.url.spec();
+  NOTREACHED_IN_MIGRATION() << request.url.spec();
 }
 
 void BitcoinTestRpcServer::SetUpBitcoinRpc(
