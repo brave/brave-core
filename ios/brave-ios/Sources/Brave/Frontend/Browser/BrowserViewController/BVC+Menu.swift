@@ -52,7 +52,9 @@ extension BrowserViewController {
         vpnRegionInfo: BraveVPN.activatedRegion,
         settingTitleEnabled: false,
         regionSelectAction: {
-          let vc = BraveVPNRegionPickerViewController()
+          let vc = UIHostingController(rootView: BraveVPNRegionPickerView(isAutomatic: true))
+
+          //          let vc = BraveVPNRegionPickerViewController()
           (self.presentedViewController as? MenuViewController)?
             .pushInnerMenu(vc)
         }
@@ -102,7 +104,10 @@ extension BrowserViewController {
       RegionMenuButton(
         vpnRegionInfo: BraveVPN.activatedRegion,
         regionSelectAction: {
-          let vc = BraveVPNRegionPickerViewController()
+          let vc = UIHostingController(rootView: BraveVPNRegionPickerView(isAutomatic: true))
+          vc.title = "Server Region"
+
+          //          let vc = BraveVPNRegionPickerViewController()
           (self.presentedViewController as? MenuViewController)?
             .pushInnerMenu(vc)
         }
