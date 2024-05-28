@@ -2,13 +2,15 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables';
+import { color, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables';
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
 import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '../../../common/Flex';
 import { omniboxController } from './SearchContext';
+import { getLocale } from '../../../common/locale';
+import Icon from '@brave/leo/react/icon';
 
 interface Props {
   match: AutocompleteMatch
@@ -49,7 +51,7 @@ const FavIcon = styled.span<{ url: string }>`
   height: 20px;
   background: rgba(255, 255, 255, 0.5);
   mask-image: url(${p => p.url});
-  mask-fit: contain;
+  mask-size: contain;
 `
 
 const Content = styled.span`
@@ -66,25 +68,49 @@ const Hint = styled.span`
   color: ${color.text.interactive};
 `
 
+const LeoIcon = styled(Icon)`
+  --leo-icon-size: ${icon.m};
+
+  color: ${color.white};
+  background: ${gradient.iconsActive};
+  border-radius: ${radius.m};
+  padding: ${spacing.s};
+`
+
+const Divider = styled.hr`
+  margin: -2px -8px;
+  opacity: 0.1;
+`
+
 export default function SearchResult({ match, line, selected }: Props) {
   const contents = mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
   const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
+  const isAskLeo = description == getLocale('searchAskLeo')
 
   const hint = description && match.destinationUrl.url
     ? description
     : ''
 
   const subtitle = match.destinationUrl.url || description
-  return <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
+  const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
     omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
   }}>
     <IconContainer>
-      <FavIcon url={match.iconUrl} />
+      {isAskLeo
+        ? <LeoIcon name="product-brave-leo" />
+        : <FavIcon url={match.iconUrl} />}
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>
       <Description>{subtitle}</Description>
     </Flex>
   </Container>
+
+  return isAskLeo
+    ? <>
+      <Divider />
+      {result}
+    </>
+    : result
 }
