@@ -26,7 +26,7 @@ PasswordEncryptor::PasswordEncryptor(const std::vector<uint8_t> key)
     : key_(key) {}
 PasswordEncryptor::~PasswordEncryptor() {
   // zero key
-  SecureZeroData(key_.data(), key_.size());
+  SecureZeroData(key_);
 }
 
 // TODO(apaymyshev): Need to use much lesser value for unit tests where this
