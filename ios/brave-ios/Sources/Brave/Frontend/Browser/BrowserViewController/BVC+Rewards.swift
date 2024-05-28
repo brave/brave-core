@@ -161,7 +161,7 @@ extension Tab {
       adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
     }
 
-    if !shouldNotifyAdsServiceTabContentDidChange { return }
+    if isRestored || !isNewNavigation || isErrorPage { return }
 
     let group = DispatchGroup()
 
