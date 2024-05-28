@@ -36,12 +36,7 @@ class ItemView : public views::LabelButton {
   ItemView() {
     auto* ink_drop = views::InkDrop::Get(this);
     ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    ink_drop->SetBaseColorCallback(base::BindRepeating(
-        [](ItemView* host) {
-          return host->GetColorProvider()->GetColor(
-              ui::kColorSysOnSurfaceSubtle);
-        },
-        this));
+    ink_drop->SetBaseColorId(ui::kColorSysOnSurfaceSubtle);
   }
   ~ItemView() override = default;
 

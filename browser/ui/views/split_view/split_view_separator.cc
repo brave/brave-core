@@ -120,7 +120,17 @@ void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
   if (resize_area_delegate_) {
     resize_area_delegate_->OnResize(resize_amount, done_resizing);
   }
-  LayoutMenuButton();
+
+  if (done_resizing == menu_button_widget_->IsVisible()) {
+    return;
+  }
+
+  if (done_resizing) {
+    LayoutMenuButton();
+    menu_button_widget_->Show();
+  } else {
+    menu_button_widget_->Hide();
+  }
 }
 
 void SplitViewSeparator::OnWidgetBoundsChanged(views::Widget* widget,
