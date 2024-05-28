@@ -427,8 +427,6 @@ public class BraveToolbarManager extends ToolbarManager {
             return;
         }
 
-        assert mActivity instanceof BraveActivity;
-
         if (mActivity instanceof BraveActivity) {
             ((BraveActivity) mActivity).updateBottomSheetPosition(newOrientation);
         }
