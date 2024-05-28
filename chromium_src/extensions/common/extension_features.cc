@@ -10,6 +10,7 @@
 namespace extensions_features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kExtensionManifestV2DeprecationWarning, base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionsManifestV3Only, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
