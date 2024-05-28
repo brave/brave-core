@@ -65,7 +65,7 @@ class GlobalState final {
  private:
   SEQUENCE_CHECKER(sequence_checker_);
 
-  const raw_ptr<AdsClient> ads_client_ = nullptr;
+  const raw_ptr<AdsClient> ads_client_ = nullptr;  // NOT OWNED
 
   const std::unique_ptr<GlobalStateHolder> global_state_holder_;
 

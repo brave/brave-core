@@ -120,10 +120,10 @@ class Account final : public AdsClientNotifierObserver,
   // UserRewardsDelegate:
   void OnDidMigrateVerifiedRewardsUser() override;
 
-  base::ObserverList<AccountObserver> observers_;
-
   const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
+
+  base::ObserverList<AccountObserver> observers_;
 
   std::unique_ptr<Confirmations> confirmations_;
 
