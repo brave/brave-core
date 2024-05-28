@@ -145,6 +145,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"searchCustomizeList", IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_LIST},
                {"searchBravePlaceholder",
                 IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER},
+               {"searchAskLeo", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
                {"searchNonBravePlaceholder",
                 IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER},
                {"searchShowSetting", IDS_BRAVE_NEW_TAB_SEARCH_SHOW_SETTING},
