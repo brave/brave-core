@@ -17,21 +17,18 @@ interface Props {
 }
 
 const Container = styled.a`
-  padding: ${spacing.s} ${spacing['2Xl']};
+  padding: ${spacing.s} ${spacing.xl};
+  border-radius: ${radius.m};
 
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacing.l};
+  gap: ${spacing.xl};
 
   text-decoration: none;
 
-  &[aria-selected=true] {
-    background: color-mix(in srgb, ${color.container.interactive}, transparent 80%);
-  }
-
-  &:hover {
-    backdrop-filter: blur(64px);
+  &[aria-selected=true], &:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 `
 
@@ -47,9 +44,12 @@ const IconContainer = styled.div`
   flex-shrink: 0;
 `
 
-const FavIcon = styled.img`
+const FavIcon = styled.span<{ url: string }>`
   width: 20px;
   height: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  mask-image: url(${p => p.url});
+  mask-fit: contain;
 `
 
 const Content = styled.span`
@@ -80,7 +80,7 @@ export default function SearchResult({ match, line, selected }: Props) {
     omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
   }}>
     <IconContainer>
-      <FavIcon src={match.iconUrl} />
+      <FavIcon url={match.iconUrl} />
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>
