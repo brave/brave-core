@@ -35,6 +35,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandNewSplitView,
     CommandTileTabs,
     CommandBreakTile,
+    CommandSwapTabsInTile,
     CommandLast,
   };
 

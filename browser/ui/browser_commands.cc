@@ -1049,4 +1049,28 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
   });
 }
 
+void SwapTabsInTile(Browser* browser) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return;
+  }
+
+  if (!IsTabsTiled(browser)) {
+    return;
+  }
+
+  auto* model = browser->tab_strip_model();
+  auto tab = model->GetActiveTab()->GetHandle();
+  auto tile = *split_view_data->GetTile(tab);
+  split_view_data->SwapTabsInTile(tile);
+
+  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second),
+                           model->GetIndexOfTab(tile.first),
+                           /*select_after_move*/ false);
+}
+
 }  // namespace brave
