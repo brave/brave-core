@@ -24,6 +24,9 @@ inline constexpr base::FeatureParam<base::TimeDelta> kPageLandAfter{
 inline constexpr base::FeatureParam<int> kPageLandCap{&kSiteVisitFeature,
                                                       "page_land_cap", 0};
 
+inline constexpr base::FeatureParam<bool> kShouldSuspendAndResumePageLand{
+    &kSiteVisitFeature, "should_suspend_and_resume_page_land", true};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_USER_ENGAGEMENT_SITE_VISIT_SITE_VISIT_FEATURE_H_
