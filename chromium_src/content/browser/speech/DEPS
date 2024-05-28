@@ -1,4 +1,5 @@
 include_rules = [
   "+brave/components/brave_service_keys/brave_service_key_utils.h",
+  "+brave/components/constants/brave_services_key.h",
   "+brave/components/speech_to_text",
 ]

@@ -7,6 +7,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/speech_to_text/buildflags.h"
 #include "brave/components/speech_to_text/features.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -14,7 +15,7 @@
 
 namespace content::google_apis {
 std::string GetAPIKey() {
-  return BUILDFLAG(SERVICE_KEY_STT);
+  return BUILDFLAG(BRAVE_SERVICES_KEY);
 }
 }  // namespace content::google_apis
 
