@@ -5,6 +5,8 @@
 
 const path = require('path')
 const { spawn, spawnSync } = require('child_process')
+const readline = require('readline')
+const os = require('os')
 const config = require('./config')
 const fs = require('fs-extra')
 const crypto = require('crypto')
@@ -14,6 +16,9 @@ const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
 const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
+
+// Do not limit the number of listeners to avoid warnings from EventEmitter.
+process.setMaxListeners(0);
 
 const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
@@ -144,24 +149,54 @@ const util = {
   },
 
   runAsync: (cmd, args = [], options = {}) => {
-    let { continueOnFail, verbose, ...cmdOptions } = options
-    if (verbose) {
+    let { continueOnFail, verbose, onStdErrLine, onStdOutLine, ...cmdOptions } = options
+    if (verbose !== false) {
       Log.command(cmdOptions.cwd, cmd, args)
     }
     return new Promise((resolve, reject) => {
       const prog = spawn(cmd, args, cmdOptions)
+      const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
+      const signalHandler = (s) => {
+        prog.kill(s)
+      }
+      signalsToForward.forEach((signal) => {
+        process.addListener(signal, signalHandler)
+      })
       let stderr = ''
       let stdout = ''
-      prog.stderr.on('data', data => {
-        stderr += data
-      })
-      prog.stdout.on('data', data => {
-        stdout += data
-      })
-      prog.on('close', statusCode => {
-        const hasFailed = statusCode !== 0
+      if (prog.stderr) {
+        if (onStdErrLine) {
+          readline.createInterface({
+            input: prog.stderr,
+            terminal: false
+          }).on('line', onStdErrLine)
+        } else {
+          prog.stderr.on('data', (data) => {
+            stderr += data
+          })
+        }
+      }
+      if (prog.stdout) {
+        if (onStdOutLine) {
+          readline.createInterface({
+            input: prog.stdout,
+            terminal: false
+          }).on('line', onStdOutLine)
+        } else {
+          prog.stdout.on('data', (data) => {
+            stdout += data
+          })
+        }
+      }
+      prog.on('close', (statusCode, signal) => {
+        signalsToForward.forEach((signal) => {
+          process.removeListener(signal, signalHandler)
+        })
+        const hasFailed = !signal && statusCode !== 0
         if (verbose && (!hasFailed || continueOnFail)) {
-          console.log(stdout)
+          if (stdout) {
+            console.log(stdout)
+          }
           if (stderr) {
             console.error(stderr)
           }
@@ -172,12 +207,15 @@ const util = {
           err.stdout = stdout
           reject(err)
           if (!continueOnFail) {
-            console.log(err.message)
-            console.log(stdout)
+            console.error(err.message)
+            console.error(stdout)
             console.error(stderr)
-            process.exit(1)
+            process.exit(statusCode)
           }
           return
+        } else if (signal) {
+          // If the process was killed by a signal, exit with the signal number.
+          process.exit(128 + os.constants.signals[signal])
         }
         resolve(stdout)
       })
@@ -598,7 +636,7 @@ const util = {
     })
   },
 
-  buildNativeRedirectCC: () => {
+  buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
 
@@ -619,7 +657,7 @@ const util = {
     }
 
     util.runGnGen(config.nativeRedirectCCDir, buildArgs)
-    util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
+    await util.buildTargets(['brave/tools/redirect_cc'], mergeWithDefault({outputDir: config.nativeRedirectCCDir}))
     Log.progressFinish('build redirect_cc')
   },
 
@@ -705,9 +743,9 @@ const util = {
     return hasGeneratedArgsUpdated || !isArgsGnValid
   },
 
-  generateNinjaFiles: (options = config.defaultOptions) => {
-    Log.progressScope('generate ninja files', () => {
-      util.buildNativeRedirectCC()
+  generateNinjaFiles: async (options = config.defaultOptions) => {
+    await Log.progressScopeAsync('generate ninja files', async () => {
+      await util.buildNativeRedirectCC()
 
       if (config.getTargetOS() === 'win') {
         util.updateMidlFiles()
@@ -717,10 +755,11 @@ const util = {
     })
   },
 
-  buildTargets: (targets = config.buildTargets, options = config.defaultOptions) => {
+  buildTargets: async (targets = config.buildTargets, options = config.defaultOptions) => {
     assert(Array.isArray(targets))
     const buildId = crypto.randomUUID()
-    const progressMessage = `build ${targets} (${config.buildConfig}, id=${buildId})`
+    const outputDir = options.outputDir || config.outputDir
+    const progressMessage = `build ${targets} (${path.basename(outputDir)}, id=${buildId})`
     Log.progressStart(progressMessage)
 
     let num_compile_failure = 1
@@ -728,7 +767,7 @@ const util = {
       num_compile_failure = 0
 
     let ninjaOpts = [
-      '-C', options.outputDir || config.outputDir, targets.join(' '),
+      '-C', outputDir, targets.join(' '),
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
@@ -736,7 +775,34 @@ const util = {
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
-    util.run('autoninja', ninjaOpts, options)
+
+    if (config.isTeamcity) {
+      // Parse output to display the build status and exact failure location.
+      let hasError = false
+      let lastStatusTime = Date.now()
+      options.onStdOutLine = (line) => {
+        if (!hasError && line.startsWith('FAILED: ')) {
+          hasError = true
+        }
+        if (hasError) {
+          Log.error(line)
+        } else {
+          console.log(line)
+          if (Date.now() - lastStatusTime > 5000) {
+            // Extract the status message from the ninja output.
+            const match = line.match(/^\[\d+ processes, (.+?) : .+?\s\]/);
+            if (match) {
+              lastStatusTime = Date.now()
+              Log.status(`build ${targets} ${match[1]}`)
+            }
+          }
+        }
+      }
+      options.onStdErrLine = options.onStdOutLine
+      options.stdio = 'pipe'
+    }
+
+    await util.runAsync('autoninja', ninjaOpts, options)
 
     Log.progressFinish(progressMessage)
   },

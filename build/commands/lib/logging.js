@@ -66,16 +66,37 @@ function progressScope(message, callable) {
   }
 }
 
-function status(message) {
-  console.log(statusStyle(message))
+async function progressScopeAsync(message, callable) {
+  progressStart(message)
+  try {
+    await callable()
+  } finally {
+    progressFinish(message)
+  }
+}
+
+function status(message, alreadyStyled = false) {
+  if (tsm) {
+    tsm.progressMessage(message)
+  } else {
+    console.log(alreadyStyled ? message : statusStyle(message))
+  }
 }
 
 function error(message) {
-  console.error(errorStyle(message))
+  if (tsm) {
+    tsm.message({text: message, status: 'ERROR'})
+  } else {
+    console.error(errorStyle(message))
+  }
 }
 
 function warn(message) {
-  console.error(warningStyle(message))
+  if (tsm) {
+    tsm.message({text: message, status: 'WARNING'})
+  } else {
+    console.error(warningStyle(message))
+  }
 }
 
 function updateStatus (projectUpdateStatus) {
@@ -89,7 +110,7 @@ function command (dir, cmd, args) {
   console.log(divider)
   if (dir)
     console.log(cmdDirStyle(dir))
-  console.log(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`)
+  status(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`, true)
 }
 
 function allPatchStatus(allPatchStatus, patchGroupName) {
@@ -144,6 +165,7 @@ module.exports = {
   progressStart,
   progressFinish,
   progressScope,
+  progressScopeAsync,
   status,
   error,
   warn,

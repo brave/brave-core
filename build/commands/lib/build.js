@@ -23,7 +23,7 @@ const checkVersionsMatch = () => {
   }
 }
 
-const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
+const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   checkVersionsMatch()
@@ -35,8 +35,8 @@ const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
     util.generateXcodeWorkspace()
   } else {
     if (options.no_gn_gen === undefined)
-      util.generateNinjaFiles()
-    util.buildTargets()
+      await util.generateNinjaFiles()
+    await util.buildTargets()
   }
 }
 
