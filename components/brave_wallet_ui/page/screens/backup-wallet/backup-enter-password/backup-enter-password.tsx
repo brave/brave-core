@@ -21,22 +21,18 @@ import { usePasswordAttempts } from '../../../../common/hooks/use-password-attem
 // components
 import {
   PasswordInput //
-} from '../../../../components/shared/password-input/index'
-import {
-  NavButton //
-} from '../../../../components/extension/buttons/nav-button/index'
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
-import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
+} from '../../../../components/shared/password-input/password-input-v2'
 
 // style
-import { VerticalSpacer } from '../../../../components/shared/style'
+import { Column, Row } from '../../../../components/shared/style'
 import {
-  StyledWrapper,
-  Title,
-  Description,
   NextButtonRow,
-  MainWrapper
+  ContinueButton
 } from '../../onboarding/onboarding.style'
+import { OnboardingContentLayout } from '../../onboarding/components/onboarding_content_layout/content_layout'
+import {
+  InputLabel
+} from '../../../../components/shared/password-input/password-input-v2.style'
 
 export const BackupEnterPassword: React.FC = () => {
   // routing
@@ -97,54 +93,46 @@ export const BackupEnterPassword: React.FC = () => {
     setPassword(value)
   }
 
-  const goBackUrl =
-    history.action === 'POP' ? WalletRoutes.PortfolioAssets : undefined
-
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
-        <StyledWrapper>
-          <StepsNavigation
-            currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
-            steps={[]}
-            goBackUrl={goBackUrl}
-          />
+    <OnboardingContentLayout
+      showBackButton
+      title={getLocale('braveWalletEnterAPasswordToContinue')}
+      subTitle={getLocale('braveWalletEnterYourPasswordToStartBackup')}
+    >
+      <Column
+        fullWidth
+        alignItems='flex-start'
+        margin='0 0 194px 0'
+      >
+        <Row justifyContent='flex-start'>
+          <InputLabel htmlFor='password'>
+            {getLocale('braveWalletInputLabelPassword')}{' '}
+          </InputLabel>
+        </Row>
+        <InputLabel></InputLabel>
+        <PasswordInput
+          key='password'
+          placeholder={getLocale('braveWalletEnterYourPassword')}
+          onChange={onPasswordChange}
+          onKeyDown={handlePasswordKeyDown}
+          hasError={!!password && !isCorrectPassword}
+          value={password}
+          error={getLocale('braveWalletLockScreenError')}
+          autoFocus
+          name='password'
+        />
+      </Column>
 
-          <div>
-            <Title>{getLocale('braveWalletEnterAPasswordToContinue')}</Title>
-            <Description>
-              {getLocale('braveWalletEnterYourPasswordToStartBackup')}
-            </Description>
-
-            <VerticalSpacer space={56} />
-
-            <PasswordInput
-              placeholder={getLocale('braveWalletEnterYourPassword')}
-              label={getLocale('braveWalletInputLabelPassword')}
-              onChange={onPasswordChange}
-              onKeyDown={handlePasswordKeyDown}
-              hasError={!!password && !isCorrectPassword}
-              value={password}
-              error={getLocale('braveWalletLockScreenError')}
-              autoFocus
-              name='password'
-            />
-          </div>
-
-          <VerticalSpacer space={194} />
-
-          <NextButtonRow>
-            <NavButton
-              buttonType='primary'
-              text={getLocale('braveWalletButtonContinue')}
-              disabled={!password || !isCorrectPassword}
-              onSubmit={onSubmit}
-            />
-          </NextButtonRow>
-        </StyledWrapper>
-      </MainWrapper>
-    </CenteredPageLayout>
+      <NextButtonRow>
+        <ContinueButton
+          onClick={onSubmit}
+          isDisabled={!password || !isCorrectPassword}
+        >
+          {getLocale('braveWalletButtonContinue')}
+        </ContinueButton>
+      </NextButtonRow>
+    </OnboardingContentLayout>
   )
 }
 
