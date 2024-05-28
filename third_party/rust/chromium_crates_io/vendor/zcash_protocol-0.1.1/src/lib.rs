@@ -4,9 +4,6 @@
 //! for the Zcash main and test networks, as well types for representing ZEC amounts and value
 //! balances.
 //!
-//! ## Feature flags
-#![doc = document_features::document_features!()]
-//!
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]

@@ -262,3 +262,9 @@ extra_kv = { raw_gn = '''
     ]
 ''' }
 
+[crate.zcash_protocol]
+extra_kv = { raw_gn = '''
+    deps -= [
+        "//brave/third_party/rust/document_features/v0_2:lib",
+]
+''' }

@@ -1,0 +1,26 @@
+From 1d458f17a811d66bc66f81fe97499be864316dc1 Mon Sep 17 00:00:00 2001
+From: oisupov <oisupov@brave.com>
+Date: Tue, 28 May 2024 18:56:27 +0700
+Subject: [PATCH] Update zcash_protocol to remove document_features
+
+---
+ .../chromium_crates_io/vendor/zcash_protocol-0.1.1/src/lib.rs  | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/third_party/rust/chromium_crates_io/vendor/zcash_protocol-0.1.1/src/lib.rs b/third_party/rust/chromium_crates_io/vendor/zcash_protocol-0.1.1/src/lib.rs
+index 2976a02643d..c8f54ba7a0a 100644
+--- a/third_party/rust/chromium_crates_io/vendor/zcash_protocol-0.1.1/src/lib.rs
++++ b/third_party/rust/chromium_crates_io/vendor/zcash_protocol-0.1.1/src/lib.rs
+@@ -4,9 +4,6 @@
+ //! for the Zcash main and test networks, as well types for representing ZEC amounts and value
+ //! balances.
+ //!
+-//! ## Feature flags
+-#![doc = document_features::document_features!()]
+-//!
+ 
+ #![cfg_attr(docsrs, feature(doc_cfg))]
+ #![cfg_attr(docsrs, feature(doc_auto_cfg))]
+-- 
+2.38.1
+

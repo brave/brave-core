@@ -44,4 +44,5 @@ cargo_crate("lib") {
     "//brave/third_party/rust/document_features/v0_2:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",
   ]
+  deps -= [ "//brave/third_party/rust/document_features/v0_2:lib" ]
 }
