@@ -5,13 +5,9 @@
 
 #include "brave/components/brave_rewards/common/features.h"
 
-#include "base/feature_list.h"
-
-namespace brave_rewards {
-namespace features {
+namespace brave_rewards::features {
 
 #if BUILDFLAG(IS_ANDROID)
-//  Flag for Brave Rewards.
 #if defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
 BASE_FEATURE(kBraveRewards, "BraveRewards", base::FEATURE_DISABLED_BY_DEFAULT);
 #else
@@ -25,10 +21,6 @@ BASE_FEATURE(kGeminiFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
-BASE_FEATURE(kVBatNoticeFeature,
-             "BraveRewardsVBatNotice",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kVerboseLoggingFeature,
              "BraveRewardsVerboseLogging",
              base::FEATURE_DISABLED_BY_DEFAULT);
@@ -41,5 +33,4 @@ BASE_FEATURE(kAllowSelfCustodyProvidersFeature,
              "BraveRewardsAllowSelfCustodyProviders",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace brave_rewards
+}  // namespace brave_rewards::features

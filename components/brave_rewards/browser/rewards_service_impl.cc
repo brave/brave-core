@@ -1145,12 +1145,6 @@ void RewardsServiceImpl::OnGetRewardsParameters(
             features::kAllowUnsupportedWalletProvidersFeature)) {
       parameters->wallet_provider_regions.clear();
     }
-
-    // If the user has disabled the "VBAT notice" feature then clear the
-    // corresponding deadline from the returned data.
-    if (!base::FeatureList::IsEnabled(features::kVBatNoticeFeature)) {
-      parameters->vbat_deadline = base::Time();
-    }
   }
 
   std::move(callback).Run(std::move(parameters));
