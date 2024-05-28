@@ -72,18 +72,18 @@ TemplateURLData CreateTestSearchEngine() {
   return result;
 }
 
-std::string GetBraveSearchProviderSyncGUID(PrefService* prefs) {
-  CHECK(prefs);
-  search_engines::SearchEngineChoiceService search_engine_choice_service(
-      *prefs);
+std::string GetBraveSearchProviderSyncGUID(Profile* profile) {
+  CHECK(profile);
+  search_engines::SearchEngineChoiceService* search_engine_choice_service =
+      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      prefs, &search_engine_choice_service,
+      profile->GetPrefs(), search_engine_choice_service,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   return data->sync_guid;
 }
 
-bool PrepopulatedDataHasDDG(PrefService* prefs) {
+bool PrepopulatedDataHasDDG(Profile* profile) {
   static constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
       alt_search_providers[] = {
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
@@ -91,13 +91,13 @@ bool PrepopulatedDataHasDDG(PrefService* prefs) {
           TemplateURLPrepopulateData::
               PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
 
-  CHECK(prefs);
-  search_engines::SearchEngineChoiceService search_engine_choice_service(
-      *prefs);
+  CHECK(profile);
+  search_engines::SearchEngineChoiceService* search_engine_choice_service =
+      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
 
   for (const auto& id : alt_search_providers) {
     if (TemplateURLPrepopulateData::GetPrepopulatedEngine(
-            prefs, &search_engine_choice_service, id)) {
+            profile->GetPrefs(), search_engine_choice_service, id)) {
       return true;
     }
   }
@@ -117,7 +117,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   // provider properly.
   prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
 
-  ASSERT_TRUE(PrepopulatedDataHasDDG(prefs));
+  ASSERT_TRUE(PrepopulatedDataHasDDG(browser()->profile()));
   prefs->SetBoolean(kShowAlternativePrivateSearchEngineProviderToggle, true);
   prefs->SetBoolean(kUseAlternativePrivateSearchEngineProvider, true);
 }
@@ -126,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateSearchProviderMigrationTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
-  ASSERT_TRUE(PrepopulatedDataHasDDG(prefs));
+  ASSERT_TRUE(PrepopulatedDataHasDDG(browser()->profile()));
 
   EXPECT_FALSE(
       prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
 
-  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile->GetPrefs()),
+  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile),
             profile->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 }
@@ -237,7 +237,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   // properly.
   profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                  "invalid_id");
-  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile->GetPrefs()),
+  EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile),
             profile->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
   EXPECT_EQ(initial_private_provider_id,
