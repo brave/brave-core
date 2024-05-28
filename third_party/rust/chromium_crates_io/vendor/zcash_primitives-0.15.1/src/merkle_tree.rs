@@ -10,8 +10,6 @@ use orchard::tree::MerkleHashOrchard;
 use std::io::{self, Read, Write};
 use zcash_encoding::{Optional, Vector};
 
-use crate::sapling;
-
 /// A hashable node within a Merkle tree.
 pub trait HashSer {
     /// Parses a node from the given byte source.
@@ -21,23 +19,6 @@ pub trait HashSer {
 
     /// Serializes this node.
     fn write<W: Write>(&self, writer: W) -> io::Result<()>;
-}
-
-impl HashSer for sapling::Node {
-    fn read<R: Read>(mut reader: R) -> io::Result<Self> {
-        let mut repr = [0u8; 32];
-        reader.read_exact(&mut repr)?;
-        Option::from(Self::from_bytes(repr)).ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::InvalidData,
-                "Non-canonical encoding of Jubjub base field value.",
-            )
-        })
-    }
-
-    fn write<W: Write>(&self, mut writer: W) -> io::Result<()> {
-        writer.write_all(&self.to_bytes())
-    }
 }
 
 impl HashSer for MerkleHashOrchard {
@@ -100,14 +81,6 @@ pub fn read_address<R: Read>(mut reader: R) -> io::Result<Address> {
     let level = reader.read_u8().map(Level::from)?;
     let index = reader.read_u64::<LittleEndian>()?;
     Ok(Address::from_parts(level, index))
-}
-
-pub fn read_frontier_v0<H: Hashable + HashSer + Clone, R: Read>(
-    mut reader: R,
-) -> io::Result<Frontier<H, { sapling::NOTE_COMMITMENT_TREE_DEPTH }>> {
-    let tree = read_commitment_tree(&mut reader)?;
-
-    Ok(tree.to_frontier())
 }
 
 pub fn write_nonempty_frontier_v1<H: HashSer, W: Write>(
@@ -357,7 +330,6 @@ mod tests {
         read_incremental_witness, write_commitment_tree, write_frontier_v1,
         write_incremental_witness, CommitmentTree, HashSer,
     };
-    use crate::sapling::{self, Node};
 
     proptest! {
         #[test]
