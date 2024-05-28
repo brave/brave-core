@@ -17,12 +17,12 @@ export const leoIcons = (window as any)['leoIcons'] as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
 export const iconMap: { [key: string]: string } = {
-  'cr:security': 'lock',
-  'cr:search': 'search',
+  'settings:security': 'lock',
+  'settings:search': 'search',
   'settings:palette': 'appearance',
   'settings:assignment': 'list-checks',
   'settings:language': 'product-translate',
-  'settings:build': 'settings',
+  'settings:system': 'settings',
   'settings:restore': 'backward',
   'settings:location-on': 'location-on', // location
   'settings:location-off': 'location-off', // location off
@@ -44,7 +44,7 @@ export const iconMap: { [key: string]: string } = {
   'cr:sync': 'product-sync', // background sync
   'settings:volume-up': 'volume-on', // sound
   'settings:volume-up-off': 'volume-off', // sound off
-  'cr:file-download': 'download', // automatic downloads
+  'settings:download': 'download', // automatic downloads
   'settings:file-download-off': 'download-off', // automatic downloads off
   'settings:midi': 'media-visualizer', // midi devices
   'settings:midi-off': 'media-visualizer-off', // midi devices off
