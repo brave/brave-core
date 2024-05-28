@@ -1082,8 +1082,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "name": "Albania",
     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
     "regions": null
-  }])", "US,CA", "USD,EUR", "BTC,ETH",
-      "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
+  }])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {

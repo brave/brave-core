@@ -44,33 +44,33 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
 
   auto service_providers = ParseServiceProviders(ParseJson(json));
   EXPECT_TRUE(service_providers);
-  EXPECT_EQ(
-      base::ranges::count_if(
-          *service_providers,
-          [](const auto& item) {
-            return item->name == "Banxa" && item->service_provider == "BANXA" &&
-                   item->status == "LIVE" &&
-                   item->web_site_url == "http://www.banxa.com" &&
-                   !item->categories.empty() &&
-                   item->categories[0] == "CRYPTO_ONRAMP" &&
-                   !item->category_statuses.empty() &&
-                   item->category_statuses.contains("CRYPTO_ONRAMP") &&
-                   item->category_statuses["CRYPTO_ONRAMP"] == "LIVE" &&
-                   item->logo_images &&
-                   item->logo_images->dark_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "logo_dark.png" &&
-                   item->logo_images->dark_short_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "short_logo_dark.png" &&
-                   item->logo_images->light_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "logo_light.png" &&
-                   item->logo_images->light_short_url ==
-                       "https://images-serviceprovider.meld.io/BANXA/"
-                       "short_logo_light.png";
-          }),
-      1);
+  EXPECT_EQ(base::ranges::count_if(
+                *service_providers,
+                [](const auto& item) {
+                  return item->name == "Banxa" &&
+                         item->service_provider == "BANXA" &&
+                         item->status == "LIVE" &&
+                         item->web_site_url == "http://www.banxa.com" &&
+                         !item->categories.empty() &&
+                         item->categories[0] == "CRYPTO_ONRAMP" &&
+                         !item->category_statuses.empty() &&
+                         item->category_statuses.contains("CRYPTO_ONRAMP") &&
+                         item->category_statuses["CRYPTO_ONRAMP"] == "LIVE" &&
+                         item->logo_images &&
+                         item->logo_images->dark_url ==
+                             "https://images-serviceprovider.meld.io/BANXA/"
+                             "logo_dark.png" &&
+                         item->logo_images->dark_short_url ==
+                             "https://images-serviceprovider.meld.io/BANXA/"
+                             "short_logo_dark.png" &&
+                         item->logo_images->light_url ==
+                             "https://images-serviceprovider.meld.io/BANXA/"
+                             "logo_light.png" &&
+                         item->logo_images->light_short_url ==
+                             "https://images-serviceprovider.meld.io/BANXA/"
+                             "short_logo_light.png";
+                }),
+            1);
   std::string json_null_logos(R"([
   {
     "serviceProvider": "BANXA",
@@ -84,19 +84,20 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
   }])");
   service_providers = ParseServiceProviders(ParseJson(json_null_logos));
   EXPECT_TRUE(service_providers);
-  EXPECT_EQ(
-      base::ranges::count_if(
-          *service_providers,
-          [](const auto& item) {
-            return item->name == "Banxa" && item->service_provider == "BANXA" &&
-                   item->status == "LIVE" &&
-                   item->web_site_url == "http://www.banxa.com" &&
-                   item->categories.empty() && !item->category_statuses.empty() &&
-                   item->category_statuses.contains("CRYPTO_ONRAMP") &&
-                   item->category_statuses["CRYPTO_ONRAMP"] == "LIVE" &&
-                   !item->logo_images;
-          }),
-      1);
+  EXPECT_EQ(base::ranges::count_if(
+                *service_providers,
+                [](const auto& item) {
+                  return item->name == "Banxa" &&
+                         item->service_provider == "BANXA" &&
+                         item->status == "LIVE" &&
+                         item->web_site_url == "http://www.banxa.com" &&
+                         item->categories.empty() &&
+                         !item->category_statuses.empty() &&
+                         item->category_statuses.contains("CRYPTO_ONRAMP") &&
+                         item->category_statuses["CRYPTO_ONRAMP"] == "LIVE" &&
+                         !item->logo_images;
+                }),
+            1);
 
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
@@ -138,7 +139,6 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     "categories": [],
     "websiteUrl": "http://www.banxa.com"
   }])")));
-
 
   // Invalid json
   EXPECT_FALSE(ParseServiceProviders(base::Value()));
