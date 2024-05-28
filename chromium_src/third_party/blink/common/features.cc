@@ -38,8 +38,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivateAggregationApiMultipleCloudProviders,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     // This feature uses shared memory to reduce IPCs to access cookies, but
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
