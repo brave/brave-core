@@ -51,8 +51,8 @@
                 android:gravity="start|top"
                 android:textSize="18sp"
                 android:background="@drawable/brave_sync_top_rounded"
-                android:paddingStart="15dip"
-                android:paddingEnd="15dip" />
+                android:padding="16dip"
+                android:fontFamily="@font/roboto_mono_regular" />
         </FrameLayout>
 
         <androidx.fragment.app.FragmentContainerView
