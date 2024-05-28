@@ -10,6 +10,7 @@ cxx = { version = "1" }
 orchard = { version = "0.8.0",  default-features = false }
 incrementalmerkletree = { version = "0.5.1", features = ["legacy-api"] }
 memuse = "0.2"
+zcash_primitives  = { version = "0.15.1", default-features = false }
 
 [lib]
 name = "zcash"

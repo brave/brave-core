@@ -2812,6 +2812,15 @@ dependencies = [
  "incrementalmerkletree",
  "memuse",
  "orchard",
+ "zcash_primitives",
+]
+
+[[package]]
+name = "zcash_encoding"
+version = "0.2.0"
+dependencies = [
+ "byteorder",
+ "nonempty",
 ]
 
 [[package]]
@@ -2824,6 +2833,23 @@ dependencies = [
  "cipher",
  "rand_core 0.6.4",
  "subtle",
+]
+
+[[package]]
+name = "zcash_primitives"
+version = "0.15.1"
+dependencies = [
+ "incrementalmerkletree",
+ "orchard",
+ "zcash_encoding",
+ "zcash_protocol",
+]
+
+[[package]]
+name = "zcash_protocol"
+version = "0.1.1"
+dependencies = [
+ "memuse",
 ]
 
 [[package]]
