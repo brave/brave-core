@@ -46,8 +46,9 @@ class ItemView : public views::LabelButton {
   ~ItemView() override = default;
 
   // views::LabelButton:
-  gfx::Size CalculatePreferredSize() const override {
-    auto size = views::LabelButton::CalculatePreferredSize();
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
+    auto size = views::LabelButton::CalculatePreferredSize(available_size);
     size.SetToMax(gfx::Size(0, 30));
     return size;
   }
