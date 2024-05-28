@@ -49,7 +49,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
             "countryCode": "US",
             "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
             "platform": "windows",
-            "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+            "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
             "segment": "untargeted",
             "studies": [],
             "topSegment": [],

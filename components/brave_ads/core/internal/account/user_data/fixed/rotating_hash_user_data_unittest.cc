@@ -39,7 +39,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
-                      "rotating_hash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
+                      "rotatingHash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
                     })"),
             BuildRotatingHashUserData(transaction));
 }

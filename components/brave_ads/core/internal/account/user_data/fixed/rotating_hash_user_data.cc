@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kRotatingHashKey[] = "rotating_hash";
+constexpr char kRotatingHashKey[] = "rotatingHash";
 }  // namespace
 
 base::Value::Dict BuildRotatingHashUserData(
