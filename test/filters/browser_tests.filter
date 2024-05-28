@@ -382,6 +382,9 @@
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportWinDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportResultDestinationEnrollment/*
 
+# These tests fail because we disable privacy_sandbox::kTrackingProtectionContentSetting
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookiesUpdatesTrackingProtectionException/*
+
 # These tests fail because we override privacy sandbox settings config
 -PrivacySandboxConsentConfirmationTest.ConsentTest/3
 -PrivacySandboxConsentConfirmationTest.ConsentTest/7

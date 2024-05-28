@@ -133,6 +133,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
+      &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
 #if BUILDFLAG(IS_WIN)
@@ -245,6 +246,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
+      &page_image_service::kImageServiceObserveSyncDownloadStatus,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
       &password_manager::features::
@@ -260,6 +262,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
+      &privacy_sandbox::kTrackingProtectionContentSetting,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
