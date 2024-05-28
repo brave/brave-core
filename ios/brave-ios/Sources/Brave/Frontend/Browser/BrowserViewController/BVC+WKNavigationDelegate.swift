@@ -685,12 +685,17 @@ extension BrowserViewController: WKNavigationDelegate {
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
-    if let tab = tab,
-      let responseURL = responseURL,
-      InternalURL(responseURL)?.isSessionRestore == true
+    if let tab = tab, let responseURL = responseURL,
+      let response = response as? HTTPURLResponse
     {
-      tab.shouldNotifyAdsServiceTabDidChange = false
-      tab.shouldNotifyAdsServiceTabContentDidChange = false
+      let internalUrl = InternalURL(responseURL)
+      let isErrorPage = internalUrl?.isErrorPage == true || response.statusCode >= 400
+      let isSessionRestore = internalUrl?.isSessionRestore == true
+
+      if isErrorPage || isSessionRestore {
+        tab.shouldNotifyAdsServiceTabDidChange = false
+        tab.shouldNotifyAdsServiceTabContentDidChange = false
+      }
     }
 
     var request: URLRequest?
@@ -1001,16 +1006,12 @@ extension BrowserViewController: WKNavigationDelegate {
 
       navigateInTab(tab: tab, to: navigation)
       if tab.navigationType != WKNavigationType.backForward {
-        if tab.shouldNotifyAdsServiceTabDidChange {
-          rewards.reportTabUpdated(
-            tab: tab,
-            isSelected: tabManager.selectedTab == tab,
-            isPrivate: privateBrowsingManager.isPrivateBrowsing
-          )
-        }
-        if tab.shouldNotifyAdsServiceTabContentDidChange {
-          tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-        }
+        rewards.reportTabUpdated(
+          tab: tab,
+          isSelected: tabManager.selectedTab == tab,
+          isPrivate: privateBrowsingManager.isPrivateBrowsing
+        )
+        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
       }
       // Set `shouldNotifyAdsServiceTabDidChange` and
       // `shouldNotifyAdsServiceTabContentDidChange` to `true` so that listeners
