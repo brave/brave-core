@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
@@ -56,7 +57,7 @@ std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
   BraveTemplateURLPrepopulateDataTest()
-      : search_engine_choice_service_(prefs_) {}
+      : search_engine_choice_service_(prefs_, &local_state_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
     // Real registration happens in `brave/browser/brave_profile_prefs.cc`
@@ -80,6 +81,7 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  TestingPrefServiceSimple local_state_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 
