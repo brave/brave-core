@@ -59,7 +59,7 @@ const Content = styled.span`
 
 const Description = styled.span`
   font: ${font.small.regular};
-  color: ${color.text.tertiary};
+  color: rgba(255,255,255,0.7);
 `
 
 const Hint = styled.span`
