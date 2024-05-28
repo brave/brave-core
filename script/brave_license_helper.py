@@ -143,10 +143,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'rust',
                      'winapi_x86_64_pc_windows_gnu'),
 
-        # Skip this Rust crate because it doesn't conform to normal layout (the
-        # crate is not in chromium_crates_io/vendor).
-        os.path.join('brave', 'third_party', 'rust', 'futures_retry'),
-
         # Rust crates that are downloaded but not used (due to Cargo.toml
         # misconfigurations in other crates).
         os.path.join('brave', 'third_party', 'rust', 'valuable'),
@@ -214,6 +210,11 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "Name": "libwally-core",
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",
             "License": "MIT",
+        },
+        os.path.join('brave', 'third_party', 'rust', 'futures_retry', 'v0_5'): {
+            "Name": "futures-retry",
+            "URL": "https://crates.io/crates/futures-retry",
+            "License": "Apache-2.0",
         },
         os.path.join('brave', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
