@@ -54,14 +54,12 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'rust', 'speedreader'),
         os.path.join('brave', 'third_party', 'rust', 'speedreader_ffi'),
 
-        # Rust crates that are dependencies of upstream rust and aren't actually
-        # downloaded or only referenced upstream crates.
-        os.path.join('brave', 'third_party', 'rust', 'adler'),
+        # Rust crates that are references to upstream crates and should have
+        # licenses in upstream //third_party/rust.
         os.path.join('brave', 'third_party', 'rust', 'aho_corasick'),
         os.path.join('brave', 'third_party', 'rust', 'anyhow'),
         os.path.join('brave', 'third_party', 'rust', 'base64'),
         os.path.join('brave', 'third_party', 'rust', 'cfg_if'),
-        os.path.join('brave', 'third_party', 'rust', 'crc32fast'),
         os.path.join('brave', 'third_party', 'rust', 'cxx'),
         os.path.join('brave', 'third_party', 'rust', 'cxxbridge_flags'),
         os.path.join('brave', 'third_party', 'rust', 'cxxbridge_macro'),
@@ -72,76 +70,21 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'rust', 'libc'),
         os.path.join('brave', 'third_party', 'rust', 'log'),
         os.path.join('brave', 'third_party', 'rust', 'memchr'),
-        os.path.join('brave', 'third_party', 'rust', 'miniz_oxide'),
         os.path.join('brave', 'third_party', 'rust', 'ppv_lite86'),
         os.path.join('brave', 'third_party', 'rust', 'proc_macro2'),
         os.path.join('brave', 'third_party', 'rust', 'quote'),
         os.path.join('brave', 'third_party', 'rust', 'rand', 'v0_8'),
-        os.path.join('brave', 'third_party', 'rust', 'rand_chacha', 'v0_3'),
         os.path.join('brave', 'third_party', 'rust', 'rand_core', 'v0_6'),
         os.path.join('brave', 'third_party', 'rust', 'regex'),
         os.path.join('brave', 'third_party', 'rust', 'regex_automata'),
         os.path.join('brave', 'third_party', 'rust', 'regex_syntax'),
         os.path.join('brave', 'third_party', 'rust', 'ryu'),
-        os.path.join('brave', 'third_party', 'rust', 'semver'),
         os.path.join('brave', 'third_party', 'rust', 'serde'),
-        os.path.join('brave', 'third_party', 'rust', 'serde_derive'),
         os.path.join('brave', 'third_party', 'rust', 'serde_json'),
         os.path.join('brave', 'third_party', 'rust', 'static_assertions'),
         os.path.join('brave', 'third_party', 'rust', 'syn'),
-        os.path.join('brave', 'third_party', 'rust', 'tokio'),
         os.path.join('brave', 'third_party', 'rust', 'unicode_ident'),
         os.path.join('brave', 'third_party', 'rust', 'winapi'),
-        os.path.join('brave', 'third_party', 'rust', 'wycheproof'),
-        os.path.join('brave', 'third_party', 'rust', 'zcash'),
-        os.path.join('brave', 'third_party', 'rust', 'zerocopy'),
-        os.path.join('brave', 'third_party', 'rust', 'zerocopy_derive'),
-
-        # Rust crates that do not supply license files.
-        os.path.join('brave', 'third_party', 'rust', 'bech32'),
-        os.path.join('brave', 'third_party', 'rust', 'blake2b_simd'),
-        os.path.join('brave', 'third_party', 'rust', 'cid'),
-        os.path.join('brave', 'third_party', 'rust', 'convert_case'),
-        os.path.join('brave', 'third_party', 'rust', 'crunchy'),
-        os.path.join('brave', 'third_party', 'rust', 'derivation_path'),
-        os.path.join('brave', 'third_party', 'rust', 'ed25519_dalek_bip32'),
-        os.path.join('brave', 'third_party', 'rust', 'ff_derive'),
-        os.path.join('brave', 'third_party', 'rust', 'forest_bigint'),
-        os.path.join('brave', 'third_party', 'rust', 'fvm_ipld_blockstore'),
-        os.path.join('brave', 'third_party', 'rust', 'fvm_ipld_encoding'),
-        os.path.join('brave', 'third_party', 'rust', 'fvm_shared'),
-        os.path.join('brave', 'third_party', 'rust', 'fxhash'),
-        os.path.join('brave', 'third_party', 'rust', 'halo2_gadgets'),
-        os.path.join('brave', 'third_party', 'rust', 'halo2_proofs'),
-        os.path.join('brave', 'third_party', 'rust', 'libsecp256k1_core'),
-        os.path.join('brave', 'third_party', 'rust', 'libsecp256k1_gen_ecmult'),
-        os.path.join('brave', 'third_party', 'rust',
-                     'libsecp256k1_gen_genmult'),
-        os.path.join('brave', 'third_party', 'rust', 'mac'),
-        os.path.join('brave', 'third_party', 'rust', 'multibase'),
-        os.path.join('brave', 'third_party', 'rust', 'multihash'),
-        os.path.join('brave', 'third_party', 'rust', 'multihash_derive'),
-        os.path.join('brave', 'third_party', 'rust', 'phf'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_codegen'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_generator'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_generator'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_macros'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_shared'),
-        os.path.join('brave', 'third_party', 'rust', 'phf_shared'),
-        os.path.join('brave', 'third_party', 'rust', 'seahash'),
-        os.path.join('brave', 'third_party', 'rust', 'selectors'),
-        os.path.join('brave', 'third_party', 'rust', 'serde_tuple'),
-        os.path.join('brave', 'third_party', 'rust', 'serde_tuple_macros'),
-        os.path.join('brave', 'third_party', 'rust', 'servo_arc'),
-        os.path.join('brave', 'third_party', 'rust', 'siphasher'),
-        os.path.join('brave', 'third_party', 'rust', 'thin_slice'),
-        os.path.join('brave', 'third_party', 'rust', 'uint'),
-        os.path.join('brave', 'third_party', 'rust', 'valuable'),
-        os.path.join('brave', 'third_party', 'rust', 'wasi'),
-        os.path.join('brave', 'third_party', 'rust',
-                     'winapi_i686_pc_windows_gnu'),
-        os.path.join('brave', 'third_party', 'rust',
-                     'winapi_x86_64_pc_windows_gnu'),
 
         # Rust crates that are downloaded but not used (due to Cargo.toml
         # misconfigurations in other crates).
@@ -393,6 +336,15 @@ def IsBraveRustCrate(path):
 
 def ReportBraveIncompleteMetadataFile(path):
     if path.startswith('brave'):
+        # If there's no LICENSE file in the third party downloaded code, then
+        # we place LICENSE file next to README.chromium. This file cannot be
+        # added as a 'License File' into the README.chromium metadata, though,
+        # so this third party code won't be added into the credits page.
+        added_license_file = os.path.join(_REPOSITORY_ROOT,
+                                          os.path.join(path, 'LICENSE'))
+        if (os.path.isfile(added_license_file)):
+            return
+
         raise ValueError(
             '\n\nMETADATA ERROR: missing required fields in README.chromium in '
             f'{path}\nIf this is code you added, then these metadata fields '

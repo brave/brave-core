@@ -81,175 +81,6 @@ root = "chromium"
 # feature (and dependency) do not get added to the build anyway
 remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
 
-[crate.adss]
-license_files = ['LICENSE']
-
-[crate.ansi_term]
-license_files = ['LICENCE']
-
-[crate.arrayref]
-license_files = ['LICENSE']
-
-[crate.bitvec]
-extra_input_roots = ['../doc', '../README.md' ]
-license_files = ['LICENSE.txt']
-
-[crate.crunchy]
-build_script_outputs = [ "lib.rs" ]
-
-[crate.cssparser]
-build_script_outputs = [ "tokenizer.rs" ]
-extra_build_script_src_roots = [ "../build" ]
-license_files = ['LICENSE']
-
-[crate.cssparser-macros]
-license_files = ['LICENSE']
-
-[crate.dtoa-short]
-license_files = ['LICENSE']
-
-[crate.encoding_rs]
-license_files = ['LICENSE-APACHE']
-
-[crate.funty]
-license_files = ['LICENSE.txt']
-
-[crate.num-bigint]
-extra_input_roots = [ "../README.md" ]
-extra_kv = { raw_gn = '''
-if (target_cpu == "arm64" || target_cpu == "x64") {
-  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
-} else {
-  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=32" ]
-}
-if (epoch != "0.2") {
-  build_script_outputs = [ "radix_bases.rs" ]
-}
-''' }
-
-[crate.num-traits]
-extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
-
-[crate.cbor4ii]
-extra_input_roots = [ "../README.md" ]
-
-[crate.platforms]
-extra_src_roots = [ "target" ]
-
-[crate.futures-core]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-channel]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-task]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-util]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.challenge-bypass-ristretto]
-extra_input_roots = [ "../docs", "../README.md" ]
-license_files = ['LICENSE']
-
-[crate.chrono]
-license_files = ['LICENSE.txt']
-
-[crate.getrandom]
-license_files = ['LICENSE-APACHE']
-
-[crate.itoa]
-license_files = ['LICENSE-APACHE']
-
-[crate.ppoprf]
-license_files = ['LICENSE']
-
-[crate.radium]
-license_files = ['LICENSE.txt']
-
-[crate.rand]
-license_files = ['LICENSE-APACHE']
-
-[crate.rand_core]
-license_files = ['LICENSE-APACHE']
-
-[crate.reddsa]
-extra_input_roots = [ "../README.md" ]
-license_files = ['LICENSE.Apache-2.0']
-
-[crate.signature]
-extra_input_roots = [ "../README.md" ]
-
-[crate.sta-rs]
-license_files = ['LICENSE']
-
-[crate.star-constellation]
-license_files = ['LICENSE']
-
-[crate.tap]
-license_files = ['LICENSE.txt']
-
-[crate.time]
-license_files = ['LICENSE-Apache']
-
-[crate.time-core]
-license_files = ['LICENSE-Apache']
-
-[crate.time-macros]
-license_files = ['LICENSE-Apache']
-
-[crate.typenum]
-extra_build_script_src_roots = [ "../build" ]
-build_script_outputs = [ "consts.rs", "op.rs" ]
-extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir) + \"/lib/op.rs" ] }
-
-[crate.html5ever]
-extra_build_script_src_roots = [ "../macros/match_token.rs" ]
-build_script_outputs = [ "rules.rs" ]
-
-[crate.markup5ever]
-extra_build_script_src_roots = [ "entities.rs" ]
-build_script_outputs = [ "generated.rs", "named_entities.rs", ]
-
-[crate.selectors]
-build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
-
-[crate.libsecp256k1]
-build_script_outputs = [ "const.rs", "const_gen.rs" ]
-
-[crate.multihash]
-extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3\") + \"" ]}
-
-[crate.curve25519-dalek]
-extra_input_roots = [ "../docs", "../README.md" ]
-extra_kv = { raw_gn = '''
-if (target_cpu == "x64") {
-    deps += [
-      "//brave/third_party/rust/cpufeatures/v0_2:lib",
-      "//brave/third_party/rust/curve25519_dalek_derive/v0_1:lib",
-    ]
-  }
-''' }
-
-[crate.ed25519]
-extra_input_roots = [ "../README.md" ]
-
-[crate.lock_api]
-extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }
-
-[crate.sha2]
-extra_kv = { raw_gn = '''
-if ((target_cpu == "arm64" &&
-    (target_os == "mac" || target_os == "linux" || target_os == "ios")) ||
-    target_cpu == "x64" || target_cpu == "x86") {
-      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-''' }
-
 [crate.adblock]
 extra_kv = { raw_gn = '''
 if (is_ios) {
@@ -269,6 +100,9 @@ if (is_ios) {
 '''}
 license_files = ['LICENSE']
 
+[crate.adss]
+license_files = ['LICENSE']
+
 [crate.aes]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
@@ -276,14 +110,20 @@ if (target_cpu == "x64" || target_cpu == "x86") {
 }
 ''' }
 
-[crate.chacha20]
-extra_kv = { raw_gn = '''
-if (target_cpu == "x64" || target_cpu == "x86") {
-      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-''' }
+[crate.ansi_term]
+license_files = ['LICENCE']
 
-[crate.poly1305]
+[crate.arrayref]
+license_files = ['LICENSE']
+
+[crate.bitvec]
+extra_input_roots = ['../doc', '../README.md' ]
+license_files = ['LICENSE.txt']
+
+[crate.cbor4ii]
+extra_input_roots = [ "../README.md" ]
+
+[crate.chacha20]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
@@ -293,28 +133,243 @@ if (target_cpu == "x64" || target_cpu == "x86") {
 [crate.chacha20poly1305]
 extra_input_roots = [ "../README.md" ]
 
+[crate.challenge-bypass-ristretto]
+extra_input_roots = [ "../docs", "../README.md" ]
+license_files = ['LICENSE']
+
+[crate.chrono]
+license_files = ['LICENSE.txt']
+
+[crate.crunchy]
+build_script_outputs = [ "lib.rs" ]
+
+[crate.cssparser]
+build_script_outputs = [ "tokenizer.rs" ]
+extra_build_script_src_roots = [ "../build" ]
+license_files = ['LICENSE']
+
+[crate.cssparser-macros]
+license_files = ['LICENSE']
+
+[crate.curve25519-dalek]
+extra_input_roots = [ "../docs", "../README.md" ]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64") {
+    deps += [
+      "//brave/third_party/rust/cpufeatures/v0_2:lib",
+      "//brave/third_party/rust/curve25519_dalek_derive/v0_1:lib",
+    ]
+  }
+''' }
+
+[crate.derivation-path]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.dtoa-short]
+license_files = ['LICENSE']
+
+[crate.ed25519]
+extra_input_roots = [ "../README.md" ]
+
+[crate.ed25519-dalek-bip32]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.encoding_rs]
+license_files = ['LICENSE-APACHE']
+
+[crate.ff_derive]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.forest_bigint]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.funty]
+license_files = ['LICENSE.txt']
+
+[crate.futures-channel]
+extra_src_roots = [ "../no_atomic_cas.rs" ]
+extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
+
+[crate.futures-core]
+extra_src_roots = [ "../no_atomic_cas.rs" ]
+extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
+
+[crate.futures-task]
+extra_src_roots = [ "../no_atomic_cas.rs" ]
+extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
+
+[crate.futures-util]
+extra_src_roots = [ "../no_atomic_cas.rs" ]
+extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
+
+[crate.fvm_ipld_blockstore]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.fvm_ipld_encoding]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.fvm_shared]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.fxhash]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.getrandom]
+license_files = ['LICENSE-APACHE']
+
+[crate.halo2_gadgets]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.halo2_proofs]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.html5ever]
+extra_build_script_src_roots = [ "../macros/match_token.rs" ]
+build_script_outputs = [ "rules.rs" ]
+
+[crate.itoa]
+license_files = ['LICENSE-APACHE']
+
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
 
-[crate.windows]
-license_files = ['license-apache-2.0']
+[crate.libsecp256k1]
+build_script_outputs = [ "const.rs", "const_gen.rs" ]
 
-[crate.windows_aarch64_gnullvm]
+[crate.libsecp256k1-core]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.libsecp256k1-gen-ecmult]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.libsecp256k1-gen-genmult]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.lock_api]
+extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }
+
+[crate.mac]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.markup5ever]
+extra_build_script_src_roots = [ "entities.rs" ]
+build_script_outputs = [ "generated.rs", "named_entities.rs", ]
+
+[crate.multihash]
+extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3\") + \"" ]}
+
+[crate.num-bigint]
+extra_input_roots = [ "../README.md" ]
+extra_kv = { raw_gn = '''
+if (target_cpu == "arm64" || target_cpu == "x64") {
+  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
+} else {
+  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=32" ]
+}
+if (epoch != "0.2") {
+  build_script_outputs = [ "radix_bases.rs" ]
+}
+''' }
+
+[crate.num-traits]
+extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
+
+[crate.platforms]
+extra_src_roots = [ "target" ]
+
+[crate.poly1305]
+extra_kv = { raw_gn = '''
+if (target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.ppoprf]
+license_files = ['LICENSE']
+
+[crate.radium]
+license_files = ['LICENSE.txt']
+
+[crate.rand]
+license_files = ['LICENSE-APACHE']
+
+[crate.rand_chacha]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.rand_core]
+license_files = ['LICENSE-APACHE']
+
+[crate.reddsa]
+extra_input_roots = [ "../README.md" ]
+license_files = ['LICENSE.Apache-2.0']
+
+[crate.selectors]
+build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
+license_files = ['../../../../../common/licenses/MPL-2.0']
+
+[crate.semver]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.serde_derive]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.servo_arc]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.sha2]
+extra_kv = { raw_gn = '''
+if ((target_cpu == "arm64" &&
+    (target_os == "mac" || target_os == "linux" || target_os == "ios")) ||
+    target_cpu == "x64" || target_cpu == "x86") {
+      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+}
+''' }
+
+[crate.signature]
+extra_input_roots = [ "../README.md" ]
+
+[crate.siphasher]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.sta-rs]
+license_files = ['LICENSE']
+
+[crate.star-constellation]
+license_files = ['LICENSE']
+
+[crate.tap]
+license_files = ['LICENSE.txt']
+
+[crate.thin-slice]
+license_files = ['../../../../../common/licenses/MPL-2.0']
+
+[crate.time]
+license_files = ['LICENSE-Apache']
+
+[crate.time-core]
+license_files = ['LICENSE-Apache']
+
+[crate.time-macros]
+license_files = ['LICENSE-Apache']
+
+[crate.typenum]
+extra_build_script_src_roots = [ "../build" ]
+build_script_outputs = [ "consts.rs", "op.rs" ]
+extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir) + \"/lib/op.rs" ] }
+
+[crate.uint]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.wasi]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.windows]
 license_files = ['license-apache-2.0']
 
 [crate.windows_aarch64_msvc]
 license_files = ['license-apache-2.0']
 
-[crate.windows_i686_gnu]
-license_files = ['license-apache-2.0']
-
 [crate.windows_i686_msvc]
-license_files = ['license-apache-2.0']
-
-[crate.windows_x86_64_gnu]
-license_files = ['license-apache-2.0']
-
-[crate.windows_x86_64_gnullvm]
 license_files = ['license-apache-2.0']
 
 [crate.windows_x86_64_msvc]
@@ -328,3 +383,6 @@ license_files = ['license-apache-2.0']
 
 [crate.wyz]
 license_files = ['LICENSE.txt']
+
+[crate.zcash]
+license_files = ['../../../../../common/licenses/MPL-2.0']
