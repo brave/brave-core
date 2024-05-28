@@ -21,6 +21,7 @@ class SimpleShieldsView: UIView {
   let hostLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 25.0)
     $0.textColor = .bravePrimary
+    $0.lineBreakMode = .byTruncatingHead
   }
 
   let shieldsSwitch = ShieldsSwitch().then {

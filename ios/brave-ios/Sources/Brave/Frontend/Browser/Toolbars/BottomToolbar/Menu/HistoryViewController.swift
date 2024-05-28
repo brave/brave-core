@@ -284,7 +284,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
 
     cell.do {
       $0.backgroundColor = UIColor.clear
-      $0.setLines(historyItem.title, detailText: historyItem.url.absoluteString)
+      $0.setLines(
+        historyItem.title,
+        detailText: URLFormatter.formatURLOrigin(
+          forDisplayOmitSchemePathAndTrivialSubdomains: historyItem.url.absoluteString
+        )
+      )
 
       $0.imageView?.contentMode = .scaleAspectFit
       $0.imageView?.layer.borderColor = FaviconUX.faviconBorderColor.cgColor

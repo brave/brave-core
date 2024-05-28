@@ -399,10 +399,15 @@ extension BrowserViewController {
             .lineLimit(1)
             .foregroundColor(Color(.braveLabel))
         }
-        Text(verbatim: url.baseDomain ?? url.host ?? url.absoluteDisplayString)
-          .font(.footnote)
-          .lineLimit(1)
-          .foregroundColor(Color(.secondaryBraveLabel))
+        Text(
+          verbatim: URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+          )
+        )
+        .font(.footnote)
+        .lineLimit(1)
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .truncationMode(.head)
       }
       .padding(.horizontal, 14)
       .padding(.vertical, 6)
