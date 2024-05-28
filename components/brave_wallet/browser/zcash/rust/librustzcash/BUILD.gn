@@ -1,0 +1,60 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("zcash_protocol") {
+  visibility = [ ":zcash_primitives" ]
+  crate_name = "zcash_protocol"
+  crate_root = "src/components/zcash_protocol/src/lib.rs"
+  sources = [
+    "src/components/zcash_protocol/src/consensus.rs",
+    "src/components/zcash_protocol/src/constants.rs",
+    "src/components/zcash_protocol/src/constants/mainnet.rs",
+    "src/components/zcash_protocol/src/constants/regtest.rs",
+    "src/components/zcash_protocol/src/constants/testnet.rs",
+    "src/components/zcash_protocol/src/lib.rs",
+    "src/components/zcash_protocol/src/memo.rs",
+    "src/components/zcash_protocol/src/value.rs",
+  ]
+  deps = [ "//brave/third_party/rust/memuse/v0_2:lib" ]
+}
+
+rust_static_library("zcash_encoding") {
+  visibility = [ ":zcash_primitives" ]
+  crate_name = "zcash_encoding"
+  crate_root = "src/components/zcash_encoding/src/lib.rs"
+  sources = [ "src/components/zcash_encoding/src/lib.rs" ]
+  allow_unsafe = true
+  deps = [
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+  ]
+}
+
+rust_static_library("zcash_primitives") {
+  visibility = [
+    "//brave/components/brave_wallet/browser/zcash/rust:rust_lib",
+    "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
+  ]
+  crate_name = "zcash_primitives"
+  crate_root = "src/zcash_primitives/src/lib.rs"
+  sources = [
+    "src/zcash_primitives/src/lib.rs",
+    "src/zcash_primitives/src/merkle_tree.rs",
+    "src/zcash_primitives/src/transaction/components.rs",
+    "src/zcash_primitives/src/transaction/components/orchard.rs",
+    "src/zcash_primitives/src/transaction/mod.rs",
+  ]
+  deps = [
+    ":zcash_encoding",
+    ":zcash_protocol",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//brave/third_party/rust/orchard/v0_8:lib",
+  ]
+}

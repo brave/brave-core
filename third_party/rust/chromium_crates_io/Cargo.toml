@@ -218,3 +218,15 @@ package = "winapi"
 [patch.crates-io.zcash_v1]
 path = "../../../components/brave_wallet/browser/zcash/rust"
 package = "zcash"
+
+[patch.crates-io.zcash_protocol_v0_1]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_protocol"
+package = "zcash_protocol"
+
+[patch.crates-io.zcash_encoding_v0_2]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_encoding"
+package = "zcash_encoding"
+
+[patch.crates-io.zcash_primitives_v0_15]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
+package = "zcash_primitives"

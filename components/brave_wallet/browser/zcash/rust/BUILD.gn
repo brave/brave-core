@@ -55,7 +55,8 @@ rust_static_library("rust_lib") {
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
+    "librustzcash:zcash_primitives",
     "//brave/components/brave_wallet/rust:rust_lib",
-    "//brave/third_party/rust/orchard/v0_7:lib",
+    "//brave/third_party/rust/orchard/v0_8:lib",
   ]
 }
