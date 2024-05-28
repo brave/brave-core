@@ -9,6 +9,5 @@ The current implementation is only for bandwidth prediction and uses a subset of
 - basic page performance metrics (page load time, page interactive time, dom content loaded, first visual change, first meaningful paint)
 
 The component includes:
-- Python code that does model fitting and parameter tunning for data already provided in the expected format
-- A small python script that translates the generated linear regression model to parameters in a C++ header file
+- Generated linear regression model to parameters in a C++ header file (bandwidth_linreg_parameters.h)
 - An interface to the model that buffers submitted features and runs the model when requested
