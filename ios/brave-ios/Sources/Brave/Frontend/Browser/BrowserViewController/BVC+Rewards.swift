@@ -154,8 +154,11 @@ extension BrowserViewController {
 extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
     guard let webView = webView, let url = webView.url else { return }
-
-    if url.isLocal || self.isPrivate || !shouldNotifyAdsServiceTabContentDidChange { return }
+    if url.isLocal || self.isPrivate
+      || isRestored || !isNewNavigation || isErrorPage
+    {
+      return
+    }
 
     let group = DispatchGroup()
 

@@ -242,9 +242,6 @@ class Tab: NSObject {
   var restoring: Bool = false
   var pendingScreenshot = false
 
-  /// The type of action triggering a navigation.
-  var navigationType: WKNavigationType?
-
   // This variable is used to keep track of current page. It is used to detect
   // and report same document navigations to Brave Rewards library.
   var rewardsXHRLoadURL: URL?
@@ -305,9 +302,10 @@ class Tab: NSObject {
   }
 
   var mimeType: String?
-  var isEditing: Bool = false
-  var shouldNotifyAdsServiceTabDidChange = true
-  var shouldNotifyAdsServiceTabContentDidChange = true
+  var isEditing = false
+  var isRestored = false
+  var isNewNavigation = true
+  var isErrorPage = false
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
@@ -572,7 +570,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
-      shouldNotifyAdsServiceTabContentDidChange = false
+      isRestored = true
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
