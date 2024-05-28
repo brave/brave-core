@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
@@ -47,7 +48,7 @@ class BraveAdsReminderTest : public UnitTestBase {
     reminder_ = std::make_unique<Reminder>();
   }
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
 
   std::unique_ptr<Reminder> reminder_;
 };

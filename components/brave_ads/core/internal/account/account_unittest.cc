@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"  // IWYU pragma: keep
@@ -63,7 +64,7 @@ class BraveAdsAccountTest : public UnitTestBase {
 
   TokenGeneratorMock token_generator_mock_;
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
 
   std::unique_ptr<Account> account_;
   AccountObserverMock observer_mock_;

@@ -39,8 +39,9 @@ class MappedTokensTransformation final : public Transformation {
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
-  raw_ptr<const neural_text_classification::flat::MappedTokenTransformation>
-      mapped_token_transformation_;
+  const raw_ptr<
+      const neural_text_classification::flat::MappedTokenTransformation>
+      mapped_token_transformation_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace ml

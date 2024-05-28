@@ -78,6 +78,8 @@ class UserRewards final : public AdsClientNotifierObserver,
   void OnCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) override;
 
+  raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
+
   IssuersUrlRequest issuers_url_request_;
   RefillConfirmationTokens refill_confirmation_tokens_;
   RedeemPaymentTokens redeem_payment_tokens_;
@@ -85,8 +87,6 @@ class UserRewards final : public AdsClientNotifierObserver,
   WalletInfo wallet_;
 
   const database::table::Transactions transactions_database_table_;
-
-  raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
 };
 
 }  // namespace brave_ads
