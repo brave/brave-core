@@ -18,7 +18,7 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
-    "//brave/third_party/rust/bls_signatures/v0_12:lib",
+    "//brave/third_party/rust/bls_signatures/v0_15:lib",
     "//brave/third_party/rust/cid/v0_8:lib",
     "//brave/third_party/rust/forest_bigint/v0_1:lib",
     "//brave/third_party/rust/fvm_ipld_encoding/v0_3:lib",

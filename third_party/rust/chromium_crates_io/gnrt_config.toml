@@ -79,7 +79,10 @@ root = "chromium"
 # spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
 # use it and lazy_static is an upstream crate with a patch.crates-io so the
 # feature (and dependency) do not get added to the build anyway
-remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
+remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin',
+		  # zcash_primitives removals
+                 'equihash', 'password-hash', 'base64ct', 'bellman', 'blake2s_simd', 'bs58', 'document-features',
+                 'litrs', 'redjubjub','zcash_address' ]
 
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
@@ -230,4 +233,32 @@ extra_input_roots = [ "../README.md" ]
 
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
+
+[crate.zcash_primitives]
+extra_kv = { raw_gn = '''
+    deps -= [
+        "//brave/third_party/rust/aes/v0_8:lib",
+        "//brave/third_party/rust/bip0039/v0_10:lib",
+        "//brave/third_party/rust/blake2b_simd/v1:lib",
+        "//brave/third_party/rust/document_features/v0_2:lib",
+        "//brave/third_party/rust/equihash/v0_2:lib",
+        "//brave/third_party/rust/ff/v0_13:lib",
+        "//brave/third_party/rust/fpe/v0_6:lib",
+        "//brave/third_party/rust/group/v0_13:lib",
+        "//brave/third_party/rust/hex/v0_4:lib",
+        "//brave/third_party/rust/jubjub/v0_10:lib",
+        "//brave/third_party/rust/memuse/v0_2:lib",
+        "//brave/third_party/rust/rand/v0_8:lib",
+        "//brave/third_party/rust/rand_core/v0_6:lib",
+        "//brave/third_party/rust/redjubjub/v0_7:lib",
+        "//brave/third_party/rust/sapling_crypto/v0_1:lib",
+        "//brave/third_party/rust/sha2/v0_10:lib",
+        "//brave/third_party/rust/subtle/v2:lib",
+        "//brave/third_party/rust/tracing/v0_1:lib",
+        "//brave/third_party/rust/zcash_address/v0_3:lib",
+        "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+        "//brave/third_party/rust/zcash_spec/v0_1:lib",
+        "//brave/third_party/rust/zip32/v0_1:lib",
+    ]
+''' }
 
