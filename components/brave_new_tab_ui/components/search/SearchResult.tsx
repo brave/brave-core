@@ -85,7 +85,7 @@ const Divider = styled.hr`
 export default function SearchResult({ match, line, selected }: Props) {
   const contents = mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
   const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
-  const isAskLeo = description == getLocale('searchAskLeo')
+  const isAskLeo = description === getLocale('searchAskLeo')
 
   const hint = description && match.destinationUrl.url
     ? description
