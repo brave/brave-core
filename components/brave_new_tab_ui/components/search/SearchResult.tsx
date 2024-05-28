@@ -7,9 +7,9 @@ import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
 import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import Flex from '../../../common/Flex';
+import Flex from '$web-common/Flex';
 import { omniboxController } from './SearchContext';
-import { getLocale } from '../../../common/locale';
+import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
 
 interface Props {

@@ -108,10 +108,8 @@ export default function Component(props: Props) {
     }
 
     el.addEventListener('close', closeHandler)
-    el.addEventListener('cancel', e => e.preventDefault())
     return () => {
       el.removeEventListener('close', closeHandler)
-      el.removeEventListener('cancel', closeHandler)
     }
   }, [props.onClose])
 
@@ -137,6 +135,10 @@ export default function Component(props: Props) {
     if (!clickedInDialog) {
       doClose()
     }
+  }}
+  onCancel={e => {
+    e.preventDefault()
+    doClose()
   }}>
     <Backdrop />
     <SearchBox />

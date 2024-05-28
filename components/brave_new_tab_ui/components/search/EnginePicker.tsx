@@ -1,11 +1,16 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import Button from '@brave/leo/react/button';
 import ButtonMenu from '@brave/leo/react/buttonMenu';
 import Icon from '@brave/leo/react/icon';
 import { color, icon, spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled from "styled-components";
-import Flex from '../../../common/Flex';
-import { getLocale } from "../../../common/locale";
+import Flex from '$web-common/Flex';
+import { getLocale } from "$web-common/locale";
 import { useSearchContext } from "./SearchContext";
 import { MediumSearchEngineIcon } from "./SearchEngineIcon";
 
