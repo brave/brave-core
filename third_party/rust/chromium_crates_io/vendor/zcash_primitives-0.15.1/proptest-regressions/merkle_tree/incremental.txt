@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc f6df6e3a7a1641029b9f39a671046ba39745ded73de8d7444e7c27a8f73e1365 # shrinks to t = CommitmentTree { left: Some(Node { repr: [36, 96, 18, 1, 228, 118, 68, 158, 142, 67, 253, 219, 85, 192, 179, 142, 230, 218, 145, 73, 159, 211, 208, 58, 182, 136, 108, 95, 137, 166, 232, 10] }), right: Some(Node { repr: [10, 211, 222, 223, 94, 55, 180, 62, 79, 50, 38, 55, 73, 152, 245, 181, 157, 40, 89, 177, 51, 96, 154, 78, 185, 74, 118, 11, 54, 188, 151, 181] }), parents: [None, None, Some(Node { repr: [99, 240, 35, 62, 160, 23, 150, 46, 3, 226, 153, 214, 59, 25, 19, 85, 247, 234, 174, 75, 93, 165, 99, 116, 194, 243, 103, 155, 166, 131, 10, 68] }), Some(Node { repr: [106, 249, 220, 118, 49, 239, 102, 59, 121, 101, 110, 82, 194, 242, 72, 24, 209, 160, 24, 225, 124, 138, 138, 52, 157, 6, 43, 180, 212, 8, 117, 3] })] }

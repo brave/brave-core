@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc ad8649940f45fef5aad3355d7ca193e7d018285b04f9d976197ff8e1fec8687a # shrinks to ct = CommitmentTree { left: Some(Node { repr: [31, 136, 59, 216, 239, 236, 65, 132, 70, 226, 212, 35, 165, 194, 10, 57, 188, 94, 141, 22, 236, 68, 38, 57, 219, 28, 160, 173, 156, 62, 220, 34] }), right: Some(Node { repr: [117, 7, 10, 72, 207, 40, 193, 79, 126, 156, 158, 193, 63, 190, 49, 179, 227, 188, 144, 85, 30, 143, 186, 203, 154, 76, 5, 113, 42, 16, 60, 41] }), parents: [Some(Node { repr: [92, 253, 34, 29, 13, 202, 250, 201, 54, 210, 88, 207, 183, 117, 166, 126, 63, 101, 34, 44, 119, 88, 122, 240, 51, 77, 53, 148, 190, 141, 226, 103] }), Some(Node { repr: [91, 140, 162, 31, 9, 135, 96, 209, 170, 45, 143, 251, 108, 37, 94, 84, 95, 22, 28, 109, 140, 61, 249, 41, 220, 207, 149, 136, 93, 220, 161, 87] }), Some(Node { repr: [21, 173, 87, 125, 78, 242, 185, 197, 174, 47, 114, 229, 189, 35, 154, 221, 164, 232, 181, 26, 232, 216, 228, 244, 81, 127, 222, 10, 22, 241, 134, 106] }), None, Some(Node { repr: [88, 145, 84, 46, 146, 135, 252, 5, 21, 50, 137, 85, 36, 136, 101, 55, 153, 134, 71, 41, 95, 73, 17, 151, 170, 141, 195, 95, 11, 204, 181, 85] }), None, None] }

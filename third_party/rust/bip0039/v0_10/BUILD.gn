@@ -1,0 +1,69 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "bip0039"
+  epoch = "0.10"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/chinese_simplified.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/chinese_traditional.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/czech.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/english.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/french.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/italian.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/japanese.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/korean.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/portuguese.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/language/spanish.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/src/mnemonic.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.10.1"
+  cargo_pkg_authors = "koushiro <koushiro.cqx@gmail.com>"
+  cargo_pkg_name = "bip0039"
+  cargo_pkg_description = "Another Rust implementation of BIP-0039 standard"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/hmac/v0_12:lib",
+    "//brave/third_party/rust/pbkdf2/v0_10:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/unicode_normalization/v0_1:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+  features = [
+    "all-languages",
+    "chinese-simplified",
+    "chinese-traditional",
+    "czech",
+    "french",
+    "italian",
+    "japanese",
+    "korean",
+    "portuguese",
+    "rand",
+    "spanish",
+    "std",
+  ]
+}

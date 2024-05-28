@@ -1,0 +1,122 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "zcash_primitives"
+  epoch = "0.15"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/block.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/extensions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/extensions/transparent.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/legacy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/legacy/keys.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/merkle_tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/orchard.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/sapling.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/sprout.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/transparent.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/transparent/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/tze.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/components/tze/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/fees.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/fees/fixed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/fees/transparent.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/fees/tze.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/fees/zip317.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/sighash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/sighash_v4.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/sighash_v5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/tests/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/txid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/transaction/util/sha256d.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_primitives-0.15.1/src/zip339.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.15.1"
+  cargo_pkg_authors =
+      "Jack Grigg <jack@z.cash>, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "zcash_primitives"
+  cargo_pkg_description = "Rust implementations of the Zcash primitives"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/aes/v0_8:lib",
+    "//brave/third_party/rust/bip0039/v0_10:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/document_features/v0_2:lib",
+    "//brave/third_party/rust/equihash/v0_2:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/fpe/v0_6:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/jubjub/v0_10:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//brave/third_party/rust/orchard/v0_8:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/redjubjub/v0_7:lib",
+    "//brave/third_party/rust/sapling_crypto/v0_1:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/zcash_address/v0_3:lib",
+    "//brave/third_party/rust/zcash_encoding/v0_2:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+    "//brave/third_party/rust/zcash_protocol/v0_1:lib",
+    "//brave/third_party/rust/zcash_spec/v0_1:lib",
+    "//brave/third_party/rust/zip32/v0_1:lib",
+  ]
+  aliased_deps = {
+    sapling = "//brave/third_party/rust/sapling_crypto/v0_1:lib"
+  }
+  deps -= [
+    "//brave/third_party/rust/aes/v0_8:lib",
+    "//brave/third_party/rust/bip0039/v0_10:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/document_features/v0_2:lib",
+    "//brave/third_party/rust/equihash/v0_2:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/fpe/v0_6:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
+    "//brave/third_party/rust/jubjub/v0_10:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/redjubjub/v0_7:lib",
+    "//brave/third_party/rust/sapling_crypto/v0_1:lib",
+    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/zcash_address/v0_3:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+    "//brave/third_party/rust/zcash_spec/v0_1:lib",
+    "//brave/third_party/rust/zip32/v0_1:lib",
+  ]
+}

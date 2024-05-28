@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  test_arm:
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.large
+    steps:
+      - checkout
+      - run:
+          name: Install Rust
+          command: |
+            curl https://sh.rustup.rs -sSf | sh -s -- --profile minimal --default-toolchain $(cat rust-toolchain) -y
+      - run:
+          name: Run cargo test pairing,multicore
+          command: cargo test --no-default-features --features pairing,multicore
+      - run:
+          name: Run cargo test blst,multicore
+          command: cargo test --release --no-default-features --features blst,multicore
+      - run:
+          name: Run cargo test blst,multicore,blst-portable
+          command: cargo test --release --no-default-features --features blst,multicore,blst-portable
+
+workflows:
+  version: 2
+  test_all:
+    jobs:
+      - test_arm

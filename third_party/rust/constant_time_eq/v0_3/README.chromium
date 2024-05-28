@@ -4,6 +4,6 @@ Description: Compares two equal-sized byte strings in constant time.
 Version: 0.3.0
 Security Critical: yes
 Shipped: yes
-License: MIT | Apache-2.0
-License File:
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/constant_time_eq-0.3.0/LICENSE-APACHE
 Revision: 09a34625babf29e1b622ed46e959ea517986b12a

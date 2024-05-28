@@ -1,0 +1,31 @@
+[package]
+name = "f4jumble"
+description = "Implementation of Zcash's F4Jumble algorithm"
+version = "0.1.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+    "Daira Hopwood <daira@electriccoin.co>",
+]
+homepage = "https://github.com/zcash/librustzcash"
+repository = "https://github.com/zcash/librustzcash"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2018"
+categories = ["encoding"]
+keywords = ["feistel"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+blake2b_simd = { version = "1", default-features = false }
+
+[dev-dependencies]
+hex = "0.4"
+proptest = "1"
+
+[features]
+default = ["std"]
+std = ["blake2b_simd/std"]

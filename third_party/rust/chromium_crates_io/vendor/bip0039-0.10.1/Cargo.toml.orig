@@ -1,0 +1,64 @@
+[package]
+name = "bip0039"
+version = "0.10.1"
+authors = ["koushiro <koushiro.cqx@gmail.com>"]
+edition = "2021"
+rust-version = "1.56"
+resolver = "2"
+
+description = "Another Rust implementation of BIP-0039 standard"
+readme = "README.md"
+license = "MIT/Apache-2.0"
+documentation = "https://docs.rs/bip0039"
+repository = "https://github.com/koushiro/bip0039"
+keywords = ["bip39", "bitcoin", "crypto", "mnemonic"]
+categories = ["cryptography"]
+exclude = [
+  ".github",
+  "words",
+  "benchmark",
+]
+
+[features]
+default = ["std", "rand"]
+std = [
+  "hmac/std",
+  "pbkdf2/std",
+  "sha2/std",
+  "unicode-normalization/std",
+]
+# Support all languages
+# Note: English is the standard so always included
+all-languages = [
+  "chinese-simplified",
+  "chinese-traditional",
+  "czech",
+  "french",
+  "italian",
+  "japanese",
+  "korean",
+  "portuguese",
+  "spanish"
+]
+chinese-simplified = []
+chinese-traditional = []
+czech = []
+french = []
+italian = []
+japanese = []
+korean = []
+portuguese = []
+spanish = []
+
+[dependencies]
+hmac = { version = "0.12", default-features = false }
+pbkdf2 = { version = "0.10", default-features = false }
+rand = { version = "0.8", optional = true }
+sha2 = { version = "0.10", default-features = false }
+unicode-normalization = { version = "0.1", default-features = false }
+zeroize = "1.2"
+
+[dev-dependencies]
+hex = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

@@ -1,0 +1,134 @@
+[package]
+name = "zcash_primitives"
+description = "Rust implementations of the Zcash primitives"
+version = "0.15.1"
+authors = [
+    "Jack Grigg <jack@z.cash>",
+    "Kris Nuttycombe <kris@electriccoin.co>"
+]
+homepage = "https://github.com/zcash/librustzcash"
+repository.workspace = true
+readme = "README.md"
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+categories.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+equihash.workspace = true
+zcash_address.workspace = true
+zcash_encoding.workspace = true
+zcash_protocol.workspace = true
+zip32.workspace = true
+
+# Dependencies exposed in a public API:
+# (Breaking upgrades to these require a breaking upgrade to this crate.)
+# - CSPRNG
+rand.workspace = true
+rand_core.workspace = true
+
+# - Digests (output types exposed)
+blake2b_simd.workspace = true
+sha2.workspace = true
+
+# - Logging and metrics
+memuse.workspace = true
+tracing.workspace = true
+
+# - Secret management
+subtle.workspace = true
+
+# - Shielded protocols
+ff.workspace = true
+group = { workspace = true, features = ["wnaf-memuse"] }
+jubjub.workspace = true
+nonempty.workspace = true
+orchard.workspace = true
+sapling.workspace = true
+zcash_spec.workspace = true
+
+# - Note Commitment Trees
+incrementalmerkletree = { workspace = true, features = ["legacy-api"] }
+
+# - Test dependencies
+proptest = { workspace = true, optional = true }
+
+# - Transparent inputs
+#   - `Error` type exposed
+hdwallet = { workspace = true, optional = true }
+#   - `SecretKey` and `PublicKey` types exposed
+secp256k1 = { workspace = true, optional = true }
+
+# - ZIP 339
+bip0039 = { version = "0.10", features = ["std", "all-languages"] }
+
+# Dependencies used internally:
+# (Breaking upgrades to these are usually backwards-compatible, but check MSRVs.)
+# - Documentation
+document-features.workspace = true
+
+# - Encodings
+byteorder.workspace = true
+hex.workspace = true
+
+# - Shielded protocols
+redjubjub = "0.7"
+
+# - Transparent inputs
+ripemd = { workspace = true, optional = true }
+
+# - ZIP 32
+aes.workspace = true
+fpe.workspace = true
+
+[dependencies.zcash_note_encryption]
+workspace = true
+features = ["pre-zip-212"]
+
+[dev-dependencies]
+chacha20poly1305 = "0.10"
+criterion.workspace = true
+incrementalmerkletree = { workspace = true, features = ["legacy-api", "test-dependencies"] }
+proptest.workspace = true
+assert_matches.workspace = true
+rand_xorshift.workspace = true
+sapling = { workspace = true, features = ["test-dependencies"] }
+orchard = { workspace = true, features = ["test-dependencies"] }
+
+[target.'cfg(unix)'.dev-dependencies]
+pprof = { version = "0.11", features = ["criterion", "flamegraph"] } # MSRV 1.56
+
+[features]
+default = ["multicore"]
+
+## Enables multithreading support for creating proofs.
+multicore = ["orchard/multicore", "sapling/multicore"]
+
+## Enables spending transparent notes with the transaction builder.
+transparent-inputs = ["dep:hdwallet", "dep:ripemd", "dep:secp256k1"]
+
+### A temporary feature flag that exposes granular APIs needed by `zcashd`. These APIs
+### should not be relied upon and will be removed in a future release.
+temporary-zcashd = []
+
+## Exposes APIs that are useful for testing, such as `proptest` strategies.
+test-dependencies = [
+    "dep:proptest",
+    "orchard/test-dependencies",
+    "sapling/test-dependencies",
+    "zcash_protocol/test-dependencies",
+]
+
+[lib]
+bench = false
+
+[[bench]]
+name = "note_decryption"
+harness = false
+
+[badges]
+maintenance = { status = "actively-developed" }

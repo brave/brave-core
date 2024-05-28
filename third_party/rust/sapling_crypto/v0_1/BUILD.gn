@@ -1,0 +1,89 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "sapling_crypto"
+  epoch = "0.1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/address.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/bundle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/circuit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/circuit/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/circuit/ecc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/circuit/pedersen_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/group_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/keys.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/note.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/note/commitment.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/note/nullifier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/note_encryption.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/pedersen_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/pedersen_hash/test_vectors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/prover.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/spec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/test_vectors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/test_vectors/note_encryption.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/test_vectors/signatures.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/value/sums.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/verifier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/verifier/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/verifier/single.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sapling-crypto-0.1.3/src/zip32.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.1.3"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "sapling-crypto"
+  cargo_pkg_description = "Cryptographic library for Zcash Sapling"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/aes/v0_8:lib",
+    "//brave/third_party/rust/bellman/v0_14:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/blake2s_simd/v1:lib",
+    "//brave/third_party/rust/bls12_381/v0_8:lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/document_features/v0_2:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/fpe/v0_6:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/jubjub/v0_10:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/redjubjub/v0_7:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+    "//brave/third_party/rust/zcash_spec/v0_1:lib",
+    "//brave/third_party/rust/zip32/v0_1:lib",
+  ]
+}

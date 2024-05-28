@@ -39,5 +39,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/subtle/v2:lib",
   ]
-  features = [ "alloc" ]
+  features = [
+    "alloc",
+    "pre-zip-212",
+  ]
 }

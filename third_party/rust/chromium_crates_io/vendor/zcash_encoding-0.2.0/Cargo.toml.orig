@@ -1,0 +1,23 @@
+[package]
+name = "zcash_encoding"
+description = "Binary encodings used throughout the Zcash ecosystem."
+version = "0.2.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+]
+homepage = "https://github.com/zcash/librustzcash"
+repository = "https://github.com/zcash/librustzcash"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.56.1"
+categories = ["cryptography::cryptocurrencies", "encoding"]
+keywords = ["zcash"]
+
+[dependencies]
+byteorder = "1"
+nonempty = "0.7"
+
+[lib]
+bench = false

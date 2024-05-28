@@ -1,0 +1,4 @@
+reorder_imports = true
+single_line_if_else_max_width = 80
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"

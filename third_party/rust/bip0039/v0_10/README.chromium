@@ -1,0 +1,9 @@
+Name: bip0039
+URL: https://crates.io/crates/bip0039
+Description: Another Rust implementation of BIP-0039 standard
+Version: 0.10.1
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/bip0039-0.10.1/LICENSE-APACHE
+Revision: c3c04434c1ad1818e623f0b45a6976a5ea828274

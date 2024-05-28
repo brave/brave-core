@@ -38,4 +38,5 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/either/v1:lib" ]
+  features = [ "legacy-api" ]
 }

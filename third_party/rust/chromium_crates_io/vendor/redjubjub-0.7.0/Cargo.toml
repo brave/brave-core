@@ -1,0 +1,39 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/removed_Cargo.toml
+# by tools/crates/gnrt. Do not edit!
+
+# This is an empty crate that has replaced the 'redjubjub' crate, since
+# it was listed in `resolve.remove_crates` in gnrt_config.toml.
+
+[package]
+name = "redjubjub"
+version = "0.7.0"
+
+[features]
+"default" = []
+"nightly" = []
+"serde" = []
+
+[dependencies.rand_core]
+version = "*"
+default_features = true
+features = []
+[dependencies.reddsa]
+version = "*"
+default_features = true
+features = []
+[dependencies.serde]
+version = "*"
+default_features = true
+features = []
+[dependencies.thiserror]
+version = "*"
+default_features = true
+features = []
+[dependencies.zeroize]
+version = "*"
+default_features = false
+features = []
