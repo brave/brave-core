@@ -7,10 +7,10 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +22,6 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.components.browser_ui.widget.TintedDrawable;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -33,7 +32,7 @@ import org.chromium.mojo.system.MojoException;
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkPreferenceAdapter.ItemClickListener {
 
-    private TextView mAddNetwork;
+    private AppCompatButton mAddNetwork;
     private RecyclerView mRecyclerView;
     @Nullable private BraveWalletAddNetworksFragment.Listener mListener;
     private JsonRpcService mJsonRpcService;
@@ -47,18 +46,10 @@ public class BraveWalletNetworksPreference extends Preference
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        mAddNetwork = (TextView) holder.findViewById(R.id.add_network);
+        mAddNetwork = (AppCompatButton) holder.findViewById(R.id.add_network);
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.network_list);
 
         if (mAddNetwork != null) {
-            mAddNetwork.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    TintedDrawable.constructTintedDrawable(
-                            getContext(),
-                            R.drawable.plus,
-                            R.color.default_control_color_active_baseline),
-                    null,
-                    null,
-                    null);
             mAddNetwork.setOnClickListener(
                     view -> {
                         if (mListener != null) {

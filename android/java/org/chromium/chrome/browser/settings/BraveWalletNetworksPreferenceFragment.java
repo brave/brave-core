@@ -11,11 +11,16 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
@@ -63,6 +68,32 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
         if (braveWalletNetworksPreference != null) {
             braveWalletNetworksPreference.setListener(this);
         }
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView onCreateRecyclerView(
+            @NonNull LayoutInflater inflater,
+            @NonNull ViewGroup parent,
+            @Nullable Bundle savedInstanceState) {
+        final RecyclerView recyclerView =
+                super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        return recyclerView;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.LayoutManager onCreateLayoutManager() {
+        final LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(requireContext()) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                };
+
+        return linearLayoutManager;
     }
 
     @Override
