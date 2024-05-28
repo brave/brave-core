@@ -7,31 +7,54 @@
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/controls/resize_area_delegate.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
+
+class Browser;
 
 // A separator view that is located between contents web views in BrowserView.
 // This separator is used to resize the contents web views.
 class SplitViewSeparator : public views::ResizeArea,
-                           public views::ResizeAreaDelegate {
+                           public views::ResizeAreaDelegate,
+                           public views::WidgetObserver {
   METADATA_HEADER(SplitViewSeparator, views::ResizeArea)
  public:
-  SplitViewSeparator();
+  explicit SplitViewSeparator(Browser* browser);
   ~SplitViewSeparator() override;
-
-  // views::View:
-  bool OnMousePressed(const ui::MouseEvent& event) override;
-
-  // views::ResizeAreaDelegate:
-  void OnResize(int resize_amount, bool done_resizing) override;
 
   void set_delegate(SplitViewSeparatorDelegate* delegate) {
     resize_area_delegate_ = delegate;
   }
 
+  // views::View:
+  void AddedToWidget() override;
+  void VisibilityChanged(views::View* starting_from, bool is_visible) override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+  void Layout(PassKey) override;
+
+  // views::ResizeAreaDelegate:
+  void OnResize(int resize_amount, bool done_resizing) override;
+
+  // views::WidgetObserver:
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& new_bounds) override;
+
  private:
+  void CreateMenuButton();
+  void LayoutMenuButton();
+
+  raw_ptr<Browser> browser_ = nullptr;
+
   raw_ptr<SplitViewSeparatorDelegate> resize_area_delegate_ = nullptr;
+
+  raw_ptr<views::Widget> menu_button_widget_ = nullptr;
+
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      parent_widget_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_SEPARATOR_H_
