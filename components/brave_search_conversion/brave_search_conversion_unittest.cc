@@ -42,6 +42,14 @@ class BraveSearchConversionTest : public testing::Test {
     provider_data = TemplateURLDataFromPrepopulatedEngine(
         TemplateURLPrepopulateData::brave_bing);
     bing_template_url_ = std::make_unique<TemplateURL>(*provider_data);
+    provider_data = TemplateURLDataFromPrepopulatedEngine(
+        TemplateURLPrepopulateData::duckduckgo);
+    ddg_template_url_ = std::make_unique<TemplateURL>(*provider_data);
+  }
+
+  void ConfigureDDGAsDefaultProvider() {
+    template_url_service_.SetUserSelectedDefaultSearchProvider(
+        ddg_template_url_.get());
   }
 
   void ConfigureBingAsDefaultProvider() {
@@ -59,12 +67,14 @@ class BraveSearchConversionTest : public testing::Test {
   std::unique_ptr<TemplateURL> brave_search_template_url_;
   std::unique_ptr<TemplateURL> brave_search_tor_template_url_;
   std::unique_ptr<TemplateURL> bing_template_url_;
+  std::unique_ptr<TemplateURL> ddg_template_url_;
   TestingPrefServiceSimple pref_service_;
   TemplateURLService template_url_service_;
 };
 
 TEST_F(BraveSearchConversionTest, DefaultValueTest) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(features::kOmniboxBanner));
+  EXPECT_FALSE(base::FeatureList::IsEnabled(features::kOmniboxDDGBanner));
   EXPECT_FALSE(base::FeatureList::IsEnabled(features::kNTP));
   EXPECT_EQ(ConversionType::kNone,
             GetConversionType(&pref_service_, &template_url_service_));
@@ -104,6 +114,58 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
             GetConversionType(&pref_service_, &template_url_service_));
 
   task_environment_.AdvanceClock(base::Days(1) + base::Milliseconds(1));
+
+  EXPECT_EQ(ConversionType::kBannerTypeB,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  // Set DDG as a default provider and check banner type is still Type B
+  // because |kOmniboxDDGBanner| feature is disabled.
+  ConfigureDDGAsDefaultProvider();
+  EXPECT_EQ(ConversionType::kBannerTypeB,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  feature_list.Reset();
+
+  feature_list.InitAndEnableFeatureWithParameters(
+      brave_search_conversion::features::kOmniboxDDGBanner,
+      {{brave_search_conversion::features::kBannerTypeParamName,
+        "type_DDG_B"}});
+
+  ConfigureBingAsDefaultProvider();
+
+  // Check no banner as current provider is bing.
+  EXPECT_EQ(ConversionType::kNone,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  // Set DDG as a default provider and check banner type again.
+  ConfigureDDGAsDefaultProvider();
+  EXPECT_EQ(ConversionType::kDDGBannerTypeB,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  feature_list.Reset();
+
+  // Set two types of features together as we use different griffin study for
+  // both.
+  feature_list.InitWithFeaturesAndParameters(
+      {{brave_search_conversion::features::kOmniboxBanner,
+        {{brave_search_conversion::features::kBannerTypeParamName, "type_B"}}},
+       {brave_search_conversion::features::kOmniboxDDGBanner,
+        {{brave_search_conversion::features::kBannerTypeParamName,
+          "type_DDG_B"}}}},
+      {});
+
+  // Set Brave and check no banner.
+  ConfigureBraveSearchAsDefaultProvider(false);
+  EXPECT_EQ(ConversionType::kNone,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  // Set DDG and check ddg banner.
+  ConfigureDDGAsDefaultProvider();
+  EXPECT_EQ(ConversionType::kDDGBannerTypeB,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  // Set bing and check non-ddg banner.
+  ConfigureBingAsDefaultProvider();
   EXPECT_EQ(ConversionType::kBannerTypeB,
             GetConversionType(&pref_service_, &template_url_service_));
 

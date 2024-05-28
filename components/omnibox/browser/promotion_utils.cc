@@ -62,8 +62,8 @@ ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
   if (!base::StringToInt(type_string, &type_int))
     return ConversionType::kNone;
   const ConversionType type = static_cast<ConversionType>(type_int);
-  DCHECK((type >= ConversionType::kBannerTypeB &&
-          type <= ConversionType::kBannerTypeD));
+  CHECK((type >= ConversionType::kBannerTypeB &&
+         type <= ConversionType::kDDGBannerTypeD));
   return type;
 }
 
