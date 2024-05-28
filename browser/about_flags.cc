@@ -759,13 +759,6 @@
           FEATURE_VALUE_TYPE(net::features::kBraveForgetFirstPartyStorage),    \
       },                                                                       \
       {                                                                        \
-          "brave-rewards-vbat-notice",                                         \
-          "Enable Brave Rewards VBAT notices",                                 \
-          "Enables notices in the Brave Rewards UI about VBAT deadlines.",     \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(brave_rewards::features::kVBatNoticeFeature),     \
-      },                                                                       \
-      {                                                                        \
           "brave-rewards-verbose-logging",                                     \
           "Enable Brave Rewards verbose logging",                              \
           "Enables detailed logging of Brave Rewards system events to a log "  \

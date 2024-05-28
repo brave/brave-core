@@ -71,7 +71,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kTypicalJSONDeprecation;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
-@property(class, nonatomic, readonly) Feature* kVBatNoticeFeature;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
 @end
 

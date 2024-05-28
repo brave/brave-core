@@ -293,11 +293,6 @@
       initWithFeature:&brave_component_updater::kUseDevUpdaterUrl];
 }
 
-+ (Feature*)kVBatNoticeFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_rewards::features::kVBatNoticeFeature];
-}
-
 + (Feature*)kVerboseLoggingFeature {
   return [[Feature alloc]
       initWithFeature:&brave_rewards::features::kVerboseLoggingFeature];
