@@ -482,8 +482,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void setAppropriateView() {
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        if (null == getActivity()) {
+            // We can reach here if we were joining the chain, but we closed the preferences.
+            return;
+        }
+
+        getActivity()
+                .getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().setTitle(R.string.sync_category_title);
 
         boolean firstSetupComplete = getBraveSyncWorker().isInitialSyncFeatureSetupComplete();
