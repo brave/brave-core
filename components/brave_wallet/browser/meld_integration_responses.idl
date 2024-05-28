@@ -17,14 +17,14 @@ namespace meld_integration_responses {
     };
 
     dictionary Country {
-        DOMString? countryCode;
+        DOMString countryCode;
         DOMString? name;
         DOMString? flagImageUrl;
         Region[]? regions;
     };
 
     dictionary CryptoCurrency {
-        DOMString? currencyCode;
+        DOMString currencyCode;
         DOMString? name;
         DOMString? chainCode;
         DOMString? chainName;
@@ -34,13 +34,13 @@ namespace meld_integration_responses {
     };
 
     dictionary FiatCurrency {
-        DOMString? currencyCode;
+        DOMString currencyCode;
         DOMString? name;
         DOMString? symbolImageUrl;
     };
 
     dictionary PaymentMethod {
-        DOMString? paymentMethod;
+        DOMString paymentMethod;
         DOMString? name;
         DOMString? paymentType;
         Logos? logos;
@@ -72,11 +72,11 @@ namespace meld_integration_responses {
     };
 
     dictionary ServiceProvider {
-        DOMString? serviceProvider;
+        DOMString serviceProvider;
         DOMString? name;
-        DOMString? status;
-        DOMString[]? categories;
-        any? categoryStatuses;
+        DOMString status;
+        DOMString[] categories;
+        any categoryStatuses;
         DOMString? websiteUrl;
         Logos? logos;
     };
