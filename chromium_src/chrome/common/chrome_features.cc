@@ -32,6 +32,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_MAC)
     {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+#if !BUILDFLAG(IS_ANDROID)
+    {kWebAppUniversalInstall, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 // Enable the DoH settings UI in chrome://settings/security on all platforms.

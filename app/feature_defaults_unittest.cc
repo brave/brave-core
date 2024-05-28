@@ -184,6 +184,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_MAC)
       &features::kUseChromiumUpdater,
 #endif
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kWebAppUniversalInstall,
+#endif
       &features::kWebIdentityDigitalCredentials,
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
