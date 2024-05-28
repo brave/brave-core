@@ -103,7 +103,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrerender2,
       &blink::features::kPrivacySandboxAdsAPIs,
       &blink::features::kPrivateAggregationApi,
-      &blink::features::kPrivateAggregationApiMultipleCloudProviders,
       &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
