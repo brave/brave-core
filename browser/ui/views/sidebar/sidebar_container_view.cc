@@ -696,14 +696,6 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   // whether there are any sibar items with a sidepanel.
   // This is similar to how chromium's side_panel_coordinator View
   // also has some control on the toolbar button.
-  auto has_panel_item =
-      GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  if (browser_view->toolbar() &&
-      browser_view->toolbar()->GetSidePanelButton()) {
-    browser_view->toolbar()->GetSidePanelButton()->SetVisible(
-        has_panel_item && show_side_panel_button_.GetValue());
-  }
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
