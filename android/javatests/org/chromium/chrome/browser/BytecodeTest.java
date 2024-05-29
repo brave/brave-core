@@ -331,6 +331,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
     }
 
     @Test
@@ -810,6 +812,13 @@ public class BytecodeTest {
                         true,
                         String.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
+                        "runSharePasswordsIntent",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class));
     }
 
     @Test
@@ -982,6 +991,13 @@ public class BytecodeTest {
                         float.class,
                         float.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
+                        "runCreateFileOnDiskIntent",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1651,6 +1667,10 @@ public class BytecodeTest {
                         Optional.class,
                         Supplier.class,
                         Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
+                        "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow"));
     }
 
     @Test
