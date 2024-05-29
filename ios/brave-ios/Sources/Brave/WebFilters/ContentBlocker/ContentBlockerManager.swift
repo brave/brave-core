@@ -91,7 +91,6 @@ import os.log
   public enum BlocklistType: Hashable, CustomDebugStringConvertible {
     fileprivate static let genericPrifix = "stored-type"
     fileprivate static let filterListPrefix = "filter-list"
-    fileprivate static let filterListURLPrefix = "filter-list-url"
 
     /// These are all types that are non-configurable by the user
     /// and don't need additional stored or fetched catalogues to get a complete list.
@@ -101,6 +100,7 @@ import os.log
 
     case generic(GenericBlocklistType)
     case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
+    case engineGroup(id: String, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
@@ -111,10 +111,12 @@ import os.log
         case .filterList(let componentId):
           return [Self.filterListPrefix, componentId].joined(separator: "-")
         case .filterListURL(let uuid):
-          return [Self.filterListURLPrefix, uuid].joined(separator: "-")
+          return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
         case .filterListText:
-          return "filter-list-text"
+          return [Self.filterListPrefix, "text"].joined(separator: "-")
         }
+      case .engineGroup(let id, _):
+        return [Self.filterListPrefix, "group", id].joined(separator: "-")
       }
     }
 
@@ -122,7 +124,7 @@ import os.log
       switch self {
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
-      case .engineSource(_, let engineType):
+      case .engineSource(_, let engineType), .engineGroup(_, let engineType):
         switch engineType {
         case .standard:
           return isAggressiveMode ? .aggressive : .standard
@@ -192,10 +194,7 @@ import os.log
 
       self.versions.value.removeValue(forKey: identifier)
       // Only allow certain prefixed identifiers to be removed so as not to remove something apple adds
-      let prefixes = [
-        BlocklistType.genericPrifix, BlocklistType.filterListPrefix,
-        BlocklistType.filterListURLPrefix,
-      ]
+      let prefixes = [BlocklistType.genericPrifix, BlocklistType.filterListPrefix]
       guard prefixes.contains(where: { identifier.hasPrefix($0) }) else { return }
 
       do {

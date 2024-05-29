@@ -3,14 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import WebKit
 import XCTest
 
 @testable import Brave
 
 final class AdBlockEngineManagerTests: XCTestCase {
+  @MainActor private lazy var ruleStore: WKContentRuleListStore = {
+    let testBundle = Bundle.module
+    let bundleURL = testBundle.bundleURL
+    return WKContentRuleListStore(url: bundleURL)!
+  }()
+
   func testEngineManager() async throws {
     // Given
     // Engine manager and file info and resources info
+    let contentBlockerManager = await makeContentBlockerManager()
     let engineManager = await AdBlockEngineManager(
       engineType: .standard,
       cacheFolderName: "test-standard"
@@ -68,7 +76,8 @@ final class AdBlockEngineManagerTests: XCTestCase {
     // We compile engine
     await engineManager.compileImmediatelyIfNeeded(
       for: sources,
-      resourcesInfo: resourcesInfo
+      resourcesInfo: resourcesInfo,
+      contentBlockerManager: contentBlockerManager
     )
 
     // Then
@@ -82,6 +91,19 @@ final class AdBlockEngineManagerTests: XCTestCase {
     XCTAssertEqual(group?.infos, fileInfos.map({ $0.filterListInfo }))
     XCTAssertEqual(group?.fileType, .text)
     XCTAssertEqual(compiledResources, resourcesInfo)
+
+    // Test that the grouped content blockers were created
+    let hasStandardRuleList = await contentBlockerManager.hasRuleList(
+      for: engineManager.blocklistType,
+      mode: .standard
+    )
+    let hasAggressiveRuleList = await contentBlockerManager.hasRuleList(
+      for: engineManager.blocklistType,
+      mode: .aggressive
+    )
+    XCTAssertTrue(hasStandardRuleList)
+    XCTAssertTrue(hasAggressiveRuleList)
+    try await contentBlockerManager.removeRuleLists(for: engineManager.blocklistType)
 
     // When
     // We load from cache using another manager with the same cache folder name
@@ -116,5 +138,12 @@ final class AdBlockEngineManagerTests: XCTestCase {
     engine = await engineManager3.engine
     XCTAssertFalse(loadedFromCache)
     XCTAssertNil(engine)
+  }
+
+  @MainActor private func makeContentBlockerManager() -> ContentBlockerManager {
+    return ContentBlockerManager(
+      ruleStore: ruleStore,
+      container: UserDefaults(suiteName: "tests") ?? .standard
+    )
   }
 }
