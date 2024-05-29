@@ -17,7 +17,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   ~BraveSidePanelCoordinator() override;
 
   // SidePanelCoodinator overrides:
-  void Show(std::optional<SidePanelEntry::Id> entry_id = std::nullopt,
+  void Show(SidePanelEntry::Id entry_id,
             std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger =
                 std::nullopt) override;
   void OnTabStripModelChanged(
@@ -25,7 +25,6 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   std::unique_ptr<views::View> CreateHeader() override;
-  void UpdateToolbarButtonHighlight(bool side_panel_visible) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_

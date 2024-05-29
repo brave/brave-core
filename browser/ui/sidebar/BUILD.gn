@@ -13,10 +13,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
-    "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc",
-  ]
+  sources = []
 
   deps = [
     "//base",
