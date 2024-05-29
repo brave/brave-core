@@ -922,6 +922,13 @@ interface WalletHandler {
   GetWalletInfo() => (WalletInfo walletInfo);
 };
 
+enum SPLTokenProgram {
+  kUnknown = 0,  // To be determined by the backend.
+  kUnsupported = 1,  // Unsupported token program or not SPL token.
+  kToken = 2,
+  kToken2022 = 3,
+};
+
 struct BlockchainToken {
   // TODO(jocelyn): contract_address should be renamed to address to be a
   // general naming for different coin type. Currently it's token mint address
@@ -932,6 +939,7 @@ struct BlockchainToken {
   bool is_erc20;
   bool is_erc721;
   bool is_erc1155;
+  SPLTokenProgram spl_token_program = SPLTokenProgram.kUnknown;
   bool is_nft;
   bool is_spam;
   string symbol;

@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 
 namespace brave_wallet {
@@ -173,6 +174,8 @@ void AddTokenToMaps(const blockchain_lists::Token& token,
   blockchain_token->is_erc20 = token.is_erc20;
   blockchain_token->is_erc721 = token.is_erc721;
   blockchain_token->is_erc1155 = token.is_erc1155;
+  // Not used for on_ramp or off_ramp tokens.
+  blockchain_token->spl_token_program = mojom::SPLTokenProgram::kUnknown;
   blockchain_token->is_nft = token.is_nft;
   blockchain_token->symbol = token.symbol;
   blockchain_token->decimals = token.decimals;
@@ -291,6 +294,18 @@ bool ParseTokenList(const std::string& json,
 
     blockchain_token->coin = coin;
     blockchain_token->visible = true;
+
+    if (IsSPLToken(blockchain_token)) {
+      bool is_token2022 =
+          blockchain_token_value->FindBool("token2022").value_or(false);
+      blockchain_token->spl_token_program =
+          is_token2022 ? mojom::SPLTokenProgram::kToken2022
+                       : mojom::SPLTokenProgram::kToken;
+    } else {
+      blockchain_token->spl_token_program =
+          mojom::SPLTokenProgram::kUnsupported;
+    }
+
     (*token_list_map)[GetTokenListKey(coin, blockchain_token->chain_id)]
         .push_back(std::move(blockchain_token));
   }

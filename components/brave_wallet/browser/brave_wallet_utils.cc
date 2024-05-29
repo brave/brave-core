@@ -736,6 +736,7 @@ mojom::BlockchainTokenPtr NetworkToNativeToken(
   result->decimals = network.decimals;
   result->logo = network.icon_urls.empty() ? "" : network.icon_urls[0];
   result->visible = true;
+  result->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   return result;
 }

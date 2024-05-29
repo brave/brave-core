@@ -114,6 +114,11 @@ export const AddNftForm = (props: Props) => {
   const name = customTokenName ?? matchedTokenInfo?.name ?? ''
   const symbol = customTokenSymbol ?? matchedTokenInfo?.symbol ?? ''
   const tokenId = customTokenID ?? matchedTokenInfo?.tokenId ?? ''
+  const splTokenProgram = customAssetsNetwork
+    ? (customAssetsNetwork.coin === BraveWallet.CoinType.SOL
+        ? BraveWallet.SPLTokenProgram.kUnknown
+        : BraveWallet.SPLTokenProgram.kUnsupported)
+    : BraveWallet.SPLTokenProgram.kUnknown;
 
   const tokenInfo: BraveWallet.BlockchainToken | undefined =
     React.useMemo(() => {
@@ -135,6 +140,7 @@ export const AddNftForm = (props: Props) => {
         isErc721:
           customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenId,
         isErc1155: false,
+        splTokenProgram: splTokenProgram,
         isNft: true,
         isSpam: false,
         visible: true

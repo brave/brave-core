@@ -264,6 +264,7 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
     asset->is_erc721 = asset_value.token_type == "ERC721";
     asset->is_erc1155 = asset_value.token_type == "ERC1155";
     asset->is_nft = false;   // Reserved for Solana
+    asset->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
     asset->is_spam = false;  // Reserved for NFTs
     asset->visible = true;
     asset->symbol = asset_value.token_symbol;

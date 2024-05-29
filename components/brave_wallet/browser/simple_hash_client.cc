@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/base/url_util.h"
@@ -584,6 +585,12 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
         continue;
       }
       token->token_id = Uint256ValueToHex(token_id_uint256);
+    }
+
+    if (IsSPLToken(token)) {
+      token->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+    } else {
+      token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
     }
 
     // coin

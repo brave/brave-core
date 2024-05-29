@@ -2691,6 +2691,7 @@ void JsonRpcService::OnGetEthTokenDecimalsForInfo(
   asset->chain_id = chain_id;
   asset->contract_address = contract_address;
   asset->coin = mojom::CoinType::ETH;
+  asset->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   int decimals_int = 0;
   // This condition will never be met since the response of GetEthTokenDecimals
