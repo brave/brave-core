@@ -260,7 +260,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
-      &privacy_sandbox::kTrackingProtectionContentSetting,
+      &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
       &safe_browsing::kImprovedDownloadPageWarnings,
