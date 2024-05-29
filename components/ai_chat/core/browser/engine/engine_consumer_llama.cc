@@ -26,7 +26,6 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -319,7 +318,6 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  DCHECK(!features::kConversationAPIEnabled.Get());
   DCHECK(!model.name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
