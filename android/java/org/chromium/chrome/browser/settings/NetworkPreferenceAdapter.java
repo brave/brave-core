@@ -8,9 +8,11 @@ package org.chromium.chrome.browser.settings;
 import static org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils.buildMenuListItem;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,7 +43,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final ItemClickListener mListener;
     private final Context mContext;
     private final List<NetworkInfo> mElements;
-    private final String mActiveChainId;
+    private final String mActiveEthChainId;
+    private final List<String> mCustomChainIds;
 
     /**
      * Listener implemented by {@link BraveWalletNetworksPreference}
@@ -63,7 +66,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                                     @NonNull final String[] hiddenChainIds,
                                     @NonNull final ItemClickListener listener) {
         mContext = context;
-        mActiveChainId = defaultChainId;
+        mActiveEthChainId = defaultChainId;
+        mCustomChainIds = Arrays.asList(customChainIds);
         mElements = getNetworkInfoByChainId(customChainIds, networks);
         mListener = listener;
     }
@@ -89,25 +93,31 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View row = LayoutInflater.from(viewGroup.getContext())
                            .inflate(R.layout.brave_wallet_network_item, viewGroup, false);
         return new RowViewHolder(row, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        final NetworkInfo info = mElements.get(i);
-        boolean activeNetwork = info.chainId.equals(mActiveChainId);
-        ((RowViewHolder) viewHolder).updateNetworkInfo(info, activeNetwork);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
+        final NetworkInfo info = mElements.get(position);
+        final boolean activeNetwork = info.chainId.equals(mActiveEthChainId);
+        final boolean customNetwork = mCustomChainIds.contains(info.chainId);
+        final RowViewHolder rowViewHolder = (RowViewHolder) viewHolder;
+        rowViewHolder.updateNetworkInfo(info, activeNetwork);
+
+        // When a network is set as active, it cannot be removed or edited.
         if (activeNetwork) {
             return;
         }
 
         ModelList menuItems = new ModelList();
-        menuItems.add(buildMenuListItem(R.string.edit, 0, 0));
-        menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
+        if (customNetwork) {
+            menuItems.add(buildMenuListItem(R.string.edit, 0, 0));
+            menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
+        }
         menuItems.add(buildMenuListItem(R.string.brave_wallet_add_network_set_as_active, 0, 0));
 
         ListMenu.Delegate delegate =
@@ -121,12 +131,11 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                         mListener.onItemSetAsActive(info);
                     }
                 };
-        ((RowViewHolder) viewHolder)
-                .setMenuButtonDelegate(
+        rowViewHolder.setMenuButtonDelegate(
                         () -> {
                             View contentView =
                                     LayoutInflater.from(mContext)
-                                            .inflate(R.layout.app_menu_layout, null);
+                                            .inflate(R.layout.app_menu_layout, rowViewHolder.mItem, false);
                             ListView listView = contentView.findViewById(R.id.app_menu_list);
                             return new BasicListMenu(
                                     mContext, menuItems, contentView, listView, delegate, 0);
@@ -142,6 +151,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         private final TextView mTitle;
         private final TextView mDescription;
         private final LinearLayout mItem;
+        private final ImageView mShowHideNetwork;
         private final ItemClickListener mListener;
 
         private final ListMenuButton mMoreButton;
@@ -151,7 +161,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             mTitle = view.findViewById(R.id.title);
             mDescription = view.findViewById(R.id.description);
-
+            mShowHideNetwork = view.findViewById(R.id.show_hide_network);
             mMoreButton = view.findViewById(R.id.more);
             mItem = view.findViewById(R.id.network_item);
             mListener = listener;
@@ -159,6 +169,14 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         void updateNetworkInfo(@NonNull final NetworkInfo item, final boolean activeNetwork) {
             mTitle.setText(item.chainName);
+            if (activeNetwork) {
+                mTitle.setTypeface(null, Typeface.BOLD);
+                mShowHideNetwork.setEnabled(false);
+            } else {
+                mTitle.setTypeface(null);
+                mShowHideNetwork.setEnabled(true);
+            }
+
             String description = item.chainId;
             if (item.activeRpcEndpointIndex >= 0
                     && item.activeRpcEndpointIndex < item.rpcEndpoints.length) {
@@ -169,8 +187,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             mMoreButton.setContentDescriptionContext(item.chainName);
 
             // The more button will become visible if setMenuButtonDelegate is called.
-            mMoreButton.setVisibility(View.GONE);
-            mItem.setOnClickListener(view -> mListener.onItemClick(item, activeNetwork));
+            mMoreButton.setVisibility(View.INVISIBLE);
         }
 
         /**
@@ -180,9 +197,6 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         void setMenuButtonDelegate(@NonNull ListMenuButtonDelegate delegate) {
             mMoreButton.setVisibility(View.VISIBLE);
             mMoreButton.setDelegate(delegate);
-            // Set item row end padding 0 when MenuButton is visible.
-            ViewCompat.setPaddingRelative(itemView, ViewCompat.getPaddingStart(itemView),
-                    itemView.getPaddingTop(), 0, itemView.getPaddingBottom());
         }
     }
 }
