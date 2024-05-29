@@ -2074,6 +2074,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   expected_token->decimals = 11;
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
+  expected_token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   EXPECT_THAT(GetAllUserAssets(prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));
@@ -2143,6 +2144,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   expected_token->decimals = 11;
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
+  expected_token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   EXPECT_THAT(GetAllUserAssets(prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));
@@ -7229,61 +7231,52 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenInfo) {
   BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
       std::move(*coingecko_ids_map));
 
-  TestGetEthTokenInfo(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
-      mojom::BlockchainToken::New(
-          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-          "", false, false, false, false, false, "BAT", 18, true, "",
-          "basic-attention-token", "0x1", mojom::CoinType::ETH),
-      mojom::ProviderError::kSuccess, "");
+  auto bat_token = mojom::BlockchainToken::New(
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token", "",
+      false, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+      "BAT", 18, true, "", "basic-attention-token", "0x1",
+      mojom::CoinType::ETH);
+
+  TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                      mojom::kMainnetChainId, bat_token.Clone(),
+                      mojom::ProviderError::kSuccess, "");
 
   // Invalid (empty) symbol response does not yield error
+  bat_token->symbol = "";
   SetEthTokenInfoInterceptor(
       GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
       mojom::kMainnetChainId, "", bat_name_result, bat_decimals_result);
-  TestGetEthTokenInfo(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
-      mojom::BlockchainToken::New(
-          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-          "", false, false, false, false, false, "", 18, true, "",
-          "basic-attention-token", "0x1", mojom::CoinType::ETH),
-      mojom::ProviderError::kSuccess, "");
+  TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                      mojom::kMainnetChainId, bat_token.Clone(),
+                      mojom::ProviderError::kSuccess, "");
+  bat_token->symbol = "BAT";
 
   // Invalid (empty) name response does not yield error
+  bat_token->name = "";
   SetEthTokenInfoInterceptor(
       GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
       mojom::kMainnetChainId, bat_symbol_result, "", bat_decimals_result);
-  TestGetEthTokenInfo(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
-      mojom::BlockchainToken::New("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
-                                  "", "", false, false, false, false, false,
-                                  "BAT", 18, true, "", "basic-attention-token",
-                                  "0x1", mojom::CoinType::ETH),
-      mojom::ProviderError::kSuccess, "");
+  TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                      mojom::kMainnetChainId, bat_token.Clone(),
+                      mojom::ProviderError::kSuccess, "");
+  bat_token->name = "Basic Attention Token";
 
   // Empty decimals response does not yield error
+  bat_token->decimals = 0;
   SetEthTokenInfoInterceptor(
       GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
       mojom::kMainnetChainId, bat_symbol_result, bat_name_result, "");
-  TestGetEthTokenInfo(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
-      mojom::BlockchainToken::New(
-          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-          "", false, false, false, false, false, "BAT", 0, true, "",
-          "basic-attention-token", "0x1", mojom::CoinType::ETH),
-      mojom::ProviderError::kSuccess, "");
+  TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                      mojom::kMainnetChainId, bat_token.Clone(),
+                      mojom::ProviderError::kSuccess, "");
 
   // Invalid decimals response does not yield error
   SetEthTokenInfoInterceptor(
       GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
       mojom::kMainnetChainId, bat_symbol_result, bat_name_result, "invalid");
-  TestGetEthTokenInfo(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", mojom::kMainnetChainId,
-      mojom::BlockchainToken::New(
-          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-          "", false, false, false, false, false, "BAT", 0, true, "",
-          "basic-attention-token", "0x1", mojom::CoinType::ETH),
-      mojom::ProviderError::kSuccess, "");
+  TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                      mojom::kMainnetChainId, bat_token.Clone(),
+                      mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {

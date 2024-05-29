@@ -308,8 +308,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-      "bat.png", true, false, false, false, false, "BAT", 18, true, "", "",
-      "0x1", mojom::CoinType::ETH);
+      "bat.png", true, false, false, mojom::SPLTokenProgram::kUnsupported,
+      false, false, "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH);
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -346,8 +346,9 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   expected_token = mojom::BlockchainToken::New(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
-      "CryptoKitties-Kitty-13733.svg", false, true, false, true, true, "CK", 0,
-      true, "", "", "0x1", mojom::CoinType::ETH);
+      "CryptoKitties-Kitty-13733.svg", false, true, false,
+      mojom::SPLTokenProgram::kUnsupported, true, true, "CK", 0, true, "", "",
+      "0x1", mojom::CoinType::ETH);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -371,9 +372,56 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
 
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, true, true, false, "ADIDAS", 0, true, "", "", "0x1",
-      mojom::CoinType::ETH);
+      false, false, true, mojom::SPLTokenProgram::kUnsupported, true, false,
+      "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH);
 
+  token = ValueToBlockchainToken(json_value);
+  EXPECT_EQ(token, expected_token);
+
+  // SPL token without token program specified should have unknown token
+  // program.
+  json_value = base::test::ParseJsonDict(R"({
+      "coin": 501,
+      "chain_id": "0x65",
+      "address": "addr",
+      "name": "name",
+      "symbol": "TEST",
+      "logo": "logo",
+      "is_erc20": false,
+      "is_erc721": false,
+      "is_erc1155": false,
+      "is_nft": false,
+      "is_spam": false,
+      "decimals": 8,
+      "visible": true,
+  })");
+
+  expected_token = mojom::BlockchainToken::New(
+      "addr", "name", "logo", false, false, false,
+      mojom::SPLTokenProgram::kUnknown, false, false, "TEST", 8, true, "", "",
+      "0x65", mojom::CoinType::SOL);
+
+  token = ValueToBlockchainToken(json_value);
+  EXPECT_EQ(token, expected_token);
+
+  // SPL token with token program specified should have the correct token
+  // program.
+  json_value.Set("spl_token_program",
+                 static_cast<int>(mojom::SPLTokenProgram::kToken2022));
+  expected_token->spl_token_program = mojom::SPLTokenProgram::kToken2022;
+  token = ValueToBlockchainToken(json_value);
+  EXPECT_EQ(token, expected_token);
+
+  json_value.Set("spl_token_program",
+                 static_cast<int>(mojom::SPLTokenProgram::kToken));
+  expected_token->spl_token_program = mojom::SPLTokenProgram::kToken;
+  token = ValueToBlockchainToken(json_value);
+  EXPECT_EQ(token, expected_token);
+
+  // Native SOL (empty address) should have unsupported token program.
+  json_value.Set("address", "");
+  expected_token->contract_address = "";
+  expected_token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
 }
