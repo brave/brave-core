@@ -871,3 +871,13 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
+    public <init>(...);
+    *** runSharePasswordsIntent(...);
+    *** runCreateFileOnDiskIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.BraveExportFlow {
+    public <init>(...);
+}
