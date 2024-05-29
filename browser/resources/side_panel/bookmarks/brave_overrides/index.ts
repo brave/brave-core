@@ -4,3 +4,4 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './power_bookmarks_list.js'
+import './power_bookmarks_edit_dialog.js'
