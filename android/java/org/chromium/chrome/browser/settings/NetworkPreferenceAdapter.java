@@ -34,7 +34,6 @@ import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,6 +62,11 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         /** Triggered when a network has been selected as active. */
         void onItemSetAsActive(
                 @NonNull final NetworkInfo chain, @NonNull final Callback<Boolean> callback);
+
+        void onItemVisibilityChange(
+                @NonNull final NetworkInfo chain,
+                final boolean show,
+                @NonNull final Callback<Boolean> callback);
     }
 
     public NetworkPreferenceAdapter(
@@ -74,20 +78,20 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             @NonNull final ItemClickListener listener) {
         mContext = context;
         mActiveEthChainId = defaultChainId;
-        mCustomChainIds = Arrays.asList(customChainIds);
-        mHiddenChainIds = Arrays.asList(hiddenChainIds);
-        mElements = getNetworkInfoByChainId(customChainIds, networks);
+        mCustomChainIds = new ArrayList<>(List.of(customChainIds));
+        mHiddenChainIds = new ArrayList<>(List.of(hiddenChainIds));
+        mElements = getNetworkInfoByChainId(mCustomChainIds, networks);
         mListener = listener;
     }
 
     @NonNull
     private List<NetworkInfo> getNetworkInfoByChainId(
-            @NonNull final String[] customChainIds, @NonNull final NetworkInfo[] allNetworks) {
+            @NonNull final List<String> customChainIds, @NonNull final NetworkInfo[] allNetworks) {
         final List<NetworkInfo> customChains = new ArrayList<>();
         final List<NetworkInfo> defaultChains = new ArrayList<>();
         final List<NetworkInfo> result = new ArrayList<>();
         for (NetworkInfo network : allNetworks) {
-            if (Arrays.asList(customChainIds).contains(network.chainId)) {
+            if (customChainIds.contains(network.chainId)) {
                 customChains.add(network);
             } else {
                 defaultChains.add(network);
@@ -115,6 +119,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         final boolean activeNetwork = info.chainId.equals(mActiveEthChainId);
         final boolean customNetwork = mCustomChainIds.contains(info.chainId);
         final RowViewHolder rowViewHolder = (RowViewHolder) viewHolder;
+        final boolean visible;
 
         rowViewHolder.mTitle.setText(info.chainName);
         if (activeNetwork) {
@@ -125,9 +130,11 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             rowViewHolder.mShowHideNetwork.setEnabled(true);
         }
 
-        if (mHiddenChainIds.contains(info.chainId)) {
+        if (mHiddenChainIds.contains(info.chainId) && !activeNetwork) {
+            visible = false;
             rowViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_off);
         } else {
+            visible = true;
             rowViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_on);
         }
 
@@ -148,6 +155,28 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (activeNetwork) {
             return;
         }
+
+        rowViewHolder.mShowHideNetwork.setOnClickListener(
+                v ->
+                        mListener.onItemVisibilityChange(
+                                info,
+                                !visible,
+                                result -> {
+                                    if (result) {
+                                        if (visible) {
+                                            if (!mHiddenChainIds.contains(info.chainId)) {
+                                                mHiddenChainIds.add(info.chainId);
+                                            }
+                                            rowViewHolder.mShowHideNetwork.setImageResource(
+                                                    R.drawable.ic_eye_off);
+                                        } else {
+                                            mHiddenChainIds.remove(info.chainId);
+                                            rowViewHolder.mShowHideNetwork.setImageResource(
+                                                    R.drawable.ic_eye_on);
+                                        }
+                                        notifyItemChanged(position);
+                                    }
+                                }));
 
         ModelList menuItems = new ModelList();
         if (customNetwork) {

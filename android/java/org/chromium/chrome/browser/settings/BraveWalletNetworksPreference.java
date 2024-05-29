@@ -104,6 +104,17 @@ public class BraveWalletNetworksPreference extends Preference
         mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, null, callback::onResult);
     }
 
+    @Override
+    public void onItemVisibilityChange(
+            @NonNull NetworkInfo chain, boolean show, @NonNull Callback<Boolean> callback) {
+        assert mJsonRpcService != null;
+        if (show) {
+            mJsonRpcService.removeHiddenNetwork(CoinType.ETH, chain.chainId, callback::onResult);
+        } else {
+            mJsonRpcService.addHiddenNetwork(CoinType.ETH, chain.chainId, callback::onResult);
+        }
+    }
+
     public void setListener(@Nullable BraveWalletAddNetworksFragment.Listener listener) {
         mListener = listener;
     }
