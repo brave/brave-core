@@ -213,32 +213,32 @@ public class BraveRewards: NSObject {
     }
   }
 
-  /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
-  ///
-  /// - note: Send nil for `adsInnerText` if the load happened due to tabs restoring
-  ///         after app launch
+  /// Report that a page has loaded in the current browser tab, and the
+  /// text/HTML content is available for analysis.
   func reportLoadedPage(
     redirectChain: [URL],
     tabId: Int,
-    html: String,
-    adsInnerText: String?
+    htmlContent: String,
+    textContent: String?
   ) {
     guard let url = redirectChain.last else {
       return
     }
 
-    tabRetrieved(tabId, url: url, html: html)
-    if let innerText = adsInnerText, ads.isServiceRunning() {
+    tabRetrieved(tabId, url: url, html: htmlContent)
+    if ads.isServiceRunning() {
       ads.notifyTabHtmlContentDidChange(
         tabId,
-        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
-        html: html
+        redirectChain: redirectChain,
+        html: htmlContent
       )
-      ads.notifyTabTextContentDidChange(
-        tabId,
-        redirectChain: redirectChain.isEmpty ? [url] : redirectChain,
-        text: innerText
-      )
+      if let textContent {
+        ads.notifyTabTextContentDidChange(
+          tabId,
+          redirectChain: redirectChain,
+          text: textContent
+        )
+      }
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
   }
