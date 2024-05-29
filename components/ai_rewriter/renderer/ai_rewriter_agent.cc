@@ -29,7 +29,7 @@ gfx::RectF GetBounds(content::RenderFrame* frame) {
     return gfx::RectF();
   }
 
-  return frame->ElementBoundsInWindow(focused);
+  return gfx::RectF(frame->ConvertViewportToWindow(focused.BoundsInWidget()));
 }
 }  // namespace
 
