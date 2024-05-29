@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 172035fee0f31ea3fec011cef9a96ab51d5039fd..7832b675dfc68ea35bc106530ed848f7cf3b2ccf 100644
+index 5bf05f864b7300f46c1cd5c7854e5384841f14d1..76b1eee08c4fb241016ce53dde291b7a0b4b9624 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -521,6 +521,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -525,6 +525,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterStringPref(kIOSChromeNextVersionKey, std::string());
    registry->RegisterStringPref(kIOSChromeUpgradeURLKey, std::string());
    registry->RegisterTimePref(kLastInfobarDisplayTimeKey, base::Time());
@@ -10,11 +10,16 @@ index 172035fee0f31ea3fec011cef9a96ab51d5039fd..7832b675dfc68ea35bc106530ed848f7
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -796,6 +797,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -800,8 +801,12 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    registry->RegisterDictionaryPref(
        prefs::kContentNotificationsEnrollmentEligibility);
++<<<<<<< ours
+ 
+   registry->RegisterStringPref(kSyncCachedTrustedVaultAutoUpgradeDebugInfo, "");
++=======
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
++>>>>>>> theirs
  }
  
  // This method should be periodically pruned of year+ old migrations.
