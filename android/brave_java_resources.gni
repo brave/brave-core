@@ -501,6 +501,7 @@ brave_java_resources = [
   "java/res/drawable/ic_eth_24.xml",
   "java/res/drawable/ic_eth_color.xml",
   "java/res/drawable/ic_expand_arrows.xml",
+  "java/res/drawable/ic_eye_off.xml",
   "java/res/drawable/ic_eye_on.xml",
   "java/res/drawable/ic_fil_asset_icon.xml",
   "java/res/drawable/ic_filecoin_color.xml",

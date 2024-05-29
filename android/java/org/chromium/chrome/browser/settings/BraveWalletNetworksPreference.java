@@ -16,6 +16,7 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Callback;
 import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -76,7 +77,7 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemClick(@NonNull NetworkInfo chain, boolean activeNetwork) {
+    public void onItemEdit(@NonNull NetworkInfo chain, boolean activeNetwork) {
         if (mListener != null) {
             mListener.modifyNetwork(chain.chainId, activeNetwork);
         }
@@ -97,18 +98,10 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemSetAsActive(@NonNull NetworkInfo chain) {
+    public void onItemSetAsActive(
+            @NonNull NetworkInfo chain, @NonNull final Callback<Boolean> callback) {
         assert mJsonRpcService != null;
-        mJsonRpcService.setNetwork(
-                chain.chainId,
-                CoinType.ETH,
-                null,
-                success -> {
-                    if (!success) {
-                        return;
-                    }
-                    updateNetworks();
-                });
+        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, null, callback::onResult);
     }
 
     public void setListener(@Nullable BraveWalletAddNetworksFragment.Listener listener) {
