@@ -14,7 +14,7 @@ import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
 assert(toolkit_views)
-  
+
 source_set("extensions") {
   # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
   check_includes = false
