@@ -15,6 +15,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 #include "chrome/browser/ui/color/material_chrome_color_mixer.h"
