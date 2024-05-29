@@ -5,6 +5,10 @@
 
 #include "chrome/browser/ui/views/bubble/webui_bubble_dialog_view.h"
 
+#if defined(USE_AURA)
+#include "ui/aura/window.h"
+#endif
+
 // In the `WebUIBubbleDialogView` constructor, give the bubble rounded corners.
 // `SetPaintClientToLayer` is required for proper cross-platform rounded corner
 // clipping. See `BubbleDialogDelegate::CreateClientView` for more.
