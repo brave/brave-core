@@ -116,6 +116,15 @@ bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
   return base::Contains(tile_index_for_tab_, tab);
 }
 
+void SplitViewBrowserData::SwapTabsInTile(const Tile& tile) {
+  auto iter = FindTile(tile.first);
+  std::swap(iter->first, iter->second);
+
+  for (auto& observer : observers_) {
+    observer.OnSwapTabsInTile(*iter);
+  }
+}
+
 std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
     const tabs::TabHandle& tab) const {
   auto iter = FindTile(tab);

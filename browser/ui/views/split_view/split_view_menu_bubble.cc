@@ -37,6 +37,8 @@ class ItemView : public views::LabelButton {
     auto* ink_drop = views::InkDrop::Get(this);
     ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
     ink_drop->SetBaseColorId(ui::kColorSysOnSurfaceSubtle);
+    SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(0, 13)));
+    SetImageLabelSpacing(12);
   }
   ~ItemView() override = default;
 
@@ -78,21 +80,31 @@ SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
   SetCloseCallback(
       base::BindOnce(&SplitViewMenuBubble::OnClose, base::Unretained(this)));
 
+  auto browser_command_callback = [browser](int command_id) {
+    return base::BindRepeating(
+        [](Browser* browser, int command_id, const ui::Event& event) {
+          chrome::ExecuteCommand(browser, command_id);
+        },
+        browser, command_id);
+  };
+
+  auto get_image_model = [](const gfx::VectorIcon& icon) {
+    return ui::ImageModel::FromVectorIcon(icon,
+                                          kColorBraveSplitViewMenuItemIcon, 16);
+  };
+
   views::Builder<SplitViewMenuBubble>(this)
+      .AddChild(views::Builder<ItemView>()
+                    .SetText(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW))
+                    .SetImageModel(views::Button::STATE_NORMAL,
+                                   get_image_model(kLeoSwapHorizontalIcon))
+                    .SetCallback(browser_command_callback(IDC_SWAP_SPLIT_VIEW)))
       .AddChild(
           views::Builder<ItemView>()
-              .SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(0, 13)))
               .SetText(l10n_util::GetStringUTF16(IDS_IDC_BREAK_TILE))
               .SetImageModel(views::Button::STATE_NORMAL,
-                             ui::ImageModel::FromVectorIcon(
-                                 kLeoBrowserSplitViewUnsplitIcon,
-                                 kColorBraveSplitViewMenuItemIcon, 16))
-              .SetImageLabelSpacing(12)
-              .SetCallback(base::BindRepeating(
-                  [](Browser* browser, int command_id, const ui::Event& event) {
-                    chrome::ExecuteCommand(browser, command_id);
-                  },
-                  browser, IDC_BREAK_TILE)))
+                             get_image_model(kLeoBrowserSplitViewUnsplitIcon))
+              .SetCallback(browser_command_callback(IDC_BREAK_TILE)))
       .BuildChildren();
 }
 

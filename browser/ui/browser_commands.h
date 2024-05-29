@@ -123,6 +123,7 @@ void TileTabs(Browser* browser, const std::vector<int>& indices = {});
 void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
+void SwapTabsInTile(Browser* browser);
 
 }  // namespace brave
 

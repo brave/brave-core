@@ -841,6 +841,15 @@ void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
                                 weak_ptr_.GetWeakPtr()));
 }
 
+void BraveBrowserView::OnSwapTabsInTile(
+    const SplitViewBrowserData::Tile& tile) {
+  if (!IsActiveWebContentsTiled(tile)) {
+    return;
+  }
+
+  UpdateSecondaryContentsWebViewVisibility();
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();

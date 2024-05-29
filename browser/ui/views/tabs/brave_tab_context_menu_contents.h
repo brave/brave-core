@@ -69,6 +69,7 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   void NewSplitView();
   void TileSelectedTabs();
   void BreakSelectedTile();
+  void SwapTabsInTile();
 
   std::vector<int> GetTabIndicesForSplitViewCommand() const;
 
