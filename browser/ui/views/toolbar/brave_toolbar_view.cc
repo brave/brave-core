@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -294,6 +295,14 @@ void BraveToolbarView::OnThemeChanged() {
     bookmark_->UpdateImageAndText();
   if (display_mode_ == DisplayMode::NORMAL && wallet_)
     wallet_->UpdateImageAndText();
+}
+
+views::View* BraveToolbarView::GetAnchorView(
+    std::optional<PageActionIconType> type) {
+  if (features::IsSidePanelPinningEnabled()) {
+    return ToolbarView::GetAnchorView(type);
+  }
+  return location_bar_;
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
