@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/i18n/time_formatting.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/speech_to_text/buildflags.h"
@@ -40,12 +41,15 @@ void AddBraveHeaders(network::ResourceRequest* request,
 
   constexpr const char kRequestKey[] = "request-key";
   request->headers.SetHeader(kRequestKey, request_key);
+  constexpr const char kRequestDate[] = "request-date";
+  const auto request_date = base::TimeFormatHTTP(base::Time::Now());
+  request->headers.SetHeader(kRequestDate, request_date);
 
   const base::flat_map<std::string, std::string> headers{
-      {kRequestKey, request_key}};
+      {kRequestKey, request_key}, {kRequestDate, request_date}};
   const auto authorization = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_STT), headers, request->url, request->method,
-      {kRequestKey});
+      {kRequestKey, kRequestDate});
   if (authorization) {
     request->headers.SetHeader(authorization->first, authorization->second);
   }
