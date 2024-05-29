@@ -46,6 +46,8 @@ inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
     "Brave.Core.FailedHTTPSUpgrades.2";
 inline constexpr char kBookmarkCountHistogramName[] =
     "Brave.Core.BookmarkCount";
+inline constexpr char kSearchBraveDailyHistogramName[] =
+    "Brave.Search.BraveDaily";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
@@ -54,8 +56,7 @@ class PageMetrics {
   PageMetrics(PrefService* local_state,
               HostContentSettingsMap* host_content_settings_map,
               history::HistoryService* history_service,
-              bookmarks::BookmarkModel* bookmark_model,
-              base::RepeatingClosure brave_query_callback);
+              bookmarks::BookmarkModel* bookmark_model);
   ~PageMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
@@ -107,8 +108,6 @@ class PageMetrics {
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
-
-  base::RepeatingClosure brave_query_callback_;
 
   base::WeakPtrFactory<PageMetrics> weak_ptr_factory_{this};
 };

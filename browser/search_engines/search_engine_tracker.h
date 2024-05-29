@@ -32,8 +32,6 @@ inline constexpr char kWebDiscoveryEnabledMetric[] =
     "Brave.Search.WebDiscoveryEnabled";
 inline constexpr char kWebDiscoveryAndAdsMetric[] =
     "Brave.Search.WebDiscoveryAndAds";
-inline constexpr char kSearchBraveDailyHistogramName[] =
-    "Brave.Search.BraveDaily";
 
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.

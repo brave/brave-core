@@ -195,7 +195,6 @@ SearchEngineTracker::~SearchEngineTracker() = default;
 void SearchEngineTracker::RecordLocationBarQuery() {
   if (current_default_engine_ == SearchEngineP3A::kBrave) {
     brave_search_conversion::p3a::RecordLocationBarQuery(local_state_);
-    UMA_HISTOGRAM_BOOLEAN(kSearchBraveDailyHistogramName, true);
   }
 }
 
