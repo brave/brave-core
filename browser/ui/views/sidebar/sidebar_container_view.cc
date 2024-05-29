@@ -27,6 +27,8 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -699,9 +701,9 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto has_panel_item =
       GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  if (browser_view->toolbar() &&
-      browser_view->toolbar()->GetSidePanelButton()) {
-    browser_view->toolbar()->GetSidePanelButton()->SetVisible(
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (brave_toolbar && brave_toolbar->side_panel_button()) {
+    brave_toolbar->side_panel_button()->SetVisible(
         has_panel_item && show_side_panel_button_.GetValue());
   }
 }
