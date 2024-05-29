@@ -1982,8 +1982,9 @@ public class BrowserViewController: UIViewController {
           url.host == rewardsURL.host
         {
           tab.reportPageNavigation(to: rewards)
-          // Not passing redirection chain here, in page navigation should not use them.
-          tab.reportPageLoad(to: rewards, redirectChain: [])
+          if let url = webView.url {
+            tab.reportPageLoad(to: rewards, redirectChain: [url])
+          }
         }
       }
 

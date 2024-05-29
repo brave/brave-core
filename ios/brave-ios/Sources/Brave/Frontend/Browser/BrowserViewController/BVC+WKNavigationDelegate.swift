@@ -694,8 +694,23 @@ extension BrowserViewController: WKNavigationDelegate {
       let response = response as? HTTPURLResponse
     {
       let internalUrl = InternalURL(responseURL)
-      tab.isErrorPage = internalUrl?.isErrorPage == true || response.statusCode >= 400
-      tab.isRestored = tab.isRestored || internalUrl?.isSessionRestore == true
+
+      tab.isErrorPage = internalUrl?.isErrorPage == true
+      if !tab.isErrorPage {
+        let kClientErrorResponseCodeClass = 4
+        let kServerErrorResponseCodeClass = 5
+
+        let responseCodeClass = response.statusCode / 100
+        if responseCodeClass == kClientErrorResponseCodeClass
+          || responseCodeClass == kServerErrorResponseCodeClass
+        {
+          tab.isErrorPage = true
+        }
+      }
+
+      if !tab.isSessionStateRestored {
+        tab.isSessionStateRestored = internalUrl?.isSessionRestore == true
+      }
     }
 
     var request: URLRequest?
@@ -1012,10 +1027,10 @@ extension BrowserViewController: WKNavigationDelegate {
         isPrivate: privateBrowsingManager.isPrivateBrowsing
       )
       tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-      // Reset `isRestored`, `isNewNavigation` and `isErrorPage` Tab properties
-      // so that listeners can be notified of tab changes when a new navigation
-      // happens.
-      tab.isRestored = false
+      // Reset `isSessionStateRestored`, `isNewNavigation` and `isErrorPage` tab
+      // properties so that listeners can be notified of tab changes when a new
+      // navigation happens.
+      tab.isSessionStateRestored = false
       tab.isNewNavigation = true
       tab.isErrorPage = false
 

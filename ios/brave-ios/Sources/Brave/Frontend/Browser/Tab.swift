@@ -303,7 +303,7 @@ class Tab: NSObject {
 
   var mimeType: String?
   var isEditing = false
-  var isRestored = false
+  var isSessionStateRestored = false
   var isNewNavigation = true
   var isErrorPage = false
   var playlistItem: PlaylistInfo?
@@ -570,7 +570,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
-      isRestored = true
+      isSessionStateRestored = true
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)

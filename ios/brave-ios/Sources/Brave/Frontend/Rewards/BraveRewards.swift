@@ -202,7 +202,7 @@ public class BraveRewards: NSObject {
         tabId,
         redirectChain: tab.redirectChain,
         isNewNavigation: tab.isNewNavigation,
-        isRestoring: tab.isRestored,
+        isRestoring: tab.isSessionStateRestored,
         isErrorPage: tab.isErrorPage,
         isSelected: isSelected
       )
