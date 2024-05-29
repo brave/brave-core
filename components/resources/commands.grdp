@@ -507,7 +507,7 @@
       Unsplit Tabs
     </message>
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
-      Swap Tab Position
+      Swap Tab Positions
     </message>
   </if>
   <if expr="not use_titlecase">
@@ -521,7 +521,7 @@
       Unsplit tabs
     </message>
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
-      Swap tab position
+      Swap tab positions
     </message>
   </if>
 </grit-part>
