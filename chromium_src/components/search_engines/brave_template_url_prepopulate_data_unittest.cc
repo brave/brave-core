@@ -57,7 +57,7 @@ std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
   BraveTemplateURLPrepopulateDataTest()
-      : search_engine_choice_service_(prefs_, &local_state_) {}
+      : search_engine_choice_service_(prefs_, local_state_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
     // Real registration happens in `brave/browser/brave_profile_prefs.cc`
