@@ -360,9 +360,14 @@ struct AddAccountView: View {
         HStack {
           Image(braveSystemName: "leo.warning.triangle-filled")
             .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
-          Text(Strings.Wallet.bitcoinAccountImportWarning)
-            .font(.caption)
-            .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.bitcoinImportExtendedKeyWarning,
+              accountNetwork.chainId == BraveWallet.BitcoinMainnet ? "zprv" : "vprv"
+            )
+          )
+          .font(.caption)
+          .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
         }
         .listRowBackground(Color(braveSystemName: .systemfeedbackWarningBackground))
       }
