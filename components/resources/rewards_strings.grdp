@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <!-- Rewards Reset -->
+  <message name="IDS_BRAVE_UI_RESET" desc="">
+    Reset
+  </message>
+  <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">
+    Reset Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">
+    By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph> for more details.
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">
+    I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.
+  </message>
+
   <!-- Payout status banner -->
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
     Check status
@@ -308,6 +322,27 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
     By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
   </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TITLE" desc="">
+    Select your region
+  </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TEXT" desc="">
+    Select your region so we can show you the right options and ads for your region.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_BUTTON_LABEL" desc="">
+    Start using Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TERMS_TEXT" desc="">
+    By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="">
+    Get paid for private ads you see in Brave
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_2" desc="">
+    Get special benefits and discounts
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TITLE" desc="">
+    Turn on Brave Rewards
+  </message>
 
   <!-- Rewards unsupported region notice -->
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
@@ -335,6 +370,9 @@
   </message>
   <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
     Earnings so far
+  </message>
+  <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">
+    Something went wrong
   </message>
 
   <!-- Self-custody invitation -->

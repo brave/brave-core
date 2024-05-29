@@ -10,6 +10,7 @@ source_set("browser_tests") {
   if (!is_android) {
     sources = [
       "rewards_ofac_browsertest.cc",
+      "rewards_page_browsertest.cc",
       "rewards_policy_browsertest.cc",
     ]
 
@@ -20,6 +21,7 @@ source_set("browser_tests") {
       "//brave/browser/brave_rewards:util",
       "//brave/components/brave_rewards/browser",
       "//brave/components/brave_rewards/common",
+      "//brave/components/brave_rewards/common:features",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
