@@ -135,13 +135,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            node('master') {
-                script {
-                    sh 'rm -rf .git/index.lock'
-                }
-            }
-        }
-    }
 }
