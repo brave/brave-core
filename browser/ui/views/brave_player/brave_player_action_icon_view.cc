@@ -67,7 +67,7 @@ BravePlayerActionIconView::~BravePlayerActionIconView() = default;
 
 void BravePlayerActionIconView::OnExecuting(ExecuteSource execute_source) {
   CHECK(player_url_.is_valid());
-  chrome::AddTabAt(std::to_address(browser_), player_url_, /*index*/ -1,
+  chrome::AddTabAt(base::to_address(browser_), player_url_, /*index*/ -1,
                    /*foreground=*/true);
 }
 

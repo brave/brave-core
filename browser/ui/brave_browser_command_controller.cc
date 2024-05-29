@@ -419,7 +419,7 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(std::to_address(browser_));
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (!split_view_browser_data) {
     // Can happen on start up.
     return;
@@ -613,7 +613,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       chrome::SendTabToSelf(&*browser_);
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
-      brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      brave::ToggleAllBookmarksButtonVisibility(base::to_address(browser_));
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
