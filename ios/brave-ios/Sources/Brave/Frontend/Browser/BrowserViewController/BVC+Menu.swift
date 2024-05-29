@@ -174,12 +174,17 @@ extension BrowserViewController {
         menuController.presentInnerMenu(vc)
       }
       MenuItemFactory.button(for: .history) { [unowned self, unowned menuController] in
-        let vc = HistoryViewController(
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-          historyAPI: self.braveCore.historyAPI,
-          tabManager: self.tabManager
+        let vc = UIHostingController(
+          rootView: HistoryView(
+            model: HistoryModel(
+              api: self.braveCore.historyAPI,
+              tabManager: self.tabManager,
+              toolbarUrlActionsDelegate: self,
+              dismiss: { [weak self] in self?.dismiss(animated: true) },
+              askForAuthentication: self.askForLocalAuthentication
+            )
+          )
         )
-        vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }
       MenuItemFactory.button(for: .downloads) {
