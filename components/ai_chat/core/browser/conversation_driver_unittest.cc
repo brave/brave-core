@@ -20,8 +20,10 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -153,6 +155,13 @@ class ConversationDriverUnitTest : public testing::Test {
   ~ConversationDriverUnitTest() override = default;
 
   void SetUp() override {
+    // TODO(petemill): Mock the engine requests so that we are not dependent on
+    // specific network API calls for any particular engine. This test only
+    // specifies the completion API responses and so doesn't work with the
+    // Conversation API engine.
+    features_.InitAndEnableFeatureWithParameters(
+        features::kAIChat, {{features::kConversationAPIEnabled.name, "false"}});
+
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
     if (!default_model_key_.empty()) {
@@ -195,6 +204,7 @@ class ConversationDriverUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
+  base::test::ScopedFeatureList features_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
