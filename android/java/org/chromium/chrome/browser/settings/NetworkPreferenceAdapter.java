@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -36,8 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Network preference adapter that shows all the available networks and let the user add, edit
- * or remove a specific network. Used by {@link BraveWalletNetworksPreference}.
+ * Network preference adapter that shows all the available networks and let the user add, edit or
+ * remove a specific network. Used by {@link BraveWalletNetworksPreference}.
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final ItemClickListener mListener;
@@ -47,24 +46,27 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final List<String> mCustomChainIds;
 
     /**
-     * Listener implemented by {@link BraveWalletNetworksPreference}
-     * used to handles network operations.
+     * Listener implemented by {@link BraveWalletNetworksPreference} used to handles network
+     * operations.
      */
     interface ItemClickListener {
         /** Triggered when a specific network is clicked to be modified. */
         void onItemClick(@NonNull final NetworkInfo chain, final boolean activeNetwork);
+
         /** Triggered to remove a custom network completely. */
-        void onItemRemove(@NonNull final  NetworkInfo chain);
+        void onItemRemove(@NonNull final NetworkInfo chain);
+
         /** Triggered when a network has been selected as active. */
-        void onItemSetAsActive(@NonNull final  NetworkInfo chain);
+        void onItemSetAsActive(@NonNull final NetworkInfo chain);
     }
 
-    public NetworkPreferenceAdapter(@NonNull final Context context,
-                                    @NonNull final String defaultChainId,
-                                    @NonNull final NetworkInfo[] networks,
-                                    @NonNull final String[] customChainIds,
-                                    @NonNull final String[] hiddenChainIds,
-                                    @NonNull final ItemClickListener listener) {
+    public NetworkPreferenceAdapter(
+            @NonNull final Context context,
+            @NonNull final String defaultChainId,
+            @NonNull final NetworkInfo[] networks,
+            @NonNull final String[] customChainIds,
+            @NonNull final String[] hiddenChainIds,
+            @NonNull final ItemClickListener listener) {
         mContext = context;
         mActiveEthChainId = defaultChainId;
         mCustomChainIds = Arrays.asList(customChainIds);
@@ -94,8 +96,9 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View row = LayoutInflater.from(viewGroup.getContext())
-                           .inflate(R.layout.brave_wallet_network_item, viewGroup, false);
+        View row =
+                LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.brave_wallet_network_item, viewGroup, false);
         return new RowViewHolder(row, mListener);
     }
 
@@ -132,14 +135,14 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     }
                 };
         rowViewHolder.setMenuButtonDelegate(
-                        () -> {
-                            View contentView =
-                                    LayoutInflater.from(mContext)
-                                            .inflate(R.layout.app_menu_layout, rowViewHolder.mItem, false);
-                            ListView listView = contentView.findViewById(R.id.app_menu_list);
-                            return new BasicListMenu(
-                                    mContext, menuItems, contentView, listView, delegate, 0);
-                        });
+                () -> {
+                    View contentView =
+                            LayoutInflater.from(mContext)
+                                    .inflate(R.layout.app_menu_layout, rowViewHolder.mItem, false);
+                    ListView listView = contentView.findViewById(R.id.app_menu_list);
+                    return new BasicListMenu(
+                            mContext, menuItems, contentView, listView, delegate, 0);
+                });
     }
 
     @Override
@@ -192,6 +195,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         /**
          * Sets up the menu button at the end of this row with a given delegate.
+         *
          * @param delegate A {@link ListMenuButtonDelegate}.
          */
         void setMenuButtonDelegate(@NonNull ListMenuButtonDelegate delegate) {
