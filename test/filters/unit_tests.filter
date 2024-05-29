@@ -672,6 +672,10 @@
 # kForYouFre feature flag was removed
 -StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
 
+# These tests fail because we stub signin::ShouldShowSyncPromo to always return
+# false
+-ShowSyncPromoTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
