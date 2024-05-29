@@ -5,6 +5,7 @@
 
 brave_side_panel_bookmarks_non_web_component_files = [
   "brave_overrides/power_bookmarks_list.ts",
+  "brave_overrides/power_bookmarks_edit_dialog.ts",
   "brave_overrides/index.ts",
 ]
 
