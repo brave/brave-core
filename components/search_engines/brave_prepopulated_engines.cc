@@ -194,7 +194,7 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "desktop",
 #endif
     "UTF-8",
-    "https://search.brave.com/api/suggest?q={searchTerms}",
+    "https://search.brave.com/api/suggest?q={searchTerms}&rich=true",
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE);
 
