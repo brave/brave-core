@@ -29,6 +29,7 @@ export class CrButtonElement extends PolymerElement {
         type: Boolean,
         value: false,
         reflectToAttribute: true,
+        observer: 'disabledChanged_'
       },
       class: {
         type: String,
@@ -66,6 +67,17 @@ export class CrButtonElement extends PolymerElement {
     }
 
     this.$.button.setAttribute('kind', kind)
+  }
+
+  disabledChanged_() {
+    // TODO(petemill): This should be a $= binding but the leo-button
+    // has a bug with treating it as a boolean attribute
+    // https://github.com/brave/leo/issues/690.
+    if (this.disabled) {
+      this.$.button.setAttribute('isDisabled', '_')
+    } else {
+      this.$.button.removeAttribute('isDisabled')
+    }
   }
 }
 
