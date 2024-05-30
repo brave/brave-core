@@ -264,7 +264,12 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     didEndDisplaying cell: UICollectionViewCell,
     forItemAt indexPath: IndexPath
   ) {
-    iabTrackedCellContexts[indexPath] = nil
+    // Due to an iOS bug, didEndDisplaying can be called for a cell which is
+    // still in a collection view. In this case didEndDisplaying should be
+    // ignored.
+    if collectionView.cellForItem(at: indexPath) == nil {
+      iabTrackedCellContexts[indexPath] = nil
+    }
     if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
       cell.content.graphicAnimationView.stop()
     }
