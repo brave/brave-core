@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index fbba4ebbdfc76eb0ad84a74706d25cb975a1f3cf..3864d65cc29df3c6ec79b50bb7ac6d82521d632d 100644
+index 219a731a87d7e98e2c0ea40da98fa712912e2bcf..816d81ad2c66890dc18e4ea1773b0fcfc76bfb10 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 @@ -412,10 +412,12 @@ public class ToolbarTablet extends ToolbarLayout
@@ -22,4 +22,4 @@ index fbba4ebbdfc76eb0ad84a74706d25cb975a1f3cf..3864d65cc29df3c6ec79b50bb7ac6d82
 +        super.onThemeColorChanged(color, shouldAnimate);
  
          // Notify the StatusBarColorController of the toolbar color change. This is to match the
-         // status bar's color with the toolbar color when the tab strip is hidden on a tablet when
+         // status bar's color with the toolbar color when the tab strip is hidden on a tablet.

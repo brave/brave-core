@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/base64/v0_13/BUILD.gn b/third_party/rust/base64/v0_13/BUILD.gn
-index 53c2ce8edf62c2fa4d7e5a15ed31ec7bb4fdb898..9f0b9bcc0b4e927ff89c91519d92e26949458397 100644
+index bf3074ae80fcbef61788f013e0bf002e6682639e..042e6a5a9a6615de8b52ec36d78fb14d3ecae50a 100644
 --- a/third_party/rust/base64/v0_13/BUILD.gn
 +++ b/third_party/rust/base64/v0_13/BUILD.gn
-@@ -46,5 +46,4 @@ cargo_crate("lib") {
-   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+@@ -47,5 +47,4 @@ cargo_crate("lib") {
    proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
    features = [ "std" ]
+ 
 -  testonly = true
  }

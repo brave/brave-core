@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/android/browsing_data/browsing_data_bridge.cc b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
-index d012b7aa4005fccdae4aead7cce19ecbddfb39fa..3bce34446f3251f8af8e928319eaef29982dd282 100644
+index 2e2171a58856051e7bc69a9ecb4fcb3fdbb8c005..9a74195eda283beadda48f3a06c655a109761f48 100644
 --- a/chrome/browser/android/browsing_data/browsing_data_bridge.cc
 +++ b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
 @@ -131,6 +131,7 @@ static void JNI_BrowsingDataBridge_ClearBrowsingData(
@@ -9,4 +9,4 @@ index d012b7aa4005fccdae4aead7cce19ecbddfb39fa..3bce34446f3251f8af8e928319eaef29
 +      BRAVE_CLEAR_BROWSING_DATA
        case browsing_data::BrowsingDataType::HOSTED_APPS_DATA:
          // Only implemented on Desktop.
-         NOTREACHED();
+         NOTREACHED_IN_MIGRATION();
