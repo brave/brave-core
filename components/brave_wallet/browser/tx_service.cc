@@ -461,10 +461,11 @@ void TxService::MakeTokenProgramTransferTxData(
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
     uint64_t amount,
+    uint8_t decimals,
     MakeTokenProgramTransferTxDataCallback callback) {
   GetSolanaTxManager()->MakeTokenProgramTransferTxData(
       chain_id, spl_token_mint_address, from_wallet_address, to_wallet_address,
-      amount, std::move(callback));
+      amount, decimals, std::move(callback));
 }
 
 void TxService::MakeTxDataFromBase64EncodedTransaction(

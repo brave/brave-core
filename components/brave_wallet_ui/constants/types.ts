@@ -302,6 +302,7 @@ export interface SendSolTransactionParams extends BaseTransactionParams {}
 
 export interface SPLTransferFromParams extends BaseTransactionParams {
   splTokenMintAddress: string
+  decimals: number
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {

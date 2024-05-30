@@ -38,7 +38,8 @@ SolanaInstructionDecodedData::FromMojom(
   }
 
   if (program_id != mojom::kSolanaSystemProgramId &&
-      program_id != mojom::kSolanaTokenProgramId) {
+      program_id != mojom::kSolanaTokenProgramId &&
+      program_id != mojom::kSolanaToken2022ProgramId) {
     return std::nullopt;
   }
 

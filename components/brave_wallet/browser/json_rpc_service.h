@@ -521,6 +521,20 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
 
+  using GetSPLTokenProgramByMintCallback =
+      base::OnceCallback<void(mojom::SPLTokenProgram token_program,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  // Get the SPL token program for a given mint address.
+  // It would first check if there's an existing info in prefs or registry,
+  // otherwise it would issue a request to the network to get the owner of the
+  // mint address to determine the token program. If the property was unknown
+  // in the user asset stored in prefs, it would be updated to the token program
+  // we get from the network.
+  void GetSPLTokenProgramByMint(const std::string& chain_id,
+                                const std::string& mint_address,
+                                GetSPLTokenProgramByMintCallback callback);
+
   void GetSPLTokenBalances(const std::string& pubkey,
                            const std::string& chain_id,
                            GetSPLTokenBalancesCallback callback) override;
@@ -707,6 +721,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnGetSPLTokenBalances(GetSPLTokenBalancesCallback callback,
                              APIRequestResult api_request_result);
+
+  void ContinueGetSPLTokenProgramByMint(
+      mojom::BlockchainTokenPtr user_asset,
+      GetSPLTokenProgramByMintCallback callback,
+      std::optional<SolanaAccountInfo> account_info,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
 
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,
                                 APIRequestResult api_request_result);

@@ -280,7 +280,8 @@ export const transactionEndpoints = ({
               payload.splTokenMintAddress,
               payload.fromAccount.address,
               payload.to,
-              BigInt(payload.value)
+              BigInt(payload.value),
+              payload.decimals,
             )
 
           if (!txData) {

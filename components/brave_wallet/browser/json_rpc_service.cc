@@ -3357,4 +3357,71 @@ void JsonRpcService::OnAnkrGetAccountBalances(
                           "");
 }
 
+void JsonRpcService::GetSPLTokenProgramByMint(
+    const std::string& chain_id,
+    const std::string& mint_address,
+    GetSPLTokenProgramByMintCallback callback) {
+  if (chain_id.empty() || mint_address.empty()) {
+    std::move(callback).Run(
+        mojom::SPLTokenProgram::kUnknown,
+        mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  mojom::BlockchainTokenPtr user_asset;
+  if ((user_asset = GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id,
+                                 mint_address, "", false, false))) {
+    if (user_asset->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
+      std::move(callback).Run(user_asset->spl_token_program,
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
+  } else if (auto token = BlockchainRegistry::GetInstance()->GetTokenByAddress(
+                 chain_id, mojom::CoinType::SOL, mint_address)) {
+    // In theory token in registry won't have unknown value appears, but we let
+    // it fall through to fetch from network as it won't hurt if that does
+    // happen somehow.
+    if (token->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
+      std::move(callback).Run(token->spl_token_program,
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::ContinueGetSPLTokenProgramByMint,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(user_asset),
+                     std::move(callback));
+  GetSolanaAccountInfo(chain_id, mint_address, std::move(internal_callback));
+}
+
+void JsonRpcService::ContinueGetSPLTokenProgramByMint(
+    mojom::BlockchainTokenPtr user_asset,
+    GetSPLTokenProgramByMintCallback callback,
+    std::optional<SolanaAccountInfo> account_info,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (!account_info) {
+    std::move(callback).Run(mojom::SPLTokenProgram::kUnknown, error,
+                            error_message);
+    return;
+  }
+
+  mojom::SPLTokenProgram program = mojom::SPLTokenProgram::kUnknown;
+  if (account_info->owner == mojom::kSolanaTokenProgramId) {
+    program = mojom::SPLTokenProgram::kToken;
+  } else if (account_info->owner == mojom::kSolanaToken2022ProgramId) {
+    program = mojom::SPLTokenProgram::kToken2022;
+  } else {
+    program = mojom::SPLTokenProgram::kUnsupported;
+  }
+
+  if (user_asset) {
+    SetAssetSPLTokenProgram(prefs_, user_asset, program);
+  }
+
+  std::move(callback).Run(program, mojom::SolanaProviderError::kSuccess, "");
+}
+
 }  // namespace brave_wallet

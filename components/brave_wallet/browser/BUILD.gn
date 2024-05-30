@@ -400,6 +400,7 @@ source_set("hd_keyring") {
     ":transaction",
     "internal:hd_key",
     "//base",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",

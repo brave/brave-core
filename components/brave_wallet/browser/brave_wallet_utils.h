@@ -144,6 +144,14 @@ bool SetCurrentChainId(PrefService* prefs,
                        const std::optional<url::Origin>& origin,
                        const std::string& chain_id);
 
+mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
+                                       mojom::CoinType coin,
+                                       const std::string& chain_id,
+                                       const std::string& address,
+                                       const std::string& token_id,
+                                       bool is_erc721,
+                                       bool is_erc1155);
+
 std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs);
 mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
                                        mojom::BlockchainTokenPtr token);
@@ -155,6 +163,9 @@ bool SetUserAssetVisible(PrefService* prefs,
 bool SetAssetSpamStatus(PrefService* prefs,
                         const mojom::BlockchainTokenPtr& token,
                         bool is_spam);
+bool SetAssetSPLTokenProgram(PrefService* prefs,
+                             const mojom::BlockchainTokenPtr& token,
+                             mojom::SPLTokenProgram program);
 base::Value::List GetDefaultUserAssets();
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
@@ -198,6 +209,8 @@ void SetTransactionSimulationOptInStatus(
     const mojom::BlowfishOptInStatus& status);
 
 bool IsRetriableStatus(mojom::TransactionStatus status);
+
+std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program);
 
 }  // namespace brave_wallet
 

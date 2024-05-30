@@ -561,6 +561,7 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
     uint64_t amount,
+    uint8_t decimals,
     MakeTokenProgramTransferTxDataCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsOfacAddress(to_wallet_address)) {
     std::move(callback).Run(
@@ -569,12 +570,44 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
     return;
   }
 
+  if (from_wallet_address.empty() || to_wallet_address.empty() ||
+      spl_token_mint_address.empty()) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  json_rpc_service_->GetSPLTokenProgramByMint(
+      chain_id, spl_token_mint_address,
+      base::BindOnce(&SolanaTxManager::OnGetSPLTokenProgramByMint,
+                     weak_ptr_factory_.GetWeakPtr(), chain_id,
+                     spl_token_mint_address, from_wallet_address,
+                     to_wallet_address, amount, decimals, std::move(callback)));
+}
+
+void SolanaTxManager::OnGetSPLTokenProgramByMint(
+    const std::string& chain_id,
+    const std::string& spl_token_mint_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    uint64_t amount,
+    uint8_t decimals,
+    MakeTokenProgramTransferTxDataCallback callback,
+    mojom::SPLTokenProgram token_program,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(nullptr, error, error_message);
+    return;
+  }
+
   std::optional<std::string> from_associated_token_account =
-      SolanaKeyring::GetAssociatedTokenAccount(spl_token_mint_address,
-                                               from_wallet_address);
+      SolanaKeyring::GetAssociatedTokenAccount(
+          spl_token_mint_address, from_wallet_address, token_program);
   std::optional<std::string> to_associated_token_account =
-      SolanaKeyring::GetAssociatedTokenAccount(spl_token_mint_address,
-                                               to_wallet_address);
+      SolanaKeyring::GetAssociatedTokenAccount(
+          spl_token_mint_address, to_wallet_address, token_program);
   if (!from_associated_token_account || !to_associated_token_account) {
     std::move(callback).Run(
         nullptr, mojom::SolanaProviderError::kInternalError,
@@ -589,7 +622,7 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
           &SolanaTxManager::OnGetAccountInfo, weak_ptr_factory_.GetWeakPtr(),
           spl_token_mint_address, from_wallet_address, to_wallet_address,
           *from_associated_token_account, *to_associated_token_account, amount,
-          std::move(callback)));
+          decimals, token_program, std::move(callback)));
 }
 
 void SolanaTxManager::MakeTxDataFromBase64EncodedTransaction(
@@ -638,6 +671,8 @@ void SolanaTxManager::OnGetAccountInfo(
     const std::string& from_associated_token_account,
     const std::string& to_associated_token_account,
     uint64_t amount,
+    uint8_t decimals,
+    mojom::SPLTokenProgram token_program,
     MakeTokenProgramTransferTxDataCallback callback,
     std::optional<SolanaAccountInfo> account_info,
     mojom::SolanaProviderError error,
@@ -649,12 +684,17 @@ void SolanaTxManager::OnGetAccountInfo(
 
   bool create_associated_token_account = false;
   std::vector<SolanaInstruction> instructions;
-  if (!account_info || account_info->owner != mojom::kSolanaTokenProgramId) {
+  if (!account_info ||
+      (token_program == mojom::SPLTokenProgram::kToken &&
+       account_info->owner != mojom::kSolanaTokenProgramId) ||
+      (token_program == mojom::SPLTokenProgram::kToken2022 &&
+       account_info->owner != mojom::kSolanaToken2022ProgramId)) {
     std::optional<SolanaInstruction> create_associated_token_instruction =
         solana::spl_associated_token_account_program::
-            CreateAssociatedTokenAccount(from_wallet_address, to_wallet_address,
-                                         to_associated_token_account,
-                                         spl_token_mint_address);
+            CreateAssociatedTokenAccount(
+                SPLTokenProgramToProgramID(token_program), from_wallet_address,
+                to_wallet_address, to_associated_token_account,
+                spl_token_mint_address);
     if (!create_associated_token_instruction) {
       std::move(callback).Run(
           nullptr, mojom::SolanaProviderError::kInternalError,
@@ -666,10 +706,11 @@ void SolanaTxManager::OnGetAccountInfo(
   }
 
   std::optional<SolanaInstruction> transfer_instruction =
-      solana::spl_token_program::Transfer(
-          mojom::kSolanaTokenProgramId, from_associated_token_account,
+      solana::spl_token_program::TransferChecked(
+          SPLTokenProgramToProgramID(token_program),
+          from_associated_token_account, spl_token_mint_address,
           to_associated_token_account, from_wallet_address,
-          std::vector<std::string>(), amount);
+          std::vector<std::string>(), amount, decimals);
   if (!transfer_instruction) {
     std::move(callback).Run(
         nullptr, mojom::SolanaProviderError::kInternalError,

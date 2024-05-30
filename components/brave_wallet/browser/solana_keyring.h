@@ -48,7 +48,8 @@ class SolanaKeyring : public HDKeyring {
 
   static std::optional<std::string> GetAssociatedTokenAccount(
       const std::string& spl_token_mint_address,
-      const std::string& wallet_address);
+      const std::string& wallet_address,
+      mojom::SPLTokenProgram spl_token_program);
 
   static std::optional<std::string> GetAssociatedMetadataAccount(
       const std::string& token_mint_address);
