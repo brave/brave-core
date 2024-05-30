@@ -164,7 +164,7 @@ void HttpRequestMonitor::Clear() {
 }
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
-    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) = default;
+    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
 EphemeralStorageBrowserTest::~EphemeralStorageBrowserTest() = default;
 
