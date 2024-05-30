@@ -507,9 +507,20 @@ void ConversationDriver::MaybeSeedOrClearSuggestions() {
           mojom::SuggestionGenerationStatus::HasGenerated) {
     // TODO(petemill): ask content fetcher if it knows whether current page is a
     // video.
-    suggestions_.emplace_back(
-        is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
-                  : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    auto found_iter = base::ranges::find_if(
+        chat_history_, [](mojom::ConversationTurnPtr& turn) {
+          if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
+              turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
+            return true;
+          }
+          return false;
+        });
+    const bool has_summarized = found_iter != chat_history_.end();
+    if (!has_summarized) {
+      suggestions_.emplace_back(
+          is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                    : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    }
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
     OnSuggestedQuestionsChanged();
