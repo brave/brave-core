@@ -499,7 +499,7 @@ extension Strings {
       "aichat.leoNavigationTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Leo",
+      value: "Leo AI",
       comment: "The title of the advanced settings view"
     )
     public static let manageSubscriptionsButtonTitle = NSLocalizedString(
