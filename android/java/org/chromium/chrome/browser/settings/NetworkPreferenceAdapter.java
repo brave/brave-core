@@ -49,7 +49,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final List<String> mHiddenChainIds;
 
     /**
-     * Listener implemented by {@link BraveWalletNetworksPreference} used to handles network
+     * Listener implemented by {@link BraveWalletNetworksPreference} used to handle network
      * operations.
      */
     interface ItemClickListener {
@@ -57,7 +57,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         void onItemEdit(@NonNull final NetworkInfo chain, final boolean activeNetwork);
 
         /** Triggered to remove a custom network completely. */
-        void onItemRemove(@NonNull final NetworkInfo chain);
+        void onItemRemove(@NonNull final NetworkInfo chain, @NonNull final Callback<Boolean> callback);
 
         /** Triggered when a network has been selected as active. */
         void onItemSetAsActive(
@@ -138,13 +138,12 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             rowViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_on);
         }
 
-        // TODO - change to string builder.
-        String description = info.chainId;
+        StringBuilder description = new StringBuilder(info.chainId);
         if (info.activeRpcEndpointIndex >= 0
                 && info.activeRpcEndpointIndex < info.rpcEndpoints.length) {
-            description += " " + info.rpcEndpoints[info.activeRpcEndpointIndex].url;
+            description.append(" ").append(info.rpcEndpoints[info.activeRpcEndpointIndex].url);
         }
-        rowViewHolder.mDescription.setText(description);
+        rowViewHolder.mDescription.setText(description.toString());
 
         rowViewHolder.mMoreButton.setContentDescriptionContext(info.chainName);
 
@@ -178,7 +177,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                                     }
                                 }));
 
-        ModelList menuItems = new ModelList();
+        final ModelList menuItems = new ModelList();
         if (customNetwork) {
             menuItems.add(buildMenuListItem(R.string.edit, 0, 0));
             menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
@@ -191,7 +190,15 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     if (textId == R.string.edit) {
                         mListener.onItemEdit(info, false);
                     } else if (textId == R.string.remove) {
-                        mListener.onItemRemove(info);
+                        mListener.onItemRemove(info, result -> {
+                            if (result) {
+                                mCustomChainIds.remove(info.chainId);
+                                // The network may or may not be hidden.
+                                mHiddenChainIds.remove(info.chainId);
+                                mElements.remove(info);
+                                notifyItemRemoved(position);
+                            }
+                        });
                     } else if (textId == R.string.brave_wallet_add_network_set_as_active) {
                         mListener.onItemSetAsActive(
                                 info,
@@ -264,7 +271,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
          *
          * @param delegate A {@link ListMenuButtonDelegate}.
          */
-        void setMenuButtonDelegate(@NonNull ListMenuButtonDelegate delegate) {
+        void setMenuButtonDelegate(@NonNull final ListMenuButtonDelegate delegate) {
             mMoreButton.setVisibility(View.VISIBLE);
             mMoreButton.setDelegate(delegate);
         }

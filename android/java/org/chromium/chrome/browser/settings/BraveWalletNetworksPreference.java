@@ -84,17 +84,12 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemRemove(@NonNull NetworkInfo chain) {
+    public void onItemRemove(@NonNull NetworkInfo chain, @NonNull final Callback<Boolean> callback) {
         assert mJsonRpcService != null;
         mJsonRpcService.removeChain(
                 chain.chainId,
                 CoinType.ETH,
-                success -> {
-                    if (!success) {
-                        return;
-                    }
-                    updateNetworks();
-                });
+                callback::onResult);
     }
 
     @Override
