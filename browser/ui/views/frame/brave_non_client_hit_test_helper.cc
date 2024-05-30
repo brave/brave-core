@@ -19,16 +19,10 @@ int NonClientHitTest(BrowserView* browser_view,
   }
 
   const auto children_count = browser_view->toolbar()->children().size();
-  int container_view_index = 0;
-  if (features::IsChromeRefresh2023()) {
-    // Upstream has two more children |background_view_left_| and
-    // |background_view_right_| behind the container view.
-    DCHECK_EQ(3u, children_count);
-    container_view_index = 2;
-  } else {
-    // All toolbar elements are children of the container view in the toolbar.
-    DCHECK_EQ(1u, children_count);
-  }
+  // Upstream has two more children |background_view_left_| and
+  // |background_view_right_| behind the container view.
+  DCHECK_EQ(3u, children_count);
+  const int container_view_index = 2;
 
   int hit_test_result = views::GetHitTestComponent(
       browser_view->toolbar()->children()[container_view_index],
