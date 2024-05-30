@@ -99,6 +99,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kFledgeConsiderKAnonymity,
       &blink::features::kFledgeEnforceKAnonymity,
       &blink::features::kInterestGroupStorage,
+      &blink::features::kIsolateSandboxedIframes,
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kPrivacySandboxAdsAPIs,
