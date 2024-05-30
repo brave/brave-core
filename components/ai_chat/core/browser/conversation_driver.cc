@@ -23,6 +23,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -115,11 +117,25 @@ ConversationDriver::ConversationDriver(
         skus_service_getter,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string)
+    : ConversationDriver(profile_prefs,
+                         local_state_prefs,
+                         ai_chat_metrics,
+                         std::make_unique<AIChatCredentialManager>(
+                             std::move(skus_service_getter),
+                             local_state_prefs),
+                         url_loader_factory,
+                         channel_string) {}
+
+ConversationDriver::ConversationDriver(
+    PrefService* profile_prefs,
+    PrefService* local_state_prefs,
+    AIChatMetrics* ai_chat_metrics,
+    std::unique_ptr<AIChatCredentialManager> credential_manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::string_view channel_string)
     : pref_service_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
-      credential_manager_(std::make_unique<ai_chat::AIChatCredentialManager>(
-          skus_service_getter,
-          local_state_prefs)),
+      credential_manager_(std::move(credential_manager)),
       feedback_api_(std::make_unique<ai_chat::AIChatFeedbackAPI>(
           url_loader_factory,
           std::string(channel_string))),
@@ -134,15 +150,17 @@ ConversationDriver::ConversationDriver(
                           weak_ptr_factory_.GetWeakPtr()));
 
   // Model choice names is selectable per conversation, not global.
-  // Start with default from pref value if. If user is premium and premium model
-  // is different to non-premium default, and user hasn't customized the model
-  // pref, then switch the user to the premium default.
+  // Start with default from pref value if set. If user is premium and premium
+  // model is different to non-premium default, and user hasn't customized the
+  // model pref, then switch the user to the premium default.
   // TODO(petemill): When we have an event for premium status changed, and a
   // profile service for AIChat, then we can call
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
   // not have to fetch premium status.
-  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey) &&
+  const base::Value* default_model_user_pref_value =
+      pref_service_->GetUserPrefValue(prefs::kDefaultModelKey);
+  if (!default_model_user_pref_value &&
       features::kAIModelsPremiumDefaultKey.Get() !=
           features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
@@ -167,6 +185,28 @@ ConversationDriver::ConversationDriver(
                 prefs::kDefaultModelKey,
                 base::Value(features::kAIModelsPremiumDefaultKey.Get()));
           }
+        },
+        // Unretained is ok as credential manager is owned by this class,
+        // and it owns the mojo binding that is used to make async call in
+        // |GetPremiumStatus|.
+        base::Unretained(this)));
+  } else if (default_model_user_pref_value &&
+             default_model_user_pref_value->GetString() ==
+                 "chat-claude-instant") {
+    // 2024-05 Migration for old "claude instant" model
+    // The migration is performed here instead of
+    // ai_chat::prefs::MigrateProfilePrefs because the migration requires
+    // knowing about premium status.
+    credential_manager_->GetPremiumStatus(base::BindOnce(
+        [](ConversationDriver* instance, mojom::PremiumStatus status,
+           mojom::PremiumInfoPtr) {
+          instance->last_premium_status_ = status;
+          const std::string model_key = IsPremiumStatus(status)
+                                            ? "chat-claude-sonnet"
+                                            : "chat-claude-haiku";
+          instance->pref_service_->SetString(prefs::kDefaultModelKey,
+                                             model_key);
+          instance->ChangeModel(model_key);
         },
         // Unretained is ok as credential manager is owned by this class,
         // and it owns the mojo binding that is used to make async call in

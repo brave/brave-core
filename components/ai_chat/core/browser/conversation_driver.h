@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -65,6 +66,13 @@ class ConversationDriver {
       AIChatMetrics* ai_chat_metrics,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::string_view channel_string);
+  ConversationDriver(
+      PrefService* profile_prefs,
+      PrefService* local_state,
+      AIChatMetrics* ai_chat_metrics,
+      std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string);
   virtual ~ConversationDriver();
