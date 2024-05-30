@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import org.chromium.chrome.browser.suggestions.mostvisited.BraveMostVisitedSitesBridge;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -114,6 +115,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.url.GURL;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -940,6 +942,15 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        BraveMostVisitedSitesBridge braveMostVisitedSitesBridge = new BraveMostVisitedSitesBridge(Profile.getLastUsedRegularProfile());
+        
+        braveMostVisitedSitesBridge.initializeCustomLinks();
+        braveMostVisitedSitesBridge.enableCustomLinks(true);
+        braveMostVisitedSitesBridge.addCustomLink(new GURL("https://www.allegiance-software.com"));
+
+        // braveMostVisitedSitesBridge.uninitializeCustomLinks();
+        // braveMostVisitedSitesBridge.enableCustomLinks(false);
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
