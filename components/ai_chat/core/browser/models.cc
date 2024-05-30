@@ -53,7 +53,7 @@ const std::vector<ai_chat::mojom::Model>& GetAllModels() {
        conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                         : mojom::ModelEngineType::CLAUDE_REMOTE,
        mojom::ModelCategory::CHAT, mojom::ModelAccess::PREMIUM, 180000, 320000},
-      {"chat-basic", "llama-2-13b-chat", "Llama 2 13b", "Meta",
+      {"chat-basic", "llama-3-8b-instruct", "Llama 3 8b", "Meta",
        conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                         : mojom::ModelEngineType::LLAMA_REMOTE,
        mojom::ModelCategory::CHAT, mojom::ModelAccess::BASIC, 8000, 9700},
