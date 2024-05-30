@@ -116,7 +116,6 @@ public class CarPlayController {
       // Tapped the currently active item, resume playback or reset based on user pref
       if Preferences.Playlist.enableCarPlayRestartPlayback.value {
         Task {
-          player.pause()
           await player.seek(to: 0)
           player.play()
         }

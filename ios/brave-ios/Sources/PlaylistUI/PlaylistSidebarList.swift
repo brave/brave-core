@@ -53,7 +53,7 @@ struct PlaylistSidebarList: View {
               title: item.name,
               assetURL: item.assetURL,
               pageURL: URL(string: item.pageSrc),
-              duration: .seconds(item.duration),
+              duration: .init(item.duration),
               isSelected: selectedItemID == item.id,
               isPlaying: isPlaying,
               downloadState: {
@@ -245,7 +245,18 @@ struct PlaylistSidebarListHeader: View {
         }
         HStack {
           let items = selectedFolder.playlistItems ?? []
-          let totalDuration = Duration.seconds(items.reduce(0, { $0 + $1.duration }))
+          let totalDuration = Duration.seconds(
+            items.reduce(
+              0,
+              { total, item in
+                if !item.duration.isFinite || item.duration == .greatestFiniteMagnitude {
+                  // Skip infinite and max values (live videos)
+                  return total
+                }
+                return total + item.duration
+              }
+            )
+          )
           let totalSize = totalSizeOnDisk
           Text("\(items.count) items")  // FIXME: Pluralization
           if !items.isEmpty {

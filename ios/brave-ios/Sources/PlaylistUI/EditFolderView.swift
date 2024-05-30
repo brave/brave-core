@@ -49,7 +49,7 @@ struct EditFolderView: View {
             title: item.name,
             assetURL: item.assetURL,
             pageURL: URL(string: item.pageSrc),
-            duration: .seconds(item.duration),
+            duration: .init(item.duration),
             isSelected: false,
             isPlaying: false,
             downloadState: nil
