@@ -114,19 +114,37 @@ public class BraveWalletNetworksPreference extends Preference
 
     public void updateNetworks() {
         if (mJsonRpcService != null && mRecyclerView != null) {
-            getAvailableChainIds(CoinType.ETH,
+            getAvailableChainIds(
+                    CoinType.ETH,
                     (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
-                        NetworkPreferenceAdapter.NetworkListContainer networkListContainerEth = new NetworkPreferenceAdapter.NetworkListContainer(ethNetworks, defaultEthChainId, hiddenEthChainIds, customEthChainIds);
-                        getAvailableChainIds(CoinType.FIL,(defaultFilChainId, filNetworks, customFilChainIds, hiddenFilChainIds) -> {
-                            NetworkPreferenceAdapter.NetworkListContainer networkListContainerFil = new NetworkPreferenceAdapter.NetworkListContainer(filNetworks, defaultFilChainId, hiddenFilChainIds, customFilChainIds);
-                            NetworkPreferenceAdapter adapter =
-                                    new NetworkPreferenceAdapter(
-                                            getContext(),
-                                            networkListContainerEth,
-                                            networkListContainerFil,
-                                            this);
-                            mRecyclerView.setAdapter(adapter);
-                        });
+                        NetworkPreferenceAdapter.NetworkListContainer networkListContainerEth =
+                                new NetworkPreferenceAdapter.NetworkListContainer(
+                                        ethNetworks,
+                                        defaultEthChainId,
+                                        hiddenEthChainIds,
+                                        customEthChainIds);
+                        getAvailableChainIds(
+                                CoinType.FIL,
+                                (defaultFilChainId,
+                                        filNetworks,
+                                        customFilChainIds,
+                                        hiddenFilChainIds) -> {
+                                    NetworkPreferenceAdapter.NetworkListContainer
+                                            networkListContainerFil =
+                                                    new NetworkPreferenceAdapter
+                                                            .NetworkListContainer(
+                                                            filNetworks,
+                                                            defaultFilChainId,
+                                                            hiddenFilChainIds,
+                                                            customFilChainIds);
+                                    NetworkPreferenceAdapter adapter =
+                                            new NetworkPreferenceAdapter(
+                                                    getContext(),
+                                                    networkListContainerEth,
+                                                    networkListContainerFil,
+                                                    this);
+                                    mRecyclerView.setAdapter(adapter);
+                                });
                     });
         }
     }
@@ -137,10 +155,11 @@ public class BraveWalletNetworksPreference extends Preference
      * initialized.
      *
      * @param callback Callback returning a network container class that includes four parameters:
-     *                default chain ID, all networks available,
-     *     custom chain IDs, and hidden chain IDs (if any).
+     *     default chain ID, all networks available, custom chain IDs, and hidden chain IDs (if
+     *     any).
      */
-    private void getAvailableChainIds(@CoinType.EnumType final int coinType,
+    private void getAvailableChainIds(
+            @CoinType.EnumType final int coinType,
             @NonNull
                     final Callbacks.Callback4<String, NetworkInfo[], String[], String[]> callback) {
         mJsonRpcService.getDefaultChainId(

@@ -117,7 +117,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @NonNull
     private List<NetworkPreferenceItem> getNetworkInfoByChainId(
-            @NonNull final List<String> customChainIds, @NonNull final List<NetworkInfo> allNetworks) {
+            @NonNull final List<String> customChainIds,
+            @NonNull final List<NetworkInfo> allNetworks) {
         final List<NetworkPreferenceItem> customChains = new ArrayList<>();
         final List<NetworkPreferenceItem> defaultChains = new ArrayList<>();
         final List<NetworkPreferenceItem> result = new ArrayList<>();
@@ -156,7 +157,9 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         if (type == NETWORK_ITEM) {
             final NetworkInfo info = networkPreferenceItem.getNetworkInfo();
-            final boolean activeNetwork = info.chainId.equals(mActiveEthChainId) || info.chainId.equals(mActiveFilChainId);
+            final boolean activeNetwork =
+                    info.chainId.equals(mActiveEthChainId)
+                            || info.chainId.equals(mActiveFilChainId);
             final boolean customNetwork = mCustomEthChainIds.contains(info.chainId);
             final NetworkViewHolder networkViewHolder = (NetworkViewHolder) viewHolder;
             final boolean visible;
@@ -170,7 +173,9 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                 networkViewHolder.mShowHideNetwork.setEnabled(true);
             }
 
-            if ((mHiddenEthChainIds.contains(info.chainId) || mHiddenFilChainIds.contains(info.chainId)) && !activeNetwork) {
+            if ((mHiddenEthChainIds.contains(info.chainId)
+                            || mHiddenFilChainIds.contains(info.chainId))
+                    && !activeNetwork) {
                 visible = false;
                 networkViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_off);
             } else {
@@ -245,7 +250,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                                     info,
                                     result -> {
                                         if (result) {
-                                            final String previousActiveChainId = getActiveChainId(info.coin);
+                                            final String previousActiveChainId =
+                                                    getActiveChainId(info.coin);
                                             setActiveChainId(info);
 
                                             final int oldActiveChainIdIndex =
@@ -298,7 +304,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         return switch (coinType) {
             case CoinType.ETH -> mActiveEthChainId;
             case CoinType.FIL -> mActiveFilChainId;
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC-> throw new IllegalStateException(
+            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported active chain for coin type %d.", coinType));
             default -> throw new IllegalStateException("Unexpected value: " + coinType);
         };
@@ -308,7 +314,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         switch (network.coin) {
             case CoinType.ETH -> mActiveEthChainId = network.chainId;
             case CoinType.FIL -> mActiveFilChainId = network.chainId;
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC-> throw new IllegalStateException(
+            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported active chain for coin type %d.", network.coin));
             default -> throw new IllegalStateException("Unexpected value: " + network.coin);
         }
@@ -450,14 +456,19 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         @NonNull final String mActiveChainId;
         @NonNull final List<String> mHiddenChainIds;
         @NonNull final List<String> mCustomChainIds;
-        public NetworkListContainer(@NonNull final NetworkInfo[] networks,
-                                    @NonNull final String activeChainId,
-                                    @NonNull final String[] hiddenChainIds,
-                                    @Nullable final String[] customChainIds) {
+
+        public NetworkListContainer(
+                @NonNull final NetworkInfo[] networks,
+                @NonNull final String activeChainId,
+                @NonNull final String[] hiddenChainIds,
+                @Nullable final String[] customChainIds) {
             mNetworks = new ArrayList<>(List.of(networks));
             mActiveChainId = activeChainId;
             mHiddenChainIds = new ArrayList<>(List.of(hiddenChainIds));
-            mCustomChainIds = customChainIds != null ? new ArrayList<>(List.of(customChainIds)) : new ArrayList<>();
+            mCustomChainIds =
+                    customChainIds != null
+                            ? new ArrayList<>(List.of(customChainIds))
+                            : new ArrayList<>();
         }
     }
 }
