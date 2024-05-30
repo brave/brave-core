@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 6efe967eb0a1cfd71f5d85209bcc9b0d90c5b4c0..54cc7367266867a62ddada0f285581f232b2f08b 100644
+index 1a2922ce8e22b4f2a256267d9d3f5d63f6547c72..1cdae97bed47ad1da44ae9e75e3c5dffdd83fa0f 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -546,7 +546,6 @@ config("compiler") {
@@ -10,18 +10,3 @@ index 6efe967eb0a1cfd71f5d85209bcc9b0d90c5b4c0..54cc7367266867a62ddada0f285581f2
      if (save_reproducers_on_lld_crash && use_lld) {
        ldflags += [
          "-fcrash-diagnostics=all",
-@@ -2409,10 +2408,10 @@ config("optimize") {
-   if (is_win) {
-     cflags = [ "/O2" ] + common_optimize_on_cflags
- 
--    # https://doc.rust-lang.org/rustc/profile-guided-optimization.html#usage
--    # suggests not using an explicit `-Copt-level` at all, and the default is
--    # to optimize for performance like `/O2` for clang.
--    rustflags = []
-+    # The `-O3` for clang turns on extra optimizations compared to the standard
-+    # `-O2`. But for rust, `-Copt-level=3` is the default and is thus reliable
-+    # to use.
-+    rustflags = [ "-Copt-level=3" ]
-   } else if (optimize_for_size || is_chromeos) {
-     # Favor size over speed.
-     # -Os in clang is more of a size-conscious -O2 than "size at any cost"

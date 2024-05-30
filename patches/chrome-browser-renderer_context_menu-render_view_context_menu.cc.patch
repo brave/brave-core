@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index de0d60b2484140042444981759fd89f3ee615c02..6f156cda4bf9cba53742263854ff2c84f54a85ff 100644
+index 4d66ff97db26efd2201d02346caa8193d38fa005..05a82c7f906bf676b4bdc8d0ee255cfe43cbdcac 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -2357,6 +2357,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
-   selection_navigation_url_ = match.destination_url;
-   if (!selection_navigation_url_.is_valid())
+@@ -2379,6 +2379,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
+   if (!selection_navigation_url_.is_valid()) {
      return;
+   }
 +  BRAVE_APPEND_SEARCH_PROVIDER
  
    std::u16string printable_selection_text = PrintableSelectionText();
