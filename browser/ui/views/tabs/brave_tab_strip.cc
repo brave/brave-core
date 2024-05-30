@@ -174,6 +174,7 @@ void BraveTabStrip::MaybeStartDrag(
           tab_strip_model->GetIndexOfTab(tile->first));
       new_selection.AddIndexToSelection(
           tab_strip_model->GetIndexOfTab(tile->second));
+      new_selection.set_active(tab_strip_model->active_index());
       tab_strip_model->SetSelectionFromModel(new_selection);
     }
   }
