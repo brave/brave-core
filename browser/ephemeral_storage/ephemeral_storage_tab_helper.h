@@ -41,6 +41,10 @@ class EphemeralStorageTabHelper
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
       const url::Origin& origin);
 
+  void SetEphemeralStorageToken(std::optional<base::UnguessableToken> token);
+  void GenerateEphemeralStorageTokenForNewTab();
+  std::optional<base::UnguessableToken> TakeEphemeralStorageTokenForNewTab();
+
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
 
@@ -58,6 +62,9 @@ class EphemeralStorageTabHelper
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
+
+  std::optional<base::UnguessableToken> ephemeral_storage_token_;
+  std::optional<base::UnguessableToken> ephemeral_storage_token_for_new_tab_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 

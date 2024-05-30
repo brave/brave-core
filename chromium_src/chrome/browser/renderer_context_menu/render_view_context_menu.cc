@@ -14,6 +14,7 @@
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -31,6 +32,7 @@
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/features.h"
 #include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -398,6 +400,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
       // allows non text types
       return IsPasteAndMatchStyleEnabled();
+    case IDC_CONTENT_CONTEXT_OPENLINKEPHEMERALTAB:
+      return true;
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
 #if BUILDFLAG(ENABLE_TOR)
       if (brave::IsTorDisabledForProfile(GetProfile())) {
@@ -467,6 +471,20 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       // Replace works just like Paste, but it doesn't trigger onpaste handlers
       source_web_contents_->Replace(result);
     }; break;
+    case IDC_CONTENT_CONTEXT_OPENLINKEPHEMERALTAB: {
+      DCHECK(!IsInProgressiveWebApp());
+      OpenURLParams params = GetOpenURLParamsWithExtraHeaders(
+          params_.link_url, params_.frame_url, params_.frame_origin,
+          WindowOpenDisposition::OFF_THE_RECORD, ui::PAGE_TRANSITION_LINK,
+          /*extra_headers=*/std::string(), /*started_from_context_menu=*/true);
+      params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+      ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+          source_web_contents_)
+          ->GenerateEphemeralStorageTokenForNewTab();
+
+      source_web_contents_->OpenURL(params);
+      break;
+    }
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
       const bool has_tor_window = HasAlreadyOpenedTorWindow(GetProfile());
@@ -769,6 +787,16 @@ void BraveRenderViewContextMenu::InitMenu() {
         IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE);
   }
 #endif
+
+  if (std::optional<size_t> open_in_new_tab_idx =
+          menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
+      open_in_new_tab_idx && !IsInProgressiveWebApp() &&
+      base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    menu_model_.InsertItemWithStringIdAt(
+        open_in_new_tab_idx.value() + 1,
+        IDC_CONTENT_CONTEXT_OPENLINKEPHEMERALTAB,
+        IDS_CONTENT_CONTEXT_OPENLINKEPHEMERALTAB);
+  }
 
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor

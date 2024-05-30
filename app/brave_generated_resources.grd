@@ -961,6 +961,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
+      <message name="IDS_CONTENT_CONTEXT_OPENLINKEPHEMERALTAB" desc="The name of the context menu item to get text from image">
+        Open link in ephemeral tab
+      </message>
+
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
         <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">

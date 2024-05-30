@@ -6,6 +6,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -50,12 +51,37 @@ EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
 std::optional<base::UnguessableToken>
 EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
+  if (ephemeral_storage_token_) {
+    return ephemeral_storage_token_;
+  }
+
   if (auto* ephemeral_storage_service =
           EphemeralStorageServiceFactory::GetForContext(
               web_contents()->GetBrowserContext())) {
     return ephemeral_storage_service->Get1PESToken(origin);
   }
   return std::nullopt;
+}
+
+void EphemeralStorageTabHelper::SetEphemeralStorageToken(
+    std::optional<base::UnguessableToken> token) {
+  CHECK(!ephemeral_storage_token_);
+  ephemeral_storage_token_ = token;
+}
+
+void EphemeralStorageTabHelper::GenerateEphemeralStorageTokenForNewTab() {
+  ephemeral_storage_token_for_new_tab_ = base::UnguessableToken::Create();
+}
+
+std::optional<base::UnguessableToken>
+EphemeralStorageTabHelper::TakeEphemeralStorageTokenForNewTab() {
+  if (ephemeral_storage_token_for_new_tab_) {
+    auto ephemeral_storage_token_for_new_tab =
+        std::move(ephemeral_storage_token_for_new_tab_);
+    return ephemeral_storage_token_for_new_tab;
+  }
+
+  return ephemeral_storage_token_;
 }
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {}
