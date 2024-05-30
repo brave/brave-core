@@ -264,6 +264,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kTrackingProtectionContentSetting,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
+      &safe_browsing::kImprovedDownloadPageWarnings,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
