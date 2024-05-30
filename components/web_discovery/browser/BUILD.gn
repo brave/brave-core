@@ -9,6 +9,8 @@ static_library("browser") {
     "content_scraper.h",
     "credential_manager.cc",
     "credential_manager.h",
+    "double_fetcher.cc",
+    "double_fetcher.h",
     "patterns.cc",
     "patterns.h",
     "pref_names.h",
@@ -25,6 +27,7 @@ static_library("browser") {
   ]
   deps = [
     "anonymous_credentials/rs:rust_lib",
+    "document_extractor/rs:rust_lib",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",

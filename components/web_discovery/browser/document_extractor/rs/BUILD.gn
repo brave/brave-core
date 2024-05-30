@@ -1,0 +1,24 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  crate_name = "document_extractor_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+
+  edition = "2021"
+  sources = [ "src/lib.rs" ]
+
+  visibility = [ "//brave/components/web_discovery/browser:*" ]
+
+  cxx_bindings = [ "src/lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/kuchikiki/v0_8:lib",
+  ]
+}

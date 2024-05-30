@@ -8,13 +8,17 @@
 
 namespace web_discovery {
 
+// Profile prefs
 inline constexpr char kCredentialRSAPrivateKey[] =
     "brave.web_discovery.rsa_priv_key";
 inline constexpr char kCredentialRSAPublicKey[] =
     "brave.web_discovery.rsa_pub_key";
 inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
+inline constexpr char kScheduledDoubleFetches[] =
+    "brave.web_discovery.scheduled_double_fetches";
 
+// Local state
 inline constexpr char kPatternsRetrievalTime[] =
     "brave.web_discovery.patterns_retrieval_time";
 

@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -49,6 +50,7 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
   registry->RegisterStringPref(kCredentialRSAPublicKey, {});
+  registry->RegisterListPref(kScheduledDoubleFetches);
 }
 
 void WDPService::Start() {
@@ -64,6 +66,7 @@ void WDPService::Start() {
 }
 
 void WDPService::Stop() {
+  double_fetcher_ = nullptr;
   content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
@@ -86,6 +89,30 @@ void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
 void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
   last_loaded_patterns_ = std::move(patterns);
   content_scraper_ = std::make_unique<ContentScraper>(&last_loaded_patterns_);
+  double_fetcher_ = std::make_unique<DoubleFetcher>(
+      profile_prefs_.get(), shared_url_loader_factory_.get(),
+      base::BindRepeating(&WDPService::OnDoubleFetched,
+                          base::Unretained(this)));
+}
+
+void WDPService::OnDoubleFetched(const base::Value& associated_data,
+                                 std::optional<std::string> response_body) {
+  if (!response_body) {
+    return;
+  }
+  auto prev_scrape_result = PageScrapeResult::FromValue(associated_data);
+  if (!prev_scrape_result) {
+    return;
+  }
+  auto* url_pattern =
+      content_scraper_->GetMatchingURLPattern(prev_scrape_result->url, true);
+  if (!url_pattern) {
+    return;
+  }
+  content_scraper_->ParseAndScrapePage(
+      std::move(prev_scrape_result), url_pattern, *response_body,
+      base::BindOnce(&WDPService::OnContentScraped, base::Unretained(this),
+                     true));
 }
 
 void WDPService::OnFinishNavigation(
@@ -102,14 +129,25 @@ void WDPService::OnFinishNavigation(
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       remote.BindNewPipeAndPassReceiver());
   auto remote_id = document_extractor_remotes_.Add(std::move(remote));
-  content_scraper_->ScrapePage(
-      url_pattern, url, document_extractor_remotes_.Get(remote_id),
-      base::BindOnce(&WDPService::OnContentScraped, base::Unretained(this)));
+  content_scraper_->ScrapePage(url_pattern, url,
+                               document_extractor_remotes_.Get(remote_id),
+                               base::BindOnce(&WDPService::OnContentScraped,
+                                              base::Unretained(this), false));
 }
 
-void WDPService::OnContentScraped(std::unique_ptr<PageScrapeResult> result) {
+void WDPService::OnContentScraped(bool is_strict,
+                                  std::unique_ptr<PageScrapeResult> result) {
   if (!result) {
     return;
+  }
+  if (!is_strict) {
+    if (!content_scraper_->GetMatchingURLPattern(result->url, true)) {
+      return;
+    }
+    double_fetcher_->ScheduleDoubleFetch(result->url,
+                                         result->SerializeToValue());
+  } else {
+    // TODO(djandries): Create payload and schedule send
   }
 }
 

@@ -15,6 +15,8 @@ namespace web_discovery {
 
 namespace {
 
+constexpr char kTextContentAttributeName[] = "textContent";
+
 mojom::AttributeResultPtr ProcessAttributeRequest(
     mojom::SelectAttributeRequest* request,
     const blink::WebVector<blink::WebElement>& elements) {
@@ -29,16 +31,21 @@ mojom::AttributeResultPtr ProcessAttributeRequest(
       sub_element = element.QuerySelector(web_sub_selector);
       element_to_query = &*sub_element;
     }
-    std::string attribute_value;
     if (element_to_query->IsNull()) {
       continue;
     }
-    auto attribute_name = blink::WebString::FromUTF8(request->attribute);
-    auto web_attribute_value = element_to_query->GetAttribute(attribute_name);
-    if (web_attribute_value.IsNull()) {
-      continue;
+    std::string attribute_value;
+    if (request->attribute == kTextContentAttributeName) {
+      attribute_value = element_to_query->TextContent().Utf8();
+    } else {
+      auto attribute_name = blink::WebString::FromUTF8(request->attribute);
+      auto web_attribute_value = element_to_query->GetAttribute(attribute_name);
+      if (web_attribute_value.IsNull()) {
+        continue;
+      }
+      attribute_value = web_attribute_value.Utf8();
     }
-    attributes_result->attribute_values.push_back(web_attribute_value.Utf8());
+    attributes_result->attribute_values.push_back(attribute_value);
   }
   return attributes_result;
 }

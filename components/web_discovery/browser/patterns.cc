@@ -38,13 +38,13 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
     const base::Value::Dict* scrape_url_dict) {
   std::vector<ScrapeRuleGroup> result(scrape_url_dict->size());
 
+  auto rule_group_it = result.begin();
   for (const auto [selector, rule_group_value] : *scrape_url_dict) {
     auto* rule_group_dict = rule_group_value.GetIfDict();
     if (!rule_group_dict) {
       VLOG(1) << "Rule group is not a dict";
       return std::nullopt;
     }
-    auto rule_group_it = result.begin();
     rule_group_it->selector = selector;
     rule_group_it->rules = std::vector<ScrapeRule>(rule_group_dict->size());
 

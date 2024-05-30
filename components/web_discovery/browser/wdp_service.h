@@ -7,11 +7,14 @@
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WDP_SERVICE_H_
 
 #include <memory>
+#include <optional>
+#include <string>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
+#include "brave/components/web_discovery/browser/double_fetcher.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -57,7 +60,10 @@ class WDPService : public KeyedService {
 
   void OnConfigChange(std::unique_ptr<ServerConfig> config);
   void OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns);
-  void OnContentScraped(std::unique_ptr<PageScrapeResult> result);
+  void OnContentScraped(bool is_strict,
+                        std::unique_ptr<PageScrapeResult> result);
+  void OnDoubleFetched(const base::Value& associated_data,
+                       std::optional<std::string> response_body);
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
@@ -69,11 +75,13 @@ class WDPService : public KeyedService {
 
   mojo::RemoteSet<mojom::DocumentExtractor> document_extractor_remotes_;
 
-  std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<ServerConfig> last_loaded_server_config_;
   std::unique_ptr<PatternsGroup> last_loaded_patterns_;
+
+  std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<CredentialManager> credential_manager_;
   std::unique_ptr<ContentScraper> content_scraper_;
+  std::unique_ptr<DoubleFetcher> double_fetcher_;
 };
 
 }  // namespace web_discovery
