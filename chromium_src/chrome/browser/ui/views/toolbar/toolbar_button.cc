@@ -56,12 +56,6 @@ void ToolbarButton::OnInkDropStateChanged(views::InkDropState state) {
   // Use different color for icon when activated.
   activated_ = state == views::InkDropState::ACTIVATED;
 
-  if (!activated_) {
-    // Set upstream colors for deactivated state.
-    UpdateIcon();
-    return;
-  }
-
   if (!HasVectorIcons()) {
     return;
   }
