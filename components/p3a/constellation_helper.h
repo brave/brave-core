@@ -25,7 +25,22 @@ class SharedURLLoaderFactory;
 
 namespace p3a {
 
+// Heuristic aggregation threshold used for STAR/Constellation
 inline constexpr size_t kConstellationDefaultThreshold = 50;
+
+// Aggregation threshold used for Nebula
+//
+// This is derived from the differential privacy paramaters
+// ε = 1.0 (the privacy budget) and δ = 1.0e-8 (should be
+// less than the reciprocal of the number of clients) along
+// with a parameter α = 1/6 which adjusts the tradeoff between
+// this threshold and the sampling probability.
+//
+// This aggregation threshold is computed as
+//
+//     kNebulaThreshold = ceil(log(1.0/delta) / Ca)
+//     where Ca = log(1.0/alpha) - 1.0 / (1.0 + alpha)
+//
 inline constexpr size_t kNebulaThreshold = 20;
 
 struct P3AConfig;

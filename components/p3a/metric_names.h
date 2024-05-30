@@ -376,6 +376,12 @@ inline constexpr auto kHistogramsWithRefcodeIncluded =
 });
 
 // List of metrics that should be protected by Nebula.
+//
+// We intend to apply Nebula to all questions by default,
+// subject to verification that it behaves as expected.
+// This list tests a small number of questions to confirm
+// this, and should be removed or converted to an exception
+// list once we're satisfied with the implementation.
 inline constexpr auto kNebulaOnlyHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.ChatCount.Nebula",

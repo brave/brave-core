@@ -28,7 +28,23 @@ namespace p3a {
 
 namespace {
 
+// Probability of submitting a true report in the Nebula protocol
+//
+// This is computed from the differential privacy budget ε = 1.0 as
+//
+//     kNebulaParticipationRate = alpha * (1 - exp(-epsilon))
+//
 constexpr double kNebulaParticipationRate = 0.105;
+
+// Probability of submitting a randomized response in the Nebula protocol
+//
+// This sets the fraction of clients not participating by submitting
+// a true report for threshold aggregration which instead submit a
+// privacy-enhancing dummy report. It must be sufficiently large to
+// provide privacy coverage for the size of the P3A question domain,
+// but values significantly less than 1.0 improve bandwidth efficiency
+// by reducing the number of reports clients must send which will not
+// be aggregated.
 constexpr double kNebulaScramblingRate = 0.05;
 
 bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
