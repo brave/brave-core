@@ -21,18 +21,18 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // --------------------------------------------------------------------------
   // For deprecated kColorId_FocusedBorderColor
   mixer[kColorFocusableBorderFocused] = {
-      dark_mode ? SkColorSetA(gfx::kBraveColorBrand, 0x66)
-                : SkColorSetA(gfx::kBraveColorBrand, 0x99)};
+      dark_mode ? SkColorSetA(gfx::kColorButtonBackground, 0x66)
+                : SkColorSetA(gfx::kColorButtonBackground, 0x99)};
 
   // --------------------------------------------------------------------------
   // Button colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_ProminentButtonColor
-  mixer[kColorButtonBackgroundProminent] = {gfx::kBraveColorBrand};
+  mixer[kColorButtonBackgroundProminent] = {gfx::kColorButtonBackground};
   // For deprecated kColorId_ProminentButtonDisabledColor
-  mixer[kColorButtonBackgroundProminentDisabled] = {gfx::kGoogleGrey800};
+  mixer[kColorButtonBackgroundProminentDisabled] = {gfx::kColorButtonDisabled};
   // For deprecated kColorId_ProminentButtonFocusedColor
-  mixer[kColorButtonBackgroundProminentFocused] = {gfx::kBraveColorBrand};
+  mixer[kColorButtonBackgroundProminentFocused] = {gfx::kColorButtonBackground};
   // For deprecated kColorId_ButtonBorderColor
   // TODO(simonhong): Add this color to palette.
   mixer[kColorButtonBorder] = {SkColorSetRGB(0xc3, 0xc4, 0xcf)};
@@ -53,8 +53,8 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Link colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_LinkEnabled & kColorId_LinkPressed
-  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorBrandDark
-                                           : gfx::kBraveColorBrand};
+  mixer[kColorLinkForeground] = {dark_mode ? gfx::kColorTextInteractiveDark
+                                           : gfx::kColorTextInteractive};
   mixer[kColorLinkForegroundPressed] = {kColorLinkForeground};
 
   // --------------------------------------------------------------------------
@@ -70,12 +70,12 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // AlphaBlend(kColorId_ProminentButtonColor, kColorId_WindowBackground,
   // SkAlpha{0x3C}))
   mixer[kColorTableBackgroundSelectedFocused] =
-      AlphaBlend(gfx::kBraveColorBrand, kColorPrimaryBackground, 0x3C);
+      AlphaBlend(gfx::kColorButtonBackground, kColorPrimaryBackground, 0x3C);
   mixer[kColorTableBackgroundSelectedUnfocused] = {
       kColorTableBackgroundSelectedFocused};
   // For deprecated kColorId_TableGroupingIndicatorColor (which was the same as
   // kColorId_FocusedBorderColor)
-  mixer[kColorTableGroupingIndicator] = {gfx::kBraveColorBrand};
+  mixer[kColorTableGroupingIndicator] = {gfx::kColorButtonBackground};
 
   // --------------------------------------------------------------------------
   // Text colors

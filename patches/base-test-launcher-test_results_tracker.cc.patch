@@ -1,8 +1,8 @@
 diff --git a/base/test/launcher/test_results_tracker.cc b/base/test/launcher/test_results_tracker.cc
-index 2b113168a53e25e6e5c1540c268913a5e2e62f8f..75011e6f5e92931eab13106f5863172fbbad5f60 100644
+index 1237a29e5fa1d8c1cbf84d4594f867aa794170a6..1adedda79da7b616d3d14eb99a702fdf02e4d32d 100644
 --- a/base/test/launcher/test_results_tracker.cc
 +++ b/base/test/launcher/test_results_tracker.cc
-@@ -144,6 +144,7 @@ TestResultsTracker::~TestResultsTracker() {
+@@ -149,6 +149,7 @@ TestResultsTracker::~TestResultsTracker() {
                     : ""),
                result.GetTestCaseName().c_str());
        if (result.status != TestResult::TEST_SUCCESS) {

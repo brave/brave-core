@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
+import androidx.annotation.Nullable;
+
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -19,6 +21,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -34,6 +37,7 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
@@ -87,9 +91,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
-            boolean shouldCreateLogoInStartToolbar,
             FullscreenManager fullscreenManager,
-            TabObscuringHandler tabObscuringHandler) {
+            TabObscuringHandler tabObscuringHandler,
+            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
         super(
                 controlContainer,
                 toolbarStub,
@@ -120,9 +124,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 constraintsSupplier,
                 compositorInMotionSupplier,
                 browserStateBrowserControlsVisibilityDelegate,
-                shouldCreateLogoInStartToolbar,
                 fullscreenManager,
-                tabObscuringHandler);
+                tabObscuringHandler,
+                desktopWindowStateProvider);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
@@ -174,6 +178,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     @Override
     public void initializeWithNative(
+            Profile profile,
             Runnable layoutUpdater,
             OnClickListener tabSwitcherClickHandler,
             OnClickListener newTabClickHandler,
@@ -185,6 +190,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             TopUiThemeColorProvider topUiThemeColorProvider) {
         super.initializeWithNative(
+                profile,
                 layoutUpdater,
                 tabSwitcherClickHandler,
                 newTabClickHandler,

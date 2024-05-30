@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "ui/views/controls/button/md_text_button.h"
+
 #include <optional>
 #include <tuple>
 
@@ -15,13 +17,13 @@
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_palette.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/button.h"
-#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
@@ -37,7 +39,6 @@ SkColor AddOpacity(SkColor color, float opacity) {
   return SkColorSetA(color, current_alpha * opacity);
 }
 
-using Kind = views::MdTextButton::Kind;
 using ColorScheme = ui::NativeTheme::PreferredColorScheme;
 using ButtonState = views::Button::ButtonState;
 
@@ -48,90 +49,163 @@ struct ButtonStyle {
 };
 
 struct MdTextButtonStyleKey {
-  Kind kind;
+  ui::ButtonStyle style;
   ColorScheme color_scheme;
   ButtonState state;
 
   bool operator<(const MdTextButtonStyleKey& other) const {
-    return std::tie(kind, color_scheme, state) <
-           std::tie(other.kind, other.color_scheme, other.state);
+    return std::tie(style, color_scheme, state) <
+           std::tie(other.style, other.color_scheme, other.state);
   }
 };
 
-constexpr float kDisabledOpacity = 0.5f;
-constexpr float kLoadingOpacity = 0.8f;
+constexpr float kLoadingOpacity = 0.75f;
 
+// We map our button styles to upstream style.
+// Prominent, Default, Tonal, Text styles are mapped
+// sequentially to our Filled, Outline, Plain and Plain-Faint.
 const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
   static base::NoDestructor<base::flat_map<MdTextButtonStyleKey, ButtonStyle>>
       button_themes(
-          {{{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = gfx::kBraveColorBrand,
+          {{{ui::ButtonStyle::kProminent, ColorScheme::kLight,
+             ButtonState::STATE_NORMAL},
+            {.background_color = gfx::kColorButtonBackground,
              .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
-           {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = gfx::kBraveColorBrand,
+           {{ui::ButtonStyle::kProminent, ColorScheme::kDark,
+             ButtonState::STATE_NORMAL},
+            {.background_color = gfx::kColorButtonBackground,
              .border_color = std::nullopt,
              .text_color = SK_ColorWHITE}},
-           {{Kind::kPrimary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-            {.background_color = SkColorSetRGB(24, 56, 172),
-             .border_color = std::nullopt,
-             .text_color = SK_ColorWHITE}},
-           {{Kind::kPrimary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = SkColorSetRGB(77, 92, 253),
-             .border_color = std::nullopt,
-             .text_color = SK_ColorWHITE}},
-
-           {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = SK_ColorBLACK,
-             .text_color = SK_ColorBLACK}},
-           {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = SK_ColorWHITE,
-             .text_color = SK_ColorWHITE}},
-           {{Kind::kSecondary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-            {.background_color = std::nullopt,
-             .border_color = gfx::kBraveColorBrand,
-             .text_color = gfx::kBraveColorBrand}},
-           {{Kind::kSecondary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = std::nullopt,
-             .border_color = gfx::kBraveColorBrand,
-             .text_color = gfx::kBraveColorBrand}},
-
-           {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(32, 74, 227)}},
-           {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(153, 173, 243)}},
-           {{Kind::kTertiary, ColorScheme::kLight, ButtonState::STATE_HOVERED},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(24, 56, 172)}},
-           {{Kind::kTertiary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(186, 199, 247)}},
-
-           {{Kind::kQuaternary, ColorScheme::kLight, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(84, 96, 113)}},
-           {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_NORMAL},
-            {.background_color = std::nullopt,
-             .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(195, 201, 211)}},
-           {{Kind::kQuaternary, ColorScheme::kLight,
+           {{ui::ButtonStyle::kProminent, ColorScheme::kLight,
              ButtonState::STATE_HOVERED},
+            {.background_color = color_utils::AlphaBlend(
+                 SK_ColorBLACK, gfx::kColorButtonBackground, 0.2f),
+             .border_color = std::nullopt,
+             .text_color = SK_ColorWHITE}},
+           {{ui::ButtonStyle::kProminent, ColorScheme::kDark,
+             ButtonState::STATE_HOVERED},
+            {.background_color = color_utils::AlphaBlend(
+                 SK_ColorWHITE, gfx::kColorButtonBackground, 0.2f),
+             .border_color = std::nullopt,
+             .text_color = SK_ColorWHITE}},
+           {{ui::ButtonStyle::kProminent, ColorScheme::kLight,
+             ButtonState::STATE_DISABLED},
+            {.background_color = gfx::kColorButtonDisabled,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabled}},
+           {{ui::ButtonStyle::kProminent, ColorScheme::kDark,
+             ButtonState::STATE_DISABLED},
+            {.background_color = gfx::kColorButtonDisabled,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabledDark}},
+
+           {{ui::ButtonStyle::kDefault, ColorScheme::kLight,
+             ButtonState::STATE_NORMAL},
+            {.background_color = std::nullopt,
+             .border_color = gfx::kColorDividerInteractive,
+             .text_color = gfx::kColorTextInteractive}},
+           {{ui::ButtonStyle::kDefault, ColorScheme::kDark,
+             ButtonState::STATE_NORMAL},
+            {.background_color = std::nullopt,
+             .border_color = gfx::kColorDividerInteractive,
+             .text_color = gfx::kColorTextInteractiveDark}},
+           {{ui::ButtonStyle::kDefault, ColorScheme::kLight,
+             ButtonState::STATE_HOVERED},
+            {
+                .background_color = std::nullopt,
+                .border_color = color_utils::AlphaBlend(
+                    SK_ColorBLACK, gfx::kColorDividerInteractive, 0.2f),
+                .text_color = color_utils::AlphaBlend(
+                    SK_ColorBLACK, gfx::kColorTextInteractive, 0.2f),
+            }},
+           {{ui::ButtonStyle::kDefault, ColorScheme::kDark,
+             ButtonState::STATE_HOVERED},
+            {
+                .background_color = std::nullopt,
+                .border_color = color_utils::AlphaBlend(
+                    SK_ColorWHITE, gfx::kColorDividerInteractive, 0.2f),
+                .text_color = color_utils::AlphaBlend(
+                    SK_ColorWHITE, gfx::kColorTextInteractiveDark, 0.2f),
+            }},
+           {{ui::ButtonStyle::kDefault, ColorScheme::kLight,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = gfx::kColorButtonDisabled,
+             .text_color = gfx::kColorTextDisabled}},
+           {{ui::ButtonStyle::kDefault, ColorScheme::kDark,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = gfx::kColorButtonDisabled,
+             .text_color = gfx::kColorTextDisabled}},
+
+           {{ui::ButtonStyle::kTonal, ColorScheme::kLight,
+             ButtonState::STATE_NORMAL},
             {.background_color = std::nullopt,
              .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(63, 72, 85)}},
-           {{Kind::kQuaternary, ColorScheme::kDark, ButtonState::STATE_HOVERED},
+             .text_color = gfx::kColorTextInteractive}},
+           {{ui::ButtonStyle::kTonal, ColorScheme::kDark,
+             ButtonState::STATE_NORMAL},
             {.background_color = std::nullopt,
              .border_color = std::nullopt,
-             .text_color = SkColorSetRGB(195, 201, 211)}}});
+             .text_color = gfx::kColorTextInteractiveDark}},
+           {{ui::ButtonStyle::kTonal, ColorScheme::kLight,
+             ButtonState::STATE_HOVERED},
+            {.background_color =
+                 SkColorSetA(gfx::kColorButtonBackground, 0xFF * 0.05),
+             .border_color = std::nullopt,
+             .text_color = color_utils::AlphaBlend(
+                 SK_ColorBLACK, gfx::kColorTextInteractive, 0.2f)}},
+           {{ui::ButtonStyle::kTonal, ColorScheme::kDark,
+             ButtonState::STATE_HOVERED},
+            {.background_color =
+                 SkColorSetA(gfx::kColorTextInteractiveDark, 0xFF * 0.1),
+             .border_color = std::nullopt,
+             .text_color = color_utils::AlphaBlend(
+                 SK_ColorWHITE, gfx::kColorTextInteractiveDark, 0.2f)}},
+           {{ui::ButtonStyle::kTonal, ColorScheme::kLight,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabled}},
+           {{ui::ButtonStyle::kTonal, ColorScheme::kDark,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabledDark}},
+
+           {{ui::ButtonStyle::kText, ColorScheme::kLight,
+             ButtonState::STATE_NORMAL},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextSecondary}},
+           {{ui::ButtonStyle::kText, ColorScheme::kDark,
+             ButtonState::STATE_NORMAL},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextSecondaryDark}},
+           {{ui::ButtonStyle::kText, ColorScheme::kLight,
+             ButtonState::STATE_HOVERED},
+            {.background_color = SkColorSetA(gfx::kColorGray60, 0xFF * 0.05),
+             .border_color = std::nullopt,
+             .text_color = color_utils::AlphaBlend(
+                 SK_ColorBLACK, gfx::kColorTextSecondary, 0.2f)}},
+           {{ui::ButtonStyle::kText, ColorScheme::kDark,
+             ButtonState::STATE_HOVERED},
+            {.background_color = SkColorSetA(gfx::kColorGray20, 0xFF * 0.1),
+             .border_color = std::nullopt,
+             .text_color = color_utils::AlphaBlend(
+                 SK_ColorWHITE, gfx::kColorTextSecondaryDark, 0.2f)}},
+           {{ui::ButtonStyle::kText, ColorScheme::kLight,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabled}},
+           {{ui::ButtonStyle::kText, ColorScheme::kDark,
+             ButtonState::STATE_DISABLED},
+            {.background_color = std::nullopt,
+             .border_color = std::nullopt,
+             .text_color = gfx::kColorTextDisabled}}});
 
   return *button_themes;
 }
@@ -164,23 +238,15 @@ MdTextButton::MdTextButton(
                        button_context,
                        use_text_color_for_icon,
                        std::move(image_container)) {
-  SetCornerRadius(100);
+  // TODO(simonhong): Use --leo-radius-l when it's available in ui layer.
+  constexpr int kLeoRadiusL = 12;
+  SetCornerRadius(kLeoRadiusL);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
-  auto* ink_drop = views::InkDrop::Get(this);
-  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop,
-                                               /*highlight_on_hover=*/false,
-                                               /*highlight_on_focus=*/true);
-  ink_drop->SetCreateHighlightCallback(base::BindRepeating(
-      [](Button* host) {
-        const SkColor fill_color = SK_ColorTRANSPARENT;
-        gfx::RectF boundsF(host->GetLocalBounds());
-        return std::make_unique<InkDropHighlight>(
-            boundsF.size(),
-            static_cast<MdTextButton*>(host)->GetCornerRadiusValue(),
-            boundsF.CenterPoint(), fill_color);
-      },
-      this));
+
+  // Disabled upstream's ink-drop as we have specific color for hover state.
+  InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+  SetImageLabelSpacing(6);
 }
 
 MdTextButton::~MdTextButton() = default;
@@ -191,27 +257,6 @@ SkPath MdTextButton::GetHighlightPath() const {
   path.addRRect(
       SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
   return path;
-}
-
-MdTextButton::Kind MdTextButton::GetKind() const {
-  return kind_;
-}
-
-void MdTextButton::SetKind(Kind kind) {
-  if (kind == kind_) {
-    return;
-  }
-
-  kind_ = kind;
-
-  // We don't want to affect the OLD style buttons, and we want them to be the
-  // default (for now), so don't change the image-label spacing unless we set
-  // the button kind to something that isn't OLD.
-  if (kind != Kind::kOld) {
-    SetImageLabelSpacing(6);
-  }
-
-  UpdateColors();
 }
 
 void MdTextButton::SetIcon(const gfx::VectorIcon* icon, int icon_size) {
@@ -232,60 +277,11 @@ void MdTextButton::SetLoading(bool loading) {
 void MdTextButton::UpdateTextColor() {
   MdTextButtonBase::UpdateTextColor();
 
-  // Once we update the buttons across Brave to use the new style, we can remove
-  // this branch.
-  if (kind_ == kOld) {
-    if (GetStyle() == ui::ButtonStyle::kProminent) {
-      return;
-    }
-    const ui::NativeTheme* theme = GetNativeTheme();
-    // Override different text hover color
-    if (theme->GetPlatformHighContrastColorScheme() !=
-        ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
-      SetTextColor(ButtonState::STATE_HOVERED, gfx::kBraveColorBrand);
-      SetTextColor(ButtonState::STATE_PRESSED, gfx::kBraveColorBrand);
-    }
-    return;
-  }
-
   auto colors = GetButtonColors();
   SetTextColor(GetVisualState(), colors.text_color);
 }
 
 void MdTextButton::UpdateBackgroundColor() {
-  // Once we update the buttons across Brave to use the new style, we can remove
-  // this branch.
-  if (kind_ == kOld) {
-    MdTextButtonBase::UpdateBackgroundColor();
-
-    // We don't modify the Prominent button at all.
-    if (GetStyle() == ui::ButtonStyle::kProminent) {
-      return;
-    }
-
-    // Override border color for hover on non-prominent
-    if (GetState() == ButtonState::STATE_PRESSED ||
-        GetState() == ButtonState::STATE_HOVERED) {
-      // First, get the same background fill color that MdTextButtonBase does.
-      // It is unfortunate to copy these lines almost as-is. Consider otherwise
-      // patching it in via a #define.
-      SkColor bg_color =
-          GetColorProvider()->GetColor(ui::kColorDialogBackground);
-      if (GetBgColorOverride()) {
-        bg_color = *GetBgColorOverride();
-      }
-      if (GetState() == STATE_PRESSED) {
-        bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
-      }
-      // The only thing that differs for Brave is the stroke color
-      SkColor stroke_color = gfx::kBraveColorBrand;
-      SetBackground(CreateBackgroundFromPainter(
-          Painter::CreateRoundRectWith1PxBorderPainter(
-              bg_color, stroke_color, GetCornerRadiusValue())));
-    }
-    return;
-  }
-
   auto colors = GetButtonColors();
 
   // SubPixelRendering doesn't work if we have any background opacity.
@@ -308,26 +304,6 @@ void MdTextButton::UpdateColors() {
   }
 }
 
-void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
-  // Set brave-style hover colors
-  MdTextButtonBase::OnPaintBackground(canvas);
-  if (GetStyle() == ui::ButtonStyle::kProminent &&
-      (hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
-    constexpr SkColor normal_color = gfx::kBraveColorBrand;
-    constexpr SkColor hover_color = SkColorSetA(normal_color, 0xFF * 0.2);
-    const SkAlpha alpha =
-        static_cast<SkAlpha>(hover_animation().CurrentValueBetween(0x00, 0xff));
-    const SkColor current_color =
-        color_utils::AlphaBlend(hover_color, normal_color, alpha);
-    cc::PaintFlags flags;
-    flags.setColor(current_color);
-    flags.setStyle(cc::PaintFlags::kFill_Style);
-    flags.setAntiAlias(true);
-    canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadiusValue(),
-                          flags);
-  }
-}
-
 MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   // Leo buttons only have a light and dark mode.
   auto color_scheme =
@@ -337,9 +313,9 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   auto state = GetVisualState();
   float opacity = 1;
 
-  // Leo buttons don't have a pressed state, so use the hover state instead.
+  // Leo buttons don't have a pressed state, so use the normal state instead.
   if (state == ButtonState::STATE_PRESSED) {
-    state = ButtonState::STATE_HOVERED;
+    state = ButtonState::STATE_NORMAL;
   }
 
   // The loading style is the normal button style, with some opacity.
@@ -348,28 +324,30 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
     opacity = kLoadingOpacity;
   }
 
-  // The enabled style is the normal button style with more opacity.
-  if (!GetEnabled() || state == STATE_DISABLED) {
-    state = ButtonState::STATE_NORMAL;
-    opacity = kDisabledOpacity;
-  }
-
-  MdTextButtonStyleKey style_lookup{GetKind(), color_scheme, state};
+  MdTextButtonStyleKey style_lookup{GetBraveStyle(), color_scheme, state};
   auto it = GetButtonThemes().find(style_lookup);
   if (it == GetButtonThemes().end()) {
-    NOTREACHED() << "No style found for ButtonKind: " << kind_
-                 << ", ColorScheme: "
+    NOTREACHED() << "No button theme found for : "
+                 << static_cast<int>(GetBraveStyle()) << ", ColorScheme: "
                  << (color_scheme == ColorScheme::kDark ? "dark" : "light")
                  << ", ButtonState: " << state;
   }
   const auto& style = it->second;
   return {.background_color = AddOpacity(
-              GetBgColorOverride().value_or(
+              GetBgColorOverrideDeprecated().value_or(
                   style.background_color.value_or(SK_ColorTRANSPARENT)),
               opacity),
           .stroke_color = AddOpacity(
               style.border_color.value_or(SK_ColorTRANSPARENT), opacity),
           .text_color = AddOpacity(style.text_color, opacity)};
+}
+
+ui::ButtonStyle MdTextButton::GetBraveStyle() const {
+  const auto style = GetStyle();
+  if (style == ui::ButtonStyle::kTonal && use_default_for_tonal_) {
+    return ui::ButtonStyle::kDefault;
+  }
+  return style;
 }
 
 BEGIN_METADATA(MdTextButton)

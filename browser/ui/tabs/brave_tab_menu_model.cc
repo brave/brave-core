@@ -67,7 +67,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   }
 
   if (restore_service_->entries().front()->type ==
-      sessions::TabRestoreService::WINDOW) {
+      sessions::tab_restore::WINDOW) {
     id = IDS_RESTORE_WINDOW;
   }
 

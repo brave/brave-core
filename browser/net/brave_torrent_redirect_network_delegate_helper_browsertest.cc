@@ -91,8 +91,7 @@ class BraveTorrentRedirectNetworkDelegateHelperTest
   }
 
   void NavigateToURLAndWaitForRedirects(const GURL& original_url) {
-    ui_test_utils::UrlLoadObserver load_complete(
-        original_url, content::NotificationService::AllSources());
+    ui_test_utils::UrlLoadObserver load_complete(original_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
     EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(),
               original_url);

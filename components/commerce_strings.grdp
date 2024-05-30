@@ -36,7 +36,7 @@
     <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_TITLE" translateable="false" desc="The title shown on the native consent dialog for getting discount.">
       Let Brave help you find&#13;discounts for your carts
     </message>
-    
+
     <message name="IDS_NATIVE_NTP_CART_DISCOUNT_CONSENT_BODY" desc="The actual consent descrition that shows in the native consent dialog.">
       Let Brave use your carts to search for personalized discounts. When available, discounts will automatically show up on your carts.
     </message>
@@ -237,9 +237,6 @@
       <message name="IDS_PRICE_HISTORY_TITLE_MULTIPLE_OPTIONS" translateable="false" desc="The title of the Price History section in the Shopping Insights side panel when we find multiple options of this product.">
         Price History Across the Web for this Option
       </message>
-      <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" translateable="false" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
-        Price History Across the Web
-      </message>
       <message name="IDS_PRICE_HISTORY_MULTIPLE_OPTIONS_LOW_PRICE" desc="Text shown in the Price History section in the Shopping Insights side panel, indicating an option has relatively low price.">
         Low Priced Option
       </message>
@@ -251,12 +248,6 @@
       </message>
       <message name="IDS_SHOPPING_INSIGHTS_SIDE_PANEL_TRACK_PRICE_TITLE" desc="The title name of the Price Tracking section in the Shopping Insights side panel.">
         Save and Track Price
-      </message>
-      <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_LOW_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively low price.">
-        Price is Low
-      </message>
-      <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
-        Price is High
       </message>
       <message name="IDS_SHOPPING_INSIGHTS_ICON_TOOLTIP_TEXT" desc="The tooltip text for the price insights icon in the location bar.">
         Shopping Insights
@@ -272,9 +263,6 @@
       <message name="IDS_PRICE_HISTORY_TITLE_MULTIPLE_OPTIONS" translateable="false" desc="The title of the Price History section in the Shopping Insights side panel when we find multiple options of this product.">
         Price history across the web for this option
       </message>
-      <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" translateable="false" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
-        Price history across the web
-      </message>
       <message name="IDS_PRICE_HISTORY_MULTIPLE_OPTIONS_LOW_PRICE" desc="Text shown in the Price History section in the Shopping Insights side panel, indicating an option has relatively low price.">
         Low priced option
       </message>
@@ -286,12 +274,6 @@
       </message>
       <message name="IDS_SHOPPING_INSIGHTS_SIDE_PANEL_TRACK_PRICE_TITLE" desc="The title name of the Price Tracking section in the Shopping Insights side panel.">
         Save and track price
-      </message>
-      <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_LOW_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively low price.">
-        Price is low
-      </message>
-      <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
-        Price is high
       </message>
       <message name="IDS_SHOPPING_INSIGHTS_ICON_TOOLTIP_TEXT" desc="The tooltip text for the price insights icon in the location bar.">
         Shopping insights
@@ -456,19 +438,96 @@
   <message name="IDS_PRICE_INSIGHTS_BUYING_OPTIONS_SUBTITLE" desc="The description text for the BUYING_OPTIONS section of price insights.">
     From other stores across the web
   </message>
+  <message name="IDS_PRICE_INSIGHTS_TRACK_BUTTON_TITLE" desc="The title text for track button of price insights.">
+    Track
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_TRACKING_BUTTON_TITLE" desc="The title text for tracking button of price insights.">
+    Tracking
+  </message>
+  <message name="IDS_INSIGHTS_ICON_EXPANDED_TEXT_GOOD_DEAL" desc="The expanded text for the price insights icon in the location bar, indicating an option is a good deal.">
+    Good Deal Now
+  </message>
+  <message name="IDS_INSIGHTS_ICON_EXPANDED_TEXT_WAIT_BUY" desc="The expanded text for the price insights icon in the location bar, indicating that the user should wait to buy an option.">
+    Wait to Buy
+  </message>
+  <message name="IDS_INSIGHTS_ICON_EXPANDED_TEXT_PRICE_HISTORY" desc="The expanded text for the price insights icon in the location bar, indicating to see the price history.">
+    See Price History
+  </message>
+  <if expr="use_titlecase">
+    <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
+      Price History Across the Web
+    </message>
+    <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_LOW_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively low price.">
+      Price is Low
+    </message>
+    <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
+      Price is High
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+      Price Range for All Options
+    </message>
+  </if> <!-- use_titlecase -->
+  <if expr="not use_titlecase">
+    <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
+      Price history across the web
+    </message>
+    <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_LOW_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively low price.">
+      Price is low
+    </message>
+    <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
+      Price is high
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+      Price range for all options
+    </message>
+  </if> <!-- not use_titlecase -->
 
   <message name="IDS_SHOPPING_COLLECTION_FOLDER_NAME" desc="The name of bookmark folder that is automatically created when a user bookmarks a product page.">
     Shopping list
   </message>
 
   <!-- For Product Specifications -->
+  <message name="IDS_PRODUCT_SPECIFICATIONS_EMPTY_STATE_TITLE_DESCRIPTION" translateable="false" desc="The description of the prompt that shows for Product Specifications when no products have been selected.">
+    Something will show here once you select something from the dropdown under this
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_EMPTY_STATE_TITLE" translateable="false" desc="The title of the prompt that shows for Product Specifications when no products have been selected.">
+    Missing some info
+  </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_ENTRY_POINT_DEFAULT" translateable="false" desc="The default text for the Product Specifications entry point button.">
     Analyze pages?
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_ENTRY_POINT" translateable="false" desc="The text for the Product Specifications entry point button with a placeholder for what the specifications are for.">
     Analyze <ph name="SPECIFICATION">$1<ex>pages</ex></ph>?
   </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_HISTORY_MENU_ITEM" translateable="false" desc="The title of the link in the history UI that navigates the user to a page showing the lists being maintained by the product specifications feature.">
+    Product specifications lists
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_OPEN_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of open tabs.">
+    Open Tabs
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_RECENTLY_VIEWED_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of recently viewed tabs.">
+    Recently Viewed
+  </message>
   <message name="IDS_TOOLTIP_PRODUCT_SPECIFICATIONS_ENTRY_POINT_CLOSE" translateable="false" desc="The tooltip text for the close button within the Product Specifications entry point button.">
     Dismiss suggestion
   </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_EMPTY_PRODUCT_SELECTOR" translateable="false" desc="The text displayed in the product selector when there is no currently selected product.">
+    Add a tab
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_EMPTY_SELECTION_MENU" translateable="false" desc="The text that shows when the product selection menu has nothing to show.">
+    First, read this then add tabs.
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADD_DEFAULT" translateable="false" desc="The default text for the Product Specifications page action chip before adding the current page.">
+    Add to analysis?
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADDED_DEFAULT" translateable="false" desc="The default text for the Product Specifications page action chip after adding the current page.">
+    Added to analysis
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADD" translateable="false" desc="The text for the Product Specifications page action chip with a placeholder for what the specifications are for, before adding the current page.">
+    Add to <ph name="SPECIFICATION">$1<ex>analysis</ex></ph>?
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADDED" translateable="false" desc="The text for the Product Specifications page action chip with a placeholder for what the specifications are for, after adding the current page.">
+    Added to <ph name="SPECIFICATION">$1<ex>analysis</ex></ph>
+  </message>
+
 </grit-part>

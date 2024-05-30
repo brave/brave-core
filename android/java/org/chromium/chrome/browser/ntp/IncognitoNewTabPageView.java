@@ -54,9 +54,6 @@ public class IncognitoNewTabPageView extends FrameLayout {
         /** Tells the caller whether a new snapshot is required or not. */
         boolean shouldCaptureThumbnail();
 
-        /** Whether the new version of the Incognito NTP should be shown. */
-        boolean shouldShowRevampedIncognitoNtp();
-
         /** Whether to show the tracking protection UI on the NTP. */
         boolean shouldShowTrackingProtectionNtp();
 

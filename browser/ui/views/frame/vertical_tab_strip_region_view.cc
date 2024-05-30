@@ -356,8 +356,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     }
   }
 
-  gfx::Size CalculatePreferredSize() const override {
-    auto size = BraveNewTabButton::CalculatePreferredSize();
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
+    auto size = BraveNewTabButton::CalculatePreferredSize(available_size);
     if (tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser())) {
       size.set_height(kHeight);
     }
@@ -848,7 +849,8 @@ int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
                                    /*ignore_animation=*/false);
 }
 
-gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
+gfx::Size VerticalTabStripRegionView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   return GetPreferredSizeForState(state_, /*include_border=*/true,
                                   /*ignore_animation=*/false);
 }
@@ -1240,11 +1242,11 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   if (IsFloatingEnabledForBrowserFullscreen() && state_ == State::kCollapsed) {
     // In this case, vertical tab strip should be invisible but show up when
     // mouse hovers.
-    return {2, View::CalculatePreferredSize().height()};
+    return {2, View::CalculatePreferredSize({}).height()};
   }
 
   return {GetPreferredWidthForState(state, include_border, ignore_animation),
-          View::CalculatePreferredSize().height()};
+          View::CalculatePreferredSize({}).height()};
 }
 
 int VerticalTabStripRegionView::GetPreferredWidthForState(

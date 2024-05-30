@@ -61,3 +61,6 @@ test_get_pkgs
 build/config/gclient_args.gni
 third_party/rust/target
 xcuserdata
+
+# buffer exclusion file generated locally during sync
+build/config/unsafe_buffers_paths.txt

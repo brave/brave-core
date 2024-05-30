@@ -1,3 +1,5 @@
 include_rules = [
   "+brave/services/printing",
+  "+ui/accessibility",
+  "+ui/accessibility/ax_updates_and_events.h",
 ]

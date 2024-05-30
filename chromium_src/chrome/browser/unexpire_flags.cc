@@ -46,11 +46,6 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 
-  if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kChromeRefresh2023Id,
-                                       internal_name)) {
-    return true;
-  }
-
   return IsFlagExpired_ChromiumImpl(storage, internal_name);
 }
 

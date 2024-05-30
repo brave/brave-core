@@ -33,7 +33,7 @@ namespace util {
 std::string GenerateRandomHexString() {
   const size_t kLength = 32;
   uint8_t bytes[kLength];
-  crypto::RandBytes(bytes, sizeof(bytes));
+  crypto::RandBytes(bytes);
   return base::HexEncode(bytes, sizeof(bytes));
 }
 

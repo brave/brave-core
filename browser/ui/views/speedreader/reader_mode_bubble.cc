@@ -63,10 +63,12 @@ void ReaderModeBubble::Hide() {
   CloseBubble();
 }
 
-gfx::Size ReaderModeBubble::CalculatePreferredSize() const {
+gfx::Size ReaderModeBubble::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   return gfx::Size(
       kBubbleWidth,
-      LocationBarBubbleDelegateView::CalculatePreferredSize().height());
+      LocationBarBubbleDelegateView::CalculatePreferredSize(available_size)
+          .height());
 }
 
 bool ReaderModeBubble::ShouldShowCloseButton() const {

@@ -288,9 +288,10 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccount(
 }
 
 std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
-    ShutdownReason shutdown_reason,
     ResetEngineReason reset_reason) {
-  auto result = SyncServiceImpl::ResetEngine(shutdown_reason, reset_reason);
+  auto result = SyncServiceImpl::ResetEngine(reset_reason);
+  auto shutdown_reason =
+      SyncServiceImpl::ShutdownReasonForResetEngineReason(reset_reason);
 
   if (initiated_self_device_info_deleted_) {
     return result;

@@ -35,6 +35,10 @@ PermissionPromptDisposition MockPermissionLifetimePrompt::GetPromptDisposition()
   return PermissionPromptDisposition::ANCHORED_BUBBLE;
 }
 
+bool MockPermissionLifetimePrompt::IsAskPrompt() const {
+  return true;
+}
+
 void MockPermissionLifetimePrompt::ResetFactory() {
   factory_ = nullptr;
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 322df3814a9e6f234e3ba4cdabfa7f3dbf60fa7a..46622f07ea7d9b6523e012e2b4a5ff5ce6d31768 100644
+index 3cc3abde578285c72e6934750470af452d9ffd94..3afb103c88588b262f3650ef0c4e0575d8c000bc 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3916,6 +3916,7 @@ const FeatureEntry::FeatureVariation kDefaultBrowserPromptRefreshVariations[] =
+@@ -3852,6 +3852,7 @@ const FeatureEntry::FeatureVariation kComposeProactiveNudgeVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
@@ -10,7 +10,7 @@ index 322df3814a9e6f234e3ba4cdabfa7f3dbf60fa7a..46622f07ea7d9b6523e012e2b4a5ff5c
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
-@@ -11395,6 +11396,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
+@@ -11434,6 +11435,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
  
  bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
                                         const FeatureEntry& entry) {

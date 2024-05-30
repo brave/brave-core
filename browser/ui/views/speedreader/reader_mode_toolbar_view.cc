@@ -55,7 +55,8 @@ content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
   return toolbar_->web_contents();
 }
 
-gfx::Size ReaderModeToolbarView::CalculatePreferredSize() const {
+gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   return kToolbarSize;
 }
 

@@ -44,8 +44,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
     SkColor text_color;
   };
 
-  enum Kind { kOld, kPrimary, kSecondary, kTertiary, kQuaternary };
-
   explicit MdTextButton(
       PressedCallback callback = PressedCallback(),
       const std::u16string& text = std::u16string(),
@@ -59,28 +57,28 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   SkPath GetHighlightPath() const;
 
-  Kind GetKind() const;
-  void SetKind(Kind kind);
-
   void SetIcon(const gfx::VectorIcon* icon, int icon_size = 0);
 
   bool GetLoading() const;
   void SetLoading(bool loading);
+  void set_use_default_for_tonal(bool use_default) {
+    use_default_for_tonal_ = use_default;
+  }
 
   // MdTextButtonBase:
   void UpdateTextColor() override;
   void UpdateBackgroundColor() override;
   void UpdateColors() override;
 
- protected:
-  // views::Views
-  void OnPaintBackground(gfx::Canvas* canvas) override;
-
  private:
   ButtonColors GetButtonColors();
+  ui::ButtonStyle GetBraveStyle() const;
 
-  Kind kind_ = kOld;
   bool loading_ = false;
+
+  // By default, use kDefault style for kTonal because
+  // it's not suitable to our style. Use default style instead.
+  bool use_default_for_tonal_ = true;
 
   int icon_size_ = 0;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;

@@ -40,7 +40,7 @@ void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
                            expiration_year);
   }
 
-  personal_data->AddCreditCard(credit_card);
+  personal_data->payments_data_manager().AddCreditCard(credit_card);
 }
 
 #if BUILDFLAG(IS_ANDROID)

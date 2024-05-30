@@ -17,7 +17,7 @@
       &lt;ul&gt;
         &lt;li&gt;&lt;em&gt;The best of Brave&lt;/em&gt;, for those who want it. For example, you can choose Brave Search as Brave’s default search engine and use Brave Password Manager to get all your passwords on any device. &lt;/li&gt;
         &lt;li&gt;&lt;em&gt;Meaningful choice&lt;/em&gt;: Brave offers you choice and control with settings, and information to help you make meaningful decisions.&lt;/li&gt;
-        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the Web Store.&lt;/li&gt;
+        &lt;li&gt;&lt;em&gt;Extensions&lt;/em&gt;: You can extend Brave functionality with over 100,000 extensions in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>.&lt;/li&gt;
       &lt;/ul&gt;
     </message>
     </if>
@@ -55,6 +55,9 @@
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
   </message>
+  <message name="IDS_SETTINGS_SHOW_TAB_GROUPS_IN_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing saved tab groups in bookmarks bar.">
+    Show tab groups in bookmarks
+  </message>
   <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
     Open Web Store
   </message>
@@ -86,10 +89,6 @@
       </if>
   </if>
 
-  <if expr="not is_macosx">
-    </if>
-  <if expr="is_macosx">
-    </if>
   <if expr="not chromeos_ash">
     </if>
   <if expr="not chromeos_ash">
@@ -181,6 +180,11 @@
     This custom setting will be removed when you close all your Private windows
   </message>
   <if expr="not chromeos_ash">
+    </if>
+
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
     </if>
 
   <if expr="not is_chromeos">

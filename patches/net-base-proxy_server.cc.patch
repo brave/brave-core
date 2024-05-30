@@ -1,8 +1,8 @@
 diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
-index ed883e77438917f866531e7693684d542c834949..69bf97330c06f55f681d304e7b2cc2f38a08ce1b 100644
+index 7c2f64aab85aacfd6ad89760949f89f18d345724..318f0ef940d545e50932c3f51d18b8c88f18e107 100644
 --- a/net/base/proxy_server.cc
 +++ b/net/base/proxy_server.cc
-@@ -57,6 +57,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+@@ -58,6 +58,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
  ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
                                                 std::string_view host,
                                                 std::optional<uint16_t> port) {
@@ -10,7 +10,7 @@ index ed883e77438917f866531e7693684d542c834949..69bf97330c06f55f681d304e7b2cc2f3
    // Create INVALID proxies directly using `ProxyServer()`.
    DCHECK_NE(scheme, SCHEME_INVALID);
  
-@@ -90,6 +91,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+@@ -96,6 +97,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
    // A uint16_t port is always valid and canonicalized.
    uint16_t fixed_port = port.value_or(GetDefaultPortForScheme(scheme));
  

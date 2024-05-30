@@ -5,10 +5,15 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
+#include "components/vector_icons/vector_icons.h"
 
-#define kTranslateIcon_ChromiumImpl kTranslateIcon
-#define kTranslateIcon kBraveTranslateIcon
+#define vector_icons
+#define kTranslateChromeRefreshIcon_ChromiumImpl kTranslateChromeRefreshIcon
+#define kTranslateChromeRefreshIcon kBraveTranslateIcon
+
 #include "src/chrome/browser/ui/views/translate/translate_icon_view.cc"
-#undef kTranslateIcon
-#define kTranslateIcon kTranslateIcon_ChromiumImpl
-#undef kTranslateIcon_ChromiumImpl
+
+#undef vector_icons
+#undef kTranslateChromeRefreshIcon
+#define kTranslateChromeRefreshIcon kTranslateChromeRefreshIcon_ChromiumImpl
+#undef kTranslateChromeRefreshIcon_ChromiumImpl

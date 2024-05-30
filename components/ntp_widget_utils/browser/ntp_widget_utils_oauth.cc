@@ -20,7 +20,7 @@ namespace ntp_widget_utils {
 std::string GetCryptoRandomString(bool hex_encode) {
   constexpr size_t kSeedByteLength = 32;
   uint8_t random_seed_bytes[kSeedByteLength];
-  crypto::RandBytes(random_seed_bytes, kSeedByteLength);
+  crypto::RandBytes(random_seed_bytes);
 
   if (!hex_encode) {
     return base::Base64Encode(random_seed_bytes);

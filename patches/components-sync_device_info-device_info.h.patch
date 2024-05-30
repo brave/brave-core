@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index f97947a6cb5183af03450db40ae3c56df39c1a3d..2a1ff24a4f9e7ebdee573a861eeddbfb303c2816 100644
+index ac2c44fae3c3054b7bbc23f9e63897c909b412c9..d370b3b1a2c013dfa1d81aa87e54bd3e7e6f5df6 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
 @@ -145,6 +145,7 @@ class DeviceInfo {

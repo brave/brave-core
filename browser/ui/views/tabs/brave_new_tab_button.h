@@ -45,7 +45,8 @@ class BraveNewTabButton : public NewTabButton {
   // NewTabButton:
   void PaintIcon(gfx::Canvas* canvas) override;
   void PaintFill(gfx::Canvas* canvas) const override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   SkPath GetBorderPath(const gfx::Point& origin,
                        bool extend_to_top) const override;
   gfx::Insets GetInsets() const override;

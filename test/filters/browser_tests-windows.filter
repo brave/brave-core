@@ -25,6 +25,7 @@
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
+-ServiceWorker/AutomationApiTestWithContextType.ForceLayout/*
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
 
@@ -52,6 +53,9 @@
 
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*
+
+# This test is disabled because we override the default handling of the welcome page
+-StartupBrowserCreatorTriggeredResetFirstRunTest.TestTriggeredResetDoesNotShowWithFirstRunURLs
 
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1

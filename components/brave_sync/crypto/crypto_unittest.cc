@@ -148,7 +148,7 @@ TEST(CryptoTest, Ed25519KeyDerivation) {
           base::HexEncode(private_key.data(), private_key.size())));
 
   std::vector<uint8_t> message(128);
-  ::crypto::RandBytes(&message[0], message.size());
+  ::crypto::RandBytes(message);
   std::vector<uint8_t> signature;
   EXPECT_TRUE(Sign(message, private_key, &signature));
   EXPECT_TRUE(Verify(message, signature, public_key));
@@ -157,7 +157,7 @@ TEST(CryptoTest, Ed25519KeyDerivation) {
 TEST(CryptoTest, GetNonce) {
   std::set<std::string> previous_nonces;
   std::vector<uint8_t> nonce_bytes(20);
-  ::crypto::RandBytes(&nonce_bytes[0], nonce_bytes.size());
+  ::crypto::RandBytes(nonce_bytes);
 
   std::vector<uint8_t> nonce;
   // gets a nonce with counter 0
@@ -171,7 +171,7 @@ TEST(CryptoTest, GetNonce) {
       base::ToLowerASCII(base::HexEncode(nonce.data(), nonce.size())));
 
   // gets a nonce with counter 1000
-  ::crypto::RandBytes(&nonce_bytes[0], nonce_bytes.size());
+  ::crypto::RandBytes(nonce_bytes);
   nonce = GetNonce(1000, nonce_bytes);
   EXPECT_EQ(nonce.size(), (size_t)24);
   EXPECT_EQ(nonce[0], 3);
@@ -183,7 +183,7 @@ TEST(CryptoTest, GetNonce) {
 
   // no duplicate nonces
   for (size_t i = 0; i < 100; ++i) {
-    ::crypto::RandBytes(&nonce_bytes[0], nonce_bytes.size());
+    ::crypto::RandBytes(nonce_bytes);
     nonce = GetNonce(1, nonce_bytes);
     EXPECT_EQ(nonce.size(), (size_t)24);
     EXPECT_EQ(nonce[0], 0);
@@ -199,7 +199,7 @@ TEST(CryptoTest, GetNonce) {
 
 TEST(CryptoTest, EncryptAndDecrypt) {
   std::vector<uint8_t> nonce_bytes(20);
-  ::crypto::RandBytes(&nonce_bytes[0], nonce_bytes.size());
+  ::crypto::RandBytes(nonce_bytes);
   std::vector<uint8_t> nonce = GetNonce(0, nonce_bytes);
   const std::vector<uint8_t> key = {149, 180, 182, 164, 238, 114, 52,  28,
                                     87,  253, 230, 254, 239, 174, 160, 156,
@@ -215,7 +215,7 @@ TEST(CryptoTest, EncryptAndDecrypt) {
   // encrypt and decrypt
   std::vector<uint8_t> message(64);
   std::vector<uint8_t> out_message;
-  ::crypto::RandBytes(message.data(), message.size());
+  ::crypto::RandBytes(message);
   EXPECT_TRUE(Encrypt(message, nonce, key, &ciphertext));
   EXPECT_TRUE(Decrypt(ciphertext, nonce, key, &out_message));
   EXPECT_EQ(base::HexEncode(message.data(), message.size()),
@@ -225,7 +225,7 @@ TEST(CryptoTest, EncryptAndDecrypt) {
 TEST(CryptoTest, Passphrase) {
   // original seed can be recovered
   std::vector<uint8_t> bytes(32);
-  ::crypto::RandBytes(bytes.data(), bytes.size());
+  ::crypto::RandBytes(bytes);
   std::string passphrase = PassphraseFromBytes32(bytes);
   EXPECT_TRUE(!passphrase.empty());
   std::vector<uint8_t> to_bytes;

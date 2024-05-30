@@ -26,7 +26,8 @@ class SidebarButtonView : public views::ImageButton {
 
   // views::ImageButton overrides:
   void OnThemeChanged() override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   std::u16string GetTooltipText(const gfx::Point& p) const override;
 };
 

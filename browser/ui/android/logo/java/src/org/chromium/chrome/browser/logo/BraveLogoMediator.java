@@ -22,7 +22,6 @@ public class BraveLogoMediator extends LogoMediator {
             PropertyModel logoModel,
             boolean shouldFetchDoodle,
             Callback<LogoBridge.Logo> onLogoAvailableCallback,
-            boolean isParentSurfaceShown,
             LogoCoordinator.VisibilityObserver visibilityObserver,
             CachedTintedBitmap defaultGoogleLogo) {
         super(
@@ -31,7 +30,6 @@ public class BraveLogoMediator extends LogoMediator {
                 logoModel,
                 shouldFetchDoodle,
                 onLogoAvailableCallback,
-                isParentSurfaceShown,
                 visibilityObserver,
                 defaultGoogleLogo);
     }

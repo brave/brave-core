@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 7cd40b9c37cce8370238c3a1b3850d209ad8d4e2..19b35fdcb96d1a235b7ef2ab42cde14d19b92455 100755
+index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1de5139832 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -64,10 +64,10 @@ index 7cd40b9c37cce8370238c3a1b3850d209ad8d4e2..19b35fdcb96d1a235b7ef2ab42cde14d
        ;;
 +    nightly )
 +      ;;
-     * )
-       echo
-       echo "ERROR: '$CHANNEL' is not a valid channel type."
-@@ -173,6 +177,7 @@ verify_channel() {
+     # Canary is released twice a day automatically, so no release notes
+     # attached.
+     canary )
+@@ -179,6 +183,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -75,7 +75,7 @@ index 7cd40b9c37cce8370238c3a1b3850d209ad8d4e2..19b35fdcb96d1a235b7ef2ab42cde14d
  }
  
  process_opts() {
-@@ -252,6 +257,17 @@ fi
+@@ -258,6 +263,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
  
@@ -93,7 +93,7 @@ index 7cd40b9c37cce8370238c3a1b3850d209ad8d4e2..19b35fdcb96d1a235b7ef2ab42cde14d
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -262,6 +278,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
+@@ -268,6 +284,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
  DEB_COMMON_DEPS="${OUTPUTDIR}/deb_common.deps"
  COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
  COMMON_PREDEPS="dpkg (>= 1.14.0)"

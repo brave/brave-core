@@ -207,27 +207,27 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, CommandsExecutionTest) {
 // Instead, BraveBrowserCommandControllerTest will do that.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   std::vector<int> commands_in_order_for_normal_profile = {
-    IDC_NEW_TAB,
-    IDC_NEW_WINDOW,
-    IDC_NEW_INCOGNITO_WINDOW,
+      IDC_NEW_TAB,
+      IDC_NEW_WINDOW,
+      IDC_NEW_INCOGNITO_WINDOW,
 #if BUILDFLAG(ENABLE_TOR)
-    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-    IDC_SHOW_BRAVE_WALLET,
+      IDC_SHOW_BRAVE_WALLET,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    IDC_SHOW_BRAVE_VPN_PANEL,
+      IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-    IDC_RECENT_TABS_MENU,
-    IDC_BOOKMARKS_MENU,
-    IDC_SHOW_DOWNLOADS,
-    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
-    IDC_ZOOM_MENU,
-    IDC_PRINT,
-    IDC_FIND,
-    IDC_MORE_TOOLS_MENU,
-    IDC_EDIT_MENU,
-    IDC_HELP_MENU,
-    IDC_OPTIONS,
+      IDC_RECENT_TABS_MENU,
+      IDC_BOOKMARKS_MENU,
+      IDC_SHOW_DOWNLOADS,
+      IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
+      IDC_ZOOM_MENU,
+      IDC_PRINT,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
+      IDC_OPTIONS,
   };
 
   std::vector<int> commands_disabled_for_normal_profile = {
@@ -265,23 +265,23 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 
   auto* private_browser = CreateIncognitoBrowser();
   std::vector<int> commands_in_order_for_private_profile = {
-    IDC_NEW_TAB,
-    IDC_NEW_WINDOW,
-    IDC_NEW_INCOGNITO_WINDOW,
+      IDC_NEW_TAB,
+      IDC_NEW_WINDOW,
+      IDC_NEW_INCOGNITO_WINDOW,
 #if BUILDFLAG(ENABLE_TOR)
-    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-    IDC_SHOW_BRAVE_WALLET,
-    IDC_BOOKMARKS_MENU,
-    IDC_SHOW_DOWNLOADS,
-    IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
-    IDC_ZOOM_MENU,
-    IDC_PRINT,
-    IDC_FIND,
-    IDC_MORE_TOOLS_MENU,
-    IDC_EDIT_MENU,
-    IDC_HELP_MENU,
-    IDC_OPTIONS,
+      IDC_SHOW_BRAVE_WALLET,
+      IDC_BOOKMARKS_MENU,
+      IDC_SHOW_DOWNLOADS,
+      IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
+      IDC_ZOOM_MENU,
+      IDC_PRINT,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
+      IDC_OPTIONS,
   };
 
   std::vector<int> commands_disabled_for_private_profile = {
@@ -309,9 +309,16 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->profile()->IsGuestSession());
   std::vector<int> commands_in_order_for_guest_profile = {
-      IDC_NEW_TAB,   IDC_NEW_WINDOW, IDC_SHOW_DOWNLOADS,  IDC_ZOOM_MENU,
-      IDC_PRINT,     IDC_FIND,       IDC_MORE_TOOLS_MENU, IDC_EDIT_MENU,
-      IDC_HELP_MENU, IDC_OPTIONS,
+      IDC_NEW_TAB,
+      IDC_NEW_WINDOW,
+      IDC_SHOW_DOWNLOADS,
+      IDC_ZOOM_MENU,
+      IDC_PRINT,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
+      IDC_OPTIONS,
   };
 
   CheckCommandsAreInOrderInMenuModel(guest_browser,
@@ -369,9 +376,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
       IDC_ZOOM_MENU,
       IDC_PRINT,
-      IDC_FIND,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
       IDC_MORE_TOOLS_MENU,
-      IDC_EDIT_MENU,
       IDC_HELP_MENU,
       IDC_OPTIONS,
   };

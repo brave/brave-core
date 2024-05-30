@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_hover_card_thumbnail_observer.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "ui/views/bubble/bubble_border.h"
 
 BraveTabHoverCardController::~BraveTabHoverCardController() = default;
@@ -35,16 +36,23 @@ void BraveTabHoverCardController::UpdateHoverCardArrow() {
 }
 
 void BraveTabHoverCardController::CreateHoverCard(Tab* tab) {
+  hover_card_image_previews_enabled_ =
+      AreHoverCardImagesEnabled() ||
+      brave_tabs::AreCardPreviewsEnabled(
+          tab->controller()->GetBrowser()->profile()->GetPrefs());
+
   TabHoverCardController::CreateHoverCard(tab);
 
-  if (!thumbnail_observer_ &&
-      brave_tabs::AreCardPreviewsEnabled(
-          tab->controller()->GetBrowser()->profile()->GetPrefs())) {
-    thumbnail_observer_ = std::make_unique<TabHoverCardThumbnailObserver>();
-    thumbnail_subscription_ = thumbnail_observer_->AddCallback(
-        base::BindRepeating(&TabHoverCardController::OnPreviewImageAvailable,
-                            weak_ptr_factory_.GetWeakPtr()));
-  }
-
   UpdateHoverCardArrow();
+}
+
+void BraveTabHoverCardController::OnHovercardImagesEnabledChanged() {
+  hover_card_image_previews_enabled_ =
+      AreHoverCardImagesEnabled() ||
+      brave_tabs::AreCardPreviewsEnabled(
+          tab_strip_->GetBrowser()->profile()->GetPrefs());
+  if (!hover_card_image_previews_enabled_) {
+    thumbnail_subscription_ = base::CallbackListSubscription();
+    thumbnail_observer_.reset();
+  }
 }

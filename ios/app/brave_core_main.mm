@@ -212,7 +212,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
-        browserStateManager->GetLastUsedBrowserState();
+        browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
     _mainBrowserState = chromeBrowserState;
 
     // Disable Safe-Browsing via Prefs

@@ -10,13 +10,13 @@
 namespace privacy_sandbox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kCookieSettingsUiAlignment, base::FEATURE_DISABLED_BY_DEFAULT},
     {kEnforcePrivacySandboxAttestations, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOverridePrivacySandboxSettingsLocalTesting,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxFirstPartySetsUI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxProactiveTopicsBlocking, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kTrackingProtectionContentSetting, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace privacy_sandbox

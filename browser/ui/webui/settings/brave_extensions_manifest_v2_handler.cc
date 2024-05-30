@@ -40,9 +40,11 @@ class ExtensionWebstoreInstaller final
       Profile* profile,
       content::WebContents* web_contents,
       extensions::WebstoreInstallWithPrompt::Callback callback)
-      : extensions::WebstoreInstallWithPrompt(webstore_item_id,
-                                              profile,
-                                              std::move(callback)),
+      : extensions::WebstoreInstallWithPrompt(
+            webstore_item_id,
+            profile,
+            web_contents->GetTopLevelNativeWindow(),
+            std::move(callback)),
         web_contents_(web_contents) {}
 
  private:

@@ -16,9 +16,7 @@ namespace random {
 
 uint64_t Uniform64() {
   uint64_t x;
-
-  crypto::RandBytes(&x, sizeof x);
-
+  crypto::RandBytes(base::byte_span_from_ref(x));
   return x;
 }
 

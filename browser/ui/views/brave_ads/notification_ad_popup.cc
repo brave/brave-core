@@ -136,8 +136,7 @@ void NotificationAdPopup::OnDisplayAdded(const display::Display& new_display) {
   RecomputeAlignment();
 }
 
-void NotificationAdPopup::OnDisplayRemoved(
-    const display::Display& old_display) {
+void NotificationAdPopup::OnDisplaysRemoved(const display::Displays& displays) {
   // Called when `old_display` has been removed
   RecomputeAlignment();
 }

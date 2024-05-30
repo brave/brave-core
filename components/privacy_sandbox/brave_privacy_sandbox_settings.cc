@@ -149,20 +149,23 @@ bool BravePrivacySandboxSettings::IsSharedStorageAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& accessing_origin,
     std::string* out_debug_message,
-    content::RenderFrameHost* console_frame) const {
+    content::RenderFrameHost* console_frame,
+    bool* out_block_is_site_setting_specific) const {
   return false;
 }
 
 bool BravePrivacySandboxSettings::IsSharedStorageSelectURLAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& accessing_origin,
-    std::string* out_debug_message) const {
+    std::string* out_debug_message,
+    bool* out_block_is_site_setting_specific) const {
   return false;
 }
 
 bool BravePrivacySandboxSettings::IsPrivateAggregationAllowed(
     const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin) const {
+    const url::Origin& reporting_origin,
+    bool* out_block_is_site_setting_specific) const {
   return false;
 }
 

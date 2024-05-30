@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/navigation_entry.h"
@@ -24,7 +25,8 @@
 namespace {
 Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
-  StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
+  StartupBrowserCreator browser_creator;
+  StartupBrowserCreatorImpl creator(base::FilePath(), dummy, &browser_creator,
                                     chrome::startup::IsFirstRun::kYes);
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr,
                  /*restore_tabbed_browser=*/true);
@@ -32,7 +34,18 @@ Browser* OpenNewBrowser(Profile* profile) {
 }
 }  // namespace
 
-using BraveWelcomeUIBrowserTest = InProcessBrowserTest;
+class BraveWelcomeUIBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveWelcomeUIBrowserTest() = default;
+  ~BraveWelcomeUIBrowserTest() override = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpDefaultCommandLine(command_line);
+    if (GetTestPreCount() > 0) {
+      command_line->RemoveSwitch(switches::kNoFirstRun);
+    }
+  }
+};
 
 // Check whether startup url at first run is our welcome page.
 IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {

@@ -8,12 +8,14 @@ package org.chromium.chrome.browser.multiwindow;
 import android.app.Activity;
 
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabmodel.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -34,7 +36,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            ObservableSupplier<Boolean> desktopWindowModeSupplier) {
+            Supplier<DesktopWindowStateProvider> desktopWindowStateProviderSupplier) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
@@ -42,7 +44,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
                 menuOrKeyboardActionController,
-                desktopWindowModeSupplier);
+                desktopWindowStateProviderSupplier);
     }
 
     @Override

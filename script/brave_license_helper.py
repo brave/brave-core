@@ -47,6 +47,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
         os.path.join('brave', 'patches', 'third_party'),
+        os.path.join('brave', 'third_party', 'polymer'),
+        os.path.join('brave', 'third_party', 'lit'),
 
         # Dependencies that are already in brave-core, and whose notices
         # therefore do not need to be repeated.

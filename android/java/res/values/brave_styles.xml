@@ -8,6 +8,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="BraveSwitchTheme">
         <item name="colorControlActivated">#fb542b</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     </style>
 
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
