@@ -12,20 +12,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
-import org.chromium.playlist.mojom.Playlist
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+
 import com.bumptech.glide.Glide
 
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.playlist.mojom.Playlist
+
 class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :
-    AbstractRecyclerViewAdapter<Playlist, RecentlyPlayedPlaylistAdapter.RecentlyPlayedPlaylistViewHolder>() {
+    AbstractRecyclerViewAdapter<
+        Playlist,
+        RecentlyPlayedPlaylistAdapter.RecentlyPlayedPlaylistViewHolder
+    >() {
 
     class RecentlyPlayedPlaylistViewHolder(
         view: View,
         private val playlistClickListener: PlaylistClickListener?
-    ) :
-        AbstractViewHolder<Playlist>(view) {
+    ) : AbstractViewHolder<Playlist>(view) {
         private val ivPlaylistCover: AppCompatImageView
         private val tvPlaylistName: AppCompatTextView
         private val tvPlaylistItemCount: AppCompatTextView
@@ -48,14 +52,12 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
                 ivPlaylistCover.setImageResource(R.drawable.ic_playlist_item_placeholder)
             }
             tvPlaylistName.text =
-                if (model.id == ConstantUtils.DEFAULT_PLAYLIST) itemView.context.resources.getString(
-                    R.string.playlist_play_later
-                ) else model.name
+                if (model.id == ConstantUtils.DEFAULT_PLAYLIST)
+                    itemView.context.resources.getString(R.string.playlist_play_later)
+                else model.name
             tvPlaylistItemCount.text =
                 itemView.context.getString(R.string.playlist_number_items, model.items.size)
-            itemView.setOnClickListener {
-                playlistClickListener?.onPlaylistClick(model)
-            }
+            itemView.setOnClickListener { playlistClickListener?.onPlaylistClick(model) }
         }
     }
 
@@ -63,8 +65,9 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
         parent: ViewGroup,
         viewType: Int
     ): RecentlyPlayedPlaylistViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recently_played_playlist, parent, false)
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_recently_played_playlist, parent, false)
         return RecentlyPlayedPlaylistViewHolder(view, playlistClickListener)
     }
 }

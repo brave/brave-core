@@ -129,13 +129,6 @@
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.playlist.PlaylistHostActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
-    android:configChanges="orientation|keyboardHidden|screenSize"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
-
-<activity
     android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:configChanges="orientation|keyboardHidden|screenSize"

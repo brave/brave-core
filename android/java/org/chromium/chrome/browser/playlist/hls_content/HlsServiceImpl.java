@@ -18,7 +18,6 @@ import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -70,34 +69,28 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    // PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-                    // if (playlistRepository == null) {
-                    //     return;
-                    // }
-                    // HlsContentQueueModel hlsContentQueueModel =
-                    //         playlistRepository.getFirstHlsContentQueueModel();
-                    // if (hlsContentQueueModel == null || mPlaylistService == null) {
-                    //     return;
-                    // }
-
                     if (mPlaylistService == null) {
                         return;
                     }
 
                     mPlaylistService.getFirstHlsContent(
-                            hlsContent -> {
+                            playlistItemId -> {
+                                if (TextUtils.isEmpty(playlistItemId)) {
+                                    return;
+                                }
+
                                 mPlaylistService.getPlaylistItem(
-                                        hlsContent.playlistItemId,
+                                        playlistItemId,
                                         playlistItem -> {
                                             if (playlistItem == null) {
                                                 PostTask.postTask(
                                                         TaskTraits.USER_VISIBLE_MAY_BLOCK,
                                                         () -> {
-                                                            // removeContentAndStartNextDownload(hlsContent.playlistItemId);
+                                                            removeContentAndStartNextDownload(
+                                                                    playlistItemId);
                                                         });
                                             }
-                                            currentDownloadingPlaylistItemId =
-                                                    hlsContent.playlistItemId;
+                                            currentDownloadingPlaylistItemId = playlistItemId;
                                             HlsUtils.getManifestFile(
                                                     mContext,
                                                     mPlaylistService,
@@ -121,10 +114,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                                         @Override
                                                                         public void onProgress(
                                                                                 int sofar) {
-                                                                            Log.e(
-                                                                                    TAG,
-                                                                                    "onProgress : "
-                                                                                            + sofar);
                                                                             if (total > 0) {
                                                                                 PlaylistUtils
                                                                                         .updateHlsContentProgress(
@@ -146,10 +135,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                                         @Override
                                                                         public void onReady(
                                                                                 String mediaPath) {
-                                                                            Log.e(
-                                                                                    TAG,
-                                                                                    "onReady : "
-                                                                                            + mediaPath);
                                                                             PostTask.postTask(
                                                                                     TaskTraits
                                                                                             .BEST_EFFORT_MAY_BLOCK,
@@ -238,17 +223,11 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
     }
 
     private void removeContentAndStartNextDownload(String playlistItemId) {
-        // PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-        // if (playlistRepository == null) {
-        //     return;
-        // }
-        // playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-
         mPlaylistService.removeHlsContent(playlistItemId);
         currentDownloadingPlaylistItemId = "";
         mPlaylistService.getFirstHlsContent(
-                hlsContent -> {
-                    if (hlsContent != null) {
+                firstPlaylistItemId -> {
+                    if (!TextUtils.isEmpty(firstPlaylistItemId)) {
                         startHlsContentFromQueue();
                     } else {
                         getService().stopSelf();

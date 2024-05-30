@@ -14,7 +14,9 @@ import com.google.android.material.shape.ShapeAppearanceModel
 
 fun MaterialCardView.setTopCornersRounded(dp: Number) {
     val shapeAppearanceModel: ShapeAppearanceModel.Builder = ShapeAppearanceModel().toBuilder()
-    val cornerSize = CornerSize { return@CornerSize dp.dpToPx }
+    val cornerSize = CornerSize {
+        return@CornerSize dp.dpToPx
+    }
     shapeAppearanceModel.setTopLeftCorner(CornerFamily.ROUNDED, cornerSize)
     shapeAppearanceModel.setTopRightCorner(CornerFamily.ROUNDED, cornerSize)
     this.shapeAppearanceModel = shapeAppearanceModel.build()

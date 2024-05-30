@@ -14,22 +14,22 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.appcompat.widget.AppCompatImageButton
+
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class MovableImageButton :
-    AppCompatImageButton, OnTouchListener {
+class MovableImageButton : AppCompatImageButton, OnTouchListener {
     private var downRawX = 0f
     private var downRawY = 0f
     private var dX = 0f
     private var dY = 0f
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr)
 
     constructor(context: Context) : super(context)
 
@@ -45,7 +45,6 @@ class MovableImageButton :
                 dY = view.y - downRawY
                 true // Consumed
             }
-
             MotionEvent.ACTION_MOVE -> {
                 val viewWidth = view.width
                 val viewHeight = view.height
@@ -68,32 +67,27 @@ class MovableImageButton :
                 // Don't allow the FAB past the bottom of the parent
                 newY = min((parentHeight - viewHeight - layoutParams.bottomMargin).toFloat(), newY)
 
-                //change view position with animation
-                view.animate()
-                    .x(newX)
-                    .y(newY)
-                    .setDuration(0)
-                    .start()
+                // change view position with animation
+                view.animate().x(newX).y(newY).setDuration(0).start()
                 true // Consumed
             }
-
             MotionEvent.ACTION_UP -> {
                 val upRawX = motionEvent.rawX
                 val upRawY = motionEvent.rawY
                 val upDX = upRawX - downRawX
                 val upDY = upRawY - downRawY
-                if (abs(upDX) < CLICK_DRAG_TOLERANCE && abs(upDY) < CLICK_DRAG_TOLERANCE)  // A click
-                    performClick()
+                if (abs(upDX) < CLICK_DRAG_TOLERANCE && abs(upDY) < CLICK_DRAG_TOLERANCE) // A click
+                 performClick()
                 else // A drag
-                    true // Consumed
+                 true // Consumed
             }
-
             else -> super.onTouchEvent(motionEvent)
         }
     }
 
     companion object {
         private const val CLICK_DRAG_TOLERANCE =
-            10f // Often, there will be a slight, unintentional, drag when the user taps the Button, so we need to account for this.
+            10f // Often, there will be a slight, unintentional, drag when the user taps the Button,
+                // so we need to account for this.
     }
 }

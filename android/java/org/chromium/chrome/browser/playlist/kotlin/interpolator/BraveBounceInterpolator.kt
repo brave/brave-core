@@ -17,6 +17,5 @@ class BraveBounceInterpolator(private val bounce: Double = 0.8, private val ener
     override fun getInterpolation(x: Float): Float =
         (1.0 + (-abs(cos(x * 10 * bounce / Math.PI)) * getCurveAdjustment(x))).toFloat()
 
-    private fun getCurveAdjustment(x: Float): Double =
-        -(2 * (1 - x) * x * energy + x * x) + 1
+    private fun getCurveAdjustment(x: Float): Double = -(2 * (1 - x) * x * energy + x * x) + 1
 }

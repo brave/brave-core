@@ -444,6 +444,8 @@ mojom::PlaylistItemPtr PlaylistService::GetPlaylistItem(const std::string& id) {
     return {};
   }
 
+  LOG(ERROR) << "Playlist : " << __func__ << " : GetPlaylistItem : " << id;
+
   return ConvertValueToPlaylistItem(*item_value);
 }
 
@@ -665,9 +667,7 @@ void PlaylistService::UpdatePlaylistItemValue(const std::string& id,
 void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
   ScopedDictPrefUpdate playlist_items(prefs_, kPlaylistItemsPref);
   playlist_items->Remove(id);
-#if BUILDFLAG(IS_ANDROID)
   RemoveHlsContent(id);
-#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
@@ -1129,41 +1129,64 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)
-void PlaylistService::AddHlsContent(mojom::HlsContentPtr hls_content) {
-  LOG(ERROR) << "playlist" << hls_content->playlist_item_id;
-  ScopedDictPrefUpdate hls_content_update(prefs_, kHlsContentsPref);
-  hls_content_update->Set(hls_content->playlist_item_id,
-                          ConvertHlsContentToValue(hls_content));
+void PlaylistService::AddHlsContent(const std::string& playlist_item_id) {
+  std::vector<std::string> hls_contents = GetAllHlsContent();
+  for (std::string& hls_content : hls_contents) {
+    if (hls_content == playlist_item_id) {
+      LOG(ERROR) << "Playlist : " << __func__ << " : already exist : ";
+      return;
+    }
+  }
+
+  LOG(ERROR) << "Playlist : " << __func__
+             << " : playlist_item_id : " << playlist_item_id;
+
+  ScopedListPrefUpdate update(prefs_, kHlsContentsPref);
+  update->Append(playlist_item_id);
 }
 
 void PlaylistService::GetFirstHlsContent(GetFirstHlsContentCallback callback) {
   std::move(callback).Run(GetFirstHlsContent());
 }
 
-mojom::HlsContentPtr PlaylistService::GetFirstHlsContent() {
-  std::vector<mojom::HlsContentPtr> hls_contents = GetAllHlsContent();
+std::string PlaylistService::GetFirstHlsContent() {
+  const auto& hls_contents = prefs_->GetList(kHlsContentsPref);
   if (hls_contents.empty()) {
     LOG(ERROR) << __func__ << " No Hlscontent found";
-    return nullptr;
+    return "";
   }
-  return hls_contents.front().Clone();
+  LOG(ERROR) << "Playlist : " << __func__
+             << "hls_contents.front().GetString() : "
+             << hls_contents.front().GetString();
+  return hls_contents.front().GetString();
 }
 
 void PlaylistService::GetAllHlsContent(GetAllHlsContentCallback callback) {
   std::move(callback).Run(GetAllHlsContent());
 }
 
-std::vector<mojom::HlsContentPtr> PlaylistService::GetAllHlsContent() {
-  std::vector<mojom::HlsContentPtr> hls_contents;
-  for (const auto it : prefs_->GetDict(kHlsContentsPref)) {
-    hls_contents.push_back(ConvertValueToHlsContent(it.second.GetDict()));
+std::vector<std::string> PlaylistService::GetAllHlsContent() {
+  const auto& list = prefs_->GetList(kHlsContentsPref);
+  std::vector<std::string> result;
+  for (const auto& item : list) {
+    result.push_back(item.GetString());
   }
-  return hls_contents;
+
+  return result;
 }
 
 void PlaylistService::RemoveHlsContent(const std::string& playlist_item_id) {
-  ScopedDictPrefUpdate hls_contents(prefs_, kHlsContentsPref);
-  hls_contents->Remove(playlist_item_id);
+  LOG(ERROR) << "Playlist : " << __func__
+             << " : playlist_item_id : " << playlist_item_id;
+  ScopedListPrefUpdate hls_contents(prefs_, kHlsContentsPref);
+  hls_contents->erase(
+      base::ranges::remove(hls_contents.Get(), playlist_item_id),
+      hls_contents.Get().end());
+  std::vector<std::string> hls_contents_items = GetAllHlsContent();
+  for (std::string& hls_content : hls_contents_items) {
+    LOG(ERROR) << "Playlist : " << __func__
+               << " : after remove : " << hls_content;
+  }
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 

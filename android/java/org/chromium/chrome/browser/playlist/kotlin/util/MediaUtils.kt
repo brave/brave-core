@@ -10,11 +10,12 @@ package org.chromium.chrome.browser.playlist.kotlin.util
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.HLS_FILE_EXTENSION
+
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-
 
 object MediaUtils {
     private val TAG: String = "Playlist/" + this::class.java.simpleName
@@ -59,7 +60,6 @@ object MediaUtils {
     }
 
     @JvmStatic
-    @Suppress("unused")
     fun isFileExist(filePath: String): Boolean {
         return try {
             val file = File(filePath)
@@ -72,8 +72,7 @@ object MediaUtils {
 
     @JvmStatic
     fun isHlsFile(mediaPath: String): Boolean {
-        val extension: String = mediaPath
-            .substring(mediaPath.lastIndexOf("."))
+        val extension: String = mediaPath.substring(mediaPath.lastIndexOf("."))
         return extension == HLS_FILE_EXTENSION
     }
 }

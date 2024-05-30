@@ -14,5 +14,6 @@ interface PlaylistItemClickListener {
     fun onPlaylistItemClick(position: Int) {}
 
     fun onPlaylistItemClickInEditMode(count: Int) {}
+
     fun onPlaylistItemMenuClick(view: View, playlistItem: PlaylistItem) {}
 }
