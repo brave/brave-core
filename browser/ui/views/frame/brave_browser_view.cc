@@ -1093,7 +1093,40 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   const bool supports_split_view =
       base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser()->is_type_normal();
+  bool need_to_update_secondary_web_view = false;
   if (supports_split_view) {
+    // In order to minimize flickering during tab activation, we should update
+    // split view only when it's needed.
+    auto* browser_data = SplitViewBrowserData::FromBrowser(browser_.get());
+    auto* tab_strip_model = browser_->tab_strip_model();
+    if (auto tile =
+            browser_data->GetTile(tab_strip_model->GetTabHandleAt(index))) {
+      auto* main_web_contents = tab_strip_model->GetWebContentsAt(
+          tab_strip_model->GetIndexOfTab(tile->first));
+      auto* secondary_web_contents = tab_strip_model->GetWebContentsAt(
+          tab_strip_model->GetIndexOfTab(tile->second));
+      if (main_web_contents != new_contents) {
+        std::swap(main_web_contents, secondary_web_contents);
+      }
+
+      need_to_update_secondary_web_view =
+          contents_web_view_->web_contents() != main_web_contents ||
+          secondary_contents_web_view_->web_contents() !=
+              secondary_web_contents;
+    } else {
+      // Old contents was in a split view. We should hide split view.
+      need_to_update_secondary_web_view =
+          secondary_contents_web_view_->web_contents();
+    }
+  }
+
+  if (need_to_update_secondary_web_view) {
+    if (!SplitViewBrowserData::FromBrowser(browser_.get())
+             ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
+      // This will help reduce flickering when switching to non tiled tab.
+      UpdateSecondaryContentsWebViewVisibility();
+    }
+
     secondary_contents_web_view_->SetWebContents(nullptr);
   }
 
