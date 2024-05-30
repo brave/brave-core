@@ -13,7 +13,6 @@ namespace web_discovery {
 namespace {
 constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
-constexpr char kVersionHeader[] = "Version";
 constexpr char kPatternsPath[] = "/patterns.gz";
 }  // namespace
 
@@ -36,8 +35,6 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = url;
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->headers.SetHeader(kVersionHeader,
-                                      base::NumberToString(kCurrentVersion));
   return resource_request;
 }
 

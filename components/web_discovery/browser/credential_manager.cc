@@ -37,17 +37,10 @@ constexpr char kJoinRSAPublicKeyField[] = "pk";
 constexpr char kJoinRSASignatureField[] = "sig";
 constexpr char kJoinResponseField[] = "joinResponse";
 
+constexpr char kVersionHeader[] = "Version";
+
 constexpr char kGSKDictKey[] = "gsk";
 constexpr char kCredentialDictKey[] = "credential";
-
-constexpr net::BackoffEntry::Policy kBackoffPolicy = {
-    .num_errors_to_ignore = 0,
-    .initial_delay_ms = 10 * 1000,
-    .multiply_factor = 2.0,
-    .jitter_factor = 0.1,
-    .maximum_backoff_ms = 10 * 60 * 1000,
-    .entry_lifetime_ms = -1,
-    .always_use_initial_delay = false};
 
 constexpr net::NetworkTrafficAnnotationTag kJoinNetworkTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("wdp_join", R"(
@@ -250,6 +243,8 @@ void CredentialManager::OnJoinRequestReady(
       generate_join_result->start_join_result.gsk.end());
 
   auto resource_request = CreateResourceRequest(join_url_);
+  resource_request->headers.SetHeader(kVersionHeader,
+                                      base::NumberToString(kCurrentVersion));
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
 
   join_url_loaders_[date] = network::SimpleURLLoader::Create(

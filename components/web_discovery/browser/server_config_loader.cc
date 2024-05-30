@@ -29,15 +29,6 @@ namespace web_discovery {
 
 namespace {
 
-constexpr net::BackoffEntry::Policy kBackoffPolicy = {
-    .num_errors_to_ignore = 0,
-    .initial_delay_ms = 10 * 1000,
-    .multiply_factor = 2.0,
-    .jitter_factor = 0.1,
-    .maximum_backoff_ms = 10 * 60 * 1000,
-    .entry_lifetime_ms = -1,
-    .always_use_initial_delay = false};
-
 constexpr base::TimeDelta kMinReloadInterval = base::Hours(1);
 constexpr base::TimeDelta kMaxReloadInterval = base::Hours(4);
 

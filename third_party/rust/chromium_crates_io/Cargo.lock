@@ -401,6 +401,7 @@ dependencies = [
  "brave_wallet",
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
+ "document-extractor-cxx",
  "filecoin-cxx",
  "json-cxx",
  "skus-cxx",
@@ -682,6 +683,15 @@ dependencies = [
  "block-buffer 0.10.4",
  "crypto-common",
  "subtle",
+]
+
+[[package]]
+name = "document-extractor-cxx"
+version = "0.1.0"
+dependencies = [
+ "cxx",
+ "html5ever",
+ "kuchikiki",
 ]
 
 [[package]]

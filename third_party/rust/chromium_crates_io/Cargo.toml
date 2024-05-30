@@ -27,6 +27,7 @@ constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
 anonymous-credentials-cxx = "0.1"
+document-extractor-cxx = "0.1"
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
@@ -87,6 +88,10 @@ package = "anonymous-credentials"
 [patch.crates-io.anonymous-credentials-cxx_v0_1]
 path = "../../../components/web_discovery/browser/anonymous_credentials/rs/cxx"
 package = "anonymous-credentials-cxx"
+
+[patch.crates-io.document-extractor_v0_1]
+path = "../../../components/web_discovery/browser/document_extractor/rs"
+package = "document-extractor-cxx"
 
 [patch.crates-io.aho_corasick_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3"
