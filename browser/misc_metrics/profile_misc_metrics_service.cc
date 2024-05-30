@@ -5,7 +5,6 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
-#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -21,6 +20,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
 #else
 #include "brave/browser/misc_metrics/extension_metrics.h"
 #include "extensions/browser/extension_registry_factory.h"
@@ -40,17 +40,16 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
-  search_engine_tracker_ =
-      SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
   if (history_service && host_content_settings_map) {
-    page_metrics_ = std::make_unique<PageMetrics>(
-        local_state, host_content_settings_map, history_service, bookmark_model,
-        base::BindRepeating(&ProfileMiscMetricsService::OnBraveQuery,
-                            base::Unretained(this)));
+    page_metrics_ =
+        std::make_unique<PageMetrics>(local_state, host_content_settings_map,
+                                      history_service, bookmark_model);
   }
 #if BUILDFLAG(IS_ANDROID)
+  auto* search_engine_tracker =
+      SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
   misc_android_metrics_ = std::make_unique<MiscAndroidMetrics>(
-      g_brave_browser_process->process_misc_metrics(), search_engine_tracker_);
+      g_brave_browser_process->process_misc_metrics(), search_engine_tracker);
 #else
   extensions::ExtensionRegistry* extension_registry =
       extensions::ExtensionRegistryFactory::GetForBrowserContext(context);
@@ -86,11 +85,5 @@ MiscAndroidMetrics* ProfileMiscMetricsService::GetMiscAndroidMetrics() {
   return misc_android_metrics_.get();
 }
 #endif
-
-void ProfileMiscMetricsService::OnBraveQuery() {
-  if (search_engine_tracker_) {
-    search_engine_tracker_->RecordLocationBarQuery();
-  }
-}
 
 }  // namespace misc_metrics

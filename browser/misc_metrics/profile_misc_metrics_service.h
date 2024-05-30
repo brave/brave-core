@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/raw_ptr.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -31,8 +30,6 @@ class ExtensionRegistry;
 namespace history {
 class HistoryService;
 }  // namespace history
-
-class SearchEngineTracker;
 
 namespace misc_metrics {
 
@@ -62,9 +59,6 @@ class ProfileMiscMetricsService : public KeyedService {
 #endif
 
  private:
-  void OnBraveQuery();
-
-  raw_ptr<SearchEngineTracker> search_engine_tracker_ = nullptr;
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
