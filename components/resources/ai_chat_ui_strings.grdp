@@ -43,7 +43,7 @@
      There was a network issue connecting to Leo, check your connection and try again.
   </message>
   <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
-    Leo is too busy right now. Please try again in a few minutes.
+    You've reached the premium rate limit. Please try again in a few hours.
   </message>
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
@@ -66,11 +66,8 @@
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
   </message>
-  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that a model is limited in functionality due to user's non-premium status">
-    Limited
-  </message>
-  <message name="IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM" desc="Label indentifying that a model is not limited in functionality as the user is a premium subscriber">
-    Unlimited
+  <message name="IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM" desc="Label indentifying that an AI Chat model is a premium model">
+    Premium
   </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
     Chat
@@ -97,7 +94,7 @@
      Response rate limit reached
   </message>
   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
-    Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.
+    You've reached the rate limit for Leo. Unlock a higher response rate by subscribing to Premium, or try again soon.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
     Explore different AI models
