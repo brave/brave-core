@@ -24,7 +24,7 @@ function getGuardCallStack() {
 class ActionGuard {
   // Path to the guard file.
   #guardFilePath
-  // Closure to perform the cleanup (optional).
+  // Cleanup closure to perform a cleanup (optional) before running the action.
   #cleanupClosure
   // Flag to indicate if the action is currently running.
   #isRunning

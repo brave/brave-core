@@ -10,13 +10,54 @@ const ActionGuard = require('./actionGuard')
 describe('ActionGuard', () => {
   const guardFilePath = '/path/to/guard/file'
   const cleanupClosure = jest.fn()
+  let files = {}
 
   beforeEach(() => {
     jest.clearAllMocks()
-    fs.existsSync = jest.fn().mockReturnValue(false)
-    fs.writeFileSync = jest.fn()
+    files = {}
+
+    fs.existsSync = jest.fn((filePath) => {
+      return files.hasOwnProperty(filePath)
+    })
+
+    fs.readFileSync = jest.fn((filePath) => {
+      if (!files.hasOwnProperty(filePath)) {
+        throw new Error(`ENOENT: no such file or directory, open '${filePath}'`)
+      }
+      return files[filePath]
+    })
+
+    fs.writeFileSync = jest.fn((filePath, data) => {
+      files[filePath] = data
+    })
+
+    fs.unlinkSync = jest.fn((filePath) => {
+      delete files[filePath]
+    })
+
     fs.ensureDirSync = jest.fn()
-    fs.unlinkSync = jest.fn()
+  })
+
+  it('should simulate fs operations correctly', () => {
+    // Simulate the existence of a file
+    files['/path/to/file'] = 'File content'
+
+    // Check if the file exists
+    expect(fs.existsSync('/path/to/file')).toBe(true)
+    expect(fs.existsSync('/path/to/nonexistent/file')).toBe(false)
+
+    // Read the file
+    const content = fs.readFileSync('/path/to/file')
+    expect(content).toBe('File content')
+
+    // Write to a file
+    fs.writeFileSync('/path/to/new/file', 'New file content')
+    expect(files['/path/to/new/file']).toBe('New file content')
+
+    // Delete a file
+    fs.unlinkSync('/path/to/file')
+    expect(files.hasOwnProperty('/path/to/file')).toBe(false)
+    expect(fs.existsSync('/path/to/file')).toBe(false)
   })
 
   describe('wasInterrupted', () => {
@@ -28,7 +69,7 @@ describe('ActionGuard', () => {
     })
 
     it('should return true when the guard file exists', () => {
-      fs.existsSync = jest.fn().mockReturnValue(true)
+      fs.writeFileSync(guardFilePath, '')
       const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
       const result = actionGuard.wasInterrupted()
       expect(result).toBe(true)
@@ -61,7 +102,7 @@ describe('ActionGuard', () => {
       expect(fs.unlinkSync).toHaveBeenCalledWith(guardFilePath)
     })
 
-    it('should set isRunning to false after the action is completed', () => {
+    it('should allow another run after the action is completed', () => {
       const actionClosure = jest.fn()
       const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
       actionGuard.run(actionClosure)
@@ -79,6 +120,35 @@ describe('ActionGuard', () => {
           actionGuard.run(actionClosure)
         })
       }).toThrow('Cannot run the action while it is already running.')
+    })
+
+    it('should handle action interruption and cleanup correctly', () => {
+      expect(!fs.existsSync(guardFilePath))
+
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      expect(() => {
+        actionGuard.run(() => {
+          throw new Error('Action error')
+        })
+      }).toThrow()
+
+      expect(fs.existsSync(guardFilePath))
+      expect(cleanupClosure).not.toHaveBeenCalled()
+      expect(actionGuard.wasInterrupted()).toBe(true)
+
+      const actionClosure = jest.fn()
+      actionGuard.run(actionClosure)
+      expect(cleanupClosure).toHaveBeenCalled()
+      expect(actionClosure).toHaveBeenCalledWith(true)
+      expect(!fs.existsSync(guardFilePath))
+
+      cleanupClosure.mockClear()
+      actionClosure.mockClear()
+
+      actionGuard.run(actionClosure)
+      expect(cleanupClosure).not.toHaveBeenCalled()
+      expect(actionClosure).toHaveBeenCalledWith(false)
+      expect(!fs.existsSync(guardFilePath))
     })
   })
 
@@ -98,7 +168,7 @@ describe('ActionGuard', () => {
     })
 
     it('should perform the cleanup and then perform the action if the guard file exists', () => {
-      fs.existsSync = jest.fn().mockReturnValue(true)
+      fs.writeFileSync(guardFilePath, '')
       const actionClosure = jest.fn()
       const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
       actionGuard.run(actionClosure)
@@ -113,10 +183,7 @@ describe('ActionGuard', () => {
     })
 
     it('should throw an error if the cleanup removes the guard file', () => {
-      fs.existsSync = jest.fn().mockReturnValue(true)
-      fs.unlinkSync = jest.fn().mockImplementation(() => {
-        fs.existsSync = jest.fn().mockReturnValue(false)
-      })
+      fs.writeFileSync(guardFilePath, '')
       const actionClosure = jest.fn()
       const actionGuard = new ActionGuard(guardFilePath, () => {
         fs.unlinkSync(guardFilePath)
