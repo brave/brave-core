@@ -1,3 +1,12 @@
+Brave has received this extra permission from Vojtech Cerny, Trezor
+CTO, on Oct 12, 2021:
+
+> We give explicit permission to use the Trezor Connect code in the
+> Brave Wallet for the sole purpose of implementing Trezor support in
+> the Brave Wallet.
+
+------------------------------
+
 # TREZOR REFERENCE SOURCE LICENSE (T-RSL)
 
 This license governs use of the accompanying software. If you use the software,
