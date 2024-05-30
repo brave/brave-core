@@ -100,7 +100,12 @@ bool SearchSuggestionParser::ParseSuggestResults(
         entity_info.set_name(*name);
       }
 
-      if (auto* image_url = suggestion_dict.FindString("img")) {
+      if (auto* image_url = suggestion_dict.FindString("img");
+          image_url && !image_url->empty() && !image_url->ends_with(".svg")) {
+        // As Native UI can't render svg, we should filter them out. Notably,
+        // OmniboxMatchCell is getting valid image even when it's svg and it
+        // decides weather to render it or not based on the URL, this would be
+        // an easy way to show magnifying glass icon for svg images.
         entity_info.set_image_url(*image_url);
       }
 
