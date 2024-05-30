@@ -21,7 +21,7 @@ pipeline {
     }
     stages {
         stage('build') {
-            agent { label 'master' }
+            agent { label 'linux-perm' }
             steps {
                 script {
                     PLATFORM = JOB_NAME.substring(JOB_NAME.indexOf('-build-pr') + 10, JOB_NAME.indexOf('/PR-'))
@@ -131,15 +131,6 @@ pipeline {
                     ]
 
                     currentBuild.result = build(job: PIPELINE_NAME, parameters: params, propagate: false).result
-                }
-            }
-        }
-    }
-    post {
-        always {
-            node('master') {
-                script {
-                    sh 'rm -rf .git/index.lock'
                 }
             }
         }
