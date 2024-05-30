@@ -3,22 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/ios/browser/svg/svg.gni")
 import("//third_party/skia/modules/skottie/skottie.gni")
 import("//third_party/skia/modules/skresources/skresources.gni")
 import("//third_party/skia/modules/sksg/sksg.gni")
 import("//third_party/skia/modules/skshaper/skshaper.gni")
+
 import("//third_party/skia/modules/svg/svg.gni")
 
 source_set("svg") {
   # //skia:skia does the same thing
   # There is no other way to include the skia/module files
   check_includes = false
-
-  defines = [
-    "SK_SHAPER_CORETEXT_AVAILABLE",
-    "SK_SHAPER_PRIMITIVE_AVAILABLE",
-  ]
 
   cflags_cc = [
     "-Wno-extra-semi",
@@ -47,8 +42,6 @@ source_set("svg") {
   sources += skia_skottie_sources
   sources += skia_skresources_sources
   sources += skia_sksg_sources
-  sources += skia_shaper_primitive_sources
-  sources += skia_shaper_coretext_sources
 
   include_dirs = [
     "//third_party/skia",
