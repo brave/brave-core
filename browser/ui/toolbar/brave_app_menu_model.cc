@@ -454,6 +454,14 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     }
   }
 
+  {
+    // Remove upstream's translate item, as it's not hooked up to the
+    // translation UI in the omnibox
+    auto index = GetIndexOfCommandId(IDC_SHOW_TRANSLATE);
+    CHECK(index);
+    RemoveItemAt(*index);
+  }
+
   // Remove upstream's dev tools menu and associated separator.
   // It'll be changed its position in more tools.
   if (const auto index = more_tools_model->GetIndexOfCommandId(IDC_DEV_TOOLS)) {
