@@ -109,7 +109,8 @@ std::string getBlockHeight() {
 //
 // "base58" as encoding is slow and deprecated. Prefer using "base64" instead.
 std::string getTokenAccountsByOwner(const std::string& pubkey,
-                                    const std::string& encoding) {
+                                    const std::string& encoding,
+                                    const std::string& program_id) {
   CHECK(IsValidEncodingString(encoding));
 
   base::Value::List params;
@@ -117,7 +118,7 @@ std::string getTokenAccountsByOwner(const std::string& pubkey,
 
   base::Value::Dict program;
   base::Value::Dict encoding_dict;
-  program.Set("programId", mojom::kSolanaTokenProgramId);
+  program.Set("programId", program_id);
   encoding_dict.Set("encoding", encoding);
   params.Append(std::move(program));
   params.Append(std::move(encoding_dict));
