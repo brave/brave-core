@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/regex/v1/BUILD.gn b/third_party/rust/regex/v1/BUILD.gn
-index c588468684483f5b84c426623c9c3d4d75978f79..f4737f46692856b2f8084a208a5812def595e7e1 100644
+index 461fe0f9abbd8c58d9778b215ed1c6e8707c1a42..964764a64ffc8cca65c861bc89b3139aed5395c2 100644
 --- a/third_party/rust/regex/v1/BUILD.gn
 +++ b/third_party/rust/regex/v1/BUILD.gn
-@@ -67,5 +67,4 @@ cargo_crate("lib") {
-     "unicode-script",
+@@ -68,5 +68,4 @@ cargo_crate("lib") {
      "unicode-segment",
    ]
+ 
 -  testonly = true
  }
