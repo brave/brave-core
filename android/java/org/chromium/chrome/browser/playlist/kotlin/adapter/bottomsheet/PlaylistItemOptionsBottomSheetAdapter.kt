@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
@@ -20,13 +21,15 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 class PlaylistItemOptionsBottomSheetAdapter(
     private val playlistItemOptionsListener: PlaylistItemOptionsListener
 ) :
-    AbstractRecyclerViewAdapter<PlaylistItemOptionModel, PlaylistItemOptionsBottomSheetAdapter.PlaylistItemOptionsViewHolder>() {
+    AbstractRecyclerViewAdapter<
+        PlaylistItemOptionModel,
+        PlaylistItemOptionsBottomSheetAdapter.PlaylistItemOptionsViewHolder
+    >() {
 
     class PlaylistItemOptionsViewHolder(
         view: View,
         private val playlistItemOptionsListener: PlaylistItemOptionsListener
-    ) :
-        AbstractViewHolder<PlaylistItemOptionModel>(view) {
+    ) : AbstractViewHolder<PlaylistItemOptionModel>(view) {
         private val optionView: View
         private val ivOptionIcon: AppCompatImageView
         private val tvOptionTitle: AppCompatTextView
@@ -50,8 +53,9 @@ class PlaylistItemOptionsBottomSheetAdapter(
         parent: ViewGroup,
         viewType: Int
     ): PlaylistItemOptionsViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_playlist_options_bottom_sheet, parent, false)
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_playlist_options_bottom_sheet, parent, false)
         return PlaylistItemOptionsViewHolder(view, playlistItemOptionsListener)
     }
 }

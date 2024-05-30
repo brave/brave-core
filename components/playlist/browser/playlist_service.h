@@ -210,11 +210,11 @@ class PlaylistService : public KeyedService,
   void CancelQuery(const std::string& query_id) override;
 
 #if BUILDFLAG(IS_ANDROID)
-  void AddHlsContent(mojom::HlsContentPtr hls_content) override;
+  void AddHlsContent(const std::string& playlist_item_id) override;
   void GetAllHlsContent(GetAllHlsContentCallback callback) override;
-  std::vector<mojom::HlsContentPtr> GetAllHlsContent();
+  std::vector<std::string> GetAllHlsContent();
   void GetFirstHlsContent(GetFirstHlsContentCallback callback) override;
-  mojom::HlsContentPtr GetFirstHlsContent();
+  std::string GetFirstHlsContent();
   void RemoveHlsContent(const std::string& playlist_item_id) override;
 #endif  // BUILDFLAG(IS_ANDROID)
 

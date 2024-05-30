@@ -16,7 +16,7 @@ import org.chromium.playlist.mojom.PlaylistServiceObserver;
 import org.chromium.url.mojom.Url;
 
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
-    private static final String TAG = "Playlist/PlaylistServiceObserverImpl";
+    private static final String TAG = "PlaylistObserver";
 
     public interface PlaylistServiceObserverImplDelegate {
         default void onItemCreated(PlaylistItem item) {}

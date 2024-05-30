@@ -16,43 +16,42 @@ import android.view.ViewGroup
 import android.view.animation.Interpolator
 import android.widget.OverScroller
 import androidx.core.view.VelocityTrackerCompat
+
 import java.util.Arrays
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
-
 /**
- * ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number
- * of useful operations and state tracking for allowing a user to drag and reposition
- * views within their parent ViewGroup.
+ * ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number of useful
+ * operations and state tracking for allowing a user to drag and reposition views within their
+ * parent ViewGroup.
  */
-class ViewDragHelper private constructor(
+class ViewDragHelper
+private constructor(
     context: Context,
     forParent: ViewGroup?,
     interpolator: Interpolator?,
     cb: Callback?
 ) {
     /**
-     * Retrieve the current drag state of this helper. This will return one of
-     * [.STATE_IDLE], [.STATE_DRAGGING] or [.STATE_SETTLING].
+     * Retrieve the current drag state of this helper. This will return one of [.STATE_IDLE],
+     * [.STATE_DRAGGING] or [.STATE_SETTLING].
+     *
      * @return The current drag state
      */
     // Current drag state; idle, dragging or settling
     var viewDragState = 0
         private set
 
-    /**
-     * @return The minimum distance in pixels that the user must travel to initiate a drag
-     */
+    /** @return The minimum distance in pixels that the user must travel to initiate a drag */
     // Distance to travel before a drag may begin
     var touchSlop: Int
         private set
 
     /**
-     * @return The ID of the pointer currently dragging the captured view,
-     * or [.INVALID_POINTER].
+     * @return The ID of the pointer currently dragging the captured view, or [.INVALID_POINTER].
      */
     // Last known position/pointer tracking
     private var activePointerId = INVALID_POINTER
@@ -68,17 +67,17 @@ class ViewDragHelper private constructor(
     private val mMaxVelocity: Float
 
     /**
-     * Return the currently configured minimum velocity. Any flings with a magnitude less
-     * than this value in pixels per second. Callback methods accepting a velocity will receive
-     * zero as a velocity value if the real detected velocity was below this threshold.
+     * Return the currently configured minimum velocity. Any flings with a magnitude less than this
+     * value in pixels per second. Callback methods accepting a velocity will receive zero as a
+     * velocity value if the real detected velocity was below this threshold.
      *
      * @return the minimum velocity that will be detected
      */
     var minVelocity: Float
 
     /**
-     * Return the size of an edge. This is the range in pixels along the edges of this view
-     * that will actively detect edge touches or drags if edge tracking is enabled.
+     * Return the size of an edge. This is the range in pixels along the edges of this view that
+     * will actively detect edge touches or drags if edge tracking is enabled.
      *
      * @return The size of an edge in pixels
      * @see .setEdgeTrackingEnabled
@@ -88,31 +87,25 @@ class ViewDragHelper private constructor(
     private val mScroller: OverScroller
     private val mCallback: Callback
 
-    /**
-     * @return The currently captured view, or null if no view has been captured.
-     */
+    /** @return The currently captured view, or null if no view has been captured. */
     private var capturedView: View? = null
     private var mReleaseInProgress = false
     private val mParentView: ViewGroup
 
     /**
-     * A Callback is used as a communication channel with the ViewDragHelper back to the
-     * parent view using it. `on*`methods are invoked on significant events and several
-     * accessor methods are expected to provide the ViewDragHelper with more information
-     * about the state of the parent view upon request. The callback also makes decisions
-     * governing the range and draggability of child views.
+     * A Callback is used as a communication channel with the ViewDragHelper back to the parent view
+     * using it. `on*`methods are invoked on significant events and several accessor methods are
+     * expected to provide the ViewDragHelper with more information about the state of the parent
+     * view upon request. The callback also makes decisions governing the range and draggability of
+     * child views.
      */
     abstract class Callback {
         /**
-         * Called when the drag state changes. See the `STATE_*` constants
-         * for more information.
+         * Called when the drag state changes. See the `STATE_*` constants for more information.
          *
          * @param state The new drag state
-         *
          * @see .STATE_IDLE
-         *
          * @see .STATE_DRAGGING
-         *
          * @see .STATE_SETTLING
          */
         open fun onViewDragStateChanged(state: Int) {}
@@ -130,9 +123,8 @@ class ViewDragHelper private constructor(
 
         /**
          * Called when a child view is captured for dragging or settling. The ID of the pointer
-         * currently dragging the captured view is supplied. If activePointerId is
-         * identified as [.INVALID_POINTER] the capture is programmatic instead of
-         * pointer-initiated.
+         * currently dragging the captured view is supplied. If activePointerId is identified as
+         * [.INVALID_POINTER] the capture is programmatic instead of pointer-initiated.
          *
          * @param capturedChild Child view that was captured
          * @param activePointerId Pointer id tracking the child capture
@@ -140,19 +132,16 @@ class ViewDragHelper private constructor(
         open fun onViewCaptured(capturedChild: View?, activePointerId: Int) {}
 
         /**
-         * Called when the child view is no longer being actively dragged.
-         * The fling velocity is also supplied, if relevant. The velocity values may
-         * be clamped to system minimums or maximums.
+         * Called when the child view is no longer being actively dragged. The fling velocity is
+         * also supplied, if relevant. The velocity values may be clamped to system minimums or
+         * maximums.
          *
-         *
-         * Calling code may decide to fling or otherwise release the view to let it
-         * settle into place. It should do so using [.settleCapturedViewAt]
-         * or [.flingCapturedView]. If the Callback invokes
-         * one of these methods, the ViewDragHelper will enter [.STATE_SETTLING]
-         * and the view capture will not fully end until it comes to a complete stop.
-         * If neither of these methods is invoked before `onViewReleased` returns,
-         * the view will stop in place and the ViewDragHelper will return to
-         * [.STATE_IDLE].
+         * Calling code may decide to fling or otherwise release the view to let it settle into
+         * place. It should do so using [.settleCapturedViewAt] or [.flingCapturedView]. If the
+         * Callback invokes one of these methods, the ViewDragHelper will enter [.STATE_SETTLING]
+         * and the view capture will not fully end until it comes to a complete stop. If neither of
+         * these methods is invoked before `onViewReleased` returns, the view will stop in place and
+         * the ViewDragHelper will return to [.STATE_IDLE].
          *
          * @param releasedChild The captured child view now being released
          * @param xVel X velocity of the pointer as it left the screen in pixels per second.
@@ -171,8 +160,8 @@ class ViewDragHelper private constructor(
         }
 
         /**
-         * Return the magnitude of a draggable child view's vertical range of motion in pixels.
-         * This method should return 0 for views that cannot move vertically.
+         * Return the magnitude of a draggable child view's vertical range of motion in pixels. This
+         * method should return 0 for views that cannot move vertically.
          *
          * @param child Child view to check
          * @return range of vertical motion in pixels
@@ -183,17 +172,15 @@ class ViewDragHelper private constructor(
 
         /**
          * Called when the user's input indicates that they want to capture the given child view
-         * with the pointer indicated by pointerId. The callback should return true if the user
-         * is permitted to drag the given view with the indicated pointer.
+         * with the pointer indicated by pointerId. The callback should return true if the user is
+         * permitted to drag the given view with the indicated pointer.
          *
+         * ViewDragHelper may call this method multiple times for the same view even if the view is
+         * already captured; this indicates that a new pointer is trying to take control of the
+         * view.
          *
-         * ViewDragHelper may call this method multiple times for the same view even if
-         * the view is already captured; this indicates that a new pointer is trying to take
-         * control of the view.
-         *
-         *
-         * If this method returns true, a call to [.onViewCaptured]
-         * will follow if the capture is successful.
+         * If this method returns true, a call to [.onViewCaptured] will follow if the capture is
+         * successful.
          *
          * @param child Child the user is attempting to capture
          * @param pointerId ID of the pointer attempting the capture
@@ -202,10 +189,9 @@ class ViewDragHelper private constructor(
         abstract fun tryCaptureView(child: View?, pointerId: Int): Boolean
 
         /**
-         * Restrict the motion of the dragged child view along the vertical axis.
-         * The default implementation does not allow vertical motion; the extending
-         * class must override this method and provide the desired clamping.
-         *
+         * Restrict the motion of the dragged child view along the vertical axis. The default
+         * implementation does not allow vertical motion; the extending class must override this
+         * method and provide the desired clamping.
          *
          * @param child Child view being dragged
          * @param top Attempted motion along the Y axis
@@ -239,8 +225,7 @@ class ViewDragHelper private constructor(
 
     /**
      * Capture a specific child view for dragging within the parent. The callback will be notified
-     * but [Callback.tryCaptureView] will not be asked permission to
-     * capture this view.
+     * but [Callback.tryCaptureView] will not be asked permission to capture this view.
      *
      * @param childView Child view to capture
      * @param activePointerId ID of the pointer that is dragging the captured child view
@@ -249,7 +234,9 @@ class ViewDragHelper private constructor(
         if (childView.parent !== mParentView) {
             throw IllegalArgumentException(
                 "captureChildView: parameter must be a descendant " +
-                        "of the ViewDragHelper's tracked parent view (" + mParentView + ")"
+                    "of the ViewDragHelper's tracked parent view (" +
+                    mParentView +
+                    ")"
             )
         }
         capturedView = childView
@@ -259,8 +246,8 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * The result of a call to this method is equivalent to
-     * [.processTouchEvent] receiving an ACTION_CANCEL event.
+     * The result of a call to this method is equivalent to [.processTouchEvent] receiving an
+     * ACTION_CANCEL event.
      */
     fun cancel() {
         activePointerId = INVALID_POINTER
@@ -271,10 +258,7 @@ class ViewDragHelper private constructor(
         }
     }
 
-    /**
-     * [.cancel], but also abort all motion in progress and snap to the end of any
-     * animation.
-     */
+    /** [.cancel], but also abort all motion in progress and snap to the end of any animation. */
     fun abort() {
         cancel()
         if (viewDragState == STATE_SETTLING) {
@@ -289,14 +273,13 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Animate the view `child` to the given (left, top) position.
-     * If this method returns true, the caller should invoke [.continueSettling]
-     * on each subsequent frame to continue the motion until it returns false. If this method
-     * returns false there is no further work to do to complete the movement.
+     * Animate the view `child` to the given (left, top) position. If this method returns true, the
+     * caller should invoke [.continueSettling] on each subsequent frame to continue the motion
+     * until it returns false. If this method returns false there is no further work to do to
+     * complete the movement.
      *
-     *
-     * This operation does not count as a capture event, though [.getCapturedView]
-     * will still report the sliding view while the slide is in progress.
+     * This operation does not count as a capture event, though [.getCapturedView] will still report
+     * the sliding view while the slide is in progress.
      *
      * @param child Child view to capture and animate
      * @param finalLeft Final left position of child
@@ -310,11 +293,10 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Settle the captured view at the given (left, top) position.
-     * The appropriate velocity from prior motion will be taken into account.
-     * If this method returns true, the caller should invoke [.continueSettling]
-     * on each subsequent frame to continue the motion until it returns false. If this method
-     * returns false there is no further work to do to complete the movement.
+     * Settle the captured view at the given (left, top) position. The appropriate velocity from
+     * prior motion will be taken into account. If this method returns true, the caller should
+     * invoke [.continueSettling] on each subsequent frame to continue the motion until it returns
+     * false. If this method returns false there is no further work to do to complete the movement.
      *
      * @param finalLeft Settled left edge position for the captured view
      * @param finalTop Settled top edge position for the captured view
@@ -324,15 +306,14 @@ class ViewDragHelper private constructor(
     fun settleCapturedViewAt(finalLeft: Int, finalTop: Int): Boolean {
         if (!mReleaseInProgress) {
             throw IllegalStateException(
-                "Cannot settleCapturedViewAt outside of a call to " +
-                        "Callback#onViewReleased"
+                "Cannot settleCapturedViewAt outside of a call to " + "Callback#onViewReleased"
             )
         }
         return forceSettleCapturedViewAt(
-            finalLeft, finalTop, VelocityTrackerCompat.getXVelocity(
-                mVelocityTracker,
-                activePointerId
-            ).toInt(), VelocityTrackerCompat.getYVelocity(mVelocityTracker, activePointerId).toInt()
+            finalLeft,
+            finalTop,
+            VelocityTrackerCompat.getXVelocity(mVelocityTracker, activePointerId).toInt(),
+            VelocityTrackerCompat.getYVelocity(mVelocityTracker, activePointerId).toInt()
         )
     }
 
@@ -401,22 +382,22 @@ class ViewDragHelper private constructor(
         val width = mParentView.width
         val halfWidth = width / 2
         val distanceRatio = min(1f, abs(delta).toFloat() / width)
-        val distance = halfWidth + halfWidth *
-                distanceInfluenceForSnapDuration(distanceRatio)
+        val distance = halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio)
         newVelocity = abs(newVelocity)
-        val duration: Int = if (newVelocity > 0) {
-            4 * (1000 * abs(distance / newVelocity)).roundToInt()
-        } else {
-            val range = abs(delta).toFloat() / motionRange
-            ((range + 1) * BASE_SETTLE_DURATION).toInt()
-        }
+        val duration: Int =
+            if (newVelocity > 0) {
+                4 * (1000 * abs(distance / newVelocity)).roundToInt()
+            } else {
+                val range = abs(delta).toFloat() / motionRange
+                ((range + 1) * BASE_SETTLE_DURATION).toInt()
+            }
         return min(duration, MAX_SETTLE_DURATION)
     }
 
     /**
-     * Clamp the magnitude of value for absMin and absMax.
-     * If the value is below the minimum, it will be clamped to zero.
-     * If the value is above the maximum, it will be clamped to the maximum.
+     * Clamp the magnitude of value for absMin and absMax. If the value is below the minimum, it
+     * will be clamped to zero. If the value is above the maximum, it will be clamped to the
+     * maximum.
      *
      * @param value Value to clamp
      * @param absMin Absolute value of the minimum significant value to return
@@ -430,9 +411,9 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Clamp the magnitude of value for absMin and absMax.
-     * If the value is below the minimum, it will be clamped to zero.
-     * If the value is above the maximum, it will be clamped to the maximum.
+     * Clamp the magnitude of value for absMin and absMax. If the value is below the minimum, it
+     * will be clamped to zero. If the value is above the maximum, it will be clamped to the
+     * maximum.
      *
      * @param value Value to clamp
      * @param absMin Absolute value of the minimum significant value to return
@@ -453,14 +434,13 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Move the captured settling view by the appropriate amount for the current time.
-     * If `continueSettling` returns true, the caller should call it again
-     * on the next frame to continue.
+     * Move the captured settling view by the appropriate amount for the current time. If
+     * `continueSettling` returns true, the caller should call it again on the next frame to
+     * continue.
      *
-     * @param deferCallbacks true if state callbacks should be deferred via posted message.
-     * Set this to true if you are calling this method from
-     * [android.view.View.computeScroll] or similar methods
-     * invoked as part of layout or drawing.
+     * @param deferCallbacks true if state callbacks should be deferred via posted message. Set this
+     *   to true if you are calling this method from [android.view.View.computeScroll] or similar
+     *   methods invoked as part of layout or drawing.
      * @return true if settle is still in progress
      */
     fun continueSettling(deferCallbacks: Boolean): Boolean {
@@ -475,8 +455,8 @@ class ViewDragHelper private constructor(
                 val y = mScroller.currY
                 val dx = x - it.left
                 val dy = y - it.top
-                if (!keepGoing && dy != 0) { //fix #525
-                    //Invalid drag state
+                if (!keepGoing && dy != 0) { // fix #525
+                    // Invalid drag state
                     it.top = 0
                     return true
                 }
@@ -508,10 +488,9 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Like all callback events this must happen on the UI thread, but release
-     * involves some extra semantics. During a release (mReleaseInProgress)
-     * is the only time it is valid to call [.settleCapturedViewAt]
-     * or [.flingCapturedView].
+     * Like all callback events this must happen on the UI thread, but release involves some extra
+     * semantics. During a release (mReleaseInProgress) is the only time it is valid to call
+     * [.settleCapturedViewAt] or [.flingCapturedView].
      */
     private fun dispatchViewReleased(xVel: Float, yVel: Float) {
         mReleaseInProgress = true
@@ -581,9 +560,13 @@ class ViewDragHelper private constructor(
             val pointerId = ev.getPointerId(i)
             val x = ev.getX(i)
             val y = ev.getY(i)
-            // Sometimes we can try and save last motion for a pointer never recorded in initial motion. In this case we just discard it.
-            if ((mLastMotionX != null) && (mLastMotionY != null
-                        ) && (mLastMotionX!!.size > pointerId) && (mLastMotionY!!.size > pointerId)
+            // Sometimes we can try and save last motion for a pointer never recorded in initial
+            // motion. In this case we just discard it.
+            if (
+                (mLastMotionX != null) &&
+                    (mLastMotionY != null) &&
+                    (mLastMotionX!!.size > pointerId) &&
+                    (mLastMotionY!!.size > pointerId)
             ) {
                 mLastMotionX!![pointerId] = x
                 mLastMotionY!![pointerId] = y
@@ -602,9 +585,9 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Attempt to capture the view with the given pointer ID. The callback will be involved.
-     * This will put us into the "dragging" state. If we've already captured this view with
-     * this pointer this method will immediately return true without consulting the callback.
+     * Attempt to capture the view with the given pointer ID. The callback will be involved. This
+     * will put us into the "dragging" state. If we've already captured this view with this pointer
+     * this method will immediately return true without consulting the callback.
      *
      * @param toCapture View to capture
      * @param pointerId Pointer to capture with
@@ -624,8 +607,8 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Check if this event as provided to the parent view's onInterceptTouchEvent should
-     * cause the parent to intercept the touch event stream.
+     * Check if this event as provided to the parent view's onInterceptTouchEvent should cause the
+     * parent to intercept the touch event stream.
      *
      * @param ev MotionEvent provided to onInterceptTouchEvent
      * @return true if the parent view should return true from onInterceptTouchEvent
@@ -654,15 +637,18 @@ class ViewDragHelper private constructor(
                     tryCaptureViewForDrag(toCapture, pointerId)
                 }
             }
-
             MotionEvent.ACTION_MOVE -> {
 
                 // First to cross a touch slop over a draggable view wins. Also report edge drags.
                 val pointerCount = ev.pointerCount
                 var i = 0
-                while ((i < pointerCount) && (mInitialMotionX != null) && (mInitialMotionY != null)) {
+                while (
+                    (i < pointerCount) && (mInitialMotionX != null) && (mInitialMotionY != null)
+                ) {
                     val pointerId = ev.getPointerId(i)
-                    if (pointerId >= mInitialMotionX!!.size || pointerId >= mInitialMotionY!!.size) {
+                    if (
+                        pointerId >= mInitialMotionX!!.size || pointerId >= mInitialMotionY!!.size
+                    ) {
                         i++
                         continue
                     }
@@ -675,12 +661,15 @@ class ViewDragHelper private constructor(
                         // Callback might have started an edge drag
                         break
                     }
-                    val toCapture = findTopChildUnder(
-                        mInitialMotionX!![pointerId].toInt(),
-                        mInitialMotionY!![pointerId].toInt()
-                    )
-                    if (((toCapture != null) && checkTouchSlop(toCapture, dy) &&
-                                tryCaptureViewForDrag(toCapture, pointerId))
+                    val toCapture =
+                        findTopChildUnder(
+                            mInitialMotionX!![pointerId].toInt(),
+                            mInitialMotionY!![pointerId].toInt()
+                        )
+                    if (
+                        ((toCapture != null) &&
+                            checkTouchSlop(toCapture, dy) &&
+                            tryCaptureViewForDrag(toCapture, pointerId))
                     ) {
                         break
                     }
@@ -688,8 +677,8 @@ class ViewDragHelper private constructor(
                 }
                 saveLastMotion(ev)
             }
-
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL -> {
                 cancel()
             }
         }
@@ -727,19 +716,14 @@ class ViewDragHelper private constructor(
                 tryCaptureViewForDrag(toCapture, pointerId)
                 mInitialEdgesTouched[pointerId]
             }
-
             MotionEvent.ACTION_MOVE -> {
                 if (viewDragState == STATE_DRAGGING) {
-                    val index = ev.findPointerIndex(
-                        activePointerId
-                    )
+                    val index = ev.findPointerIndex(activePointerId)
                     val x = ev.getX(index)
                     val y = ev.getY(index)
                     val idx = (x - mLastMotionX!![activePointerId]).toInt()
                     val idy = (y - mLastMotionY!![activePointerId]).toInt()
-                    capturedView?.let {
-                        dragTo(it.left + idx, it.top + idy, idx, idy)
-                    }
+                    capturedView?.let { dragTo(it.left + idx, it.top + idy, idx, idy) }
                     saveLastMotion(ev)
                 } else {
                     // Check to see if any pointer is now over a draggable view.
@@ -756,12 +740,14 @@ class ViewDragHelper private constructor(
                             // Callback might have started an edge drag.
                             break
                         }
-                        val toCapture = findTopChildUnder(
-                            mInitialMotionX!![pointerId].toInt(),
-                            mInitialMotionY!![pointerId].toInt()
-                        )
-                        if (checkTouchSlop(toCapture, dy) &&
-                            tryCaptureViewForDrag(toCapture, pointerId)
+                        val toCapture =
+                            findTopChildUnder(
+                                mInitialMotionX!![pointerId].toInt(),
+                                mInitialMotionY!![pointerId].toInt()
+                            )
+                        if (
+                            checkTouchSlop(toCapture, dy) &&
+                                tryCaptureViewForDrag(toCapture, pointerId)
                         ) {
                             break
                         }
@@ -770,14 +756,12 @@ class ViewDragHelper private constructor(
                     saveLastMotion(ev)
                 }
             }
-
             MotionEvent.ACTION_UP -> {
                 if (viewDragState == STATE_DRAGGING) {
                     releaseViewForPointerUp()
                 }
                 cancel()
             }
-
             MotionEvent.ACTION_CANCEL -> {
                 if (viewDragState == STATE_DRAGGING) {
                     dispatchViewReleased(0f, 0f)
@@ -809,10 +793,12 @@ class ViewDragHelper private constructor(
     private fun checkNewEdgeDrag(delta: Float, odelta: Float, pointerId: Int, edge: Int): Boolean {
         val absDelta = abs(delta)
         val absODelta = abs(odelta)
-        if ((((mInitialEdgesTouched[pointerId] and edge) != edge) || ((mTrackingEdges and edge) == 0) || (
-                    (mEdgeDragsLocked[pointerId] and edge) == edge) || (
-                    (mEdgeDragsInProgress[pointerId] and edge) == edge) ||
-                    (absDelta <= touchSlop && absODelta <= touchSlop))
+        if (
+            (((mInitialEdgesTouched[pointerId] and edge) != edge) ||
+                ((mTrackingEdges and edge) == 0) ||
+                ((mEdgeDragsLocked[pointerId] and edge) == edge) ||
+                ((mEdgeDragsInProgress[pointerId] and edge) == edge) ||
+                (absDelta <= touchSlop && absODelta <= touchSlop))
         ) {
             return false
         }
@@ -820,9 +806,9 @@ class ViewDragHelper private constructor(
     }
 
     /**
-     * Check if we've crossed a reasonable touch slop for the given child view.
-     * If the child cannot be dragged along the horizontal or vertical axis, motion
-     * along that axis will not count toward the slop check.
+     * Check if we've crossed a reasonable touch slop for the given child view. If the child cannot
+     * be dragged along the horizontal or vertical axis, motion along that axis will not count
+     * toward the slop check.
      *
      * @param child Child to check
      * @param dy Motion since initial position along Y axis
@@ -845,14 +831,18 @@ class ViewDragHelper private constructor(
     @Suppress("DEPRECATION")
     private fun releaseViewForPointerUp() {
         mVelocityTracker?.computeCurrentVelocity(1000, mMaxVelocity)
-        val xVel = clampMag(
-            VelocityTrackerCompat.getXVelocity(mVelocityTracker, activePointerId),
-            minVelocity, mMaxVelocity
-        )
-        val yVel = clampMag(
-            VelocityTrackerCompat.getYVelocity(mVelocityTracker, activePointerId),
-            minVelocity, mMaxVelocity
-        )
+        val xVel =
+            clampMag(
+                VelocityTrackerCompat.getXVelocity(mVelocityTracker, activePointerId),
+                minVelocity,
+                mMaxVelocity
+            )
+        val yVel =
+            clampMag(
+                VelocityTrackerCompat.getYVelocity(mVelocityTracker, activePointerId),
+                minVelocity,
+                mMaxVelocity
+            )
         dispatchViewReleased(xVel, yVel)
     }
 
@@ -872,17 +862,14 @@ class ViewDragHelper private constructor(
             if (dx != 0 || dy != 0) {
                 val clampedDx = left - oldLeft
                 val clampedDy = clampedY - oldTop
-                mCallback.onViewPositionChanged(
-                    it, left, clampedY,
-                    clampedDx, clampedDy
-                )
+                mCallback.onViewPositionChanged(it, left, clampedY, clampedDx, clampedDy)
             }
         }
     }
 
     /**
-     * Find the topmost child under the given point within the parent view's coordinate system.
-     * The child order is determined using [Callback.getOrderedChildIndex].
+     * Find the topmost child under the given point within the parent view's coordinate system. The
+     * child order is determined using [Callback.getOrderedChildIndex].
      *
      * @param x X position to test in the parent's coordinate system
      * @param y Y position to test in the parent's coordinate system
@@ -892,9 +879,7 @@ class ViewDragHelper private constructor(
         val childCount = mParentView.childCount
         for (i in childCount - 1 downTo 0) {
             val child = mParentView.getChildAt(mCallback.getOrderedChildIndex(i))
-            if ((x >= child.left) && (x < child.right) && (
-                        y >= child.top) && (y < child.bottom)
-            ) {
+            if ((x >= child.left) && (x < child.right) && (y >= child.top) && (y < child.bottom)) {
                 return child
             }
         }
@@ -911,61 +896,46 @@ class ViewDragHelper private constructor(
     }
 
     companion object {
-        /**
-         * A null/invalid pointer ID.
-         */
+        /** A null/invalid pointer ID. */
         const val INVALID_POINTER = -1
 
-        /**
-         * A view is not currently being dragged or animating as a result of a fling/snap.
-         */
+        /** A view is not currently being dragged or animating as a result of a fling/snap. */
         const val STATE_IDLE = 0
 
         /**
-         * A view is currently being dragged. The position is currently changing as a result
-         * of user input or simulated user input.
+         * A view is currently being dragged. The position is currently changing as a result of user
+         * input or simulated user input.
          */
         const val STATE_DRAGGING = 1
 
         /**
-         * A view is currently settling into place as a result of a fling or
-         * predefined non-interactive motion.
+         * A view is currently settling into place as a result of a fling or predefined
+         * non-interactive motion.
          */
         const val STATE_SETTLING = 2
 
-        /**
-         * Edge flag indicating that the left edge should be affected.
-         */
+        /** Edge flag indicating that the left edge should be affected. */
         const val EDGE_LEFT = 1 shl 0
 
-        /**
-         * Edge flag indicating that the right edge should be affected.
-         */
+        /** Edge flag indicating that the right edge should be affected. */
         const val EDGE_RIGHT = 1 shl 1
 
-        /**
-         * Edge flag indicating that the top edge should be affected.
-         */
+        /** Edge flag indicating that the top edge should be affected. */
         const val EDGE_TOP = 1 shl 2
 
-        /**
-         * Edge flag indicating that the bottom edge should be affected.
-         */
+        /** Edge flag indicating that the bottom edge should be affected. */
         const val EDGE_BOTTOM = 1 shl 3
 
         private const val EDGE_SIZE = 20 // dp
         private const val BASE_SETTLE_DURATION = 256 // ms
         private const val MAX_SETTLE_DURATION = 600 // ms
 
-        /**
-         * Interpolator defining the animation curve for mScroller
-         */
-        private val sInterpolator: Interpolator =
-            Interpolator { time ->
-                var t = time
-                t -= 1.0f
-                t * t * t * t * t + 1.0f
-            }
+        /** Interpolator defining the animation curve for mScroller */
+        private val sInterpolator: Interpolator = Interpolator { time ->
+            var t = time
+            t -= 1.0f
+            t * t * t * t * t + 1.0f
+        }
 
         /**
          * Factory method to create a new ViewDragHelper with the specified interpolator.
@@ -987,8 +957,8 @@ class ViewDragHelper private constructor(
          * Factory method to create a new ViewDragHelper with the specified interpolator.
          *
          * @param forParent Parent view to monitor
-         * @param sensitivity Multiplier for how sensitive the helper should be about detecting
-         * the start of a drag. Larger values are more sensitive. 1.0f is normal.
+         * @param sensitivity Multiplier for how sensitive the helper should be about detecting the
+         *   start of a drag. Larger values are more sensitive. 1.0f is normal.
          * @param interpolator interpolator for scroller
          * @param cb Callback to provide information and receive events
          * @return a new ViewDragHelper instance

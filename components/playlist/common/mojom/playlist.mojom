@@ -159,13 +159,13 @@ interface PlaylistService {
   CancelQuery(string query_id);
 
   [EnableIf=is_android]
-  AddHlsContent(HlsContent hls_content);
+  AddHlsContent(string playlist_item_id);
 
   [EnableIf=is_android]
-  GetAllHlsContent() => (array<HlsContent> hls_contents);
+  GetAllHlsContent() => (array<string> hls_contents);
 
   [EnableIf=is_android]
-  GetFirstHlsContent() => (HlsContent hls_content);
+  GetFirstHlsContent() => (string hls_content);
 
   [EnableIf=is_android]
   RemoveHlsContent(string playlist_item_id);

@@ -7,38 +7,37 @@
 
 package org.chromium.chrome.browser.playlist.kotlin.activity
 
-import org.chromium.chrome.browser.init.AsyncInitializationActivity
-import org.chromium.mojo.bindings.ConnectionErrorHandler
-import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.mojo.system.MojoException
-import org.chromium.playlist.mojom.PlaylistService
+import org.chromium.base.BraveFeatureList
+import org.chromium.base.BravePreferenceKeys
+import org.chromium.base.Log
+import org.chromium.base.supplier.OneshotSupplier
+import org.chromium.chrome.browser.app.BraveActivity
 import org.chromium.chrome.browser.flags.ChromeFeatureList
 import org.chromium.chrome.browser.init.ActivityProfileProvider
-import org.chromium.base.BraveFeatureList
-import org.chromium.base.Log
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
-import org.chromium.chrome.browser.profiles.ProfileProvider
-import org.chromium.base.BravePreferenceKeys
+import org.chromium.chrome.browser.init.AsyncInitializationActivity
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
-import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
-import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet
-import org.chromium.chrome.browser.util.TabUtils
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
-import org.chromium.chrome.browser.app.BraveActivity
-import android.content.Intent
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
+import org.chromium.chrome.browser.profiles.ProfileProvider
+import org.chromium.chrome.browser.util.TabUtils
+import org.chromium.mojo.bindings.ConnectionErrorHandler
+import org.chromium.mojo.system.MojoException
+import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.playlist.mojom.PlaylistService
 
-import android.view.View
-import org.chromium.chrome.R
-
-abstract  class PlaylistBaseActivity : AsyncInitializationActivity(), ConnectionErrorHandler, PlaylistServiceObserverImplDelegate, PlaylistItemOptionsListener {
+abstract class PlaylistBaseActivity :
+    AsyncInitializationActivity(),
+    ConnectionErrorHandler,
+    PlaylistServiceObserverImplDelegate,
+    PlaylistItemOptionsListener {
     companion object {
         val TAG: String = "PlaylistBaseActivity"
     }
@@ -47,24 +46,25 @@ abstract  class PlaylistBaseActivity : AsyncInitializationActivity(), Connection
     protected var mPlaylistService: PlaylistService? = null
     protected var mPlaylistServiceObserver: PlaylistServiceObserverImpl? = null
 
-    override fun onConnectionError(mojoException : MojoException) {
+    override fun onConnectionError(mojoException: MojoException) {
         mPlaylistService?.close()
         mPlaylistService = null
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+        if (
+            ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST) &&
+                ChromeSharedPreferences.getInstance()
+                    .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+        ) {
             initPlaylistService()
         }
     }
 
     private fun initPlaylistService() {
         if (mPlaylistService != null) {
-            mPlaylistService = null;
+            mPlaylistService = null
         }
         mPlaylistService =
-                PlaylistServiceFactoryAndroid.getInstance()
-                        .getPlaylistService(
-                                getProfileProviderSupplier().get()?.getOriginalProfile(), this)
+            PlaylistServiceFactoryAndroid.getInstance()
+                .getPlaylistService(getProfileProviderSupplier().get()?.getOriginalProfile(), this)
         addPlaylistObserver()
     }
 
@@ -73,18 +73,18 @@ abstract  class PlaylistBaseActivity : AsyncInitializationActivity(), Connection
         mPlaylistService?.addObserver(mPlaylistServiceObserver)
     }
 
-    fun getPlaylistService() : PlaylistService? {
+    fun getPlaylistService(): PlaylistService? {
         return mPlaylistService
     }
 
     open fun deletePlaylistItem(playlistItemOptionModel: PlaylistItemOptionModel) {}
 
-    private fun openPlaylistInTab(isIncognito : Boolean, url: String) {
+    private fun openPlaylistInTab(isIncognito: Boolean, url: String) {
         try {
             val activity = BraveActivity.getBraveActivity()
             TabUtils.openUrlInNewTab(isIncognito, url)
             TabUtils.bringChromeTabbedActivityToTheTop(activity)
-        } catch (e : BraveActivity.BraveActivityNotFoundException) {
+        } catch (e: BraveActivity.BraveActivityNotFoundException) {
             Log.e(TAG, "openPlaylistInTab error", e)
         }
     }
@@ -99,30 +99,30 @@ abstract  class PlaylistBaseActivity : AsyncInitializationActivity(), Connection
     override fun finishNativeInitialization() {
         super.finishNativeInitialization()
     }
-    
+
     override fun onResumeWithNative() {
-        super.onResumeWithNative();
+        super.onResumeWithNative()
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            initPlaylistService();
+            initPlaylistService()
         }
     }
 
     override fun onDestroy() {
-            mPlaylistService?.close()
-            mPlaylistService = null
-            mPlaylistServiceObserver?.close()
-            mPlaylistServiceObserver?.destroy()
-            mPlaylistServiceObserver = null
-        
-        super.onDestroy();
+        mPlaylistService?.close()
+        mPlaylistService = null
+        mPlaylistServiceObserver?.close()
+        mPlaylistServiceObserver?.destroy()
+        mPlaylistServiceObserver = null
+
+        super.onDestroy()
     }
 
-    override fun shouldStartGpuProcess() : Boolean {
-        return true;
+    override fun shouldStartGpuProcess(): Boolean {
+        return true
     }
 
-    override fun createProfileProvider() : OneshotSupplier<ProfileProvider> {
-        return ActivityProfileProvider(getLifecycleDispatcher());
+    override fun createProfileProvider(): OneshotSupplier<ProfileProvider> {
+        return ActivityProfileProvider(getLifecycleDispatcher())
     }
 
     // PlaylistItemOptionsListener callback
@@ -130,41 +130,37 @@ abstract  class PlaylistBaseActivity : AsyncInitializationActivity(), Connection
         when (playlistItemOptionModel.optionType) {
             PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM -> {
                 playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    PlaylistUtils.showSharingDialog(
-                        this@PlaylistBaseActivity, it
-                    )
+                    PlaylistUtils.showSharingDialog(this@PlaylistBaseActivity, it)
                 }
             }
-
             PlaylistOptionsEnum.OPEN_IN_NEW_TAB -> {
                 playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
                     openPlaylistInTab(false, it)
                 }
             }
-
             PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB -> {
                 playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
                     openPlaylistInTab(true, it)
                 }
             }
-
             PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM -> {
-                // playlistItemOptionModel.playlistItem?.let { 
-                //     stopVideoPlayerOnDelete(it)
-                //     deletePlaylistItems(arrayListOf(it))
-                // }
                 deletePlaylistItem(playlistItemOptionModel)
             }
-
-            PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM, PlaylistOptionsEnum.COPY_PLAYLIST_ITEM -> {
+            PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM,
+            PlaylistOptionsEnum.COPY_PLAYLIST_ITEM -> {
                 val moveOrCopyItems = ArrayList<PlaylistItem>()
                 playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
                 PlaylistUtils.moveOrCopyModel =
-                        MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId , "", moveOrCopyItems)
+                    MoveOrCopyModel(
+                        playlistItemOptionModel.optionType,
+                        mPlaylistId,
+                        "",
+                        moveOrCopyItems
+                    )
                 MoveOrCopyToPlaylistBottomSheet().show(supportFragmentManager, null)
             }
             else -> {
-                //Do nothing
+                // Do nothing
             }
         }
     }

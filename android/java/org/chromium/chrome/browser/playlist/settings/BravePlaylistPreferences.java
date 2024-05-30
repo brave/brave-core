@@ -17,7 +17,6 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -73,10 +72,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                                 () -> {
                                     mPlaylistService.clearAllQueries();
                                     mPlaylistService.resetAll();
-                                    PlaylistRepository playlistRepository =
-                                            new PlaylistRepository(getActivity());
-                                    // playlistRepository.deleteAllLastPlayedPosition();
-                                    playlistRepository.deleteAllHlsContentQueueModel();
                                     PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
                                     getActivity()
                                             .runOnUiThread(

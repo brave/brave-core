@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
+
+import com.google.android.material.snackbar.Snackbar
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
@@ -28,7 +31,6 @@ import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.
 import org.chromium.chrome.browser.playlist.kotlin.view.MovableImageButton
 import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistOnboardingPanel
 import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
-import com.google.android.material.snackbar.Snackbar
 
 object PlaylistViewUtils {
     @JvmStatic
@@ -42,16 +44,19 @@ object PlaylistViewUtils {
         movableImageButton.id = R.id.playlist_button_id
         movableImageButton.setBackgroundResource(R.drawable.ic_playlist_floating_button_bg)
         movableImageButton.setImageResource(R.drawable.ic_playlist_button)
-        val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
+        val params: FrameLayout.LayoutParams =
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
         params.marginEnd = 16
-        params.bottomMargin = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            40F,
-            activity.resources.displayMetrics
-        ).toInt()
+        params.bottomMargin =
+            TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    40F,
+                    activity.resources.displayMetrics
+                )
+                .toInt()
         params.gravity = Gravity.BOTTOM or Gravity.END
         movableImageButton.layoutParams = params
         movableImageButton.elevation = 8.0f
@@ -62,29 +67,32 @@ object PlaylistViewUtils {
             if (shouldShowOnboarding) {
                 PlaylistOnboardingPanel(
                     (activity as FragmentActivity),
-                    it, playlistOnboardingActionClickListener
+                    it,
+                    playlistOnboardingActionClickListener
                 )
                 PlaylistPreferenceUtils.defaultPrefs(activity).shouldShowOnboarding = false
             } else {
                 PlaylistOptionsBottomSheet(
-                    mutableListOf(
-                        PlaylistOptionsModel(
-                            activity.getString(R.string.playlist_add_media),
-                            R.drawable.ic_add_to_media,
-                            PlaylistOptionsEnum.ADD_MEDIA
+                        mutableListOf(
+                            PlaylistOptionsModel(
+                                activity.getString(R.string.playlist_add_media),
+                                R.drawable.ic_add_to_media,
+                                PlaylistOptionsEnum.ADD_MEDIA
+                            ),
+                            PlaylistOptionsModel(
+                                activity.getString(R.string.playlist_open_playlist),
+                                R.drawable.ic_open_playlist,
+                                PlaylistOptionsEnum.OPEN_PLAYLIST
+                            ),
+                            PlaylistOptionsModel(
+                                activity.getString(R.string.playlist_open_playlist_settings),
+                                R.drawable.ic_playlist_settings,
+                                PlaylistOptionsEnum.PLAYLIST_SETTINGS
+                            )
                         ),
-                        PlaylistOptionsModel(
-                            activity.getString(R.string.playlist_open_playlist),
-                            R.drawable.ic_open_playlist,
-                            PlaylistOptionsEnum.OPEN_PLAYLIST
-                        ),
-                        PlaylistOptionsModel(
-                            activity.getString(R.string.playlist_open_playlist_settings),
-                            R.drawable.ic_playlist_settings,
-                            PlaylistOptionsEnum.PLAYLIST_SETTINGS
-                        )
-                    ), playlistOptionsListener
-                ).show((activity as FragmentActivity).supportFragmentManager, null)
+                        playlistOptionsListener
+                    )
+                    .show((activity as FragmentActivity).supportFragmentManager, null)
             }
         }
         movableImageButton.allowMoving(true)
@@ -92,10 +100,11 @@ object PlaylistViewUtils {
             parent.removeView(parent.findViewById<MovableImageButton>(R.id.playlist_button_id))
         }
         parent.addView(movableImageButton)
-        val transition = Slide(Gravity.BOTTOM)
-            .addTarget(R.id.playlist_button_id)
-            .setDuration(500)
-            .setInterpolator(BraveBounceInterpolator())
+        val transition =
+            Slide(Gravity.BOTTOM)
+                .addTarget(R.id.playlist_button_id)
+                .setDuration(500)
+                .setInterpolator(BraveBounceInterpolator())
 
         TransitionManager.beginDelayedTransition(parent, transition)
         movableImageButton.visibility = View.VISIBLE

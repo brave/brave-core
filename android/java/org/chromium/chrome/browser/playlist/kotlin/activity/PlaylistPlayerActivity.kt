@@ -7,12 +7,12 @@
 
 package org.chromium.chrome.browser.playlist.kotlin.activity
 
-import android.annotation.SuppressLint
-import android.content.*
+import android.content.ComponentName
+import android.content.ContentResolver
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.os.*
-import org.chromium.base.Log
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -21,8 +21,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.SeekBar
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -31,8 +29,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -42,37 +38,35 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.mediarouter.app.MediaRouteButton
 import androidx.recyclerview.widget.RecyclerView
-import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
-import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
-import org.chromium.playlist.mojom.PlaylistEvent
-import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
-import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
-import org.chromium.chrome.browser.playlist.kotlin.extension.dpToPx
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
-import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
-import org.chromium.chrome.browser.playlist.kotlin.model.*
-import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService
-import org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_MODEL
-import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
-import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
+
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.material.card.MaterialCardView
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
-import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
-import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity
-import org.chromium.playlist.mojom.Playlist
-import org.chromium.playlist.mojom.PlaylistItem
-import android.text.TextUtils
-import android.content.Intent
 
-class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPanelLayout.PanelSlideListener, PlaylistItemClickListener  {
+import org.chromium.base.Log
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.extension.dpToPx
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService
+import org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
+import org.chromium.playlist.mojom.Playlist
+import org.chromium.playlist.mojom.PlaylistEvent
+import org.chromium.playlist.mojom.PlaylistItem
+
+class PlaylistPlayerActivity :
+    PlaylistBaseActivity(),
+    Player.Listener,
+    BottomPanelLayout.PanelSlideListener,
+    PlaylistItemClickListener {
     companion object {
         val TAG: String = "PlaylistPlayerActivity"
         private const val SEEK_VALUE_MS = 15000
@@ -196,20 +190,17 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             }
         }
-        mBackImg.setOnClickListener {
-            finish()
-        }
+        mBackImg.setOnClickListener { finish() }
         mIvVideoOptions.setOnClickListener {
-            val currentPlaylistItem =
-                    mPlaylist.items[mPlayerView.player?.currentPeriodIndex ?: 0]
-                MenuUtils.showPlaylistItemMenu(
-                    this@PlaylistPlayerActivity,
-                    supportFragmentManager,
-                    currentPlaylistItem,
-                    playlistId = mPlaylist.id,
-                    playlistItemOptionsListener = this@PlaylistPlayerActivity,
-                    shouldShowMove = false
-                )
+            val currentPlaylistItem = mPlaylist.items[mPlayerView.player?.currentPeriodIndex ?: 0]
+            MenuUtils.showPlaylistItemMenu(
+                this@PlaylistPlayerActivity,
+                supportFragmentManager,
+                currentPlaylistItem,
+                playlistId = mPlaylist.id,
+                playlistItemOptionsListener = this@PlaylistPlayerActivity,
+                shouldShowMove = false
+            )
         }
         mMainLayout.addPanelSlideListener(this)
         val mediaRouteButton: MediaRouteButton = findViewById(R.id.media_route_button)
@@ -227,68 +218,65 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     override fun onResumeWithNative() {
-        Log.e(TAG, "onResumeWithNative")
-        super.onResumeWithNative();
-        mPlaylistId = intent.getStringExtra(ConstantUtils.PLAYLIST_ID)?:ConstantUtils.DEFAULT_PLAYLIST
+        super.onResumeWithNative()
+        mPlaylistId =
+            intent.getStringExtra(ConstantUtils.PLAYLIST_ID) ?: ConstantUtils.DEFAULT_PLAYLIST
 
         fetchPlaylistData()
     }
 
     private fun fetchPlaylistData() {
-        mPlaylistService?.getPlaylist(mPlaylistId) {
-                playlist -> 
-                    Log.e(TAG, playlist.toString())
-                    val playlistItems = mutableListOf<PlaylistItem>()
-                    playlist.items.forEach {
-                        if (it.id != controller?.currentMediaItem?.mediaId) {
-                            playlistItems.add(it)
-                        } else {
-                            playlistItems.add(0, it)
-                        }
-                    }
+        mPlaylistService?.getPlaylist(mPlaylistId) { playlist ->
+            Log.e(TAG, playlist.toString())
+            val playlistItems = mutableListOf<PlaylistItem>()
+            playlist.items.forEach {
+                if (it.id != controller?.currentMediaItem?.mediaId) {
+                    playlistItems.add(it)
+                } else {
+                    playlistItems.add(0, it)
+                }
+            }
 
-                    val updatedPlaylist = Playlist()
-                    updatedPlaylist.id = playlist.id
-                    updatedPlaylist.name = playlist.name
-                    updatedPlaylist.items = playlist.items
+            val updatedPlaylist = Playlist()
+            updatedPlaylist.id = playlist.id
+            updatedPlaylist.name = playlist.name
+            updatedPlaylist.items = playlist.items
 
-                    mPlaylist = updatedPlaylist
+            mPlaylist = updatedPlaylist
 
-                    VideoPlaybackService.currentPlayingItem.observe(this@PlaylistPlayerActivity) { currentPlayingItemId ->
-                        if (!currentPlayingItemId.isNullOrEmpty()) {
-                            mPlaylistItemAdapter?.updatePlayingStatus(currentPlayingItemId)
-                        }
-                    }
+            VideoPlaybackService.currentPlayingItem.observe(this@PlaylistPlayerActivity) {
+                currentPlayingItemId ->
+                if (!currentPlayingItemId.isNullOrEmpty()) {
+                    mPlaylistItemAdapter?.updatePlayingStatus(currentPlayingItemId)
+                }
+            }
 
-                    mTvVideoSource.text =
-                        if (mPlaylist.id == DEFAULT_PLAYLIST) getString(R.string.playlist_play_later) else mPlaylist.name
-                    mTvPlaylistName.text = getString(R.string.playlist_up_next)
+            PlaylistUtils.hlsContentProgress.observe(this@PlaylistPlayerActivity) {
+                mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(it)
+            }
 
-                    mPlaylistItemAdapter?.submitList(playlistItems)
+            mTvVideoSource.text =
+                if (mPlaylist.id == ConstantUtils.DEFAULT_PLAYLIST)
+                    getString(R.string.playlist_play_later)
+                else mPlaylist.name
+            mTvPlaylistName.text = getString(R.string.playlist_up_next)
 
-                    mProgressBar.visibility = View.GONE
-                    mRvPlaylist.visibility = View.VISIBLE
-                };
+            mPlaylistItemAdapter?.submitList(playlistItems)
+
+            mProgressBar.visibility = View.GONE
+            mRvPlaylist.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroy() {
-        Log.e(TAG, "onDestroy")
         mPlayerView.player = null
-        // releaseController()
-        
-        super.onDestroy();
+
+        super.onDestroy()
     }
 
     override fun onPreCreate() {
         initializeController()
         super.onPreCreate()
-
-    }
-
-    override fun onStartWithNative() {
-        Log.e(TAG, "onStartWithNative")
-        super.onStartWithNative()
-        // initializeController()
     }
 
     override fun onStopWithNative() {
@@ -296,19 +284,20 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         super.onStopWithNative()
     }
 
-
     private fun initializeController() {
-        Log.e(TAG, "initializeController")
-        controllerFuture = MediaController.Builder(
-            this@PlaylistPlayerActivity, SessionToken(
-                this@PlaylistPlayerActivity, ComponentName(this@PlaylistPlayerActivity, VideoPlaybackService::class.java)
-            )
-        ).buildAsync()
+        controllerFuture =
+            MediaController.Builder(
+                    this@PlaylistPlayerActivity,
+                    SessionToken(
+                        this@PlaylistPlayerActivity,
+                        ComponentName(this@PlaylistPlayerActivity, VideoPlaybackService::class.java)
+                    )
+                )
+                .buildAsync()
         controllerFuture.addListener({ setController() }, MoreExecutors.directExecutor())
     }
 
     private fun releaseController() {
-        Log.e(TAG, "releaseController")
         MediaController.releaseFuture(controllerFuture)
     }
 
@@ -316,7 +305,6 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         if (controller == null) {
             return
         }
-        Log.e(TAG, "setController")
         updatePlayerView()
 
         initializePlayer()
@@ -328,7 +316,9 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         return try {
             val rotationSetting: Int =
                 Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION)
-            rotationSetting == 0 // If rotationSetting is 0, it means the orientation is locked; if it's 1, it's unlocked.
+            rotationSetting ==
+                0 // If rotationSetting is 0, it means the orientation is locked; if it's 1, it's
+                  // unlocked.
         } catch (e: Settings.SettingNotFoundException) {
             e.printStackTrace()
             false // Unable to determine, return a default value
@@ -350,15 +340,19 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         val newVisibility = if (mHoverControlsLayout.isVisible) View.GONE else View.VISIBLE
         mHoverControlsLayout.visibility = newVisibility
         Looper.myLooper()?.let {
-            Handler(it).postDelayed({
-                if (mHoverControlsLayout.isVisible) mHoverControlsLayout.visibility = View.GONE
-            }, 5000)
+            Handler(it)
+                .postDelayed(
+                    {
+                        if (mHoverControlsLayout.isVisible)
+                            mHoverControlsLayout.visibility = View.GONE
+                    },
+                    5000
+                )
         }
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         super.onMediaItemTransition(mediaItem, reason)
-        Log.e(TAG, "onMediaItemTransition")
         mPlayerView.player?.let {
             updateSeekBar()
             mDuration = it.duration
@@ -373,7 +367,6 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     override fun onPlaybackStateChanged(playbackState: Int) {
-        Log.e(TAG, "onPlaybackStateChanged")
         super.onPlaybackStateChanged(playbackState)
         if (playbackState == ExoPlayer.STATE_READY) {
             mPlayerView.player?.let {
@@ -391,10 +384,8 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-        Log.e(TAG, "onIsPlayingChanged")
-        if (isPlaying && !mIsUserTrackingTouch) mPlayerView.postDelayed(
-            this::setCurrentPlayerPosition, mUpdatePositionDelayMs
-        )
+        if (isPlaying && !mIsUserTrackingTouch)
+            mPlayerView.postDelayed(this::setCurrentPlayerPosition, mUpdatePositionDelayMs)
         setPlayAndPause()
     }
 
@@ -404,7 +395,8 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
             if (mPlaybackSpeed > 2) mPlaybackSpeed = 1f
             when (mPlaybackSpeed) {
                 1f -> mIvPlaylistMediaSpeed.setImageResource(R.drawable.ic_playlist_speed_1x)
-                1.5f -> mIvPlaylistMediaSpeed.setImageResource(R.drawable.ic_playlist_speed_1_point_5_x)
+                1.5f ->
+                    mIvPlaylistMediaSpeed.setImageResource(R.drawable.ic_playlist_speed_1_point_5_x)
                 2f -> mIvPlaylistMediaSpeed.setImageResource(R.drawable.ic_playlist_speed_2x)
             }
             mUpdatePositionDelayMs = (mUpdatePositionDelayMs / mPlaybackSpeed).toLong()
@@ -419,12 +411,10 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
                     mRepeatMode = Player.REPEAT_MODE_ALL
                     mIvPlaylistRepeat.setImageResource(R.drawable.ic_playlist_repeat_all_on)
                 }
-
                 Player.REPEAT_MODE_ALL -> {
                     mRepeatMode = Player.REPEAT_MODE_ONE
                     mIvPlaylistRepeat.setImageResource(R.drawable.ic_playlist_repeat_1)
                 }
-
                 Player.REPEAT_MODE_ONE -> {
                     mRepeatMode = Player.REPEAT_MODE_OFF
                     mIvPlaylistRepeat.setImageResource(R.drawable.ic_playlist_repeat_all_off)
@@ -446,11 +436,9 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun initializePlayer() {
-        Log.e(TAG, "initializePlayer")
         mPlayerView.player = controller
         controller?.addListener(this@PlaylistPlayerActivity)
         mPlayerView.player?.let { currentPlayer ->
-            Log.e(TAG, "addListener")
             currentPlayer.shuffleModeEnabled = mIsShuffleOn
             currentPlayer.repeatMode = mRepeatMode
             currentPlayer.setPlaybackSpeed(mPlaybackSpeed)
@@ -474,7 +462,6 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mIvPrevVideo.isEnabled = false
         mIvPrevVideo.alpha = 0.4f
     }
-
 
     private fun setNextMedia() {
         mIvNextVideo.setOnClickListener {
@@ -503,8 +490,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mIvPlayPauseVideo.setOnClickListener {
             mPlayerView.player?.let {
                 setPlayOrPauseIcon(mIvPlayPauseVideo)
-                if (it.isPlaying) it.pause()
-                else it.play()
+                if (it.isPlaying) it.pause() else it.play()
             }
         }
     }
@@ -539,37 +525,37 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun setSeekBarListener() {
-        mVideoSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar?, progress: Int, fromUser: Boolean
-            ) {
-                mPlayerView.player?.let {
-                    updateTime(it.currentPosition)
+        mVideoSeekBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    mPlayerView.player?.let { updateTime(it.currentPosition) }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    mIsUserTrackingTouch = true
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    mIsUserTrackingTouch = false
+                    mPlayerView.player?.let {
+                        val percentage = seekBar.progress.toFloat() / 100f
+                        it.seekTo((mDuration * percentage).toLong())
+                        updateTime(it.currentPosition)
+                    }
                 }
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                mIsUserTrackingTouch = true
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                mIsUserTrackingTouch = false
-                mPlayerView.player?.let {
-                    val percentage = seekBar.progress.toFloat() / 100f
-                    it.seekTo((mDuration * percentage).toLong())
-                    updateTime(it.currentPosition)
-                }
-            }
-        })
+        )
     }
 
     private fun setCurrentPlayerPosition() {
         mPlayerView.player?.let {
             if (it.isPlaying) {
                 updateTime(it.currentPosition)
-                mPlayerView.postDelayed(
-                    this::setCurrentPlayerPosition, mUpdatePositionDelayMs
-                )
+                mPlayerView.postDelayed(this::setCurrentPlayerPosition, mUpdatePositionDelayMs)
             }
             if (it.isPlaying && !mIsUserTrackingTouch) updateSeekBar()
         }
@@ -609,18 +595,16 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun updatePortraitView() {
-        // view?.afterMeasured {
-        //     view?.fitsSystemWindows = true
-        // }
-
         val layoutParams: FrameLayout.LayoutParams =
             mAspectRatioFrameLayout.layoutParams as FrameLayout.LayoutParams
         mPlayerView.afterMeasured {
-            layoutParams.height = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                if (context?.resources?.getBoolean(R.bool.isTablet) == true) 650f else 300f,
-                resources.displayMetrics
-            ).toInt()
+            layoutParams.height =
+                TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        if (context?.resources?.getBoolean(R.bool.isTablet) == true) 650f else 300f,
+                        resources.displayMetrics
+                    )
+                    .toInt()
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             mAspectRatioFrameLayout.layoutParams = layoutParams
             mAspectRatioFrameLayout.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
@@ -634,7 +618,11 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
 
         mMainLayout.mSlideState = BottomPanelLayout.PanelState.COLLAPSED
         mTvVideoTitle.afterMeasured {
-            val availableHeight = Integer.min(mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom), 190.dpToPx.toInt())
+            val availableHeight =
+                Integer.min(
+                    mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom),
+                    190.dpToPx.toInt()
+                )
             mMainLayout.panelHeight = availableHeight
         }
 
@@ -643,9 +631,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
             mLayoutVideoControls.visibility = View.VISIBLE
         }
         mPlaylistToolbar.visibility = View.VISIBLE
-        val windowInsetsController = WindowCompat.getInsetsController(
-            window, window.decorView
-        )
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
         mBackImg.visibility = View.GONE
         mEmptyView.visibility = View.GONE
@@ -653,9 +639,6 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
     }
 
     private fun updateLandscapeView() {
-        // view?.afterMeasured {
-        //     view?.fitsSystemWindows = false
-        // }
         val layoutParams: FrameLayout.LayoutParams =
             mAspectRatioFrameLayout.layoutParams as FrameLayout.LayoutParams
         mPlayerView.afterMeasured {
@@ -677,9 +660,7 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         mPlayerView.showController()
         mLayoutVideoControls.visibility = View.GONE
         mPlaylistToolbar.visibility = View.GONE
-        val windowInsetsController = WindowCompat.getInsetsController(
-            window, window.decorView
-        )
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
@@ -728,50 +709,33 @@ class PlaylistPlayerActivity : PlaylistBaseActivity(), Player.Listener, BottomPa
         }
     }
 
-    override fun onMediaFileDownloadProgressed(id:String, totalBytes:Long, receivedBytes:Long, percentComplete:Byte, timeRemaining:String) {
-        mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(HlsContentProgressModel(id, totalBytes, receivedBytes, "" + percentComplete))
+    override fun onMediaFileDownloadProgressed(
+        id: String,
+        totalBytes: Long,
+        receivedBytes: Long,
+        percentComplete: Byte,
+        timeRemaining: String
+    ) {
+        mPlaylistItemAdapter?.updatePlaylistItemDownloadProgress(
+            HlsContentProgressModel(id, totalBytes, receivedBytes, "" + percentComplete)
+        )
     }
 
-    override fun onItemCached(playlistItem:PlaylistItem) {
-        Log.e(TAG, "onItemCached")
+    override fun onItemCached(playlistItem: PlaylistItem) {
         mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
     }
 
-    override fun onItemUpdated(playlistItem:PlaylistItem) {
-        Log.e(TAG, "onItemUpdated")
+    override fun onItemUpdated(playlistItem: PlaylistItem) {
         mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
     }
 
-    override fun onPlaylistUpdated(playlist:Playlist) {
-        Log.e(TAG, "onPlaylistUpdated")
+    override fun onPlaylistUpdated(playlist: Playlist) {
         fetchPlaylistData()
     }
 
-    override fun onEvent(eventType: Int , id : String) {
+    override fun onEvent(eventType: Int, id: String) {
         if (eventType == PlaylistEvent.ITEM_MOVED && id.equals(mPlaylistId)) {
             fetchPlaylistData()
         }
     }
-
-    // override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
-    //     if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
-    //         playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-    //             PlaylistUtils.showSharingDialog(
-    //                 this@PlaylistPlayerActivity, it
-    //             )
-    //         }
-    //     } else {
-    //         if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
-    //             mPlayerView.player?.stop()
-    //             // if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
-    //             finish()
-    //         } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
-    //             val moveOrCopyItems = ArrayList<PlaylistItem>()
-    //             playlistItemOptionModel.playlistItem?.let { moveOrCopyItems.add(it) }
-    //             PlaylistUtils.moveOrCopyModel =
-    //                 MoveOrCopyModel(playlistItemOptionModel.optionType,mPlaylistId, "", moveOrCopyItems)
-    //         }
-    //         // mPlaylistViewModel.setPlaylistItemOption(playlistItemOptionModel)
-    //     }
-    // }
 }

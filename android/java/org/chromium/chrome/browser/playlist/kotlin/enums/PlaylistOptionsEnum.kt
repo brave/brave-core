@@ -11,7 +11,7 @@ import androidx.annotation.Keep
 
 @Keep
 enum class PlaylistOptionsEnum {
-    //Playlist button options
+    // Playlist button options
     ADD_MEDIA,
     OPEN_PLAYLIST,
     PLAYLIST_SETTINGS,

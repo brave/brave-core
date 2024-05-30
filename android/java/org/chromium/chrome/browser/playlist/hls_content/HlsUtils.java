@@ -15,9 +15,10 @@ import org.chromium.base.Log;
 import org.chromium.base.PathUtils;
 import org.chromium.chrome.browser.playlist.PlaylistStreamingObserverImpl;
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.HLSParsingUtil;
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
+import org.chromium.chrome.browser.util.ServiceUtils;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
@@ -174,7 +175,7 @@ public class HlsUtils {
     }
 
     private static String getPlaylistIdFromFile(PlaylistItem playlistItem) {
-        String playlistId = "Default";
+        String playlistId = ConstantUtils.DEFAULT_PLAYLIST;
         if (playlistItem != null && playlistItem.cached) {
             // For i.e.
             // "file:///data/user/0/com.brave.browser_nightly/app_chrome/Default/playlist/399C40F34AF31E593D0C48B9ECEEB4CA/media_file.m3u8"
@@ -229,9 +230,7 @@ public class HlsUtils {
     }
 
     public static boolean isVideoPlaybackServiceRunning() {
-        // return PlaylistUtils.isServiceRunning(
-        //         ContextUtils.getApplicationContext(), VideoPlaybackService.class);
-        return WireguardUtils.isServiceRunningInForeground(
+        return ServiceUtils.isServiceRunning(
                 ContextUtils.getApplicationContext(), VideoPlaybackService.class);
     }
 }

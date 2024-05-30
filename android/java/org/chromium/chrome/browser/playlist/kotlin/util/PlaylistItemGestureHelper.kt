@@ -22,20 +22,19 @@ import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
 import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
-import kotlin.math.min
 
+import kotlin.math.min
 
 class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHolder<M>, M : Any>(
     context: Context,
     private val recyclerView: RecyclerView,
     private val adapter: AbstractRecyclerViewAdapter<M, VH>,
     private val itemInteractionListener: ItemInteractionListener
-) : SimpleCallback(
-    UP or DOWN, START or END
-), RecyclerView.OnItemTouchListener {
+) : SimpleCallback(UP or DOWN, START or END), RecyclerView.OnItemTouchListener {
 
     private val deleteIcon: Drawable?
     private val shareIcon: Drawable?
@@ -46,14 +45,18 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
     private var swipePosition = -1
     private var oldSwipePosition = -1
 
-    private val gestureListener: SimpleOnGestureListener = object : SimpleOnGestureListener() {
-        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-            if (swipePosition != -1) {
-                for (button in buttonPositions[swipePosition].orEmpty()) if (button.handleTouch(e)) return true
+    private val gestureListener: SimpleOnGestureListener =
+        object : SimpleOnGestureListener() {
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                if (swipePosition != -1) {
+                    for (button in buttonPositions[swipePosition].orEmpty()) if (
+                        button.handleTouch(e)
+                    )
+                        return true
+                }
+                return false
             }
-            return false
         }
-    }
 
     init {
         deleteIcon = AppCompatResources.getDrawable(context, R.drawable.ic_playlist_delete)
@@ -125,13 +128,12 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
 
         val rightBound = itemView.left + dX.toInt()
 
-        if (!buttonPositions.containsKey(viewHolder.bindingAdapterPosition)) buttonPositions[viewHolder.bindingAdapterPosition] =
-            instantiateOptions(viewHolder.bindingAdapterPosition)
+        if (!buttonPositions.containsKey(viewHolder.bindingAdapterPosition))
+            buttonPositions[viewHolder.bindingAdapterPosition] =
+                instantiateOptions(viewHolder.bindingAdapterPosition)
 
-
-        buttonPositions[viewHolder.bindingAdapterPosition]?.get(0)?.viewRect = Rect(
-            itemView.left, itemView.top, itemView.right, itemView.bottom
-        )
+        buttonPositions[viewHolder.bindingAdapterPosition]?.get(0)?.viewRect =
+            Rect(itemView.left, itemView.top, itemView.right, itemView.bottom)
 
         val shareIconMargin = (itemView.height - shareIcon.intrinsicHeight) / 2
         val shareIconTop = itemView.top + (itemView.height - shareIcon.intrinsicHeight) / 2
@@ -139,9 +141,8 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
         val shareIconLeft = itemView.left + shareIconMargin
         val shareIconRight = shareIconLeft + shareIcon.intrinsicWidth
 
-        if (rightBound >= shareIconRight) shareIcon.setBounds(
-            shareIconLeft, shareIconTop, shareIconRight, shareIconBottom
-        )
+        if (rightBound >= shareIconRight)
+            shareIcon.setBounds(shareIconLeft, shareIconTop, shareIconRight, shareIconBottom)
         else shareIcon.setBounds(0, 0, 0, 0)
 
         shareIconBg.setBounds(itemView.left, itemView.top, itemView.right, itemView.bottom)
@@ -172,28 +173,24 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
         deleteIcon.draw(c)
     }
 
-    override fun onSelectedChanged(
-        viewHolder: RecyclerView.ViewHolder?, actionState: Int
-    ) {
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
 
-
-        if (viewHolder is AbstractRecyclerViewAdapter.AbstractViewHolder<*> && !viewHolder.isSelected(
-                viewHolder.bindingAdapterPosition
-            )
+        if (
+            viewHolder is AbstractRecyclerViewAdapter.AbstractViewHolder<*> &&
+                !viewHolder.isSelected(viewHolder.bindingAdapterPosition)
         ) {
             viewHolder.itemView.setBackgroundResource(R.color.playlist_background)
         }
     }
 
-    override fun clearView(
-        recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder
-    ) {
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        if (viewHolder is AbstractRecyclerViewAdapter.AbstractViewHolder<*> && !viewHolder.isSelected(
-                viewHolder.bindingAdapterPosition
-            )
-        ) viewHolder.itemView.background = null
+        if (
+            viewHolder is AbstractRecyclerViewAdapter.AbstractViewHolder<*> &&
+                !viewHolder.isSelected(viewHolder.bindingAdapterPosition)
+        )
+            viewHolder.itemView.background = null
     }
 
     override fun getMovementFlags(
@@ -205,12 +202,12 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
 
     override fun isLongPressDragEnabled(): Boolean = false
 
-    private fun instantiateOptions(position: Int): List<OptionButton> = listOf(
-        OptionButton(position, itemInteractionListener::onShare)
-    )
+    private fun instantiateOptions(position: Int): List<OptionButton> =
+        listOf(OptionButton(position, itemInteractionListener::onShare))
 
     inner class OptionButton(
-        private val adapterPosition: Int, private val click: (position: Int) -> Unit
+        private val adapterPosition: Int,
+        private val click: (position: Int) -> Unit
     ) {
         var viewRect: Rect? = null
 

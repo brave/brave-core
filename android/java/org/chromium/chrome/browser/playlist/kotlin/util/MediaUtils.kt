@@ -10,14 +10,16 @@ package org.chromium.chrome.browser.playlist.kotlin.util
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.HLS_FILE_EXTENSION
+
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
-
 object MediaUtils {
-    private val TAG: String = "Playlist/"+this::class.java.simpleName
+    private val TAG: String = "Playlist/" + this::class.java.simpleName
+
     @JvmStatic
     fun getFileSizeFromUri(context: Context, uri: Uri): Long {
         var fileSize = 0L
@@ -32,13 +34,13 @@ object MediaUtils {
                 }
             }
         } catch (ex: Exception) {
-            Log.e(TAG, ::getFileSizeFromUri.name + " : "+  ex.message.toString())
+            Log.e(TAG, ::getFileSizeFromUri.name + " : " + ex.message.toString())
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close()
                 } catch (ex: IOException) {
-                    Log.e(TAG, ::getFileSizeFromUri.name + " : "+  ex.message.toString())
+                    Log.e(TAG, ::getFileSizeFromUri.name + " : " + ex.message.toString())
                 }
             }
         }
@@ -50,26 +52,25 @@ object MediaUtils {
         try {
             val file = File(filePath)
             data?.let { file.appendBytes(it) }
-        } catch (ex:Exception) {
-            Log.e(TAG, ::writeToFile.name + " : "+  ex.message.toString())
+        } catch (ex: Exception) {
+            Log.e(TAG, ::writeToFile.name + " : " + ex.message.toString())
         }
     }
 
     @JvmStatic
-    fun isFileExist(filePath: String) : Boolean {
+    fun isFileExist(filePath: String): Boolean {
         return try {
             val file = File(filePath)
             file.exists()
-        } catch (ex:Exception) {
-            Log.e(TAG, ::writeToFile.name + " : "+  ex.message.toString())
+        } catch (ex: Exception) {
+            Log.e(TAG, ::writeToFile.name + " : " + ex.message.toString())
             false
         }
     }
 
     @JvmStatic
     fun isHlsFile(mediaPath: String): Boolean {
-        val extension: String = mediaPath
-            .substring(mediaPath.lastIndexOf("."))
+        val extension: String = mediaPath.substring(mediaPath.lastIndexOf("."))
         return extension == HLS_FILE_EXTENSION
     }
 }

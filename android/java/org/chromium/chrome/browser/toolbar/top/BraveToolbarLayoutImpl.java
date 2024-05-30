@@ -728,19 +728,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             playlistItems.add(playlistItem);
                         }
                     }
-                    if (playlistItems.size() > 0) {
-                        mPlaylistService.addMediaFiles(
-                                playlistItems.toArray(new PlaylistItem[0]),
-                                ConstantUtils.DEFAULT_PLAYLIST,
-                                true,
-                                addedItems -> {
-                                    if (addedItems.length > 0) {
-                                        showAddedToPlaylistSnackBar();
-                                    }
-                                });
-                    } else {
-                        showAlreadyAddedToPlaylistSnackBar();
-                    }
+                    // if (playlistItems.size() > 0) {
+                    mPlaylistService.addMediaFiles(
+                            playlistItems.toArray(new PlaylistItem[0]),
+                            ConstantUtils.DEFAULT_PLAYLIST,
+                            true,
+                            addedItems -> {
+                                if (addedItems.length > 0) {
+                                    showAddedToPlaylistSnackBar();
+                                }
+                            });
+                    // } else {
+                    //     showAlreadyAddedToPlaylistSnackBar();
+                    // }
                 });
     }
 

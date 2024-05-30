@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.ImageViewCompat
+
 import org.chromium.chrome.R
 
 class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
@@ -37,14 +38,14 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
 
     private val defaultStatusBarColor: Int
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : this(
-        context,
-        attrs,
-        defStyleAttr,
-        0
-    )
+    constructor(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) : this(context, attrs, defStyleAttr, 0)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
     constructor(context: Context) : this(context, null)
 
     init {
@@ -56,25 +57,29 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
             typedArray.getBoolean(R.styleable.PlaylistToolbar_showActionButton, false)
         val requireDarkMode =
             typedArray.getBoolean(R.styleable.PlaylistToolbar_requireDarkMode, false)
-        val backButtonIcon = typedArray.getResourceId(
-            R.styleable.PlaylistToolbar_backButtonIcon,
-            R.drawable.ic_back_toolbar_playlist
-        )
+        val backButtonIcon =
+            typedArray.getResourceId(
+                R.styleable.PlaylistToolbar_backButtonIcon,
+                R.drawable.ic_back_toolbar_playlist
+            )
 
-        val optionButtonIcon = typedArray.getResourceId(
-            R.styleable.PlaylistToolbar_optionButtonIcon,
-            R.drawable.ic_options_toolbar_playlist
-        )
+        val optionButtonIcon =
+            typedArray.getResourceId(
+                R.styleable.PlaylistToolbar_optionButtonIcon,
+                R.drawable.ic_options_toolbar_playlist
+            )
 
-        val optionButtonTint = typedArray.getResourceId(
-            R.styleable.PlaylistToolbar_optionButtonTint,
-            android.R.color.white
-        )
+        val optionButtonTint =
+            typedArray.getResourceId(
+                R.styleable.PlaylistToolbar_optionButtonTint,
+                android.R.color.white
+            )
 
-        val backButtonTint = typedArray.getResourceId(
-            R.styleable.PlaylistToolbar_backButtonTint,
-            android.R.color.white
-        )
+        val backButtonTint =
+            typedArray.getResourceId(
+                R.styleable.PlaylistToolbar_backButtonTint,
+                android.R.color.white
+            )
 
         layoutMainToolbar = findViewById(R.id.layoutMainToolbar)
         tvTitleToolbarPlaylist = findViewById(R.id.tvTitleToolbarPlaylist)
@@ -94,8 +99,7 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         ivOptionsToolbarPlayList.visibility = if (showOptions) VISIBLE else GONE
         tvActionToolbarPlaylist.visibility = if (showCreateButton) VISIBLE else GONE
         ivBackToolbarPlaylist.setOnClickListener {
-            if (context is AppCompatActivity)
-                context.onBackPressedDispatcher.onBackPressed()
+            if (context is AppCompatActivity) context.onBackPressedDispatcher.onBackPressed()
         }
         tvTitleToolbarPlaylist.text = typedArray.getString(R.styleable.PlaylistToolbar_title)
         tvActionToolbarPlaylist.text =
@@ -108,10 +112,8 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         ivDeleteItem = layoutEditToolbar.findViewById(R.id.ivDeleteItem)
         tvItemSelected.text = context.getString(R.string.playlist_number_selected, 0)
 
-        defaultStatusBarColor = if (context is AppCompatActivity)
-            context.window.statusBarColor
-        else
-            0
+        defaultStatusBarColor =
+            if (context is AppCompatActivity) context.window.statusBarColor else 0
 
         if (requireDarkMode) {
             tvTitleToolbarPlaylist.setTextColor(getColor(android.R.color.white))

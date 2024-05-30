@@ -13,20 +13,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet.PlaylistOptionsBottomSheetAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.card.MaterialCardView
 
 class PlaylistOptionsBottomSheet(
     private val playlistOptionsModel: MutableList<PlaylistOptionsModel>,
     private val playlistOptionsListener: PlaylistOptionsListener
-) :
-    BottomSheetDialogFragment(), PlaylistOptionsListener {
+) : BottomSheetDialogFragment(), PlaylistOptionsListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,9 +50,6 @@ class PlaylistOptionsBottomSheet(
         val behavior = BottomSheetBehavior.from(layoutBottomSheet)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         behavior.isDraggable = false
-
-        // dialog?.window?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-        //     ?.setBackgroundResource(android.R.color.transparent)
     }
 
     override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
