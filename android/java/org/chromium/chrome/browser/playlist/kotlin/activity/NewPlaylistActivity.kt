@@ -79,7 +79,7 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
     private var mShouldMoveOrCopy: Boolean = false
 
     override fun initializeViews() {
-        setContentView(R.layout.fragment_new_playlist)
+        setContentView(R.layout.activity_new_playlist)
 
         mPlaylistToolbar = findViewById(R.id.playlistToolbar)
         mEtPlaylistName = findViewById(R.id.etPlaylistName)
