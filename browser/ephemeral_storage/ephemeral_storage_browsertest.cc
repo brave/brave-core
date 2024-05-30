@@ -164,8 +164,7 @@ void HttpRequestMonitor::Clear() {
 }
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
-    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-}
+    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) = default;
 
 EphemeralStorageBrowserTest::~EphemeralStorageBrowserTest() = default;
 
@@ -175,6 +174,7 @@ void EphemeralStorageBrowserTest::SetUp() {
 }
 
 void EphemeralStorageBrowserTest::SetUpOnMainThread() {
+  InProcessBrowserTest::SetUpOnMainThread();
   std::vector<base::FilePath> test_data_dirs(2);
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
   base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
