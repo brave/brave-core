@@ -34,6 +34,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeEnforceKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kIsolateSandboxedIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
