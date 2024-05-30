@@ -5,6 +5,8 @@
 
 #include "brave/components/omnibox/browser/brave_search_suggestion_parser.h"
 
+#include <utility>
+
 #include "components/omnibox/browser/autocomplete_scheme_classifier.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

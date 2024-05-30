@@ -5,6 +5,8 @@
 
 #include "brave/components/omnibox/browser/brave_search_suggestion_parser.h"
 
+#include <utility>
+
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/omnibox/browser/search_suggestion_parser.h"
