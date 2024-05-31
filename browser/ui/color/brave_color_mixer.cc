@@ -416,6 +416,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       key, mixer, leo::light::kColorTextInteractive,
       leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
+  mixer[kColorSearchConversionBannerTypeBackground] = {
+      SkColorSetRGB(0xEA, 0xF1, 0xFF)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
@@ -428,17 +431,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(104, 0xFF, 0xFF, 0xFF)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
       SkColorSetRGB(0xEF, 0xEF, 0xFB)};
-  mixer[kColorSearchConversionButtonTypeInputAppend] = {
-      SkColorSetRGB(0x58, 0x5C, 0x6D)};
-  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
-      SkColorSetRGB(0xED, 0xEE, 0xFA)};
-  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
-      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
 
-  mixer[kColorSearchConversionButtonTypeDescNormal] = {
-      SkColorSetRGB(0x44, 0x4d, 0xd0)};
-  mixer[kColorSearchConversionButtonTypeDescHovered] = {
-      SkColorSetRGB(0x1F, 0x25, 0x7A)};
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0x49, 0x50, 0x57)};
@@ -534,6 +527,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       key, mixer, leo::light::kColorTextInteractive,
       leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
+  mixer[kColorSearchConversionBannerTypeBackground] = {
+      SkColorSetRGB(0x00, 0x1C, 0x37)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
@@ -546,16 +542,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(104, 0x17, 0x19, 0x1E)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
       SkColorSetARGB(104, 0x1F, 0x25, 0x7A)};
-  mixer[kColorSearchConversionButtonTypeInputAppend] = {
-      SkColorSetRGB(0xAC, 0xAF, 0xBB)};
-  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
-      SkColorSetRGB(0x1A, 0x1C, 0x3B)};
-  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
-      SkColorSetRGB(0x1F, 0x25, 0x7A)};
-  mixer[kColorSearchConversionButtonTypeDescNormal] = {
-      SkColorSetRGB(0xA6, 0xAB, 0xE9)};
-  mixer[kColorSearchConversionButtonTypeDescHovered] = {
-      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0xC2, 0xC4, 0xCF)};

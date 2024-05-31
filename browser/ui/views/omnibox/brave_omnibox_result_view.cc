@@ -136,7 +136,8 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
   brave_search_promotion_view_ =
       AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
-          this, g_browser_process->local_state(), prefs));
+          this, g_browser_process->local_state(), prefs,
+          popup_view_->controller()->client()->GetTemplateURLService()));
 
   brave_search_promotion_view_->SetTypeAndInput(
       GetConversionTypeFromMatch(match_),
