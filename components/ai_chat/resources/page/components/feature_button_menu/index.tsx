@@ -57,21 +57,13 @@ export default function FeatureMenu() {
                 {getLocale(`braveLeoModelSubtitle-${model.key}`)}
               </p>
             </div>
-            {model.access === mojom.ModelAccess.PREMIUM && (
-              <Icon
-                className={classnames({
-                  [styles.lockOpen]: context.isPremiumUser
-                })}
-                name={context.isPremiumUser ? 'lock-open' : 'lock-plain'}
-              />
-            )}
-            {model.access === mojom.ModelAccess.BASIC_AND_PREMIUM && (
+            {model.access === mojom.ModelAccess.PREMIUM && !context.isPremiumUser && (
               <Label
-               className={styles.modelFreemiumLabel}
-               mode={context.isPremiumUser ? 'loud' : 'default'}
+               className={styles.modelLabel}
+               mode={'outline'}
                color='blue'
               >
-                {context.isPremiumUser ? getLocale('modelFreemiumLabelPremium') : getLocale('modelFreemiumLabelNonPremium')}
+                {getLocale('modelPremiumLabelNonPremium')}
               </Label>
             )}
           </div>
