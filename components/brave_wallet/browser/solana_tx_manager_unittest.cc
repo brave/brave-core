@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -125,6 +126,56 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
   mojom::AccountIdPtr SolAccount(size_t index) {
     return GetAccountUtils().EnsureSolAccount(index)->account_id->Clone();
+  }
+
+  void SetAccountInfoInterceptor(
+      const std::map<std::string, std::string> account_owner_map) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, account_owner_map](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          base::Value::Dict request_root =
+              base::test::ParseJsonDict(request_string);
+          auto* params = request_root.FindList("params");
+          ASSERT_TRUE(params && !params->empty() && (*params)[0].is_string());
+          std::string account_address = (*params)[0].GetString();
+          ASSERT_TRUE(account_owner_map.contains(account_address));
+
+          if (account_owner_map.at(account_address).empty()) {
+            url_loader_factory_.AddResponse(request.url.spec(), R"(
+                {
+                  "jsonrpc":"2.0","id":1,
+                  "result":{
+                    "context":{"slot":123121238},
+                    "value":null
+                  }
+                })");
+            return;
+          }
+
+          std::string json = R"(
+              {
+                "jsonrpc":"2.0","id":1,
+                "result": {
+                  "context":{"slot":123065869},
+                    "value":{
+                    "data":["SEVMTE8gV09STEQ=","base64"],
+                    "executable":false,
+                    "lamports":88801034809120,
+                    "owner": "$1",
+                    "rentEpoch":284
+                  }
+                }
+              }
+          )";
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              base::ReplaceStringPlaceholders(
+                  json, {account_owner_map.at(account_address)}, nullptr));
+        }));
   }
 
   void SetInterceptor(
@@ -356,6 +407,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
   }
 
   void TestMakeTokenProgramTransferTxData(
+      base::Location location,
       const std::string& chain_id,
       const std::string& spl_token_mint_address,
       const std::string& from_wallet_address,
@@ -365,13 +417,22 @@ class SolanaTxManagerUnitTest : public testing::Test {
       mojom::SolanaProviderError expected_error,
       const std::string& expected_err_message) {
     base::RunLoop run_loop;
+    SCOPED_TRACE(testing::Message() << location.ToString());
     solana_tx_manager()->MakeTokenProgramTransferTxData(
         chain_id, spl_token_mint_address, from_wallet_address,
-        to_wallet_address, amount,
+        to_wallet_address, amount, 8 /* decimals */,
         base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
                                        mojom::SolanaProviderError error,
                                        const std::string& err_message) {
           EXPECT_EQ(expected_tx_data, tx_data);
+          if (expected_tx_data && tx_data) {
+            EXPECT_EQ(expected_tx_data->tx_type, tx_data->tx_type);
+            EXPECT_EQ(expected_tx_data->instructions, tx_data->instructions);
+            EXPECT_EQ(expected_tx_data->message_header,
+                      tx_data->message_header);
+            EXPECT_EQ(expected_tx_data->static_account_keys,
+                      tx_data->static_account_keys);
+          }
           EXPECT_EQ(expected_error, error);
           EXPECT_EQ(expected_err_message, err_message);
           run_loop.Quit();
@@ -745,7 +806,15 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
-TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
+class TokenProgramTest
+    : public SolanaTxManagerUnitTest,
+      public testing::WithParamInterface<mojom::SPLTokenProgram> {};
+
+TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
+  mojom::SPLTokenProgram token_program = GetParam();
+  const std::string token_program_id =
+      SPLTokenProgramToProgramID(token_program);
+
   // Test receiving associated token account exists.
   std::string from_wallet_address =
       "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
@@ -755,39 +824,45 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM";
 
   auto from_associated_token_account = SolanaKeyring::GetAssociatedTokenAccount(
-      spl_token_mint_address, from_wallet_address);
+      spl_token_mint_address, from_wallet_address, token_program);
   ASSERT_TRUE(from_associated_token_account);
   auto to_associated_token_account = SolanaKeyring::GetAssociatedTokenAccount(
-      spl_token_mint_address, to_wallet_address);
+      spl_token_mint_address, to_wallet_address, token_program);
   ASSERT_TRUE(to_associated_token_account);
 
-  const std::vector<uint8_t> data = {3, 128, 150, 152, 0, 0, 0, 0, 0};
+  const std::vector<uint8_t> data = {12, 128, 150, 152, 0, 0, 0, 0, 0, 8};
 
   auto solana_account_meta1 = mojom::SolanaAccountMeta::New(
       *from_associated_token_account, nullptr, false, true);
+  auto mint_account_meta = mojom::SolanaAccountMeta::New(spl_token_mint_address,
+                                                         nullptr, false, false);
   auto solana_account_meta2 = mojom::SolanaAccountMeta::New(
       *to_associated_token_account, nullptr, false, true);
   auto solana_account_meta3 =
       mojom::SolanaAccountMeta::New(from_wallet_address, nullptr, true, false);
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
   account_metas.push_back(std::move(solana_account_meta1));
+  account_metas.push_back(mint_account_meta.Clone());
   account_metas.push_back(std::move(solana_account_meta2));
   account_metas.push_back(std::move(solana_account_meta3));
 
   auto mojom_param = mojom::SolanaInstructionParam::New(
       "amount", "Amount", "10000000",
       mojom::SolanaInstructionParamType::kUint64);
+  auto mojom_decimals_param = mojom::SolanaInstructionParam::New(
+      "decimals", "Decimals", "8", mojom::SolanaInstructionParamType::kUint8);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
+  mojom_params.emplace_back(std::move(mojom_decimals_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
-      static_cast<uint32_t>(mojom::SolanaTokenInstruction::kTransfer),
+      static_cast<uint32_t>(mojom::SolanaTokenInstruction::kTransferChecked),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
-          std::nullopt, mojom::SolanaTokenInstruction::kTransfer),
+          std::nullopt, mojom::SolanaTokenInstruction::kTransferChecked),
       std::move(mojom_params));
 
-  auto mojom_transfer_instruction = mojom::SolanaInstruction::New(
-      mojom::kSolanaTokenProgramId, std::move(account_metas), data,
-      std::move(mojom_decoded_data));
+  auto mojom_transfer_instruction =
+      mojom::SolanaInstruction::New(token_program_id, std::move(account_metas),
+                                    data, std::move(mojom_decoded_data));
 
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(mojom_transfer_instruction.Clone());
@@ -795,10 +870,11 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       "", 0, from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
       10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
       std::move(instructions), mojom::SolanaMessageVersion::kLegacy,
-      mojom::SolanaMessageHeader::New(1, 0, 1),
-      std::vector<std::string>(
-          {from_wallet_address, *from_associated_token_account,
-           *to_associated_token_account, mojom::kSolanaTokenProgramId}),
+      mojom::SolanaMessageHeader::New(1, 0, 2),
+      std::vector<std::string>({from_wallet_address,
+                                *from_associated_token_account,
+                                *to_associated_token_account, token_program_id,
+                                spl_token_mint_address}),
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr);
 
@@ -812,16 +888,19 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
           "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
           "lamports":88801034809120,
-          "owner":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "owner":"$1",
           "rentEpoch":284
         }
       }
     }
   )";
-  SetInterceptor("", 0, "", json);
+
+  SetInterceptor(
+      "", 0, "",
+      base::ReplaceStringPlaceholders(json, {token_program_id}, nullptr));
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, spl_token_mint_address, from_wallet_address,
-      to_wallet_address, 10000000, std::move(tx_data),
+      FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
+      from_wallet_address, to_wallet_address, 10000000, std::move(tx_data),
       mojom::SolanaProviderError::kSuccess, "");
 
   account_metas.clear();
@@ -835,8 +914,8 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       spl_token_mint_address, nullptr, false, false);
   auto solana_account_meta8 = mojom::SolanaAccountMeta::New(
       mojom::kSolanaSystemProgramId, nullptr, false, false);
-  auto solana_account_meta9 = mojom::SolanaAccountMeta::New(
-      mojom::kSolanaTokenProgramId, nullptr, false, false);
+  auto solana_account_meta9 =
+      mojom::SolanaAccountMeta::New(token_program_id, nullptr, false, false);
   account_metas.push_back(std::move(solana_account_meta4));
   account_metas.push_back(std::move(solana_account_meta5));
   account_metas.push_back(std::move(solana_account_meta6));
@@ -864,60 +943,42 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
            *from_associated_token_account,
            mojom::kSolanaAssociatedTokenProgramId, to_wallet_address,
            spl_token_mint_address, mojom::kSolanaSystemProgramId,
-           mojom::kSolanaTokenProgramId}),
+           token_program_id}),
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr);
 
   // Test owner is not token program account.
-  json = R"(
-    {
-      "jsonrpc":"2.0","id":1,
-      "result": {
-        "context":{"slot":123065869},
-        "value":{
-          "data":["SEVMTE8gV09STEQ=","base64"],
-          "executable":false,
-          "lamports":88801034809120,
-          "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
-        }
-      }
-    }
-  )";
-  SetInterceptor("", 0, "", json);
+  SetAccountInfoInterceptor(
+      {{spl_token_mint_address, token_program_id},
+       {*to_associated_token_account, "11111111111111111111111111111111"}});
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, spl_token_mint_address, from_wallet_address,
-      to_wallet_address, 10000000, tx_data.Clone(),
+      FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
+      from_wallet_address, to_wallet_address, 10000000, tx_data.Clone(),
       mojom::SolanaProviderError::kSuccess, "");
 
   // Test receiving associated token account does not exist.
-  json = R"(
-    {
-      "jsonrpc":"2.0","id":1,
-      "result":{
-        "context":{"slot":123121238},
-        "value":null
-      }
-    })";
-  SetInterceptor("", 0, "", json);
+  SetAccountInfoInterceptor({{spl_token_mint_address, token_program_id},
+                             {*to_associated_token_account, ""}});
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, spl_token_mint_address, from_wallet_address,
-      to_wallet_address, 10000000, std::move(tx_data),
+      FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
+      from_wallet_address, to_wallet_address, 10000000, std::move(tx_data),
       mojom::SolanaProviderError::kSuccess, "");
 
   // Empty addresses should be handled.
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, "", to_wallet_address, spl_token_mint_address,
-      10000000, nullptr, mojom::SolanaProviderError::kInternalError,
-      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      FROM_HERE, mojom::kSolanaMainnet, "", to_wallet_address,
+      spl_token_mint_address, 10000000, nullptr,
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, from_wallet_address, "", spl_token_mint_address,
-      10000000, nullptr, mojom::SolanaProviderError::kInternalError,
-      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      FROM_HERE, mojom::kSolanaMainnet, from_wallet_address, "",
+      spl_token_mint_address, 10000000, nullptr,
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, from_wallet_address, to_wallet_address, "",
-      10000000, nullptr, mojom::SolanaProviderError::kInternalError,
-      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      FROM_HERE, mojom::kSolanaMainnet, from_wallet_address, to_wallet_address,
+      "", 10000000, nullptr, mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // Test sending to OFAC Sanctioned address
   const std::string ofac_sanctioned_to =
@@ -925,11 +986,16 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
   TestMakeTokenProgramTransferTxData(
-      mojom::kSolanaMainnet, spl_token_mint_address, from_wallet_address,
-      ofac_sanctioned_to, 10000000, std::move(tx_data),
+      FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
+      from_wallet_address, ofac_sanctioned_to, 10000000, std::move(tx_data),
       mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
 }
+
+INSTANTIATE_TEST_SUITE_P(TokenProgramTest,
+                         TokenProgramTest,
+                         testing::Values(mojom::SPLTokenProgram::kToken,
+                                         mojom::SPLTokenProgram::kToken2022));
 
 TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
   // OK: TX data from base64-encoded transaction.

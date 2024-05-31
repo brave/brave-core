@@ -1706,6 +1706,64 @@ TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(GetAllUserAssets(&prefs)[1],
+            GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+                         "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
+                         false, false));
+  EXPECT_FALSE(GetUserAsset(
+      &prefs, mojom::CoinType::SOL, mojom::kMainnetChainId,
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "", false, false))
+      << "Coin type should match";
+  EXPECT_FALSE(GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kSolanaMainnet,
+                            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
+                            false, false))
+      << "Chain id should match";
+  EXPECT_FALSE(GetUserAsset(
+      &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", false, false))
+      << "Address should match";
+
+  // Test token ID cases.
+  auto erc721_token = mojom::BlockchainToken::New(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "name1", "logo",
+      false /* is_erc20 */, true /* is_erc721 */, false /* is_erc1155 */,
+      mojom::SPLTokenProgram::kUnsupported, true /* is_nft */,
+      false /* is_spam */, "SYMBOL", 8 /* decimals */, true /* visible */,
+      "0x11", "" /* coingecko_id */, mojom::kMainnetChainId,
+      mojom::CoinType::ETH);
+  ASSERT_TRUE(AddUserAsset(&prefs, erc721_token.Clone()));
+  EXPECT_EQ(erc721_token,
+            GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+                         "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x11",
+                         true, false));
+  EXPECT_FALSE(GetUserAsset(
+      &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x22", true, false))
+      << "Token ID should match";
+
+  auto erc1155_token = mojom::BlockchainToken::New(
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "name2", "logo",
+      false /* is_erc20 */, false /* is_erc721 */, true /* is_erc1155 */,
+      mojom::SPLTokenProgram::kUnsupported, true /* is_nft */,
+      false /* is_spam */, "SYMBOL2", 8 /* decimals */, true /* visible */,
+      "0x22", "" /* coingecko_id */, mojom::kMainnetChainId,
+      mojom::CoinType::ETH);
+  ASSERT_TRUE(AddUserAsset(&prefs, erc1155_token.Clone()));
+  EXPECT_EQ(erc1155_token,
+            GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+                         "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "0x22",
+                         false, true));
+  EXPECT_FALSE(GetUserAsset(
+      &prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "0x11", false, true))
+      << "Token ID should match";
+}
+
 TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
@@ -1809,6 +1867,33 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSpamStatus) {
 
   asset->chain_id = "0x98765";
   EXPECT_FALSE(SetAssetSpamStatus(&prefs, asset, true));
+}
+
+TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto asset = mojom::BlockchainToken::New(
+      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "TSLA", "tsla.png", false,
+      false, false, mojom::SPLTokenProgram::kUnknown, false, false, "TSLA", 8,
+      true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
+
+  ASSERT_TRUE(
+      SetAssetSPLTokenProgram(&prefs, asset, mojom::SPLTokenProgram::kToken));
+  asset->spl_token_program = mojom::SPLTokenProgram::kToken;
+  EXPECT_EQ(asset,
+            GetUserAsset(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                         "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "",
+                         false, false));
+
+  EXPECT_TRUE(SetAssetSPLTokenProgram(&prefs, asset,
+                                      mojom::SPLTokenProgram::kToken2022));
+  asset->spl_token_program = mojom::SPLTokenProgram::kToken2022;
+  EXPECT_EQ(asset,
+            GetUserAsset(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                         "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "",
+                         false, false));
 }
 
 }  // namespace brave_wallet

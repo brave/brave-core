@@ -1770,6 +1770,27 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSPLTokenProgramByMint(const base::Location& location,
+                                    const std::string& mint,
+                                    const std::string& chain_id,
+                                    mojom::SPLTokenProgram expected_program,
+                                    mojom::SolanaProviderError expected_error,
+                                    const std::string& expected_error_message) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSPLTokenProgramByMint(
+        chain_id, mint,
+        base::BindLambdaForTesting([&](mojom::SPLTokenProgram program,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(program, expected_program);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void GetFilEstimateGas(const std::string& chain_id,
                          const std::string& from,
                          const std::string& to,
@@ -7486,6 +7507,131 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
             run_loop_4.Quit();
           }));
   run_loop_4.Run();
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
+  const std::string tsla_mint_addr =
+      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ";
+
+  // Invalid mint or chain ID yields invalid params.
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "", mojom::kSolanaMainnet, mojom::SPLTokenProgram::kUnknown,
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, tsla_mint_addr, "", mojom::SPLTokenProgram::kUnknown,
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Setup registry.
+  const char token_list_json[] = R"(
+    {
+      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+        "name": "Tesla Inc.",
+        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+        "erc20": false,
+        "symbol": "TSLA",
+        "decimals": 8,
+        "chainId": "0x65"
+      },
+      "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
+        "name": "SolarMoon",
+        "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+        "erc20": false,
+        "symbol": "MOON",
+        "decimals": 5,
+        "chainId": "0x65",
+        "token2022": true
+      }
+    })";
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
+  registry->UpdateTokenList(std::move(token_list_map));
+
+  // Setup user asset.
+  auto asset = mojom::BlockchainToken::New(
+      tsla_mint_addr, "Tesla", "tsla.png", false, false, false,
+      mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true, "", "",
+      mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  ASSERT_TRUE(AddUserAsset(prefs(), asset.Clone()));
+
+  auto asset2 = mojom::BlockchainToken::New(
+      "So11111111111111111111111111111111111111112", "Wrapped SOL", "sol.png",
+      false, false, false, mojom::SPLTokenProgram::kUnknown, false, false,
+      "WSOL", 8, true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  ASSERT_TRUE(AddUserAsset(prefs(), asset2.Clone()));
+
+  // Test record in registry, the value should be used.
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Test record in both registry and user assets. The value in user assets
+  // should be used.
+  TestGetSPLTokenProgramByMint(FROM_HERE, tsla_mint_addr, mojom::kSolanaMainnet,
+                               mojom::SPLTokenProgram::kToken2022,
+                               mojom::SolanaProviderError::kSuccess, "");
+
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":18446744073709551615,
+          "owner":"$1",
+          "rentEpoch":18446744073709551615
+        }
+      }
+    }
+  )";
+
+  // Test record in user assets with unknown token program, result is from
+  // network and the pref value should be updated based on the result.
+  auto user_asset =
+      GetUserAsset(prefs(), mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   asset2->contract_address, "", false, false);
+  ASSERT_TRUE(user_asset);
+  EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kUnknown);
+
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
+                 base::ReplaceStringPlaceholders(
+                     json, {mojom::kSolanaTokenProgramId}, nullptr));
+
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, asset2->contract_address, mojom::kSolanaMainnet,
+      mojom::SPLTokenProgram::kToken, mojom::SolanaProviderError::kSuccess, "");
+
+  user_asset =
+      GetUserAsset(prefs(), mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   asset2->contract_address, "", false, false);
+  ASSERT_TRUE(user_asset);
+  EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kToken);
+
+  // Test record not in registry or user assets, result is from network.
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
+                 base::ReplaceStringPlaceholders(
+                     json, {mojom::kSolanaToken2022ProgramId}, nullptr));
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Valid inputs but request times out yields internal error.
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kUnknown,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

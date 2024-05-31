@@ -41,42 +41,47 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSOL) {
 namespace spl_token_program {
 
 TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
-  auto ins = Transfer("program", "source", "destination", "authority",
-                      std::vector<std::string>(), 10000000);
+  auto ins =
+      TransferChecked("program", "source", "mint_address", "destination",
+                      "authority", std::vector<std::string>(), 10000000, 2u);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 128, 150, 152, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("program", "source", "destination", "authority",
-                 std::vector<std::string>({"signer1", "signer2"}), 10000000);
+  ins = TransferChecked(
+      "program", "source", "mint_address", "destination", "authority",
+      std::vector<std::string>({"signer1", "signer2"}), 10000000, 2u);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, false, false),
                  SolanaAccountMeta("signer1", std::nullopt, true, false),
                  SolanaAccountMeta("signer2", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 128, 150, 152, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 128, 150, 152, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("program", "source", "destination", "authority",
-                 std::vector<std::string>(), 1);
+  ins = TransferChecked("program", "source", "mint_address", "destination",
+                        "authority", std::vector<std::string>(), 1, 2);
   EXPECT_TRUE(ins);
   EXPECT_EQ(ins.value(),
             SolanaInstruction(
                 "program",
                 {SolanaAccountMeta("source", std::nullopt, false, true),
+                 SolanaAccountMeta("mint_address", std::nullopt, false, false),
                  SolanaAccountMeta("destination", std::nullopt, false, true),
                  SolanaAccountMeta("authority", std::nullopt, true, false)},
-                std::vector<uint8_t>({3, 1, 0, 0, 0, 0, 0, 0, 0})));
+                std::vector<uint8_t>({12, 1, 0, 0, 0, 0, 0, 0, 0, 2})));
 
-  ins = Transfer("", "", "", "", std::vector<std::string>(), 1);
+  ins = TransferChecked("", "", "", "", "", std::vector<std::string>(), 1, 2);
   EXPECT_FALSE(ins);
 }
 
@@ -85,9 +90,9 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
 namespace spl_associated_token_account_program {
 
 TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
-  auto ins = CreateAssociatedTokenAccount("funding_address", "wallet_address",
-                                          "associated_token_account_address",
-                                          "spl_token_mint_address");
+  auto ins = CreateAssociatedTokenAccount(
+      "program", "funding_address", "wallet_address",
+      "associated_token_account_address", "spl_token_mint_address");
   ASSERT_TRUE(ins);
   EXPECT_EQ(
       ins.value(),
@@ -101,19 +106,23 @@ TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
                              false),
            SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
                              false),
-           SolanaAccountMeta(mojom::kSolanaTokenProgramId, std::nullopt, false,
-                             false)},
+           SolanaAccountMeta("program", std::nullopt, false, false)},
           std::vector<uint8_t>()));
 
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+  EXPECT_FALSE(CreateAssociatedTokenAccount("", "funding_address",
                                             "associated_token_account_address",
                                             "wallet_address", ""));
-  EXPECT_FALSE(CreateAssociatedTokenAccount(
-      "funding_address", "", "wallet_address", "spl_token_mint_address"));
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
+                                            "associated_token_account_address",
+                                            "wallet_address", ""));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address", "",
+                                            "wallet_address",
+                                            "spl_token_mint_address"));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
                                             "associated_token_account_address",
                                             "", "spl_token_mint_address"));
-  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+  EXPECT_FALSE(CreateAssociatedTokenAccount("program", "funding_address",
                                             "associated_token_account_address",
                                             "wallet_address", ""));
 }

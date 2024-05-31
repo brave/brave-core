@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
+
 #include <memory>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -200,15 +201,32 @@ TEST(SolanaKeyringUnitTest, FindProgramDerivedAddress) {
 TEST(SolanaKeyringUnitTest, GetAssociatedTokenAccount) {
   auto addr = SolanaKeyring::GetAssociatedTokenAccount(
       "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
-      "8ZETgHajbpwRr6wMjuytNvziM4VUVxfaJWhhhQoYot5T");
+      "8ZETgHajbpwRr6wMjuytNvziM4VUVxfaJWhhhQoYot5T",
+      mojom::SPLTokenProgram::kToken);
   ASSERT_TRUE(addr);
   EXPECT_EQ(*addr, "5EHQ5fBsMdN3mESRhTJeEjNb3g33YWzkPBGDjoVtAGkN");
 
   addr = SolanaKeyring::GetAssociatedTokenAccount(
       "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
-      "5ofLtZax45EhkNSkoBrDPdWNonKmijMTsW41ckzPs2r5");
+      "5ofLtZax45EhkNSkoBrDPdWNonKmijMTsW41ckzPs2r5",
+      mojom::SPLTokenProgram::kToken);
   ASSERT_TRUE(addr);
   EXPECT_EQ(*addr, "3bHK4cYoW94angdFWJeDBQcAuSq3mtYEdVaqkm1xXKcy");
+
+  addr = SolanaKeyring::GetAssociatedTokenAccount(
+      "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
+      "5ofLtZax45EhkNSkoBrDPdWNonKmijMTsW41ckzPs2r5",
+      mojom::SPLTokenProgram::kToken2022);
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "4h5w4Yn8egf1w2GgaR5LhC3RgZTL3rMyuCVFtb4dGyVE");
+
+  for (auto program : {mojom::SPLTokenProgram::kUnknown,
+                       mojom::SPLTokenProgram::kUnsupported}) {
+    addr = SolanaKeyring::GetAssociatedTokenAccount(
+        "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
+        "5ofLtZax45EhkNSkoBrDPdWNonKmijMTsW41ckzPs2r5", program);
+    EXPECT_FALSE(addr);
+  }
 }
 
 TEST(SolanaKeyringUnitTest, GetAssociatedMetadataAccount) {
