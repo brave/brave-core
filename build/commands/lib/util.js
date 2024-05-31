@@ -633,20 +633,20 @@ const util = {
     // Guard to check if gn gen was successful last time.
     const gnGenGuard = new ActionGuard(path.join(outputDir, 'gn_gen.guard'))
 
-    const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
-    const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+    gnGenGuard.run((wasInterrupted) => {
+      const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
+      const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
 
-    const shouldRunGnGen =
-      config.force_gn_gen ||
-      !doesBuildNinjaExist ||
-      hasBuildArgsUpdated ||
-      gnGenGuard.isDirty()
+      const shouldRunGnGen =
+        config.force_gn_gen ||
+        !doesBuildNinjaExist ||
+        hasBuildArgsUpdated ||
+        wasInterrupted
 
-    if (shouldRunGnGen) {
-      gnGenGuard.run(() => {
+      if (shouldRunGnGen) {
         util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
-      })
-    }
+      }
+    })
   },
 
   writeGnBuildArgs: (outputDir, buildArgs) => {
@@ -846,7 +846,11 @@ const util = {
     if (!fs.existsSync(file)) {
       return default_value
     }
-    return fs.readJSONSync(file)
+    try {
+      return fs.readJSONSync(file)
+    } catch {
+      return default_value
+    }
   },
 
   writeJSON: (file, value) => {
