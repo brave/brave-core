@@ -49,7 +49,7 @@
 				    android:textSize="20sp"
 				    android:layout_gravity="center_vertical"
 				    android:singleLine="true"
-        			android:ellipsize="end"
+        			android:ellipsize="start"
         			android:fontFamily="sans-serif"
 				    android:textColor="@color/shield_title_color"/>
 
