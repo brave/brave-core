@@ -6,6 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_bookmark_sub_menu_model.h"
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
 #include "chrome/grit/generated_resources.h"
 
@@ -15,7 +16,9 @@
 
 #define RecentTabsSubMenuModel BraveRecentTabsSubMenuModel
 #define BookmarkSubMenuModel BraveBookmarkSubMenuModel
+#define kBrowserToolsUpdateChromeRefreshIcon kBrowserToolsUpdateIcon
 #include "src/chrome/browser/ui/toolbar/app_menu_model.cc"
+#undef kBrowserToolsUpdateChromeRefreshIcon
 #undef BookmarkSubMenuModel
 #undef RecentTabsSubMenuModel
 
