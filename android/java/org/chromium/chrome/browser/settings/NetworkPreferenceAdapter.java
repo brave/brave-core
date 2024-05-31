@@ -66,6 +66,10 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private String mActiveFilChainId;
     private final List<String> mHiddenFilChainIds;
 
+    // Sol network types.
+    private String mActiveSolChainId;
+    private final List<String> mHiddenSolChainIds;
+
     /**
      * Listener implemented by {@link BraveWalletNetworksPreference} used to handle network
      * operations.
@@ -92,6 +96,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             @NonNull final Context context,
             @NonNull NetworkListContainer networkListContainerEth,
             @NonNull NetworkListContainer networkListContainerFil,
+            @NonNull NetworkListContainer networkListContainerSol,
             @NonNull final ItemClickListener listener) {
         mContext = context;
 
@@ -102,8 +107,12 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         mActiveFilChainId = networkListContainerFil.mActiveChainId;
         mHiddenFilChainIds = networkListContainerFil.mHiddenChainIds;
 
+        mActiveSolChainId = networkListContainerSol.mActiveChainId;
+        mHiddenSolChainIds = networkListContainerSol.mHiddenChainIds;
+
         // Generate items for ETH networks.
-        mElements = getNetworkInfoByChainId(mCustomEthChainIds, networkListContainerEth.mNetworks);
+        mElements =
+                getEthNetworkInfoByChainId(mCustomEthChainIds, networkListContainerEth.mNetworks);
 
         // Generate items for FIL networks.
         if (networkListContainerFil.mNetworks.size() > 0) {
@@ -112,11 +121,20 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                 mElements.add(new NetworkPreferenceItem(filNetwork));
             }
         }
+
+        // Generate items for SOL networks.
+        if (networkListContainerSol.mNetworks.size() > 0) {
+            mElements.add(new NetworkPreferenceItem(LABEL_SOLANA_ITEM));
+            for (NetworkInfo solNetwork : networkListContainerSol.mNetworks) {
+                mElements.add(new NetworkPreferenceItem(solNetwork));
+            }
+        }
+
         mListener = listener;
     }
 
     @NonNull
-    private List<NetworkPreferenceItem> getNetworkInfoByChainId(
+    private List<NetworkPreferenceItem> getEthNetworkInfoByChainId(
             @NonNull final List<String> customChainIds,
             @NonNull final List<NetworkInfo> allNetworks) {
         final List<NetworkPreferenceItem> customChains = new ArrayList<>();
@@ -156,15 +174,14 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         final NetworkPreferenceItem networkPreferenceItem = mElements.get(position);
 
         if (type == NETWORK_ITEM) {
-            final NetworkInfo info = networkPreferenceItem.getNetworkInfo();
-            final boolean activeNetwork =
-                    info.chainId.equals(mActiveEthChainId)
-                            || info.chainId.equals(mActiveFilChainId);
-            final boolean customNetwork = mCustomEthChainIds.contains(info.chainId);
+            final NetworkInfo networkInfo = networkPreferenceItem.getNetworkInfo();
+            final boolean activeNetwork = isActiveNetwork(networkInfo);
+            // Custom networks are available only for ETH coin type.
+            final boolean customNetwork = mCustomEthChainIds.contains(networkInfo.chainId);
             final NetworkViewHolder networkViewHolder = (NetworkViewHolder) viewHolder;
             final boolean visible;
 
-            networkViewHolder.mTitle.setText(info.chainName);
+            networkViewHolder.mTitle.setText(networkInfo.chainName);
             if (activeNetwork) {
                 networkViewHolder.mTitle.setTypeface(null, Typeface.BOLD);
                 networkViewHolder.mShowHideNetwork.setEnabled(false);
@@ -173,9 +190,9 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                 networkViewHolder.mShowHideNetwork.setEnabled(true);
             }
 
-            if ((mHiddenEthChainIds.contains(info.chainId)
-                            || mHiddenFilChainIds.contains(info.chainId))
-                    && !activeNetwork) {
+            final boolean hiddenNetwork = isHiddenNetwork(networkInfo);
+
+            if (hiddenNetwork && !activeNetwork) {
                 visible = false;
                 networkViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_off);
             } else {
@@ -183,14 +200,16 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                 networkViewHolder.mShowHideNetwork.setImageResource(R.drawable.ic_eye_on);
             }
 
-            StringBuilder description = new StringBuilder(info.chainId);
-            if (info.activeRpcEndpointIndex >= 0
-                    && info.activeRpcEndpointIndex < info.rpcEndpoints.length) {
-                description.append(" ").append(info.rpcEndpoints[info.activeRpcEndpointIndex].url);
+            StringBuilder description = new StringBuilder(networkInfo.chainId);
+            if (networkInfo.activeRpcEndpointIndex >= 0
+                    && networkInfo.activeRpcEndpointIndex < networkInfo.rpcEndpoints.length) {
+                description
+                        .append(" ")
+                        .append(networkInfo.rpcEndpoints[networkInfo.activeRpcEndpointIndex].url);
             }
             networkViewHolder.mDescription.setText(description.toString());
 
-            networkViewHolder.mMoreButton.setContentDescriptionContext(info.chainName);
+            networkViewHolder.mMoreButton.setContentDescriptionContext(networkInfo.chainName);
 
             // The more button will become visible if setMenuButtonDelegate is called.
             networkViewHolder.mMoreButton.setVisibility(View.INVISIBLE);
@@ -203,16 +222,16 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             networkViewHolder.mShowHideNetwork.setOnClickListener(
                     v ->
                             mListener.onItemVisibilityChange(
-                                    info,
+                                    networkInfo,
                                     !visible,
                                     result -> {
                                         if (result) {
                                             if (visible) {
-                                                addHiddenNetwork(info);
+                                                addHiddenNetwork(networkInfo);
                                                 networkViewHolder.mShowHideNetwork.setImageResource(
                                                         R.drawable.ic_eye_off);
                                             } else {
-                                                removeHiddenNetwork(info);
+                                                removeHiddenNetwork(networkInfo);
                                                 networkViewHolder.mShowHideNetwork.setImageResource(
                                                         R.drawable.ic_eye_on);
                                             }
@@ -231,33 +250,33 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     (model) -> {
                         int textId = model.get(ListMenuItemProperties.TITLE_ID);
                         if (textId == R.string.edit) {
-                            mListener.onItemEdit(info, false);
+                            mListener.onItemEdit(networkInfo, false);
                         } else if (textId == R.string.remove) {
                             // Remove option is only for ETH custom networks.
                             mListener.onItemRemove(
-                                    info,
+                                    networkInfo,
                                     result -> {
                                         if (result) {
-                                            mCustomEthChainIds.remove(info.chainId);
+                                            mCustomEthChainIds.remove(networkInfo.chainId);
                                             // The network may or may not be hidden.
-                                            mHiddenEthChainIds.remove(info.chainId);
+                                            mHiddenEthChainIds.remove(networkInfo.chainId);
                                             mElements.remove(networkPreferenceItem);
                                             notifyItemRemoved(position);
                                         }
                                     });
                         } else if (textId == R.string.brave_wallet_add_network_set_as_active) {
                             mListener.onItemSetAsActive(
-                                    info,
+                                    networkInfo,
                                     result -> {
                                         if (result) {
                                             final String previousActiveChainId =
-                                                    getActiveChainId(info.coin);
-                                            setActiveChainId(info);
+                                                    getActiveChainId(networkInfo.coin);
+                                            setActiveChainId(networkInfo);
 
                                             final int oldActiveChainIdIndex =
-                                                    findChainIdPosition(previousActiveChainId);
+                                                    findChainIdPosition(previousActiveChainId, networkInfo.coin);
                                             final int newActiveChainIdIndex =
-                                                    findChainIdPosition(info.chainId);
+                                                    findChainIdPosition(networkInfo.chainId, networkInfo.coin);
 
                                             if (oldActiveChainIdIndex != NO_POSITION) {
                                                 notifyItemChanged(oldActiveChainIdIndex);
@@ -288,11 +307,23 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
-    private int findChainIdPosition(@NonNull final String chainId) {
+    private boolean isHiddenNetwork(@NonNull final NetworkInfo network) {
+        return (network.coin == CoinType.ETH && mHiddenEthChainIds.contains(network.chainId))
+                || (network.coin == CoinType.FIL && mHiddenFilChainIds.contains(network.chainId))
+                || (network.coin == CoinType.SOL && mHiddenSolChainIds.contains(network.chainId));
+    }
+
+    private boolean isActiveNetwork(@NonNull final NetworkInfo network) {
+        return (network.coin == CoinType.ETH && network.chainId.equals(mActiveEthChainId))
+                || (network.coin == CoinType.FIL && network.chainId.equals(mActiveFilChainId))
+                || (network.coin == CoinType.SOL && network.chainId.equals(mActiveSolChainId));
+    }
+
+    private int findChainIdPosition(@NonNull final String chainId, @CoinType.EnumType final int coinType) {
         for (int i = 0; i < mElements.size(); i++) {
             NetworkPreferenceItem networkPreferenceItem = mElements.get(i);
             if (networkPreferenceItem.mNetworkInfo != null
-                    && chainId.equals(networkPreferenceItem.mNetworkInfo.chainId)) {
+                    && chainId.equals(networkPreferenceItem.mNetworkInfo.chainId) && coinType == networkPreferenceItem.mNetworkInfo.coin) {
                 return i;
             }
         }
@@ -304,7 +335,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         return switch (coinType) {
             case CoinType.ETH -> mActiveEthChainId;
             case CoinType.FIL -> mActiveFilChainId;
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
+            case CoinType.SOL -> mActiveSolChainId;
+            case CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported active chain for coin type %d.", coinType));
             default -> throw new IllegalStateException("Unexpected value: " + coinType);
         };
@@ -314,7 +346,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         switch (network.coin) {
             case CoinType.ETH -> mActiveEthChainId = network.chainId;
             case CoinType.FIL -> mActiveFilChainId = network.chainId;
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
+            case CoinType.SOL -> mActiveSolChainId = network.chainId;
+            case CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported active chain for coin type %d.", network.coin));
             default -> throw new IllegalStateException("Unexpected value: " + network.coin);
         }
@@ -332,7 +365,12 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     mHiddenFilChainIds.add(network.chainId);
                 }
             }
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
+            case CoinType.SOL -> {
+                if (!mHiddenSolChainIds.contains(network.chainId)) {
+                    mHiddenSolChainIds.add(network.chainId);
+                }
+            }
+            case CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported hidden chain for coin type %d.", network.coin));
             default -> throw new IllegalStateException("Unexpected value: " + network.coin);
         }
@@ -342,7 +380,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         switch (network.coin) {
             case CoinType.ETH -> mHiddenEthChainIds.remove(network.chainId);
             case CoinType.FIL -> mHiddenFilChainIds.remove(network.chainId);
-            case CoinType.SOL, CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
+            case CoinType.SOL -> mHiddenSolChainIds.remove(network.chainId);
+            case CoinType.BTC, CoinType.ZEC -> throw new IllegalStateException(
                     String.format("Unsupported hidden chain for coin type %d.", network.coin));
             default -> throw new IllegalStateException("Unexpected value: " + network.coin);
         }

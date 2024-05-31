@@ -117,19 +117,20 @@ public class BraveWalletNetworksPreference extends Preference
             getAvailableChainIds(
                     CoinType.ETH,
                     (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
-                        NetworkPreferenceAdapter.NetworkListContainer networkListContainerEth =
-                                new NetworkPreferenceAdapter.NetworkListContainer(
-                                        ethNetworks,
-                                        defaultEthChainId,
-                                        hiddenEthChainIds,
-                                        customEthChainIds);
+                        final NetworkPreferenceAdapter.NetworkListContainer
+                                networkListContainerEth =
+                                        new NetworkPreferenceAdapter.NetworkListContainer(
+                                                ethNetworks,
+                                                defaultEthChainId,
+                                                hiddenEthChainIds,
+                                                customEthChainIds);
                         getAvailableChainIds(
                                 CoinType.FIL,
                                 (defaultFilChainId,
                                         filNetworks,
                                         customFilChainIds,
                                         hiddenFilChainIds) -> {
-                                    NetworkPreferenceAdapter.NetworkListContainer
+                                    final NetworkPreferenceAdapter.NetworkListContainer
                                             networkListContainerFil =
                                                     new NetworkPreferenceAdapter
                                                             .NetworkListContainer(
@@ -137,13 +138,29 @@ public class BraveWalletNetworksPreference extends Preference
                                                             defaultFilChainId,
                                                             hiddenFilChainIds,
                                                             customFilChainIds);
-                                    NetworkPreferenceAdapter adapter =
-                                            new NetworkPreferenceAdapter(
-                                                    getContext(),
-                                                    networkListContainerEth,
-                                                    networkListContainerFil,
-                                                    this);
-                                    mRecyclerView.setAdapter(adapter);
+                                    getAvailableChainIds(
+                                            CoinType.SOL,
+                                            (defaultSolChainId,
+                                                    solNetworks,
+                                                    customSolChainIds,
+                                                    hiddenSolChainIds) -> {
+                                                final NetworkPreferenceAdapter.NetworkListContainer
+                                                        networkListContainerSol =
+                                                                new NetworkPreferenceAdapter
+                                                                        .NetworkListContainer(
+                                                                        solNetworks,
+                                                                        defaultSolChainId,
+                                                                        hiddenSolChainIds,
+                                                                        customSolChainIds);
+                                                final NetworkPreferenceAdapter adapter =
+                                                        new NetworkPreferenceAdapter(
+                                                                getContext(),
+                                                                networkListContainerEth,
+                                                                networkListContainerFil,
+                                                                networkListContainerSol,
+                                                                this);
+                                                mRecyclerView.setAdapter(adapter);
+                                            });
                                 });
                     });
         }
