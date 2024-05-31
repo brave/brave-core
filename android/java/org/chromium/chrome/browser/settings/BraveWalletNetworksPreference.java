@@ -152,28 +152,31 @@ public class BraveWalletNetworksPreference extends Preference
                                                                         defaultSolChainId,
                                                                         hiddenSolChainIds,
                                                                         customSolChainIds);
-                                    getAvailableChainIds(CoinType.BTC, (defaultBtcChainId,
-                                                                        btcNetworks,
-                                                                        customBtcChainIds,
-                                                                        hiddenBtcChainIds) -> {
-                                        final NetworkPreferenceAdapter.NetworkListContainer
-                                                networkListContainerBtc =
-                                                new NetworkPreferenceAdapter
-                                                        .NetworkListContainer(
-                                                        btcNetworks,
-                                                        defaultBtcChainId,
-                                                        hiddenBtcChainIds,
-                                                        customBtcChainIds);
-                                        final NetworkPreferenceAdapter adapter =
-                                                new NetworkPreferenceAdapter(
-                                                        getContext(),
-                                                        networkListContainerEth,
-                                                        networkListContainerFil,
-                                                        networkListContainerSol,
-                                                        networkListContainerBtc,
-                                                        this);
-                                        mRecyclerView.setAdapter(adapter);
-                                    });
+                                                getAvailableChainIds(
+                                                        CoinType.BTC,
+                                                        (defaultBtcChainId,
+                                                                btcNetworks,
+                                                                customBtcChainIds,
+                                                                hiddenBtcChainIds) -> {
+                                                            final NetworkPreferenceAdapter
+                                                                            .NetworkListContainer
+                                                                    networkListContainerBtc =
+                                                                            new NetworkPreferenceAdapter
+                                                                                    .NetworkListContainer(
+                                                                                    btcNetworks,
+                                                                                    defaultBtcChainId,
+                                                                                    hiddenBtcChainIds,
+                                                                                    customBtcChainIds);
+                                                            final NetworkPreferenceAdapter adapter =
+                                                                    new NetworkPreferenceAdapter(
+                                                                            getContext(),
+                                                                            networkListContainerEth,
+                                                                            networkListContainerFil,
+                                                                            networkListContainerSol,
+                                                                            networkListContainerBtc,
+                                                                            this);
+                                                            mRecyclerView.setAdapter(adapter);
+                                                        });
                                             });
                                 });
                     });
