@@ -199,7 +199,6 @@ function ConversationList(props: ConversationListProps) {
               <Button
                 key={id}
                 kind='outline'
-                size="small"
                 onClick={() => handleQuestionSubmit(question)}
                 isDisabled={shouldDisableUserInput}
               >
