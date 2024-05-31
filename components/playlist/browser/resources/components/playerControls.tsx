@@ -28,6 +28,7 @@ const Container = styled.div`
 
   & > div {
     display: flex;
+    align-items: center;
     gap: ${spacing.m};
   }
 `
@@ -37,6 +38,9 @@ const StyledButton = styled(Button)`
   --leo-button-padding: ${spacing.s};
   align-items: center;
   display: flex;
+  width: var(--leo-icon-xl);
+  height: var(--leo-icon-xl);
+  padding: var(--leo-spacing-s);
 `
 
 const NormalPlayerButton = styled(StyledButton)`
@@ -74,6 +78,7 @@ function Control({
       size={size}
       onClick={onClick}
       title={title}
+      fab
     >
       <Icon name={iconName}></Icon>
     </Button>
