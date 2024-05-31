@@ -510,8 +510,6 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  /// `chainId` is only for .fil or .btc coin type
-  /// correct `BraveWallet.KeyringId` will be returned from `keyringIdForNewAccount`
   @MainActor func addPrimaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,
@@ -531,7 +529,6 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     return accountInfo != nil
   }
 
-  /// `chainId` is only for .fil or .btc coin type
   @MainActor func addSecondaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,
@@ -544,13 +541,23 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       accountName = defaultAccountName(for: coin, chainId: chainId)
     }
     let accountInfo: BraveWallet.AccountInfo?
-    if coin == .fil {
+    switch coin {
+    case .fil:
       accountInfo = await keyringService.importFilecoinAccount(
         accountName: accountName,
         privateKey: privateKey,
         network: chainId
       )
-    } else {
+    case .btc:
+      accountInfo = await keyringService.importBitcoinAccount(
+        accountName: accountName,
+        payload: privateKey,
+        network: chainId
+      )
+    case .zec:
+      // ZCash not supported on iOS yet, including account import
+      return nil
+    default:
       accountInfo = await keyringService.importAccount(
         accountName: accountName,
         privateKey: privateKey,
