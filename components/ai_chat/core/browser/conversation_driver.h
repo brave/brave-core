@@ -33,13 +33,10 @@ FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 namespace ai_chat {
 class AIChatMetrics;
 
-const std::string& GetActionTypeQuestion(mojom::ActionType action_type);
-
-using GeneratedTextCallback =
-    base::RepeatingCallback<void(const std::string& text)>;
-
 class ConversationDriver {
  public:
+  using GeneratedTextCallback =
+      base::RepeatingCallback<void(const std::string& text)>;
   // |invalidation_token| is an optional parameter that will be passed back on
   // the next call to |GetPageContent| so that the implementer may determine if
   // the page content is static or if it needs to be fetched again. Most page

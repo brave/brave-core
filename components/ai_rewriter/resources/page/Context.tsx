@@ -104,6 +104,11 @@ export default function Context(props: React.PropsWithChildren) {
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
   const [actionType, setActionType] = React.useState<ActionType>()
   const [generatedText, setGeneratedText] = React.useState<string>()
+  const generatedTextRef = React.useRef<string | undefined>(generatedText)
+  React.useEffect(() => {
+    generatedTextRef.current = generatedText
+  }, [generatedText])
+
   const [forwardHistory, setForwardHistory] = React.useState<string[]>([])
   const [backHistory, setBackHistory] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
@@ -160,6 +165,11 @@ export default function Context(props: React.PropsWithChildren) {
           // Reset Action/Instructions
           setActionType(undefined)
           setInstructionsText('')
+
+          // Don't update history if the text didn't change.
+          if (generatedTextRef.current === generatedText) {
+            return
+          }
 
           // Update history
           // TODO: include action & instructions in history

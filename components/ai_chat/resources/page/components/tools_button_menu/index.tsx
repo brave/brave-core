@@ -34,13 +34,13 @@ export default function ToolsButtonMenu(props: Props) {
       <div slot='anchor-content'>{props.children}</div>
       {props.actionList.map((actionGroup) => {
         return (
-          <>
+          <React.Fragment key={actionGroup.category}>
             <div className={styles.menuSectionTitle}>
               {actionGroup.category}
             </div>
             {actionGroup.entries.map((entry, i) => {
               if (entry.subheading) {
-                return <div className={styles.menuSubtitle}>{entry.subheading}</div>
+                return <div key={i} className={styles.menuSubtitle}>{entry.subheading}</div>
               } else {
                 return (
                   <leo-menu-item
@@ -56,7 +56,7 @@ export default function ToolsButtonMenu(props: Props) {
                 )
               }
             })}
-          </>
+          </React.Fragment>
         )
       })}
     </ButtonMenu>

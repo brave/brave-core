@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
@@ -14,6 +15,9 @@ import ModifyGeneration from './ModifyGeneration'
 
 const TitleText = styled.h2`
   font: ${font.heading.h3};
+
+  font-size: 16px;
+  line-height: 16px;
 `
 
 const TitleRow = styled.div`
@@ -94,7 +98,10 @@ export default function Layout() {
         <Icon name="erase" />
       </Button>
       <FlexSpacer />
-      <Button isLoading={context.isGenerating} onClick={context.generatedText ? context.acceptGeneratedText : context.submitRewriteRequest} isDisabled={context.isGenerating}>
+      <Button
+        isLoading={context.isGenerating}
+        onClick={context.generatedText ? context.acceptGeneratedText : context.submitRewriteRequest}
+        isDisabled={context.isGenerating || (!context.instructionsText && !context.selectedActionType)}>
         {context.isGenerating
           ? "Generating"
           : context.generatedText

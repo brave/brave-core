@@ -100,14 +100,14 @@ GetActionTypeQuestionMap() {
   return *map;
 }
 
-}  // namespace
-
 const std::string& GetActionTypeQuestion(mojom::ActionType action_type) {
   const auto& map = GetActionTypeQuestionMap();
   auto iter = map.find(action_type);
   CHECK(iter != map.end());
   return iter->second;
 }
+
+}  // namespace
 
 ConversationDriver::ConversationDriver(
     PrefService* profile_prefs,
