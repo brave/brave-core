@@ -1139,6 +1139,47 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetInterceptor(const GURL& expected_url,
+                      const std::map<std::string, std::string>& json_rsp_map) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [=, this](const network::ResourceRequest& request) {
+          EXPECT_EQ(request.url, expected_url);
+          std::string header_value;
+          ASSERT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
+          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+
+          ASSERT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+          ASSERT_TRUE(json_rsp_map.contains(header_value));
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(),
+                                          json_rsp_map.at(header_value));
+        }));
+  }
+
+  void SetOwnedTokenAccountsInterceptor(
+      const GURL& expected_url,
+      const std::string& token_accounts_rsp,
+      const std::string& token2022_accounts_rsp) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [=, this](const network::ResourceRequest& request) {
+          EXPECT_EQ(request.url, expected_url);
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          bool is_token = request_string.find(mojom::kSolanaTokenProgramId) !=
+                          std::string::npos;
+          bool is_token2022 =
+              request_string.find(mojom::kSolanaToken2022ProgramId) !=
+              std::string::npos;
+          ASSERT_TRUE(is_token || is_token2022);
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              is_token ? token_accounts_rsp : token2022_accounts_rsp);
+        }));
+  }
+
   void SetInvalidJsonInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [this](const network::ResourceRequest& request) {
@@ -4310,32 +4351,92 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaBalance) {
 TEST_F(JsonRpcServiceUnitTest, GetSPLTokenAccountBalance) {
   auto expected_network =
       GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
-  SetInterceptor(
-      expected_network, "getTokenAccountBalance", "",
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\","
-      "\"decimals\":2,\"uiAmount\":98.64,\"uiAmountString\":\"98.64\"}}}");
+
+  std::string account_info_rsp = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":18446744073709551615,
+          "owner":"$1",
+          "rentEpoch":18446744073709551615
+        }
+      }
+    }
+  )";
+
+  std::string balance_rsp = R"(
+    {
+      "jsonrpc":"2.0", "id":1,
+      "result":{
+        "context":{"slot":1069},
+        "value":{
+          "amount":"9864",
+          "decimals":2,
+          "uiAmount":98.64,
+          "uiAmountString":"98.64"
+        }
+      }
+    })";
+
+  std::map<std::string, std::string> mock_rsp = {
+      {"getAccountInfo",
+       base::ReplaceStringPlaceholders(
+           account_info_rsp, {mojom::kSolanaSystemProgramId}, nullptr)},
+      {"getTokenAccountBalance", balance_rsp}};
+  SetInterceptor(expected_network, mock_rsp);
+  TestGetSPLTokenAccountBalance(
+      "", 0u, "", mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  mock_rsp["getAccountInfo"] = base::ReplaceStringPlaceholders(
+      account_info_rsp, {mojom::kSolanaTokenProgramId}, nullptr);
+  SetInterceptor(expected_network, mock_rsp);
+  TestGetSPLTokenAccountBalance("9864", 2u, "98.64",
+                                mojom::SolanaProviderError::kSuccess, "");
+
+  mock_rsp["getAccountInfo"] = base::ReplaceStringPlaceholders(
+      account_info_rsp, {mojom::kSolanaToken2022ProgramId}, nullptr);
+  SetInterceptor(expected_network, mock_rsp);
   TestGetSPLTokenAccountBalance("9864", 2u, "98.64",
                                 mojom::SolanaProviderError::kSuccess, "");
 
   // Treat non-existed account as 0 balance.
-  SetInterceptor(expected_network, "getTokenAccountBalance", "",
-                 R"({"jsonrpc":"2.0","id":1,"error":
-                    {"code":-32602, "message": "Invalid param: could not find account"}})");
+  mock_rsp["getTokenAccountBalance"] =
+      R"({
+            "jsonrpc": "2.0",
+            "id": 1,
+            "error":{
+              "code": -32602,
+              "message": "Invalid param: could not find account"
+            }
+          })";
+  SetInterceptor(expected_network, mock_rsp);
   TestGetSPLTokenAccountBalance("0", 0u, "0",
                                 mojom::SolanaProviderError::kSuccess, "");
 
   // Response parsing error
-  SetInterceptor(expected_network, "getTokenAccountBalance", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  mock_rsp["getTokenAccountBalance"] =
+      R"({"jsonrpc":"2.0","id":1,"result":"0"})";
+  SetInterceptor(expected_network, mock_rsp);
   TestGetSPLTokenAccountBalance(
       "", 0u, "", mojom::SolanaProviderError::kParsingError,
       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
-  SetInterceptor(expected_network, "getTokenAccountBalance", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
-                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+  mock_rsp["getTokenAccountBalance"] =
+      R"({
+            "jsonrpc": "2.0",
+            "id": 1,
+            "error": {
+              "code": -32601,
+              "message": "method does not exist"
+            }
+          })";
+  SetInterceptor(expected_network, mock_rsp);
   TestGetSPLTokenAccountBalance("", 0u, "",
                                 mojom::SolanaProviderError::kMethodNotFound,
                                 "method does not exist");
@@ -4794,7 +4895,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
   auto expected_network_url =
       GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
 
-  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "", R"({
+  std::string token_accounts = R"({
     "jsonrpc": "2.0",
     "result": {
       "context": {
@@ -4831,7 +4932,36 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
       ]
     },
     "id": 1
-  })");
+  })";
+
+  std::string token2022_accounts = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+            "rentEpoch": 361
+          },
+          "pubkey": "5rUXc3r8bfHVadpvCUPLgcTphcwPMLihCJrxmBeaJEpR"
+        }
+      ]
+    },
+    "id": 1
+  })";
+
+  SetOwnedTokenAccountsInterceptor(expected_network_url, token_accounts,
+                                   token2022_accounts);
   // Create expected account infos
   std::vector<SolanaAccountInfo> expected_account_infos;
   SolanaAccountInfo account_info;
@@ -4846,18 +4976,17 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
   account_info.owner = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
   account_info.rent_epoch = 361;
 
-  expected_account_infos.push_back(std::move(account_info));
+  expected_account_infos.push_back(account_info);
   account_info.data =
       "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+"
       "lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
       "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       "QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       "AAA";
-  account_info.executable = false;
-  account_info.lamports = 2039280;
-  account_info.owner = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
-  account_info.rent_epoch = 361;
-  expected_account_infos.push_back(std::move(account_info));
+  expected_account_infos.push_back(account_info);
+
+  account_info.owner = mojom::kSolanaToken2022ProgramId;
+  expected_account_infos.push_back(account_info);
 
   std::optional solana_address =
       SolanaAddress::FromBase58("4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF");
@@ -4905,7 +5034,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenBalances) {
   auto expected_network_url =
       GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
 
-  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "", R"(
+  std::string token_accounts = R"(
     {
       "jsonrpc": "2.0",
       "result": {
@@ -4946,13 +5075,65 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenBalances) {
       },
       "id": 1
     }
-  )");
+  )";
 
+  std::string token2022_accounts = R"(
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "context": {
+          "apiVersion": "1.14.17",
+          "slot": 195856971
+        },
+        "value": [
+          {
+            "account": {
+              "data": {
+                "parsed": {
+                  "info": {
+                    "isNative": false,
+                    "mint": "6dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",
+                    "owner": "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X",
+                    "state": "initialized",
+                    "tokenAmount": {
+                      "amount": "898843",
+                      "decimals": 9,
+                      "uiAmount": 0.000898843,
+                      "uiAmountString": "0.000898843"
+                    }
+                  },
+                  "type": "account"
+                },
+                "program": "spl-token",
+                "space": 165
+              },
+              "executable": false,
+              "lamports": 2039280,
+              "owner": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+              "rentEpoch": 0
+            },
+            "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+          }
+        ]
+      },
+      "id": 1
+    }
+  )";
+  SetOwnedTokenAccountsInterceptor(
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL), token_accounts,
+      token2022_accounts);
   std::vector<mojom::SPLTokenAmountPtr> expected_results;
   mojom::SPLTokenAmountPtr result = mojom::SPLTokenAmount::New();
   result->mint = "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj";
   result->amount = "898865";
   result->ui_amount = "0.000898865";
+  result->decimals = 9;
+  expected_results.push_back(std::move(result));
+
+  result = mojom::SPLTokenAmount::New();
+  result->mint = "6dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj";
+  result->amount = "898843";
+  result->ui_amount = "0.000898843";
   result->decimals = 9;
   expected_results.push_back(std::move(result));
 
