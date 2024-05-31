@@ -286,6 +286,7 @@ export default {
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         apiHasError,
         switchToBasicModel,
+        shouldSendPageContents: siteInfo?.isContentAssociationPossible
       }
 
       return (
