@@ -3655,6 +3655,7 @@ extension BrowserViewController {
       braveCore: braveCore,
       webView: webView,
       script: BraveLeoScriptHandler.self,
+      braveTalkScript: self.braveTalkJitsiCoordinator,
       querySubmited: query
     )
 
@@ -3666,5 +3667,15 @@ extension BrowserViewController {
       )
     )
     present(chatController, animated: true)
+  }
+}
+
+extension BraveTalkJitsiCoordinator: AIChatBraveTalkJavascript {
+  @MainActor
+  public func getTranscript() async -> String? {
+    if self.isCallActive {
+      return await jitsiTranscriptProcessor?.getTranscript()
+    }
+    return nil
   }
 }
