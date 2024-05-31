@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
@@ -207,11 +208,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // Make sure initial state matches previously set flags and toolbar type.
-        mIsBottomToolbarVisible =
-                BottomToolbarConfiguration.isBottomToolbarEnabled()
-                        && BraveMenuButtonCoordinator.isMenuFromBottom()
-                        && !BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class);
+        if (context instanceof BraveLeoActivity) {
+            // Make sure initial state matches previously set flags.
+            mIsBottomToolbarVisible =
+                    BottomToolbarConfiguration.isBottomToolbarEnabled()
+                            && BraveMenuButtonCoordinator.isMenuFromBottom();
+        }
     }
 
     @Override
