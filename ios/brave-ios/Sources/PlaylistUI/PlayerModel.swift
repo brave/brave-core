@@ -674,7 +674,7 @@ extension AVPlayer {
 // MARK: -
 
 extension PlaylistItem {
-  fileprivate var cachedDataURL: URL? {
+  var cachedDataURL: URL? {
     guard let cachedData else { return nil }
     do {
       var isStale: Bool = false

@@ -107,7 +107,7 @@ extension EnvironmentValues {
 }
 
 extension View {
-  /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environement
+  /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environment
   /// values.
   func prepareEffectiveGeometryEnvironment() -> some View {
     modifier(EffectiveGeometryEnvironmentModifier())

@@ -145,9 +145,8 @@ extension MediaContentView {
           get: {
             if isScrubbing {
               return model.currentTime
-            } else {
-              return self.currentTime
             }
+            return self.currentTime
           },
           set: { newValue in
             Task { await model.seek(to: newValue, accurately: true) }
@@ -194,6 +193,7 @@ extension MediaContentView {
             RoutePickerView()
           }
         }
+        // FIXME: Handle live video better
         PlaybackScrubber(model: model)
         VStack(spacing: 28) {
           HStack {

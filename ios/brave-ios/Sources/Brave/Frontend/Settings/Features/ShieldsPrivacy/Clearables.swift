@@ -198,7 +198,7 @@ class PlayListCacheClearable: Clearable {
   }
 
   func clear() async throws {
-    PlaylistCarplayManager.shared.destroyPiP()
+    PlaylistCoordinator.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: true)
 
     // Backup in case there is folder corruption, so we delete the cache anyway
@@ -221,7 +221,7 @@ class PlayListDataClearable: Clearable {
   }
 
   func clear() async throws {
-    PlaylistCarplayManager.shared.destroyPiP()
+    PlaylistCoordinator.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: false)
 
     // Backup in case there is folder corruption, so we delete the cache anyway

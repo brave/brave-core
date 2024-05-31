@@ -306,7 +306,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     playbackOffset: Double,
     folderSharingPageUrl: String? = nil
   ) {
-    let playlistController = PlaylistCarplayManager.shared.getPlaylistController(
+    let playlistController = PlaylistCoordinator.shared.getPlaylistController(
       tab: tab,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset

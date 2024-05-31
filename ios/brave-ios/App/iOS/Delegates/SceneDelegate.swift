@@ -116,7 +116,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // as it is only possible to have a single car-play instance.
     // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
     // instance instead of a `BrowserViewController`.
-    PlaylistCarplayManager.shared.do {
+    PlaylistCoordinator.shared.do {
       $0.browserController = browserViewController
     }
 

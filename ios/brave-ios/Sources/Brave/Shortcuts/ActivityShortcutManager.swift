@@ -231,7 +231,7 @@ public class ActivityShortcutManager: NSObject {
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab
-      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
+      PlaylistCoordinator.shared.getPlaylistController(tab: tab) { playlistController in
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }

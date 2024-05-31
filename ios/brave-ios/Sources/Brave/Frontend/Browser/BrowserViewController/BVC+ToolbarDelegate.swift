@@ -640,7 +640,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
     func openVoiceSearch(speechRecognizer: SpeechRecognizer) {
       // Pause active playing in PiP when Audio Search is enabled
-      if let pipMediaPlayer = PlaylistCarplayManager.shared.mediaPlayer?.pictureInPictureController?
+      if let pipMediaPlayer = PlaylistCoordinator.shared.mediaPlayer?.pictureInPictureController?
         .playerLayer.player
       {
         pipMediaPlayer.pause()

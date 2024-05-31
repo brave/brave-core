@@ -130,7 +130,7 @@ class PlaylistListViewController: UIViewController {
         )
       }.store(in: &observers)
 
-    PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
+    PlaylistCoordinator.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
         guard let self = self else { return }
@@ -211,7 +211,7 @@ class PlaylistListViewController: UIViewController {
 
     // Store the last played item's time-offset
     if let playTime = delegate?.currentPlaylistItem?.currentTime(),
-      let item = PlaylistCarplayManager.shared.currentPlaylistItem
+      let item = PlaylistCoordinator.shared.currentPlaylistItem
     {
       PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
     }
@@ -224,14 +224,14 @@ class PlaylistListViewController: UIViewController {
 
     folderObserver = nil
     if isMovingFromParent || isBeingDismissed {
-      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+      if !PlaylistCoordinator.shared.isCarPlayAvailable {
         delegate?.stopPlaying()
       }
 
       stopLoadingSharedPlaylist()
 
-      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
-        PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
+      if !PlaylistCoordinator.shared.isCarPlayAvailable {
+        PlaylistCoordinator.shared.onCarplayUIChangedToRoot.send()
       }
     }
   }
@@ -289,7 +289,7 @@ class PlaylistListViewController: UIViewController {
     // We do nothing when CarPlay is active because the user shouldn't be using the phone anyway
     // But also because if the driver is controlling the audio, there will be a conflict
     // if both the driver is selecting an item, and auto-play happens.
-    if PlaylistCarplayManager.shared.isCarPlayAvailable
+    if PlaylistCoordinator.shared.isCarPlayAvailable
       || (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false)
     {
       return
@@ -340,7 +340,7 @@ class PlaylistListViewController: UIViewController {
     }
 
     // If the current item is already playing, do nothing.
-    if let currentItemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId,
+    if let currentItemId = PlaylistCoordinator.shared.currentPlaylistItem?.tagId,
       PlaylistManager.shared.index(of: currentItemId) != nil
     {
       return
@@ -363,8 +363,8 @@ class PlaylistListViewController: UIViewController {
 
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = indexPath.row
+          PlaylistCoordinator.shared.currentPlaylistItem = item
 
           let item = try await delegate.playItem(item: item)
 
@@ -384,8 +384,8 @@ class PlaylistListViewController: UIViewController {
           // it is now as it has begun to play
           delegate.updateLastPlayedItem(item: item)
         } catch {
-          PlaylistCarplayManager.shared.currentPlaylistItem = nil
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+          PlaylistCoordinator.shared.currentPlaylistItem = nil
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
 
           self.commitPlayerItemTransaction(
             at: indexPath,
@@ -479,7 +479,7 @@ class PlaylistListViewController: UIViewController {
     })
 
     if selectedItems.contains(where: {
-      $0.uuid == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId
+      $0.uuid == PlaylistCoordinator.shared.currentPlaylistItem?.tagId
     }) {
       delegate?.stopPlaying()
     } else {
@@ -497,7 +497,7 @@ class PlaylistListViewController: UIViewController {
 
       // We moved an item that was playing
       if items.firstIndex(where: {
-        PlaylistInfo(item: $0).tagId == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId
+        PlaylistInfo(item: $0).tagId == PlaylistCoordinator.shared.currentPlaylistItem?.tagId
       }) != nil {
         self.delegate?.stopPlaying()
       }
@@ -742,7 +742,7 @@ extension PlaylistListViewController {
   }
 
   func highlightActiveItem() {
-    let activeItemIndex = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    let activeItemIndex = PlaylistCoordinator.shared.currentlyPlayingItemIndex
 
     tableView.selectRow(
       at: IndexPath(row: activeItemIndex, section: 0),
@@ -939,8 +939,8 @@ extension PlaylistListViewController {
   }
 
   func onFavIconSelected(_ videoView: VideoView) {
-    if let browser = PlaylistCarplayManager.shared.browserController,
-      let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem,
+    if let browser = PlaylistCoordinator.shared.browserController,
+      let currentItem = PlaylistCoordinator.shared.currentPlaylistItem,
       let pageURL = URL(string: currentItem.pageSrc)
     {
 

@@ -222,7 +222,7 @@ class PlaylistSettingsViewController: TableViewController {
                   title: Strings.PlayList.playlistResetAlertTitle,
                   style: .default,
                   handler: { _ in
-                    PlaylistCarplayManager.shared.destroyPiP()
+                    PlaylistCoordinator.shared.destroyPiP()
                     PlaylistManager.shared.deleteAllItems(cacheOnly: false)
                   }
                 )

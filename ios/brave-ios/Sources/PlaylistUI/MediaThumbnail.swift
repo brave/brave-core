@@ -32,7 +32,7 @@ class MediaThumbnailLoader: ObservableObject {
       }
       return
     }
-    // FIXME: Figure out if we still need to use something else to deal with HLS
+    // FIXME: Bring over HLSThumbnailGenerator to handle HLS stream thumbnails
     let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
     let cgImage = try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
     try Task.checkCancellation()

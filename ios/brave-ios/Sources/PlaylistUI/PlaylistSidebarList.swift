@@ -178,16 +178,14 @@ struct PlaylistSidebarListHeader: View {
     let items = folder.playlistItems ?? []
     var totalSize: Int = 0
     for item in items {
-      guard let cachedData = item.cachedData else { continue }
+      guard let cachedDataURL = item.cachedDataURL else { continue }
       totalSize += await Task.detached {
         // No CoreData usage allowed in here
         do {
-          var isStale: Bool = false
-          let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-          let values = try url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
+          let values = try cachedDataURL.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
           if values.isDirectory == true {
             // This item is an HLS stream saved as a movpkg, get the size of the directory instead
-            return Int(try FileManager.default.directorySize(at: url) ?? 0)
+            return Int(try FileManager.default.directorySize(at: cachedDataURL) ?? 0)
           }
           return values.fileSize ?? 0
         } catch {

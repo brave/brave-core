@@ -16,9 +16,8 @@ import Preferences
 import Shared
 import os.log
 
-/// Lightweight class that manages a single MediaPlayer item
-/// The MediaPlayer is then passed to any controller that needs to use it.
-public class PlaylistCarplayManager: NSObject {
+/// Coordinates the usage of playlist across the main UI, Picture in Picture and CarPlay
+public class PlaylistCoordinator: NSObject {
   private var carPlayStatusObservers = [Any]()
   private(set) weak var mediaPlayer: MediaPlayer?
   private(set) var isCarPlayAvailable = false
@@ -80,7 +79,7 @@ public class PlaylistCarplayManager: NSObject {
   // There can only ever be one instance of this class
   // Because there can only be a single AudioSession and MediaPlayer
   // in use at any given moment
-  public static let shared = PlaylistCarplayManager()
+  public static let shared = PlaylistCoordinator()
 
   func getCarPlayController() -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
@@ -265,7 +264,7 @@ public class PlaylistCarplayManager: NSObject {
   }
 }
 
-extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
+extension PlaylistCoordinator: CPSessionConfigurationDelegate {
   public func connect(interfaceController: CPInterfaceController) {
     carplayInterface = interfaceController
     carplaySessionConfiguration = CPSessionConfiguration(delegate: self)
@@ -295,7 +294,8 @@ extension PlaylistCarplayManager: CPSessionConfigurationDelegate {
   }
 }
 
-extension PlaylistCarplayManager: AVPictureInPictureControllerDelegate {
+// Handles PiP for new playlist only
+extension PlaylistCoordinator: AVPictureInPictureControllerDelegate {
   // This is actually the `restoreUserInterfaceForPictureInPictureStopWithCompletionHandler`
   // delegate method, but the `async` version gets named wierdly
   @MainActor public func pictureInPictureController(

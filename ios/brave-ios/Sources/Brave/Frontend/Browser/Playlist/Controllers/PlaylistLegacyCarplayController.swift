@@ -134,7 +134,7 @@ class PlaylistLegacyCarplayController: NSObject {
             $0.accessoryType =
               PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
-            if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
+            if PlaylistCoordinator.shared.currentPlaylistItem?.tagId == itemId {
               $0.isPlaying = true
 
               PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
@@ -195,7 +195,7 @@ class PlaylistLegacyCarplayController: NSObject {
       event.mediaPlayer.pause()
       event.mediaPlayer.seek(to: .zero)
 
-      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         self.updateLastPlayedItem(item: item)
       }
 
@@ -284,8 +284,8 @@ class PlaylistLegacyCarplayController: NSObject {
 
   private func reloadData() {
     // Update Currently Playing Index before layout (so we can show the playing indicator)
-    if let itemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex =
+    if let itemId = PlaylistCoordinator.shared.currentPlaylistItem?.tagId {
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex =
         PlaylistManager.shared.index(of: itemId) ?? -1
     }
 
@@ -436,7 +436,7 @@ class PlaylistLegacyCarplayController: NSObject {
 
       // Update the current playing status
       listItem.isPlaying =
-        player.isPlaying && (PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
+        player.isPlaying && (PlaylistCoordinator.shared.currentPlaylistItem?.src == item.src)
 
       listItem.accessoryType =
         PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
@@ -621,7 +621,7 @@ extension PlaylistLegacyCarplayController {
     if !Preferences.Playlist.enableCarPlayRestartPlayback.value {
       // Item is already playing.
       // Show now-playing screen and don't restart playback.
-      if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
+      if PlaylistCoordinator.shared.currentPlaylistItem?.tagId == itemId {
         // If the player is currently paused, un-pause it and play the item.
         // If the player is currently stopped, do nothing.
         if !player.isPlaying, player.currentItem != nil {
@@ -635,17 +635,17 @@ extension PlaylistLegacyCarplayController {
     PlaylistMediaStreamer.clearNowPlayingInfo()
 
     do {
-      PlaylistCarplayManager.shared.currentPlaylistItem = item
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentPlaylistItem = item
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       try await playItem(item: item)
 
-      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         updateLastPlayedItem(item: item)
       }
     } catch {
-      PlaylistCarplayManager.shared.currentPlaylistItem = nil
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+      PlaylistCoordinator.shared.currentPlaylistItem = nil
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
     }
 
     // Workaround to see carplay NowPlaying on the simulator
@@ -660,24 +660,24 @@ extension PlaylistLegacyCarplayController {
 
 extension PlaylistLegacyCarplayController {
   func onPreviousTrack(isUserInitiated: Bool) {
-    if PlaylistCarplayManager.shared.currentlyPlayingItemIndex <= 0 {
+    if PlaylistCoordinator.shared.currentlyPlayingItemIndex <= 0 {
       return
     }
 
-    let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
+    let index = PlaylistCoordinator.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets,
       let item = PlaylistManager.shared.itemAtIndex(index)
     {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
           try await playItem(item: item)
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.updateLastPlayedItem(item: item)
         } catch {
-          PlaylistCarplayManager.shared.currentPlaylistItem = nil
+          PlaylistCoordinator.shared.currentPlaylistItem = nil
 
           Logger.module.debug("Error Playing Item: \(error)")
           self.displayLoadingResourceError()
@@ -688,8 +688,8 @@ extension PlaylistLegacyCarplayController {
 
   func onNextTrack(isUserInitiated: Bool) {
     let assetCount = PlaylistManager.shared.numberOfAssets
-    let isAtEnd = PlaylistCarplayManager.shared.currentlyPlayingItemIndex >= assetCount - 1
-    var index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    let isAtEnd = PlaylistCoordinator.shared.currentlyPlayingItemIndex >= assetCount - 1
+    var index = PlaylistCoordinator.shared.currentlyPlayingItemIndex
 
     switch player.repeatState {
     case .none:
@@ -698,7 +698,7 @@ extension PlaylistLegacyCarplayController {
         player.pictureInPictureController?.stopPictureInPicture()
         player.pause()
 
-        PlaylistCarplayManager.shared.playlistController = nil
+        PlaylistCoordinator.shared.playlistController = nil
         return
       }
       index += 1
@@ -713,14 +713,14 @@ extension PlaylistLegacyCarplayController {
     if index >= 0,
       let item = PlaylistManager.shared.itemAtIndex(index)
     {
-      PlaylistCarplayManager.shared.currentPlaylistItem = item
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentPlaylistItem = item
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       PlaylistManager.shared.playbackTask = Task { @MainActor [index] in
         do {
           try await playItem(item: item)
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.updateLastPlayedItem(item: item)
         } catch {
           if isUserInitiated || self.player.repeatState == .repeatOne || assetCount <= 1 {
@@ -728,7 +728,7 @@ extension PlaylistLegacyCarplayController {
             Logger.module.debug("Error Loading CarPlay Resource: \(error)")
           } else {
             DispatchQueue.main.async {
-              PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+              PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
               self.onNextTrack(isUserInitiated: isUserInitiated)
             }
           }
@@ -748,8 +748,8 @@ extension PlaylistLegacyCarplayController {
   private func stop() {
     PlaylistMediaStreamer.clearNowPlayingInfo()
 
-    PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-    PlaylistCarplayManager.shared.currentPlaylistItem = nil
+    PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
+    PlaylistCoordinator.shared.currentPlaylistItem = nil
     player.stop()
 
     PlaylistManager.shared.playbackTask?.cancel()

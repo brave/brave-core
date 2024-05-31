@@ -61,7 +61,7 @@ extension CarplayTemplateApplicationSceneDelegate: CPTemplateApplicationSceneDel
     log.debug("Template application scene did connect.")
 
     DispatchQueue.main.async {
-      PlaylistCarplayManager.shared.connect(interfaceController: interfaceController)
+      PlaylistCoordinator.shared.connect(interfaceController: interfaceController)
     }
   }
 
@@ -72,7 +72,7 @@ extension CarplayTemplateApplicationSceneDelegate: CPTemplateApplicationSceneDel
     log.debug("Template application scene did disconnect.")
 
     DispatchQueue.main.async {
-      PlaylistCarplayManager.shared.disconnect(interfaceController: interfaceController)
+      PlaylistCoordinator.shared.disconnect(interfaceController: interfaceController)
     }
   }
 }
