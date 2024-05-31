@@ -113,74 +113,75 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     public void updateNetworks() {
-        if (mJsonRpcService != null && mRecyclerView != null) {
-            getAvailableChainIds(
-                    CoinType.ETH,
-                    (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
-                        final NetworkPreferenceAdapter.NetworkListContainer
-                                networkListContainerEth =
-                                        new NetworkPreferenceAdapter.NetworkListContainer(
-                                                ethNetworks,
-                                                defaultEthChainId,
-                                                hiddenEthChainIds,
-                                                customEthChainIds);
-                        getAvailableChainIds(
-                                CoinType.FIL,
-                                (defaultFilChainId,
-                                        filNetworks,
-                                        customFilChainIds,
-                                        hiddenFilChainIds) -> {
-                                    final NetworkPreferenceAdapter.NetworkListContainer
-                                            networkListContainerFil =
-                                                    new NetworkPreferenceAdapter
-                                                            .NetworkListContainer(
-                                                            filNetworks,
-                                                            defaultFilChainId,
-                                                            hiddenFilChainIds,
-                                                            customFilChainIds);
-                                    getAvailableChainIds(
-                                            CoinType.SOL,
-                                            (defaultSolChainId,
-                                                    solNetworks,
-                                                    customSolChainIds,
-                                                    hiddenSolChainIds) -> {
-                                                final NetworkPreferenceAdapter.NetworkListContainer
-                                                        networkListContainerSol =
-                                                                new NetworkPreferenceAdapter
-                                                                        .NetworkListContainer(
-                                                                        solNetworks,
-                                                                        defaultSolChainId,
-                                                                        hiddenSolChainIds,
-                                                                        customSolChainIds);
-                                                getAvailableChainIds(
-                                                        CoinType.BTC,
-                                                        (defaultBtcChainId,
-                                                                btcNetworks,
-                                                                customBtcChainIds,
-                                                                hiddenBtcChainIds) -> {
-                                                            final NetworkPreferenceAdapter
-                                                                            .NetworkListContainer
-                                                                    networkListContainerBtc =
-                                                                            new NetworkPreferenceAdapter
-                                                                                    .NetworkListContainer(
-                                                                                    btcNetworks,
-                                                                                    defaultBtcChainId,
-                                                                                    hiddenBtcChainIds,
-                                                                                    customBtcChainIds);
-                                                            final NetworkPreferenceAdapter adapter =
-                                                                    new NetworkPreferenceAdapter(
-                                                                            getContext(),
-                                                                            networkListContainerEth,
-                                                                            networkListContainerFil,
-                                                                            networkListContainerSol,
-                                                                            networkListContainerBtc,
-                                                                            this);
-                                                            mRecyclerView.setAdapter(adapter);
-                                                        });
-                                            });
-                                });
-                    });
+        if (mJsonRpcService == null || mRecyclerView == null) {
+            return;
         }
+        getAvailableChainIds(
+                CoinType.ETH,
+                (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
+                    final NetworkPreferenceAdapter.NetworkListContainer
+                            networkListContainerEth =
+                                    new NetworkPreferenceAdapter.NetworkListContainer(
+                                            ethNetworks,
+                                            defaultEthChainId,
+                                            hiddenEthChainIds,
+                                            customEthChainIds);
+                    getAvailableChainIds(
+                            CoinType.FIL,
+                            (defaultFilChainId,
+                                    filNetworks,
+                                    customFilChainIds,
+                                    hiddenFilChainIds) -> {
+                                final NetworkPreferenceAdapter.NetworkListContainer
+                                        networkListContainerFil =
+                                                new NetworkPreferenceAdapter
+                                                        .NetworkListContainer(
+                                                        filNetworks,
+                                                        defaultFilChainId,
+                                                        hiddenFilChainIds,
+                                                        customFilChainIds);
+                                getAvailableChainIds(
+                                        CoinType.SOL,
+                                        (defaultSolChainId,
+                                                solNetworks,
+                                                customSolChainIds,
+                                                hiddenSolChainIds) -> {
+                                            final NetworkPreferenceAdapter.NetworkListContainer
+                                                    networkListContainerSol =
+                                                            new NetworkPreferenceAdapter
+                                                                    .NetworkListContainer(
+                                                                    solNetworks,
+                                                                    defaultSolChainId,
+                                                                    hiddenSolChainIds,
+                                                                    customSolChainIds);
+                                            getAvailableChainIds(
+                                                    CoinType.BTC,
+                                                    (defaultBtcChainId,
+                                                            btcNetworks,
+                                                            customBtcChainIds,
+                                                            hiddenBtcChainIds) -> {
+                                                        final NetworkPreferenceAdapter
+                                                                        .NetworkListContainer
+                                                                networkListContainerBtc =
+                                                                        new NetworkPreferenceAdapter
+                                                                                .NetworkListContainer(
+                                                                                btcNetworks,
+                                                                                defaultBtcChainId,
+                                                                                hiddenBtcChainIds,
+                                                                                customBtcChainIds);
+                                                        final NetworkPreferenceAdapter adapter =
+                                                                new NetworkPreferenceAdapter(
+                                                                        getContext(),
+                                                                        networkListContainerEth,
+                                                                        networkListContainerFil,
+                                                                        networkListContainerSol,
+                                                                        networkListContainerBtc,
+                                                                        this);
+                                                        mRecyclerView.setAdapter(adapter);
+                                                    });
+                                        });
+                            });
+                });
     }
 
     /**

@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import org.chromium.base.Callback;
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
@@ -44,6 +45,7 @@ import java.util.List;
  * remove a specific network. Used by {@link BraveWalletNetworksPreference}.
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private static final String TAG = "NetworkPreferenceAdapter";
     /** Item types. */
     private static final int NETWORK_ITEM = 0;
 
@@ -341,7 +343,10 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     private int findChainIdPosition(
-            @NonNull final String chainId, @CoinType.EnumType final int coinType) {
+            @Nullable final String chainId, @CoinType.EnumType final int coinType) {
+        if (chainId == null) {
+            return NO_POSITION;
+        }
         for (int i = 0; i < mElements.size(); i++) {
             NetworkPreferenceItem networkPreferenceItem = mElements.get(i);
             if (networkPreferenceItem.mNetworkInfo != null
@@ -353,17 +358,17 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         return NO_POSITION;
     }
 
-    @NonNull
+    @Nullable
     private String getActiveChainId(@CoinType.EnumType final int coinType) {
-        return switch (coinType) {
-            case CoinType.ETH -> mActiveEthChainId;
-            case CoinType.FIL -> mActiveFilChainId;
-            case CoinType.SOL -> mActiveSolChainId;
-            case CoinType.BTC -> mActiveBtcChainId;
-            case CoinType.ZEC -> throw new IllegalStateException(
-                    String.format("Unsupported active chain for coin type %d.", coinType));
-            default -> throw new IllegalStateException("Unexpected value: " + coinType);
-        };
+        String activeChainId = null;
+        switch (coinType) {
+            case CoinType.ETH -> activeChainId = mActiveEthChainId;
+            case CoinType.FIL -> activeChainId = mActiveFilChainId;
+            case CoinType.SOL -> activeChainId = mActiveSolChainId;
+            case CoinType.BTC -> activeChainId = mActiveBtcChainId;
+            case CoinType.ZEC -> Log.e(TAG, "Unsupported active chain for coin type: " + coinType);
+        }
+        return activeChainId;
     }
 
     private void setActiveChainId(@NonNull final NetworkInfo network) {
@@ -372,9 +377,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             case CoinType.FIL -> mActiveFilChainId = network.chainId;
             case CoinType.SOL -> mActiveSolChainId = network.chainId;
             case CoinType.BTC -> mActiveBtcChainId = network.chainId;
-            case CoinType.ZEC -> throw new IllegalStateException(
-                    String.format("Unsupported active chain for coin type %d.", network.coin));
-            default -> throw new IllegalStateException("Unexpected value: " + network.coin);
+            case CoinType.ZEC -> Log.e(TAG, "Unsupported active chain for coin type: " + network.coin);
         }
     }
 
@@ -400,9 +403,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     mHiddenBtcChainIds.add(network.chainId);
                 }
             }
-            case CoinType.ZEC -> throw new IllegalStateException(
-                    String.format("Unsupported hidden chain for coin type %d.", network.coin));
-            default -> throw new IllegalStateException("Unexpected value: " + network.coin);
+            case CoinType.ZEC -> Log.e(TAG, "Unsupported hidden chain for coin type: " + network.coin);
         }
     }
 
@@ -412,9 +413,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             case CoinType.FIL -> mHiddenFilChainIds.remove(network.chainId);
             case CoinType.SOL -> mHiddenSolChainIds.remove(network.chainId);
             case CoinType.BTC -> mHiddenBtcChainIds.remove(network.chainId);
-            case CoinType.ZEC -> throw new IllegalStateException(
-                    String.format("Unsupported hidden chain for coin type %d.", network.coin));
-            default -> throw new IllegalStateException("Unexpected value: " + network.coin);
+            case CoinType.ZEC -> Log.e(TAG, "Unsupported hidden chain for coin type: " + network.coin);
         }
     }
 
