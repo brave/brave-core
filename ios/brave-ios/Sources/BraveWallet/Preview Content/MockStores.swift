@@ -302,7 +302,7 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     solTxManagerProxy._makeSystemProgramTransferTxData = { _, _, _, completion in
       completion(.init(), .success, "")
     }
-    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, completion in
+    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, _, completion in
       completion(.init(), .success, "")
     }
     solTxManagerProxy._estimatedTxFee = { _, _, completion in
