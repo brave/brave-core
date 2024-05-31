@@ -41,11 +41,12 @@ class FilterListService : public KeyedService,
   void GetCustomFilters(GetCustomFiltersCallback callback) override;
   void UpdateCustomFilters(const std::string& custom_filters,
                            UpdateCustomFiltersCallback callback) override;
+  void UpdateFilterLists(UpdateFilterListsCallback callback) override;
 
  private:
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;
   mojo::ReceiverSet<mojom::FilterListAndroidHandler> receivers_;
-  base::WeakPtrFactory<FilterListService> discovery_weak_factory_{this};
+  base::WeakPtrFactory<FilterListService> weak_factory_{this};
 
   FilterListService(const FilterListService&) = delete;
   FilterListService& operator=(const FilterListService&) = delete;

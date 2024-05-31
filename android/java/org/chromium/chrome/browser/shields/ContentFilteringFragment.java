@@ -32,6 +32,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo_base.mojom.Value;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     private Value mFilterLists[];
     private MenuItem mEditItem;
     private MenuItem mDoneItem;
+    private MenuItem mUpdateFilterListItem;
     private boolean mIsMenuLoaded;
     private boolean mIsGetSubscriptionsLoaded;
 
@@ -67,6 +69,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         super.onActivityCreated(savedInstanceState);
         setData();
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -204,6 +207,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         inflater.inflate(R.menu.menu_custom_filter_list, menu);
         mEditItem = menu.findItem(R.id.menu_id_edit);
         mDoneItem = menu.findItem(R.id.menu_id_done);
+        mUpdateFilterListItem = menu.findItem(R.id.update_filter_list_id);
         mIsMenuLoaded = true;
         if (mIsGetSubscriptionsLoaded) {
             checkForEmptySubscriptionFilters(true);
@@ -219,6 +223,21 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         } else if (id == R.id.menu_id_done) {
             isEditSelected(false);
             return true;
+        } else if (item.getItemId() == R.id.update_filter_list_id) {
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.updateFilterLists(
+                        isSuccess -> {
+                            if (isSuccess) {
+                                setData();
+                            }
+                            String message =
+                                    isSuccess
+                                            ? getString(R.string.update_filter_list_success_text)
+                                            : getString(R.string.update_filter_list_fail_text);
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        });
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -226,6 +245,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     private void isEditSelected(boolean isEditable) {
         mDoneItem.setVisible(isEditable);
         mEditItem.setVisible(!isEditable);
+        mUpdateFilterListItem.setVisible(!isEditable);
         mAdapter.setEditable(isEditable);
     }
 
