@@ -36,7 +36,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
-import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
+// import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -99,7 +99,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
-    private Preference mVpnCalloutPreference;
+    // private Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
@@ -251,19 +251,19 @@ public class BraveMainPreferencesBase
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        if (getActivity() != null && !getActivity().isFinishing()
-                && BraveVpnPrefUtils.shouldShowCallout()
-                && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
-            if (mVpnCalloutPreference == null) {
-                mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
-            }
-            if (mVpnCalloutPreference != null) {
-                mVpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
-                mVpnCalloutPreference.setOrder(firstSectionOrder);
-                getPreferenceScreen().addPreference(mVpnCalloutPreference);
-            }
-        }
+        // if (getActivity() != null && !getActivity().isFinishing()
+        //         && BraveVpnPrefUtils.shouldShowCallout()
+        //         && !BraveVpnPrefUtils.isSubscriptionPurchase()
+        //         && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
+        //     if (mVpnCalloutPreference == null) {
+        //         mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
+        //     }
+        //     if (mVpnCalloutPreference != null) {
+        //         mVpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
+        //         mVpnCalloutPreference.setOrder(firstSectionOrder);
+        //         getPreferenceScreen().addPreference(mVpnCalloutPreference);
+        //     }
+        // }
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
 

@@ -109,50 +109,50 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu = menu;
 
-        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
-            SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
-            MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
-            if (shouldShowIconBeforeItem()) {
-                braveVpnSubMenuItem.setIcon(
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_vpn));
-            }
-            MenuItem braveVpnCheckedSubMenuItem =
-                    vpnSubMenu.findItem(R.id.request_brave_vpn_check_id);
-            if (braveVpnCheckedSubMenuItem != null) {
-                braveVpnCheckedSubMenuItem.setCheckable(true);
-                braveVpnCheckedSubMenuItem.setChecked(
-                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
-            }
+        // if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
+        //     SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
+        //     MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
+        //     if (shouldShowIconBeforeItem()) {
+        //         braveVpnSubMenuItem.setIcon(
+        //                 AppCompatResources.getDrawable(mContext, R.drawable.ic_vpn));
+        //     }
+        //     MenuItem braveVpnCheckedSubMenuItem =
+        //             vpnSubMenu.findItem(R.id.request_brave_vpn_check_id);
+        //     if (braveVpnCheckedSubMenuItem != null) {
+        //         braveVpnCheckedSubMenuItem.setCheckable(true);
+        //         braveVpnCheckedSubMenuItem.setChecked(
+        //                 BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
+        //     }
 
-            if (BraveVpnPrefUtils.isSubscriptionPurchase()
-                    && !TextUtils.isEmpty(BraveVpnPrefUtils.getServerIsoCode())) {
-                String serverLocation =
-                        " "
-                                + BraveVpnUtils.countryCodeToEmoji(
-                                        BraveVpnPrefUtils.getServerIsoCode())
-                                + "   "
-                                + BraveVpnPrefUtils.getServerNamePretty();
+        //     if (BraveVpnPrefUtils.isSubscriptionPurchase()
+        //             && !TextUtils.isEmpty(BraveVpnPrefUtils.getServerIsoCode())) {
+        //         String serverLocation =
+        //                 " "
+        //                         + BraveVpnUtils.countryCodeToEmoji(
+        //                                 BraveVpnPrefUtils.getServerIsoCode())
+        //                         + "   "
+        //                         + BraveVpnPrefUtils.getServerNamePretty();
 
-                SubMenu vpnLocationSubMenu =
-                        menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
-                MenuItem vpnLocationSubMenuItem =
-                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
-                vpnLocationSubMenuItem.setTitle(serverLocation);
-                MenuItem vpnLocationIconSubMenuItem =
-                        vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
-                Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
+        //         SubMenu vpnLocationSubMenu =
+        //                 menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
+        //         MenuItem vpnLocationSubMenuItem =
+        //                 vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
+        //         vpnLocationSubMenuItem.setTitle(serverLocation);
+        //         MenuItem vpnLocationIconSubMenuItem =
+        //                 vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
+        //         Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
 
-                drawable = DrawableCompat.wrap(drawable);
-                DrawableCompat.setTint(
-                        drawable, ContextCompat.getColor(mContext, R.color.vpn_timer_icon_color));
-                vpnLocationIconSubMenuItem.setIcon(drawable);
-            } else {
-                menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
-            }
-        } else {
+        //         drawable = DrawableCompat.wrap(drawable);
+        //         DrawableCompat.setTint(
+        //                 drawable, ContextCompat.getColor(mContext, R.color.vpn_timer_icon_color));
+        //         vpnLocationIconSubMenuItem.setIcon(drawable);
+        //     } else {
+        //         menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
+        //     }
+        // } else {
             menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
             menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
-        }
+        // }
 
         // Brave donesn't show `Clear browsing data` menu.
         menu.findItem(R.id.quick_delete_menu_id).setVisible(false).setEnabled(false);
@@ -220,21 +220,21 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
-        if (bravePlaylist != null) {
-            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                    && ChromeSharedPreferences.getInstance()
-                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
-                bravePlaylist.setVisible(true);
-                if (shouldShowIconBeforeItem()) {
-                    bravePlaylist.setIcon(
-                            AppCompatResources.getDrawable(mContext, R.drawable.ic_open_playlist));
-                }
-            } else {
+        // if (bravePlaylist != null) {
+        //     if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+        //             && ChromeSharedPreferences.getInstance()
+        //                     .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+        //         bravePlaylist.setVisible(true);
+        //         if (shouldShowIconBeforeItem()) {
+        //             bravePlaylist.setIcon(
+        //                     AppCompatResources.getDrawable(mContext, R.drawable.ic_open_playlist));
+        //         }
+        //     } else {
                 bravePlaylist.setVisible(false);
-            }
-        }
+        //     }
+        // }
 
-//        MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
+       MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
 //        if (addToPlaylist != null) {
 //            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
 //                    && ChromeSharedPreferences.getInstance()
@@ -249,7 +249,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 //                                    mContext, R.drawable.ic_baseline_add_24));
 //                }
 //            } else {
-//                addToPlaylist.setVisible(false);
+               addToPlaylist.setVisible(false);
 //            }
 //        }
 //
