@@ -123,4 +123,10 @@ void FilterListService::UpdateCustomFilters(
           custom_filters));
 }
 
+void FilterListService::UpdateFilterLists(UpdateFilterListsCallback callback) {
+  ad_block_service_
+      ->component_service_manager()
+      ->UpdateFilterLists(std::move(callback));
+}
+
 }  // namespace brave_shields

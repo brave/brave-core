@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
@@ -46,6 +47,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     private Value mFilterLists[];
     private MenuItem mEditItem;
     private MenuItem mDoneItem;
+    private MenuItem mUpdateFilterListItem;
     private boolean mIsMenuLoaded;
     private boolean mIsGetSubscriptionsLoaded;
 
@@ -67,6 +69,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         super.onActivityCreated(savedInstanceState);
         setData();
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -204,6 +207,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         inflater.inflate(R.menu.menu_custom_filter_list, menu);
         mEditItem = menu.findItem(R.id.menu_id_edit);
         mDoneItem = menu.findItem(R.id.menu_id_done);
+        mUpdateFilterListItem = menu.findItem(R.id.update_filter_list_id);
         mIsMenuLoaded = true;
         if (mIsGetSubscriptionsLoaded) {
             checkForEmptySubscriptionFilters(true);
@@ -219,6 +223,14 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         } else if (id == R.id.menu_id_done) {
             isEditSelected(false);
             return true;
+        } else if (item.getItemId() == R.id.update_filter_list_id) {
+            mUpdateFilterListItem.setVisible(!mEditItem.isVisible());
+            if (mFilterListAndroidHandler != null) {
+                mFilterListAndroidHandler.updateFilterLists(
+                    isSuccess -> {
+                        Log.e("FILTERLIST", ""+isSuccess);
+                    });
+            }
         }
         return super.onOptionsItemSelected(item);
     }
