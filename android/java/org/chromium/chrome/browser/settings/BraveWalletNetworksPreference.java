@@ -188,7 +188,7 @@ public class BraveWalletNetworksPreference extends Preference
      * chain IDs. The method can be called ONLY after the JSON RPC service has been correctly
      * initialized.
      *
-     * @param callback Callback returning a network container class that includes four parameters:
+     * @param callback Callback returning four parameters:
      *     default chain ID, all networks available, custom chain IDs, and hidden chain IDs (if
      *     any).
      */
