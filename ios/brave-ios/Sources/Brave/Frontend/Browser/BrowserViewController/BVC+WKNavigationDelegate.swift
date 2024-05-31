@@ -589,6 +589,8 @@ extension BrowserViewController: WKNavigationDelegate {
         {
 
           return await withCheckedContinuation { continuation in
+            // This alert does not need to be a BrowserAlertController because we return a policy
+            // without waiting for user action
             let alert = UIAlertController(
               title: Strings.unableToOpenURLErrorTitle,
               message: Strings.unableToOpenURLError,
@@ -1302,7 +1304,7 @@ extension BrowserViewController: WKUIDelegate {
       }
     }()
     let title = String.localizedStringWithFormat(titleFormat, origin.host)
-    let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
     alertController.addAction(
       .init(
         title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
@@ -1321,6 +1323,9 @@ extension BrowserViewController: WKUIDelegate {
         }
       )
     )
+    alertController.dismissedWithoutAction = {
+      decisionHandler(.prompt)
+    }
     if #available(iOS 16.0, *) {
       if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
       {
@@ -1416,8 +1421,7 @@ extension BrowserViewController: WKUIDelegate {
       return
     }
     promptingTab.alertShownCount += 1
-    let suppressBlock: JSAlertInfo.SuppressHandler = { [weak self, weak webView] suppress in
-      guard let self, let webView else { return }
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
       if suppress {
         func suppressDialogues(_: UIAlertAction) {
           self.suppressJSAlerts(webView: webView)
@@ -1486,18 +1490,14 @@ extension BrowserViewController: WKUIDelegate {
     return false
   }
 
-  public func webView(
+  @MainActor public func webView(
     _ webView: WKWebView,
-    contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-    completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
-  ) {
-
+    contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
+  ) async -> UIContextMenuConfiguration? {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
     // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
     guard let url = elementInfo.linkURL, url.isWebPage() else {
-      return completionHandler(
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
-      )
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
     }
 
     let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
@@ -1647,13 +1647,11 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
-    let config = UIContextMenuConfiguration(
+    return UIContextMenuConfiguration(
       identifier: nil,
       previewProvider: linkPreviewProvider,
       actionProvider: actionProvider
     )
-
-    completionHandler(config)
   }
 
   public func webView(
