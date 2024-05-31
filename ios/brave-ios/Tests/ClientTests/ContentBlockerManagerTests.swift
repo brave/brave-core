@@ -43,7 +43,7 @@ class ContentBlockerManagerTests: XCTestCase {
       version: "0",
       modes: filterListType.allowedModes
     )
-    let customListType = ContentBlockerManager.BlocklistType.customFilterList(
+    let customListType = ContentBlockerManager.BlocklistType.filterListURL(
       uuid: filterListCustomUUID
     )
     try await manager.compile(
@@ -88,7 +88,7 @@ class ContentBlockerManagerTests: XCTestCase {
       try await manager.removeRuleLists(
         for: .filterList(componentId: filterListUUID, isAlwaysAggressive: false)
       )
-      try await manager.removeRuleLists(for: .customFilterList(uuid: filterListCustomUUID))
+      try await manager.removeRuleLists(for: .filterListURL(uuid: filterListCustomUUID))
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -108,9 +108,49 @@ class ContentBlockerManagerTests: XCTestCase {
 
     await manager.compileRuleList(
       at: filterListURL,
-      for: .customFilterList(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),
+      for: .filterListURL(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),
       version: "0",
       modes: ContentBlockerManager.BlockingMode.allCases
+    )
+  }
+
+  func testRulesTestingSuccess() async {
+    let filterSet = [
+      "! This is a network rule",
+      "||example.com^",
+      "! This is an empty line",
+      "",
+      "! This is a cosmetic filter",
+      "example.com,example.net##h1",
+    ]
+
+    let manager = await makeManager()
+    let result = await manager.testRules(
+      forFilterSet: filterSet.joined(separator: "\n")
+    )
+    XCTAssertNil(result)
+  }
+
+  func testRulesTestingError() async {
+    let filterSet = [
+      "! This is a network rule",
+      "||example.com^",
+      "! This is an empty line",
+      "",
+      "! This is a cosmetic filter",
+      "example.com,example.net##h1",
+      "! This is an invalid rule",
+      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/",
+    ]
+
+    let manager = await makeManager()
+    let result = await manager.testRules(
+      forFilterSet: filterSet.joined(separator: "\n")
+    )
+    XCTAssertEqual(result?.line, 7)
+    XCTAssertEqual(
+      result?.rule,
+      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/"
     )
   }
 

@@ -65,7 +65,7 @@ struct OtherPrivacySettingsSectionView: View {
         }
       )
       ToggleView(
-        title: Strings.blockMobileAnnoyances,
+        title: Strings.Shields.blockMobileAnnoyances,
         subtitle: nil,
         toggle: $settings.blockMobileAnnoyances
       )

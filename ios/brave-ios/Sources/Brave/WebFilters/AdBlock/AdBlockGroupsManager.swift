@@ -159,6 +159,52 @@ import os
     }
   }
 
+  /// Update the file managers with the latest files and will compile the engines right away.
+  /// - Parameters:
+  ///   - fileInfos: The file infos to update on the appropriate engine manager
+  func updateImmediately(
+    fileInfos: [AdBlockEngineManager.FileInfo]
+  ) async {
+    let enabledSources = sourceProvider.enabledSources
+
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = getManager(for: engineType)
+      let sources = sourceProvider.sources(for: engineType)
+      var updatedFiles = false
+
+      // Compile content blockers if this filter list is enabled
+      for fileInfo in fileInfos {
+        guard sources.contains(fileInfo.filterListInfo.source) else {
+          // This file is not for this engine type
+          continue
+        }
+
+        if enabledSources.contains(fileInfo.filterListInfo.source) {
+          await ensureContentBlockers(for: fileInfo, engineType: engineType)
+        }
+
+        updatedFiles = true
+        manager.add(fileInfo: fileInfo)
+      }
+
+      if updatedFiles {
+        await manager.compileImmediatelyIfNeeded(
+          for: enabledSources,
+          resourcesInfo: resourcesInfo
+        )
+      }
+    }
+  }
+
+  /// Handle updated filter list info. Will compile the engine immediately.
+  /// - Parameters:
+  ///   - fileInfo: The file info to update on the appropriate engine manager
+  func updateImmediately(
+    fileInfo: AdBlockEngineManager.FileInfo
+  ) async {
+    await updateImmediately(fileInfos: [fileInfo])
+  }
+
   /// Handle updated filter list info
   /// - Parameters:
   ///   - fileInfo: The file info to update on the appropriate engine manager
@@ -173,6 +219,13 @@ import os
     for source: GroupedAdBlockEngine.Source
   ) {
     removeFileInfos(for: [source])
+  }
+
+  /// Remove the file info from the list that is no longer available and compile the engines if it is needed.
+  func removeFileInfoImmediately(
+    for source: GroupedAdBlockEngine.Source
+  ) async {
+    await removeFileInfosImmediately(for: [source])
   }
 
   /// Remove the file infos from the list that is no longer available and compile the engines if it is needed.
@@ -192,6 +245,23 @@ import os
     }
   }
 
+  /// Remove the file infos from the list that is no longer available and compile the engines if it is needed.
+  func removeFileInfosImmediately(
+    for sources: [GroupedAdBlockEngine.Source]
+  ) async {
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = getManager(for: engineType)
+      for source in sources {
+        manager.removeInfo(for: source)
+      }
+
+      await manager.compileImmediatelyIfNeeded(
+        for: sourceProvider.enabledSources,
+        resourcesInfo: resourcesInfo
+      )
+    }
+  }
+
   /// Immediately compile any engines that have all the files ready.
   /// Will not compile anything is there is already the same set of files being compiled.
   func compileEnginesIfFilesAreReady() {
@@ -203,10 +273,8 @@ import os
   /// Immediately compile the engine for the given type if it has all the files ready..
   /// Will not compile anything is there is already the same set of files being compiled.
   func compileEngineIfFilesAreReady(for engineType: GroupedAdBlockEngine.EngineType) {
-    let allEnabledSources = sourceProvider.enabledSources
-    let engineTypeSources = sourceProvider.sources(for: engineType)
-    let enabledSources = allEnabledSources.filter({ engineTypeSources.contains($0) })
     let manager = self.getManager(for: engineType)
+    let enabledSources = sourceProvider.enabledSources(for: engineType)
     guard manager.checkHasAllInfo(for: enabledSources) else { return }
 
     Task {
@@ -455,6 +523,7 @@ extension AdBlockEngineManager.FileInfo {
   var enabledSources: [GroupedAdBlockEngine.Source] {
     var enabledSources = FilterListStorage.shared.enabledSources
     enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
+    enabledSources.append(contentsOf: [.filterListText])
     return enabledSources
   }
 
@@ -463,13 +532,14 @@ extension AdBlockEngineManager.FileInfo {
   func sources(
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
-    var enabledSources = FilterListStorage.shared.sources(for: engineType)
     switch engineType {
     case .aggressive:
-      enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
-      return enabledSources
+      var sources = FilterListStorage.shared.sources(for: engineType)
+      sources.append(contentsOf: CustomFilterListStorage.shared.allSources)
+      sources.append(contentsOf: [.filterListText])
+      return sources
     case .standard:
-      return enabledSources
+      return FilterListStorage.shared.sources(for: engineType)
     }
   }
 
