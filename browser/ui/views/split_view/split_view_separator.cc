@@ -113,6 +113,17 @@ void SplitViewSeparator::Layout(PassKey) {
   LayoutMenuButton();
 }
 
+void SplitViewSeparator::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  ResizeArea::ViewHierarchyChanged(details);
+
+  if (details.is_add && details.child == this) {
+    CHECK(!parent_view_observation_.IsObserving())
+        << "This is supposed to be called only once.";
+    parent_view_observation_.Observe(parent());
+  }
+}
+
 void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
   // When mouse goes toward web contents area, the cursor could have been
   // changed to the normal cursor. Reset it resize cursor.
@@ -135,6 +146,10 @@ void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
 
 void SplitViewSeparator::OnWidgetBoundsChanged(views::Widget* widget,
                                                const gfx::Rect& new_bounds) {
+  LayoutMenuButton();
+}
+
+void SplitViewSeparator::OnViewBoundsChanged(views::View* observed_view) {
   LayoutMenuButton();
 }
 
