@@ -21,6 +21,10 @@ function SearchSummary (props: { searchQueries: string[] }) {
     getPageHandlerInstance().pageHandler.openURL(queryUrl)
   }, [])
 
+  const handleLearnMore = () => {
+    getPageHandlerInstance().pageHandler.openLearnMoreAboutBraveSearchWithLeo()
+  }
+
   const message = formatMessage(getLocale('searchQueries'), {
     placeholders: {
       $1: props.searchQueries.map((query, i, a) => (
@@ -37,7 +41,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
     <div className={styles.searchSummary}>
       <Icon name="brave-icon-search-color" />
       <span>
-        {message}
+        {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale('learnMore')}</a>
       </span>
     </div>
   )

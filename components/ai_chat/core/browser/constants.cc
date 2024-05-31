@@ -104,6 +104,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
       {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
       {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
+      {"learnMore", IDS_CHAT_UI_LEARN_MORE},
       {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
       {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
       {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},
