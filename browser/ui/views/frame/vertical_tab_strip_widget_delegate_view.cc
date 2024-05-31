@@ -51,11 +51,10 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
 
   auto* delegate_view =
       new VerticalTabStripWidgetDelegateView(browser_view, host_view);
-  views::Widget::InitParams params;
+  views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
   params.delegate = delegate_view;
 
   params.parent = browser_view->GetWidget()->GetNativeView();
-  params.type = views::Widget::InitParams::TYPE_CONTROL;
   // We need this to pass the key events to the top level widget. i.e. we should
   // not get focus.
   params.activatable = views::Widget::InitParams::Activatable::kNo;
