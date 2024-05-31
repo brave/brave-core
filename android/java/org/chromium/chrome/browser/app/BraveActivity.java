@@ -433,8 +433,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
-            // openPlaylist(true);
-            openAllPlaylistActivity();
+            openPlaylist(true);
         } else if (id == R.id.add_to_playlist_id) {
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
             layout.addMediaToPlaylist();
@@ -1519,13 +1518,14 @@ public abstract class BraveActivity extends ChromeActivity
     private void openPlaylist(boolean shouldHandlePlaylistActivity) {
         if (!shouldHandlePlaylistActivity) mIsDeepLink = true;
 
+        Log.e("playlist", "openPlaylist 1");
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+            Log.e("playlist", "openPlaylist 2");
             PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
         } else if (shouldHandlePlaylistActivity) {
-            // openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
             openAllPlaylistActivity();
         }
     }
