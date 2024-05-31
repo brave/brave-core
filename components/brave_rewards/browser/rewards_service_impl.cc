@@ -389,6 +389,10 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
           kNewTabPageShowSponsoredImagesBackgroundImage,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      brave_ads::prefs::kOptedInToSearchResultAds,
+      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
@@ -403,8 +407,15 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
-      key == brave_ads::prefs::kOptedInToNotificationAds) {
+      key == brave_ads::prefs::kOptedInToNotificationAds ||
+      key == brave_ads::prefs::kOptedInToSearchResultAds) {
     p3a::RecordAdTypesEnabled(profile_->GetPrefs());
+  }
+
+  if (key == brave_ads::prefs::kOptedInToSearchResultAds) {
+    GetExternalWallet(
+        base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
+                       AsWeakPtr(), false, true));
   }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -2205,7 +2216,7 @@ void RewardsServiceImpl::RecordBackendP3AStats(bool delay_report) {
 
   GetExternalWallet(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
-                     AsWeakPtr(), delay_report));
+                     AsWeakPtr(), delay_report, false));
 }
 
 void RewardsServiceImpl::OnP3ADailyTimer() {
@@ -2217,6 +2228,7 @@ void RewardsServiceImpl::OnP3ADailyTimer() {
 
 void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     bool delay_report,
+    bool search_result_optin_changed,
     mojom::ExternalWalletPtr wallet) {
   if (!Connected()) {
     return;
@@ -2229,7 +2241,9 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
     return;
   }
 
-  if (delay_report) {
+  if (search_result_optin_changed) {
+    p3a::RecordSearchResultAdsOptinChange(profile_->GetPrefs());
+  } else if (delay_report) {
     // Use delay to ensure tips are confirmed when counting.
     p3a_tip_report_timer_.Start(
         FROM_HERE, kP3ATipReportDelay,

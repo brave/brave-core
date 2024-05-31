@@ -29,7 +29,11 @@ inline constexpr char kRecurringTipHistogramName[] =
 inline constexpr char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 inline constexpr char kAdTypesEnabledHistogramName[] =
-    "Brave.Rewards.AdTypesEnabled";
+    "Brave.Rewards.AdTypesEnabled.2";
+inline constexpr char kSearchResultAdsOptinHistogramName[] =
+    "Brave.Rewards.SearchResultAdsOptin";
+inline constexpr char kAdsHistoryViewHistogramName[] =
+    "Brave.Rewards.AdsHistoryView";
 inline constexpr char kMobileConversionHistogramName[] =
     "Brave.Rewards.MobileConversion";
 #if BUILDFLAG(IS_ANDROID)
@@ -66,15 +70,11 @@ void RecordNoWalletCreatedForAllMetrics();
 
 void RecordRewardsPageViews(PrefService* prefs, bool new_view);
 
-enum class AdTypesEnabled {
-  kNone,
-  kNTP,
-  kNotification,
-  kAll,
-  kMaxValue = kAll,
-};
-
 void RecordAdTypesEnabled(PrefService* prefs);
+
+void RecordSearchResultAdsOptinChange(PrefService* prefs);
+
+void RecordAdsHistoryView();
 
 class ConversionMonitor {
  public:
