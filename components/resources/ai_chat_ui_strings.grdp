@@ -355,4 +355,10 @@
   <message name="IDS_AI_CHAT_MAYBE_LATER_LABEL" desc="The button label that dismisses an error prompt">
     Maybe later
   </message>
+  <message name="IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL" desc="The button label for Leo's slash tools">
+    Leo tools
+  </message>
+  <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature">
+    Use microphone
+  </message>
 </grit-part>
