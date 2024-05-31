@@ -1130,6 +1130,7 @@ void ConversationDriver::OnPremiumStatusReceived(
   // Maybe switch to premium model when user is newly premium and on a basic
   // model
   const bool should_switch_model =
+      features::kFreemiumAvailable.Get() &&
       // This isn't the first retrieval (that's handled in the constructor)
       last_premium_status_ != mojom::PremiumStatus::Unknown &&
       last_premium_status_ != premium_status &&
