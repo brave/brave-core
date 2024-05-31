@@ -16,7 +16,6 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-import org.chromium.base.ContextUtils
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.ChromeTabbedActivity
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
@@ -76,24 +75,6 @@ object PlaylistUtils {
     }
 
     @JvmStatic
-    fun openBraveActivityWithUrl(activity: ComponentActivity, url: String) {
-        try {
-            val intent = Intent(activity, ChromeTabbedActivity::class.java)
-            intent.putExtra(ConstantUtils.OPEN_URL, url)
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            activity.finish()
-            activity.startActivity(intent)
-        } catch (ex: ClassNotFoundException) {
-            Log.e(TAG, "openBraveActivityWithUrl : " + ex.message)
-        }
-    }
-
-    @JvmStatic
-    fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
-        return ServiceUtils.isServiceRunning(ContextUtils.getApplicationContext(), serviceClass)
-    }
-
-    @JvmStatic
     fun isPlaylistItemCached(selectedPlaylistItem: PlaylistItem): Boolean {
         return selectedPlaylistItem.cached &&
             (!MediaUtils.isHlsFile(selectedPlaylistItem.mediaPath.url) ||
@@ -119,7 +100,7 @@ object PlaylistUtils {
     fun checkAndStartHlsDownload(context: Context) {
         try {
             val hlsServiceClass = HlsService::class.java
-            if (!isServiceRunning(context, hlsServiceClass)) {
+            if (!ServiceUtils.isServiceRunning(context, hlsServiceClass)) {
                 context.startService(Intent(context, hlsServiceClass))
             }
         } catch (ex: Exception) {

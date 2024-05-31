@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
 import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.chrome.browser.util.TabUtils
 
 class PlaylistMenuOnboardingActivity : AppCompatActivity(R.layout.activity_playlist_onboarding) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class PlaylistMenuOnboardingActivity : AppCompatActivity(R.layout.activity_playl
         val nextButton: AppCompatButton = findViewById(R.id.btNextOnboarding)
         nextButton.setOnClickListener {
             if (playlistOnboardingViewPager.currentItem == 2) {
-                PlaylistUtils.openBraveActivityWithUrl(this, ConstantUtils.PLAYLIST_FEATURE_YT_URL)
+                TabUtils.openURLWithBraveActivity(ConstantUtils.PLAYLIST_FEATURE_YT_URL)
             } else {
                 playlistOnboardingViewPager.currentItem =
                     playlistOnboardingViewPager.currentItem + 1
