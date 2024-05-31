@@ -37,9 +37,11 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                     R.string.kill_switch_tutorial_text_1,
                     R.string.kill_switch_tutorial_text_2,
                     R.string.kill_switch_tutorial_text_3);
+    private boolean mIsKillSwitch;
 
-    public AlwaysOnPagerAdapter(Context context) {
+    public AlwaysOnPagerAdapter(Context context, boolean isKillSwitch) {
         this.mContext = context;
+        this.mIsKillSwitch = isKillSwitch;
     }
 
     @NonNull
@@ -50,32 +52,48 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                 LayoutInflater.from(mContext)
                         .inflate(R.layout.kill_switch_tutorial_item_layout, null);
         TextView killSwitchTutorialText = view.findViewById(R.id.kill_switch_tutorial_text);
+        String killSwitchText = mContext.getResources().getString(mTexts.get(position));
         if (position == 2) {
-            String tutorialText =
-                    mContext.getResources().getString(R.string.kill_switch_tutorial_text_3)
-                            + "\n"
-                            + mContext.getResources()
-                                    .getString(R.string.kill_switch_tutorial_text_4);
             SpannableString tutorialSpannableString =
                     SpanApplier.applySpans(
-                            tutorialText,
+                            killSwitchText,
                             new SpanInfo(
                                     "<always_on_tutorial>",
                                     "</always_on_tutorial>",
                                     null,
-                                    new StyleSpan(android.graphics.Typeface.BOLD)),
-                            new SpanInfo(
-                                    "<always_on_tutorial_2>",
-                                    "</always_on_tutorial_2>",
-                                    null,
                                     new StyleSpan(android.graphics.Typeface.BOLD)));
+            if (mIsKillSwitch) {
+                killSwitchText =
+                        killSwitchText
+                                + "\n"
+                                + mContext.getResources()
+                                        .getString(R.string.kill_switch_tutorial_text_4);
+                tutorialSpannableString =
+                        SpanApplier.applySpans(
+                                killSwitchText,
+                                new SpanInfo(
+                                        "<always_on_tutorial>",
+                                        "</always_on_tutorial>",
+                                        null,
+                                        new StyleSpan(android.graphics.Typeface.BOLD)),
+                                new SpanInfo(
+                                        "<always_on_tutorial_2>",
+                                        "</always_on_tutorial_2>",
+                                        null,
+                                        new StyleSpan(android.graphics.Typeface.BOLD)));
+            }
             killSwitchTutorialText.setText(tutorialSpannableString);
         } else {
-            killSwitchTutorialText.setText(mContext.getResources().getString(mTexts.get(position)));
+            killSwitchTutorialText.setText(killSwitchText);
         }
 
         ImageView killSwitchTutorialImage = view.findViewById(R.id.kill_switch_tutorial_image);
-        killSwitchTutorialImage.setImageResource(mImageResources.get(position));
+        int killSwitchImage = mImageResources.get(position);
+        if (!mIsKillSwitch && position == 2) {
+            killSwitchImage = R.drawable.ic_vpn_always_on_4;
+        }
+        killSwitchTutorialImage.setImageResource(killSwitchImage);
+
         collection.addView(view);
         return view;
     }
