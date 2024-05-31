@@ -1558,8 +1558,7 @@ inline constexpr char kBitcoinMainnetRpcEndpoint[] =
 inline constexpr char kBitcoinTestnetRpcEndpoint[] =
     "https://blockstream.info/testnet/api/";
 
-inline constexpr char kMeldRpcEndpoint[] =
-    "https://api-meld.wallet.brave.software";
+inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
 

@@ -48,18 +48,15 @@ std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
   return result;
 }
 
-std::optional<base::flat_map<std::string, std::string>>
-ParseOptionalMapOfStrings(const std::optional<base::Value>& val) {
-  if (!val || !val->is_dict()) {
-    return std::nullopt;
+base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
+    const base::Value& val) {
+  base::flat_map<std::string, std::string> result;
+  if (!val.is_dict()) {
+    return result;
   }
 
-  base::flat_map<std::string, std::string> result;
-  for (const auto [key, value] : val->GetDict()) {
+  for (const auto [key, value] : val.GetDict()) {
     result.insert_or_assign(key, value.GetString());
-  }
-  if (result.empty()) {
-    return std::nullopt;
   }
 
   return result;

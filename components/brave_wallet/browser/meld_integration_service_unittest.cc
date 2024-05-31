@@ -288,8 +288,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   {
     "serviceProvider": "BLOCKCHAINDOTCOM",
     "name": "Blockchain.com",
-    "status": null,
-    "categories": null,
+    "status": "LIVE",
+    "categories": [
+      "CRYPTO_ONRAMP"
+    ],
     "categoryStatuses": {
       "CRYPTO_ONRAMP": "LIVE"
     },
@@ -306,8 +308,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                           [](const auto& item) {
                             return item->name == "Banxa" &&
                                    item->service_provider == "BANXA" &&
-                                   item->status == "LIVE" && item->categories &&
-                                   (*item->categories)[0] == "CRYPTO_ONRAMP" &&
+                                   item->status == "LIVE" &&
+                                   !item->categories.empty() &&
+                                   item->categories[0] == "CRYPTO_ONRAMP" &&
                                    item->web_site_url ==
                                        "http://www.banxa.com" &&
                                    item->logo_images &&
@@ -329,12 +332,32 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                             return item->name == "Blockchain.com" &&
                                    item->service_provider ==
                                        "BLOCKCHAINDOTCOM" &&
-                                   !item->status && !item->categories &&
+                                   item->status == "LIVE" &&
+                                   item->categories[0] == "CRYPTO_ONRAMP" &&
                                    item->web_site_url ==
                                        "https://www.blockchain.com" &&
                                    !item->logo_images;
                           }),
                       1);
+          }));
+  TestGetServiceProvider(
+      R"([{
+    "status": "LIVE",
+    "categories": [
+      "CRYPTO_ONRAMP"
+    ],
+    "categoryStatuses": {
+      "CRYPTO_ONRAMP": "LIVE"
+    }
+  }])",
+      "US", "USD", "ETH", "", "", "",
+      base::BindLambdaForTesting(
+          [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
+              const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
           }));
   TestGetServiceProvider(
       R"({
@@ -646,6 +669,27 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
           }));
 
   TestGetPaymentMethods(
+      R"([{
+    "name": "ACH",
+    "paymentType": "BANK_TRANSFER",
+    "logos": {
+      "dark": null,
+      "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
+    }
+  }])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
+                 payment_methods,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
+  TestGetPaymentMethods(
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
@@ -744,6 +788,23 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "name": null,
     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   })",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
+  TestGetFiatCurrencies(
+      R"([{
+    "name": null,
+    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  }])",
       "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
       "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
@@ -890,6 +951,27 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
           }));
 
   TestGetCryptoCurrencies(
+      R"([{
+    "name": null,
+    "chainCode": "KCC",
+    "chainName": "KuCoin Community Chain",
+    "chainId": "0",
+    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  }])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
+                 crypto_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
+  TestGetCryptoCurrencies(
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
@@ -994,6 +1076,24 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                     }),
                 1);
           }));
+  TestGetCountries(
+      R"([
+  {
+    "name": "Albania",
+    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
+    "regions": null
+  }])",
+      "US,CA", "USD,EUR", "BTC,ETH", "BANXA,BLOCKCHAINDOTCOM",
+      "MOBILE_WALLET,BANK_TRANSFER", "",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
   TestGetCountries(
       "some wrong data", "US,CA", "USD,EUR", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
