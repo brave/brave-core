@@ -274,9 +274,12 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                                             setActiveChainId(networkInfo);
 
                                             final int oldActiveChainIdIndex =
-                                                    findChainIdPosition(previousActiveChainId, networkInfo.coin);
+                                                    findChainIdPosition(
+                                                            previousActiveChainId,
+                                                            networkInfo.coin);
                                             final int newActiveChainIdIndex =
-                                                    findChainIdPosition(networkInfo.chainId, networkInfo.coin);
+                                                    findChainIdPosition(
+                                                            networkInfo.chainId, networkInfo.coin);
 
                                             if (oldActiveChainIdIndex != NO_POSITION) {
                                                 notifyItemChanged(oldActiveChainIdIndex);
@@ -319,11 +322,13 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                 || (network.coin == CoinType.SOL && network.chainId.equals(mActiveSolChainId));
     }
 
-    private int findChainIdPosition(@NonNull final String chainId, @CoinType.EnumType final int coinType) {
+    private int findChainIdPosition(
+            @NonNull final String chainId, @CoinType.EnumType final int coinType) {
         for (int i = 0; i < mElements.size(); i++) {
             NetworkPreferenceItem networkPreferenceItem = mElements.get(i);
             if (networkPreferenceItem.mNetworkInfo != null
-                    && chainId.equals(networkPreferenceItem.mNetworkInfo.chainId) && coinType == networkPreferenceItem.mNetworkInfo.coin) {
+                    && chainId.equals(networkPreferenceItem.mNetworkInfo.chainId)
+                    && coinType == networkPreferenceItem.mNetworkInfo.coin) {
                 return i;
             }
         }
