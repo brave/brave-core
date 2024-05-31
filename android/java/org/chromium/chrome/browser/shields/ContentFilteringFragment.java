@@ -22,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
@@ -33,6 +32,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo_base.mojom.Value;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,10 +227,15 @@ public class ContentFilteringFragment extends BravePreferenceFragment
             mUpdateFilterListItem.setVisible(!mEditItem.isVisible());
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.updateFilterLists(
-                    isSuccess -> {
-                        Log.e("FILTERLIST", ""+isSuccess);
-                    });
+                        isSuccess -> {
+                            String message =
+                                    isSuccess
+                                            ? getString(R.string.update_filter_list_success_text)
+                                            : getString(R.string.update_filter_list_fail_text);
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        });
             }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -238,6 +243,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     private void isEditSelected(boolean isEditable) {
         mDoneItem.setVisible(isEditable);
         mEditItem.setVisible(!isEditable);
+        mUpdateFilterListItem.setVisible(!isEditable);
         mAdapter.setEditable(isEditable);
     }
 
