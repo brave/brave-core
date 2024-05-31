@@ -3984,10 +3984,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Update is downloaded.
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_SUCCESS_TEXT" desc="Text to notify users for updating filterlist successfully">
-      Filterlist is updated successfully
+      Filter list is updated successfully
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
-      Filterlist could not be updated. Please try again
+      Filter list could not be updated. Please try again
     </message>
   </messages>
   </release>

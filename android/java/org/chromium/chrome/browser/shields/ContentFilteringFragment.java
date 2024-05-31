@@ -224,10 +224,12 @@ public class ContentFilteringFragment extends BravePreferenceFragment
             isEditSelected(false);
             return true;
         } else if (item.getItemId() == R.id.update_filter_list_id) {
-            mUpdateFilterListItem.setVisible(!mEditItem.isVisible());
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.updateFilterLists(
                         isSuccess -> {
+                            if (isSuccess) {
+                                setData();
+                            }
                             String message =
                                     isSuccess
                                             ? getString(R.string.update_filter_list_success_text)
