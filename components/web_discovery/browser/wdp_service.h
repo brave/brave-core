@@ -16,6 +16,7 @@
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/double_fetcher.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -60,6 +61,8 @@ class WDPService : public KeyedService {
 
   void OnConfigChange(std::unique_ptr<ServerConfig> config);
   void OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns);
+  void extracted(std::unique_ptr<PageScrapeResult>& result,
+                 const PatternsURLDetails*& url_details);
   void OnContentScraped(bool is_strict,
                         std::unique_ptr<PageScrapeResult> result);
   void OnDoubleFetched(const base::Value& associated_data,

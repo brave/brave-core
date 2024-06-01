@@ -13,6 +13,8 @@ static_library("browser") {
     "double_fetcher.h",
     "patterns.cc",
     "patterns.h",
+    "payload_generator.cc",
+    "payload_generator.h",
     "pref_names.h",
     "rsa.cc",
     "rsa.h",

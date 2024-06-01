@@ -17,8 +17,8 @@ struct SelectRequest {
 };
 
 struct AttributeResult {
-  string key;
-  array<string> attribute_values;
+  string root_selector;
+  map<string, string?> attribute_values;
 };
 
 interface DocumentExtractor {

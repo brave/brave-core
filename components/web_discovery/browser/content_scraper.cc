@@ -9,7 +9,6 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/task/thread_pool.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
 
@@ -37,12 +36,12 @@ base::Value PageScrapeResult::SerializeToValue() {
   base::Value::Dict result;
   base::Value::Dict fields_dict;
 
-  for (const auto& [key, values] : fields) {
+  for (const auto& [root_selector, inner_fields] : fields) {
     base::Value::List list;
-    for (const auto& value : values) {
-      list.Append(value);
+    for (const auto& values : inner_fields) {
+      list.Append(values.Clone());
     }
-    fields_dict.Set(key, std::move(list));
+    fields_dict.Set(root_selector, std::move(list));
   }
 
   result.Set(kFieldsValueKey, std::move(fields_dict));
@@ -66,32 +65,21 @@ std::unique_ptr<PageScrapeResult> PageScrapeResult::FromValue(
   }
 
   auto result = std::make_unique<PageScrapeResult>(GURL(*url), *id);
-  for (const auto [key, values] : *fields_dict) {
-    std::vector<std::string> values_vec;
-    for (const auto& val : values.GetList()) {
-      if (!val.is_string()) {
-        return nullptr;
-      }
-      values_vec.push_back(val.GetString());
+  for (const auto [root_selector, inner_fields_val] : *fields_dict) {
+    const auto* inner_fields_list = inner_fields_val.GetIfList();
+    if (!inner_fields_list) {
+      continue;
     }
-    result->fields[key] = std::move(values_vec);
+    for (const auto& values : *inner_fields_list) {
+      const auto* values_dict = values.GetIfDict();
+      if (!values_dict) {
+        continue;
+      }
+      result->fields[root_selector].push_back(values_dict->Clone());
+    }
   }
 
   return result;
-}
-
-const PatternsURLDetails* ContentScraper::GetMatchingURLPattern(
-    const GURL& url,
-    bool is_strict_scrape) {
-  const auto& patterns = is_strict_scrape ? patterns_->get()->strict_patterns
-                                          : patterns_->get()->normal_patterns;
-  for (const auto& pattern : patterns) {
-    if (re2::RE2::PartialMatch(url.spec(), *pattern.url_regex) &&
-        !pattern.scrape_rule_groups.empty()) {
-      return &pattern;
-    }
-  }
-  return nullptr;
 }
 
 void ContentScraper::ScrapePage(const PatternsURLDetails* url_details,
@@ -107,7 +95,7 @@ void ContentScraper::ScrapePage(const PatternsURLDetails* url_details,
     select_request->root_selector = group.selector;
     for (const auto& rule : group.rules) {
       if (rule.rule_type == ScrapeRuleType::kStandard) {
-        ProcessStandardRule(rule, url, interim_result.get());
+        ProcessStandardRule(rule, group.selector, url, interim_result.get());
         continue;
       }
       auto attribute_request = mojom::SelectAttributeRequest::New();
@@ -141,7 +129,8 @@ void ContentScraper::ParseAndScrapePage(
     select_request.root_selector = group.selector;
     for (const auto& rule : group.rules) {
       if (rule.rule_type == ScrapeRuleType::kStandard) {
-        ProcessStandardRule(rule, interim_result->url, interim_result.get());
+        ProcessStandardRule(rule, group.selector, interim_result->url,
+                            interim_result.get());
         continue;
       }
       rust_document_extractor::SelectAttributeRequest attribute_request{
@@ -164,11 +153,13 @@ void ContentScraper::ParseAndScrapePage(
 }
 
 void ContentScraper::ProcessStandardRule(const ScrapeRule& rule,
+                                         const std::string& root_selector,
                                          const GURL& url,
                                          PageScrapeResult* scrape_result) {
   if (rule.attribute == kUrlAttrId) {
-    scrape_result->fields.insert_or_assign(
-        rule.report_key, std::vector<std::string>({url.spec()}));
+    base::Value::Dict dict;
+    dict.Set(rule.report_key, url.spec());
+    scrape_result->fields[root_selector].push_back(std::move(dict));
   }
 }
 
@@ -177,8 +168,16 @@ void ContentScraper::OnScrapedElementAttributes(
     PageScrapeResultCallback callback,
     std::vector<mojom::AttributeResultPtr> attribute_results) {
   for (const auto& attribute_result : attribute_results) {
-    scrape_result->fields.insert_or_assign(attribute_result->key,
-                                           attribute_result->attribute_values);
+    base::Value::Dict attribute_values;
+    for (const auto& [key, value_str] : attribute_result->attribute_values) {
+      base::Value value;
+      if (value_str) {
+        value = base::Value(*value_str);
+      }
+      attribute_values.Set(key, std::move(value));
+    }
+    scrape_result->fields[attribute_result->root_selector].push_back(
+        std::move(attribute_values));
   }
   std::move(callback).Run(std::move(scrape_result));
 }
@@ -188,13 +187,16 @@ void ContentScraper::OnRustElementAttributes(
     PageScrapeResultCallback callback,
     rust::Vec<rust_document_extractor::AttributeResult> attribute_results) {
   for (const auto& attribute_result : attribute_results) {
-    std::vector<std::string> attribute_values;
-    base::ranges::transform(attribute_result.attribute_values.begin(),
-                            attribute_result.attribute_values.end(),
-                            std::back_inserter(attribute_values),
-                            [](auto value) { return std::string(value); });
-    scrape_result->fields.insert_or_assign(std::string(attribute_result.key),
-                                           attribute_values);
+    base::Value::Dict attribute_values;
+    for (const auto& pair : attribute_result.attribute_pairs) {
+      base::Value value;
+      if (!pair.value.empty()) {
+        value = base::Value(std::string(pair.value));
+      }
+      attribute_values.Set(std::string(pair.key), std::move(value));
+    }
+    scrape_result->fields[std::string(attribute_result.root_selector)]
+        .push_back(std::move(attribute_values));
   }
   std::move(callback).Run(std::move(scrape_result));
 }

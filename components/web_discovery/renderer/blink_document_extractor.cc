@@ -17,37 +17,40 @@ namespace {
 
 constexpr char kTextContentAttributeName[] = "textContent";
 
-mojom::AttributeResultPtr ProcessAttributeRequest(
-    mojom::SelectAttributeRequest* request,
-    const blink::WebVector<blink::WebElement>& elements) {
-  auto attributes_result = mojom::AttributeResult::New();
-  attributes_result->key = request->key;
+void ProcessAttributeRequests(
+    std::string root_selector,
+    const std::vector<mojom::SelectAttributeRequestPtr>& requests,
+    const blink::WebVector<blink::WebElement>& elements,
+    std::vector<mojom::AttributeResultPtr>& results) {
   for (const auto& element : elements) {
+    auto attributes_result = mojom::AttributeResult::New();
+    attributes_result->root_selector = root_selector;
+
     std::optional<blink::WebElement> sub_element;
     const auto* element_to_query = &element;
-    if (request->sub_selector) {
-      auto web_sub_selector =
-          blink::WebString::FromUTF8(*request->sub_selector);
-      sub_element = element.QuerySelector(web_sub_selector);
-      element_to_query = &*sub_element;
-    }
-    if (element_to_query->IsNull()) {
-      continue;
-    }
-    std::string attribute_value;
-    if (request->attribute == kTextContentAttributeName) {
-      attribute_value = element_to_query->TextContent().Utf8();
-    } else {
-      auto attribute_name = blink::WebString::FromUTF8(request->attribute);
-      auto web_attribute_value = element_to_query->GetAttribute(attribute_name);
-      if (web_attribute_value.IsNull()) {
-        continue;
+    for (const auto& request : requests) {
+      if (request->sub_selector) {
+        auto web_sub_selector =
+            blink::WebString::FromUTF8(*request->sub_selector);
+        sub_element = element.QuerySelector(web_sub_selector);
+        element_to_query = &*sub_element;
       }
-      attribute_value = web_attribute_value.Utf8();
+      std::optional<std::string> attribute_value;
+      if (!element_to_query->IsNull()) {
+        if (request->attribute == kTextContentAttributeName) {
+          attribute_value = element_to_query->TextContent().Utf8();
+        } else {
+          auto attribute_name = blink::WebString::FromUTF8(request->attribute);
+          auto web_attribute_value =
+              element_to_query->GetAttribute(attribute_name);
+          if (!web_attribute_value.IsNull()) {
+            attribute_value = web_attribute_value.Utf8();
+          }
+        }
+      }
+      attributes_result->attribute_values[request->key] = attribute_value;
     }
-    attributes_result->attribute_values.push_back(attribute_value);
   }
-  return attributes_result;
 }
 
 }  // namespace
@@ -68,15 +71,10 @@ void BlinkDocumentExtractor::QueryElementAttributes(
   blink::WebDocument document = render_frame_->GetWebFrame()->GetDocument();
   std::vector<mojom::AttributeResultPtr> results;
   for (const auto& request : requests) {
-    auto result = mojom::AttributeResult::New();
-
     auto selector = blink::WebString::FromUTF8(request->root_selector);
     auto elements = document.QuerySelectorAll(selector);
-    for (const auto& attribute_request : request->attribute_requests) {
-      auto attributes_result =
-          ProcessAttributeRequest(attribute_request.get(), elements);
-      results.push_back(std::move(attributes_result));
-    }
+    ProcessAttributeRequests(request->root_selector,
+                             request->attribute_requests, elements, results);
   }
 
   std::move(callback).Run(std::move(results));

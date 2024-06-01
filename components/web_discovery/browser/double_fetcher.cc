@@ -24,7 +24,8 @@ constexpr char kRequestTimeKey[] = "request_time";
 constexpr char kRetriesKey[] = "retries";
 
 constexpr base::TimeDelta kRequestMaxAge = base::Hours(1);
-constexpr base::TimeDelta kRequestInterval = base::Minutes(1);
+// constexpr base::TimeDelta kRequestInterval = base::Minutes(1);
+constexpr base::TimeDelta kRequestInterval = base::Seconds(5);
 constexpr size_t kMaxRetries = 3;
 constexpr size_t kMaxDoubleFetchResponseSize = 2 * 1024 * 1024;
 
