@@ -31,7 +31,7 @@ struct PageScrapeResult {
   static std::unique_ptr<PageScrapeResult> FromValue(const base::Value& dict);
 
   GURL url;
-  base::flat_map<std::string, std::vector<std::string>> fields;
+  base::flat_map<std::string, std::vector<base::Value::Dict>> fields;
   std::string id;
 };
 
@@ -46,8 +46,6 @@ class ContentScraper {
   ContentScraper(const ContentScraper&) = delete;
   ContentScraper& operator=(const ContentScraper&) = delete;
 
-  const PatternsURLDetails* GetMatchingURLPattern(const GURL& url,
-                                                  bool is_strict_scrape);
   // For initial page scrape in renderer
   void ScrapePage(const PatternsURLDetails* url_details,
                   const GURL& url,
@@ -61,6 +59,7 @@ class ContentScraper {
 
  private:
   void ProcessStandardRule(const ScrapeRule& rule,
+                           const std::string& root_selector,
                            const GURL& url,
                            PageScrapeResult* scrape_result);
   void OnScrapedElementAttributes(

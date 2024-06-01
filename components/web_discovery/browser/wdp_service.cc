@@ -104,8 +104,8 @@ void WDPService::OnDoubleFetched(const base::Value& associated_data,
   if (!prev_scrape_result) {
     return;
   }
-  auto* url_pattern =
-      content_scraper_->GetMatchingURLPattern(prev_scrape_result->url, true);
+  auto* url_pattern = last_loaded_patterns_->GetMatchingURLPattern(
+      prev_scrape_result->url, true);
   if (!url_pattern) {
     return;
   }
@@ -121,7 +121,7 @@ void WDPService::OnFinishNavigation(
   if (!content_scraper_) {
     return;
   }
-  auto* url_pattern = content_scraper_->GetMatchingURLPattern(url, false);
+  auto* url_pattern = last_loaded_patterns_->GetMatchingURLPattern(url, false);
   if (!url_pattern) {
     return;
   }
@@ -140,14 +140,17 @@ void WDPService::OnContentScraped(bool is_strict,
   if (!result) {
     return;
   }
+  auto* url_details =
+      last_loaded_patterns_->GetMatchingURLPattern(result->url, true);
+  if (!url_details) {
+    return;
+  }
   if (!is_strict) {
-    if (!content_scraper_->GetMatchingURLPattern(result->url, true)) {
-      return;
-    }
     double_fetcher_->ScheduleDoubleFetch(result->url,
                                          result->SerializeToValue());
   } else {
-    // TODO(djandries): Create payload and schedule send
+    auto payloads = GeneratePayloads(url_details, std::move(result));
+    // TODO(djandries): send payloads
   }
 }
 

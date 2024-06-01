@@ -26,13 +26,98 @@ constexpr char kScrapeRulesKey[] = "scrape";
 constexpr char kSubSelectorKey[] = "item";
 constexpr char kRuleTypeKey[] = "type";
 constexpr char kAttributeKey[] = "etype";
+constexpr char kResultTypeKey[] = "results";
+constexpr char kActionKey[] = "action";
+constexpr char kFieldsKey[] = "fields";
+constexpr char kPayloadsKey[] = "payloads";
+constexpr char kJoinFieldAction[] = "join";
 
-constexpr auto kRuleTypeMap =
+constexpr auto kScrapeRuleTypeMap =
     base::MakeFixedFlatMap<std::string_view, ScrapeRuleType>({
         {"standard", ScrapeRuleType::kStandard},
         {"searchQuery", ScrapeRuleType::kSearchQuery},
         {"widgetTitle", ScrapeRuleType::kWidgetTitle},
     });
+constexpr auto kPayloadRuleTypeMap =
+    base::MakeFixedFlatMap<std::string_view, PayloadRuleType>({
+        {"query", PayloadRuleType::kQuery},
+        {"single", PayloadRuleType::kSingle},
+    });
+constexpr auto kPayloadResultTypeMap =
+    base::MakeFixedFlatMap<std::string_view, PayloadResultType>({
+        {"single", PayloadResultType::kSingle},
+        {"clustered", PayloadResultType::kClustered},
+        {"custom", PayloadResultType::kCustom},
+    });
+
+bool ParsePayloadRule(const base::Value& rule_value, PayloadRule* rule_out) {
+  auto* rule_list = rule_value.GetIfList();
+  if (!rule_list || rule_list->size() < 2) {
+    VLOG(1) << "Payload rule details is not a list of appropiate size";
+    return false;
+  }
+  auto* selector = (*rule_list)[0].GetIfString();
+  auto* payload_key = (*rule_list)[1].GetIfString();
+  if (!selector || !payload_key) {
+    VLOG(1) << "Selector or key missing from payload rule";
+    return false;
+  }
+  rule_out->selector = *selector;
+  rule_out->key = *payload_key;
+  if (rule_list->size() > 2) {
+    auto* field_action = (*rule_list)[2].GetIfString();
+    if (field_action && *field_action == kJoinFieldAction) {
+      rule_out->is_join = true;
+    }
+  }
+  return true;
+}
+
+std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
+    const base::Value::Dict* payload_dict) {
+  std::vector<PayloadRuleGroup> result(payload_dict->size());
+
+  auto rule_group_it = result.begin();
+  for (const auto [key, rule_group_value] : *payload_dict) {
+    auto* rule_group_dict = rule_group_value.GetIfDict();
+    if (!rule_group_dict) {
+      VLOG(1) << "Payload rule group is not a dict";
+      return std::nullopt;
+    }
+    auto* action = rule_group_dict->FindString(kActionKey);
+    auto* fields = rule_group_dict->FindList(kFieldsKey);
+    auto* rule_type_str = rule_group_dict->FindString(kRuleTypeKey);
+    auto* result_type_str = rule_group_dict->FindString(kResultTypeKey);
+    if (!action || !rule_type_str || !result_type_str) {
+      VLOG(1) << "Payload rule group attributes missing";
+      return std::nullopt;
+    }
+    auto rule_type_it = kPayloadRuleTypeMap.find(*rule_type_str);
+    auto result_type_it = kPayloadResultTypeMap.find(*result_type_str);
+    if (rule_type_it == kPayloadRuleTypeMap.end() ||
+        result_type_it == kPayloadResultTypeMap.end()) {
+      VLOG(1) << "Payload rule or result types unknown";
+      return std::nullopt;
+    }
+    rule_group_it->key = key;
+    rule_group_it->result_type = result_type_it->second;
+    rule_group_it->rule_type = rule_type_it->second;
+    if (fields) {
+      rule_group_it->rules = std::vector<PayloadRule>(fields->size());
+
+      auto rule_it = rule_group_it->rules.begin();
+      for (const auto& rule_value : *fields) {
+        if (!ParsePayloadRule(rule_value, rule_it.base())) {
+          return std::nullopt;
+        }
+        rule_it = std::next(rule_it);
+      }
+    }
+
+    rule_group_it = std::next(rule_group_it);
+  }
+  return result;
+}
 
 std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
     const base::Value::Dict* scrape_url_dict) {
@@ -42,7 +127,7 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
   for (const auto [selector, rule_group_value] : *scrape_url_dict) {
     auto* rule_group_dict = rule_group_value.GetIfDict();
     if (!rule_group_dict) {
-      VLOG(1) << "Rule group is not a dict";
+      VLOG(1) << "Scrape rule group is not a dict";
       return std::nullopt;
     }
     rule_group_it->selector = selector;
@@ -52,7 +137,7 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
     for (const auto [report_key, rule_value] : *rule_group_dict) {
       auto* rule_dict = rule_value.GetIfDict();
       if (!rule_dict) {
-        VLOG(1) << "Rule details is not a dict";
+        VLOG(1) << "Scrape rule details is not a dict";
         return std::nullopt;
       }
       auto* sub_selector = rule_dict->FindString(kSubSelectorKey);
@@ -65,8 +150,8 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
       rule_it->report_key = report_key;
       rule_it->rule_type = ScrapeRuleType::kOther;
       if (rule_type_str) {
-        auto rule_type_it = kRuleTypeMap.find(*rule_type_str);
-        if (rule_type_it != kRuleTypeMap.end()) {
+        auto rule_type_it = kScrapeRuleTypeMap.find(*rule_type_str);
+        if (rule_type_it != kScrapeRuleTypeMap.end()) {
           rule_it->rule_type = rule_type_it->second;
         }
       }
@@ -87,6 +172,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
   auto* url_patterns_list = root_dict->FindList(kUrlPatternsKey);
   auto* search_engines_list = root_dict->FindList(kSearchEnginesKey);
   auto* scrape_dict = root_dict->FindDict(kScrapeRulesKey);
+  auto* payloads_dict = root_dict->FindDict(kPayloadsKey);
   auto* id_mapping_dict = root_dict->FindDict(kIdMappingKey);
   if (!url_patterns_list || !search_engines_list || !scrape_dict ||
       !id_mapping_dict) {
@@ -111,6 +197,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
 
     auto* id = id_mapping_dict->FindString(i_str);
     auto* scrape_url_dict = scrape_dict->FindDict(i_str);
+    auto* payloads_url_dict = payloads_dict->FindDict(i_str);
     if (!id || !scrape_url_dict) {
       VLOG(1) << "ID or scrape dict missing for pattern";
       return std::nullopt;
@@ -127,6 +214,13 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
       return std::nullopt;
     }
     details.scrape_rule_groups = std::move(*scrape_rule_groups);
+    if (payloads_url_dict) {
+      auto payload_rule_groups = ParsePayloadRules(payloads_url_dict);
+      if (!payload_rule_groups) {
+        return std::nullopt;
+      }
+      details.payload_rule_groups = std::move(*payload_rule_groups);
+    }
   }
 
   return result;
@@ -140,11 +234,30 @@ ScrapeRule::~ScrapeRule() = default;
 ScrapeRuleGroup::ScrapeRuleGroup() = default;
 ScrapeRuleGroup::~ScrapeRuleGroup() = default;
 
+PayloadRule::PayloadRule() = default;
+PayloadRule::~PayloadRule() = default;
+
+PayloadRuleGroup::PayloadRuleGroup() = default;
+PayloadRuleGroup::~PayloadRuleGroup() = default;
+
 PatternsURLDetails::PatternsURLDetails() = default;
 PatternsURLDetails::~PatternsURLDetails() = default;
 
 PatternsGroup::PatternsGroup() = default;
 PatternsGroup::~PatternsGroup() = default;
+
+const PatternsURLDetails* PatternsGroup::GetMatchingURLPattern(
+    const GURL& url,
+    bool is_strict_scrape) {
+  const auto& patterns = is_strict_scrape ? strict_patterns : normal_patterns;
+  for (const auto& pattern : patterns) {
+    if (re2::RE2::PartialMatch(url.spec(), *pattern.url_regex) &&
+        !pattern.scrape_rule_groups.empty()) {
+      return &pattern;
+    }
+  }
+  return nullptr;
+}
 
 std::unique_ptr<PatternsGroup> ParsePatterns(const std::string& patterns_json) {
   auto result = std::make_unique<PatternsGroup>();

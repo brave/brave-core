@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
+#include "url/gurl.h"
 
 namespace re2 {
 class RE2;
@@ -20,6 +20,8 @@ class RE2;
 namespace web_discovery {
 
 enum class ScrapeRuleType { kStandard, kSearchQuery, kWidgetTitle, kOther };
+enum class PayloadRuleType { kQuery, kSingle };
+enum class PayloadResultType { kSingle, kClustered, kCustom };
 
 struct ScrapeRule {
   ScrapeRule();
@@ -46,6 +48,32 @@ struct ScrapeRuleGroup {
   std::vector<ScrapeRule> rules;
 };
 
+struct PayloadRule {
+  PayloadRule();
+  ~PayloadRule();
+
+  PayloadRule(const PayloadRule&) = delete;
+  PayloadRule& operator=(const PayloadRule&) = delete;
+
+  std::string selector;
+  std::string key;
+  bool is_join = false;
+};
+
+struct PayloadRuleGroup {
+  PayloadRuleGroup();
+  ~PayloadRuleGroup();
+
+  PayloadRuleGroup(const PayloadRuleGroup&) = delete;
+  PayloadRuleGroup& operator=(const PayloadRuleGroup&) = delete;
+
+  std::string key;
+  PayloadRuleType rule_type;
+  PayloadResultType result_type;
+  std::string action;
+  std::vector<PayloadRule> rules;
+};
+
 struct PatternsURLDetails {
   PatternsURLDetails();
   ~PatternsURLDetails();
@@ -57,6 +85,7 @@ struct PatternsURLDetails {
   bool is_search_engine;
   std::string id;
   std::vector<ScrapeRuleGroup> scrape_rule_groups;
+  std::vector<PayloadRuleGroup> payload_rule_groups;
 };
 
 struct PatternsGroup {
@@ -65,6 +94,9 @@ struct PatternsGroup {
 
   PatternsGroup(const PatternsGroup&) = delete;
   PatternsGroup& operator=(const PatternsGroup&) = delete;
+
+  const PatternsURLDetails* GetMatchingURLPattern(const GURL& url,
+                                                  bool is_strict_scrape);
 
   std::vector<PatternsURLDetails> normal_patterns;
   std::vector<PatternsURLDetails> strict_patterns;
