@@ -10,7 +10,7 @@
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_30">#F0F2FF</color>
     <color name="baseline_primary_90">#235B47</color>
-    <color name="baseline_primary_80">#33F3AD</color>
+    <color name="baseline_primary_80">#1BD176</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
     <color name="modern_blue_600">@color/baseline_primary_30</color>
