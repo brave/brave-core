@@ -65,6 +65,9 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorToggleButtonTrackOn] = {ui::kColorSysPrimary};
   mixer[ui::kColorToggleButtonTrackOnDisabled] = {
       ui::kColorSysStateDisabledContainer};
+
+  mixer[kColorAppMenuRowBackgroundHovered] = {kColorSysStateHoverOnSubtle};
+  mixer[kColorAppMenuUpgradeRowBackground] = {kColorSysTonalContainer};
 }
 
 }  // namespace ui
