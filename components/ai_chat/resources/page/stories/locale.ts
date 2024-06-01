@@ -95,4 +95,7 @@ provideStrings({
   shortenLabel: 'Shorten',
   maybeLaterLabel: 'Maybe later',
   menuManageSubscription: 'Manage subscription',
+  toolsMenuButtonLabel: 'Leo tools',
+  sendChatButtonLabel: 'Send message to Leo',
+  useMicButtonLabel: 'Use microphone',
 })
