@@ -93,11 +93,11 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
         happyImageView.setOnClickListener(
                 (v) -> {
                     dismiss();
-                    BraveAskPlayStoreRatingDialog fragment =
-                            BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
-                    fragment.show(
-                            ((AppCompatActivity) getActivity()).getSupportFragmentManager(),
-                            BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
+                    // BraveAskPlayStoreRatingDialog fragment =
+                    //         BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
+                    // fragment.show(
+                    //         ((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                    //         BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
                 });
     }
 
@@ -105,8 +105,8 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
         ImageView sadImageView = view.findViewById(R.id.sadImageView);
         sadImageView.setOnClickListener((v) -> {
             dismiss();
-            BraveRateThanksFeedbackDialog.showBraveRateThanksFeedbackDialog(
-                    (AppCompatActivity) getActivity());
+            // BraveRateThanksFeedbackDialog.showBraveRateThanksFeedbackDialog(
+            //         (AppCompatActivity) getActivity());
         });
     }
 }

@@ -359,7 +359,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 isIncognito()
                         || !ChromeSharedPreferences.getInstance()
                                 .readBoolean(
-                                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
+                                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false));
     }
 
     @Override
@@ -413,7 +413,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
+                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
@@ -1347,7 +1347,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
+                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)) {
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }

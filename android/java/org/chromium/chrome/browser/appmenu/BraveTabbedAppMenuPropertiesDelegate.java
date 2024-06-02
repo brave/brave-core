@@ -109,7 +109,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         mMenu = menu;
 
-        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
+        if (BraveVpnUtils.isVpnFeatureSupported(mContext) && false) {
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
             MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
             if (shouldShowIconBeforeItem()) {
@@ -220,10 +220,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
-        if (bravePlaylist != null) {
+        if (bravePlaylist != null || true) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                     && ChromeSharedPreferences.getInstance()
-                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true) && false) {
                 bravePlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     bravePlaylist.setIcon(
@@ -234,24 +234,24 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             }
         }
 
-//        MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
-//        if (addToPlaylist != null) {
-//            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-//                    && ChromeSharedPreferences.getInstance()
-//                            .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
-//                    && !ChromeSharedPreferences.getInstance()
-//                            .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)
-//                    && BraveToolbarLayoutImpl.mShouldShowPlaylistMenu) {
-//                addToPlaylist.setVisible(true);
-//                if (shouldShowIconBeforeItem()) {
-//                    addToPlaylist.setIcon(
-//                            AppCompatResources.getDrawable(
-//                                    mContext, R.drawable.ic_baseline_add_24));
-//                }
-//            } else {
-//                addToPlaylist.setVisible(false);
-//            }
-//        }
+       MenuItem addToPlaylist = menu.findItem(R.id.add_to_playlist_id);
+       if (addToPlaylist != null || true) {
+           if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                   && ChromeSharedPreferences.getInstance()
+                           .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+                   && !ChromeSharedPreferences.getInstance()
+                           .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)
+                   && BraveToolbarLayoutImpl.mShouldShowPlaylistMenu && false) {
+               addToPlaylist.setVisible(true);
+               if (shouldShowIconBeforeItem()) {
+                   addToPlaylist.setIcon(
+                           AppCompatResources.getDrawable(
+                                   mContext, R.drawable.ic_baseline_add_24));
+               }
+           } else {
+               addToPlaylist.setVisible(false);
+           }
+       }
 //
 //        MenuItem braveNews = menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
 //        if (shouldShowIconBeforeItem()) {

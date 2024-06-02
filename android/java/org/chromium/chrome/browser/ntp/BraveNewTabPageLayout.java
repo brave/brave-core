@@ -357,7 +357,7 @@ public class BraveNewTabPageLayout
 
     private boolean shouldDisplayBraveStats() {
         return ContextUtils.getAppSharedPreferences().getBoolean(
-                BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true);
+                BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
     }
 
     private void setNtpRecyclerView(LinearLayoutManager linearLayoutManager) {

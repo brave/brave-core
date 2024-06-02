@@ -27,13 +27,13 @@
             android:paddingTop="2dip"
             android:paddingEnd="2dip" >
 
-            <ImageView android:id="@+id/brave_sync_image"
+            <!-- <ImageView android:id="@+id/brave_sync_image"
                android:layout_width="match_parent"
                android:layout_height="0px"
                android:layout_weight="2"
                app:srcCompat="@drawable/brave_sync"
                android:scaleType="center"
-               android:contentDescription="@null" />
+               android:contentDescription="@null" /> -->
 
            <TextView android:id="@+id/brave_sync_text_initial"
                android:layout_width="match_parent"

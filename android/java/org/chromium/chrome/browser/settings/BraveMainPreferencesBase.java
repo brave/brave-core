@@ -254,7 +254,7 @@ public class BraveMainPreferencesBase
         if (getActivity() != null && !getActivity().isFinishing()
                 && BraveVpnPrefUtils.shouldShowCallout()
                 && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
+                && BraveVpnUtils.isVpnFeatureSupported(getActivity()) && false) {
             if (mVpnCalloutPreference == null) {
                 mVpnCalloutPreference = new VpnCalloutPreference(getActivity());
             }

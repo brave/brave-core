@@ -840,12 +840,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
       </message>
-      <message name="IDS_SHOW_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Ping Rewards icon.">
+      <!-- <message name="IDS_SHOW_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Ping Rewards icon.">
         Ping Rewards icon
-      </message>
-      <message name="IDS_SHOW_BRAVE_REWARDS_ICON_SUMMARY" desc="Summary for preference that hides or shows Ping Rewards icon.">
+      </message> -->
+      <!-- <message name="IDS_SHOW_BRAVE_REWARDS_ICON_SUMMARY" desc="Summary for preference that hides or shows Ping Rewards icon.">
         Show Ping Rewards icon in address bar
-      </message>
+      </message> -->
       <message name="IDS_BOTTOM_TOOLBAR_ENABLE" desc="Menu item for enabling the bottom toolbar.">
         Enable bottom toolbar
       </message>
@@ -1236,12 +1236,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESET_BRAVE_REWARDS_ERROR_DESCRIPTION" desc="Description for Ping Rewards reset error dialog.">
         There was an error resetting Ping Rewards. Please relaunch Ping and try again.
       </message>
-      <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_TITLE" desc="Title for Show Ads when Ping is not in use option in Ping rewards settings.">
+      <!-- <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_TITLE" desc="Title for Show Ads when Ping is not in use option in Ping rewards settings.">
         Ping Ads
-      </message>
-      <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_SUMMARY" desc="Summary for Show Ads when Ping is not in use option in Ping rewards settings.">
+      </message> -->
+      <!-- <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE_SUMMARY" desc="Summary for Show Ads when Ping is not in use option in Ping rewards settings.">
         Show notification ads when Ping is not in use
-      </message>
+      </message> -->
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Ping Rewards.">
         This will delete your Ping Rewards and reset all of your Ping Rewards data
       </message>

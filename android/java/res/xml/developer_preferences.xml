@@ -17,15 +17,15 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:key="beta_stable_hint"
-        android:title="Hint: You can also enable Developer options on Beta/Stable channels by tapping the Brave version in &quot;Settings > About Brave&quot; multiple times."
+        android:title="Hint: You can also enable Developer options on Beta/Stable channels by tapping the Brave version in &quot;Settings > About Ping&quot; multiple times."
         app:allowDividerAbove="false"
         app:allowDividerBelow="false" />
-    <Preference
+    <!-- <Preference
         android:fragment="org.chromium.chrome.browser.settings.developer.BraveQAPreferences"
         android:key="qa_preferences"
         android:title="QA Preferences"/>
     <Preference
         android:fragment="org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences"
         android:key="brave_rewards_debug_preferences"
-        android:title="Rewards Debug"/>
+        android:title="Rewards Debug"/> -->
 </PreferenceScreen>
