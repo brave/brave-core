@@ -13,7 +13,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 27;
+const int kBraveCurrentDataVersion = 28;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -194,7 +194,8 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "desktop",
 #endif
     "UTF-8",
-    "https://search.brave.com/api/suggest?q={searchTerms}",
+    "https://search.brave.com/api/"
+    "suggest?q={searchTerms}&rich=true&source=browser",
     SEARCH_ENGINE_OTHER,
     PREPOPULATED_ENGINE_ID_BRAVE);
 
