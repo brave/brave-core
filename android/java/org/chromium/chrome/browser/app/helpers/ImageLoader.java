@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.app.helpers;
 
+import static org.chromium.chrome.browser.content.WebContentsFactory.DEFAULT_NETWORK_HANDLE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.content.Context;
@@ -114,7 +115,8 @@ public class ImageLoader {
 
             WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
-                    webContentsFactory.createWebContentsWithWarmRenderer(profile, true);
+                    webContentsFactory.createWebContentsWithWarmRenderer(
+                            profile, true, DEFAULT_NETWORK_HANDLE);
             webContents.downloadImage(new GURL(validUrl), // Url
                     false, // isFavIcon
                     WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize

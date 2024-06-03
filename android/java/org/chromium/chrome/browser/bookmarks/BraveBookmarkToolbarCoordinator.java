@@ -15,6 +15,8 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListT
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.util.function.BooleanSupplier;
+
 class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
     // Overridden Chromium's BookmarkToolbarCoordinator.mToolbar
     private BookmarkToolbar mToolbar;
@@ -22,7 +24,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
     BraveBookmarkToolbarCoordinator(
             Context context,
             SelectableListLayout<BookmarkId> selectableListLayout,
-            SelectionDelegate selectionDelegate,
+            SelectionDelegate<BookmarkId> selectionDelegate,
             SearchDelegate searchDelegate,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
             boolean isDialogUi,
@@ -32,7 +34,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             BookmarkUiPrefs bookmarkUiPrefs,
             ModalDialogManager modalDialogManager,
             Runnable endSearchRunnable,
-            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
+            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
+            BooleanSupplier incognitoEnabledSupplier) {
         super(
                 context,
                 selectableListLayout,
@@ -46,7 +49,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 bookmarkUiPrefs,
                 modalDialogManager,
                 endSearchRunnable,
-                bookmarkMoveSnackbarManager);
+                bookmarkMoveSnackbarManager,
+                incognitoEnabledSupplier);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);
