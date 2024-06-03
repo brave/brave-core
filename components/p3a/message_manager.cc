@@ -305,11 +305,11 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
       is_constellation
           ? constellation_send_log_stores_[log_type]->staged_log_type()
           : json_log_stores_[log_type]->staged_log_type();
-  bool is_nebula = is_constellation
-                       ? p3a::kNebulaOnlyHistograms.contains(
-                             constellation_send_log_stores_[log_type]
-                                 ->staged_log_histogram_name())
-                       : false;
+  const bool is_nebula = is_constellation
+                             ? p3a::kNebulaOnlyHistograms.contains(
+                                   constellation_send_log_stores_[log_type]
+                                       ->staged_log_histogram_name())
+                             : false;
 
   VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes";
   uploader_->UploadLog(log, upload_type, is_constellation, is_nebula, log_type);
@@ -351,7 +351,7 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
              "randomness for histogram: "
           << log_key;
 
-  bool is_nebula = p3a::kNebulaOnlyHistograms.contains(log_key);
+  const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(log_key);
   if (is_nebula && !features::IsNebulaEnabled()) {
     // Do not report if Nebula feature is not enabled,
     // mark request as successful to avoid transmission.
@@ -390,9 +390,9 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   message_meta_.Update();
 
   if (is_constellation) {
-    bool include_refcode =
+    const bool include_refcode =
         p3a::kHistogramsWithRefcodeIncluded.contains(histogram_name);
-    bool is_nebula = p3a::kNebulaOnlyHistograms.contains(histogram_name);
+    const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(histogram_name);
     return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
                                            upload_type, include_refcode,
                                            is_nebula);

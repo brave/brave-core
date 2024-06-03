@@ -70,7 +70,7 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
           kBraveP3AVersionHeader,
           base::NumberToString(kCurrentP3AVersionValue));
 
-      size_t threshold =
+      const size_t threshold =
           is_nebula ? kNebulaThreshold : kConstellationDefaultThreshold;
       resource_request->headers.SetHeader(kBraveP3AConstellationThresholdHeader,
                                           base::NumberToString(threshold));
