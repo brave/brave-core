@@ -305,20 +305,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       return
     }
 
-    contexts.forEach({
+    for context in contexts {
       guard
         let routerpath = NavigationPath(
-          url: $0.url,
+          url: context.url,
           isPrivateBrowsing: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing
             == true
         )
       else {
-        Logger.module.error("[SCENE] - Invalid Navigation Path: \($0.url)")
+        Logger.module.error("[SCENE] - Invalid Navigation Path: \(context.url)")
         return
       }
 
+      if case .url(let navigationPathURL, _) = routerpath, let pathURL = navigationPathURL, pathURL.isFileURL {
+        defer {
+          pathURL.stopAccessingSecurityScopedResource()
+        }
+        
+        let canAccessFileURL = pathURL.startAccessingSecurityScopedResource()
+
+        if !canAccessFileURL {
+          //File can not be accessed pass the url text to search engine
+          scene.browserViewController?.submitSearchText(pathURL.absoluteString)
+          continue
+        }
+      }
+
       scene.browserViewController?.handleNavigationPath(path: routerpath)
-    })
+    }
   }
 
   func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
