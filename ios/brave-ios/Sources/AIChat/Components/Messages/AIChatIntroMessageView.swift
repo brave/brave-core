@@ -25,9 +25,6 @@ struct AIChatIntroMessageView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralModelDescription
 
-    case .chatClaudeInstant:
-      return Strings.AIChat.introMessageClaudeInstantModelDescription
-
     case .chatClaudeHaiku:
       return Strings.AIChat.introMessageClaudeHaikuModelDescription
 
@@ -47,9 +44,6 @@ struct AIChatIntroMessageView: View {
 
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralMessageDescription
-
-    case .chatClaudeInstant:
-      return Strings.AIChat.introMessageClaudeInstantMessageDescription
 
     case .chatClaudeHaiku:
       return Strings.AIChat.introMessageClaudeHaikuMessageDescription

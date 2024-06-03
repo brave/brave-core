@@ -239,9 +239,6 @@ struct AIChatMenuView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralModelPurposeDescription
 
-    case .chatClaudeInstant:
-      return Strings.AIChat.introMessageClaudeInstantModelPurposeDescription
-
     case .chatClaudeHaiku:
       return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
 
