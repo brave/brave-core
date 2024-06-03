@@ -15,7 +15,6 @@ import {
   FrostedGlass,
   HiddenPhraseContainer,
   EyeOffIcon,
-  IconWrapper,
   WordPos
 } from './recovery-phrase.style'
 
@@ -62,9 +61,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
     return (
       <HiddenPhraseContainer onMouseEnter={() => setHidden(false)}>
         <FrostedGlass>
-          <IconWrapper>
-            <EyeOffIcon />
-          </IconWrapper>
+          <EyeOffIcon />
         </FrostedGlass>
         <RecoveryPhraseContainer phraseLength={FAKE_PHRASE_WORDS.length}>
           {FAKE_PHRASE_WORDS.map((word, index) => (
