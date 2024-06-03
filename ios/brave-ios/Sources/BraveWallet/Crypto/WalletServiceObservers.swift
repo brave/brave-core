@@ -207,7 +207,7 @@ class JsonRpcServiceObserver: BraveWalletJsonRpcServiceObserver {
     _chainChangedEvent: (
       (_ chainId: String, _ coin: BraveWallet.CoinType, _ origin: URLOrigin?) -> Void
     )? = nil,
-    _onAddEthereumChainRequestCompleted: ((_ chainId: String, _ error: String) -> Void)? = nil,
+    _onAddEthereumChainRequestCompleted: ((_ chainId: String, _ error: String) -> Void)? = nil
   ) {
     self._chainChangedEvent = _chainChangedEvent
     self._onAddEthereumChainRequestCompleted = _onAddEthereumChainRequestCompleted

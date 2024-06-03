@@ -135,9 +135,9 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let allNetworks = await rpcService.allNetworks(coin: nft.coin)
+      let allNetworks = await rpcService.allNetworks()
       if let network = allNetworks.first(where: {
-        $0.chainId.caseInsensitiveCompare(nft.chainId) == .orderedSame
+        $0.coin == nft.coin && $0.chainId.caseInsensitiveCompare(nft.chainId) == .orderedSame
       }) {
         networkInfo = network
       }

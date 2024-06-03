@@ -372,11 +372,14 @@ extension BraveWalletJsonRpcService {
     await withTaskGroup(of: [BraveWallet.NetworkInfo].self) {
       @MainActor [weak self] group -> [BraveWallet.NetworkInfo] in
       guard let self = self else { return [] }
+      let chains = await self.allNetworks()
       for coinType in coins {
         group.addTask { @MainActor in
-          let chains = await self.allNetworks(coin: coinType)
           let hiddenChains = await self.hiddenNetworks(coin: coinType)
           return chains.filter {
+            if $0.coin != coinType {
+              return false
+            }
             if $0.chainId == BraveWallet.LocalhostChainId {
               // localhost not supported
               return false

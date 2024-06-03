@@ -263,8 +263,10 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     by chainId: String,
     coin: BraveWallet.CoinType
   ) async -> BraveWallet.NetworkInfo? {
-    let allNetworks = await rpcService.allNetworks(coin: coin)
-    return allNetworks.first { $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame }
+    let allNetworks = await rpcService.allNetworks()
+    return allNetworks.first {
+      $0.coin == coin && $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame
+    }
   }
 
   @MainActor func allAssets() async -> [AssetViewModel] {

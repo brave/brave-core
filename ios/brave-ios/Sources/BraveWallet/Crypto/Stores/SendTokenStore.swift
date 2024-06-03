@@ -301,7 +301,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.selectedSendToken = prefilledToken
     } else {
       // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks(coin: prefilledToken.coin)
+      let allNetworksForTokenCoin = await rpcService.allNetworks().filter({
+        $0.coin == prefilledToken.coin
+      })
       guard
         let networkForToken = allNetworksForTokenCoin.first(where: {
           $0.chainId == prefilledToken.chainId
@@ -410,32 +412,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.selectedSendTokenBalance = balance
       self.selectedSendNFTMetadata = metadataCache[selectedSendToken.id]
       self.validateBalance()
-    }
-  }
-
-  private func makeEIP1559Tx(
-    chainId: String,
-    baseData: BraveWallet.TxData,
-    from accountId: BraveWallet.AccountId,
-    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
-  ) {
-    let eip1559Data = BraveWallet.TxData1559(
-      baseData: baseData,
-      chainId: chainId,
-      maxPriorityFeePerGas: "",
-      maxFeePerGas: "",
-      gasEstimation: nil
-    )
-    let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    self.txService.addUnapprovedTransaction(
-      txDataUnion: txDataUnion,
-      chainId: chainId,
-      from: accountId
-    ) {
-      success,
-      txMetaId,
-      errorMessage in
-      completion(success, errorMessage)
     }
   }
 
@@ -716,37 +692,19 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     rpcService.network(coin: .eth, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
-        let baseData = BraveWallet.TxData(
-          nonce: "",
-          gasPrice: "",
-          gasLimit: "",
+        let params = BraveWallet.NewEvmTransactionParams(
+          chainId: network.chainId,
+          from: fromAccountInfo.accountId,
           to: sendToAddress,
           value: "0x\(weiHexString)",
-          data: .init(),
-          signOnly: false,
-          signedTransaction: nil
+          gasLimit: "",
+          data: .init()
         )
-        if network.isEip1559 {
-          self.makeEIP1559Tx(
-            chainId: network.chainId,
-            baseData: baseData,
-            from: fromAccountInfo.accountId
-          ) {
-            success,
-            errorMessage in
-            self.isMakingTx = false
-            completion(success, errorMessage)
-          }
-        } else {
-          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountInfo.accountId
-          ) { success, txMetaId, errorMessage in
-            self.isMakingTx = false
-            completion(success, errorMessage)
-          }
+        self.txService.addUnapprovedEvmTransaction(
+          params: params
+        ) { success, txMetaId, errorMessage in
+          self.isMakingTx = false
+          completion(success, errorMessage)
         }
       } else if token.isErc721 {
         self.ethTxManagerProxy.makeErc721TransferFromData(
@@ -790,37 +748,20 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(
-            nonce: "",
-            gasPrice: "",
-            gasLimit: "",
+
+          let params = BraveWallet.NewEvmTransactionParams(
+            chainId: network.chainId,
+            from: fromAccountInfo.accountId,
             to: token.contractAddress,
             value: "0x0",
-            data: data,
-            signOnly: false,
-            signedTransaction: nil
+            gasLimit: "",
+            data: data
           )
-          if network.isEip1559 {
-            self.makeEIP1559Tx(
-              chainId: network.chainId,
-              baseData: baseData,
-              from: fromAccountInfo.accountId
-            ) {
-              success,
-              errorMessage in
-              self.isMakingTx = false
-              completion(success, errorMessage)
-            }
-          } else {
-            let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-            self.txService.addUnapprovedTransaction(
-              txDataUnion: txDataUnion,
-              chainId: network.chainId,
-              from: fromAccountInfo.accountId
-            ) { success, txMetaId, errorMessage in
-              self.isMakingTx = false
-              completion(success, errorMessage)
-            }
+          self.txService.addUnapprovedEvmTransaction(
+            params: params
+          ) { success, txMetaId, errorMessage in
+            self.isMakingTx = false
+            completion(success, errorMessage)
           }
         }
       }

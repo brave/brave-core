@@ -97,7 +97,6 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   }
 
   func allNetworks(
-    coin: BraveWallet.CoinType,
     completion: @escaping ([BraveWallet.NetworkInfo]) -> Void
   ) {
     completion(networks)
