@@ -2028,6 +2028,11 @@ public class BrowserViewController: UIViewController {
       Task {
         await tab.updateSecureContentState()
         self.logSecureContentState(tab: tab, path: .serverTrust)
+        DebugLogger.log(
+          for: .secureState,
+          text:
+            "WebView Trust: \(webView.serverTrust != nil) -- SecureContentState NewKey: \(change?[.newKey] != nil)"
+        )
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
