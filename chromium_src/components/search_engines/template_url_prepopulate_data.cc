@@ -27,10 +27,7 @@ namespace TemplateURLPrepopulateData {
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     PrefService* prefs,
     search_engines::SearchEngineChoiceService* search_engine_choice_service,
-    size_t* default_search_provider_index,
-    bool include_current_default = false,
-    TemplateURLService* template_url_service = nullptr,
-    bool* was_current_default_inserted = nullptr);
+    size_t* default_search_provider_index);
 
 }  // namespace TemplateURLPrepopulateData
 
@@ -664,10 +661,7 @@ int GetDataVersion(PrefService* prefs) {
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     PrefService* prefs,
     search_engines::SearchEngineChoiceService* search_engine_choice_service,
-    size_t* default_search_provider_index,
-    bool include_current_default,
-    TemplateURLService* template_url_service,
-    bool* was_current_default_inserted) {
+    size_t* default_search_provider_index) {
   // If there is a set of search engines in the preferences file, it overrides
   // the built-in set.
   if (default_search_provider_index)
