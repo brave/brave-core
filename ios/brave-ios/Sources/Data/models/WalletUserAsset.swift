@@ -16,6 +16,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var isERC20: Bool
   @NSManaged public var isERC721: Bool
   @NSManaged public var isERC1155: Bool
+  @NSManaged public var splTokenProgram: Int16
   @NSManaged public var isNFT: Bool
   @NSManaged public var isSpam: Bool
   @NSManaged public var symbol: String
@@ -36,6 +37,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       isErc20: self.isERC20,
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
+      splTokenProgram: BraveWallet.SPLTokenProgram(rawValue: Int(self.splTokenProgram)),
       isNft: self.isNFT,
       isSpam: self.isSpam,
       symbol: self.symbol,
@@ -72,6 +74,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     self.isERC20 = asset.isErc20
     self.isERC721 = asset.isErc721
     self.isERC1155 = asset.isErc1155
+    self.splTokenProgram = Int16(asset.splTokenProgram.rawValue)
     self.isNFT = asset.isNft
     self.isSpam = asset.isSpam
     self.symbol = asset.symbol
