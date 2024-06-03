@@ -28,12 +28,6 @@ enum PlaylistEvent {
   kUpdated,
 };
 
-[EnableIf=is_android]
-enum HlsContentStatus {
-  kReady,    // Content is already prepared
-  kNotReady, // COntent needs preparing
-};
-
 struct Playlist {
   string? id;
   string name;
@@ -82,12 +76,6 @@ struct PlaylistItem {
   bool is_selected;
 };
 
-[EnableIf=is_android]
-struct HlsContent {
-  string playlist_item_id;
-  bool is_prepared;
-};
-
 // Used by the web UI to bootstrap bidirectional communication.
 // the WebUI page's |BrowserProxy| singleton calls this method
 // when the page is first initialized.
@@ -128,8 +116,6 @@ interface PlaylistService {
   // actors that update the item.
   UpdateItem(PlaylistItem item);
   UpdateItemLastPlayedPosition(string playlist_item_idid, int32 last_played_position);
-  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
-    int64 updated_file_size);
 
   // Try downloading media files again. Returns PlaylistItem after trying
   // recovery. If it succeeded, |cached| state of the return item would be true.
@@ -153,10 +139,19 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
+  [EnableIf=is_android]
   RequestStreamingQuery(string query_id, string url,string method,
    pending_remote<PlaylistStreamingObserver> observer);
+
+  [EnableIf=is_android]
   ClearAllQueries();
+  
+  [EnableIf=is_android]
   CancelQuery(string query_id);
+
+  [EnableIf=is_android]
+  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
+    int64 updated_file_size);
 
   [EnableIf=is_android]
   AddHlsContent(string playlist_item_id);

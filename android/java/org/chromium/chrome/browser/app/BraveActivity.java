@@ -1529,11 +1529,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void openPlaylist(boolean shouldHandlePlaylistActivity) {
         if (!shouldHandlePlaylistActivity) mIsDeepLink = true;
-
-        Log.e("playlist", "openPlaylist 1");
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-            Log.e("playlist", "openPlaylist 2");
             PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
