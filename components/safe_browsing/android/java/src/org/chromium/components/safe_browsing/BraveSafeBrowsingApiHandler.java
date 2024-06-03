@@ -198,4 +198,14 @@ public class BraveSafeBrowsingApiHandler implements SafetyNetApiHandler {
     private boolean isHttpsOrHttp(String uri) {
         return URLUtil.isHttpsUrl(uri) || URLUtil.isHttpUrl(uri);
     }
+
+    @Override
+    public void isVerifyAppsEnabled(long callbackId) {
+        mObserver.onVerifyAppsEnabledDone(callbackId, VerifyAppsResult.SUCCESS_ENABLED);
+    }
+
+    @Override
+    public void enableVerifyApps(long callbackId) {
+        mObserver.onVerifyAppsEnabledDone(callbackId, VerifyAppsResult.SUCCESS_ENABLED);
+    }
 }
