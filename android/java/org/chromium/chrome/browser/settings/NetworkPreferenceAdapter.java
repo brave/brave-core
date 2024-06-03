@@ -46,6 +46,7 @@ import java.util.List;
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
     private static final String TAG = "NetworkPreferenceAdapter";
+
     /** Item types. */
     private static final int NETWORK_ITEM = 0;
 
@@ -377,7 +378,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             case CoinType.FIL -> mActiveFilChainId = network.chainId;
             case CoinType.SOL -> mActiveSolChainId = network.chainId;
             case CoinType.BTC -> mActiveBtcChainId = network.chainId;
-            case CoinType.ZEC -> Log.e(TAG, "Unsupported active chain for coin type: " + network.coin);
+            case CoinType.ZEC -> Log.e(
+                    TAG, "Unsupported active chain for coin type: " + network.coin);
         }
     }
 
@@ -403,7 +405,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
                     mHiddenBtcChainIds.add(network.chainId);
                 }
             }
-            case CoinType.ZEC -> Log.e(TAG, "Unsupported hidden chain for coin type: " + network.coin);
+            case CoinType.ZEC -> Log.e(
+                    TAG, "Unsupported hidden chain for coin type: " + network.coin);
         }
     }
 
@@ -413,7 +416,8 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             case CoinType.FIL -> mHiddenFilChainIds.remove(network.chainId);
             case CoinType.SOL -> mHiddenSolChainIds.remove(network.chainId);
             case CoinType.BTC -> mHiddenBtcChainIds.remove(network.chainId);
-            case CoinType.ZEC -> Log.e(TAG, "Unsupported hidden chain for coin type: " + network.coin);
+            case CoinType.ZEC -> Log.e(
+                    TAG, "Unsupported hidden chain for coin type: " + network.coin);
         }
     }
 

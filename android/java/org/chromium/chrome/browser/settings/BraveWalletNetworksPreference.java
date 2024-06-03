@@ -119,13 +119,12 @@ public class BraveWalletNetworksPreference extends Preference
         getAvailableChainIds(
                 CoinType.ETH,
                 (defaultEthChainId, ethNetworks, customEthChainIds, hiddenEthChainIds) -> {
-                    final NetworkPreferenceAdapter.NetworkListContainer
-                            networkListContainerEth =
-                                    new NetworkPreferenceAdapter.NetworkListContainer(
-                                            ethNetworks,
-                                            defaultEthChainId,
-                                            hiddenEthChainIds,
-                                            customEthChainIds);
+                    final NetworkPreferenceAdapter.NetworkListContainer networkListContainerEth =
+                            new NetworkPreferenceAdapter.NetworkListContainer(
+                                    ethNetworks,
+                                    defaultEthChainId,
+                                    hiddenEthChainIds,
+                                    customEthChainIds);
                     getAvailableChainIds(
                             CoinType.FIL,
                             (defaultFilChainId,
@@ -134,8 +133,7 @@ public class BraveWalletNetworksPreference extends Preference
                                     hiddenFilChainIds) -> {
                                 final NetworkPreferenceAdapter.NetworkListContainer
                                         networkListContainerFil =
-                                                new NetworkPreferenceAdapter
-                                                        .NetworkListContainer(
+                                                new NetworkPreferenceAdapter.NetworkListContainer(
                                                         filNetworks,
                                                         defaultFilChainId,
                                                         hiddenFilChainIds,
