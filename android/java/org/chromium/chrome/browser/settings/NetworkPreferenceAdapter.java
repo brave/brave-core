@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -45,7 +44,7 @@ import java.util.List;
  * remove a specific network. Used by {@link BraveWalletNetworksPreference}.
  */
 public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private static final String TAG = "NetworkPreferenceAdapter";
+    private static final String TAG = "NetworkPreference";
 
     /** Item types. */
     private static final int NETWORK_ITEM = 0;
