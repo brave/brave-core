@@ -101,6 +101,18 @@ enum class TypeKind {
 };
 
 struct Type {
+  explicit Type(TypeKind kind);
+  Type(TypeKind kind, size_t m);
+
+  // Delete copy constructor and copy assignment operator
+  Type(const Type&) = delete;
+  Type& operator=(const Type&) = delete;
+
+  // Define move constructor
+  Type(Type&& other) noexcept;
+
+  ~Type();
+
   TypeKind kind;
 
   // Indicates bit length for fixed-size types if applicable.
@@ -111,17 +123,6 @@ struct Type {
 
   // Indicates the types of the tuple elements, if kind is kTuple.
   std::vector<Type> tuple_types;
-
-  explicit Type(TypeKind kind);
-  Type(TypeKind kind, size_t m);
-  ~Type();
-
-  // Delete copy constructor and copy assignment operator
-  Type(const Type&) = delete;
-  Type& operator=(const Type&) = delete;
-
-  // Define move constructor
-  Type(Type&& other) noexcept;
 };
 
 class TypeBuilder {
