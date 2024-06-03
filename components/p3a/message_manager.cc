@@ -358,6 +358,7 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
     constellation_prep_log_stores_[log_type]->DiscardStagedLog();
     constellation_prep_schedulers_[log_type]->UploadFinished(true);
     delegate_->OnMetricCycled(log_key, true);
+    return;
   }
 
   if (!constellation_helper_->StartMessagePreparation(log_key.c_str(), log_type,
