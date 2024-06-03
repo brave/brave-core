@@ -158,6 +158,9 @@ void BraveTabMenuModel::BuildItemsForSplitView(
 
   if (brave::IsTabsTiled(browser, indices)) {
     InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
+  }
+
+  if (brave::IsTabsTiled(browser, {tab_strip_model->active_index()})) {
     InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
                              IDS_IDC_SWAP_SPLIT_VIEW);
   }
