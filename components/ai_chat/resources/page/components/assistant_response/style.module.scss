@@ -34,3 +34,12 @@
     color: var(--leo-color-text-interactive);
   }
 }
+
+.searchLearnMoreLink {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-secondary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}
