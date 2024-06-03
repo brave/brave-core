@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+
 #include <string>
 #include <string_view>
 
@@ -15,7 +17,6 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -155,8 +156,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     SetEthChainIdInterceptor(
         {GURL(kSomeEndpoint),
-         GetKnownChain(profile->GetPrefs(), mojom::kNeonEVMMainnetChainId,
-                       mojom::CoinType::ETH)
+         GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
              ->rpc_endpoints.front()},
         mojom::kNeonEVMMainnetChainId);
 
@@ -349,10 +349,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   CreateSettingsTab();
-  auto* prefs = browser()->profile()->GetPrefs();
-
   auto known_neon_evm_rpc =
-      GetKnownChain(prefs, mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
+      GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
           ->rpc_endpoints.front();
   // Neon EVM rpc is from known info.
   WaitForNeonEVMNetworkUrl(known_neon_evm_rpc);

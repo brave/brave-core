@@ -256,7 +256,6 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
   EXPECT_EQ(18, chain1->decimals);
   EXPECT_EQ(0u, chain1->icon_urls.size());
   EXPECT_EQ(chain1->coin, mojom::CoinType::ETH);
-  EXPECT_FALSE(chain1->is_eip1559);
 
   auto& chain2 = result[1];
   ASSERT_TRUE(chain2);
@@ -278,7 +277,6 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
   EXPECT_EQ(18, chain2->decimals);
   EXPECT_EQ(0u, chain2->icon_urls.size());
   EXPECT_EQ(chain2->coin, mojom::CoinType::ETH);
-  EXPECT_FALSE(chain2->is_eip1559);
 }
 
 TEST(BlockchainListParseUnitTest, ParseDappLists) {

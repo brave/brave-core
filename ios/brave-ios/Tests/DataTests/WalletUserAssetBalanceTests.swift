@@ -62,8 +62,7 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     symbolName: "SOL",
     decimals: 9,
     coin: .sol,
-    supportedKeyrings: [],
-    isEip1559: false
+    supportedKeyrings: []
   )
 
   let fetchRequest = NSFetchRequest<WalletUserAssetBalance>(

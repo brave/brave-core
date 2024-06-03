@@ -135,9 +135,6 @@ class TestJsonRpcServiceObserver
     EXPECT_EQ(coin, expected_coin_);
   }
 
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
-
   bool chain_changed_called() {
     base::RunLoop().RunUntilIdle();
     return chain_changed_called_;

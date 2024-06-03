@@ -527,7 +527,7 @@ public class BraveWalletUtilsTest {
                             || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
                             || varName.equals("rpcEndpoints") || varName.equals("supportedKeyrings")
                             || varName.equals("activeRpcEndpointIndex") || varName.equals("symbol")
-                            || varName.equals("symbolName") || varName.equals("isEip1559")) {
+                            || varName.equals("symbolName")) {
                         continue;
                     }
                     if (v == null) {

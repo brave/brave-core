@@ -9,7 +9,6 @@ import { getLocale } from '../../common/locale'
 // types
 import {
   BraveWallet,
-  WalletAccountTypeName,
   BitcoinMainnetKeyringIds,
   BitcoinTestnetKeyringIds
 } from '../constants/types'
@@ -62,17 +61,6 @@ export const findAccountByUniqueKey = <
   }
 
   return accounts.find((account) => uniqueKey === account.accountId.uniqueKey)
-}
-
-export const getAccountType = (
-  info: Pick<BraveWallet.AccountInfo, 'accountId' | 'hardware'>
-): WalletAccountTypeName => {
-  if (info.accountId.kind === BraveWallet.AccountKind.kHardware) {
-    return info.hardware!.vendor as 'Ledger' | 'Trezor'
-  }
-  return info.accountId.kind === BraveWallet.AccountKind.kImported
-    ? 'Secondary'
-    : 'Primary'
 }
 
 export const entityIdFromAccountId = (

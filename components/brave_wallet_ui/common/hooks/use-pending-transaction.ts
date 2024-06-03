@@ -16,12 +16,9 @@ import { PanelActions } from '../../panel/actions'
 // utils
 import Amount from '../../utils/amount'
 import { getPriceIdForToken } from '../../utils/api-utils'
-import { isHardwareAccount, getAccountType } from '../../utils/account-utils'
+import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
-import {
-  getCoinFromTxDataUnion,
-  hasEIP1559Support
-} from '../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
@@ -31,7 +28,8 @@ import {
   findTransactionToken,
   isEthereumTransaction,
   isZCashTransaction,
-  isBitcoinTransaction
+  isBitcoinTransaction,
+  isEIP1559Transaction
 } from '../../utils/tx-utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 
@@ -185,9 +183,9 @@ export const usePendingTransactions = () => {
     isLoading: isLoadingGasEstimates,
     isError: hasEvmFeeEstimatesError
   } = useGetGasEstimation1559Query(
-    txAccount &&
-      transactionsNetwork &&
-      hasEIP1559Support(getAccountType(txAccount), transactionsNetwork)
+    transactionsNetwork &&
+      transactionInfo &&
+      isEIP1559Transaction(transactionInfo)
       ? transactionsNetwork.chainId
       : skipToken,
     defaultQuerySubscriptionOptions

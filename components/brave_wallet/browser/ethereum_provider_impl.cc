@@ -268,6 +268,17 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     return;
   }
 
+  auto is_eip1559_opt = IsEip1559Chain(prefs_, chain->chain_id);
+  if (!is_eip1559_opt.has_value()) {
+    mojom::ProviderError code = mojom::ProviderError::kInternalError;
+    std::string message = "Internal JSON-RPC error";
+    base::Value formed_response = GetProviderErrorDictionary(code, message);
+    reject = true;
+    std::move(callback).Run(std::move(id), std::move(formed_response), reject,
+                            "", false);
+    return;
+  }
+
   std::string from;
   mojom::TxData1559Ptr tx_data_1559 =
       ParseEthTransaction1559Params(normalized_json_request, &from);
@@ -287,7 +298,7 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     return;
   }
 
-  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
+  if (ShouldCreate1559Tx(tx_data_1559.Clone(), is_eip1559_opt.value(),
                          keyring_service_->GetAllAccountInfos(), account_id)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;

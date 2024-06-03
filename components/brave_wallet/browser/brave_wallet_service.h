@@ -92,6 +92,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
+  static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

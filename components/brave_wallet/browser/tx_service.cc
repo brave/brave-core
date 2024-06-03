@@ -201,6 +201,8 @@ void TxService::AddUnapprovedTransaction(
     const std::string& chain_id,
     mojom::AccountIdPtr from,
     AddUnapprovedTransactionCallback callback) {
+  CHECK_NE(from->coin, mojom::CoinType::ETH)
+      << "Wallet UI must use AddUnapprovedEvmTransaction";
   AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
                                      std::move(from), std::nullopt,
                                      std::move(callback));
@@ -229,6 +231,35 @@ void TxService::AddUnapprovedTransactionWithOrigin(
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       chain_id, std::move(tx_data_union), from, origin, std::move(callback));
+}
+
+void TxService::AddUnapprovedEvmTransaction(
+    mojom::NewEvmTransactionParamsPtr params,
+    AddUnapprovedEvmTransactionCallback callback) {
+  AddUnapprovedEvmTransactionWithOrigin(std::move(params), std::nullopt,
+                                        std::move(callback));
+}
+
+void TxService::AddUnapprovedEvmTransactionWithOrigin(
+    mojom::NewEvmTransactionParamsPtr params,
+    const std::optional<url::Origin>& origin,
+    AddUnapprovedEvmTransactionCallback callback) {
+  CHECK_EQ(params->from->coin, mojom::CoinType::ETH);
+  if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
+  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params), origin,
+                                                 std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

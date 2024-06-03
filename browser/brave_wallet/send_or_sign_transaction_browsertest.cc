@@ -104,7 +104,7 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
     run_loop_new_unapproved_->Run();
   }
 
-  void WaitForRjectedStatus() {
+  void WaitForRejectedStatus() {
     run_loop_rejected_ = std::make_unique<base::RunLoop>();
     run_loop_rejected_->Run();
   }
@@ -137,9 +137,6 @@ class TestJsonRpcServiceObserver : public mojom::JsonRpcServiceObserver {
   void ChainChangedEvent(const std::string& chain_id,
                          brave_wallet::mojom::CoinType coin,
                          const std::optional<::url::Origin>& origin) override {}
-
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
 
   ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
@@ -361,7 +358,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
         mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
-          observer()->WaitForRjectedStatus();
+          observer()->WaitForRejectedStatus();
           run_loop.Quit();
         }));
     run_loop.Run();

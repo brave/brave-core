@@ -400,6 +400,14 @@ class EthTxManagerUnitTest : public testing::Test {
         chain_id, std::move(tx_data), from, origin, std::move(callback));
   }
 
+  void AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParamsPtr params,
+      const std::optional<url::Origin>& origin,
+      EthTxManager::AddUnapprovedEvmTransactionCallback callback) {
+    eth_tx_manager()->AddUnapprovedEvmTransaction(std::move(params), origin,
+                                                  std::move(callback));
+  }
+
   void AddUnapprovedTransaction(
       const std::string& chain_id,
       mojom::TxDataPtr tx_data,
@@ -499,6 +507,27 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+}
+
+TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
+  auto params = mojom::NewEvmTransactionParams::New(
+      mojom::kLocalhostChainId, from(),
+      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+      "0x0974", data_);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+  AddUnapprovedEvmTransaction(
+      std::move(params), std::nullopt,
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
 }
 
 TEST_F(EthTxManagerUnitTest, WalletOrigin) {

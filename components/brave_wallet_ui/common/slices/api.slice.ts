@@ -263,7 +263,6 @@ export const {
   useInvalidateAccountInfosMutation,
   useInvalidateSelectedAccountMutation,
   useInvalidateTransactionsCacheMutation,
-  useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,

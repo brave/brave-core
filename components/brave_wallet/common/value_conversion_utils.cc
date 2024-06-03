@@ -153,12 +153,6 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
-  if (chain.coin == mojom::CoinType::ETH) {
-    chain.is_eip1559 = params_dict->FindBool("is_eip1559").value_or(false);
-  } else {
-    chain.is_eip1559 = false;
-  }
-
   return chain.Clone();
 }
 
@@ -210,8 +204,6 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   chain.active_rpc_endpoint_index =
       GetFirstValidChainURLIndex(chain.rpc_endpoints);
 
-  chain.is_eip1559 = false;
-
   return chain.Clone();
 }
 
@@ -221,10 +213,6 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   dict.Set("coin", static_cast<int>(chain.coin));
   dict.Set("chainId", chain.chain_id);
   dict.Set("chainName", chain.chain_name);
-
-  if (chain.coin == mojom::CoinType::ETH) {
-    dict.Set("is_eip1559", chain.is_eip1559);
-  }
 
   base::Value::List blockExplorerUrlsValue;
   if (!chain.block_explorer_urls.empty()) {

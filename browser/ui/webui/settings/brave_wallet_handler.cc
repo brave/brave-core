@@ -248,7 +248,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   }
   auto& known_networks =
       result.Set("knownNetworks", base::Value::List())->GetList();
-  for (const auto& it : brave_wallet::GetAllKnownChains(prefs, *coin)) {
+  for (const auto& it : brave_wallet::GetAllKnownChains(*coin)) {
     known_networks.Append(it->chain_id);
   }
 

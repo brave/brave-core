@@ -13,7 +13,6 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { IsEip1559Changed } from '../../constants/action_types'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
 import { ACCOUNT_TAG_IDS } from './account.endpoints'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
@@ -30,11 +29,6 @@ export const NETWORK_TAG_IDS = {
   SWAP_SUPPORTED: 'SWAP_SUPPORTED',
   CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
 } as const
-
-interface IsEip1559ChangedMutationArg {
-  id: string
-  isEip1559: boolean
-}
 
 export const networkEndpoints = ({
   mutation,
@@ -378,18 +372,6 @@ export const networkEndpoints = ({
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
       ]
-    }),
-    isEip1559Changed: mutation<IsEip1559ChangedMutationArg, IsEip1559Changed>({
-      queryFn: async (arg, _, __, baseQuery) => {
-        // invalidate base cache of networks
-        baseQuery(undefined).cache.clearNetworksRegistry()
-
-        const { chainId, isEip1559 } = arg
-        return {
-          data: { id: chainId, isEip1559 }
-        }
-      },
-      invalidatesTags: ['Network']
     }),
     refreshNetworkInfo: mutation<boolean, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {

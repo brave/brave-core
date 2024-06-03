@@ -1246,9 +1246,6 @@ interface JsonRpcServiceObserver {
 
   // Fired when a wallet_addEthereumChain request is completed
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
-
-  // Fired when a chain ID's 1559 status changes
-  OnIsEip1559Changed(string chain_id, bool is_eip1559);
 };
 
 struct TxData {
@@ -1367,7 +1364,6 @@ struct NetworkInfo {
   int32 decimals;
   CoinType coin;
   array<KeyringId> supported_keyrings;
-  bool is_eip1559; // only for ETH.
 };
 
 struct OriginInfo {
@@ -1821,12 +1817,24 @@ interface TxServiceObserver {
   OnTxServiceReset();
 };
 
+struct NewEvmTransactionParams {
+  string chain_id;
+  AccountId from;
+  string to;
+  string value;
+  string gas_limit;
+  array<uint8> data;
+};
+
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
   AddUnapprovedTransaction(TxDataUnion tx_data_union,
                            string chain_id,
                            AccountId from)
+    => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction

@@ -10,11 +10,6 @@ import {
   TransactionProviderError
 } from '../../constants/types'
 
-export type IsEip1559Changed = {
-  chainId: string
-  isEip1559: boolean
-}
-
 export type UnapprovedTxUpdated = {
   txInfo: SerializableTransactionInfo
 }

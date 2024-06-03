@@ -95,7 +95,6 @@ export const getNormalizedExternalRewardsNetwork = (
     supportedKeyrings: [],
     decimals: 0,
     iconUrls: [],
-    isEip1559: true,
     rpcEndpoints: [],
     symbol: externalRewardsProvider,
     symbolName: externalRewardsProvider

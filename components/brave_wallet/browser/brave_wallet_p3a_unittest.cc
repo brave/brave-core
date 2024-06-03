@@ -317,6 +317,24 @@ class BraveWalletP3AUnitTest : public testing::Test {
     return success;
   }
 
+  bool AddUnapprovedEvmTransaction(mojom::NewEvmTransactionParamsPtr params,
+                                   std::string* tx_meta_id) {
+    bool success;
+    base::RunLoop run_loop;
+    tx_service_->AddUnapprovedEvmTransaction(
+        std::move(params),
+        base::BindLambdaForTesting([&](bool v, const std::string& tx_id,
+                                       const std::string& error_message) {
+          success = v;
+          *tx_meta_id = tx_id;
+          ASSERT_TRUE(error_message.empty());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+
+    return success;
+  }
+
   bool ApproveTransaction(const mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id) {
@@ -591,24 +609,22 @@ TEST_F(BraveWalletP3AUnitTest, EthTransactionSentObservation) {
 
   keyring_service_->CreateWallet("testing123", base::DoNothing());
 
-  // Create & add unapproved ETH transaction
-  std::vector<uint8_t> data;
-  auto tx_data =
-      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data, false, std::nullopt);
-  std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
-      mojom::kMainnetChainId, eth_from(), &tx_meta_id));
-
   // Set an interceptor and just fake a common response for
   // eth_getTransactionCount and eth_sendRawTransaction
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
+  // Create & add unapproved ETH transaction
+  std::string tx_meta_id;
+  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kAuroraMainnetChainId, eth_from(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>()),
+      &tx_meta_id));
+
   // Approve the ETH transaction
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH, mojom::kMainnetChainId,
-                                 tx_meta_id));
+  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH,
+                                 mojom::kAuroraMainnetChainId, tx_meta_id));
 
   // Verify EthTransactionSent
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
@@ -624,15 +640,13 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 
   // Create & add unapproved ETH transaction on testnet
-  std::vector<uint8_t> data;
-  auto tx_data =
-      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data, false, std::nullopt);
   std::string tx_meta_id;
-  EXPECT_TRUE(AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
-      mojom::kLocalhostChainId, eth_from(), &tx_meta_id));
+  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kLocalhostChainId, eth_from(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>()),
+      &tx_meta_id));
 
   // Approve the ETH transaction on testnet
   EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH, mojom::kLocalhostChainId,
@@ -645,12 +659,12 @@ TEST_F(BraveWalletP3AUnitTest, TestnetEthTransactionSentObservation) {
   cmdline->AppendSwitch(mojom::kP3ACountTestNetworksSwitch);
 
   // Create & add unapproved ETH transaction on testnet
-  tx_data = mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
-                               "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                               "0x016345785d8a0000", data, false, std::nullopt);
-  EXPECT_TRUE(AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
-      mojom::kLocalhostChainId, eth_from(), &tx_meta_id));
+  EXPECT_TRUE(AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kLocalhostChainId, eth_from(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>()),
+      &tx_meta_id));
 
   // Approve the ETH transaction on testnet
   EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH, mojom::kLocalhostChainId,

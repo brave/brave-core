@@ -385,9 +385,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     @Override
-    public void onIsEip1559Changed(String chainId, boolean isEip1559) {}
-
-    @Override
     public void onConnectionError(MojoException e) {}
 
     @Override

@@ -40,12 +40,6 @@ export type TokenPriceHistory = {
   close: number
 }
 
-export type WalletAccountTypeName =
-  | 'Primary'
-  | 'Secondary'
-  | 'Ledger'
-  | 'Trezor'
-
 export interface AssetOptionType {
   id: string
   name: string
@@ -282,14 +276,8 @@ export interface BaseTransactionParams {
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
-  gas?: string
-
-  // Legacy gas pricing
-  gasPrice?: string
-
-  // EIP-1559 gas pricing
-  maxPriorityFeePerGas?: string
-  maxFeePerGas?: string
+  gas: string
+  data: number[]
 }
 
 export interface SendFilTransactionParams extends BaseTransactionParams {
@@ -307,9 +295,7 @@ export interface SPLTransferFromParams extends BaseTransactionParams {
   decimals: number
 }
 
-export interface SendEthTransactionParams extends BaseEthTransactionParams {
-  data?: number[]
-}
+export interface SendEthTransactionParams extends BaseEthTransactionParams {}
 
 export type SendTransactionParams =
   | SendEthTransactionParams
@@ -336,11 +322,6 @@ export interface ApproveERC20Params {
   contractAddress: string
   spenderAddress: string
   allowance: string
-}
-
-export interface SendETHFilForwardTransactionParams
-  extends BaseTransactionParams {
-  contractAddress: string
 }
 
 export interface SendBtcTransactionParams extends BaseTransactionParams {

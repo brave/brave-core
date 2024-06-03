@@ -186,9 +186,6 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                          const std::optional<url::Origin>& origin) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
-
   void OnSwitchEthereumChainRequested(const std::string& chain_id,
                                       const GURL& origin) {}
   void OnSwitchEthereumChainRequestProcessed(bool approved,
