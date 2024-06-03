@@ -39,22 +39,33 @@
 
         </LinearLayout>
 
-        <LinearLayout android:orientation="vertical"
+        <LinearLayout android:id="@+id/brave_sync_qr_containter"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/brave_sync_qr_rounded"
+            android:background="@drawable/brave_sync_top_rounded"
             android:layout_gravity="center"
-            android:paddingBottom="5dip"
-            android:paddingTop="5dip"
-            android:paddingStart="5dip"
-            android:paddingEnd="5dip"
-            android:layout_marginBottom="15dp" >
+            android:layout_marginBottom="15dp"
+            android:padding="15dip"
+            android:layout_marginStart="60dip"
+            android:layout_marginEnd="60dip" >
 
-            <ImageView android:id="@+id/brave_sync_qr_code_image"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+            <LinearLayout android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/brave_sync_qr_rounded"
                 android:layout_gravity="center"
-                android:contentDescription="@string/brave_sync_btn_laptop" />
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip"
+                android:paddingStart="5dip"
+                android:paddingEnd="5dip" >
+
+                <ImageView android:id="@+id/brave_sync_qr_code_image"
+                    android:layout_width="220dp"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/brave_sync_btn_laptop" />
+            </LinearLayout>
         </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView

@@ -155,6 +155,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private ScrollView mAddDeviceTab;
     private LayoutInflater mInflater;
     private ImageView mQRCodeImage;
+    private LinearLayout mQRContainer;
     private LinearLayout mLayoutSyncStartChain;
     private EditText mCodeWords;
     private FrameLayout mLayoutMobile;
@@ -398,6 +399,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         mQRCodeImage = getView().findViewById(R.id.brave_sync_qr_code_image);
+
+        mQRContainer = getView().findViewById(R.id.brave_sync_qr_containter);
 
         mDoneButton = getView().findViewById(R.id.brave_sync_btn_done);
         if (mDoneButton != null) {
@@ -821,7 +824,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 ChromeBrowserInitializer.getInstance()
                         .runNowOrAfterFullBrowserStarted(() -> fillQrCode(qrCodeString));
 
-                mQRCodeImage.setVisibility(View.VISIBLE);
+                mQRContainer.setVisibility(View.VISIBLE);
                 mNewQrCodeButton.setVisibility(View.GONE);
             }
         }
@@ -1528,7 +1531,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         countdown.setExpiredRunnable(
                 () -> {
                     mNewQrCodeButton.setVisibility(View.VISIBLE);
-                    mQRCodeImage.setVisibility(View.GONE);
+                    mQRContainer.setVisibility(View.GONE);
                 });
         countdown.setNotAfter(notAfterTime);
     }
