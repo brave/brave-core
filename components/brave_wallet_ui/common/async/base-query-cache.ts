@@ -321,7 +321,8 @@ export class BaseQueryCache {
       // nothing to change
       return token.logo
     }
-    return token.logo.startsWith('ipfs://') ? '' : `chrome://erc-token-images/${token.logo}`
+    return token.logo.startsWith('ipfs://') ? ''
+    :`chrome://erc-token-images/${token.logo}`
   }
 
   getEnabledCoinTypes = async () => {

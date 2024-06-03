@@ -184,7 +184,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-04
   ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
 #endif
-  
+
   // Added 2024-05
   ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
 
