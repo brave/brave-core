@@ -76,6 +76,7 @@ import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
+import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
@@ -1275,7 +1276,8 @@ public class BytecodeTest {
                         OmniboxActionDelegate.class,
                         ActivityLifecycleDispatcher.class,
                         OmniboxSuggestionsDropdownEmbedder.class,
-                        WindowAndroid.class));
+                        WindowAndroid.class,
+                        DeferredIMEWindowInsetApplicationCallback.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -1530,7 +1532,8 @@ public class BytecodeTest {
                         BookmarkUiPrefs.class,
                         ModalDialogManager.class,
                         Runnable.class,
-                        BookmarkMoveSnackbarManager.class));
+                        BookmarkMoveSnackbarManager.class,
+                        BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
