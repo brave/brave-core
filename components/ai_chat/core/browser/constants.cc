@@ -143,7 +143,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
       {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
-      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL}};
+      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL},
+      {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
+      {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL}};
 
   return kLocalizedStrings;
 }
@@ -240,7 +242,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
             base::JoinString(
                 {change_tone_subheading,
                  l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)},
-                "/ "),
+                " / "),
             mojom::ActionType::EXPAND)));
 
     action_list.push_back(std::move(group));

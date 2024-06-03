@@ -96,6 +96,7 @@ function InputBox() {
             fab
             kind='plain-faint'
             onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
+            title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
               className={classnames({
@@ -110,6 +111,7 @@ function InputBox() {
               kind='plain-faint'
               onClick={handleMic}
               disabled={context.shouldDisableUserInput}
+              title={getLocale('useMicButtonLabel')}
             >
               <Icon name='microphone' />
             </Button>
