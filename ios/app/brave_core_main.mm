@@ -35,7 +35,6 @@
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
-#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
