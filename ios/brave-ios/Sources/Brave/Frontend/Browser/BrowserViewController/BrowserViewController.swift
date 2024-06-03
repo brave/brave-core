@@ -1997,7 +1997,7 @@ public class BrowserViewController: UIViewController {
 
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .url)
+        self.logSecureContentState(tab: tab, path: .url, change: change)
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2021,7 +2021,7 @@ public class BrowserViewController: UIViewController {
     case .hasOnlySecureContent:
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent)
+        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent, change: change)
         if tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2065,38 +2065,10 @@ public class BrowserViewController: UIViewController {
       )
     }
 
-    if change != nil {
-      if let change = change?[.oldKey] {
-        if let value = change as? Bool {
-          text.append("\n Changed From Value: \(value)")
-        } else if let value = change as? URL {
-          text.append("\n Changed From Value: \(value)")
-        } else if let value = change as? SecTrust? {
-          text.append("\n Changed From Value: \(value != nil ? "present" : "nil")")
-        } else if CFGetTypeID(change as CFTypeRef) == SecTrustGetTypeID() {
-          text.append("\n Changed From Value: present")
-        } else {
-          text.append("\n Changed From Value: \(change)")
-        }
-      } else {
-        text.append("\n Changed From Value: nil")
-      }
-
-      if let change = change?[.newKey] {
-        if let value = change as? Bool {
-          text.append("\n Changed To Value: \(value)")
-        } else if let value = change as? URL {
-          text.append("\n Changed To Value: \(value)")
-        } else if let value = change as? SecTrust? {
-          text.append("\n Changed To Value: \(value != nil ? "present" : "nil")")
-        } else if CFGetTypeID(change as CFTypeRef) == SecTrustGetTypeID() {
-          text.append("\n Changed To Value: present")
-        } else {
-          text.append("\n Changed To Value: \(change)")
-        }
-      } else {
-        text.append("\n Changed To Value: nil")
-      }
+    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
+      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
+    } else if let change, let value = change[.newKey] {
+      text.append("\n Change: \(String(describing: value))")
     }
 
     DebugLogger.log(for: .secureState, text: text)
