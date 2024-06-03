@@ -980,7 +980,7 @@ extension BrowserViewController: WKNavigationDelegate {
       updateUIForReaderHomeStateForTab(tab)
     }
 
-    updateForwardStatusIfNeeded(webView: webView)
+    updateBackForwardActionStatus(for: webView)
   }
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
