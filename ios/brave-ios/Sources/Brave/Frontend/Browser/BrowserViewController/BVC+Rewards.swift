@@ -152,8 +152,8 @@ extension BrowserViewController {
 }
 
 extension Tab {
-  func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
-    guard let url = urls.last, let webView = webView, !url.isLocal, !isPrivate
+  func reportPageLoad(to rewards: BraveRewards, redirectChain: [URL]) {
+    guard let url = redirectChain.last, let webView = webView, !url.isLocal, !isPrivate
     else {
       return
     }
@@ -162,7 +162,12 @@ extension Tab {
       adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
     }
 
-    if isSessionStateRestored || !isNewNavigation || isErrorPage { return }
+    if rewardsReportingState.wasRestored
+      || !rewardsReportingState.isNewNavigation
+      || rewardsReportingState.isErrorPage
+    {
+      return
+    }
 
     let group = DispatchGroup()
 
@@ -193,7 +198,7 @@ extension Tab {
 
     group.notify(queue: .main) {
       rewards.reportLoadedPage(
-        redirectChain: urls,
+        redirectChain: redirectChain,
         tabId: Int(self.rewardsId),
         htmlContent: htmlContent ?? "",
         textContent: textContent

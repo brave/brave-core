@@ -67,6 +67,17 @@ protocol URLChangeDelegate {
   func tab(_ tab: Tab, urlDidChangeTo url: URL)
 }
 
+struct RewardsTabChangeReportingState {
+  /// Set to true when the resulting page was restored from session state.
+  var wasRestored = false
+  /// Set to true when the resulting page navigation is not a reload or a
+  /// back/forward type.
+  var isNewNavigation = true
+  /// Set to true when the resulting page is showing an error interstitial or
+  /// the resulting response from the web page had a 4xx or 5xx status code.
+  var isErrorPage = false
+}
+
 enum TabSecureContentState: String {
   case unknown = "Unknown"
   case localhost = "Localhost"
@@ -303,11 +314,12 @@ class Tab: NSObject {
 
   var mimeType: String?
   var isEditing = false
-  var isSessionStateRestored = false
-  var isNewNavigation = true
-  var isErrorPage = false
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
+
+  /// The rewards reporting state which is filled during a page navigation.
+  // It is reset to initial values when the page navigation is finished.
+  var rewardsReportingState = RewardsTabChangeReportingState()
 
   /// This is the request that was upgraded to HTTPS
   /// This allows us to rollback the upgrade when we encounter a 4xx+
@@ -570,7 +582,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
-      isSessionStateRestored = true
+      rewardsReportingState.wasRestored = true
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)

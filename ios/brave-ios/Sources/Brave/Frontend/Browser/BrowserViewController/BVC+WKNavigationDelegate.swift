@@ -298,7 +298,7 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    tab?.isNewNavigation =
+    tab?.rewardsReportingState.isNewNavigation =
       navigationAction.navigationType != WKNavigationType.backForward
       && navigationAction.navigationType != WKNavigationType.reload
     tab?.currentRequestURL = requestURL
@@ -695,21 +695,21 @@ extension BrowserViewController: WKNavigationDelegate {
     {
       let internalUrl = InternalURL(responseURL)
 
-      tab.isErrorPage = internalUrl?.isErrorPage == true
-      if !tab.isErrorPage {
-        let kClientErrorResponseCodeClass = 4
-        let kServerErrorResponseCodeClass = 5
+      tab.rewardsReportingState.isErrorPage = internalUrl?.isErrorPage == true
+      if !tab.rewardsReportingState.isErrorPage {
+        let kHttpClientErrorResponseCodeClass = 4
+        let kHttpServerErrorResponseCodeClass = 5
 
         let responseCodeClass = response.statusCode / 100
-        if responseCodeClass == kClientErrorResponseCodeClass
-          || responseCodeClass == kServerErrorResponseCodeClass
+        if responseCodeClass == kHttpClientErrorResponseCodeClass
+          || responseCodeClass == kHttpServerErrorResponseCodeClass
         {
-          tab.isErrorPage = true
+          tab.rewardsReportingState.isErrorPage = true
         }
       }
 
-      if !tab.isSessionStateRestored {
-        tab.isSessionStateRestored = internalUrl?.isSessionRestore == true
+      if !tab.rewardsReportingState.wasRestored {
+        tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
       }
     }
 
@@ -1027,12 +1027,9 @@ extension BrowserViewController: WKNavigationDelegate {
         isPrivate: privateBrowsingManager.isPrivateBrowsing
       )
       tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-      // Reset `isSessionStateRestored`, `isNewNavigation` and `isErrorPage` tab
-      // properties so that listeners can be notified of tab changes when a new
-      // navigation happens.
-      tab.isSessionStateRestored = false
-      tab.isNewNavigation = true
-      tab.isErrorPage = false
+      // Reset `rewardsReportingState` tab property so that listeners
+      // can be notified of tab changes when a new navigation happens.
+      tab.rewardsReportingState = RewardsTabChangeReportingState()
 
       Task {
         await tab.updateEthereumProperties()
