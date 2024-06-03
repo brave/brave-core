@@ -56,6 +56,10 @@ public class AppState {
           Migration.postCoreDataInitMigrations()
           Migration.migrateLostTabsActiveWindow()
         }
+
+        if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
+          NetworkMonitor.shared.start()
+        }
         break
       case .active:
         break
