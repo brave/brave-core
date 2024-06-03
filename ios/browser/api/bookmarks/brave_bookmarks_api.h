@@ -71,6 +71,7 @@ OBJC_EXPORT
 @property(nonatomic, readonly) NSArray<IOSBookmarkNode*>* children;
 @property(nonatomic, readonly) NSArray<BookmarkFolder*>* nestedChildFolders;
 @property(nonatomic, readonly) NSUInteger childCount;
+@property(nonatomic, readonly) NSUInteger totalCount;
 
 - (nullable IOSBookmarkNode*)childAtIndex:(NSUInteger)index;
 - (NSArray<BookmarkFolder*>*)nestedChildFoldersFiltered:

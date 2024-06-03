@@ -329,6 +329,11 @@
 
 - (NSUInteger)childCount {
   DCHECK(node_);
+  return node_->children().size();
+}
+
+- (NSUInteger)totalCount {
+  DCHECK(node_);
   return node_->GetTotalNodeCount() - 1;
 }
 
