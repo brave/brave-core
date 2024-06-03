@@ -100,6 +100,8 @@ void JNI_BackgroundVideoPlaybackTabHelper_SendOrientationChangeEvent(
     jboolean is_full_screen) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
+  // Injecting this script to make youtube video fullscreen on landscape mode
+  // and exit fullscreen on portrait mode.
   std::string script;
   if (is_full_screen) {
     script =

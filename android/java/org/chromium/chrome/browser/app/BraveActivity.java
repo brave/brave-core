@@ -212,6 +212,7 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -219,8 +220,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
@@ -383,8 +382,8 @@ public abstract class BraveActivity extends ChromeActivity
         if (isActivityFinishingOrDestroyed()) return;
         Tab currentTab = getActivityTab();
         if (currentTab != null
-                && currentTab.getUrl().getSpec() != null
-                && isYTVideoUrl(currentTab.getUrl().getSpec())
+                && currentTab.getUrl() != null
+                && isYTVideoUrl(currentTab.getUrl())
                 && !isInPictureInPictureMode()
                 && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
             BackgroundVideoPlaybackTabHelper.sendOrientationChangeEvent(
@@ -1413,8 +1412,8 @@ public abstract class BraveActivity extends ChromeActivity
 
         Tab currentTab = getActivityTab();
         if (currentTab != null
-                && currentTab.getUrl().getSpec() != null
-                && isYTVideoUrl(currentTab.getUrl().getSpec())
+                && currentTab.getUrl() != null
+                && isYTVideoUrl(currentTab.getUrl())
                 && !isInPictureInPictureMode()) {
             BackgroundVideoPlaybackTabHelper.sendOrientationChangeEvent(
                     currentTab.getWebContents(),
@@ -1422,13 +1421,17 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    private boolean isYTVideoUrl(String url) {
+    private boolean isYTVideoUrl(GURL url) {
 
-        String pattern =
-                "^(?:https?:)?(?:\\/\\/)?(?:youtu\\.be\\/|(?:www\\.|m\\.)?youtube\\.com\\/(?:watch|v|embed)(?:\\.php)?(?:\\?.*v=|\\/))([a-zA-Z0-9\\_-]{7,15})(?:[\\?&][a-zA-Z0-9\\_-]+=[a-zA-Z0-9\\_-]+)*(?:[&\\/\\#].*)?$";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-        return matcher.find();
+        if (!GURL.isEmptyOrInvalid(url)
+                && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                && url.getPath() != null
+                && url.getPath().equalsIgnoreCase("/watch")
+                && url.getQuery() != null) {
+            String videoId = UrlUtilities.getValueForKeyInQuery(url, "v");
+            return videoId != null && videoId.trim().length() > 0;
+        }
+        return false;
     }
 
     private void migrateBgPlaybackToFeature() {
