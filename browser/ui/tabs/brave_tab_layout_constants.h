@@ -46,7 +46,7 @@ inline constexpr int kHorizontalTabInset =
     (kHorizontalTabGap + kHorizontalTabOverlap) / 2;
 
 // The content padding within a tab.
-inline constexpr int kHorizontalTabPadding = 6;
+inline constexpr int kHorizontalTabPadding = 8;
 
 // The horizontal difference between the visual edge of a tab group and the
 // bounds of the group underline.
