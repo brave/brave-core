@@ -7,11 +7,15 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/color/color_provider_key.h"
 
@@ -57,4 +61,17 @@ BraveBrowserFrame::GetCustomTheme() const {
 views::internal::RootView* BraveBrowserFrame::CreateRootView() {
   root_view_ = new BraveBrowserRootView(browser_view_, this);
   return root_view_;
+}
+
+void BraveBrowserFrame::SetTabDragKind(TabDragKind kind) {
+  const bool should_sync_shared_pinned_tab =
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      tab_drag_kind_ == TabDragKind::kAllTabs && kind == TabDragKind::kNone;
+
+  BrowserFrame::SetTabDragKind(kind);
+
+  if (should_sync_shared_pinned_tab) {
+    SharedPinnedTabServiceFactory::GetForProfile(browser_view_->GetProfile())
+        ->TabDraggingEnded(browser_view_->browser());
+  }
 }

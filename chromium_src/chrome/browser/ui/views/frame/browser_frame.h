@@ -11,7 +11,11 @@
   friend class BraveBrowserFrame; \
   void OnMenuClosed
 
+#define SetTabDragKind virtual SetTabDragKind
+
 #include "src/chrome/browser/ui/views/frame/browser_frame.h"  // IWYU pragma: export
+
+#undef SetTabDragKind
 
 #undef OnMenuClosed
 

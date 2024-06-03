@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
@@ -721,7 +722,22 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
   }
 }
 
+void SharedPinnedTabService::TabDraggingEnded(Browser* browser) {
+  if (!in_tab_dragging_browsers_.erase(browser)) {
+    return;
+  }
+
+  if (!browser->IsBrowserClosing()) {
+    SynchronizeNewBrowser(browser);
+  }
+}
+
 void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
+  if (IsBrowserInTabDragging(browser)) {
+    in_tab_dragging_browsers_.insert(browser);
+    return;
+  }
+
   auto* model = browser->tab_strip_model();
   std::vector<PinnedTabData> new_pinned_tabs;
   for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
@@ -793,6 +809,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     Browser* browser,
     int index,
     bool is_last_closing_browser) {
+  if (IsBrowserInTabDragging(browser)) {
+    return;
+  }
+
   auto* tab_strip_model = browser->tab_strip_model();
   DCHECK_LT(index, tab_strip_model->count());
 
@@ -925,4 +945,9 @@ SharedPinnedTabService::CreateDummyWebContents(
   DummyContentsData::CreateForWebContents(dummy_contents.get(),
                                           shared_contents);
   return dummy_contents;
+}
+
+bool SharedPinnedTabService::IsBrowserInTabDragging(Browser* browser) const {
+  CHECK(browser);
+  return static_cast<BraveBrowserWindow*>(browser->window())->IsInTabDragging();
 }
