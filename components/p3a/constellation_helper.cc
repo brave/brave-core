@@ -46,7 +46,15 @@ constexpr double kNebulaParticipationRate = 0.105;
 // be aggregated.
 constexpr double kNebulaScramblingRate = 0.05;
 
-bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
+// Check and prepare a response under the Nebula protocol
+//
+// Decides based on the probability constants above whether
+// to participate in the random sampling, and whether to
+// scramble the message vector before submission.
+//
+// The report should only be submitted if this function
+// returns true. Otherwise the message should be discarded.
+bool MaybeScrambleForNebula(std::vector<std::string>* layers) {
   bool should_participate = base::RandDouble() < kNebulaParticipationRate;
   if (should_participate) {
     return true;
@@ -111,7 +119,7 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
 
-  if (is_nebula && !CheckParticipationAndScrambleForNebula(&layers)) {
+  if (is_nebula && !MaybeScrambleForNebula(&layers)) {
     // Do not send measurement since client is unable to participate,
     // but mark the request as successful so the client does not retry
     // transmission.
