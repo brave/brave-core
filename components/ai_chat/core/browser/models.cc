@@ -49,7 +49,7 @@ const std::vector<ai_chat::mojom::Model>& GetAllModels() {
       {"chat-claude-sonnet", "claude-3-sonnet-20240229", "Claude 3 Sonnet",
        "Anthropic", mojom::ModelEngineType::CLAUDE_REMOTE,
        mojom::ModelCategory::CHAT, mojom::ModelAccess::PREMIUM, 180000, 320000},
-      {"chat-basic", "llama-2-13b-chat", "Llama 2 13b", "Meta",
+      {"chat-basic", "llama-3-8b-instruct", "Llama 3 8b", "Meta",
        mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT,
        mojom::ModelAccess::BASIC, 8000, 9700},
   });
