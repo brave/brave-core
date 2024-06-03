@@ -723,11 +723,9 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
 }
 
 void SharedPinnedTabService::TabDraggingEnded(Browser* browser) {
-  if (!in_tab_dragging_browsers_.count(browser)) {
+  if (!in_tab_dragging_browsers_.erase(browser)) {
     return;
   }
-
-  in_tab_dragging_browsers_.erase(browser);
 
   if (!browser->IsBrowserClosing()) {
     SynchronizeNewBrowser(browser);
@@ -950,5 +948,6 @@ SharedPinnedTabService::CreateDummyWebContents(
 }
 
 bool SharedPinnedTabService::IsBrowserInTabDragging(Browser* browser) const {
+  CHECK(browser);
   return static_cast<BraveBrowserWindow*>(browser->window())->IsInTabDragging();
 }
