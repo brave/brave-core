@@ -22,24 +22,25 @@ def add_chromium_src_include_categories_rule(data):
     # Find the IncludeCategories list.
     include_categories = data['IncludeCategories']
 
-    # Find the '.*' rule and increment its priority.
-    for item in include_categories:
-        if item['Regex'] == '.*':
-            new_priority = item['Priority'] + 1
+    # Find the '.*' rule (wildcard regex).
+    for idx, rule in enumerate(include_categories):
+        if rule['Regex'] == '.*':
+            wildcard_rule_idx = idx
+            wildcard_rule_priority = rule['Priority']
             break
     else:
         raise RuntimeError("Couldn't find the '.*' rule in IncludeCategories")
 
-    # Add the new item.
-    new_item = {
+    # Create chromium_src rule with a lower priority than the wildcard rule.
+    chromium_src_rule = {
         'Regex': '^"(src\/|..\/gen\/).*',
-        'Priority': new_priority,
+        'Priority': wildcard_rule_priority + 1,
     }
 
-    # Insert the new item before the '.*' rule.
-    index = next(i for i, item in enumerate(include_categories)
-                 if item['Regex'] == '.*')
-    include_categories.insert(index, new_item)
+    # Insert the chromium_src rule before the wildcard rule. This is required
+    # for regex to work correctly, otherwise everything will be matched by the
+    # wildcard rule.
+    include_categories.insert(wildcard_rule_idx, chromium_src_rule)
 
 
 def load_clang_format(path):
