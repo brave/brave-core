@@ -288,7 +288,7 @@ std::optional<DecoderResult<base::Value>> DecodeParam(const eth_abi::Type& type,
   }
 
   // Unrecognized types are considered errors.
-  return std::nullopt;
+  NOTREACHED_NORETURN();
 }
 
 std::optional<DecoderResult<base::Value>> DecodeParam(
