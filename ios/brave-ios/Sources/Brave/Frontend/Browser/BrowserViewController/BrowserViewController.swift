@@ -3455,7 +3455,7 @@ extension BrowserViewController {
       NavigationPath.handle(nav: path, with: self)
     }
   }
-  
+
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
     var engine = profile.searchEngines.defaultEngine(
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard

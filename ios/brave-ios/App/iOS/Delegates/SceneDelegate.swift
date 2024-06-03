@@ -317,11 +317,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return
       }
 
-      if case .url(let navigationPathURL, _) = routerpath, let pathURL = navigationPathURL, pathURL.isFileURL {
+      if case .url(let navigationPathURL, _) = routerpath, let pathURL = navigationPathURL,
+        pathURL.isFileURL
+      {
         defer {
           pathURL.stopAccessingSecurityScopedResource()
         }
-        
+
         let canAccessFileURL = pathURL.startAccessingSecurityScopedResource()
 
         if !canAccessFileURL {
