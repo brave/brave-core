@@ -465,11 +465,11 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
   expected_zero_ex_quote->fees = std::move(fees);
 
   auto expected_swap_fees = mojom::SwapFees::New();
-  expected_swap_fees->fee_pct = "0.875";
+  expected_swap_fees->fee_pct = "0";
   expected_swap_fees->discount_pct = "0";
+  expected_swap_fees->effective_fee_pct = "0";
   expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
-  expected_swap_fees->effective_fee_pct = "0.875";
-  expected_swap_fees->fee_param = "0.00875";
+  expected_swap_fees->fee_param = "";
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
@@ -1090,11 +1090,11 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   auto& expected_quote = params->get_jupiter_transaction_params()->quote;
 
   auto expected_swap_fees = mojom::SwapFees::New();
-  expected_swap_fees->fee_pct = "0.85";
+  expected_swap_fees->fee_pct = "0";
   expected_swap_fees->discount_pct = "0";
-  expected_swap_fees->effective_fee_pct = "0.85";
+  expected_swap_fees->effective_fee_pct = "0";
   expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
-  expected_swap_fees->fee_param = "85";
+  expected_swap_fees->fee_param = "";
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewJupiterQuote(
@@ -1380,11 +1380,11 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuote) {
   )");
 
   auto expected_swap_fees = mojom::SwapFees::New();
-  expected_swap_fees->fee_pct = "0.875";
+  expected_swap_fees->fee_pct = "0";
   expected_swap_fees->discount_pct = "0";
-  expected_swap_fees->effective_fee_pct = "0.875";
+  expected_swap_fees->effective_fee_pct = "0";
   expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
-  expected_swap_fees->fee_param = "0.00875";
+  expected_swap_fees->fee_param = "";
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
   EXPECT_CALL(
