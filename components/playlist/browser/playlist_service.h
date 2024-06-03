@@ -165,10 +165,6 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& playlist_item_id,
                                     int32_t last_played_position) override;
-
-  void UpdateItemHlsMediaFilePath(const std::string& playlist_item_id,
-                                  const std::string& hls_media_file_path,
-                                  int64_t updated_file_size) override;
   void RecoverLocalDataForItem(
       const std::string& item_id,
       bool update_media_src_before_recovery,
@@ -199,7 +195,6 @@ class PlaylistService : public KeyedService,
   bool HasPlaylistItem(const std::string& id) const;
 
 #if BUILDFLAG(IS_ANDROID)
-  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
   void RequestStreamingQuery(
       const std::string& query_id,
       const std::string& url,
@@ -207,15 +202,15 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
-
-#if BUILDFLAG(IS_ANDROID)
+  void UpdateItemHlsMediaFilePath(const std::string& playlist_item_id,
+                                  const std::string& hls_media_file_path,
+                                  int64_t updated_file_size) override;
   void AddHlsContent(const std::string& playlist_item_id) override;
   void GetAllHlsContent(GetAllHlsContentCallback callback) override;
   std::vector<std::string> GetAllHlsContent();
   void GetFirstHlsContent(GetFirstHlsContentCallback callback) override;
   std::string GetFirstHlsContent();
   void RemoveHlsContent(const std::string& playlist_item_id) override;
-#endif  // BUILDFLAG(IS_ANDROID)
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
