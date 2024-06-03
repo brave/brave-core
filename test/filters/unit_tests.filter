@@ -647,14 +647,6 @@
 -TrustedVaultEncryptionKeysTabHelperPrerenderingTest.CreateEncryptionKeysInPrerendering
 -WebAppIconDownloaderPrerenderTest.PrerenderedPageNavigates
 
-# These tests fail because we disable the kChromeRefresh2023 feature
--All/NewTabPageHandlerThemeTest.SetTheme/2
--All/NewTabPageHandlerThemeTest.SetTheme/3
--All/OpaqueBrowserFrameViewLayoutTest.BasicWindow/Maximized
--All/OpaqueBrowserFrameViewLayoutTest.WindowButtonsOnLeft/Maximized
--All/OpaqueBrowserFrameViewLayoutTest.WindowWithTitleAndIcon/Maximized
--DownloadBubbleRowViewInfoTest.InterruptedInfo
-
 # This test crashes because brave.sidebar.side_panel_width isn't registered by
 # SidebarService for the test.
 -ExtensionsToolbarButtonFeatureUnitTest.UpdateState

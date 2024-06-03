@@ -140,7 +140,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
-      &features::kChromeRefresh2023,
       &features::kChromeStructuredMetrics,
       &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,

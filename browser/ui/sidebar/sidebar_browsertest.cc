@@ -959,14 +959,13 @@ class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
 
   void SetUp() override {
     SidebarBrowserTest::SetUp();
-
-    feature_list_.InitAndEnableFeature(::features::kChromeRefresh2023);
   }
 
   base::test::ScopedFeatureList feature_list_;
 };
 
-// To check enabling kChromeRefresh2023 doesn't make crash with sidebar opening.
+// Test originally introduced before the chrome-refresh-2023 cleanup, to check
+// if sidebar crashes when opening.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
                        SidebarOpeningTest) {
   // Open side panel to check it doesn't make crash.
