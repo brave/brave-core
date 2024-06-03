@@ -784,6 +784,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBravePlayerActionViewBorder] = {
       pick_color(leo::Color::kColorDividerSubtle)};
 
+  // We don't use bg color for location icon view.
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+
   if (key.custom_theme) {
     return;
   }
@@ -810,7 +813,6 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kLight)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -830,7 +832,7 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
       pick_color(leo::Color::kColorDividerSubtle)};
   mixer[kColorBravePlayerActionViewBorder] = {
       pick_color(leo::Color::kColorDividerSubtle)};
-
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
   if (key.custom_theme) {
     return;
   }
@@ -855,7 +857,6 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {
       leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kDark)};
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
@@ -876,7 +877,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ true)};
-  mixer[kColorPageInfoBackground] = {kColorLocationBarBackground};
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
