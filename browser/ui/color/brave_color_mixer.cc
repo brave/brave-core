@@ -578,6 +578,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
     playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
   }
 #endif
+
+  mixer[kColorBraveExtensionMenuIcon] = {
+      leo::GetColor(leo::Color::kColorIconActive, leo::Theme::kLight)};
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -690,6 +693,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
     playlist::AddThemeColorMixer(provider, leo::Theme::kDark, key);
   }
 #endif
+
+  mixer[kColorBraveExtensionMenuIcon] = {
+      leo::GetColor(leo::Color::kColorIconActive, leo::Theme::kDark)};
 }
 
 // Handling dark or light theme on normal profile.

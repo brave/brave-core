@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
+index 344e1221dd543894be3ae0fc55ae68e81f92a0c2..768c9c46850abf8836773ef282621f893fd55a84 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
++++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
+@@ -727,6 +727,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
+     ExtensionMenuItemView::SitePermissionsButtonAccess
+         site_permissions_button_access,
+     int index) {
++  BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM
+   // base::Unretained() below is safe because `menu_handler_` lifetime is
+   // tied to this view lifetime by the extensions menu coordinator.
+   auto item = std::make_unique<ExtensionMenuItemView>(
