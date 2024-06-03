@@ -106,7 +106,7 @@ class TabLocationView: UIView {
       configuration.image = UIImage(braveSystemNamed: "leo.warning.triangle-filled")
     case .unknown:
       configuration.baseForegroundColor = UIColor(braveSystemName: .iconDefault)
-      configuration.image = UIImage(braveSystemNamed: "leo.warning.circle-filled")
+      configuration.image = UIImage(braveSystemNamed: "leo.info.filled")
     }
     return configuration
   }
