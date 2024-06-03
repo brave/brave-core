@@ -12,12 +12,9 @@
 
 #define TabGroupUnderline BraveTabGroupUnderline
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
-#define ChromeRefresh2023TabGroupStyle \
-  ChromeRefresh2023TabGroupStyle_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_style.cc"
 
-#undef ChromeRefresh2023TabGroupStyle
 #undef TabGroupStyle
 #undef TabGroupUnderline
 
@@ -93,9 +90,4 @@ int TabGroupStyle::GetChipCornerRadius() const {
     return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
   }
   return brave_tabs::kTabBorderRadius;
-}
-
-int ChromeRefresh2023TabGroupStyle::GetTabGroupOverlapAdjustment() {
-  return ChromeRefresh2023TabGroupStyle_ChromiumImpl::
-      GetTabGroupOverlapAdjustment();
 }
