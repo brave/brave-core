@@ -982,6 +982,7 @@ export class MockedWalletApiProxy {
           isErc20: true,
           isErc721: false,
           isErc1155: false,
+          splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
           isNft: false,
           tokenId: '',
           logo: '',

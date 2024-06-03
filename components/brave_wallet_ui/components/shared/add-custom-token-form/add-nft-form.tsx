@@ -145,7 +145,14 @@ export const AddNftForm = (props: Props) => {
         isSpam: false,
         visible: true
       }
-    }, [customAssetsNetwork, tokenContractAddress, name, symbol, tokenId])
+    }, [
+      customAssetsNetwork,
+      tokenContractAddress,
+      name,
+      symbol,
+      splTokenProgram,
+      tokenId
+    ])
 
   const resetBaseInputFields = React.useCallback(() => {
     setCustomTokenName(undefined)

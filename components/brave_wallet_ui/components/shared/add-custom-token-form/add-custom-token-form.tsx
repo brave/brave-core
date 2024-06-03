@@ -173,6 +173,7 @@ export const AddCustomTokenForm = (props: Props) => {
       symbol,
       decimals,
       coingeckoId,
+      splTokenProgram,
       iconURL
     ])
 
