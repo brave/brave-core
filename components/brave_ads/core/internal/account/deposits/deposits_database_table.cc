@@ -49,7 +49,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_instance_id);
     BindDouble(command, index++, creative_ad.value);
-    BindInt64(command, index++, ToChromeTimestampFromTime(creative_ad.end_at));
+    BindInt64(command, index++,
+              ToChromeTimestampFromTime(creative_ad.end_at + base::Days(7)));
 
     ++count;
   }
