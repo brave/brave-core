@@ -149,6 +149,16 @@ function installDepotTools(options = config.defaultOptions) {
       fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
     })
   }
+
+  if (process.platform === 'win32' && config.isCI) {
+    // Bootstrap gsutil on Windows manually to fix random LockFile issues.
+    depotToolsGuard.run(() => {
+      util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
+        ...options,
+        stdio: 'pipe'
+      })
+    })
+  }
 }
 
 module.exports = {
