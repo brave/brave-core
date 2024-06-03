@@ -83,17 +83,11 @@ class TupleEncoder {
 };
 
 enum class TypeKind {
-  // bytes<M> where 0 < M <= 32
-  kBytesM,
-
   kAddress,
-
   // uint<M> where 0 < M <= 256 and M % 8 == 0
   // uint is an alias for uint256.
   kUintM,
-
   kBool,
-
   kBytes,
   kString,
   kArray,
