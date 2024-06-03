@@ -13,6 +13,7 @@
   "//chrome/app/vector_icons/sharing_hub_screenshot.icon": "leo_screenshot",
   "//chrome/app/vector_icons/zoom_minus.icon": "leo_search_zoom_out",
   "//chrome/app/vector_icons/zoom_plus.icon": "leo_search_zoom_in",
+  "//components/omnibox/browser/vector_icons/bookmark_chrome_refresh.icon": "leo_browser_bookmark_normal",
   "//components/omnibox/browser/vector_icons/bookmark.icon": "leo_browser_bookmark_normal",
   "//components/omnibox/browser/vector_icons/find_in_page.icon": "leo_window_search",
   "//components/omnibox/browser/vector_icons/http.icon": "leo_info_filled",
