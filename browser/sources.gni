@@ -197,6 +197,7 @@ brave_chrome_browser_deps = [
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
   "//brave/components/speedreader/common/buildflags",
+  "//brave/components/ipfs",
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
   "//brave/components/webcompat:core",

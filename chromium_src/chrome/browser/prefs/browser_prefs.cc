@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -183,6 +184,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-04
   ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
 #endif
+  
+  // Added 2024-05
+  ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

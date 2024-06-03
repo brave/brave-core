@@ -54,9 +54,9 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
-constexpr char kBraveIpfsFeatureMigrated[] = "brave.ipfs";
-constexpr char kBraveIpfsCompanionMigrated[] = "brave.ipfs_companion_enabled";
+//Deprecated 05/2024
 constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
+//Deprecated 05/2024
 constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
@@ -137,9 +137,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(kBraveIpfsFeatureMigrated);
-  registry->RegisterBooleanPref(kBraveIpfsCompanionMigrated, false);
+  //Deprecated 05/2024
   registry->RegisterDictionaryPref(kPinnedNFTAssetsMigrated);
+  //Deprecated 05/2024
   registry->RegisterBooleanPref(kAutoPinEnabledMigrated, false);
 }
 
@@ -161,9 +161,10 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
-  prefs->ClearPref(kBraveIpfsFeatureMigrated);
-  prefs->ClearPref(kBraveIpfsCompanionMigrated);
+  DCHECK(prefs);
+  // Deprecated 05/2024
   prefs->ClearPref(kPinnedNFTAssetsMigrated);
+  // Deprecated 05/2024
   prefs->ClearPref(kAutoPinEnabledMigrated);
 }
 
@@ -331,7 +332,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
-  ClearDeprecatedIpfsPrefs(prefs);
 
   // Added 03/2023 to add filecoin evm support.
   BraveWalletService::MigrateHiddenNetworks(prefs);
@@ -351,6 +351,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 06/2024 to migrate Eip1559 flag to a separate pref.
   BraveWalletService::MigrateEip1559ForCustomNetworks(prefs);
+
+  // Added 05/2024
+  ClearDeprecatedIpfsPrefs(prefs);
 }
 
 }  // namespace brave_wallet
