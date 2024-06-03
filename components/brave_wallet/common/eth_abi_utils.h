@@ -124,8 +124,8 @@ class TypeBuilder {
   explicit TypeBuilder(TypeKind kind);
   TypeBuilder(TypeKind kind, size_t m);
 
-  TypeBuilder& setArrayType(Type array_type);
-  TypeBuilder& addTupleType(Type tuple_type);
+  TypeBuilder& SetArrayType(Type array_type);
+  TypeBuilder& AddTupleType(Type tuple_type);
   Type build();
 
  private:

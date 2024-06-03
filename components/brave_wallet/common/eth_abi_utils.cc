@@ -582,12 +582,12 @@ Type::Type(Type&& other) noexcept
 TypeBuilder::TypeBuilder(TypeKind kind) : type_{kind} {}
 TypeBuilder::TypeBuilder(TypeKind kind, size_t m) : type_{kind, m} {}
 
-TypeBuilder& TypeBuilder::setArrayType(Type array_type) {
+TypeBuilder& TypeBuilder::SetArrayType(Type array_type) {
   type_.array_type = std::make_unique<Type>(std::move(array_type));
   return *this;
 }
 
-TypeBuilder& TypeBuilder::addTupleType(Type tuple_type) {
+TypeBuilder& TypeBuilder::AddTupleType(Type tuple_type) {
   type_.tuple_types.push_back(std::move(tuple_type));
   return *this;
 }
