@@ -98,15 +98,13 @@ class BraveAppMenuBrowserTestWithChromeRefresh2023
 
   void SetUp() override {
     BraveAppMenuBrowserTest::SetUp();
-
-    feature_list_.InitAndEnableFeature(features::kChromeRefresh2023);
   }
 
   base::test::ScopedFeatureList feature_list_;
 };
 
-// To check enabling kChromeRefresh2023 doesn't make crash with app menu
-// opening.
+// Test originally introduced before the chrome-refresh-2023 cleanup, to check
+// if sidebar crashes when opening.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithChromeRefresh2023,
                        AppMenuOpeningTest) {
   // Open app menu to check it doesn't make crash.
