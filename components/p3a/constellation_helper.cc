@@ -56,6 +56,8 @@ bool CheckParticipationAndScrambleForNebula(std::vector<std::string>* layers) {
     std::vector<uint8_t> random_buffer(30);
     base::RandBytes(random_buffer);
 
+    CHECK(layers);
+    CHECK(!layers->empty());
     (*layers)[0] = base::Base64Encode(random_buffer);
     return true;
   }
