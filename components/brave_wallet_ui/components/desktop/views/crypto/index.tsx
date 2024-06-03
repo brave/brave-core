@@ -331,15 +331,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <TransactionsScreen />
         </Route>
 
-        {/* NFT Pinning onboarding page */}
-        <Route
-          path={WalletRoutes.LocalIpfsNode}
-          exact={true}
-          render={(props) =>
-            <Redirect to={WalletRoutes.PortfolioAssets} />
-          }
-        />
-
         <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
       </Switch>
 

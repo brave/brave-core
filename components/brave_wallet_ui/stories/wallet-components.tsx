@@ -13,7 +13,6 @@ import { TopNavOptions } from '../options/top-nav-options'
 import './locale'
 import { LoadingSkeleton } from '../components/shared/loading-skeleton/index'
 import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
-import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import { mockNetwork } from '../common/constants/mocks'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
@@ -116,21 +115,6 @@ _BuySendSwapDeposit.story = {
 }
 
 
-export const _LocalIpfsScreen = () => {
-  const onClose = () => {
-    console.log('close')
-  }
-
-  return (
-    <WalletPageStory>
-      <LocalIpfsNodeScreen onClose={onClose} />
-    </WalletPageStory>
-  )
-}
-
-_LocalIpfsScreen.story = {
-  name: 'Run Local IPFS Node'
-}
 
 export const _NftsEmptyState = () => {
   return <NftsEmptyState onImportNft={() => console.log('On import NFT')} />

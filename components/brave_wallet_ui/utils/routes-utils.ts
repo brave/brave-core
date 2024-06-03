@@ -36,10 +36,7 @@ export function isPersistableSessionRoute(
     route.includes(WalletRoutes.PortfolioAssets) ||
     route.includes(WalletRoutes.PortfolioNFTs) ||
     route.includes(WalletRoutes.PortfolioNFTAsset) ||
-    route.includes(WalletRoutes.Market) ||
-    route.includes(WalletRoutes.Swap) ||
-    route.includes(WalletRoutes.Send) ||
-    route.includes(WalletRoutes.LocalIpfsNode)
+    route.includes(WalletRoutes.Market)
   if (isPanel) {
     return isPersistableInPanel
   }

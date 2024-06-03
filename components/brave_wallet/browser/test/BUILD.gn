@@ -138,7 +138,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/resources:strings_grit",
     "//brave/components/services/brave_wallet/public/cpp/utils",
     "//brave/components/services/brave_wallet/public/mojom",
-    "//chrome/browser:browser",
     "//components/component_updater:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
