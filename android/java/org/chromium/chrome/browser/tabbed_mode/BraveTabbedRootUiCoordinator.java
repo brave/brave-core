@@ -48,8 +48,8 @@ import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.features.start_surface.StartSurface;
-import org.chromium.components.browser_ui.widget.InsetObserver;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
+import org.chromium.ui.InsetObserver;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -102,7 +102,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                     ObservableSupplierImpl<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             @NonNull IntentRequestTracker intentRequestTracker,
             int controlContainerHeightResource,
-            @NonNull Supplier<InsetObserver> insetObserverViewSupplier,
+            @NonNull InsetObserver insetObserver,
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             boolean initializeUiWithIncognitoColors,
@@ -152,7 +152,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 ephemeralTabCoordinatorSupplier,
                 intentRequestTracker,
                 controlContainerHeightResource,
-                insetObserverViewSupplier,
+                insetObserver,
                 backButtonShouldCloseTabFn,
                 tabReparentingControllerSupplier,
                 initializeUiWithIncognitoColors,
