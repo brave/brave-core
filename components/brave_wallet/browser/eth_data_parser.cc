@@ -77,7 +77,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   } else if (selector == kERC20TransferSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
@@ -93,7 +93,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   } else if (selector == kERC20ApproveSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
@@ -110,7 +110,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
@@ -129,7 +129,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
@@ -154,7 +154,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L29-L41
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Bytes())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(eth_abi::Address())
                     .build();
     auto decoded_calldata = ABIDecode(type, calldata);
@@ -203,8 +203,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L58-L71
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Bytes())
-                    .AddTupleType(eth_abi::UintM(256))
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(eth_abi::Address())
                     .build();
     auto decoded_calldata = ABIDecode(type, calldata);
@@ -243,8 +243,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         eth_abi::Tuple()
             .AddTupleType(
                 eth_abi::Array().SetArrayType(eth_abi::Address()).build())
-            .AddTupleType(eth_abi::UintM(256))
-            .AddTupleType(eth_abi::UintM(256))
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Uint(256))
             .AddTupleType(eth_abi::Bool())
             .build();
     auto decoded_calldata = ABIDecode(type, calldata);
@@ -279,19 +279,19 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/ITransformERC20Feature.sol#L113-L134
-    auto type = eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
-                    .AddTupleType(eth_abi::UintM(256))
-                    .AddTupleType(
-                        eth_abi::Array()
-                            .SetArrayType(eth_abi::Tuple()
-                                              .AddTupleType(eth_abi::UintM(32))
-                                              .AddTupleType(eth_abi::Bytes())
-                                              .build())
-                            .build())
-                    .build();
+    auto type =
+        eth_abi::Tuple()
+            .AddTupleType(eth_abi::Address())
+            .AddTupleType(eth_abi::Address())
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Array()
+                              .SetArrayType(eth_abi::Tuple()
+                                                .AddTupleType(eth_abi::Uint(32))
+                                                .AddTupleType(eth_abi::Bytes())
+                                                .build())
+                              .build())
+            .build();
     auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
@@ -381,8 +381,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(128))
-                    .AddTupleType(eth_abi::UintM(128))
+                    .AddTupleType(eth_abi::Uint(128))
+                    .AddTupleType(eth_abi::Uint(128))
                     .build();
     auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
@@ -455,8 +455,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .build();
     auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
@@ -498,7 +498,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                     .AddTupleType(eth_abi::String())
                     .AddTupleType(eth_abi::String())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(
                         eth_abi::Array()
                             .SetArrayType(eth_abi::Tuple()
@@ -506,7 +506,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                               .AddTupleType(eth_abi::Address())
                                               .AddTupleType(eth_abi::Address())
                                               .AddTupleType(eth_abi::Address())
-                                              .AddTupleType(eth_abi::UintM(256))
+                                              .AddTupleType(eth_abi::Uint(256))
                                               .AddTupleType(eth_abi::Bytes())
                                               .AddTupleType(eth_abi::Bool())
                                               .build())
@@ -551,8 +551,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::UintM(256))
-                    .AddTupleType(eth_abi::UintM(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
                     .AddTupleType(eth_abi::Bytes())
                     .build();
     auto decoded = ABIDecode(type, calldata);

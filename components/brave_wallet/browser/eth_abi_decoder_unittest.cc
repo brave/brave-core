@@ -51,7 +51,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint8) {
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded =
-      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::UintM(8)).build(), data);
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(8)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xff"));
@@ -62,22 +62,22 @@ TEST(EthABIDecoderTest, ABIDecodeUint8) {
       "ff",
       &data));
   decoded =
-      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::UintM(8)).build(), data);
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(8)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xff"));
 
   // KO: insufficient uint8 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
-  EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(8)).build(), data));
+  EXPECT_FALSE(
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(8)).build(), data));
 
   // KO: outside range of uint8
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000000100",
       &data));
-  EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(8)).build(), data));
+  EXPECT_FALSE(
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(8)).build(), data));
 }
 
 TEST(EthABIDecoderTest, ABIDecodeUint16) {
@@ -87,8 +87,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint16) {
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000000fff",
       &data));
-  auto decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(16)).build(), data);
+  auto decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(16)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xfff"));
@@ -98,8 +98,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint16) {
       "0x0000000000000000000000000000000000000000000000000000000000000fff"
       "ff",
       &data));
-  decoded = ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::UintM(16)).build(),
-                      data);
+  decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(16)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xfff"));
@@ -107,14 +107,14 @@ TEST(EthABIDecoderTest, ABIDecodeUint16) {
   // KO: insufficient uint16 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(16)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(16)).build(), data));
 
   // KO: outside range of uint16
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000000010000",
       &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(16)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(16)).build(), data));
 }
 
 TEST(EthABIDecoderTest, ABIDecodeUint32) {
@@ -124,8 +124,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint32) {
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x00000000000000000000000000000000000000000000000000000000ffffffff",
       &data));
-  auto decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(32)).build(), data);
+  auto decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(32)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffff"));
@@ -135,8 +135,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint32) {
       "0x00000000000000000000000000000000000000000000000000000000ffffffff"
       "ff",
       &data));
-  decoded = ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::UintM(32)).build(),
-                      data);
+  decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(32)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffff"));
@@ -144,14 +144,14 @@ TEST(EthABIDecoderTest, ABIDecodeUint32) {
   // KO: insufficient uint16 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(32)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(32)).build(), data));
 
   // KO: outside range of uint32
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000000000000100000000",
       &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(32)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(32)).build(), data));
 }
 
 TEST(EthABIDecoderTest, ABIDecodeUint64) {
@@ -161,8 +161,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint64) {
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x000000000000000000000000000000000000000000000000ffffffffffffffff",
       &data));
-  auto decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(64)).build(), data);
+  auto decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(64)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffffffffffff"));
@@ -172,8 +172,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint64) {
       "0x000000000000000000000000000000000000000000000000ffffffffffffffff"
       "ff",
       &data));
-  decoded = ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::UintM(64)).build(),
-                      data);
+  decoded =
+      ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(64)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffffffffffff"));
@@ -181,14 +181,14 @@ TEST(EthABIDecoderTest, ABIDecodeUint64) {
   // KO: insufficient uint16 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(64)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(64)).build(), data));
 
   // KO: outside range of uint64
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000000000000000000010000000000000000",
       &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(64)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(64)).build(), data));
 }
 
 TEST(EthABIDecoderTest, ABIDecodeUint128) {
@@ -201,7 +201,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint128) {
       "0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff",
       &data));
   auto decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(128)).build(), data);
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(128)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffffffffffffffffffffffffffff"));
@@ -211,8 +211,8 @@ TEST(EthABIDecoderTest, ABIDecodeUint128) {
       "0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff"
       "ff",
       &data));
-  decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(128)).build(), data);
+  decoded = ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(128)).build(),
+                      data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xffffffffffffffffffffffffffffffff"));
@@ -220,14 +220,14 @@ TEST(EthABIDecoderTest, ABIDecodeUint128) {
   // KO: insufficient uint128 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(128)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(128)).build(), data));
 
   // KO: outside range of uint128
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x0000000000000000000000000000000100000000000000000000000000000000",
       &data));
   EXPECT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(128)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(128)).build(), data));
 }
 
 TEST(EthABIDecoderTest, ABIDecodeUint256) {
@@ -238,7 +238,7 @@ TEST(EthABIDecoderTest, ABIDecodeUint256) {
       "0x00000000000000000000000000000000000000000000000000000000000000ff",
       &data));
   auto decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build(), data);
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build(), data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xff"));
@@ -246,15 +246,15 @@ TEST(EthABIDecoderTest, ABIDecodeUint256) {
   // KO: insufficient uint256 length
   ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
   ASSERT_FALSE(ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build(), data));
+      eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build(), data));
 
   // OK: extra uint256 length
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x00000000000000000000000000000000000000000000000000000000000000ff"
       "ff",
       &data));
-  decoded = ABIDecode(
-      eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build(), data);
+  decoded = ABIDecode(eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build(),
+                      data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_EQ(decoded->back(), base::Value("0xff"));
@@ -687,14 +687,13 @@ TEST(EthABIDecoderTest, ABIDecodeTuple) {
       "0000000000000000000000000000000000000000000000000000000000000045"
       "0000000000000000000000000000000000000000000000000000000000000001",
       &data));
-  auto decoded =
-      ABIDecode(eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Tuple()
-                                      .AddTupleType(eth_abi::UintM(8))
-                                      .AddTupleType(eth_abi::Bool())
-                                      .build())
-                    .build(),
-                data);
+  auto decoded = ABIDecode(eth_abi::Tuple()
+                               .AddTupleType(eth_abi::Tuple()
+                                                 .AddTupleType(eth_abi::Uint(8))
+                                                 .AddTupleType(eth_abi::Bool())
+                                                 .build())
+                               .build(),
+                           data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
   EXPECT_TRUE(decoded->back().is_list());
@@ -714,7 +713,7 @@ TEST(EthABIDecoderTest, ABIDecodeTuple) {
           .AddTupleType(eth_abi::Tuple()
                             .AddTupleType(eth_abi::Bool())
                             .AddTupleType(eth_abi::Tuple()
-                                              .AddTupleType(eth_abi::UintM(8))
+                                              .AddTupleType(eth_abi::Uint(8))
                                               .AddTupleType(eth_abi::Bool())
                                               .build())
                             .build())

@@ -79,7 +79,7 @@ TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
   std::string result =
       "0x00000000000000000000000000000000000000000000000166e12cfce39a0000";
   auto args = DecodeEthCallResponse(
-      result, eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build());
+      result, eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build());
   ASSERT_NE(args, std::nullopt);
   ASSERT_EQ(args->size(), 1UL);
   ASSERT_EQ(args->at(0), "0x166e12cfce39a0000");
@@ -90,7 +90,7 @@ TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
       "000000000000000000000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000";
   args = DecodeEthCallResponse(
-      result, eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build());
+      result, eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build());
   ASSERT_NE(args, std::nullopt);
   ASSERT_EQ(args->size(), 1UL);
   ASSERT_EQ(args->at(0), "0x45d12");
@@ -98,13 +98,13 @@ TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
   // KO: insufficient length of response
   ASSERT_EQ(
       DecodeEthCallResponse(
-          "0x0", eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build()),
+          "0x0", eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build()),
       std::nullopt);
 
   // KO: invalid response
   ASSERT_EQ(DecodeEthCallResponse(
                 "foobarbaz",
-                eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build()),
+                eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build()),
             std::nullopt);
 }
 

@@ -604,7 +604,7 @@ Type Address() {
   return Type{TypeKind::kAddress};
 }
 
-Type UintM(size_t m) {
+Type Uint(size_t m) {
   CHECK(m > 0 && m <= 256 && m % 8 == 0) << "Invalid M for uint<M> type: " << m;
   return Type{TypeKind::kUintM, m};
 }

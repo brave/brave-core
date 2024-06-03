@@ -1222,7 +1222,7 @@ void JsonRpcService::OnGetERC20TokenBalance(
   }
 
   // (uint256)
-  auto type = eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build();
+  auto type = eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build();
   const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run(
@@ -1298,7 +1298,7 @@ void JsonRpcService::OnGetERC20TokenAllowance(
   }
 
   // (uint256)
-  auto type = eth_abi::Tuple().AddTupleType(eth_abi::UintM(256)).build();
+  auto type = eth_abi::Tuple().AddTupleType(eth_abi::Uint(256)).build();
   const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run(
@@ -2625,7 +2625,7 @@ void JsonRpcService::OnGetEthTokenDecimals(
   }
 
   // (uint8)
-  auto type = eth_abi::Tuple().AddTupleType(eth_abi::UintM(8)).build();
+  auto type = eth_abi::Tuple().AddTupleType(eth_abi::Uint(8)).build();
   const auto& args = eth::DecodeEthCallResponse(*result, type);
   if (args == std::nullopt) {
     std::move(callback).Run("", mojom::ProviderError::kParsingError,

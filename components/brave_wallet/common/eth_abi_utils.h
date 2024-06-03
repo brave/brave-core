@@ -133,7 +133,7 @@ class TypeBuilder {
 };
 
 Type Address();
-Type UintM(size_t m);
+Type Uint(size_t m);
 Type Uint();
 Type Bool();
 Type Bytes();
