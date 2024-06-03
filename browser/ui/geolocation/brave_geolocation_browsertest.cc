@@ -30,7 +30,6 @@ class GeolocationPermissionRequestBrowserTest : public CertVerifierBrowserTest {
   void SetUpOnMainThread() override {
     CertVerifierBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir);

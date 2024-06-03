@@ -106,7 +106,6 @@ class BraveSearchTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &BraveSearchTest::HandleRequest, base::Unretained(this)));
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);

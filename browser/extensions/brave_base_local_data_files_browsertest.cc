@@ -21,14 +21,8 @@ using brave_component_updater::LocalDataFilesObserver;
 using content::BrowserThread;
 using extensions::ExtensionBrowserTest;
 
-void BaseLocalDataFilesBrowserTest::SetUp() {
-  brave::RegisterPathProvider();
-  MaybeInitEmbeddedTestServer();
-  ExtensionBrowserTest::SetUp();
-}
-
 void BaseLocalDataFilesBrowserTest::SetUpOnMainThread() {
-  MaybeSetUpEmbeddedTestServerOnMainThread();
+  MaybeInitEmbeddedTestServer();
   ExtensionBrowserTest::SetUpOnMainThread();
 }
 
@@ -51,9 +45,6 @@ void BaseLocalDataFilesBrowserTest::MaybeInitEmbeddedTestServer() {
   content::SetupCrossSiteRedirector(embedded_test_server());
   embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
   ASSERT_TRUE(embedded_test_server()->Start());
-}
-
-void BaseLocalDataFilesBrowserTest::MaybeSetUpEmbeddedTestServerOnMainThread() {
   host_resolver()->AddRule("*", "127.0.0.1");
 }
 

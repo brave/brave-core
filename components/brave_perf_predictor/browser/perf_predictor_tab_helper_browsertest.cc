@@ -48,6 +48,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    InitEmbeddedTestServer();
     host_resolver()->AddRule("*", "127.0.0.1");
 
     auto* content_settings =
@@ -60,11 +61,6 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
         content_settings, brave_shields::ControlType::BLOCK, GURL());
   }
 
-  void SetUp() override {
-    InitEmbeddedTestServer();
-    InProcessBrowserTest::SetUp();
-  }
-
   void PreRunTestOnMainThread() override {
     InProcessBrowserTest::PreRunTestOnMainThread();
   }
@@ -72,7 +68,6 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   void TearDown() override { InProcessBrowserTest::TearDown(); }
 
   void InitEmbeddedTestServer() {
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);

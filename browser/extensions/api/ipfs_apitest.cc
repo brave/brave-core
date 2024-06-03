@@ -32,11 +32,10 @@ class IpfsExtensionApiTest : public ExtensionApiTest {
   IpfsExtensionApiTest() {
     feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
   }
-  void SetUp() override {
-    brave::RegisterPathProvider();
+  void SetUpOnMainThread() override {
+    ExtensionApiTest::SetUpOnMainThread();
     base::PathService::Get(brave::DIR_TEST_DATA, &extension_dir_);
     extension_dir_ = extension_dir_.AppendASCII("extensions/api_test");
-    ExtensionApiTest::SetUp();
   }
   void WriteConfigToFile() {
     base::ScopedAllowBlockingForTesting allow_blocking;
@@ -46,7 +45,6 @@ class IpfsExtensionApiTest : public ExtensionApiTest {
     ASSERT_TRUE(base::CreateDirectory(path.DirName()));
     ASSERT_TRUE(base::WriteFile(path, ipfs_config));
   }
-  void TearDown() override { ExtensionApiTest::TearDown(); }
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
   base::FilePath extension_dir_;
   base::test::ScopedFeatureList feature_list_;

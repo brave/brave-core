@@ -42,6 +42,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
+#include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
@@ -466,26 +467,6 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
   RequestOTRServiceWorkerBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  void SetUp() override {
-    // We still need this so InstallMockExtension() can find its files.
-    brave::RegisterPathProvider();
-
-    // Reuse upstream test files in content.
-    content::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(content::DIR_TEST_DATA, &test_data_dir);
-
-    // We need an HTTPS server to test service workers.
-    content::SetupCrossSiteRedirector(&https_server_);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(https_server_.Start());
-
-    // Bypass BaseLocalDataFilesBrowserTest::SetUp() because we've handled
-    // everything already.
-    ExtensionBrowserTest::SetUp();
-  }
-
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
@@ -497,8 +478,21 @@ class RequestOTRServiceWorkerBrowserTest : public RequestOTRBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    base::FilePath test_data_dir;
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    base::PathService::Get(content::DIR_TEST_DATA, &test_data_dir);
+
+    // We need an HTTPS server to test service workers.
+    content::SetupCrossSiteRedirector(&https_server_);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_.Start());
+
+    host_resolver()->AddRule("*", "127.0.0.1");
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    RequestOTRBrowserTestBase::SetUpOnMainThread();
+
+    // Bypass BaseLocalDataFilesBrowserTest::SetUpOnMainThread() because we've
+    // handled everything already.
+    ExtensionBrowserTest::SetUpOnMainThread();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
@@ -542,12 +536,15 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
 // a custom header to trigger an OTR tab.
 class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
  public:
-  void SetUp() override {
-    content::SetupCrossSiteRedirector(embedded_test_server());
+  void SetUpOnMainThread() override {
     embedded_test_server()->RegisterRequestHandler(
         base::BindRepeating(&RespondWithCustomHeader));
     ASSERT_TRUE(embedded_test_server()->Start());
-    ExtensionBrowserTest::SetUp();
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    // Bypass BaseLocalDataFilesBrowserTest::SetUpOnMainThread() because we've
+    // handled everything already.
+    ExtensionBrowserTest::SetUpOnMainThread();
   }
 };
 

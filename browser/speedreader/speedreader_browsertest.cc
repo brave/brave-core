@@ -106,11 +106,20 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         speedreader::kSpeedreaderFeature,
         {{speedreader::kSpeedreaderTTS.name, "true"}});
 #endif
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+  }
 
+  SpeedReaderBrowserTest(const SpeedReaderBrowserTest&) = delete;
+  SpeedReaderBrowserTest& operator=(const SpeedReaderBrowserTest&) = delete;
+
+  ~SpeedReaderBrowserTest() override = default;
+
+  void SetUp() override {
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    InProcessBrowserTest::SetUp();
+  }
+
+  void SetUpOnMainThread() override {
     auto redirector = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
       if (request.GetURL().path_piece() != kTestPageRedirect) {
@@ -129,25 +138,17 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     };
 
     https_server_.RegisterDefaultHandler(base::BindRepeating(redirector));
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-
-    EXPECT_TRUE(https_server_.Start());
-  }
-
-  SpeedReaderBrowserTest(const SpeedReaderBrowserTest&) = delete;
-  SpeedReaderBrowserTest& operator=(const SpeedReaderBrowserTest&) = delete;
-
-  ~SpeedReaderBrowserTest() override = default;
-
-  void SetUpOnMainThread() override {
+    https_server_.ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    https_server_.StartAcceptingConnections();
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
         "MAP *:443 " + https_server_.host_port_pair().ToString());
-    InProcessBrowserTest::SetUpCommandLine(command_line);
   }
 
   content::WebContents* ActiveWebContents() {

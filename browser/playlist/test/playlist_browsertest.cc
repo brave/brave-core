@@ -119,7 +119,6 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   virtual void SetUpHTTPSServer() {
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
 

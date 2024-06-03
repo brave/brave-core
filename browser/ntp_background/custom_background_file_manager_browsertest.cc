@@ -37,7 +37,6 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
     file_manager_ = std::make_unique<CustomBackgroundFileManager>(profile());
 
     base::ScopedAllowBlockingForTesting allow_blocking_call;
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
 

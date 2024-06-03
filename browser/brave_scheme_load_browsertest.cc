@@ -32,15 +32,10 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                                    public TabStripModelObserver {
  public:
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    host_resolver()->AddRule("*", "127.0.0.1");
-
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-
+    embedded_test_server()->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     ASSERT_TRUE(embedded_test_server()->Start());
+    host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   PrefService* prefs() {
@@ -61,11 +56,22 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  bool NavigateToURLUntilLoadStop(GURL url) {
+    ui_test_utils::UrlLoadObserver load_complete(url);
+    browser()->OpenURL(
+        content::OpenURLParams(url, content::Referrer(),
+                               WindowOpenDisposition::CURRENT_TAB,
+                               ui::PAGE_TRANSITION_TYPED, false),
+        /*navigation_handle_callback=*/{});
+    load_complete.Wait();
+    EXPECT_EQ(active_contents()->GetLastCommittedURL(), url);
+    return true;
+  }
+
   bool NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), embedded_test_server()->GetURL(origin, path)));
-    return WaitForLoadStop(active_contents());
+    GURL url = embedded_test_server()->GetURL(origin, path);
+    return NavigateToURLUntilLoadStop(url);
   }
 
   // Check loading |url| in guest window is not allowed for an url.

@@ -533,12 +533,7 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 class SolanaProviderRendererTest : public InProcessBrowserTest {
  public:
   SolanaProviderRendererTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -561,6 +556,9 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
         browser()->profile()->GetPrefs(),
         brave_wallet::mojom::DefaultWallet::BraveWallet);
     content::SetBrowserClientForTesting(&test_content_browser_client_);
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());

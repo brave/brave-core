@@ -78,11 +78,6 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
   };
   using FramesWithRegisteredBlobs = std::vector<RenderFrameHostBlobData>;
 
-  void SetUpOnMainThread() override {
-    EphemeralStorageBrowserTest::SetUpOnMainThread();
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
   static GURL RegisterBlob(content::RenderFrameHost* render_frame_host,
                            std::string_view content) {
     return GURL(EvalJs(render_frame_host,

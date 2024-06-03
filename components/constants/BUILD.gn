@@ -28,7 +28,6 @@ source_set("constants") {
   sources = [
     "brave_constants.cc",
     "brave_constants.h",
-    "brave_paths.cc",
     "brave_paths.h",
     "brave_switches.h",
     "network_constants.h",

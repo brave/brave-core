@@ -153,6 +153,12 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(
+        test_data_dir.Append(FILE_PATH_LITERAL("ephemeral-storage")));
+    content::SetupCrossSiteRedirector(embedded_test_server());
+    ASSERT_TRUE(embedded_test_server()->Start());
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -170,18 +176,6 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void SetUp() override {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(
-        test_data_dir.Append(FILE_PATH_LITERAL("ephemeral-storage")));
-    content::SetupCrossSiteRedirector(embedded_test_server());
-    ASSERT_TRUE(embedded_test_server()->Start());
-
-    InProcessBrowserTest::SetUp();
   }
 
   HostContentSettingsMap* content_settings() {

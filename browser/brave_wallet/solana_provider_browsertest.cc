@@ -345,7 +345,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     https_server_for_files_.SetSSLConfig(
         net::EmbeddedTestServer::CERT_TEST_NAMES);
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII("brave-wallet");

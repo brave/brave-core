@@ -20,7 +20,6 @@ class BaseLocalDataFilesBrowserTest : public ExtensionBrowserTest {
   BaseLocalDataFilesBrowserTest() {}
 
   // ExtensionBrowserTest overrides
-  void SetUp() override;
   void SetUpOnMainThread() override;
   void PreRunTestOnMainThread() override;
 

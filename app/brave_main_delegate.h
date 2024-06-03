@@ -8,7 +8,6 @@
 
 #include <optional>
 
-#include "build/build_config.h"
 #include "chrome/app/chrome_main_delegate.h"
 
 // Chrome implementation of ContentMainDelegate.
@@ -28,6 +27,7 @@ class BraveMainDelegate : public ChromeMainDelegate {
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
   content::ContentUtilityClient* CreateContentUtilityClient() override;
+  std::optional<int> BasicStartupComplete() override;
   void PreSandboxStartup() override;
   std::optional<int> PostEarlyInitialization(
       ChromeMainDelegate::InvokedIn invoked_in) override;

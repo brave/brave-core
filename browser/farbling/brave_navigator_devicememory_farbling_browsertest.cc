@@ -35,14 +35,7 @@ const char kDeviceMemoryScript[] = "navigator.deviceMemory * 1024";
 class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveDeviceMemoryFarblingBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    EXPECT_TRUE(https_server_.Start());
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveDeviceMemoryFarblingBrowserTest(
       const BraveDeviceMemoryFarblingBrowserTest&) = delete;
@@ -53,6 +46,11 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 

@@ -629,7 +629,7 @@
 -BookmarkBarNavigationTest.ExternalHandlerAllowed
 
 # These tests fail because of the shields extension. The tests don't expect
-# permission manager to get a request from 
+# permission manager to get a request from
 # chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/ before the callback is
 # set in the tests.
 -PermissionManagerBrowserTest.ServiceWorkerPermissionAfterRendererCrash
@@ -777,6 +777,9 @@
 -WebNavigationApiFencedFrameTest/WebNavigationApiFencedFrameTest.*
 -WebViewTests/WebViewFencedFrameTest.FencedFrameInGuestHasGuestSiteInstance/SiteIsolationForGuestsEnabled
 
+# These tests fail because we skip amp pages with deamp
+-AMPPageLoadMetricsObserverTest.*
+
 # These tests fail because we intentionally disable
 # blink::features::kAdInterestGroupAPI
 -All/BrowsingDataModelBrowserTest.InterestGroupsAccessReportedCorrectly/*
@@ -812,7 +815,7 @@
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
 -DiceWebSigninInterceptorWithExplicitSigninEnabledBrowserTest.*
--DiceWebSigninInterceptorWithUnoDisabledAndPREEnabledBrowserTest.ChromeSignedinWithUnoShouldRevertBackToDefaultWithUnoDisabled 
+-DiceWebSigninInterceptorWithUnoDisabledAndPREEnabledBrowserTest.ChromeSignedinWithUnoShouldRevertBackToDefaultWithUnoDisabled
 -DiceWebSigninInterceptorWithUnoEnabledAndPREDisabledBrowserTest.ChromeSignedInTransitionToUnoEnabled
 -DiceWebSigninInterceptorWithUnoEnabledBrowserTest.ChromeSigninInterceptAccepted
 -DiceWebSigninInterceptorWithUnoEnabledBrowserTest.OptOutOfAccountStorage
@@ -1063,7 +1066,7 @@
 # was loaded over HTTPS, but requested an insecure frame 'http://example.com/'.
 # This request has been blocked; the content must be served over HTTPS.",
 # source: __const_std::string&_script__ (4).
-# In addition, the tests attempts to use CSP like 
+# In addition, the tests attempts to use CSP like
 # {"ftp:*", "ftp://example.com", 0, 0}, which doesn't work correctly because
 # "ftp:*" is not getting parsed by CSP parser as a protocol, but as a host (
 # because the parser expects :// for parsing it as a protocol). Not sure how/if

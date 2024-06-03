@@ -52,7 +52,6 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(&https_server_);
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     test_data_dir = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);

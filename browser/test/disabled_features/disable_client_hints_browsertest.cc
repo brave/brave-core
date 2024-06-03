@@ -79,7 +79,6 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   }
 
   void SetUpOnMainThread() override {
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
 

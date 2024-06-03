@@ -41,7 +41,6 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override;
   void SetUpInProcessBrowserTestFixture() override;
   void SetUpOnMainThread() override;
-  void SetUp() override;
   void PreRunTestOnMainThread() override;
   void TearDownOnMainThread() override;
   void TearDownInProcessBrowserTestFixture() override;
