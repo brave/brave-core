@@ -37,7 +37,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       isErc20: self.isERC20,
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
-      splTokenProgram: BraveWallet.SPLTokenProgram(rawValue: Int(self.splTokenProgram)),
+      splTokenProgram: BraveWallet.SPLTokenProgram(rawValue: Int(self.splTokenProgram))!,
       isNft: self.isNFT,
       isSpam: self.isSpam,
       symbol: self.symbol,

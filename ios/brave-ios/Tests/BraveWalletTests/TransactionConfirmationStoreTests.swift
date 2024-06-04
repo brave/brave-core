@@ -682,6 +682,7 @@ extension BraveWallet.BlockchainToken {
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: .unsupported,
     isNft: false,
     isSpam: false,
     symbol: "DAI",
