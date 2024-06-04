@@ -376,7 +376,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         updateShieldsLayoutBackground(isIncognito()
                 || !ContextUtils.getAppSharedPreferences().getBoolean(
-                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false));
     }
 
     @Override
@@ -436,7 +436,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.IsSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
@@ -1450,7 +1450,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.IsSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false)) {
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }
