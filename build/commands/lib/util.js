@@ -298,6 +298,12 @@ const util = {
           config.getBraveLogoIconName()),
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])
+    // Replace webui bookmark svg icon.
+    fileMap.add([
+      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+          'browser-bookmark-normal.svg'),
+      path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
+          'icon_bookmark.svg')])
 
     let explicitSourceFiles = new Set()
     if (config.getTargetOS() === 'mac') {
