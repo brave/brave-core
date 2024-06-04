@@ -140,7 +140,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.17
 package = "ppv-lite86"
 
 [patch.crates-io.proc_macro2_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.84"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.85"
 package = "proc-macro2"
 
 [patch.crates-io.quote_v1]
