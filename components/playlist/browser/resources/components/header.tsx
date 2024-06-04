@@ -93,6 +93,11 @@ const StyledButton = styled(LeoButton)`
   flex: 0 0 auto;
 `
 
+const MediumSizedButton = styled(StyledButton)`
+  width: var(--leo-icon-m);
+  height: var(--leo-icon-m);
+`
+
 const StyledSeparator = styled.div`
   width: ${elevation.xxs};
   background-color: ${color.divider.subtle};
@@ -123,8 +128,9 @@ function BackButton ({
 }) {
   return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
     <StyledButton
-      size='large'
+      size='small'
       kind='plain'
+      fab
       onClick={() => getPlaylistActions().setPlaylistEditMode(undefined)}
     >
       <ColoredIcon
@@ -293,9 +299,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
 
 function NewPlaylistButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
+      fab
       title={getLocalizedString('bravePlaylistA11YCreatePlaylistFolder')}
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
@@ -305,15 +312,16 @@ function NewPlaylistButton () {
         name='plus-add'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
 function SettingButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
+      fab
       title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
       onClick={() => getPlaylistAPI().openSettingsPage()}
     >
@@ -321,15 +329,16 @@ function SettingButton () {
         name='settings'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
 function CloseButton () {
   return (
-    <StyledButton
-      size='large'
+    <MediumSizedButton
+      size='small'
       kind='plain'
+      fab
       title={getLocalizedString('bravePlaylistA11YClosePanel')}
       onClick={() => getPlaylistAPI().closePanel()}
     >
@@ -337,7 +346,7 @@ function CloseButton () {
         name='close'
         color={color.icon.default}
       />
-    </StyledButton>
+    </MediumSizedButton>
   )
 }
 
