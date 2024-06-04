@@ -150,6 +150,15 @@ class TransactionConfirmationStoreTests: XCTestCase {
     solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    bitcoinWalletService._balance = { accountId, completion in
+      let bitcoinBalance: BraveWallet.BitcoinBalance = .init(
+        totalBalance: 100000,
+        availableBalance: 100000,
+        pendingBalance: 0,
+        balances: [:]
+      )
+      completion(bitcoinBalance, "")
+    }
 
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
