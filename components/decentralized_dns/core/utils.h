@@ -8,6 +8,7 @@
 
 #include <string_view>
 
+#include "base/containers/span.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 
 class GURL;
@@ -41,6 +42,7 @@ void SetSnsResolveMethod(PrefService* local_state, ResolveMethodTypes method);
 ResolveMethodTypes GetSnsResolveMethod(PrefService* local_state);
 bool IsSnsResolveMethodAsk(PrefService* local_state);
 bool IsSnsResolveMethodEnabled(PrefService* local_state);
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 
 }  // namespace decentralized_dns
 
