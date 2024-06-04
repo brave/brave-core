@@ -3,4 +3,5 @@ include_rules = [
   "+services/network/public",
   "+absl/types/optional.h",
   "+third_party/skia/include",
+  "+third_party/re2/src/re2",
 ]

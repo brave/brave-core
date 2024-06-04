@@ -2,18 +2,22 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react'
-import styled from 'styled-components'
-import { font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
-import InitialText from './InitialText'
-import NoContent from './NoContent'
+import { font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+import * as React from 'react'
+import styled from 'styled-components'
 import { useRewriterContext } from '../Context'
+import BeginGeneration from './BeginGeneration'
+import ModifyGeneration from './ModifyGeneration'
 
 const TitleText = styled.h2`
   font: ${font.heading.h3};
+
+  font-size: 16px;
+  line-height: 16px;
 `
 
 const TitleRow = styled.div`
@@ -37,16 +41,6 @@ const DialogControls = styled.div`
 
   display: flex;
   gap: ${spacing.xl};
-`
-
-const FiltersContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-self: stretch;
-  gap: ${spacing['2Xl']};
-
-  padding: 0 ${spacing['2Xl']} ${spacing['2Xl']} ${spacing['2Xl']};
 `
 
 const ActionsRow = styled.div`
@@ -75,38 +69,44 @@ const Root = styled.div`
 `
 
 export default function Layout() {
-  const { undo, canUndo, redo, canRedo, erase, canErase, generate, close, openSettings } = useRewriterContext()
+  const context = useRewriterContext()
   return <Root>
     <TitleRow>
       <Icon name='product-brave-leo' />
       <TitleText>leo writer</TitleText>
       <Label color='blue'>PREMIUM</Label>
       <DialogControls>
-        <Button fab kind='plain-faint' size='small' onClick={openSettings}>
+        <Button fab kind='plain-faint' size='small' onClick={context.openSettings}>
           <Icon name='settings' />
         </Button>
-        <Button fab kind='plain-faint' size='small' onClick={close}>
+        <Button fab kind='plain-faint' size='small' onClick={context.close}>
           <Icon name='close' />
         </Button>
       </DialogControls>
     </TitleRow>
-    <FiltersContainer>
-      <InitialText />
-    </FiltersContainer>
-    <NoContent />
+    {context.generatedText
+      ? <ModifyGeneration />
+      : <BeginGeneration />}
     <ActionsRow>
-      <Button fab kind="outline" isDisabled={!canUndo} onClick={undo}>
+      <Button fab kind="outline" isDisabled={!context.canUndo} onClick={context.undo}>
         <Icon name="arrow-undo" />
       </Button>
-      <Button fab kind="outline" isDisabled={!canRedo} onClick={redo}>
+      <Button fab kind="outline" isDisabled={!context.canRedo} onClick={context.redo}>
         <Icon name="arrow-redo" />
       </Button>
-      <Button fab kind="outline" isDisabled={!canErase} onClick={erase}>
+      <Button fab kind="outline" isDisabled={!context.canErase} onClick={context.erase}>
         <Icon name="erase" />
       </Button>
       <FlexSpacer />
-      <Button onClick={generate}>
-        Generate
+      <Button
+        isLoading={context.isGenerating}
+        onClick={context.generatedText ? context.acceptGeneratedText : context.submitRewriteRequest}
+        isDisabled={context.isGenerating || (!context.instructionsText && !context.selectedActionType)}>
+        {context.isGenerating
+          ? "Generating"
+          : context.generatedText
+            ? "Insert"
+            : "Generate"}
       </Button>
     </ActionsRow>
   </Root>

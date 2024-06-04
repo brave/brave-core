@@ -9,41 +9,44 @@ import classnames from '$web-common/classnames'
 import * as mojom from '../../api/page_handler'
 
 import styles from './style.module.scss'
-import DataContext from '../../state/context'
 
 interface Props {
   children: React.ReactNode
+
+  inputText: string,
+  isToolsMenuOpen: boolean,
+  setIsToolsMenuOpen: (open: boolean) => void,
+  actionList: mojom.ActionGroup[],
+  handleActionTypeClick: (action: mojom.ActionType) => void
 }
 
 export default function ToolsButtonMenu(props: Props) {
-  const context = React.useContext(DataContext)
-
   return (
     <ButtonMenu
       className={classnames({
         [styles.buttonMenu]: true,
         [styles.highlightFirstItem]:
-          context.isToolsMenuOpen && context.inputText.startsWith('/')
+          props.isToolsMenuOpen && props.inputText.startsWith('/')
       })}
-      isOpen={context.isToolsMenuOpen}
-      onClose={() => context.setIsToolsMenuOpen(false)}
+      isOpen={props.isToolsMenuOpen}
+      onClose={() => props.setIsToolsMenuOpen(false)}
     >
       <div slot='anchor-content'>{props.children}</div>
-      {context.actionList.map((actionGroup) => {
+      {props.actionList.map((actionGroup) => {
         return (
-          <>
+          <React.Fragment key={actionGroup.category}>
             <div className={styles.menuSectionTitle}>
               {actionGroup.category}
             </div>
             {actionGroup.entries.map((entry, i) => {
               if (entry.subheading) {
-                return <div className={styles.menuSubtitle}>{entry.subheading}</div>
+                return <div key={i} className={styles.menuSubtitle}>{entry.subheading}</div>
               } else {
                 return (
                   <leo-menu-item
                     key={i}
                     onClick={() =>
-                      context.handleActionTypeClick(
+                      props.handleActionTypeClick(
                         entry.details?.type as mojom.ActionType
                       )
                     }
@@ -53,7 +56,7 @@ export default function ToolsButtonMenu(props: Props) {
                 )
               }
             })}
-          </>
+          </React.Fragment>
         )
       })}
     </ButtonMenu>

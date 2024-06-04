@@ -34,12 +34,12 @@
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -840,15 +840,51 @@ void ConversationDriver::AddSubmitSelectedTextError(
 void ConversationDriver::SubmitSelectedText(
     const std::string& selected_text,
     mojom::ActionType action_type,
-    EngineConsumer::GenerationDataCallback received_callback,
+    GeneratedTextCallback received_callback,
     EngineConsumer::GenerationCompletedCallback completed_callback) {
   const std::string& question = GetActionTypeQuestion(action_type);
+  SubmitSelectedTextWithQuestion(selected_text, question, action_type,
+                                 std::move(received_callback),
+                                 std::move(completed_callback));
+}
 
+void ConversationDriver::SubmitSelectedTextWithQuestion(
+    const std::string& selected_text,
+    const std::string& question,
+    mojom::ActionType action_type,
+    GeneratedTextCallback received_callback,
+    EngineConsumer::GenerationCompletedCallback completed_callback) {
   if (received_callback && completed_callback) {
     // Start a one-off request and replace in-place with the result.
-    engine_->GenerateRewriteSuggestion(selected_text, question,
-                                       std::move(received_callback),
-                                       std::move(completed_callback));
+    engine_->GenerateRewriteSuggestion(
+        selected_text, question,
+        base::BindRepeating(
+            [](GeneratedTextCallback received_callback,
+               mojom::ConversationEntryEventPtr rewrite_event) {
+              constexpr char kResponseTagPattern[] =
+                  "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
+              if (!rewrite_event->is_completion_event()) {
+                return;
+              }
+
+              std::string suggestion =
+                  rewrite_event->get_completion_event()->completion;
+
+              base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
+                                        &suggestion);
+              if (suggestion.empty()) {
+                return;
+              }
+
+              // Avoid showing the ending tag.
+              if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
+                return;
+              }
+
+              received_callback.Run(suggestion);
+            },
+            std::move(received_callback)),
+        std::move(completed_callback));
   } else if (!received_callback && !completed_callback) {
     // Use sidebar.
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(

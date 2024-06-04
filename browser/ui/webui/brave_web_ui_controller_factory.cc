@@ -272,7 +272,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
-      url.host_piece() == kRewriterUIHost ||
+      (url.host_piece() == kRewriterUIHost &&
+       ai_rewriter::features::IsAIRewriterEnabled()) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost) {
