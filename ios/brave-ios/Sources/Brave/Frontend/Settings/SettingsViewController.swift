@@ -935,18 +935,30 @@ class SettingsViewController: TableViewController {
               UIPasteboard.general.strings = [version, coreVersion, deviceModel]
             }
 
+            let copyTabDebugInfoAction = UIAlertAction(
+              title: Strings.copyTabsDebugToClipboard,
+              style: .default
+            ) { [weak tabManager] _ in
+              guard let tabManager else { return }
+              UIPasteboard.general.setSecureString(
+                AppDebugComposer.composeTabDebug(tabManager),
+                expirationDate: Date().addingTimeInterval(2.minutes)
+              )
+            }
+
             let copyAppInfoAction = UIAlertAction(
               title: Strings.copyAppSizeInfoToClipboard,
               style: .default
             ) { _ in
               UIPasteboard.general.setSecureString(
-                AppStorageDebugComposer.compose(),
+                AppDebugComposer.composeAppSize(),
                 expirationDate: Date().addingTimeInterval(2.minutes)
               )
             }
 
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
+            actionSheet.addAction(copyTabDebugInfoAction)
             actionSheet.addAction(
               UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
             )
