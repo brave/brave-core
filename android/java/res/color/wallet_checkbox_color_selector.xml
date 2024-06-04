@@ -8,5 +8,5 @@
     <item android:state_enabled="false"
         android:color="@color/text_disabled"/>
     <item android:state_enabled="true"
-        android:color="@color/text_on_primary"/>
+        android:color="@color/wallet_bg"/>
 </selector>
