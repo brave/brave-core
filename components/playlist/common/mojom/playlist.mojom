@@ -73,6 +73,7 @@ struct PlaylistItem {
   // Playlists that contain this item. Could have multiple |Playlist| in case
   // user copied this item to another list.
   array<string> parents;
+  [EnableIf=is_android]
   bool is_selected;
 };
 

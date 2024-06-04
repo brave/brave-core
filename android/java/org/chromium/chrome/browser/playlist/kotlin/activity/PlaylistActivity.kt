@@ -30,6 +30,8 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl
@@ -148,7 +150,9 @@ class PlaylistActivity :
                         mPlaylistId,
                         playlistItem.id,
                         index.toShort()
-                    ) {}
+                    ) {
+                        fetchPlaylistData();
+                    }
                 }
                 VideoPlaybackService.reorderPlaylistItemModel(playlistItems)
             }
@@ -365,26 +369,27 @@ class PlaylistActivity :
 
     private fun openPlaylistPlayer(isShuffle: Boolean, position: Int) {
         val browser = this.mMediaBrowser ?: return
-
-        var recentPlaylistIds = LinkedList<String>()
-        val recentPlaylistJson =
-            PlaylistPreferenceUtils.defaultPrefs(this@PlaylistActivity).recentlyPlayedPlaylist
-        if (!recentPlaylistJson.isNullOrEmpty()) {
-            recentPlaylistIds =
-                GsonBuilder()
-                    .serializeNulls()
-                    .create()
-                    .fromJson(
-                        recentPlaylistJson,
-                        TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
-                    )
-            if (recentPlaylistIds.contains(mPlaylistId)) {
-                recentPlaylistIds.remove(mPlaylistId)
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
+            var recentPlaylistIds = LinkedList<String>()
+            val recentPlaylistJson =
+                PlaylistPreferenceUtils.defaultPrefs(this@PlaylistActivity).recentlyPlayedPlaylist
+            if (!recentPlaylistJson.isNullOrEmpty()) {
+                recentPlaylistIds =
+                    GsonBuilder()
+                        .serializeNulls()
+                        .create()
+                        .fromJson(
+                            recentPlaylistJson,
+                            TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
+                        )
+                if (recentPlaylistIds.contains(mPlaylistId)) {
+                    recentPlaylistIds.remove(mPlaylistId)
+                }
             }
-        }
-        recentPlaylistIds.addFirst(mPlaylistId)
-        PlaylistPreferenceUtils.defaultPrefs(this@PlaylistActivity).recentlyPlayedPlaylist =
-            GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
+            recentPlaylistIds.addFirst(mPlaylistId)
+            PlaylistPreferenceUtils.defaultPrefs(this@PlaylistActivity).recentlyPlayedPlaylist =
+                GsonBuilder().serializeNulls().create().toJson(recentPlaylistIds)
+        };
         val subItemMediaList = mutableListOf<MediaItem>()
         mPlaylist.items.forEach {
             if (PlaylistUtils.isPlaylistItemCached(it)) {
@@ -533,10 +538,6 @@ class PlaylistActivity :
 
     override fun onItemUpdated(playlistItem: PlaylistItem) {
         mPlaylistItemAdapter?.updatePlaylistItem(playlistItem)
-    }
-
-    override fun onPlaylistUpdated(playlist: Playlist) {
-        fetchPlaylistData()
     }
 
     override fun onEvent(eventType: Int, id: String) {

@@ -258,7 +258,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
                 l.onPanelStateChanged(panel, previousState, newState)
             }
         }
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+        // sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
     }
 
     fun updateObscuredViewVisibility() {

@@ -273,7 +273,7 @@ class VideoPlaybackService :
     ) {
         PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
-                mediaItem.mediaId?.let { mediaId ->
+                mediaItem.mediaId.let { mediaId ->
                     mPlaylistService?.updateItemLastPlayedPosition(mediaId, currentPosition.toInt())
                 }
             }

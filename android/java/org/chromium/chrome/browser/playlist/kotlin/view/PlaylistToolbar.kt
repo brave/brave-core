@@ -36,7 +36,7 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     private val ivMoveItem: AppCompatImageView
     private val ivDeleteItem: AppCompatImageView
 
-    private val defaultStatusBarColor: Int
+    // private val defaultStatusBarColor: Int
 
     constructor(
         context: Context,
@@ -112,8 +112,8 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         ivDeleteItem = layoutEditToolbar.findViewById(R.id.ivDeleteItem)
         tvItemSelected.text = context.getString(R.string.playlist_number_selected, 0)
 
-        defaultStatusBarColor =
-            if (context is AppCompatActivity) context.window.statusBarColor else 0
+        // defaultStatusBarColor =
+        //     if (context is AppCompatActivity) context.window.statusBarColor else 0
 
         if (requireDarkMode) {
             tvTitleToolbarPlaylist.setTextColor(getColor(android.R.color.white))
@@ -132,17 +132,17 @@ class PlaylistToolbar(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     fun enableEditMode(enable: Boolean) {
         layoutMainToolbar.visibility = if (enable) GONE else VISIBLE
         layoutEditToolbar.visibility = if (enable) VISIBLE else GONE
-        setStatusBarInEditMode(enable)
+        // setStatusBarInEditMode(enable)
     }
 
-    private fun setStatusBarInEditMode(editMode: Boolean) {
-        if (context is AppCompatActivity) {
-            val activity = context as AppCompatActivity
-            activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            activity.window.statusBarColor =
-                if (editMode) getColor(R.color.edit_toolbar) else defaultStatusBarColor
-        }
-    }
+    // private fun setStatusBarInEditMode(editMode: Boolean) {
+    //     if (context is AppCompatActivity) {
+    //         val activity = context as AppCompatActivity
+    //         activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    //         activity.window.statusBarColor =
+    //             if (editMode) getColor(R.color.edit_toolbar) else defaultStatusBarColor
+    //     }
+    // }
 
     fun setActionButtonClickListener(clickListener: OnClickListener) {
         tvActionToolbarPlaylist.setOnClickListener(clickListener)

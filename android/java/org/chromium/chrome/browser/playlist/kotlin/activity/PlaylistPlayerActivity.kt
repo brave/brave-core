@@ -44,6 +44,8 @@ import com.google.android.material.card.MaterialCardView
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
@@ -337,16 +339,14 @@ class PlaylistPlayerActivity :
     private fun showHoveringControls() {
         val newVisibility = if (mHoverControlsLayout.isVisible) View.GONE else View.VISIBLE
         mHoverControlsLayout.visibility = newVisibility
-        Looper.myLooper()?.let {
-            Handler(it)
-                .postDelayed(
+        PostTask.postDelayedTask(
+                    TaskTraits.UI_DEFAULT,
                     {
-                        if (mHoverControlsLayout.isVisible)
+                        if (mHoverControlsLayout.isVisible) {
                             mHoverControlsLayout.visibility = View.GONE
+                        }
                     },
-                    5000
-                )
-        }
+                    5000);
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {

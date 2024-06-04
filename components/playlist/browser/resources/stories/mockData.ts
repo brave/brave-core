@@ -26,8 +26,7 @@ export const mockData: Playlist[] = [
         lastPlayedPosition: 0,
         author: 'Creator',
         duration: '0',
-        parents: ['default'],
-        isSelected: false,
+        parents: ['default']
       }
     ]
   },
@@ -52,8 +51,7 @@ export const mockData: Playlist[] = [
         lastPlayedPosition: 0,
         author: 'Creator',
         duration: '0',
-        parents: ['2'],
-        isSelected: false,
+        parents: ['2']
       },
       {
         id: '3',
@@ -71,8 +69,7 @@ export const mockData: Playlist[] = [
         lastPlayedPosition: 0,
         author: 'Creator',
         duration: '0',
-        parents: ['2'],
-        isSelected: false,
+        parents: ['2']
       }
     ]
   }
