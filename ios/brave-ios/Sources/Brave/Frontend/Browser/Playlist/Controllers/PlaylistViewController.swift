@@ -381,7 +381,7 @@ class PlaylistViewController: UIViewController {
 
       if !PlaylistCoordinator.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .playing
-        PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+        NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
       } else if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         self.playerView.setVideoInfo(
           videoDomain: item.pageSrc,
@@ -401,7 +401,7 @@ class PlaylistViewController: UIViewController {
 
       if !PlaylistCoordinator.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .paused
-        PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+        NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
       }
     }.store(in: &playerStateObservers)
 
@@ -412,7 +412,7 @@ class PlaylistViewController: UIViewController {
         for: .normal
       )
       self.playerView.resetVideoInfo()
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
 
       PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
       PlaylistCoordinator.shared.currentPlaylistItem = nil
@@ -688,7 +688,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
   }
 
   func stopPlaying() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
     PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
     PlaylistCoordinator.shared.currentPlaylistItem = nil
@@ -985,7 +985,7 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   private func clear() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
     player.clear()
 
     PlaylistManager.shared.playbackTask?.cancel()
@@ -1067,19 +1067,19 @@ extension PlaylistViewController: VideoViewDelegate {
 
         do {
           try await load(playerView, asset: asset, autoPlayEnabled: listController.autoPlayEnabled)
-          PlaylistMediaStreamer.clearNowPlayingInfo()
+          NowPlayingInfo.clearNowPlayingInfo()
           self.playerView.setVideoInfo(
             videoDomain: item.pageSrc,
             videoTitle: item.pageTitle,
             isPrivateBrowsing: self.isPrivateBrowsing
           )
-          PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+          NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
         } catch {
-          PlaylistMediaStreamer.clearNowPlayingInfo()
+          NowPlayingInfo.clearNowPlayingInfo()
           throw error
         }
       } else {
-        PlaylistMediaStreamer.clearNowPlayingInfo()
+        NowPlayingInfo.clearNowPlayingInfo()
         throw PlaylistMediaStreamer.PlaybackError.expired
       }
       return item
@@ -1095,13 +1095,13 @@ extension PlaylistViewController: VideoViewDelegate {
     do {
       item = try await mediaStreamer.loadMediaStreamingAsset(item)
     } catch {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw error
     }
 
     // Item can be streamed
     guard let url = URL(string: item.src) else {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
 
@@ -1113,7 +1113,7 @@ extension PlaylistViewController: VideoViewDelegate {
         autoPlayEnabled: self.listController.autoPlayEnabled
       )
     } catch {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw PlaylistMediaStreamer.PlaybackError.cannotLoadMedia
     }
 
@@ -1123,7 +1123,7 @@ extension PlaylistViewController: VideoViewDelegate {
       isPrivateBrowsing: isPrivateBrowsing
     )
 
-    PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+    NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
     return item
   }
 

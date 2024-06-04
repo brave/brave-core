@@ -727,7 +727,7 @@ extension PlaylistListViewController {
       videoTitle: item.pageTitle,
       isPrivateBrowsing: isPrivateBrowsing
     )
-    PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: selectedCell?.iconView.image)
+    NowPlayingInfo.setNowPlayingMediaArtwork(image: selectedCell?.iconView.image)
     completion?(item)
   }
 

@@ -114,7 +114,7 @@ class PlaylistLegacyCarplayController: NSObject {
       guard let self = self else { return }
 
       MPNowPlayingInfoCenter.default().playbackState = .playing
-      PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+      NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
 
       // Update the playing item indicator & Cache State Icon
       guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
@@ -137,7 +137,7 @@ class PlaylistLegacyCarplayController: NSObject {
             if PlaylistCoordinator.shared.currentPlaylistItem?.tagId == itemId {
               $0.isPlaying = true
 
-              PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
+              NowPlayingInfo.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
             } else {
               $0.isPlaying = false
             }
@@ -160,7 +160,7 @@ class PlaylistLegacyCarplayController: NSObject {
 
     player.publisher(for: .pause).sink { event in
       MPNowPlayingInfoCenter.default().playbackState = .paused
-      PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+      NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .stop).sink { [weak self] _ in
@@ -416,8 +416,8 @@ class PlaylistLegacyCarplayController: NSObject {
             PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
           let userInfo = listItem.userInfo as? [String: Any]
-          PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
-          PlaylistMediaStreamer.updateNowPlayingInfo(self.player)
+          NowPlayingInfo.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
+          NowPlayingInfo.updateNowPlayingInfo(self.player)
 
           completion()
 
@@ -458,7 +458,7 @@ class PlaylistLegacyCarplayController: NSObject {
           }
 
           if listItem.isPlaying {
-            PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: image)
+            NowPlayingInfo.setNowPlayingMediaArtwork(image: image)
           }
 
           // After completion, remove the renderer from the user info
@@ -632,7 +632,7 @@ extension PlaylistLegacyCarplayController {
     }
 
     // Reset Now Playing when playback is starting.
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
     do {
       PlaylistCoordinator.shared.currentPlaylistItem = item
@@ -746,7 +746,7 @@ extension PlaylistLegacyCarplayController {
   }
 
   private func stop() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
     PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
     PlaylistCoordinator.shared.currentPlaylistItem = nil
@@ -757,7 +757,7 @@ extension PlaylistLegacyCarplayController {
   }
 
   private func clear() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
     player.clear()
 
     PlaylistManager.shared.playbackTask?.cancel()
@@ -831,13 +831,13 @@ extension PlaylistLegacyCarplayController {
         do {
           try await load(asset: asset, autoPlayEnabled: true)
           if !isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
+            NowPlayingInfo.clearNowPlayingInfo()
           }
 
-          PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+          NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
         } catch {
           if !isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
+            NowPlayingInfo.clearNowPlayingInfo()
           }
 
           throw error
@@ -859,27 +859,27 @@ extension PlaylistLegacyCarplayController {
 
     do {
       item = try await mediaStreamer.loadMediaStreamingAsset(item)
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
     } catch {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw error
     }
 
     // Item can be streamed
     guard let url = URL(string: item.src)
     else {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
 
     // Attempt to play the stream
     do {
       try await load(url: url, autoPlayEnabled: true)
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
-      PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
+      NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
       Logger.module.debug("Playing Live Video: \(self.player.isLiveMedia)")
     } catch {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw error
     }
   }
