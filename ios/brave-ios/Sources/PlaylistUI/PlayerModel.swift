@@ -159,6 +159,22 @@ public final class PlayerModel: ObservableObject {
     await updateSystemPlayer()
   }
 
+  private func handleAudioInterruption(
+    type: AVAudioSession.InterruptionType,
+    options: AVAudioSession.InterruptionOptions?
+  ) {
+    switch type {
+    case .began:
+      pause()
+    case .ended:
+      if let options, options.contains(.shouldResume) {
+        play()
+      }
+    @unknown default:
+      break
+    }
+  }
+
   // MARK: - Playback Extras
 
   enum RepeatMode {
@@ -576,7 +592,8 @@ public final class PlayerModel: ObservableObject {
 
   /// Sets up NotificationCenter notifications
   private func setupPlayerNotifications() {
-    let observer = NotificationCenter.default.addObserver(
+    let center = NotificationCenter.default
+    let didPlayToEndTime = center.addObserver(
       forName: AVPlayerItem.didPlayToEndTimeNotification,
       object: nil,
       queue: .main
@@ -593,11 +610,28 @@ public final class PlayerModel: ObservableObject {
         self.playNextItem()
       }
     }
-    cancellables.insert(
-      .init {
-        _ = observer
+    let interruption = center.addObserver(
+      forName: AVAudioSession.interruptionNotification,
+      object: AVAudioSession.sharedInstance(),
+      queue: .main,
+      using: { [weak self] notification in
+        guard let self,
+          let userInfo = notification.userInfo,
+          let typeInfo = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+          let type = AVAudioSession.InterruptionType(rawValue: typeInfo)
+        else {
+          return
+        }
+        let options = (userInfo[AVAudioSessionInterruptionOptionKey] as? UInt).map(
+          AVAudioSession.InterruptionOptions.init(rawValue:)
+        )
+        handleAudioInterruption(type: type, options: options)
       }
     )
+    cancellables.formUnion([
+      .init { _ = didPlayToEndTime },
+      .init { _ = interruption },
+    ])
   }
 
   /// Sets up KVO observations for AVPlayer properties which trigger the `objectWillChange` publisher
