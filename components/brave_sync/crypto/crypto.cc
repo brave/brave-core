@@ -23,7 +23,7 @@ std::vector<uint8_t> GetSeed(size_t size) {
     size = DEFAULT_SEED_SIZE;
   }
   std::vector<uint8_t> bytes(size);
-  ::crypto::RandBytes(&bytes[0], bytes.size());
+  ::crypto::RandBytes(bytes);
   return bytes;
 }
 

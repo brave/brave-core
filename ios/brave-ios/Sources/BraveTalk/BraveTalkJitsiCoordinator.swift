@@ -57,6 +57,7 @@ import Shared
 
   private var pipViewCoordinator: PiPViewCoordinator?
   private var jitsiMeetView: JitsiMeetView?
+  public private(set) var jitsiTranscriptProcessor: BraveTalkJitsiTranscriptProcessor?
   private var delegate: JitsiDelegate?
   private var isMuted: Bool = false
   public private(set) var isBraveTalkInPiPMode: Bool = false
@@ -122,6 +123,8 @@ import Shared
     onEnterCall()
     delegate = JitsiDelegate(
       conferenceWillJoin: { [weak self] in
+        self?.jitsiTranscriptProcessor = BraveTalkJitsiTranscriptProcessor()
+
         // Its possible for a permission prompt for mic to appear on the web page after joining but the
         // alert gets placed on top of the JitsiMeetView and eats touches. Weirdly it isn't actually visible
         // on top of the JitsiMeetView so the user can't even dismiss it.
@@ -135,7 +138,8 @@ import Shared
       },
       conferenceTerminated: { [weak self] in
         guard let self = self else { return }
-        self.dismissJitsiMeetView {
+        self.dismissJitsiMeetView { [weak self] in
+          self?.jitsiTranscriptProcessor = nil
           onExitCall()
         }
       },
@@ -153,9 +157,15 @@ import Shared
         guard let self = self else { return }
         if !self.isCallActive {
           // Trying to leave the join screen
-          self.dismissJitsiMeetView {
+          self.dismissJitsiMeetView { [weak self] in
+            self?.jitsiTranscriptProcessor = nil
             onExitCall()
           }
+        }
+      },
+      transcriptChunkReceived: { data in
+        Task { [weak self] in
+          await self?.jitsiTranscriptProcessor?.processTranscript(dictionary: data)
         }
       }
     )
@@ -187,6 +197,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
   var exitedPiP: () -> Void
   var audioIsMuted: (Bool) -> Void
   var readyToClose: () -> Void
+  var transcriptChunkReceived: ([AnyHashable: Any]) -> Void
 
   init(
     conferenceWillJoin: @escaping () -> Void,
@@ -195,7 +206,8 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
     enterPictureInPicture: @escaping () -> Void,
     exitedPictureInPicture: @escaping () -> Void,
     audioIsMuted: @escaping (Bool) -> Void,
-    readyToClose: @escaping () -> Void
+    readyToClose: @escaping () -> Void,
+    transcriptChunkReceived: @escaping ([AnyHashable: Any]) -> Void
   ) {
     self.conferenceWillJoin = conferenceWillJoin
     self.conferenceJoined = conferenceJoined
@@ -204,6 +216,7 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
     self.exitedPiP = exitedPictureInPicture
     self.audioIsMuted = audioIsMuted
     self.readyToClose = readyToClose
+    self.transcriptChunkReceived = transcriptChunkReceived
   }
 
   func conferenceJoined(_ data: [AnyHashable: Any]!) {
@@ -237,5 +250,9 @@ private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinator
 
   func ready(toClose data: [AnyHashable: Any]!) {
     readyToClose()
+  }
+
+  func transcriptionChunkReceived(_ data: [AnyHashable: Any]!) {
+    transcriptChunkReceived(data)
   }
 }

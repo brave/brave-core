@@ -61,6 +61,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
     InProcessBrowserTest::SetUp();
   }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -70,7 +71,6 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
@@ -111,6 +111,19 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
   }
 
   void TearDown() override { browser_content_client_.reset(); }
+
+  void NavigateToURLAndWaitForRewrites(content::WebContents* contents,
+                                       const GURL& original_url,
+                                       const GURL& final_url) {
+    ui_test_utils::UrlLoadObserver load_complete(final_url);
+    browser()->OpenURL(
+        content::OpenURLParams(original_url, content::Referrer(),
+                               WindowOpenDisposition::CURRENT_TAB,
+                               ui::PAGE_TRANSITION_TYPED, false),
+        /*navigation_handle_callback=*/{});
+    load_complete.Wait();
+    EXPECT_EQ(contents->GetLastCommittedURL(), final_url);
+  }
 
   const GURL& magnet_html_url() { return magnet_html_url_; }
   const GURL& magnet_url() { return magnet_url_; }
@@ -252,26 +265,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        browser(), GURL(scheme + chrome::kChromeUISyncHost)));
-    ASSERT_TRUE(WaitForLoadStop(contents));
+    NavigateToURLAndWaitForRewrites(contents,
+                                    GURL(scheme + chrome::kChromeUISyncHost),
+                                    GURL("chrome://sync"));
 
     EXPECT_STREQ(base::UTF16ToUTF8(
                      browser()->location_bar_model()->GetFormattedFullURL())
                      .c_str(),
                  "brave://sync");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetVirtualURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://sync/");
-    EXPECT_STREQ(contents->GetController()
-                     .GetLastCommittedEntry()
-                     ->GetURL()
-                     .spec()
-                     .c_str(),
-                 "chrome://settings/braveSync");
+    EXPECT_EQ(
+        contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
+        GURL("chrome://sync"));
+    EXPECT_EQ(contents->GetController().GetLastCommittedEntry()->GetURL(),
+              GURL("chrome://settings/braveSync"));
   }
 }
 
@@ -284,10 +290,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), GURL(scheme + "adblock")));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
+    NavigateToURLAndWaitForRewrites(contents, GURL(scheme + "adblock"),
+                                    GURL("chrome://settings/shields/filters"));
     EXPECT_STREQ(base::UTF16ToUTF8(
                      browser()->location_bar_model()->GetFormattedFullURL())
                      .c_str(),

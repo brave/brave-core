@@ -10,7 +10,7 @@ import PackageDescription
 var package = Package(
   name: "Brave",
   defaultLocalization: "en",
-  platforms: [.iOS(.v15), .macOS(.v12)],
+  platforms: [.iOS(.v16), .macOS(.v13)],
   products: [
     .library(name: "Brave", targets: ["Brave"]),
     .library(name: "Shared", targets: ["Shared"]),
@@ -590,7 +590,13 @@ if isNativeTalkEnabled {
       dependencies: ["Shared", "Preferences", "JitsiMeet"],
       plugins: ["LoggerPlugin"]
     ),
-    .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
+    .testTarget(
+      name: "BraveTalkTests",
+      dependencies: [
+        "BraveTalk", "Shared", "TestHelpers",
+        .product(name: "Collections", package: "swift-collections"),
+      ]
+    ),
   ])
 }
 

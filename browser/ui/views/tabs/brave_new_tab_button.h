@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 
-#include <memory>
-
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -36,7 +34,7 @@ class BraveNewTabButton : public NewTabButton {
   const TabStrip* tab_strip() const { return tab_strip_; }
 
   views::InkDropContainerView* ink_drop_container() {
-    return std::to_address(ink_drop_container_);
+    return base::to_address(ink_drop_container_);
   }
 
   // Allow child classes to override PaintFill().
@@ -45,7 +43,8 @@ class BraveNewTabButton : public NewTabButton {
   // NewTabButton:
   void PaintIcon(gfx::Canvas* canvas) override;
   void PaintFill(gfx::Canvas* canvas) const override;
-  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
   SkPath GetBorderPath(const gfx::Point& origin,
                        bool extend_to_top) const override;
   gfx::Insets GetInsets() const override;

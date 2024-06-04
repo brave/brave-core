@@ -11,7 +11,6 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/preloading/preloading_features.h"
-#include "chrome/browser/signin/signin_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/companion/visual_query/features.h"
@@ -42,6 +41,7 @@
 #include "components/segmentation_platform/public/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "components/signin/public/base/signin_buildflags.h"
+#include "components/signin/public/base/signin_switches.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
@@ -56,6 +56,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
+#include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #else
 #include "chrome/browser/apps/link_capturing/link_capturing_features.h"
@@ -111,6 +112,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kSharedStorageSelectURLLimit,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -128,6 +132,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
+      &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
 #if BUILDFLAG(IS_WIN)
@@ -137,9 +142,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
-      &features::kChromeRefresh2023NTB,
       &features::kChromeStructuredMetrics,
-      &features::kChromeWebuiRefresh2023,
       &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
@@ -156,10 +159,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kIdleDetection,
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
-      &features::kLegacyTechReportEnableCookieIssueReports,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
-      &features::kOmniboxTriggerForNoStatePrefetch,
       &features::kOmniboxTriggerForPrerender2,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
@@ -174,7 +175,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kSidePanelPinning,
 #endif
-      &features::kSignedExchangeReportingForDistributors,
       &features::kSignedHTTPExchange,
       &features::kSupportSearchSuggestionForPrerender2,
       &features::kTabHoverCardImages,
@@ -184,6 +184,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
 #if BUILDFLAG(IS_MAC)
       &features::kUseChromiumUpdater,
+#endif
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kWebAppUniversalInstall,
 #endif
       &features::kWebIdentityDigitalCredentials,
       &features::kWebOTP,
@@ -203,12 +206,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
-#if !BUILDFLAG(IS_ANDROID)
-      &kForYouFre,
-#endif
-#if BUILDFLAG(ENABLE_DICE_SUPPORT)
-      &kPreconnectAccountCapabilitiesBeforeSignIn,
-#endif
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
@@ -218,7 +215,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
-      &metrics::structured::kNearbyShareMetrics,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,
@@ -249,6 +245,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
+      &page_image_service::kImageServiceObserveSyncDownloadStatus,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
       &password_manager::features::
@@ -259,14 +256,15 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
-      &privacy_sandbox::kCookieSettingsUiAlignment,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
+      &privacy_sandbox::kTrackingProtectionContentSetting,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
+      &safe_browsing::kImprovedDownloadPageWarnings,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,

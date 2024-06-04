@@ -64,7 +64,8 @@ public struct FullScreenCalloutManager {
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
     // If REgion is Japan check new focus onboarding is finished
-    if Locale.current.regionCode == "JP", !Preferences.FocusOnboarding.focusOnboardingFinished.value
+    if Locale.current.region?.identifier == "JP",
+      !Preferences.FocusOnboarding.focusOnboardingFinished.value
     {
       return false
     }
@@ -81,7 +82,7 @@ public struct FullScreenCalloutManager {
 
     // Delay period 3 days that will be added to full screen callouts
     // This will be the case as long as new onboarding is active for JAPAN
-    if Locale.current.regionCode == "JP" {
+    if Locale.current.region?.identifier == "JP" {
       calloutDelayInterval += delayAmountJpOnboarding
     }
 

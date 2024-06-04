@@ -14,6 +14,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kExtensionTelemetryDisableOffstoreExtensions,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionTelemetryTabsApiSignal, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kImprovedDownloadPageWarnings, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace safe_browsing

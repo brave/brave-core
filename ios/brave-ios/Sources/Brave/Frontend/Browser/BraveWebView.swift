@@ -9,10 +9,6 @@ import UserAgent
 import WebKit
 
 class BraveWebView: WKWebView {
-  lazy var findInPageDelegate: WKWebViewFindStringFindDelegate? = {
-    return WKWebViewFindStringFindDelegate(webView: self)
-  }()
-
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
 
@@ -40,16 +36,12 @@ class BraveWebView: WKWebView {
 
     super.init(frame: frame, configuration: configuration)
 
-    if #available(iOS 16.0, *) {
-      isFindInteractionEnabled = true
-    }
+    isFindInteractionEnabled = true
 
     customUserAgent = UserAgent.userAgentForDesktopMode
-    #if compiler(>=5.8)
     if #available(iOS 16.4, *) {
       isInspectable = true
     }
-    #endif
   }
 
   static func removeNonPersistentStore() {

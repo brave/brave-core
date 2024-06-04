@@ -14,7 +14,9 @@ const PlaceholderContainer = styled.div`
   position: relative;
   overflow: hidden;
 
-  border-radius: ${radius.xs};
+  border-radius: ${radius.m};
+
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 `
 
 function Swapper() {

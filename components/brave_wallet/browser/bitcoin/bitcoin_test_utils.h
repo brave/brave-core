@@ -10,24 +10,40 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {
 
-const char kMockBtcTxid1[] =
+inline constexpr char kMockBtcTxid1[] =
     "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
-const char kMockBtcTxid2[] =
+inline constexpr char kMockBtcTxid2[] =
     "bd1c9cfb126a519f3ee593bbbba41a0f9d55b4d267e9483673a848242bc5c2be";
-const char kMockBtcTxid3[] =
+inline constexpr char kMockBtcTxid3[] =
     "f4024cb219b898ed51a5c2a2d0589c1de4bb35e329ad15ab08b6ac9ffcc95ae2";
-const char kMockBtcAddress[] = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+inline constexpr char kMockBtcAddress[] =
+    "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+
+// Accounts generated from kMnemonicAbandonAbandon mnemonic.
+inline constexpr char kBtcMainnetImportAccount0[] =
+    "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqWvGp42t42"
+    "nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE";  // m/84'/0'/0'
+inline constexpr char kBtcMainnetImportAccount1[] =
+    "zprvAdG4iTXWBoAS2cCGuaGevCvH54GCunrvLJb2hoWCSuE3D9LS42XVg3c6sPm64w6VMq3w18"
+    "vJf8nF3cBA2kUMkyWHsq6enWVXivzw42UrVHG";  // m/84'/0'/1'
+inline constexpr char kBtcTestnetImportAccount0[] =
+    "vprv9K7GLAaERuM58PVvbk1sMo7wzVCoPwzZpVXLRBmum93gL5pSqQCAAvZjtmz93nnnYMr9i2"
+    "FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H";  // m/84'/1'/0'
+inline constexpr char kBtcTestnetImportAccount1[] =
+    "vprv9K7GLAaERuM5CAKPEd5qaDFXn67e95YPxcSUXpD7A1dvei4bQLCuH8DDz2RjtR5bS6nHyo"
+    "SXbaMZ2K2DzVUrZ9SAYjwuZV39iTyRsiQG7N9";  // m/84'/1'/0'
 
 class BitcoinTestRpcServer {
  public:
-  BitcoinTestRpcServer(KeyringService* keyring_service, PrefService* prefs);
+  BitcoinTestRpcServer();
   ~BitcoinTestRpcServer();
 
   static bitcoin_rpc::AddressStats EmptyAddressStats(
@@ -43,17 +59,18 @@ class BitcoinTestRpcServer {
 
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
-  void SetUpBitcoinRpc(const mojom::AccountIdPtr& account_id);
-  void AddTransactedAddress(const std::string& address);
-  void AddMempoolBalance(const std::string& address,
+  void SetUpBitcoinRpc(const std::optional<std::string>& mnemonic,
+                       std::optional<uint32_t> account_index);
+  void AddTransactedAddress(const mojom::BitcoinAddressPtr& address);
+  void AddMempoolBalance(const mojom::BitcoinAddressPtr& address,
                          uint64_t funded,
                          uint64_t spent);
 
   void FailNextTransactionBroadcast();
   void ConfirmAllTransactions();
 
-  const std::string& Address0() const { return address_0_; }
-  const std::string& Address6() const { return address_6_; }
+  const mojom::BitcoinAddressPtr& Address0() const { return address_0_; }
+  const mojom::BitcoinAddressPtr& Address6() const { return address_6_; }
 
   std::map<std::string, bitcoin_rpc::AddressStats>& address_stats_map() {
     return address_stats_map_;
@@ -65,11 +82,9 @@ class BitcoinTestRpcServer {
   void RequestInterceptor(const network::ResourceRequest& request);
 
  private:
-  std::string mainnet_rpc_url_ = "https://btc-mainnet.com/";
-  std::string testnet_rpc_url_ = "https://btc-testnet.com/";
   uint32_t mainnet_height_ = 12345;
-  std::string address_0_;
-  std::string address_6_;
+  mojom::BitcoinAddressPtr address_0_;
+  mojom::BitcoinAddressPtr address_6_;
   std::map<std::string, bitcoin_rpc::AddressStats> address_stats_map_;
   std::map<std::string, bitcoin_rpc::UnspentOutputs> utxos_map_;
   base::Value fee_estimates_;
@@ -77,12 +92,11 @@ class BitcoinTestRpcServer {
   bool fail_next_transaction_broadcast_ = false;
   std::vector<bitcoin_rpc::Transaction> broadcasted_transactions_;
 
-  mojom::AccountIdPtr account_id_;
+  std::optional<uint32_t> account_index_;
 
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  raw_ptr<KeyringService> keyring_service_;
-  raw_ptr<PrefService> prefs_;
+  std::unique_ptr<BitcoinHDKeyring> keyring_;
 };
 
 }  // namespace brave_wallet

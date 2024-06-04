@@ -169,12 +169,12 @@ struct SaferSignMessageRequestContainerView: View {
             .foregroundColor(Color(.secondaryBraveLabel))
           HStack {
             Group {
-              if let image = network?.nativeTokenLogoImage {
-                Image(uiImage: image)
-                  .resizable()
+              if let network {
+                NetworkIcon(network: network)
               } else {
                 Circle()
                   .stroke(Color(.braveSeparator))
+                  .background(Color(braveSystemName: .iconActive).clipShape(Circle()))
               }
             }
             .frame(

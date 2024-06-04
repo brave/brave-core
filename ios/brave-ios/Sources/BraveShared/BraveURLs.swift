@@ -40,6 +40,9 @@ extension URL {
     public static let braveVPNLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
     )!
+    public static let braveVPNRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=vpn&ux=mobile"
+    )!
     public static let safeBrowsingHelp = URL(
       string: "https://support.brave.com/hc/en-us/articles/15222663599629-Safe-Browsing-in-Brave"
     )!
@@ -63,6 +66,9 @@ extension URL {
     )!
     public static let braveLeoLinkReceiptDev = URL(
       string: "https://account.brave.software/?intent=link-order&product=leo"
+    )!
+    public static let braveLeoRefreshCredentials = URL(
+      string: "https://account.brave.com/?intent=recover&product=leo&ux=mobile"
     )!
     public static let braveLeoModelCategorySupport = URL(
       string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"

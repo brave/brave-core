@@ -23,6 +23,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -32,12 +34,12 @@
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using ai_chat::mojom::CharacterType;
@@ -115,11 +117,25 @@ ConversationDriver::ConversationDriver(
         skus_service_getter,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string)
+    : ConversationDriver(profile_prefs,
+                         local_state_prefs,
+                         ai_chat_metrics,
+                         std::make_unique<AIChatCredentialManager>(
+                             std::move(skus_service_getter),
+                             local_state_prefs),
+                         url_loader_factory,
+                         channel_string) {}
+
+ConversationDriver::ConversationDriver(
+    PrefService* profile_prefs,
+    PrefService* local_state_prefs,
+    AIChatMetrics* ai_chat_metrics,
+    std::unique_ptr<AIChatCredentialManager> credential_manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::string_view channel_string)
     : pref_service_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
-      credential_manager_(std::make_unique<ai_chat::AIChatCredentialManager>(
-          skus_service_getter,
-          local_state_prefs)),
+      credential_manager_(std::move(credential_manager)),
       feedback_api_(std::make_unique<ai_chat::AIChatFeedbackAPI>(
           url_loader_factory,
           std::string(channel_string))),
@@ -134,15 +150,17 @@ ConversationDriver::ConversationDriver(
                           weak_ptr_factory_.GetWeakPtr()));
 
   // Model choice names is selectable per conversation, not global.
-  // Start with default from pref value if. If user is premium and premium model
-  // is different to non-premium default, and user hasn't customized the model
-  // pref, then switch the user to the premium default.
+  // Start with default from pref value if set. If user is premium and premium
+  // model is different to non-premium default, and user hasn't customized the
+  // model pref, then switch the user to the premium default.
   // TODO(petemill): When we have an event for premium status changed, and a
   // profile service for AIChat, then we can call
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
   // not have to fetch premium status.
-  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey) &&
+  const base::Value* default_model_user_pref_value =
+      pref_service_->GetUserPrefValue(prefs::kDefaultModelKey);
+  if (!default_model_user_pref_value &&
       features::kAIModelsPremiumDefaultKey.Get() !=
           features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
@@ -167,6 +185,28 @@ ConversationDriver::ConversationDriver(
                 prefs::kDefaultModelKey,
                 base::Value(features::kAIModelsPremiumDefaultKey.Get()));
           }
+        },
+        // Unretained is ok as credential manager is owned by this class,
+        // and it owns the mojo binding that is used to make async call in
+        // |GetPremiumStatus|.
+        base::Unretained(this)));
+  } else if (default_model_user_pref_value &&
+             default_model_user_pref_value->GetString() ==
+                 "chat-claude-instant") {
+    // 2024-05 Migration for old "claude instant" model
+    // The migration is performed here instead of
+    // ai_chat::prefs::MigrateProfilePrefs because the migration requires
+    // knowing about premium status.
+    credential_manager_->GetPremiumStatus(base::BindOnce(
+        [](ConversationDriver* instance, mojom::PremiumStatus status,
+           mojom::PremiumInfoPtr) {
+          instance->last_premium_status_ = status;
+          const std::string model_key = IsPremiumStatus(status)
+                                            ? "chat-claude-sonnet"
+                                            : "chat-claude-haiku";
+          instance->pref_service_->SetString(prefs::kDefaultModelKey,
+                                             model_key);
+          instance->ChangeModel(model_key);
         },
         // Unretained is ok as credential manager is owned by this class,
         // and it owns the mojo binding that is used to make async call in
@@ -293,7 +333,7 @@ void ConversationDriver::InitEngine() {
   model_key_ = model->key;
 
   // Engine enum on model to decide which one
-  if (features::kConversationAPIEnabled.Get()) {
+  if (model->engine_type == mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
     DVLOG(1) << "Started AI engine: conversation api";
     engine_ = std::make_unique<EngineConsumerConversationAPI>(
         *model, url_loader_factory_, credential_manager_.get());
@@ -467,9 +507,20 @@ void ConversationDriver::MaybeSeedOrClearSuggestions() {
           mojom::SuggestionGenerationStatus::HasGenerated) {
     // TODO(petemill): ask content fetcher if it knows whether current page is a
     // video.
-    suggestions_.emplace_back(
-        is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
-                  : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    auto found_iter = base::ranges::find_if(
+        chat_history_, [](mojom::ConversationTurnPtr& turn) {
+          if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
+              turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
+            return true;
+          }
+          return false;
+        });
+    const bool has_summarized = found_iter != chat_history_.end();
+    if (!has_summarized) {
+      suggestions_.emplace_back(
+          is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                    : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
+    }
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
     OnSuggestedQuestionsChanged();
@@ -789,15 +840,51 @@ void ConversationDriver::AddSubmitSelectedTextError(
 void ConversationDriver::SubmitSelectedText(
     const std::string& selected_text,
     mojom::ActionType action_type,
-    EngineConsumer::GenerationDataCallback received_callback,
+    GeneratedTextCallback received_callback,
     EngineConsumer::GenerationCompletedCallback completed_callback) {
   const std::string& question = GetActionTypeQuestion(action_type);
+  SubmitSelectedTextWithQuestion(selected_text, question, action_type,
+                                 std::move(received_callback),
+                                 std::move(completed_callback));
+}
 
+void ConversationDriver::SubmitSelectedTextWithQuestion(
+    const std::string& selected_text,
+    const std::string& question,
+    mojom::ActionType action_type,
+    GeneratedTextCallback received_callback,
+    EngineConsumer::GenerationCompletedCallback completed_callback) {
   if (received_callback && completed_callback) {
     // Start a one-off request and replace in-place with the result.
-    engine_->GenerateRewriteSuggestion(selected_text, question,
-                                       std::move(received_callback),
-                                       std::move(completed_callback));
+    engine_->GenerateRewriteSuggestion(
+        selected_text, question,
+        base::BindRepeating(
+            [](GeneratedTextCallback received_callback,
+               mojom::ConversationEntryEventPtr rewrite_event) {
+              constexpr char kResponseTagPattern[] =
+                  "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
+              if (!rewrite_event->is_completion_event()) {
+                return;
+              }
+
+              std::string suggestion =
+                  rewrite_event->get_completion_event()->completion;
+
+              base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
+                                        &suggestion);
+              if (suggestion.empty()) {
+                return;
+              }
+
+              // Avoid showing the ending tag.
+              if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
+                return;
+              }
+
+              received_callback.Run(suggestion);
+            },
+            std::move(received_callback)),
+        std::move(completed_callback));
   } else if (!received_callback && !completed_callback) {
     // Use sidebar.
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
@@ -1079,6 +1166,7 @@ void ConversationDriver::OnPremiumStatusReceived(
   // Maybe switch to premium model when user is newly premium and on a basic
   // model
   const bool should_switch_model =
+      features::kFreemiumAvailable.Get() &&
       // This isn't the first retrieval (that's handled in the constructor)
       last_premium_status_ != mojom::PremiumStatus::Unknown &&
       last_premium_status_ != premium_status &&

@@ -60,7 +60,7 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
   CHECK(browser_state_manager);
 
   ChromeBrowserState* browser_state =
-      browser_state_manager->GetLastUsedBrowserState();
+      browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
   CHECK(browser_state);
 
   if (privateMode) {

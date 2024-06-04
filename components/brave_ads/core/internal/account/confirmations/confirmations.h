@@ -54,10 +54,10 @@ class Confirmations final : public ConfirmationQueueDelegate,
       const ConfirmationInfo& confirmation) override;
   void OnDidExhaustConfirmationQueue() override;
 
-  raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
-
   const raw_ptr<TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
+
+  raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
 
   ConfirmationQueue queue_;
 

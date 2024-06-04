@@ -267,18 +267,6 @@ public class Utils {
         return allNetworks.get(0);
     }
 
-    public static NetworkInfo[] getNetworkInfosByChainIds(
-            String[] chainId, NetworkInfo[] allNetworks) {
-        List<NetworkInfo> list = new ArrayList<NetworkInfo>();
-        for (NetworkInfo network : allNetworks) {
-            if (Arrays.asList(chainId).contains(network.chainId)) {
-                list.add(network);
-            }
-        }
-
-        return list.toArray(new NetworkInfo[0]);
-    }
-
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     public static String getDecimalsDepNumber(int decimals) {
         String strDecimals = "1";

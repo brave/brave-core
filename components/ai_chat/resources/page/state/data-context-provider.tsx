@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
+import * as React from 'react'
 
+import usePromise from '$web-common/usePromise'
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext, { AIChatContext } from './context'
 
@@ -23,47 +24,40 @@ function normalizeText(text: string) {
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
-function useActionMenu() {
-  const [actionList, setActionList] = React.useState<mojom.ActionGroup[]>([])
+export const getFirstValidAction = (actionList: mojom.ActionGroup[]) => actionList
+  .flatMap((actionGroup) => actionGroup.entries)
+  .find((entries) => entries.details)?.details?.type
 
-  const filterActionsByText = (searchText: string) => {
-    // effectively remove the leading slash (\), and normalize before comparing it to the action labels.
-    const text = normalizeText(searchText.substring(1))
+export function useActionMenu(filter: string, getActions: () => Promise<mojom.ActionGroup[]>) {
+  const { result: actionList = [] } = usePromise(getActions, [])
 
-    const filteredList = actionList
-      .map((group) => ({
-        ...group,
-        entries: group.entries.filter((entry) => {
-          // Only apply filter to valid ActionType's label
-          if (entry.details) {
-            return normalizeText(entry.details.label).includes(text)
-          }
-          // For other items, we dont return or show
-          return false
-        })
-      })).filter((group) => group.entries.length > 0)
+  return React.useMemo(() => {
+    const reg = new RegExp(/^\/\w+/)
 
-    return filteredList
-  }
+    // If we aren't filtering the actions, then just return our original list.
+    if (!reg.test(filter)) return actionList
 
-  const getFirstValidActionType = (actionList: mojom.ActionGroup[]) => {
-    const action = actionList
-      .flatMap((actionGroup) => actionGroup.entries)
-      .filter((entries) => entries.details)
+    // effectively remove the leading slash (/), and normalize before comparing it to the action labels.
+    const normalizedFilter = normalizeText(filter.substring(1))
 
-    return action[0].details?.type
-  }
+    // Filter the actionlist by our text
+    return actionList.map((group) => ({
+      ...group,
+      entries: group.entries.filter((entry) => !!entry.details
+        && normalizeText(entry.details.label).includes(normalizedFilter))
+    })).filter((group) => group.entries.length > 0);
+  }, [actionList, filter])
+}
 
-  React.useEffect(() => {
-    getPageHandlerInstance().pageHandler.getActionMenuList().then(resp => {
-      setActionList(resp.actionList)
-    })
-  }, [])
+export function useCharCountInfo(inputText: string) {
+  const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
+  const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
+  const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
 
   return {
-    actionList,
-    filterActionsByText,
-    getFirstValidActionType,
+    isCharLimitExceeded,
+    isCharLimitApproaching,
+    inputTextCharCountDisplay
   }
 }
 
@@ -72,7 +66,7 @@ interface DataContextProviderProps {
   store?: Partial<AIChatContext>
 }
 
-function DataContextProvider (props: DataContextProviderProps) {
+function DataContextProvider(props: DataContextProviderProps) {
   const [currentModelKey, setCurrentModelKey] = React.useState<string>();
   const [allModels, setAllModels] = React.useState<mojom.Model[]>([])
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
@@ -96,7 +90,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [inputText, setInputText] = React.useState('')
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
-  const { actionList: initialActionList, filterActionsByText, getFirstValidActionType } = useActionMenu()
+  const actionList = useActionMenu(inputText, () => getPageHandlerInstance().pageHandler.getActionMenuList().then(({ actionList }) => actionList))
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -191,9 +185,11 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCanShowPremiumPrompt(false)
   }
 
+  // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
+  // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => m.access === mojom.ModelAccess.BASIC)
+    const nonPremium = allModels.find(m => m.access !== mojom.ModelAccess.PREMIUM)
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
@@ -225,7 +221,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const shouldShowLongPageWarning = React.useMemo(() =>
     conversationHistory.length >= 1 &&
     siteInfo?.contentUsedPercentage < 100,
-  [conversationHistory.length, siteInfo?.contentUsedPercentage])
+    [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     if (!currentModel) return false
@@ -263,11 +259,6 @@ function DataContextProvider (props: DataContextProviderProps) {
       .then((res) => { setInputText(res.turn.text) })
   }
 
-  const handleSwitchToBasicModelAndRetry = () => {
-    switchToBasicModel()
-    getPageHandlerInstance().pageHandler.retryAPIRequest()
-  }
-
   const resetSelectedActionType = () => {
     setSelectedActionType(undefined)
   }
@@ -281,16 +272,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
   }
 
-  const actionList = React.useMemo(() => {
-    // If inputText starts with '/' followed by word characters
-    // filter the action list based on inputText
-    const reg = new RegExp(/^\/\w+/)
-    return reg.test(inputText)
-    ? filterActionsByText(inputText)
-    : initialActionList
-  }, [inputText, initialActionList, filterActionsByText])
-
-
   React.useEffect(() => {
     const isOpen = inputText.startsWith('/') && actionList.length > 0
     setIsToolsMenuOpen(isOpen)
@@ -298,7 +279,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleFilterActivation = () => {
     if (isToolsMenuOpen && inputText.startsWith('/')) {
-      setSelectedActionType(getFirstValidActionType(actionList))
+      setSelectedActionType(getFirstValidAction(actionList))
       setInputText('')
       setIsToolsMenuOpen(false)
       return true
@@ -361,7 +342,7 @@ function DataContextProvider (props: DataContextProviderProps) {
         setSuggestedQuestions(questions)
         setSuggestionStatus(suggestionStatus)
       }
-    )
+      )
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener(
       setSiteInfo
@@ -428,7 +409,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     updateShouldSendPageContents,
     setInputText,
     handleMaybeLater,
-    handleSwitchToBasicModelAndRetry,
     submitInputTextToAPI,
     resetSelectedActionType,
     handleActionTypeClick,

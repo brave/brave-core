@@ -126,15 +126,12 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false, tab: previous)
-    }
     displayPageZoom(visible: false)
     updateTabsBarVisibility()
     selected?.updatePullToRefreshVisibility()
 
     topToolbar.locationView.loading = selected?.loading ?? false
-    navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
+    updateBackForwardActionStatus(for: selected?.webView)
     navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
 
     let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true

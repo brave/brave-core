@@ -5,6 +5,7 @@
 .gclient_*
 .tags*
 .cipd
+/.clang-format
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
@@ -61,3 +62,6 @@ test_get_pkgs
 build/config/gclient_args.gni
 third_party/rust/target
 xcuserdata
+
+# buffer exclusion file generated locally during sync
+build/config/unsafe_buffers_paths.txt

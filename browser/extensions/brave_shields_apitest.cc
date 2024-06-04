@@ -14,14 +14,10 @@ namespace {
 
 class BraveShieldsExtensionApiTest : public ExtensionApiTest {
  public:
-  void SetUp() override {
-    brave::RegisterPathProvider();
+  void SetUpOnMainThread() override {
+    ExtensionApiTest::SetUpOnMainThread();
     base::PathService::Get(brave::DIR_TEST_DATA, &extension_dir_);
     extension_dir_ = extension_dir_.AppendASCII("extensions/api_test");
-    ExtensionApiTest::SetUp();
-  }
-  void TearDown() override {
-    ExtensionApiTest::TearDown();
   }
   base::FilePath extension_dir_;
 };

@@ -29,7 +29,7 @@
   const clearStorage = async key => {
     const result = Object.create(null)
     try {
-      if (W.navigator.cookieEnabled === false) {
+      if (W.navigator.cookieEnabled === false || !await W.document.hasStorageAccess()) {
         result.cookies = exceptionEncoding
       } else {
         C.remove(key)
@@ -66,7 +66,7 @@
   const readStorageAction = async key => {
     const result = Object.create(null)
     try {
-      if (W.navigator.cookieEnabled === false) {
+      if (W.navigator.cookieEnabled === false || !await W.document.hasStorageAccess()) {
         result.cookies = exceptionEncoding
       } else {
         const readCookieValue = C.get(key)
@@ -100,7 +100,7 @@
   const writeStorageAction = async (key, value) => {
     const result = Object.create(null)
     try {
-      if (W.navigator.cookieEnabled === false) {
+      if (W.navigator.cookieEnabled === false || !await W.document.hasStorageAccess()) {
         result.cookies = false
       } else {
         C.set(key, value, {

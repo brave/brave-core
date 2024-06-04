@@ -64,30 +64,21 @@ struct SelectAccountTokenView: View {
       ToolbarItemGroup(placement: .bottomBar) {
         networkFilterButton
         Spacer()
-        if shouldShowZeroBalanceButton {
-          Button {
-            store.isHidingZeroBalances.toggle()
-          } label: {
-            Text(
-              store.isHidingZeroBalances
-                ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
-            )
-            .font(.footnote.weight(.medium))
-            .foregroundColor(Color(.braveBlurpleTint))
-          }
+        Button {
+          store.isHidingZeroBalances.toggle()
+        } label: {
+          Text(
+            store.isHidingZeroBalances
+              ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
+          )
+          .font(.footnote.weight(.medium))
+          .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }
     .onDisappear {
       store.resetFilters()
     }
-  }
-
-  private var shouldShowZeroBalanceButton: Bool {
-    if !store.isHidingZeroBalances {
-      return true
-    }
-    return store.accountSections.isEmpty
   }
 
   private var networkFilterButton: some View {

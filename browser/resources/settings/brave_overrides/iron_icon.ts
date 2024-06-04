@@ -3,20 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Unfortunately, Chromium is midway through migrating from iron-icon to cr-icon
+// which means we need to support both. The overrides here and in cr-icon are
+// extremely similar, but subtly different (the chromium ==> Nala icon mapping
+// is shared). Hopefully in the not too distant future we'll be able to remove
+// this, when the settings page is 100% cr-icon.
+
 import { RegisterStyleOverride, RegisterPolymerPrototypeModification } from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import 'chrome://resources/brave/leo.bundle.js'
 
-const leoIcons = (window as any)['leoIcons'] as Set<string>
+export const leoIcons = (window as any)['leoIcons'] as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
-const iconMap: { [key: string]: string } = {
-  'cr:security': 'lock',
-  'cr:search': 'search',
+export const iconMap: { [key: string]: string } = {
+  'settings:security': 'lock',
+  'settings:search': 'search',
   'settings:palette': 'appearance',
   'settings:assignment': 'list-checks',
   'settings:language': 'product-translate',
-  'settings:build': 'settings',
+  'settings:system': 'settings',
   'settings:restore': 'backward',
   'settings:location-on': 'location-on', // location
   'settings:location-off': 'location-off', // location off
@@ -38,7 +44,7 @@ const iconMap: { [key: string]: string } = {
   'cr:sync': 'product-sync', // background sync
   'settings:volume-up': 'volume-on', // sound
   'settings:volume-up-off': 'volume-off', // sound off
-  'cr:file-download': 'download', // automatic downloads
+  'settings:download': 'download', // automatic downloads
   'settings:file-download-off': 'download-off', // automatic downloads off
   'settings:midi': 'media-visualizer', // midi devices
   'settings:midi-off': 'media-visualizer-off', // midi devices off

@@ -19,3 +19,8 @@ public protocol AIChatJavascript {
   @MainActor
   static func getPrintViewPDF(webView: WKWebView) async -> Data
 }
+
+public protocol AIChatBraveTalkJavascript {
+  @MainActor
+  func getTranscript() async -> String?
+}

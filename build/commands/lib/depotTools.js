@@ -10,21 +10,6 @@ const path = require('path')
 const Log = require('./logging')
 const util = require('./util')
 
-// This guard is used to ensure that we don't have a partial or broken checkout
-// of depot_tools.
-const depotToolsGuard = new ActionGuard(
-  path.join(
-    path.dirname(config.depotToolsDir),
-    `${path.basename(config.depotToolsDir)}_install.guard`
-  ),
-  () => {
-    if (fs.existsSync(config.depotToolsDir)) {
-      Log.status('detected incomplete depot_tools checkout. Cleaning up...')
-      fs.rmSync(config.depotToolsDir, { recursive: true })
-    }
-  }
-)
-
 // The .disable_auto_update file in the depot_tools directory, regardless of
 // its content, disables auto-updates. If a specific depot_tools reference is
 // enforced, we use this file for two purposes: 1) disable auto-updates; 2)
@@ -62,6 +47,7 @@ function writeEnforcedDepotToolsRef(ref) {
   }
 }
 
+// Bootstrap CIPD, Python and other dependencies in depot_tools.
 function bootstrapDepotTools(options) {
   if (process.platform === 'win32') {
     util.run(path.join(config.depotToolsDir, 'cipd_bin_setup.bat'), [], options)
@@ -72,6 +58,13 @@ function bootstrapDepotTools(options) {
     )
   } else {
     util.run(path.join(config.depotToolsDir, 'ensure_bootstrap'), [], options)
+  }
+}
+
+// Remove the depot_tools directory.
+function removeDepotTools() {
+  if (fs.existsSync(config.depotToolsDir)) {
+    fs.rmSync(config.depotToolsDir, { recursive: true })
   }
 }
 
@@ -87,22 +80,31 @@ function installDepotTools(options = config.defaultOptions) {
     process.exit(1)
   }
 
-  // If we're modifying depot_tools reference, it's important to ensure a clean
-  // checkout to re-bootstrap CIPD, Python and other dependencies.
-  if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
-    depotToolsGuard.run(() => {
-      if (fs.existsSync(config.depotToolsDir)) {
-        Log.status(
-          'depot_tools ref is updated. Removing existing checkout to ' +
-            're-bootstrap all dependencies.'
-        )
-        fs.rmSync(config.depotToolsDir, { recursive: true })
-      }
-    })
-  }
+  // This guard is used to ensure that we don't have a partial or broken
+  // checkout of depot_tools.
+  const depotToolsGuard = new ActionGuard(
+    `${config.depotToolsDir}_install.guard`,
+    () => {
+      Log.status('depot_tools checkout was interrupted. Cleaning up...')
+      removeDepotTools()
+    }
+  )
 
-  if (!fs.existsSync(config.depotToolsDir) || depotToolsGuard.isDirty()) {
-    depotToolsGuard.ensureClean(() => {
+  depotToolsGuard.run((wasInterrupted) => {
+    // If we're modifying depot_tools reference, it's important to ensure a
+    // clean checkout to re-bootstrap CIPD, Python and other dependencies.
+    if (
+      fs.existsSync(config.depotToolsDir) &&
+      enforcedDepotToolsRef !== readEnforcedDepotToolsRef()
+    ) {
+      Log.status(
+        'depot_tools ref is updated. Removing existing checkout to ' +
+          're-bootstrap all dependencies.'
+      )
+      removeDepotTools()
+    }
+
+    if (!fs.existsSync(config.depotToolsDir) || wasInterrupted) {
       Log.progressScope('install depot_tools', () => {
         util.run(
           'git',
@@ -110,11 +112,9 @@ function installDepotTools(options = config.defaultOptions) {
           options
         )
       })
-    })
-  }
+    }
 
-  if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
-    depotToolsGuard.run(() => {
+    if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
       // Write the enforced ref to .disable_auto_update or remove the file to
       // re-enable auto-updates.
       writeEnforcedDepotToolsRef(enforcedDepotToolsRef)
@@ -131,14 +131,12 @@ function installDepotTools(options = config.defaultOptions) {
           }
         )
       }
-    })
-  }
+    }
 
-  const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg')
-  if (!fs.existsSync(ninjaLogCfgPath)) {
-    depotToolsGuard.run(() => {
-      // Create a ninja config to prevent autoninja from calling "cipd auth-info"
-      // each time. See for details:
+    const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg')
+    if (!fs.existsSync(ninjaLogCfgPath)) {
+      // Create a ninja config to prevent autoninja from calling "cipd
+      // auth-info" each time. See for details:
       // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
       const ninjaLogCfgConfig = {
         'is-googler': false,
@@ -147,8 +145,16 @@ function installDepotTools(options = config.defaultOptions) {
         'opt-in': false
       }
       fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
-    })
-  }
+    }
+
+    if (process.platform === 'win32' && config.isCI) {
+      // Bootstrap gsutil on Windows manually to fix random LockFile issues.
+      util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
+        ...options,
+        stdio: 'pipe'
+      })
+    }
+  })
 }
 
 module.exports = {

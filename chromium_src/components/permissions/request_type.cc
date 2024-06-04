@@ -19,10 +19,6 @@
 namespace {
 constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
 }  // namespace
-#else
-namespace vector_icons {
-constexpr auto& kMicIconValue = vector_icons::kMicIcon;
-}  // namespace vector_icons
 #endif
 
 // Add Brave cases into GetIconIdAndroid.
@@ -38,8 +34,8 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
-#define kMicIcon                                     \
-  kMicIconValue;                                     \
+#define kStorageAccessIcon                           \
+  kStorageAccessIcon;                                \
   case RequestType::kWidevine:                       \
   case RequestType::kBraveEthereum:                  \
   case RequestType::kBraveSolana:                    \
@@ -73,7 +69,7 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 #undef RequestTypeToContentSettingsType
 #undef ContentSettingsTypeToRequestType
 #undef BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
-#undef kMicIcon
+#undef kStorageAccessIcon
 #undef IDR_ANDROID_STORAGE_ACCESS
 
 namespace permissions {

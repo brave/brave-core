@@ -7,7 +7,10 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
-static_library("common") {
+component("common") {
+  output_name = "ai_chat_common"
+  defines = [ "IS_AI_CHAT_COMMON_IMPL" ]
+
   sources = [
     "features.cc",
     "features.h",

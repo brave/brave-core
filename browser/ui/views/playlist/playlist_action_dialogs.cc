@@ -14,8 +14,10 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -39,6 +41,18 @@ BrowserView* FindBrowserViewFromSidebarContents(
   return coordinator->GetBrowserView();
 }
 
+// If |BrowserView| is not found from Sidebar's |WebContents|, try to find it
+// from tab's |WebContents|.
+BrowserView* FindBrowserViewFromWebContents(content::WebContents* contents) {
+  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+
+  if (!browser_view) {
+    auto* browser = chrome::FindBrowserWithTab(contents);
+    return browser ? BrowserView::GetBrowserViewForBrowser(browser) : nullptr;
+  }
+  return browser_view;
+}
+
 bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {
   CHECK(item);
 
@@ -52,7 +66,6 @@ bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {
 class TiledItemsView : public views::BoxLayoutView {
   METADATA_HEADER(TiledItemsView, views::BoxLayoutView)
  public:
-
   static constexpr gfx::Size kThumbnailSize = gfx::Size(64, 48);
   static constexpr int kCornerRadius = 4;
 
@@ -189,7 +202,7 @@ namespace playlist {
 void ShowCreatePlaylistDialog(content::WebContents* contents) {
   DVLOG(2) << __FUNCTION__;
   PlaylistActionDialog::Show<PlaylistNewPlaylistDialog>(
-      FindBrowserViewFromSidebarContents(contents),
+      FindBrowserViewFromWebContents(contents),
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           contents->GetBrowserContext()));
 }
@@ -198,7 +211,7 @@ void ShowRemovePlaylistDialog(content::WebContents* contents,
                               const std::string& playlist_id) {
   DVLOG(2) << __FUNCTION__;
   PlaylistActionDialog::Show<PlaylistRemovePlaylistConfirmDialog>(
-      FindBrowserViewFromSidebarContents(contents),
+      FindBrowserViewFromWebContents(contents),
       playlist::PlaylistServiceFactory::GetForBrowserContext(
           contents->GetBrowserContext()),
       playlist_id);
@@ -215,19 +228,21 @@ void ShowMoveItemsDialog(content::WebContents* contents,
   base::ranges::copy(items, std::back_inserter(param.items));
 
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
-      FindBrowserViewFromSidebarContents(contents), std::move(param));
+      FindBrowserViewFromWebContents(contents), std::move(param));
 }
 
 void ShowPlaylistSettings(content::WebContents* contents) {
-  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+  auto* browser_view = FindBrowserViewFromWebContents(contents);
   CHECK(browser_view);
   ShowSingletonTab(browser_view->browser(),
                    GURL("brave://settings/braveContent#playlist-section"));
 }
 
 void ClosePanel(content::WebContents* contents) {
-  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+  auto* browser_view = FindBrowserViewFromWebContents(contents);
   CHECK(browser_view);
+  // TODO(): If this not opened in the Side Panel, we should consider
+  // closing the tab.
   if (SidePanelUI* ui =
           SidePanelUI::GetSidePanelUIForBrowser(browser_view->browser())) {
     ui->Close();

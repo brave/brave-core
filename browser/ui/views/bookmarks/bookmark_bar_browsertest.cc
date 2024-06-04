@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(BookmarkBarTest, AllBookmarksButtonVisibility) {
   EXPECT_TRUE(is_all_bookmarks_button_visible());
 
   // When all node is removed, all bookmarks button should be hidden
-  bookmarks::RemoveAllBookmarks(model, node->url());
+  bookmarks::RemoveAllBookmarks(model, node->url(), FROM_HERE);
   EXPECT_FALSE(is_all_bookmarks_button_visible());
 
   // Turning on the visibility pref doesn't show "All bookmarks button" when

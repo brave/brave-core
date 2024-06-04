@@ -58,7 +58,6 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
-    brave::RegisterPathProvider();
     auto* profile = browser()->profile();
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile));
@@ -83,6 +82,7 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);

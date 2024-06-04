@@ -6,6 +6,7 @@
 #include "components/sync_device_info/device_info_sync_bridge.h"
 
 #include "brave/components/sync_device_info/brave_device_info.h"
+#include "components/sync/base/deletion_origin.h"
 
 #define BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS \
   specifics->mutable_brave_fields()->set_is_self_delete_supported(true);
@@ -80,7 +81,8 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
 void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
                                             base::OnceClosure callback) {
   std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
-  change_processor()->Delete(client_id, batch->GetMetadataChangeList());
+  change_processor()->Delete(client_id, DeletionOrigin::Unspecified(),
+                             batch->GetMetadataChangeList());
   DeleteSpecifics(client_id, batch.get());
   batch->GetMetadataChangeList()->ClearMetadata(client_id);
   CommitAndNotify(std::move(batch), /*should_notify=*/true);

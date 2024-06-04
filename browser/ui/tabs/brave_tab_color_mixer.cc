@@ -105,14 +105,23 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
            leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)},
           {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
+          {kColorBraveSplitViewMenuButtonIcon,
+           leo::GetColor(leo::Color::kColorIconInteractive,
+                         leo::Theme::kLight)},
+          {kColorBraveSplitViewMenuButtonBackground,
+           leo::GetColor(leo::Color::kColorContainerBackground,
+                         leo::Theme::kLight)},
+          {kColorBraveSplitViewMenuButtonBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
+          {kColorBraveSplitViewInactiveWebViewBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
+          {kColorBraveSplitViewMenuItemIcon,
+           leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     mixer[color_id] =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
   }
-
-  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
 }
 
 void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -142,6 +151,17 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
            leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)},
           {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
+          {kColorBraveSplitViewMenuButtonIcon,
+           leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)},
+          {kColorBraveSplitViewMenuButtonBackground,
+           leo::GetColor(leo::Color::kColorContainerBackground,
+                         leo::Theme::kDark)},
+          {kColorBraveSplitViewMenuButtonBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
+          {kColorBraveSplitViewInactiveWebViewBorder,
+           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
+          {kColorBraveSplitViewMenuItemIcon,
+           leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     auto color =
@@ -155,9 +175,6 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
       mixer[color_id] = color;
     }
   }
-
-  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
 }
 
 void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,

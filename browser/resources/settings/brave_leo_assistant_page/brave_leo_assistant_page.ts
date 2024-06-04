@@ -45,14 +45,15 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: String,
           computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
         },
-        shouldShowManageSubscriptionLink_: {
+        isPremiumUser_: {
           type: Boolean,
           value: false,
-          computed: 'computeShouldShowManageSubscriptionLink_(premiumStatus_)'
+          computed: 'computeIsPremiumUser_(premiumStatus_)'
         }
       }
     }
 
+    private isPremiumUser_: boolean
     leoAssistantShowOnToolbarPref_: boolean
     defaultModelKeyPrefValue_: string
     models_: ModelWithSubtitle[]
@@ -121,14 +122,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       return model.model.displayName
     }
 
-    isModelPremium_(modelAccess: ModelAccess) {
-      if (modelAccess === ModelAccess.PREMIUM) {
-        return true
-      }
-
-      return false
-    }
-
     onModelSelectionChange_(e: any) {
       this.setPrefValue(MODEL_PREF_PATH, e.value)
       this.defaultModelKeyPrefValue_ = e.value
@@ -155,12 +148,16 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       Router.getInstance().navigateTo(routes.APPEARANCE, new URLSearchParams("highlight=#autocomplete-suggestion-sources"))
     }
 
-    computeShouldShowManageSubscriptionLink_() {
-      if (this.premiumStatus_ === PremiumStatus.Active) {
+    computeIsPremiumUser_() {
+      if (this.premiumStatus_ === PremiumStatus.Active || this.premiumStatus_ === PremiumStatus.ActiveDisconnected) {
         return true
       }
 
       return false
+    }
+
+    shouldShowModelPremiumLabel_(modelAccess: ModelAccess) {
+      return (modelAccess === ModelAccess.PREMIUM && !this.isPremiumUser_)
     }
 
     openManageAccountPage_() {

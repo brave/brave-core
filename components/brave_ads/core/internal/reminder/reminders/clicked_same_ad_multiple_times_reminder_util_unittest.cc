@@ -61,7 +61,7 @@ class BraveAdsClickedSameAdMultipleTimesReminderUtilTest : public UnitTestBase {
     ads_observer_mock_ = AddAdsObserverMock();
   }
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
 };
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,

@@ -145,14 +145,8 @@ private struct CreateFolderView: View {
             saveTapped()
           }
           .onAppear {
-            if #available(iOS 16.0, *) {
-              DispatchQueue.main.async {
-                focused = true
-              }
-            } else {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                focused = true
-              }
+            DispatchQueue.main.async {
+              focused = true
             }
           }
           .padding(.horizontal, 16)

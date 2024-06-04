@@ -172,7 +172,10 @@ export const keyringIdForNewAccount = (
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
-const bitcoinTestnetKeyrings = [BraveWallet.KeyringId.kBitcoin84Testnet]
+const bitcoinTestnetKeyrings = [
+  BraveWallet.KeyringId.kBitcoin84Testnet,
+  BraveWallet.KeyringId.kBitcoinImportTestnet
+]
 const zcashTestnetKeyrings = [BraveWallet.KeyringId.kZCashTestnet]
 
 export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {

@@ -24,6 +24,12 @@ private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
 }
 
 class Blockies {
+  struct Colors {
+    let color: UIColor
+    let backgroundColor: UIColor
+    let spotColor: UIColor
+  }
+
   private var generator: XorshiftRandomNumberGenerator
   private let colors: [Int] = [
     0x423EEE, 0xE2E2FC, 0xFE5907, 0xFEDED6, 0x5F5CF1,
@@ -48,6 +54,10 @@ class Blockies {
     )
   }
 
+  func makeColors() -> Colors {
+    .init(color: makeColor(), backgroundColor: makeColor(), spotColor: makeColor())
+  }
+
   func makeColor() -> UIColor {
     let normalized = Double(generator.next()) / Double(Int32.max)
     return UIColor(rgb: colors[Int(floor(normalized * 100)) % colors.count])
@@ -58,9 +68,7 @@ class Blockies {
   }
 
   func image(length: Int, scale: CGFloat) -> UIImage {
-    let color = makeColor()
-    let backgroundColor = makeColor()
-    let spotColor = makeColor()
+    let colors = makeColors()
 
     func data() -> [Double] {
       let dataLength = Int(ceil(Double(length) / 2.0))
@@ -84,13 +92,13 @@ class Blockies {
     let width = sqrt(Double(data.count))
 
     let image = renderer.image { context in
-      backgroundColor.setFill()
+      colors.backgroundColor.setFill()
       context.fill(.init(origin: .zero, size: size))
-      spotColor.setFill()
+      colors.spotColor.setFill()
       for (i, value) in data.enumerated() where value > 0 {
         let row = floor(Double(i) / width)
         let col = i % Int(width)
-        let fillColor = value == 1 ? color : spotColor
+        let fillColor = value == 1 ? colors.color : colors.spotColor
         let shapeType = floor(rand() * 3)
 
         switch shapeType {
@@ -151,17 +159,17 @@ struct Blockie: View {
   }
 }
 
-struct BlockieMaterial: View {
+struct BlockieBackground: View {
 
-  init(address: String) {
-    self.blockies = Blockies(seed: address.lowercased())
+  let colors: Blockies.Colors
+
+  init(seed: String) {
+    self.colors = Blockies(seed: seed).makeColors()
   }
-
-  private let blockies: Blockies
 
   var body: some View {
     LinearGradient(
-      colors: [.init(blockies.makeColor()), .init(blockies.makeColor())],
+      colors: [.init(colors.backgroundColor), .init(colors.spotColor)],
       startPoint: .top,
       endPoint: .bottom
     )

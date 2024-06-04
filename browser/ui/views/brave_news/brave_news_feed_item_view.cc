@@ -89,8 +89,8 @@ void BraveNewsFeedItemView::Update() {
                     : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
 
   subscribe_button_->SetLoading(loading_);
-  subscribe_button_->SetKind(is_subscribed ? views::MdTextButton::kSecondary
-                                           : views::MdTextButton::kPrimary);
+  subscribe_button_->SetStyle(is_subscribed ? ui::ButtonStyle::kDefault
+                                            : ui::ButtonStyle::kProminent);
   subscribe_button_->SetIcon(
       is_subscribed ? &kLeoHeartFilledIcon : &kLeoHeartOutlineIcon,
       kFollowButtonIconSize);

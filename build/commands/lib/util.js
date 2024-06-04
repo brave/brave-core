@@ -12,6 +12,7 @@ const l10nUtil = require('./l10nUtil')
 const Log = require('./logging')
 const assert = require('assert')
 const updateChromeVersion = require('./updateChromeVersion')
+const updateUnsafeBuffersPaths = require('./updateUnsafeBuffersPaths.js')
 const ActionGuard = require('./actionGuard')
 
 const mergeWithDefault = (options) => {
@@ -64,6 +65,8 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
+
+  await updateUnsafeBuffersPaths()
 
   updateChromeVersion()
   Log.progressFinish('apply patches')
@@ -295,6 +298,12 @@ const util = {
           config.getBraveLogoIconName()),
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])
+    // Replace webui bookmark svg icon.
+    fileMap.add([
+      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+          'browser-bookmark-normal.svg'),
+      path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
+          'icon_bookmark.svg')])
 
     let explicitSourceFiles = new Set()
     if (config.getTargetOS() === 'mac') {
@@ -630,20 +639,20 @@ const util = {
     // Guard to check if gn gen was successful last time.
     const gnGenGuard = new ActionGuard(path.join(outputDir, 'gn_gen.guard'))
 
-    const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
-    const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+    gnGenGuard.run((wasInterrupted) => {
+      const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
+      const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
 
-    const shouldRunGnGen =
-      config.force_gn_gen ||
-      !doesBuildNinjaExist ||
-      hasBuildArgsUpdated ||
-      gnGenGuard.isDirty()
+      const shouldRunGnGen =
+        config.force_gn_gen ||
+        !doesBuildNinjaExist ||
+        hasBuildArgsUpdated ||
+        wasInterrupted
 
-    if (shouldRunGnGen) {
-      gnGenGuard.run(() => {
+      if (shouldRunGnGen) {
         util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
-      })
-    }
+      }
+    })
   },
 
   writeGnBuildArgs: (outputDir, buildArgs) => {
@@ -843,7 +852,11 @@ const util = {
     if (!fs.existsSync(file)) {
       return default_value
     }
-    return fs.readJSONSync(file)
+    try {
+      return fs.readJSONSync(file)
+    } catch {
+      return default_value
+    }
   },
 
   writeJSON: (file, value) => {

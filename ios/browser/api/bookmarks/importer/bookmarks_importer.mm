@@ -81,7 +81,7 @@ void BookmarksImporter::AddBookmarks(
   ios::ChromeBrowserStateManager* browser_state_manager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
-      browser_state_manager->GetLastUsedBrowserState();
+      browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
   bookmarks::BookmarkModel* model = ios::LocalOrSyncableBookmarkModelFactory::
       GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
           browser_state);

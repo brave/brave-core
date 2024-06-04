@@ -133,7 +133,6 @@ public class BrowserViewController: UIViewController {
     return alertStackView
   }()
 
-  var findInPageBar: FindInPageBar?
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
   private var openTabsModelStateListener: SendTabToSelfModelStateListener?
@@ -356,7 +355,7 @@ public class BrowserViewController: UIViewController {
       environment: BraveRewards.Configuration.current().environment
     )
 
-    if Locale.current.regionCode == "JP" {
+    if Locale.current.region?.identifier == "JP" {
       benchmarkBlockingDataSource = BlockingSummaryDataSource()
     }
 
@@ -715,8 +714,7 @@ public class BrowserViewController: UIViewController {
       let webView = tab.webView
     {
       updateURLBar()
-      navigationToolbar.updateBackStatus(webView.canGoBack)
-      updateForwardStatusIfNeeded(webView: webView)
+      updateBackForwardActionStatus(for: webView)
       topToolbar.locationView.loading = tab.loading
     }
 
@@ -1412,11 +1410,10 @@ public class BrowserViewController: UIViewController {
           make.top.equalTo(self.readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
       }
 
-      let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.toolbarHeight
       if self.isUsingBottomBar {
-        make.bottom.equalTo(self.header.snp.top).offset(-findInPageHeight)
+        make.bottom.equalTo(self.header.snp.top)
       } else {
-        make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
+        make.bottom.equalTo(self.footer.snp.top)
       }
     }
 
@@ -1441,8 +1438,7 @@ public class BrowserViewController: UIViewController {
 
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil || searchEngineSettingsDismissed
-            || findInPageBar != nil)
+          && (presentedViewController == nil || searchEngineSettingsDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
@@ -1659,6 +1655,16 @@ public class BrowserViewController: UIViewController {
     }
 
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+    vc.openAuthenticationVPNInNewTab = { [weak self] in
+      guard let self = self else { return }
+
+      self.openURLInNewTab(
+        .brave.braveVPNRefreshCredentials,
+        isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+        isPrivileged: false
+      )
+    }
+
     let navigationController = SettingsNavigationController(rootViewController: vc)
     navigationController.navigationBar.topItem?.leftBarButtonItem =
       .init(
@@ -1887,10 +1893,6 @@ public class BrowserViewController: UIViewController {
     return false
   }
 
-  // This variable is used to keep track of current page. It is used to detect internal site navigation
-  // to report internal page load to Rewards lib
-  var rewardsXHRLoadURL: URL?
-
   override public func observeValue(
     forKeyPath keyPath: String?,
     of object: Any?,
@@ -1974,13 +1976,14 @@ public class BrowserViewController: UIViewController {
 
       // Rewards reporting
       if let url = change?[.newKey] as? URL, !url.isLocal {
-        // Notify Rewards of new page load.
-        if let rewardsURL = rewardsXHRLoadURL,
+        // Notify Brave Rewards library of the same document navigation.
+        if let tab = tabManager.selectedTab,
+          let rewardsURL = tab.rewardsXHRLoadURL,
           url.host == rewardsURL.host
         {
-          tabManager.selectedTab?.reportPageNavigation(to: rewards)
+          tab.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
-          tabManager.selectedTab?.reportPageLoad(to: rewards, redirectChain: [])
+          tab.reportPageLoad(to: rewards, redirectChain: [])
         }
       }
 
@@ -1994,7 +1997,7 @@ public class BrowserViewController: UIViewController {
 
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .url)
+        self.logSecureContentState(tab: tab, path: .url, change: change)
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2009,22 +2012,16 @@ public class BrowserViewController: UIViewController {
         navigateInTab(tab: tab)
         tabsBar.updateSelectedTabTitle()
       }
-    case .canGoBack:
-      guard tab === tabManager.selectedTab, let canGoBack = change?[.newKey] as? Bool else {
+    case .canGoBack, .canGoForward:
+      guard tab === tabManager.selectedTab else {
         break
       }
 
-      navigationToolbar.updateBackStatus(canGoBack)
-    case .canGoForward:
-      guard tab === tabManager.selectedTab, let canGoForward = change?[.newKey] as? Bool else {
-        break
-      }
-
-      navigationToolbar.updateForwardStatus(canGoForward)
+      updateBackForwardActionStatus(for: webView)
     case .hasOnlySecureContent:
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent)
+        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent, change: change)
         if tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2032,7 +2029,7 @@ public class BrowserViewController: UIViewController {
     case .serverTrust:
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .serverTrust)
+        self.logSecureContentState(tab: tab, path: .serverTrust, change: change)
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2044,7 +2041,11 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func logSecureContentState(tab: Tab, path: KVOConstants? = nil) {
+  func logSecureContentState(
+    tab: Tab,
+    path: KVOConstants? = nil,
+    change: [NSKeyValueChangeKey: Any]? = nil
+  ) {
     var text = """
       Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
        Secure State: \(tab.lastKnownSecureContentState.rawValue)
@@ -2064,10 +2065,18 @@ public class BrowserViewController: UIViewController {
       )
     }
 
+    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
+      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
+    } else if let change, let value = change[.newKey] {
+      text.append("\n Change: \(String(describing: value))")
+    }
+
     DebugLogger.log(for: .secureState, text: text)
   }
 
-  func updateForwardStatusIfNeeded(webView: WKWebView) {
+  func updateBackForwardActionStatus(for webView: WKWebView?) {
+    guard let webView = webView else { return }
+
     if let forwardListItem = webView.backForwardList.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
@@ -2075,6 +2084,8 @@ public class BrowserViewController: UIViewController {
     } else {
       navigationToolbar.updateForwardStatus(webView.canGoForward)
     }
+
+    navigationToolbar.updateBackStatus(webView.canGoBack)
   }
 
   func updateUIForReaderHomeStateForTab(_ tab: Tab) {
@@ -2316,16 +2327,6 @@ public class BrowserViewController: UIViewController {
       pageZoomBar.view.removeFromSuperview()
       self.updateViewConstraints()
       self.pageZoomBar = nil
-    }
-
-    if #unavailable(iOS 16.0) {
-      if let findInPageBar = findInPageBar {
-        updateFindInPageVisibility(visible: false)
-        findInPageBar.endEditing(true)
-        findInPageBar.removeFromSuperview()
-        self.findInPageBar = nil
-        updateViewConstraints()
-      }
     }
 
     alertStackView.arrangedSubviews.forEach({
@@ -2623,10 +2624,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
     if tab == tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false)
-    }
-
     tabManager.selectTab(tab)
   }
 
@@ -2696,10 +2693,6 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
-    if #unavailable(iOS 16.0) {
-      injectedScripts.append(FindInPageScriptHandler(tab: tab))
-    }
-
     #if canImport(BraveTalk)
     injectedScripts.append(
       BraveTalkScriptHandler(
@@ -2742,10 +2735,6 @@ extension BrowserViewController: TabDelegate {
       .delegate = self
     (tab.getContentScript(name: SessionRestoreScriptHandler.scriptName)
       as? SessionRestoreScriptHandler)?.delegate = self
-    if #unavailable(iOS 16.0) {
-      (tab.getContentScript(name: FindInPageScriptHandler.scriptName) as? FindInPageScriptHandler)?
-        .delegate = self
-    }
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?
       .delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
@@ -2798,12 +2787,9 @@ extension BrowserViewController: TabDelegate {
 
   /// Triggered when "Find in Page" is selected on selected text
   func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String) {
-    if #available(iOS 16.0, *), let findInteraction = tab.webView?.findInteraction {
+    if let findInteraction = tab.webView?.findInteraction {
       findInteraction.searchText = selectedText
       findInteraction.presentFindNavigator(showingReplace: false)
-    } else {
-      updateFindInPageVisibility(visible: true)
-      findInPageBar?.text = selectedText
     }
   }
 
@@ -3023,14 +3009,9 @@ extension BrowserViewController: SearchViewControllerDelegate {
     shouldFindInPage query: String
   ) {
     topToolbar.leaveOverlayMode()
-    if #available(iOS 16.0, *),
-      let findInteraction = tabManager.selectedTab?.webView?.findInteraction
-    {
+    if let findInteraction = tabManager.selectedTab?.webView?.findInteraction {
       findInteraction.searchText = query
       findInteraction.presentFindNavigator(showingReplace: false)
-    } else {
-      updateFindInPageVisibility(visible: true)
-      findInPageBar?.text = query
     }
   }
 
@@ -3658,10 +3639,8 @@ extension BrowserViewController {
         }
 
         await MainActor.run { [errorDescription] in
-          if #available(iOS 16.0, *) {
-            // System components sit on top so we want to dismiss it
-            webView.findInteraction?.dismissFindNavigator()
-          }
+          // System components sit on top so we want to dismiss it
+          webView.findInteraction?.dismissFindNavigator()
           let certificateViewController = CertificateViewController(
             certificate: certificate,
             evaluationError: errorDescription
@@ -3688,6 +3667,7 @@ extension BrowserViewController {
       braveCore: braveCore,
       webView: webView,
       script: BraveLeoScriptHandler.self,
+      braveTalkScript: self.braveTalkJitsiCoordinator,
       querySubmited: query
     )
 
@@ -3699,5 +3679,15 @@ extension BrowserViewController {
       )
     )
     present(chatController, animated: true)
+  }
+}
+
+extension BraveTalkJitsiCoordinator: AIChatBraveTalkJavascript {
+  @MainActor
+  public func getTranscript() async -> String? {
+    if self.isCallActive {
+      return await jitsiTranscriptProcessor?.getTranscript()
+    }
+    return nil
   }
 }

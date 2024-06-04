@@ -87,7 +87,7 @@ void ThumbnailProvider::GetThumbnail(
     return;
   }
 
-  auto& in_memory_cache = GetInMemoryCache(std::to_address(service_));
+  auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
   if (auto iter = in_memory_cache.Get(item->id);
       iter != in_memory_cache.end()) {
     std::move(callback).Run(iter->second);
@@ -134,7 +134,7 @@ void ThumbnailProvider::OnGotThumbnail(
     gfx::Image thumbnail) {
   if (!thumbnail.IsEmpty()) {
     DCHECK(!id.empty());
-    auto& in_memory_cache = GetInMemoryCache(std::to_address(service_));
+    auto& in_memory_cache = GetInMemoryCache(base::to_address(service_));
     if (from_network) {
       in_memory_cache.Put({id, thumbnail});
     } else if (in_memory_cache.Peek(id) != in_memory_cache.end()) {

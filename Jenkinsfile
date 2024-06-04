@@ -4,6 +4,7 @@ pipeline {
     agent none
     options {
         ansiColor('xterm')
+        disableConcurrentBuilds(abortPrevious: true)
         skipDefaultCheckout(true)
         timestamps()
     }
@@ -20,17 +21,19 @@ pipeline {
     }
     stages {
         stage('build') {
-            agent { label 'master' }
+            agent { label 'linux-perm' }
             steps {
                 script {
                     PLATFORM = JOB_NAME.substring(JOB_NAME.indexOf('-build-pr') + 10, JOB_NAME.indexOf('/PR-'))
                     PIPELINE_NAME = 'pr-brave-browser-' + CHANGE_BRANCH.replace('/', '-') + '-' + PLATFORM
 
+                    def prDetails
+
                     withCredentials([usernamePassword(credentialsId: 'brave-builds-github-token-for-pr-builder', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
                         GITHUB_API = 'https://api.github.com/repos/brave'
                         GITHUB_AUTH_HEADERS = [[name: 'Authorization', value: 'token ' + PR_BUILDER_TOKEN]]
                         CHANGE_BRANCH_ENCODED = java.net.URLEncoder.encode(CHANGE_BRANCH, 'UTF-8')
-                        def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
+                        prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
                         SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) ||\
                                prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1) ||\
                                PLATFORM in ["linux-arm64", "macos-arm64", "windows-arm64", "windows-x86"] && prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/run-${PLATFORM}") }.equals(0)
@@ -42,10 +45,26 @@ pipeline {
                         STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
                     }
 
+                    // Yeah, that's pretty terrible, but getting this sha without a checkout doesn't seem possible
+                    def logFile = Jenkins.instance.getItemByFullName(JOB_NAME).getBuildByNumber(Integer.parseInt(BUILD_NUMBER)).logFile
+                    def sha = (logFile.text =~ /.*Obtained Jenkinsfile from ([0-9a-f]{40}).*/)[0][1]
+
                     if (SKIP && PLATFORM != 'noplatform') {
                         echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
+                        // The status set here gets overwritten at the end of the build, so we set it after the build finishes
+                        build(job: "brave-core-pr-status-set-skipped", wait: false, propagate: false,
+                              parameters: [string(name: 'PR_NUMBER', value: "${prDetails.number}"), string(name: 'SHA', value: sha), string(name: 'PLATFORM', value: PLATFORM)])
                         return
+                    } else {
+                        step([
+                            $class: "GitHubCommitStatusSetter",
+                            reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/brave/brave-core.git"],
+                            commitShaSource: [$class: "ManuallyEnteredShaSource", sha: sha],
+                            contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "continuous-integration/${PLATFORM}/pr-head"],
+                            errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "ERROR"]],
+                            statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "Building...", state: "PENDING"]]]
+                        ])
                     }
 
                     for (build in Jenkins.instance.getItemByFullName(JOB_NAME).builds) {
@@ -112,15 +131,6 @@ pipeline {
                     ]
 
                     currentBuild.result = build(job: PIPELINE_NAME, parameters: params, propagate: false).result
-                }
-            }
-        }
-    }
-    post {
-        always {
-            node('master') {
-                script {
-                    sh 'rm -rf .git/index.lock'
                 }
             }
         }

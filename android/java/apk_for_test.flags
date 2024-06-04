@@ -42,6 +42,9 @@
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
     *** isScrollableMvtEnabled(...);
+    *** setSearchProviderTopMargin(...);
+    *** setSearchProviderBottomMargin(...);
+    *** getLogoMargin(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -143,6 +146,7 @@
     *** mTabContentManager;
     *** mTabCreatorManager;
     *** mSnackbarManager;
+    *** mModalDialogManagerSupplier;
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
     *** onOrientationChange(...);
@@ -361,6 +365,8 @@
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity
 
 -keep class org.chromium.chrome.browser.app.BraveActivity
+
+-keep class org.chromium.chrome.browser.media.BravePictureInPictureActivity
 
 -keep class org.chromium.chrome.browser.suggestions.tile.SuggestionsTileView
 
@@ -855,5 +861,23 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.BraveAutocompleteEditText {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
+    public <init>(...);
+    *** runSharePasswordsIntent(...);
+    *** runCreateFileOnDiskIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.BraveExportFlow {
     public <init>(...);
 }

@@ -41,6 +41,8 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
+constexpr char kURLLearnMoreBraveSearchLeo[] =
+    "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
@@ -270,6 +272,10 @@ void AIChatUIPageHandler::ManagePremium() {
 #endif
 }
 
+void AIChatUIPageHandler::OpenLearnMoreAboutBraveSearchWithLeo() {
+  OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
+}
+
 void AIChatUIPageHandler::SetShouldSendPageContents(bool should_send) {
   if (active_chat_tab_helper_) {
     active_chat_tab_helper_->SetShouldSendPageContents(should_send);
@@ -431,10 +437,9 @@ void AIChatUIPageHandler::GetFaviconImageData(
           return;
         }
 
-        scoped_refptr<base::RefCountedMemory> bytes = result.bitmap_data;
-        std::vector<uint8_t> buffer(bytes->front_as<uint8_t>(),
-                                    bytes->front_as<uint8_t>() + bytes->size());
-        std::move(callback).Run(std::move(buffer));
+        std::vector<uint8_t> bytes(result.bitmap_data->begin(),
+                                   result.bitmap_data->end());
+        std::move(callback).Run(std::move(bytes));
       };
 
   favicon_service_->GetRawFaviconForPageURL(

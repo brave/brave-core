@@ -158,11 +158,6 @@ class BraveTorTest : public InProcessBrowserTest {
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 
-  void SetUp() override {
-    brave::RegisterPathProvider();
-    InProcessBrowserTest::SetUp();
-  }
-
   void DownloadTorClient() const {
     DownloadTorComponent(tor::kTorClientComponentId);
   }

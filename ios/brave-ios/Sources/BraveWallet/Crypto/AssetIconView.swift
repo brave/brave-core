@@ -37,24 +37,25 @@ struct AssetIcon: View {
 
   @State private var monogramSize: CGSize = .zero
   private var fallbackMonogram: some View {
-    BlockieMaterial(address: token.contractAddress)
-      .blur(radius: 8, opaque: true)
-      .clipShape(Circle())
-      .readSize(onChange: { newSize in
-        monogramSize = newSize
-      })
-      .overlay(
-        Text(token.symbol.first?.uppercased() ?? "")
-          .font(
-            .system(
-              size: max(monogramSize.width, monogramSize.height) / 2,
-              weight: .bold,
-              design: .rounded
-            )
+    BlockieBackground(
+      seed: token.contractAddress.isEmpty ? token.name : token.contractAddress.lowercased()
+    )
+    .clipShape(Circle())
+    .readSize(onChange: { newSize in
+      monogramSize = newSize
+    })
+    .overlay(
+      Text(token.symbol.first?.uppercased() ?? "")
+        .font(
+          .system(
+            size: max(monogramSize.width, monogramSize.height) / 2,
+            weight: .bold,
+            design: .rounded
           )
-          .foregroundColor(.white)
-          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-      )
+        )
+        .foregroundColor(.white)
+        .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+    )
   }
 }
 

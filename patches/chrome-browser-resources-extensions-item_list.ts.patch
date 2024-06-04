@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/item_list.ts b/chrome/browser/resources/extensions/item_list.ts
-index ebeb7ec522e9e9a1fdf267d76affd9d38f3bcd9c..9f0715281f8e4ba01a811aac16bd8b4c4ab33e6d 100644
+index a2ab3363234a2e9c2176c0d87b89a0bc6f6d0d29..48fa4d37db727c2349db6f52185f560bd33ef949 100644
 --- a/chrome/browser/resources/extensions/item_list.ts
 +++ b/chrome/browser/resources/extensions/item_list.ts
-@@ -14,6 +14,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
+@@ -15,6 +15,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
  
  import type {ExtensionsItemElement, ItemDelegate} from './item.js';
  import {getTemplate} from './item_list.html.js';

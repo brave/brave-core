@@ -694,15 +694,18 @@ void BringAllTabs(Browser* browser) {
   std::stack<std::unique_ptr<tabs::TabModel>> detached_pinned_tabs;
   std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
+  const bool shared_pinned_tab_enabled =
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
+
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs,
-                                    &browsers_to_close](auto* other) {
+                                    &detached_unpinned_tabs, &browsers_to_close,
+                                    shared_pinned_tab_enabled](auto* other) {
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
       const bool is_pinned = i < pinned_tab_count;
-      if (is_pinned && base::FeatureList::IsEnabled(
-                           tabs::features::kBraveSharedPinnedTabs)) {
+      if (is_pinned && shared_pinned_tab_enabled) {
         // SharedPinnedTabService is responsible for synchronizing pinned
         // tabs, thus we shouldn't manually detach and attach tabs here.
         // Meanwhile, the tab strips don't get empty when they have dummy
@@ -737,7 +740,7 @@ void BringAllTabs(Browser* browser) {
     detached_unpinned_tabs.pop();
   }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (shared_pinned_tab_enabled) {
     base::ranges::for_each(browsers_to_close,
                            [](auto* other) { other->window()->Close(); });
   }
@@ -1044,6 +1047,30 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
   return base::ranges::none_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
   });
+}
+
+void SwapTabsInTile(Browser* browser) {
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    return;
+  }
+
+  if (browser->tab_strip_model()->empty()) {
+    return;
+  }
+
+  if (!IsTabsTiled(browser)) {
+    return;
+  }
+
+  auto* model = browser->tab_strip_model();
+  auto tab = model->GetActiveTab()->GetHandle();
+  auto tile = *split_view_data->GetTile(tab);
+  split_view_data->SwapTabsInTile(tile);
+
+  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second),
+                           model->GetIndexOfTab(tile.first),
+                           /*select_after_move*/ false);
 }
 
 }  // namespace brave

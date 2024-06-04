@@ -57,3 +57,7 @@
     *** shouldUseParentIds(...);
     *** getOrCreateTabGroupId(...);
 }
+
+-keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
+    *** runCreateFileOnDiskIntent(...);
+}

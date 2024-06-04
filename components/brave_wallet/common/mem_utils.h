@@ -9,12 +9,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "base/containers/span.h"
+
 namespace brave_wallet {
 
 // When we call memset in end of function to clean local variables
 // for security reason, compiler optimizer can remove such call.
 // So we use our own function for this purpose.
-void SecureZeroData(void* data, size_t size);
+void SecureZeroData(base::span<uint8_t> bytes);
 
 // Allocator which will zero out memory when destruct
 template <typename T>
@@ -31,7 +33,8 @@ struct SecureZeroAllocator {
     return static_cast<T*>(::operator new(n * sizeof(T)));
   }
   void deallocate(T* p, size_t n) {
-    SecureZeroData(p, n);
+    SecureZeroData(
+        base::as_writable_bytes(UNSAFE_BUFFERS(base::make_span(p, n))));
     ::operator delete(p);
   }
 };

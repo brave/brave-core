@@ -1,17 +1,17 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 0cc1fb02318efb609cd05c752131c2fc7af1c2ae..9f88322886a9d074153228e28fcabab52fb663dc 100644
+index c3f90e94bddc8d4d32bcb5211b0e5a96ae5c3bca..fbb975efc664e48f39c1fc91b1a303a6ecd7a89c 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
-@@ -4,7 +4,7 @@
- 
+@@ -5,7 +5,7 @@
  import("//device/vr/buildflags/buildflags.gni")
+ import("//services/device/public/cpp/geolocation/buildflags.gni")
  
 -source_set("permissions_common") {
 +component("permissions_common") {
    sources = [
      "constants.cc",
      "constants.h",
-@@ -157,6 +157,7 @@ source_set("permissions") {
+@@ -158,6 +158,7 @@ source_set("permissions") {
    if (!is_android) {
      deps += [ "//components/guest_view/browser" ]
    }

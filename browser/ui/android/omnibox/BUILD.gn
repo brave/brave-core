@@ -23,6 +23,7 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProcessor.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProperties.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerViewBinder.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   ]
 
   deps = [
@@ -42,6 +43,7 @@ android_library("java") {
     "//chrome/browser/ui/android/omnibox:java_resources",
     "//components/favicon/android:java",
     "//components/omnibox/browser:browser_java",
+    "//components/omnibox/common:features_java",
     "//components/permissions/android:java",
     "//components/prefs/android:java",
     "//components/search_engines/android:java",

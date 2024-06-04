@@ -41,5 +41,8 @@ void BraveBrowserWindow::CleanAndCopySelectedURL() {}
 bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
   return false;
 }
+#endif  // defined(TOOLKIT_VIEWS)
 
-#endif
+bool BraveBrowserWindow::IsInTabDragging() const {
+  return false;
+}

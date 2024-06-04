@@ -4,6 +4,7 @@ include_rules = [
   "+brave/build/android/jni_headers",
   "+brave/common",
   "+brave/grit",
+  "+brave/components/ai_rewriter",
   "+brave/components/brave_ads",
   "+brave/components/brave_component_updater/browser",
   "+brave/components/brave_news",

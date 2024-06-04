@@ -58,10 +58,8 @@ extension BrowserViewController {
 
     guard let tab = tabManager.selectedTab else { return }
 
-    if #available(iOS 16.0, *) {
-      // System components sit on top so we want to dismiss it
-      tab.webView?.findInteraction?.dismissFindNavigator()
-    }
+    // System components sit on top so we want to dismiss it
+    tab.webView?.findInteraction?.dismissFindNavigator()
 
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
@@ -157,12 +155,18 @@ extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectChain urls: [URL]) {
     guard let webView = webView, let url = webView.url else { return }
 
-    if url.isLocal || self.isPrivate || !shouldNotifyAdsServiceTabContentDidChange { return }
+    if url.isLocal || self.isPrivate { return }
+
+    if self.displayFavicon == nil {
+      adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
+    }
+
+    if !shouldNotifyAdsServiceTabContentDidChange { return }
 
     let group = DispatchGroup()
 
-    group.enter()
     var htmlContent: String?
+    group.enter()
     webView.evaluateSafeJavaScript(
       functionName: "new XMLSerializer().serializeToString",
       args: ["document"],
@@ -173,26 +177,25 @@ extension Tab {
       group.leave()
     }
 
-    group.enter()
     var textContent: String?
-    webView.evaluateSafeJavaScript(
-      functionName: "document?.body?.innerText",
-      contentWorld: .defaultClient,
-      asFunction: false
-    ) { text, _ in
-      textContent = text as? String
-      group.leave()
+    if rewards.isEnabled {
+      group.enter()
+      webView.evaluateSafeJavaScript(
+        functionName: "document?.body?.innerText",
+        contentWorld: .defaultClient,
+        asFunction: false
+      ) { text, _ in
+        textContent = text as? String
+        group.leave()
+      }
     }
 
     group.notify(queue: .main) {
-      if self.displayFavicon == nil {
-        adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
-      }
       rewards.reportLoadedPage(
         redirectChain: urls.isEmpty ? [url] : urls,
         tabId: Int(self.rewardsId),
-        html: htmlContent ?? "",
-        adsInnerText: textContent
+        htmlContent: htmlContent ?? "",
+        textContent: textContent
       )
     }
   }

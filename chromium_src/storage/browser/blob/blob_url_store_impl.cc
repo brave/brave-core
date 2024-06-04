@@ -56,9 +56,11 @@ bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {
   const GURL& clean_url = BlobUrlUtils::UrlHasFragment(url)
                               ? BlobUrlUtils::ClearUrlFragment(url)
                               : url;
+  constexpr std::string_view kChromeExtensionScheme = "chrome-extension";
   return (registry_ && registry_->IsUrlMapped(clean_url, storage_key_)) ||
          (url.SchemeIsBlob() &&
-          url::Origin::Create(url).scheme() == "chrome-extension");
+          (url::Origin::Create(url).scheme() == kChromeExtensionScheme ||
+           storage_key_.origin().scheme() == kChromeExtensionScheme));
 }
 
 }  // namespace storage

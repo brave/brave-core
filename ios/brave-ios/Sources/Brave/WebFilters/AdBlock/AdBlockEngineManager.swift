@@ -382,7 +382,9 @@ extension GroupedAdBlockEngine.Source {
 
       return .filterList(componentId: componentId, isAlwaysAggressive: isAlwaysAggressive)
     case .filterListURL(let uuid):
-      return .customFilterList(uuid: uuid)
+      return .filterListURL(uuid: uuid)
+    case .filterListText:
+      return .filterListText
     }
   }
 }

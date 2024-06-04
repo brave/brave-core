@@ -24,7 +24,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kKeyPinningComponentUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNewTabPageTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kOmniboxTriggerForNoStatePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSupportSearchSuggestionForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

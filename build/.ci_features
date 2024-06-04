@@ -1,11 +1,2 @@
 # This file contains supported CI features in the current checkout to
 # conditionally enable them on CI. Use lower_snake_case naming.
-
-# Allow CI to set ignore_patch_version_number=true in .env. This feature is
-# added to speedup PR builders. When ignore_patch_version_number=true,
-# chrome/VERSION will always have PATCH=0. This will also generate dist files
-# with .0 at the end, CI should be aware of that to upload correct files to S3.
-ignore_patch_version_number
-
-# Allow CI to run Windows x64 builds with DCHECKs enabled.
-windows_x64_dchecks

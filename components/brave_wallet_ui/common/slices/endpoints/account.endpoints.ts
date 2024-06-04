@@ -4,7 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // constants
-import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
+import {
+  BitcoinNetwork,
+  BraveWallet,
+  FilecoinNetwork
+} from '../../../constants/types'
 import { NETWORK_TAG_IDS } from './network.endpoints'
 
 // types
@@ -198,25 +202,105 @@ export const accountEndpoints = ({
         accountName: string
         privateKey: string
         coin: BraveWallet.CoinType
-        network?: FilecoinNetwork
       }
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { cache, data: api } = baseQuery(undefined)
           const { keyringService } = api
-          const result =
-            arg.coin === BraveWallet.CoinType.FIL && arg.network
-              ? await keyringService.importFilecoinAccount(
-                  arg.accountName,
-                  arg.privateKey,
-                  arg.network
-                )
-              : await keyringService.importAccount(
-                  arg.accountName,
-                  arg.privateKey,
-                  arg.coin
-                )
+          const result = await keyringService.importAccount(
+            arg.accountName,
+            arg.privateKey,
+            arg.coin
+          )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import account',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    importFilAccount: mutation<
+      true,
+      {
+        accountName: string
+        privateKey: string
+        network: FilecoinNetwork
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result = await keyringService.importFilecoinAccount(
+            arg.accountName,
+            arg.privateKey,
+            arg.network
+          )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import account',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    importBtcAccount: mutation<
+      true,
+      {
+        accountName: string
+        payload: string
+        network: BitcoinNetwork
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result = await keyringService.importBitcoinAccount(
+            arg.accountName,
+            arg.payload,
+            arg.network
+          )
 
           if (!result.account) {
             throw new Error('No result')

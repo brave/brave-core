@@ -20,16 +20,12 @@ void BraveAddPasswordManagerResources(content::WebUIDataSource* source,
 
 }  // namespace
 
-#define SetupChromeRefresh2023(SOURCE) \
-  SetupChromeRefresh2023(SOURCE);      \
-  BraveAddPasswordManagerResources(source, profile);
-
 #define SetupWebUIDataSource(...)                             \
   SetupWebUIDataSource(__VA_ARGS__);                          \
   source->AddResourcePath("images/password_manager_logo.svg", \
-                          IDR_BRAVE_PASSWORD_MANAGER_LOGO)
+                          IDR_BRAVE_PASSWORD_MANAGER_LOGO);   \
+  BraveAddPasswordManagerResources(source, profile);
 
 #include "src/chrome/browser/ui/webui/password_manager/password_manager_ui.cc"
 
 #undef SetupWebUIDataSource
-#undef SetupChromeRefresh2023

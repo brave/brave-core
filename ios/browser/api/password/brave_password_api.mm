@@ -271,7 +271,8 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 }
 
 - (void)removeLogin:(IOSPasswordForm*)passwordForm {
-  password_store_->RemoveLogin([self createCredentialForm:passwordForm]);
+  password_store_->RemoveLogin(FROM_HERE,
+                               [self createCredentialForm:passwordForm]);
 }
 
 - (void)updateLogin:(IOSPasswordForm*)newPasswordForm

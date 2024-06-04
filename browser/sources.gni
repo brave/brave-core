@@ -49,6 +49,7 @@ import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -136,6 +137,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/common",
   "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
@@ -282,6 +284,7 @@ if (is_mac) {
 
 if (enable_sparkle) {
   brave_chrome_browser_sources += [
+    "//brave/browser/mac/keystone_infobar_delegate.mm",
     "//brave/browser/mac/sparkle_glue.h",
     "//brave/browser/mac/sparkle_glue.mm",
     "//brave/browser/mac/su_updater.h",
@@ -314,6 +317,10 @@ if (enable_ai_chat) {
     brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
     brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
   }
+}
+
+if (enable_ai_rewriter) {
+  brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
 }
 
 if (enable_brave_vpn) {

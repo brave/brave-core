@@ -208,6 +208,8 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="not is_android">
         <if expr="not use_titlecase">
+          <if expr="is_win or is_macosx or is_linux">
+          </if>
           <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
             New Private &amp;tab
           </message>
@@ -216,6 +218,8 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           </if>
         <if expr="use_titlecase">
+          <if expr="is_win or is_macosx or is_linux">
+              </if>
           <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
             New Private &amp;Tab
           </message>
@@ -341,6 +345,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="use_titlecase">
           </if>
+      <if expr="_google_chrome">
+        </if>
+
       <if expr="not is_android">
         </if>
 
@@ -587,6 +594,8 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_lacros">
         </if>
 
+      <if expr="is_win or is_macosx">
+        </if>
       <if expr="is_win">
         </if>
 
@@ -600,7 +609,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <message name="IDS_NTP_CUSTOMIZE_CHROME_WEBSTORE_LABEL" desc="The message that prompts user to customize Brave with Brave webstore.">
-        Customize your browser even more with extensions from the <ph name="BEGIN_LINK1">&lt;a href="#" id="chromeWebstoreLink" on-click="onBraveWebStoreLinkClick_"&gt;</ph>Web Store<ph name="END_LINK1">&lt;/a&gt;</ph>
+        Customize your browser even more with extensions from the <ph name="BEGIN_LINK1">&lt;a href="#" id="chromeWebstoreLink"&gt;</ph>Web Store<ph name="END_LINK1">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_NTP_WEBSTORE_TOAST_MESSAGE" desc="The message displayed on the New Tab Page toast that directs users to the Brave webstore themes.">
         You can find older colors in the Web Store
@@ -655,6 +664,15 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if>
 
+      <if expr="_google_chrome">
+        <if expr="not is_android">
+          <if expr="use_titlecase">
+            </if>
+          <if expr="not use_titlecase">
+            </if>
+          </if>
+      </if>
+
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
@@ -686,7 +704,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -804,6 +825,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
+        </if>
+
+    <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
         </if>
 
       <if expr="not use_titlecase">
@@ -950,7 +976,22 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
+        <if expr="use_titlecase">
+          <then>
+            </then>
+         <else>
+          </else>
         </if>
+
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+      </if>
 
       <if expr="not chromeos_ash and not is_android">
         </if>
@@ -1183,6 +1224,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_WIN_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'. 'Windows Hello' is a feature of the Microsoft Windows operating system (https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0).">
          This passkey will be saved only in Windows Hello. It will remain on this device after you close all Private windows.
       </message>
+      <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_TITLE" desc="The title of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. The title is asking the user to confirm that they want to perform the action, while suggesting that the new passkey will exist outside of Private mode.">
+        Save this passkey outside Private?
+      </message>
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
@@ -1195,8 +1239,8 @@ are declared in tools/grit/grit_rule.gni.
       Close Private
     </message>
 
-    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
-      To clear data, close all Private windows
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the delete browsing data dialog which is shown in Private when users invokes a delete browsing data action in Private. The text describes how Private users can delete the browsing data by closing all Private windows.">
+      To delete data, close all Private windows
     </message>
     <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
       This only affects Private windows
@@ -1204,8 +1248,8 @@ are declared in tools/grit/grit_rule.gni.
     <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
     Sites you visit aren’t saved in Private
   </message>
-  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
-    To clear Private browsing history from your device, close all Private tabs
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to delete Private browsing history from the device,">
+    To delete Private browsing history from your device, close all Private tabs
   </message>
   <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
     Close Private

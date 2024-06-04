@@ -18,6 +18,13 @@ BASE_FEATURE(kOmniboxBanner,
 const base::FeatureParam<std::string> kBannerType{&kOmniboxBanner,
                                                   kBannerTypeParamName, ""};
 
+BASE_FEATURE(kOmniboxDDGBanner,
+             "BraveSearchOmniboxDDGBanner",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<std::string> kDDGBannerType{&kOmniboxDDGBanner,
+                                                     kBannerTypeParamName, ""};
+
 // Brave search promotion at NTP.
 BASE_FEATURE(kNTP, "BraveSearchNTP", base::FEATURE_DISABLED_BY_DEFAULT);
 

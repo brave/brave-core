@@ -147,7 +147,7 @@ extension BraveWallet.AccountId {
   }
 
   var blockieSeed: String {
-    address.isEmpty ? uniqueKey.sha256 : address
+    address.isEmpty ? uniqueKey.sha256 : address.lowercased()
   }
 }
 
@@ -274,39 +274,6 @@ extension BraveWallet.CoinType {
     case .btc:
       return "bitcoin-asset-icon"
     case .zec:
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
-  var defaultAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSolAccountName
-    case .fil:
-      return Strings.Wallet.defaultFilAccountName
-    case .btc:
-      return Strings.Wallet.defaultBitcoinAccountName
-    case .zec:
-      fallthrough
-    @unknown default:
-      return ""
-    }
-  }
-
-  var defaultSecondaryAccountName: String {
-    switch self {
-    case .eth:
-      return Strings.Wallet.defaultSecondaryEthAccountName
-    case .sol:
-      return Strings.Wallet.defaultSecondarySolAccountName
-    case .fil:
-      return Strings.Wallet.defaultSecondaryFilAccountName
-    case .btc, .zec:
-      // no secondary/import account for bitcoin
       fallthrough
     @unknown default:
       return ""
@@ -619,11 +586,7 @@ extension BraveWallet.OnRampProvider {
 extension Locale {
   /// The region identifier (iOS 16+) or region code for the `Locale`.
   var safeRegionCode: String? {
-    if #available(iOS 16, *) {
-      return Locale.current.region?.identifier ?? Locale.current.regionCode
-    } else {
-      return Locale.current.regionCode
-    }
+    return Locale.current.region?.identifier
   }
 }
 

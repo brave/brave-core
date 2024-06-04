@@ -6,7 +6,6 @@
 import BraveUI
 import SwiftUI
 
-@available(iOS, introduced: 15.0, obsoleted: 16.0)
 public struct AIChatAdvancedSettingsLabelDetailView: View {
   let title: String
   var detail: String?  // When detail is nil, a Progress View is shown

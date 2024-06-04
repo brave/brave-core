@@ -174,6 +174,7 @@ void BraveTabStrip::MaybeStartDrag(
           tab_strip_model->GetIndexOfTab(tile->first));
       new_selection.AddIndexToSelection(
           tab_strip_model->GetIndexOfTab(tile->second));
+      new_selection.set_active(tab_strip_model->active_index());
       tab_strip_model->SetSelectionFromModel(new_selection);
     }
   }
@@ -303,7 +304,7 @@ void BraveTabStrip::UpdateTabContainer() {
       base::FeatureList::IsEnabled(features::kSplitTabStrip);
   const bool is_using_compound_tab_container =
       views::IsViewClass<BraveCompoundTabContainer>(
-          std::to_address(tab_container_));
+          base::to_address(tab_container_));
 
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
@@ -313,7 +314,7 @@ void BraveTabStrip::UpdateTabContainer() {
 
     // Resets TabContainer to use.
     auto original_container = RemoveChildViewT(
-        static_cast<TabContainer*>(std::to_address(tab_container_)));
+        static_cast<TabContainer*>(base::to_address(tab_container_)));
 
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged

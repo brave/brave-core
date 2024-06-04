@@ -20,14 +20,15 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
@@ -41,6 +42,7 @@
 #include "url/gurl.h"
 
 using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
+using ::testing::_;
 
 namespace ai_chat {
 
@@ -94,6 +96,15 @@ class MockEngineConsumer : public EngineConsumer {
   bool supports_delta_text_responses_ = false;
 };
 
+class MockAIChatCredentialManager : public AIChatCredentialManager {
+ public:
+  using AIChatCredentialManager::AIChatCredentialManager;
+  MOCK_METHOD(void,
+              GetPremiumStatus,
+              (mojom::PageHandler::GetPremiumStatusCallback callback),
+              (override));
+};
+
 class MockConversationDriverObserver : public ConversationDriver::Observer {
  public:
   explicit MockConversationDriverObserver(ConversationDriver* driver) {
@@ -116,14 +127,13 @@ class MockConversationDriver : public ConversationDriver {
       PrefService* profile_prefs,
       PrefService* local_state,
       AIChatMetrics* ai_chat_metrics,
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter,
+      std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string)
       : ConversationDriver(profile_prefs,
                            local_state,
                            ai_chat_metrics,
-                           std::move(skus_service_getter),
+                           std::move(credential_manager),
                            url_loader_factory,
                            channel_string) {}
   ~MockConversationDriver() override = default;
@@ -145,15 +155,37 @@ class ConversationDriverUnitTest : public testing::Test {
   ~ConversationDriverUnitTest() override = default;
 
   void SetUp() override {
+    // TODO(petemill): Mock the engine requests so that we are not dependent on
+    // specific network API calls for any particular engine. This test only
+    // specifies the completion API responses and so doesn't work with the
+    // Conversation API engine.
+    features_.InitAndEnableFeatureWithParameters(
+        features::kAIChat, {{features::kConversationAPIEnabled.name, "false"}});
+
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
+    if (!default_model_key_.empty()) {
+      prefs_.SetString(prefs::kDefaultModelKey, default_model_key_);
+    }
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    auto skus_service_getter = base::BindRepeating(
-        []() { return mojo::PendingRemote<skus::mojom::SkusService>(); });
+    std::unique_ptr<MockAIChatCredentialManager> credential_manager =
+        std::make_unique<MockAIChatCredentialManager>(base::NullCallback(),
+                                                      &local_state_);
+
+    ON_CALL(*credential_manager, GetPremiumStatus(_))
+        .WillByDefault(
+            [&](mojom::PageHandler::GetPremiumStatusCallback callback) {
+              mojom::PremiumInfoPtr premium_info = mojom::PremiumInfo::New();
+              std::move(callback).Run(is_premium_
+                                          ? mojom::PremiumStatus::Active
+                                          : mojom::PremiumStatus::Inactive,
+                                      std::move(premium_info));
+            });
+
     conversation_driver_ = std::make_unique<MockConversationDriver>(
-        &prefs_, &local_state_, nullptr, skus_service_getter,
+        &prefs_, &local_state_, nullptr, std::move(credential_manager),
         shared_url_loader_factory_, "");
   }
 
@@ -172,11 +204,65 @@ class ConversationDriverUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
+  base::test::ScopedFeatureList features_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<MockConversationDriver> conversation_driver_;
+  std::string default_model_key_;
+  bool is_premium_ = false;
 };
+
+// Test fixture which emulates premium user state
+class ConversationDriverUnitTest_Premium : public ConversationDriverUnitTest {
+ public:
+  using ConversationDriverUnitTest::ConversationDriverUnitTest;
+
+  void SetUp() override {
+    is_premium_ = true;
+    ConversationDriverUnitTest::SetUp();
+  }
+};
+
+// Test fixture which emulates user pref for obsolete claude instant default
+// model.
+class ConversationDriverUnitTest_ClaudeInstant
+    : public ConversationDriverUnitTest {
+ public:
+  using ConversationDriverUnitTest::ConversationDriverUnitTest;
+
+  void SetUp() override {
+    default_model_key_ = "chat-claude-instant";
+    ConversationDriverUnitTest::SetUp();
+  }
+};
+
+// Test fixture which emulates user pref for obsolete claude instant default
+// model and a premium user state.
+class ConversationDriverUnitTest_PremiumClaudeInstant
+    : public ConversationDriverUnitTest_Premium {
+ public:
+  using ConversationDriverUnitTest_Premium::ConversationDriverUnitTest_Premium;
+
+  void SetUp() override {
+    default_model_key_ = "chat-claude-instant";
+    ConversationDriverUnitTest_Premium::SetUp();
+  }
+};
+
+TEST_F(ConversationDriverUnitTest_ClaudeInstant, Construction_Migrate) {
+  // Test that obsolete "chat-claude-instant" is correctly migrated for
+  // non-premium users.
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_driver_->GetCurrentModel().key, "chat-claude-haiku");
+}
+
+TEST_F(ConversationDriverUnitTest_PremiumClaudeInstant, Construction_Migrate) {
+  // Test that obsolete "chat-claude-instant" is correctly migrated for premium
+  // users.
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_driver_->GetCurrentModel().key, "chat-claude-sonnet");
+}
 
 TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   bool is_page_content_linked = false;

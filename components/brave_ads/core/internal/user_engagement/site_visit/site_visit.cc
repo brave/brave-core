@@ -45,7 +45,7 @@ void SiteVisit::RemoveObserver(SiteVisitObserver* observer) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SiteVisit::IsPageLanding(const int32_t tab_id) const {
+bool SiteVisit::IsLandingPage(const int32_t tab_id) const {
   return base::Contains(page_lands_, tab_id);
 }
 
@@ -55,7 +55,7 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
     return;
   }
 
-  if (!IsPageLanding(tab.id)) {
+  if (!IsLandingPage(tab.id)) {
     MaybeLandOnPageAfter(tab, *last_clicked_ad_, kPageLandAfter.Get());
   }
 
@@ -66,7 +66,7 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
 void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
                                      const AdInfo& ad,
                                      const base::TimeDelta page_land_after) {
-  CHECK(!IsPageLanding(tab.id));
+  CHECK(!IsLandingPage(tab.id));
 
   if (!DomainOrHostExists(tab.redirect_chain, ad.target_url)) {
     return BLOG(1, "Visited page does not match the ad landing page");
@@ -84,7 +84,7 @@ void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
 }
 
 void SiteVisit::MaybeLandOnPageAfterCallback(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+  CHECK(IsLandingPage(tab.id));
 
   const AdInfo ad = page_lands_[tab.id].ad;
   DidLandOnPage(tab.id, ad.target_url) ? LandedOnPage(tab, ad)
@@ -121,8 +121,7 @@ void SiteVisit::DidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) const {
 }
 
 void SiteVisit::MaybeCancelPageLand(const TabInfo& tab) {
-  if (!IsPageLanding(tab.id)) {
-    // The tab isn't a landing page.
+  if (!IsLandingPage(tab.id)) {
     return;
   }
 
@@ -134,8 +133,7 @@ void SiteVisit::MaybeCancelPageLand(const TabInfo& tab) {
 }
 
 void SiteVisit::CancelPageLand(const int32_t tab_id) {
-  if (!IsPageLanding(tab_id)) {
-    // The tab isn't a landing page.
+  if (!IsLandingPage(tab_id)) {
     return;
   }
 
@@ -160,8 +158,11 @@ void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
 }
 
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
-  if (!IsPageLanding(tab_id)) {
-    // The tab isn't a landing page.
+  if (!kShouldSuspendAndResumePageLand.Get()) {
+    return;
+  }
+
+  if (!IsLandingPage(tab_id)) {
     return;
   }
 
@@ -180,7 +181,7 @@ void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
 
 base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
     const int32_t tab_id) {
-  CHECK(IsPageLanding(tab_id));
+  CHECK(IsLandingPage(tab_id));
 
   const PageLandInfo& page_land = page_lands_[tab_id];
 
@@ -188,7 +189,7 @@ base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
 }
 
 void SiteVisit::SuspendPageLand(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+  CHECK(IsLandingPage(tab.id));
 
   PageLandInfo& page_land = page_lands_[tab.id];
 
@@ -207,7 +208,7 @@ void SiteVisit::SuspendPageLand(const TabInfo& tab) {
 }
 
 void SiteVisit::ResumePageLand(const TabInfo& tab) {
-  CHECK(IsPageLanding(tab.id));
+  CHECK(IsLandingPage(tab.id));
 
   PageLandInfo& page_land = page_lands_[tab.id];
 

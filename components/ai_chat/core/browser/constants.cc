@@ -37,9 +37,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"introMessage-chat-claude-sonnet",
        IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET},
       {"modelNameSyntax", IDS_CHAT_UI_MODEL_NAME_SYNTAX},
-      {"modelFreemiumLabelNonPremium",
-       IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_NON_PREMIUM},
-      {"modelFreemiumLabelPremium", IDS_CHAT_UI_MODEL_FREEMIUM_LABEL_PREMIUM},
+      {"modelPremiumLabelNonPremium",
+       IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"modelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
       {"menuNewChat", IDS_CHAT_UI_MENU_NEW_CHAT},
       {"menuGoPremium", IDS_CHAT_UI_MENU_GO_PREMIUM},
@@ -105,6 +104,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
       {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
       {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
+      {"learnMore", IDS_CHAT_UI_LEARN_MORE},
       {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
       {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
       {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},
@@ -143,7 +143,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
       {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
-      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL}};
+      {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL},
+      {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
+      {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL}};
 
   return kLocalizedStrings;
 }
@@ -240,7 +242,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
             base::JoinString(
                 {change_tone_subheading,
                  l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPAND)},
-                "/ "),
+                " / "),
             mojom::ActionType::EXPAND)));
 
     action_list.push_back(std::move(group));

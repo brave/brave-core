@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
+
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
@@ -190,6 +191,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD_WITH_PREVIEW},
       {"appearanceSettingsTabHoverModeTooltip",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
+      {"appearanceSettingsSharedPinnedTab",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB},
       {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
       {"appearanceSettingsShowOptionTitle",
        IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
@@ -416,6 +419,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL},
       {"leoClearHistoryDataSubLabel",
        IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL},
+      {"braveLeoPremiumLabelNonPremium",
+       IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
       {"braveLeoAssistantModelSelectionLabel",
        IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
       {"braveLeoModelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},

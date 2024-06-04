@@ -426,7 +426,6 @@ class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
     extensions::ExtensionBrowserTest::SetUpOnMainThread();
 
     // Override extension data dir.
-    brave::RegisterPathProvider();
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     extension_path_ = test_data_dir_.AppendASCII("extensions")
                           .AppendASCII("trivial_extension");

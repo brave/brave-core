@@ -255,7 +255,13 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
           }
-        })
+        },
+        openPrivacyReportsUrl: {
+          openURL(.brave.braveLeoRefreshCredentials)
+
+          dismiss()
+        }
+      )
     }
     .sheet(isPresented: $isAdvancedSettingsPresented) {
       AIChatAdvancedSettingsView(
@@ -449,8 +455,10 @@ public struct AIChatView: View {
         )
         .padding()
       case .contextLimitReached:
-        AIChatContextLimitErrorView()
-          .padding()
+        AIChatContextLimitErrorView {
+          model.clearConversationHistory()
+        }
+        .padding()
       case .none:
         EmptyView()
       @unknown default:

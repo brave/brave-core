@@ -9,6 +9,7 @@
 
 // Forward declaration
 int GetLayoutConstant_ChromiumImpl(LayoutConstant constant);
+gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
 
 #define LayoutConstant LayoutConstant constant) {                            \
     const std::optional<int> braveOption = GetBraveLayoutConstant(constant); \
@@ -21,5 +22,18 @@ int GetLayoutConstant_ChromiumImpl(LayoutConstant constant);
                                                                              \
   int GetLayoutConstant_ChromiumImpl(LayoutConstant
 
+#define LayoutInset LayoutInset inset) {           \
+    const std::optional<gfx::Insets> braveOption = \
+        GetBraveLayoutInsets(inset);               \
+    if (braveOption) {                             \
+      return braveOption.value();                  \
+    }                                              \
+                                                   \
+    return GetLayoutInsets_ChromiumImpl(inset);    \
+  }                                                \
+                                                   \
+  gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset
+
 #include "src/chrome/browser/ui/layout_constants.cc"
+#undef LayoutInset
 #undef LayoutConstant

@@ -43,6 +43,7 @@ static_library("browser") {
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
+    "//ui/accessibility:ax_base",
     "//ui/base",
     "//url",
   ]

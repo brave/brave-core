@@ -513,7 +513,6 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
   // directly for test
   brave_sync_service_impl()->sync_disabled_by_admin_ = true;
   brave_sync_service_impl()->ResetEngine(
-      ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA,
       SyncServiceImpl::ResetEngineReason::kDisabledAccount);
 
   EXPECT_TRUE(join_chain_callback_invoked);

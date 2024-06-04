@@ -13,7 +13,6 @@ import WebKit
 public enum AIChatModelKey: String {
   case chatBasic = "chat-basic"
   case chatExpanded = "chat-leo-expanded"
-  case chatClaudeInstant = "chat-claude-instant"
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
 }
@@ -22,6 +21,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   private var api: AIChat!
   private weak var webView: WKWebView?
   private let script: any AIChatJavascript.Type
+  private let braveTalkScript: AIChatBraveTalkJavascript?
   var querySubmited: String?
 
   @Published var siteInfo: AiChat.SiteInfo?
@@ -111,10 +111,12 @@ public class AIChatViewModel: NSObject, ObservableObject {
     braveCore: BraveCoreMain,
     webView: WKWebView?,
     script: any AIChatJavascript.Type,
+    braveTalkScript: AIChatBraveTalkJavascript?,
     querySubmited: String? = nil
   ) {
     self.webView = webView
     self.script = script
+    self.braveTalkScript = braveTalkScript
     self.querySubmited = querySubmited
 
     super.init()
@@ -241,6 +243,10 @@ extension AIChatViewModel: AIChatDelegate {
 
     requestInProgress = true
     defer { requestInProgress = api.isRequestInProgress }
+
+    if let transcript = await braveTalkScript?.getTranscript() {
+      return (transcript, false)
+    }
 
     if await script.getPageContentType(webView: webView) == "application/pdf" {
       if let base64EncodedPDF = await script.getPDFDocument(webView: webView) {

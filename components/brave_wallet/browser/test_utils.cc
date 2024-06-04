@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ref.h"
 #include "base/notreached.h"
@@ -14,6 +15,7 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -42,6 +44,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Zcash Mainnet Account";
       case mojom::KeyringId::kZCashTestnet:
         return "Zcash Testnet Account";
+      case mojom::KeyringId::kBitcoinImport:
+        return "Bitcoin Imported Account";
+      case mojom::KeyringId::kBitcoinImportTestnet:
+        return "Bitcoin Imported Testnet Account";
     }
     NOTREACHED();
     return "";
@@ -88,8 +94,56 @@ mojom::AccountInfoPtr AccountUtils::CreateDerivedAccount(
   return acc;
 }
 
+mojom::AccountInfoPtr AccountUtils::GetImportedAccount(
+    mojom::KeyringId keyring_id,
+    uint32_t index) {
+  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
+
+  auto all_accounts = keyring_service_->GetAllAccountsSync();
+  for (auto& acc : all_accounts->accounts) {
+    if (acc->account_id->keyring_id != keyring_id ||
+        acc->account_id->kind != mojom::AccountKind::kImported) {
+      continue;
+    }
+    if (index == 0) {
+      return acc->Clone();
+    }
+    --index;
+  }
+  return nullptr;
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
+    mojom::KeyringId keyring_id,
+    const std::string& name) {
+  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
+  const auto network = GetNetworkForBitcoinKeyring(keyring_id);
+  auto acc =
+      keyring_service_
+          ->ImportBitcoinAccountSync(name,
+                                     (network == mojom::kBitcoinMainnet)
+                                         ? kBtcMainnetImportAccount0
+                                         : kBtcTestnetImportAccount0,
+                                     GetNetworkForBitcoinKeyring(keyring_id))
+          ->Clone();
+  EXPECT_TRUE(acc);
+  return acc;
+}
+
 mojom::AccountInfoPtr AccountUtils::EnsureAccount(mojom::KeyringId keyring_id,
                                                   uint32_t index) {
+  if (IsBitcoinImportKeyring(keyring_id)) {
+    for (auto i = 0u; i <= index; ++i) {
+      if (!GetImportedAccount(keyring_id, i)) {
+        EXPECT_TRUE(
+            CreateImportedAccount(keyring_id, NewAccName(keyring_id, i)));
+      }
+    }
+    auto acc = GetImportedAccount(keyring_id, index);
+    EXPECT_TRUE(acc);
+    return acc;
+  }
+
   for (auto i = 0u; i <= index; ++i) {
     if (!GetDerivedAccount(keyring_id, i)) {
       EXPECT_TRUE(CreateDerivedAccount(keyring_id, NewAccName(keyring_id, i)));
@@ -213,9 +267,14 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
     mojom::KeyringId keyring_id) {
+  return AllAccounts(std::vector<mojom::KeyringId>{keyring_id});
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
+    const std::vector<mojom::KeyringId>& keyring_ids) {
   std::vector<mojom::AccountInfoPtr> result;
   for (auto& acc : keyring_service_->GetAllAccountInfos()) {
-    if (acc->account_id->keyring_id == keyring_id) {
+    if (base::Contains(keyring_ids, acc->account_id->keyring_id)) {
       result.push_back(acc->Clone());
     }
   }
@@ -239,11 +298,13 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilTestAccounts() {
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
-  return AllAccounts(mojom::KeyringId::kBitcoin84);
+  return AllAccounts(
+      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
-  return AllAccounts(mojom::KeyringId::kBitcoin84Testnet);
+  return AllAccounts({mojom::KeyringId::kBitcoin84Testnet,
+                      mojom::KeyringId::kBitcoinImportTestnet});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {

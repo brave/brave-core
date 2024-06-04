@@ -299,13 +299,6 @@ class TestSourceProvider: AdBlockGroupsManager.SourceProvider {
     }
   }
 
-  /// Return all engabled sources for the given engine type
-  func enabledSources(
-    for engineType: GroupedAdBlockEngine.EngineType
-  ) -> [GroupedAdBlockEngine.Source] {
-    return enabledSources
-  }
-
   func legacyCacheFiles(
     for engineType: Brave.GroupedAdBlockEngine.EngineType
   ) -> [Brave.AdBlockEngineManager.FileInfo] {

@@ -1,5 +1,5 @@
 diff --git a/tools/perf/core/results_dashboard.py b/tools/perf/core/results_dashboard.py
-index d9d262b836877a4e39c9c3481c68aa08f1eb5796..9034695561a275e3703b0f922376aeb3ee2bf2a4 100755
+index 90c7292dfedd240cb5f06c63e18f3078c9fda343..ecf9bd1b6e2abae74c42d4241275d47535b01278 100755
 --- a/tools/perf/core/results_dashboard.py
 +++ b/tools/perf/core/results_dashboard.py
 @@ -507,3 +507,4 @@ def _SendHistogramJson(url, histogramset_json, token_generator_callback):

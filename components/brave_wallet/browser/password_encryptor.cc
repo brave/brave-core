@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/mem_utils.h"
 #include "crypto/aead.h"
 #include "crypto/openssl_util.h"
+#include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
 namespace brave_wallet {
@@ -24,7 +26,66 @@ PasswordEncryptor::PasswordEncryptor(const std::vector<uint8_t> key)
     : key_(key) {}
 PasswordEncryptor::~PasswordEncryptor() {
   // zero key
-  SecureZeroData(key_.data(), key_.size());
+  SecureZeroData(key_);
+}
+
+// TODO(apaymyshev): Need to use much lesser value for unit tests where this
+// value is irrelevant. Otherwise it takes too much time for tests to pass.
+// static
+std::optional<int>& PasswordEncryptor::GetPbkdf2IterationsForTesting() {
+  static std::optional<int> iterations;
+  return iterations;
+}
+
+// static
+base::RepeatingCallback<std::vector<uint8_t>()>&
+PasswordEncryptor::GetCreateNonceCallbackForTesting() {
+  static base::NoDestructor<base::RepeatingCallback<std::vector<uint8_t>()>>
+      callback;
+  return *callback.get();
+}
+
+// static
+base::RepeatingCallback<std::vector<uint8_t>()>&
+PasswordEncryptor::GetCreateSaltCallbackForTesting() {
+  static base::NoDestructor<base::RepeatingCallback<std::vector<uint8_t>()>>
+      callback;
+  return *callback.get();
+}
+
+// static
+std::vector<uint8_t> PasswordEncryptor::CreateNonce() {
+  if (GetCreateNonceCallbackForTesting()) {
+    return GetCreateNonceCallbackForTesting().Run();  // IN-TEST
+  }
+  return crypto::RandBytesAsVector(kEncryptorNonceSize);
+}
+
+// static
+std::vector<uint8_t> PasswordEncryptor::CreateSalt() {
+  if (GetCreateSaltCallbackForTesting()) {
+    return GetCreateSaltCallbackForTesting().Run();  // IN-TEST
+  }
+  return crypto::RandBytesAsVector(kEncryptorSaltSize);
+}
+
+// static
+std::unique_ptr<PasswordEncryptor> PasswordEncryptor::CreateEncryptor(
+    const std::string& password,
+    base::span<const uint8_t> salt) {
+  if (password.empty()) {
+    return nullptr;
+  }
+
+  if (salt.size() != kEncryptorSaltSize) {
+    return nullptr;
+  }
+
+  const auto iterations =
+      GetPbkdf2IterationsForTesting().value_or(kPbkdf2Iterations);  // IN-TEST
+
+  return PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+      password, salt, iterations, kPbkdf2KeySize);
 }
 
 // static

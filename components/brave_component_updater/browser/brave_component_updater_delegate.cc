@@ -40,7 +40,7 @@ void BraveComponentUpdaterDelegate::Register(
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
-  brave::RegisterComponent(std::to_address(component_updater_), component_name,
+  brave::RegisterComponent(base::to_address(component_updater_), component_name,
                            component_base64_public_key,
                            std::move(registered_callback),
                            std::move(ready_callback));
@@ -75,7 +75,7 @@ const std::string& BraveComponentUpdaterDelegate::locale() const {
 }
 
 PrefService* BraveComponentUpdaterDelegate::local_state() {
-  return std::to_address(local_state_);
+  return base::to_address(local_state_);
 }
 
 }  // namespace brave

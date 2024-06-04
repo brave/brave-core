@@ -69,7 +69,8 @@ BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
   }
 }
 
-gfx::Size BookmarkBarInstructionsView::CalculatePreferredSize() const {
+gfx::Size BookmarkBarInstructionsView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   int height = 0, width = 0;
   for (views::View* view : children()) {
     gfx::Size pref = view->GetPreferredSize();
@@ -127,7 +128,8 @@ void BookmarkBarInstructionsView::UpdateColors() {
 
   const ui::ColorProvider* cp = GetColorProvider();
   if (cp && import_link_) {
-    import_link_->SetEnabledColor(cp->GetColor(ui::kColorLinkForeground));
+    import_link_->SetEnabledColor(
+        cp->GetColor(kColorBookmarkBarInstructionsLink));
   }
 }
 

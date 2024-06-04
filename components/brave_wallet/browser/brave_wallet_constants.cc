@@ -72,22 +72,6 @@ GetEthBalanceScannerContractAddresses() {
   return *contract_addresses;
 }
 
-bool HasJupiterFeesForTokenMint(const std::string& mint) {
-  static std::vector<std::string> mints(
-      {"So11111111111111111111111111111111111111112",     // wSOL
-       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",    // USDC
-       "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",    // USDT
-       "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",    // WETH (Wormhole)
-       "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk",    // ETH (Sollet)
-       "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E",    // BTC (Sollet)
-       "qfnqNqs3nCAHjnyCgLRDbBtq4p2MtHZxw8YjSyYhPoL",     // wWBTC (Wormhole)
-       "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",    // stSOL
-       "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",     // mSOL
-       "FYpdBuyAHSbdaAyD1sKkxyLWbAP8uUW9h6uvdhK74ij1"});  // DAI
-
-  return base::Contains(mints, mint);
-}
-
 const std::vector<std::string>& GetEthSupportedNftInterfaces() {
   static base::NoDestructor<std::vector<std::string>> interfaces({
       kERC721InterfaceId,

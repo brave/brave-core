@@ -16,10 +16,7 @@ extension AttributedString {
     result.interpretedSyntax = .full
     result.failurePolicy = .returnPartiallyParsedIfPossible
     result.languageCode = nil
-
-    if #available(iOS 16, *) {
-      result.appliesSourcePositionAttributes = false
-    }
+    result.appliesSourcePositionAttributes = false
     return result
   }
 

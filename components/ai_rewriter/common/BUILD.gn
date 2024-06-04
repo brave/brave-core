@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+assert(enable_ai_rewriter)
+
+component("common") {
+  output_name = "ai_rewriter_common"
+
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  defines = [ "IS_AI_REWRITER_COMMON_IMPL" ]
+
+  public_deps = [ "//brave/components/ai_rewriter/common/mojom" ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_rewriter/common/buildflags",
+  ]
+}

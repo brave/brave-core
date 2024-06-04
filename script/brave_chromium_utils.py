@@ -57,6 +57,20 @@ def get_chromium_src_override(path: str) -> str:
     return wspath(f'//brave/chromium_src/{src_path}')
 
 
+def to_wspath(path: str) -> str:
+    """Convert path into workspace path. Examples:
+
+    `/home/user/brave_checkout/src/chrome/file.txt` -> `//chrome/file.txt`
+    `C:\\brave_checkout\\src\\chrome\\file.txt` -> `//chrome/file.txt`
+    """
+    assert path, path
+    if not os.path.isabs(path):
+        path = os.path.abspath(path)
+    assert os.path.exists(path), path
+    src_dir = get_src_dir()
+    return '//' + os.path.relpath(path, src_dir).replace(os.path.sep, '/')
+
+
 def inline_file(path: str, _globals: Dict[str, Any],
                 _locals: Dict[str, Any]) -> None:
     """Inline file from `path` by executing it using `_globals` and `_locals`

@@ -10,6 +10,8 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
@@ -196,7 +198,15 @@ SharedPinnedTabService::SharedPinnedTabService(Profile* profile)
     : profile_(profile) {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
   profile_observation_.Observe(profile_);
-  browser_list_observation_.Observe(BrowserList::GetInstance());
+
+  shared_pinned_tab_enabled_.Init(
+      brave_tabs::kSharedPinnedTab, profile_->GetPrefs(),
+      base::BindRepeating(&SharedPinnedTabService::OnSharedPinnedTabPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+
+  if (*shared_pinned_tab_enabled_) {
+    browser_list_observation_.Observe(BrowserList::GetInstance());
+  }
 }
 
 SharedPinnedTabService::~SharedPinnedTabService() = default;
@@ -288,8 +298,6 @@ void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
   DVLOG(2) << __FUNCTION__ << " " << browser->tab_strip_model()->count();
 
   browser->tab_strip_model()->AddObserver(this);
-  DCHECK_EQ(0, browser->tab_strip_model()->count())
-      << "We're assuming that browser doesn't have any tabs at this point.";
   browsers_.insert(browser);
 }
 
@@ -367,6 +375,16 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
 void SharedPinnedTabService::OnBrowserRemoved(Browser* browser) {
   DVLOG(2) << __FUNCTION__;
   closing_browsers_.erase(browser);
+
+  // On Mac, even after the last browser is closed, the app could be still alive
+  // on background. We should clean up the data in this case.
+  if (last_active_browser_ == browser) {
+    last_active_browser_ = nullptr;
+  }
+
+  if (browsers_.empty()) {
+    pinned_tab_data_.clear();
+  }
 }
 
 void SharedPinnedTabService::OnTabStripModelChanged(
@@ -641,11 +659,11 @@ void SharedPinnedTabService::OnTabUnpinned(
     DCHECK_NE(iter->contents_owner_model, tab_strip_model);
 
     auto unique_shared_contents =
-        iter->contents_owner_model->ReplaceWebContentsAt(
+        iter->contents_owner_model->DiscardWebContentsAt(
             previous_index, CreateDummyWebContents(shared_contents));
     SharedContentsData::RemoveFromWebContents(unique_shared_contents.get());
 
-    tab_strip_model->ReplaceWebContentsAt(index,
+    tab_strip_model->DiscardWebContentsAt(index,
                                           std::move(unique_shared_contents));
   } else {
     SharedContentsData::RemoveFromWebContents(contents.get());
@@ -704,7 +722,22 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
   }
 }
 
+void SharedPinnedTabService::TabDraggingEnded(Browser* browser) {
+  if (!in_tab_dragging_browsers_.erase(browser)) {
+    return;
+  }
+
+  if (!browser->IsBrowserClosing()) {
+    SynchronizeNewBrowser(browser);
+  }
+}
+
 void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
+  if (IsBrowserInTabDragging(browser)) {
+    in_tab_dragging_browsers_.insert(browser);
+    return;
+  }
+
   auto* model = browser->tab_strip_model();
   std::vector<PinnedTabData> new_pinned_tabs;
   for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
@@ -776,6 +809,10 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     Browser* browser,
     int index,
     bool is_last_closing_browser) {
+  if (IsBrowserInTabDragging(browser)) {
+    return;
+  }
+
   auto* tab_strip_model = browser->tab_strip_model();
   DCHECK_LT(index, tab_strip_model->count());
 
@@ -785,14 +822,16 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
   if (pinned_tab_data.contents_owner_model) {
     // Detach shared pinned tab from the current owner model.
     std::unique_ptr<content::WebContents> unique_shared_contents =
-        pinned_tab_data.contents_owner_model->ReplaceWebContentsAt(
+        pinned_tab_data.contents_owner_model->DiscardWebContentsAt(
             index, CreateDummyWebContents(pinned_tab_data.shared_contents));
     DCHECK_EQ(pinned_tab_data.shared_contents, unique_shared_contents.get());
 
     // Install DummyView to the dummy contents.
-    DummyContentsData::FromWebContents(
-        pinned_tab_data.contents_owner_model->GetWebContentsAt(index))
-        ->ShowDummyView();
+    if (pinned_tab_data.contents_owner_model->active_index() == index) {
+      DummyContentsData::FromWebContents(
+          pinned_tab_data.contents_owner_model->GetWebContentsAt(index))
+          ->ShowDummyView();
+    }
 
     // Replace owner model
     pinned_tab_data.contents_owner_model = tab_strip_model;
@@ -806,7 +845,7 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
     DCHECK(dummy_contents_data);
     dummy_contents_data->stop_propagation();
 
-    pinned_tab_data.contents_owner_model->ReplaceWebContentsAt(
+    pinned_tab_data.contents_owner_model->DiscardWebContentsAt(
         index, std::move(unique_shared_contents));
   } else {
     // Restore a shared pinned tab from a closed browser.
@@ -838,6 +877,63 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
   }
 }
 
+void SharedPinnedTabService::OnSharedPinnedTabPrefChanged() {
+  if (*shared_pinned_tab_enabled_) {
+    OnSharedPinnedTabEnabled();
+  } else {
+    OnSharedPinnedTabDisabled();
+  }
+}
+
+void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
+  // Init observers
+  browser_list_observation_.Observe(BrowserList::GetInstance());
+  auto browsers = chrome::FindAllTabbedBrowsersWithProfile(profile_);
+  for (auto* browser : browsers) {
+    OnBrowserAdded(browser);
+  }
+
+  // Synchronize all pre-existing pinned tabs.
+  for (auto* browser : browsers) {
+    auto* tab_strip_model = browser->tab_strip_model();
+    for (int i = 0; i < tab_strip_model->IndexOfFirstNonPinnedTab(); ++i) {
+      auto* contents = tab_strip_model->GetWebContentsAt(i);
+      if (IsDummyContents(contents)) {
+        // This tab is dummy tab created inside this loop from another
+        // browser.
+        continue;
+      }
+      TabPinnedStateChanged(tab_strip_model, contents, i);
+    }
+  }
+}
+
+void SharedPinnedTabService::OnSharedPinnedTabDisabled() {
+  // Reset observers. Note that we should remove observers first so that
+  // closing dummy contents won't close shared contents too.
+  for (auto* browser : browsers_) {
+    browser->tab_strip_model()->RemoveObserver(this);
+  }
+  browser_list_observation_.Reset();
+
+  // Remove all dummy contents
+  for (auto* browser : browsers_) {
+    auto* tab_strip_model = browser->tab_strip_model();
+    for (auto i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0;
+         --i) {
+      if (IsDummyContents(tab_strip_model->GetWebContentsAt(i))) {
+        tab_strip_model->CloseWebContentsAt(i, /* close_type */ 0);
+      }
+    }
+  }
+
+  // Reset data
+  browsers_.clear();
+  last_active_browser_ = nullptr;
+  closing_browsers_.clear();
+  pinned_tab_data_.clear();
+}
+
 std::unique_ptr<content::WebContents>
 SharedPinnedTabService::CreateDummyWebContents(
     content::WebContents* shared_contents) {
@@ -849,4 +945,9 @@ SharedPinnedTabService::CreateDummyWebContents(
   DummyContentsData::CreateForWebContents(dummy_contents.get(),
                                           shared_contents);
   return dummy_contents;
+}
+
+bool SharedPinnedTabService::IsBrowserInTabDragging(Browser* browser) const {
+  CHECK(browser);
+  return static_cast<BraveBrowserWindow*>(browser->window())->IsInTabDragging();
 }

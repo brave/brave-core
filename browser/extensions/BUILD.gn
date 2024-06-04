@@ -13,6 +13,8 @@ import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
+assert(toolkit_views)
+
 source_set("extensions") {
   # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
   check_includes = false
@@ -80,6 +82,7 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
@@ -98,10 +101,6 @@ source_set("extensions") {
     "//ui/base",
     "//url",
   ]
-
-  if (toolkit_views) {
-    deps += [ "//brave/components/sidebar/browser" ]
-  }
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]

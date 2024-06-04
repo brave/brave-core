@@ -1598,6 +1598,18 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_DOWN_TEXT" desc="Text for brave shields down.">
         You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?
       </message>
+      <message name="IDS_BRAVE_ETHEREUM_NETWORKS" desc="Text Ethereum networks label.">
+        Ethereum networks
+      </message>
+      <message name="IDS_BRAVE_FILECOIN_NETWORKS" desc="Text Filecoin networks label.">
+        Filecoin networks
+      </message>
+      <message name="IDS_BRAVE_SOLANA_NETWORKS" desc="Text Solana networks label.">
+        Solana networks
+      </message>
+      <message name="IDS_BRAVE_BITCOIN_NETWORKS" desc="Text Bitcoin networks label.">
+        Bitcoin networks
+      </message>
       <message name="IDS_SITE_BROKEN_TEXT" desc="Shields text for broken text warning message.">
         If this site appears broken, try Shields down.
       </message>
@@ -3982,6 +3994,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
       Update is downloaded.
+    </message>
+    <message name="IDS_UPDATE_FILTER_LIST_SUCCESS_TEXT" desc="Text to notify users for updating filterlist successfully">
+      Filter list is updated successfully
+    </message>
+    <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
+      Filter list could not be updated. Please try again
     </message>
   </messages>
   </release>

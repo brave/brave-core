@@ -91,7 +91,6 @@ class SearchResultAdTest : public InProcessBrowserTest {
     https_server_->RegisterRequestHandler(base::BindRepeating(
         &SearchResultAdTest::HandleRequest, base::Unretained(this)));
 
-    brave::RegisterPathProvider();
     const base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_->ServeFilesFromDirectory(test_data_dir);

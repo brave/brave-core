@@ -11,6 +11,7 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
@@ -29,6 +30,7 @@ class BraveNewsP3ATest : public testing::Test {
     task_environment_.AdvanceClock(base::Days(2));
     PrefRegistrySimple* registry = pref_service_.registry();
     BraveNewsPrefManager::RegisterProfilePrefs(registry);
+    registry->RegisterBooleanPref(brave_rewards::prefs::kEnabled, false);
 
     pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
     metrics_ = std::make_unique<NewsMetrics>(&pref_service_, *pref_manager_);
@@ -110,9 +112,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
 
 TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
   metrics_->RecordAtInit();
-  histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 1);
-  histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 0,
-                                      1);
+  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 0, 1);
 
   metrics_->RecordWeeklyDisplayAdsViewedCount(true);
   metrics_->RecordWeeklyDisplayAdsViewedCount(true);
@@ -124,21 +125,18 @@ TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
 
   task_environment_.AdvanceClock(base::Days(2));
   metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 5);
-  histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 2,
-                                      3);
+  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 5);
+  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 2, 3);
 
   task_environment_.AdvanceClock(base::Days(3));
   metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 6);
-  histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 1,
-                                      2);
+  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 6);
+  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 1, 2);
 
   task_environment_.AdvanceClock(base::Days(2));
   metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 7);
-  histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 0,
-                                      2);
+  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 7);
+  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 0, 2);
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyDisplayAdViewedCount), 0);
 }

@@ -24,13 +24,7 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest,
                                     public ::testing::WithParamInterface<bool> {
  public:
   FileSystemAccessBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~FileSystemAccessBrowserTest() override = default;
 
@@ -47,6 +41,10 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest,
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
     // Map all hosts to localhost.
     host_resolver()->AddRule("*", "127.0.0.1");

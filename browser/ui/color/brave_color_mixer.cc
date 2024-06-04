@@ -16,6 +16,8 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/color/chrome_color_provider_utils.h"
+#include "chrome/browser/ui/color/material_chrome_color_mixer.h"
 #include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
 #include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
@@ -310,6 +312,17 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
       base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
   mixer[kColorToolbarInkDropRipple] = {
       base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
+
+  if (key.custom_theme) {
+    return;
+  }
+
+  mixer[kColorLocationBarBackground] = {kColorToolbarBackgroundSubtleEmphasis};
+  mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
+
+  // We don't show border when omnibox doesn't have focus but still
+  // contains in-progress user input.
+  mixer[kColorLocationBarBorderOnMismatch] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
@@ -371,14 +384,30 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
                                        const ui::ColorProviderKey& key) {
   AddChromeColorMixerForAllThemes(provider, key);
 
-  if (key.custom_theme) {
-    return;
-  }
-
   // This is behind features::IsChromeRefresh2023 upstream, but without it the
   // colors are not set correctly.
+  // These mixers should be called always as upstream does. Otherwise,
+  // some colors are missed for private windows because we use custom theme
+  // for private/tor window.
   if (!features::IsChromeRefresh2023()) {
+    AddMaterialChromeColorMixer(provider, key);
     AddMaterialSidePanelColorMixer(provider, key);
+  }
+
+  // Upstream started to use same colors for all severity. But, we want to use
+  // upstream's previous non-material color to app menu highlight. These colors
+  // are copied from AddChromeColorMixer() because it's overwritten by
+  // AddMaterialChromeColorMixer().
+  ui::ColorMixer& mixer = provider->AddMixer();
+  mixer[kColorAppMenuHighlightSeverityLow] = AdjustHighlightColorForContrast(
+      ui::kColorAlertLowSeverity, kColorToolbar);
+  mixer[kColorAppMenuHighlightSeverityHigh] = {
+      kColorAvatarButtonHighlightSyncError};
+  mixer[kColorAppMenuHighlightSeverityMedium] = AdjustHighlightColorForContrast(
+      ui::kColorAlertMediumSeverityIcon, kColorToolbar);
+
+  if (key.custom_theme) {
+    return;
   }
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
@@ -396,7 +425,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorBookmarkBarInstructionsLink] = {PickColorContrastingToToolbar(
+      key, mixer, leo::light::kColorTextInteractive,
+      leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
+  // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
+  mixer[kColorSearchConversionBannerTypeBackground] = {
+      SkColorSetRGB(0xEA, 0xF1, 0xFF)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
@@ -409,17 +444,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(104, 0xFF, 0xFF, 0xFF)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
       SkColorSetRGB(0xEF, 0xEF, 0xFB)};
-  mixer[kColorSearchConversionButtonTypeInputAppend] = {
-      SkColorSetRGB(0x58, 0x5C, 0x6D)};
-  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
-      SkColorSetRGB(0xED, 0xEE, 0xFA)};
-  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
-      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
 
-  mixer[kColorSearchConversionButtonTypeDescNormal] = {
-      SkColorSetRGB(0x44, 0x4d, 0xd0)};
-  mixer[kColorSearchConversionButtonTypeDescHovered] = {
-      SkColorSetRGB(0x1F, 0x25, 0x7A)};
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0x49, 0x50, 0x57)};
@@ -511,7 +536,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
+  mixer[kColorBookmarkBarInstructionsLink] = {PickColorContrastingToToolbar(
+      key, mixer, leo::light::kColorTextInteractive,
+      leo::dark::kColorTextInteractive)};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
+  // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
+  mixer[kColorSearchConversionBannerTypeBackground] = {
+      SkColorSetRGB(0x00, 0x1C, 0x37)};
   mixer[kColorSearchConversionCloseButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
   mixer[kColorSearchConversionBannerTypeDescText] = {
@@ -524,16 +555,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(104, 0x17, 0x19, 0x1E)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
       SkColorSetARGB(104, 0x1F, 0x25, 0x7A)};
-  mixer[kColorSearchConversionButtonTypeInputAppend] = {
-      SkColorSetRGB(0xAC, 0xAF, 0xBB)};
-  mixer[kColorSearchConversionButtonTypeBackgroundNormal] = {
-      SkColorSetRGB(0x1A, 0x1C, 0x3B)};
-  mixer[kColorSearchConversionButtonTypeBackgroundHovered] = {
-      SkColorSetRGB(0x1F, 0x25, 0x7A)};
-  mixer[kColorSearchConversionButtonTypeDescNormal] = {
-      SkColorSetRGB(0xA6, 0xAB, 0xE9)};
-  mixer[kColorSearchConversionButtonTypeDescHovered] = {
-      SkColorSetRGB(0xE2, 0xE3, 0xF8)};
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0xC2, 0xC4, 0xCF)};
@@ -763,6 +784,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBravePlayerActionViewBorder] = {
       pick_color(leo::Color::kColorDividerSubtle)};
 
+  // We don't use bg color for location icon view.
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+
   if (key.custom_theme) {
     return;
   }
@@ -808,7 +832,7 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
       pick_color(leo::Color::kColorDividerSubtle)};
   mixer[kColorBravePlayerActionViewBorder] = {
       pick_color(leo::Color::kColorDividerSubtle)};
-
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
   if (key.custom_theme) {
     return;
   }
@@ -853,6 +877,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ true)};
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,

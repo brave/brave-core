@@ -39,6 +39,7 @@ class JSPromptAlertController: UIAlertController {
           title: Strings.suppressAlertsActionTitle,
           style: .default,
           handler: { _ in
+            self.handledAction = true
             handler(true)
           }
         )
@@ -50,6 +51,7 @@ class JSPromptAlertController: UIAlertController {
           title: Strings.cancelButtonTitle,
           style: .cancel,
           handler: { _ in
+            self.handledAction = true
             self.info?.cancel()
           }
         )
@@ -59,9 +61,18 @@ class JSPromptAlertController: UIAlertController {
 
   weak var delegate: JSPromptAlertControllerDelegate?
 
+  private var handledAction: Bool = false
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    delegate?.promptAlertControllerDidDismiss(self)
+    // The alert controller is dismissed before the UIAlertAction's handler is even called so we
+    // need a small delay
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+      if !handledAction {
+        info?.cancel()
+      }
+      delegate?.promptAlertControllerDidDismiss(self)
+    }
   }
 }
 
@@ -169,4 +180,55 @@ private func titleForJavaScriptPanelInitiatedByFrame(_ frame: WKFrameInfo) -> St
     title += ":\(frame.securityOrigin.port)"
   }
   return title
+}
+
+/// A generic browser alert that will execute a closure if its dismissed and no actions were picked
+/// to allow us to call any neccessary completion handlers required by WebKit
+///
+/// This should eventually be deleted and we should insert overlays onto the web view itsead
+/// of presenting full blown alerts/action sheets
+class BrowserAlertController: UIAlertController {
+  /// The alert controller was dismissed by external forces before any action was made
+  var dismissedWithoutAction: (() -> Void)?
+
+  private var handledAction: Bool = false
+
+  @available(iOS, unavailable)
+  override func addAction(_ action: UIAlertAction) {
+    super.addAction(action)
+  }
+
+  // Unfortunately `UIAlertAction` does not expose a way to execute the handler so we must create
+  // our own
+  struct BrowserAlertAction {
+    var title: String?
+    var style: UIAlertAction.Style
+    var isEnabled: Bool = true
+    var handler: ((BrowserAlertAction) -> Void)?
+  }
+
+  func addAction(_ action: BrowserAlertAction) {
+    super.addAction(
+      .init(
+        title: action.title,
+        style: action.style,
+        handler: { [unowned self] _ in
+          self.handledAction = true
+          action.handler?(action)
+        }
+      )
+    )
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // The alert controller is dismissed before the UIAlertAction's handler is even called so we
+    // need a small delay
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+      if !handledAction {
+        dismissedWithoutAction?()
+      }
+    }
+  }
 }

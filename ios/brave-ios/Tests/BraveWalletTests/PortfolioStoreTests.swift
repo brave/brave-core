@@ -59,7 +59,7 @@ import XCTest
   let btcAccount1: BraveWallet.AccountInfo = .mockBtcAccount
   let btcAccount2 = (BraveWallet.AccountInfo.mockBtcAccount.copy() as! BraveWallet.AccountInfo).then
   {
-    $0.accountId.bitcoinAccountIndex = 1
+    $0.accountId.accountIndex = 1
     $0.accountId.uniqueKey = "4_0_0_1"
     $0.name = "Bitcoin Account 2"
   }

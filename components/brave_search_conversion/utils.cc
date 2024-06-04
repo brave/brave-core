@@ -29,6 +29,28 @@ namespace brave_search_conversion {
 
 namespace {
 
+bool ShouldUseDuckDuckGoBanner(const TemplateURL* template_url) {
+  if (!base::FeatureList::IsEnabled(features::kOmniboxDDGBanner)) {
+    return false;
+  }
+
+  const auto id = template_url->prepopulate_id();
+  if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO ||
+      id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE ||
+      id == TemplateURLPrepopulateData::
+                PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE) {
+    return true;
+  }
+
+  // If user adds manualy as default search provider, it could not have above
+  // id. So, check with host again.
+  if (GURL(template_url->url()).host() == "duckduckgo.com") {
+    return true;
+  }
+
+  return false;
+}
+
 ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
   if (param == "type_B") {
     return ConversionType::kBannerTypeB;
@@ -40,6 +62,22 @@ ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
 
   if (param == "type_D") {
     return ConversionType::kBannerTypeD;
+  }
+
+  if (param == "type_DDG_A") {
+    return ConversionType::kDDGBannerTypeA;
+  }
+
+  if (param == "type_DDG_B") {
+    return ConversionType::kDDGBannerTypeB;
+  }
+
+  if (param == "type_DDG_C") {
+    return ConversionType::kDDGBannerTypeC;
+  }
+
+  if (param == "type_DDG_D") {
+    return ConversionType::kDDGBannerTypeD;
   }
 
   LOG(ERROR) << __func__
@@ -83,13 +121,15 @@ ConversionType GetConversionType(PrefService* prefs,
   }
 
   // Don't need to ask conversion if user uses brave as a default provider.
-  auto id = service->GetDefaultSearchProvider()->data().prepopulate_id;
-  if (id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
-      id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
+  const auto* template_url = service->GetDefaultSearchProvider();
+  if (template_url->prepopulate_id() ==
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
+      template_url->prepopulate_id() ==
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR) {
     return ConversionType::kNone;
   }
 
-  if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
+  if (IsBraveSearchConversionFeatureEnabled()) {
     // Give conversion type after 3d passed since maybe later clicked time.
     auto clicked_time = prefs->GetTime(prefs::kMaybeLaterClickedTime);
     if (!clicked_time.is_null() &&
@@ -97,7 +137,16 @@ ConversionType GetConversionType(PrefService* prefs,
       return ConversionType::kNone;
     }
 
-    return GetConversionTypeFromBannerTypeParam(features::kBannerType.Get());
+    if (ShouldUseDuckDuckGoBanner(template_url)) {
+      return GetConversionTypeFromBannerTypeParam(
+          features::kDDGBannerType.Get());
+    }
+
+    if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
+      return GetConversionTypeFromBannerTypeParam(features::kBannerType.Get());
+    }
+
+    return ConversionType::kNone;
   }
 
   return ConversionType::kNone;
@@ -129,7 +178,8 @@ GURL GetPromoURL(const std::string& search_term) {
 }
 
 bool IsBraveSearchConversionFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kOmniboxBanner);
+  return base::FeatureList::IsEnabled(features::kOmniboxBanner) ||
+         base::FeatureList::IsEnabled(features::kOmniboxDDGBanner);
 }
 
 }  // namespace brave_search_conversion

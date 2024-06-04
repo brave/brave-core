@@ -503,6 +503,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(bool delay_report,
+                                        bool search_result_optin_changed,
                                         mojom::ExternalWalletPtr wallet);
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(

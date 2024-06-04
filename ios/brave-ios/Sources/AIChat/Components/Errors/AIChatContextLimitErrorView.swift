@@ -7,7 +7,7 @@ import DesignSystem
 import SwiftUI
 
 struct AIChatContextLimitErrorView: View {
-  var newChatStarted: (() -> Void)?
+  var newChatStarted: () -> Void
 
   var body: some View {
     HStack(alignment: .top, spacing: 0.0) {
@@ -23,7 +23,7 @@ struct AIChatContextLimitErrorView: View {
 
         Button(
           action: {
-            newChatStarted?()
+            newChatStarted()
           },
           label: {
             Text(Strings.AIChat.newChatActionTitle)
@@ -49,8 +49,10 @@ struct AIChatContextLimitErrorView: View {
 #if DEBUG
 struct AIChatContextLimitErrorView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatContextLimitErrorView()
-      .previewLayout(.sizeThatFits)
+    AIChatContextLimitErrorView {
+      print("New Chat")
+    }
+    .previewLayout(.sizeThatFits)
   }
 }
 #endif

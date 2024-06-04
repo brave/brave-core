@@ -17,7 +17,6 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.omnibox.OmniboxFeatures;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
@@ -30,6 +29,7 @@ import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdap
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
+import org.chromium.components.omnibox.OmniboxFeatures;
 import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -158,6 +158,22 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 // There is no any item above nav suggest tiles, so use the default
                 config = GroupConfig.getDefaultInstance();
             }
+
+            // Handle rounded corners for leo and previous item.
+            if (viewInfoList.size() > 0) {
+                viewInfoList
+                        .get(viewInfoList.size() - 1)
+                        .model
+                        .set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
+                viewInfoList
+                        .get(viewInfoList.size() - 1)
+                        .model
+                        .set(DropdownCommonProperties.SHOW_DIVIDER, true);
+            }
+
+            leoModel.set(DropdownCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
+            leoModel.set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
+            leoModel.set(DropdownCommonProperties.SHOW_DIVIDER, false);
 
             viewInfoList.add(
                     tileNavSuggestPosition,

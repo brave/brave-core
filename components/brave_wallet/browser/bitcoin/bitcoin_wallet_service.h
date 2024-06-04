@@ -37,7 +37,7 @@ struct DiscoveredBitcoinAccount {
 
 class BitcoinWalletService : public KeyedService,
                              public mojom::BitcoinWalletService,
-                             KeyringServiceObserverBase {
+                             public KeyringServiceObserverBase {
  public:
   BitcoinWalletService(
       KeyringService* keyring_service,
@@ -60,6 +60,9 @@ class BitcoinWalletService : public KeyedService,
   void RunDiscovery(mojom::AccountIdPtr account_id,
                     bool change,
                     RunDiscoveryCallback callback) override;
+
+  // KeyringServiceObserverBase:
+  void AccountsAdded(std::vector<mojom::AccountInfoPtr> accounts) override;
 
   // address -> related utxo list
   using UtxoMap = std::map<std::string, bitcoin_rpc::UnspentOutputs>;
@@ -127,6 +130,10 @@ class BitcoinWalletService : public KeyedService,
       GetTransactionStatusCallback callback,
       base::expected<bitcoin_rpc::Transaction, std::string> transaction);
 
+  void OnImportedAccountDiscoveryDone(
+      mojom::AccountIdPtr account_id,
+      base::expected<DiscoveredBitcoinAccount, std::string> result);
+
   bool SignTransactionInternal(BitcoinTransaction& tx,
                                const mojom::AccountIdPtr& account_id);
   void CreateTransactionTaskDone(CreateTransactionTask* task);
@@ -137,6 +144,8 @@ class BitcoinWalletService : public KeyedService,
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
   bool arrange_transactions_for_testing_ = false;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_service_observer_receiver_{this};
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
 

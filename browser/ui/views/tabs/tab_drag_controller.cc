@@ -10,16 +10,19 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/window_finder.h"
+#include "components/prefs/pref_service.h"
 #include "ui/views/view_utils.h"
 
 namespace {
@@ -64,7 +67,15 @@ TabDragController::Liveness TabDragController::Init(
     return TabDragController::Liveness::DELETED;
   }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  auto* widget = source_view->GetWidget();
+  DCHECK(widget);
+  const auto* browser =
+      BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
+          ->browser();
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     if (base::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
           // We don't allow sharable pinned tabs to be detached.
           return slot_view->GetTabSlotViewType() ==
@@ -75,11 +86,6 @@ TabDragController::Liveness TabDragController::Init(
     }
   }
 
-  auto* widget = source_view->GetWidget();
-  DCHECK(widget);
-  const auto* browser =
-      BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
-          ->browser();
   is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_) {

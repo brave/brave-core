@@ -47,9 +47,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       navigationItem.searchController = searchController
     }
     navigationItem.hidesSearchBarWhenScrolling = false
-    if #available(iOS 16.0, *) {
-      navigationItem.preferredSearchBarPlacement = .stacked
-    }
+    navigationItem.preferredSearchBarPlacement = .stacked
 
     // Hide the search bar when Brave News is off
     Preferences.BraveNews.isEnabled.$value
@@ -57,10 +55,8 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
         guard let self else { return }
         self.navigationItem.searchController = isEnabled ? self.searchController : nil
         self.navigationItem.hidesSearchBarWhenScrolling = false
-        if #available(iOS 16.0, *) {
-          // Setting `searchController` to nil seems to invalidate this setting and needs to be set again
-          self.navigationItem.preferredSearchBarPlacement = .stacked
-        }
+        // Setting `searchController` to nil seems to invalidate this setting and needs to be set again
+        self.navigationItem.preferredSearchBarPlacement = .stacked
         self.navigationController?.setToolbarHidden(!isEnabled, animated: true)
       }
       .store(in: &cancellables)

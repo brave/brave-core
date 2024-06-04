@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PREF_NAMES_H_
 
+#include "base/component_export.h"
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
@@ -63,11 +64,15 @@ inline constexpr char kBraveAIChatContextMenuEnabled[] =
 // Used to indicate whether the feature is enabled by group policy.
 inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 void MigrateProfilePrefs(PrefService* profile_prefs);
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace ai_chat::prefs

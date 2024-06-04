@@ -43,16 +43,7 @@ const char kEnumerateDevicesScript[] =
 class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveEnumerateDevicesFarblingBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("b.test", "/");
-    farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveEnumerateDevicesFarblingBrowserTest(
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
@@ -63,6 +54,13 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    EXPECT_TRUE(https_server_.Start());
+    top_level_page_url_ = https_server_.GetURL("b.test", "/");
+    farbling_url_ = https_server_.GetURL("b.test", "/simple.html");
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 

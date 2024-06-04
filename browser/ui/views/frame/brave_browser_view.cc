@@ -29,6 +29,7 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -61,6 +62,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
@@ -319,7 +321,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     secondary_contents_web_view_ =
         contents_container_->AddChildView(std::move(contents_web_view));
     split_view_separator_ = contents_container_->AddChildView(
-        std::make_unique<SplitViewSeparator>());
+        std::make_unique<SplitViewSeparator>(browser_.get()));
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
@@ -840,6 +842,15 @@ void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
                                 weak_ptr_.GetWeakPtr()));
 }
 
+void BraveBrowserView::OnSwapTabsInTile(
+    const SplitViewBrowserData::Tile& tile) {
+  if (!IsActiveWebContentsTiled(tile)) {
+    return;
+  }
+
+  UpdateSecondaryContentsWebViewVisibility();
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
@@ -1083,7 +1094,40 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   const bool supports_split_view =
       base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser()->is_type_normal();
+  bool need_to_update_secondary_web_view = false;
   if (supports_split_view) {
+    // In order to minimize flickering during tab activation, we should update
+    // split view only when it's needed.
+    auto* browser_data = SplitViewBrowserData::FromBrowser(browser_.get());
+    auto* tab_strip_model = browser_->tab_strip_model();
+    if (auto tile =
+            browser_data->GetTile(tab_strip_model->GetTabHandleAt(index))) {
+      auto* main_web_contents = tab_strip_model->GetWebContentsAt(
+          tab_strip_model->GetIndexOfTab(tile->first));
+      auto* secondary_web_contents = tab_strip_model->GetWebContentsAt(
+          tab_strip_model->GetIndexOfTab(tile->second));
+      if (main_web_contents != new_contents) {
+        std::swap(main_web_contents, secondary_web_contents);
+      }
+
+      need_to_update_secondary_web_view =
+          contents_web_view_->web_contents() != main_web_contents ||
+          secondary_contents_web_view_->web_contents() !=
+              secondary_web_contents;
+    } else {
+      // Old contents was in a split view. We should hide split view.
+      need_to_update_secondary_web_view =
+          secondary_contents_web_view_->web_contents();
+    }
+  }
+
+  if (need_to_update_secondary_web_view) {
+    if (!SplitViewBrowserData::FromBrowser(browser_.get())
+             ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
+      // This will help reduce flickering when switching to non tiled tab.
+      UpdateSecondaryContentsWebViewVisibility();
+    }
+
     secondary_contents_web_view_->SetWebContents(nullptr);
   }
 
@@ -1098,7 +1142,9 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      browser()->profile()->GetPrefs()->GetBoolean(
+          brave_tabs::kSharedPinnedTab)) {
     if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
                         command_id == IDC_CLOSE_TAB) {
       auto* tab_strip_model = browser()->tab_strip_model();
@@ -1109,8 +1155,11 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
       }
     }
   }
-
   return BrowserView::AcceleratorPressed(accelerator);
+}
+
+bool BraveBrowserView::IsInTabDragging() const {
+  return frame()->tab_drag_kind() == TabDragKind::kAllTabs;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

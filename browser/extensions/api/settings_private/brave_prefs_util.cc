@@ -347,6 +347,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+  (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
+      settings_api::PrefType::kBoolean;
+#endif
+
   return *s_brave_allowlist;
 }
 

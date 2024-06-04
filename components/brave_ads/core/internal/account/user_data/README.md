@@ -26,7 +26,7 @@ Should only be included in the confirmation payload for users who have joined Br
 | httpResponseStatus  | yes  | no  | Whether the navigation committed an error page.  |
 | locale  | yes  | no  | Privacy-preserving operating system locale  |
 | platform  | no  | no  | Operating system.  |
-| rotating_hash  | yes  | no  | Privacy-preserving time-based rotating hash.  |
+| rotatingHash  | yes  | no  | Privacy-preserving time-based rotating hash.  |
 | segment  | yes  | no  | Advertising taxonomy for the chosen ad.  |
 | studies  | no  | no  | User studies. See [Griffin](https://github.com/brave/brave-browser/wiki/Brave-Variations-(Griffin)).  |
 | systemTimestamp  | no  | yes  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp.  |

@@ -104,7 +104,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
           }
           previousPoint = scaledPoint
         }
-        if closed {
+        if closed, path.currentPoint != nil {
           path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
           path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
           path.closeSubpath()

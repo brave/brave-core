@@ -95,7 +95,6 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       const SyncProtocolError&);
 
   std::unique_ptr<SyncEngine> ResetEngine(
-      ShutdownReason shutdown_reason,
       ResetEngineReason reset_reason) override;
 
   void LocalDeviceAppeared();

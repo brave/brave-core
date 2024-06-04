@@ -160,7 +160,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UIView.applyAppearanceDefaults()
 
     if Preferences.Rewards.isUsingBAP.value == nil {
-      Preferences.Rewards.isUsingBAP.value = Locale.current.regionCode == "JP"
+      Preferences.Rewards.isUsingBAP.value = Locale.current.region?.identifier == "JP"
     }
 
     // If a shortcut was launched, display its information and take the appropriate action

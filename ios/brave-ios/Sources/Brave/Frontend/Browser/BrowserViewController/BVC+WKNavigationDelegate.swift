@@ -85,9 +85,6 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
-    if #unavailable(iOS 16.0) {
-      updateFindInPageVisibility(visible: false)
-    }
     displayPageZoom(visible: false)
 
     // If we are going to navigate to a new page, hide the reader mode button. Unless we
@@ -600,6 +597,8 @@ extension BrowserViewController: WKNavigationDelegate {
         {
 
           return await withCheckedContinuation { continuation in
+            // This alert does not need to be a BrowserAlertController because we return a policy
+            // without waiting for user action
             let alert = UIAlertController(
               title: Strings.unableToOpenURLErrorTitle,
               message: Strings.unableToOpenURLError,
@@ -626,13 +625,13 @@ extension BrowserViewController: WKNavigationDelegate {
   ///
   /// The user unfortunately has to  dismiss it manually after they have handled the file.
   /// Chrome iOS does the same
-  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab?) {
+  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab) {
     let vc = SFSafariViewController(url: url, configuration: .init())
     vc.modalPresentationStyle = .formSheet
     self.present(vc, animated: true)
 
     // If the website opened this URL in a separate tab, remove the empty tab
-    if let tab = tab, tab.url == nil || tab.url?.absoluteString == "about:blank" {
+    if tab.url == nil || tab.url?.absoluteString == "about:blank" {
       tabManager.removeTab(tab)
     }
   }
@@ -688,12 +687,17 @@ extension BrowserViewController: WKNavigationDelegate {
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
-    if let tab = tab,
-      let responseURL = responseURL,
-      InternalURL(responseURL)?.isSessionRestore == true
+    if let tab = tab, let responseURL = responseURL,
+      let response = response as? HTTPURLResponse
     {
-      tab.shouldNotifyAdsServiceTabDidChange = false
-      tab.shouldNotifyAdsServiceTabContentDidChange = false
+      let internalUrl = InternalURL(responseURL)
+      let isErrorPage = internalUrl?.isErrorPage == true || response.statusCode >= 400
+      let isSessionRestore = internalUrl?.isSessionRestore == true
+
+      if isErrorPage || isSessionRestore {
+        tab.shouldNotifyAdsServiceTabDidChange = false
+        tab.shouldNotifyAdsServiceTabContentDidChange = false
+      }
     }
 
     var request: URLRequest?
@@ -714,18 +718,11 @@ extension BrowserViewController: WKNavigationDelegate {
     // SFSafariViewController only supports http/https links
     if navigationResponse.isForMainFrame, let url = responseURL,
       url.isWebPage(includeDataURIs: false),
+      let tab, tab === tabManager.selectedTab,
       let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
       mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
     {
-
-      let isAboutHome = InternalURL(url)?.isAboutHomeURL == true
-      let isNonActiveTab = isAboutHome ? false : url.host != tabManager.selectedTab?.url?.host
-
-      // Check website is trying to open Safari Controller in non-active tab
-      if !isNonActiveTab {
-        handleLinkWithSafariViewController(url, tab: tab)
-      }
-
+      handleLinkWithSafariViewController(url, tab: tab)
       return .cancel
     }
 
@@ -768,7 +765,8 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Open our helper and cancel this response from the webview.
-      if let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
+      if tab === tabManager.selectedTab,
+        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
       {
         present(downloadAlert, animated: true, completion: nil)
       }
@@ -982,7 +980,7 @@ extension BrowserViewController: WKNavigationDelegate {
       updateUIForReaderHomeStateForTab(tab)
     }
 
-    updateForwardStatusIfNeeded(webView: webView)
+    updateBackForwardActionStatus(for: webView)
   }
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -1011,16 +1009,12 @@ extension BrowserViewController: WKNavigationDelegate {
 
       navigateInTab(tab: tab, to: navigation)
       if tab.navigationType != WKNavigationType.backForward {
-        if tab.shouldNotifyAdsServiceTabDidChange {
-          rewards.reportTabUpdated(
-            tab: tab,
-            isSelected: tabManager.selectedTab == tab,
-            isPrivate: privateBrowsingManager.isPrivateBrowsing
-          )
-        }
-        if tab.shouldNotifyAdsServiceTabContentDidChange {
-          tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-        }
+        rewards.reportTabUpdated(
+          tab: tab,
+          isSelected: tabManager.selectedTab == tab,
+          isPrivate: privateBrowsingManager.isPrivateBrowsing
+        )
+        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
       }
       // Set `shouldNotifyAdsServiceTabDidChange` and
       // `shouldNotifyAdsServiceTabContentDidChange` to `true` so that listeners
@@ -1035,7 +1029,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
       if webView.url?.isLocal == false {
         // Set rewards inter site url as new page load url.
-        rewardsXHRLoadURL = webView.url
+        tab.rewardsXHRLoadURL = webView.url
       }
 
       if tab.walletEthProvider != nil {
@@ -1355,7 +1349,7 @@ extension BrowserViewController: WKUIDelegate {
       }
     }()
     let title = String.localizedStringWithFormat(titleFormat, origin.host)
-    let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
     alertController.addAction(
       .init(
         title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
@@ -1374,14 +1368,14 @@ extension BrowserViewController: WKUIDelegate {
         }
       )
     )
-    if #available(iOS 16.0, *) {
-      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
-      {
-        webView.closeAllMediaPresentations {
-          self.present(alertController, animated: true)
-        }
-        return
+    alertController.dismissedWithoutAction = {
+      decisionHandler(.prompt)
+    }
+    if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
+      webView.closeAllMediaPresentations {
+        self.present(alertController, animated: true)
       }
+      return
     }
     present(alertController, animated: true)
   }
@@ -1469,8 +1463,7 @@ extension BrowserViewController: WKUIDelegate {
       return
     }
     promptingTab.alertShownCount += 1
-    let suppressBlock: JSAlertInfo.SuppressHandler = { [weak self, weak webView] suppress in
-      guard let self, let webView else { return }
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
       if suppress {
         func suppressDialogues(_: UIAlertAction) {
           self.suppressJSAlerts(webView: webView)
@@ -1539,18 +1532,14 @@ extension BrowserViewController: WKUIDelegate {
     return false
   }
 
-  public func webView(
+  @MainActor public func webView(
     _ webView: WKWebView,
-    contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-    completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
-  ) {
-
+    contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
+  ) async -> UIContextMenuConfiguration? {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
     // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
     guard let url = elementInfo.linkURL, url.isWebPage() else {
-      return completionHandler(
-        UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
-      )
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
     }
 
     let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
@@ -1700,13 +1689,11 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
-    let config = UIContextMenuConfiguration(
+    return UIContextMenuConfiguration(
       identifier: nil,
       previewProvider: linkPreviewProvider,
       actionProvider: actionProvider
     )
-
-    completionHandler(config)
   }
 
   public func webView(

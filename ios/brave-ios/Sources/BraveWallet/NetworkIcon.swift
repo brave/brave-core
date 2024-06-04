@@ -37,24 +37,9 @@ struct NetworkIcon: View {
     .aspectRatio(1, contentMode: .fit)
   }
 
-  @State private var monogramSize: CGSize = .zero
   private var networkIconMonogram: some View {
-    Blockie(address: network.chainName, shape: .circle)
-      .readSize(onChange: { newSize in
-        monogramSize = newSize
-      })
-      .overlay(
-        Text(network.chainName.first?.uppercased() ?? "")
-          .font(
-            .system(
-              size: max(monogramSize.width, monogramSize.height) / 2,
-              weight: .bold,
-              design: .rounded
-            )
-          )
-          .foregroundColor(.white)
-          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
-      )
+    BlockieBackground(seed: network.chainName)
+      .clipShape(Circle())
   }
 
   private typealias NetworkImageInfo = (iconName: String, grayscale: Bool)

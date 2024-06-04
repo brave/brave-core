@@ -16,11 +16,11 @@ struct MeldLogoImages {
 
 struct MeldServiceProvider {
   string? name;
-  string? service_provider;
-  string? status;
+  string service_provider;
+  string status;
   string? web_site_url;
-  array<string>? categories;
-  map<string, string>? category_statuses;
+  array<string> categories;
+  map<string, string> category_statuses;
   MeldLogoImages? logo_images;
 };
 
@@ -44,20 +44,20 @@ struct MeldCryptoQuote {
 };
 
 struct MeldPaymentMethod {
-  string? payment_method;
+  string payment_method;
   string? name;
   string? payment_type;
   MeldLogoImages? logo_images;
 };
 
 struct MeldFiatCurrency {
-  string? currency_code;
+  string currency_code;
   string? name;
   string? symbol_image_url;
 };
 
 struct MeldCryptoCurrency {
-  string? currency_code;
+  string currency_code;
   string? name;
   string? chain_code;
   string? chain_name;
@@ -72,7 +72,7 @@ struct MeldRegion {
 };
 
 struct MeldCountry {
-  string? country_code;
+  string country_code;
   string? name;
   string? flag_image_url;
   array<MeldRegion>? regions;

@@ -1,8 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 973d8bcbd2f1fa714ecd6f2752efde6e6770f5d8..56284802ddfe359c23bc4bbb0ce366cb9027a60b 100644
+index 6efe967eb0a1cfd71f5d85209bcc9b0d90c5b4c0..54cc7367266867a62ddada0f285581f232b2f08b 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -588,7 +588,6 @@ config("compiler") {
+@@ -546,7 +546,6 @@ config("compiler") {
    }
  
    if (is_clang && !is_nacl && current_os != "zos") {
@@ -10,7 +10,7 @@ index 973d8bcbd2f1fa714ecd6f2752efde6e6770f5d8..56284802ddfe359c23bc4bbb0ce366cb
      if (save_reproducers_on_lld_crash && use_lld) {
        ldflags += [
          "-fcrash-diagnostics=all",
-@@ -2431,10 +2430,10 @@ config("optimize") {
+@@ -2409,10 +2408,10 @@ config("optimize") {
    if (is_win) {
      cflags = [ "/O2" ] + common_optimize_on_cflags
  

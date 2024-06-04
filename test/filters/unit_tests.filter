@@ -42,6 +42,7 @@
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -All/PrintContentAnalysisUtilsTest.*/*
 -All/SyncConfirmationHandlerTest.*
+-All/TabStripModelTest.NavigationForgettingDoesntAffectNewTab/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
 -ApcScrimManagerImplTest.HideFocusOnTheWebContent
@@ -64,6 +65,7 @@
 -BrowserCommandControllerWithBookmarksTest.BookmarkAllTabsUpdatesOnTabStripChanges
 -BrowserFeaturePromoControllerPolicyTest.*
 -BrowserFeaturePromoControllerPriorityTest.*
+-BrowserFeaturePromoControllerRotatingPromoTest.*
 -BrowserFeaturePromoControllerViewsTest.*
 -BrowserFinderTest.ScheduledForDeletion
 -BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
@@ -88,10 +90,13 @@
 -CookieControlsIconViewUnitTest.*
 -CookieControlsUserBypassTest.SiteCounts
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
+-CpuHealthTrackerBrowserTest.*
 -CustomCursorSuppressorTest.*
 -CustomizeChromeFeaturePromoHelperTest.*
 -DefaultBrowserPromptManagerTest.*
 -DeleteAddressProfileDialogControllerImplTest.*
+-DesktopTabModelURLVisitDataFetcherTest.FetchURLVisitData
+-DesktopTabModelURLVisitDataFetcherTest.FetchURLVisitData_AggregateValues
 -DiceWebSigninInterceptorTestWithUnoDisabled.InterceptShouldLogChromeSigninBubbleOfferedForControlGroup
 -DiceWebSigninInterceptorTestWithUnoEnabled.*
 -DoesFirstPartyPrecedeThirdPartyTest.*
@@ -154,9 +159,7 @@
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewPre3pcdTest.*
--PageInfoPermissionContentViewTestMediaPreview.MediaPreviewCamera
--PageInfoPermissionContentViewTestMediaPreview.MediaPreviewMic
--PageInfoPermissionContentViewTestMediaPreview.MediaPreviewNoCameraOrMic
+-PageInfoPermissionContentViewTestMediaPreview.MediaPreview*
 -PageInfoPreviewsCoordinatorDeathTest.NeitherCameraNorMic
 -PageInfoPreviewsCoordinatorTest.MediaStreamCamera
 -PageInfoPreviewsCoordinatorTest.MediaStreamMic
@@ -168,10 +171,7 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOff
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
--PermissionPromptBubbleOneOriginViewTestMediaPreview.MediaPreviewCameraAndMic
--PermissionPromptBubbleOneOriginViewTestMediaPreview.MediaPreviewCameraOnly
--PermissionPromptBubbleOneOriginViewTestMediaPreview.MediaPreviewMicOnly
--PermissionPromptBubbleOneOriginViewTestMediaPreview.MediaPreviewNoCameraOrMic
+-PermissionPromptBubbleOneOriginViewTestMediaPreview.MediaPreview*
 -PermissionPromptPreviewsCoordinatorDeathTest.NoEligibleDevices
 -PermissionPromptPreviewsCoordinatorTest.EligibleCameras
 -PermissionPromptPreviewsCoordinatorTest.EligibleCamerasandMics
@@ -190,6 +190,8 @@
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
 -ReadAnythingCoordinatorWebUIToolbarTest.WithWebUIFlagEnabled_ShowsWebUIToolbar
 -RecentSessionObserverImplTest.OnRecentSessionsUpdated
+-RecentSessionObserverImplTest.SessionCallback
+-RecentSessionObserverImplTest.SessionCallbackOnObserve
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.*
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Metrics_*
 -SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.Upload_OnSave_HideIconAndBubbleAfterUpload
@@ -202,6 +204,7 @@
 -SidePanelPinningCoordinatorTest.SidePanelPinButtonsHideInGuestMode
 -SidePanelPinningCoordinatorTest.SidePanelTitleUpdates
 -SidePanelToolbarContainerTest.*
+-SiteAccessRequestsHelperUnittest.*
 -TabHelperUnitTest.ClearsExtensionOnUnload
 -TabHelperUnitTest.ReloadRequired_BlockAllExtensions
 -TabHelperUnitTest.ReloadRequired_CustomizeByExtension
@@ -331,6 +334,11 @@
 -DiceWebSigninInterceptorTest.*
 -GAIAInfoUpdateServiceTest.*
 
+# This test fails because we intentionally stub out
+# IdentityManager::PrepareForAddingNewAccount
+-DiceTabHelperTest.Initialization
+-PreconnectEnabled/SigninDiceResponseHandlerTestPreconnect.Signin/1
+
 # This test fails because we disable the privacy sandbox
 -PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
 
@@ -388,9 +396,12 @@
 -ExtensionsHatsHandlerTest.ExtensionsPageLoad
 -ExtensionsHatsHandlerTest.OnSurveyInteraction
 -LocalTabHandlerTest.*
+-PermissionPromptBaseViewTest.IncludedInTrackedPictureInPictureWidgets
 -PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
 -PermissionPromptBubbleTwoOriginsViewTest.LinkIsPresent
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
+-ProductSpecificationsButtonTest.AnimatesToExpanded
+-ProductSpecificationsButtonTest.AppliesWidthFactor
 -SavedTabGroupBar/SavedTabGroupBarUnitTest.*
 -SavedTabGroupEverythingMenu/STGEverythingMenuUnitTest.TabGroupItemsSortedByCreationTime/*
 -SavedTabGroupKeyedServiceUnitTest.*
@@ -426,6 +437,7 @@
 -ShowPromoTest.ShowPromoWithSignedInAccount
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
+-SignInPromoVersionTest.SignInPromoVersions
 -SignoutAllowed/SigninManagerTest.*
 -TestAppMenuModelCR2023.ProfileSyncOnTest
 
@@ -476,6 +488,7 @@
 -ClientSideDetectionHostTest.*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
+-DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
@@ -561,8 +574,8 @@
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToTrue
 
-# This test fails a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
--PeopleHandlerWithExplicitBrowserSigninTest.ChromeSigninUserInfoUpdateOnSync
+# These tests fail a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
+-PeopleHandlerWithExplicitBrowserSigninTest.*
 
 # These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
 # or TrackingProtectionOnboardingFactory.
@@ -651,6 +664,17 @@
 -StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
 -StorageAccessAPIServiceImplTest.RenewPermissionGrant
 -StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection
+
+# This test fails because our badge doesn't match the upstream badge
+-IconBadgingTest.VerifyFromDisk
+
+# This test fails because it no longer modifies its expectations now that the
+# kForYouFre feature flag was removed
+-StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
+
+# These tests fail because we stub signin::ShouldShowSyncPromo to always return
+# false
+-ShowSyncPromoTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -1016,6 +1040,7 @@
 -TabStripModelTestWithReadLaterEnabled.*
 -TabStripPageHandlerTest.*
 -TabTest.*
+-TabTestWithDiscardRingImprovements.*
 -TCPSocketUnitTest.*
 -TemplateURLServiceSyncTest.*
 -TemplateURLServiceTest.*

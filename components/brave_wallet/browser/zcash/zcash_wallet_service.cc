@@ -70,7 +70,7 @@ void ZCashWalletService::GetBalance(const std::string& chain_id,
 void ZCashWalletService::GetReceiverAddress(
     mojom::AccountIdPtr account_id,
     GetReceiverAddressCallback callback) {
-  auto id = mojom::ZCashKeyId::New(account_id->bitcoin_account_index, 0, 0);
+  auto id = mojom::ZCashKeyId::New(account_id->account_index, 0, 0);
   auto addr = keyring_service_->GetZCashAddress(*account_id, *id);
   if (!addr) {
     std::move(callback).Run(

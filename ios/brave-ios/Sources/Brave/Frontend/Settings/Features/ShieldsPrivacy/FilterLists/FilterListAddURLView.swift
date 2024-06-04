@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShields
 import BraveUI
 import DesignSystem
 import Strings
@@ -16,7 +17,7 @@ struct FilterListAddURLView: View {
   @FocusState private var isURLFieldFocused: Bool
 
   private var textField: some View {
-    TextField(Strings.filterListsEnterFilterListURL, text: $newURLInput)
+    TextField(Strings.Shields.filterListsEnterFilterListURL, text: $newURLInput)
       .onChange(of: newURLInput) { newValue in
         errorMessage = nil
       }
@@ -41,16 +42,16 @@ struct FilterListAddURLView: View {
             }.listRowBackground(Color(.secondaryBraveGroupedBackground))
           },
           header: {
-            Text(Strings.customFilterListURL)
+            Text(Strings.Shields.customFilterListURL)
           },
           footer: {
             VStack(alignment: .leading, spacing: 0) {
               SectionFooterErrorView(errorMessage: errorMessage)
 
               VStack(alignment: .leading, spacing: 8) {
-                Text(Strings.addCustomFilterListDescription)
+                Text(Strings.Shields.addCustomFilterListDescription)
                   .fixedSize(horizontal: false, vertical: true)
-                Text(LocalizedStringKey(Strings.addCustomFilterListWarning))
+                Text(LocalizedStringKey(Strings.Shields.addCustomFilterListWarning))
                   .fixedSize(horizontal: false, vertical: true)
               }.padding(.top)
             }
@@ -60,11 +61,11 @@ struct FilterListAddURLView: View {
       .animation(.easeInOut, value: errorMessage)
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
       .listStyle(.insetGrouped)
-      .navigationTitle(Strings.customFilterList)
+      .navigationTitle(Strings.Shields.customFilterList)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .confirmationAction) {
-          Button(Strings.filterListsAdd) {
+          Button(Strings.Shields.filterListsAdd) {
             handleOnSubmit()
           }.disabled(newURLInput.isEmpty)
         }
@@ -84,11 +85,11 @@ struct FilterListAddURLView: View {
   private func handleOnSubmit() {
     guard !newURLInput.isEmpty else { return }
     guard let url = URL(string: newURLInput) else {
-      self.errorMessage = Strings.filterListAddInvalidURLError
+      self.errorMessage = Strings.Shields.filterListAddInvalidURLError
       return
     }
     guard url.scheme == "https" else {
-      self.errorMessage = Strings.filterListAddOnlyHTTPSAllowedError
+      self.errorMessage = Strings.Shields.filterListAddOnlyHTTPSAllowedError
       return
     }
     guard

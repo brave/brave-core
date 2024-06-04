@@ -75,23 +75,29 @@ void RecordRewardsPageViews(PrefService* prefs, bool new_view) {
 
 void RecordAdTypesEnabled(PrefService* prefs) {
   if (!prefs->GetBoolean(prefs::kEnabled)) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 4);
+    UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 8);
     return;
   }
-  bool ntp_enabled =
+  int ntp_enabled =
       prefs->GetBoolean(ntp_background_images::prefs::
                             kNewTabPageShowSponsoredImagesBackgroundImage);
-  bool notification_enabled =
+  int notification_enabled =
       prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
-  AdTypesEnabled answer = AdTypesEnabled::kNone;
-  if (ntp_enabled && notification_enabled) {
-    answer = AdTypesEnabled::kAll;
-  } else if (ntp_enabled) {
-    answer = AdTypesEnabled::kNTP;
-  } else if (notification_enabled) {
-    answer = AdTypesEnabled::kNotification;
+  int search_result_enabled =
+      prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
+  int answer =
+      (search_result_enabled << 2) | (notification_enabled << 1) | ntp_enabled;
+  UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, answer, 8);
+}
+
+void RecordSearchResultAdsOptinChange(PrefService* prefs) {
+  if (prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds)) {
+    UMA_HISTOGRAM_BOOLEAN(kSearchResultAdsOptinHistogramName, true);
   }
-  UMA_HISTOGRAM_ENUMERATION(kAdTypesEnabledHistogramName, answer);
+}
+
+void RecordAdsHistoryView() {
+  UMA_HISTOGRAM_BOOLEAN(kAdsHistoryViewHistogramName, true);
 }
 
 ConversionMonitor::ConversionMonitor(PrefService* prefs)

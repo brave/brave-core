@@ -506,6 +506,9 @@
     <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
       Unsplit Tabs
     </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap Tab Positions
+    </message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
@@ -516,6 +519,9 @@
     </message>
     <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
       Unsplit tabs
+    </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap tab positions
     </message>
   </if>
 </grit-part>

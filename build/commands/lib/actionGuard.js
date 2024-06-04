@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const fs = require('fs')
+const assert = require('assert')
+const fs = require('fs-extra')
+const path = require('path')
 
 // This function is used to get the call stack of the guarded operation. It is
 // stored in the guard file.
@@ -18,32 +20,53 @@ function getGuardCallStack() {
 }
 
 // This class is used to ensure that a given action is successfully completed,
-// otherwise a cleanup might be performed.
+// otherwise a rerun might be required.
 class ActionGuard {
+  // Path to the guard file.
+  #guardFilePath
+  // Cleanup closure to perform a cleanup (optional) before running the action.
+  #cleanupClosure
+  // Flag to indicate if the action is currently running.
+  #isRunning
+
   constructor(guardFilePath, cleanupClosure) {
-    this.guardFilePath = guardFilePath
-    this.cleanupClosure = cleanupClosure
+    this.#guardFilePath = guardFilePath
+    this.#cleanupClosure = cleanupClosure
+    this.#isRunning = false
   }
 
   // Check if the last action was interrupted.
-  isDirty() {
-    return fs.existsSync(this.guardFilePath)
-  }
-
-  // If the last action was interrupted, perform the cleanup and then perform
-  // the requested action with a guard.
-  ensureClean(actionClosure) {
-    if (this.isDirty()) {
-      this.cleanupClosure()
-    }
-    this.run(actionClosure)
+  wasInterrupted() {
+    assert(
+      !this.#isRunning,
+      'Cannot check if the action was interrupted while it is running.'
+    )
+    return fs.existsSync(this.#guardFilePath)
   }
 
   // Perform the requested action with a guard.
   run(actionClosure) {
-    fs.writeFileSync(this.guardFilePath, getGuardCallStack())
-    actionClosure()
-    fs.unlinkSync(this.guardFilePath)
+    assert(
+      !this.#isRunning,
+      'Cannot run the action while it is already running.'
+    )
+    const wasInterrupted = this.wasInterrupted()
+    if (wasInterrupted && this.#cleanupClosure) {
+      this.#cleanupClosure()
+      assert(
+        this.wasInterrupted(),
+        'Cleanup should not remove the guard as it may lead to partial cleanup and unhandled broken state.'
+      )
+    }
+    try {
+      this.#isRunning = true
+      fs.ensureDirSync(path.dirname(this.#guardFilePath))
+      fs.writeFileSync(this.#guardFilePath, getGuardCallStack())
+      actionClosure(wasInterrupted)
+      fs.unlinkSync(this.#guardFilePath)
+    } finally {
+      this.#isRunning = false
+    }
   }
 }
 

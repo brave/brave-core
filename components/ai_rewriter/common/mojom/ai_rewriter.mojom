@@ -1,0 +1,31 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+module ai_rewriter.mojom;
+
+import "ui/gfx/geometry/mojom/geometry.mojom";
+import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
+
+interface AIRewriterAgent {
+  GetFocusBounds() => (gfx.mojom.RectF rect);
+};
+
+interface AIRewriterPage {
+  OnUpdatedGeneratedText(string generate_text);
+};
+
+// Interface that the Rewriter page uses to communicate with the browser process.
+interface AIRewriterPageHandler {
+  SetPage(pending_remote<AIRewriterPage> page);
+
+  Close();
+  OpenSettings();
+  GetInitialText() => (string initial_text);
+
+  // Note: Rewritten text is streamed via AIRewriterPage::OnUpdatedGeneratedText
+  RewriteText(string text, ai_chat.mojom.ActionType action, string instructions) => ();
+  GetActionMenuList() => (array<ai_chat.mojom.ActionGroup> action_list);
+
+  InsertTextAndClose(string text) => ();
+};

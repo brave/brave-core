@@ -71,6 +71,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSiteInfo(GetSiteInfoCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
+  void OpenLearnMoreAboutBraveSearchWithLeo() override;
   void SetShouldSendPageContents(bool should_send) override;
   void GetShouldSendPageContents(
       GetShouldSendPageContentsCallback callback) override;

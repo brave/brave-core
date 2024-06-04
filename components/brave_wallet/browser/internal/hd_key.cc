@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include <optional>
+#include <utility>
 
 #include "base/check.h"
 #include "base/containers/span.h"
@@ -50,7 +51,7 @@ const secp256k1_context* GetSecp256k1Ctx() {
         SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
     SecureVector bytes(kContextRandomizeSize);
-    crypto::RandBytes(bytes.data(), bytes.size());
+    crypto::RandBytes(bytes);
     [[maybe_unused]] int result =
         secp256k1_context_randomize(context, bytes.data());
 
@@ -115,6 +116,9 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
 HDKey::HDKey() : identifier_(20), public_key_(33), chain_code_(32) {}
 HDKey::~HDKey() = default;
 
+HDKey::ParsedExtendedKey::ParsedExtendedKey() = default;
+HDKey::ParsedExtendedKey::~ParsedExtendedKey() = default;
+
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   // 128 - 512 bits
@@ -143,7 +147,8 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
 }
 
 // static
-std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
+std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
+    const std::string& key) {
   std::vector<unsigned char> decoded_key(kSerializationLength);
   if (!DecodeBase58Check(key, decoded_key, decoded_key.size())) {
     LOG(ERROR) << __func__ << ": DecodeBase58Check failed";
@@ -151,7 +156,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   }
 
   SecureVector buf(decoded_key.begin(), decoded_key.end());
-  SecureZeroData(decoded_key.data(), decoded_key.size());
+  SecureZeroData(base::as_writable_byte_span(decoded_key));
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   const uint8_t* ptr = buf.data();
@@ -179,16 +184,16 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   hdkey->SetChainCode(chain_code);
 
   if (*ptr == 0x00) {
-    DCHECK_EQ(version, ExtendedKeyVersion::kXprv);
-    ptr += 1;  // Skip first zero byte which is not part of private key.
-    hdkey->SetPrivateKey(base::make_span(ptr, ptr + 32));
+    // Skip first zero byte which is not part of private key.
+    hdkey->SetPrivateKey(base::make_span(ptr + 1, ptr + 33));
   } else {
-    DCHECK_EQ(version, ExtendedKeyVersion::kXpub);
-    std::vector<uint8_t> public_key(ptr, ptr + 33);
-    hdkey->SetPublicKey(public_key);
+    hdkey->SetPublicKey(
+        base::make_span<kSecp256k1PubkeySize>(ptr, ptr + kSecp256k1PubkeySize));
   }
-
-  return hdkey;
+  auto result = std::make_unique<ParsedExtendedKey>();
+  result->hdkey = std::move(hdkey);
+  result->version = version;
+  return result;
 }
 
 // static
@@ -382,8 +387,7 @@ void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPrivateExtendedKey(
-    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXprv*/) const {
+std::string HDKey::GetPrivateExtendedKey(ExtendedKeyVersion version) const {
   return Serialize(version, private_key_);
 }
 
@@ -396,12 +400,8 @@ std::vector<uint8_t> HDKey::GetPublicKeyBytes() const {
   return public_key_;
 }
 
-void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
-  // Compressed only
-  if (value.size() != 33) {
-    LOG(ERROR) << __func__ << ": public key must be 33 bytes";
-    return;
-  }
+void HDKey::SetPublicKey(
+    base::span<const uint8_t, kSecp256k1PubkeySize> value) {
   // Verify public key
   secp256k1_pubkey pubkey;
   if (!secp256k1_ec_pubkey_parse(GetSecp256k1Ctx(), &pubkey, value.data(),
@@ -409,20 +409,15 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
     LOG(ERROR) << __func__ << ": not a valid public key";
     return;
   }
-  public_key_ = value;
+  public_key_.assign(value.begin(), value.end());
   identifier_ = Hash160(public_key_);
 
   const uint8_t* ptr = identifier_.data();
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPublicExtendedKey(
-    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXpub*/) const {
+std::string HDKey::GetPublicExtendedKey(ExtendedKeyVersion version) const {
   return Serialize(version, public_key_);
-}
-
-std::string HDKey::GetSegwitAddress(bool testnet) const {
-  return PubkeyToSegwitAddress(public_key_, testnet);
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -578,8 +573,8 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
       LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_tweak_add failed";
       return nullptr;
     }
-    size_t public_key_len = 33;
-    std::vector<uint8_t> public_key(public_key_len);
+    size_t public_key_len = kSecp256k1PubkeySize;
+    std::array<uint8_t, kSecp256k1PubkeySize> public_key;
     if (!secp256k1_ec_pubkey_serialize(GetSecp256k1Ctx(), public_key.data(),
                                        &public_key_len, &pubkey,
                                        SECP256K1_EC_COMPRESSED)) {

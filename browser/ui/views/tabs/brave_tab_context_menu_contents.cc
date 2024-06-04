@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -183,6 +184,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandTileTabs:
       [[fallthrough]];
     case BraveTabMenuModel::CommandBreakTile:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandSwapTabsInTile:
       return true;
     default:
       NOTREACHED();
@@ -239,6 +242,9 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandBreakTile:
       BreakSelectedTile();
       return;
+    case BraveTabMenuModel::CommandSwapTabsInTile:
+      SwapTabsInTile();
+      return;
     default:
       NOTREACHED();
       return;
@@ -275,6 +281,10 @@ void BraveTabContextMenuContents::TileSelectedTabs() {
 
 void BraveTabContextMenuContents::BreakSelectedTile() {
   brave::BreakTiles(browser_, GetTabIndicesForSplitViewCommand());
+}
+
+void BraveTabContextMenuContents::SwapTabsInTile() {
+  brave::SwapTabsInTile(browser_);
 }
 
 std::vector<int> BraveTabContextMenuContents::GetTabIndicesForSplitViewCommand()

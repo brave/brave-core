@@ -105,6 +105,7 @@ extension KeyringStore {
   static var previewStoreWithWalletCreated: KeyringStore {
     let store = KeyringStore.previewStore
     store.createWallet(password: "password")
+    store.allAccounts = [.previewAccount, .mockSolAccount]
     return store
   }
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 2f6990cb4baae479d61ecdbc1e5f13d973ed722f..ea529400e293276fabb44b76ec7214f37fb4699f 100644
+index 69c86a2dc1c5bbd70daa4e784723df653dcf57d2..56d4db77ea82f406045d7b2063b2b25a4bcb37c4 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
-@@ -692,6 +692,9 @@ def sign_all(orig_paths,
+@@ -737,6 +737,9 @@ def sign_all(orig_paths,
          if not disable_packaging:
              _package_and_maybe_notarize_distributions(config, distributions,
                                                        notary_paths)

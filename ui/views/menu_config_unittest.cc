@@ -12,8 +12,10 @@ namespace views {
 using MenuConfigTest = ViewsTestBase;
 
 TEST_F(MenuConfigTest, ChangedValueTest) {
-  EXPECT_EQ(4, views::MenuConfig::instance().item_vertical_margin);
-  EXPECT_EQ(16, views::MenuConfig::instance().item_horizontal_padding);
+  const auto& menu_config = views::MenuConfig::instance();
+  EXPECT_EQ(4, menu_config.item_vertical_margin);
+  EXPECT_EQ(16, menu_config.item_horizontal_padding +
+                    menu_config.item_horizontal_border_padding);
 }
 
 }  // namespace views

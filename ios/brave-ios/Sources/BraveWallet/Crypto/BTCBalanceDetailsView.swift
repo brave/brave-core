@@ -153,16 +153,9 @@ struct BTCBalanceDetailsView: View {
     .readSize { size in
       self.viewHeight = size.height
     }
-    .osAvailabilityModifiers({ view in
-      if #available(iOS 16, *) {
-        view
-          .presentationDetents([
-            .height(viewHeight)
-          ])
-      } else {
-        view
-      }
-    })
+    .presentationDetents([
+      .height(viewHeight)
+    ])
   }
 
   private func containerRow(

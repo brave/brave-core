@@ -245,6 +245,10 @@ class Tab: NSObject {
   /// The type of action triggering a navigation.
   var navigationType: WKNavigationType?
 
+  // This variable is used to keep track of current page. It is used to detect
+  // and report same document navigations to Brave Rewards library.
+  var rewardsXHRLoadURL: URL?
+
   /// This object holds on to information regarding the current web page
   ///
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)

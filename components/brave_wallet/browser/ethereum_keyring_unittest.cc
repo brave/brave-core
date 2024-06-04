@@ -34,12 +34,14 @@ TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed);
-  EXPECT_EQ(keyring.root_.get()->GetPrivateExtendedKey(),
-            "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV"
-            "5kDmXXSZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
-  EXPECT_EQ(keyring.root_.get()->GetPublicExtendedKey(),
-            "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBK"
-            "ozqYKB8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
+  EXPECT_EQ(
+      keyring.root_.get()->GetPrivateExtendedKey(ExtendedKeyVersion::kXprv),
+      "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV5kDmXX"
+      "SZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
+  EXPECT_EQ(
+      keyring.root_.get()->GetPublicExtendedKey(ExtendedKeyVersion::kXpub),
+      "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBKozqYKB"
+      "8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
 }
 
 TEST(EthereumKeyringUnitTest, EncodePrivateKeyForExport) {

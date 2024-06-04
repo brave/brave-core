@@ -7,7 +7,9 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "ui/views/style/typography.h"
 
 // |icon_left| - Padding between left border of location bar and first
 //               decoration. Use element padding.
@@ -15,6 +17,7 @@
 //               If last decoration has label, it has sufficient padding inside.
 //               If custom padding is provided(text_left is not null), respect
 //               it. Otherwise, set our design value - 5px.
+// Both value could be updated when |should_indent| is true.
 #define BRAVE_LAYOUT_LEADING_DECORATIONS                           \
   icon_left = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);     \
   if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) { \
@@ -33,7 +36,14 @@
 #define OmniboxViewViews BraveOmniboxViewViews
 #define ChromeOmniboxClient BraveOmniboxClientImpl
 #define PageActionIconContainerView BravePageActionIconContainerView
+#define STYLE_BODY_4_EMPHASIS STYLE_PRIMARY
+
+// We don't use different hover color when omnibox doesn't have focus but still
+// contains in-progress user input.
+#define kColorOmniboxResultsBackgroundHovered kColorLocationBarBackground
 #include "src/chrome/browser/ui/views/location_bar/location_bar_view.cc"
+#undef STYLE_BODY_4_EMPHASIS
+#undef kColorOmniboxResultsBackgroundHovered
 #undef PageActionIconContainerView
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews

@@ -21,7 +21,7 @@ module.exports = {
     'es6': true,
     'jest/globals': true
   },
-  'plugins': ['jest', 'licenses', 'react-hooks'],
+  'plugins': ['jest', 'licenses', 'no-unsanitized', 'react-hooks'],
   'globals': {
     'chrome': 'readonly'
   },
@@ -29,6 +29,8 @@ module.exports = {
     'project': './tsconfig-lint.json'
   },
   'rules': {
+    'no-unsanitized/method': 'error',
+    'no-unsanitized/property': 'error',
     'licenses/header': [
       2,
       {

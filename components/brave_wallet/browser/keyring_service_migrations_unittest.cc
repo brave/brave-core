@@ -10,6 +10,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -414,21 +415,26 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    testing::Test::SetUp();
     RegisterProfilePrefs(profile_prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefsForMigration(profile_prefs_.registry());
 
-    KeyringService::GetCreateNonceCallbackForTesting() =
-        base::BindLambdaForTesting(
-            [this] { return std::vector<uint8_t>(12, next_nonce_++); });
-    KeyringService::GetCreateSaltCallbackForTesting() =
-        base::BindLambdaForTesting(
-            [this] { return std::vector<uint8_t>(32, next_salt_++); });
+    PasswordEncryptor::GetCreateNonceCallbackForTesting() =
+        base::BindLambdaForTesting([this] {
+          return std::vector<uint8_t>(kEncryptorNonceSize, next_nonce_++);
+        });
+    PasswordEncryptor::GetCreateSaltCallbackForTesting() =
+        base::BindLambdaForTesting([this] {
+          return std::vector<uint8_t>(kEncryptorSaltSize, next_salt_++);
+        });
   }
 
   void TearDown() override {
-    KeyringService::GetCreateNonceCallbackForTesting() = base::NullCallback();
-    KeyringService::GetCreateSaltCallbackForTesting() = base::NullCallback();
+    PasswordEncryptor::GetCreateNonceCallbackForTesting() =
+        base::NullCallback();
+    PasswordEncryptor::GetCreateSaltCallbackForTesting() = base::NullCallback();
+    testing::Test::TearDown();
   }
 
   static std::optional<std::string> GetWalletMnemonic(

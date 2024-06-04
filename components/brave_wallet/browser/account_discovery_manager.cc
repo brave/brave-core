@@ -227,12 +227,12 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
     const auto& account_id = account->account_id;
     if (account_id->coin == mojom::CoinType::BTC &&
         account_id->keyring_id == acc.keyring_id) {
-      if (account->account_id->bitcoin_account_index == acc.account_index) {
+      if (account->account_id->account_index == acc.account_index) {
         bitcoin_account_to_update = account->account_id->Clone();
       }
 
-      if (!last_bitcoin_account || last_bitcoin_account->bitcoin_account_index <
-                                       account_id->bitcoin_account_index) {
+      if (!last_bitcoin_account ||
+          last_bitcoin_account->account_index < account_id->account_index) {
         last_bitcoin_account = account_id->Clone();
       }
     }
@@ -240,7 +240,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
 
   if (!bitcoin_account_to_update) {
     if (last_bitcoin_account &&
-        last_bitcoin_account->bitcoin_account_index + 1 != acc.account_index) {
+        last_bitcoin_account->account_index + 1 != acc.account_index) {
       // We don't allow gaps in account indexes, so just return if discovered
       // account would not be the next account.
       return;

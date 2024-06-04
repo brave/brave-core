@@ -329,6 +329,11 @@
 
 - (NSUInteger)childCount {
   DCHECK(node_);
+  return node_->children().size();
+}
+
+- (NSUInteger)totalCount {
+  DCHECK(node_);
   return node_->GetTotalNodeCount() - 1;
 }
 
@@ -447,7 +452,8 @@
 - (void)remove {
   DCHECK(node_);
   DCHECK(model_);
-  model_->Remove(node_, bookmarks::metrics::BookmarkEditSource::kOther);
+  model_->Remove(node_, bookmarks::metrics::BookmarkEditSource::kOther,
+                 FROM_HERE);
   node_ = nil;
   model_ = nil;
 }
@@ -542,7 +548,7 @@
   ios::ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browserState =
-      browserStateManager->GetLastUsedBrowserState();
+      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browserState);
   return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);
@@ -616,7 +622,7 @@
 
 - (void)removeAll {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  bookmark_model_->RemoveAllUserBookmarks();
+  bookmark_model_->RemoveAllUserBookmarks(FROM_HERE);
 }
 
 - (void)searchWithQuery:(NSString*)queryArg

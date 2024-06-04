@@ -131,9 +131,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     view.window?.addGestureRecognizer(gesture)
 
     DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
-    if #available(iOS 16.0, *) {
-      self.setNeedsUpdateOfSupportedInterfaceOrientations()
-    }
+    self.setNeedsUpdateOfSupportedInterfaceOrientations()
   }
 
   public override func viewDidLoad() {

@@ -26,11 +26,12 @@ public class BraveHomepageSettings extends HomepageSettings {
         if (homepageSwitch.isVisible()) return;
         // Show homepage switch if it is hidden.
         homepageSwitch.setVisible(true);
-        boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
+        boolean isHomepageEnabled = mHomepageManager.isHomepageEnabled();
         homepageSwitch.setChecked(isHomepageEnabled);
-        homepageSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
-            mHomepageManager.setPrefHomepageEnabled((boolean) newValue);
-            return true;
-        });
+        homepageSwitch.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    mHomepageManager.setPrefHomepageEnabled((boolean) newValue);
+                    return true;
+                });
     }
 }

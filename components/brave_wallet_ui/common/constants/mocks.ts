@@ -230,7 +230,7 @@ export const mockAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0'
   },
   hardware: undefined
@@ -244,7 +244,7 @@ export const mockBtcAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'bc1q4500000000000000000',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_bc1q4500000000000000000'
   },
   hardware: undefined
@@ -258,7 +258,7 @@ export const mockZecAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kZCashMainnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 'zCash-address',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_zCash-address'
   },
   hardware: undefined
@@ -273,7 +273,7 @@ export const mockEthAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kDefault,
     kind: BraveWallet.AccountKind.kDerived,
     address: '0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db'
   }
 }
@@ -286,7 +286,7 @@ export const mockSolanaAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRez',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRez'
   },
   hardware: undefined
@@ -300,7 +300,7 @@ export const mockSolanaAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kSolana,
     kind: BraveWallet.AccountKind.kDerived,
     address: '5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_5sDWP4vCRgDrGsmS1RRuWGRWKo5mhP5wKw8RNqK6zRer'
   },
   hardware: undefined
@@ -314,7 +314,7 @@ export const mockFilecoinAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_t1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti'
   },
   hardware: undefined
@@ -328,7 +328,7 @@ export const mockFilecoinAccountInfo: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: 't1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_t1alebc2ujfh4kuxs5bvzmx5b2w5ixrqrl3ni5rti'
   },
   hardware: undefined
@@ -342,7 +342,7 @@ export const mockBitcoinAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinAccount'
   },
   hardware: undefined
@@ -356,7 +356,7 @@ export const mockBitcoinTestAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinTestAccount'
   },
   hardware: undefined
@@ -370,7 +370,7 @@ export const mockBitcoinTestnetAccount: BraveWallet.AccountInfo = {
     keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
     kind: BraveWallet.AccountKind.kDerived,
     address: '',
-    bitcoinAccountIndex: 0,
+    accountIndex: 0,
     uniqueKey: 'unique_key_MockBitcoinTestnetAccount'
   },
   hardware: undefined

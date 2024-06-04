@@ -389,7 +389,7 @@ action("create_dmg") {
     "--target",
     "$mac_unsigned_output_prefix/$brave_dmg",
     "--format",
-    "UDBZ",
+    "ULMO",
     "--verbosity",
     "2",
     "--volname",

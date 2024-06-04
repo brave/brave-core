@@ -690,7 +690,7 @@
     Save IBAN to Brave sync chain?
   </message>
   <message name="IDS_AUTOFILL_UPLOAD_IBAN_PROMPT_EXPLANATION" desc="Explanation text for the Autofill save IBAN (International Bank Account Number) to the GPay server prompt when a user submits a form with a valid IBAN.">
-    To pay faster next time, save your IBAN to your Brave sync chain
+    To autofill this IBAN next time, save it in your Brave account
   </message>
 
   <!-- Mandatory Reauth related strings - start -->
@@ -741,22 +741,6 @@
   <if expr="not is_ios and not is_android">
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_FALLBACK_ICON_TOOLTIP" desc="The tooltip message for the omnibox icon for the virtual card enroll bubble on Desktop. This bubble prompts users if they would like to enroll in a virtual card.">
       Add virtual card
-    </message>
-    <message name="IDS_AUTOFILL_VIRTUAL_CARD_SELECTION_DIALOG_CONTENT_TITLE" desc="The title shown in the Autofill virtual card selection dialog. This dialog offers available virtual credit cards for users to choose to fill the form with. [ICU Syntax]">
-      {NUM_CARDS, plural,
-      =1 {Use a virtual number for this card}
-      other {Select a card}}
-    </message>
-    <message name="IDS_AUTOFILL_VIRTUAL_CARD_SELECTION_DIALOG_CONTENT_EXPLANATION" desc="The detailed explanations shown in the Autofill virtual card selection dialog. This dialog offers available virtual credit cards for users to choose to fill the form with. [ICU Syntax]">
-      {NUM_CARDS, plural,
-      =1 {This card will be charged when you pay, but its real number won't be shared with this site. For extra security, a temporary CVC will be generated.}
-      other {The card you select will be charged when you pay, but its real number won't be shared with this site. For extra security, a temporary CVC will be generated.}}
-    </message>
-    <message name="IDS_AUTOFILL_VIRTUAL_CARD_SELECTION_DIALOG_OK_BUTTON_LABEL" desc="Text shown in the OK button in the Autofill virtual card selection dialog. This dialog offers all available virtual credit cards for users to choose.">
-      Continue
-    </message>
-    <message name="IDS_AUTOFILL_VIRTUAL_CARD_SELECTION_DIALOG_CANCEL_BUTTON_LABEL" desc="Text shown in the Cancel button in the Autofill virtual card selection dialog. This dialog offers all available virtual credit cards for users to choose.">
-      Cancel
     </message>
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_TITLE" desc="The title shown in the Autofill virtual card manual fallback bubble on Desktop. This bubble shows the complete information for the virtual card selected to fill the form.">
       Virtual card details
@@ -1039,6 +1023,9 @@
     <message name="IDS_AUTOFILL_CREDIT_CARD_DELETE_CONFIRMATION_TITLE" desc="Title for the confirmation dialog displayed when the user clicks on the delete button while editing card information." formatter_data="android_java">
       Delete card
     </message>
+    <message name="IDS_AUTOFILL_IBAN_DELETE_CONFIRMATION_TITLE" desc="Title for the confirmation dialog displayed when the user clicks on the delete button while editing the IBAN information." formatter_data="android_java">
+      Delete IBAN
+    </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_DELETE_CONFIRMATION_DESCRIPTION" desc="Description for the confirmation dialog displayed when the user clicks on the delete button while editing payment method information." formatter_data="android_java">
       This payment method will be deleted from this device
     </message>
@@ -1127,7 +1114,7 @@
       Card benefits
     </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_CARD_BENEFITS_TOGGLE_SUBLABEL_WITH_LEARN_LINK" desc="Sublabel for the payments settings page card benefits toggle, including a hyperlinked text to learn about card benefits.">
-      See info that helps you choose which card to pay with. <ph name="CARD_BENEFIT_HELP_LINK_BEGIN">&lt;a href="#" aria-description="$1"&gt;</ph>Learn about card benefits<ph name="CARD_BENEFIT_HELP_LINK_END">&lt;/a&gt;</ph>
+      Show which rewards and benefits are available for your cards at checkout <ph name="CARD_BENEFIT_HELP_LINK_BEGIN">&lt;a href="#" aria-description="$1"&gt;</ph>Learn about card benefits<ph name="CARD_BENEFIT_HELP_LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_BULK_REMOVE_CVC_TITLE" desc="Title for the modal dialog when the user is trying to bulk remove/delete all the CVCs stored locally and on Brave servers.">
       Delete saved security codes?
@@ -1138,11 +1125,8 @@
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_CVC_TAG_FOR_CREDIT_CARD_LIST_ENTRY" desc="Tag present on each entry in the credit card list on the payments settings page if that entry has a cvc saved to it.">
       CVC saved
     </message>
-    <message name="IDS_AUTOFILL_SETTINGS_PAGE_BENEFITS_AVAILABLE_TAG_FOR_CREDIT_CARD_LIST_ENTRY" desc="Tag present on each entry in the credit card list on the payments settings page if that entry has associated benefits and a product terms URL.">
-      Card benefits available
-    </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_BENEFITS_TERMS_TAG_FOR_CREDIT_CARD_LIST_ENTRY" desc="Tag present on each entry in the credit card list on the payments settings page if that entry has associated benefits and a product terms URL. It is also a hyperlink text which opens the product terms page.">
-      See terms here
+      See card benefit terms
     </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_BENEFITS_TERMS_ARIA_LABEL" desc="Screenreader text for the benefits terms link on a credit card entry in the Autofill settings page.">
       See terms here for <ph name="CREDIT_CARD_NAME">$1</ph>

@@ -23,6 +23,8 @@ source_set("ui") {
     "//ios/web/public/webui",
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui:web_controller_header",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
     "//ios/web/webui",
     "//ui/base",
   ]

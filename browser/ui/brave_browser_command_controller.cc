@@ -419,7 +419,7 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(std::to_address(browser_));
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (!split_view_browser_data) {
     // Can happen on start up.
     return;
@@ -430,11 +430,15 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
   }
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
-                                               std::to_address(browser_)));
+                                               base::to_address(browser_)));
   UpdateCommandEnabled(IDC_TILE_TABS,
-                       brave::CanTileTabs(std::to_address(browser_)));
-  UpdateCommandEnabled(IDC_BREAK_TILE,
-                       brave::IsTabsTiled(std::to_address(browser_)));
+                       brave::CanTileTabs(base::to_address(browser_)));
+
+  const auto is_tab_tiled = brave::IsTabsTiled(base::to_address(browser_));
+  for (auto command_enabled_when_tab_is_tiled :
+       {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
+    UpdateCommandEnabled(command_enabled_when_tab_is_tiled, is_tab_tiled);
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -609,7 +613,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       chrome::SendTabToSelf(&*browser_);
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
-      brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      brave::ToggleAllBookmarksButtonVisibility(base::to_address(browser_));
       break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -657,6 +661,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_BREAK_TILE:
       brave::BreakTiles(&*browser_);
+      break;
+    case IDC_SWAP_SPLIT_VIEW:
+      brave::SwapTabsInTile(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

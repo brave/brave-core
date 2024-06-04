@@ -174,6 +174,10 @@ If you want to use this account one-time only, you can use <ph name="GUEST_LINK_
 Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
         </message>
       </if>
+
+      <if expr="is_linux">
+        </if>
+
       <if expr="is_win">
         </if>
       <if expr="is_macosx">
@@ -233,9 +237,6 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="chromeos_ash">
         </if>
 
-      <if expr="is_win or is_macosx or is_linux">
-        </if>
-
       <if expr="is_macosx">
         </if>
 
@@ -259,6 +260,11 @@ Permissions you've already given to websites and apps may apply to this account.
         </if>
 
       <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+
         </if>
 
       <if expr="not chromeos_ash and not is_android">
@@ -295,6 +301,9 @@ Permissions you've already given to websites and apps may apply to this account.
           This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
         </message>
 
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="not is_android">
@@ -410,6 +419,10 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
       </if>
 
-      </messages>
+      <if expr="not is_android and not is_chromeos">
+        </if>
+      <if expr="is_macosx">
+        </if>
+    </messages>
   </release>
 </grit>

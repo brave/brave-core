@@ -8,31 +8,39 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
 namespace ai_chat::features {
 
-BASE_DECLARE_FEATURE(kAIChat);
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChat);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsDefaultKey;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
 
 // If true, certain freemium models are available to non-premium users. If
 // false, those models are premium-only.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kFreemiumAvailable;
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kAIChatSSE;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kConversationAPIEnabled;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
 
-bool IsAIChatEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
-BASE_DECLARE_FEATURE(kAIChatHistory);
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
 
-bool IsAIChatHistoryEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatHistoryEnabled();
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kContextMenuRewriteInPlace);
-bool IsContextMenuRewriteInPlaceEnabled();
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsContextMenuRewriteInPlaceEnabled();
 
 }  // namespace ai_chat::features
 

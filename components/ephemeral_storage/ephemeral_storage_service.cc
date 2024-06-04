@@ -159,7 +159,7 @@ bool EphemeralStorageService::IsDefaultCookieSetting(const GURL& url) const {
   for (const auto& setting : settings) {
     if (setting.primary_pattern.Matches(url) &&
         setting.secondary_pattern.Matches(url)) {
-      return setting.source == "default";
+      return setting.source == content_settings::ProviderType::kDefaultProvider;
     }
   }
 

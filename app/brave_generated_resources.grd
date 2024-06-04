@@ -607,11 +607,35 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC" desc="The text for the banner type description">
           Fully private, 100% independent, and with great AI features.
         </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DDG_DESC" desc="The text for the banner type description">
+          DDG is just Bing in disguise. Time for real privacy, better results, and an independent index. Time for Brave Search.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_TITLE" desc="The text for the banner type title">
+          Ditch the duck
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_DESC" desc="The text for the banner type description">
+          Brave Search doesn’t track you, your queries, or your clicks. And (unlike DDG) it’s not just Bing in disguise.
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_TITLE" desc="The text for the banner type title">
+          Get better results
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_DESC" desc="The text for the banner type description">
+          Brave Search is independently verified to have better results than Bing (or Bing clones like DuckDuckGo).
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_TITLE" desc="The text for the banner type title">
+          Improve search results
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_DESC" desc="The text for the banner type description">
+          Brave Search has better results than DuckDuckGo for most queries. And it’s truly private.
+        </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
           Try Brave Search
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP" desc="The tooltip text for the dismiss button in a promotion match">
           Dismiss
+        </message>
+        <message name="IDS_BRAVE_SEARCH_CONVERSION_SET_AS_DEFAULT_BUTTON_LABEL" desc="The text for the set as default button in a promotion match">
+          Set as default
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP" desc="The tooltip text for the maybe later button in a promotion match">
           Maybe later
@@ -666,6 +690,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION" desc="The description explaning how to bring the tab to this window when dummy tab is visible"> 
           Clicking this tab will bring its contents to this window
+        </message>
+
+        <!-- Split View -->
+        <message name="IDS_SPLIT_VIEW_A11Y_SEPARATOR_MENU_BUTTON" desc="The a11y text for the separator menu button in split view">
+          Split view menu button
         </message>
       </if>
 

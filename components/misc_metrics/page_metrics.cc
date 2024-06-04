@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -298,6 +300,10 @@ void PageMetrics::ReportBookmarkCount() {
     return;
   }
   bookmark_counter_->Restart();
+}
+
+void PageMetrics::OnBraveQuery() {
+  UMA_HISTOGRAM_BOOLEAN(kSearchBraveDailyHistogramName, true);
 }
 
 }  // namespace misc_metrics

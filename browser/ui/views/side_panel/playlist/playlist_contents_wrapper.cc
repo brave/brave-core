@@ -36,8 +36,7 @@ PlaylistContentsWrapper::PlaylistContentsWrapper(
 PlaylistContentsWrapper::~PlaylistContentsWrapper() = default;
 
 bool PlaylistContentsWrapper::CanEnterFullscreenModeForTab(
-    content::RenderFrameHost* requesting_frame,
-    const blink::mojom::FullscreenOptions& options) {
+    content::RenderFrameHost* requesting_frame) {
   return true;
 }
 

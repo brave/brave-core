@@ -63,7 +63,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     explicit MockColorProviderSource(bool is_dark) {
       key_.color_mode = is_dark ? ui::ColorProviderKey::ColorMode::kDark
                                 : ui::ColorProviderKey::ColorMode::kLight;
-      provider_.GenerateColorMap();
     }
     MockColorProviderSource(const MockColorProviderSource&) = delete;
     MockColorProviderSource& operator=(const MockColorProviderSource&) = delete;
@@ -101,7 +100,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
 
-    brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);

@@ -18,18 +18,18 @@ using extensions::ExtensionBrowserTest;
 
 class ExtensionSystemBrowserTest : public ExtensionBrowserTest {
  public:
-  ExtensionSystemBrowserTest() {
-    brave::RegisterPathProvider();
-    dir_test_data_ = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+  ExtensionSystemBrowserTest() = default;
 
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    https_server_->ServeFilesFromDirectory(dir_test_data_);
-    EXPECT_TRUE(https_server_->Start());
+  void SetUp() override {
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    InProcessBrowserTest::SetUp();
   }
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
+    dir_test_data_ = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
+    https_server_.ServeFilesFromDirectory(dir_test_data_);
+    https_server_.StartAcceptingConnections();
     host_resolver()->AddRule("*", "127.0.0.1");
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
@@ -38,7 +38,7 @@ class ExtensionSystemBrowserTest : public ExtensionBrowserTest {
     ExtensionBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
-        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_.port()));
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
@@ -62,7 +62,7 @@ class ExtensionSystemBrowserTest : public ExtensionBrowserTest {
  protected:
   base::FilePath dir_test_data_;
   content::ContentMockCertVerifier mock_cert_verifier_;
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
 IN_PROC_BROWSER_TEST_F(ExtensionSystemBrowserTest,

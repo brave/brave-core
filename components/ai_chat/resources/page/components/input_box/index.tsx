@@ -11,19 +11,31 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import DataContext from '../../state/context'
+import { AIChatContext } from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
 import ActionTypeLabel from '../action_type_label'
 
-function InputBox() {
-  const context = React.useContext(DataContext)
+type Props = Pick<AIChatContext,
+  'inputText'
+  | 'setInputText'
+  | 'submitInputTextToAPI'
+  | 'selectedActionType'
+  | 'resetSelectedActionType'
+  | 'isCharLimitApproaching'
+  | 'isCharLimitExceeded'
+  | 'inputTextCharCountDisplay'
+  | 'isToolsMenuOpen'
+  | 'setIsToolsMenuOpen'
+  | 'isMobile'
+  | 'shouldDisableUserInput'>
 
+function InputBox(props: Props) {
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    context.setInputText(e.target.value)
+    props.setInputText(e.target.value)
   }
 
   const handleSubmit = (e: PointerEvent) => {
-    context.submitInputTextToAPI()
+    props.submitInputTextToAPI()
   }
 
   const handleMic = (e: PointerEvent) => {
@@ -33,7 +45,7 @@ function InputBox() {
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
-        context.submitInputTextToAPI()
+        props.submitInputTextToAPI()
       }
 
       e.preventDefault()
@@ -41,53 +53,53 @@ function InputBox() {
 
     if (
       e.key === 'Backspace' &&
-      context.inputText === '' &&
-      context.selectedActionType
+      props.inputText === '' &&
+      props.selectedActionType
     ) {
-      context.resetSelectedActionType()
+      props.resetSelectedActionType()
     }
   }
 
   const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
-    if (node && context.selectedActionType) {
+    if (node && props.selectedActionType) {
       node.focus()
     }
   }
 
   return (
     <form className={styles.form}>
-      {context.selectedActionType && (
+      {props.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
           <ActionTypeLabel
             removable={true}
-            actionType={context.selectedActionType}
-            onCloseClick={context.resetSelectedActionType}
+            actionType={props.selectedActionType}
+            onCloseClick={props.resetSelectedActionType}
           />
         </div>
       )}
       <div
         className={styles.growWrap}
-        data-replicated-value={context.inputText}
+        data-replicated-value={props.inputText}
       >
         <textarea
           ref={maybeAutofocus}
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
-          value={context.inputText}
+          value={props.inputText}
           autoFocus
           rows={1}
         />
       </div>
-      {context.isCharLimitApproaching && (
+      {props.isCharLimitApproaching && (
         <div
           className={classnames({
             [styles.counterText]: true,
-            [styles.counterTextVisible]: context.isCharLimitApproaching,
-            [styles.counterTextError]: context.isCharLimitExceeded
+            [styles.counterTextVisible]: props.isCharLimitApproaching,
+            [styles.counterTextError]: props.isCharLimitExceeded
           })}
         >
-          {context.inputTextCharCountDisplay}
+          {props.inputTextCharCountDisplay}
         </div>
       )}
       <div className={styles.toolsContainer}>
@@ -95,21 +107,23 @@ function InputBox() {
           <Button
             fab
             kind='plain-faint'
-            onClick={() => context.setIsToolsMenuOpen(!context.isToolsMenuOpen)}
+            onClick={() => props.setIsToolsMenuOpen(!props.isToolsMenuOpen)}
+            title={getLocale('toolsMenuButtonLabel')}
           >
             <Icon
               className={classnames({
-                [styles.slashIconActive]: context.isToolsMenuOpen
+                [styles.slashIconActive]: props.isToolsMenuOpen
               })}
               name='slash'
             />
           </Button>
-          {context.isMobile && (
+          {props.isMobile && (
             <Button
               fab
               kind='plain-faint'
               onClick={handleMic}
-              disabled={context.shouldDisableUserInput}
+              disabled={props.shouldDisableUserInput}
+              title={getLocale('useMicButtonLabel')}
             >
               <Icon name='microphone' />
             </Button>
@@ -120,7 +134,7 @@ function InputBox() {
             fab
             kind='plain-faint'
             onClick={handleSubmit}
-            disabled={context.shouldDisableUserInput}
+            disabled={props.shouldDisableUserInput}
             title={getLocale('sendChatButtonLabel')}
           >
             <Icon name='send' />

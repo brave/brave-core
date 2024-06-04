@@ -53,6 +53,8 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   bool IsTabTiled(const tabs::TabHandle& tab) const;
 
+  void SwapTabsInTile(const Tile& tile);
+
   std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
 
   const std::vector<Tile>& tiles() const { return tiles_; }

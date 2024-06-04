@@ -80,16 +80,6 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
   BraveNewsTabHelperTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
-  void SetUp() override {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
-
-    InProcessBrowserTest::SetUp();
-  }
-
   void OptIn() {
     auto* prefs = browser()->profile()->GetPrefs();
     prefs->SetBoolean(brave_news::prefs::kNewTabPageShowToday, true);
@@ -113,6 +103,10 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     host_resolver()->AddRule("*", "127.0.0.1");
     cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }

@@ -351,7 +351,7 @@ private struct AccountCardView: View {
   }
 
   private var cardBackground: some View {
-    BlockieMaterial(address: account.blockieSeed)
+    BlockieBackground(seed: account.blockieSeed)
       .blur(radius: 25, opaque: true)
       .opacity(0.3)
       .clipShape(RoundedRectangle(cornerRadius: 8))

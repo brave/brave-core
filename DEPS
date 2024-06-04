@@ -7,7 +7,7 @@ vars = {
 deps = {
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@e57534eb50ed4a676d430c6199b1dc68edfeacd8",
+    "url": "https://github.com/brave/omaha.git@32383a4dc9c50a88e42be0e03e5b2f2ba7ad058b",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
@@ -137,6 +137,12 @@ hooks = [
     'pattern': '.',
     'condition': 'host_os == "mac"',
     'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
+  },
+  {
+    # Generate .clang-format.
+    'name': 'generate_clang_format',
+    'pattern': '.',
+    'action': ['vpython3', 'build/util/generate_clang_format.py', '../.clang-format', '.clang-format']
   },
 ]
 

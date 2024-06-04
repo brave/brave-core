@@ -30,6 +30,8 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -39,15 +41,17 @@
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 
 void BraveOmniboxResultView::ResetChildren() {
-  // Reset children visibility. Their visibility could be configured later
-  // based on |match_| and the current input.
-  // NOTE: The first child in the result box is supposed to be the
-  // `suggestion_container_`, which used to be stored as a data member.
-  children().front()->SetVisible(true);
-  button_row_->SetVisible(true);
   if (brave_search_promotion_view_) {
     RemoveChildViewT(brave_search_promotion_view_);
     brave_search_promotion_view_ = nullptr;
+  }
+
+  // Reset children visibility. Their visibility could be configured later
+  // based on |match_| and the current input.
+  // Reset upstream's layout manager.
+  SetLayoutManager(std::make_unique<views::FillLayout>());
+  for (auto& child : children()) {
+    child->SetVisible(true);
   }
 }
 
@@ -118,17 +122,22 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   }
 
   // Hide upstream children and show our promotion view.
-  // NOTE: The first child in the result box is supposed to be the
-  // `suggestion_container_`, which used to be stored as a data member.
-  children().front()->SetVisible(false);
-  button_row_->SetVisible(false);
+  // It'll be the only visible child view.
+  for (auto& child : children()) {
+    child->SetVisible(false);
+  }
+
+  // To have proper size for promotion view.
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical);
 
   CHECK(!brave_search_promotion_view_);
   auto* controller = popup_view_->controller()->autocomplete_controller();
   auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
   brave_search_promotion_view_ =
       AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
-          this, g_browser_process->local_state(), prefs));
+          this, g_browser_process->local_state(), prefs,
+          popup_view_->controller()->client()->GetTemplateURLService()));
 
   brave_search_promotion_view_->SetTypeAndInput(
       GetConversionTypeFromMatch(match_),

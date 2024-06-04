@@ -333,8 +333,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
-    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>(
-        keyring_service_.get(), GetPrefs());
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ =
         BitcoinWalletServiceFactory::GetServiceForContext(profile_.get());
     bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
@@ -2670,7 +2669,7 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   SetupWallet();
 
   auto btc_account = GetAccountUtils().EnsureBtcAccount(0);
-  bitcoin_test_rpc_server_->SetUpBitcoinRpc(btc_account->account_id);
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
 
   base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
       callback;

@@ -65,7 +65,6 @@ struct LockScreenShortcutProvider: IntentTimelineProvider {
   }
 }
 
-@available(iOS 16.0, *)
 struct LockScreenShortcutView: View {
   var entry: LockScreenShortcutEntry
 

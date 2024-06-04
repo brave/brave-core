@@ -49,6 +49,10 @@ BraveWalletPermissionPromptImpl::GetPromptDisposition() const {
   return permissions::PermissionPromptDisposition::ANCHORED_BUBBLE;
 }
 
+bool BraveWalletPermissionPromptImpl::IsAskPrompt() const {
+  return true;
+}
+
 std::optional<gfx::Rect>
 BraveWalletPermissionPromptImpl::GetViewBoundsInScreen() const {
   return std::nullopt;

@@ -24,4 +24,10 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/update_filter_list_id"
+        android:title="@string/update"
+        app:iconTint="@color/add_custom_filter_tint_color"
+        app:showAsAction="ifRoom" />
+
 </menu>

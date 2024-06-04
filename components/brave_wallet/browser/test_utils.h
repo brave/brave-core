@@ -72,6 +72,10 @@ class AccountUtils {
                                           uint32_t index);
   mojom::AccountInfoPtr CreateDerivedAccount(mojom::KeyringId keyring_id,
                                              const std::string& name);
+  mojom::AccountInfoPtr GetImportedAccount(mojom::KeyringId keyring_id,
+                                           uint32_t index);
+  mojom::AccountInfoPtr CreateImportedAccount(mojom::KeyringId keyring_id,
+                                              const std::string& name);
   mojom::AccountInfoPtr EnsureAccount(mojom::KeyringId keyring_id,
                                       uint32_t index);
 
@@ -103,6 +107,8 @@ class AccountUtils {
   mojom::AccountIdPtr FindAccountIdByAddress(const std::string& address);
 
   std::vector<mojom::AccountInfoPtr> AllAccounts(mojom::KeyringId keyring_id);
+  std::vector<mojom::AccountInfoPtr> AllAccounts(
+      const std::vector<mojom::KeyringId>& keyring_ids);
   std::vector<mojom::AccountInfoPtr> AllEthAccounts();
   std::vector<mojom::AccountInfoPtr> AllSolAccounts();
   std::vector<mojom::AccountInfoPtr> AllFilAccounts();

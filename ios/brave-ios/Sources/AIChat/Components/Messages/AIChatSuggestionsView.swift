@@ -76,82 +76,6 @@ struct WrappingHStack: Layout {
   }
 }
 
-@available(iOS, introduced: 15.0, obsoleted: 16.0)
-struct WrappingHStackOld<Model, V>: View where Model: Hashable, V: View {
-  typealias ViewGenerator = (Model) -> V
-
-  var models: [Model]
-  var hSpacing: CGFloat
-  var vSpacing: CGFloat
-  var viewGenerator: ViewGenerator
-  var proxy: GeometryProxy
-
-  @State private var viewHeight = CGFloat.infinity
-
-  init(geometry: GeometryProxy, models: [Model], viewGenerator: @escaping ViewGenerator) {
-    self.models = models
-    self.viewGenerator = viewGenerator
-    self.hSpacing = 2.0
-    self.vSpacing = 2.0
-    self.proxy = geometry
-  }
-
-  init(
-    geometry: GeometryProxy,
-    models: [Model],
-    hSpacing: Float,
-    vSpacing: Float,
-    viewGenerator: @escaping ViewGenerator
-  ) {
-    self.models = models
-    self.viewGenerator = viewGenerator
-    self.hSpacing = CGFloat(hSpacing)
-    self.vSpacing = CGFloat(vSpacing)
-    self.proxy = geometry
-  }
-
-  var body: some View {
-    VStack(spacing: 0.0) {
-      self.generateContent(in: proxy)
-    }
-  }
-
-  @ViewBuilder
-  private func generateContent(in geometry: GeometryProxy) -> some View {
-    var width: CGFloat = .zero
-    var height: CGFloat = .zero
-
-    ZStack(alignment: .topLeading) {
-      ForEach(models, id: \.self) { model in
-        viewGenerator(model)
-          .alignmentGuide(
-            .leading,
-            computeValue: { dimension in
-              if abs(width - dimension.width) > geometry.size.width {
-                width = 0.0
-                height -= dimension.height + vSpacing
-              }
-
-              let result = width
-              width = model == models.last! ? 0.0 : width - dimension.width - hSpacing
-              return result
-            }
-          )
-          .alignmentGuide(
-            .top,
-            computeValue: { dimension in
-              let result = height + dimension.height
-              if model == models.last! {
-                height = 0.0
-              }
-              return result
-            }
-          )
-      }
-    }
-  }
-}
-
 struct AIChatSuggestionsButton: View {
   var title: String
   var isLoading: Bool
@@ -200,17 +124,8 @@ struct AIChatSuggestionsView: View {
   }
 
   var body: some View {
-    if #available(iOS 16, *) {
-      WrappingHStack(hSpacing: 8.0, vSpacing: 8.0) {
-        ForEach(suggestions, id: \.self) { title in
-          AIChatSuggestionsButton(title: title, isLoading: false) {
-            onSuggestionPressed?(title)
-          }
-        }
-      }
-    } else {
-      WrappingHStackOld(geometry: proxy, models: suggestions, hSpacing: 8.0, vSpacing: 8.0) {
-        title in
+    WrappingHStack(hSpacing: 8.0, vSpacing: 8.0) {
+      ForEach(suggestions, id: \.self) { title in
         AIChatSuggestionsButton(title: title, isLoading: false) {
           onSuggestionPressed?(title)
         }

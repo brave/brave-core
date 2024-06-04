@@ -7,7 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_DOCUMENT_H_
 
 #define IsPluginDocument                                    \
-  IsDOMFeaturePolicyEnabled(v8::Local<v8::Context> context, \
+  IsDOMFeaturePolicyEnabled(v8::Isolate* isolate,           \
+                            v8::Local<v8::Context> context, \
                             const WebString& feature);      \
   bool IsPluginDocument
 

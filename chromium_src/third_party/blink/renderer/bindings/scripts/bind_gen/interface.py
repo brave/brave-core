@@ -186,8 +186,6 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     if not _should_track_in_page_graph(cg_context):
         return expr
 
-    if cg_context.no_alloc_direct_call_for_testing:
-        return expr
     # `expr`` is a C++ code (a simple string) that contains the call and the
     # return value assignment. Make sure it's a single-lined expression as it's
     # originally implemented in upstream `_make_blink_api_call` function.

@@ -67,7 +67,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   }
 
   if (restore_service_->entries().front()->type ==
-      sessions::TabRestoreService::WINDOW) {
+      sessions::tab_restore::WINDOW) {
     id = IDS_RESTORE_WINDOW;
   }
 
@@ -141,6 +141,8 @@ void BraveTabMenuModel::BuildItemsForSplitView(
   if (indices.size() == 1u) {
     if (brave::IsTabsTiled(browser, indices)) {
       InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
+      InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
+                               IDS_IDC_SWAP_SPLIT_VIEW);
       return;
     }
 
@@ -156,5 +158,10 @@ void BraveTabMenuModel::BuildItemsForSplitView(
 
   if (brave::IsTabsTiled(browser, indices)) {
     InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
+  }
+
+  if (brave::IsTabsTiled(browser, {tab_strip_model->active_index()})) {
+    InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
+                             IDS_IDC_SWAP_SPLIT_VIEW);
   }
 }

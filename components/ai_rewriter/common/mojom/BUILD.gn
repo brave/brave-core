@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom_component("mojom") {
+  output_prefix = "ai_rewriter_mojom"
+  macro_prefix = "AI_REWRITER_MOJOM"
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "ai_rewriter.mojom" ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common/mojom",
+    "//mojo/public/mojom/base",
+    "//ui/gfx/geometry/mojom",
+    "//url/mojom:url_mojom_gurl",
+  ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

@@ -71,7 +71,7 @@ class InstantService {
 // before the change.
 #if !defined(TOOLKIT_VIEWS)
 namespace webui {
-ui::NativeTheme* GetNativeTheme(content::WebContents* web_contents) {
+ui::NativeTheme* GetNativeThemeDeprecated(content::WebContents* web_contents) {
   return ui::NativeTheme::BraveGetInstanceForNativeUi();
 }
 }  // namespace webui

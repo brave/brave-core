@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/functional/callback_forward.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/task/cancelable_task_tracker.h"
@@ -45,6 +46,8 @@ inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
     "Brave.Core.FailedHTTPSUpgrades.2";
 inline constexpr char kBookmarkCountHistogramName[] =
     "Brave.Core.BookmarkCount";
+inline constexpr char kSearchBraveDailyHistogramName[] =
+    "Brave.Search.BraveDaily";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
@@ -59,6 +62,8 @@ class PageMetrics {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void IncrementPagesLoadedCount(bool is_reload);
+
+  void OnBraveQuery();
 
  private:
   void InitStorage();

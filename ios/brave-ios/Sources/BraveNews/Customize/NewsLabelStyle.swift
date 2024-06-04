@@ -14,14 +14,8 @@ struct NewsLabelStyle: LabelStyle {
       configuration.icon
       configuration.title
     }
-    .osAvailabilityModifiers { content in
-      if #available(iOS 16.0, *) {
-        content.alignmentGuide(.listRowSeparatorLeading) { d in
-          d[.leading]
-        }
-      } else {
-        content
-      }
+    .alignmentGuide(.listRowSeparatorLeading) { d in
+      d[.leading]
     }
   }
 }

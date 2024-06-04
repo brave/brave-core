@@ -15,6 +15,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -23,6 +24,9 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data_util.h"
+#include "components/search_engines/template_url_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -62,8 +66,10 @@ constexpr int kBannerTypeMarginBottom = 4;
 constexpr int kBannerTypeRadius = 8;
 constexpr int kMaxBannerDescLines = 5;
 constexpr int kBannerTypeCloseButtonSize = 24;
+constexpr int kBannerTypeCloseButtonSizeDDG = 16;
 constexpr int kBannerTypeCloseButtonMargin = 8;
 constexpr int kBannerTypeContentsMargin = 13;
+constexpr int kBannerTypeContentsMarginDDG = 28;
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
   gfx::FontList font_list;
@@ -74,53 +80,89 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 // Draw graphic over gradient background for banner type.
 class HorizontalGradientBackground : public views::Background {
  public:
-  using Background::Background;
+  HorizontalGradientBackground(bool use_ddg, bool draw_graphic)
+      : use_ddg_(use_ddg), draw_graphic_(draw_graphic) {}
   ~HorizontalGradientBackground() override = default;
   HorizontalGradientBackground(const HorizontalGradientBackground&) = delete;
   HorizontalGradientBackground& operator=(const HorizontalGradientBackground&) =
       delete;
 
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
-    // Fill with base color first.
-    canvas->DrawColor(
-        view->GetColorProvider()->GetColor(kColorOmniboxResultsBackground));
+    const gfx::RectF bounds(view->GetContentsBounds());
 
-    SkColor from_color = gfx::kPlaceholderColor;
-    SkColor to_color = gfx::kPlaceholderColor;
-    if (const ui::ColorProvider* color_provider = view->GetColorProvider()) {
-      from_color = color_provider->GetColor(
-          kColorSearchConversionBannerTypeBackgroundGradientFrom);
-      to_color = color_provider->GetColor(
-          kColorSearchConversionBannerTypeBackgroundGradientTo);
+    if (use_ddg_) {
+      canvas->DrawColor(view->GetColorProvider()->GetColor(
+          kColorSearchConversionBannerTypeBackground));
+    } else {
+      // Fill with base color first.
+      canvas->DrawColor(
+          view->GetColorProvider()->GetColor(kColorOmniboxResultsBackground));
+
+      SkColor from_color = gfx::kPlaceholderColor;
+      SkColor to_color = gfx::kPlaceholderColor;
+      if (const ui::ColorProvider* color_provider = view->GetColorProvider()) {
+        from_color = color_provider->GetColor(
+            kColorSearchConversionBannerTypeBackgroundGradientFrom);
+        to_color = color_provider->GetColor(
+            kColorSearchConversionBannerTypeBackgroundGradientTo);
+      }
+
+      // Gradient background from design.
+      //  - linear-gradient(90deg, from_color, 19.6%, to_color, 100%).
+      cc::PaintFlags flags;
+      SkPoint points[2] = {SkPoint::Make(0, 0),
+                           SkPoint::Make(view->width(), 0)};
+      SkColor4f colors[2] = {SkColor4f::FromColor(from_color),
+                             SkColor4f::FromColor(to_color)};
+      SkScalar positions[2] = {0.196f, 1.f};
+      flags.setShader(cc::PaintShader::MakeLinearGradient(
+          points, colors, positions, 2, SkTileMode::kClamp));
+      flags.setStyle(cc::PaintFlags::kFill_Style);
+      canvas->DrawRect(bounds, flags);
     }
 
-    // Gradient background from design.
-    //  - linear-gradient(90deg, from_color, 19.6%, to_color, 100%).
-    cc::PaintFlags flags;
-    SkPoint points[2] = {SkPoint::Make(0, 0), SkPoint::Make(view->width(), 0)};
-    SkColor4f colors[2] = {SkColor4f::FromColor(from_color),
-                           SkColor4f::FromColor(to_color)};
-    SkScalar positions[2] = {0.196f, 1.f};
-    flags.setShader(cc::PaintShader::MakeLinearGradient(
-        points, colors, positions, 2, SkTileMode::kClamp));
-    flags.setStyle(cc::PaintFlags::kFill_Style);
-    gfx::RectF bounds(view->GetContentsBounds());
-    canvas->DrawRect(bounds, flags);
+    if (!draw_graphic_) {
+      return;
+    }
 
+    const bool use_dark =
+        ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
+    int graphic_resource = use_dark
+                               ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
+                               : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;
+    if (use_ddg_) {
+      graphic_resource =
+          use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK
+                   : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG;
+    }
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    const auto* graphic = bundle.GetImageSkiaNamed(
-        ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
-            ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
-            : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC);
-
-    constexpr int kGraphicRightPadding = 27;
+    const auto* graphic = bundle.GetImageSkiaNamed(graphic_resource);
+    int kGraphicRightPadding = use_ddg_ ? kBannerTypeRadius : 27;
     const auto host_insets = view->GetInsets();
-    const int graphic_x = view->size().width() - host_insets.right() -
-                          kGraphicRightPadding - graphic->width();
-    const int graphic_y =
-        host_insets.top() + (bounds.height() - graphic->height()) / 2 + 1;
-    canvas->DrawImageInt(*graphic, graphic_x, graphic_y);
+    if (use_ddg_) {
+      // Scale graphic to fit banner.
+      // Calculate proper target position and size.
+      const int dst_height = bounds.height();
+      const int dst_width = graphic->width() * dst_height / graphic->height();
+      const int dst_x = view->size().width() - host_insets.right() -
+                        kGraphicRightPadding - dst_width;
+      const int dst_y = host_insets.top();
+      canvas->DrawImageInt(*graphic, 0, 0, graphic->width(), graphic->height(),
+                           dst_x, dst_y, dst_width, dst_height, true);
+    } else {
+      // Just locate in center.
+      const int dst_x = view->size().width() - host_insets.right() -
+                        kGraphicRightPadding - graphic->width();
+      const int dst_y =
+          host_insets.top() + (bounds.height() - graphic->height()) / 2 + 1;
+      canvas->DrawImageInt(*graphic, dst_x, dst_y);
+    }
   }
+
+ private:
+  // true when this background is for ddg conversion promotion.
+  bool use_ddg_ = false;
+  bool draw_graphic_ = false;
 };
 
 // For customizing label's font size.
@@ -248,13 +290,15 @@ END_METADATA
 BraveSearchConversionPromotionView::BraveSearchConversionPromotionView(
     BraveOmniboxResultView* result_view,
     PrefService* local_state,
-    PrefService* profile_prefs)
+    PrefService* profile_prefs,
+    TemplateURLService* template_url_service)
     : result_view_(result_view),
       mouse_enter_exit_handler_(base::BindRepeating(
           &BraveSearchConversionPromotionView::UpdateHoverState,
           base::Unretained(this))),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {
+      profile_prefs_(profile_prefs),
+      template_url_service_(*template_url_service) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   mouse_enter_exit_handler_.ObserveMouseEnterExitOn(this);
 }
@@ -341,7 +385,10 @@ void BraveSearchConversionPromotionView::UpdateState() {
   SetBackground(views::CreateSolidBackground(
       GetColorProvider()->GetColor(kColorOmniboxResultsBackground)));
   banner_type_container_->SetBackground(
-      std::make_unique<HorizontalGradientBackground>());
+      std::make_unique<HorizontalGradientBackground>(UseDDG(),
+                                                     ShouldDrawGraphic()));
+
+  SchedulePaint();
 }
 
 void BraveSearchConversionPromotionView::ConfigureForBannerType() {
@@ -367,20 +414,29 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kUnbounded)
           .WithOrder(2));
+  int contents_margin =
+      UseDDG() ? kBannerTypeContentsMarginDDG : kBannerTypeContentsMargin;
   banner_contents->SetProperty(
-      views::kMarginsKey, gfx::Insets::TLBR(kBannerTypeContentsMargin,
-                                            kBannerTypeContentsMargin, 0, 0));
+      views::kMarginsKey,
+      gfx::Insets::TLBR(contents_margin, contents_margin, contents_margin, 0));
 
   // Setup banner contents.
-  const std::u16string title_label =
-      brave_l10n::GetLocalizedResourceUTF16String(
-          GetBannerTypeTitleStringResourceId());
-  views::Label::CustomFont title_font = {
-      GetFont(16, gfx::Font::Weight::SEMIBOLD)};
-  auto* banner_title = banner_contents->AddChildView(
-      std::make_unique<views::Label>(title_label, title_font));
-  banner_title->SetAutoColorReadabilityEnabled(false);
-  banner_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  // We don't use titile for banner type A.
+  if (type_ != ConversionType::kDDGBannerTypeA) {
+    const std::u16string title_label =
+        brave_l10n::GetLocalizedResourceUTF16String(
+            GetBannerTypeTitleStringResourceId());
+    views::Label::CustomFont title_font = {
+        GetFont(16, gfx::Font::Weight::SEMIBOLD)};
+    auto* banner_title = banner_contents->AddChildView(
+        std::make_unique<views::Label>(title_label, title_font));
+    if (UseDDG() && ShouldDrawGraphic()) {
+      banner_title->SetProperty(views::kMarginsKey,
+                                gfx::Insets::TLBR(0, 0, 0, 300));
+    }
+    banner_title->SetAutoColorReadabilityEnabled(false);
+    banner_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  }
 
   const std::u16string desc_label = brave_l10n::GetLocalizedResourceUTF16String(
       GetBannerTypeDescStringResourceId());
@@ -388,8 +444,12 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   banner_type_description_ = banner_contents->AddChildView(
       std::make_unique<views::Label>(desc_label, desc_font));
   // Give right margin to not overlap with background image.
-  banner_type_description_->SetProperty(views::kMarginsKey,
-                                        gfx::Insets::TLBR(4, 0, 0, 70));
+  int right_margin = UseDDG() ? 300 : 70;
+  if (!ShouldDrawGraphic()) {
+    right_margin = 0;
+  }
+  banner_type_description_->SetProperty(
+      views::kMarginsKey, gfx::Insets::TLBR(4, 0, 0, right_margin));
   banner_type_description_->SetMultiLine(true);
   banner_type_description_->SetMaxLines(kMaxBannerDescLines);
   banner_type_description_->SetAutoColorReadabilityEnabled(false);
@@ -401,46 +461,19 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred));
-  button_row->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 13, 0));
+  button_row->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(10, 0, 0, 0));
   button_row->SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kHorizontal);
-  auto* try_button = button_row->AddChildView(
-      std::make_unique<CustomMdTextButton>(views::Button::PressedCallback(
-          base::BindRepeating(&BraveSearchConversionPromotionView::OpenMatch,
-                              base::Unretained(this)))));
-  try_button->SetKind(views::MdTextButton::Kind::kPrimary);
-  try_button->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kPreferred));
-  try_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
-  try_button->SetFontSize(13);
-
-  auto* maybe_later_button = button_row->AddChildView(
-      std::make_unique<CustomMdTextButton>(views::Button::PressedCallback(
-          base::BindRepeating(&BraveSearchConversionPromotionView::MaybeLater,
-                              base::Unretained(this)))));
-  maybe_later_button->SetKind(views::MdTextButton::Kind::kQuaternary);
-  maybe_later_button->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-                               views::MaximumFlexSizeRule::kPreferred));
-  maybe_later_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_LABEL));
-  maybe_later_button->SetFontSize(13);
-  maybe_later_button->SetProperty(views::kMarginsKey,
-                                  gfx::Insets::TLBR(0, 13, 0, 0));
-  maybe_later_button->SetTooltipText(
-      brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP));
+  button_row->AddChildView(GetPrimaryButton());
+  button_row->AddChildView(GetSecondaryButton());
 
   auto* close_button = banner_type_container_->AddChildView(
       std::make_unique<CloseButton>(views::Button::PressedCallback(
           base::BindRepeating(&BraveSearchConversionPromotionView::Dismiss,
                               base::Unretained(this)))));
   views::SetImageFromVectorIconWithColor(
-      close_button, kLeoCloseIcon, kBannerTypeCloseButtonSize,
+      close_button, kLeoCloseIcon,
+      (UseDDG() ? kBannerTypeCloseButtonSizeDDG : kBannerTypeCloseButtonSize),
       GetCloseButtonColor(), gfx::kPlaceholderColor);
   views::InstallCircleHighlightPathGenerator(close_button);
   views::FocusRing::Install(close_button);
@@ -448,6 +481,76 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
                             gfx::Insets(kBannerTypeCloseButtonMargin));
   close_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_BRAVE_SEARCH_CONVERSION_CLOSE_BUTTON_TOOLTIP));
+}
+
+std::unique_ptr<views::View>
+BraveSearchConversionPromotionView::GetPrimaryButton() {
+  auto primary_button = std::make_unique<CustomMdTextButton>(
+      views::Button::PressedCallback(base::BindRepeating(
+          &BraveSearchConversionPromotionView::OnPrimaryButtonPressed,
+          base::Unretained(this))));
+  primary_button->SetStyle(ui::ButtonStyle::kProminent);
+  primary_button->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred));
+  primary_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+      UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_SET_AS_DEFAULT_BUTTON_LABEL
+               : IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
+  primary_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+      UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_SET_AS_DEFAULT_BUTTON_LABEL
+               : IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL));
+  primary_button->SetFontSize(13);
+
+  return primary_button;
+}
+
+std::unique_ptr<views::View>
+BraveSearchConversionPromotionView::GetSecondaryButton() {
+  auto secondary_button = std::make_unique<CustomMdTextButton>(
+      views::Button::PressedCallback(base::BindRepeating(
+          &BraveSearchConversionPromotionView::OnSecondaryButtonPressed,
+          base::Unretained(this))));
+  secondary_button->SetStyle(UseDDG() ? ui::ButtonStyle::kDefault
+                                      : ui::ButtonStyle::kText);
+  secondary_button->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred));
+  secondary_button->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+      UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL
+               : IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_LABEL));
+  secondary_button->SetFontSize(13);
+  secondary_button->SetProperty(views::kMarginsKey,
+                                gfx::Insets::TLBR(0, 13, 0, 0));
+  secondary_button->SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+      UseDDG() ? IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL
+               : IDS_BRAVE_SEARCH_CONVERSION_MAYBE_LATER_BUTTON_TOOLTIP));
+  return secondary_button;
+}
+
+void BraveSearchConversionPromotionView::OnPrimaryButtonPressed() {
+  if (UseDDG()) {
+    SetBraveAsDefault();
+  }
+
+  OpenMatch();
+}
+
+void BraveSearchConversionPromotionView::OnSecondaryButtonPressed() {
+  if (UseDDG()) {
+    OpenMatch();
+    return;
+  }
+
+  MaybeLater();
+}
+
+void BraveSearchConversionPromotionView::SetBraveAsDefault() {
+  auto provider_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search);
+  TemplateURL template_url(*provider_data);
+  template_url_service_->SetUserSelectedDefaultSearchProvider(&template_url);
 }
 
 SkColor BraveSearchConversionPromotionView::GetCloseButtonColor() const {
@@ -459,7 +562,8 @@ SkColor BraveSearchConversionPromotionView::GetCloseButtonColor() const {
   return button_color;
 }
 
-gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
+gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
   // Ask preferred size + margin for banner.
   auto size = banner_type_container_->GetPreferredSize();
   const auto margin = GetInsets();
@@ -478,7 +582,6 @@ gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
   size.Enlarge(0, banner_type_description_->GetHeightForWidth(
                       final_width_for_description) -
                       banner_type_description_->GetLineHeight());
-
   return size;
 }
 
@@ -496,7 +599,8 @@ int BraveSearchConversionPromotionView::
       GetInsets().width() + banner_type_container_->GetInsets().width();
   horizontal_margin +=
       banner_type_description_->GetProperty(views::kMarginsKey)->width();
-  horizontal_margin += kBannerTypeContentsMargin;
+  horizontal_margin +=
+      (UseDDG() ? kBannerTypeContentsMarginDDG : kBannerTypeContentsMargin);
   horizontal_margin +=
       (kBannerTypeCloseButtonSize + kBannerTypeCloseButtonMargin * 2);
   return horizontal_margin;
@@ -516,6 +620,15 @@ int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE;
     case ConversionType::kBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE;
+    case ConversionType::kDDGBannerTypeA:
+      // DDG Type A doesn't use title.
+      NOTREACHED_NORETURN();
+    case ConversionType::kDDGBannerTypeB:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_TITLE;
+    case ConversionType::kDDGBannerTypeC:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_TITLE;
+    case ConversionType::kDDGBannerTypeD:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_TITLE;
     default:
       break;
   }
@@ -533,11 +646,34 @@ int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC;
     case ConversionType::kBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC;
+    case ConversionType::kDDGBannerTypeA:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DDG_DESC;
+    case ConversionType::kDDGBannerTypeB:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_DESC;
+    case ConversionType::kDDGBannerTypeC:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_DESC;
+    case ConversionType::kDDGBannerTypeD:
+      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_DESC;
     default:
       break;
   }
 
   NOTREACHED_NORETURN();
+}
+
+bool BraveSearchConversionPromotionView::UseDDG() const {
+  return (type_ == ConversionType::kDDGBannerTypeA ||
+          type_ == ConversionType::kDDGBannerTypeB ||
+          type_ == ConversionType::kDDGBannerTypeC ||
+          type_ == ConversionType::kDDGBannerTypeD);
+}
+
+bool BraveSearchConversionPromotionView::ShouldDrawGraphic() const {
+  if (!UseDDG()) {
+    return true;
+  }
+
+  return result_view_->GetPopupView()->GetLocationBarViewWidth() > 650;
 }
 
 BEGIN_METADATA(BraveSearchConversionPromotionView)

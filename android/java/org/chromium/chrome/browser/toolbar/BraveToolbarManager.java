@@ -33,7 +33,6 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
-import org.chromium.chrome.browser.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -68,6 +67,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -111,6 +111,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
+    private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
@@ -179,7 +180,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            OneshotSupplier<AppHeaderCoordinator> appHeaderCoordinatorSupplier) {
+            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
         super(
                 activity,
                 controlsSizer,
@@ -228,7 +229,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 overviewColorSupplier,
                 baseChromeLayout,
                 readAloudControllerSupplier,
-                appHeaderCoordinatorSupplier);
+                desktopWindowStateProvider);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -287,7 +288,8 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mCompositorViewHolder::getDynamicResourceLoader,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
-                                    mSnackbarManager);
+                                    mSnackbarManager,
+                                    mModalDialogManagerSupplier.get());
             mBottomControlsCoordinatorSupplier.set(
                     new BraveBottomControlsCoordinator(
                             mLayoutStateProviderSupplier,
@@ -424,8 +426,6 @@ public class BraveToolbarManager extends ToolbarManager {
             // the toolbar.
             return;
         }
-
-        assert mActivity instanceof BraveActivity;
 
         if (mActivity instanceof BraveActivity) {
             ((BraveActivity) mActivity).updateBottomSheetPosition(newOrientation);

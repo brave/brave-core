@@ -74,4 +74,29 @@ TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCapWhenDisabled) {
   EXPECT_EQ(0, kPageLandCap.Get());
 }
 
+TEST(BraveAdsSiteVisitFeatureTest, ShouldSuspendAndResumePageLand) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSiteVisitFeature, {{"should_suspend_and_resume_page_land", "false"}});
+
+  // Act & Assert
+  EXPECT_FALSE(kShouldSuspendAndResumePageLand.Get());
+}
+
+TEST(BraveAdsSiteVisitFeatureTest, DefaultShouldSuspendAndResumePageLand) {
+  // Act & Assert
+  EXPECT_TRUE(kShouldSuspendAndResumePageLand.Get());
+}
+
+TEST(BraveAdsSiteVisitFeatureTest,
+     DefaultShouldSuspendAndResumePageLandWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
+
+  // Act & Assert
+  EXPECT_TRUE(kShouldSuspendAndResumePageLand.Get());
+}
+
 }  // namespace brave_ads

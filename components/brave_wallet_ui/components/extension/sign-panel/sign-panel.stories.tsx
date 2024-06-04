@@ -95,7 +95,7 @@ export const _SignData = () => {
         keyringId: BraveWallet.KeyringId.kDefault,
         kind: BraveWallet.AccountKind.kDerived,
         address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-        bitcoinAccountIndex: 0,
+        accountIndex: 0,
         uniqueKey: '0x3f29A1da97149722eB09c526E4eAd698895b426_id'
       },
       originInfo: mockOriginInfo,

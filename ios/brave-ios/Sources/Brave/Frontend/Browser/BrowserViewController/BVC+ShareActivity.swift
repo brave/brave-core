@@ -103,13 +103,9 @@ extension BrowserViewController {
         callback: { [weak self] in
           guard let self = self else { return }
 
-          if #available(iOS 16.0, *),
-            let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction
-          {
+          if let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
             findInteraction.searchText = ""
             findInteraction.presentFindNavigator(showingReplace: false)
-          } else {
-            self.updateFindInPageVisibility(visible: true)
           }
         }
       )

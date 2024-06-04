@@ -55,13 +55,7 @@ public struct FocusOnboardingView: View {
           dismiss()
         }
       }
-      .osAvailabilityModifiers { content in
-        if #available(iOS 16.0, *) {
-          content.toolbar(.hidden, for: .navigationBar)
-        } else {
-          content.navigationBarHidden(true)
-        }
-      }
+      .toolbar(.hidden, for: .navigationBar)
     }
     .navigationViewStyle(StackNavigationViewStyle())
   }

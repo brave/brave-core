@@ -6,7 +6,19 @@
 import * as React from 'react'
 import * as mojom from '../api/page_handler'
 
-export interface AIChatContext {
+export interface CharCountContext {
+  isCharLimitExceeded: boolean
+  isCharLimitApproaching: boolean
+  inputTextCharCountDisplay: string
+}
+
+export const defaultCharCountContext: CharCountContext = {
+  isCharLimitApproaching: false,
+  isCharLimitExceeded: false,
+  inputTextCharCountDisplay: ''
+}
+
+export interface AIChatContext extends CharCountContext {
   allModels: mojom.Model[]
   currentModel?: mojom.Model
   conversationHistory: mojom.ConversationTurn[]
@@ -29,9 +41,6 @@ export interface AIChatContext {
   shouldSendPageContents: boolean
   isMobile: boolean
   inputText: string
-  isCharLimitExceeded: boolean
-  isCharLimitApproaching: boolean
-  inputTextCharCountDisplay: string
   selectedActionType: mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   actionList: mojom.ActionGroup[]
@@ -48,7 +57,6 @@ export interface AIChatContext {
   updateShouldSendPageContents: (shouldSend: boolean) => void
   setInputText: (text: string) => void
   handleMaybeLater: () => void
-  handleSwitchToBasicModelAndRetry: () => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: mojom.ActionType) => void
@@ -77,9 +85,6 @@ export const defaultContext: AIChatContext = {
   shouldSendPageContents: true,
   isMobile: false,
   inputText: '',
-  isCharLimitExceeded: false,
-  isCharLimitApproaching: false,
-  inputTextCharCountDisplay: '',
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   actionList: [],
@@ -96,11 +101,11 @@ export const defaultContext: AIChatContext = {
   updateShouldSendPageContents: () => {},
   setInputText: () => {},
   handleMaybeLater: () => {},
-  handleSwitchToBasicModelAndRetry: () => {},
   submitInputTextToAPI: () => {},
   resetSelectedActionType: () => {},
   handleActionTypeClick: () => {},
   setIsToolsMenuOpen: () => {},
+  ...defaultCharCountContext,
 }
 
 export default React.createContext<AIChatContext>(defaultContext)
