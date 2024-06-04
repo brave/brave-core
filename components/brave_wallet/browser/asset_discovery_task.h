@@ -115,7 +115,7 @@ class AssetDiscoveryTask {
       DiscoverAssetsCompletedCallback callback);
   void OnGetSolanaTokenAccountsByOwner(
       base::OnceCallback<void(std::vector<SolanaAddress>)> barrier_callback,
-      const std::vector<SolanaAccountInfo>& token_accounts,
+      std::vector<SolanaAccountInfo> token_accounts,
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void MergeDiscoveredSPLTokens(DiscoverAssetsCompletedCallback callback,

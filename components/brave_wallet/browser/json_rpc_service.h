@@ -47,8 +47,19 @@ class EnsResolverTask;
 class NftMetadataFetcher;
 struct PendingAddChainRequest;
 struct PendingSwitchChainRequest;
+
 template <typename T>
 struct SolanaRPCResponse;
+
+template <typename T>
+using SolanaRPCResponsesCallback =
+    base::OnceCallback<void(std::vector<T> values,
+                            mojom::SolanaProviderError error,
+                            const std::string& error_message)>;
+
+template <typename T>
+void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
+                             std::vector<SolanaRPCResponse<T>> responses);
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -514,10 +525,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolanaBlockHeight(const std::string& chain_id,
                             GetSolanaBlockHeightCallback callback);
 
-  using GetSolanaTokenAccountsByOwnerCallback = base::OnceCallback<void(
-      const std::vector<SolanaAccountInfo>& token_accounts,
-      mojom::SolanaProviderError error,
-      const std::string& error_message)>;
+  using GetSolanaTokenAccountsByOwnerCallback =
+      base::OnceCallback<void(std::vector<SolanaAccountInfo> token_accounts,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
   void GetSolanaTokenAccountsByOwner(
       const SolanaAddress& pubkey,
       const std::string& chain_id,
@@ -716,8 +727,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSolanaBlockHeight(GetSolanaBlockHeightCallback callback,
                               APIRequestResult api_request_result);
   void OnGetSolanaTokenAccountsByOwner(
-      base::OnceCallback<
-          void(SolanaRPCResponse<std::vector<SolanaAccountInfo>>)> callback,
+      base::OnceCallback<void(SolanaRPCResponse<SolanaAccountInfo>)> callback,
       APIRequestResult api_request_result);
   void OnIsSolanaBlockhashValid(IsSolanaBlockhashValidCallback callback,
                                 APIRequestResult api_request_result);
@@ -738,8 +748,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& error_message);
 
   void OnGetSPLTokenBalances(
-      base::OnceCallback<void(
-          SolanaRPCResponse<std::vector<mojom::SPLTokenAmountPtr>>)> callback,
+      base::OnceCallback<void(SolanaRPCResponse<mojom::SPLTokenAmountPtr>)>
+          callback,
       APIRequestResult api_request_result);
 
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,

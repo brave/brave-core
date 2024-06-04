@@ -75,18 +75,14 @@ struct PendingSwitchChainRequest {
 
 template <typename T>
 struct SolanaRPCResponse {
-  T value;
+  std::vector<T> values;
   mojom::SolanaProviderError error;
   std::string error_message;
 
-  SolanaRPCResponse(T&& value,
+  SolanaRPCResponse(std::vector<T>&& values,
                     mojom::SolanaProviderError error,
                     const std::string& error_message)
-      : value(std::move(value)), error(error), error_message(error_message) {}
-  SolanaRPCResponse(const T& value,
-                    mojom::SolanaProviderError error,
-                    const std::string& error_message)
-      : value(value), error(error), error_message(error_message) {}
+      : values(std::move(values)), error(error), error_message(error_message) {}
   ~SolanaRPCResponse() = default;
 
   SolanaRPCResponse(SolanaRPCResponse&&) = default;
@@ -94,6 +90,26 @@ struct SolanaRPCResponse {
   SolanaRPCResponse(const SolanaRPCResponse&) = delete;
   SolanaRPCResponse& operator=(const SolanaRPCResponse&) = delete;
 };
+
+template <typename T>
+void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
+                             std::vector<SolanaRPCResponse<T>> responses) {
+  std::vector<T> merged_responses;
+  mojom::SolanaProviderError error = mojom::SolanaProviderError::kSuccess;
+  std::string error_message;
+  for (auto& response : responses) {
+    if (response.error != mojom::SolanaProviderError::kSuccess) {
+      error = response.error;
+      error_message = response.error_message;
+      break;
+    }
+    for (auto& value : response.values) {
+      merged_responses.push_back(std::move(value));
+    }
+  }
+
+  std::move(callback).Run(std::move(merged_responses), error, error_message);
+}
 
 namespace {
 
@@ -289,42 +305,6 @@ std::optional<std::string> GetAnkrBlockchainFromChainId(
   }
 
   return std::nullopt;
-}
-
-void MergeOwnedTokenAccounts(
-    JsonRpcService::GetSolanaTokenAccountsByOwnerCallback callback,
-    std::vector<SolanaRPCResponse<std::vector<SolanaAccountInfo>>> responses) {
-  std::vector<SolanaAccountInfo> token_accounts;
-  for (auto& response : responses) {
-    if (response.error != mojom::SolanaProviderError::kSuccess) {
-      std::move(callback).Run({}, response.error, response.error_message);
-      return;
-    }
-    token_accounts.insert(token_accounts.end(), response.value.begin(),
-                          response.value.end());
-  }
-
-  std::move(callback).Run(token_accounts, mojom::SolanaProviderError::kSuccess,
-                          "");
-}
-
-void MergeGetSPLTokenBalances(
-    JsonRpcService::GetSPLTokenBalancesCallback callback,
-    std::vector<SolanaRPCResponse<std::vector<mojom::SPLTokenAmountPtr>>>
-        responses) {
-  std::vector<mojom::SPLTokenAmountPtr> balances;
-  for (auto& response : responses) {
-    if (response.error != mojom::SolanaProviderError::kSuccess) {
-      std::move(callback).Run({}, response.error, response.error_message);
-      return;
-    }
-    for (auto& balance : response.value) {
-      balances.push_back(std::move(balance));
-    }
-  }
-
-  std::move(callback).Run(std::move(balances),
-                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace
@@ -3267,9 +3247,10 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
   }
 
   const auto barrier_callback =
-      base::BarrierCallback<SolanaRPCResponse<std::vector<SolanaAccountInfo>>>(
+      base::BarrierCallback<SolanaRPCResponse<SolanaAccountInfo>>(
           2, /* token and token2022 */
-          base::BindOnce(&MergeOwnedTokenAccounts, std::move(callback)));
+          base::BindOnce(&MergeSolanaRPCResponses<SolanaAccountInfo>,
+                         std::move(callback)));
 
   for (const auto& program_id :
        {mojom::kSolanaTokenProgramId, mojom::kSolanaToken2022ProgramId}) {
@@ -3286,8 +3267,7 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
 }
 
 void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
-    base::OnceCallback<void(SolanaRPCResponse<std::vector<SolanaAccountInfo>>)>
-        callback,
+    base::OnceCallback<void(SolanaRPCResponse<SolanaAccountInfo>)> callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
@@ -3309,7 +3289,7 @@ void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
   }
 
   std::move(callback).Run(
-      {token_accounts, mojom::SolanaProviderError::kSuccess, ""});
+      {std::move(token_accounts), mojom::SolanaProviderError::kSuccess, ""});
 }
 
 void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
@@ -3323,10 +3303,11 @@ void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
     return;
   }
 
-  const auto barrier_callback = base::BarrierCallback<
-      SolanaRPCResponse<std::vector<mojom::SPLTokenAmountPtr>>>(
-      2, /* token and token2022 */
-      base::BindOnce(&MergeGetSPLTokenBalances, std::move(callback)));
+  const auto barrier_callback =
+      base::BarrierCallback<SolanaRPCResponse<mojom::SPLTokenAmountPtr>>(
+          2, /* token and token2022 */
+          base::BindOnce(&MergeSolanaRPCResponses<mojom::SPLTokenAmountPtr>,
+                         std::move(callback)));
 
   for (const auto& program_id :
        {mojom::kSolanaTokenProgramId, mojom::kSolanaToken2022ProgramId}) {
@@ -3339,8 +3320,8 @@ void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
 }
 
 void JsonRpcService::OnGetSPLTokenBalances(
-    base::OnceCallback<void(
-        SolanaRPCResponse<std::vector<mojom::SPLTokenAmountPtr>>)> callback,
+    base::OnceCallback<void(SolanaRPCResponse<mojom::SPLTokenAmountPtr>)>
+        callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(

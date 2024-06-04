@@ -385,7 +385,7 @@ void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
 
 void AssetDiscoveryTask::OnGetSolanaTokenAccountsByOwner(
     base::OnceCallback<void(std::vector<SolanaAddress>)> barrier_callback,
-    const std::vector<SolanaAccountInfo>& token_accounts,
+    std::vector<SolanaAccountInfo> token_accounts,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess || token_accounts.empty()) {

@@ -1754,7 +1754,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     json_rpc_service_->GetSolanaTokenAccountsByOwner(
         solana_address, chain_id,
         base::BindLambdaForTesting(
-            [&](const std::vector<SolanaAccountInfo>& token_accounts,
+            [&](std::vector<SolanaAccountInfo> token_accounts,
                 mojom::SolanaProviderError error,
                 const std::string& error_message) {
               EXPECT_EQ(token_accounts, expected_token_accounts);
@@ -7704,7 +7704,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  // Setup registry.
+  // Setup registry with two assets.
   const char token_list_json[] = R"(
     {
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
@@ -7732,7 +7732,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
   registry->UpdateTokenList(std::move(token_list_map));
 
-  // Setup user asset.
+  // Setup two user assets.
   auto asset = mojom::BlockchainToken::New(
       tsla_mint_addr, "Tesla", "tsla.png", false, false, false,
       mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true, "", "",
