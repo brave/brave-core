@@ -359,6 +359,14 @@ public class BraveStoreSDK: AppStoreSDK {
 
       // Save subscription Ids
       Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
+
+      // Restore product subscription if necessary
+      if Preferences.AIChat.subscriptionOrderId.value == nil {
+        // We don't have a cached subscriptionOrderId
+        // This means the product was purchased on a different device
+        // So let's automatically restore it to this device as well
+        _ = await restorePurchases()
+      }
     }
   }
 
