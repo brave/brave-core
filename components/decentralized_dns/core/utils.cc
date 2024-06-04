@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/core/utils.h"
 
+#include <string>
 #include <string_view>
 
 #include "base/strings/string_util.h"
