@@ -234,6 +234,11 @@ class TabManager: NSObject {
     }
   }
 
+  func tabsCountForMode(isPrivate: Bool) -> Int {
+    let tabType: TabType = isPrivate ? .private : .regular
+    return tabs(withType: tabType).count
+  }
+
   private func tabs(withType type: TabType, query: String? = nil) -> [Tab] {
     assert(Thread.isMainThread)
 
