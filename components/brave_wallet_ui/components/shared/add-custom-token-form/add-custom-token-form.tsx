@@ -136,12 +136,6 @@ export const AddCustomTokenForm = (props: Props) => {
   const coingeckoId = customCoingeckoId ?? matchedTokenInfo?.coingeckoId ?? ''
   const iconURL = customIconURL ?? matchedTokenInfo?.logo ?? ''
 
-  const splTokenProgram = customAssetsNetwork
-    ? (customAssetsNetwork.coin === BraveWallet.CoinType.SOL
-        ? BraveWallet.SPLTokenProgram.kUnknown
-        : BraveWallet.SPLTokenProgram.kUnsupported)
-    : BraveWallet.SPLTokenProgram.kUnknown;
-
   const tokenInfo: BraveWallet.BlockchainToken | undefined =
     React.useMemo(() => {
       if (!customAssetsNetwork || !tokenContractAddress) {
@@ -161,7 +155,7 @@ export const AddCustomTokenForm = (props: Props) => {
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
         isErc1155: false,
-        splTokenProgram: splTokenProgram,
+        splTokenProgram: BraveWallet.SPLTokenProgram.kUnknown,
         isNft: false,
         isSpam: false,
         visible: true
@@ -173,7 +167,6 @@ export const AddCustomTokenForm = (props: Props) => {
       symbol,
       decimals,
       coingeckoId,
-      splTokenProgram,
       iconURL
     ])
 

@@ -1797,6 +1797,21 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
+  // SPL token program is set to unsupported for non-SPL tokens.
+  asset->contract_address = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d";
+  asset->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+  ASSERT_TRUE(AddUserAsset(&prefs, asset.Clone()));
+  asset->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(asset))));
+
+  // SPL token program stay as is for SPL tokens.
+  asset->contract_address = "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ";
+  asset->coin = mojom::CoinType::SOL;
+  asset->chain_id = mojom::kSolanaMainnet;
+  asset->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+  ASSERT_TRUE(AddUserAsset(&prefs, asset.Clone()));
+  EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(asset))));
+
   // Invalid contract address is rejected.
   asset->coin = mojom::CoinType::ETH;
   asset->chain_id = mojom::kMainnetChainId;

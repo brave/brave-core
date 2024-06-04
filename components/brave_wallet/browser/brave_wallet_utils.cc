@@ -1906,6 +1906,10 @@ mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
     }
   }
 
+  if (!IsSPLToken(token)) {
+    token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  }
+
   ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
 
   for (auto& existing_asset : *update) {
