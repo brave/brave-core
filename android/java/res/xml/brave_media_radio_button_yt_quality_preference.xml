@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+ 
+ <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:focusable="false">
+
+   <org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout
+        android:id="@+id/radio_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+         android:id="@+id/on"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:minHeight="@dimen/min_touch_target_size"
+         app:primaryText="@string/quality_settings_on" />
+
+      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+         android:id="@+id/allow_over_wifi"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:minHeight="@dimen/min_touch_target_size"
+         app:primaryText="@string/quality_settings_allow_over_wifi" />
+
+      <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+         android:id="@+id/off"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:minHeight="@dimen/min_touch_target_size"
+         app:primaryText="@string/quality_settings_off" />
+
+   </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
+
+</LinearLayout>

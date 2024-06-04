@@ -98,6 +98,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/android/preferences/constants.h"
 #include "components/feed/core/common/pref_names.h"
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
@@ -283,6 +284,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
+  registry->RegisterIntegerPref(
+      kYTVideoQualityPref,
+      static_cast<int>(settings::YTVideoQuality::kAllowOverWifi));
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
   // clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,

@@ -446,6 +446,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_YOUTUBE_SHORTS_DESCRIPTION" desc="Hides shorts on YouTube.">
         Blocks Shorts from the home page, trending page and search results on youtube.com.
       </message>
+      <message name="IDS_YOUTUBE_HIGHEST_QUALITY_PLAYBACK" desc="Youtube highest quality playback.">
+        Highest Quality Playback
+      </message>
+      <message name="IDS_YOUTUBE_HIGHEST_QUALITY_PLAYBACK_DESCRIPTION" desc="Allow high-quality resolution on youtube">
+        Allows high-quality resolution
+      </message>
+      <message name="IDS_QUALITY_SETTINGS_TITLE" desc="Title for quality settings.">
+        Quality Settings
+      </message>
+      <message name="IDS_QUALITY_SETTINGS_ON" desc="Text for highest quality settings on.">
+        On
+      </message>
+      <message name="IDS_QUALITY_SETTINGS_ALLOW_OVER_WIFI" desc="Text for highest quality settings allow over wifi.">
+        Allow over Wi-Fi
+      </message>
+      <message name="IDS_QUALITY_SETTINGS_OFF" desc="Text for highest quality settings off.">
+        Off
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>
