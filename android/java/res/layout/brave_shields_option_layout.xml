@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:maxLines="2"
-            android:ellipsize="end"
+            android:ellipsize="start"
             android:textColor="@color/shield_title_color"/>
 
     </LinearLayout>
