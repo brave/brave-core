@@ -289,9 +289,19 @@ private struct SiteConnectionDetailView: View {
     }
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(siteConnection.url)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
+      ToolbarItem(placement: .principal) {
+        Text(
+          URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: siteConnection.url
+          )
+        )
+        .lineLimit(1)
+        .truncationMode(.head)
+        .fontWeight(.medium)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+      }
       ToolbarItemGroup(placement: .bottomBar) {
         Spacer()
         Button {

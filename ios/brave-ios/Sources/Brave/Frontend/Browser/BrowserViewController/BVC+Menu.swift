@@ -174,12 +174,17 @@ extension BrowserViewController {
         menuController.presentInnerMenu(vc)
       }
       MenuItemFactory.button(for: .history) { [unowned self, unowned menuController] in
-        let vc = HistoryViewController(
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-          historyAPI: self.braveCore.historyAPI,
-          tabManager: self.tabManager
+        let vc = UIHostingController(
+          rootView: HistoryView(
+            model: HistoryModel(
+              api: self.braveCore.historyAPI,
+              tabManager: self.tabManager,
+              toolbarUrlActionsDelegate: self,
+              dismiss: { [weak self] in self?.dismiss(animated: true) },
+              askForAuthentication: self.askForLocalAuthentication
+            )
+          )
         )
-        vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }
       MenuItemFactory.button(for: .downloads) {
@@ -399,10 +404,15 @@ extension BrowserViewController {
             .lineLimit(1)
             .foregroundColor(Color(.braveLabel))
         }
-        Text(verbatim: url.baseDomain ?? url.host ?? url.absoluteDisplayString)
-          .font(.footnote)
-          .lineLimit(1)
-          .foregroundColor(Color(.secondaryBraveLabel))
+        Text(
+          verbatim: URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+          )
+        )
+        .font(.footnote)
+        .lineLimit(1)
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .truncationMode(.head)
       }
       .padding(.horizontal, 14)
       .padding(.vertical, 6)
