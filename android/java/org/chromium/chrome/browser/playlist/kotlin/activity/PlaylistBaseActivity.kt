@@ -79,13 +79,13 @@ abstract class PlaylistBaseActivity :
 
     open fun deletePlaylistItem(playlistItemOptionModel: PlaylistItemOptionModel) {}
 
-    private fun openPlaylistInTab(isIncognito: Boolean, url: String) {
+    private fun openPlaylistItemUrlInTab(isIncognito: Boolean, url: String) {
         try {
             val activity = BraveActivity.getBraveActivity()
             TabUtils.openUrlInNewTab(isIncognito, url)
             TabUtils.bringChromeTabbedActivityToTheTop(activity)
         } catch (e: BraveActivity.BraveActivityNotFoundException) {
-            Log.e(TAG, "openPlaylistInTab error", e)
+            Log.e(TAG, "openPlaylistItemUrlInTab error", e)
         }
     }
 
@@ -135,12 +135,12 @@ abstract class PlaylistBaseActivity :
             }
             PlaylistOptionsEnum.OPEN_IN_NEW_TAB -> {
                 playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    openPlaylistInTab(false, it)
+                    openPlaylistItemUrlInTab(false, it)
                 }
             }
             PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB -> {
                 playlistItemOptionModel.playlistItem?.pageSource?.url?.let {
-                    openPlaylistInTab(true, it)
+                    openPlaylistItemUrlInTab(true, it)
                 }
             }
             PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM -> {

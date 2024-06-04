@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
@@ -75,43 +77,44 @@ class AllPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
             mRvPlaylist.adapter = playlistAdapter
             playlistAdapter.submitList(allPlaylistList)
 
-            val recentPlaylistJson =
+            PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
+                val recentPlaylistJson =
                 PlaylistPreferenceUtils.defaultPrefs(this@AllPlaylistActivity)
                     .recentlyPlayedPlaylist
-            if (!recentPlaylistJson.isNullOrEmpty()) {
-                val recentPlaylist = LinkedList<Playlist>()
-                val recentPlaylistIds: LinkedList<String> =
-                    GsonBuilder()
-                        .create()
-                        .fromJson(
-                            recentPlaylistJson,
-                            TypeToken.getParameterized(LinkedList::class.java, String::class.java)
-                                .type
-                        )
-                if (recentPlaylistIds.size > 0) {
-                    recentPlaylistIds.forEach ids@{
-                        allPlaylistList.forEach playlists@{ playlist ->
-                            if (playlist.id == it && playlist.items.isNotEmpty()) {
-                                recentPlaylist.add(playlist)
-                                return@playlists
+                if (!recentPlaylistJson.isNullOrEmpty()) {
+                    val recentPlaylist = LinkedList<Playlist>()
+                    val recentPlaylistIds: LinkedList<String> =
+                        GsonBuilder()
+                            .create()
+                            .fromJson(
+                                recentPlaylistJson,
+                                TypeToken.getParameterized(LinkedList::class.java, String::class.java).type
+                            )
+                    if (recentPlaylistIds.size > 0) {
+                        recentPlaylistIds.forEach ids@{
+                            allPlaylistList.forEach playlists@{ playlist ->
+                                if (playlist.id == it && playlist.items.isNotEmpty()) {
+                                    recentPlaylist.add(playlist)
+                                    return@playlists
+                                }
                             }
                         }
                     }
+                    mRvRecentlyPlayed.layoutManager =
+                        LinearLayoutManager(
+                            this@AllPlaylistActivity,
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                    val recentlyPlayedPlaylistAdapter =
+                        RecentlyPlayedPlaylistAdapter(this@AllPlaylistActivity)
+                    mRvRecentlyPlayed.adapter = recentlyPlayedPlaylistAdapter
+                    recentlyPlayedPlaylistAdapter.submitList(recentPlaylist)
+                    mRvRecentlyPlayed.visibility =
+                        if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
+                    mTvRecentlyPlayed.visibility =
+                        if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
                 }
-                mRvRecentlyPlayed.layoutManager =
-                    LinearLayoutManager(
-                        this@AllPlaylistActivity,
-                        LinearLayoutManager.HORIZONTAL,
-                        false
-                    )
-                val recentlyPlayedPlaylistAdapter =
-                    RecentlyPlayedPlaylistAdapter(this@AllPlaylistActivity)
-                mRvRecentlyPlayed.adapter = recentlyPlayedPlaylistAdapter
-                recentlyPlayedPlaylistAdapter.submitList(recentPlaylist)
-                mRvRecentlyPlayed.visibility =
-                    if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
-                mTvRecentlyPlayed.visibility =
-                    if (recentPlaylist.isNotEmpty()) View.VISIBLE else View.GONE
             }
         }
     }

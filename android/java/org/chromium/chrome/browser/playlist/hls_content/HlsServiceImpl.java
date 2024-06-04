@@ -121,14 +121,14 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                 segmentsQueue,
                 new HlsUtils.HlsFileDelegate() {
                     @Override
-                    public void onProgress(int sofar) {
+                    public void onProgress(int soFar) {
                         if (total > 0) {
                             PlaylistUtils.updateHlsContentProgress(
                                     new HlsContentProgressModel(
                                             playlistItem.id,
                                             (long) total,
-                                            (long) sofar,
-                                            String.valueOf((sofar * 100) / total)));
+                                            (long) soFar,
+                                            String.valueOf((soFar * 100) / total)));
                         }
                     }
 

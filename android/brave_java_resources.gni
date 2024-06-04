@@ -551,6 +551,8 @@ brave_java_resources = [
   "java/res/drawable/ic_metamask.xml",
   "java/res/drawable/ic_microsoft_color.xml",
   "java/res/drawable/ic_midnight_purple_circle.xml",
+  "java/res/drawable/ic_neon_color.xml",
+  "java/res/drawable/ic_monitor.xml",
   "java/res/drawable/ic_move_media.xml",
   "java/res/drawable/ic_neon_color.xml",
   "java/res/drawable/ic_new_tab.xml",

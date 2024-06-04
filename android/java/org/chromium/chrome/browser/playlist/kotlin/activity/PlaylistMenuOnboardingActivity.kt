@@ -9,7 +9,6 @@ package org.chromium.chrome.browser.playlist.kotlin.activity
 
 import android.os.Bundle
 import android.widget.ScrollView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.viewpager2.widget.ViewPager2
 
@@ -24,9 +23,10 @@ import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import org.chromium.chrome.browser.util.TabUtils
 
-class PlaylistMenuOnboardingActivity : AppCompatActivity(R.layout.activity_playlist_onboarding) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class PlaylistMenuOnboardingActivity : PlaylistBaseActivity() {
+
+    override fun initializeViews() {
+        setContentView(R.layout.activity_playlist_onboarding)
         val onboardingLayout = findViewById<ScrollView>(R.id.onboardingLayout)
         onboardingLayout.afterMeasured { showOnboardingGradientBg() }
 

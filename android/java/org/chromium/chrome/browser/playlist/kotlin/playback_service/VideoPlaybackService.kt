@@ -275,13 +275,10 @@ class VideoPlaybackService :
         mediaItem: MediaItem,
         @Suppress("UNUSED_PARAMETER") currentPosition: Long
     ) {
-        mScope.launch {
-            if (
-                PlaylistPreferenceUtils.defaultPrefs(applicationContext)
-                    .rememberFilePlaybackPosition
-            ) {
-                mediaItem.mediaId.let {
-                    mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
+            if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
+                mediaItem.mediaId.let { mediaId ->
+                    mPlaylistService?.updateItemLastPlayedPosition(mediaId, currentPosition.toInt())
                 }
             }
         }
