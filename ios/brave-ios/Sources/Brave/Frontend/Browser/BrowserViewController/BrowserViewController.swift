@@ -1989,7 +1989,7 @@ public class BrowserViewController: UIViewController {
 
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .url)
+        self.logSecureContentState(tab: tab, path: .url, change: change)
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2019,7 +2019,7 @@ public class BrowserViewController: UIViewController {
     case .hasOnlySecureContent:
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent)
+        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent, change: change)
         if tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2027,7 +2027,7 @@ public class BrowserViewController: UIViewController {
     case .serverTrust:
       Task {
         await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .serverTrust)
+        self.logSecureContentState(tab: tab, path: .serverTrust, change: change)
         if self.tabManager.selectedTab === tab {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
@@ -2039,7 +2039,11 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func logSecureContentState(tab: Tab, path: KVOConstants? = nil) {
+  func logSecureContentState(
+    tab: Tab,
+    path: KVOConstants? = nil,
+    change: [NSKeyValueChangeKey: Any]? = nil
+  ) {
     var text = """
       Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
        Secure State: \(tab.lastKnownSecureContentState.rawValue)
@@ -2057,6 +2061,12 @@ public class BrowserViewController: UIViewController {
          WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
         """
       )
+    }
+
+    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
+      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
+    } else if let change, let value = change[.newKey] {
+      text.append("\n Change: \(String(describing: value))")
     }
 
     DebugLogger.log(for: .secureState, text: text)
