@@ -302,6 +302,7 @@ class Tab: NSObject {
   var mimeType: String?
   var isEditing: Bool = false
   var shouldNotifyAdsServiceTabDidChange = true
+  var shouldNotifyAdsServiceTabContentDidChange = true
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
@@ -562,7 +563,7 @@ class Tab: NSObject {
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
       restoring = false
-      shouldNotifyAdsServiceTabDidChange = false
+      shouldNotifyAdsServiceTabContentDidChange = false
       self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
