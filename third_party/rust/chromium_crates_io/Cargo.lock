@@ -2809,9 +2809,8 @@ version = "1.0.0"
 dependencies = [
  "brave_wallet",
  "cxx",
- "incrementalmerkletree",
- "memuse",
  "orchard",
+ "rand_core 0.6.4",
  "zcash_primitives",
 ]
 

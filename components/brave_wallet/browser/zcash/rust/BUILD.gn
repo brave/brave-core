@@ -54,23 +54,12 @@ rust_static_library("rust_lib") {
   crate_name = "zcash"
   crate_root = "lib.rs"
   allow_unsafe = true
-  sources = [
-    "lib.rs",
-    "librustzcash/amount.rs",
-    "librustzcash/encoding.rs",
-    "librustzcash/merkle_tree.rs",
-    "librustzcash/mod.rs",
-    "librustzcash/orchard.rs",
-  ]
+  sources = [ "lib.rs" ]
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
     "librustzcash:zcash_primitives",
     "//brave/components/brave_wallet/rust:rust_lib",
-    "//brave/third_party/rust/byteorder/v1:lib",
-    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
-    "//brave/third_party/rust/memuse/v0_2:lib",
-    "//brave/third_party/rust/nonempty/v0_7:lib",
     "//brave/third_party/rust/orchard/v0_8:lib",
     "//third_party/rust/rand_core/v0_6:lib",
   ]

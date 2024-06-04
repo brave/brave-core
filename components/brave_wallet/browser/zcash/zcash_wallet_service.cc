@@ -255,9 +255,8 @@ void ZCashWalletService::PostShieldTransaction(
     ZCashTransaction zcash_transaction,
     SignAndPostTransactionCallback callback) {
   auto tx = ZCashSerializer::SerializeRawTransaction(zcash_transaction);
-  std::string as_string(reinterpret_cast<char*>(tx.data()), tx.size());
   zcash_rpc_->SendTransaction(
-      chain_id, as_string,
+      chain_id, tx,
       base::BindOnce(&ZCashWalletService::OnSendTransactionResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(zcash_transaction)));
@@ -288,9 +287,8 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
   }
 
   auto tx = ZCashSerializer::SerializeRawTransaction(zcash_transaction);
-  std::string as_string(reinterpret_cast<char*>(tx.data()), tx.size());
   zcash_rpc_->SendTransaction(
-      chain_id, as_string,
+      chain_id, tx,
       base::BindOnce(&ZCashWalletService::OnSendTransactionResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(zcash_transaction)));
@@ -452,6 +450,7 @@ void ZCashWalletService::CreateShieldTransactionTaskDone(
     ShieldFundsCallback callback,
     base::expected<ZCashTransaction, std::string> transaction) {
   if (!transaction.has_value()) {
+    shield_funds_task_ = nullptr;
     std::move(callback).Run(
         std::nullopt, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;

@@ -226,7 +226,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   zcash_wallet_service_->SignAndPostTransaction(
       mojom::kZCashMainnet, account_id(), std::move(zcash_transaction),
       sign_callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&sign_callback);
 
   EXPECT_EQ(ToHex(signed_tx.transparent_part().inputs[0].script_sig),
@@ -307,7 +307,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
 
     EXPECT_TRUE(callback_called);
   }
@@ -355,7 +355,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
 
     EXPECT_TRUE(callback_called);
   }
@@ -419,7 +419,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
 
     EXPECT_TRUE(callback_called);
   }
@@ -624,7 +624,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds) {
 
   zcash_wallet_service_->ShieldFunds(mojom::kZCashMainnet, account_id.Clone(),
                                      shield_funds_callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&shield_funds_callback);
 
   EXPECT_EQ(

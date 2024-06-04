@@ -67,7 +67,7 @@ class ZCashRpc {
                               GetTransactionCallback callback);
 
   virtual void SendTransaction(const std::string& chain_id,
-                               const std::string& data,
+                               base::span<const uint8_t> data,
                                SendTransactionCallback callback);
 
   virtual void IsKnownAddress(const std::string& chain_id,

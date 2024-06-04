@@ -24,6 +24,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr size_t kMaxBodySize = 5000;
+
 // Checks if provided stream contains any messages.
 class IsKnownAddressTxStreamHandler : public GRrpcMessageStreamHandler {
  public:
@@ -240,9 +242,9 @@ std::string MakeGetTransactionParams(const std::string& tx_hash) {
   return GetPrefixedProtobuf(request.SerializeAsString());
 }
 
-std::string MakeSendTransactionParams(const std::string& data) {
+std::string MakeSendTransactionParams(base::span<const uint8_t> data) {
   zcash::RawTransaction request;
-  request.set_data(data);
+  request.set_data(reinterpret_cast<const char*>(data.data()), data.size());
   return GetPrefixedProtobuf(request.SerializeAsString());
 }
 
@@ -317,7 +319,7 @@ void ZCashRpc::GetTreeState(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::GetLatestTreeState(const std::string& chain_id,
@@ -341,7 +343,7 @@ void ZCashRpc::GetLatestTreeState(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTreeStateResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::GetUtxoList(const std::string& chain_id,
@@ -366,7 +368,7 @@ void ZCashRpc::GetUtxoList(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetUtxosResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::GetLatestBlock(const std::string& chain_id,
@@ -390,7 +392,7 @@ void ZCashRpc::GetLatestBlock(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetLatestBlockResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::GetTransaction(const std::string& chain_id,
@@ -415,7 +417,7 @@ void ZCashRpc::GetTransaction(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTransactionResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
@@ -504,7 +506,7 @@ void ZCashRpc::OnGetTransactionResponse(
 }
 
 void ZCashRpc::SendTransaction(const std::string& chain_id,
-                               const std::string& data,
+                               base::span<const uint8_t> data,
                                SendTransactionCallback callback) {
   GURL request_url = MakeSendTransactionURL(
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
@@ -525,7 +527,7 @@ void ZCashRpc::SendTransaction(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnSendTransactionResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      5000);
+      kMaxBodySize);
 }
 
 void ZCashRpc::IsKnownAddress(const std::string& chain_id,

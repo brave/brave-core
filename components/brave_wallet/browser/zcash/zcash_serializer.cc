@@ -290,7 +290,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
 // https://zips.z.cash/zip-0244#signature-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
     const ZCashTransaction& zcash_transaction,
-    std::optional<ZCashTransaction::TxInput> input) {
+    const std::optional<ZCashTransaction::TxInput>& input) {
   std::array<uint8_t, kZCashDigestSize> header_hash =
       HashHeader(zcash_transaction);
 

@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-mod librustzcash;
-
 use std::fmt;
 
 use orchard::{
@@ -23,7 +21,7 @@ use orchard::{
     tree::MerkleHashOrchard
 };
 
-use crate::librustzcash::amount::Amount;
+use zcash_primitives::transaction::components::amount::Amount;
 
 use ffi::OrchardOutput;
 
@@ -291,7 +289,7 @@ fn create_orchard_builder_internal(
     random_source: OrchardRandomSource
 ) -> Box<OrchardUnauthorizedBundleResult> {
     use orchard::Anchor;
-    use crate::librustzcash::merkle_tree::read_commitment_tree;
+    use zcash_primitives::merkle_tree::read_commitment_tree;
 
     // To construct transaction orchard tree state of some block should be provided
     // But in tests we can use empty anchor.
@@ -362,7 +360,7 @@ impl OrchardUnauthorizedBundle {
     }
 
     fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult> {
-        use crate::librustzcash::orchard::write_v5_bundle;
+        use zcash_primitives::transaction::components::orchard::write_v5_bundle;
         Box::new(OrchardAuthorizedBundleResult::from(match self.0.rng.clone() {
             OrchardRandomSource::OsRng(mut rng) => {
                 self.0.unauthorized_bundle.clone()

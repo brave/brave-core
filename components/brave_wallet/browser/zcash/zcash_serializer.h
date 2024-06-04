@@ -22,7 +22,7 @@ class ZCashSerializer {
       const ZCashTransaction& zcash_transaction);
   static std::array<uint8_t, kZCashDigestSize> CalculateSignatureDigest(
       const ZCashTransaction& zcash_transaction,
-      std::optional<ZCashTransaction::TxInput> input);
+      const std::optional<ZCashTransaction::TxInput>& input);
   static std::vector<uint8_t> SerializeRawTransaction(
       const ZCashTransaction& zcash_transaction);
   static bool SignTransparentPart(KeyringService* keyring_service,

@@ -450,10 +450,14 @@ bool CreateShieldAllTransactionTask::CreateTransaction() {
   ZCashTransaction::OrchardOutput orchard_output;
   auto addr_bytes =
       zcash_wallet_service_->keyring_service()->GetOrchardRawBytes(
-          account_id_,
-          mojom::ZCashKeyId::New(account_id_->bitcoin_account_index,
-                                 1 /* internal */, 0));
+          account_id_, mojom::ZCashKeyId::New(account_id_->account_index,
+                                              1 /* internal */, 0));
   if (!addr_bytes) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    return false;
+  }
+
+  if (zcash_transaction.fee() > zcash_transaction.TotalInputsAmount()) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     return false;
   }
