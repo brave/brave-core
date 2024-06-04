@@ -98,67 +98,13 @@ std::string GetAffiliateAddress(const std::string& chain_id) {
   return "";
 }
 
-mojom::SwapFeesPtr GetJupiterSwapFee(const mojom::SwapQuoteParams& params) {
+mojom::SwapFeesPtr GetZeroSwapFee() {
   mojom::SwapFeesPtr response = mojom::SwapFees::New();
-  bool has_fees = HasJupiterFeesForTokenMint(
-      params.to_token.empty() ? kWrappedSolanaMintAddress : params.to_token);
-
-  auto fee_pct = kSolanaBuyTokenFeePercentage;
-  response->fee_pct = base::NumberToString(fee_pct);
-
-  auto discount = has_fees ? 0.0 : 100.0;
-  response->discount_pct = base::NumberToString(discount);
-
-  auto effective_fee_pct = (100.0 - discount) / 100.0 * fee_pct;
-  response->effective_fee_pct = base::NumberToString(effective_fee_pct);
-
-  // Jupiter swap fee is specified in basis points
-  response->fee_param =
-      effective_fee_pct != 0.0
-          ? base::NumberToString(static_cast<int>(effective_fee_pct * 100.0))
-          : "";
-
-  response->discount_code =
-      has_fees ? mojom::SwapDiscountCode::kNone
-               : mojom::SwapDiscountCode::kUnknownJupiterOutputMint;
-
-  return response;
-}
-
-mojom::SwapFeesPtr GetLiFiSwapFee() {
-  mojom::SwapFeesPtr response = mojom::SwapFees::New();
-
-  response->fee_pct = base::NumberToString(kLiFiFeePercentage);
-
-  // We currently do not offer discounts on LiFi Brave fees.
+  response->fee_pct = "0";
   response->discount_pct = "0";
+  response->effective_fee_pct = "0";
+  response->fee_param = "";
   response->discount_code = mojom::SwapDiscountCode::kNone;
-  response->effective_fee_pct = response->fee_pct;
-
-  // LiFi swap fee is specified as a multiplier
-  response->fee_param = response->effective_fee_pct != "0"
-                            ? base::NumberToString(kLiFiFeePercentage / 100.0)
-                            : "";
-
-  return response;
-}
-
-mojom::SwapFeesPtr GetZeroExSwapFee() {
-  mojom::SwapFeesPtr response = mojom::SwapFees::New();
-
-  response->fee_pct = base::NumberToString(kZeroExBuyTokenFeePercentage);
-
-  // We currently do not offer discounts on 0x Brave fees.
-  response->discount_pct = "0";
-  response->discount_code = mojom::SwapDiscountCode::kNone;
-  response->effective_fee_pct = response->fee_pct;
-
-  // 0x swap fee is specified as a multiplier
-  response->fee_param =
-      response->effective_fee_pct != "0"
-          ? base::NumberToString(kZeroExBuyTokenFeePercentage / 100.0)
-          : "";
-
   return response;
 }
 
@@ -381,7 +327,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   if (params->from_chain_id == params->to_chain_id &&
       IsNetworkSupportedByZeroEx(params->from_chain_id)) {
-    auto swap_fee = GetZeroExSwapFee();
+    auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
     auto internal_callback = base::BindOnce(
@@ -397,7 +343,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
   if (params->from_chain_id == params->to_chain_id &&
       IsNetworkSupportedByJupiter(params->from_chain_id)) {
-    auto swap_fee = GetJupiterSwapFee(*params);
+    auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
     auto internal_callback = base::BindOnce(
@@ -416,7 +362,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
   if (IsNetworkSupportedByLiFi(params->from_chain_id) &&
       IsNetworkSupportedByLiFi(params->to_chain_id)) {
-    auto swap_fee = GetLiFiSwapFee();
+    auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
     auto encoded_params = lifi::EncodeQuoteParams(std::move(params), fee_param);
@@ -533,7 +479,7 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
 void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
                                  GetTransactionCallback callback) {
   if (params->is_zero_ex_transaction_params()) {
-    auto swap_fee = GetZeroExSwapFee();
+    auto swap_fee = GetZeroSwapFee();
 
     auto internal_callback =
         base::BindOnce(&SwapService::OnGetZeroExTransaction,

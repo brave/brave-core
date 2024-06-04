@@ -1421,7 +1421,6 @@ inline constexpr char kZeroExBaseBaseAPIURL[] =
     "https://base.api.0x.wallet.brave.com";
 inline constexpr char kZeroExEthereumBaseAPIURL[] =
     "https://api.0x.wallet.brave.com";
-inline constexpr double kZeroExBuyTokenFeePercentage = 0.875;
 inline constexpr char kEVMFeeRecipient[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 inline constexpr char kAffiliateAddress[] =
@@ -1431,7 +1430,6 @@ inline constexpr char kZeroExNativeAssetContractAddress[] =
 
 // Jupiter swap constants
 inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
-inline constexpr double kSolanaBuyTokenFeePercentage = 0.85;
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
 inline constexpr char kJupiterReferralProgram[] =
@@ -1451,7 +1449,6 @@ inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
 inline constexpr char kLiFiIntegratorID[] = "brave";
 inline constexpr char kLiFiNativeAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";
-inline constexpr double kLiFiFeePercentage = 0.875;
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
@@ -1494,7 +1491,6 @@ const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses();
-bool HasJupiterFeesForTokenMint(const std::string& mint);
 const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
