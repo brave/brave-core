@@ -10,7 +10,6 @@ package org.chromium.chrome.browser.playlist.kotlin.activity
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 
-import org.chromium.base.Log
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
@@ -123,7 +122,6 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
 
     private fun fetchPlaylistData() {
         mPlaylistService?.getPlaylist(mPlaylistId) { playlist ->
-            Log.e(TAG, playlist.toString())
             mPlaylist = playlist
 
             mEtPlaylistName.setText(playlist?.name)

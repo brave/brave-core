@@ -782,7 +782,6 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 }
 
 void PlaylistService::ResetAll() {
-#if BUILDFLAG(IS_ANDROID)
   // Resets all on-going downloads
   thumbnail_downloader_->CancelAllDownloadRequests();
   media_file_download_manager_->CancelAllDownloadRequests();

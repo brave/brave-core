@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -32,7 +32,6 @@ import com.google.common.util.concurrent.ListenableFuture
 import org.chromium.base.BraveFeatureList
 import org.chromium.base.BravePreferenceKeys
 import org.chromium.base.ContextUtils
-import org.chromium.base.Log
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.flags.ChromeFeatureList
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
@@ -90,7 +89,7 @@ class VideoPlaybackService :
                             .resources
                             .getString(
                                 R.string.playlist_play_later
-                            ), // TODO update playlist name here
+                            ),
                     )
                 mediaItemsInPlayer.add(mediaItem)
                 mPlayer.addMediaItem(mediaItem)

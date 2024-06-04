@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
-import org.chromium.base.Log
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
@@ -60,7 +59,6 @@ class AllPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
     override fun onResumeWithNative() {
         super.onResumeWithNative()
         mPlaylistService?.getAllPlaylists { playlists ->
-            Log.e(TAG, playlists.toString())
             val allPlaylistList = mutableListOf<Playlist>()
 
             var defaultPlaylist: Playlist? = null

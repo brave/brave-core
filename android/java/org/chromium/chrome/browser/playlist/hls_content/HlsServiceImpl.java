@@ -91,80 +91,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                         });
                                             }
                                             currentDownloadingPlaylistItemId = playlistItemId;
-                                            HlsUtils.getManifestFile(
-                                                    mContext,
-                                                    mPlaylistService,
-                                                    playlistItem,
-                                                    new HlsUtils.HlsManifestDelegate() {
-                                                        @Override
-                                                        public void onHlsManifestCompleted(
-                                                                Queue<Segment> segmentsQueue) {
-                                                            int total = segmentsQueue.size();
-                                                            String hlsMediaFilePath =
-                                                                    HlsUtils.getHlsMediaFilePath(
-                                                                            playlistItem);
-                                                            HlsUtils.deleteFileIfExist(
-                                                                    hlsMediaFilePath);
-                                                            HlsUtils.getHLSFile(
-                                                                    mContext,
-                                                                    mPlaylistService,
-                                                                    playlistItem,
-                                                                    segmentsQueue,
-                                                                    new HlsUtils.HlsFileDelegate() {
-                                                                        @Override
-                                                                        public void onProgress(
-                                                                                int sofar) {
-                                                                            if (total > 0) {
-                                                                                PlaylistUtils
-                                                                                        .updateHlsContentProgress(
-                                                                                                new HlsContentProgressModel(
-                                                                                                        playlistItem
-                                                                                                                .id,
-                                                                                                        (long)
-                                                                                                                total,
-                                                                                                        (long)
-                                                                                                                sofar,
-                                                                                                        String
-                                                                                                                .valueOf(
-                                                                                                                        (sofar
-                                                                                                                                        * 100)
-                                                                                                                                / total)));
-                                                                            }
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onReady(
-                                                                                String mediaPath) {
-                                                                            PostTask.postTask(
-                                                                                    TaskTraits
-                                                                                            .BEST_EFFORT_MAY_BLOCK,
-                                                                                    () -> {
-                                                                                        long
-                                                                                                updatedFileSize =
-                                                                                                        MediaUtils
-                                                                                                                .getFileSizeFromUri(
-                                                                                                                        mContext,
-                                                                                                                        Uri
-                                                                                                                                .parse(
-                                                                                                                                        "file://"
-                                                                                                                                                + mediaPath));
-                                                                                        mPlaylistService
-                                                                                                .updateItemHlsMediaFilePath(
-                                                                                                        playlistItem
-                                                                                                                .id,
-                                                                                                        mediaPath,
-                                                                                                        updatedFileSize);
-                                                                                        addNewPlaylistItemModel(
-                                                                                                playlistItem
-                                                                                                        .id);
-                                                                                        removeContentAndStartNextDownload(
-                                                                                                playlistItem
-                                                                                                        .id);
-                                                                                    });
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
+                                            getManifestFile(playlistItem);
                                         });
                             });
                 });
@@ -194,14 +121,14 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                 segmentsQueue,
                 new HlsUtils.HlsFileDelegate() {
                     @Override
-                    public void onProgress(int soFar) {
+                    public void onProgress(int sofar) {
                         if (total > 0) {
                             PlaylistUtils.updateHlsContentProgress(
                                     new HlsContentProgressModel(
                                             playlistItem.id,
                                             (long) total,
-                                            (long) soFar,
-                                            String.valueOf((soFar * 100) / total)));
+                                            (long) sofar,
+                                            String.valueOf((sofar * 100) / total)));
                         }
                     }
 

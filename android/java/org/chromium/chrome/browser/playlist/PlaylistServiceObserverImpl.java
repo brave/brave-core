@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.playlist.hls_content.HlsUtils;
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
@@ -16,8 +15,6 @@ import org.chromium.playlist.mojom.PlaylistServiceObserver;
 import org.chromium.url.mojom.Url;
 
 public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
-    private static final String TAG = "PlaylistObserver";
-
     public interface PlaylistServiceObserverImplDelegate {
         default void onItemCreated(PlaylistItem item) {}
 
@@ -79,20 +76,8 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
     public void onItemCached(PlaylistItem playlistItem) {
         if (mDelegate == null) return;
         mDelegate.onItemCached(playlistItem);
-        Log.e(TAG, "onItemCached 1");
-        Log.e(
-                TAG,
-                "onItemCached 1 : "
-                        + playlistItem.mediaPath.url
-                        + " : "
-                        + MediaUtils.isHlsFile(playlistItem.mediaPath.url));
-        Log.e(
-                TAG,
-                "onItemCached 1 : HlsUtils.isVideoPlaybackServiceRunning() :"
-                        + HlsUtils.isVideoPlaybackServiceRunning());
         if (!MediaUtils.isHlsFile(playlistItem.mediaPath.url)
                 && HlsUtils.isVideoPlaybackServiceRunning()) {
-            Log.e(TAG, "onItemCached 2");
             VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItem);
         }
     }
