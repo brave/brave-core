@@ -115,6 +115,7 @@ export class MockPageHandlerRemote implements Public<mojom.PageHandlerRemote> {
     window.open(url.url, '_blank')
   }
 
+  openLearnMoreAboutBraveSearchWithLeo() {}
   onConnectionError() {}
   setClientPage() {}
   changeModel() {}

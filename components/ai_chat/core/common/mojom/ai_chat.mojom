@@ -224,6 +224,7 @@ interface PageHandler {
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
   OpenURL(url.mojom.Url url);
+  OpenLearnMoreAboutBraveSearchWithLeo();
   SetShouldSendPageContents(bool should_send);
   GetShouldSendPageContents() => (bool should_send);
   GoPremium();

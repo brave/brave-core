@@ -17,6 +17,7 @@ provideStrings({
   errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
   errorRateLimit: 'Leo is too busy right now. Please try again in a few minutes.',
   retryButtonLabel: 'Retry',
+  learnMore: 'Learn more',
   dismissButtonLabel: 'Dismiss',
   'introMessage-0': `I'm here to help. What can I assist you with today? $1Learn more$2`,
   'introMessage-1': 'I have a vast base of knowledge and a large memory able to help with more complex challenges. $1Learn more$2',

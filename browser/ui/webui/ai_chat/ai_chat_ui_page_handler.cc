@@ -41,6 +41,8 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
+constexpr char kURLLearnMoreBraveSearchLeo[] =
+    "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
@@ -268,6 +270,10 @@ void AIChatUIPageHandler::ManagePremium() {
                                    : web_contents();
   ai_chat::ManagePremium(contents_to_navigate);
 #endif
+}
+
+void AIChatUIPageHandler::OpenLearnMoreAboutBraveSearchWithLeo() {
+  OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
 }
 
 void AIChatUIPageHandler::SetShouldSendPageContents(bool should_send) {
