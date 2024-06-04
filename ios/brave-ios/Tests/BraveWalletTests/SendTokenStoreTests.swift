@@ -109,6 +109,15 @@ class SendTokenStoreTests: XCTestCase {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    bitcoinWalletService._balance = { accountId, completion in
+      let bitcoinBalance: BraveWallet.BitcoinBalance = .init(
+        totalBalance: 100000,
+        availableBalance: 100000,
+        pendingBalance: 0,
+        balances: [:]
+      )
+      completion(bitcoinBalance, "")
+    }
 
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { _, _ in
@@ -669,8 +678,8 @@ class SendTokenStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     store.selectedSendToken = .mockBTCToken
-    let ex = expectation(description: "send-fil-transaction")
-    store.sendToken(amount: "1") { success, _ in
+    let ex = expectation(description: "send-btc-transaction")
+    store.sendToken(amount: "0.0005") { success, _ in
       defer { ex.fulfill() }
       XCTAssertTrue(success)
     }
