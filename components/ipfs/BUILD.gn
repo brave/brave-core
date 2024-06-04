@@ -9,5 +9,8 @@ static_library("ipfs") {
     "ipfs_prefs.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [ 
+    "//base",
+    "//components/prefs:prefs",
+  ]
 }
