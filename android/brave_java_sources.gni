@@ -35,7 +35,6 @@ brave_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/PlaylistAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/PlaylistItemAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/RecentlyPlayedPlaylistAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/enums/HlsContentStatus.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/enums/PlaylistOptionsEnum.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/MaterialCardViewExtension.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/NumberExtension.kt",

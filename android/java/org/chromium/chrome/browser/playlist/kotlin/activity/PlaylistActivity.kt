@@ -30,7 +30,6 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
-import org.chromium.base.Log
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl
@@ -272,7 +271,6 @@ class PlaylistActivity :
         mProgressBar.visibility = View.VISIBLE
         mRvPlaylist.visibility = View.GONE
         mPlaylistService?.getPlaylist(mPlaylistId) { playlist ->
-            Log.e(TAG, playlist.toString())
             mPlaylist = playlist
             mPlaylist.items.forEach { playlistItem ->
                 if (!PlaylistUtils.isPlaylistItemCached(playlistItem)) {

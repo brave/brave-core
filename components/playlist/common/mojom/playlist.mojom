@@ -115,7 +115,8 @@ interface PlaylistService {
   // would be better to gurantee the data consistency. We have many concurrent
   // actors that update the item.
   UpdateItem(PlaylistItem item);
-  UpdateItemLastPlayedPosition(string playlist_item_idid, int32 last_played_position);
+  UpdateItemLastPlayedPosition(string playlist_item_id,
+   int32 last_played_position);
 
   // Try downloading media files again. Returns PlaylistItem after trying
   // recovery. If it succeeded, |cached| state of the return item would be true.
@@ -145,7 +146,7 @@ interface PlaylistService {
 
   [EnableIf=is_android]
   ClearAllQueries();
-  
+
   [EnableIf=is_android]
   CancelQuery(string query_id);
 

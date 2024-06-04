@@ -44,7 +44,6 @@ import com.google.android.material.card.MaterialCardView
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 
-import org.chromium.base.Log
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
@@ -227,7 +226,6 @@ class PlaylistPlayerActivity :
 
     private fun fetchPlaylistData() {
         mPlaylistService?.getPlaylist(mPlaylistId) { playlist ->
-            Log.e(TAG, playlist.toString())
             val playlistItems = mutableListOf<PlaylistItem>()
             playlist.items.forEach {
                 if (it.id != controller?.currentMediaItem?.mediaId) {
