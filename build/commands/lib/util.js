@@ -658,7 +658,7 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
-      rbe_bin_dir: config.realRewrapperDir,
+      reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
