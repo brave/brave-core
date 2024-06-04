@@ -174,7 +174,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
             } == true
         ) {
             setAllChildrenVisible()
-            // ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 
@@ -757,7 +756,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
                 mDragHelper?.abort()
                 return
             }
-            // ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 

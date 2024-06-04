@@ -32,6 +32,8 @@ import com.google.common.util.concurrent.ListenableFuture
 import org.chromium.base.BraveFeatureList
 import org.chromium.base.BravePreferenceKeys
 import org.chromium.base.ContextUtils
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.flags.ChromeFeatureList
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
@@ -50,11 +52,6 @@ import org.chromium.mojo.system.MojoException
 import org.chromium.playlist.mojom.PlaylistItem
 import org.chromium.playlist.mojom.PlaylistService
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-
 @UnstableApi
 class VideoPlaybackService :
     MediaLibraryService(),
@@ -62,7 +59,6 @@ class VideoPlaybackService :
     MediaLibraryService.MediaLibrarySession.Callback,
     Player.Listener {
     private lateinit var mMediaLibrarySession: MediaLibrarySession
-    private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
 
     companion object {
@@ -275,13 +271,10 @@ class VideoPlaybackService :
         mediaItem: MediaItem,
         @Suppress("UNUSED_PARAMETER") currentPosition: Long
     ) {
-        mScope.launch {
-            if (
-                PlaylistPreferenceUtils.defaultPrefs(applicationContext)
-                    .rememberFilePlaybackPosition
-            ) {
-                mediaItem.mediaId.let {
-                    mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
+            if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
+                mediaItem.mediaId?.let { mediaId ->
+                    mPlaylistService?.updateItemLastPlayedPosition(mediaId, currentPosition.toInt())
                 }
             }
         }
