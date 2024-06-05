@@ -165,7 +165,6 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
     numPeers, timeRemaining, infoHash
 } = torrent
   let length: number = 0
-  console.log(torrent.files)
   const files: File[] = torrent.files.map((file) => {
     length += file.length
     return { name: file.name, length: file.length, path: file.path }

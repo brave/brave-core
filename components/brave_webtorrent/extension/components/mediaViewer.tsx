@@ -53,7 +53,6 @@ const LoadingContainer = styled.div`
 interface Props {
   torrent: TorrentObj
   ix: number
-  infoHash: string
 }
 
 const playMedia = (element: HTMLMediaElement) =>
@@ -69,14 +68,11 @@ const setMediaElementRef = (element: HTMLMediaElement | null) => {
   })
 }
 
-export default function MediaViewer({ torrent, ix, infoHash }: Props) {
+export default function MediaViewer({ torrent, ix }: Props) {
   const file = getSelectedFile(torrent, ix)
   const fileType = getFileType(file)
-  const fileURL =
-    torrent.serverURL &&
-    torrent.serverURL + '/webtorrent/' + infoHash + '/' + file?.path
+  const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
   const loading = !file || !fileURL
-  console.log({ torrent, file, fileURL, fileType })
 
   React.useEffect(() => {
     document.body.style.backgroundColor = isMedia(fileType)

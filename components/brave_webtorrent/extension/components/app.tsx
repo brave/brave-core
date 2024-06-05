@@ -46,7 +46,6 @@ export function BraveWebTorrentPage({
       <MediaViewer
         torrent={torrentObj}
         ix={torrentState.ix}
-        infoHash={torrentState.infoHash}
       />
     )
   }

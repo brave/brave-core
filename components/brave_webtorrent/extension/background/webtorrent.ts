@@ -23,7 +23,6 @@ export const getWebTorrent = () => {
 }
 
 export const createServer = (
-  client: WebTorrent.Instance,
   torrent: WebTorrent.Torrent,
   cb: (serverURL: string) => void
 ) => {
@@ -38,11 +37,11 @@ export const createServer = (
     // Ref: https://github.com/brave/browser-laptop/issues/12616
     hostname: '127.0.0.1'
   }
-  const server = client.createServer(opts, 'node')
+  const server = torrent.createServer(opts)
   if (!server) return
 
   try {
-    (server as any).listen(0, '127.0.0.1', undefined, () => {
+    server.listen(0, '127.0.0.1', undefined, () => {
       // Explicitly cast server.address() to AddressInfo to access its
       // properties. It's safe to cast here because the only possible type of
       // server.address() here is AddressInfo since pipe name (as string) is
@@ -59,7 +58,7 @@ export const createServer = (
 export const addTorrent = (torrentId: string | Instance) => {
   const client = getWebTorrent()
   const torrent = client.add(torrentId)
-  addTorrentEvents(client, torrent)
+  addTorrentEvents(torrent)
 }
 
 export const findTorrent = (infoHash: string) => {

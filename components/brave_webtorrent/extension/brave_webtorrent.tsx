@@ -51,45 +51,6 @@ const unsubscribe = store.subscribe(async () => {
     const tab: any = await new Promise((resolve) =>
       chrome.tabs.getCurrent(resolve)
     )
-
-    const permissionsToCheck = {
-      permissions: ['downloads', 'dns', 'tabs', 'webNavigation'],
-      origins: []
-    }
-
-    chrome.permissions.contains(permissionsToCheck, (result) => {
-      if (chrome.runtime.lastError) {
-        console.error(
-          'chrome.permissions.contains error:',
-          chrome.runtime.lastError.message
-        )
-        return
-      }
-
-      if (result) {
-        console.log('Permission already granted.')
-        // Proceed with the action that requires the permission
-      } else {
-        console.log('Permission not granted. Requesting permission...')
-        chrome.permissions.request(permissionsToCheck, (granted) => {
-          if (chrome.runtime.lastError) {
-            console.error(
-              'chrome.permissions.request error:',
-              chrome.runtime.lastError.message
-            )
-            return
-          }
-
-          if (granted) {
-            console.log('Permission granted.')
-            // Proceed with the action that requires the permission
-          } else {
-            console.log('Permission denied.')
-          }
-        })
-      }
-    })
-
     render(
       <Provider store={store}>
         <GlobalStyle />

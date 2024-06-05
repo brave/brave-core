@@ -16,7 +16,6 @@ import Spinner from './spinner'
 interface Props {
   torrentId: string
   torrent?: TorrentObj
-  infoHash?: string
   onSaveAllFiles: () => void
 }
 
@@ -81,19 +80,17 @@ const tableHeader: Cell[] = [
 ]
 
 const downloadFile = (url: string, filename: string) => {
-  const anchor = document.createElement('a')
-  anchor.setAttribute('href', url)
-  anchor.setAttribute('download', filename)
-  anchor.click()
+  chrome.downloads.download({
+    url,
+    filename
+  })
 }
 
 export default function TorrentFileList({
   torrent,
-  infoHash,
   torrentId,
   onSaveAllFiles
 }: Props) {
-  // console.log(torrent?.files)
   const rows = React.useMemo<Row[] | undefined>(
     () =>
       torrent?.files?.map((file: File, index: number) => ({
@@ -112,7 +109,6 @@ export default function TorrentFileList({
                     (/^https?:/.test(torrentId) ? '#ix=' : '&ix=') +
                     index
                   }
-                  // href={`${torrent.serverURL}/${infoHash}/${file.path}`}
                 >
                   {file.name}
                 </Link>
@@ -127,7 +123,7 @@ export default function TorrentFileList({
                 level='secondary'
                 onClick={() =>
                   downloadFile(
-                    `${torrent.serverURL}/${infoHash}/${file.path}`,
+                    `${torrent.serverURL}/${index}/${file.name}`,
                     file.name
                   )
                 }

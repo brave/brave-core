@@ -66,7 +66,6 @@ export default function TorrentViewer({
       <TorrentFileList
         torrentId={torrentId}
         torrent={torrent}
-        infoHash={infoHash}
         onSaveAllFiles={() => actions.saveAllFiles(infoHash)}
       />
       <TorrentViewerFooter torrent={torrent} />

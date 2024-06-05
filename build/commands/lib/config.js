@@ -357,7 +357,7 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
-    dcheck_always_on: false, //getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
+    dcheck_always_on: getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
@@ -496,9 +496,9 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
-    !this.isComponentBuild() &&
-    this.targetOS !== 'ios' &&
-    this.targetOS !== 'android') {
+      !this.isComponentBuild() &&
+      this.targetOS !== 'ios' &&
+      this.targetOS !== 'android') {
     args.enable_profiling = true
   }
 
@@ -524,9 +524,9 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.getTargetOS() === 'mac' &&
-    fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
-    // always use hermetic xcode for macos when available
-    args.use_system_xcode = false
+      fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
+      // always use hermetic xcode for macos when available
+      args.use_system_xcode = false
   }
 
   if (this.getTargetOS() === 'linux') {
@@ -556,8 +556,8 @@ Config.prototype.buildArgs = function () {
   }
   // Enable Page Graph WebAPI probes only in dev/nightly builds.
   if (args.enable_brave_page_graph &&
-    (!this.isBraveReleaseBuild() || this.channel === 'dev' ||
-      this.channel === 'nightly')) {
+      (!this.isBraveReleaseBuild() || this.channel === 'dev' ||
+       this.channel === 'nightly')) {
     args.enable_brave_page_graph_webapi_probes = true
   } else {
     args.enable_brave_page_graph_webapi_probes = false
@@ -1187,7 +1187,7 @@ Config.prototype.update = function (options) {
   }
 }
 
-Config.prototype.getTargetOS = function () {
+Config.prototype.getTargetOS = function() {
   if (this.targetOS)
     return this.targetOS
   if (process.platform === 'darwin')
@@ -1206,11 +1206,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
   get: function () {
     let env = Object.assign({}, process.env)
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python-bin'),
-      true)
+                            true)
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python2-bin'),
-      true)
+                            true)
     env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party',
-      'rust-toolchain', 'bin'), true)
+                                           'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
     const pythonPaths = [
       ['brave', 'script'],
