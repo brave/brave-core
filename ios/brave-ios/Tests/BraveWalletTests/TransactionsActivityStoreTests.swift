@@ -62,7 +62,6 @@ class TransactionsActivityStoreTests: XCTestCase {
         .mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet, .mockFilecoinMainnet,
         .mockFilecoinTestnet,
       ])
-
     }
     rpcService._hiddenNetworks = { $1([]) }
     rpcService._erc721Metadata = { _, _, _, completion in

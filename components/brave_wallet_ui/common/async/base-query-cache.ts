@@ -202,7 +202,7 @@ export class BaseQueryCache {
           hiddenIdsByCoinType[coin] = []
 
           networks.forEach(({ chainId, coin: networkCoin }) => {
-            if (networkCoin != coin) {
+            if (networkCoin !== coin) {
               return
             }
             const networkId = networkEntityAdapter

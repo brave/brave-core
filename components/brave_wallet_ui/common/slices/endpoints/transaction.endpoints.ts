@@ -878,7 +878,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: payload.value,
-              gas: payload.gas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -969,7 +969,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
-              gas: payload.gas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -1028,7 +1028,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
-              gas: payload.gas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -1081,7 +1081,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
-              gas: '',
+              gasLimit: '',
               data
             },
             txService
@@ -1803,7 +1803,7 @@ async function sendEvmTransaction({
   const params: BraveWallet.NewEvmTransactionParams = {
     chainId: payload.network.chainId,
     from: payload.fromAccount.accountId,
-    gasLimit: payload.gas,
+    gasLimit: payload.gasLimit,
     to: payload.to,
     value: payload.value,
     data: payload.data

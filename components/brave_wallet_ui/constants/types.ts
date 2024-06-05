@@ -276,7 +276,7 @@ export interface BaseTransactionParams {
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
-  gas: string
+  gasLimit: string
   data: number[]
 }
 
@@ -390,9 +390,6 @@ export type TransactionInfo =
 
 export type GetUnstoppableDomainsWalletAddrReturnInfo =
   BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
-
-export type GetIsStrongPassswordReturnInfo =
-  BraveWallet.KeyringService_IsStrongPassword_ResponseParams
 
 export interface RecoveryObject {
   value: string
