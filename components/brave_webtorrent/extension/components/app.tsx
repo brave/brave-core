@@ -42,7 +42,11 @@ export function BraveWebTorrentPage({
 
   if (!torrentState) return null
 
-  if (torrentObj && typeof torrentState.ix === 'number' && torrentState.infoHash) {
+  if (
+    torrentObj &&
+    typeof torrentState.ix === 'number' &&
+    torrentState.infoHash
+  ) {
     return (
       <MediaViewer
         torrent={torrentObj}

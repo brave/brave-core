@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
- 
+
 import * as ParseTorrent from 'parse-torrent'
 import { Torrent } from 'webtorrent'
 import { parse } from 'querystring'
@@ -10,7 +10,11 @@ import { parse } from 'querystring'
 // Constants
 import * as tabTypes from '../../constants/tab_types'
 import * as torrentTypes from '../../constants/webtorrent_types'
-import { File, TorrentState, TorrentsState } from '../../constants/webtorrentState'
+import {
+  File,
+  TorrentState,
+  TorrentsState
+} from '../../constants/webtorrentState'
 
 // Utils
 import {
@@ -31,7 +35,8 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
   // create new torrent state
   const parsedURL = new window.URL(url)
   const torrentId = parsedURL.href
-  if (parsedURL.protocol === 'magnet:') { // parse torrent
+  if (parsedURL.protocol === 'magnet:') {
+    // parse torrent
     try {
       const { name, infoHash, ix } = ParseTorrent(torrentId)
       newInfoHash = infoHash
@@ -39,8 +44,13 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
     } catch (error) {
       newTorrentState = { tabId, torrentId, errorMsg: error.message }
     }
-  } else if (parsedURL.protocol === 'https:' || parsedURL.protocol === 'http:') {
-    const name = parsedURL.pathname.substr(parsedURL.pathname.lastIndexOf('/') + 1)
+  } else if (
+    parsedURL.protocol === 'https:' ||
+    parsedURL.protocol === 'http:'
+  ) {
+    const name = parsedURL.pathname.substr(
+      parsedURL.pathname.lastIndexOf('/') + 1
+    )
     // for .torrent case, ix (index of file) for selecting a specific file in
     // the file list is given in url like #ix=5
     let ix: number | undefined = Number(parse(parsedURL.hash.slice(1)).ix)
@@ -49,11 +59,11 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
     // Use an existing infoHash if it's the same torrentId
     const torrentUrl = parsedURL.origin + parsedURL.pathname
     const key = Object.keys(torrentStateMap).find(
-      key => torrentStateMap[key].infoHash &&
-        torrentStateMap[key].torrentId === torrentUrl)
-    newInfoHash = key
-      ? torrentStateMap[key].infoHash
-      : undefined
+      (key) =>
+        torrentStateMap[key].infoHash &&
+        torrentStateMap[key].torrentId === torrentUrl
+    )
+    newInfoHash = key ? torrentStateMap[key].infoHash : undefined
 
     newTorrentState = { tabId, torrentId, name, ix, infoHash: newInfoHash }
   }
@@ -87,7 +97,8 @@ const tabRemoved = (tabId: number, state: TorrentsState) => {
   const torrentState = torrentStateMap[tabId]
   if (torrentState) {
     const infoHash = torrentState.infoHash
-    if (infoHash && torrentObjMap[infoHash]) { // unsubscribe
+    if (infoHash && torrentObjMap[infoHash]) {
+      // unsubscribe
       if (torrentObjMap[infoHash].tabClients) {
         torrentObjMap[infoHash].tabClients.delete(tabId)
       }
@@ -102,7 +113,11 @@ const tabRemoved = (tabId: number, state: TorrentsState) => {
   return { ...state, torrentStateMap, torrentObjMap }
 }
 
-const startTorrent = (torrentId: string, tabId: number, state: TorrentsState) => {
+const startTorrent = (
+  torrentId: string,
+  tabId: number,
+  state: TorrentsState
+) => {
   const { torrentStateMap, torrentObjMap } = state
   const torrentState = torrentStateMap[tabId]
 
@@ -111,11 +126,17 @@ const startTorrent = (torrentId: string, tabId: number, state: TorrentsState) =>
     parseTorrentRemote(torrentId, tabId)
   }
 
-  if (torrentState && torrentState.infoHash &&
-    !findTorrent(torrentState.infoHash)) {
+  if (
+    torrentState &&
+    torrentState.infoHash &&
+    !findTorrent(torrentState.infoHash)
+  ) {
     addTorrent(torrentId) // objectMap will be updated when info event is emitted
-  } else if (torrentState && torrentState.infoHash &&
-    torrentObjMap[torrentState.infoHash]) {
+  } else if (
+    torrentState &&
+    torrentState.infoHash &&
+    torrentObjMap[torrentState.infoHash]
+  ) {
     torrentObjMap[torrentState.infoHash].tabClients.add(tabId)
   }
 
@@ -142,7 +163,14 @@ const updateProgress = (state: TorrentsState, torrent: Torrent) => {
   }
 
   const {
-    downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio, numPeers, timeRemaining
+    downloaded,
+    uploaded,
+    downloadSpeed,
+    uploadSpeed,
+    progress,
+    ratio,
+    numPeers,
+    timeRemaining
   } = torrent
   torrentObjMap[torrent.infoHash] = {
     ...torrentObjMap[torrent.infoHash],
@@ -162,9 +190,17 @@ const updateProgress = (state: TorrentsState, torrent: Torrent) => {
 const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   const { torrentStateMap, torrentObjMap } = state
   const {
- name, downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
-    numPeers, timeRemaining, infoHash
-} = torrent
+    name,
+    downloaded,
+    uploaded,
+    downloadSpeed,
+    uploadSpeed,
+    progress,
+    ratio,
+    numPeers,
+    timeRemaining,
+    infoHash
+  } = torrent
   let length: number = 0
   const files: File[] = torrent.files.map((file) => {
     length += file.length
@@ -172,12 +208,11 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   })
 
   const tabClients: Set<number> = new Set<number>()
-  Object.keys(torrentStateMap).filter(
-    key => torrentStateMap[key].infoHash === infoHash).map(
-      key => {
-        tabClients.add(torrentStateMap[key].tabId)
-      }
-    )
+  Object.keys(torrentStateMap)
+    .filter((key) => torrentStateMap[key].infoHash === infoHash)
+    .map((key) => {
+      tabClients.add(torrentStateMap[key].tabId)
+    })
 
   torrentObjMap[torrent.infoHash] = {
     ...torrentObjMap[torrent.infoHash],
@@ -198,13 +233,27 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   return { ...state, torrentStateMap, torrentObjMap }
 }
 
-const updateServer = (state: TorrentsState, torrent: Torrent, serverURL: string) => {
+const updateServer = (
+  state: TorrentsState,
+  torrent: Torrent,
+  serverURL: string
+) => {
   const { torrentObjMap } = state
-  torrentObjMap[torrent.infoHash] = { ...torrentObjMap[torrent.infoHash], serverURL }
+  torrentObjMap[torrent.infoHash] = {
+    ...torrentObjMap[torrent.infoHash],
+    serverURL
+  }
   return { ...state, torrentObjMap }
 }
 
-const torrentParsed = (torrentId: string, tabId: number, infoHash: string | undefined, errorMsg: string | undefined, parsedTorrent: ParseTorrent.Instance | undefined, state: TorrentsState) => {
+const torrentParsed = (
+  torrentId: string,
+  tabId: number,
+  infoHash: string | undefined,
+  errorMsg: string | undefined,
+  parsedTorrent: ParseTorrent.Instance | undefined,
+  state: TorrentsState
+) => {
   const { torrentObjMap, torrentStateMap } = state
   torrentStateMap[tabId] = { ...torrentStateMap[tabId], infoHash, errorMsg }
 
@@ -223,7 +272,11 @@ const saveAllFiles = (state: TorrentsState, infoHash: string) => {
 }
 
 const defaultState: TorrentsState = { torrentStateMap: {}, torrentObjMap: {} }
-export const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
+export const webtorrentReducer = (
+  state: TorrentsState = defaultState,
+  action: any
+) => {
+  // TODO: modify any to be actual action type
   const payload = action.payload
   switch (action.type) {
     case tabTypes.types.TAB_UPDATED:
@@ -255,8 +308,14 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
       state = stopDownload(payload.tabId, state)
       break
     case torrentTypes.types.WEBTORRENT_TORRENT_PARSED:
-      state = torrentParsed(payload.torrentId, payload.tabId, payload.infoHash,
-        payload.errorMsg, payload.parsedTorrent, state)
+      state = torrentParsed(
+        payload.torrentId,
+        payload.tabId,
+        payload.infoHash,
+        payload.errorMsg,
+        payload.parsedTorrent,
+        state
+      )
       break
     case torrentTypes.types.WEBTORRENT_SAVE_ALL_FILES:
       state = saveAllFiles(state, payload.infoHash)
