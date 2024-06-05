@@ -434,6 +434,13 @@ import os.log
     }
   }
 
+  /// Eagerly load the rule lists for this type
+  func loadRuleLists(for type: BlocklistType) async throws {
+    for mode in type.allowedModes {
+      _ = try await ruleList(for: type, mode: mode)
+    }
+  }
+
   /// Return all the modes that need to be compiled for the given type
   func missingModes(for type: BlocklistType, version: String) async -> [BlockingMode] {
     return await type.allowedModes.asyncFilter { mode in
@@ -478,8 +485,17 @@ import os.log
   /// Remove the rule list for the blocklist type
   public func removeRuleLists(for type: BlocklistType, force: Bool = false) async throws {
     for mode in type.allowedModes {
-      try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
+      try await removeRuleLists(for: type, mode: mode, force: force)
     }
+  }
+
+  /// Remove the rule list for the blocklist type
+  public func removeRuleLists(
+    for type: BlocklistType,
+    mode: BlockingMode,
+    force: Bool = false
+  ) async throws {
+    try await removeRuleList(forIdentifier: type.makeIdentifier(for: mode), force: force)
   }
 
   /// Load a rule list from the rule store and return it. Will use cached results if they exist

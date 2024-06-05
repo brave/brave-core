@@ -282,6 +282,8 @@ import os
     for group: GroupedAdBlockEngine.FilterListGroup,
     contentBlockerManager: ContentBlockerManager
   ) async {
+    // We only comile the group if slim list is disabled
+    guard FeatureList.kBraveAdblockDropSlimList.enabled else { return }
     // Only do this for content blockers that should be combined
     guard engineType.combineContentBlockers else { return }
     guard !group.infos.isEmpty else { return }
@@ -443,6 +445,11 @@ extension GroupedAdBlockEngine.Source {
   func blocklistType(
     engineType: GroupedAdBlockEngine.EngineType
   ) -> ContentBlockerManager.BlocklistType? {
+    // The standard engine uses either (a) slm list for its content blockers
+    // or (if we drop slim list) (b) it combines all of the filter lists into one content blocker.
+    // Either way, we don't use individual blocklist types for the standard engine
+    guard engineType != .standard else { return nil }
+    // Otherwise, check if we have some other restriction for this filter list
     guard allowContentBlockers else { return nil }
     return .engineSource(self, engineType: engineType)
   }

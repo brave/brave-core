@@ -13,14 +13,6 @@ import os
 public actor LaunchHelper {
   public static let shared = LaunchHelper()
   static let signpost = OSSignposter(logger: ContentBlockerManager.log)
-  private let currentBlocklistVersion: Float = 1.0
-
-  /// Get the last version the user launched this application. This allows us to know what to re-compile.
-  public var lastBlocklistVersion = Preferences.Option<Float?>(
-    key: "launch_helper.last-launch-version",
-    default: nil
-  )
-
   private var loadTask: Task<(), Never>?
   private var areAdBlockServicesReady = false
 
@@ -44,23 +36,18 @@ public actor LaunchHelper {
       let state = Self.signpost.beginInterval("blockingLaunchTask", id: signpostID)
       await FilterListStorage.shared.start(with: adBlockService)
 
-      // We only want to compile the necessary content blockers during launch
-      // We will compile other ones after launch
-      let launchBlockModes = self.getFirstLaunchBlocklistModes()
-
       // Load cached data
       // This is done first because compileResources need their results
       await AdBlockGroupsManager.shared.loadResourcesFromCache()
       async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
-      async let adblockResourceCache: Void = AdBlockGroupsManager.shared
-        .loadBundledDataIfNeeded(allowedModes: launchBlockModes)
+      async let adblockResourceCache: Void = AdBlockGroupsManager.shared.loadBundledDataIfNeeded()
       _ = await (loadEngines, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
 
       ContentBlockerManager.log.debug("Loaded blocking launch data")
 
       // This one is non-blocking
-      performPostLoadTasks(adBlockService: adBlockService, loadedBlockModes: launchBlockModes)
+      performPostLoadTasks(adBlockService: adBlockService)
       areAdBlockServicesReady = true
       Self.signpost.endInterval("blockingLaunchTask", state)
     }
@@ -71,43 +58,17 @@ public actor LaunchHelper {
     self.loadTask = nil
   }
 
-  /// Return the blocking modes we need to pre-compile on first launch.
-  private func getFirstLaunchBlocklistModes() -> Set<ContentBlockerManager.BlockingMode> {
-    guard let version = self.lastBlocklistVersion.value else {
-      // If we don't have version, this is our first launch
-      return ShieldPreferences.blockAdsAndTrackingLevel.firstLaunchBlockingModes
-    }
-
-    if version < currentBlocklistVersion {
-      // We updated something and require things to be re-compiled
-      return ShieldPreferences.blockAdsAndTrackingLevel.firstLaunchBlockingModes
-    } else {
-      // iOS caches content blockers. We only need to pre-compile things the first time (on first launch).
-      // Since we didn't change anything and we know this isn't a first launch, we can return an empty set
-      // So that subsequent relaunches are much faster
-      return []
-    }
-  }
-
   /// Perform tasks that don't need to block the initial load (things that can happen happily in the background after the first page loads
   private func performPostLoadTasks(
-    adBlockService: AdblockService,
-    loadedBlockModes: Set<ContentBlockerManager.BlockingMode>
+    adBlockService: AdblockService
   ) {
-    // Here we need to load the remaining modes so they are ready should the user change their settings
-    let remainingModes = ContentBlockerManager.BlockingMode.allCases.filter({
-      !loadedBlockModes.contains($0)
-    })
-
     Task.detached(priority: .low) {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
       await AdBlockGroupsManager.shared.cleaupInvalidRuleLists()
+      await AdblockResourceDownloader.shared.startFetching()
       Self.signpost.endInterval("nonBlockingLaunchTask", state)
-
-      // Update the setting
-      await self.lastBlocklistVersion.value = self.currentBlocklistVersion
     }
   }
 }

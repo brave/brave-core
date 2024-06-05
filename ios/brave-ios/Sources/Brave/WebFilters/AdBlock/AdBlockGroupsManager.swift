@@ -81,51 +81,48 @@ import os
   }
 
   /// This will load bundled data for the given content blocking modes. But only if the files are not already compiled.
-  func loadBundledDataIfNeeded(
-    allowedModes: Set<ContentBlockerManager.BlockingMode>
-  ) async {
-    guard !allowedModes.isEmpty else { return }
-
+  func loadBundledDataIfNeeded() async {
     // Compile bundled blocklists but only if we don't have anything already loaded.
     await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
       genericType in
       let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
-      let modes = await self.contentBlockerManager.missingModes(
+      var missingModes = await self.contentBlockerManager.missingModes(
         for: blocklistType,
         version: genericType.version
       )
 
-      if genericType == .blockAds {
+      // When we drop slim list, we don't use the `blockAds` type
+      // once we have the proper rule list downloaded and compiled.
+      // So we have to check against different type if 'drop slim list' is enabled
+      // and remove those from the missing modes.
+      if genericType == .blockAds, FeatureList.kBraveAdblockDropSlimList.enabled {
         // This type is temproary and replaced with a downloaded filter list
-        // Check if we have the downloaded version of this replacement
-        let results = await modes.asyncMap { mode in
-          return await self.contentBlockerManager.hasRuleList(
-            for: .engineSource(
-              .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo"),
-              engineType: .standard
-            ),
+        // Check if we have the downloaded version of this replacement.
+        await blocklistType.allowedModes.asyncForEach { mode in
+          if await self.contentBlockerManager.hasRuleList(
+            for: self.standardManager.blocklistType,
             mode: mode
-          )
-        }
+          ) {
+            missingModes.removeAll(where: { $0 == mode })
+            guard !missingModes.contains(mode) else { return }
 
-        if results.allSatisfy({ $0 }) {
-          do {
-            // Remove this as it's no longer needed
-            try await self.contentBlockerManager.removeRuleLists(
-              for: blocklistType
-            )
-          } catch {
-            // we don't care if we failed to remove this
+            do {
+              // Remove this as it's no longer needed
+              try await self.contentBlockerManager.removeRuleLists(
+                for: blocklistType,
+                mode: mode
+              )
+            } catch {
+              // we don't care if we failed to remove this
+            }
           }
-
-          return
         }
       }
 
       do {
         try await self.contentBlockerManager.compileBundledRuleList(
           for: genericType,
-          modes: modes
+          modes: missingModes
         )
       } catch {
         assertionFailure("A bundled file should not fail to compile")
@@ -388,12 +385,16 @@ import os
     let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
       switch type {
       case .blockAds:
-        // We only use this legacy list during the upgrade so we don't have
-        // a pause on network blocking. Later we can remove this logic.
-        return !contentBlockerManager.isReady(
-          for: standardManager.blocklistType,
-          mode: .standard
-        )
+        if FeatureList.kBraveAdblockDropSlimList.enabled {
+          // We only use this legacy list during the upgrade so we don't have
+          // a pause on network blocking. Later we can remove this logic.
+          return !contentBlockerManager.isReady(
+            for: standardManager.blocklistType,
+            mode: .standard
+          )
+        } else {
+          return true
+        }
       default:
         return true
       }

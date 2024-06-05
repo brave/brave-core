@@ -58,7 +58,7 @@ public actor GroupedAdBlockEngine {
     /// as we control the filter lists for this type and we can guarantee they don't surpas 150k network rules.
     var combineContentBlockers: Bool {
       switch self {
-      case .standard: return true
+      case .standard: return FeatureList.kBraveAdblockDropSlimList.enabled
       case .aggressive: return false
       }
     }
