@@ -88,7 +88,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
 
           // The `Save and share` submenu
           {IDC_SAVE_PAGE, kLeoFileDownloadIcon},
-          {IDC_INSTALL_PWA, kLeoClipboardIcon},
+          {IDC_INSTALL_PWA, kLeoPwaInstallIcon},
           {IDC_OPEN_IN_PWA_WINDOW, kLeoLaunchIcon},
           {IDC_CREATE_SHORTCUT, kLeoShareWindowsIcon},
           {IDC_COPY_URL, kLeoLinkNormalIcon},
