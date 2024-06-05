@@ -72,7 +72,7 @@ function Control ({
   return (
     <Button
       kind={kind}
-      size='mini'
+      size='jumbo'
       onClick={onClick}
       title={title}
       fab
