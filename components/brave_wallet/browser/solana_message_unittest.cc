@@ -564,7 +564,7 @@ TEST(SolanaMessageUnitTest, UsesDurableNonce) {
 TEST(SolanaMessageUnitTest, AddPriorityFee) {
   auto legacy_message = GetTestLegacyMessage();
   auto static_account_keys_before = legacy_message.static_account_keys();
-  auto legacy_message_header_before = legacy_message.message_header_;
+  auto legacy_message_header_before = legacy_message.message_header();
   auto instructions_size_before = legacy_message.instructions().size();
   ASSERT_TRUE(legacy_message.AddPriorityFee(300, 1000));
 
@@ -601,11 +601,11 @@ TEST(SolanaMessageUnitTest, AddPriorityFee) {
   // Header should be the same except for the number of readonly unsigned
   // accounts.
   EXPECT_EQ(legacy_message_header_before.num_required_signatures,
-            legacy_message.message_header_.num_required_signatures);
+            legacy_message.message_header().num_required_signatures);
   EXPECT_EQ(legacy_message_header_before.num_readonly_signed_accounts,
-            legacy_message.message_header_.num_readonly_signed_accounts);
+            legacy_message.message_header().num_readonly_signed_accounts);
   EXPECT_EQ(legacy_message_header_before.num_readonly_unsigned_accounts + 1,
-            legacy_message.message_header_.num_readonly_unsigned_accounts);
+            legacy_message.message_header().num_readonly_unsigned_accounts);
 
   auto legacy_message_with_durable_nonce = GetTestLegacyMessage();
   SolanaInstruction instruction = GetAdvanceNonceAccountInstruction();

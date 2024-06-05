@@ -138,6 +138,7 @@ class SolanaTransaction {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
 
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.

@@ -86,6 +86,8 @@ class SolanaMessage {
     return static_account_keys_;
   }
 
+  const SolanaMessageHeader& message_header() const { return message_header_; }
+
   mojom::SolanaMessageVersion version() const { return version_; }
 
   // Returns true if transaction begins with a valid advance nonce instruction.
@@ -97,7 +99,7 @@ class SolanaMessage {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
-  FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, AddPriorityFee);
+  // FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, AddPriorityFee);
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, UsesPriorityFee);
 
   static void GetUniqueAccountMetas(
@@ -112,7 +114,7 @@ class SolanaMessage {
       uint16_t& num_readonly_signed_accounts,
       uint16_t& num_readonly_unsigned_accounts);
 
-  // Returns true if transaction begins with a valid advance nonce instruction.
+  // Returns true if transaction contains a set compute price instruction.
   bool UsesPriorityFee() const;
 
   mojom::SolanaMessageVersion version_;

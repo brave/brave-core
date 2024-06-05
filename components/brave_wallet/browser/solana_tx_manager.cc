@@ -115,7 +115,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  GetSolanaTxFeeEstimationAndMeta(chain_id, std::move(meta),
+  GetSolanaTxFeeEstimationForMeta(chain_id, std::move(meta),
                                   std::move(internal_callback));
 }
 
@@ -123,7 +123,7 @@ void SolanaTxManager::OnSimulateSolanaTransaction(
     const std::string& chain_id,
     std::unique_ptr<SolanaTxMeta> meta,
     uint64_t base_fee,
-    GetSolanaTxFeeEstimationAndMetaCallback callback,
+    GetSolanaTxFeeEstimationForMetaCallback callback,
     uint64_t compute_units_consumed,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
@@ -153,13 +153,13 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
     std::unique_ptr<SolanaTxMeta> meta,
     uint64_t base_fee,
     uint64_t compute_units,
-    GetSolanaTxFeeEstimationAndMetaCallback callback,
+    GetSolanaTxFeeEstimationForMetaCallback callback,
     std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
     // If the call to fetch recent priority fees fails, we'll still propagate
-    // the base fee - the client can use it even if the priority fee fails.
+    // the base fee and compute units, but use the default fee per compute unit.
     mojom::SolanaFeeEstimationPtr estimation =
         mojom::SolanaFeeEstimation::New();
     estimation->base_fee = base_fee;
@@ -203,13 +203,22 @@ void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
 
 void SolanaTxManager::OnGetEstimatedTxBaseFee(
     const std::string& chain_id,
-    GetSolanaTxFeeEstimationAndMetaCallback callback,
+    GetSolanaTxFeeEstimationForMetaCallback callback,
     std::unique_ptr<SolanaTxMeta> meta,
     uint64_t base_fee,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
-    std::move(callback).Run({}, {}, error, error_message);
+    // If the base fee fetching fails, set it to zero so
+    // ContinueAddUnapprovedTransaction can identify the failure is from base
+    // fee fetching.
+    mojom::SolanaFeeEstimationPtr estimation =
+        mojom::SolanaFeeEstimation::New();
+    estimation->base_fee = 0;
+    estimation->compute_units = 0;
+    estimation->fee_per_compute_unit = 0;
+    std::move(callback).Run(std::move(meta), std::move(estimation), error,
+                            error_message);
     return;
   }
 
@@ -237,10 +246,11 @@ void SolanaTxManager::ContinueAddUnapprovedTransaction(
     mojom::SolanaFeeEstimationPtr estimation,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
-  // If the base fee is zero (fetching failed), we add the transaction without
-  // adding the priority fee instruction and without setting the gas estimate.
-  if (error != mojom::SolanaProviderError::kSuccess &&
-      estimation->base_fee == 0) {
+  // If the base fee is zero (base feefetching failed), we add the transaction
+  // without adding the priority fee instruction and without setting the gas
+  // estimate.
+  if (!estimation || (error != mojom::SolanaProviderError::kSuccess &&
+                      estimation->base_fee == 0)) {
     if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
       std::move(callback).Run(
           false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -993,14 +1003,28 @@ void SolanaTxManager::GetSolanaTxFeeEstimation(
       base::BindOnce(&SolanaTxManager::FinishGetSolanaTxFeeEstimation,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  GetSolanaTxFeeEstimationAndMeta(chain_id, std::move(meta),
+  GetSolanaTxFeeEstimationForMeta(chain_id, std::move(meta),
                                   std::move(internal_callback));
 }
 
-void SolanaTxManager::GetSolanaTxFeeEstimationAndMeta(
+void SolanaTxManager::GetSolanaTxFeeEstimationForMeta(
     const std::string& chain_id,
     std::unique_ptr<SolanaTxMeta> meta,
-    GetSolanaTxFeeEstimationAndMetaCallback callback) {
+    GetSolanaTxFeeEstimationForMetaCallback callback) {
+  // This function makes three RPC calls to create the SolanaFeeEstimation:
+  //
+  // 1. getFeeForMessage to get the base fee
+  // 2. simulateTransaction to get the compute unit estimation
+  // 3. getRecentPrioritizationFees to get the fee per compute unit
+  //
+  // If fetching the base fee fails, we set the base fee, compute units, and fee
+  // per compute unit to zero so the caller can identify the failure.
+  //
+  // If estimating the compute units fails, we set the correct base fee, but
+  // set the compute units and fee per compute unit to zero.
+  //
+  // If fetching the fee per compute unit fails, we set the correct base fee and
+  // compute units, but set the fee per compute unit to the default value.
   auto internal_callback = base::BindOnce(
       &SolanaTxManager::OnGetEstimatedTxBaseFee, weak_ptr_factory_.GetWeakPtr(),
       chain_id, std::move(callback));

@@ -78,7 +78,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                               const std::string& error_message)>;
   using GetSolanaTxFeeEstimationCallback =
       mojom::SolanaTxManagerProxy::GetSolanaTxFeeEstimationCallback;
-  using GetSolanaTxFeeEstimationAndMetaCallback =
+  using GetSolanaTxFeeEstimationForMetaCallback =
       base::OnceCallback<void(std::unique_ptr<SolanaTxMeta> tx_meta,
                               mojom::SolanaFeeEstimationPtr fee_estimation,
                               mojom::SolanaProviderError error,
@@ -106,10 +106,10 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   void GetSolanaTxFeeEstimation(const std::string& chain_id,
                                 const std::string& tx_meta_id,
                                 GetSolanaTxFeeEstimationCallback callback);
-  void GetSolanaTxFeeEstimationAndMeta(
+  void GetSolanaTxFeeEstimationForMeta(
       const std::string& chain_id,
       std::unique_ptr<SolanaTxMeta> meta,
-      GetSolanaTxFeeEstimationAndMetaCallback callback);
+      GetSolanaTxFeeEstimationForMetaCallback callback);
   void ProcessSolanaHardwareSignature(
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& signature_bytes,
@@ -225,7 +225,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& chain_id,
       std::unique_ptr<SolanaTxMeta> meta,
       uint64_t base_fee,
-      GetSolanaTxFeeEstimationAndMetaCallback callback,
+      GetSolanaTxFeeEstimationForMetaCallback callback,
       uint64_t compute_units_consumed,
       mojom::SolanaProviderError error,
       const std::string& error_message);
@@ -234,13 +234,13 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       std::unique_ptr<SolanaTxMeta> meta,
       uint64_t base_fee,
       uint64_t compute_units,
-      GetSolanaTxFeeEstimationAndMetaCallback callback,
+      GetSolanaTxFeeEstimationForMetaCallback callback,
       std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
       mojom::SolanaProviderError error,
       const std::string& error_message);
 
   void OnGetEstimatedTxBaseFee(const std::string& chain_id,
-                               GetSolanaTxFeeEstimationAndMetaCallback callback,
+                               GetSolanaTxFeeEstimationForMetaCallback callback,
                                std::unique_ptr<SolanaTxMeta> meta,
                                uint64_t base_fee,
                                mojom::SolanaProviderError error,
