@@ -16,6 +16,7 @@ struct PlaylistContentView: View {
 
   @Environment(\.dismiss) private var dismiss
   @Environment(\.isFullScreen) private var isFullScreen
+  @Environment(\.toggleFullScreen) private var toggleFullScreen
 
   @FetchRequest(
     sortDescriptors: [
@@ -223,6 +224,7 @@ struct PlaylistContentView: View {
           selectedDetent = .anchor(.emptyPlaylistContent)
         }
         playerModel.stop()
+        toggleFullScreen(explicitFullScreenMode: false)
         return
       }
     }
