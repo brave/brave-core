@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import os
+import re
 import subprocess
 
 BRAVE_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -31,10 +32,67 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
-        # These have auto-generated license files and
-        # GetThirdPartyDepsFromGNDepsOutput causes strange license errors
-        # unless the this entire directory is excluded.
-        os.path.join('brave', 'third_party', 'rust'),
+        # Metadata files for Rust crates are located in the subfolders of
+        # brave/third_party/rust/<crate_name>/<v>, the crates themselves in
+        # brave/third_party/rust/chromium_crates_io can be skipped.
+        os.path.join('brave', 'third_party', 'rust', 'chromium_crates_io'),
+
+        # Same for upstream
+        os.path.join('third_party', 'rust', 'chromium_crates_io'),
+
+        # Rust code written by Brave and under the same license as the browser.
+        os.path.join('brave', 'third_party', 'rust', 'adblock_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'brave_news_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'brave_wallet'),
+        os.path.join('brave', 'third_party', 'rust',
+                     'challenge_bypass_ristretto_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'constellation_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'json_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'filecoin_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'skus'),
+        os.path.join('brave', 'third_party', 'rust', 'skus_cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'speedreader'),
+        os.path.join('brave', 'third_party', 'rust', 'speedreader_ffi'),
+
+        # Rust crates that are references to upstream crates and should have
+        # licenses in upstream //third_party/rust.
+        os.path.join('brave', 'third_party', 'rust', 'aho_corasick'),
+        os.path.join('brave', 'third_party', 'rust', 'anyhow'),
+        os.path.join('brave', 'third_party', 'rust', 'base64'),
+        os.path.join('brave', 'third_party', 'rust', 'cfg_if'),
+        os.path.join('brave', 'third_party', 'rust', 'cxx'),
+        os.path.join('brave', 'third_party', 'rust', 'cxxbridge_flags'),
+        os.path.join('brave', 'third_party', 'rust', 'cxxbridge_macro'),
+        os.path.join('brave', 'third_party', 'rust', 'getrandom', 'v0_2'),
+        os.path.join('brave', 'third_party', 'rust', 'hex'),
+        os.path.join('brave', 'third_party', 'rust', 'itoa', 'v1'),
+        os.path.join('brave', 'third_party', 'rust', 'lazy_static'),
+        os.path.join('brave', 'third_party', 'rust', 'libc'),
+        os.path.join('brave', 'third_party', 'rust', 'log'),
+        os.path.join('brave', 'third_party', 'rust', 'memchr'),
+        os.path.join('brave', 'third_party', 'rust', 'ppv_lite86'),
+        os.path.join('brave', 'third_party', 'rust', 'proc_macro2'),
+        os.path.join('brave', 'third_party', 'rust', 'quote'),
+        os.path.join('brave', 'third_party', 'rust', 'rand', 'v0_8'),
+        os.path.join('brave', 'third_party', 'rust', 'rand_core', 'v0_6'),
+        os.path.join('brave', 'third_party', 'rust', 'regex'),
+        os.path.join('brave', 'third_party', 'rust', 'regex_automata'),
+        os.path.join('brave', 'third_party', 'rust', 'regex_syntax'),
+        os.path.join('brave', 'third_party', 'rust', 'ryu'),
+        os.path.join('brave', 'third_party', 'rust', 'serde'),
+        os.path.join('brave', 'third_party', 'rust', 'serde_json'),
+        os.path.join('brave', 'third_party', 'rust', 'static_assertions'),
+        os.path.join('brave', 'third_party', 'rust', 'syn'),
+        os.path.join('brave', 'third_party', 'rust', 'unicode_ident'),
+        os.path.join('brave', 'third_party', 'rust', 'winapi'),
+
+        # Rust crates that are downloaded but not used (due to Cargo.toml
+        # misconfigurations in other crates).
+        os.path.join('brave', 'third_party', 'rust', 'valuable'),
+        os.path.join('brave', 'third_party', 'rust', 'windows_aarch64_gnullvm'),
+        os.path.join('brave', 'third_party', 'rust', 'windows_i686_gnu'),
+        os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnu'),
+        os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnullvm'),
 
         # No third-party code directly under android_deps. It's all under
         # android_deps/libs instead and it's special-cased further down.
@@ -96,6 +154,11 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",
             "License": "MIT",
         },
+        os.path.join('brave', 'third_party', 'rust', 'futures_retry', 'v0_5'): {
+            "Name": "futures-retry",
+            "URL": "https://crates.io/crates/futures-retry",
+            "License": "Apache-2.0",
+        },
         os.path.join('brave', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
             "URL": "https://github.com/brave/brave-extension",
@@ -119,8 +182,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "/brave/vendor/omaha/third_party/breakpad/LICENSE"
             ],
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad',
-                     'src', 'third_party', 'musl'): {
+        # Unclear why, but presumbit wants this line formatted this way, while
+        # at the same time complaining it's too long when it is formatted so.
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad', 'src', 'third_party', 'musl'): {  # pylint: disable=line-too-long
             "Name": "musl",
             "URL": "https://musl.libc.org/",
             "License File": [
@@ -128,13 +192,13 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "musl/COPYRIGHT"
             ],
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'):
-        {
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
-            "License File":
-                ["/brave/vendor/omaha/third_party/googletest/LICENSE"],
+            "License File": [
+                "/brave/vendor/omaha/third_party/googletest/LICENSE"
+            ],
         },
         os.path.join('brave', 'third_party', 'rapidjson'): {
             "Name": "RapidJSON",
@@ -147,20 +211,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/EngFlow/reclient-configs",
             "License": "Apache-2.0",
             "License File": ["/brave/third_party/reclient_configs/src/LICENSE"],
-        },
-        os.path.join('brave', 'third_party', 'rust'): {
-            "Name": "rust-cxx",
-            "URL": "https://crates.io/crates/cxx",
-            "License": "Apache-2.0",
-            "License File": \
-                ["/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE"],
-        },
-        os.path.join('brave', 'third_party', 'rust'): {
-            "Name": "rust-cxx",
-            "URL": "https://crates.io/crates/either",
-            "License": "MIT",
-            "License File": \
-                ["/brave/third_party/rust/either/v1/crate/LICENSE-MIT"],
         },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
@@ -231,6 +281,10 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
+        # brave/third_party/rust itself doesn't need to have a license, but
+        # all subfolders in it should.
+        if path == os.path.join('brave', 'third_party', 'rust'):
+            return
         output = subprocess.check_output(
             [
                 'git', 'status', '-z',
@@ -268,3 +322,43 @@ def ContainsFiles(path):
             return True
 
     return False
+
+
+def IsBraveRustCrate(path):
+    if not path:
+        return False
+    sep = re.escape(os.path.sep)
+    path_regex = re.compile(
+        r'''^(brave{sep})?third_party{sep}rust{sep}{nonsep}+'''.format(
+            sep=sep, nonsep=f'[^{sep}]'))
+    return path_regex.fullmatch(path) != None
+
+
+def ReportBraveIncompleteMetadataFile(path):
+    if path.startswith('brave'):
+        # If there's no LICENSE file in the third party downloaded code, then
+        # we place LICENSE file next to README.chromium. This file cannot be
+        # added as a 'License File' into the README.chromium metadata, though,
+        # so this third party code won't be added into the credits page.
+        added_license_file = os.path.join(_REPOSITORY_ROOT,
+                                          os.path.join(path, 'LICENSE'))
+        if (os.path.isfile(added_license_file)):
+            return
+
+        raise ValueError(
+            '\n\nMETADATA ERROR: missing required fields in README.chromium in '
+            f'{path}\nIf this is code you added, then these metadata fields '
+            'in generated README.chromium are required: Name, URL, Shipped, '
+            'License File. You can fix it in one of these ways:'
+            '\n* If this is a Rust crate that you added and it has a custom '
+            'License File name, you can configure the custom name in '
+            '//brave/third_party/rust/chromium_crates_io/gnrt_config.toml.'
+            '\n* If this is a Rust crate that does not have a LICENSE file, '
+            'then either add LICENSE file in the same folder where the '
+            'README.chromium file is if the code has MIT license, or configure '
+            'the custom relative path to shared Apache-2.0 or MPL-2.0 licenses '
+            '(in //brave/commone/licenses) in '
+            '//brave/third_party/rust/chromium_crates_io/gnrt_config.toml'
+            '\n* If this is a Rust crate that is just a reference to an '
+            'upstream crate, then add it as an exception to prune_paths in '
+            '//brave/script/brave_license_helper.py.\n')

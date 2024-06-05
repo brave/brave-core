@@ -5,5 +5,5 @@ Version: 0.27.2
 Security Critical: yes
 Shipped: yes
 License: Mozilla Public License 2.0
-License File:
+License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.27.2/LICENSE
 Revision: 7c9854ebf5f18860fc20d4e7b7c8534eb7b704c6

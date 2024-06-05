@@ -1,9 +1,0 @@
-Name: windows_x86_64_gnullvm
-URL: https://crates.io/crates/windows_x86_64_gnullvm
-Description: Import lib for Windows
-Version: 0.48.5
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File:
-Revision: b769fa7570f8eeaede0ed1995a7dbe1e9591a35b
