@@ -459,7 +459,7 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
     return;
   }
 
-  if (!wallet && UserHasOptedInToNotificationAds()) {
+  if (!wallet && UserHasJoinedBraveRewards()) {
     VLOG(1) << "Failed to initialize Brave Rewards wallet";
     return Shutdown();
   }
