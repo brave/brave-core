@@ -3,14 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from "$web-common/Flex";
+import { getLocale } from "$web-common/locale";
 import Button from '@brave/leo/react/button';
 import ButtonMenu from '@brave/leo/react/buttonMenu';
-import Icon from '@brave/leo/react/icon';
-import { color, icon, spacing } from "@brave/leo/tokens/css/variables";
+import { color, spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled from "styled-components";
-import Flex from '$web-common/Flex';
-import { getLocale } from "$web-common/locale";
 import { useSearchContext } from "./SearchContext";
 import { MediumSearchEngineIcon } from "./SearchEngineIcon";
 
@@ -20,24 +19,17 @@ const Option = styled.div`
     gap: ${spacing.m};
 `
 
-const OpenIcon = styled(Icon)`
-  --leo-icon-color: rgba(255, 255, 255, 0.5);
-  --leo-icon-size: ${icon.xs};
-`
-
 const CustomizeButton = styled(Button)`
   border-top: 1px solid ${color.divider.subtle};
   color: ${color.text.secondary};
 `
 
-const Vr = styled.div`
-  width: 1px;
-  background: rgba(255,255,255,0.1);
-  height: 24px;
-`
-
 const OpenButton = styled(Button)`
   margin: -6px 0 -6px ${spacing.m};
+`
+
+const IconContainer = styled(Flex)`
+  margin-right: 16px;
 `
 
 export default function EnginePicker() {
@@ -46,11 +38,9 @@ export default function EnginePicker() {
 
   return <ButtonMenu data-theme="light" positionStrategy='fixed' isOpen={open} onClose={() => setOpen(false)}>
     <OpenButton fab kind="plain-faint" slot="anchor-content" onClick={() => setOpen(true)}>
-      <Flex gap={spacing.s} align='center'>
+      <IconContainer align="center" justify="center">
         <MediumSearchEngineIcon engine={searchEngine} />
-        <OpenIcon name={open ? "close" : "carat-down"} />
-        <Vr />
-      </Flex>
+      </IconContainer>
     </OpenButton>
     {filteredSearchEngines.map(s => <leo-menu-item onClick={() => setSearchEngine(s)} key={s.keyword}>
       <Option>

@@ -80,7 +80,7 @@ const LeoIcon = styled(Icon)`
 `
 
 const Divider = styled.hr`
-  margin: -2px -8px;
+  margin: 2px -8px;
   opacity: 0.1;
 `
 
