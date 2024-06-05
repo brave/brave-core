@@ -66,11 +66,10 @@ import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
 interface Props {
   onClose: () => void
+  onSave?: () => void
 }
 
-export const PortfolioFiltersModal = (props: Props) => {
-  const { onClose } = props
-
+export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
   // routing
   const { pathname: currentRoute } = useLocation()
 
@@ -158,6 +157,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     setHidePortfolioSmallBalances(hideSmallBalances)
     setShowNetworkLogoOnNfts(showNetworkLogo)
     setHideUnownedNfts(hideUnownedNftsToggle)
+    onSave?.()
     onClose()
   }, [
     setFilteredOutPortfolioNetworkKeys,
@@ -174,6 +174,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     showNetworkLogo,
     setHideUnownedNfts,
     hideUnownedNftsToggle,
+    onSave,
     onClose
   ])
 
@@ -194,7 +195,7 @@ export const PortfolioFiltersModal = (props: Props) => {
           fullWidth={true}
           alignItems='flex-start'
         >
-          {showNftFilters && (
+          {showNftFilters ? (
             <>
               <FilterToggleSection
                 title={getLocale('braveWalletShowNetworkLogoOnNftsTitle')}
@@ -225,19 +226,18 @@ export const PortfolioFiltersModal = (props: Props) => {
                 }
               /> */}
             </>
-          )}
-
-          <FilterDropdownSection
-            title={getLocale('braveWalletPortfolioGroupByTitle')}
-            description={getLocale('braveWalletPortfolioGroupByDescription')}
-            icon='stack'
-            dropdownOptions={GroupAssetsByOptions}
-            selectedOptionId={selectedGroupAssetsByOption}
-            onSelectOption={setSelectedGroupAssetsByOption}
-          />
-
-          {!showNftFilters && (
+          ) : (
             <>
+              <FilterDropdownSection
+                title={getLocale('braveWalletPortfolioGroupByTitle')}
+                description={getLocale(
+                  'braveWalletPortfolioGroupByDescription'
+                )}
+                icon='stack'
+                dropdownOptions={GroupAssetsByOptions}
+                selectedOptionId={selectedGroupAssetsByOption}
+                onSelectOption={setSelectedGroupAssetsByOption}
+              />
               <FilterDropdownSection
                 title={getLocale('braveWalletSortAssets')}
                 description={getLocale('braveWalletSortAssetsDescription')}
