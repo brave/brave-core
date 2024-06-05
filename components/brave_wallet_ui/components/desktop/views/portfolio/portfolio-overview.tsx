@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 // selectors
@@ -113,6 +113,7 @@ import {
 export const PortfolioOverview = () => {
   // routing
   const history = useHistory()
+  const location = useLocation()
 
   // local-storage
   const [filteredOutPortfolioNetworkKeys] = useLocalStorage(
@@ -657,7 +658,18 @@ export const PortfolioOverview = () => {
 
       {showPortfolioSettings && (
         <PortfolioFiltersModal
-          onClose={() => setShowPortfolioSettings(false)}
+          onSave={() => {
+            // reset to first page after filters change
+            const newParams = new URLSearchParams(location.search)
+            newParams.delete('page')
+            history.push({
+              ...location,
+              search: `?${newParams.toString()}`
+            })
+          }}
+          onClose={() => {
+            setShowPortfolioSettings(false)
+          }}
         />
       )}
     </>
