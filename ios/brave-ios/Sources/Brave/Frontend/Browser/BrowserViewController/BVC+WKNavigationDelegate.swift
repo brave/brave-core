@@ -727,7 +727,8 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Open our helper and cancel this response from the webview.
-      if let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
+      if tab === tabManager.selectedTab,
+        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
       {
         present(downloadAlert, animated: true, completion: nil)
       }
