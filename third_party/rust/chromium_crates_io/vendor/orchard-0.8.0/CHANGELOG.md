@@ -7,6 +7,28 @@ and this project adheres to Rust's notion of
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-03-25
+
+### Added
+- `orchard::note::Rho`
+- `orchard::action::Action::rho`
+- `orchard::note_encryption::CompactAction::rho`
+- `orchard::note_encryption::OrchardDomain::for_compact_action`
+- Additions under the `test-dependencies` feature flag:
+  - `orchard::tree::MerkleHashOrchard::random`
+  - `impl Distribution<MerkleHashOrchard> for Standard`
+
+### Changed
+- The following methods have their `Nullifier`-typed argument or return value
+  now take or return `note::Rho` instead:
+  - `orchard::note::RandomSeed::from_bytes`
+  - `orchard::note::Note::from_parts`
+  - `orchard::note::Note::rho`
+
+### Removed
+- `orchard::note_encryption::OrchardDomain::for_nullifier` (use `for_action`
+  or `for_compact_action` instead).
+
 ## [0.7.1] - 2024-02-29
 ### Added
 - `impl subtle::ConstantTimeEq for orchard::note::Nullifier`

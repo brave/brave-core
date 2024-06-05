@@ -18,7 +18,7 @@ use crate::{
         FullViewingKey, OutgoingViewingKey, Scope, SpendAuthorizingKey, SpendValidatingKey,
         SpendingKey,
     },
-    note::{Note, TransmittedNoteCiphertext},
+    note::{Note, Rho, TransmittedNoteCiphertext},
     note_encryption::OrchardNoteEncryption,
     primitives::redpallas::{self, Binding, SpendAuth},
     tree::{Anchor, MerklePath},
@@ -335,11 +335,12 @@ impl ActionInfo {
         let cv_net = ValueCommitment::derive(v_net, self.rcv.clone());
 
         let nf_old = self.spend.note.nullifier(&self.spend.fvk);
+        let rho = Rho::from_nf_old(nf_old);
         let ak: SpendValidatingKey = self.spend.fvk.clone().into();
         let alpha = pallas::Scalar::random(&mut rng);
         let rk = ak.randomize(&alpha);
 
-        let note = Note::new(self.output.recipient, self.output.value, nf_old, &mut rng);
+        let note = Note::new(self.output.recipient, self.output.value, rho, &mut rng);
         let cm_new = note.commitment();
         let cmx = cm_new.into();
 

@@ -16,7 +16,7 @@ use crate::{
         DiversifiedTransmissionKey, Diversifier, EphemeralPublicKey, EphemeralSecretKey,
         OutgoingViewingKey, PreparedEphemeralPublicKey, PreparedIncomingViewingKey, SharedSecret,
     },
-    note::{ExtractedNoteCommitment, Nullifier, RandomSeed},
+    note::{ExtractedNoteCommitment, Nullifier, RandomSeed, Rho},
     value::{NoteValue, ValueCommitment},
     Address, Note,
 };
@@ -81,7 +81,7 @@ where
 /// Orchard-specific note encryption logic.
 #[derive(Debug)]
 pub struct OrchardDomain {
-    rho: Nullifier,
+    rho: Rho,
 }
 
 impl memuse::DynamicUsage for OrchardDomain {
@@ -97,14 +97,12 @@ impl memuse::DynamicUsage for OrchardDomain {
 impl OrchardDomain {
     /// Constructs a domain that can be used to trial-decrypt this action's output note.
     pub fn for_action<T>(act: &Action<T>) -> Self {
-        OrchardDomain {
-            rho: *act.nullifier(),
-        }
+        Self { rho: act.rho() }
     }
 
-    /// Constructs a domain from a nullifier.
-    pub fn for_nullifier(nullifier: Nullifier) -> Self {
-        OrchardDomain { rho: nullifier }
+    /// Constructs a domain that can be used to trial-decrypt this action's output note.
+    pub fn for_compact_action(act: &CompactAction) -> Self {
+        Self { rho: act.rho() }
     }
 }
 
@@ -335,6 +333,65 @@ impl CompactAction {
     pub fn cmx(&self) -> ExtractedNoteCommitment {
         self.cmx
     }
+
+    /// Obtains the [`Rho`] value that was used to construct the new note being created.
+    pub fn rho(&self) -> Rho {
+        Rho::from_nf_old(self.nullifier)
+    }
+}
+
+/// Utilities for constructing test data.
+#[cfg(feature = "test-dependencies")]
+pub mod testing {
+    use rand::RngCore;
+    use zcash_note_encryption::Domain;
+
+    use crate::{
+        keys::OutgoingViewingKey,
+        note::{ExtractedNoteCommitment, Nullifier, RandomSeed, Rho},
+        value::NoteValue,
+        Address, Note,
+    };
+
+    use super::{CompactAction, OrchardDomain, OrchardNoteEncryption};
+
+    /// Creates a fake `CompactAction` paying the given recipient the specified value.
+    ///
+    /// Returns the `CompactAction` and the new note.
+    pub fn fake_compact_action<R: RngCore>(
+        rng: &mut R,
+        nf_old: Nullifier,
+        recipient: Address,
+        value: NoteValue,
+        ovk: Option<OutgoingViewingKey>,
+    ) -> (CompactAction, Note) {
+        let rho = Rho::from_nf_old(nf_old);
+        let rseed = {
+            loop {
+                let mut bytes = [0; 32];
+                rng.fill_bytes(&mut bytes);
+                let rseed = RandomSeed::from_bytes(bytes, &rho);
+                if rseed.is_some().into() {
+                    break rseed.unwrap();
+                }
+            }
+        };
+        let note = Note::from_parts(recipient, value, rho, rseed).unwrap();
+        let encryptor = OrchardNoteEncryption::new(ovk, note, [0u8; 512]);
+        let cmx = ExtractedNoteCommitment::from(note.commitment());
+        let ephemeral_key = OrchardDomain::epk_bytes(encryptor.epk());
+        let enc_ciphertext = encryptor.encrypt_note_plaintext();
+
+        (
+            CompactAction {
+                nullifier: nf_old,
+                cmx,
+                ephemeral_key,
+                enc_ciphertext: enc_ciphertext.as_ref()[..52].try_into().unwrap(),
+            },
+            note,
+        )
+    }
 }
 
 #[cfg(test)]
@@ -352,7 +409,7 @@ mod tests {
             DiversifiedTransmissionKey, Diversifier, EphemeralSecretKey, IncomingViewingKey,
             OutgoingViewingKey, PreparedIncomingViewingKey,
         },
-        note::{ExtractedNoteCommitment, Nullifier, RandomSeed, TransmittedNoteCiphertext},
+        note::{ExtractedNoteCommitment, Nullifier, RandomSeed, Rho, TransmittedNoteCiphertext},
         primitives::redpallas,
         value::{NoteValue, ValueCommitment},
         Address, Note,
@@ -377,7 +434,8 @@ mod tests {
 
             // Received Action
             let cv_net = ValueCommitment::from_bytes(&tv.cv_net).unwrap();
-            let rho = Nullifier::from_bytes(&tv.rho).unwrap();
+            let nf_old = Nullifier::from_bytes(&tv.nf_old).unwrap();
+            let rho = Rho::from_nf_old(nf_old);
             let cmx = ExtractedNoteCommitment::from_bytes(&tv.cmx).unwrap();
 
             let esk = EphemeralSecretKey::from_bytes(&tv.esk).unwrap();
@@ -405,8 +463,8 @@ mod tests {
             assert_eq!(ExtractedNoteCommitment::from(note.commitment()), cmx);
 
             let action = Action::from_parts(
-                // rho is the nullifier in the receiving Action.
-                rho,
+                // nf_old is the nullifier revealed by the receiving Action.
+                nf_old,
                 // We don't need a valid rk for this test.
                 redpallas::VerificationKey::dummy(),
                 cmx,

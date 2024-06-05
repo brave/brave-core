@@ -1,7 +1,7 @@
 use memuse::DynamicUsage;
 
 use crate::{
-    note::{ExtractedNoteCommitment, Nullifier, TransmittedNoteCiphertext},
+    note::{ExtractedNoteCommitment, Nullifier, Rho, TransmittedNoteCiphertext},
     primitives::redpallas::{self, SpendAuth},
     value::ValueCommitment,
 };
@@ -64,6 +64,11 @@ impl<T> Action<T> {
     /// Returns the encrypted note ciphertext.
     pub fn encrypted_note(&self) -> &TransmittedNoteCiphertext {
         &self.encrypted_note
+    }
+
+    /// Obtains the [`Rho`] value that was used to construct the new note being created.
+    pub fn rho(&self) -> Rho {
+        Rho::from_nf_old(self.nf)
     }
 
     /// Returns the commitment to the net value created or consumed by this action.

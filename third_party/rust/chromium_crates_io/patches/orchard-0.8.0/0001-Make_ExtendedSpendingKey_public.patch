@@ -1,16 +1,16 @@
-From b1a4813fe933fa77e246dc7d109e0446468e36c0 Mon Sep 17 00:00:00 2001
+From fb906da81ff6e0b1a97ffa34ccbde32204751211 Mon Sep 17 00:00:00 2001
 From: oisupov <oisupov@brave.com>
-Date: Tue, 2 Apr 2024 18:13:37 +0700
-Subject: [PATCH] Patch orchard crate
+Date: Tue, 28 May 2024 17:52:54 +0700
+Subject: [PATCH] Add orchard-0.8.0 patch
 
 ---
- .../chromium_crates_io/vendor/orchard-0.7.1/src/zip32.rs    | 6 +++---
+ .../chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs    | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/third_party/rust/chromium_crates_io/vendor/orchard-0.7.1/src/zip32.rs b/third_party/rust/chromium_crates_io/vendor/orchard-0.7.1/src/zip32.rs
+diff --git a/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs b/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
 index 31f318b111d..c37aeebf6ba 100644
---- a/third_party/rust/chromium_crates_io/vendor/orchard-0.7.1/src/zip32.rs
-+++ b/third_party/rust/chromium_crates_io/vendor/orchard-0.7.1/src/zip32.rs
+--- a/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
++++ b/third_party/rust/chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs
 @@ -122,7 +122,7 @@ impl KeyIndex {
  ///
  /// [orchardextendedkeys]: https://zips.z.cash/zip-0032#orchard-extended-keys

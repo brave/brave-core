@@ -961,7 +961,7 @@ mod tests {
         *,
     };
     use crate::{
-        note::{ExtractedNoteCommitment, Nullifier, RandomSeed},
+        note::{ExtractedNoteCommitment, RandomSeed, Rho},
         value::NoteValue,
         Note,
     };
@@ -1041,7 +1041,7 @@ mod tests {
             let addr = fvk.address(diversifier, Scope::External);
             assert_eq!(&addr.pk_d().to_bytes(), &tv.default_pk_d);
 
-            let rho = Nullifier::from_bytes(&tv.note_rho).unwrap();
+            let rho = Rho::from_bytes(&tv.note_rho).unwrap();
             let note = Note::from_parts(
                 addr,
                 NoteValue::from_raw(tv.note_v),
