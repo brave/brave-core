@@ -23,7 +23,6 @@ import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.Triple;
@@ -31,6 +30,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -124,11 +124,19 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> updateChainId());
-        _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            getAllNetworks(mJsonRpcService, Collections.singletonList(coinType), networkInfoSet -> {
-                _mDefaultCoinCryptoNetworks.postValue(new ArrayList<>(networkInfoSet));
-            });
-        });
+        _mDefaultCoinCryptoNetworks.addSource(
+                mSharedData.getCoinTypeLd(),
+                coinType -> {
+                    getAllNetworks(
+                            mJsonRpcService,
+                            networkInfoSet -> {
+                                _mDefaultCoinCryptoNetworks.postValue(
+                                        new ArrayList<>(
+                                                networkInfoSet.stream()
+                                                        .filter(n -> n.coin == coinType)
+                                                        .collect(Collectors.toList())));
+                            });
+                });
 
         _mChainNetworkAllNetwork.addSource(_mDefaultNetwork, networkInfo -> {
             NetworkInfo currNetwork = null;
@@ -240,25 +248,29 @@ public class NetworkModel implements JsonRpcServiceObserver {
         init();
     }
 
-    static void getAllNetworks(JsonRpcService jsonRpcService, List<Integer> supportedCoins,
-            Callbacks.Callback1<List<NetworkInfo>> callback) {
+    static void getAllNetworks(
+            JsonRpcService jsonRpcService, Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {
             callback.call(Collections.emptyList());
             return;
         }
+        jsonRpcService.getAllNetworks(
+                networks -> {
+                    List<NetworkInfo> networkInfoList = new ArrayList<>();
+                    networkInfoList.addAll(Arrays.asList(networks));
+                    if (!AndroidUtils.isDebugBuild()) {
+                        networkInfoList =
+                                networkInfoList.stream()
+                                        .filter(
+                                                networkInfo ->
+                                                        !NetworkUtils.Filters.isLocalNetwork(
+                                                                networkInfo))
+                                        .collect(Collectors.toList());
+                    }
 
-        NetworkResponsesCollector networkResponsesCollector =
-                new NetworkResponsesCollector(jsonRpcService, supportedCoins);
-        networkResponsesCollector.getNetworks(networkInfoList -> {
-            if (!AndroidUtils.isDebugBuild()) {
-                networkInfoList =
-                        networkInfoList.stream()
-                                .filter(networkInfo
-                                        -> !NetworkUtils.Filters.isLocalNetwork(networkInfo))
-                                .collect(Collectors.toList());
-            }
-            callback.call(networkInfoList);
-        });
+                    networkInfoList.sort(NetworkUtils.sSortNetworkByPriority);
+                    callback.call(networkInfoList);
+                });
     }
 
     public void init() {
@@ -283,7 +295,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
             getAllNetworks(
                     mJsonRpcService,
-                    mSharedData.getSupportedCryptoCoins(),
                     cryptoNetworks -> {
                         _mCryptoNetworks.postValue(cryptoNetworks);
 

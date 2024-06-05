@@ -236,21 +236,6 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetNetworkResponseContext
-            extends SingleResponseBaseContext implements JsonRpcService.GetAllNetworks_Response {
-        public NetworkInfo[] networkInfos;
-
-        public GetNetworkResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-            networkInfos = new NetworkInfo[0];
-        }
-        @Override
-        public void call(NetworkInfo[] networkInfos) {
-            this.networkInfos = networkInfos;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     public static class FetchPricesResponseContext extends SingleResponseBaseContext
             implements Callbacks.Callback1<HashMap<String, Double>> {
         public HashMap<String, Double> assetPrices;
