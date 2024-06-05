@@ -25,7 +25,7 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacing.xl};
+  gap: ${spacing.l};
 
   text-decoration: none;
 
@@ -93,7 +93,6 @@ export default function SearchResult({ match, line, selected }: Props) {
     ? description
     : ''
 
-  const subtitle = match.destinationUrl.url || description
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
     omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
@@ -105,7 +104,7 @@ export default function SearchResult({ match, line, selected }: Props) {
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>
-      <Description>{subtitle}</Description>
+      {description && description !== hint && <Description>{description}</Description>}
     </Flex>
   </Container>
 

@@ -32,7 +32,7 @@ const CustomizeButton = styled(Button)`
 `
 
 const OpenButton = styled(Button)`
-  margin: -6px 0 -6px ${spacing.m};
+  margin: -6px 0 -6px ${spacing.s};
 `
 
 const IconContainer = styled(Flex) <{ open: boolean }>`
