@@ -16,6 +16,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 #include "chrome/browser/ui/color/material_chrome_color_mixer.h"
 #include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
 #include "ui/base/ui_base_features.h"
@@ -392,6 +393,18 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
     AddMaterialChromeColorMixer(provider, key);
     AddMaterialSidePanelColorMixer(provider, key);
   }
+
+  // Upstream started to use same colors for all severity. But, we want to use
+  // upstream's previous non-material color to app menu highlight. These colors
+  // are copied from AddChromeColorMixer() because it's overwritten by
+  // AddMaterialChromeColorMixer().
+  ui::ColorMixer& mixer = provider->AddMixer();
+  mixer[kColorAppMenuHighlightSeverityLow] = AdjustHighlightColorForContrast(
+      ui::kColorAlertLowSeverity, kColorToolbar);
+  mixer[kColorAppMenuHighlightSeverityHigh] = {
+      kColorAvatarButtonHighlightSyncError};
+  mixer[kColorAppMenuHighlightSeverityMedium] = AdjustHighlightColorForContrast(
+      ui::kColorAlertMediumSeverityIcon, kColorToolbar);
 
   if (key.custom_theme) {
     return;
