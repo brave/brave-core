@@ -154,6 +154,9 @@ struct PlaylistSidebarList: View {
     }
     .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
       downloadStates[output.id] = output.state
+      if output.state == .downloaded, let item = items.first(where: { $0.uuid == output.id }) {
+        PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
+      }
     }
     .onReceive(PlaylistManager.shared.downloadProgressUpdated) { output in
       downloadProgress[output.id] = output.percentComplete
@@ -173,9 +176,31 @@ struct PlaylistSidebarListHeader: View {
   @State private var isDeletePlaylistConfirmationActive: Bool = false
   @State private var isRenamePlaylistAlertPresented: Bool = false
 
+  @FetchRequest private var selectedFolderItems: FetchedResults<PlaylistItem>
+
+  init(
+    folders: [PlaylistFolder],
+    selectedFolder: Binding<PlaylistFolder>,
+    selectedItemID: PlaylistItem.ID?,
+    isPlaying: Binding<Bool>,
+    isNewPlaylistAlertPresented: Binding<Bool>,
+    isEditModePresented: Binding<Bool>
+  ) {
+    self.folders = folders
+    self._selectedFolder = selectedFolder
+    self.selectedItemID = selectedItemID
+    self._isPlaying = isPlaying
+    self._isNewPlaylistAlertPresented = isNewPlaylistAlertPresented
+    self._isEditModePresented = isEditModePresented
+    self._selectedFolderItems = .init(
+      sortDescriptors: [],
+      predicate: .init(format: "playlistFolder.uuid == %@", selectedFolder.id)
+    )
+  }
+
   @MainActor private func calculateTotalSizeOnDisk(for folder: PlaylistFolder) async {
     // Since we're consuming CoreData we need to make sure those accesses happen on main
-    let items = folder.playlistItems ?? []
+    let items = selectedFolderItems
     var totalSize: Int = 0
     for item in items {
       guard let cachedDataURL = item.cachedDataURL else { continue }
@@ -219,7 +244,7 @@ struct PlaylistSidebarListHeader: View {
       .font(.title2)
       .labelStyle(.iconOnly)
       .tint(Color(braveSystemName: .textPrimary))
-      .disabled(selectedItemID == nil && (selectedFolder.playlistItems ?? Set()).isEmpty)
+      .disabled(selectedItemID == nil && selectedFolderItems.isEmpty)
       VStack(alignment: .leading) {
         Menu {
           Picker("", selection: $selectedFolder) {
@@ -242,7 +267,7 @@ struct PlaylistSidebarListHeader: View {
             .contentShape(.rect)
         }
         HStack {
-          let items = selectedFolder.playlistItems ?? []
+          let items = selectedFolderItems
           let totalDuration = Duration.seconds(
             items.reduce(
               0,
@@ -298,10 +323,9 @@ struct PlaylistSidebarListHeader: View {
     .task {
       await calculateTotalSizeOnDisk(for: selectedFolder)
     }
-    .onChange(of: selectedFolder) { newValue in
-      // FIXME: Need to recalculate size on disk when an item is saved for offline/or cache deleted
+    .onChange(of: selectedFolderItems.map(\.cachedDataURL)) { _ in
       Task {
-        await calculateTotalSizeOnDisk(for: newValue)
+        await calculateTotalSizeOnDisk(for: selectedFolder)
       }
     }
     .editActions(
