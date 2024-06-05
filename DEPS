@@ -138,6 +138,12 @@ hooks = [
     'condition': 'host_os == "mac"',
     'action': ['python3', 'build/apple/download_swift_format.py', '510.1.0', '0ddbb486640cde862fa311dc0f7387e6c5171bdcc0ee0c89bc9a1f8a75e8bfaf']
   },
+  {
+    # Generate .clang-format.
+    'name': 'generate_clang_format',
+    'pattern': '.',
+    'action': ['vpython3', 'build/util/generate_clang_format.py', '../.clang-format', '.clang-format']
+  },
 ]
 
 include_rules = [
