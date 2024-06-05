@@ -335,6 +335,60 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 }
 
+void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
+                                         const ui::ColorProviderKey& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  // Apply bravified color when there is no custom theme.
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
+      /*dark*/ false, /*private*/ false)};
+  // Use same color for normal & hover location bar background.
+  // Instead, shadow is set when hovered.
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      kColorToolbarBackgroundSubtleEmphasis};
+  mixer[kColorOmniboxText] = {kLightOmniboxText};
+
+  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
+      kColorOmniboxResultsBackground, /*dark*/ false, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsBackgroundHovered] = {
+      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
+                                 /*dark*/ false, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsBackgroundSelected] = {
+      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
+                                 /*dark*/ false, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsFocusIndicator] = {
+      ui::kColorFocusableBorderFocused};
+  mixer[kColorOmniboxResultsUrl] = {
+      leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kLight)};
+  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+}
+
+void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
+                                        const ui::ColorProviderKey& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  // Apply bravified color when there is no custom theme.
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
+      /*dark*/ true, /*private*/ false)};
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      kColorToolbarBackgroundSubtleEmphasis};
+  mixer[kColorOmniboxText] = {kDarkOmniboxText};
+
+  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
+      kColorOmniboxResultsBackground, /*dark*/ true, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsBackgroundHovered] = {
+      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
+                                 /*dark*/ true, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsBackgroundSelected] = {
+      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
+                                 /*dark*/ true, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsFocusIndicator] = {
+      ui::kColorFocusableBorderFocused};
+  mixer[kColorOmniboxResultsUrl] = {
+      leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kDark)};
+  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
+}
+
 }  // namespace
 
 SkColor GetLocationBarBackground(bool dark, bool priv) {
@@ -766,99 +820,6 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorFrameInactive] = {kPrivateTorFrame};
 }
 
-void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
-                                         const ui::ColorProviderKey& key) {
-  ui::ColorMixer& mixer = provider->AddMixer();
-
-  auto pick_color = [&](leo::Color color) {
-    if (!key.custom_theme) {
-      return leo::GetColor(color, leo::Theme::kLight);
-    }
-
-    return PickColorContrastingToOmniboxResultsBackground(
-        key, mixer, leo::GetColor(color, leo::Theme::kLight),
-        leo::GetColor(color, leo::Theme::kDark));
-  };
-  mixer[kColorBraveOmniboxResultViewSeparator] = {
-      pick_color(leo::Color::kColorDividerSubtle)};
-  mixer[kColorBravePlayerActionViewBorder] = {
-      pick_color(leo::Color::kColorDividerSubtle)};
-
-  // We don't use bg color for location icon view.
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
-
-  if (key.custom_theme) {
-    return;
-  }
-
-  // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
-      /*dark*/ false, /*private*/ false)};
-  // Use same color for normal & hover location bar background.
-  // Instead, shadow is set when hovered.
-  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
-      kColorToolbarBackgroundSubtleEmphasis};
-  mixer[kColorOmniboxText] = {kLightOmniboxText};
-
-  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
-      kColorOmniboxResultsBackground, /*dark*/ false, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundHovered] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-                                 /*dark*/ false, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundSelected] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
-                                 /*dark*/ false, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsFocusIndicator] = {
-      ui::kColorFocusableBorderFocused};
-  mixer[kColorOmniboxResultsUrl] = {
-      leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kLight)};
-  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-}
-
-void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
-                                        const ui::ColorProviderKey& key) {
-  ui::ColorMixer& mixer = provider->AddMixer();
-
-  auto pick_color = [&](leo::Color color) {
-    if (!key.custom_theme) {
-      return leo::GetColor(color, leo::Theme::kDark);
-    }
-
-    return PickColorContrastingToOmniboxResultsBackground(
-        key, mixer, leo::GetColor(color, leo::Theme::kLight),
-        leo::GetColor(color, leo::Theme::kDark));
-  };
-  mixer[kColorBraveOmniboxResultViewSeparator] = {
-      pick_color(leo::Color::kColorDividerSubtle)};
-  mixer[kColorBravePlayerActionViewBorder] = {
-      pick_color(leo::Color::kColorDividerSubtle)};
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
-  if (key.custom_theme) {
-    return;
-  }
-
-  // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
-      /*dark*/ true, /*private*/ false)};
-  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
-      kColorToolbarBackgroundSubtleEmphasis};
-  mixer[kColorOmniboxText] = {kDarkOmniboxText};
-
-  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
-      kColorOmniboxResultsBackground, /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundHovered] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-                                 /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundSelected] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
-                                 /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsFocusIndicator] = {
-      ui::kColorFocusableBorderFocused};
-  mixer[kColorOmniboxResultsUrl] = {
-      leo::GetColor(leo::Color::kColorTextInteractive, leo::Theme::kDark)};
-  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-}
-
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
                                            const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
@@ -878,6 +839,43 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ true)};
   mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+}
+
+void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
+                               const ui::ColorProviderKey& key) {
+  ui::ColorMixer& mixer = provider->AddMixer();
+
+  auto pick_color = [&](leo::Color color) {
+    if (!key.custom_theme) {
+      return leo::GetColor(color, leo::Theme::kDark);
+    }
+
+    return PickColorContrastingToOmniboxResultsBackground(
+        key, mixer, leo::GetColor(color, leo::Theme::kLight),
+        leo::GetColor(color, leo::Theme::kDark));
+  };
+
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      pick_color(leo::Color::kColorDividerSubtle)};
+  mixer[kColorBravePlayerActionViewBorder] = {
+      pick_color(leo::Color::kColorDividerSubtle)};
+
+  // Re-apply non-material color.
+  mixer[kColorOmniboxResultsButtonBorder] = ui::BlendTowardMaxContrast(
+      kColorToolbarBackgroundSubtleEmphasis, gfx::kGoogleGreyAlpha400);
+  mixer[kColorOmniboxResultsButtonIcon] = {kColorOmniboxResultsIcon};
+  mixer[kColorOmniboxResultsButtonIconSelected] = {
+      kColorOmniboxResultsIconSelected};
+
+  // We don't use bg color for location icon view.
+  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+  if (key.custom_theme) {
+    return;
+  }
+
+  key.color_mode == ui::ColorProviderKey::ColorMode::kDark
+      ? AddBraveOmniboxDarkThemeColorMixer(provider, key)
+      : AddBraveOmniboxLightThemeColorMixer(provider, key);
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
