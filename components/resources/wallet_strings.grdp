@@ -1082,4 +1082,12 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME_TOO_LONG_ERROR" desc="An error that appears when the user enters an account name that is too long">Account name must be <ph name="VALUE">$1<ex>30</ex></ph> characters or less</message>
   <message name="IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE" desc="A label for the input field for entering the password for an imported file">Enter password (if applicable)</message>
   <message name="IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE" desc="Label for the dropdown to select the format to use for importing a private key">Import type</message>
+  <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
+  <message name="IDS_BRAVE_WALLET_NO_DAPPS_FOUND" desc="No DApps found message">No DApps found</message>
+  <message name="IDS_BRAVE_WALLET_ACTIVE_WALLETS" desc="Active wallets text">Active wallets</message>
+  <message name="IDS_BRAVE_WALLET_VISIT_DAPP" desc="Visit dapp button text">Visit <ph name="VALUE">$1<ex>Raydium</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_FILTERS" desc="Filters label">Filters</message>
+  <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
 </grit-part>
