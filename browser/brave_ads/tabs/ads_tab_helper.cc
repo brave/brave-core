@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 
+#include "base/containers/contains.h"
+#include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,6 +35,12 @@ constexpr char16_t kSerializeDocumentToStringJavaScript[] =
 
 constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
+
+std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
+  return base::StringPrintf("%d%d%d", id.frame_routing_id.child_id,
+                            id.frame_routing_id.frame_routing_id,
+                            id.delegate_id);
+}
 
 }  // namespace
 
@@ -284,6 +292,8 @@ void AdsTabHelper::DidStartNavigation(
   redirect_chain_.clear();
 
   is_error_page_ = false;
+
+  is_playing_media_.clear();
 }
 
 void AdsTabHelper::DidFinishNavigation(
@@ -312,16 +322,44 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   ProcessNavigation();
 }
 
-void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
+bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_id) {
+  return base::Contains(is_playing_media_, media_player_id);
+}
+
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
                                        const content::MediaPlayerId& id) {
-  MaybeNotifyTabDidStartPlayingMedia();
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  if (IsPlayingMedia(media_player_uuid)) {
+    // Already playing media.
+    return;
+  }
+
+  is_playing_media_.insert(media_player_uuid);
+  if (is_playing_media_.size() == 1) {
+    // If this is the first media player that has started playing, notify that
+    // the tab has started playing media.
+    MaybeNotifyTabDidStartPlayingMedia();
+  }
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
-    const MediaPlayerInfo& video_type,
+    const MediaPlayerInfo& /*video_type*/,
     const content::MediaPlayerId& id,
-    WebContentsObserver::MediaStoppedReason reason) {
-  MaybeNotifyTabDidStopPlayingMedia();
+    WebContentsObserver::MediaStoppedReason /*reason*/) {
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  if (!IsPlayingMedia(media_player_uuid)) {
+    // Not playing media.
+    return;
+  }
+
+  is_playing_media_.erase(media_player_uuid);
+  if (is_playing_media_.empty()) {
+    // If this is the last media player that has stopped playing, notify that
+    // the tab has stopped playing media.
+    MaybeNotifyTabDidStopPlayingMedia();
+  }
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
