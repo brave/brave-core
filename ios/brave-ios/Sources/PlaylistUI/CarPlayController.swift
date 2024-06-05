@@ -13,9 +13,6 @@ import Playlist
 import Preferences
 import Strings
 
-// FIXME: Still missing:
-// - Errors?
-
 /// Handles display and input of audio on CarPlay
 ///
 /// This class populates the CarPlay interface and binds the UI to the player model.
@@ -35,12 +32,8 @@ public class CarPlayController {
     self.interface = interface
     self.fetchResultsDelegate = FetchResultsDelegate()
 
-    do {
-      foldersFRC.delegate = fetchResultsDelegate
-      try foldersFRC.performFetch()
-    } catch {
-      // FIXME: Display error?
-    }
+    foldersFRC.delegate = fetchResultsDelegate
+    try? foldersFRC.performFetch()
 
     Task { @MainActor in
       player.prepareItemQueue()
@@ -67,6 +60,7 @@ public class CarPlayController {
   private var currentFolderListTemplate: CPListTemplate?
   private var currentItemListTemplate: CPListTemplate?
   private var selectedFolderID: PlaylistFolder.ID?
+  private var isErrorPresented: Bool = false
 
   @MainActor private func updateFoldersList() {
     let folderListTemplate = self.folderListTemplate
@@ -79,6 +73,58 @@ public class CarPlayController {
     currentItemListTemplate?.updateSections(itemListTemplate.sections)
   }
 
+  @MainActor private func handlePlayerError() {
+    if isErrorPresented, player.error == nil, interface.presentedTemplate is CPAlertTemplate {
+      // Handle the case where a user dismisses an error in the app while CarPlay is open
+      interface.dismissTemplate(animated: true) { [weak self] _, _ in
+        self?.isErrorPresented = false
+      }
+      return
+    }
+
+    guard let error = player.error, let title = error.failureReason ?? error.errorDescription,
+      !isErrorPresented
+    else {
+      return
+    }
+
+    let alert = CPAlertTemplate(
+      titleVariants: [title],
+      actions: [
+        CPAlertAction(
+          title: Strings.PlayList.okayButtonTitle,
+          style: .default,
+          handler: { [weak self] _ in
+            self?.interface.dismissTemplate(
+              animated: true,
+              completion: { success, error in
+                guard let self else { return }
+                self.player.error?.handler?()
+                self.player.error = nil
+                self.isErrorPresented = false
+                if self.interface.topTemplate == CPNowPlayingTemplate.shared {
+                  self.interface.popTemplate(animated: true, completion: nil)
+                }
+              }
+            )
+          }
+        )
+      ]
+    )
+
+    // Preemptively set this so repeat object changes dont present multiple times
+    isErrorPresented = true
+    interface.presentTemplate(
+      alert,
+      animated: true,
+      completion: { [weak self] success, _ in
+        if !success {
+          self?.isErrorPresented = false
+        }
+      }
+    )
+  }
+
   private var cancellables: Set<AnyCancellable> = []
   private func setUpPlayerBindings() {
     player.objectWillChange
@@ -86,6 +132,7 @@ public class CarPlayController {
       .sink { [weak self] in
         MainActor.assumeIsolated {
           self?.updateItemList()
+          self?.handlePlayerError()
         }
       }
       .store(in: &cancellables)

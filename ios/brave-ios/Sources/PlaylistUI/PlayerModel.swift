@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AVKit
+import BraveStrings
 import Combine
 import Data
 import Foundation
@@ -11,6 +12,7 @@ import MediaPlayer
 import OrderedCollections
 import Playlist
 import Preferences
+import Strings
 import SwiftUI
 import os
 
@@ -488,43 +490,85 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
+  @MainActor private var nextItemID: PlaylistItem.ID? {
+    guard let selectedItemID, let currentItemIndex = itemQueue.firstIndex(of: selectedItemID) else {
+      return nil
+    }
+    if repeatMode == .one {
+      // Replay the current video regardless of shuffle state/queue
+      return selectedItemID
+    }
+    if selectedItemID == itemQueue.last {
+      if repeatMode == .all {
+        // Last item in the set and repeat mode is on, start from the beginning of the queue
+        return itemQueue.first
+      }
+      // Nothing to play if not repeating
+      return nil
+    }
+    // This should be safe as we've already checked if the selected item is the last in the queue
+    return itemQueue[currentItemIndex + 1]
+  }
+
   @MainActor func playNextItem() {
     pause()
 
-    let repeatMode = repeatMode
-
-    if repeatMode == .one {
-      // Replay the current video regardless of shuffle state/queue
+    let nextItemID = self.nextItemID
+    if selectedItemID != nil, nextItemID == selectedItemID {
+      // Re-playing the same item again due to repeat mode
       play()
       return
     }
 
-    guard let currentItem = selectedItem else {
-      // FIXME: What should we do here if nothing is playing, play first item?
-      return
-    }
-
-    if currentItem.id == itemQueue.last {
-      if repeatMode == .all {
-        // Last item in the set and repeat mode is on, start from the beginning of the queue
-        selectedItemID = itemQueue.first
+    if nextItemID != nil || player.currentItem == nil {
+      // We'll set the selected item to the next item, or nil it out completely if we were never
+      // able to set the player item at all due to an error meaning controls wouldn't work anyways
+      self.selectedItemID = nextItemID
+      Task {
+        await self.prepareToPlaySelectedItem(
+          initialOffset: seekToInitialTimestamp,
+          playImmediately: true
+        )
       }
-      // Nothing to play if not repeating
-      return
-    }
-
-    if let currentItemIndex = itemQueue.firstIndex(of: currentItem.id) {
-      // This should be safe as we've already checked if the selected item is the last in the queue
-      selectedItemID = itemQueue[currentItemIndex + 1]
-    }
-
-    Task {
-      await self.prepareToPlaySelectedItem(
-        initialOffset: seekToInitialTimestamp,
-        playImmediately: true
-      )
     }
   }
+
+  struct PlayerModelError: LocalizedError {
+    enum Reason {
+      case loadingStreamingURLFailed(PlaylistMediaStreamer.PlaybackError)
+      case unknown
+    }
+    var reason: Reason
+    var handler: (() -> Void)?
+
+    var errorDescription: String? {
+      // `errorDescription` is used for the title in SwiftUI's `alert` modifier
+      switch reason {
+      case .loadingStreamingURLFailed(.expired):
+        return Strings.PlayList.expiredAlertTitle
+      case .loadingStreamingURLFailed(.cannotLoadMedia):
+        return Strings.PlayList.sorryAlertTitle
+      default:
+        return "Something went wrong"
+      }
+    }
+
+    var failureReason: String? {
+      switch reason {
+      case .loadingStreamingURLFailed(.expired):
+        return Strings.PlayList.expiredAlertDescription
+      case .loadingStreamingURLFailed(.cannotLoadMedia):
+        return Strings.PlayList.loadResourcesErrorAlertDescription
+      default:
+        return nil
+      }
+    }
+  }
+
+  @MainActor var isErrorAlertPresented: Binding<Bool> {
+    .init(get: { self.error != nil }, set: { if !$0 { self.error = nil } })
+  }
+  @MainActor @Published var error: PlayerModelError?
 
   @MainActor func prepareToPlaySelectedItem(
     initialOffset: TimeInterval?,
@@ -548,7 +592,23 @@ public final class PlayerModel: ObservableObject {
           playerItemToReplace = .init(asset: AVURLAsset(url: url))
         }
       } catch {
-        // FIXME: Show an error on the UI
+        if isPictureInPictureActive {
+          // Can't show any error in PiP, so skip to the next item
+          playNextItem()
+        } else {
+          let reason: PlayerModelError.Reason = {
+            if let error = error as? PlaylistMediaStreamer.PlaybackError {
+              return .loadingStreamingURLFailed(error)
+            }
+            return .unknown
+          }()
+          self.error = .init(
+            reason: reason,
+            handler: { [weak self] in
+              self?.playNextItem()
+            }
+          )
+        }
       }
       isLoadingStreamingURL = false
     }

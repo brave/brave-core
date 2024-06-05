@@ -8,6 +8,7 @@ import Data
 import Foundation
 import Playlist
 import Preferences
+import Strings
 import SwiftUI
 
 struct PlaylistContentView: View {
@@ -194,6 +195,22 @@ struct PlaylistContentView: View {
       //   action even when the button is enabled.
       // .disabled(newPlaylistName.isEmpty)
     }
+    .alert(
+      isPresented: playerModel.isErrorAlertPresented,
+      error: playerModel.error,
+      actions: { error in
+        Button {
+          error.handler?()
+        } label: {
+          Text(Strings.OKString)
+        }
+      },
+      message: { error in
+        if let reason = error.failureReason {
+          Text(reason)
+        }
+      }
+    )
     .sheet(isPresented: $isPopulatingNewPlaylist) {
       PopulateNewPlaylistView(destinationFolder: selectedFolderID)
         .presentationDetents([.medium, .large])
