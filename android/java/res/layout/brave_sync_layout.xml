@@ -41,7 +41,26 @@
                android:layout_weight="1.4"
                android:gravity="center"
                android:paddingStart="15dip"
-               android:paddingEnd="15dip" />
+               android:paddingEnd="15dip"
+               android:text="@string/brave_sync_official" />
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="0px"
+               android:layout_weight="1.4"
+               android:gravity="center"
+               android:paddingStart="15dip"
+               android:paddingEnd="15dip"
+               android:text="@string/brave_sync_description_page_1_part_1" />
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="0px"
+               android:layout_weight="1.4"
+               android:gravity="center"
+               android:paddingStart="15dip"
+               android:paddingEnd="15dip"
+               android:text="@string/brave_sync_description_page_1_part_2" />
 
            <android.widget.Button android:id="@+id/brave_sync_btn_scan_chain_code"
                android:layout_width="match_parent"

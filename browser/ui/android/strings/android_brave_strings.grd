@@ -1161,23 +1161,17 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_BTN_LAPTOP" desc="Text for Brave Sync add a laptop button.">
 	Add a Computer
       </message>
-      <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_1" desc="Text for Brave Sync add a mobile device description part 1.">
-	Using a second phone or tablet, navigate to Brave Settings > Sync > Scan.
+      <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT" desc="Text for Brave Sync add a mobile device description part 1.">
+  Using a second phone or tablet, navigate to Brave Settings > Sync > Scan.\n\nOn your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR Code below.
       </message>
-      <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_2" desc="Text for Brave Sync add a mobile device description part 2.">
-	On your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR Code below.
-      </message>
-      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_1" desc="Text for Brave Sync add a laptop description part 1.">
-	On your computer, navigate to Brave Settings > Sync. Choose "Enter a Sync Chain Code".
+      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT" desc="Text for Brave Sync add a laptop description.">
+  On your computer, navigate to Brave Settings > Sync. Choose "Enter a Sync Chain Code".\n\nOn your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
       </message>
       <message name="IDS_BRAVE_SYNC_SCAN_SYNC_CODE" desc="Text for Brave Sync scan sync code message.">
 	Scan this sync code
       </message>
       <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="Text for Brave Sync code warning message.">
 	Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.
-      </message>
-      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_2_NEW" desc="Text for Brave Sync add laptop part 2.">
-	On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
       </message>
       <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_TITLE" desc="Text for Brave Sync add laptop title.">
 	Enter the sync chain code

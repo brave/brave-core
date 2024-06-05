@@ -33,7 +33,7 @@
             android:layout_margin="8dp"
             android:textColor="@color/brave_sync_count_down_text_color"
             android:gravity="center_vertical"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:drawableTint="@android:color/white" />
     </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:text="@string/brave_sync_code_expired_block_text"
             android:textColor="@color/brave_sync_expired_block_text_color"
             android:gravity="center_vertical"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:drawableTint="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

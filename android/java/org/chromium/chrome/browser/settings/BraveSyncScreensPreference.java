@@ -29,7 +29,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.AlignmentSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -133,10 +132,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // Brave Sync message text view
     private TextView mBraveSyncTextViewInitial;
     private TextView mBraveSyncTextViewSyncChainCode;
-    private TextView mBraveSyncTextViewAddMobileDevice;
-    private TextView mBraveSyncTextViewAddLaptop;
-    private TextView mBraveSyncWarningTextViewAddMobileDevice;
-    private TextView mBraveSyncWarningTextViewAddLaptop;
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
@@ -445,20 +440,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mBraveSyncTextViewInitial = getView().findViewById(R.id.brave_sync_text_initial);
         mBraveSyncTextViewSyncChainCode =
                 getView().findViewById(R.id.brave_sync_text_sync_chain_code);
-        mBraveSyncTextViewAddMobileDevice =
-                getView().findViewById(R.id.brave_sync_text_add_mobile_device);
-        mBraveSyncTextViewAddLaptop = getView().findViewById(R.id.brave_sync_text_add_laptop);
-        mBraveSyncWarningTextViewAddMobileDevice =
-                getView().findViewById(R.id.brave_sync_warning_text_add_mobile_device);
-        mBraveSyncWarningTextViewAddLaptop =
-                getView().findViewById(R.id.brave_sync_warning_text_add_laptop);
         mBraveSyncTextDevicesTitle = getView().findViewById(R.id.brave_sync_devices_title);
         mBraveSyncWordCountTitle = getView().findViewById(R.id.brave_sync_text_word_count);
         mBraveSyncWordCountTitle.setText(getString(R.string.brave_sync_word_count_text, 0));
         mBraveSyncAddDeviceCodeWords =
                 getView().findViewById(R.id.brave_sync_add_device_code_words);
 
-        setMainSyncText();
         mCameraSourcePreview = getView().findViewById(R.id.preview);
 
         mAddDeviceButton = getView().findViewById(R.id.brave_sync_btn_add_device);
@@ -568,15 +555,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         setSyncDoneLayout();
     }
 
-    private void setMainSyncText() {
-        setSyncText(getResources().getString(R.string.brave_sync_official),
-                getResources().getString(R.string.brave_sync_description_page_1_part_1) + "\n\n"
-                        + getResources().getString(R.string.brave_sync_description_page_1_part_2),
-                mBraveSyncTextViewInitial);
-    }
-
     private void setQRCodeText() {
-        setSyncText("", getResources().getString(R.string.brave_sync_qrcode_message_v2),
+        setSyncText(
+                "",
+                getResources().getString(R.string.brave_sync_qrcode_message_v2),
                 mBraveSyncTextViewSyncChainCode);
     }
 
@@ -978,7 +960,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null != mScrollViewEnterCodeWords) {
             mScrollViewEnterCodeWords.setVisibility(View.GONE);
         }
-        setMainSyncText();
     }
 
     // Handles the requesting of the camera permission.
@@ -1489,19 +1470,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void setAddMobileDeviceLayout() {
         getActivity().setTitle(R.string.brave_sync_btn_mobile);
-        if (null != mBraveSyncTextViewAddMobileDevice) {
-            setSyncText(
-                    getResources().getString(R.string.brave_sync_scan_sync_code),
-                    getResources().getString(R.string.brave_sync_add_mobile_device_text_part_1)
-                            + "\n\n"
-                            + getResources()
-                                    .getString(R.string.brave_sync_add_mobile_device_text_part_2)
-                            + "\n",
-                    mBraveSyncTextViewAddMobileDevice);
-        }
-        if (null != mBraveSyncWarningTextViewAddMobileDevice) {
-            mBraveSyncWarningTextViewAddMobileDevice.setText(getWarningRedBold());
-        }
+
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
         }
@@ -1544,20 +1513,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void setAddLaptopLayout() {
         getActivity().setTitle(R.string.brave_sync_btn_laptop);
-        if (null != mBraveSyncTextViewAddLaptop) {
-            setSyncText(
-                    getResources().getString(R.string.brave_sync_add_laptop_text_title),
-                    getResources().getString(R.string.brave_sync_add_laptop_text_part_1)
-                            + "\n\n"
-                            + getResources()
-                                    .getString(R.string.brave_sync_add_laptop_text_part_2_new)
-                            + "\n",
-                    mBraveSyncTextViewAddLaptop);
-        }
-
-        if (null != mBraveSyncWarningTextViewAddLaptop) {
-            mBraveSyncWarningTextViewAddLaptop.setText(getWarningRedBold());
-        }
 
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
@@ -1579,28 +1534,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         generateNewCodeWords();
-    }
-
-    private SpannableString getWarningRedBold() {
-        String braveSyncCodeWarning = getResources().getString(R.string.brave_sync_code_warning);
-        SpannableString braveSyncCodeWarningSpanned = new SpannableString(braveSyncCodeWarning);
-
-        ForegroundColorSpan foregroundSpan =
-                new ForegroundColorSpan(getContext().getColor(R.color.default_red));
-        braveSyncCodeWarningSpanned.setSpan(
-                foregroundSpan, 0, braveSyncCodeWarningSpanned.length() - 1, 0);
-        braveSyncCodeWarningSpanned.setSpan(
-                new StyleSpan(Typeface.BOLD),
-                0,
-                braveSyncCodeWarning.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        braveSyncCodeWarningSpanned.setSpan(
-                new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL),
-                0,
-                braveSyncCodeWarning.length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-        return braveSyncCodeWarningSpanned;
     }
 
     private void setWordsCountDown(LocalDateTime notAfterTime) {
