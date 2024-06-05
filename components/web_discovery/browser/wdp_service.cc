@@ -51,6 +51,8 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
   registry->RegisterStringPref(kCredentialRSAPublicKey, {});
   registry->RegisterListPref(kScheduledDoubleFetches);
+  registry->RegisterListPref(kScheduledReports);
+  registry->RegisterDictionaryPref(kUsedBasenameCounts);
 }
 
 void WDPService::Start() {
@@ -66,6 +68,7 @@ void WDPService::Start() {
 }
 
 void WDPService::Stop() {
+  reporter_ = nullptr;
   double_fetcher_ = nullptr;
   content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
@@ -93,6 +96,9 @@ void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
       profile_prefs_.get(), shared_url_loader_factory_.get(),
       base::BindRepeating(&WDPService::OnDoubleFetched,
                           base::Unretained(this)));
+  reporter_ = std::make_unique<Reporter>(
+      profile_prefs_.get(), shared_url_loader_factory_.get(),
+      credential_manager_.get(), &last_loaded_server_config_);
 }
 
 void WDPService::OnDoubleFetched(const base::Value& associated_data,
@@ -150,7 +156,9 @@ void WDPService::OnContentScraped(bool is_strict,
                                          result->SerializeToValue());
   } else {
     auto payloads = GeneratePayloads(url_details, std::move(result));
-    // TODO(djandries): send payloads
+    for (auto& payload : payloads) {
+      reporter_->ScheduleSend(std::move(payload));
+    }
   }
 }
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/wall_clock_timer.h"
@@ -35,6 +36,8 @@ struct GenerateJoinRequestResult {
 
 class CredentialManager {
  public:
+  using SignCallback =
+      base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
   CredentialManager(PrefService* profile_prefs,
                     network::SharedURLLoaderFactory* shared_url_loader_factory,
                     std::unique_ptr<ServerConfig>* last_loaded_server_config);
@@ -45,9 +48,10 @@ class CredentialManager {
 
   void JoinGroups();
 
-  std::optional<std::vector<const uint8_t>> Sign(
-      const std::vector<const uint8_t>& msg,
-      const std::vector<const uint8_t>& basename);
+  bool CredentialExistsForToday();
+  bool Sign(std::vector<const uint8_t> msg,
+            std::vector<const uint8_t> basename,
+            SignCallback callback);
 
  private:
   bool LoadRSAKey();

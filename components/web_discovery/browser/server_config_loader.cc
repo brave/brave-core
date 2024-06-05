@@ -6,7 +6,6 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/base64.h"
 #include "base/files/file_util.h"
@@ -60,6 +59,10 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotation =
 constexpr char kGroupPubKeysFieldName[] = "groupPubKeys";
 constexpr char kPubKeysFieldName[] = "pubKeys";
 constexpr char kMinVersionFieldName[] = "minVersion";
+constexpr char kKeysFieldName[] = "keys";
+constexpr char kLimitFieldName[] = "limit";
+constexpr char kPeriodFieldName[] = "period";
+constexpr char kSourceMapFieldName[] = "sourceMap";
 
 constexpr char kConfigPathWithFields[] =
     "/config?fields=minVersion,groupPubKeys,pubKeys,sourceMap";
@@ -74,6 +77,32 @@ KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
       continue;
     }
     map[date] = key_b64.GetString();
+  }
+  return map;
+}
+
+base::flat_map<std::string, SourceMapActionConfig> ParseSourceMapActionConfigs(
+    const base::Value::Dict& configs_dict) {
+  base::flat_map<std::string, SourceMapActionConfig> map;
+  for (const auto [action, config_dict_val] : configs_dict) {
+    auto* config_dict = config_dict_val.GetIfDict();
+    if (!config_dict) {
+      continue;
+    }
+    auto& action_config = map[action];
+    auto* keys_list = config_dict->FindList(kKeysFieldName);
+    if (keys_list) {
+      for (const auto& key_val : *keys_list) {
+        if (key_val.is_string()) {
+          action_config.keys.push_back(key_val.GetString());
+        }
+      }
+    }
+    auto limit = config_dict->FindInt(kLimitFieldName);
+    auto period = config_dict->FindInt(kPeriodFieldName);
+
+    action_config.limit = limit && limit >= 0 ? *limit : 1;
+    action_config.period = period && period >= 0 ? *period : 24;
   }
   return map;
 }
@@ -101,8 +130,12 @@ std::optional<std::string> ReadPatternsFile(base::FilePath patterns_path) {
 
 }  // namespace
 
-ServerConfig::ServerConfig() = default;
+SourceMapActionConfig::SourceMapActionConfig() = default;
+SourceMapActionConfig::~SourceMapActionConfig() = default;
+SourceMapActionConfig::SourceMapActionConfig(const SourceMapActionConfig&) =
+    default;
 
+ServerConfig::ServerConfig() = default;
 ServerConfig::~ServerConfig() = default;
 
 ServerConfigLoader::ServerConfigLoader(
@@ -209,9 +242,15 @@ bool ServerConfigLoader::ProcessConfigResponse(
     VLOG(1) << "Failed to retrieve pubKeys from server config";
     return false;
   }
+  const auto* source_map = root->FindDict(kSourceMapFieldName);
+  if (!source_map) {
+    VLOG(1) << "Failed to retrieve sourceMap from server config";
+    return false;
+  }
 
   config->group_pub_keys = ParseKeys(*group_pub_keys);
   config->pub_keys = ParseKeys(*pub_keys);
+  config->source_map_actions = ParseSourceMapActionConfigs(*source_map);
 
   config_callback_.Run(std::move(config));
   return true;

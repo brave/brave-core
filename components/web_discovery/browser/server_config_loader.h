@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
@@ -29,12 +30,25 @@ namespace web_discovery {
 
 using KeyMap = base::flat_map<std::string, std::string>;
 
+struct SourceMapActionConfig {
+  SourceMapActionConfig();
+  ~SourceMapActionConfig();
+
+  SourceMapActionConfig(const SourceMapActionConfig&);
+
+  std::vector<std::string> keys;
+  size_t limit;
+  size_t period;
+};
+
 struct ServerConfig {
   ServerConfig();
   ~ServerConfig();
 
   KeyMap group_pub_keys;
   KeyMap pub_keys;
+
+  base::flat_map<std::string, SourceMapActionConfig> source_map_actions;
 };
 
 class ServerConfigLoader {

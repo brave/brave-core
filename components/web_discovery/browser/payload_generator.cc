@@ -11,9 +11,6 @@ namespace web_discovery {
 
 namespace {
 
-constexpr char kActionKey[] = "action";
-constexpr char kInnerPayloadKey[] = "payload";
-
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
   if (value_str && !value_str->empty()) {
