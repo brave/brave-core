@@ -29,7 +29,7 @@ const Container = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    gap: ${spacing.m};
+    gap: ${spacing.s};
   }
 `
 
@@ -40,7 +40,6 @@ const StyledButton = styled(Button)`
   display: flex;
   width: var(--leo-icon-xl);
   height: var(--leo-icon-xl);
-  padding: var(--leo-spacing-s);
 `
 
 const NormalPlayerButton = styled(StyledButton)`
@@ -51,9 +50,8 @@ const MiniPlayerButton = styled(StyledButton)`
   ${hiddenOnNormalPlayer}
 `
 
-function Control({
+function Control ({
   iconName,
-  size,
   visibility,
   title,
   kind,
@@ -61,7 +59,6 @@ function Control({
 }: {
   iconName: string
   title: string
-  size: 'jumbo' | 'large'
   visibility: 'mini' | 'normal' | 'both'
   kind: 'plain' | 'plain-faint'
   onClick: () => void
@@ -75,7 +72,7 @@ function Control({
   return (
     <Button
       kind={kind}
-      size={size}
+      size='mini'
       onClick={onClick}
       title={title}
       fab
@@ -85,7 +82,7 @@ function Control({
   )
 }
 
-export default function PlayerControls({ videoElement, className }: Props) {
+export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
 
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
@@ -122,7 +119,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
       <div>
         <Control
           iconName='previous-outline'
-          size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YPrevious')}
           kind='plain-faint'
@@ -138,7 +134,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         />
         <Control
           iconName='rewind-15'
-          size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YRewind')}
           kind='plain-faint'
@@ -147,7 +142,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         {isPlaying ? (
           <Control
             iconName='pause-filled'
-            size='jumbo'
             visibility='both'
             title={getLocalizedString('bravePlaylistA11YPause')}
             kind='plain-faint'
@@ -156,7 +150,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         ) : (
           <Control
             iconName='play-filled'
-            size='jumbo'
             visibility='both'
             title={getLocalizedString('bravePlaylistA11YPlay')}
             kind='plain-faint'
@@ -165,7 +158,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         )}
         <Control
           iconName='forward-15'
-          size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YForward')}
           kind='plain-faint'
@@ -173,7 +165,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         />
         <Control
           iconName='next-outline'
-          size='jumbo'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YNext')}
           kind='plain-faint'
@@ -181,7 +172,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
         />
         <Control
           iconName='close'
-          size='jumbo'
           visibility='mini'
           title={getLocalizedString('bravePlaylistA11YClose')}
           kind='plain-faint'
@@ -191,7 +181,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
       <div>
         <Control
           iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
-          size='large'
           visibility='normal'
           title={getLocalizedString('bravePlaylistA11YShuffle')}
           kind={shuffleEnabled ? 'plain' : 'plain-faint'}
@@ -205,7 +194,6 @@ export default function PlayerControls({ videoElement, className }: Props) {
               ? 'loop-1-toggle-on'
               : 'loop-all-toggle-on'
           }
-          size='large'
           visibility='normal'
           title={getLocalizedString(
             !loopMode
