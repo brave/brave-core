@@ -34,11 +34,11 @@ function InputBox(props: Props) {
     props.setInputText(e.target.value)
   }
 
-  const handleSubmit = (e: PointerEvent) => {
+  const handleSubmit = () => {
     props.submitInputTextToAPI()
   }
 
-  const handleMic = (e: PointerEvent) => {
+  const handleMic = () => {
     getPageHandlerInstance().pageHandler.handleVoiceRecognition()
   }
 

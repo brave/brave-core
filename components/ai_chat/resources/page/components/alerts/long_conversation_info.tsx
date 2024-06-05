@@ -14,8 +14,7 @@ import getPageHandlerInstance from '../../api/page_handler'
 export default function LongConversationInfo() {
   const context = React.useContext(DataContext)
 
-  const handleClearChat = (e: any) => {
-    e.preventDefault()
+  const handleClearChat = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
     context.dismissLongConversationInfo()
   }
