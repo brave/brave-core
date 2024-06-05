@@ -617,13 +617,13 @@ extension BrowserViewController: WKNavigationDelegate {
   ///
   /// The user unfortunately has to  dismiss it manually after they have handled the file.
   /// Chrome iOS does the same
-  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab?) {
+  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab) {
     let vc = SFSafariViewController(url: url, configuration: .init())
     vc.modalPresentationStyle = .formSheet
     self.present(vc, animated: true)
 
     // If the website opened this URL in a separate tab, remove the empty tab
-    if let tab = tab, tab.url == nil || tab.url?.absoluteString == "about:blank" {
+    if tab.url == nil || tab.url?.absoluteString == "about:blank" {
       tabManager.removeTab(tab)
     }
   }
@@ -680,18 +680,11 @@ extension BrowserViewController: WKNavigationDelegate {
     // SFSafariViewController only supports http/https links
     if navigationResponse.isForMainFrame, let url = responseURL,
       url.isWebPage(includeDataURIs: false),
+      let tab, tab === tabManager.selectedTab,
       let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
       mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
     {
-
-      let isAboutHome = InternalURL(url)?.isAboutHomeURL == true
-      let isNonActiveTab = isAboutHome ? false : url.host != tabManager.selectedTab?.url?.host
-
-      // Check website is trying to open Safari Controller in non-active tab
-      if !isNonActiveTab {
-        handleLinkWithSafariViewController(url, tab: tab)
-      }
-
+      handleLinkWithSafariViewController(url, tab: tab)
       return .cancel
     }
 
