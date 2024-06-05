@@ -665,8 +665,8 @@ export class MockedWalletApiProxy {
   jsonRpcService: Partial<
     InstanceType<typeof BraveWallet.JsonRpcServiceInterface>
   > = {
-    getAllNetworks: async (coin: BraveWallet.CoinType) => {
-      return { networks: this.networks.filter((n) => n.coin === coin) }
+    getAllNetworks: async () => {
+      return { networks: this.networks }
     },
     getHiddenNetworks: async () => {
       return { chainIds: [] }

@@ -1873,6 +1873,12 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
 
 void JsonRpcService::GetGasPrice(const std::string& chain_id,
                                  GetGasPriceCallback callback) {
+  if (gas_price_for_testing_) {
+    std::move(callback).Run(*gas_price_for_testing_,
+                            mojom::ProviderError::kSuccess, "");
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetGasPrice,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));

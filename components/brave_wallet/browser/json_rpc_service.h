@@ -125,7 +125,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
-                  const std::string& chaind_id,
+                  const std::string& chain_id,
                   GetBalanceCallback callback) override;
   void GetCode(const std::string& address,
                mojom::CoinType coin,
@@ -457,6 +457,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void SetSkipEthChainIdValidationForTesting(bool skipped) {
     skip_eth_chain_id_validation_for_testing_ = skipped;
+  }
+
+  void SetGasPriceForTesting(const std::optional<std::string>& gas_price) {
+    gas_price_for_testing_ = gas_price;
   }
 
   // Solana JSON RPCs
@@ -797,6 +801,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   bool skip_eth_chain_id_validation_for_testing_ = false;
+  std::optional<std::string> gas_price_for_testing_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   const raw_ptr<PrefService> prefs_ = nullptr;

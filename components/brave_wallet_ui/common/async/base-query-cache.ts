@@ -159,7 +159,7 @@ export class BaseQueryCache {
 
       const visibleIds: string[] = []
       const hiddenIds: string[] = []
-      const idsByCoinType: Record<EntityId, EntityId[]> = {}
+      const visibleIdsByCoinType: Record<EntityId, EntityId[]> = {}
       const hiddenIdsByCoinType: Record<EntityId, string[]> = {}
       const mainnetIds: string[] = []
       const testnetIds: string[] = []
@@ -198,10 +198,13 @@ export class BaseQueryCache {
             )
           }
 
-          idsByCoinType[coin] = []
+          visibleIdsByCoinType[coin] = []
           hiddenIdsByCoinType[coin] = []
 
-          networks.forEach(({ chainId, coin }) => {
+          networks.forEach(({ chainId, coin: networkCoin }) => {
+            if (networkCoin != coin) {
+              return
+            }
             const networkId = networkEntityAdapter
               .selectId({
                 chainId,
@@ -220,7 +223,7 @@ export class BaseQueryCache {
               hiddenIds.push(networkId)
             } else {
               // visible networks for coin
-              idsByCoinType[coin].push(networkId)
+              visibleIdsByCoinType[coin].push(networkId)
               visibleIds.push(networkId)
             }
 
@@ -246,7 +249,7 @@ export class BaseQueryCache {
       const normalizedNetworksState = networkEntityAdapter.setAll(
         {
           ...emptyNetworksRegistry,
-          idsByCoinType,
+          visibleIdsByCoinType,
           hiddenIds,
           hiddenIdsByCoinType,
           visibleIds,
