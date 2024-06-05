@@ -9,14 +9,33 @@ import SearchBox, { Backdrop } from './SearchBox';
 import { SearchContext, useSearchContext } from './SearchContext';
 import SearchDialog from './SearchDialog';
 import { searchBoxRadius } from './config';
+import Button from '@brave/leo/react/button';
+import Icon from '@brave/leo/react/icon';
+
+const MenuButton = styled(Button)`
+  color: white;
+
+  position: absolute;
+  top: calc(50% - 12px);
+  right: -28px;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease-in-out;
+  transition-delay: 1s;
+`
 
 const PlaceholderContainer = styled.div`
   position: relative;
-  overflow: hidden;
-
+  
   border-radius: ${searchBoxRadius};
-
+  
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+  
+  &:hover ${MenuButton} {
+    transition-delay: 0s;
+    opacity: 1;
+  }
 `
 
 function Swapper() {
@@ -29,6 +48,9 @@ function Swapper() {
     }}>
       <Backdrop />
       <SearchBox />
+      <MenuButton fab kind='plain-faint'>
+        <Icon name='more-vertical' />
+      </MenuButton>
     </PlaceholderContainer>}
     {open && <SearchDialog offsetY={boxPos} onClose={() => setOpen(false)} />}
   </>
