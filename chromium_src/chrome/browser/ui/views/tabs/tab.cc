@@ -23,10 +23,6 @@
 #define BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY \
   showing_close_button_ &= mouse_hovered();
 
-#define BRAVE_TAB_LAYOUT                              \
-  Center(contents_rect.height(), gfx::kFaviconSize)); \
-  if (false) (
-
 // `UpdateIconVisibility` currently has an early return when the tab view's
 // height is less than `GetLayoutConstant(TAB_HEIGHT)`. Unfortunately, when in
 // vertical tabs mode this will prevent the favicon and close button from
@@ -41,6 +37,5 @@
 #include "src/chrome/browser/ui/views/tabs/tab.cc"
 
 #undef GetLayoutConstant
-#undef BRAVE_TAB_LAYOUT
 #undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
 #undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
