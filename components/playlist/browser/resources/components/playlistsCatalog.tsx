@@ -285,7 +285,7 @@ export default function PlaylistsCatalog () {
           })
         }
       }}
-      onDragCancel={() => {
+      onDragCanceled={() => {
         setDraggedId(null)
       }}
     >

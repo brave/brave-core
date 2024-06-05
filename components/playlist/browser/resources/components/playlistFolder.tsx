@@ -327,7 +327,7 @@ export default function PlaylistFolder({
           )
         }
       }}
-      onDragCancel={() => {
+      onDragCanceled={() => {
         setDraggedId(null)
       }}
     >
