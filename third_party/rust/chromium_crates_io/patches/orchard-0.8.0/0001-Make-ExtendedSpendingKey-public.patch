@@ -1,7 +1,7 @@
-From fb906da81ff6e0b1a97ffa34ccbde32204751211 Mon Sep 17 00:00:00 2001
+From 33c2619d77c24b85bf931ce0d4ae7580132a48b2 Mon Sep 17 00:00:00 2001
 From: oisupov <oisupov@brave.com>
-Date: Tue, 28 May 2024 17:52:54 +0700
-Subject: [PATCH] Add orchard-0.8.0 patch
+Date: Wed, 5 Jun 2024 21:48:33 +0700
+Subject: [PATCH] Make ExtendedSpendingKey public
 
 ---
  .../chromium_crates_io/vendor/orchard-0.8.0/src/zip32.rs    | 6 +++---
