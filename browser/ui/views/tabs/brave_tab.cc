@@ -132,25 +132,6 @@ void BraveTab::Layout(PassKey) {
   }
 }
 
-gfx::Insets BraveTab::GetInsets() const {
-  // Supplement extra left side padding.
-  // Upstream gives extra padding to balance with right side padding space but
-  // it's gone when tab doesn't have sufficient available width. In our case,
-  // As we have more narrow left & right padding than upstream, icon seems stick
-  // to left side when extra padding is not used.
-  // We only need to do that when |extra_padding_before_content_| is false.
-  int extra_left_padding = 0;
-
-  // Add extra padding if upstream tab doesn't have it.
-  if (!extra_padding_before_content_) {
-    extra_left_padding = kExtraLeftPadding;
-  }
-
-  auto insets = Tab::GetInsets();
-  insets.set_left(insets.left() + extra_left_padding);
-  return insets;
-}
-
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
   if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
