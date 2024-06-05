@@ -396,7 +396,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return false
     }
-    var gasPrice: String?
     var gasLimit: String?
     var to: String?
     var value: String?
@@ -413,8 +412,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return false
       }
       // these values are already in wei
-      gasPrice =
-        "0x\(weiFormatter.weiString(from: zeroExQuote.gasPrice, radix: .hex, decimals: 0) ?? "0")"
       gasLimit =
         "0x\(weiFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
       to = zeroExQuote.to
@@ -439,8 +436,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return false
       }
       // these values are already in wei
-      gasPrice =
-        "0x\(weiFormatter.weiString(from: evmTransaction.gasPrice, radix: .hex, decimals: 0) ?? "0")"
       gasLimit =
         "0x\(weiFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
       to = evmTransaction.to
@@ -454,8 +449,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return false
     }
 
-    guard let gasPrice,
-      let gasLimit,
+    guard let gasLimit,
       let to,
       let value,
       let data

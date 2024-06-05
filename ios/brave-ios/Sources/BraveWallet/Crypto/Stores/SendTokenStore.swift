@@ -717,21 +717,16 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(
-            nonce: "",
-            gasPrice: "",
-            gasLimit: "",
+          let params = BraveWallet.NewEvmTransactionParams(
+            chainId: network.chainId,
+            from: fromAccountInfo.accountId,
             to: token.contractAddress,
             value: "0x0",
-            data: data,
-            signOnly: false,
-            signedTransaction: nil
+            gasLimit: "",
+            data: data
           )
-          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountInfo.accountId
+          self.txService.addUnapprovedEvmTransaction(
+            params: params
           ) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)

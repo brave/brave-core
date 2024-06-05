@@ -86,21 +86,8 @@ class NFTStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      switch coin {
-      case .eth:
-        completion([self.ethNetwork])
-      case .sol:
-        completion([self.solNetwork])
-      case .fil:
-        completion([.mockFilecoinTestnet])
-      case .btc:
-        completion([])  // no NFT in Bitcoin
-      case .zec:
-        XCTFail("Should not fetch zec network")
-      @unknown default:
-        XCTFail("Should not fetch unknown network")
-      }
+    rpcService._allNetworks = {
+      $0([self.ethNetwork, self.solNetwork, .mockFilecoinTestnet])
     }
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       guard contractAddress == BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress else {

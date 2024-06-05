@@ -259,21 +259,11 @@ import XCTest
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      switch coin {
-      case .eth:
-        completion([self.ethNetwork, self.goerliNetwork])
-      case .sol:
-        completion([self.solNetwork])
-      case .fil:
-        completion([self.filMainnet, self.filTestnet])
-      case .btc:
-        completion([self.btcMainnet, self.btcTestnet])
-      case .zec:
-        XCTFail("Should not fetch zcash network")
-      @unknown default:
-        XCTFail("Should not fetch unknown network")
-      }
+    rpcService._allNetworks = {
+      $0([
+        self.ethNetwork, self.goerliNetwork, self.solNetwork, self.filMainnet, self.filTestnet,
+        self.btcMainnet, self.btcTestnet,
+      ])
     }
     rpcService._balance = { accountAddress, coin, chainId, completion in
       // eth balance

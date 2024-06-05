@@ -14,10 +14,10 @@ class AccountActivityStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [.mockMainnet, .mockGoerli],
-    .sol: [.mockSolana, .mockSolanaTestnet],
-    .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
+  let networks: [BraveWallet.NetworkInfo] = [
+    .mockMainnet, .mockGoerli,
+    .mockSolana, .mockSolanaTestnet,
+    .mockFilecoinMainnet, .mockFilecoinTestnet,
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
@@ -68,8 +68,8 @@ class AccountActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      completion(self.networks[coin] ?? [])
+    rpcService._allNetworks = {
+      $0(self.networks)
     }
     rpcService._balance = { _, coin, chainId, completion in
       switch chainId {

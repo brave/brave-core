@@ -49,7 +49,7 @@ class AssetDetailStoreTests: XCTestCase {
       ) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
-      $1([.mockMainnet])
+      $0([.mockMainnet])
     }
     rpcService._network = {
       $2(.mockMainnet)
@@ -277,7 +277,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
-      $1([.mockBitcoinMainnet])
+      $0([.mockBitcoinMainnet])
     }
     rpcService._network = {
       $2(.mockBitcoinMainnet)
@@ -500,7 +500,7 @@ class AssetDetailStoreTests: XCTestCase {
       $2(.mockMainnet)
     }
     rpcService._allNetworks = {
-      $1([.mockMainnet])
+      $0([.mockMainnet])
     }
     rpcService._hiddenNetworks = {
       $1([])

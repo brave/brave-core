@@ -165,8 +165,8 @@ import XCTest
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      completion(
+    rpcService._allNetworks = {
+      $0(
         [
           .mockMainnet,
           .mockSolana,
@@ -174,7 +174,7 @@ import XCTest
           .mockFilecoinTestnet,
           .mockBitcoinMainnet,
           .mockBitcoinTestnet,
-        ].filter { $0.coin == coin }
+        ]
       )
     }
     rpcService._hiddenNetworks = {

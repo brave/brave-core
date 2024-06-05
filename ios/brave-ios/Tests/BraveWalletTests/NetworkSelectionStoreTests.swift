@@ -14,10 +14,10 @@ import XCTest
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon],
-    .sol: [.mockSolana, .mockSolanaTestnet],
-    .fil: [.mockFilecoinTestnet],
+  private let allNetworks: [BraveWallet.NetworkInfo] = [
+    .mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon,
+    .mockSolana, .mockSolanaTestnet,
+    .mockFilecoinTestnet,
   ]
 
   private func setupServices() -> (
@@ -45,8 +45,8 @@ import XCTest
     rpcService._addObserver = { _ in }
     rpcService._chainIdForOrigin = { $2(currentChainId) }
     rpcService._network = { $2(currentNetwork) }
-    rpcService._allNetworks = { [weak self] coinType, completion in
-      completion(self?.allNetworks[coinType, default: []] ?? [])
+    rpcService._allNetworks = { [weak self] completion in
+      completion(self?.allNetworks ?? [])
     }
     rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)

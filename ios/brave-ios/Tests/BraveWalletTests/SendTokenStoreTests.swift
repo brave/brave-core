@@ -53,7 +53,7 @@ class SendTokenStoreTests: XCTestCase {
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
-    rpcService._allNetworks = { $1(allNetworks) }
+    rpcService._allNetworks = { $0(allNetworks) }
     rpcService._setNetwork = { _, _, _, completion in completion(true) }
     rpcService._addObserver = { _ in }
     rpcService._balance = { $3(balance, .success, "") }
@@ -195,8 +195,8 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._network = { coin, _, completion in
       completion(selectedNetwork)
     }
-    rpcService._allNetworks = { coin, completion in
-      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    rpcService._allNetworks = {
+      $0([.mockMainnet, .mockSolana])
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
@@ -484,7 +484,7 @@ class SendTokenStoreTests: XCTestCase {
 
     rpcService._chainIdForOrigin = { $2(BraveWallet.NetworkInfo.mockGoerli.chainId) }
     rpcService._network = { $2(BraveWallet.NetworkInfo.mockGoerli) }
-    rpcService._allNetworks = { $1([.mockGoerli]) }
+    rpcService._allNetworks = { $0([.mockGoerli]) }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
