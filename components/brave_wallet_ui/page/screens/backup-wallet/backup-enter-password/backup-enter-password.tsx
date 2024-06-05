@@ -99,7 +99,7 @@ export const BackupEnterPassword: React.FC = () => {
   return (
     <OnboardingContentLayout
       showBackButton
-      title={getLocale('braveWalletEnterAPasswordToContinue')}
+      title={getLocale('braveWalletEnterAPassswordToContinue')}
       subTitle={getLocale('braveWalletEnterYourPasswordToStartBackup')}
     >
       <Column
