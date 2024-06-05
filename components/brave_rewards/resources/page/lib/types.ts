@@ -134,6 +134,7 @@ export interface AdsData {
   needsBrowserUpgradeToServeAds: boolean
   notificationAdsEnabled: boolean
   newTabAdsEnabled: boolean
+  searchAdsEnabled: boolean
   newsAdsEnabled: boolean
   adsNextPaymentDate: number
   adsReceivedThisMonth: number
@@ -173,7 +174,8 @@ export type AdType =
   'ad_notification' |
   'new_tab_page_ad' |
   'promoted_content_ad' |
-  'inline_content_ad'
+  'inline_content_ad' |
+  'search_result_ad'
 
 export interface AdContent {
   adType: AdType

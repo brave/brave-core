@@ -313,6 +313,10 @@ bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
   return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
+bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
+  return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToSearchResultAds);
+}
+
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
   NotificationHelper::GetInstance()->InitForProfile(profile_);
 
@@ -339,7 +343,8 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
          (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
-                                          UserHasOptedInToNewTabPageAds()));
+                                          UserHasOptedInToNewTabPageAds() ||
+                                          UserHasOptedInToSearchResultAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {

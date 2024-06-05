@@ -489,6 +489,11 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
+      brave_ads::prefs::kOptedInToSearchResultAds,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
       brave_rewards::prefs::kAutoContributeEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
@@ -1092,6 +1097,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       "newTabAdsEnabled",
       prefs->GetBoolean(ntp_background_images::prefs::
                             kNewTabPageShowSponsoredImagesBackgroundImage));
+  ads_data.Set("searchAdsEnabled",
+               prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds));
+
   ads_data.Set("newsAdsEnabled",
                prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
                    prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
@@ -1320,6 +1328,9 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   } else if (key == "newTabAdsEnabled") {
     prefs->SetBoolean(ntp_background_images::prefs::
                           kNewTabPageShowSponsoredImagesBackgroundImage,
+                      value == "true");
+  } else if (key == "searchAdsEnabled") {
+    prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds,
                       value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
     prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
