@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h b/chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h
+index d3dafeaa60c3622106ef5f17dc0688e2f16ce4bd..b21ee9332e81b02294b24b055e9a596837a8bff5 100644
+--- a/chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h
++++ b/chrome/browser/ui/webui/cr_components/theme_color_picker/theme_color_picker_handler.h
+@@ -59,6 +59,7 @@ class ThemeColorPickerHandler
+   void UpdateTheme() override;
+ 
+  private:
++  friend class BraveThemeColorPickerHandler;
+   void MaybeIncrementSeedColorChangeCount();
+ 
+   // ui::NativeThemeObserver:
