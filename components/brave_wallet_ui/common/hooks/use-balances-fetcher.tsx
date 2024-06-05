@@ -16,7 +16,7 @@ import {
   GetTokenBalancesRegistryArg //
 } from '../slices/endpoints/token_balances.endpoints'
 
-type Arg = Pick<GetTokenBalancesRegistryArg, 'networks'> & {
+type Arg = Pick<GetTokenBalancesRegistryArg, 'networks' | 'isSpamRegistry'> & {
   accounts: BraveWallet.AccountInfo[]
 }
 
@@ -45,7 +45,8 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
               supportedKeyrings
             })
           ),
-          useAnkrBalancesFeature
+          useAnkrBalancesFeature,
+          isSpamRegistry: arg.isSpamRegistry
         }
       : skipToken,
     {

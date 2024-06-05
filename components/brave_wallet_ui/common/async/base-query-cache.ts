@@ -90,6 +90,10 @@ export class BaseQueryCache {
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
   public balanceScannerSupportedChains: string[] | undefined = undefined
+  public spamNftsForAccountRegistry: Record<
+    string, // accountUniqueId
+    BraveWallet.BlockchainToken[]
+  > = {}
 
   getWalletInfo = async () => {
     if (!this.walletInfo) {
@@ -481,6 +485,43 @@ export class BaseQueryCache {
     }
 
     return this._nftMetadataRegistry[tokenId]
+  }
+
+  getSpamNftsForAccountId = async (accountId: BraveWallet.AccountId) => {
+    if (!this.spamNftsForAccountRegistry[accountId.uniqueKey]) {
+      const { braveWalletService } = getAPIProxy()
+      const { address, coin } = accountId
+      const networksRegistry = await cache.getNetworksRegistry()
+
+      const chainIds = networksRegistry.ids.map(
+        (network) => networksRegistry.entities[network]!.chainId
+      )
+
+      let currentCursor: string | null = null
+      const accountSpamNfts = []
+
+      do {
+        const {
+          tokens,
+          cursor
+        }: {
+          tokens: BraveWallet.BlockchainToken[]
+          cursor: string | null
+        } = await braveWalletService.getSimpleHashSpamNFTs(
+          address,
+          chainIds,
+          coin,
+          currentCursor
+        )
+
+        accountSpamNfts.push(...tokens)
+        currentCursor = cursor
+      } while (currentCursor)
+
+      this.spamNftsForAccountRegistry[accountId.uniqueKey] = accountSpamNfts
+    }
+
+    return this.spamNftsForAccountRegistry[accountId.uniqueKey]
   }
 
   // Brave Rewards

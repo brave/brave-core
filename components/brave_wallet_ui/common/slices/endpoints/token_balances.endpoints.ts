@@ -40,10 +40,15 @@ import {
   baseQueryFunction
 } from '../../async/base-query-cache'
 import {
+  getPersistedPortfolioSpamTokenBalances,
   getPersistedPortfolioTokenBalances,
+  setPersistedPortfolioSpamTokenBalances,
   setPersistedPortfolioTokenBalances
 } from '../../../utils/local-storage-utils'
 import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
+import {
+  blockchainTokenEntityAdaptorInitialState //
+} from '../entities/blockchain-token.entity'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -92,6 +97,9 @@ export type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
   networks: BalanceNetwork[]
   useAnkrBalancesFeature: boolean
+  /** if true, only spam NFT balances will be fetched, if falsey, only user
+   * token balances will be fetched */
+  isSpamRegistry?: boolean
 }
 
 function mergeTokenBalancesRegistry(
@@ -222,8 +230,10 @@ export const tokenBalancesEndpoints = ({
       TokenBalancesRegistry | null,
       GetTokenBalancesRegistryArg
     >({
-      queryFn: function () {
-        const persistedBalances = getPersistedPortfolioTokenBalances()
+      queryFn: function (arg) {
+        const persistedBalances = arg.isSpamRegistry
+          ? getPersistedPortfolioSpamTokenBalances()
+          : getPersistedPortfolioTokenBalances()
 
         // return null so we can tell if we have data or not to start with
         return {
@@ -357,7 +367,13 @@ export const tokenBalancesEndpoints = ({
                     networkSupportsAccount(network, accountId)
                   )
 
-                const userTokens = await cache.getUserTokensRegistry()
+                const userTokensRegistry = arg.isSpamRegistry
+                  ? blockchainTokenEntityAdaptorInitialState
+                  : await cache.getUserTokensRegistry()
+
+                const spamTokens = arg.isSpamRegistry
+                  ? await cache.getSpamNftsForAccountId(accountId)
+                  : []
 
                 if (nonAnkrSupportedAccountNetworks.length) {
                   await eachLimit(
@@ -366,6 +382,22 @@ export const tokenBalancesEndpoints = ({
                     async (network: BraveWallet.NetworkInfo) => {
                       assert(coinTypesMapping[network.coin] !== undefined)
                       try {
+                        const tokens = arg.isSpamRegistry
+                          ? spamTokens.filter(
+                              (token) =>
+                                token.coin === network.coin &&
+                                token.chainId === network.chainId
+                            )
+                          : getEntitiesListFromEntityState(
+                              userTokensRegistry,
+                              userTokensRegistry.idsByChainId[
+                                networkEntityAdapter.selectId({
+                                  coin: network.coin,
+                                  chainId: network.chainId
+                                })
+                              ]
+                            )
+
                         await fetchTokenBalanceRegistryForAccountsAndChainIds({
                           args:
                             network.coin === CoinTypes.SOL
@@ -381,15 +413,7 @@ export const tokenBalancesEndpoints = ({
                                     accountId,
                                     coin: coinTypesMapping[network.coin],
                                     chainId: network.chainId,
-                                    tokens: getEntitiesListFromEntityState(
-                                      userTokens,
-                                      userTokens.idsByChainId[
-                                        networkEntityAdapter.selectId({
-                                          coin: network.coin,
-                                          chainId: network.chainId
-                                        })
-                                      ]
-                                    )
+                                    tokens: tokens
                                   }
                                 ],
                           cache,
@@ -416,13 +440,19 @@ export const tokenBalancesEndpoints = ({
               return tokenBalancesRegistry
             })
 
-            const persistedBalances = getPersistedPortfolioTokenBalances()
-            setPersistedPortfolioTokenBalances(
-              mergeTokenBalancesRegistry(
-                persistedBalances,
-                tokenBalancesRegistry
-              )
+            const persistedBalances = arg.isSpamRegistry
+              ? getPersistedPortfolioSpamTokenBalances()
+              : getPersistedPortfolioTokenBalances()
+
+            const mergedRegistry = mergeTokenBalancesRegistry(
+              persistedBalances,
+              tokenBalancesRegistry
             )
+            if (arg.isSpamRegistry) {
+              setPersistedPortfolioSpamTokenBalances(mergedRegistry)
+            } else {
+              setPersistedPortfolioTokenBalances(mergedRegistry)
+            }
           } catch (error) {
             handleEndpointError(
               'getTokenBalancesRegistry.onCacheEntryAdded',

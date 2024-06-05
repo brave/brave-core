@@ -1043,6 +1043,7 @@ provideStrings({
   braveWalletShowSpamNftsTitle: 'Spam NFTs',
   braveWalletShowSpamNftsDescription: 'Show Spam NFTs',
   braveWalletPortfolioSettings: 'Portfolio Settings',
+  braveWalletHideNotOwnedNfTs: 'Hide not owned NFTs',
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All accounts',

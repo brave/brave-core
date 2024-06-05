@@ -144,12 +144,42 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
   }
 }
 
+export const getPersistedPortfolioSpamTokenBalances =
+  (): TokenBalancesRegistry => {
+    try {
+      const registry: TokenBalancesRegistry = JSON.parse(
+        window.localStorage.getItem(LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES) ||
+          JSON.stringify(createEmptyTokenBalancesRegistry())
+      )
+      if (registry.accounts) {
+        return registry
+      }
+      return createEmptyTokenBalancesRegistry()
+    } catch (error) {
+      console.error(error)
+      return createEmptyTokenBalancesRegistry()
+    }
+  }
+
 export const setPersistedPortfolioTokenBalances = (
   registry: TokenBalancesRegistry
 ) => {
   try {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
+      JSON.stringify(registry)
+    )
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const setPersistedPortfolioSpamTokenBalances = (
+  registry: TokenBalancesRegistry
+) => {
+  try {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES,
       JSON.stringify(registry)
     )
   } catch (error) {

@@ -10,7 +10,8 @@ import {
   SendPageTabHashes,
   WalletOrigin,
   WalletCreationMode,
-  WalletImportMode
+  WalletImportMode,
+  NftDropdownOptionId
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
@@ -269,6 +270,17 @@ export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
   return (
     isNft ? WalletRoutes.PortfolioNFTAsset : WalletRoutes.PortfolioAsset
   ).replace(':assetId', assetId)
+}
+
+export const makePortfolioNftsRoute = (
+  tab: NftDropdownOptionId,
+  page?: number
+) => {
+  const params = new URLSearchParams({
+    tab: tab,
+    page: page?.toString() || '0'
+  })
+  return `${WalletRoutes.PortfolioNFTs}?${params.toString()}`
 }
 
 // Tabs
