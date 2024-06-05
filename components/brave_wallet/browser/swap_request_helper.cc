@@ -73,6 +73,8 @@ std::optional<std::string> EncodeTransactionParams(
   }
 
   tx_params.Set("userPublicKey", params.user_public_key);
+  tx_params.Set("dynamicComputeUnitLimit", true);
+  tx_params.Set("prioritizationFeeLamports", "auto");
 
   base::Value::Dict quote;
   quote.Set("inputMint", params.quote->input_mint);
