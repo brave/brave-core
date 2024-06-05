@@ -3,11 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import GuardianConnect
 import SwiftUI
 
+public struct ServerRegion: Identifiable {
+  public let id = UUID()
+  let name: String
+  let servers: Int
+  var isConnected: Bool = false
+}
+
 public struct BraveVPNRegionPickerView: View {
-  @State public var isAutomatic: Bool
+
+  @State private var isAutomatic: Bool
+  @State private var isLoading = false
   @State private var isRegionDetailsPresented = false
+  @State private var selectedIndex = 0
 
   public var serverRegions: [ServerRegion] = [
     ServerRegion(name: "Australia", servers: 5),
@@ -34,36 +45,50 @@ public struct BraveVPNRegionPickerView: View {
   }
 
   public var body: some View {
-    NavigationStack {
+    ZStack {
       VStack {
         List {
           Section(
-            footer: Text("A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.")
-              .foregroundColor(Color(.black))
+            footer: Text(
+              "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds."
+            )
+            .font(.footnote)
+            .foregroundColor(Color(braveSystemName: .textSecondary))
           ) {
             Toggle(
-              "Automatic",
               isOn: Binding(
                 get: { isAutomatic },
                 set: { enableAutomaticServer($0) }
               )
-            )
-            .foregroundColor(Color(.black))
-            .toggleStyle(SwitchToggleStyle(tint: Color(.blue)))
+            ) {
+              VStack(alignment: .leading) {
+                Text("Automatic")
+                  .font(.body)
+                if isAutomatic {
+                  Text("Brazil")
+                    .font(.footnote)
+                    .foregroundColor(Color(braveSystemName: .textSecondary))
+                }
+              }
+            }
+            .disabled(isLoading)
+            .foregroundColor(Color(braveSystemName: .textPrimary))
+            .tint(.accentColor)
             .listRowBackground(Color(.white))
           }
-          
+
           if !isAutomatic {
             Section {
               ForEach(Array(serverRegions.enumerated()), id: \.offset) { index, region in
                 Button {
                   print("Index Outside \(index)")
+                  selectDesignatedVPNRegion()
                 } label: {
                   HStack {
-                    Image(systemName: "flag.2.crossed")
+                    regionFlag ?? Image(braveSystemName: "leo.globe")
                     VStack(alignment: .leading) {
                       Text("\(region.name)")
-                      Text("\(region.servers) servers servers serverss servers servers servers")
+                      Text("\(region.servers) servers")
                         .foregroundColor(.gray)
                     }
                     Spacer()
@@ -83,16 +108,29 @@ public struct BraveVPNRegionPickerView: View {
             .listRowBackground(Color(.white))
           }
         }
-        .navigationDestination(isPresented: $isRegionDetailsPresented) {
+      }
+      .background {
+        NavigationLink("", isActive: $isRegionDetailsPresented) {
           BraveRegionDetailsView()
         }
       }
+      .opacity(isLoading ? 0.5 : 1.0)
+
+      if isLoading {
+        BraveVPNRegionLoadingIndicatorView()
+          .transition(.opacity)
+          .zIndex(1)
+      }
     }
   }
-  
+
   private func infoButtonView(index: Int) -> some View {
     Button(
       action: {
+        guard !isLoading else {
+          return
+        }
+
         isRegionDetailsPresented = true
       },
       label: {
@@ -105,13 +143,39 @@ public struct BraveVPNRegionPickerView: View {
   private func enableAutomaticServer(_ enabled: Bool) {
     isAutomatic = enabled
   }
-}
 
-public struct ServerRegion: Identifiable {
-  public let id = UUID()
-  public let name: String
-  public let servers: Int
-  public var isConnected: Bool = false
+  private func selectDesignatedVPNRegion() {
+    guard !isLoading else {
+      return
+    }
+
+    isLoading = true
+
+    // TODO: Select Region
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      isLoading = false
+    }
+  }
+
+  private var regionFlag: Image? {
+    // Root Unicode flags index
+    let rootIndex: UInt32 = 127397
+    var unicodeScalarView = ""
+
+    for scalar in "CA".unicodeScalars {
+      // Shift the letter index to the flags index
+      if let appendedScalar = UnicodeScalar(rootIndex + scalar.value) {
+        // Append symbol to the Unicode string
+        unicodeScalarView.unicodeScalars.append(appendedScalar)
+      }
+    }
+
+    if unicodeScalarView.isEmpty {
+      return nil
+    }
+
+    return Image(uiImage: unicodeScalarView.image())
+  }
 }
 
 struct ServerRegionView_Previews: PreviewProvider {
