@@ -199,10 +199,10 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
 
 void AdsTabHelper::MaybeNotifyTabContentDidChange() {
   if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty() ||
-      is_error_page_) {
-    // Don't notify content changes if the tab was restored, was a previously
-    // committed navigation, the web contents are still loading, or an error
-    // page was displayed.
+      is_error_page_ || !IsVisible()) {
+    // Don't notify content changes if the tab was restored, if it was a
+    // previously committed navigation, if the web contents are hidden or
+    // occluded, if they are still loading, or if an error page was displayed.
     return;
   }
 
