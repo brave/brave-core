@@ -44,8 +44,8 @@ function Swapper() {
   return <>
     {!open && <PlaceholderContainer onClick={e => {
       // If we were clicking a button inside the SearchBox, don't open the box.
-      if (e.nativeEvent.composedPath().some(el => el['tagName'] === 'LEO-BUTTON')) {
-        console.log(e.nativeEvent.composedPath())
+      if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
+        e.preventDefault()
         return
       }
       setOpen(true)
