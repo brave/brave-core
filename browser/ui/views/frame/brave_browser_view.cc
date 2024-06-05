@@ -1122,6 +1122,10 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   }
 
   if (need_to_update_secondary_web_view) {
+    // This helps reduce flickering when switching between tiled tabs.
+    contents_web_view_->SetFastResize(true);
+    secondary_contents_web_view_->SetFastResize(true);
+
     if (!SplitViewBrowserData::FromBrowser(browser_.get())
              ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
       // This will help reduce flickering when switching to non tiled tab.
@@ -1138,6 +1142,14 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
     // Setting nullptr doesn't detach the previous contents.
     UpdateContentsWebViewVisual();
+
+    if (need_to_update_secondary_web_view) {
+      // Revert back to default state.
+      contents_web_view_->SetFastResize(false);
+      secondary_contents_web_view_->SetFastResize(false);
+      contents_web_view_->DeprecatedLayoutImmediately();
+      secondary_contents_web_view_->DeprecatedLayoutImmediately();
+    }
   }
 }
 
