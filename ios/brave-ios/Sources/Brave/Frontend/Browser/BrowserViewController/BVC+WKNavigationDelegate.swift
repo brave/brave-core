@@ -298,6 +298,9 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    tab?.rewardsReportingState.isNewNavigation =
+      navigationAction.navigationType != WKNavigationType.backForward
+      && navigationAction.navigationType != WKNavigationType.reload
     tab?.currentRequestURL = requestURL
 
     // Website redirection logic
@@ -691,12 +694,22 @@ extension BrowserViewController: WKNavigationDelegate {
       let response = response as? HTTPURLResponse
     {
       let internalUrl = InternalURL(responseURL)
-      let isErrorPage = internalUrl?.isErrorPage == true || response.statusCode >= 400
-      let isSessionRestore = internalUrl?.isSessionRestore == true
 
-      if isErrorPage || isSessionRestore {
-        tab.shouldNotifyAdsServiceTabDidChange = false
-        tab.shouldNotifyAdsServiceTabContentDidChange = false
+      tab.rewardsReportingState.isErrorPage = internalUrl?.isErrorPage == true
+      if !tab.rewardsReportingState.isErrorPage {
+        let kHttpClientErrorResponseCodeClass = 4
+        let kHttpServerErrorResponseCodeClass = 5
+
+        let responseCodeClass = response.statusCode / 100
+        if responseCodeClass == kHttpClientErrorResponseCodeClass
+          || responseCodeClass == kHttpServerErrorResponseCodeClass
+        {
+          tab.rewardsReportingState.isErrorPage = true
+        }
+      }
+
+      if !tab.rewardsReportingState.wasRestored {
+        tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
       }
     }
 
@@ -1008,19 +1021,15 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       navigateInTab(tab: tab, to: navigation)
-      if tab.navigationType != WKNavigationType.backForward {
-        rewards.reportTabUpdated(
-          tab: tab,
-          isSelected: tabManager.selectedTab == tab,
-          isPrivate: privateBrowsingManager.isPrivateBrowsing
-        )
-        tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-      }
-      // Set `shouldNotifyAdsServiceTabDidChange` and
-      // `shouldNotifyAdsServiceTabContentDidChange` to `true` so that listeners
-      // are notified of tab changes after the tab is restored.
-      tab.shouldNotifyAdsServiceTabDidChange = true
-      tab.shouldNotifyAdsServiceTabContentDidChange = true
+      rewards.reportTabUpdated(
+        tab: tab,
+        isSelected: tabManager.selectedTab == tab,
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
+      tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+      // Reset `rewardsReportingState` tab property so that listeners
+      // can be notified of tab changes when a new navigation happens.
+      tab.rewardsReportingState = RewardsTabChangeReportingState()
 
       Task {
         await tab.updateEthereumProperties()
