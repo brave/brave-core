@@ -203,7 +203,7 @@ void BraveAppMenuModel::Build() {
     ApplyLeoIcons(submenu.get());
   }
 
-  // TODO(simonhong): apply reo icons recursively.
+  // TODO(simonhong): apply Nala icons recursively.
   // Can be null in tests.
   if (!bookmark_sub_menu_model()) {
     return;
