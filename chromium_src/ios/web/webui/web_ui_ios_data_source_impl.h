@@ -12,16 +12,20 @@ namespace network::mojom {
 enum class CSPDirectiveName : std::int32_t;
 }  // namespace network::mojom
 
-#define should_replace_i18n_in_js_ should_replace_i18n_in_js_; \
-  public: \
-    void OverrideContentSecurityPolicy(\
-        network::mojom::CSPDirectiveName directive, \
-        const std::string& value) override; \
-    virtual void AddFrameAncestor(const GURL& frame_ancestor) override; \
-    virtual void DisableTrustedTypesCSP() override; \
-  private: \
-    base::flat_map<network::mojom::CSPDirectiveName, std::string> csp_overrides_; \
-    std::set<GURL> frame_ancestors_
+#define should_replace_i18n_in_js_                                          \
+  should_replace_i18n_in_js_;                                               \
+                                                                            \
+ public:                                                                    \
+  void OverrideContentSecurityPolicy(                                       \
+      network::mojom::CSPDirectiveName directive, const std::string& value) \
+      override;                                                             \
+  void AddFrameAncestor(const GURL& frame_ancestor) override;               \
+  void DisableTrustedTypesCSP() override;                                   \
+                                                                            \
+ private:                                                                   \
+  base::flat_map<network::mojom::CSPDirectiveName, std::string>             \
+      csp_overrides_;                                                       \
+  std::set<GURL> frame_ancestors_
 
 #include "src/ios/web/webui/web_ui_ios_data_source_impl.h"  // IWYU pragma: export
 

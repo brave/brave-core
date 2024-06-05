@@ -17,7 +17,8 @@ enum class CSPDirectiveName : std::int32_t;
   virtual std::string GetContentSecurityPolicyObjectSrc
 
 #define ShouldServiceRequest                                    \
-  ShouldServiceRequest(const GURL& url) const;                  \
+  ShouldServiceRequest_ChromiumImpl(const GURL& url) const;     \
+  virtual bool ShouldServiceRequest(const GURL& url) const;     \
   virtual bool ShouldAddContentSecurityPolicy() const;          \
   virtual std::string GetContentSecurityPolicyFrameSrc() const; \
   virtual std::string GetContentSecurityPolicy(                 \

@@ -3,4 +3,5 @@ include_rules = [
   "+ios/chrome/browser/ui/policy/user_policy_util.h",
   "+ios/components/webui",
   "+mojo/public",
+  "+services/network/public/mojom/content_security_policy.mojom.h",
 ]

@@ -12,6 +12,8 @@ source_set("webui") {
   sources = [
     "brave_web_ui_controller_factory.h",
     "brave_web_ui_controller_factory.mm",
+    "brave_webui_data_source.h",
+    "brave_webui_data_source.mm",
     "brave_webui_source.h",
     "brave_webui_source.mm",
   ]
@@ -30,6 +32,7 @@ source_set("webui") {
     "//ios/chrome/browser/webui/ui_bundled:webui_internal",
     "//ios/components/webui:url_constants",
     "//ios/web/public/webui",
+    "//ios/web/webui:webui",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",

@@ -1,3 +1,8 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include "ios/web/public/webui/url_data_source_ios.h"
 
 #include "base/containers/span.h"
@@ -29,6 +34,10 @@ bool URLDataSourceIOS::ShouldAddContentSecurityPolicy() const {
   return true;
 }
 
+bool URLDataSourceIOS::ShouldServiceRequest(const GURL& url) const {
+  return URLDataSourceIOS::ShouldServiceRequest_ChromiumImpl(url);
+}
+
 std::string URLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
   if (ShouldAddContentSecurityPolicy()) {
     std::string csp_header;
@@ -41,7 +50,6 @@ std::string URLDataSourceIOS::GetContentSecurityPolicyObjectSrc() const {
         network::mojom::CSPDirectiveName::FencedFrameSrc,
         network::mojom::CSPDirectiveName::FormAction,
         network::mojom::CSPDirectiveName::FontSrc,
-        //      network::mojom::CSPDirectiveName::FrameSrc,
         network::mojom::CSPDirectiveName::ImgSrc,
         network::mojom::CSPDirectiveName::MediaSrc,
         network::mojom::CSPDirectiveName::ObjectSrc,
@@ -138,6 +146,9 @@ std::string URLDataSourceIOS::GetContentSecurityPolicy(
 #define GetContentSecurityPolicyObjectSrc \
   GetContentSecurityPolicyObjectSrc_ChromiumImpl
 
+#define ShouldServiceRequest ShouldServiceRequest_ChromiumImpl
+
 #include "src/ios/web/webui/url_data_source_ios.mm"
 
+#undef ShouldServiceRequest
 #undef GetContentSecurityPolicyObjectSrc
