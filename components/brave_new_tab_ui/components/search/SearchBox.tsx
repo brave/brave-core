@@ -6,12 +6,12 @@ import Flex from '$web-common/Flex';
 import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
 import Input from '@brave/leo/react/input';
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables';
+import { color, font, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSearchContext } from './SearchContext';
-import { braveSearchHost } from './config';
 import EnginePicker from './EnginePicker';
+import { useSearchContext } from './SearchContext';
+import { braveSearchHost, searchBoxRadius } from './config';
 
 const SearchInput = styled(Input)`
   --leo-control-focus-effect: none;
@@ -33,13 +33,13 @@ const SearchIconContainer = styled.div`
 `
 
 const Container = styled.div`
-  --leo-control-radius: ${radius.m};
+  --leo-control-radius: ${searchBoxRadius};
 
   display: flex;
 
   /* If we have search results, don't add a radius to the bottom of the search box */
   &:has(+ .search-results) {
-    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
+    --leo-control-radius: ${searchBoxRadius} ${searchBoxRadius} 0 0;
   }
 
   border-radius: var(--leo-control-radius);
@@ -50,7 +50,7 @@ export const Backdrop = styled.div`
   position: absolute;
   inset: 0;
   backdrop-filter: blur(64px);
-  border-radius: ${radius.m};
+  border-radius: ${searchBoxRadius};
 `
 
 export default function SearchBox() {

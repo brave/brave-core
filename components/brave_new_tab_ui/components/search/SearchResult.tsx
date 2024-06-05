@@ -19,7 +19,7 @@ interface Props {
 }
 
 const Container = styled.a`
-  padding: ${spacing.s} ${spacing.xl};
+  padding: ${spacing.s} ${spacing.m};
   border-radius: ${radius.m};
 
   display: flex;
@@ -56,11 +56,13 @@ const FavIcon = styled.span<{ url: string }>`
 
 const Content = styled.span`
   font: ${font.large.regular};
+  line-height: 24px;
   color: ${color.text.secondary};
 `
 
 const Description = styled.span`
   font: ${font.small.regular};
+  line-height: 18px;
   color: rgba(255,255,255,0.7);
 `
 
