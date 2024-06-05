@@ -75,7 +75,7 @@ export const iconMap: { [key: string]: string } = {
   'settings:zoom-in': 'search-zoom-in', // zoom levels
   'settings:pdf': 'file', // pdfs
   'settings:open-in-browser': 'window', // open in browser
-
+  'cr:delete': 'trash', // delete browsing data
 }
 
 RegisterStyleOverride('iron-icon', html`
