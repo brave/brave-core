@@ -10,8 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 // types
 import {
   BraveWallet,
-  NftDropdownOptionId,
-  WalletRoutes
+  NftDropdownOptionId
 } from '../../../../../constants/types'
 import {
   TokenBalancesRegistry //
@@ -108,7 +107,7 @@ const searchNfts = (
   items: BraveWallet.BlockchainToken[]
 ) => {
   if (searchValue === '') {
-    return items.slice()
+    return items
   }
 
   return items.filter((item) => {
@@ -182,9 +181,9 @@ export const Nfts = ({
   // queries
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
-  const { data: simpleHashSpamNfts = [], isLoading: isLoadingSpamNfts } =
+  const { data: simpleHashSpamNfts = [], isFetching: isLoadingSpamNfts } =
     useGetSimpleHashSpamNftsQuery(
-      tab === 'collected' ? skipToken : { accounts }
+      selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
   const { accounts: allAccounts } = useAccountsQuery()
   const { userTokensRegistry, hiddenNfts, visibleNfts } =
@@ -196,12 +195,12 @@ export const Nfts = ({
       })
     })
 
-  const shouldFetchSpamNftBalances = !(
-    tab === 'collected' ||
-    isLoadingSpamNfts ||
-    (!hideUnownedNfts && accounts.length === 0) ||
-    networks.length === 0
-  )
+  const shouldFetchSpamNftBalances =
+    selectedTab === 'hidden' &&
+    !isLoadingSpamNfts &&
+    !hideUnownedNfts &&
+    accounts.length > 0 &&
+    networks.length > 0
 
   const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
     shouldFetchSpamNftBalances
@@ -363,43 +362,48 @@ export const Nfts = ({
     tokenBalancesRegistry
   ])
 
-  const searchedNfts = React.useMemo(() => {
-    return searchNfts(
+  const { searchResults, totalNftsFound } = React.useMemo(() => {
+    const searchResults = searchNfts(
       searchValue,
       sortedSelectedNftListForChainsAndAccounts
-    ).sort(compareFn)
+    )
+    return {
+      searchResults,
+      totalNftsFound: searchResults.length
+    }
   }, [searchValue, sortedSelectedNftListForChainsAndAccounts])
 
   const lastPageNumber =
-    Math.floor(searchedNfts.length / LIST_PAGE_ITEM_COUNT) + 1
+    Math.floor(searchResults.length / LIST_PAGE_ITEM_COUNT) + 1
 
+  /** label summary is shown only on the selected tab */
   const dropDownOptions: NftDropdownOption[] = React.useMemo(() => {
     return [
       {
         id: 'collected',
         label: getLocale('braveNftsTabCollected'),
-        labelSummary: visibleUserNonSpamNfts.length
+        labelSummary: totalNftsFound
       },
       {
         id: 'hidden',
         label: getLocale('braveNftsTabHidden'),
-        labelSummary: hiddenAndSpamNfts.length
+        labelSummary: totalNftsFound
       }
     ]
-  }, [visibleUserNonSpamNfts.length, hiddenAndSpamNfts.length])
+  }, [totalNftsFound])
 
   const renderedListPage = React.useMemo(() => {
     const pageStartItemIndex =
       currentPageNumber * LIST_PAGE_ITEM_COUNT - LIST_PAGE_ITEM_COUNT
-    return searchedNfts.slice(
+    return searchResults.slice(
       pageStartItemIndex,
       pageStartItemIndex + LIST_PAGE_ITEM_COUNT
     )
-  }, [searchedNfts, currentPageNumber])
+  }, [searchResults, currentPageNumber])
 
   const isLoadingAssets =
     !assetAutoDiscoveryCompleted ||
-    (tab === 'hidden' &&
+    (selectedTab === 'hidden' &&
       (isLoadingSpamNfts ||
         (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)))
 
@@ -411,7 +415,7 @@ export const Nfts = ({
         history.push(makePortfolioNftsRoute(selectedTab, 1))
       }
     },
-    [history, currentPageNumber, selectedTab]
+    [currentPageNumber, history, selectedTab]
   )
 
   const onSelectAsset = React.useCallback(
@@ -452,10 +456,7 @@ export const Nfts = ({
 
   const onSelectOption = React.useCallback(
     (selectedOption: NftDropdownOption) => {
-      history.push({
-        pathname: WalletRoutes.PortfolioNFTs,
-        search: `?tab=${selectedOption.id}`
-      })
+      history.push(makePortfolioNftsRoute(selectedOption.id, 1))
     },
     [history]
   )
@@ -477,15 +478,6 @@ export const Nfts = ({
   React.useEffect(() => {
     braveWalletP3A.recordNFTGalleryView(visibleNfts.length)
   }, [braveWalletP3A, visibleNfts.length])
-
-  React.useEffect(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [assetAutoDiscoveryCompleted, dispatch])
-
-  React.useEffect(() => {
-    // redirect to first page when networks or accounts change
-    history.push(makePortfolioNftsRoute(selectedTab, 1))
-  }, [history, networks, accounts, selectedTab])
 
   return (
     <ContentWrapper
