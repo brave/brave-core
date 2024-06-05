@@ -11,10 +11,13 @@ import SearchDialog from './SearchDialog';
 import { searchBoxRadius } from './config';
 import Button from '@brave/leo/react/button';
 import Icon from '@brave/leo/react/icon';
+import ButtonMenu from '@brave/leo/react/buttonMenu';
+import { spacing } from '@brave/leo/tokens/css/variables';
+import { getLocale } from '$web-common/locale';
 
-const MenuButton = styled(Button)`
-  color: white;
-
+const MenuContainer = styled(ButtonMenu).attrs({
+  'data-theme': 'light'
+})`
   position: absolute;
   top: calc(50% - 12px);
   right: -28px;
@@ -23,6 +26,18 @@ const MenuButton = styled(Button)`
 
   transition: opacity 0.2s ease-in-out;
   transition-delay: 1s;
+
+  & > leo-menu-item {
+    display: flex;
+    align-items: center;
+    gap: ${spacing.m};
+
+    padding: ${spacing.m};
+  }
+`
+
+const MenuButton = styled(Button)`
+  color: white;
 `
 
 const PlaceholderContainer = styled.div`
@@ -32,7 +47,7 @@ const PlaceholderContainer = styled.div`
   
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
   
-  &:hover ${MenuButton} {
+  &:hover ${MenuContainer} {
     transition-delay: 0s;
     opacity: 1;
   }
@@ -41,6 +56,7 @@ const PlaceholderContainer = styled.div`
 function Swapper() {
   const { open, setOpen } = useSearchContext()
   const [boxPos, setBoxPos] = React.useState(0)
+  const [, setShowSearchBox] = useNewTabPref('showSearchBox')
   return <>
     {!open && <PlaceholderContainer onClick={e => {
       // If we were clicking a button inside the SearchBox, don't open the box.
@@ -53,9 +69,19 @@ function Swapper() {
     }}>
       <Backdrop />
       <SearchBox />
-      <MenuButton fab kind='plain-faint'>
-        <Icon name='more-vertical' />
-      </MenuButton>
+      <div data-theme="light">
+        <MenuContainer>
+          <MenuButton fab kind='plain-faint' slot='anchor-content'>
+            <Icon name='more-vertical' />
+          </MenuButton>
+          <leo-menu-item onClick={e => {
+            e.stopPropagation()
+            setShowSearchBox(false)
+          }}>
+            <Icon name='eye-off' /> {getLocale('searchHide')}
+          </leo-menu-item>
+        </MenuContainer>
+      </div>
     </PlaceholderContainer>}
     {open && <SearchDialog offsetY={boxPos} onClose={() => setOpen(false)} />}
   </>

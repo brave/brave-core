@@ -252,6 +252,9 @@
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
         Customize available engines
       </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_HIDE_SEARCH" desc="Message for the menu entry to hide the search box on the NTP">
+        Hide Search
+      </message>
 
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
         Want even better privacy?
