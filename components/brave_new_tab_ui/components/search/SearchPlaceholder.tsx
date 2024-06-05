@@ -43,6 +43,11 @@ function Swapper() {
   const [boxPos, setBoxPos] = React.useState(0)
   return <>
     {!open && <PlaceholderContainer onClick={e => {
+      // If we were clicking a button inside the SearchBox, don't open the box.
+      if (e.nativeEvent.composedPath().some(el => el['tagName'] === 'LEO-BUTTON')) {
+        console.log(e.nativeEvent.composedPath())
+        return
+      }
       setOpen(true)
       setBoxPos(e.currentTarget.getBoundingClientRect().y)
     }}>
