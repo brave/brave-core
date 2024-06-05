@@ -1090,4 +1090,5 @@
   <message name="IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE" desc="A label for the input field for entering the password for an imported file">Enter password (if applicable)</message>
   <message name="IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE" desc="Label for the dropdown to select the format to use for importing a private key">Import type</message>
   <message name="IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS" desc="Toggle label to enable or disable the display of NFTs that are not owned by any wallet account">Hide not owned NFTs</message>
+  <message name="IDS_BRAVE_WALLET_GROUP_BY_COLLECTION" desc="Toggle label for grouping NFTs by collection">Group by collection</message>
 </grit-part>
