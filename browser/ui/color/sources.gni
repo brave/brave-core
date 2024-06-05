@@ -14,6 +14,8 @@ if (!is_android) {
     "//brave/browser/ui/color/brave_material_side_panel_color_mixer.cc",
     "//brave/browser/ui/color/brave_material_side_panel_color_mixer.h",
     "//brave/browser/ui/color/color_palette.h",
+    "//brave/browser/ui/color/material_brave_color_mixer.cc",
+    "//brave/browser/ui/color/material_brave_color_mixer.h",
     "//brave/browser/ui/color/playlist/playlist_color_mixer.cc",
     "//brave/browser/ui/color/playlist/playlist_color_mixer.h",
   ]
