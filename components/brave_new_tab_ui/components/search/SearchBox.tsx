@@ -15,7 +15,7 @@ import { braveSearchHost, searchBoxRadius } from './config';
 
 const SearchInput = styled(Input)`
   --leo-control-focus-effect: none;
-  --leo-control-padding: 12px;
+  --leo-control-padding: 10px;
   --leo-control-color: rgba(255, 255, 255, 0.1);
   --leo-control-text-color: ${color.white};
   --leo-control-font: ${font.large.regular};
