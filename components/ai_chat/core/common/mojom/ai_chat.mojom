@@ -28,6 +28,7 @@ enum APIError {
 enum ModelEngineType {
   LLAMA_REMOTE,
   CLAUDE_REMOTE,
+  BRAVE_CONVERSATION_API,
 };
 
 // When adding or modifying category names, associated UI strings must also
