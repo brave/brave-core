@@ -212,6 +212,7 @@ class TxService : public KeyedService,
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
       uint64_t amount,
+      uint8_t decimals,
       MakeTokenProgramTransferTxDataCallback callback) override;
   void MakeTxDataFromBase64EncodedTransaction(
       const std::string& encoded_transaction,

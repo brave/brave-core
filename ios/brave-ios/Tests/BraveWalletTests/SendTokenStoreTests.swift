@@ -383,6 +383,7 @@ class SendTokenStoreTests: XCTestCase {
       isErc20: true,
       isErc721: false,
       isErc1155: false,
+      splTokenProgram: .unsupported,
       isNft: false,
       isSpam: false,
       symbol: batSymbol,
@@ -596,7 +597,7 @@ class SendTokenStoreTests: XCTestCase {
       selectedNetwork: .mockSolana,
       splTokenBalance: splTokenBalance
     )
-    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, completion in
+    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, _, completion in
       completion(.init(), .success, "")
     }
     let store = SendTokenStore(
@@ -746,7 +747,7 @@ class SendTokenStoreTests: XCTestCase {
       selectedNetwork: .mockSolana,
       solanaBalance: mockBalance
     )
-    solTxManagerProxy._makeTokenProgramTransferTxData = { chainId, _, _, _, amount, completion in
+    solTxManagerProxy._makeTokenProgramTransferTxData = { chainId, _, _, _, amount, _, completion in
       let splValueString = "10000"  // 0.01 SPD
       XCTAssertNotNil(UInt64(splValueString))
       XCTAssertEqual(amount, UInt64(splValueString)!)

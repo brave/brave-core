@@ -177,6 +177,7 @@ export const getRewardsBATToken = (
     isErc20: true,
     isErc721: false,
     isErc1155: false,
+    splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
     isNft: false,
     isSpam: false,
     decimals: 18,

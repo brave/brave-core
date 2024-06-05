@@ -155,6 +155,7 @@ export const AddCustomTokenForm = (props: Props) => {
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
         isErc1155: false,
+        splTokenProgram: BraveWallet.SPLTokenProgram.kUnknown,
         isNft: false,
         isSpam: false,
         visible: true

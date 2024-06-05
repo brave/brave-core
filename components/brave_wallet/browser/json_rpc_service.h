@@ -48,6 +48,19 @@ class NftMetadataFetcher;
 struct PendingAddChainRequest;
 struct PendingSwitchChainRequest;
 
+template <typename T>
+struct SolanaRPCResponse;
+
+template <typename T>
+using SolanaRPCResponsesCallback =
+    base::OnceCallback<void(std::vector<T> values,
+                            mojom::SolanaProviderError error,
+                            const std::string& error_message)>;
+
+template <typename T>
+void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
+                             std::vector<SolanaRPCResponse<T>> responses);
+
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
   JsonRpcService(
@@ -512,14 +525,28 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolanaBlockHeight(const std::string& chain_id,
                             GetSolanaBlockHeightCallback callback);
 
-  using GetSolanaTokenAccountsByOwnerCallback = base::OnceCallback<void(
-      const std::vector<SolanaAccountInfo>& token_accounts,
-      mojom::SolanaProviderError error,
-      const std::string& error_message)>;
+  using GetSolanaTokenAccountsByOwnerCallback =
+      base::OnceCallback<void(std::vector<SolanaAccountInfo> token_accounts,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
   void GetSolanaTokenAccountsByOwner(
       const SolanaAddress& pubkey,
       const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
+
+  using GetSPLTokenProgramByMintCallback =
+      base::OnceCallback<void(mojom::SPLTokenProgram token_program,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  // Get the SPL token program for a given mint address.
+  // It would first check if there's an existing info in prefs or registry,
+  // otherwise it would issue a request to the network to get the owner of the
+  // mint address to determine the token program. If the property was unknown
+  // in the user asset stored in prefs, it would be updated to the token program
+  // we get from the network.
+  void GetSPLTokenProgramByMint(const std::string& chain_id,
+                                const std::string& mint_address,
+                                GetSPLTokenProgramByMintCallback callback);
 
   void GetSPLTokenBalances(const std::string& pubkey,
                            const std::string& chain_id,
@@ -700,13 +727,30 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetSolanaBlockHeight(GetSolanaBlockHeightCallback callback,
                               APIRequestResult api_request_result);
   void OnGetSolanaTokenAccountsByOwner(
-      GetSolanaTokenAccountsByOwnerCallback callback,
+      base::OnceCallback<void(SolanaRPCResponse<SolanaAccountInfo>)> callback,
       APIRequestResult api_request_result);
   void OnIsSolanaBlockhashValid(IsSolanaBlockhashValidCallback callback,
                                 APIRequestResult api_request_result);
 
-  void OnGetSPLTokenBalances(GetSPLTokenBalancesCallback callback,
-                             APIRequestResult api_request_result);
+  void OnGetSPLTokenProgramByMint(const std::string& wallet_address,
+                                  const std::string& token_mint_address,
+                                  const GURL& network_url,
+                                  GetSPLTokenAccountBalanceCallback callback,
+                                  mojom::SPLTokenProgram token_program,
+                                  mojom::SolanaProviderError error,
+                                  const std::string& error_message);
+
+  void ContinueGetSPLTokenProgramByMint(
+      mojom::BlockchainTokenPtr user_asset,
+      GetSPLTokenProgramByMintCallback callback,
+      std::optional<SolanaAccountInfo> account_info,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
+
+  void OnGetSPLTokenBalances(
+      base::OnceCallback<void(SolanaRPCResponse<mojom::SPLTokenAmountPtr>)>
+          callback,
+      APIRequestResult api_request_result);
 
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,
                                 APIRequestResult api_request_result);

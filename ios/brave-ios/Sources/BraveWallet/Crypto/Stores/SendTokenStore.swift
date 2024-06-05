@@ -875,7 +875,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           splTokenMintAddress: token.contractAddress,
           fromWalletAddress: fromAccountInfo.address,
           toWalletAddress: sendToAddress,
-          amount: amount
+          amount: amount,
+          decimals: UInt8(token.decimals)
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
             self.isMakingTx = false

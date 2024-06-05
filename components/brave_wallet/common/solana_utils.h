@@ -13,6 +13,7 @@
 
 #include "base/containers/span.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 namespace brave_wallet {
 
@@ -44,6 +45,8 @@ std::optional<std::vector<uint8_t>> CompactArrayDecode(
 bool IsValidCommitmentString(const std::string& commitment);
 
 bool IsValidEncodingString(const std::string& encoding);
+
+bool IsSPLToken(const mojom::BlockchainTokenPtr& token);
 
 }  // namespace brave_wallet
 

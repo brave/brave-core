@@ -120,7 +120,7 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
       "params":[
         "pubkey",
         {
-          "programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          "programId":"program"
         },
         {
           "encoding":"%s"
@@ -128,22 +128,23 @@ TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
       ]
     }
   )";
-  ASSERT_EQ(
-      base::test::ParseJsonDict(getTokenAccountsByOwner("pubkey", "base64")),
-      base::test::ParseJsonDict(
-          base::StringPrintf(expected_json_string_fmt.c_str(), "base64")));
-
-  ASSERT_EQ(
-      base::test::ParseJsonDict(getTokenAccountsByOwner("pubkey", "base58")),
-      base::test::ParseJsonDict(
-          base::StringPrintf(expected_json_string_fmt.c_str(), "base58")));
+  ASSERT_EQ(base::test::ParseJsonDict(
+                getTokenAccountsByOwner("pubkey", "base64", "program")),
+            base::test::ParseJsonDict(base::StringPrintf(
+                expected_json_string_fmt.c_str(), "base64")));
 
   ASSERT_EQ(base::test::ParseJsonDict(
-                getTokenAccountsByOwner("pubkey", "jsonParsed")),
+                getTokenAccountsByOwner("pubkey", "base58", "program")),
+            base::test::ParseJsonDict(base::StringPrintf(
+                expected_json_string_fmt.c_str(), "base58")));
+
+  ASSERT_EQ(base::test::ParseJsonDict(
+                getTokenAccountsByOwner("pubkey", "jsonParsed", "program")),
             base::test::ParseJsonDict(base::StringPrintf(
                 expected_json_string_fmt.c_str(), "jsonParsed")));
 
-  EXPECT_CHECK_DEATH(getTokenAccountsByOwner("pubkey", "invalid encoding"));
+  EXPECT_CHECK_DEATH(
+      getTokenAccountsByOwner("pubkey", "invalid encoding", "program"));
 }
 
 TEST(SolanaRequestsUnitTest, isBlockhashValid) {

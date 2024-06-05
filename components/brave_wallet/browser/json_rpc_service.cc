@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -57,6 +58,58 @@
 #include "url/origin.h"
 
 using api_request_helper::APIRequestHelper;
+
+namespace brave_wallet {
+
+struct PendingAddChainRequest {
+  mojom::AddChainRequestPtr request;
+  url::Origin origin;
+};
+
+struct PendingSwitchChainRequest {
+  mojom::SwitchChainRequestPtr switch_chain_request;
+  url::Origin origin;
+  base::Value switch_chain_id;
+  mojom::EthereumProvider::RequestCallback switch_chain_callback;
+};
+
+template <typename T>
+struct SolanaRPCResponse {
+  std::vector<T> values;
+  mojom::SolanaProviderError error;
+  std::string error_message;
+
+  SolanaRPCResponse(std::vector<T>&& values,
+                    mojom::SolanaProviderError error,
+                    const std::string& error_message)
+      : values(std::move(values)), error(error), error_message(error_message) {}
+  ~SolanaRPCResponse() = default;
+
+  SolanaRPCResponse(SolanaRPCResponse&&) = default;
+  SolanaRPCResponse& operator=(SolanaRPCResponse&&) = default;
+  SolanaRPCResponse(const SolanaRPCResponse&) = delete;
+  SolanaRPCResponse& operator=(const SolanaRPCResponse&) = delete;
+};
+
+template <typename T>
+void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
+                             std::vector<SolanaRPCResponse<T>> responses) {
+  std::vector<T> merged_responses;
+  mojom::SolanaProviderError error = mojom::SolanaProviderError::kSuccess;
+  std::string error_message;
+  for (auto& response : responses) {
+    if (response.error != mojom::SolanaProviderError::kSuccess) {
+      error = response.error;
+      error_message = response.error_message;
+      break;
+    }
+    for (auto& value : response.values) {
+      merged_responses.push_back(std::move(value));
+    }
+  }
+
+  std::move(callback).Run(std::move(merged_responses), error, error_message);
+}
 
 namespace {
 
@@ -241,16 +294,8 @@ T* GetCustomEVMNetworkFromPrefsDict(const std::string& chain_id,
   return nullptr;
 }
 
-namespace solana {
 // https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
 constexpr char kAccountNotCreatedError[] = "could not find account";
-}  // namespace solana
-
-}  // namespace
-
-namespace brave_wallet {
-
-namespace {
 
 std::optional<std::string> GetAnkrBlockchainFromChainId(
     const std::string& chain_id) {
@@ -263,18 +308,6 @@ std::optional<std::string> GetAnkrBlockchainFromChainId(
 }
 
 }  // namespace
-
-struct PendingAddChainRequest {
-  mojom::AddChainRequestPtr request;
-  url::Origin origin;
-};
-
-struct PendingSwitchChainRequest {
-  mojom::SwitchChainRequestPtr switch_chain_request;
-  url::Origin origin;
-  base::Value switch_chain_id;
-  mojom::EthereumProvider::RequestCallback switch_chain_callback;
-};
 
 JsonRpcService::JsonRpcService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -2691,6 +2724,7 @@ void JsonRpcService::OnGetEthTokenDecimalsForInfo(
   asset->chain_id = chain_id;
   asset->contract_address = contract_address;
   asset->coin = mojom::CoinType::ETH;
+  asset->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   int decimals_int = 0;
   // This condition will never be met since the response of GetEthTokenDecimals
@@ -2767,9 +2801,24 @@ void JsonRpcService::GetSPLTokenAccountBalance(
     return;
   }
 
+  GetSPLTokenProgramByMint(
+      chain_id, token_mint_address,
+      base::BindOnce(&JsonRpcService::OnGetSPLTokenProgramByMint,
+                     weak_ptr_factory_.GetWeakPtr(), wallet_address,
+                     token_mint_address, network_url, std::move(callback)));
+}
+
+void JsonRpcService::OnGetSPLTokenProgramByMint(
+    const std::string& wallet_address,
+    const std::string& token_mint_address,
+    const GURL& network_url,
+    GetSPLTokenAccountBalanceCallback callback,
+    mojom::SPLTokenProgram token_program,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
   std::optional<std::string> associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(token_mint_address,
-                                               wallet_address);
+                                               wallet_address, token_program);
   if (!associated_token_account) {
     std::move(callback).Run(
         "", 0, "", mojom::SolanaProviderError::kInternalError,
@@ -2828,8 +2877,7 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
 
     // Treat balance as 0 if the associated token account is not created yet.
     if (error == mojom::SolanaProviderError::kInvalidParams &&
-        error_message.find(::solana::kAccountNotCreatedError) !=
-            std::string::npos) {
+        error_message.find(kAccountNotCreatedError) != std::string::npos) {
       std::move(callback).Run("0", 0u, "0",
                               mojom::SolanaProviderError::kSuccess, "");
       return;
@@ -3102,8 +3150,8 @@ void JsonRpcService::OnGetSolanaAccountInfo(
     return;
   }
 
-  std::move(callback).Run(account_info, mojom::SolanaProviderError::kSuccess,
-                          "");
+  std::move(callback).Run(std::move(account_info),
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetSolanaFeeForMessage(
@@ -3198,24 +3246,34 @@ void JsonRpcService::GetSolanaTokenAccountsByOwner(
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      solana::getTokenAccountsByOwner(pubkey.ToBase58(), "base64"), true,
-      network_url, std::move(internal_callback),
-      base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
-                     "/account",
-                     std::vector<std::string>({"lamports", "rentEpoch"})));
+  const auto barrier_callback =
+      base::BarrierCallback<SolanaRPCResponse<SolanaAccountInfo>>(
+          2, /* token and token2022 */
+          base::BindOnce(&MergeSolanaRPCResponses<SolanaAccountInfo>,
+                         std::move(callback)));
+
+  for (const auto& program_id :
+       {mojom::kSolanaTokenProgramId, mojom::kSolanaToken2022ProgramId}) {
+    RequestInternal(
+        solana::getTokenAccountsByOwner(pubkey.ToBase58(), "base64",
+                                        program_id),
+        true, network_url,
+        base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback),
+        base::BindOnce(&ConvertMultiUint64InObjectArrayToString,
+                       "/result/value", "/account",
+                       std::vector<std::string>({"lamports", "rentEpoch"})));
+  }
 }
 
 void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
-    GetSolanaTokenAccountsByOwnerCallback callback,
+    base::OnceCallback<void(SolanaRPCResponse<SolanaAccountInfo>)> callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        {}, mojom::SolanaProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        {{},
+         mojom::SolanaProviderError::kInternalError,
+         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -3226,13 +3284,12 @@ void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(
         api_request_result.value_body(), &error, &error_message);
-    std::move(callback).Run(std::vector<SolanaAccountInfo>(), error,
-                            error_message);
+    std::move(callback).Run({{}, error, error_message});
     return;
   }
 
-  std::move(callback).Run(token_accounts, mojom::SolanaProviderError::kSuccess,
-                          "");
+  std::move(callback).Run(
+      {std::move(token_accounts), mojom::SolanaProviderError::kSuccess, ""});
 }
 
 void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
@@ -3246,20 +3303,31 @@ void JsonRpcService::GetSPLTokenBalances(const std::string& pubkey,
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetSPLTokenBalances,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::getTokenAccountsByOwner(pubkey, "jsonParsed"), true,
-                  network_url, std::move(internal_callback));
+  const auto barrier_callback =
+      base::BarrierCallback<SolanaRPCResponse<mojom::SPLTokenAmountPtr>>(
+          2, /* token and token2022 */
+          base::BindOnce(&MergeSolanaRPCResponses<mojom::SPLTokenAmountPtr>,
+                         std::move(callback)));
+
+  for (const auto& program_id :
+       {mojom::kSolanaTokenProgramId, mojom::kSolanaToken2022ProgramId}) {
+    RequestInternal(
+        solana::getTokenAccountsByOwner(pubkey, "jsonParsed", program_id), true,
+        network_url,
+        base::BindOnce(&JsonRpcService::OnGetSPLTokenBalances,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback));
+  }
 }
 
 void JsonRpcService::OnGetSPLTokenBalances(
-    GetSPLTokenBalancesCallback callback,
+    base::OnceCallback<void(SolanaRPCResponse<mojom::SPLTokenAmountPtr>)>
+        callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        {}, mojom::SolanaProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        {{},
+         mojom::SolanaProviderError::kInternalError,
+         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -3270,12 +3338,12 @@ void JsonRpcService::OnGetSPLTokenBalances(
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(
         api_request_result.value_body(), &error, &error_message);
-    std::move(callback).Run({}, error, error_message);
+    std::move(callback).Run({{}, error, error_message});
     return;
   }
 
-  std::move(callback).Run(std::move(*result),
-                          mojom::SolanaProviderError::kSuccess, "");
+  std::move(callback).Run(
+      {std::move(*result), mojom::SolanaProviderError::kSuccess, ""});
 }
 
 void JsonRpcService::AnkrGetAccountBalances(
@@ -3354,6 +3422,73 @@ void JsonRpcService::OnAnkrGetAccountBalances(
 
   std::move(callback).Run(std::move(*result), mojom::ProviderError::kSuccess,
                           "");
+}
+
+void JsonRpcService::GetSPLTokenProgramByMint(
+    const std::string& chain_id,
+    const std::string& mint_address,
+    GetSPLTokenProgramByMintCallback callback) {
+  if (chain_id.empty() || mint_address.empty()) {
+    std::move(callback).Run(
+        mojom::SPLTokenProgram::kUnknown,
+        mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  mojom::BlockchainTokenPtr user_asset;
+  if ((user_asset = GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id,
+                                 mint_address, "", false, false))) {
+    if (user_asset->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
+      std::move(callback).Run(user_asset->spl_token_program,
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
+  } else if (auto token = BlockchainRegistry::GetInstance()->GetTokenByAddress(
+                 chain_id, mojom::CoinType::SOL, mint_address)) {
+    // In theory token in registry won't have unknown value appears, but we let
+    // it fall through to fetch from network as it won't hurt if that does
+    // happen somehow.
+    if (token->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
+      std::move(callback).Run(token->spl_token_program,
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::ContinueGetSPLTokenProgramByMint,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(user_asset),
+                     std::move(callback));
+  GetSolanaAccountInfo(chain_id, mint_address, std::move(internal_callback));
+}
+
+void JsonRpcService::ContinueGetSPLTokenProgramByMint(
+    mojom::BlockchainTokenPtr user_asset,
+    GetSPLTokenProgramByMintCallback callback,
+    std::optional<SolanaAccountInfo> account_info,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (!account_info) {
+    std::move(callback).Run(mojom::SPLTokenProgram::kUnknown, error,
+                            error_message);
+    return;
+  }
+
+  mojom::SPLTokenProgram program = mojom::SPLTokenProgram::kUnknown;
+  if (account_info->owner == mojom::kSolanaTokenProgramId) {
+    program = mojom::SPLTokenProgram::kToken;
+  } else if (account_info->owner == mojom::kSolanaToken2022ProgramId) {
+    program = mojom::SPLTokenProgram::kToken2022;
+  } else {
+    program = mojom::SPLTokenProgram::kUnsupported;
+  }
+
+  if (user_asset) {
+    SetAssetSPLTokenProgram(prefs_, user_asset, program);
+  }
+
+  std::move(callback).Run(program, mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

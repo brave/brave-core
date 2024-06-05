@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
@@ -145,6 +146,11 @@ bool IsValidCommitmentString(const std::string& commitment) {
 bool IsValidEncodingString(const std::string& encoding) {
   return encoding == "base58" || encoding == "base64" ||
          encoding == "jsonParsed";
+}
+
+bool IsSPLToken(const mojom::BlockchainTokenPtr& token) {
+  return token->coin == mojom::CoinType::SOL &&
+         !token->contract_address.empty();
 }
 
 }  // namespace brave_wallet

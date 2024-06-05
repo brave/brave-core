@@ -736,6 +736,7 @@ mojom::BlockchainTokenPtr NetworkToNativeToken(
   result->decimals = network.decimals;
   result->logo = network.icon_urls.empty() ? "" : network.icon_urls[0];
   result->visible = true;
+  result->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
   return result;
 }
@@ -1858,6 +1859,36 @@ std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
   return result;
 }
 
+mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
+                                       mojom::CoinType coin,
+                                       const std::string& chain_id,
+                                       const std::string& address,
+                                       const std::string& token_id,
+                                       bool is_erc721,
+                                       bool is_erc1155) {
+  mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New();
+  token->chain_id = chain_id;
+  token->contract_address = address;
+  token->coin = coin;
+  token->token_id = token_id;
+  token->is_erc721 = is_erc721;
+  token->is_erc1155 = is_erc1155;
+
+  const auto& user_assets_list = prefs->GetList(kBraveWalletUserAssetsList);
+  for (auto& asset : user_assets_list) {
+    auto* token_dict = asset.GetIfDict();
+    if (!token_dict) {
+      continue;
+    }
+
+    if (TokenMatchesDict(token, token_dict)) {
+      return ValueToBlockchainToken(*token_dict);
+    }
+  }
+
+  return nullptr;
+}
+
 mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
                                        mojom::BlockchainTokenPtr token) {
   if (!GetChain(prefs, token->chain_id, token->coin)) {
@@ -1873,6 +1904,10 @@ mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
     if (!HexValueToUint256(token->token_id, &token_id_uint)) {
       return nullptr;
     }
+  }
+
+  if (!IsSPLToken(token)) {
+    token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   }
 
   ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
@@ -1922,6 +1957,21 @@ bool SetAssetSpamStatus(PrefService* prefs,
       token_value.GetDict().Set("is_spam", is_spam);
       // Marking a token as spam makes it not visible and vice-versa
       token_value.GetDict().Set("visible", !is_spam);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool SetAssetSPLTokenProgram(PrefService* prefs,
+                             const mojom::BlockchainTokenPtr& token,
+                             mojom::SPLTokenProgram program) {
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+
+  for (auto& token_value : *update) {
+    if (TokenMatchesDict(token, token_value.GetIfDict())) {
+      token_value.GetDict().Set("spl_token_program", static_cast<int>(program));
       return true;
     }
   }
@@ -2126,6 +2176,17 @@ void SetTransactionSimulationOptInStatus(
 bool IsRetriableStatus(mojom::TransactionStatus status) {
   return status == mojom::TransactionStatus::Error ||
          status == mojom::TransactionStatus::Dropped;
+}
+
+std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program) {
+  switch (program) {
+    case mojom::SPLTokenProgram::kToken:
+      return mojom::kSolanaTokenProgramId;
+    case mojom::SPLTokenProgram::kToken2022:
+      return mojom::kSolanaToken2022ProgramId;
+    default:
+      return "";
+  }
 }
 
 }  // namespace brave_wallet

@@ -135,11 +135,18 @@ export const AddNftForm = (props: Props) => {
         isErc721:
           customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenId,
         isErc1155: false,
+        splTokenProgram: BraveWallet.SPLTokenProgram.kUnknown,
         isNft: true,
         isSpam: false,
         visible: true
       }
-    }, [customAssetsNetwork, tokenContractAddress, name, symbol, tokenId])
+    }, [
+      customAssetsNetwork,
+      tokenContractAddress,
+      name,
+      symbol,
+      tokenId
+    ])
 
   const resetBaseInputFields = React.useCallback(() => {
     setCustomTokenName(undefined)

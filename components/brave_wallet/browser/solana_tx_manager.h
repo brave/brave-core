@@ -80,6 +80,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
       uint64_t amount,
+      uint8_t decimals,
       MakeTokenProgramTransferTxDataCallback callback);
   void MakeTxDataFromBase64EncodedTransaction(
       const std::string& encoded_transaction,
@@ -167,6 +168,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                         const std::string& from_associated_token_account,
                         const std::string& to_associated_token_account,
                         uint64_t amount,
+                        uint8_t decimals,
+                        mojom::SPLTokenProgram token_program,
                         MakeTokenProgramTransferTxDataCallback callback,
                         std::optional<SolanaAccountInfo> account_info,
                         mojom::SolanaProviderError error,
@@ -182,6 +185,17 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                           uint64_t tx_fee,
                           mojom::SolanaProviderError error,
                           const std::string& error_message);
+  void OnGetSPLTokenProgramByMint(
+      const std::string& chain_id,
+      const std::string& spl_token_mint_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      uint64_t amount,
+      uint8_t decimals,
+      MakeTokenProgramTransferTxDataCallback callback,
+      mojom::SPLTokenProgram token_program,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
 
   // SolanaBlockTracker::Observer
   void OnLatestBlockhashUpdated(const std::string& chain_id,

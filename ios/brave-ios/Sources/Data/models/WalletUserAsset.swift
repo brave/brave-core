@@ -16,6 +16,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var isERC20: Bool
   @NSManaged public var isERC721: Bool
   @NSManaged public var isERC1155: Bool
+  @NSManaged public var splTokenProgram: NSNumber?
   @NSManaged public var isNFT: Bool
   @NSManaged public var isSpam: Bool
   @NSManaged public var symbol: String
@@ -28,6 +29,17 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var isDeletedByUser: Bool
   @NSManaged public var walletUserAssetGroup: WalletUserAssetGroup?
 
+  /// Helper to get the enum value based on the stored optional Int16. If nil, infer value based on `coin`.
+  private var splTokenProgramEnumValue: BraveWallet.SPLTokenProgram {
+    if let splTokenProgramValue = self.splTokenProgram?.intValue,
+      let splTokenProgram = BraveWallet.SPLTokenProgram(rawValue: Int(splTokenProgramValue))
+    {
+      return splTokenProgram
+    } else {
+      return .unknown
+    }
+  }
+
   public var blockchainToken: BraveWallet.BlockchainToken {
     .init(
       contractAddress: self.contractAddress,
@@ -36,6 +48,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       isErc20: self.isERC20,
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
+      splTokenProgram: self.splTokenProgramEnumValue,
       isNft: self.isNFT,
       isSpam: self.isSpam,
       symbol: self.symbol,
@@ -72,6 +85,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     self.isERC20 = asset.isErc20
     self.isERC721 = asset.isErc721
     self.isERC1155 = asset.isErc1155
+    self.splTokenProgram = NSNumber(value: asset.splTokenProgram.rawValue)
     self.isNFT = asset.isNft
     self.isSpam = asset.isSpam
     self.symbol = asset.symbol

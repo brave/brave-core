@@ -204,6 +204,8 @@ TEST(TestBraveWalletHandler, AddChain) {
   expected_token->decimals = 11;
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
+  expected_token->spl_token_program =
+      brave_wallet::mojom::SPLTokenProgram::kUnsupported;
 
   EXPECT_THAT(brave_wallet::GetAllUserAssets(handler.prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));

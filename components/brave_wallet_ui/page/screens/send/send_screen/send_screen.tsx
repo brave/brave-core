@@ -382,7 +382,8 @@ export const SendScreen = React.memo((props: Props) => {
                   .multiplyByDecimals(tokenFromParams.decimals)
                   .toHex()
               : new Amount(sendAmount).toHex(),
-            splTokenMintAddress: tokenFromParams.contractAddress
+            splTokenMintAddress: tokenFromParams.contractAddress,
+            decimals: tokenFromParams.decimals
           })
           resetSendFields()
           return

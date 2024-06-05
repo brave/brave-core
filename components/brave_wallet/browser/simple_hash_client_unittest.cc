@@ -759,6 +759,7 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
   nft1->is_erc1155 = false;
   nft1->is_erc20 = false;
   nft1->is_nft = true;
+  nft1->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   nft1->symbol = "ONE";
   nft1->coin = mojom::CoinType::ETH;
   expected_nfts.push_back(std::move(nft1));
@@ -841,6 +842,7 @@ TEST_F(SimpleHashClientUnitTest, FetchAllNFTsFromSimpleHash) {
   nft2->is_erc20 = false;
   nft2->is_erc721 = true;
   nft2->is_erc1155 = false;
+  nft2->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   nft2->is_nft = true;
   nft2->symbol = "FIVE";
   nft2->coin = mojom::CoinType::ETH;
@@ -880,6 +882,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   nft1->is_erc721 = true;
   nft1->is_erc1155 = false;
   nft1->is_erc20 = false;
+  nft1->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   nft1->is_nft = true;
   nft1->symbol = "ONE";
   nft1->coin = mojom::CoinType::ETH;
@@ -992,6 +995,7 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
   nft3->is_erc721 = true;
   nft3->is_erc1155 = false;
   nft3->is_erc20 = false;
+  nft3->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   nft3->is_nft = true;
   nft3->symbol = "THREE";
   nft3->coin = mojom::CoinType::ETH;

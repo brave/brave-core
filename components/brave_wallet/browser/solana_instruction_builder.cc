@@ -87,38 +87,46 @@ namespace spl_token_program {
 // directly or via a delegate.
 // Account references for single owner/delegate:
 //   0. Source account [non-signer, writable].
-//   1. Destination account [non-signer, writable].
-//   2. Authority account (source account's owner/delegate) [signer, readonly]
+//   1. The token mint [non-signer, readonly].
+//   2. Destination account [non-signer, writable].
+//   3. Authority account (source account's owner/delegate) [signer, readonly]
 // Account references for multisignature owner/delegate:
 //   0. Source account [non-signer, writable].
-//   1. Destination account [non-signer, writable].
-//   2. Authority account (source account's multisignature owner/delegate)
+//   1. The token mint [non-signer, readonly].
+//   2. Destination account [non-signer, writable].
+//   3. Authority account (source account's multisignature owner/delegate)
 //      [non-signer, readonly]
-//   3~3+M. M signer accounts [signer, readonly].
+//   4~4+M. M signer accounts [signer, readonly].
 // Insturction data: u8 instruction index and u64 amount.
-std::optional<SolanaInstruction> Transfer(
+std::optional<SolanaInstruction> TransferChecked(
     const std::string& token_program_id,
     const std::string& source_pubkey,
+    const std::string& mint_address,
     const std::string& destination_pubkey,
     const std::string& authority_pubkey,
     const std::vector<std::string>& signer_pubkeys,
-    uint64_t amount) {
+    uint64_t amount,
+    uint8_t decimals) {
   if (token_program_id.empty() || source_pubkey.empty() ||
-      destination_pubkey.empty() || authority_pubkey.empty()) {
+      mint_address.empty() || destination_pubkey.empty() ||
+      authority_pubkey.empty()) {
     return std::nullopt;
   }
 
   // Instruction data is consisted of u8 instruction index and u64 amount.
   std::vector<uint8_t> instruction_data = {
-      static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransfer)};
+      static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransferChecked)};
 
   std::vector<uint8_t> amount_bytes;
   UintToLEBytes(amount, &amount_bytes);
   instruction_data.insert(instruction_data.end(), amount_bytes.begin(),
                           amount_bytes.end());
 
+  instruction_data.emplace_back(decimals);
+
   std::vector<SolanaAccountMeta> account_metas = {
       SolanaAccountMeta(source_pubkey, std::nullopt, false, true),
+      SolanaAccountMeta(mint_address, std::nullopt, false, false),
       SolanaAccountMeta(destination_pubkey, std::nullopt, false, true),
       SolanaAccountMeta(authority_pubkey, std::nullopt, signer_pubkeys.empty(),
                         false)};
@@ -149,12 +157,13 @@ namespace spl_associated_token_account_program {
 // Ref:
 // https://docs.rs/spl-associated-token-account/1.1.2/spl_associated_token_account/instruction/enum.AssociatedTokenAccountInstruction.html#variant.Create
 std::optional<SolanaInstruction> CreateAssociatedTokenAccount(
+    const std::string& token_program_id,
     const std::string& funding_address,
     const std::string& wallet_address,
     const std::string& associated_token_account_address,
     const std::string& spl_token_mint_address) {
-  if (funding_address.empty() || wallet_address.empty() ||
-      associated_token_account_address.empty() ||
+  if (token_program_id.empty() || funding_address.empty() ||
+      wallet_address.empty() || associated_token_account_address.empty() ||
       spl_token_mint_address.empty()) {
     return std::nullopt;
   }
@@ -167,8 +176,7 @@ std::optional<SolanaInstruction> CreateAssociatedTokenAccount(
       SolanaAccountMeta(spl_token_mint_address, std::nullopt, false, false),
       SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
                         false),
-      SolanaAccountMeta(mojom::kSolanaTokenProgramId, std::nullopt, false,
-                        false)};
+      SolanaAccountMeta(token_program_id, std::nullopt, false, false)};
   return SolanaInstruction(mojom::kSolanaAssociatedTokenProgramId,
                            std::move(account_metas), std::vector<uint8_t>());
 }

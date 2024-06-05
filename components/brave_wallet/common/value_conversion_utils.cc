@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "net/base/url_util.h"
 
 namespace {
@@ -360,6 +361,21 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
     token_ptr->coingecko_id = *coingecko_id;
   }
 
+  if (IsSPLToken(token_ptr)) {
+    auto spl_token_program_int = value.FindInt("spl_token_program");
+    if (!spl_token_program_int) {
+      token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+    } else {
+      auto spl_token_program =
+          static_cast<mojom::SPLTokenProgram>(*spl_token_program_int);
+      token_ptr->spl_token_program = mojom::IsKnownEnumValue(spl_token_program)
+                                         ? spl_token_program
+                                         : mojom::SPLTokenProgram::kUnknown;
+    }
+  } else {
+    token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  }
+
   return token_ptr;
 }
 
@@ -382,6 +398,7 @@ base::Value::Dict BlockchainTokenToValue(
   value.Set("coingecko_id", token->coingecko_id);
   value.Set("coin", static_cast<int>(token->coin));
   value.Set("chain_id", token->chain_id);
+  value.Set("spl_token_program", static_cast<int>(token->spl_token_program));
   return value;
 }
 
