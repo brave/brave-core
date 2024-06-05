@@ -15,6 +15,9 @@
 
 namespace web_discovery {
 
+inline constexpr char kActionKey[] = "action";
+inline constexpr char kInnerPayloadKey[] = "payload";
+
 std::vector<base::Value::Dict> GeneratePayloads(
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result);

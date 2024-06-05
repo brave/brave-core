@@ -11,9 +11,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "base/timer/timer.h"
 #include "base/values.h"
-#include "net/base/backoff_entry.h"
+#include "brave/components/web_discovery/browser/request_queue.h"
 #include "url/gurl.h"
 
 class PrefService;
@@ -41,8 +40,7 @@ class DoubleFetcher {
   void ScheduleDoubleFetch(const GURL& url, base::Value associated_data);
 
  private:
-  void OnFetchTimer();
-  void StartFetchTimer(base::TimeDelta delta);
+  void OnFetchTimer(const base::Value& request_data);
   void OnRequestComplete(std::optional<std::string> response_body);
   bool ProcessCompletedRequest(std::optional<std::string>* response_body);
 
@@ -50,9 +48,8 @@ class DoubleFetcher {
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 
-  net::BackoffEntry backoff_entry_;
+  RequestQueue request_queue_;
 
-  base::OneShotTimer fetch_timer_;
   FetchedCallback callback_;
 };
 
