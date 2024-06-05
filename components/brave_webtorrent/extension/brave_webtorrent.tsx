@@ -51,6 +51,7 @@ const unsubscribe = store.subscribe(async () => {
     const tab: any = await new Promise((resolve) =>
       chrome.tabs.getCurrent(resolve)
     )
+
     render(
       <Provider store={store}>
         <GlobalStyle />

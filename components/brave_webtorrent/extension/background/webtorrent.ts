@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import WebTorrent from 'webtorrent'
+import * as WebTorrent from 'webtorrent'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
