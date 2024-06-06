@@ -313,7 +313,7 @@ const util = {
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
     // Replace chrome dark logo with channel specific brave logo.
     fileMap.add([
-      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+      path.join(config.braveCoreDir, 'browser', 'resources', 'settings', 'images',
           config.getBraveLogoIconName()),
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])
