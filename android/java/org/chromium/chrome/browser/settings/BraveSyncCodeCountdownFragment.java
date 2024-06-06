@@ -6,7 +6,10 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,9 +95,16 @@ public class BraveSyncCodeCountdownFragment extends Fragment {
                             .getString(
                                     R.string.brave_sync_valid_for_period_text, formattedDuration);
 
+            SpannableString formatedText = new SpannableString(theWarningText);
+            formatedText.setSpan(
+                    new StyleSpan(Typeface.BOLD),
+                    theWarningText.length() - formattedDuration.length(),
+                    theWarningText.length(),
+                    0);
+
             TextView countDownTextView =
                     (TextView) getView().findViewById(R.id.brave_sync_count_down_text);
-            countDownTextView.setText(theWarningText);
+            countDownTextView.setText(formatedText);
         } else {
             countDownExpiredBlock.setVisibility(View.VISIBLE);
             countdownBlock.setVisibility(View.GONE);
