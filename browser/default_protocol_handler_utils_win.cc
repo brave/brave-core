@@ -67,7 +67,7 @@ std::wstring HashString(std::wstring_view input_string) {
   // in the scramble below.
   base::MD5Digest digest;
   base::MD5Sum(base::span(input_bytes, input_byte_count), &digest);
-  auto* md5 = reinterpret_cast<DWORD*>(digest.a);
+  auto* md5 = reinterpret_cast<DWORD*>(digest.a.data());
   // The following loop effectively computes two checksums, scrambled like a
   // hash after every DWORD is added.
 
