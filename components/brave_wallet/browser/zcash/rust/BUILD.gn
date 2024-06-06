@@ -56,6 +56,6 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/components/brave_wallet/rust:rust_lib",
-    "//brave/third_party/rust/orchard/v0_7:lib",
+    "//brave/third_party/rust/orchard/v0_8:lib",
   ]
 }
