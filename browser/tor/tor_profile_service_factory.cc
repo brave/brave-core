@@ -5,6 +5,7 @@
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
+#include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
@@ -86,8 +87,13 @@ bool TorProfileServiceFactory::IsTorDisabled(content::BrowserContext* context) {
     return true;
   }
   if (g_browser_process) {
-    return g_browser_process->local_state()->GetBoolean(
-        tor::prefs::kTorDisabled);
+    // local_state can be null in tests
+    if (g_browser_process->local_state()) {
+      return g_browser_process->local_state()->GetBoolean(
+          tor::prefs::kTorDisabled);
+    } else {
+      CHECK_IS_TEST();
+    }
   }
   return false;
 }

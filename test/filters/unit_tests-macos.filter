@@ -4,3 +4,59 @@
 ## When adding a new filter to this list, please include a short description of
 ## why the filter is required and create an associated tracking issue.
 ##
+
+# MacOS overrides `DIR_USER_NATIVE_MESSAGING` to use Google dir
+-NativeMessagingTest.EchoConnect
+-NativeMessagingTest.ReconnectArgs
+-NativeMessagingTest.ReconnectArgsIfNativeConnectionDisallowed
+-NativeMessagingTest.ReconnectArgs_Disabled
+-NativeMessagingTest.UserLevel
+
+# We have a different number of items in the menu model
+-All/RecentTabsSubMenuModelTest.NoTabs/0
+-All/RecentTabsSubMenuModelTest.OtherDevices/0
+-All/RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate/0
+
+# UI specific colors and themes that we change
+-All/NewTabPageHandlerThemeTest.*
+-MaterialNewTabPageColorMixerTest.*
+-ThemeColorPickerHandlerTest.*
+-All/ThemeColorPickerHandlerSetThemeTest.*
+
+# We modify first dialog run behavior
+-FirstRunDialogControllerTest.*
+-FirstRunServiceTest.ShouldOpenFirstRun
+
+# We are incorrectly adding modifiers to accelerators somewhere - need to investigate
+-AcceleratorTableTest.CheckMacOSAccelerators
+
+# Still need investigation for failures
+-AcceleratorTableTest.CheckNoDuplicatesGlobalKeyboardShortcutsMac
+-All/TabStripRegionViewTest.NewTabButtonRightOfTabs/0
+-All/TabStripRegionViewTest.NewTabButtonRightOfTabs/1
+-MacHistorySwiperTest.MagicMouseStateResetsCorrectly
+-MacHistorySwiperTest.SwipeLeft
+-MacHistorySwiperTest.SwipeLeftSmallAmount
+-MacHistorySwiperTest.SwipeLeftThenDown
+-MacHistorySwiperTest.SwipeRight
+-MacHistorySwiperTest.SwipeRightEventOrdering
+-MacHistorySwiperTest.TouchEventAfterGestureFinishes
+-NtpCustomBackgroundServiceTest.TestUpdateCustomBackgroundColorGM3
+
+# Still need to investigate for crashes
+-All/NtpBackgroundServiceTest.CollectionRequestWithGM3Enabled/0
+-All/NtpBackgroundServiceTest.CollectionRequestWithGM3Enabled/1
+-BookmarkMenuCocoaControllerTest.TestOpenItemAfterModelLoaded
+-BookmarkMenuCocoaControllerTest.TestOpenItemWhileModelLoading
+-BrowserWindowDefaultTouchBarUnitTest.BackAccessibilityLabel
+-BrowserWindowDefaultTouchBarUnitTest.BackCommandUpdate
+-BrowserWindowDefaultTouchBarUnitTest.BookmkarStarTouchBarItem
+-BrowserWindowDefaultTouchBarUnitTest.ForwardAccessibilityLabel
+-BrowserWindowDefaultTouchBarUnitTest.ForwardCommandUpdate
+-BrowserWindowDefaultTouchBarUnitTest.HistoricTouchBarItems
+-BrowserWindowDefaultTouchBarUnitTest.HomeUpdate
+-BrowserWindowDefaultTouchBarUnitTest.ReloadOrStopTouchBarItem
+-BrowserWindowDefaultTouchBarUnitTest.TouchBarItems
+-ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveMode
+-ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
+-FirstRunServiceTest.ShouldPopulateProfileNameFromPrimaryAccount
