@@ -70,6 +70,10 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
+  ConversationAPIClient::ConversationEvent
+  GetAssociatedContentConversationEvent(const std::string& content,
+                                        const bool is_video);
+
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
   base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};
 };

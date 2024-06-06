@@ -26,18 +26,6 @@ namespace {
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
-ConversationEvent GetAssociatedContentConversationEvent(
-    const std::string& content,
-    const bool is_video) {
-  ConversationEvent event;
-  event.role = mojom::CharacterType::HUMAN;
-  event.content = content;
-  // TODO(petemill): Differentiate video XML / VTT
-  event.type = is_video ? ConversationEventType::VideoTranscriptXML
-                        : ConversationEventType::PageText;
-  return event;
-}
-
 }  // namespace
 
 EngineConsumerConversationAPI::EngineConsumerConversationAPI(
@@ -47,6 +35,7 @@ EngineConsumerConversationAPI::EngineConsumerConversationAPI(
   DCHECK(!model.name.empty());
   api_ = std::make_unique<ConversationAPIClient>(model.name, url_loader_factory,
                                                  credential_manager);
+  max_page_content_length_ = model.max_page_content_length;
 }
 
 EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
@@ -153,6 +142,22 @@ void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {
 
 bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
   return true;
+}
+
+ConversationEvent
+EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
+    const std::string& content,
+    const bool is_video) {
+  const std::string& truncated_page_content =
+      content.substr(0, max_page_content_length_);
+
+  ConversationEvent event;
+  event.role = mojom::CharacterType::HUMAN;
+  event.content = truncated_page_content;
+  // TODO(petemill): Differentiate video XML / VTT
+  event.type = is_video ? ConversationEventType::VideoTranscriptXML
+                        : ConversationEventType::PageText;
+  return event;
 }
 
 }  // namespace ai_chat
