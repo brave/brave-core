@@ -267,6 +267,8 @@ export const useReceiveAddressQuery = (
   React.useEffect(() => {
     // skip fetching/polling if not needed
     if (accountId?.address) {
+      setReceiveAddress(accountId.address)
+      setIsFetchingAddress(false)
       return
     }
 
