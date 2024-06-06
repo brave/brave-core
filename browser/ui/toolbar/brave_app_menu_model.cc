@@ -198,8 +198,24 @@ void BraveAppMenuModel::Build() {
 
   ApplyLeoIcons(this);
   ApplyLeoIcons(bookmark_sub_menu_model());
+
   for (const auto& submenu : sub_menus()) {
     ApplyLeoIcons(submenu.get());
+  }
+
+  // TODO(simonhong): apply Nala icons recursively.
+  // Can be null in tests.
+  if (!bookmark_sub_menu_model()) {
+    return;
+  }
+
+  if (const auto reading_list_submenu_index =
+          bookmark_sub_menu_model()->GetIndexOfCommandId(
+              IDC_READING_LIST_MENU)) {
+    auto* reading_list_submenu = bookmark_sub_menu_model()->GetSubmenuModelAt(
+        *reading_list_submenu_index);
+    CHECK(reading_list_submenu);
+    ApplyLeoIcons(static_cast<ui::SimpleMenuModel*>(reading_list_submenu));
   }
 }
 
