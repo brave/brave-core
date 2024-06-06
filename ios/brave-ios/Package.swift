@@ -397,8 +397,9 @@ var package = Package(
       name: "PlaylistUI",
       dependencies: [
         "Favicon", "Data", "DesignSystem", "Playlist", "SDWebImage", "SnapKit", "Strings",
-        .product(name: "Algorithms", package: "swift-algorithms"),
-      ]
+        "CodableHelpers", .product(name: "Algorithms", package: "swift-algorithms"),
+      ],
+      resources: [.copy("Resources/oembed_providers.json")]
     ),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),

@@ -32,6 +32,13 @@ class MediaThumbnailLoader: ObservableObject {
       }
       return
     }
+    if let oembedThumbnail = await OEmbedThumbnailFetcher.shared.oembedThumbnail(for: pageURL) {
+      await MainActor.run {
+        image = oembedThumbnail
+      }
+      await SDImageCache.shared.store(image, forKey: cacheKey)
+      return
+    }
     // FIXME: Bring over HLSThumbnailGenerator to handle HLS stream thumbnails
     let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
     let cgImage = try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
