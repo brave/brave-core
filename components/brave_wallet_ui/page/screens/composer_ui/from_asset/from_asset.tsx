@@ -173,7 +173,7 @@ export const FromAsset = (props: Props) => {
     if (!token || !account) {
       return (
         <FromText
-          textSize='16px'
+          textSize='14px'
           isBold={false}
         >
           {getLocale('braveWalletFrom')}
@@ -183,7 +183,7 @@ export const FromAsset = (props: Props) => {
     if (token.isNft) {
       return (
         <FromText
-          textSize='16px'
+          textSize='14px'
           isBold={false}
         >
           {account.name}
@@ -196,7 +196,7 @@ export const FromAsset = (props: Props) => {
         justifyContent='flex-start'
       >
         <FromText
-          textSize='16px'
+          textSize='14px'
           isBold={false}
         >
           {account.name}:
@@ -213,8 +213,9 @@ export const FromAsset = (props: Props) => {
           ) : (
             <>
               <BalanceText
-                textSize='16px'
+                textSize='14px'
                 isBold={true}
+                textColor='primary'
               >
                 {formatTokenBalanceWithSymbol(
                   tokenBalance,
@@ -226,8 +227,9 @@ export const FromAsset = (props: Props) => {
               {token.coin === BraveWallet.CoinType.BTC && hasPendingBalance && (
                 <>
                   <BalanceText
-                    textSize='16px'
+                    textSize='14px'
                     isBold={true}
+                    textColor='primary'
                   >
                     {`(${getLocale('braveWalletAvailable')})`}
                   </BalanceText>
@@ -280,13 +282,12 @@ export const FromAsset = (props: Props) => {
         fullWidth={true}
         justifyContent='space-between'
         alignItems='center'
-        padding='32px 0px 58px 0px'
+        padding='0px 0px 32px 0px'
       >
         <AccountNameAndPresetsRow
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
           marginBottom={10}
         >
           {accountNameAndBalance}
@@ -306,7 +307,6 @@ export const FromAsset = (props: Props) => {
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px 0px 6px'
           marginBottom={10}
         >
           <Row width='unset'>
@@ -333,12 +333,12 @@ export const FromAsset = (props: Props) => {
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
         >
           {network && token && (
             <NetworkText
               textSize='14px'
               isBold={false}
+              textColor='secondary'
             >
               {getLocale('braveWalletPortfolioAssetNetworkDescription')
                 .replace('$1', '')

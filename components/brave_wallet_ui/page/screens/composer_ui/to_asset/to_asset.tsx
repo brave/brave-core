@@ -126,26 +126,26 @@ export const ToAsset = (props: Props) => {
     >
       <Column
         fullWidth={true}
-        justifyContent='space-between'
+        fullHeight={true}
+        justifyContent='flex-start'
         alignItems='center'
-        padding='48px 0px 0px 0px'
+        padding='32px 0px 0px 0px'
       >
         <ReceiveAndQuoteRow
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
           marginBottom={10}
         >
           <ReceiveAndQuoteText
-            textSize='16px'
+            textSize='14px'
             isBold={false}
           >
             {getLocale('braveWalletReceiveEstimate')}
           </ReceiveAndQuoteText>
           {isFetchingQuote && (
             <ReceiveAndQuoteText
-              textSize='16px'
+              textSize='14px'
               isBold={false}
             >
               {getLocale('braveSwapFindingPrice')}
@@ -156,7 +156,6 @@ export const ToAsset = (props: Props) => {
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px 0px 6px'
           marginBottom={10}
         >
           <Row width='unset'>
@@ -182,7 +181,6 @@ export const ToAsset = (props: Props) => {
           width='100%'
           alignItems='center'
           justifyContent='space-between'
-          padding='0px 16px'
         >
           {network && token && (
             <NetworkAndFiatText

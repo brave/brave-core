@@ -114,6 +114,16 @@
   <message name="IDS_BRAVE_WALLET_OWNED" desc="Token list owned label">Owned</message>
   <message name="IDS_BRAVE_WALLET_NOT_OWNED" desc="Token list not owned label">Not owned</message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_24H" desc="Token list amount and 24h change">Amount/24h</message>
+  <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_BRIDGE" desc="Bridge asset modal title">Choose asset to bridge</message>
+  <message name="IDS_BRAVE_WALLET_BRIDGING_VIA" desc="Bridging via provider label">Bridging via</message>
+  <message name="IDS_BRAVE_WALLET_SWAPPING_VIA" desc="Bridging via provider label">Swapping via</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_SWAP" desc="Review swap button">Review swap</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
+  <message name="IDS_BRAVE_WALLET_EST_FEES" desc="Bridge and Swap estimated fees label">Est fees</message>
+  <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
+  <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>
+  <message name="IDS_BRAVE_WALLET_EXCHANGE_FOR" desc="Bridge and Swap exchange rate value for value label"><ph name="ONE_TOKEN_VALUE"><ex>1 BAT</ex>$1</ph> for <ph name="EXCHANGE_VALUE"><ex>5 USDC</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_RECIPIENT" desc="Bridge and Swap recipient label">Recipient</message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Message shown when searching for a UD or ENS domain">Searching for domain...</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_TITLE" desc="Message title shown when requesting to do an ENS off chain lookup.">Brave supports using off-chain gateways to resolve .eth domains.</message>
@@ -907,7 +917,6 @@
   <message name="IDS_BRAVE_WALLET_ENTER_A_PASSWORD_TO_CONTINUE" desc="Prompt to enter a password before continuing">Enter a password to continue</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP" desc="Password prompt description for backing up wallet">Enter your Brave Wallet password to start backing up wallet.</message>
   <message name="IDS_BRAVE_SWAP" desc="Swap main title">Swap</message>
-  <message name="IDS_BRAVE_SWAP_REVIEW_ORDER" desc="Text for swap button">Review order</message>
   <message name="IDS_BRAVE_SWAP_APPROVE_TOKEN" desc="Text for swap button while approving ERC20 token">Approve <ph name="TOKEN">$1</ph></message>
   <message name="IDS_BRAVE_SWAP_INSUFFICIENT_BALANCE" desc="Text for swap button when token token balance is insufficient">Insufficient <ph name="TOKEN">$1</ph> balance</message>
   <message name="IDS_BRAVE_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
@@ -925,13 +934,11 @@
   <message name="IDS_BRAVE_SWAP_HIDE_TOKENS_WITH_ZERO_BALANCES" desc="Button text to hide tokens with zero balance">Hide zero balance</message>
   <message name="IDS_BRAVE_SWAP_SEARCH_TOKEN" desc="Text prompt to search token by name">Search token by name</message>
   <message name="IDS_BRAVE_SWAP_OPTION" desc="Swap quote option">Option</message>
-  <message name="IDS_BRAVE_SWAP_RATE" desc="Swap exchange rate">Rate</message>
   <message name="IDS_BRAVE_SWAP_PRICE_IMPACT" desc="Swap price impact">Price impact</message>
   <message name="IDS_BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE" desc="Minimum guaranteed amount user will get after the swap">Minimum received after slippage</message>
   <message name="IDS_BRAVE_SWAP_NETWORK_FEE" desc="Text indicating network fees">Network fee</message>
-  <message name="IDS_BRAVE_SWAP_BRAVE_FEE" desc="Text indicating Brave fee for swaps">Brave fee</message>
+  <message name="IDS_BRAVE_SWAP_BRAVE_FEE" desc="Text indicating Brave fee for swaps">Included Brave fee</message>
   <message name="IDS_BRAVE_SWAP_FREE" desc="Text indicating free Brave fees for swaps">Free</message>
-  <message name="IDS_BRAVE_SWAP_LIQUIDITY_PROVIDER" desc="Liquidity provider for the swap quote">Liquidity provider</message>
   <message name="IDS_BRAVE_SWAP_SWAP_AND_SEND" desc="Swap and send to a specific address in one transaction">Swap &amp; send</message>
   <message name="IDS_BRAVE_SWAP_NO_EXTRA_FEES" desc="Text indicating swap and send has no extra fees">NO extra fees!</message>
   <message name="IDS_BRAVE_SWAP_CONFIRM_ADDRESS" desc="Text to confirm that the address is correct">I confirm that the address above is correct</message>

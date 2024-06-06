@@ -15,7 +15,7 @@ export const InputRow = styled(Row)`
 `
 
 export const ToText = styled(Text)`
-  line-height: 26px;
+  line-height: 22px;
   color: ${leo.color.text.tertiary};
 `
 

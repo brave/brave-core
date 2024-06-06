@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
@@ -58,7 +58,9 @@ import {
   getLiFiFromAmount,
   getLiFiToAmount
 } from '../swap.utils'
-import { makeSwapRoute } from '../../../../utils/routes-utils'
+import {
+  makeSwapOrBridgeRoute //
+} from '../../../../utils/routes-utils'
 
 // Queries
 import {
@@ -115,6 +117,8 @@ export const useSwap = () => {
   // routing
   const query = useQuery()
   const history = useHistory()
+  const { pathname } = useLocation()
+  const isBridge = pathname.includes(WalletRoutes.Bridge)
 
   // Queries
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
@@ -124,8 +128,11 @@ export const useSwap = () => {
   const { account: fromAccount } = useAccountFromAddressQuery(
     query.get('fromAccountId') ?? undefined
   )
+  const { account: toAccount } = useAccountFromAddressQuery(
+    query.get('toAddress') ?? undefined
+  )
   // TODO: deprecate toAccountId in favour of toAddress + toCoin
-  const toAccountId = fromAccount?.accountId
+  const toAccountId = toAccount?.accountId
   const toCoinFromParams = query.get('toCoin') ?? undefined
   const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
   const toAddress = query.get('toAddress') ?? undefined
@@ -606,34 +613,36 @@ export const useSwap = () => {
   const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
 
   const onClickFlipSwapTokens = useCallback(async () => {
-    if (!fromAccount || !fromToken || !toToken) {
+    if (!fromAccount || !toAccount || !fromToken || !toToken) {
       return
     }
     if (
-      fromAccount.accountId.coin !== toToken.coin ||
-      toCoin !== fromToken.coin
+      !isBridge &&
+      (fromAccount.accountId.coin !== toToken.coin || toCoin !== fromToken.coin)
     ) {
       history.replace(WalletRoutes.Swap)
     } else {
       history.replace(
-        makeSwapRoute({
+        makeSwapOrBridgeRoute({
           fromToken: toToken,
-          fromAccount,
+          fromAccount: toAccount,
           toToken: fromToken,
-          toAddress,
-          toCoin
+          toAddress: fromAccount.accountId.address,
+          toCoin: fromToken.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
         })
       )
     }
     await handleOnSetFromAmount('')
   }, [
     fromAccount,
+    toAccount,
     fromToken,
     toToken,
     toCoin,
     handleOnSetFromAmount,
     history,
-    toAddress
+    isBridge
   ])
 
   // Changing the To asset does the following:
@@ -644,18 +653,22 @@ export const useSwap = () => {
   //     debouncing.
   //  5. Fetch spot price.
   const onSelectToToken = useCallback(
-    async (token: BraveWallet.BlockchainToken) => {
+    async (
+      token: BraveWallet.BlockchainToken,
+      account?: BraveWallet.AccountInfo
+    ) => {
       if (!fromToken || !fromAccount) {
         return
       }
       setEditingFromOrToAmount('from')
       history.replace(
-        makeSwapRoute({
+        makeSwapOrBridgeRoute({
           fromToken,
           fromAccount,
           toToken: token,
-          toAddress,
-          toCoin: token.coin
+          toAddress: account?.accountId.address,
+          toCoin: token.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
         })
       )
       setSelectingFromOrTo(undefined)
@@ -671,7 +684,7 @@ export const useSwap = () => {
       fromToken,
       fromAccount,
       history,
-      toAddress,
+      isBridge,
       reset,
       handleQuoteRefreshInternal
     ]
@@ -691,23 +704,46 @@ export const useSwap = () => {
         return
       }
       setEditingFromOrToAmount('from')
-      // ToDo: Until cross-chain swaps is supported,
-      // we have this check to make sure that the toToken
-      // and the incoming fromToken are on the same network.
-      // If not we clear the toToken from params.
-      if (toToken && toToken.chainId === token.chainId) {
+
+      if (isBridge) {
         history.replace(
-          makeSwapRoute({
+          makeSwapOrBridgeRoute({
             fromToken: token,
             fromAccount: account,
             toToken,
             toAddress,
-            toCoin
+            toCoin,
+            routeType: 'bridge'
+          })
+        )
+        setSelectingFromOrTo(undefined)
+        setFromAmount('')
+        setToAmount('')
+        reset()
+        return
+      }
+
+      // For regular Swaps we check that the toToken
+      // and the incoming fromToken are on the same network.
+      // If not we clear the toToken from params.
+      if (toToken && toToken.chainId === token.chainId) {
+        history.replace(
+          makeSwapOrBridgeRoute({
+            fromToken: token,
+            fromAccount: account,
+            toToken,
+            toAddress,
+            toCoin,
+            routeType: 'swap'
           })
         )
       } else {
         history.replace(
-          makeSwapRoute({ fromToken: token, fromAccount: account })
+          makeSwapOrBridgeRoute({
+            fromToken: token,
+            fromAccount: account,
+            routeType: 'swap'
+          })
         )
       }
       setSelectingFromOrTo(undefined)
@@ -715,7 +751,7 @@ export const useSwap = () => {
       setToAmount('')
       reset()
     },
-    [toToken, reset, history, toAddress, toCoin]
+    [toToken, reset, history, toAddress, toCoin, isBridge]
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -734,6 +770,25 @@ export const useSwap = () => {
       setUserConfirmedAddress(checked)
     },
     []
+  )
+
+  const onChangeRecipient = useCallback(
+    async (address: string) => {
+      if (!fromToken || !fromAccount || !toToken) {
+        return
+      }
+      history.replace(
+        makeSwapOrBridgeRoute({
+          fromToken,
+          fromAccount,
+          toToken: toToken,
+          toAddress: address,
+          toCoin: toToken.coin,
+          routeType: isBridge ? 'bridge' : 'swap'
+        })
+      )
+    },
+    [fromToken, toToken, fromAccount, history, isBridge]
   )
 
   // Memos
@@ -959,8 +1014,12 @@ export const useSwap = () => {
   ])
 
   const submitButtonText = useMemo(() => {
+    const defaultText = isBridge
+      ? getLocale('braveWalletReviewBridge')
+      : getLocale('braveWalletReviewSwap')
+
     if (!fromToken || !fromNetwork) {
-      return getLocale('braveSwapReviewOrder')
+      return defaultText
     }
 
     if (swapValidationError === 'insufficientBalance') {
@@ -992,8 +1051,8 @@ export const useSwap = () => {
       return getLocale('braveWalletSwapUnknownError')
     }
 
-    return getLocale('braveSwapReviewOrder')
-  }, [fromToken, fromNetwork, swapValidationError])
+    return defaultText
+  }, [isBridge, fromToken, fromNetwork, swapValidationError])
 
   const isSubmitButtonDisabled = useMemo(() => {
     return (
@@ -1094,12 +1153,15 @@ export const useSwap = () => {
     setSlippageTolerance,
     setUseDirectRoute,
     onSubmit,
+    onChangeRecipient,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
     spotPrices: spotPriceRegistry,
     tokenBalancesRegistry,
-    isLoadingBalances
+    isLoadingBalances,
+    isBridge,
+    toAccount
   }
 }
 export default useSwap

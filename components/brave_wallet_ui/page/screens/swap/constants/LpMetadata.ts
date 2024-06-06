@@ -24,9 +24,11 @@ import FireBirdOneSwapIcon from '../assets/lp-icons/firebirdoneswap.png'
 import GooseFXIcon from '../assets/lp-icons/goosefx.svg'
 import InvariantIcon from '../assets/lp-icons/invariant.svg'
 import IronSwapIcon from '../assets/lp-icons/ironswap.svg'
+import JupiterIcon from '../assets/lp-icons/jupiter.svg'
 import KyberDMMIcon from '../assets/lp-icons/kyberdmm.svg'
 import LidoIcon from '../assets/lp-icons/lido.svg'
 import LifinityIcon from '../assets/lp-icons/lifinity.jpg'
+import LiFiIcon from '../assets/lp-icons/lifi.svg'
 import MakerPsmIcon from '../assets/lp-icons/makerpsm.svg'
 import MarinadeIcon from '../assets/lp-icons/marinade.svg'
 import MDexIcon from '../assets/lp-icons/mdex.svg'
@@ -82,8 +84,10 @@ const LPMetadata: LPMetadataType = {
   'GooseFX': GooseFXIcon,
   'Invariant': InvariantIcon,
   'IronSwap': IronSwapIcon,
+  'Jupiter': JupiterIcon,
   'KyberDMM': KyberDMMIcon,
   'Lido': LidoIcon,
+  'Li.Fi': LiFiIcon,
   'Lifinity': LifinityIcon,
   // LiquidityProvider info unknown
   'LiquidityProvider': '',
@@ -99,6 +103,7 @@ const LPMetadata: LPMetadataType = {
   'QuickSwap': QuickSwapIcon,
   'PancakeSwap': PancakeSwapIcon,
   'PancakeSwap_V2': PancakeSwapIcon,
+  'PancakeSwap_V3': PancakeSwapIcon,
   'Penguin': PenguinIcon,
   'Saber': SaberIcon,
   'Saddle': SaddleIcon,

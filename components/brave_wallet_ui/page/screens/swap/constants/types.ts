@@ -7,9 +7,10 @@ import { BraveWallet } from '../../../../constants/types'
 
 import Amount from '../../../../utils/amount'
 
-type LiquiditySource = {
+export type LiquiditySource = {
   name: string
   proportion: Amount
+  icon?: string
 }
 
 export type QuoteOption = {
@@ -35,6 +36,8 @@ export type QuoteOption = {
   networkFee: Amount
 
   networkFeeFiat: string
+  provider: string
+  executionDuration?: string
 }
 
 export type SwapAndSend = {

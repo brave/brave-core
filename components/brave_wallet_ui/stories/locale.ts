@@ -119,7 +119,6 @@ provideStrings({
   braveWalletNotEnoughFunds: 'Not enough funds',
   braveWalletSendHalf: 'HALF',
   braveWalletSendMax: 'MAX',
-  braveSwapReviewOrder: 'Review order',
   braveWalletReviewSend: 'Review send',
   braveWalletNoAvailableTokens: 'No available tokens',
   braveWalletSearchTokens: 'Search by name or paste address',
@@ -138,6 +137,16 @@ provideStrings({
   braveWalletOwned: 'Owned',
   braveWalletNotOwned: 'Not owned',
   braveWalletAmount24H: 'Amount/24h',
+
+  // Bridge
+  braveWalletChooseAssetToBridge: 'Choose asset to bridge',
+  braveWalletBridgingVia: 'Bridging via',
+  braveWalletEstFees: 'Est fees',
+  braveWalletEstTime: 'Est time',
+  braveWalletExchangeRate: 'Exchange rate',
+  braveWalletExchangeFor: '$1 for $2',
+  braveWalletRecipient: 'Recipient',
+  braveWalletReviewBridge: 'Review bridge',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
@@ -591,6 +600,8 @@ provideStrings({
   braveWalletSwapReviewHeader: 'Confirm order',
   braveWalletSolanaSwap: 'Solana Swap',
   braveWalletNoRoutesFound: 'No routes found',
+  braveWalletSwappingVia: 'Swapping via',
+  braveWalletReviewSwap: 'Review swap',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',

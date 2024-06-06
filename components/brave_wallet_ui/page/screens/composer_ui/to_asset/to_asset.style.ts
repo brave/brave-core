@@ -10,7 +10,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import { Text, Row } from '../../../../components/shared/style'
 
 export const ReceiveAndQuoteText = styled(Text)`
-  line-height: 26px;
+  line-height: 18px;
   color: ${leo.color.text.tertiary};
 `
 

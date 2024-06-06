@@ -96,13 +96,13 @@ const ListItem = (props: ListItemProps) => {
 
   const groupingLabel = React.useMemo(() => {
     if (
-      modalType === 'swap' &&
+      modalType !== 'send' &&
       index === 0 &&
       firstNoBalanceTokenKey !== getAssetIdKey(token)
     ) {
       return 'owned'
     }
-    return modalType === 'swap' &&
+    return modalType !== 'send' &&
       firstNoBalanceTokenKey === getAssetIdKey(token)
       ? 'not-owned'
       : undefined

@@ -5,64 +5,95 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
 import {
-  Icon,
+  WalletButton,
+  Column,
   Row,
-  StyledDiv,
-  Text,
-  IconButton
-} from '../../shared-swap.styles'
-
-export const HorizontalArrows = styled(Icon)`
-  color: ${(p) => p.theme.color.text03};
-  margin-left: 8px;
-`
-
-export const FuelTank = styled(Icon)`
-  color: ${(p) => p.theme.color.text02};
-  margin-right: 6px;
-`
+  Text //
+} from '../../../../../../components/shared/style'
 
 export const Bubble = styled(Row)`
-  padding: 2px 8px;
-  border-radius: 8px;
-  background-color: ${leo.color.purple[10]};
-  @media (prefers-color-scheme: dark) {
-    /* #282B37 does not exist in the design system */
-    background-color: #282b37;
-  }
+  border-radius: 4px;
+  background-color: ${leo.color.green[10]};
 `
 
-export const LPIcon = styled(StyledDiv)<{ icon: string; size: number }>`
+export const FreeText = styled(Text)`
+  text-transform: uppercase;
+  line-height: 10px;
+  color: ${leo.color.green[60]};
+  font-weight: 700;
+`
+
+export const LPIcon = styled.div<{ icon: string }>`
   background-image: url(${(p) => p.icon});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: ${(p) => p.size}px;
-  width: ${(p) => p.size}px;
-  margin-left: 6px;
-  border-radius: 50px;
+  height: 16px;
+  width: 16px;
+  margin-right: 8px;
 `
 
 export const LPSeparator = styled(Text)`
   padding: 0 6px;
 `
 
-export const BraveFeeContainer = styled(Row)`
-  gap: 4px;
-`
-
 export const BraveFeeDiscounted = styled(Text)`
   text-decoration: line-through;
 `
 
-export const ExpandButton = styled(IconButton)<{
-  isExpanded: boolean
-}>`
-  transform: ${(p) => (p.isExpanded ? 'rotate(180deg)' : 'unset')};
-  transition: transform 300ms ease;
+export const Button = styled(WalletButton)`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  background-color: none;
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  :disabled {
+    cursor: default;
+  }
+`
+
+export const ExpandButton = styled(Button)`
+  background-color: ${leo.color.container.background};
+  border-radius: 100%;
+  padding: 1px;
 `
 
 export const LPRow = styled(Row)`
   flex-wrap: wrap;
+`
+
+export const Section = styled(Column)`
+  background-color: ${leo.color.container.background};
+  border-radius: ${leo.radius.m};
+  position: relative;
+`
+
+export const CaratDownIcon = styled(Icon).attrs({
+  name: 'carat-down'
+})<{ isOpen: boolean }>`
+  --leo-icon-size: 18px;
+  color: ${leo.color.icon.default};
+  transition-duration: 0.3s;
+  transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
+`
+
+export const ExpandRow = styled(Row)`
+  position: absolute;
+  bottom: 0px;
+  max-height: 0px;
+`
+
+export const CaratRightIcon = styled(Icon).attrs({
+  name: 'carat-right'
+})`
+  --leo-icon-size: 18px;
+  color: ${leo.color.icon.default};
 `

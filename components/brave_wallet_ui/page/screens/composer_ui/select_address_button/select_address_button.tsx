@@ -19,8 +19,9 @@ import {
 } from '../../../../components/shared/create-account-icon/create-account-icon'
 
 // Styled Components
-import { Button, ButtonIcon, ButtonText } from './select_address_button.style'
+import { SelectButton } from './select_address_button.style'
 import { Row } from '../../../../components/shared/style'
+import { CaratIcon, ButtonText } from '../shared_composer.style'
 
 interface Props {
   onClick: () => void
@@ -37,7 +38,7 @@ export const SelectAddressButton = (props: Props) => {
   )
 
   return (
-    <Button
+    <SelectButton
       isPlaceholder={!toAddressOrUrl}
       onClick={onClick}
       disabled={isDisabled}
@@ -53,14 +54,13 @@ export const SelectAddressButton = (props: Props) => {
         <ButtonText
           textSize='22px'
           textAlign='left'
-          isPlaceholder={!toAddressOrUrl}
         >
           {toAddressOrUrl !== ''
             ? toAddressOrUrl
             : getLocale('braveWalletChooseRecipient')}
         </ButtonText>
       </Row>
-      <ButtonIcon />
-    </Button>
+      <CaratIcon />
+    </SelectButton>
   )
 }
