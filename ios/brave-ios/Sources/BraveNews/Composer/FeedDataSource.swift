@@ -31,14 +31,6 @@ public class FeedDataSource: ObservableObject {
     /// Some sort of error has occured when attempting to load feed content
     case failure(Error)
 
-    public var isLoading: Bool {
-      switch self {
-      case .loading:
-        return true
-      default:
-        return false
-      }
-    }
     /// The list of generated feed cards, if the state is `success`
     public var cards: [FeedCard]? {
       switch self {

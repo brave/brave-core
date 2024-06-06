@@ -87,8 +87,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   private var isShowingOptInCard: Bool {
-    Preferences.BraveNews.isShowingOptIn.value
-      || Preferences.BraveNews.userOptedIn.value && dataSource.state.isLoading
+    !Preferences.BraveNews.isEnabled.value && Preferences.BraveNews.isShowingOptIn.value
   }
 
   func collectionView(

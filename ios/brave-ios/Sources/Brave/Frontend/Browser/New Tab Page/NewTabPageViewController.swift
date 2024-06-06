@@ -904,6 +904,9 @@ class NewTabPageViewController: UIViewController {
     guard let section = layout.braveNewsSection, parent != nil else { return }
 
     func _completeLoading() {
+      if Preferences.BraveNews.isShowingOptIn.value {
+        Preferences.BraveNews.isShowingOptIn.value = false
+      }
       UIView.animate(
         withDuration: 0.2,
         animations: {
