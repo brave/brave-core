@@ -9,6 +9,10 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 
+#define BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION \
+  favicon_bounds.set_y(contents_rect.y() +                  \
+                       Center(contents_rect.height(), gfx::kFaviconSize));
+
 // Set alert indicator's pos to start of the title and
 // move title after the alert indicator.
 // Title right should respect close btn's space
@@ -39,3 +43,4 @@
 #undef GetLayoutConstant
 #undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
 #undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
+#undef BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION

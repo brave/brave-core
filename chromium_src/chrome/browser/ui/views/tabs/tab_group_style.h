@@ -16,6 +16,12 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 
   static const int kStrokeThicknessForVerticalTabs;
 
+  bool TabGroupUnderlineShouldBeHidden() const override;
+
+  bool TabGroupUnderlineShouldBeHidden(
+      const views::View* leading_view,
+      const views::View* trailing_view) const override;
+
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
 
   gfx::Insets GetInsetsForHeaderChip(bool should_show_sync_icon) const override;

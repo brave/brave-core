@@ -20,6 +20,16 @@
 
 const int TabGroupStyle::kStrokeThicknessForVerticalTabs = 4;
 
+bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
+  return false;
+}
+
+bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+    const views::View* leading_view,
+    const views::View* trailing_view) const {
+  return false;
+}
+
 SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
   if (!ShouldShowVerticalTabs()) {
     return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
@@ -59,8 +69,8 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
     return insets;
   }
   if (!ShouldShowVerticalTabs()) {
-    insets.set_top(brave_tabs::kTabGroupTitleVerticalInset)
-        .set_bottom(brave_tabs::kTabGroupTitleVerticalInset);
+    return gfx::Insets::VH(brave_tabs::kTabGroupTitleVerticalInset,
+                           brave_tabs::kTabGroupTitleHorizontalInset);
   }
   return insets;
 }
