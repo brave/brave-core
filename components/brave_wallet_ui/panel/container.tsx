@@ -99,26 +99,49 @@ function Container() {
     PanelSelectors.connectingAccounts
   )
 
-  // queries & mutations
+  // queries
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
-  const { data: getEncryptionPublicKeyRequest } =
-    useGetPendingGetEncryptionPublicKeyRequestQuery()
-  const { data: signTransactionRequests } =
-    useGetPendingSignTransactionRequestsQuery()
-  const { data: signAllTransactionsRequests } =
-    useGetPendingSignAllTransactionsRequestsQuery()
-  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
-  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
-  const { data: addTokenRequests = [] } =
+  const {
+    data: getEncryptionPublicKeyRequest,
+    isLoading: isLoadingPendingPublicKeyRequest
+  } = useGetPendingGetEncryptionPublicKeyRequestQuery()
+  const {
+    data: signTransactionRequests,
+    isLoading: isLoadingSignTransactionRequests
+  } = useGetPendingSignTransactionRequestsQuery()
+  const {
+    data: signAllTransactionsRequests,
+    isLoading: isLoadingSignAllTransactionsRequests
+  } = useGetPendingSignAllTransactionsRequestsQuery()
+  const { data: signMessageData, isLoading: isLoadingSignMessageData } =
+    useGetPendingSignMessageRequestsQuery()
+  const {
+    data: signMessageErrorData,
+    isLoading: isLoadingSignMessageErrorData
+  } = useGetPendingSignMessageErrorsQuery()
+  const { data: addTokenRequests = [], isLoading: isLoadingAddTokenRequests } =
     useGetPendingTokenSuggestionRequestsQuery()
+  const {
+    selectedPendingTransaction,
+    isLoading: isLoadingPendingTransactions
+  } = useSelectedPendingTransaction()
 
-  const selectedPendingTransaction = useSelectedPendingTransaction()
+  // computed
+  const isLoadingPendingActions =
+    isLoadingPendingTransactions ||
+    isLoadingPendingPublicKeyRequest ||
+    isLoadingSignTransactionRequests ||
+    isLoadingSignAllTransactionsRequests ||
+    isLoadingSignMessageData ||
+    isLoadingSignMessageErrorData ||
+    isLoadingAddTokenRequests
 
-  if (!hasInitialized) {
+  // render
+  if (!hasInitialized || isLoadingPendingActions) {
     return (
       <PanelWrapper
         width={390}
