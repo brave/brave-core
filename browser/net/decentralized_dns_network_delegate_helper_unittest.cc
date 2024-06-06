@@ -215,7 +215,8 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   test_url_loader_factory().SimulateResponseForPendingRequest(
       eth_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
-          {"hash", "", "", "", "", ""}),
+          {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
+           ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
@@ -231,10 +232,13 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   test_url_loader_factory().SimulateResponseForPendingRequest(
       eth_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
-          {"hash", "", "", "", "", ""}),
+          {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
+           ""}),
       net::HTTP_OK);
   task_environment_.RunUntilIdle();
-  EXPECT_EQ(brave_request_info->new_url_spec, "ipfs://hash");
+  EXPECT_EQ(
+      brave_request_info->new_url_spec,
+      "https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
@@ -279,7 +283,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec,
-            "ipfs://"
+            "https://ipfs.io/ipfs/"
             "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
 
   EXPECT_FALSE(brave_request_info->pending_error.has_value());
