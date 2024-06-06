@@ -6,7 +6,6 @@
 import Flex from "$web-common/Flex";
 import { getLocale } from "$web-common/locale";
 import Button from '@brave/leo/react/button';
-import ButtonMenu from '@brave/leo/react/buttonMenu';
 import Floating from '@brave/leo/react/floating';
 import { color, radius, spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
@@ -74,17 +73,37 @@ export default function EnginePicker() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, setOpen: setBoxOpen } = useSearchContext()
   const [open, setOpen] = React.useState(false)
 
-  const ref = React.useRef<HTMLElement>();
+  const buttonRef = React.useRef<HTMLElement>();
+  const menuRef = React.useRef<HTMLElement>();
 
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      console.log(menuRef.current)
+      if (!e.composedPath().includes(menuRef.current!)) {
+        setOpen(false)
+      }
+    }
+
+    // Add the handler after we're finished opening the menu, so we don't
+    // instantly close it.
+    setTimeout(() => document.addEventListener('click', handler))
+
+    return () => {
+      document.removeEventListener('click', handler)
+    }
+  }, [open])
 
   return <>
-    <OpenButton ref={ref} fab kind="plain-faint" slot="anchor-content" onClick={() => setOpen(o => !o)}>
+    <OpenButton ref={buttonRef} fab kind="plain-faint" slot="anchor-content" onClick={() => setOpen(o => !o)}>
       <IconContainer align="center" justify="center" open={open}>
         <MediumSearchEngineIcon engine={searchEngine} />
       </IconContainer>
     </OpenButton>
-    {open && <Floating target={findParentWithTag(ref.current, 'LEO-INPUT')!} autoUpdate positionStrategy="fixed" placement="top-start" >
-      <Menu data-theme="dark">
+    {open && <Floating ref={menuRef} target={findParentWithTag(buttonRef.current, 'LEO-INPUT')!} autoUpdate positionStrategy="fixed" placement="top-start">
+      <Menu data-theme="dark" onClick={e => {
+        e.stopPropagation()
+      }}>
         {filteredSearchEngines.map(s => <Option onClick={() => {
           setSearchEngine(s)
           setOpen(false)
@@ -99,27 +118,11 @@ export default function EnginePicker() {
           // For now, close the search box - the Settings dialog doesn't use a
           // dialog, so it gets rendered underneath.
           setBoxOpen(false)
+          setOpen(false)
         }}>
           {getLocale('searchCustomizeList')}
         </CustomizeButton>
       </Menu>
     </Floating>}
   </>
-  return <ButtonMenu data-theme="light" positionStrategy='fixed' isOpen={open} onClose={() => setOpen(false)}>
-
-    {filteredSearchEngines.map(s => <leo-menu-item onClick={() => setSearchEngine(s)} key={s.keyword}>
-      <Option>
-        <MediumSearchEngineIcon engine={s} />{s.name}
-      </Option>
-    </leo-menu-item>)}
-    <CustomizeButton kind="plain-faint" size="small" onClick={() => {
-      history.pushState(undefined, '', '?openSettings=Search')
-
-      // For now, close the search box - the Settings dialog doesn't use a
-      // dialog, so it gets rendered underneath.
-      setBoxOpen(false)
-    }}>
-      {getLocale('searchCustomizeList')}
-    </CustomizeButton>
-  </ButtonMenu>
 }
