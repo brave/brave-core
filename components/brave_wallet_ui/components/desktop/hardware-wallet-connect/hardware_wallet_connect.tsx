@@ -246,12 +246,14 @@ export const HardwareWalletConnect = ({
     (vendor: HardwareVendor) => {
       const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
       setSelectedDerivationScheme(
-        Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
+        selectedAccountType.coin === BraveWallet.CoinType.SOL
+          ? SolDerivationPaths.Default
+          : (Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme)
       )
       setSelectedHardwareWallet(vendor)
       onSelectVendor?.(vendor)
     },
-    [onSelectVendor]
+    [onSelectVendor, selectedAccountType.coin]
   )
 
   const onSelectLedger = React.useCallback(() => {
