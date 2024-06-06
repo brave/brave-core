@@ -199,15 +199,15 @@ export const WalletSettingsMenu = (props: Props) => {
           </PopupButtonText>
         </PopupButton>
 
-        {selectedNetwork?.coin === BraveWallet.CoinType.ETH ||
-          (selectedNetwork?.coin === BraveWallet.CoinType.SOL && (
-            <PopupButton onClick={onClickConnectedSites}>
-              <ButtonIcon name='link-normal' />
-              <PopupButtonText>
-                {getLocale('braveWalletWalletPopupConnectedSites')}
-              </PopupButtonText>
-            </PopupButton>
-          ))}
+        {(selectedNetwork?.coin === BraveWallet.CoinType.ETH ||
+          selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
+          <PopupButton onClick={onClickConnectedSites}>
+            <ButtonIcon name='link-normal' />
+            <PopupButtonText>
+              {getLocale('braveWalletWalletPopupConnectedSites')}
+            </PopupButtonText>
+          </PopupButton>
+        )}
 
         <PopupButton onClick={onClickSettings}>
           <ButtonIcon name='settings' />
