@@ -3965,9 +3965,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
       Always-on VPN
     </message>
-    <message name="IDS_KILL_SWITCH" desc="Vpn setting title for kill switch">
-      Kill switch
-    </message>
     <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
       How to turn on:
     </message>
@@ -3979,12 +3976,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
       3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.
-    </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_4" desc="Vpn kill swicth tutorial text">
-      4. Toggle <ph name="ALWAYS_ON_TUTORIAL_2_START">&lt;always_on_tutorial_2&gt;</ph>Block connections without VPN<ph name="ALWAYS_ON_TUTORIAL_2_END">&lt;/always_on_tutorial_2&gt;</ph> to enable the kill switch.
-    </message>
-    <message name="IDS_KILL_SWITCH_TEXT" desc="Vpn kill swicth tutorial text">
-      Kill switch will disable split tunneling. It also prevents connections from outside the VPN tunnel.
     </message>
     <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill swicth tutorial action text">
       Open Android settings
