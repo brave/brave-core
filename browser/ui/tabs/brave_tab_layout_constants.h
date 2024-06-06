@@ -65,6 +65,9 @@ inline constexpr int kTabGroupLineHeight = 24;
 // (i.e. the rectangle enclosing the tab group title).
 inline constexpr int kTabGroupTitleVerticalInset = 4;
 
+// The amount of padding at sides of tab group header "chips".
+inline constexpr int kTabGroupTitleHorizontalInset = 10;
+
 }  // namespace brave_tabs
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_LAYOUT_CONSTANTS_H_
