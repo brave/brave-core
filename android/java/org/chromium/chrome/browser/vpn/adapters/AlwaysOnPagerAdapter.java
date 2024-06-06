@@ -67,9 +67,6 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
 
         ImageView killSwitchTutorialImage = view.findViewById(R.id.kill_switch_tutorial_image);
         int killSwitchImage = mImageResources.get(position);
-        if (position == 2) {
-            killSwitchImage = R.drawable.ic_vpn_always_on_4;
-        }
         killSwitchTutorialImage.setImageResource(killSwitchImage);
 
         collection.addView(view);
