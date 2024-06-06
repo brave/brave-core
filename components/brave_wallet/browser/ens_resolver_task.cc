@@ -608,9 +608,10 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
 
 void EnsResolverTask::RequestInternal(const std::string& json_payload,
                                       RequestIntermediateCallback callback) {
-  api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload));
+  api_request_helper_->Request(
+      "POST", network_url_, json_payload, "application/json",
+      std::move(callback),
+      MakeCommonJsonRpcHeaders(json_payload, network_url_));
 }
 
 }  // namespace brave_wallet

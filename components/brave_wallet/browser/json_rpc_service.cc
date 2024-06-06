@@ -374,7 +374,7 @@ void JsonRpcService::RequestInternal(
 
   api_request_helper_->Request(
       "POST", network_url, json_payload, "application/json",
-      std::move(callback), MakeCommonJsonRpcHeaders(json_payload),
+      std::move(callback), MakeCommonJsonRpcHeaders(json_payload, network_url),
       {.auto_retry_on_network_change = auto_retry_on_network_change},
       std::move(conversion_callback));
 }
@@ -436,7 +436,7 @@ void JsonRpcService::GetPendingAddChainRequests(
 void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
                               AddChainCallback callback) {
   auto chain_id = chain->chain_id;
-  GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(*chain));
+  GURL url = GetActiveEndpointUrl(*chain);
 
   if (!url.is_valid()) {
     std::move(callback).Run(
@@ -531,7 +531,7 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
 
   const auto& chain =
       *add_chain_pending_requests_[chain_id].request->network_info;
-  GURL url = MaybeAddInfuraProjectId(GetActiveEndpointUrl(chain));
+  GURL url = GetActiveEndpointUrl(chain);
   if (!url.is_valid()) {
     FirePendingRequestCompleted(
         chain_id,
@@ -3375,9 +3375,13 @@ void JsonRpcService::AnkrGetAccountBalances(
   std::string encoded_params =
       EncodeAnkrGetAccountBalancesParams(account_address, blockchains);
 
+  auto headers = IsEndpointUsingBraveProxy(GURL(kAnkrAdvancedAPIBaseURL))
+                     ? MakeBraveServicesKeyHeaders()
+                     : base::flat_map<std::string, std::string>();
+
   api_request_helper_->Request(
       "POST", GURL(kAnkrAdvancedAPIBaseURL), encoded_params, "application/json",
-      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
+      std::move(internal_callback), headers,
       {.auto_retry_on_network_change = false}, std::move(conversion_callback));
 }
 

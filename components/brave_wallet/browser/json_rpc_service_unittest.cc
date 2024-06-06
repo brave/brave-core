@@ -931,8 +931,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void SetUDENSInterceptor(const std::string& chain_id) {
-    GURL network_url = AddInfuraProjectId(
-        GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
+    GURL network_url = GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=, this](const network::ResourceRequest& request) {
@@ -983,8 +982,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void SetENSZeroAddressInterceptor(const std::string& chain_id) {
-    GURL network_url = AddInfuraProjectId(
-        GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH));
+    GURL network_url = GetNetworkURL(prefs(), chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(network_url.is_valid());
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=, this](const network::ResourceRequest& request) {
@@ -1132,8 +1130,15 @@ class JsonRpcServiceUnitTest : public testing::Test {
                 !expected_cache_header.empty());
             EXPECT_EQ(expected_cache_header, header_value);
           }
-          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+
+          if (IsEndpointUsingBraveProxy(request.url)) {
+            EXPECT_TRUE(
+                request.headers.GetHeader("x-brave-key", &header_value));
+            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+          } else {
+            EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
+          }
+
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1145,8 +1150,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
         [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
           std::string header_value;
-          ASSERT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+
+          if (IsEndpointUsingBraveProxy(request.url)) {
+            EXPECT_TRUE(
+                request.headers.GetHeader("x-brave-key", &header_value));
+            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+          } else {
+            EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
+          }
 
           ASSERT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
           ASSERT_TRUE(json_rsp_map.contains(header_value));
@@ -1958,15 +1969,16 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_a), mojom::kSolanaTestnet);
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_b), mojom::kSolanaMainnet);
 
-  EXPECT_EQ(url::Origin::Create(
-                GURL(GetNetworkUrl(mojom::CoinType::SOL, std::nullopt))),
-            url::Origin::Create(GURL("https://mainnet-beta-solana.brave.com")));
+  EXPECT_EQ(
+      url::Origin::Create(
+          GURL(GetNetworkUrl(mojom::CoinType::SOL, std::nullopt))),
+      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
   EXPECT_EQ(
       url::Origin::Create(GURL(GetNetworkUrl(mojom::CoinType::SOL, origin_a))),
       url::Origin::Create(GURL("https://api.testnet.solana.com")));
   EXPECT_EQ(
       url::Origin::Create(GURL(GetNetworkUrl(mojom::CoinType::SOL, origin_b))),
-      url::Origin::Create(GURL("https://mainnet-beta-solana.brave.com")));
+      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
 }
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {

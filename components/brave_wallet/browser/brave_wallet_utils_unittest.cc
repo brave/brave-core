@@ -790,9 +790,6 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     // Brave proxies should have infura key added to path.
     GURL rpc_url(chain->rpc_endpoints.front());
-    if (base::EndsWith(rpc_url.host(), "brave.com")) {
-      rpc_url = AddInfuraProjectId(rpc_url);
-    }
 
     EXPECT_EQ(rpc_url,
               GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH));
@@ -802,7 +799,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   EXPECT_EQ(chain2.rpc_endpoints.front(),
             GetNetworkURL(&prefs, chain2.chain_id, mojom::CoinType::ETH));
 
-  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"),
+  EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
             GetNetworkURL(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL));
   auto custom_sol_network =
       GetKnownChain(&prefs, mojom::kSolanaMainnet, mojom::CoinType::SOL);
@@ -859,9 +856,10 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   // GetNetworkURL for these known chains should resolve to brave subdomain.
-  base::flat_set<std::string> infura_chains = {
+  base::flat_set<std::string> known_chains = {
       brave_wallet::mojom::kMainnetChainId,
       brave_wallet::mojom::kPolygonMainnetChainId,
+      brave_wallet::mojom::kBnbSmartChainMainnetChainId,
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kAvalancheMainnetChainId,
@@ -872,7 +870,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
     auto network_url =
         GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH);
     EXPECT_EQ(base::EndsWith(network_url.host(), ".brave.com"),
-              infura_chains.contains(chain->chain_id));
+              known_chains.contains(chain->chain_id));
   }
 }
 
@@ -989,7 +987,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   mojom::NetworkInfo sol_mainnet(
       brave_wallet::mojom::kSolanaMainnet, "Solana Mainnet Beta",
       {"https://explorer.solana.com/"}, {}, 0,
-      {GURL("https://mainnet-beta-solana.brave.com/rpc")}, "SOL", "Solana", 9,
+      {GURL("https://solana-mainnet.wallet.brave.com")}, "SOL", "Solana", 9,
       brave_wallet::mojom::CoinType::SOL, {mojom::KeyringId::kSolana}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
   EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),
@@ -1228,7 +1226,7 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
   EXPECT_EQ(
       GetNetworkURL(&prefs, mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
           .GetWithoutFilename(),
-      GURL("https://mainnet-polygon.brave.com/"));
+      GURL("https://polygon-mainnet.wallet.brave.com"));
 
   mojom::NetworkInfo chain1 =
       GetTestNetworkInfo1(mojom::kPolygonMainnetChainId);
@@ -1250,7 +1248,7 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
   EXPECT_EQ(
       GetNetworkURL(&prefs, mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
           .GetWithoutFilename(),
-      GURL("https://mainnet-polygon.brave.com/"));
+      GURL("https://polygon-mainnet.wallet.brave.com"));
 }
 
 TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
@@ -1509,19 +1507,18 @@ TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {
-  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+  EXPECT_EQ(GURL("https://ethereum-mainnet.wallet.brave.com"),
             GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
-  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-polygon.brave.com")),
+  EXPECT_EQ(GURL("https://polygon-mainnet.wallet.brave.com"),
             GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetEnsRpcUrl) {
-  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
-            GetEnsRpcUrl());
+  EXPECT_EQ(GURL("https://ethereum-mainnet.wallet.brave.com"), GetEnsRpcUrl());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
-  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
+  EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"), GetSnsRpcUrl());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {

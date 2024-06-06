@@ -34,18 +34,29 @@ const std::string GetSardineNetworkName(const std::string& chain_id) {
   }
 }
 
-const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
-  static base::NoDestructor<base::flat_map<std::string, std::string>> endpoints(
-      {{brave_wallet::mojom::kPolygonMainnetChainId,
-        "https://mainnet-polygon.brave.com/"},
-       {brave_wallet::mojom::kOptimismMainnetChainId,
-        "https://mainnet-optimism.brave.com/"},
-       {brave_wallet::mojom::kAuroraMainnetChainId,
-        "https://mainnet-aurora.brave.com/"},
-       {brave_wallet::mojom::kAvalancheMainnetChainId,
-        "https://mainnet-avalanche.wallet.brave.com/"}});
+const std::string GetChainSubdomain(const std::string& chain_id) {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      subdomains({// EVM chains
+                  {mojom::kMainnetChainId, "ethereum-mainnet"},
+                  {mojom::kSepoliaChainId, "ethereum-sepolia"},
+                  {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
+                  {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
+                  {mojom::kAuroraMainnetChainId, "aurora-mainnet"},
+                  {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
+                  {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
 
-  return *endpoints;
+                  // SVM chains
+                  {mojom::kSolanaMainnet, "solana-mainnet"},
+
+                  // Other chains
+                  {mojom::kBitcoinMainnet, "bitcoin-mainnet"}});
+
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (subdomains->contains(chain_id_lower)) {
+    return subdomains->at(chain_id_lower);
+  }
+
+  return "";
 }
 
 const base::flat_map<std::string, std::string>&

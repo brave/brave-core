@@ -169,8 +169,7 @@ std::string EndpointHost(const GURL& request_url) {
 
 bool ShouldThrottleEndpoint(const std::string& endpoint_host) {
   // Don't throttle requests if host matches brave proxy.
-  return EndpointHost(GURL(brave_wallet::kBitcoinMainnetRpcEndpoint)) !=
-         endpoint_host;
+  return !brave_wallet::IsEndpointUsingBraveProxy(endpoint_host);
 }
 
 std::optional<std::string> ConvertPlainStringToJsonArray(
@@ -501,7 +500,7 @@ void BitcoinRpc::MaybeStartQueuedRequest(const std::string& endpoint_host) {
       base::BindOnce(&BitcoinRpc::OnRequestInternalDone,
                      weak_ptr_factory_.GetWeakPtr(), endpoint_host,
                      std::move(request.callback)),
-      {}, {.auto_retry_on_network_change = true},
+      MakeBraveServicesKeyHeaders(), {.auto_retry_on_network_change = true},
       std::move(request.conversion_callback));
 }
 
