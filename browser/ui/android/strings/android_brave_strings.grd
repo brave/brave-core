@@ -1870,6 +1870,12 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_DOWNLOAD_LOCATION_PROMPT_ENABLED_TITLE" desc="Title for preference that allows the user to indicate whether they want to show a change downloads location prompt every time they download.">
         Ask where to save files (if SD card is detected)
       </message>
+      <message name="IDS_ENABLE_PARALLEL_DOWNLOADING_TITLE" desc="Title for preference that allows the user to enable parallel downloading.">
+        Parallel Downloading
+      </message>
+      <message name="IDS_ENABLE_PARALLEL_DOWNLOADING_TEXT" desc="Summary for preference that allows the user to enable parallel downloading.">
+        Enable parallel downloading to accelerate download speed
+      </message>
       <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
         View full Privacy Report
       </message>

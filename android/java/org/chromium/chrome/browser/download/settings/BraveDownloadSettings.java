@@ -14,6 +14,9 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.base.BraveFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
 public class BraveDownloadSettings
         extends DownloadSettings implements Preference.OnPreferenceChangeListener {
@@ -22,9 +25,11 @@ public class BraveDownloadSettings
     public static final String PREF_LOCATION_PROMPT_ENABLED = "location_prompt_enabled";
     private static final String PREF_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE =
             "download_progress_notification_bubble";
+    private static final String PREF_ENABLE_PARALLEL_DOWNLOADING = "enable_parallel_downloading";
 
     private ChromeSwitchPreference mAutomaticallyOpenWhenPossiblePref;
     private ChromeSwitchPreference mDownloadProgressNotificationBubblePref;
+    private ChromeSwitchPreference mParallelDownloadingPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,10 @@ public class BraveDownloadSettings
         mDownloadProgressNotificationBubblePref =
                 (ChromeSwitchPreference) findPreference(PREF_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE);
         mDownloadProgressNotificationBubblePref.setOnPreferenceChangeListener(this);
+
+        mParallelDownloadingPref =
+                (ChromeSwitchPreference) findPreference(PREF_ENABLE_PARALLEL_DOWNLOADING);
+        mParallelDownloadingPref.setOnPreferenceChangeListener(this);
 
         ChromeSwitchPreference locationPromptEnabledPref =
                 (ChromeSwitchPreference) findPreference(PREF_LOCATION_PROMPT_ENABLED);
@@ -64,6 +73,9 @@ public class BraveDownloadSettings
                         BravePreferenceKeys.BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
                         false);
         mDownloadProgressNotificationBubblePref.setChecked(downloadProgressNotificationBubble);
+
+        boolean isParallelDownloadingEnabled = ChromeFeatureList.isEnabled(BraveFeatureList.ENABLE_PARALLEL_DOWNLOADING);
+        mParallelDownloadingPref.setChecked(isParallelDownloadingEnabled);
     }
 
     // Preference.OnPreferenceChangeListener implementation.
@@ -83,6 +95,9 @@ public class BraveDownloadSettings
                                         .BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
                             (boolean) newValue)
                     .apply();
+        } else if (PREF_ENABLE_PARALLEL_DOWNLOADING.equals(preference.getKey())) {
+            BraveFeatureUtil.enableFeature(
+                    BraveFeatureList.ENABLE_PARALLEL_DOWNLOADING, (boolean) newValue, false);
         }
         return super.onPreferenceChange(preference, newValue);
     }
