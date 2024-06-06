@@ -170,7 +170,7 @@ extension SessionWindow {
     DataController.perform { context in
       guard
         let sessionWindows = SessionWindow.all(
-          where: NSPredicate(format: "isPrivate == %@", privateOnly ? "true" : "false"),
+          where: NSPredicate(format: "isPrivate == %@", NSNumber(value: privateOnly)),
           context: context
         )
       else {
