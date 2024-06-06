@@ -54,12 +54,12 @@ const getApplicableFilters = (suite) => {
   return filterFilePaths
 }
 
-const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
-  buildTests(suite, buildConfig, options)
+const test = async (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+  await buildTests(suite, buildConfig, options)
   runTests(passthroughArgs, suite, buildConfig, options)
 }
 
-const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+const buildTests = async (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -75,7 +75,7 @@ const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}
   }
   util.touchOverriddenFiles()
   util.touchGsutilChangeLogFile()
-  util.buildTargets()
+  await util.buildTargets()
 }
 
 const runTests = (passthroughArgs, suite, buildConfig, options) => {

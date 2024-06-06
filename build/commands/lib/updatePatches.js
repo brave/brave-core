@@ -13,7 +13,7 @@ const patchExtension = '.patch'
 async function getModifiedPaths (gitRepoPath) {
   const modifiedDiffArgs = ['diff', '--ignore-submodules', '--diff-filter=M',
       '--name-only', '--ignore-space-at-eol']
-  const cmdOutput = await util.runAsync('git', modifiedDiffArgs, { cwd: gitRepoPath })
+  const cmdOutput = await util.runAsync('git', modifiedDiffArgs, { cwd: gitRepoPath, verbose: false })
   return cmdOutput.split('\n').filter(s => s)
 }
 
@@ -39,7 +39,7 @@ async function writePatchFiles (modifiedPaths, gitRepoPath, patchDirPath) {
   let writeOpsDoneCount = 0
   let writePatchOps = modifiedPaths.map(async (old, i) => {
     const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--full-index', old]
-    const patchContents = await util.runAsync('git', singleDiffArgs, { cwd: gitRepoPath })
+    const patchContents = await util.runAsync('git', singleDiffArgs, { cwd: gitRepoPath, verbose: false })
     const patchFilename = patchFilenames[i]
     await fs.writeFile(path.join(patchDirPath, patchFilename), patchContents)
 

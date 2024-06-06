@@ -8,14 +8,14 @@ const util = require('../lib/util')
 const path = require('path')
 const fs = require('fs-extra')
 
-const createDist = (buildConfig = config.defaultBuildConfig, options = {}) => {
+const createDist = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   util.touchOverriddenFiles()
   util.updateBranding()
   config.buildTargets = ['create_dist']
-  util.generateNinjaFiles()
-  util.buildTargets()
+  await util.generateNinjaFiles()
+  await util.buildTargets()
 }
 
 module.exports = createDist
