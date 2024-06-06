@@ -7,6 +7,8 @@ static_library("ipfs") {
   sources = [
     "ipfs_prefs.cc",
     "ipfs_prefs.h",
+    "ipfs_utils.cc",
+    "ipfs_utils.h",
   ]
 
   deps = [

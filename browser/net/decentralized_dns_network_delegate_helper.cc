@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "components/base32/base32.h"
 #include "content/public/browser/browser_context.h"
@@ -96,9 +97,11 @@ void OnBeforeURLRequest_EnsRedirectWork(
     return;
   }
 
+  GURL resolved_ipfs_uri;
   GURL ipfs_uri = ContentHashToCIDv1URL(content_hash);
-  if (ipfs_uri.is_valid()) {
-    ctx->new_url_spec = ipfs_uri.spec();
+  if (ipfs_uri.is_valid() &&
+      ipfs::TranslateIPFSURI(ipfs_uri, &resolved_ipfs_uri, false)) {
+    ctx->new_url_spec = resolved_ipfs_uri.spec();
   }
 
   next_callback.Run();
