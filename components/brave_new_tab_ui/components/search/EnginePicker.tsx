@@ -7,27 +7,33 @@ import Flex from "$web-common/Flex";
 import { getLocale } from "$web-common/locale";
 import Button from '@brave/leo/react/button';
 import Floating from '@brave/leo/react/floating';
-import { color, radius, spacing } from "@brave/leo/tokens/css/variables";
+import { radius, spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled, { css } from "styled-components";
 import { useSearchContext } from "./SearchContext";
 import { MediumSearchEngineIcon } from "./SearchEngineIcon";
 
 const Option = styled.div`
-    display: flex;
-    gap: ${spacing.m};
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
 
-    padding: ${spacing.m};
-    border-radius: ${radius.s};
+  padding: ${spacing.m};
+  border-radius: ${radius.s};
 
-    &:hover, &[data-selected=true] {
-      background: rgba(255,255,255,0.1);
-    }
+  &:hover, &[data-selected=true] {
+    background: rgba(255,255,255,0.1);
+  }
 `
 
-const CustomizeButton = styled(Button)`
-  border-top: 1px solid ${color.divider.subtle};
-  color: ${color.text.secondary};
+const CustomizeButton = styled(Option)`
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  justify-content: center;
+
+  &:not(:hover) {
+    border-radius: 0;
+  }
 `
 
 const OpenButton = styled(Button)`
@@ -102,6 +108,7 @@ export default function EnginePicker() {
     </OpenButton>
     {open && <Floating ref={menuRef} target={findParentWithTag(buttonRef.current, 'LEO-INPUT')!} autoUpdate positionStrategy="fixed" placement="top-start">
       <Menu data-theme="dark" onClick={e => {
+        e.preventDefault()
         e.stopPropagation()
       }}>
         {filteredSearchEngines.map(s => <Option onClick={() => {
@@ -112,7 +119,7 @@ export default function EnginePicker() {
           data-selected={s === searchEngine}>
           <MediumSearchEngineIcon engine={s} />{s.name}
         </Option>)}
-        <CustomizeButton kind="plain-faint" size="small" onClick={() => {
+        <CustomizeButton onClick={() => {
           history.pushState(undefined, '', '?openSettings=Search')
 
           // For now, close the search box - the Settings dialog doesn't use a
