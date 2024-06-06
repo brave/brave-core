@@ -73,6 +73,11 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
   const needsUpdate = targetSHA !== headSHA || (!headSHA && !targetSHA) ||
       JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
+  console.log(`headSHA: ${headSHA}`)
+  console.log(`targetSHA: ${targetSHA}`)
+  console.log(`latestSyncInfo: ${JSON.stringify(latestSyncInfo)}`)
+  console.log(`expectedSyncInfo: ${JSON.stringify(expectedSyncInfo)}`)
+  console.log(`needsUpdate: ${needsUpdate}`)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
     console.log(`Chromium repo ${chalk.blue.bold('needs sync')}.\n  target is ${
