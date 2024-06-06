@@ -24,6 +24,14 @@ FORWARD_DECLARE_TEST(EthTransactionTest, GetSignedTransaction);
 FORWARD_DECLARE_TEST(EthTransactionTest, TransactionAndValue);
 FORWARD_DECLARE_TEST(Eip2930TransactionUnitTest, GetSignedTransaction);
 
+// TODO(apaymyshev): make use of that enum instead of magic numbers.
+// https://eips.ethereum.org/EIPS/eip-2718
+enum EthTransactionType : uint8_t {
+  kLegacy = 0,
+  kEip2930 = 1,  // https://eips.ethereum.org/EIPS/eip-2930#definitions
+  kEip1559 = 2   // https://eips.ethereum.org/EIPS/eip-1559#specification
+};
+
 class EthTransaction {
  public:
   EthTransaction();

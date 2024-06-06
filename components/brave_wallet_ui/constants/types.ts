@@ -252,19 +252,6 @@ export type SwapValidationErrorType =
   | 'insufficientLiquidity'
   | 'unknownError'
 
-export interface GetAllTokensReturnInfo {
-  tokens: BraveWallet.BlockchainToken[]
-}
-
-export interface GetNativeAssetBalancesReturnInfo {
-  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[][]
-}
-
-export interface GetFlattenedAccountBalancesReturnInfo {
-  token: BraveWallet.BlockchainToken
-  balance: number
-}
-
 export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
   fromAccount: Pick<
@@ -296,11 +283,6 @@ export interface SPLTransferFromParams extends BaseTransactionParams {
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {}
-
-export type SendTransactionParams =
-  | SendEthTransactionParams
-  | SendFilTransactionParams
-  | SendSolTransactionParams
 
 export interface ER20TransferParams extends BaseEthTransactionParams {
   contractAddress: string
@@ -388,14 +370,6 @@ export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
 
-export type GetUnstoppableDomainsWalletAddrReturnInfo =
-  BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
-
-export interface RecoveryObject {
-  value: string
-  id: number
-}
-
 export interface GetTransactionMessageToSignReturnInfo {
   message: string
 }
@@ -437,8 +411,6 @@ export interface AmountPresetObjectType {
   value: AmountPresetTypes
 }
 
-export type ToOrFromType = 'to' | 'from'
-
 export type TransactionDataType = {
   functionName: string
   parameters: string
@@ -468,14 +440,6 @@ export const BuySupportedChains = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID
 ]
-
-export interface GetAllNetworksList {
-  networks: BraveWallet.NetworkInfo[]
-}
-
-export interface SwitchChainRequestsList {
-  requests: BraveWallet.SwitchChainRequest[]
-}
 
 export type TransactionPanelPayload = {
   transactionAmount: string

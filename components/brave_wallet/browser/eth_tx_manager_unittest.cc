@@ -510,24 +510,77 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
-  auto params = mojom::NewEvmTransactionParams::New(
-      mojom::kLocalhostChainId, from(),
-      "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
-      "0x0974", data_);
+  json_rpc_service_->SetGasPriceForTesting("0x123");
+  // Known Eip1559 chain.
+  {
+    auto params = mojom::NewEvmTransactionParams::New(
+        mojom::kMainnetChainId, from(),
+        "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+        "0x0974", data_);
+    EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), params->chain_id));
 
-  bool callback_called = false;
-  std::string tx_meta_id;
-  AddUnapprovedEvmTransaction(
-      std::move(params), std::nullopt,
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id));
+    bool callback_called = false;
+    std::string tx_meta_id;
+    AddUnapprovedEvmTransaction(
+        std::move(params), std::nullopt,
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, &tx_meta_id));
 
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
+    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+    auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+    EXPECT_TRUE(tx_meta);
 
-  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kEip1559);
+  }
+
+  // Known non-Eip1559 chain.
+  {
+    auto params = mojom::NewEvmTransactionParams::New(
+        mojom::kAuroraMainnetChainId, from(),
+        "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+        "0x0974", data_);
+    EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), params->chain_id));
+
+    bool callback_called = false;
+    std::string tx_meta_id;
+    AddUnapprovedEvmTransaction(
+        std::move(params), std::nullopt,
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, &tx_meta_id));
+
+    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+    auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+    EXPECT_TRUE(tx_meta);
+
+    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
+  }
+
+  // Yet not known state of Eip1559 for custom chain.
+  {
+    auto params = mojom::NewEvmTransactionParams::New(
+        "0x1234", from(), "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+        "0x016345785d8a0000", "0x0974", data_);
+    EXPECT_FALSE(IsEip1559Chain(GetPrefs(), params->chain_id).has_value());
+
+    bool callback_called = false;
+    std::string tx_meta_id;
+    AddUnapprovedEvmTransaction(
+        std::move(params), std::nullopt,
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, &tx_meta_id));
+
+    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+    auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+    EXPECT_TRUE(tx_meta);
+
+    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
+  }
 }
 
 TEST_F(EthTxManagerUnitTest, WalletOrigin) {

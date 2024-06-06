@@ -1690,6 +1690,112 @@ TEST_F(BraveWalletServiceUnitTest, SolanaTokenUserAssetsAPI) {
   EXPECT_FALSE(SetUserAssetVisible(sol_0x100->Clone(), true));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateEip1559ForCustomNetworks) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  ASSERT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
+  GetPrefs()->ClearPref(kBraveWalletEip1559ForCustomNetworksMigrated);
+
+  char legacy_custom_networks_pref[] =
+      R"( {
+            "ethereum": [ {
+            "activeRpcEndpointIndex": 0,
+            "blockExplorerUrls": [ "https://aurorascan.dev" ],
+            "chainId": "0x4e454152",
+            "chainName": "Aurora Mainnet Custom",
+            "coin": 60,
+            "iconUrls": [  ],
+            "is_eip1559": false,
+            "nativeCurrency": {
+                "decimals": 18,
+                "name": "Ether",
+                "symbol": "ETH"
+            },
+            "rpcUrls": [ "https://mainnet-aurora.brave.com/" ]
+          }, {
+            "activeRpcEndpointIndex": 0,
+            "blockExplorerUrls": [ "https://etherscan.io" ],
+            "chainId": "0x1",
+            "chainName": "Ethereum Mainnet Custom",
+            "coin": 60,
+            "iconUrls": [  ],
+            "is_eip1559": true,
+            "nativeCurrency": {
+                "decimals": 18,
+                "name": "Ethereum",
+                "symbol": "ETH"
+            },
+            "rpcUrls": [ "https://mainnet-infura.brave.com/" ]
+          }, {
+            "activeRpcEndpointIndex": 0,
+            "blockExplorerUrls": [ "https://lineascan.build" ],
+            "chainId": "0xe708",
+            "chainName": "Linea",
+            "coin": 60,
+            "iconUrls": [  ],
+            "is_eip1559": true,
+            "nativeCurrency": {
+                "decimals": 18,
+                "name": "Linea Ether",
+                "symbol": "ETH"
+            },
+            "rpcUrls": [ "https://linea.blockpi.network/v1/rpc/public" ]
+          } ],
+          "solana": [ {
+            "activeRpcEndpointIndex": 0,
+            "blockExplorerUrls": [ "https://explorer.solana.com/?cluster=testnet" ],
+            "chainId": "0x66",
+            "chainName": "Solana Testnet Custom",
+            "coin": 501,
+            "iconUrls": [  ],
+            "nativeCurrency": {
+                "decimals": 9,
+                "name": "Solana",
+                "symbol": "SOL"
+            },
+            "rpcUrls": [ "https://api.testnet.solana.com/" ]
+          } ]
+        }
+  )";
+
+  EXPECT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
+  GetPrefs()->SetBoolean(kSupportEip1559OnLocalhostChainDeprecated, false);
+  GetPrefs()->SetDict(kBraveWalletCustomNetworks,
+                      base::test::ParseJsonDict(legacy_custom_networks_pref));
+
+  BraveWalletService::MigrateEip1559ForCustomNetworks(GetPrefs());
+  for (auto&& [coin_key, value] :
+       GetPrefs()->GetDict(kBraveWalletCustomNetworks)) {
+    for (auto& custom_network : *value.GetIfList()) {
+      EXPECT_FALSE(custom_network.GetDict().FindBool("is_eip1559"));
+    }
+  }
+
+  EXPECT_FALSE(
+      GetPrefs()->HasPrefPath(kSupportEip1559OnLocalhostChainDeprecated));
+
+  EXPECT_EQ(GetPrefs()->GetDict(kBraveWalletEip1559CustomChains),
+            base::test::ParseJsonDict(R"( {
+              "0x1": true,
+              "0x4e454152": false,
+              "0x539": false,
+              "0xe708": true
+            })"));
+
+  EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), "0x4e454152"));
+  EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), "0x1"));
+  EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), "0xe708"));
+  EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), mojom::kLocalhostChainId));
+
+  // solana does not get into this list.
+  EXPECT_FALSE(IsEip1559Chain(GetPrefs(), "0x66").has_value());
+
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
   // Note: The testing profile has already performed the prefs migration by the
   // time this test runs, so undo its effects here for testing purposes

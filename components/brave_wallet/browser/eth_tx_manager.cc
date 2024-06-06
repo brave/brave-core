@@ -166,18 +166,11 @@ void EthTxManager::AddUnapprovedEvmTransaction(
   auto origin_val =
       origin.value_or(url::Origin::Create(GURL("chrome://wallet")));
 
-  auto is_eip1559 = IsEip1559Chain(prefs_, params->chain_id);
-  if (!is_eip1559.has_value()) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
   auto tx_data =
       mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
                          params->data, false, std::nullopt);
 
-  if (!is_eip1559.value()) {
+  if (!IsEip1559Chain(prefs_, params->chain_id).value_or(false)) {
     AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
                              std::move(origin_val), std::move(callback));
   } else {

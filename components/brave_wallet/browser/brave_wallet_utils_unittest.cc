@@ -663,6 +663,12 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
+  EXPECT_EQ(GetAllChains(&prefs).size(), 23u);
+  for (auto& chain : GetAllChains(&prefs)) {
+    EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
+    EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
+  }
+
   auto get_all_chains_for_coin = [&](mojom::CoinType coin) {
     std::vector<mojom::NetworkInfoPtr> result;
     for (auto& chain : GetAllChains(&prefs)) {
@@ -1091,6 +1097,57 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
             "devnet");
 }
 
+TEST(BraveWalletUtilsUnitTest, Eip1559Chain) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+  auto dict = [&] { return &prefs.GetDict(kBraveWalletEip1559CustomChains); };
+
+  EXPECT_TRUE(dict()->empty());
+
+  // Values for known chains.
+  std::map<std::string, bool> known_states = {
+      {mojom::kMainnetChainId, true},
+      {mojom::kPolygonMainnetChainId, true},
+      {mojom::kAvalancheMainnetChainId, true},
+      {mojom::kOptimismMainnetChainId, true},
+      {mojom::kGoerliChainId, true},
+      {mojom::kSepoliaChainId, true},
+      {mojom::kFilecoinEthereumMainnetChainId, true},
+      {mojom::kFilecoinEthereumTestnetChainId, true},
+      {mojom::kBnbSmartChainMainnetChainId, false},
+      {mojom::kAuroraMainnetChainId, false},
+      {mojom::kNeonEVMMainnetChainId, false},
+      {mojom::kLocalhostChainId, false}};
+  for (auto& [chain_id, value] : known_states) {
+    EXPECT_EQ(IsEip1559Chain(&prefs, chain_id).value(), value);
+  }
+
+  // Custom chain.
+  const std::string custom_chain_id = "0xa23123";
+  EXPECT_FALSE(IsEip1559Chain(&prefs, custom_chain_id));
+
+  SetEip1559ForCustomChain(&prefs, custom_chain_id, true);
+  EXPECT_TRUE(*IsEip1559Chain(&prefs, custom_chain_id));
+  EXPECT_EQ(*dict()->FindBool(custom_chain_id), true);
+
+  SetEip1559ForCustomChain(&prefs, base::ToUpperASCII(custom_chain_id), false);
+  EXPECT_FALSE(*IsEip1559Chain(&prefs, base::ToUpperASCII(custom_chain_id)));
+  EXPECT_EQ(*dict()->FindBool(custom_chain_id), false);
+
+  SetEip1559ForCustomChain(&prefs, custom_chain_id, std::nullopt);
+  EXPECT_FALSE(IsEip1559Chain(&prefs, custom_chain_id).has_value());
+  EXPECT_EQ(dict()->FindBool(custom_chain_id), std::nullopt);
+
+  // Custom chain overriding known one.
+  SetEip1559ForCustomChain(&prefs, mojom::kPolygonMainnetChainId, false);
+  EXPECT_FALSE(*IsEip1559Chain(&prefs, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(*dict()->FindBool(mojom::kPolygonMainnetChainId), false);
+
+  SetEip1559ForCustomChain(&prefs, mojom::kPolygonMainnetChainId, std::nullopt);
+  EXPECT_TRUE(IsEip1559Chain(&prefs, mojom::kPolygonMainnetChainId));
+  EXPECT_EQ(dict()->FindBool(mojom::kPolygonMainnetChainId), std::nullopt);
+}
+
 TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
@@ -1306,6 +1363,22 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
   }
 
   EXPECT_TRUE(AllCoinsTested());
+}
+
+TEST(BraveWalletUtilsUnitTest, RemoveCustomNetworkRemovesEip1559) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  mojom::NetworkInfo chain = GetTestNetworkInfo1();
+
+  AddCustomNetwork(&prefs, chain);
+
+  EXPECT_FALSE(IsEip1559Chain(&prefs, chain.chain_id).has_value());
+  SetEip1559ForCustomChain(&prefs, chain.chain_id, true);
+  EXPECT_TRUE(*IsEip1559Chain(&prefs, chain.chain_id));
+
+  RemoveCustomNetwork(&prefs, chain.chain_id, mojom::CoinType::ETH);
+  EXPECT_FALSE(IsEip1559Chain(&prefs, chain.chain_id).has_value());
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {

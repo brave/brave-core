@@ -79,7 +79,7 @@ class BraveWalletService : public KeyedService,
       ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
       PrefService* local_state,
-      bool is_private_window_);
+      bool is_private_window);
 
   ~BraveWalletService() override;
 
