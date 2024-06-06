@@ -95,9 +95,11 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openAlwaysOnActivity(Activity activity, boolean isKillSwitch) {
+    public static void openAlwaysOnActivity(Activity activity) {
+        if (activity == null) {
+            return;
+        }
         Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
-        vpnAlwaysOnActivityIntent.putExtra(IS_KILL_SWITCH, isKillSwitch);
         activity.startActivity(vpnAlwaysOnActivityIntent);
     }
 

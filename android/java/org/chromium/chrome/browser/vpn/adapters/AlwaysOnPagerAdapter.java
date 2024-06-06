@@ -37,11 +37,9 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                     R.string.kill_switch_tutorial_text_1,
                     R.string.kill_switch_tutorial_text_2,
                     R.string.kill_switch_tutorial_text_3);
-    private boolean mIsKillSwitch;
 
-    public AlwaysOnPagerAdapter(Context context, boolean isKillSwitch) {
+    public AlwaysOnPagerAdapter(Context context) {
         this.mContext = context;
-        this.mIsKillSwitch = isKillSwitch;
     }
 
     @NonNull
@@ -62,26 +60,6 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                                     "</always_on_tutorial>",
                                     null,
                                     new StyleSpan(android.graphics.Typeface.BOLD)));
-            if (mIsKillSwitch) {
-                killSwitchText =
-                        killSwitchText
-                                + "\n"
-                                + mContext.getResources()
-                                        .getString(R.string.kill_switch_tutorial_text_4);
-                tutorialSpannableString =
-                        SpanApplier.applySpans(
-                                killSwitchText,
-                                new SpanInfo(
-                                        "<always_on_tutorial>",
-                                        "</always_on_tutorial>",
-                                        null,
-                                        new StyleSpan(android.graphics.Typeface.BOLD)),
-                                new SpanInfo(
-                                        "<always_on_tutorial_2>",
-                                        "</always_on_tutorial_2>",
-                                        null,
-                                        new StyleSpan(android.graphics.Typeface.BOLD)));
-            }
             killSwitchTutorialText.setText(tutorialSpannableString);
         } else {
             killSwitchTutorialText.setText(killSwitchText);
@@ -89,9 +67,6 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
 
         ImageView killSwitchTutorialImage = view.findViewById(R.id.kill_switch_tutorial_image);
         int killSwitchImage = mImageResources.get(position);
-        if (!mIsKillSwitch && position == 2) {
-            killSwitchImage = R.drawable.ic_vpn_always_on_4;
-        }
         killSwitchTutorialImage.setImageResource(killSwitchImage);
 
         collection.addView(view);
