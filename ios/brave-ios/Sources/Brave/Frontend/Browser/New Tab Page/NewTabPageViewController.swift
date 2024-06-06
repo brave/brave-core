@@ -786,7 +786,6 @@ class NewTabPageViewController: UIViewController {
     case .optInCardAction(.turnOnBraveNewsButtonTapped):
       preventReloadOnBraveNewsEnabledChange = true
       Preferences.BraveNews.userOptedIn.value = true
-      Preferences.BraveNews.isShowingOptIn.value = false
       Preferences.BraveNews.isEnabled.value = true
       rewards.ads.initialize { [weak self] _ in
         // Initialize ads if it hasn't already been done
