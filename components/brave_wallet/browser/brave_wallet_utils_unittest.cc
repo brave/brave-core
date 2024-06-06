@@ -20,16 +20,17 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -656,6 +657,9 @@ TEST(BraveWalletUtilsUnitTest, CustomChainsExist) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
+  const base::test::ScopedFeatureList scoped_feature_list{
+      features::kBraveWalletZCashFeature};
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
