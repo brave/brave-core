@@ -110,7 +110,7 @@ blink::mojom::PermissionStatus GetCurrentGoogleSignInPermissionStatus(
     const GURL& request_initiator_url) {
   return permission_controller->GetPermissionStatusForCurrentDocument(
       blink::PermissionType::BRAVE_GOOGLE_SIGN_IN,
-      contents->GetPrimaryMainFrame());
+      contents->GetPrimaryMainFrame(), /*should_include_device_status=*/false);
 }
 
 void CreateGoogleSignInPermissionRequest(

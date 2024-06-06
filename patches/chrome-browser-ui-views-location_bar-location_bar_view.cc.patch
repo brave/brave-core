@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 8f5f211d1d36f4eb0ab4ea76e340914f3047431e..001e6457dd447248f8bae449ced4ac5ba8ddbb9f 100644
+index 9ecaad1fa8257dd331640dc30f89b9434a527915..100b40d5ea6adc5cf3e97086c5b0c6a94b9459cf 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -662,6 +662,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -716,6 +716,7 @@ void LocationBarView::Layout(PassKey) {
    // Indentation add padding when the permission chip is visible and replacing
    // the LHS icon.
    int text_overriding_permission_chip_indent = 0;
@@ -10,7 +10,7 @@ index 8f5f211d1d36f4eb0ab4ea76e340914f3047431e..001e6457dd447248f8bae449ced4ac5b
    if (should_indent) {
      icon_left += icon_indent;
      text_left += text_indent;
-@@ -748,6 +749,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -802,6 +803,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
