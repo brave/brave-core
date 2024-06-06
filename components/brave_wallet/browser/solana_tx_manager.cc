@@ -109,8 +109,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
     return;
   }
 
-  // Fetch the compute units used for priority fee estimation
-  // by using the simulateTransaction API.
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -140,7 +138,6 @@ void SolanaTxManager::OnSimulateSolanaTransaction(
     return;
   }
 
-  // Fetch the fee estimate
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::OnGetRecentSolanaPrioritizationFees,
                      weak_ptr_factory_.GetWeakPtr(), std::move(meta), base_fee,

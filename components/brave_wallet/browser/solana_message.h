@@ -99,7 +99,6 @@ class SolanaMessage {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
-  // FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, AddPriorityFee);
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, UsesPriorityFee);
 
   static void GetUniqueAccountMetas(

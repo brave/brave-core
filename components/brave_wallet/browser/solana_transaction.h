@@ -135,10 +135,12 @@ class SolanaTransaction {
   void set_fee_estimation(mojom::SolanaFeeEstimationPtr estimation) {
     fee_estimation_ = std::move(estimation);
   }
+  const mojom::SolanaFeeEstimationPtr& fee_estimation() const {
+    return fee_estimation_;
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
-  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
 
   SolanaMessage message_;
   // Value will be assigned when FromSignedTransactionBytes is called.

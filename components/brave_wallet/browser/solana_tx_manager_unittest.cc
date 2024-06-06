@@ -716,7 +716,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
                            from_account, &meta_id1);
   tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
-  EXPECT_FALSE(tx_meta1->tx()->fee_estimation_);
+  EXPECT_FALSE(tx_meta1->tx()->fee_estimation());
   responses.clear();
 
   // When priority fee fetching fails (simulateTransaction), the tx should have
@@ -730,10 +730,10 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
                            from_account, &meta_id2);
   auto tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
-  EXPECT_TRUE(tx_meta2->tx()->fee_estimation_);
-  EXPECT_EQ(tx_meta2->tx()->fee_estimation_->base_fee, 5000U);
-  EXPECT_EQ(tx_meta2->tx()->fee_estimation_->compute_units, 0U);
-  EXPECT_EQ(tx_meta2->tx()->fee_estimation_->fee_per_compute_unit, 0U);
+  EXPECT_TRUE(tx_meta2->tx()->fee_estimation());
+  EXPECT_EQ(tx_meta2->tx()->fee_estimation()->base_fee, 5000U);
+  EXPECT_EQ(tx_meta2->tx()->fee_estimation()->compute_units, 0U);
+  EXPECT_EQ(tx_meta2->tx()->fee_estimation()->fee_per_compute_unit, 0U);
   responses.clear();
 
   // 3. Testcase for when priority fee fetching fails
@@ -749,10 +749,10 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
                            from_account, &meta_id3);
   auto tx_meta3 = solana_tx_manager()->GetTxForTesting(meta_id3);
   ASSERT_TRUE(tx_meta3);
-  EXPECT_TRUE(tx_meta3->tx()->fee_estimation_);
-  EXPECT_EQ(tx_meta3->tx()->fee_estimation_->base_fee, 5000U);
-  EXPECT_EQ(tx_meta3->tx()->fee_estimation_->compute_units, 69017U);
-  EXPECT_EQ(tx_meta3->tx()->fee_estimation_->fee_per_compute_unit, 1U);
+  EXPECT_TRUE(tx_meta3->tx()->fee_estimation());
+  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->base_fee, 5000U);
+  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->compute_units, 69017U);
+  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->fee_per_compute_unit, 1U);
 
   // When `everything is successful, the tx should have a fee estimation with
   // each of base_fee, compute_units and fee_per_compute_unit set from data in

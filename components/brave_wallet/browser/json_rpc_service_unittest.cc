@@ -1854,7 +1854,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void TestGetRecentSolanaPrioritizationFees(
       const std::string& chain_id,
-      const std::vector<std::pair<uint64_t, uint64_t>> expected_recent_fees,
+      const std::vector<std::pair<uint64_t, uint64_t>>& expected_recent_fees,
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
