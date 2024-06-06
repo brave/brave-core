@@ -36,6 +36,9 @@ namespace ai_chat {
 // - Long conversation warning threshold: 100k * 0.80 = 80k tokens
 
 const std::vector<ai_chat::mojom::Model>& GetAllModels() {
+  // TODO(petemill): When removing kFreemiumAvailable flag, and not having any
+  // BASIC and PREMIUM-only models, remove all the `switchToBasicModel`-related
+  // functions.
   static const auto kFreemiumAccess =
       features::kFreemiumAvailable.Get() ? mojom::ModelAccess::BASIC_AND_PREMIUM
                                          : mojom::ModelAccess::PREMIUM;
@@ -56,7 +59,11 @@ const std::vector<ai_chat::mojom::Model>& GetAllModels() {
       {"chat-basic", "llama-3-8b-instruct", "Llama 3 8b", "Meta",
        conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                         : mojom::ModelEngineType::LLAMA_REMOTE,
-       mojom::ModelCategory::CHAT, mojom::ModelAccess::BASIC, 8000, 9700},
+       mojom::ModelCategory::CHAT,
+       features::kFreemiumAvailable.Get()
+           ? mojom::ModelAccess::BASIC_AND_PREMIUM
+           : mojom::ModelAccess::BASIC,
+       8000, 9700},
   });
   return *kModels;
 }

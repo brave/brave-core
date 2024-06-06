@@ -48,7 +48,6 @@ export interface AIChatContext {
   updateShouldSendPageContents: (shouldSend: boolean) => void
   setInputText: (text: string) => void
   handleMaybeLater: () => void
-  handleSwitchToBasicModelAndRetry: () => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
   handleActionTypeClick: (actionType: mojom.ActionType) => void
@@ -96,7 +95,6 @@ export const defaultContext: AIChatContext = {
   updateShouldSendPageContents: () => {},
   setInputText: () => {},
   handleMaybeLater: () => {},
-  handleSwitchToBasicModelAndRetry: () => {},
   submitInputTextToAPI: () => {},
   resetSelectedActionType: () => {},
   handleActionTypeClick: () => {},

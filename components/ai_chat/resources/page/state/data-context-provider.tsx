@@ -191,9 +191,11 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCanShowPremiumPrompt(false)
   }
 
+  // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
+  // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => m.access === mojom.ModelAccess.BASIC)
+    const nonPremium = allModels.find(m => m.access !== mojom.ModelAccess.PREMIUM)
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
@@ -261,11 +263,6 @@ function DataContextProvider (props: DataContextProviderProps) {
   const handleMaybeLater = () => {
     getPageHandlerInstance().pageHandler.clearErrorAndGetFailedMessage()
       .then((res) => { setInputText(res.turn.text) })
-  }
-
-  const handleSwitchToBasicModelAndRetry = () => {
-    switchToBasicModel()
-    getPageHandlerInstance().pageHandler.retryAPIRequest()
   }
 
   const resetSelectedActionType = () => {
@@ -428,7 +425,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     updateShouldSendPageContents,
     setInputText,
     handleMaybeLater,
-    handleSwitchToBasicModelAndRetry,
     submitInputTextToAPI,
     resetSelectedActionType,
     handleActionTypeClick,
