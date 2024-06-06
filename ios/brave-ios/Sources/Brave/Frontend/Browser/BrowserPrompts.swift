@@ -61,7 +61,7 @@ class JSPromptAlertController: UIAlertController {
 
   weak var delegate: JSPromptAlertControllerDelegate?
 
-  private var handledAction: Bool = false
+  fileprivate var handledAction: Bool = false
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
@@ -102,7 +102,8 @@ struct MessageAlert: JSAlertInfo {
       showCancel: false
     )
     alertController.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default) { _ in
+      UIAlertAction(title: Strings.OKString, style: .default) { [weak alertController] _ in
+        alertController?.handledAction = true
         self.completionHandler()
       }
     )
@@ -128,7 +129,8 @@ struct ConfirmPanelAlert: JSAlertInfo {
       info: self
     )
     alertController.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default) { _ in
+      UIAlertAction(title: Strings.OKString, style: .default) { [weak alertController] _ in
+        alertController?.handledAction = true
         self.completionHandler(true)
       }
     )
@@ -159,7 +161,8 @@ struct TextInputAlert: JSAlertInfo {
       input.text = self.defaultText
     })
     alertController.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default) { _ in
+      UIAlertAction(title: Strings.OKString, style: .default) { [weak alertController] _ in
+        alertController?.handledAction = true
         self.completionHandler(input.text)
       }
     )
