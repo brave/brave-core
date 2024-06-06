@@ -85,7 +85,6 @@ export default function EnginePicker() {
   React.useEffect(() => {
     if (!open) return
     const handler = (e: MouseEvent) => {
-      console.log(menuRef.current)
       if (!e.composedPath().includes(menuRef.current!)) {
         setOpen(false)
       }

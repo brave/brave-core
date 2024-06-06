@@ -59,7 +59,6 @@ function Swapper() {
   const [, setShowSearchBox] = useNewTabPref('showSearchBox')
   return <>
     {!open && <PlaceholderContainer onClick={e => {
-      console.log("Closing", e.nativeEvent.composedPath())
       // If we were clicking a button inside the SearchBox, don't open the box.
       if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
         e.preventDefault()
