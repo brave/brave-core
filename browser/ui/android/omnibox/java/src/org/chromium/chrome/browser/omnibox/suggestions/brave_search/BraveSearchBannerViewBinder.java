@@ -46,7 +46,10 @@ public class BraveSearchBannerViewBinder {
             BraveSearchBannerProperties.Delegate delegate =
                     model.get(BraveSearchBannerProperties.DELEGATE);
             if (delegate != null) {
-                btnPositive.setOnClickListener(view -> { delegate.onPositiveClicked(); });
+                btnPositive.setOnClickListener(
+                        view -> {
+                            delegate.onPositiveClicked();
+                        });
 
                 btnNegative.setOnClickListener(
                         view -> {

@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
-import org.chromium.base.BraveFeatureList;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.OmniboxPrefManager;
@@ -181,9 +179,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         }
         // if (isBraveSearchPromoBanner() && autocompleteEnabled) {
         final PropertyModel model = mBraveSearchBannerProcessor.createModel();
-            mBraveSearchBannerProcessor.populateModel(model);
-            viewInfoList.add(new DropdownItemViewInfo(
-                    mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
+        mBraveSearchBannerProcessor.populateModel(model);
+        viewInfoList.add(
+                new DropdownItemViewInfo(
+                        mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
         // }
 
         return viewInfoList;
