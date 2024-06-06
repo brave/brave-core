@@ -6,23 +6,17 @@
 import GuardianConnect
 import SwiftUI
 
-public struct ServerRegion: Identifiable {
+public struct ServerRegion: Identifiable, Equatable {
   public let id = UUID()
   let name: String
   let servers: Int
-  var isConnected: Bool = false
 }
 
-public struct BraveVPNRegionPickerView: View {
-
-  @State private var isAutomatic: Bool
-  @State private var isLoading = false
-  @State private var isRegionDetailsPresented = false
-  @State private var selectedIndex = 0
-
+public class ServerRegionDetail: ObservableObject {
   public var serverRegions: [ServerRegion] = [
     ServerRegion(name: "Australia", servers: 5),
-    ServerRegion(name: "Brazil", servers: 4, isConnected: true),
+    ServerRegion(name: "Brazil", servers: 4),
+    //     ServerRegion(name: "Brazil", servers: 4, isConnected: true),
     ServerRegion(name: "Canada", servers: 2),
     ServerRegion(name: "France", servers: 3),
     ServerRegion(name: "Germany", servers: 5),
@@ -32,15 +26,27 @@ public struct BraveVPNRegionPickerView: View {
     ServerRegion(name: "Netherlands", servers: 1),
   ]
 
-  var selectedCountry: String {
-    serverRegions.first(where: { $0.isConnected })?.name ?? "Unknown"
-  }
+  @Published var selectedRegion: ServerRegion? = nil
 
-  public init(isAutomatic: Bool, serverRegions: [ServerRegion]? = nil) {
+  public init() {
+    selectedRegion = serverRegions.first
+  }
+}
+
+public struct BraveVPNRegionPickerView: View {
+
+  @State private var isAutomatic: Bool
+  @State private var isLoading = false
+  @State private var isRegionDetailsPresented = false
+  @State private var selectedIndex = 0
+
+  @ObservedObject private var serverRegionDetail = ServerRegionDetail()
+
+  public init(isAutomatic: Bool, serverRegionDetail: ServerRegionDetail? = nil) {
     self.isAutomatic = isAutomatic
 
-    if let serverRegions = serverRegions {
-      self.serverRegions = serverRegions
+    if let serverRegionDetail = serverRegionDetail {
+      self.serverRegionDetail = serverRegionDetail
     }
   }
 
@@ -79,10 +85,12 @@ public struct BraveVPNRegionPickerView: View {
 
           if !isAutomatic {
             Section {
-              ForEach(Array(serverRegions.enumerated()), id: \.offset) { index, region in
+              ForEach(Array(serverRegionDetail.serverRegions.enumerated()), id: \.offset) {
+                index,
+                region in
                 Button {
                   print("Index Outside \(index)")
-                  selectDesignatedVPNRegion()
+                  selectDesignatedVPNRegion(at: index)
                 } label: {
                   HStack {
                     regionFlag ?? Image(braveSystemName: "leo.globe")
@@ -92,7 +100,7 @@ public struct BraveVPNRegionPickerView: View {
                         .foregroundColor(.gray)
                     }
                     Spacer()
-                    if region.isConnected {
+                    if region == serverRegionDetail.selectedRegion {
                       Text("Connected")
                         .foregroundColor(.green)
                     }
@@ -144,7 +152,7 @@ public struct BraveVPNRegionPickerView: View {
     isAutomatic = enabled
   }
 
-  private func selectDesignatedVPNRegion() {
+  private func selectDesignatedVPNRegion(at index: Int) {
     guard !isLoading else {
       return
     }
@@ -153,6 +161,10 @@ public struct BraveVPNRegionPickerView: View {
 
     // TODO: Select Region
     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      if let selectedRegion = serverRegionDetail.serverRegions[safe: index] {
+        serverRegionDetail.selectedRegion = selectedRegion
+      }
+      
       isLoading = false
     }
   }
