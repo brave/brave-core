@@ -194,6 +194,23 @@ void BraveShieldsWebContentsObserver::DispatchAllowedOnceEventForWebContents(
   }
   shields_data_ctrlr->HandleItemAllowedOnce(block_type, subresource);
 }
+// static
+void BraveShieldsWebContentsObserver::
+    DispatchWebcompatFeatureInvokedForWebContents(
+        ContentSettingsType webcompat_content_settings,
+        WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+  auto* shields_data_ctrlr =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  // |shields_data_ctrlr| can be null if the |web_contents| is generated in
+  // component layer - We don't attach any tab helpers in this case.
+  if (!shields_data_ctrlr) {
+    return;
+  }
+  shields_data_ctrlr->HandleWebcompatFeatureInvoked(webcompat_content_settings);
+}
 #endif
 
 void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
@@ -206,6 +223,19 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
   }
   DispatchAllowedOnceEventForWebContents(
       brave_shields::kJavaScript, base::UTF16ToUTF8(details), web_contents);
+#endif
+}
+
+void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
+    ContentSettingsType webcompat_settings_type) {
+#if !BUILDFLAG(IS_ANDROID)
+  WebContents* web_contents =
+      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+  if (!web_contents) {
+    return;
+  }
+  DispatchWebcompatFeatureInvokedForWebContents(webcompat_settings_type,
+                                                web_contents);
 #endif
 }
 

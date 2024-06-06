@@ -79,6 +79,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetNoScriptEnabled();
   settings.is_forget_first_party_storage_enabled =
       active_shields_data_controller_->GetForgetFirstPartyStorageEnabled();
+  settings.webcompat_settings =
+      active_shields_data_controller_->GetWebcompatSettings();
 
   std::move(callback).Run(settings.Clone());
 }
@@ -159,6 +161,17 @@ void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
       is_enabled);
 }
 
+void ShieldsPanelDataHandler::SetWebcompatEnabled(
+    ContentSettingsType webcompat_settings_type,
+    bool enable) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->SetWebcompatEnabled(webcompat_settings_type,
+                                                       enable);
+}
+
 void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   if (!active_shields_data_controller_) {
     return;
@@ -207,6 +220,10 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
+  const auto& invoked_webcompat_set =
+      active_shields_data_controller_->GetInvokedWebcompatFeatures();
+  site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(
+      invoked_webcompat_set.begin(), invoked_webcompat_set.end());
 
   // This method gets called from various callsites. Constantly updating favicon
   // url will replace the hashed version too. So, we update this once only

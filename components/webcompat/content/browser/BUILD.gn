@@ -5,10 +5,8 @@
 
 import("//brave/build/config.gni")
 
-source_set("core") {
+source_set("browser") {
   sources = [
-    "features.cc",
-    "features.h",
     "webcompat_exceptions_service.cc",
     "webcompat_exceptions_service.h",
   ]

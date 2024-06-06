@@ -14,8 +14,8 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/webcompat/features.h"
-#include "brave/components/webcompat/webcompat_exceptions_service.h"
+#include "brave/components/webcompat/core/common/features.h"
+#include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -147,10 +147,12 @@ IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
     // Check the default setting
     const auto observed_setting_default =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_default, CONTENT_SETTING_ASK);
+    EXPECT_EQ(observed_setting_default, CONTENT_SETTING_BLOCK);
 
-    // Add a rule and then reload the page.
-    webcompat_exceptions_service->AddRuleForTesting(pattern, test_case.name);
+    // Create a rule and then reload the page.
+    webcompat::PatternsByWebcompatTypeMap rule_map;
+    rule_map[test_case.type] = std::vector<ContentSettingsPattern>({pattern});
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
     NavigateToURL("a.test", "/simple.html");
 
     // Check the remote setting gets used
@@ -161,22 +163,30 @@ IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
     // Check that the remote setting doesn't leak to another domain
     const auto observed_setting_cross_site =
         map->GetContentSetting(GURL("https://b.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_cross_site, CONTENT_SETTING_ASK);
+    EXPECT_EQ(observed_setting_cross_site, CONTENT_SETTING_BLOCK);
 
     // Check that manual setting can override the remote setting
-    brave_shields::SetWebcompatFeatureSetting(map, test_case.type,
-                                              ControlType::BLOCK,
-                                              GURL("https://a.test"), nullptr);
+    brave_shields::SetWebcompatEnabled(map, test_case.type, false,
+                                       GURL("https://a.test"), nullptr);
     const auto observed_setting_override1 =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
     EXPECT_EQ(observed_setting_override1, CONTENT_SETTING_BLOCK);
 
     // Check that manual setting can override the remote setting
-    brave_shields::SetWebcompatFeatureSetting(map, test_case.type,
-                                              ControlType::ALLOW,
-                                              GURL("https://b.test"), nullptr);
+    brave_shields::SetWebcompatEnabled(map, test_case.type, true,
+                                       GURL("https://b.test"), nullptr);
     const auto observed_setting_override2 =
         map->GetContentSetting(GURL("https://b.test"), GURL(), test_case.type);
     EXPECT_EQ(observed_setting_override2, CONTENT_SETTING_ALLOW);
+
+    // Check that webcompat returns false for non-http URLs.
+    bool result = brave_shields::IsWebcompatEnabled(map, test_case.type,
+                                                    GURL("file://tmp"));
+    EXPECT_FALSE(result);
+
+    // Check that the webcompat setting has been enabled as expected.
+    bool result2 = brave_shields::IsWebcompatEnabled(map, test_case.type,
+                                                     GURL("https://b.test"));
+    EXPECT_TRUE(result2);
   }
 }

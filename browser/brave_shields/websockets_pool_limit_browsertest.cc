@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -91,7 +92,10 @@ constexpr char kWsCloseInSwScript[] = R"(
 
 class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
  public:
-  WebSocketsPoolLimitBrowserTest() = default;
+  WebSocketsPoolLimitBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        webcompat::features::kBraveWebcompatExceptionsService);
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -192,8 +196,10 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
   std::unique_ptr<net::SpawnedTestServer> ws_server_;
-
   GURL ws_url_;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest, PoolIsLimitedByDefault) {
@@ -328,10 +334,9 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
   // Enable shields.
   brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
   // Enable webcompat exception.
-  brave_shields::SetWebcompatFeatureSetting(
+  brave_shields::SetWebcompatEnabled(
       content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
-      brave_shields::ControlType::ALLOW, https_server_.GetURL("a.com", "/"),
-      nullptr);
+      true, https_server_.GetURL("a.com", "/"), nullptr);
 
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,

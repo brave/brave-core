@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/webcompat/webcompat_exceptions_service.h"
+#include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 
 #include <memory>
 #include <set>
@@ -66,56 +66,34 @@ constexpr auto kWebcompatNamesToType =
 
 WebcompatExceptionsService* singleton = nullptr;
 
-}  // namespace
-
-WebcompatExceptionsService::WebcompatExceptionsService(
-    LocalDataFilesService* local_data_files_service)
-    : LocalDataFilesObserver(local_data_files_service) {}
-
-void WebcompatExceptionsService::LoadWebcompatExceptions(
-    const base::FilePath& install_dir) {
-  base::FilePath txt_file_path =
-      install_dir.AppendASCII(WEBCOMPAT_EXCEPTIONS_JSON_FILE_VERSION)
-          .AppendASCII(WEBCOMPAT_EXCEPTIONS_JSON_FILE);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     txt_file_path),
-      base::BindOnce(&WebcompatExceptionsService::OnJsonFileDataReady,
-                     weak_factory_.GetWeakPtr()));
-}
-
-bool WebcompatExceptionsService::AddRule(const ContentSettingsPattern& pattern,
-                                         const std::string& exception_string) {
+bool AddRule(
+  const ContentSettingsPattern& pattern,
+  const std::string& exception_string,
+  PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
   const auto it = kWebcompatNamesToType.find(exception_string);
   if (it != kWebcompatNamesToType.end()) {
     const auto webcompat_type = it->second;
-    if (!patterns_by_webcompat_type_.contains(webcompat_type)) {
-      patterns_by_webcompat_type_[webcompat_type] = kEmptyPatternVector;
+    if (!patterns_by_webcompat_type.contains(webcompat_type)) {
+      patterns_by_webcompat_type[webcompat_type] = kEmptyPatternVector;
     }
-    patterns_by_webcompat_type_[webcompat_type].push_back(pattern);
+    patterns_by_webcompat_type[webcompat_type].push_back(pattern);
     return true;
   }
   return false;
 }
 
-bool WebcompatExceptionsService::AddRuleForTesting(
-    const ContentSettingsPattern& pattern,
-    const std::string& exception_string) {
-  base::AutoLock lock(lock_);
-  return AddRule(pattern, exception_string);
-}
-
-void WebcompatExceptionsService::AddRules(
-    const base::Value::List& include_strings,
-    const base::Value::Dict& rule_dict) {
+void AddRules(
+  const base::Value::List& include_strings,
+  const base::Value::Dict& rule_dict,
+  PatternsByWebcompatTypeMap& patterns_by_webcompat_type
+) {
   const base::Value* exceptions = rule_dict.Find(kExceptions);
   if (exceptions->is_list()) {
     for (const base::Value& include_string : include_strings) {
       const auto pattern =
           ContentSettingsPattern::FromString(include_string.GetString());
       for (const base::Value& exception : exceptions->GetList()) {
-        const bool success = AddRule(pattern, exception.GetString());
+        const bool success = AddRule(pattern, exception.GetString(), patterns_by_webcompat_type);
         if (!success) {
           DLOG(ERROR) << "Unrecognized webcompat exception "
                       << exception.GetString();
@@ -128,21 +106,10 @@ void WebcompatExceptionsService::AddRules(
   }
 }
 
-void WebcompatExceptionsService::ClearRules() {
-  base::AutoLock lock(lock_);
-  patterns_by_webcompat_type_.clear();
-}
-
-const std::vector<ContentSettingsPattern>
-WebcompatExceptionsService::GetPatterns(ContentSettingsType webcompat_type) {
-  base::AutoLock lock(lock_);
-  const auto it = patterns_by_webcompat_type_.find(webcompat_type);
-  return it == patterns_by_webcompat_type_.end() ? kEmptyPatternVector
-                                                 : it->second;
-}
-
-void WebcompatExceptionsService::OnJsonFileDataReady(
-    const std::string& contents) {
+void ParseJsonRules(
+  const std::string& contents,
+  PatternsByWebcompatTypeMap& patterns_by_webcompat_type
+) {
   if (contents.empty()) {
     // We don't have the file yet.
     return;
@@ -157,7 +124,6 @@ void WebcompatExceptionsService::OnJsonFileDataReady(
                 << WEBCOMPAT_EXCEPTIONS_JSON_FILE;
     return;
   }
-  ClearRules();
   for (const auto& rule : json_root->GetList()) {
     if (!rule.is_dict()) {
       // Something is wrong with the rule definition; skip it.
@@ -170,7 +136,7 @@ void WebcompatExceptionsService::OnJsonFileDataReady(
     if (include == nullptr) {
       DLOG(ERROR) << "No include parameter found";
     } else if (include->is_list()) {
-      AddRules(include->GetList(), rule_dict);
+      AddRules(include->GetList(), rule_dict, patterns_by_webcompat_type);
     } else if (include->is_string()) {
       DLOG(ERROR) << "Not implemented yet";
     } else {
@@ -178,6 +144,52 @@ void WebcompatExceptionsService::OnJsonFileDataReady(
                   << WEBCOMPAT_EXCEPTIONS_JSON_FILE;
     }
   }
+}
+
+PatternsByWebcompatTypeMap ReadAndParseJsonRules(
+    const base::FilePath& txt_file_path) {
+  PatternsByWebcompatTypeMap patterns_by_webcompat_type;
+  const auto raw_contents =
+      brave_component_updater::GetDATFileAsString(txt_file_path);
+  ParseJsonRules(raw_contents, patterns_by_webcompat_type);
+  return patterns_by_webcompat_type;
+}
+
+}  // namespace
+
+WebcompatExceptionsService::WebcompatExceptionsService(
+    LocalDataFilesService* local_data_files_service)
+    : LocalDataFilesObserver(local_data_files_service) {}
+
+void WebcompatExceptionsService::LoadWebcompatExceptions(
+    const base::FilePath& install_dir) {
+  base::FilePath txt_file_path =
+      install_dir.AppendASCII(WEBCOMPAT_EXCEPTIONS_JSON_FILE_VERSION)
+          .AppendASCII(WEBCOMPAT_EXCEPTIONS_JSON_FILE);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&ReadAndParseJsonRules, txt_file_path),
+      base::BindOnce(&WebcompatExceptionsService::SetRules,
+                     weak_factory_.GetWeakPtr()));
+}
+
+std::vector<ContentSettingsPattern>
+WebcompatExceptionsService::GetPatterns(ContentSettingsType webcompat_type) {
+  base::AutoLock lock(lock_);
+  const auto it = patterns_by_webcompat_type_.find(webcompat_type);
+  return it == patterns_by_webcompat_type_.end() ? kEmptyPatternVector
+                                                 : it->second;
+}
+
+void WebcompatExceptionsService::SetRules(
+  PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
+  base::AutoLock lock(lock_);
+  patterns_by_webcompat_type_ = std::move(patterns_by_webcompat_type);
+}
+
+void WebcompatExceptionsService::SetRulesForTesting(
+  PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
+    SetRules(std::move(patterns_by_webcompat_type));
 }
 
 // implementation of LocalDataFilesObserver

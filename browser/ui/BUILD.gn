@@ -33,7 +33,10 @@ source_set("ui") {
     "//chrome/browser/ui/webui:configs",
   ]
 
-  deps = [ "//brave/components/brave_shields/core/browser" ]
+  deps = [
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/webcompat/core/common",
+  ]
 
   public_deps = []
   sources = [

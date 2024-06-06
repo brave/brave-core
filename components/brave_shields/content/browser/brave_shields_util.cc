@@ -848,11 +848,11 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   return GetAdsSettingCountFromRules(cosmetic_rules);
 }
 
-void SetWebcompatFeatureSetting(HostContentSettingsMap* map,
-                                ContentSettingsType webcompat_settings_type,
-                                ControlType type,
-                                const GURL& url,
-                                PrefService* local_state) {
+void SetWebcompatEnabled(HostContentSettingsMap* map,
+                         ContentSettingsType webcompat_settings_type,
+                         bool enabled,
+                         const GURL& url,
+                         PrefService* local_state) {
   DCHECK(map);
 
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
@@ -864,21 +864,27 @@ void SetWebcompatFeatureSetting(HostContentSettingsMap* map,
     return;
   }
 
-  ContentSetting setting;
-  if (type == ControlType::ALLOW) {
-    // Unprotect feature
-    setting = CONTENT_SETTING_ALLOW;
-  } else if (type == ControlType::BLOCK) {
-    // Protect feature
-    setting = CONTENT_SETTING_BLOCK;
-  } else {
-    // Fall back to default
-    setting = CONTENT_SETTING_DEFAULT;
-  }
+  ContentSetting setting =
+      enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
   map->SetContentSettingCustomScope(primary_pattern,
                                     ContentSettingsPattern::Wildcard(),
                                     webcompat_settings_type, setting);
   RecordShieldsSettingChanged(local_state);
+}
+
+bool IsWebcompatEnabled(HostContentSettingsMap* map,
+                        ContentSettingsType webcompat_settings_type,
+                        const GURL& url) {
+  DCHECK(map);
+
+  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+    return false;
+  }
+
+  ContentSetting setting =
+      map->GetContentSetting(url, url, webcompat_settings_type);
+
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 }  // namespace brave_shields

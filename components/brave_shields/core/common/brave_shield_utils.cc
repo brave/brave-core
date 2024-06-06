@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/no_destructor.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "url/gurl.h"
@@ -39,6 +40,10 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
         webcompat_rules,
     const GURL& primary_url,
     const ContentSettingsType content_settings_type) {
+  if (!base::FeatureList::IsEnabled(
+          webcompat::features::kBraveWebcompatExceptionsService)) {
+    return CONTENT_SETTING_DEFAULT;
+  }
   const auto& item = webcompat_rules.find(content_settings_type);
   if (item == webcompat_rules.end()) {
     return CONTENT_SETTING_DEFAULT;
