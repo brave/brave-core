@@ -277,6 +277,11 @@ void MdTextButton::SetLoading(bool loading) {
 void MdTextButton::UpdateTextColor() {
   MdTextButtonBase::UpdateTextColor();
 
+  // Use explicitely set color instead of our default colors.
+  if (explicitly_set_normal_color()) {
+    return;
+  }
+
   auto colors = GetButtonColors();
   SetTextColor(GetVisualState(), colors.text_color);
 }

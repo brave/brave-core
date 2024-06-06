@@ -26,10 +26,8 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
                                const ui::ColorProviderKey& key);
 void AddTorThemeColorMixer(ui::ColorProvider* provider,
                            const ui::ColorProviderKey& key);
-void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
-                                         const ui::ColorProviderKey& key);
-void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
-                                        const ui::ColorProviderKey& key);
+void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
+                               const ui::ColorProviderKey& key);
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
                                            const ui::ColorProviderKey& key);
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
