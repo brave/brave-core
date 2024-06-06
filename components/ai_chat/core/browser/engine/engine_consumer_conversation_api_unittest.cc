@@ -34,6 +34,10 @@ using ::testing::_;
 
 namespace ai_chat {
 
+namespace {
+const int kTestingMaxPageContentLength = 100;
+}
+
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 
 class MockConversationAPIClient : public ConversationAPIClient {
@@ -69,12 +73,15 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   ~EngineConsumerConversationAPIUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = GetModel("chat-leo-expanded");
-    ASSERT_TRUE(model);
-    engine_ = std::make_unique<EngineConsumerConversationAPI>(*model, nullptr,
+    model_ = mojom::Model::New(
+        "test_model_key", "test-model-name", "Test Model Display Name",
+        "Test Maker", mojom::ModelEngineType::BRAVE_CONVERSATION_API,
+        mojom::ModelCategory::CHAT, mojom::ModelAccess::BASIC,
+        kTestingMaxPageContentLength, 1000);
+    engine_ = std::make_unique<EngineConsumerConversationAPI>(*model_, nullptr,
                                                               nullptr);
     engine_->SetAPIForTesting(
-        std::make_unique<MockConversationAPIClient>(model->name));
+        std::make_unique<MockConversationAPIClient>(model_->name));
   }
 
   MockConversationAPIClient* GetMockConversationAPIClient() {
@@ -94,6 +101,7 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  mojom::ModelPtr model_;
   std::unique_ptr<EngineConsumerConversationAPI> engine_;
 };
 
@@ -107,8 +115,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   // ConversationEvent to JSON. It's convenient to test both here but more
   // exhaustive tests of  ConversationAPIClient are performed in its own
   // unit test suite.
+  std::string page_content(kTestingMaxPageContentLength + 1, 'a');
+  std::string expected_page_content(kTestingMaxPageContentLength, 'a');
   std::string expected_events = R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "pageText", "content": ")" +
+                                expected_page_content + R"("},
     {"role": "user", "type": "chatMessage", "content": "Which show is this about?"}
   ])";
   auto* mock_api_client = GetMockConversationAPIClient();
@@ -120,6 +131,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        // Page content should be truncated
+        EXPECT_EQ(conversation[0].content, expected_page_content);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
         EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
         // Match entire structure
@@ -135,8 +148,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", history,
-      "Which show is this about?", base::DoNothing(),
+      false, page_content, history, "Which show is this about?",
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
