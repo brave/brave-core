@@ -123,9 +123,11 @@
                android:layout_width="match_parent"
                android:layout_height="0px"
                android:layout_weight="1"
-               android:gravity="center"
+               android:layout_marginTop="20dp"
                android:paddingStart="15dip"
-               android:paddingEnd="15dip" />
+               android:paddingEnd="15dip"
+               android:text="@string/brave_sync_qrcode_message_v2"
+               style="@style/BraveSyncDescriptionText" />
 
            <android.widget.Button android:id="@+id/brave_sync_btn_enter_code_words"
                android:layout_width="match_parent"
@@ -212,6 +214,8 @@
     <ScrollView android:id="@+id/view_enter_code_words"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:fillViewport="true" >
 
         <LinearLayout android:orientation="vertical"
@@ -234,11 +238,13 @@
                 android:paddingStart="15dip"
                 android:paddingTop="15dip"
                 android:paddingEnd="15dip"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:fontFamily="@font/roboto_mono_regular" />
 
             <LinearLayout android:orientation="horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
                 android:paddingStart="15dip"
                 android:paddingEnd="15dip"
                 android:paddingBottom="15dip" >

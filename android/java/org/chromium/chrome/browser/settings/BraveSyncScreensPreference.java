@@ -18,19 +18,12 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.AlignmentSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +124,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private Button mNewQrCodeButton;
     // Brave Sync message text view
     private TextView mBraveSyncTextViewInitial;
-    private TextView mBraveSyncTextViewSyncChainCode;
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
@@ -438,8 +430,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         mBraveSyncTextViewInitial = getView().findViewById(R.id.brave_sync_text_initial);
-        mBraveSyncTextViewSyncChainCode =
-                getView().findViewById(R.id.brave_sync_text_sync_chain_code);
         mBraveSyncTextDevicesTitle = getView().findViewById(R.id.brave_sync_devices_title);
         mBraveSyncWordCountTitle = getView().findViewById(R.id.brave_sync_text_word_count);
         mBraveSyncWordCountTitle.setText(getString(R.string.brave_sync_word_count_text, 0));
@@ -553,34 +543,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             return;
         }
         setSyncDoneLayout();
-    }
-
-    private void setQRCodeText() {
-        setSyncText(
-                "",
-                getResources().getString(R.string.brave_sync_qrcode_message_v2),
-                mBraveSyncTextViewSyncChainCode);
-    }
-
-    private void setSyncText(String title, String message, TextView textView) {
-        String text = "";
-        if (title.length() > 0) {
-            text = title + "\n\n";
-        }
-        text += message;
-        SpannableString formatedText = new SpannableString(text);
-        formatedText.setSpan(new RelativeSizeSpan(1.25f), 0, title.length(), 0);
-        formatedText.setSpan(
-                new StyleSpan(Typeface.BOLD),
-                0,
-                title.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        formatedText.setSpan(
-                new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL),
-                0,
-                text.length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        textView.setText(formatedText);
     }
 
     private String getWordsValidationString(String words) {
@@ -1404,7 +1366,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             createCameraSource(true, false);
         }
 
-        setQRCodeText();
         getActivity().setTitle(R.string.brave_sync_scan_chain_code);
         if (null != mScrollViewSyncChainCode) {
             mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
