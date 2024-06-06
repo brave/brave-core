@@ -24,10 +24,9 @@ import '$web-components/app.global.scss'
 // to brave_webtorrent2.html and have that rewrite the URL to
 // brave_webtorrent.html
 if (window.location.pathname === '/extension/brave_webtorrent2.html') {
-  window.location.href = window.location.href.replace(
-    'brave_webtorrent2.html',
-    'brave_webtorrent.html'
-  )
+  const newPath = '/extension/brave_webtorrent.html'
+  const newUrl = window.location.origin + newPath
+  window.location.href = newUrl
 }
 
 const GlobalStyle = createGlobalStyle`
