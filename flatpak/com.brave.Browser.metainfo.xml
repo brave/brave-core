@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 the Chromium authors, with modifications -->
+<component type="desktop-application">
+  <id>com.brave.Browser</id>
+  <launchable type="desktop-id">com.brave.Browser.desktop</launchable>
+  <name>Brave Browser</name>
+  <developer_name>Brave Software</developer_name>
+  <summary>The web browser from Brave</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MPL-2.0</project_license>
+  <url type="homepage">https://brave.com/</url>
+  <description>
+   <p>
+      Brave is on a mission to fix the web by giving users a safer, faster and better
+      browsing experience while growing support for content creators through a new
+      attention-based ecosystem of rewards.
+   </p>
+   <p>
+      Browse faster by blocking ads and trackers that violate your privacy and cost
+      you time and money.
+   </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/flathub/com.brave.Browser/beta/screenshot_mainpage.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/flathub/com.brave.Browser/beta/screenshot_welcomescreen.jpg</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="1.67.108" date="2024-06-06"/>
+    <release version="1.67.105" date="2024-06-04"/>
+    <release version="1.67.100" date="2024-05-30"/>
+    <release version="1.67.94" date="2024-05-24"/>
+    <release version="1.67.92" date="2024-05-23"/>
+    <release version="1.67.90" date="2024-05-21"/>
+    <release version="1.67.85" date="2024-05-16"/>
+    <release version="1.67.78" date="2024-05-09"/>
+    <release version="1.66.102" date="2024-05-07"/>
+    <release version="1.66.97" date="2024-05-02"/>
+    <release version="1.66.95" date="2024-04-30"/>
+    <release version="1.66.90" date="2024-04-25"/>
+    <release version="1.66.80" date="2024-04-16"/>
+    <release version="1.65.108" date="2024-04-09"/>
+    <release version="1.65.103" date="2024-04-04"/>
+    <release version="1.65.101" date="2024-04-02"/>
+    <release version="1.65.96" date="2024-03-28"/>
+    <release version="1.65.89" date="2024-03-21"/>
+    <release version="1.65.87" date="2024-03-19"/>
+    <release version="1.65.82" date="2024-03-14"/>
+    <release version="1.64.102" date="2024-03-12"/>
+    <release version="1.64.97" date="2024-03-07"/>
+    <release version="1.64.95" date="2024-03-05"/>
+    <release version="1.64.90" date="2024-02-29"/>
+    <release version="1.64.88" date="2024-02-27"/>
+    <release version="1.64.82" date="2024-02-22"/>
+    <release version="1.64.80" date="2024-02-20"/>
+    <release version="1.64.74" date="2024-02-15"/>
+    <release version="1.63.153" date="2024-02-13"/>
+    <release version="1.63.148" date="2024-02-08"/>
+    <release version="1.63.146" date="2024-02-06"/>
+    <release version="1.63.141" date="2024-02-01"/>
+    <release version="1.63.138" date="2024-01-30"/>
+    <release version="1.63.133" date="2024-01-25"/>
+    <release version="1.63.131" date="2024-01-23"/>
+    <release version="1.63.126" date="2024-01-18"/>
+    <release version="1.62.144" date="2024-01-16"/>
+    <release version="1.62.137" date="2024-01-11"/>
+    <release version="1.62.130" date="2024-01-04"/>
+    <release version="1.62.128" date="2024-01-02"/>
+    <release version="1.62.123" date="2023-12-28"/>
+    <release version="1.62.121" date="2023-12-26"/>
+    <release version="1.62.116" date="2023-12-21"/>
+    <release version="1.62.114" date="2023-12-19"/>
+    <release version="1.62.107" date="2023-12-14"/>
+    <release version="1.62.105" date="2023-12-12"/>
+    <release version="1.62.99" date="2023-12-07"/>
+    <release version="1.62.97" date="2023-12-05"/>
+    <release version="1.62.93" date="2023-11-30"/>
+    <release version="1.62.92" date="2023-11-29"/>
+    <release version="1.61.91" date="2023-11-28"/>
+    <release version="1.61.85" date="2023-11-23"/>
+    <release version="1.61.83" date="2023-11-21"/>
+    <release version="1.61.77" date="2023-11-16"/>
+    <release version="1.61.75" date="2023-11-14"/>
+    <release version="1.61.69" date="2023-11-09"/>
+    <release version="1.61.67" date="2023-11-07"/>
+    <release version="1.61.61" date="2023-11-02"/>
+    <release version="1.61.59" date="2023-10-31"/>
+    <release version="1.60.102" date="2023-10-24"/>
+    <release version="1.60.96" date="2023-10-19"/>
+    <release version="1.60.88" date="2023-10-12"/>
+    <release version="1.60.86" date="2023-10-10"/>
+    <release version="1.60.81" date="2023-10-05"/>
+    <release version="1.59.109" date="2023-10-03"/>
+    <release version="1.59.102" date="2023-09-28"/>
+    <release version="1.59.100" date="2023-09-26"/>
+    <release version="1.59.93" date="2023-09-19"/>
+    <release version="1.59.90" date="2023-09-16"/>
+    <release version="1.59.86" date="2023-09-14"/>
+    <release version="1.59.84" date="2023-09-12"/>
+    <release version="1.58.109" date="2023-08-31"/>
+    <release version="1.58.106" date="2023-08-29"/>
+    <release version="1.58.100" date="2023-08-24"/>
+    <release version="1.58.97" date="2023-08-22"/>
+    <release version="1.58.91" date="2023-08-17"/>
+    <release version="1.58.83" date="2023-08-10"/>
+    <release version="1.57.41" date="2023-08-08"/>
+    <release version="1.57.33" date="2023-08-01"/>
+    <release version="1.57.27" date="2023-07-27"/>
+    <release version="1.57.24" date="2023-07-25"/>
+    <release version="1.57.18" date="2023-07-20"/>
+    <release version="1.57.16" date="2023-07-18"/>
+    <release version="1.57.13" date="2023-07-15"/>
+    <release version="1.57.1" date="2023-07-06"/>
+    <release version="1.54.93" date="2023-07-06"/>
+    <release version="1.54.91" date="2023-07-04"/>
+    <release version="1.54.82" date="2023-06-27"/>
+    <release version="1.54.78" date="2023-06-23"/>
+    <release version="1.54.76" date="2023-06-22"/>
+    <release version="1.53.100" date="2023-06-20"/>
+    <release version="1.53.94" date="2023-06-15"/>
+    <release version="1.53.87" date="2023-06-09"/>
+    <release version="1.53.85" date="2023-06-08"/>
+    <release version="1.53.82" date="2023-06-06"/>
+    <release version="1.53.76" date="2023-06-01"/>
+    <release version="1.53.74" date="2023-05-30"/>
+    <release version="1.53.71" date="2023-05-28"/>
+    <release version="1.52.109" date="2023-05-23"/>
+    <release version="1.52.102" date="2023-05-18"/>
+    <release version="1.52.94" date="2023-05-11"/>
+    <release version="1.52.92" date="2023-05-09"/>
+    <release version="1.52.84" date="2023-05-02"/>
+    <release version="1.52.78" date="2023-04-27"/>
+    <release version="1.51.98" date="2023-04-20"/>
+    <release version="1.51.97" date="2023-04-20"/>
+    <release version="1.51.95" date="2023-04-18"/>
+    <release version="1.51.89" date="2023-04-15"/>
+    <release version="1.51.87" date="2023-04-13"/>
+    <release version="1.51.79" date="2023-04-06"/>
+    <release version="1.51.77" date="2023-04-04"/>
+    <release version="1.51.71" date="2023-03-30"/>
+    <release version="1.50.107" date="2023-03-28"/>
+    <release version="1.50.101" date="2023-03-23"/>
+    <release version="1.50.99" date="2023-03-21"/>
+    <release version="1.50.93" date="2023-03-16"/>
+    <release version="1.50.91" date="2023-03-14"/>
+    <release version="1.50.85" date="2023-03-09"/>
+    <release version="1.50.83" date="2023-03-07"/>
+    <release version="1.50.76" date="2023-03-02"/>
+    <release version="1.49.108" date="2023-02-23"/>
+    <release version="1.49.106" date="2023-02-21"/>
+    <release version="1.49.100" date="2023-02-16"/>
+    <release version="1.49.97" date="2023-02-14"/>
+    <release version="1.49.91" date="2023-02-09"/>
+    <release version="1.49.89" date="2023-02-07"/>
+    <release version="1.48.151" date="2023-02-01"/>
+    <release version="1.48.149" date="2023-01-31"/>
+    <release version="1.48.141" date="2023-01-26"/>
+    <release version="1.48.139" date="2023-01-24"/>
+    <release version="1.48.132" date="2023-01-19"/>
+    <release version="1.48.129" date="2023-01-17"/>
+    <release version="1.48.122" date="2023-01-12"/>
+    <release version="1.48.119" date="2023-01-10"/>
+    <release version="1.48.113" date="2023-01-05"/>
+    <release version="1.47.161" date="2023-01-03"/>
+    <release version="1.47.149" date="2022-12-27"/>
+    <release version="1.47.136" date="2022-12-20"/>
+    <release version="1.47.129" date="2022-12-15"/>
+    <release version="1.47.126" date="2022-12-13"/>
+    <release version="1.47.115" date="2022-12-06"/>
+    <release version="1.47.108" date="2022-12-01"/>
+    <release version="1.47.99" date="2022-11-24"/>
+    <release version="1.46.110" date="2022-11-15"/>
+    <release version="1.46.99" date="2022-11-08"/>
+    <release version="1.46.90" date="2022-11-03"/>
+    <release version="1.46.87" date="2022-11-01"/>
+    <release version="1.46.81" date="2022-10-27"/>
+    <release version="1.46.70" date="2022-10-20"/>
+    <release version="1.45.104" date="2022-10-18"/>
+    <release version="1.45.95" date="2022-10-11"/>
+    <release version="1.45.88" date="2022-10-06"/>
+    <release version="1.45.85" date="2022-10-04"/>
+    <release version="1.45.78" date="2022-09-29"/>
+    <release version="1.45.75" date="2022-09-27"/>
+    <release version="1.45.68" date="2022-09-22"/>
+    <release version="1.44.93" date="2022-09-20"/>
+    <release version="1.44.86" date="2022-09-15"/>
+    <release version="1.44.83" date="2022-09-13"/>
+    <release version="1.44.79" date="2022-09-08"/>
+    <release version="1.44.75" date="2022-09-06"/>
+    <release version="1.43.79" date="2022-08-23"/>
+    <release version="1.43.74" date="2022-08-18"/>
+    <release version="1.43.71" date="2022-08-16"/>
+    <release version="1.43.67" date="2022-08-11"/>
+    <release version="1.43.63" date="2022-08-09"/>
+    <release version="1.43.58" date="2022-08-04"/>
+    <release version="1.43.55" date="2022-08-02"/>
+    <release version="1.43.51" date="2022-07-28"/>
+    <release version="1.42.78" date="2022-07-26"/>
+    <release version="1.42.65" date="2022-07-14"/>
+    <release version="1.42.62" date="2022-07-12"/>
+    <release version="1.41.91" date="2022-07-05"/>
+    <release version="1.41.86" date="2022-06-30"/>
+    <release version="1.41.82" date="2022-06-28"/>
+    <release version="1.41.74" date="2022-06-21"/>
+    <release version="1.40.100" date="2022-06-16"/>
+    <release version="1.40.96" date="2022-06-14"/>
+    <release version="1.40.91" date="2022-06-09"/>
+    <release version="1.40.87" date="2022-06-07"/>
+    <release version="1.40.83" date="2022-06-02"/>
+    <release version="1.40.80" date="2022-05-31"/>
+    <release version="1.40.75" date="2022-05-26"/>
+    <release version="1.40.68" date="2022-05-19"/>
+    <release version="1.39.106" date="2022-05-17"/>
+    <release version="1.39.101" date="2022-05-12"/>
+    <release version="1.38.75" date="2022-04-09"/>
+    <release version="1.37.111" date="2022-04-05"/>
+    <release version="1.37.109" date="2022-03-30"/>
+    <release version="1.36.122" date="2022-03-26"/>
+    <release version="1.36.119" date="2022-03-21"/>
+    <release version="1.36.112" date="2022-03-10"/>
+    <release version="1.36.111" date="2022-03-07"/>
+    <release version="1.36.109" date="2022-03-02"/>
+    <release version="1.35.103" date="2022-02-16"/>
+    <release version="1.35.101" date="2022-02-08"/>
+    <release version="1.35.100" date="2022-02-02"/>
+    <release version="1.34.81" date="2022-01-20"/>
+    <release version="1.34.80" date="2022-01-06"/>
+    <release version="1.33.106" date="2021-12-14"/>
+    <release version="1.32.115" date="2021-12-08"/>
+    <release version="1.32.113" date="2021-11-24"/>
+    <release version="1.32.106" date="2021-11-16"/>
+    <release version="1.31.91" date="2021-11-09"/>
+    <release version="1.31.88" date="2021-10-29"/>
+    <release version="1.31.87" date="2021-10-19"/>
+    <release version="1.30.89" date="2021-10-10"/>
+    <release version="1.30.87" date="2021-10-01"/>
+    <release version="1.30.86" date="2021-09-28"/>
+    <release version="1.29.81" date="2021-09-14"/>
+    <release version="1.29.80" date="2021-09-13"/>
+    <release version="1.29.79" date="2021-09-08"/>
+    <release version="1.29.77" date="2021-09-02"/>
+    <release version="1.29.76" date="2021-08-31"/>
+    <release version="1.28.106" date="2021-08-19"/>
+    <release version="1.28.105" date="2021-08-11"/>
+    <release version="1.27.111" date="2021-08-06"/>
+    <release version="1.27.108" date="2021-07-23"/>
+    <release version="1.26.77" date="2021-07-16"/>
+    <release version="1.25.68" date="2021-06-30"/>
+    <release version="1.20.103" date="2021-02-11"/>
+    <release version="1.19.92" date="2021-02-05"/>
+    <release version="1.19.88" date="2021-01-28"/>
+    <release version="1.19.86" date="2021-01-22"/>
+    <release version="1.18.78" date="2021-01-17"/>
+    <release version="1.18.77" date="2021-01-02"/>
+    <release version="1.18.75" date="2020-12-19"/>
+    <release version="1.18.70" date="2020-12-10"/>
+    <release version="1.17.75" date="2020-12-04"/>
+    <release version="1.17.73" date="2020-11-23"/>
+    <release version="1.16.72" date="2020-11-03"/>
+    <release version="1.16.68" date="2020-10-25"/>
+    <release version="1.15.76" date="2020-10-21"/>
+    <release version="1.14.84" date="2020-08-25"/>
+  </releases>
+  <content_rating type="oars-1.1"/>
+  <update_contact>https://support.brave.com/hc/en-us/requests/new</update_contact>
+</component>

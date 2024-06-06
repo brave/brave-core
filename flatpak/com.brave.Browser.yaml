@@ -1,0 +1,119 @@
+app-id: com.brave.Browser
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+base: org.chromium.Chromium.BaseApp
+base-version: '23.08'
+command: brave
+separate-locales: false
+build-options:
+  no-debuginfo: true
+finish-args:
+  - --allow=multiarch
+  - --device=all
+  - --env=GTK_PATH=/app/lib/gtkmodules
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+  - --share=ipc
+  - --share=network
+  - --socket=cups
+  - --socket=pcsc # FIDO2
+  - --socket=pulseaudio
+  - --socket=x11
+  - --socket=wayland
+  - --require-version=1.8.2
+  - --system-talk-name=org.freedesktop.UPower
+  - --talk-name=org.freedesktop.FileManager1
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.kde.kwalletd5
+  - --talk-name=org.kde.kwalletd6
+  - --talk-name=org.gnome.SessionManager
+  - --talk-name=org.gnome.Mutter.IdleMonitor.*
+  - --system-talk-name=org.freedesktop.Avahi
+  - --own-name=org.mpris.MediaPlayer2.brave.*
+  - --filesystem=xdg-run/pipewire-0
+  # To load policies on the host /etc/brave/policies
+  - --filesystem=host-etc
+  # To install a PWA application
+  - --filesystem=home/.local/share/applications:create
+  - --filesystem=home/.local/share/icons:create
+  - --filesystem=xdg-desktop
+  # For default download directory to work as expected (PR #324)
+  - --filesystem=xdg-download
+  # For GNOME proxy resolution
+  - --filesystem=xdg-run/dconf
+  - --filesystem=~/.config/dconf:ro
+  - --talk-name=ca.desrt.dconf
+  - --env=DCONF_USER_CONFIG_DIR=.config/dconf
+  - --env=GIO_EXTRA_MODULES=/app/lib/gio/modules
+  - --env=GSETTINGS_BACKEND=dconf
+  # For KDE proxy resolution (KDE5 only)
+  - --filesystem=~/.config/kioslaverc
+  - --filesystem=/run/.heim_org.h5l.kcm-socket
+  - --persist=.pki
+modules:
+  - name: dconf
+    buildsystem: meson
+    config-opts:
+      - -Dbash_completion=false
+      - -Dman=false
+      - -Dvapi=false
+    cleanup:
+      - /etc
+      - /include
+      - ca.desrt.dconf.service
+      - dconf.service
+      - dconf-service
+      - '*.pc'
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/dconf/0.40/dconf-0.40.0.tar.xz
+        sha256: cf7f22a4c9200421d8d3325c5c1b8b93a36843650c9f95d6451e20f0bcb24533
+        x-checker-data:
+          type: gnome
+          name: dconf
+          stable-only: true
+      # From: https://src.fedoraproject.org/rpms/dconf
+      - type: patch
+        path: dconf-override.patch
+
+  - name: zypak
+    sources:
+      - type: git
+        url: https://github.com/refi64/zypak
+        tag: v2024.01.17
+        commit: ded79a2f8a509adc21834b95a9892073d4a91fdc
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\d.]+)$
+
+  - name: brave
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/brave
+      - bsdtar -xf brave.zip -C /app/brave
+      - install -Dm 644 /app/brave/product_logo_128_beta.png /app/share/icons/hicolor/128x128/apps/com.brave.Browser.png
+      - install -Dm 644 brave-browser.desktop /app/share/applications/com.brave.Browser.desktop
+      - install -Dm 755 brave.sh /app/bin/brave
+      - install -Dm 644 -t /app/etc cobalt.ini
+      - install -Dm 644 -t /app/share/metainfo com.brave.Browser.metainfo.xml
+    sources:
+      - type: file
+        url: https://github.com/brave/brave-browser/releases/download/v1.67.108/brave-browser-beta-1.67.108-linux-amd64.zip
+        sha256: 1cc63ddcb297ed81dd367f7b3213bafbcf9f65c5f66fd601ea7f2d87e8c687e9
+        dest-filename: brave.zip
+        only-arches: [x86_64]
+      - type: file
+        url: https://github.com/brave/brave-browser/releases/download/v1.67.108/brave-browser-beta-1.67.108-linux-arm64.zip
+        sha256: 5882ac06ead79d9471b92791fb0fed6e0b99a87489753693e532419002f68c7d
+        dest-filename: brave.zip
+        only-arches: [aarch64]
+      - type: file
+        path: cobalt.ini
+      - type: file
+        path: com.brave.Browser.metainfo.xml
+      - type: file
+        path: brave-browser.desktop
+      - type: file
+        path: brave.sh
