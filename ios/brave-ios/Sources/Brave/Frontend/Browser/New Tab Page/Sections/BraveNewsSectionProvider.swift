@@ -325,7 +325,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     }
 
     guard let card = dataSource.state.cards?[safe: indexPath.item] else {
-      return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveNewsEmptyFeedView>
+      return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveNewsOptInView>
     }
 
     switch card {
