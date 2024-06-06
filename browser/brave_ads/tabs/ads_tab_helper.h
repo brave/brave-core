@@ -7,6 +7,8 @@
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
 #include <optional>
+#include <set>
+#include <string>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -77,6 +79,7 @@ class AdsTabHelper : public content::WebContentsObserver,
       const std::vector<GURL>& redirect_chain,
       base::Value value);
 
+  bool IsPlayingMedia(const std::string& media_player_id);
   void MaybeNotifyTabDidStartPlayingMedia();
   void MaybeNotifyTabDidStopPlayingMedia();
 
@@ -113,6 +116,8 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
+
+  std::set</*media_player_uuid*/ std::string> is_playing_media_;
 
   std::optional<bool> is_browser_active_;
 
