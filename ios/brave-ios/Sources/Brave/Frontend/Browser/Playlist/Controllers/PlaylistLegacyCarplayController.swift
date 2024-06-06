@@ -27,7 +27,7 @@ enum PlaylistCarplayError: Error {
   case itemExpired(id: String)
 }
 
-class PlaylistCarplayController: NSObject {
+class PlaylistLegacyCarplayController: NSObject {
   private let player: MediaPlayer
   private let mediaStreamer: PlaylistMediaStreamer
   private let interfaceController: CPInterfaceController
@@ -114,7 +114,7 @@ class PlaylistCarplayController: NSObject {
       guard let self = self else { return }
 
       MPNowPlayingInfoCenter.default().playbackState = .playing
-      PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+      NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
 
       // Update the playing item indicator & Cache State Icon
       guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
@@ -134,10 +134,10 @@ class PlaylistCarplayController: NSObject {
             $0.accessoryType =
               PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
-            if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
+            if PlaylistCoordinator.shared.currentPlaylistItem?.tagId == itemId {
               $0.isPlaying = true
 
-              PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
+              NowPlayingInfo.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
             } else {
               $0.isPlaying = false
             }
@@ -160,7 +160,7 @@ class PlaylistCarplayController: NSObject {
 
     player.publisher(for: .pause).sink { event in
       MPNowPlayingInfoCenter.default().playbackState = .paused
-      PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+      NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .stop).sink { [weak self] _ in
@@ -195,7 +195,7 @@ class PlaylistCarplayController: NSObject {
       event.mediaPlayer.pause()
       event.mediaPlayer.seek(to: .zero)
 
-      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         self.updateLastPlayedItem(item: item)
       }
 
@@ -284,8 +284,8 @@ class PlaylistCarplayController: NSObject {
 
   private func reloadData() {
     // Update Currently Playing Index before layout (so we can show the playing indicator)
-    if let itemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex =
+    if let itemId = PlaylistCoordinator.shared.currentPlaylistItem?.tagId {
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex =
         PlaylistManager.shared.index(of: itemId) ?? -1
     }
 
@@ -416,8 +416,8 @@ class PlaylistCarplayController: NSObject {
             PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
           let userInfo = listItem.userInfo as? [String: Any]
-          PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
-          PlaylistMediaStreamer.updateNowPlayingInfo(self.player)
+          NowPlayingInfo.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
+          NowPlayingInfo.updateNowPlayingInfo(self.player)
 
           completion()
 
@@ -436,7 +436,7 @@ class PlaylistCarplayController: NSObject {
 
       // Update the current playing status
       listItem.isPlaying =
-        player.isPlaying && (PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
+        player.isPlaying && (PlaylistCoordinator.shared.currentPlaylistItem?.src == item.src)
 
       listItem.accessoryType =
         PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
@@ -458,7 +458,7 @@ class PlaylistCarplayController: NSObject {
           }
 
           if listItem.isPlaying {
-            PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: image)
+            NowPlayingInfo.setNowPlayingMediaArtwork(image: image)
           }
 
           // After completion, remove the renderer from the user info
@@ -550,7 +550,7 @@ class PlaylistCarplayController: NSObject {
   }
 }
 
-extension PlaylistCarplayController: CPInterfaceControllerDelegate {
+extension PlaylistLegacyCarplayController: CPInterfaceControllerDelegate {
   func templateWillAppear(_ aTemplate: CPTemplate, animated: Bool) {
     Logger.module.debug("Template \(aTemplate.classForCoder) will appear.")
   }
@@ -568,7 +568,7 @@ extension PlaylistCarplayController: CPInterfaceControllerDelegate {
   }
 }
 
-extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
+extension PlaylistLegacyCarplayController: NSFetchedResultsControllerDelegate {
   func controller(
     _ controller: NSFetchedResultsController<NSFetchRequestResult>,
     didChange anObject: Any,
@@ -585,7 +585,7 @@ extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension PlaylistCarplayController {
+extension PlaylistLegacyCarplayController {
 
   func loadThumbnail(
     for mediaItem: PlaylistInfo,
@@ -621,7 +621,7 @@ extension PlaylistCarplayController {
     if !Preferences.Playlist.enableCarPlayRestartPlayback.value {
       // Item is already playing.
       // Show now-playing screen and don't restart playback.
-      if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
+      if PlaylistCoordinator.shared.currentPlaylistItem?.tagId == itemId {
         // If the player is currently paused, un-pause it and play the item.
         // If the player is currently stopped, do nothing.
         if !player.isPlaying, player.currentItem != nil {
@@ -632,20 +632,20 @@ extension PlaylistCarplayController {
     }
 
     // Reset Now Playing when playback is starting.
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
     do {
-      PlaylistCarplayManager.shared.currentPlaylistItem = item
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentPlaylistItem = item
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       try await playItem(item: item)
 
-      if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         updateLastPlayedItem(item: item)
       }
     } catch {
-      PlaylistCarplayManager.shared.currentPlaylistItem = nil
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+      PlaylistCoordinator.shared.currentPlaylistItem = nil
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
     }
 
     // Workaround to see carplay NowPlaying on the simulator
@@ -658,26 +658,26 @@ extension PlaylistCarplayController {
   }
 }
 
-extension PlaylistCarplayController {
+extension PlaylistLegacyCarplayController {
   func onPreviousTrack(isUserInitiated: Bool) {
-    if PlaylistCarplayManager.shared.currentlyPlayingItemIndex <= 0 {
+    if PlaylistCoordinator.shared.currentlyPlayingItemIndex <= 0 {
       return
     }
 
-    let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
+    let index = PlaylistCoordinator.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets,
       let item = PlaylistManager.shared.itemAtIndex(index)
     {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
           try await playItem(item: item)
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.updateLastPlayedItem(item: item)
         } catch {
-          PlaylistCarplayManager.shared.currentPlaylistItem = nil
+          PlaylistCoordinator.shared.currentPlaylistItem = nil
 
           Logger.module.debug("Error Playing Item: \(error)")
           self.displayLoadingResourceError()
@@ -688,8 +688,8 @@ extension PlaylistCarplayController {
 
   func onNextTrack(isUserInitiated: Bool) {
     let assetCount = PlaylistManager.shared.numberOfAssets
-    let isAtEnd = PlaylistCarplayManager.shared.currentlyPlayingItemIndex >= assetCount - 1
-    var index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    let isAtEnd = PlaylistCoordinator.shared.currentlyPlayingItemIndex >= assetCount - 1
+    var index = PlaylistCoordinator.shared.currentlyPlayingItemIndex
 
     switch player.repeatState {
     case .none:
@@ -698,7 +698,7 @@ extension PlaylistCarplayController {
         player.pictureInPictureController?.stopPictureInPicture()
         player.pause()
 
-        PlaylistCarplayManager.shared.playlistController = nil
+        PlaylistCoordinator.shared.playlistController = nil
         return
       }
       index += 1
@@ -713,14 +713,14 @@ extension PlaylistCarplayController {
     if index >= 0,
       let item = PlaylistManager.shared.itemAtIndex(index)
     {
-      PlaylistCarplayManager.shared.currentPlaylistItem = item
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+      PlaylistCoordinator.shared.currentPlaylistItem = item
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
 
       PlaylistManager.shared.playbackTask = Task { @MainActor [index] in
         do {
           try await playItem(item: item)
-          PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-          PlaylistCarplayManager.shared.currentPlaylistItem = item
+          PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+          PlaylistCoordinator.shared.currentPlaylistItem = item
           self.updateLastPlayedItem(item: item)
         } catch {
           if isUserInitiated || self.player.repeatState == .repeatOne || assetCount <= 1 {
@@ -728,7 +728,7 @@ extension PlaylistCarplayController {
             Logger.module.debug("Error Loading CarPlay Resource: \(error)")
           } else {
             DispatchQueue.main.async {
-              PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+              PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
               self.onNextTrack(isUserInitiated: isUserInitiated)
             }
           }
@@ -746,10 +746,10 @@ extension PlaylistCarplayController {
   }
 
   private func stop() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
-    PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-    PlaylistCarplayManager.shared.currentPlaylistItem = nil
+    PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
+    PlaylistCoordinator.shared.currentPlaylistItem = nil
     player.stop()
 
     PlaylistManager.shared.playbackTask?.cancel()
@@ -757,7 +757,7 @@ extension PlaylistCarplayController {
   }
 
   private func clear() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
     player.clear()
 
     PlaylistManager.shared.playbackTask?.cancel()
@@ -831,13 +831,13 @@ extension PlaylistCarplayController {
         do {
           try await load(asset: asset, autoPlayEnabled: true)
           if !isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
+            NowPlayingInfo.clearNowPlayingInfo()
           }
 
-          PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+          NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
         } catch {
           if !isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
+            NowPlayingInfo.clearNowPlayingInfo()
           }
 
           throw error
@@ -859,27 +859,27 @@ extension PlaylistCarplayController {
 
     do {
       item = try await mediaStreamer.loadMediaStreamingAsset(item)
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
     } catch {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw error
     }
 
     // Item can be streamed
     guard let url = URL(string: item.src)
     else {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
 
     // Attempt to play the stream
     do {
       try await load(url: url, autoPlayEnabled: true)
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
-      PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
+      NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
       Logger.module.debug("Playing Live Video: \(self.player.isLiveMedia)")
     } catch {
-      if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
+      if !isPlaying { NowPlayingInfo.clearNowPlayingInfo() }
       throw error
     }
   }
@@ -897,7 +897,7 @@ extension PlaylistCarplayController {
     // Maybe in the future, check if the phone is open, if it is, display the alert there.
     // and the user can "open" the item in the webView/browser.
 
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       // Some cars do NOT support CPActionSheetTemplate,
       // So we MUST use CPAlertTemplate
       let alert = CPAlertTemplate(
@@ -964,7 +964,7 @@ extension PlaylistCarplayController {
   }
 
   func displayLoadingResourceError() {
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       // Some cars do NOT support CPActionSheetTemplate,
       // So we MUST use CPAlertTemplate
       let alert = CPAlertTemplate(
@@ -1034,7 +1034,7 @@ extension PlaylistCarplayController {
   private func displayErrorAlert(error: Error) {
     // Some cars do NOT support CPActionSheetTemplate
     // So we MUST use CPAlertTemplate
-    if PlaylistCarplayController.mustUseCPAlertTemplate {
+    if PlaylistLegacyCarplayController.mustUseCPAlertTemplate {
       let alert = CPAlertTemplate(
         titleVariants: [error.localizedDescription],
         actions: [

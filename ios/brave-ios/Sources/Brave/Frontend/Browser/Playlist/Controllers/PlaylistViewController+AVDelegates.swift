@@ -16,7 +16,7 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
     _ pictureInPictureController: AVPictureInPictureController
   ) {
 
-    PlaylistCarplayManager.shared.playlistController = self
+    PlaylistCoordinator.shared.playlistController = self
 
     if UIDevice.isIpad {
       self.dismiss(animated: true, completion: nil)
@@ -36,7 +36,7 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
   func pictureInPictureControllerDidStopPictureInPicture(
     _ pictureInPictureController: AVPictureInPictureController
   ) {
-    PlaylistCarplayManager.shared.playlistController = nil
+    PlaylistCoordinator.shared.playlistController = nil
   }
 
   func pictureInPictureController(
@@ -62,11 +62,11 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
     ) -> Void
   ) {
 
-    if let restorationController = PlaylistCarplayManager.shared.playlistController {
+    if let restorationController = PlaylistCoordinator.shared.playlistController {
       restorationController.modalPresentationStyle = .fullScreen
       guard
         let browserViewController = view.window == nil
-          ? PlaylistCarplayManager.shared.browserController
+          ? PlaylistCoordinator.shared.browserController
           : self.currentScene?.browserViewController
       else {
         completionHandler(true)
@@ -80,7 +80,7 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
         || restorationController.isMovingToParent || restorationController.isBeingPresented
       {
         DispatchQueue.main.async {
-          PlaylistCarplayManager.shared.playlistController = nil
+          PlaylistCoordinator.shared.playlistController = nil
           completionHandler(true)
         }
         return
@@ -88,7 +88,7 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
 
       browserViewController.present(restorationController, animated: true) {
         DispatchQueue.main.async {
-          PlaylistCarplayManager.shared.playlistController = nil
+          PlaylistCoordinator.shared.playlistController = nil
           completionHandler(true)
         }
       }

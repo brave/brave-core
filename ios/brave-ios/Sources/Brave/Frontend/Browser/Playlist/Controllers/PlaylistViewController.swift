@@ -94,6 +94,8 @@ class PlaylistViewController: UIViewController {
     listController.initialItemPlaybackOffset = initialItemPlaybackOffset
     listController.delegate = self
     detailController.delegate = self
+
+    modalPresentationStyle = .fullScreen
   }
 
   required init?(coder: NSCoder) {
@@ -101,10 +103,10 @@ class PlaylistViewController: UIViewController {
   }
 
   deinit {
-    PlaylistCarplayManager.shared.isPlaylistControllerPresented = false
+    PlaylistCoordinator.shared.isPlaylistControllerPresented = false
 
     // Store the last played item's time-offset
-    if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+    if let item = PlaylistCoordinator.shared.currentPlaylistItem {
       updateLastPlayedItem(item: item)
     }
 
@@ -114,11 +116,11 @@ class PlaylistViewController: UIViewController {
 
     // Simulator cannot "detect" if Car-Play is enabled, therefore we need to STOP playback
     // When this controller deallocates. The user can still manually resume playback in CarPlay.
-    if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+    if !PlaylistCoordinator.shared.isCarPlayAvailable {
       // Stop media playback
       stop(playerView)
-      PlaylistCarplayManager.shared.currentPlaylistItem = nil
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+      PlaylistCoordinator.shared.currentPlaylistItem = nil
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
 
       // Destroy folder observers
       folderObserver = nil
@@ -128,7 +130,7 @@ class PlaylistViewController: UIViewController {
     // Cancel all loading.
     listController.stopLoadingSharedPlaylist()
     PlaylistManager.shared.playbackTask = nil
-    PlaylistCarplayManager.shared.playlistController = nil
+    PlaylistCoordinator.shared.playlistController = nil
   }
 
   override func viewDidLoad() {
@@ -222,7 +224,7 @@ class PlaylistViewController: UIViewController {
 
   @objc
   private func saveLastPlayedPosition() {
-    if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+    if let item = PlaylistCoordinator.shared.currentPlaylistItem {
       updateLastPlayedItem(item: item)
     }
   }
@@ -358,7 +360,7 @@ class PlaylistViewController: UIViewController {
       )
     }
 
-    if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+    if let item = PlaylistCoordinator.shared.currentPlaylistItem {
       playerView.setVideoInfo(
         videoDomain: item.pageSrc,
         videoTitle: item.pageTitle,
@@ -377,10 +379,10 @@ class PlaylistViewController: UIViewController {
         for: .normal
       )
 
-      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+      if !PlaylistCoordinator.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .playing
-        PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
-      } else if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+        NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
+      } else if let item = PlaylistCoordinator.shared.currentPlaylistItem {
         self.playerView.setVideoInfo(
           videoDomain: item.pageSrc,
           videoTitle: item.pageTitle,
@@ -397,9 +399,9 @@ class PlaylistViewController: UIViewController {
         for: .normal
       )
 
-      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+      if !PlaylistCoordinator.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().playbackState = .paused
-        PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+        NowPlayingInfo.updateNowPlayingInfo(event.mediaPlayer)
       }
     }.store(in: &playerStateObservers)
 
@@ -410,10 +412,10 @@ class PlaylistViewController: UIViewController {
         for: .normal
       )
       self.playerView.resetVideoInfo()
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
 
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-      PlaylistCarplayManager.shared.currentPlaylistItem = nil
+      PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
+      PlaylistCoordinator.shared.currentPlaylistItem = nil
 
       // Cancel all loading.
       PlaylistManager.shared.playbackTask = nil
@@ -433,7 +435,7 @@ class PlaylistViewController: UIViewController {
         button.setTitle("2.0x", for: .normal)
       }
 
-      if !PlaylistCarplayManager.shared.isCarPlayAvailable {
+      if !PlaylistCoordinator.shared.isCarPlayAvailable {
         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] =
           event.mediaPlayer.rate
       }
@@ -461,12 +463,12 @@ class PlaylistViewController: UIViewController {
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .previousTrack).sink { [weak self] _ in
-      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      guard let self = self, !PlaylistCoordinator.shared.isCarPlayAvailable else { return }
       self.onPreviousTrack(self.playerView, isUserInitiated: true)
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .nextTrack).sink { [weak self] _ in
-      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      guard let self = self, !PlaylistCoordinator.shared.isCarPlayAvailable else { return }
       self.onNextTrack(self.playerView, isUserInitiated: true)
     }.store(in: &playerStateObservers)
 
@@ -477,7 +479,7 @@ class PlaylistViewController: UIViewController {
 
       // When CarPlay is available, do NOT pause or handle `nextTrack`
       // CarPlay will do all of that. So, just update the UI only.
-      if PlaylistCarplayManager.shared.isCarPlayAvailable {
+      if PlaylistCoordinator.shared.isCarPlayAvailable {
         self.playerView.controlsView.playPauseButton.isEnabled = false
         self.playerView.controlsView.playPauseButton.setImage(
           UIImage(named: "playlist_pause", in: .module, compatibleWith: nil)!,
@@ -530,7 +532,7 @@ class PlaylistViewController: UIViewController {
         )
         event.mediaPlayer.seek(to: .zero)
 
-        if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+        if let item = PlaylistCoordinator.shared.currentPlaylistItem {
           self.updateLastPlayedItem(item: item)
         }
 
@@ -686,10 +688,10 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
   }
 
   func stopPlaying() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
 
-    PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-    PlaylistCarplayManager.shared.currentPlaylistItem = nil
+    PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
+    PlaylistCoordinator.shared.currentPlaylistItem = nil
     playerView.resetVideoInfo()
     stop(playerView)
 
@@ -705,7 +707,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
 
     PlaylistManager.shared.delete(item: PlaylistInfo(item: item))
 
-    if PlaylistCarplayManager.shared.currentlyPlayingItemIndex == index
+    if PlaylistCoordinator.shared.currentlyPlayingItemIndex == index
       || PlaylistManager.shared.numberOfAssets == 0
     {
       stopPlaying()
@@ -768,12 +770,12 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   func onPreviousTrack(_ videoView: VideoView, isUserInitiated: Bool) {
-    if PlaylistCarplayManager.shared.currentlyPlayingItemIndex <= 0 {
+    if PlaylistCoordinator.shared.currentlyPlayingItemIndex <= 0 {
       return
     }
 
     saveLastPlayedPosition()
-    let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
+    let index = PlaylistCoordinator.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets {
       let indexPath = IndexPath(row: index, section: 0)
       listController.prepareToPlayItem(at: indexPath) { [weak self] item in
@@ -785,14 +787,14 @@ extension PlaylistViewController: VideoViewDelegate {
           return
         }
 
-        PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
-        PlaylistCarplayManager.shared.currentPlaylistItem = item
+        PlaylistCoordinator.shared.currentlyPlayingItemIndex = indexPath.row
+        PlaylistCoordinator.shared.currentPlaylistItem = item
 
         PlaylistManager.shared.playbackTask = Task { @MainActor in
           do {
             let item = try await self.playItem(item: item)
-            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-            PlaylistCarplayManager.shared.currentPlaylistItem = item
+            PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+            PlaylistCoordinator.shared.currentPlaylistItem = item
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
             self.updateLastPlayedItem(item: item)
           } catch {
@@ -807,8 +809,8 @@ extension PlaylistViewController: VideoViewDelegate {
 
   func onNextTrack(_ videoView: VideoView, isUserInitiated: Bool) {
     let assetCount = PlaylistManager.shared.numberOfAssets
-    let isAtEnd = PlaylistCarplayManager.shared.currentlyPlayingItemIndex >= assetCount - 1
-    var index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
+    let isAtEnd = PlaylistCoordinator.shared.currentlyPlayingItemIndex >= assetCount - 1
+    var index = PlaylistCoordinator.shared.currentlyPlayingItemIndex
     saveLastPlayedPosition()
 
     switch repeatMode {
@@ -817,7 +819,7 @@ extension PlaylistViewController: VideoViewDelegate {
         player.pictureInPictureController?.delegate = nil
         player.pictureInPictureController?.stopPictureInPicture()
         player.stop()
-        PlaylistCarplayManager.shared.playlistController = nil
+        PlaylistCoordinator.shared.playlistController = nil
         return
       }
       index += 1
@@ -842,21 +844,21 @@ extension PlaylistViewController: VideoViewDelegate {
           return
         }
 
-        PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
-        PlaylistCarplayManager.shared.currentPlaylistItem = item
+        PlaylistCoordinator.shared.currentlyPlayingItemIndex = indexPath.row
+        PlaylistCoordinator.shared.currentPlaylistItem = item
 
         PlaylistManager.shared.playbackTask = Task { @MainActor in
           do {
             let item = try await self.playItem(item: item)
-            PlaylistCarplayManager.shared.currentPlaylistItem = item
+            PlaylistCoordinator.shared.currentPlaylistItem = item
 
             self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
-            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-            PlaylistCarplayManager.shared.currentPlaylistItem = item
+            PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
+            PlaylistCoordinator.shared.currentPlaylistItem = item
             self.updateLastPlayedItem(item: item)
           } catch {
-            PlaylistCarplayManager.shared.currentPlaylistItem = nil
-            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+            PlaylistCoordinator.shared.currentPlaylistItem = nil
+            PlaylistCoordinator.shared.currentlyPlayingItemIndex = -1
             Logger.module.error("Playlist Error Playing Item: \(error)")
 
             if isUserInitiated || self.repeatMode == .repeatOne || assetCount <= 1 {
@@ -865,7 +867,7 @@ extension PlaylistViewController: VideoViewDelegate {
             } else {
               DispatchQueue.main.async {
                 self.listController.commitPlayerItemTransaction(at: indexPath, isExpired: false)
-                PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
+                PlaylistCoordinator.shared.currentlyPlayingItemIndex = index
                 self.onNextTrack(videoView, isUserInitiated: isUserInitiated)
               }
             }
@@ -983,7 +985,7 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   private func clear() {
-    PlaylistMediaStreamer.clearNowPlayingInfo()
+    NowPlayingInfo.clearNowPlayingInfo()
     player.clear()
 
     PlaylistManager.shared.playbackTask?.cancel()
@@ -1065,19 +1067,19 @@ extension PlaylistViewController: VideoViewDelegate {
 
         do {
           try await load(playerView, asset: asset, autoPlayEnabled: listController.autoPlayEnabled)
-          PlaylistMediaStreamer.clearNowPlayingInfo()
+          NowPlayingInfo.clearNowPlayingInfo()
           self.playerView.setVideoInfo(
             videoDomain: item.pageSrc,
             videoTitle: item.pageTitle,
             isPrivateBrowsing: self.isPrivateBrowsing
           )
-          PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+          NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
         } catch {
-          PlaylistMediaStreamer.clearNowPlayingInfo()
+          NowPlayingInfo.clearNowPlayingInfo()
           throw error
         }
       } else {
-        PlaylistMediaStreamer.clearNowPlayingInfo()
+        NowPlayingInfo.clearNowPlayingInfo()
         throw PlaylistMediaStreamer.PlaybackError.expired
       }
       return item
@@ -1093,13 +1095,13 @@ extension PlaylistViewController: VideoViewDelegate {
     do {
       item = try await mediaStreamer.loadMediaStreamingAsset(item)
     } catch {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw error
     }
 
     // Item can be streamed
     guard let url = URL(string: item.src) else {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
 
@@ -1111,7 +1113,7 @@ extension PlaylistViewController: VideoViewDelegate {
         autoPlayEnabled: self.listController.autoPlayEnabled
       )
     } catch {
-      PlaylistMediaStreamer.clearNowPlayingInfo()
+      NowPlayingInfo.clearNowPlayingInfo()
       throw PlaylistMediaStreamer.PlaybackError.cannotLoadMedia
     }
 
@@ -1121,7 +1123,7 @@ extension PlaylistViewController: VideoViewDelegate {
       isPrivateBrowsing: isPrivateBrowsing
     )
 
-    PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
+    NowPlayingInfo.setNowPlayingInfo(item, withPlayer: self.player)
     return item
   }
 

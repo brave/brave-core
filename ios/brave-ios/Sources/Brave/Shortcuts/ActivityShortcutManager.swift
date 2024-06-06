@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveNews
 import BraveVPN
 import BrowserIntentsModels
@@ -11,6 +12,7 @@ import Data
 import Growth
 import Intents
 import MobileCoreServices
+import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI
@@ -229,8 +231,7 @@ public class ActivityShortcutManager: NSObject {
       bvc.popToBVC()
 
       let tab = bvc.tabManager.selectedTab
-      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
-        playlistController.modalPresentationStyle = .fullScreen
+      PlaylistCoordinator.shared.getPlaylistController(tab: tab) { playlistController in
         PlaylistP3A.recordUsage()
         bvc.present(playlistController, animated: true)
       }

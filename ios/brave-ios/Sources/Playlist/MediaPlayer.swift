@@ -10,7 +10,6 @@ import Foundation
 import MediaPlayer
 import Shared
 import Then
-import UserAgent
 import os.log
 
 public enum MediaPlaybackError: Error {
@@ -685,83 +684,5 @@ extension MediaPlayer {
         )
       )
     }
-  }
-}
-
-extension AVPlayerItem {
-  private var isReadyToPlay: Bool {
-    var error: NSError?
-    if case .loaded = self.asset.statusOfValue(forKey: "tracks", error: &error) {
-      return true
-    }
-    return false
-  }
-
-  /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
-  public func isAudioTracksAvailable() -> Bool {
-    tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
-  }
-
-  /// Returns whether or not the assetTrack has video tracks OR the asset has video tracks
-  /// If called on optional, assume true
-  /// We do this because for m3u8 HLS streams,
-  /// tracks may not always be available and the particle effect will show even on videos..
-  /// It's best to assume this type of media is a video stream.
-  public func isVideoTracksAvailable() -> Bool {
-    if !isReadyToPlay {
-      return true
-    }
-
-    if tracks.isEmpty && asset.tracks.isEmpty {
-      return true  // Assume video
-    }
-
-    // All tracks are null (not loaded yet)
-    if tracks.allSatisfy({ $0.assetTrack == nil }) {
-      return true  // Assume video
-    }
-
-    // If the only current track types are audio
-    if !tracks.allSatisfy({ $0.assetTrack?.mediaType == .audio }) {
-      return true  // Assume video
-    }
-
-    let hasVideoTracks =
-      !tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty
-      || asset.isVideoTracksAvailable()
-
-    // Ultra hack
-    // Some items `fade` in/out or have an audio track that fades out but no video track
-    // In this case, assume video as it is potentially still a video, just with blank frames
-    if !hasVideoTracks && currentTime().seconds <= 1.0
-      || fabs(duration.seconds - currentTime().seconds) <= 3.0
-    {
-      return true
-    }
-
-    return hasVideoTracks
-  }
-}
-
-extension AVAsset {
-  /// Returns whether or not the asset has audio tracks
-  public func isAudioTracksAvailable() -> Bool {
-    !tracks.filter({ $0.mediaType == .audio }).isEmpty
-  }
-
-  /// Returns whether or not the  asset has video tracks
-  /// If called on optional, assume true
-  /// We do this because for m3u8 HLS streams,
-  /// tracks may not always be available and the particle effect will show even on videos..
-  /// It's best to assume this type of media is a video stream.
-  public func isVideoTracksAvailable() -> Bool {
-    !tracks.filter({ $0.mediaType == .video }).isEmpty
-  }
-
-  public static var defaultOptions: [String: Any] {
-    let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
-    var options: [String: Any] = [:]
-    options[AVURLAssetHTTPUserAgentKey] = userAgent
-    return options
   }
 }

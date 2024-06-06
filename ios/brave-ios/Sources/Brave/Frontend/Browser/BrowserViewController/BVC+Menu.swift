@@ -9,6 +9,7 @@ import BraveVPN
 import BraveWallet
 import Data
 import Foundation
+import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI
@@ -268,7 +269,7 @@ extension BrowserViewController {
   }
 
   public func presentPlaylistController() {
-    if PlaylistCarplayManager.shared.isPlaylistControllerPresented {
+    if PlaylistCoordinator.shared.isPlaylistControllerPresented {
       let alert = UIAlertController(
         title: Strings.PlayList.playlistAlreadyShowingTitle,
         message: Strings.PlayList.playlistAlreadyShowingBody,
@@ -282,25 +283,24 @@ extension BrowserViewController {
     }
 
     // Present existing playlist controller
-    if let playlistController = PlaylistCarplayManager.shared.playlistController {
+    if let playlistController = PlaylistCoordinator.shared.playlistController {
       PlaylistP3A.recordUsage()
 
       dismiss(animated: true) {
-        PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
+        PlaylistCoordinator.shared.isPlaylistControllerPresented = true
         self.present(playlistController, animated: true)
       }
     } else {
       // Retrieve the item and offset-time from the current tab's webview.
       let tab = self.tabManager.selectedTab
-      PlaylistCarplayManager.shared.getPlaylistController(tab: tab) {
+      PlaylistCoordinator.shared.getPlaylistController(tab: tab) {
         [weak self] playlistController in
         guard let self = self else { return }
 
-        playlistController.modalPresentationStyle = .fullScreen
         PlaylistP3A.recordUsage()
 
         self.dismiss(animated: true) {
-          PlaylistCarplayManager.shared.isPlaylistControllerPresented = true
+          PlaylistCoordinator.shared.isPlaylistControllerPresented = true
           self.present(playlistController, animated: true)
         }
       }

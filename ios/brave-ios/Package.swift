@@ -43,6 +43,7 @@ var package = Package(
     .library(name: "Playlist", targets: ["Playlist"]),
     .library(name: "UserAgent", targets: ["UserAgent"]),
     .library(name: "CredentialProviderUI", targets: ["CredentialProviderUI"]),
+    .library(name: "PlaylistUI", targets: ["PlaylistUI"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -392,6 +393,13 @@ var package = Package(
       name: "GrowthTests",
       dependencies: ["Growth", "Shared", "BraveShared", "BraveVPN"]
     ),
+    .target(
+      name: "PlaylistUI",
+      dependencies: [
+        "Favicon", "Data", "DesignSystem", "Playlist", "SDWebImage", "SnapKit", "Strings",
+        .product(name: "Algorithms", package: "swift-algorithms"),
+      ]
+    ),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
     .plugin(
@@ -437,6 +445,7 @@ var braveTarget: PackageDescription.Target = .target(
     "UserAgent",
     .product(name: "Lottie", package: "lottie-ios"),
     .product(name: "Collections", package: "swift-collections"),
+    "PlaylistUI",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",

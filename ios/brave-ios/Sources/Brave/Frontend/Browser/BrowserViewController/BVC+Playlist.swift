@@ -10,6 +10,7 @@ import Foundation
 import Growth
 import Onboarding
 import Playlist
+import PlaylistUI
 import Preferences
 import Shared
 import UIKit
@@ -305,14 +306,16 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     playbackOffset: Double,
     folderSharingPageUrl: String? = nil
   ) {
-    let playlistController = PlaylistCarplayManager.shared.getPlaylistController(
+    let playlistController = PlaylistCoordinator.shared.getPlaylistController(
       tab: tab,
       initialItem: item,
       initialItemPlaybackOffset: playbackOffset
     )
-    playlistController.modalPresentationStyle = .fullScreen
-    if let folderSharingPageUrl = folderSharingPageUrl {
-      playlistController.setFolderSharingUrl(folderSharingPageUrl)
+    // Legacy UI set up for shared playlists
+    if let playlistController = playlistController as? PlaylistViewController {
+      if let folderSharingPageUrl = folderSharingPageUrl {
+        playlistController.setFolderSharingUrl(folderSharingPageUrl)
+      }
     }
 
     // Donate Open Playlist Activity for suggestions
@@ -322,8 +325,11 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     PlaylistP3A.recordUsage()
 
     present(playlistController, animated: true) {
-      if let folderSharingPageUrl = folderSharingPageUrl {
-        playlistController.setFolderSharingUrl(folderSharingPageUrl)
+      // Legacy UI set up for shared playlists
+      if let playlistController = playlistController as? PlaylistViewController {
+        if let folderSharingPageUrl = folderSharingPageUrl {
+          playlistController.setFolderSharingUrl(folderSharingPageUrl)
+        }
       }
     }
   }

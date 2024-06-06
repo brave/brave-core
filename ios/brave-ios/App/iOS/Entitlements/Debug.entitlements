@@ -28,5 +28,7 @@
 	<array>
 		<string>group.$(MOZ_BUNDLE_ID).unique</string>
 	</array>
+	<key>com.apple.developer.carplay-audio</key>
+	<true/>
 </dict>
 </plist>
