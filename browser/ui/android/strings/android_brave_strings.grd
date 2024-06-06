@@ -1109,11 +1109,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_OFFICIAL" desc="Text for Brave Sync preference.">
 	Brave Sync
       </message>
-      <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_1" desc="Text for Brave Sync description part 1.">
-	Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.
-      </message>
-      <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_2" desc="Text for Brave Sync description part 2.">
-	Simply scan the code from your sync chain that you created on another device. Or start a new sync chain.
+      <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1" desc="Text for Brave Sync description.">
+  Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.\n\nSimply scan the code from your sync chain that you created on another device. Or start a new sync chain.
       </message>
       <message name="IDS_BRAVE_SYNC_QRCODE_MESSAGE_V2" desc="Text for Brave Sync QR code message.">
 	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.

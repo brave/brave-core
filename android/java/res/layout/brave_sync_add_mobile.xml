@@ -51,7 +51,8 @@
                 android:layout_height="wrap_content"
                 style="@style/BraveSyncRedWarningText"
                 android:text="@string/brave_sync_code_warning"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/brave_sync_qr_containter"
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/brave_sync_top_rounded"
             android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="30dp"
             android:padding="15dip"
             android:layout_marginStart="60dip"
             android:layout_marginEnd="60dip" >
