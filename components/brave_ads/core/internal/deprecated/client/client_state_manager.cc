@@ -420,7 +420,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
                                 "Failed to parse client state");
       base::debug::DumpWithoutCrashing();
 
-      BLOG(3, "Failed to parse client state: " << *json);
+      BLOG(1, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }

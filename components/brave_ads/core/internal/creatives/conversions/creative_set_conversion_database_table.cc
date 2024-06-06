@@ -58,6 +58,9 @@ size_t BindParameters(
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid creative set conversion");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid creative set conversion");
+
       continue;
     }
 
@@ -107,6 +110,7 @@ void GetCallback(GetConversionsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative set conversions");
+
     return std::move(callback).Run(/*success=*/false,
                                    /*conversion_set_conversions=*/{});
   }
@@ -124,6 +128,9 @@ void GetCallback(GetConversionsCallback callback,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid creative set conversion");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid creative set conversion");
+
       continue;
     }
 

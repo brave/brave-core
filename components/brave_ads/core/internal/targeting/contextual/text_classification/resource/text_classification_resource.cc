@@ -50,6 +50,7 @@ void TextClassificationResource::ClassifyPage(const std::string& text,
   if (!IsInitialized()) {
     BLOG(1,
          "Failed to process text classification as resource not initialized");
+
     return std::move(callback).Run(/*probabilities=*/{});
   }
 

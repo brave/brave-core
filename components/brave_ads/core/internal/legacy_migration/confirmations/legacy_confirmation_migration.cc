@@ -73,7 +73,8 @@ void MigrateConfirmationState(InitializeCallback callback) {
                                          "Failed to parse confirmation state");
                base::debug::DumpWithoutCrashing();
 
-               BLOG(0, "Failed to load confirmation state");
+               BLOG(0, "Failed to parse confirmation state");
+
                return FailedToMigrate(std::move(callback));
              }
 
@@ -84,7 +85,16 @@ void MigrateConfirmationState(InitializeCallback callback) {
                       [](const std::string& json, InitializeCallback callback,
                          const bool success) {
                         if (!success) {
+                          // TODO(https://github.com/brave/brave-browser/issues/32066):
+                          // Detect potential defects using
+                          // `DumpWithoutCrashing`.
+                          SCOPED_CRASH_KEY_STRING64(
+                              "Issue32066", "failure_reason",
+                              "Failed to save confirmation state");
+                          base::debug::DumpWithoutCrashing();
+
                           BLOG(0, "Failed to save confirmation state");
+
                           return FailedToMigrate(std::move(callback));
                         }
 
@@ -125,6 +135,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
                                     BLOG(0,
                                          "Failed to save confirmation state");
+
                                     return FailedToMigrate(std::move(callback));
                                   }
 

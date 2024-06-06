@@ -74,7 +74,13 @@ void Conversions::GetCreativeSetConversionsCallback(
     const bool success,
     const CreativeSetConversionList& creative_set_conversions) {
   if (!success) {
-    return BLOG(1, "Failed to get creative set conversions");
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to get creative set conversions");
+    base::debug::DumpWithoutCrashing();
+
+    return BLOG(0, "Failed to get creative set conversions");
   }
 
   if (creative_set_conversions.empty()) {
@@ -100,7 +106,13 @@ void Conversions::GetAdEventsCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    return BLOG(1, "Failed to get ad events");
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to get ad events");
+    base::debug::DumpWithoutCrashing();
+
+    return BLOG(0, "Failed to get ad events");
   }
 
   CheckForConversions(redirect_chain, html, creative_set_conversions,
@@ -210,7 +222,14 @@ void Conversions::ConvertCallback(
     const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
-    BLOG(1, "Failed to record ad conversion event");
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to record ad conversion event");
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Failed to record ad conversion event");
+
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 

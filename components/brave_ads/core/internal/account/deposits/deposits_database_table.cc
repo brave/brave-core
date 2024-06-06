@@ -93,6 +93,7 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
+
     return std::move(callback).Run(/*success=*/false,
                                    /*deposit=*/std::nullopt);
   }
@@ -112,6 +113,8 @@ void GetForCreativeInstanceIdCallback(
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Invalid deposit");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Invalid deposit");
 
     return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);
   }
@@ -164,6 +167,8 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Invalid deposit");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Invalid deposit");
 
     return std::move(callback).Run(/*success=*/false);
   }

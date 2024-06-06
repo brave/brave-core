@@ -109,7 +109,8 @@ void SiteVisit::LandedOnPageCallback(const TabInfo& tab,
                               "Failed to record ad page land event");
     base::debug::DumpWithoutCrashing();
 
-    BLOG(1, "Failed to record ad page land event");
+    BLOG(0, "Failed to record ad page land event");
+
     return NotifyDidNotLandOnPage(tab, ad);
   }
 

@@ -78,7 +78,7 @@ void IssuersUrlRequest::FetchCallback(
   is_fetching_ = false;
 
   if (url_response.status_code == net::kHttpUpgradeRequired) {
-    BLOG(1, "Failed to request issuers as a browser upgrade is required");
+    BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
 
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
@@ -92,7 +92,8 @@ void IssuersUrlRequest::FetchCallback(
   const std::optional<IssuersInfo> issuers =
       json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
-    BLOG(3, "Failed to parse issuers");
+    BLOG(0, "Failed to parse issuers");
+
     return FailedToFetchIssuers();
   }
 

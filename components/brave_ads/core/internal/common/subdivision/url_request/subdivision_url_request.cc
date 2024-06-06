@@ -83,7 +83,7 @@ void SubdivisionUrlRequest::FetchCallback(
   const std::optional<std::string> subdivision =
       json::reader::ParseSubdivision(url_response.body);
   if (!subdivision) {
-    BLOG(1, "Failed to parse subdivision");
+    BLOG(0, "Failed to parse subdivision");
     return FailedToFetchSubdivision();
   }
 

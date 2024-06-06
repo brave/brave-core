@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
@@ -176,6 +177,8 @@ bool ClientInfo::FromJson(const std::string& json) {
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Malformed client JSON state");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Malformed client JSON state");
 
     return false;
   }

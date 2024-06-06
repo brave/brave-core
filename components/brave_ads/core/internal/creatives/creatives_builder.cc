@@ -362,6 +362,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         if (!creative_set_conversion.IsValid()) {
           BLOG(1, "Creative set id " << creative_set.id
                                      << " has an invalid conversion");
+
           continue;
         }
 

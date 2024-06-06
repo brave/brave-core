@@ -71,7 +71,9 @@ void DatabaseManager::CreateOrOpenCallback(
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to create or open database");
+
     NotifyFailedToCreateOrOpenDatabase();
+
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -113,7 +115,8 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
     SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version", to_version);
     base::debug::DumpWithoutCrashing();
 
-    BLOG(1, "Failed to create database for schema version " << to_version);
+    BLOG(0, "Failed to create database for schema version " << to_version);
+
     NotifyFailedToCreateOrOpenDatabase();
 
     return std::move(callback).Run(/*success=*/false);
@@ -150,7 +153,9 @@ void DatabaseManager::MaybeMigrate(const int from_version,
 
     BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
+
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -181,9 +186,11 @@ void DatabaseManager::MigrateFromVersionCallback(const int from_version,
                               "Database migration failed");
     base::debug::DumpWithoutCrashing();
 
-    BLOG(1, "Failed to migrate database from schema version "
+    BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
+
     NotifyFailedToMigrateDatabase(from_version, to_version);
+
     return std::move(callback).Run(/*success=*/false);
   }
 

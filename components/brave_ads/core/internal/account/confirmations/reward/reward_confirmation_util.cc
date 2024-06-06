@@ -10,6 +10,7 @@
 
 #include "base/base64url.h"
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
@@ -54,12 +55,26 @@ std::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
   const std::optional<ConfirmationTokenInfo> confirmation_token =
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to get confirmation token");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to get confirmation token");
+
     return std::nullopt;
   }
 
   if (!RemoveConfirmationToken(*confirmation_token)) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to remove confirmation token");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to remove confirmation token");
+
     return std::nullopt;
   }
 
@@ -90,7 +105,14 @@ std::optional<std::string> BuildRewardCredential(
           confirmation.reward,
           json::writer::WriteConfirmationPayload(confirmation));
   if (!reward_credential) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to build reward credential");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to build reward credential");
+
     return std::nullopt;
   }
 
@@ -121,7 +143,14 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   const std::optional<RewardInfo> reward =
       BuildReward(token_generator, confirmation);
   if (!reward) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to build reward");
+    base::debug::DumpWithoutCrashing();
+
     BLOG(0, "Failed to build reward");
+
     return std::nullopt;
   }
   confirmation.reward = reward;

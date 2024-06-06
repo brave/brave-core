@@ -183,6 +183,7 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
+
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
   }
@@ -192,6 +193,7 @@ void GetForCreativeInstanceIdCallback(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative inline content ad");
+
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
   }
@@ -209,6 +211,7 @@ void GetForSegmentsAndDimensionsCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
+
     return std::move(callback).Run(/*success=*/false, segments,
                                    /*creative_ad=*/{});
   }
@@ -226,6 +229,7 @@ void GetForDimensionsCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
+
     return std::move(callback).Run(/*success=*/false, /*creative_ad=*/{});
   }
 
@@ -241,6 +245,7 @@ void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative inline content ads");
+
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
                                    /*creative_ads=*/{});
   }

@@ -69,7 +69,8 @@ void MigrateClientState(InitializeCallback callback) {
                                          "Failed to parse client state");
                base::debug::DumpWithoutCrashing();
 
-               BLOG(0, "Failed to load client state");
+               BLOG(0, "Failed to parse client state");
+
                return FailedToMigrate(std::move(callback));
              }
 
@@ -88,6 +89,7 @@ void MigrateClientState(InitializeCallback callback) {
                           base::debug::DumpWithoutCrashing();
 
                           BLOG(0, "Failed to save client state");
+
                           return FailedToMigrate(std::move(callback));
                         }
 

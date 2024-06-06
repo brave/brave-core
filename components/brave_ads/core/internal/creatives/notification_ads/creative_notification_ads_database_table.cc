@@ -173,6 +173,7 @@ void GetForSegmentsCallback(const SegmentList& segments,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
+
     return std::move(callback).Run(/*success=*/false, segments,
                                    /*creative_ads=*/{});
   }
@@ -189,6 +190,7 @@ void GetAllCallback(GetCreativeNotificationAdsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");
+
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
                                    /*creative_ads=*/{});
   }

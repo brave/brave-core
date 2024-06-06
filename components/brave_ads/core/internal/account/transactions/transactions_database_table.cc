@@ -61,6 +61,9 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid transaction");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid transaction");
+
       continue;
     }
 
@@ -114,6 +117,7 @@ void GetCallback(GetTransactionsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
+
     return std::move(callback).Run(/*success=*/false, /*transactions=*/{});
   }
 
@@ -129,6 +133,9 @@ void GetCallback(GetTransactionsCallback callback,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid transaction");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid transaction");
+
       continue;
     }
 
