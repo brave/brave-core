@@ -61,7 +61,7 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
   showNetworkLogo
 }) => {
   // custom hooks
-  const selectedPendingTransaction = useSelectedPendingTransaction()
+  const { selectedPendingTransaction } = useSelectedPendingTransaction()
 
   // queries
   const { data: txNetwork } = useGetNetworkQuery(
