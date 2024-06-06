@@ -30,7 +30,7 @@ class SwapStoreTests: XCTestCase {
     let ex = expectation(description: "default-sell-buy-token-on-main")
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
-    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    let testAccountInfo: BraveWallet.AccountInfo = .previewAccount
     store.prepare(with: testAccountInfo) {
       defer { ex.fulfill() }
       XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), "eth")
@@ -86,7 +86,7 @@ class SwapStoreTests: XCTestCase {
     // `prefilledToken` not set until validated in `prepare()`
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
-    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    let testAccountInfo: BraveWallet.AccountInfo = .previewAccount
     store.prepare(with: testAccountInfo) {
       defer { ex.fulfill() }
       XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), batToken.symbol.lowercased())
@@ -111,15 +111,6 @@ class SwapStoreTests: XCTestCase {
 
     rpcService._network = { coin, _, completion in
       completion(selectedNetwork)
-    }
-    rpcService._solanaBalance = { _, _, completion in
-      completion(0, .success, "")
-    }
-    rpcService._splTokenAccountBalance = { _, _, _, completion in
-      completion("", 0, "", .success, "")
-    }
-    rpcService._allNetworks = {
-      $0([.mockMainnet, .mockSolana])
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
@@ -155,7 +146,7 @@ class SwapStoreTests: XCTestCase {
     // `prefilledToken` not set until validated in `prepare()`
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
-    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    let testAccountInfo: BraveWallet.AccountInfo = .previewAccount
     store.prepare(with: testAccountInfo) {
       defer { ex.fulfill() }
       XCTAssertEqual(
@@ -195,7 +186,7 @@ class SwapStoreTests: XCTestCase {
     rpcService.setNetwork(chainId: BraveWallet.PolygonMainnetChainId, coin: .eth, origin: nil) {
       success in
       XCTAssertTrue(success)
-      let testAccountInfo: BraveWallet.AccountInfo = .init()
+      let testAccountInfo: BraveWallet.AccountInfo = .previewAccount
       store.prepare(with: testAccountInfo) {
         defer { ex.fulfill() }
         XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), "matic")
@@ -244,8 +235,7 @@ class SwapStoreTests: XCTestCase {
       chainId: BraveWallet.PolygonMainnetChainId,
       coin: .eth
     )
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
+    let rpcService = MockJsonRpcService()
     rpcService._network = { $2(.mockPolygon) }
     rpcService._erc20TokenBalance = { $3("10", .success, "") }
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
@@ -275,7 +265,7 @@ class SwapStoreTests: XCTestCase {
       .store(in: &cancellables)
 
     let ex = expectation(description: "default-sell-buy-token-on-evm")
-    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    let testAccountInfo: BraveWallet.AccountInfo = .previewAccount
     store.prepare(with: testAccountInfo) {
       defer { ex.fulfill() }
       XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), daiToken.symbol.lowercased())
@@ -300,8 +290,8 @@ class SwapStoreTests: XCTestCase {
     keyringService._addObserver = { _ in }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._allTokens = { $2([.previewToken, .previewDaiToken]) }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._network = { $2(network) }
     rpcService._balance = { _, _, _, completion in
       // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
@@ -310,12 +300,6 @@ class SwapStoreTests: XCTestCase {
     rpcService._erc20TokenBalance = { _, _, _, completion in
       // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
       completion("0x13e25e19dc20ba7", .success, "")
-    }
-    rpcService._solanaBalance = { _, _, completion in
-      completion(0, .internalError, "")
-    }
-    rpcService._splTokenAccountBalance = { _, _, _, completion in
-      completion("", 0, "", .internalError, "")
     }
     let swapService = BraveWallet.TestSwapService()
     swapService._quote = { _, completion in
@@ -945,13 +929,12 @@ class SwapStoreTests: XCTestCase {
     let mockBalance = "47.156499657504857477"
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._chainIdForOrigin = { $2(BraveWallet.NetworkInfo.mockGoerli.chainId) }
     rpcService._network = { $2(BraveWallet.NetworkInfo.mockGoerli) }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
-    rpcService._addObserver = { _ in }
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
 
     let store = SwapTokenStore(

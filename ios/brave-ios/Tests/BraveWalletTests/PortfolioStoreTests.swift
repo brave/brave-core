@@ -65,14 +65,6 @@ import XCTest
   }
   let btcTestnetAccount: BraveWallet.AccountInfo = .mockBtcTestnetAccount
 
-  // Networks
-  let ethNetwork: BraveWallet.NetworkInfo = .mockMainnet
-  let goerliNetwork: BraveWallet.NetworkInfo = .mockGoerli
-  let solNetwork: BraveWallet.NetworkInfo = .mockSolana
-  let filMainnet: BraveWallet.NetworkInfo = .mockFilecoinMainnet
-  let filTestnet: BraveWallet.NetworkInfo = .mockFilecoinTestnet
-  let btcMainnet: BraveWallet.NetworkInfo = .mockBitcoinMainnet
-  let btcTestnet: BraveWallet.NetworkInfo = .mockBitcoinTestnet
   // ETH Asset, balance, price, history
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
@@ -180,7 +172,7 @@ import XCTest
       ) ?? ""
     // config filecoin on testnet
     let mockFilTestnetUserAssets: [BraveWallet.BlockchainToken] = [
-      filTestnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
     let mockFilTestnetBalanceInWei =
       formatter.weiString(
@@ -221,16 +213,16 @@ import XCTest
       ) ?? ""
 
     let mockEthGoerliUserAssets: [BraveWallet.BlockchainToken] = [
-      goerliNetwork.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)
     ]
 
     // config bitcoin on mainnet
     let mockBtcUserAssets: [BraveWallet.BlockchainToken] = [
-      btcMainnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.copy(asVisibleAsset: true)
     ]
     // config bitcoin on testnet
     let mockBtcTestnetUserAssets: [BraveWallet.BlockchainToken] = [
-      btcTestnet.nativeToken.copy(asVisibleAsset: true)
+      BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
 
     // setup test services
@@ -257,24 +249,18 @@ import XCTest
         )
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = {
-      $0([
-        self.ethNetwork, self.goerliNetwork, self.solNetwork, self.filMainnet, self.filTestnet,
-        self.btcMainnet, self.btcTestnet,
-      ])
-    }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks = [.mockPolygon, .mockSepolia, .mockSolanaTestnet]
     rpcService._balance = { accountAddress, coin, chainId, completion in
       // eth balance
       if coin == .eth {
-        if chainId == self.ethNetwork.chainId, accountAddress == self.ethAccount1.address {
+        if chainId == BraveWallet.MainnetChainId, accountAddress == self.ethAccount1.address {
           completion(ethBalanceWei, .success, "")
         } else {
           completion("", .success, "")
         }
       } else if coin == .fil {  // .fil
-        if chainId == self.filMainnet.chainId {
+        if chainId == BraveWallet.FilecoinMainnet {
           if accountAddress == self.filAccount1.address {
             completion(mockFilBalanceInWei, .success, "")
           } else {
@@ -307,7 +293,6 @@ import XCTest
         completion(0, .success, "")
       }
     }
-    rpcService._hiddenNetworks = { $1([]) }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -669,9 +654,9 @@ import XCTest
         isHidingUnownedNFTs: store.filters.isHidingUnownedNFTs,
         isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
         accounts: store.filters.accounts,
-        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // de-select all networks with balance
-          .init(isSelected: $0.chainId == goerliNetwork.chainId, model: $0)
+          .init(isSelected: $0.chainId == BraveWallet.GoerliChainId, model: $0)
         }
       )
     )
@@ -793,9 +778,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -887,9 +870,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -963,7 +944,7 @@ import XCTest
           // BTC testnet (value = $0.65726)
           XCTAssertEqual(
             group.assets[safe: offset]?.token.symbol,
-            self.btcMainnet.nativeToken.symbol
+            BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.symbol
           )
           XCTAssertEqual(
             group.assets[safe: offset]?.quantity,
@@ -984,7 +965,7 @@ import XCTest
         // BTC mainnet (value = $0.0006)
         XCTAssertEqual(
           group.assets[safe: offset]?.token.symbol,
-          self.btcMainnet.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.symbol
         )
         XCTAssertEqual(
           group.assets[safe: offset]?.quantity,
@@ -994,7 +975,7 @@ import XCTest
         // ETH Goerli (value = $0)
         XCTAssertEqual(
           group.assets[safe: offset]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
         )
         XCTAssertEqual(group.assets[safe: offset]?.quantity, String(format: "%.04f", 0))
       }.store(in: &cancellables)
@@ -1012,9 +993,7 @@ import XCTest
         ].map {  // deselect ethAccount2
           .init(isSelected: $0 != ethAccount2, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1091,7 +1070,7 @@ import XCTest
         // ETH Goerli (value = $0)
         XCTAssertEqual(
           group.assets[safe: 4]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
         )
         XCTAssertEqual(group.assets[safe: 4]?.quantity, String(format: "%.04f", 0))
         // SOL (value = $0, SOL networks hidden)
@@ -1119,9 +1098,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // only select Ethereum networks
           .init(isSelected: $0.coin == .eth || $0.coin == .fil, model: $0)
         }
@@ -1232,7 +1209,7 @@ import XCTest
         // ETH Goerli (value = $0)
         XCTAssertEqual(
           ethAccount1Group.assets[safe: 2]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
         )
         XCTAssertEqual(ethAccount1Group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
 
@@ -1292,7 +1269,7 @@ import XCTest
         // ETH Goerli (value = $0)
         XCTAssertEqual(
           ethAccount2Group.assets[safe: 2]?.token.symbol,
-          self.goerliNetwork.nativeToken.symbol
+          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
         )
         XCTAssertEqual(ethAccount2Group.assets[safe: 2]?.quantity, String(format: "%.04f", 0))
 
@@ -1353,9 +1330,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1485,9 +1460,7 @@ import XCTest
         ].map {
           .init(isSelected: $0 != ethAccount2, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1537,7 +1510,7 @@ import XCTest
             XCTFail("Unexpected test result")
             return
           }
-          XCTAssertEqual(btcTestnetGroup.groupType, .network(self.btcTestnet))
+          XCTAssertEqual(btcTestnetGroup.groupType, .network(.mockBitcoinTestnet))
           XCTAssertEqual(btcTestnetGroup.assets.count, 1)
           // BTC testnet (value = $0)
           XCTAssertEqual(
@@ -1615,7 +1588,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
 
-        XCTAssertEqual(btcMainnetGroup.groupType, .network(self.btcMainnet))
+        XCTAssertEqual(btcMainnetGroup.groupType, .network(.mockBitcoinMainnet))
         XCTAssertEqual(btcMainnetGroup.assets.count, 1)
         // BTC mainnet (value = $0.0065726)
         XCTAssertEqual(
@@ -1654,9 +1627,7 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           .init(isSelected: true, model: $0)
         }
       )
@@ -1760,11 +1731,9 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [
-          ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet, btcMainnet, btcTestnet,
-        ].map {
+        networks: MockJsonRpcService.allKnownNetworks.map {
           // hide ethNetwork
-          .init(isSelected: $0 != ethNetwork, model: $0)
+          .init(isSelected: $0 != .mockMainnet, model: $0)
         }
       )
     )

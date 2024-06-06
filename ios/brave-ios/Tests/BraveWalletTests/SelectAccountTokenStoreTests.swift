@@ -58,15 +58,6 @@ class SelectAccountTokenStoreTests: XCTestCase {
     ]
   }
 
-  private let allNetworks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet,
-    .mockGoerli,
-    .mockSolana,
-    .mockSolanaTestnet,
-    .mockFilecoinMainnet,
-    .mockFilecoinTestnet,
-  ]
-
   private let mockEthAccount2: BraveWallet.AccountInfo = .init(
     accountId: .init(
       coin: .eth,
@@ -164,11 +155,8 @@ class SelectAccountTokenStoreTests: XCTestCase {
         )
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = {
-      $0(self.allNetworks)
-    }
-    rpcService._hiddenNetworks = { $1([]) }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { accountAddress, coin, _, completion in
       if coin == .eth {
         completion(ethBalanceWei, .success, "")  // eth balance for both eth accounts

@@ -14,11 +14,6 @@ class AccountActivityStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  let networks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet, .mockGoerli,
-    .mockSolana, .mockSolanaTestnet,
-    .mockFilecoinMainnet, .mockFilecoinTestnet,
-  ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
@@ -68,11 +63,8 @@ class AccountActivityStoreTests: XCTestCase {
       $0(.mock)
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = {
-      $0(self.networks)
-    }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { _, coin, chainId, completion in
       switch chainId {
       case BraveWallet.MainnetChainId:
@@ -107,29 +99,6 @@ class AccountActivityStoreTests: XCTestCase {
         .success,
         ""
       )
-    }
-    rpcService._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
-    rpcService._solTokenMetadata = { _, _, completion in
-      let metaData = """
-        {
-          "image": "sol.mock.image.url",
-          "name": "sol mock nft name",
-          "description": "sol mock nft description"
-        }
-        """
-      completion("", metaData, .success, "")
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
     }
 
     let walletService = BraveWallet.TestBraveWalletService()

@@ -56,14 +56,8 @@ class TransactionsActivityStoreTests: XCTestCase {
       $0(.mock)
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = {
-      $0([
-        .mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet, .mockFilecoinMainnet,
-        .mockFilecoinTestnet,
-      ])
-    }
-    rpcService._hiddenNetworks = { $1([]) }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
         {
