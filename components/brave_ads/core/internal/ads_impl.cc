@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
+#include <sstream>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -37,6 +38,7 @@ void FailedToInitialize(InitializeCallback callback) {
   base::debug::DumpWithoutCrashing();
 
   BLOG(0, "Failed to initialize ads");
+
   std::move(callback).Run(/*success=*/false);
 }
 
@@ -86,6 +88,7 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(1, "Already initialized ads");
+
     return FailedToInitialize(std::move(callback));
   }
 
@@ -101,6 +104,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Shutdown failed as not initialized");
+
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -212,6 +216,9 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
             if (!success) {
               // TODO(https://github.com/brave/brave-browser/issues/32066):
               // Detect potential defects using `DumpWithoutCrashing`.
+              std::stringstream ss;
+              ss << ad_type;
+              SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type", ss.str());
               SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                         "Failed to purge orphaned ad events");
               base::debug::DumpWithoutCrashing();
@@ -311,6 +318,7 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to create or open database");
+
     return FailedToInitialize(std::move(callback));
   }
 
@@ -330,6 +338,7 @@ void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge expired ad events");
+
     return FailedToInitialize(std::move(callback));
   }
 
@@ -349,6 +358,7 @@ void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to purge orphaned ad events");
+
     return FailedToInitialize(std::move(callback));
   }
 
@@ -417,6 +427,7 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid wallet");
+
       return FailedToInitialize(std::move(callback));
     }
   }
@@ -436,6 +447,8 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Failed to load confirmation state");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Failed to load confirmation state");
 
     return FailedToInitialize(std::move(callback));
   }

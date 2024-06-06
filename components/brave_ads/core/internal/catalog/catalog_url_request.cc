@@ -99,7 +99,7 @@ void CatalogUrlRequest::FetchCallback(
   const std::optional<CatalogInfo> catalog =
       json::reader::ReadCatalog(url_response.body);
   if (!catalog) {
-    BLOG(1, "Failed to parse catalog");
+    BLOG(0, "Failed to parse catalog");
     return FailedToFetchCatalog();
   }
 

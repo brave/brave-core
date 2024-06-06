@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
@@ -148,6 +149,13 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
                 base::JoinString(placement_ids, ", ");
 
             if (!success) {
+              // TODO(https://github.com/brave/brave-browser/issues/32066):
+              // Detect potential defects using `DumpWithoutCrashing`.
+              SCOPED_CRASH_KEY_STRING64(
+                  "Issue32066", "failure_reason",
+                  "Failed to purge orphaned inline content ad events");
+              base::debug::DumpWithoutCrashing();
+
               return BLOG(
                   0, "Failed to purge orphaned inline content ad events for "
                          << joined_placement_ids << " placement ids");

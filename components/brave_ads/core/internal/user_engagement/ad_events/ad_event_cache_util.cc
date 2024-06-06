@@ -24,7 +24,13 @@ void RebuildAdEventCache() {
   database_table.GetUnexpired(
       base::BindOnce([](const bool success, const AdEventList& ad_events) {
         if (!success) {
-          return BLOG(1, "Failed to get ad events");
+          // TODO(https://github.com/brave/brave-browser/issues/32066):
+          // Detect potential defects using `DumpWithoutCrashing`.
+          SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                    "Failed to get ad events");
+          base::debug::DumpWithoutCrashing();
+
+          return BLOG(0, "Failed to get ad events");
         }
 
         const std::string& id = GetInstanceId();
@@ -38,6 +44,9 @@ void RebuildAdEventCache() {
             SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                       "Invalid ad event");
             base::debug::DumpWithoutCrashing();
+
+            BLOG(0, "Invalid ad event");
+
             continue;
           }
 

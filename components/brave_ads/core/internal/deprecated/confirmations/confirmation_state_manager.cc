@@ -63,7 +63,7 @@ void ConfirmationStateManager::LoadCallback(
                                 "Failed to parse confirmation state");
       base::debug::DumpWithoutCrashing();
 
-      BLOG(3, "Failed to parse confirmation state: " << *json);
+      BLOG(1, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }
@@ -128,6 +128,8 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Malformed confirmation JSON state");
     base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Malformed confirmation JSON state");
 
     return false;
   }

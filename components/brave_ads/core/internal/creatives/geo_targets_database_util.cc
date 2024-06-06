@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_util.h"
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
@@ -15,6 +16,12 @@ void DeleteGeoTargets() {
   const table::GeoTargets database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066):
+      // Detect potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                "Failed to delete geo targets");
+      base::debug::DumpWithoutCrashing();
+
       return BLOG(0, "Failed to delete geo targets");
     }
   }));

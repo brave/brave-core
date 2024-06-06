@@ -33,6 +33,7 @@ void NotificationAdEventHandler::FireEvent(
   if (!ad) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
+
     return FailedToFireEvent(placement_id, event_type, std::move(callback));
   }
 

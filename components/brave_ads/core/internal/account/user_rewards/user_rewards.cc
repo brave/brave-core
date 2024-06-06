@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
@@ -103,6 +104,12 @@ void UserRewards::OnDidRedeemPaymentTokens(
   transactions_database_table_.Reconcile(
       payment_tokens, base::BindOnce([](const bool success) {
         if (!success) {
+          // TODO(https://github.com/brave/brave-browser/issues/32066):
+          // Detect potential defects using `DumpWithoutCrashing`.
+          SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                                    "Failed to reconcile transactions");
+          base::debug::DumpWithoutCrashing();
+
           return BLOG(0, "Failed to reconcile transactions");
         }
 

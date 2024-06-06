@@ -137,6 +137,7 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
+
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
   }
@@ -146,6 +147,7 @@ void GetForCreativeInstanceIdCallback(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
+
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
   }

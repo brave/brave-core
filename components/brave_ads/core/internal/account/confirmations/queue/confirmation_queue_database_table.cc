@@ -81,6 +81,9 @@ size_t BindParameters(
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid confirmation queue item");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid confirmation queue item");
+
       continue;
     }
 
@@ -218,6 +221,7 @@ void GetCallback(GetConfirmationQueueCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get confirmation queue");
+
     return std::move(callback).Run(/*success=*/false,
                                    /*confirmations_queue_items=*/{});
   }
@@ -235,6 +239,9 @@ void GetCallback(GetConfirmationQueueCallback callback,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid confirmation queue item");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid confirmation queue item");
+
       continue;
     }
 

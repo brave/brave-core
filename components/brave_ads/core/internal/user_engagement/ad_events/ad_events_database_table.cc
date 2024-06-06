@@ -60,6 +60,9 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid ad event");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid ad event");
+
       continue;
     }
 
@@ -109,6 +112,7 @@ void GetCallback(GetAdEventsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
+
     return std::move(callback).Run(/*success=*/false, /*ad_events=*/{});
   }
 
@@ -123,6 +127,9 @@ void GetCallback(GetAdEventsCallback callback,
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid ad event");
       base::debug::DumpWithoutCrashing();
+
+      BLOG(0, "Invalid ad event");
+
       continue;
     }
 
