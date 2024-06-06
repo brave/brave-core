@@ -87,7 +87,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   private var isShowingOptInCard: Bool {
-    !Preferences.BraveNews.isEnabled.value && Preferences.BraveNews.isShowingOptIn.value
+    Preferences.BraveNews.isShowingOptIn.value
   }
 
   func collectionView(
@@ -326,7 +326,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
 
     guard let card = dataSource.state.cards?[safe: indexPath.item] else {
       assertionFailure()
-      return UICollectionViewCell()
+      return collectionView.dequeueReusableCell(for: indexPath)
+        as FeedCardCell<BraveNewsEmptyFeedView>
     }
 
     switch card {
