@@ -340,9 +340,8 @@ public class AsyncUtils {
         public void call(SolanaFeeEstimation fee, int error, String errorMessage) {
             this.fee =
                     fee.baseFee
-                            + ((long) fee.computeUnits
-                                    * fee.feePerComputeUnit
-                                    * BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
+                            + (((long) fee.computeUnits * fee.feePerComputeUnit)
+                                    / BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
             this.error = error;
             this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();

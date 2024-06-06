@@ -1781,9 +1781,9 @@ export const transactionEndpoints = ({
             throw new Error(errorMessage)
           }
 
-          const priorityFee = BigInt(fee.computeUnits)
-                            * BigInt(fee.feePerComputeUnit)
-                            * BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT);
+          const priorityFee = (BigInt(fee.computeUnits)
+                            * BigInt(fee.feePerComputeUnit))
+            / BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT);
           const totalFee = BigInt(fee.baseFee) + priorityFee;
 
           return {

@@ -18,7 +18,7 @@ extension BraveWalletSolanaTxManagerProxy {
           group.addTask { @MainActor in
             let (fee, _, _) = await self.solanaTxFeeEstimation(chainId: tx.chainId, txMetaId: tx.id)
             let priorityFee =
-              UInt64(fee.computeUnits) * fee.feePerComputeUnit * BraveWallet.MicroLamportsPerLamport
+              (UInt64(fee.computeUnits) * fee.feePerComputeUnit) / BraveWallet.MicroLamportsPerLamport
             let totalFee = fee.baseFee + priorityFee
             return [tx.id: totalFee]
           }
