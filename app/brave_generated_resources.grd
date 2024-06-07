@@ -1239,6 +1239,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Sorry, we couldn't find any media on this page.
           </message>
         <if expr="use_titlecase">
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST" desc="A title label on a bubble to show media file is added to Playlist">
+            Added to Playlist
+          </message>
           <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
             Open in Playlist
           </message>
@@ -1256,6 +1259,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
         <if expr="not use_titlecase">
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST" desc="A title label on a bubble to show media file is added to Playlist">
+            Added to playlist
+          </message>
           <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
             Open in playlist
           </message>
