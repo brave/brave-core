@@ -14,7 +14,7 @@ import lxml.etree  # pylint: disable=import-error
 # List of HTML tags that we allow inside the translated text.
 allowed_html_tags = [
     'a', 'abbr', 'b', 'b1', 'b2', 'br', 'code', 'em', 'h4', 'learnmore', 'li',
-    'li1', 'li2', 'ol', 'p', 'span', 'strong', 'ul'
+    'li1', 'li2', 'ol', 'p', 'span', 'strong', 'u', 'ul'
 ]
 
 def validate_elements_tags(elements):
