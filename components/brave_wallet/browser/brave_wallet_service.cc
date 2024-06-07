@@ -1555,7 +1555,7 @@ void BraveWalletService::Reset() {
 }
 
 void BraveWalletService::DiscoverEthAllowances(
-    DiscoverEthAllowancesCallback callback) {
+    DiscoverEthAllowancesCallback callback) { 
   eth_allowance_manager_->DiscoverEthAllowancesOnAllSupportedChains(
       std::move(callback));
 }

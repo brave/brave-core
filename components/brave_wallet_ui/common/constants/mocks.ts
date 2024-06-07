@@ -18,7 +18,6 @@ import {
 } from '../../assets/network_token_icons/network_token_icons'
 
 // utils
-import { getAssetIdKey } from '../../utils/asset-utils'
 import { getPriceIdForToken } from '../../utils/api-utils'
 
 // mocks
@@ -29,7 +28,6 @@ import {
   mockBinanceCoinErc20TokenId,
   mockBitcoinErc20TokenId,
   mockDaiTokenId,
-  mockErc721Token,
   mockEthToken,
   mockMoonCatNFT,
   mockSplBasicAttentionTokenId,
@@ -213,13 +211,6 @@ export const mockBtcMainnetNetwork: BraveWallet.NetworkInfo = {
   coin: BraveWallet.CoinType.BTC,
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
   isEip1559: false
-}
-
-export const mockNftPinningStatus = {
-  [getAssetIdKey(mockErc721Token)]: {
-    code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
-    error: undefined
-  }
 }
 
 export const mockAccount: BraveWallet.AccountInfo = {

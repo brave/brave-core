@@ -26,8 +26,6 @@ import {
   makeKeyringServiceObserver,
   makeTxServiceObserver,
   makeBraveWalletServiceObserver,
-  makeBraveWalletPinServiceObserver,
-  makeBraveWalletAutoPinServiceObserver,
   makeBraveWalletServiceTokenObserver
 } from '../common/wallet_api_proxy_observers'
 
@@ -61,10 +59,6 @@ proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
   makeBraveWalletServiceTokenObserver(store)
-)
-proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
-proxy.addBraveWalletAutoPinServiceObserver(
-  makeBraveWalletAutoPinServiceObserver(store)
 )
 
 export const walletPanelApiProxy = proxy
