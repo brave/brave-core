@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -26,13 +27,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class TransactionUtils {
-    public static @CoinType.EnumType int getCoinFromTxDataUnion(TxDataUnion txDataUnion) {
-        if (txDataUnion.which() == TxDataUnion.Tag.FilTxData)
+    @CoinType.EnumType
+    public static int getCoinFromTxDataUnion(@NonNull final TxDataUnion txDataUnion) {
+        if (txDataUnion.which() == TxDataUnion.Tag.BtcTxData) {
+            return CoinType.BTC;
+        } else if (txDataUnion.which() == TxDataUnion.Tag.ZecTxData) {
+            return CoinType.ZEC;
+        } else if (txDataUnion.which() == TxDataUnion.Tag.FilTxData) {
             return CoinType.FIL;
-        else if (txDataUnion.which() == TxDataUnion.Tag.SolanaTxData)
+        } else if (txDataUnion.which() == TxDataUnion.Tag.SolanaTxData) {
             return CoinType.SOL;
-        else
+        } else {
             return CoinType.ETH;
+        }
     }
 
     public static @StringRes int getTxType(TransactionInfo info) {
