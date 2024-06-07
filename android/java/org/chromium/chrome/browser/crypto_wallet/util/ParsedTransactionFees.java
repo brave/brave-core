@@ -9,6 +9,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOL
 
 import androidx.annotation.NonNull;
 
+import org.chromium.brave_wallet.mojom.BtcTxData;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -105,9 +106,13 @@ public class ParsedTransactionFees {
         final FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
                 ? txDataUnion.getFilTxData()
                 : null;
+        final BtcTxData btcTxData = txDataUnion.which() == TxDataUnion.Tag.BtcTxData
+                ? txDataUnion.getBtcTxData()
+                : null;
         final int networkDecimals = txNetwork.decimals;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
         final boolean isFilTransaction = filTxData != null;
+        final boolean isBtcTransaction = btcTxData != null;
 
         final String gasLimit;
         final String gasPrice;
@@ -131,8 +136,15 @@ public class ParsedTransactionFees {
         }
         final boolean isEIP1559Transaction =
                 !maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty();
-        final double[] gasFeeArr = calcGasFee(txNetwork, networkSpotPrice, isEIP1559Transaction,
-                gasLimit, gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
+        final double[] gasFeeArr;
+        if (isBtcTransaction) {
+            final double gasFee =  Utils.fromWei(Long.toString(btcTxData.fee), networkDecimals);
+            final double gasFeeFiat = gasFee * networkSpotPrice;
+            gasFeeArr = new double[]{gasFee, gasFeeFiat};
+        } else {
+            gasFeeArr = calcGasFee(txNetwork, networkSpotPrice, isEIP1559Transaction,
+                    gasLimit, gasPrice, maxFeePerGas, isSolTransaction, solFeeEstimatesFee);
+        }
         final double gasFee = gasFeeArr[0];
         final double gasFeeFiat = gasFeeArr[1];
         final String missingGasLimitError =
@@ -142,11 +154,9 @@ public class ParsedTransactionFees {
         final double gasFeeCap =
                 isFilTransaction ? Utils.fromHexWei(filTxData.gasFeeCap, networkDecimals) : 0.0d;
 
-        ParsedTransactionFees parsedTransactionFees = new ParsedTransactionFees(gasLimit, gasPrice,
+        return new ParsedTransactionFees(gasLimit, gasPrice,
                 maxPriorityFeePerGas, maxFeePerGas, gasFee, gasFeeFiat, isEIP1559Transaction,
                 missingGasLimitError, gasPremium, gasFeeCap);
-
-        return parsedTransactionFees;
     }
 
     @NonNull
