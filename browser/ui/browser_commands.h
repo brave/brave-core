@@ -116,7 +116,8 @@ bool CanOpenNewSplitViewForTab(
     Browser* browser,
     std::optional<tabs::TabHandle> tab = std::nullopt);
 void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab = std::nullopt);
+                        std::optional<tabs::TabHandle> tab = std::nullopt,
+                        GURL url = GURL());
 // In case |indices| empty, selected tabs will be used.
 void TileTabs(Browser* browser, const std::vector<int>& indices = {});
 void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
