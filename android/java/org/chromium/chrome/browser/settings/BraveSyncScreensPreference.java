@@ -148,6 +148,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private FrameLayout mLayoutMobile;
     private FrameLayout mLayoutLaptop;
     private AlertDialog mFinalWarningDialog;
+    private TabLayout mTabLayout;
 
     BraveSyncWorker getBraveSyncWorker() {
         return BraveSyncWorker.get();
@@ -465,9 +466,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         assert mNewQrCodeButton != null;
         mNewQrCodeButton.setOnClickListener(this);
 
-        TabLayout tabLayout = getView().findViewById(R.id.tab_layout);
-
-        tabLayout.addOnTabSelectedListener(
+        mTabLayout = getView().findViewById(R.id.tab_layout);
+        mTabLayout.addOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
@@ -604,6 +604,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             setAddMobileDeviceLayout();
         } else if (mLaptopButton == v) {
             setAddLaptopLayout();
+            selectAddLaptopTab();
         } else if (mDoneButton == v) {
             setSyncDoneLayout();
         } else if (mDoneLaptopButton == v) {
@@ -723,6 +724,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
+    private void selectAddLaptopTab() {
+        mTabLayout.getTabAt(1).select();
+    }
+
     void generateNewCodeWords() {
         ThreadUtils.assertOnUiThread();
 
@@ -746,7 +751,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         String seedHex = getBraveSyncWorker().getSeedHexFromWords(getPureWords());
         if (null == seedHex || seedHex.isEmpty()) {
             // Give up, seed must be valid
-            Log.e(TAG, "setAddMobileDeviceLayout seedHex is empty");
+            Log.e(TAG, "generateNewQrCode seedHex is empty");
             assert false;
         } else {
             if (!isSeedHexValid(seedHex)) {
