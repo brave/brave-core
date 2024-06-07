@@ -862,7 +862,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kBnbSmartChainMainnetChainId,
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
-      brave_wallet::mojom::kAvalancheMainnetChainId,
+      // TODO(onyb): Re-enable when Brave proxy is supported for Avalanche.
+      // brave_wallet::mojom::kAvalancheMainnetChainId,
       brave_wallet::mojom::kGoerliChainId,
       brave_wallet::mojom::kSepoliaChainId};
 
