@@ -36,9 +36,6 @@ namespace brave_vpn {
 
 namespace {
 
-constexpr char kBraveVPNLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/";
-
 constexpr int kChildSpacing = 16;
 constexpr int kPadding = 24;
 constexpr int kTopPadding = 32;
@@ -82,32 +79,13 @@ BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(Browser* browser)
   const std::u16string contents_text =
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_FALLBACK_DIALOG_TEXT);
 
-  std::u16string learn_more_link_text =
-      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_FALLBACK_DIALOG_LEARN_MORE_TEXT);
-  std::u16string full_text = l10n_util::GetStringFUTF16(
-      IDS_BRAVE_VPN_FALLBACK_DIALOG_TEXT, learn_more_link_text);
-  const int main_message_length =
-      full_text.size() - learn_more_link_text.size();
-
   auto* contents_label = AddChildView(std::make_unique<views::StyledLabel>());
   contents_label->SetTextContext(views::style::CONTEXT_DIALOG_BODY_TEXT);
-  views::StyledLabel::RangeStyleInfo message_style;
-  contents_label->SetText(full_text);
-  contents_label->AddStyleRange(gfx::Range(0, main_message_length),
-                                message_style);
+  contents_label->SetText(contents_text);
   contents_label->SizeToFit(kDialogWidth);
 
   RegisterWindowClosingCallback(base::BindOnce(
       &BraveVpnFallbackDialogView::OnClosing, base::Unretained(this)));
-
-  // Add "Learn more" link.
-  views::StyledLabel::RangeStyleInfo link_style =
-      views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
-          &BraveVpnFallbackDialogView::OnLearnMoreLinkClicked,
-          base::Unretained(this)));
-  contents_label->AddStyleRange(
-      gfx::Range(main_message_length, full_text.size()), link_style);
-  contents_label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 
   dont_ask_again_checkbox_ =
       AddChildView(std::make_unique<views::Checkbox>(l10n_util::GetStringUTF16(
@@ -115,12 +93,6 @@ BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(Browser* browser)
 }
 
 BraveVpnFallbackDialogView::~BraveVpnFallbackDialogView() = default;
-
-void BraveVpnFallbackDialogView::OnLearnMoreLinkClicked() {
-  chrome::AddSelectedTabWithURL(browser_, GURL(kBraveVPNLearnMoreURL),
-                                ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
-  CancelDialog();
-}
 
 ui::ModalType BraveVpnFallbackDialogView::GetModalType() const {
   return ui::MODAL_TYPE_WINDOW;
