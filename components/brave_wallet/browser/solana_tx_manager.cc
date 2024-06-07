@@ -97,18 +97,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta->set_status(mojom::TransactionStatus::Unapproved);
   meta->set_chain_id(chain_id);
 
-  // If the transaction is partially signed, we can't modify the instructions
-  // to add a priority fee.
-  if (meta->tx()->IsPartialSigned()) {
-    if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
-      std::move(callback).Run(
-          false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-    std::move(callback).Run(true, meta->id(), "");
-    return;
-  }
-
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -217,6 +205,19 @@ void SolanaTxManager::OnGetEstimatedTxBaseFee(
     estimation->fee_per_compute_unit = 0;
     std::move(callback).Run(std::move(meta), std::move(estimation), error,
                             error_message);
+    return;
+  }
+
+  // If the transaction is partially signed, we can't modify the instructions
+  // to add a priority fee. So we return just the base fee.
+  if (meta->tx()->IsPartialSigned()) {
+    mojom::SolanaFeeEstimationPtr estimation =
+        mojom::SolanaFeeEstimation::New();
+    estimation->base_fee = base_fee;
+    estimation->compute_units = 0;
+    estimation->fee_per_compute_unit = 0;
+    std::move(callback).Run(std::move(meta), std::move(estimation),
+                            mojom::SolanaProviderError::kSuccess, "");
     return;
   }
 

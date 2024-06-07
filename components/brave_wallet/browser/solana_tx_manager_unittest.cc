@@ -51,6 +51,11 @@
 
 namespace {
 
+constexpr char kEncodedSerializedMessage[] =
+    "FDmjJVJ5XUQPik2xqs7NqP7VdMkDXNWLimqTR8C2KstRHZAdRUoCMQr7LXUjQ6dSer9jfWWfbN"
+    "XzMToAWzoQLWvgduNCLxSVWVuiVZzqGPwC8mWT4SAu5NDCC5VTWcSNWj4Q9HSvgQitodttQiQR"
+    "3yQvRZJurNzub3SBK3umEqULkVJPYZJRCmPbXQm9ebPEXGYQRKrjiAt7";
+
 constexpr char kMockGetFeeForMessageResponse[] = R"({
       "jsonrpc":"2.0","id":1,
       "result": {
@@ -690,16 +695,26 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // First add a partially signed transaction - it should not fetch add any
   // priority fee instructions or add a fee estimate.
   auto param = mojom::SolanaSignTransactionParam::New(
-      "test", std::vector<mojom::SignaturePubkeyPairPtr>());
+      kEncodedSerializedMessage, std::vector<mojom::SignaturePubkeyPairPtr>());
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(
       std::vector<uint8_t>(kSolanaSignatureSize, 1), sol_account()->address));
   solana_tx_data->sign_transaction_param = std::move(param);
   auto tx = SolanaTransaction::FromSolanaTxData(solana_tx_data.Clone());
   ASSERT_TRUE(tx);
   std::string meta_id1;
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
+                 kMockGetFeeForMessageResponse, false,
+                 last_valid_block_height1_, std::nullopt);
   AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
                            from_account, &meta_id1);
   auto tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
+  ASSERT_TRUE(tx_meta1);
+  mojom::SolanaFeeEstimationPtr expected_estimate =
+      mojom::SolanaFeeEstimation::New();
+  expected_estimate->base_fee = 5000;
+  expected_estimate->compute_units = 0;
+  expected_estimate->fee_per_compute_unit = 0;
+  tx->set_fee_estimation(expected_estimate.Clone());
   EXPECT_EQ(*tx_meta1->tx(), *tx);
 
   // Remove partial signature
