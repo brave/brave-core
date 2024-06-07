@@ -250,9 +250,6 @@
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings to visit help center">
     Learn more.
   </message>
-  <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_LEARN_MORE_TEXT" desc="A text shown to user when Brave VPN WireGuard is asking for fallback to IKEv2">
-    Learn more.
-  </message>
 
   <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_BY_BRAVE_VPN" desc="A text shown to user on settings page for DNS setting when it is blocked by BraveVPN">
     The setting is locked by BraveVPN while it is connected
@@ -274,8 +271,6 @@ Need help with compatibility or configuration? Reach out to our friendly support
 You can always revert back to WireGuard on brave://settings/system.
 
 Let's get you connected!
-
-<ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
   </message>
 
   <message name="IDS_BRAVE_VPN_FALLBACK_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when Brave VPN WireGuard is asking for fallback to IKEv2">
