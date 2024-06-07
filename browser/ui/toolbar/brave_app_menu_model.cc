@@ -451,15 +451,9 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   }
 
   {
-    // Remove upstream's clear browsing data. It'll be added into history sub
-    // menu at RecentTabsSubMenuModel::Build().
-    auto index = GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA);
-    CHECK(index);
-    RemoveItemAt(*index);
-
     // Remove upstream's profile menu. "Add new profile" will be added into more
     // tools sub menu.
-    index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
+    auto index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
     CHECK(index);
     RemoveItemAt(*index);
 
