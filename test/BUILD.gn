@@ -498,7 +498,7 @@ test("brave_unit_tests") {
       deps += [ "//brave/components/brave_mobile_subscription/renderer/android:unit_tests" ]
     }
     if (use_v8_context_snapshot) {
-      deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
+      deps += [ "//tools/v8_context_snapshot" ]
     }
 
     if (!use_v8_context_snapshot || include_both_v8_snapshots) {
