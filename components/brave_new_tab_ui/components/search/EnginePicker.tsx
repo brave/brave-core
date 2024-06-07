@@ -3,68 +3,132 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Button from '@brave/leo/react/button';
-import ButtonMenu from '@brave/leo/react/buttonMenu';
-import Icon from '@brave/leo/react/icon';
-import { color, icon, spacing } from "@brave/leo/tokens/css/variables";
-import * as React from "react";
-import styled from "styled-components";
-import Flex from '$web-common/Flex';
+import Flex from "$web-common/Flex";
 import { getLocale } from "$web-common/locale";
+import Button from '@brave/leo/react/button';
+import Floating from '@brave/leo/react/floating';
+import { radius, spacing } from "@brave/leo/tokens/css/variables";
+import * as React from "react";
+import styled, { css } from "styled-components";
 import { useSearchContext } from "./SearchContext";
 import { MediumSearchEngineIcon } from "./SearchEngineIcon";
 
 const Option = styled.div`
-    display: flex;
-    color: ${color.black};
-    gap: ${spacing.m};
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+
+  padding: ${spacing.m};
+  border-radius: ${radius.s};
+
+  &:hover, &[data-selected=true] {
+    background: rgba(255,255,255,0.1);
+  }
 `
 
-const OpenIcon = styled(Icon)`
-  --leo-icon-color: rgba(255, 255, 255, 0.5);
-  --leo-icon-size: ${icon.xs};
-`
+const CustomizeButton = styled(Option)`
+  border-top: 1px solid rgba(255,255,255,0.1);
 
-const CustomizeButton = styled(Button)`
-  border-top: 1px solid ${color.divider.subtle};
-  color: ${color.text.secondary};
-`
+  justify-content: center;
 
-const Vr = styled.div`
-  width: 1px;
-  background: rgba(255,255,255,0.1);
-  height: 24px;
+  &:not(:hover) {
+    border-radius: 0;
+  }
 `
 
 const OpenButton = styled(Button)`
-  margin: -6px 0 -6px ${spacing.m};
+  margin: -6px 0 -6px ${spacing.s};
 `
+
+const IconContainer = styled(Flex) <{ open: boolean }>`
+  margin-right: 4px;
+  border-radius: ${radius.s};
+  padding: ${spacing.s};
+
+  width: 32px;
+  height: 32px;
+
+  ${p => p.open && css`
+    background: rgba(255,255,255,0.25);
+  `}
+`
+
+const Menu = styled.div`
+  width: 180px;
+
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(64px);
+
+  border-radius: ${radius.m};
+  padding: ${spacing.s};
+
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.s};
+`
+
+const findParentWithTag = (el: HTMLElement | null | undefined, tagName: string) => {
+  do {
+    el = el?.parentElement
+  } while (el && el.tagName !== tagName)
+
+  return el;
+}
 
 export default function EnginePicker() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, setOpen: setBoxOpen } = useSearchContext()
   const [open, setOpen] = React.useState(false)
 
-  return <ButtonMenu data-theme="light" positionStrategy='fixed' isOpen={open} onClose={() => setOpen(false)}>
-    <OpenButton fab kind="plain-faint" slot="anchor-content" onClick={() => setOpen(true)}>
-      <Flex gap={spacing.s} align='center'>
-        <MediumSearchEngineIcon engine={searchEngine} />
-        <OpenIcon name={open ? "close" : "carat-down"} />
-        <Vr />
-      </Flex>
-    </OpenButton>
-    {filteredSearchEngines.map(s => <leo-menu-item onClick={() => setSearchEngine(s)} key={s.keyword}>
-      <Option>
-        <MediumSearchEngineIcon engine={s} />{s.name}
-      </Option>
-    </leo-menu-item>)}
-    <CustomizeButton kind="plain-faint" size="small" onClick={() => {
-      history.pushState(undefined, '', '?openSettings=Search')
+  const buttonRef = React.useRef<HTMLElement>();
+  const menuRef = React.useRef<HTMLElement>();
 
-      // For now, close the search box - the Settings dialog doesn't use a
-      // dialog, so it gets rendered underneath.
-      setBoxOpen(false)
-    }}>
-      {getLocale('searchCustomizeList')}
-    </CustomizeButton>
-  </ButtonMenu>
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (!e.composedPath().includes(menuRef.current!)) {
+        setOpen(false)
+      }
+    }
+
+    // Add the handler after we're finished opening the menu, so we don't
+    // instantly close it.
+    setTimeout(() => document.addEventListener('click', handler))
+
+    return () => {
+      document.removeEventListener('click', handler)
+    }
+  }, [open])
+
+  return <>
+    <OpenButton ref={buttonRef} fab kind="plain-faint" slot="anchor-content" onClick={() => setOpen(o => !o)}>
+      <IconContainer align="center" justify="center" open={open}>
+        <MediumSearchEngineIcon engine={searchEngine} />
+      </IconContainer>
+    </OpenButton>
+    {open && <Floating ref={menuRef} target={findParentWithTag(buttonRef.current, 'LEO-INPUT')!} autoUpdate positionStrategy="fixed" placement="top-start">
+      <Menu data-theme="dark" onClick={e => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}>
+        {filteredSearchEngines.map(s => <Option onClick={() => {
+          setSearchEngine(s)
+          setOpen(false)
+        }}
+          key={s.keyword}
+          data-selected={s === searchEngine}>
+          <MediumSearchEngineIcon engine={s} />{s.name}
+        </Option>)}
+        <CustomizeButton onClick={() => {
+          history.pushState(undefined, '', '?openSettings=Search')
+
+          // For now, close the search box - the Settings dialog doesn't use a
+          // dialog, so it gets rendered underneath.
+          setBoxOpen(false)
+          setOpen(false)
+        }}>
+          {getLocale('searchCustomizeList')}
+        </CustomizeButton>
+      </Menu>
+    </Floating>}
+  </>
 }

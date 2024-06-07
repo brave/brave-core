@@ -84,7 +84,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   const [searchEngine, setSearchEngineInternal] = React.useState<SearchEngineInfo>()
   const [query, setQuery] = React.useState('')
   const { result: searchEngines = [] } = usePromise(() => searchEnginesPromise, [])
-  const filteredSearchEngines = React.useMemo(() => searchEngines.filter(isSearchEngineEnabled), [searchEngines])
+  const filteredSearchEngines = searchEngines.filter(isSearchEngineEnabled)
 
   const setSearchEngine = React.useCallback((engine: SearchEngineInfo | string) => {
     if (typeof engine === 'string') {

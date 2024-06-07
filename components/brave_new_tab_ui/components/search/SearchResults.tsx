@@ -21,7 +21,7 @@ const Container = styled.div`
   border-bottom-left-radius: ${radius.m};
   border-bottom-right-radius: ${radius.m};
 
-  padding: ${spacing.s};
+  padding: ${spacing.m};
   gap: ${spacing.s};
   display: flex;
   flex-direction: column;

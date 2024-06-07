@@ -6,7 +6,7 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components'
 import SearchBox, { Backdrop } from './SearchBox';
 import SearchResults from './SearchResults';
-import { color, radius, spacing } from '@brave/leo/tokens/css/variables';
+import { color, radius } from '@brave/leo/tokens/css/variables';
 import { createPortal } from 'react-dom';
 
 interface Props {
@@ -58,7 +58,7 @@ const exitBackdrop = keyframes`
 `
 
 const Dialog = styled.dialog<{ offsetY: number }>`
-  --margin-top: ${spacing['9Xl']};
+  --margin-top: calc(50vh - 209px);
   --offset-y: ${p => p.offsetY}px;
 
   outline: none;
@@ -66,7 +66,7 @@ const Dialog = styled.dialog<{ offsetY: number }>`
   border-radius: ${radius.m};
   background: transparent;
   margin-top: var(--margin-top);
-  padding: 2px;
+  padding: 0px;
 
   animation: ${enterDialog} ${duration} ${easing};
 

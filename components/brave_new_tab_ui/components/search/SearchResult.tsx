@@ -19,13 +19,13 @@ interface Props {
 }
 
 const Container = styled.a`
-  padding: ${spacing.s} ${spacing.xl};
+  padding: ${spacing.s} ${spacing.m};
   border-radius: ${radius.m};
 
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: ${spacing.xl};
+  gap: ${spacing.l};
 
   text-decoration: none;
 
@@ -56,11 +56,13 @@ const FavIcon = styled.span<{ url: string }>`
 
 const Content = styled.span`
   font: ${font.large.regular};
+  line-height: 24px;
   color: ${color.text.secondary};
 `
 
 const Description = styled.span`
   font: ${font.small.regular};
+  line-height: 18px;
   color: rgba(255,255,255,0.7);
 `
 
@@ -78,7 +80,7 @@ const LeoIcon = styled(Icon)`
 `
 
 const Divider = styled.hr`
-  margin: -2px -8px;
+  margin: 2px -8px;
   opacity: 0.1;
 `
 
@@ -91,7 +93,6 @@ export default function SearchResult({ match, line, selected }: Props) {
     ? description
     : ''
 
-  const subtitle = match.destinationUrl.url || description
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
     omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
@@ -103,7 +104,7 @@ export default function SearchResult({ match, line, selected }: Props) {
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>
-      <Description>{subtitle}</Description>
+      {description && description !== hint && <Description>{description}</Description>}
     </Flex>
   </Container>
 
