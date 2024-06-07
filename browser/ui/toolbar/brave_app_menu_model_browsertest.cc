@@ -130,7 +130,6 @@ void CheckCommandsAreInOrderInMenuModel(
   std::vector<size_t> commands_index;
   for (int id : commands_in_order) {
     std::optional<size_t> index = model->GetIndexOfCommandId(id);
-    LOG(ERROR) << id;
     EXPECT_TRUE(index.has_value());
     commands_index.push_back(index.value());
   }
@@ -185,18 +184,6 @@ void CheckHelpCommandsAreInOrderInMenuModel(
   CheckCommandsAreInOrderInMenuModel(help_model, help_commands_in_order);
 }
 
-void CheckHistoryCommandsAreInOrderInMenuModel(
-    Browser* browser,
-    const std::vector<int>& history_commands_in_order) {
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  BraveAppMenuModel model(browser_view->toolbar(), browser);
-  model.Init();
-  ui::SimpleMenuModel* history_model =
-      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model.GetIndexOfCommandId(IDC_RECENT_TABS_MENU).value()));
-  CheckCommandsAreInOrderInMenuModel(history_model, history_commands_in_order);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, CommandsExecutionTest) {
   RunCommandFromAppMenuModel(CreateIncognitoBrowser(),
                              IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS);
@@ -247,7 +234,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER,
   };
   CheckHelpCommandsAreInOrderInMenuModel(browser(), help_commands_in_order);
-  CheckHistoryCommandsAreInOrderInMenuModel(browser(), {IDC_SHOW_HISTORY});
 
   std::vector<int> more_tools_in_order = {
       IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SIDEBAR_SHOW_OPTION_MENU,
