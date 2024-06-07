@@ -1420,32 +1420,28 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
 
   if (coin == mojom::CoinType::SOL) {
     for (const auto* network : GetKnownSolNetworks()) {
-      result.push_back(
-          GetKnownChain(prefs, network->chain_id, mojom::CoinType::SOL));
+      result.push_back(network->Clone());
     }
     return result;
   }
 
   if (coin == mojom::CoinType::FIL) {
     for (const auto* network : GetKnownFilNetworks()) {
-      result.push_back(
-          GetKnownChain(prefs, network->chain_id, mojom::CoinType::FIL));
+      result.push_back(network->Clone());
     }
     return result;
   }
 
   if (coin == mojom::CoinType::BTC) {
     for (const auto* network : GetKnownBitcoinNetworks()) {
-      result.push_back(
-          GetKnownChain(prefs, network->chain_id, mojom::CoinType::BTC));
+      result.push_back(network->Clone());
     }
     return result;
   }
 
   if (coin == mojom::CoinType::ZEC) {
     for (const auto* network : GetKnownZCashNetworks()) {
-      result.push_back(
-          GetKnownChain(prefs, network->chain_id, mojom::CoinType::ZEC));
+      result.push_back(network->Clone());
     }
     return result;
   }
