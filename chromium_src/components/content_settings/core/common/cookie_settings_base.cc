@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/content_settings/core/common/cookie_settings_base.h"
+
 #include <optional>
 
 #include "base/auto_reset.h"
@@ -12,7 +14,6 @@
 #include "base/types/optional_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/cookie_settings_base.h"
 #include "components/content_settings/core/common/features.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -314,8 +315,14 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
         setting_info.secondary_pattern.MatchesAllHosts();                \
   }
 
+// Force GetCookieSetting to use a first-party context when calling into
+// GetCookieSettingInternal, rather than assuming a third-party context. See
+// https://chromium.googlesource.com/chromium/src/+/1eca8080b750b1b3e3067cfb7209163b9026de8a
+#define SiteForCookies() SiteForCookies::FromUrl(first_party_url)
+
 #define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed
+#undef SiteForCookies
 #undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
