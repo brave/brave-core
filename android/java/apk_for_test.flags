@@ -41,7 +41,6 @@
     *** mMvTilesContainerLayout;
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
-    *** isScrollableMvtEnabled(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
