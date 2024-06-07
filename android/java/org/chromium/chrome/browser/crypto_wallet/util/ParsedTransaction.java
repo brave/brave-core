@@ -13,6 +13,7 @@ import android.util.Pair;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BtcTxData;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
@@ -150,6 +151,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
         FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
                 ? txDataUnion.getFilTxData()
                 : null;
+        BtcTxData btcTxData = txDataUnion.which() == TxDataUnion.Tag.BtcTxData
+                ? txDataUnion.getBtcTxData()
+                : null;
 
         final boolean isFilTransaction = filTxData != null;
         final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
@@ -157,16 +161,19 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         == TransactionType
                                    .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
+        final boolean isBtcTransaction = btcTxData != null;
 
         final String value = isSPLTransaction
                 ? solTxData != null ? String.valueOf(solTxData.amount) : ""
                 : isSolTransaction ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
                 : isFilTransaction ? filTxData.value != null ? Utils.toHex(filTxData.value) : ""
+                : isBtcTransaction ? String.valueOf(btcTxData.amount)
                 : txData != null   ? txData.baseData.value
                                    : "";
 
         String to = isSolTransaction ? solTxData != null ? solTxData.toWalletAddress : ""
                 : isFilTransaction   ? filTxData.to
+                : isBtcTransaction ? btcTxData.to
                                      : txData.baseData.to;
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
