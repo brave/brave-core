@@ -90,6 +90,7 @@
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_800</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
+    <color name="brave_sync_top_rounded_bg_color">#212429</color>
 
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 

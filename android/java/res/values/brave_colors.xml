@@ -114,6 +114,7 @@
     <color name="brave_sync_toggle_off_btn_text_color">@color/text_secondary</color>
     <color name="brave_sync_toggle_on_btn_text_color">@color/text_interactive</color>
     <color name="brave_sync_code_countdown_bg_color">@color/systemfeedback_info_background</color>
+    <color name="brave_sync_top_rounded_bg_color">@color/container_background</color>
 
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>

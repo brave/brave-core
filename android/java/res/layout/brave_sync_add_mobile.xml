@@ -59,7 +59,7 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/brave_sync_top_rounded"
+            android:background="@drawable/brave_sync_top_rounded_light"
             android:layout_gravity="center"
             android:layout_marginBottom="30dp"
             android:padding="15dip"
