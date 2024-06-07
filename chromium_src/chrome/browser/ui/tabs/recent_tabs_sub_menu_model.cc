@@ -14,9 +14,6 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 }  //  namespace
 
-// Patched because this inserting should be done before BuildLocalEntries() in
-// ctor and only once.
-
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES      \
   if (tabs_in_session.size() > kMaxSessionsToShow) {                        \
     /* Not all the tabs are shown in menu */                                \
