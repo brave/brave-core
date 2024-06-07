@@ -34,20 +34,6 @@ const std::string GetSardineNetworkName(const std::string& chain_id) {
   }
 }
 
-const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
-  static base::NoDestructor<base::flat_map<std::string, std::string>> endpoints(
-      {{brave_wallet::mojom::kPolygonMainnetChainId,
-        "https://mainnet-polygon.brave.com/"},
-       {brave_wallet::mojom::kOptimismMainnetChainId,
-        "https://mainnet-optimism.brave.com/"},
-       {brave_wallet::mojom::kAuroraMainnetChainId,
-        "https://mainnet-aurora.brave.com/"},
-       {brave_wallet::mojom::kAvalancheMainnetChainId,
-        "https://mainnet-avalanche.wallet.brave.com/"}});
-
-  return *endpoints;
-}
-
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses() {
   static base::NoDestructor<base::flat_map<std::string, std::string>>

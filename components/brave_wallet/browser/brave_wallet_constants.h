@@ -1529,9 +1529,6 @@ constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 2;
 
-inline constexpr char kPolygonMainnetEndpoint[] =
-    "https://mainnet-polygon.brave.com/";
-
 // Ankr constants
 inline constexpr char kAnkrAdvancedAPIBaseURL[] =
     "https://multichain.ankr.wallet.brave.com/";
@@ -1558,8 +1555,6 @@ inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";
 
-inline constexpr char kBitcoinMainnetRpcEndpoint[] =
-    "https://bitcoin-mainnet.wallet.brave.com/";
 inline constexpr char kBitcoinTestnetRpcEndpoint[] =
     "https://blockstream.info/testnet/api/";
 
@@ -1568,7 +1563,6 @@ inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
 
 const std::string GetSardineNetworkName(const std::string& chain_id);
-const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses();
 const std::vector<std::string>& GetEthSupportedNftInterfaces();

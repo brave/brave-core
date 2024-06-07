@@ -93,7 +93,7 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   chainId: 't',
   chainName: 'Filecoin Testnet',
   activeRpcEndpointIndex: 0,
-  rpcEndpoints: [{ url: 'https://mainnet-beta-solana.brave.com/rpc' }],
+  rpcEndpoints: [{ url: 'https://solana-mainnet.wallet.brave.com' }],
   blockExplorerUrls: ['https://calibration.filscan.io/tipset/message-detail'],
   symbol: 'FIL',
   symbolName: 'Filecoin',
