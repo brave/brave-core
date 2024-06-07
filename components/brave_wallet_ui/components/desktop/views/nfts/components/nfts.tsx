@@ -68,6 +68,7 @@ import {
   makePortfolioNftsRoute
 } from '../../../../../utils/routes-utils'
 import {
+  selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
 import {
@@ -178,10 +179,11 @@ export const Nfts = ({
       selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
   const { accounts: allAccounts } = useAccountsQuery()
-  const { userTokensRegistry, hiddenNfts } =
+  const { userTokensRegistry, hiddenNfts, visibleNfts } =
     useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
         userTokensRegistry: result.data,
+        visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
     })
