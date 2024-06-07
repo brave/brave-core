@@ -287,13 +287,12 @@ public class BraveStoreSDK: AppStoreSDK {
 
   /// Processes the product purchase transaction with the BraveSkusSDK
   /// If the transaction cannot be processed (receipt is empty or null), throw an exception
-  /// - Parameter product: The product that is currently being purchased
-  /// - Parameter transaction: The verified purchase transaction for the product
-  override func processPurchase(of product: Product, transaction: Transaction) async throws {
+  /// - Parameter productId: The ID of the product that is currently being purchased
+  override func processPurchase(of productId: Product.ID) async throws {
     // Find the Brave offered product from the AppStore Product ID
-    guard let product = BraveStoreProduct.allCases.first(where: { product.id == $0.rawValue })
+    guard let product = BraveStoreProduct.allCases.first(where: { productId == $0.rawValue })
     else {
-      Logger.module.info("[BraveStoreSDK] - Not a Brave Product! - \(product.id, privacy: .public)")
+      Logger.module.info("[BraveStoreSDK] - Not a Brave Product! - \(productId, privacy: .public)")
       throw BraveStoreSDKError.invalidProduct
     }
 
@@ -360,6 +359,14 @@ public class BraveStoreSDK: AppStoreSDK {
 
       // Save subscription Ids
       Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
+
+      // Restore product subscription if necessary
+      if Preferences.AIChat.subscriptionOrderId.value == nil {
+        // We don't have a cached subscriptionOrderId
+        // This means the product was purchased on a different device
+        // So let's automatically restore it to this device as well
+        _ = await restorePurchases()
+      }
     }
   }
 
