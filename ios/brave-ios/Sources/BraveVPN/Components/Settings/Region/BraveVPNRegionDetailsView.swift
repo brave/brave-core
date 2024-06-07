@@ -1,3 +1,8 @@
+// Copyright 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import SwiftUI
 
 struct Server: Identifiable, Equatable {
@@ -24,9 +29,17 @@ class ServerDetail: ObservableObject {
 
 struct BraveRegionDetailsView: View {
 
-  @State private var isAutoSelectEnabled: Bool
-  @State private var isLoading = false
-  @ObservedObject private var serverDetail = ServerDetail()
+  @State
+  private var isAutoSelectEnabled: Bool
+
+  @State
+  private var isLoading = false
+
+  @State
+  private var isConfirmationPresented = false
+
+  @ObservedObject
+  private var serverDetail = ServerDetail()
 
   public init(isAutoSelectEnabled: Bool = false, serverDetail: ServerDetail? = nil) {
     self.isAutoSelectEnabled = isAutoSelectEnabled
@@ -66,6 +79,7 @@ struct BraveRegionDetailsView: View {
           }
         }
       }
+      .opacity(isLoading ? 0.5 : 1.0)
 
       if isLoading {
         BraveVPNRegionLoadingIndicatorView()
@@ -74,6 +88,13 @@ struct BraveRegionDetailsView: View {
       }
     }
     .navigationBarTitle("Brazil Server", displayMode: .inline)
+    .background {
+      BraveVPNRegionChangedContentView(
+        isPresented: $isConfirmationPresented,
+        regionTitle: "VPN Region Changed",
+        regionSubtitle: "Rio de Janeiro"
+      )
+    }
   }
 
   private func selectDesignatedVPNServer(_ server: Server) {
@@ -84,12 +105,17 @@ struct BraveRegionDetailsView: View {
     isLoading = true
 
     // TODO: Select Region
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+    Task.delayed(bySeconds: 3) { @MainActor in
       serverDetail.selectedServer = server
+
       isLoading = false
+      isConfirmationPresented = true
+
+      Task.delayed(bySeconds: 2) { @MainActor in
+        isConfirmationPresented = false
+      }
     }
   }
-
 }
 
 struct ServerViewModel_Previews: PreviewProvider {
