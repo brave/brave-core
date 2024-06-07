@@ -1556,7 +1556,6 @@ inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
 
 const std::string GetSardineNetworkName(const std::string& chain_id);
-const std::string GetChainSubdomain(const std::string& chain_id);
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses();
 const std::vector<std::string>& GetEthSupportedNftInterfaces();

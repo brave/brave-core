@@ -34,31 +34,6 @@ const std::string GetSardineNetworkName(const std::string& chain_id) {
   }
 }
 
-const std::string GetChainSubdomain(const std::string& chain_id) {
-  static base::NoDestructor<base::flat_map<std::string, std::string>>
-      subdomains({// EVM chains
-                  {mojom::kMainnetChainId, "ethereum-mainnet"},
-                  {mojom::kSepoliaChainId, "ethereum-sepolia"},
-                  {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
-                  {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
-                  {mojom::kAuroraMainnetChainId, "aurora-mainnet"},
-                  {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
-                  {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
-
-                  // SVM chains
-                  {mojom::kSolanaMainnet, "solana-mainnet"},
-
-                  // Other chains
-                  {mojom::kBitcoinMainnet, "bitcoin-mainnet"}});
-
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (subdomains->contains(chain_id_lower)) {
-    return subdomains->at(chain_id_lower);
-  }
-
-  return "";
-}
-
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses() {
   static base::NoDestructor<base::flat_map<std::string, std::string>>

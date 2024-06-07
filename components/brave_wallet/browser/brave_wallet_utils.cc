@@ -76,6 +76,31 @@ const char kGanacheLocalhostURL[] = "http://localhost:7545/";
 const char kSolanaLocalhostURL[] = "http://localhost:8899/";
 const char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
+const std::string GetChainSubdomain(const std::string& chain_id) {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      subdomains({// EVM chains
+                  {mojom::kMainnetChainId, "ethereum-mainnet"},
+                  {mojom::kSepoliaChainId, "ethereum-sepolia"},
+                  {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
+                  {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
+                  {mojom::kAuroraMainnetChainId, "aurora-mainnet"},
+                  {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
+                  {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
+
+                  // SVM chains
+                  {mojom::kSolanaMainnet, "solana-mainnet"},
+
+                  // Other chains
+                  {mojom::kBitcoinMainnet, "bitcoin-mainnet"}});
+
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (subdomains->contains(chain_id_lower)) {
+    return subdomains->at(chain_id_lower);
+  }
+
+  return "";
+}
+
 std::optional<GURL> GetURLForKnownChainId(const std::string& chain_id) {
   auto subdomain = brave_wallet::GetChainSubdomain(chain_id);
   if (subdomain.empty()) {
