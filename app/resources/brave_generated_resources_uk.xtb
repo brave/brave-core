@@ -104,6 +104,9 @@
 <translation id="1324417023773393937">Браузер Brave</translation>
 <translation id="7276554663454265692">Ви можете змінити <ph name="SETTING_TEXT"/> будь-коли в налаштуваннях браузера.</translation>
 <translation id="6873781976650514089">цей параметр</translation>
+<translation id="4684633335323013758">Цей сайт запитав <ph name="PART_ONE"/>загальні дані про ваше розташування<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Докладніше<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">Цей сайт запитав <ph name="PART_ONE"/>точні дані про ваше розташування<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Докладніше<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">Цей сайт запитав <ph name="PART_ONE"/>точні дані про ваше розташування<ph name="PART_ONE_END"/>. Brave зможе надати лише <ph name="PART_TWO"/>загальні дані про розташування<ph name="PART_TWO_END"/>, оскільки <ph name="PART_THREE"/>служби визначення розташування<ph name="PART_THREE_END"/> вимкнено. <ph name="PART_FOUR"/>Докладніше<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Закрити всі</translation>
 <translation id="7658239707568436148">Скасувати</translation>
 <translation id="4870911314065352661">Закрити всі вкладки?</translation>
@@ -163,7 +166,8 @@
 <translation id="6959315322491671328">Клацніть правою кнопкою, щоб вилучити</translation>
 <translation id="495046168593986294">Прокрутити вгору</translation>
 <translation id="4021716437419160885">Прокрутити вниз</translation>
-<translation id="2702801445560668637">Список читання</translation>
+<translation id="1907157509746585817">закладки</translation>
+<translation id="4840597165888262798">список читання</translation>
 <translation id="2533715613366623756">Менеджер закладок</translation>
 <translation id="3405021928725149239">Менеджер закладок</translation>
 <translation id="6284218950354553099">Автоматично надсилати щоденний сигнал використання Brave</translation>
@@ -192,7 +196,7 @@
 <translation id="5046066249040287308">Служба утиліти гаманця Brave</translation>
 <translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
 <translation id="7299769530898469069">Не вдається завантажити збережену версію</translation>
-<translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
+<translation id="2609895996619941644">Хочете перевірити, чи є збережена версія у вебархіві Wayback Machine?</translation>
 <translation id="8010675257566903381">Wayback Machine не може знайти збережену версію цього сайту.</translation>
 <translation id="1207694258341311738">Перевірити збережену версію</translation>
 <translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL"/>Публічної Ліцензії Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) і включає <ph name="BEGIN_LINK_OSS"/>програмне забезпечення з відкритим кодом<ph name="END_LINK_OSS"/> за умовами багатьох інших ліцензій.
@@ -212,7 +216,7 @@
 <translation id="4405580203042711503">Нова вкладка нижче</translation>
 <translation id="5611474372949142946">Закрити вкладки нижче</translation>
 <translation id="573844928911967687">Перенести всі вкладки до цього вікна</translation>
-<translation id="2703180365855369896">Закриття копій вкладок</translation>
+<translation id="2703180365855369896">Закрити копії вкладок</translation>
 <translation id="3704707436873245822">Копіювати текст із зображення</translation>
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст із зображення скопійовано</translation>
@@ -243,14 +247,16 @@
 <translation id="8025559074845816210">Brave потребує повного доступу до диска, щоб імпортувати ваші закладки з Safari.</translation>
 <translation id="8515328844674404333">Дізнайтесь, як надати повний доступ до диска за допомогою налаштувань системи.</translation>
 <translation id="6414878884710400018">Відкрити налаштування системи</translation>
+<translation id="4759238208242260848">Завантаження</translation>
 <translation id="796831669370432378">Щоб додати закладку, натисніть кнопку закладки поруч з адресним рядком</translation>
 <translation id="8487693399751278191">Імпортувати закладки...</translation>
 <translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки на панелі закладок.</translation>
+<translation id="2702801445560668637">Список читання</translation>
 <translation id="1968543937259008435">Готові до найкращої приватності онлайн?</translation>
 <translation id="6817415381278637662">Зробіть Brave своїм типовим браузером, щоб користуватися вбудованими засобами захисту приватності на кожній відвідуваній вебсторінці.</translation>
 <translation id="8722651357687610395">Зробити Brave типовим браузером</translation>
 <translation id="7537601449003285327">Закріпити на панелі завдань</translation>
-<translation id="2307973900865360088">Залишити закріпленим</translation>
+<translation id="2307973900865360088">Залишити в Dock</translation>
 <translation id="961012016278832836">Застаріла версія Microsoft Edge</translation>
 <translation id="6436994631426134065">Імпортовано з <ph name="BROWSER_NAME"/>.</translation>
 <translation id="1386966479075994683">Розгорнути вкладки</translation>
@@ -314,8 +320,8 @@
 <translation id="1727684853006449697">Програвач Brave</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
-<translation id="1426410128494586442">так</translation>
-<translation id="4250680216510889253">ні</translation>
+<translation id="1426410128494586442">Так</translation>
+<translation id="4250680216510889253">Ні</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
 <translation id="8081858229109418493">Ім’я та зображення профілю</translation>
@@ -350,7 +356,7 @@
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="4144468798716165316">Швидкі команди</translation>
 <translation id="7310387888625228830">Leo – помічник на основі ШІ</translation>
-<translation id="5222974844674487962">Показати кнопку новин Brave</translation>
+<translation id="5222974844674487962">Показати кнопку Новини Brave</translation>
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок відображається на всіх сторінках</translation>
 <translation id="8693858092251192712">Панель закладок прихована на всіх сторінках, крім сторінки нової вкладки</translation>
@@ -359,66 +365,67 @@
 <translation id="5529693968082667490">Показувати кнопку пошуку вкладок</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час</translation>
-<translation id="7984721311211272523">Видалити функцію вимкнення звуку в значках динаміків на вкладках</translation>
+<translation id="7984721311211272523">Вилучити функцію вимкнення звуку для піктограми гучномовця на вкладках</translation>
 <translation id="2422927186524098759">Бічна панель</translation>
 <translation id="832432428796481785">Показати кнопку бічної панелі</translation>
-<translation id="5581036754486769849">Дозволити автоматичне заповнення у приватному вікні</translation>
+<translation id="5581036754486769849">Дозволити автозаповнення у приватних вікнах</translation>
 <translation id="2262012219398520969">Інформація зі звичайних вікон може зчитуватися / автоматично заповнюватися у приватних вікнах</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
-<translation id="1988804048511540801">Покази сторінки нової вкладки</translation>
-<translation id="2970343821770026391">Панель управління</translation>
-<translation id="3719826155360621982">Домашня сторінка</translation>
-<translation id="5448570825852364919">Порожня сторінка</translation>
+<translation id="1988804048511540801">Тип сторінки нової вкладки</translation>
+<translation id="2970343821770026391">Інформаційна панель</translation>
+<translation id="3719826155360621982">Домівка</translation>
+<translation id="5448570825852364919">Чиста сторінка</translation>
 <translation id="8244387390464017490">Налаштувати сторінку нової вкладки</translation>
 <translation id="7461924472993315131">Закріпити</translation>
+<translation id="735832369569964359">Натисніть «Закріпити» й підтвердьте цю дію в наступному сповіщенні Windows</translation>
 <translation id="7506648566440714944">Brave уже закріплено</translation>
-<translation id="239275665037555969">Закріпити</translation>
-<translation id="4057614912106618659">Brave уже закріплено</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave уже закріплено в Dock</translation>
 <translation id="3195845168740336657">Налаштування щитів</translation>
-<translation id="754769152790647708">Статус щитів</translation>
+<translation id="754769152790647708">Стан щитів</translation>
 <translation id="4868109105992358853">За допомогою щитів можна блокувати стеження, рекламу та зчитування цифрового відбитка</translation>
 <translation id="5690973901138662477">Щити ввімкнено</translation>
 <translation id="4697275813919189958">Щити вимкнено</translation>
 <translation id="6303294677342628402">Щити</translation>
-<translation id="7133511168130368997">Заблокуйте відстеження та рекламу, які ходять за вами по Інтернету.</translation>
+<translation id="7133511168130368997">Заблокуйте стеження та рекламу, що переслідують вас в Інтернеті.</translation>
 <translation id="2761825942249694703">Це типові налаштування щитів. Вони застосовуються до всіх вебсайтів, якщо ви не змінили їх на панелі щитів для певного сайту. Зміна цих налаштувань не вплине на ваші наявні налаштування для окремих сайтів.</translation>
-<translation id="1435116578479068303">Цей засіб дасть змогу блокувати більшість реклами на вебсайтах, крім Brave Private Ads, якими керують налаштування <ph name="BEGIN_LINK"/>винагород Brave<ph name="END_LINK"/>.</translation>
+<translation id="1435116578479068303">Це заблокує більшість реклами на вебсайтах, крім Brave Private Ads, якими керують налаштування <ph name="BEGIN_LINK"/>Винагород Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Це заблокує більшість реклами на вебсайтах.</translation>
-<translation id="4800195524776354947">Показати кількість блокованих зображень на іконці Щитів</translation>
-<translation id="5510493033031835532">Автоматичне переспрямування сторінок AMP</translation>
-<translation id="7630031867325944356">Віддавайте перевагу URL-адресам сторінок видавців замість AMP та подібних версій.</translation>
-<translation id="920638232916443453">Автоматичне переспрямування URL-адрес відстеження</translation>
-<translation id="1118970888826017401">Активація підтримки обходу URL-адрес відстеження переспрямувань верхнього рівня.</translation>
-<translation id="7607166182943595829">Не дозволяти сайтам зберігати цифрові сліди залежно від моїх налаштувань мови</translation>
-<translation id="3497934980362703405">Якщо ввімкнути це налаштування, буде зменшено кількість сайтів, які зможуть побачити ваші налаштування мови.</translation>
-<translation id="2133317862976486547">Блокування відстежувачів та рекламних оголошень</translation>
+<translation id="4800195524776354947">Показувати кількість заблокованих елементів на піктограмі щитів</translation>
+<translation id="5510493033031835532">Автоматично переспрямовувати сторінки AMP</translation>
+<translation id="7630031867325944356">Надавати перевагу URL-адресам повноцінних сторінок видавців замість спрощених версій AMP та інших.</translation>
+<translation id="920638232916443453">Автоматично переспрямовувати URL-адреси зі стеженням</translation>
+<translation id="1118970888826017401">Активувати підтримку обходу переспрямування на верхньому рівні для URL-адрес зі стеженням.</translation>
+<translation id="7607166182943595829">Не дозволяти сайтам зчитувати цифровий відбиток на основі моїх налаштувань мови</translation>
+<translation id="3497934980362703405">Увімкнення цього параметра зменшує можливість визначення ваших налаштувань мови вебсайтами.</translation>
+<translation id="2133317862976486547">Блокування стеження та реклами</translation>
 <translation id="4078738236287221428">Агресивно</translation>
 <translation id="7740996059027112821">Стандартно</translation>
 <translation id="4824468494729001999">Блокувати скрипти</translation>
-<translation id="6531019308847917584">Блокувати цифрові сліди</translation>
-<translation id="5533533363827555308">Суворо, сайти можуть не працювати</translation>
-<translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
+<translation id="6531019308847917584">Блокувати зчитування цифрового відбитка</translation>
+<translation id="5533533363827555308">Обов’язково – може пошкодити сайти</translation>
+<translation id="3570081523466826008">Оновлювати з’єднання до HTTPS</translation>
 <translation id="3357319404342882895">Обов’‎язково</translation>
 <translation id="8823559166155093873">Блокувати файли cookie</translation>
 <translation id="6196640612572343990">Блокувати сторонні файли cookie</translation>
 <translation id="5657156137487675418">Дозволити всі файли cookie</translation>
-<translation id="6883611015375728278">Блокувати всі кукіз</translation>
+<translation id="6883611015375728278">Блокувати всі файли cookie</translation>
 <translation id="7390783310074170337">Типове подання</translation>
-<translation id="130615081792797568">Простий вигляд</translation>
-<translation id="2360360976480535628">Розширений вигляд</translation>
-<translation id="101592339984642584">Фільтрація вмісту</translation>
+<translation id="130615081792797568">Просте подання</translation>
+<translation id="2360360976480535628">Розширене подання</translation>
+<translation id="101592339984642584">Фільтрування контенту</translation>
 <translation id="8694564340481124390">Увімкніть користувацькі фільтри, які блокують стеження й надокучливі елементи для певного регіону чи мови.</translation>
-<translation id="3482656215021340727">Додавання списків користувацьких фільтрів</translation>
-<translation id="1020877116991797978">Додавайте окремі списки, що створені довіреною спільнотою та які підтримуються нею.</translation>
-<translation id="7617831480435794399">Підписуйтеся лише на списки від тих компаній, яким довіряєте. Ваш браузер буде час від часу перевіряти наявність оновлень списків з указаної вами URL-адреси, повідомляючи вашу IP-адресу вашому серверу.</translation>
+<translation id="3482656215021340727">Додавання користувацьких списків фільтрів</translation>
+<translation id="1020877116991797978">Додайте інші списки, створені довіреною спільнотою та які підтримуються нею.</translation>
+<translation id="7617831480435794399">Підписуйтеся лише на списки від довірених видавців. Ваш браузер час від часу перевірятиме наявність оновлень для списків за вказаною URL-адресою, повідомляючи вашу IP-адресу видавцю.</translation>
 <translation id="8580328754808744073">Створення користувацьких фільтрів</translation>
-<translation id="4618274268052410139">Додавайте створені вами користувацькі фільтри в розташованому нижче полі по одному в рядку. Обов’язково користуйтеся <ph name="BEGIN_LINK"/>синтаксисом фільтрів Adblock<ph name="END_LINK"/>.</translation>
+<translation id="4618274268052410139">Додавайте створені вами користувацькі фільтри в розташованому нижче полі – один фільтр на рядок. Обов’язково використовуйте <ph name="BEGIN_LINK"/>синтаксис фільтрів Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Додати</translation>
 <translation id="3075903430639801825">Назва списку</translation>
-<translation id="9204006549413740506">Дата останнього оновлення</translation>
+<translation id="9204006549413740506">Востаннє оновлено</translation>
 <translation id="6745592621698551453">Оновити зараз</translation>
 <translation id="5334844597069022743">Переглянути джерело</translation>
-<translation id="4720556299488643018">Скасувати підписку</translation>
+<translation id="4720556299488643018">Відписатися</translation>
 <translation id="6532106788206463496">Зберегти зміни</translation>
 <translation id="4516904298421534459">Списки фільтрів</translation>
 <translation id="4435215931544457255">Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.</translation>
@@ -426,6 +433,10 @@
 <translation id="7889605993994647168">Помилка оновлення</translation>
 <translation id="5438573563213942361">Користувацькі списки</translation>
 <translation id="4182731739150761577">Показати весь список</translation>
+<translation id="2776571540844891267">Оновити списки</translation>
+<translation id="7424267932649051704">Помилка оновлення – Повторіть спробу</translation>
+<translation id="8426801388284487512">Списки оновлено</translation>
+<translation id="3422250445565385437">Оновлення списків</translation>
 <translation id="1340263054776016283">Уведіть URL-адресу списку фільтрів</translation>
 <translation id="8578397014396032341">Фільтри вмісту</translation>
 <translation id="3020183492814296499">Ярлики швидкого доступу</translation>
@@ -435,11 +446,11 @@
 <translation id="8826461509529116322">Показати кнопку Винагороди Brave</translation>
 <translation id="9185018653595759199">Блокування в соціальних медіа</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
-<translation id="7791141927430186653">Дозволити вбудовані публікації X (колишній Twitter)</translation>
+<translation id="7791141927430186653">Дозволити вбудовані дописи X (колишній Twitter)</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
 <translation id="8792121506918889955">Політика поводження з IP WebRTC</translation>
 <translation id="6165508094623778733">Детальніше</translation>
-<translation id="8798099450830957504">За умовчанням</translation>
+<translation id="8798099450830957504">Типово</translation>
 <translation id="1822560017823072927">Типові публічний і приватний інтерфейси</translation>
 <translation id="5825943197137337319">Лише типовий публічний інтерфейс</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
@@ -567,8 +578,8 @@
 <translation id="294985549514492876">Веб-програми (PWA)</translation>
 <translation id="6285118765755298263">Індексування інших пошукових систем</translation>
 <translation id="919715748352669592">Автоматична індексація вебсайтів, які відповідають специфікації OpenSearch.</translation>
-<translation id="842628013524824194">Нормальне вікно: пошукова система, встановлена в адресному рядку</translation>
-<translation id="5324939009884545145">Приватне вікно: пошукова система, встановлена в адресному рядку</translation>
+<translation id="842628013524824194">Звичайне вікно – пошукова система в адресному рядку</translation>
+<translation id="5324939009884545145">Приватне вікно – пошукова система в адресному рядку</translation>
 <translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
 <translation id="7878791177459550035">Маршрутизатор медіавмісту дозволяє транслювати в браузері.</translation>
@@ -625,10 +636,10 @@
 <translation id="702381242110464396">Розширення (бекап гаманця Brave)</translation>
 <translation id="4718664830805652430">Основна валюта</translation>
 <translation id="7992507032049865603">Основна криптовалюта</translation>
-<translation id="3044369626313583722">Показати кнопку гаманця Brave</translation>
+<translation id="3044369626313583722">Показати кнопку Гаманець Brave</translation>
 <translation id="7568430944629653319">Увімкнути знаходження NFT</translation>
 <translation id="970496996377628529">Автоматично додає NFT, якими ви володієте, в гаманець, використовуючи сторонні API.</translation>
-<translation id="4898839076551703154">Активувати Brave Wallet у приватних вікнах.</translation>
+<translation id="4898839076551703154">Активувати Гаманець Brave у приватних вікнах.</translation>
 <translation id="1550684990179058322">Попередження. Повторне використання адреси гаманця в сеансі приватного вікна може дати сайту змогу пов’язати сеанс приватного вікна із сеансом не приватного вікна.</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
@@ -697,7 +708,7 @@
 <translation id="6789104345873307368">Автоматично перенаправляти запити щодо ресурсів IPFS-мережі до налаштованого шлюзу.</translation>
 <translation id="4138306018048329894">Запити щодо ресурсів IPFS, розміщених у сторонніх шлюзах IPFS або ресурсах DNSLINK, передаватимуться через вибраний локальний чи віддалений шлюз.
     Примітка: у разі вибору локального вузла запит буде надіслано безпосередньо на ваш комп’ютер, і IPFS-мережа може протягом певного часу отримувати дані з кешу.</translation>
-<translation id="8068526464562249859">Використовує супровідне розширення IPFS для покращеної підтримки IPFS у Brave, в тому числі доступу до частих завдань IPFS з рядка веб-переглядача.</translation>
+<translation id="8068526464562249859">Brave використовує супровідне розширення IPFS для розширеної підтримки IPFS, включно з доступом до поширених завдань IPFS з панелі браузера.</translation>
 <translation id="1251574393468476924">Максимальний розмір кешу IPFS (ГБ)</translation>
 <translation id="2503497578400410320">Програмна верхня межа для розміру сховища даних IPFS.</translation>
 <translation id="6758961763875471084">Змінити перелік вузлів</translation>
@@ -730,8 +741,8 @@
 <translation id="8571837315037233299">Адреса шлюзу</translation>
 <translation id="7703184801853248830">Невірна адреса шлюзу</translation>
 <translation id="7690058578502751948">У Brave можна користуватися лише дійсним шлюзом IPFS з увімкненою функцією «Ізоляція походження»</translation>
-<translation id="1643029991199044105">Перемикайте вкладки, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
-<translation id="2775956301559569472">Показати запит на пошук збереженої копії, якщо сторінку не знайдено</translation>
+<translation id="1643029991199044105">Перемикати останні активні вкладки за допомогою Ctrl-Tab</translation>
+<translation id="2775956301559569472">Показати запит на пошук сторінки у Wayback Machine, якщо її не знайдено (помилка 404)</translation>
 <translation id="3095201688102519917">Попереджувати перед закриттям вікна з декількома вкладками</translation>
 <translation id="7120553802660696133">Закривати вікно після закриття останньої вкладки</translation>
 <translation id="6129027151000961048">Leo</translation>
@@ -747,13 +758,13 @@
 <translation id="5574059574002819179">Коригувати пропозиції щодо автозаповнення</translation>
 <translation id="8157373421434119674">Дані та історія чата</translation>
 <translation id="614530507403667291">Типова модель для нових розмов</translation>
-<translation id="8826914609353373601">Керуйте преміумпідписками</translation>
+<translation id="8826914609353373601">Керуйте передплатами преміум</translation>
 <translation id="349846214503465941">Увімкнути список відтворення</translation>
 <translation id="7903608716704052878">Автоматично додавати файли для перегляду в режимі офлайн</translation>
 <translation id="4193768184502613558">Коли цей параметр увімкнено, медіафайли автоматично зберігаються в кеші, щоб їх можна було відтворювати без інтернет-з’єднання.</translation>
-<translation id="8950562208228589873">За замовчуванням з ОС або Quad9</translation>
-<translation id="5646330590189545860">За замовчуванням з ОС або Wikimedia</translation>
-<translation id="2026075482948458926">За замовчуванням з ОС або Cloudflare</translation>
+<translation id="8950562208228589873">Налаштування системи або Quad9</translation>
+<translation id="5646330590189545860">Налаштування системи або Wikimedia</translation>
+<translation id="2026075482948458926">Налаштування системи або Cloudflare</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

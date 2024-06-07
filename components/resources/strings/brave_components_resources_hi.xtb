@@ -183,6 +183,9 @@
 <translation id="4759608598194750161">जितना ज़्यादा देखेंगे, उतना ज़्यादा कमाएँगे.</translation>
 <translation id="7526443283522395161">नए टैब पेज के विज्ञापन</translation>
 <translation id="7968650944098083708">नोटिफ़िकेशन विज्ञापन</translation>
+<translation id="8289546216379862569">Search ads</translation>
+<translation id="4758111936363146244">Brave Search Ads<ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/> पर दिखाई देते हैं.</translation>
+<translation id="7596536223419118193">आप अभी Brave Search Ads से BAT नहीं कमा सकते हैं, लेकिन उन्हें चालू करके आप Brave को सपोर्ट देने में मदद कर सकते हैं.</translation>
 <translation id="6390952132783970876">Brave न्यूज़ के विज्ञापन</translation>
 <translation id="7516281787184495886">Brave न्यूज़ के विज्ञापनों को अलग से बंद नहीं किया जा सकता.</translation>
 <translation id="8008378848677625233">Brave न्यूज़ को फ़िलहाल बंद रखा गया है.</translation>
@@ -459,6 +462,7 @@
 <translation id="412480955826088549">कम्पोनेंट डाउनलोड कर रहा है...</translation>
 <translation id="4894106830958548828">मै समझता हूँ</translation>
 <translation id="326118736933420687">आप एक WebTorrent पेज देख रहे हैं</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/> प्लेसहोल्डर के लिए स्ट्रिंग को टेस्ट किया जा रहा है<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/><ph name="PART_TWO_END"/>और जानें.</translation>
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
 <translation id="4492298165410552103">क्या हम Brave में Unstoppable डोमेन का समर्थन सक्षम करें?</translation>
 <translation id="5015092481905019948">Brave, <ph name="PROVIDER_NAME"/> पर मौजूद<ph name="DOMAIN_LIST"/> डोमेन नामों को ठीक करने के लिए <ph name="DOMAIN_PROVIDER_NAME"/> का उपयोग करेगा। Brave आपके IP एड्रेस को छिपा देता है। अगर आपने इसे चालू कर दिया, तो <ph name="PROVIDER_NAME"/> को सिर्फ़ यह दिखाई देगा कि कोई इन डोमेन पर आने की कोशिश कर रहा है और इसके अलावा कुछ और नहीं दिखाई देगा। <ph name="PROVIDER_NAME"/> के <ph name="BEGIN_PROVIDER_TOU_LINK"/>उपयोग की शर्तें<ph name="END_PROVIDER_TOU_LINK"/> और <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_PROVIDER_PRIVACY_LINK"/> को देखें।</translation>
@@ -712,6 +716,11 @@
 <translation id="5382339341735118861">अनुरोध प्रोसेस करने के दौरान एक सामान्य समस्या हुई है</translation>
 <translation id="7123780456696055383">जिस रिसोर्स का अनुरोध किया गया है, वह उपलब्ध नहीं है</translation>
 <translation id="1680597601664421644">इम्पोर्ट किया जा रहा स्मरक Brave Wallet के लिए मान्य नहीं है</translation>
+<translation id="372898731091371291">आप किस तरह का वॉलेट इम्पोर्ट करना चाहेंगे?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin वॉलेट</translation>
+<translation id="8659668419772278776">अपने सीड फ़्रेज़ को किसी मौजूदा वॉलेट से इम्पोर्ट करें</translation>
+<translation id="8110492767853188065">हार्डवेयर वॉलेट</translation>
+<translation id="7437218084485869007">अपने हार्डवेयर वॉलेट को Brave से कनेक्ट करें</translation>
 <translation id="4641919696349069826">एक अनुरोध पहले से ही जारी है</translation>
 <translation id="872806943696014633">लेन-देन डेटा गायब है</translation>
 <translation id="7068183357903252127">लेन-देन डेटा 'to' या 'data' निर्दिष्ट किया जाना चाहिए</translation>
@@ -805,19 +814,21 @@
 <translation id="1426410128494586442">हां</translation>
 <translation id="4250680216510889253">नहीं</translation>
 <translation id="1201402288615127009">अगला</translation>
-<translation id="8712637175834984815">समझ लिया</translation>
+<translation id="3214453326297774895">मेरा रिकवरी फ़्रेज़ दिखाएं</translation>
 <translation id="6896758677409633944">कॉपी बनाएं</translation>
 <translation id="7885157704277298658">कॉपी की गई!</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="6042308850641462728">अधिक</translation>
-<translation id="768236965975208017">सुरक्षित. मल्टी-चेन. और हाँ, इस्तेमाल में काफ़ी आसान. आपका Brave वॉलेट बस कुछ ही क्लिक दूर है</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
-<translation id="2484275747844666540">नया वॉलेट बनाएँ</translation>
-<translation id="3662348701117072366">मौजूदा वॉलेट को इंपोर्ट करें</translation>
-<translation id="7150150391368236519">हार्डवेयर वॉलेट को कनेक्ट करें</translation>
+<translation id="414070570958255222">ब्राउज़र-नेटिव. स्व-संरक्षण. और मल्टी-चेन.</translation>
+<translation id="1350120992777389959">अपनी क्रिप्टो और NFT कंट्रोल करें. Brave Wallet, Ethereum, EVM chains, Solana, Filecoin, Bitcoin वगैरह को सपोर्ट करता है.</translation>
+<translation id="165255193061631296">क्या आपको नया वॉलेट चाहिए?</translation>
+<translation id="1939235910515558387">कुछ ही मिनट में Brave वॉलेट का इस्तेमाल करना शुरू करें.</translation>
+<translation id="5844138175312846408">आपके पास पहले से कोई वॉलेट है?</translation>
+<translation id="772643556080081594">मुझे बस नज़र रखने वाला वॉलेट चाहिए</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave और Brave लोगो Brave Software, Inc. के रजिस्टर्ड ट्रेडमार्क हैं. अन्य प्रोडक्ट का नाम और लोगो उनकी संबंधित कंपनियों के ट्रेडमार्क हो सकते हैं. सभी अधिकार सुरक्षित हैं.</translation>
 <translation id="7501957181231305652">या</translation>
 <translation id="375882617301124395">अपने क्रिप्टो वॉलेट का बैकअप लें</translation>
-<translation id="180032279811483155">अगले स्टेप में आपको <ph name="RECOVERY_PHRASE_LENGTH"/> शब्दों का एक रिकवरी फ़्रेज़ दिखाई देगा, जिसका इस्तेमाल आप अपने प्राथमिक क्रिप्टो अकाउंट को रिकवर करने के लिए कर सकते हैं. इसे किसी सुरक्षित जगह पर सेव करें. पासवर्ड भूल जाने, खो जाने या चोरी हो जाने की स्थिति में या अगर आप वॉलेट बदलना चाहते हैं, तो अपने अकाउंट को फिर से पाने के लिए आपका रिकवरी फ़्रेज़ एकमात्र तरीका है.</translation>
 <translation id="5024543173656851695">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
 <translation id="6532106788206463496">बदलाव सेव करें</translation>
@@ -830,7 +841,7 @@
 <translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
 <translation id="3747079125031086337">अपने रिकवरी फ़्रेज़ में शब्दों को उनके सही क्रम में चुनें.</translation>
 <translation id="802060020117206314">रिकवरी फ़्रेज़ मेल नहीं खा रहे हैं, कृपया दोबारा कोशिश करें.</translation>
-<translation id="8412783472871103529">अपना रिकवरी फ़्रेज़ वेरिफ़ाई करें</translation>
+<translation id="7345730059518887993">आइये देखें</translation>
 <translation id="2226686084760581391">अपने रिकवरी फ़्रेज़ के <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, और <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> शब्दों पर क्लिक करें.</translation>
 <translation id="7575574239720542222">रिकवरी फ़्रेज़ मेल नहीं खा रहा</translation>
 <translation id="8692301574305033504">नया पासवर्ड बनाएँ</translation>
@@ -860,7 +871,10 @@
 <translation id="4359319875297001084">लिगेसी Brave क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
 <translation id="3331452756822160641">नया पासवर्ड</translation>
 <translation id="8624315169751085215">क्लिपबोर्ड पर कॉपी करें</translation>
+<translation id="2598171223363459366">अब आप इस स्टेप को छोड़ सकते हैं, लेकिन अकाउंट की सुरक्षा सुनिश्चित करने के लिए आपको अभी भी अपने रिकवरी फ़्रेज़ का बैकअप लेना होगा.</translation>
+<translation id="5303015959766064022">मैं बाद में बैकअप लूंगा</translation>
 <translation id="6346952829206698721">क्लिपबोर्ड से पेस्ट करें</translation>
+<translation id="2610561535971892504">कॉपी करने के लिए क्लिक करें</translation>
 <translation id="1121335910737476837">प्राथमिक क्रिप्टो अकाउंट्स</translation>
 <translation id="6969147029062037757">इम्पोर्ट किए गए अकाउंट</translation>
 <translation id="3926119534765499672">कनेक्ट किए गए हार्डवेयर वॉलेट</translation>
@@ -896,16 +910,23 @@
 <translation id="6892232036314454524">Ledger डिवाइस पर कोई गलत ऐप्लिकेशन के खुले होने की वजह से यह गड़बड़ी हो सकती है.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Brave को अपने लेजर डिवाइस का ऐक्सेस दें.</translation>
+<translation id="8012452656725205792">अपने <ph name="HARDWARE_DEVICE"/> डिवाइस पर Brave को एक्सेस दें.</translation>
 <translation id="4378551569595875038">कनेक्ट हो रहा है...</translation>
 <translation id="1943188256166395881">चेक किए गए अकाउंट जोड़ें</translation>
 <translation id="8554010658308662631">और लोड करें</translation>
 <translation id="6998738230710304743">और लोड हो रहा है...</translation>
 <translation id="5592304751234049046">अकाउंट खोजें</translation>
+<translation id="3168978475376026497">HD Path</translation>
 <translation id="6151024411349343484">यदि आपको वह अकाउंट नहीं मिल रहा है जिसे आप ढूंढ रहे हैं, तो HD पथ (ऊपर) स्विच करने की कोशिश करें.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">लिगेसी (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">कोई परिणाम नहीं मिला.</translation>
+<translation id="7261362517244085362">अपने वॉलेट को ऑथोराइज़ करें</translation>
+<translation id="7150150391368236519">हार्डवेयर वॉलेट को कनेक्ट करें</translation>
+<translation id="5400782314657008092">हम अभी<ph name="HARDWARE_DEVICE"/> और <ph name="HARDWARE_DEVICE1"/> डिवाइस को सपोर्ट करते हैं.</translation>
+<translation id="8144305264680648043">अपने हार्डवेयर वॉलेट को कनेक्ट करके अपने एसेट को सीधे Brave वॉलेट से मैनेज करें.</translation>
+<translation id="1329837291200753515">अपने हार्डवेयर वॉलेट को इम्पोर्ट करने के लिए ब्लॉकचेन चुनें</translation>
+<translation id="6983390509997396124">अपने<ph name="HARDWARE_DEVICE"/>डिवाइस को Brave वॉलेट से कनेक्ट करें.</translation>
 <translation id="5149944858285555235">अनजान एरर, कृपया अपने हार्डवेयर वॉलेट को फिर से कनेक्ट करें और दोबारा कोशिश  करें.</translation>
 <translation id="4522570452068850558">विवरण</translation>
 <translation id="9220525904950070496">खाता हटाएं</translation>
@@ -944,8 +965,6 @@
 <translation id="1613627717923045622">नेटवर्क टेस्ट करें</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">सेपोलिया</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">अकाउंट चुनें</translation>
 <translation id="6797737193502014008">अकाउंट खोजें</translation>
@@ -1059,6 +1078,7 @@
 <translation id="6383204195803840504">लेन-देन यहां दिखाई देंगे</translation>
 <translation id="6079696972035130497">असीमित</translation>
 <translation id="2916401020782528840">ऐसा कोई लेन-देन नहीं मिला</translation>
+<translation id="1690963073120772693">इस ट्रांज़ैक्शन को दोबारा करने की कोशिश नहीं की जा सकती है.</translation>
 <translation id="2833661570529295305">अस्वीकृत</translation>
 <translation id="8034530868111548216">स्वीकृत</translation>
 <translation id="6015436276085482001">रिजेक्ट किया हुआ</translation>
@@ -1153,8 +1173,8 @@
 <translation id="8523768065044261559">लेन-देन प्रोसेस करने में गड़बड़ी हुई, कृपया दोबारा कोशिश करें</translation>
 <translation id="971552837551838642">साइन इन मेसेज से सम्बंधित एरर, कृपया दोबारा कोशिश करें</translation>
 <translation id="8273603707418703324">साइन इन मेसेज से सम्बंधित एरर, अनजान कीरिंग का अनुरोध किया गया, कृपया दोबारा कोशिश करें</translation>
-<translation id="5265455943786954050">Trezor कमांड से ही जारी है</translation>
-<translation id="7017116822583380542">Trezor ब्रिज तैयार नहीं है</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> कमांड पहले से ही चल रहा है</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> ब्रिज तैयार नहीं है</translation>
 <translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
 <translation id="4378475168089649292">ब्लॉकचेन</translation>
@@ -1348,17 +1368,22 @@
 <translation id="1792917191129448067">Rainbow Bridge ऐप खोलें</translation>
 <translation id="1522775706527775647">Aurora के लिए ब्रिज</translation>
 <translation id="4903322403594141291">Brave वॉलेट के बारे में और जानें</translation>
-<translation id="3875185448438395303">कम-से-कम :</translation>
-<translation id="2029465635925899949">8 कैरेक्ट</translation>
-<translation id="6697810017029555732">मिलान!</translation>
+<translation id="4427684901715566795">पासवर्ड होना चाहिए:</translation>
+<translation id="8521329076169776625">कम से कम 8 कैरेक्टर्स</translation>
+<translation id="3665035348242240953">पासवर्ड मैच</translation>
 <translation id="8918368616587206671">मज़बूत!</translation>
 <translation id="574392208103952083">मध्यम</translation>
 <translation id="8297006494302853456">कमज़ोर</translation>
+<translation id="3282258437441351851">इसके बाद Brave Wallet ऑटो-लॉक हो जाएगा</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> मिनट</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> घंटे</translation>
 <translation id="7084181009966710506">वॉलेट बनाया जा रहा है...</translation>
-<translation id="6782556046178425980">इससे पहले कि आप वॉलेट का बैकअप लेना शुरू करें</translation>
+<translation id="3259102562570606417">रिकवरी फ्रेज़ सेव करें</translation>
 <translation id="7119749028647909394">12-24 शब्दों का रिकवरी फ़्रेज़ एक निजी की है, कनेक्टेड डिवाइस खोने पर आप इसका इस्तेमाल करके आपने वॉलेट का ऐक्सेस फिर से पा सकते हैं. इसे किसी सुरक्षित जगह पर रखें और ठीक उसी क्रम में जिसमें यह नीचे दिखाई दे रहा है.</translation>
 <translation id="3259018319025894691">Brave आपके सीक्रेट रिकवरी फ़्रेज़ को ऐक्सेस नहीं कर सकता. इसे सुरक्षित रखें और इसे कभी भी किसी और के साथ शेयर न करें.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>ज़रूरी जानकारी : <ph name="TAG_AFTER"/>अपना रिकवरी फ़्रेज़ कभी भी शेयर न करें. इस फ़्रेज़ से कोई व्यक्ति आपके ऐसेट को हमेशा के लिए ले सकता है.</translation>
+<translation id="426648489149930289">इसे किसी सुरक्षित स्थान पर रखें जहां अन्य लोग न पहुंच सकें और इसे किसी के साथ शेयर नहीं करें.</translation>
+<translation id="119185410022731300">अपने रिकवरी फ़्रेज़ से<ph name="VALUE"/> पोज़िशन में शब्द डालें.</translation>
+<translation id="2193954488469999829">सेव करना भूल गए? वापस जाएं</translation>
 <translation id="7509948206688764960">अपने वॉलेट रिकवरी फ़्रेज़ का बैक अप लें</translation>
 <translation id="8052898407431791827">क्लिपबोर्ड पर कॉपी किया गया</translation>
 <translation id="4576741736874242970">अपना फ़्रेज़ देखने के लिए क्लिक करें</translation>
@@ -1377,8 +1402,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">बधाई हो! आपका Brave वॉलेट तैयार है!</translation>
-<translation id="6828327990705355767">अपने वॉलेट को ऐक्सेस करने के लिए, बस किसी भी Brave ब्राउज़र विंडो के सबसे ऊपर दाईं ओर मौजूद वॉलेट आइकन पर क्लिक करें.</translation>
+<translation id="1148624853678088576">वाह, आप पूरी तरह से तैयार हैं!</translation>
+<translation id="1656439328205762155">आपका Brave Wallet अब सेट हो गया है और इस्तेमाल के लिए तैयार है.</translation>
+<translation id="3342494025742308764">पोर्टफ़ोलियो पर जाएँ</translation>
 <translation id="396152018598329740">क्रिप्टो वॉलेट को कैसे इस्तेमाल करें?</translation>
 <translation id="7512061585041489067">सबसे अच्छा क्रिप्टो वॉलेट कौन-सा है?</translation>
 <translation id="1342755158522323177">क्रिप्टो ब्राउज़र क्या होता है?</translation>
@@ -1386,24 +1412,31 @@
 <translation id="4674552515763857735">रिकवरी फ़्रेज़ क्या होता है?</translation>
 <translation id="7328255859839881981">DApps क्या होते हैं?</translation>
 <translation id="3852489285890032403">वेब 3 क्या है?</translation>
-<translation id="5448233694500869445">हमने आपके ब्राउज़र में MetaMask एक्सटेंशन का पता लगाया है</translation>
-<translation id="8436080536329710282">Brave वॉलेट में आसानी से इंपोर्ट करने के लिए अपने MetaMask वॉलेट का पासवर्ड डालें.</translation>
+<translation id="2349224271234429946">MetaMask वॉलेट को इंपोर्ट करें</translation>
+<translation id="6715906859822319136">आप अपना पासवर्ड डालकर आसानी से अपना MetaMask वॉलेट इंपोर्ट कर सकते हैं.</translation>
 <translation id="7543512765962444927">अपने मौजूदा वॉलेट से कनेक्ट करें</translation>
 <translation id="3551682252653406110">आपके पास पहले से मौजूद वॉलेट से कनेक्ट करने के लिए, आपको अपना रिकवरी फ़्रेज़ डालने की ज़रूरत पड़ सकती है. इस समय हम Ethereum और Solana वॉलेट से रीस्टोर / इंपोर्ट करना सपोर्ट करते हैं.</translation>
-<translation id="346929827081904572">सीड फ़्रेज़ से रीस्टोर करें</translation>
+<translation id="3961126209136843111">किसी मौजूदा वॉलेट को इंपोर्ट करें</translation>
 <translation id="5645597512426471834">12-24 शब्द</translation>
-<translation id="8158505311297755780">अपने Brave वॉलेट का 12-24 शब्दों का रिकवरी फ़्रेज टाइप करें.</translation>
+<translation id="2321396552035646646">आप अपना पूरा रिकवरी फ़्रेज़ किसी भी फ़ील्ड में पेस्ट कर सकते हैं.</translation>
 <translation id="5419707890586509000">MetaMask से इंपोर्ट करें</translation>
 <translation id="2265945811107390939">अपने सीड फ़्रेज़ को इंपोर्ट करने के लिए अपने MetaMask के पासवर्ड का इस्तेमाल करें</translation>
 <translation id="7060680423657442298">कोई बात नहीं, मैं एक नया वॉलेट बना लूँगा</translation>
+<translation id="1932878136775815535">मेरे पास एक <ph name="LENGTH"/> -शब्दों का रिकवरी फ़्रेज़ है.</translation>
+<translation id="7877416315564177070">अपना रिकवरी फ़्रेज़ देखें और दोबारा कोशिश करें.</translation>
+<translation id="6503538941917874992">अपने रिकवरी फ़्रेज़ का इस्तेमाल करके इंपोर्ट करें</translation>
+<translation id="782167880151571109">Metamask वॉलेट मिला!</translation>
+<translation id="3619071361843652814">Legacy वॉलेट मिला!</translation>
+<translation id="4634124774493850572">पासवर्ड का इस्तेमाल करें</translation>
+<translation id="7697478310235189459"><ph name="VALUE"/> शब्द</translation>
 <translation id="5913194823092185468">अपने MetaMask का 12-24 शब्दों का रिकवरी फ़्रेज टाइप करें.</translation>
 <translation id="7720392926833259937">MetaMask का पासवर्ड टाइप करें</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="6260144012548445299">मेरे नए वॉलेट के बारे में और जानें</translation>
-<translation id="8746910870914151528">कानूनी बातें</translation>
-<translation id="5148123176978018397">कृपया इन्हें मंज़ूर करें :</translation>
-<translation id="6088314935678153800">मुझे पता है कि यह एक सेल्फ़-कस्टडी वॉलेट है और इससे जुड़े किसी भी फ़ंड, ऐसेट या अकाउंट के लिए और अपने वॉलेट को सुरक्षित रखने, बचाने और बैकअप करने के लिए ज़रूरी कार्रवाई करने की जिम्मेदारी सिर्फ़ मेरी है. मुझे पता है कि Brave मेरे वॉलेट को ऐक्सेस नहीं कर सकता या मेरी ओर से लेन-देन को रिवर्स नहीं कर सकता और यह कि मेरा पासवर्ड भूलने, डिवाइस चोरी होने या इसी तरह के हालात में रिकवरी फ़्रेज़ ऐक्सेस वापस पाने का एकमात्र तरीका है.</translation>
-<translation id="7781090633800450517">मैंने <ph name="LINK_BEFORE"/>इस्तेमाल की शर्तें<ph name="LINK_AFTER"/> पढ़ ली हैं और उनसे सहमत हूँ</translation>
+<translation id="2502258949541727762">हमारे शुरू करने से पहले</translation>
+<translation id="5333225216561354793">हम चाहते हैं कि आप नीचे दिए गए आइटम के लिए हमें अपनी स्वीकृति दें</translation>
+<translation id="4284971227128011550">मुझे पता है कि यह एक सेल्फ़ कस्टडी वॉलेट है और इससे जुड़े किसी भी फ़ंड, एसेट या अकाउंट के लिए और अपने वॉलेट को सुरक्षित रखने तथा उसका बैकअप रखने के लिए ज़रूरी कार्रवाई करने की ज़िम्मेदारी सिर्फ़ मेरी है. मुझे पता है कि Brave मेरे वॉलेट को एक्सेस नहीं कर सकता या मेरी ओर से लेनदेन को रिवर्स नहीं कर सकता और यह कि अपना पासवर्ड भूल जाने, डिवाइस चोरी हो जाने या इस तरह की किसी भी अन्य परिस्थिति में मेरे पास इसकी एक्सेस वापस पाने के लिए सिर्फ़ रिकवरी फ़्रेज़ वाला तरीका होगा.</translation>
+<translation id="3604445540387095708">मैंने <ph name="LINK_BEFORE"/>इस्तेमाल की शर्तें <ph name="LINK_AFTER"/>पढ़ ली हैं और उनसे सहमत हूँ.</translation>
 <translation id="1422451606553326863">क्रिप्टो खरीदें</translation>
 <translation id="3887541341068007345">वॉलेट एक्सटेंशन का पता लगाया जा रहा है...</translation>
 <translation id="3567994771568272606">लेगसी Brave क्रिप्टो वॉलेट से इंपोर्ट करें</translation>
@@ -1604,6 +1637,7 @@
 <translation id="5667702863609780570">असुरक्षित कार्रवाई, जिसमें नुकसान का जोखिम है</translation>
 <translation id="6405354572620970908">यह अनुरोध गलत इरादे वाला लग रहा है और इससे आपको चोरी का खतरा हो सकता है। अगर आपको इस ऐप पर भरोसा न हो, तो आगे न बढ़ें।</translation>
 <translation id="786261184916565476">हमें <ph name="VALUE"/> समस्याएँ मिली हैं।</translation>
+<translation id="2826600321627372011">कोई रूट नहीं मिला</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1682,6 +1716,7 @@
 <translation id="7948579849190819732">मौजूदा टैब</translation>
 <translation id="7056969230130642253">आपने सब देख लिया है</translation>
 <translation id="7292242212818928219">नया कॉन्टेंट उपलब्ध है। क्या रीलोड करना है?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="7481312909269577407">आगे जाएं</translation>
 <translation id="302781076327338683">कैशे को नज़रअंदाज़ करके फिर से लोड करें</translation>
@@ -1834,13 +1869,11 @@
 <translation id="831931573200952705">इस मेल को पहले से <ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता.</translation>
 <translation id="3537006124004887164">इस मेल को पहले से<ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता. सिस्टम सेटिंग्स में `ऐप शॉर्टकट` के ज़रिए इसमें बदलाव करने की कोशिश करें.</translation>
 <translation id="712598284361781729">नया स्प्लिट व्यू</translation>
-<translation id="6655450014966273037">स्प्लिट व्यू बंद करें</translation>
 <translation id="1130188644637295274">स्प्लिट व्यू में खोलें</translation>
-<translation id="7195519370590486580">टैब्स में जाएँ</translation>
+<translation id="6459036216700972269">टैब को अलग करें</translation>
 <translation id="3617523374417810198">नया स्प्लिट व्यू</translation>
-<translation id="9053179124396567872">स्प्लिट व्यू बंद करें</translation>
 <translation id="8571323456914890254">स्प्लिट व्यू में खोलें</translation>
-<translation id="2397258152713354053">टैब्स में जाएँ</translation>
+<translation id="5329136173514538969">टैब को अलग करें</translation>
 <translation id="8591883849678260674">मूल देखें</translation>
 <translation id="1969654232209826429">पढ़ने में कम से कम इतना समय लगेगा</translation>
 <translation id="4101707289420716287">स्पीडरीडर बंद करें</translation>
@@ -1885,28 +1918,29 @@
 <translation id="7921782882718083488">इस पेज को संक्षेप में बताएँ</translation>
 <translation id="7932221068776853847">इस पेज का कंटेंट लियो को भेजे जाने से रोकने के लिए डिसकनेक्ट करें और नई बातचीत शुरू करें.</translation>
 <translation id="1167803637855350748">लियो से कनेक्ट करते समय नेटवर्क की समस्या हुई, अपना कनेक्शन जाँचें और फिर से कोशिश करें.</translation>
-<translation id="5095201428204952524">इस समय लियो काफ़ी व्यस्त है. कृपया कुछ देर में फिर से कोशिश करें.</translation>
+<translation id="1996126325390835277">इस समय लियो काफ़ी व्यस्त है. कृपया कुछ देर में फिर से कोशिश करें.</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
-<translation id="2505565639170795978">नमस्ते, मैं लियो हूँ. मैं Brave का एक ऐसा AI असिस्टेंट हूँ, जिसे पूरी तरह से होस्ट किया गया है. मुझमें Llama 13B की शक्ति है, इस मॉडल को Meta द्वारा इस तरह से बनाया गया है कि यह बेहतर प्रदर्शन के साथ ही ज़्यादातर परिस्थितियों में काम करता है.</translation>
-<translation id="8030558642460377506">नमस्ते, मैं Leo हूं। मैं Brave का पूरी तरह से होस्ट किया गया AI असिस्टेंट हूं। मुझे Mixtral 8x7B द्वारा संचालित किया जाता है, यह ऐसा मॉडल है, जिसे उन्नत कार्य करने के लिए Mistral AI द्वारा बनाया गया है।</translation>
-<translation id="2489317965865266353">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude Instant की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
+<translation id="8570488829560315702">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Llama 3 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफॉरमेंस और कई यूज़ केसेज़ के लिए लागू है.<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Mixtral 8x7B द्वारा संचालित हूँ, जो एडवांस टास्क को संभालने के लिए Mistral AI द्वारा बनाया गया एक मॉडल है. <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पॉवरड हूँ और Claude Instant द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है.<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Haiku की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="4147243042852964992">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Sonnet की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, <ph name="COMPANY_NAME"/> की पेशकश</translation>
-<translation id="8944485226638699751">सीमित</translation>
 <translation id="6187065185557150870">चैट</translation>
 <translation id="2961040541145689181">नई चैट</translation>
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
 <translation id="1691256669639196606">सदस्यता मैनेज करें</translation>
+<translation id="2304783958703511257">एडवांस सेटिंग</translation>
 <translation id="3037594989275592390">लैंग्वेज मॉडल</translation>
 <translation id="6637015365469044269">अभी अपग्रेड करें</translation>
+<translation id="5543505256451301851">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="849535826888024304">जवाब मिलने की सीमा खत्म हुई</translation>
-<translation id="6149863263423821329">प्रीमियम की सदस्यता लेकर जवाब की उच्च दर प्राप्त करें। जारी रखने के लिए आप हमारे कम ताकतवर Llama2 13b वाले मुफ़्त मॉडल पर भी स्विच कर सकते हैं।</translation>
+<translation id="2252128900328632803">प्रीमियम की सदस्यता लेकर जवाब की उच्च दर प्राप्त करें। जारी रखने के लिए आप हमारे कम ताकतवर Llama2 13b वाले मुफ़्त मॉडल पर भी स्विच कर सकते हैं।</translation>
 <translation id="4173478269537830374">विभिन्न AI मॉडल खोजें</translation>
 <translation id="3245401959451976966">अपनी रचनात्मकता को अनलॉक करें</translation>
 <translation id="4165928407303989823">विषय पर बने रहें</translation>
 <translation id="2389665228467129817">लंबे समय तक चैट करें</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /महीना</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $/महीना</translation>
 <translation id="5151923271944811339">फ़्री मॉडल पर स्विच करें</translation>
 <translation id="5474757891469990756">प्रीमियम के साथ Leo की पूरी ताकत दिखाएँ:</translation>
 <translation id="5552332211527367850">विभिन्न कौशल वाले ताकतवर मॉडलों तक प्राथमिकता वाली एक्सेस</translation>
@@ -1934,8 +1968,11 @@
 <translation id="8742658901413346500">यह बातचीत बहुत लंबी है और संभव है कि लियो जल्द ही भूलने लगे. आप प्रीमियम मॉडल को अपनाकर लंबी बातचीत की सुविधा पा सकते हैं या चैट को रीसेट कर सकते हैं.</translation>
 <translation id="7550152963854770123">चैट मिटाएँ</translation>
 <translation id="7494736170250048402">लियो को मैसेज भेजें</translation>
+<translation id="8712637175834984815">समझ लिया</translation>
 <translation id="1093419424466417703">लियो के लिए पेज बहुत लंबा है. हो सकता है बातचीत से कुछ संदर्भ पूरी तरह से ना हों. लियो पेज के <ph name="PERCENTAGE"/> कंटेंट को पढ़ सकता है.</translation>
 <translation id="4370698775470316661">यह बातचीत बहुत लंबी है, इसलिए इसे जारी नहीं रखा जा सकता है. ऐसे कुछ अन्य मॉडल हो सकते हैं, जिनके साथ लियो लंबी बातचीत के दौरान भी सटीकता बनाए रख सके.</translation>
+<translation id="5719170755629028558">Brave Search के साथ अपने जवाब को बेहतर बनाएं...</translation>
+<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>के लिए बेहतर जवाब सर्च करता है.</translation>
 <translation id="6291843235651817590">सामान्य विषय की चैट</translation>
 <translation id="8193130769524604031">चैट के एडवांस कार्य</translation>
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
@@ -1975,6 +2012,8 @@
 <translation id="3130793786899299931">लंबाई बदलें</translation>
 <translation id="6320643499534852464">सोशल मीडिया</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
+<translation id="983013125018250242">Leo टूल</translation>
+<translation id="49269513399674318">माइक्रोफ़ोन का इस्तेमाल करें</translation>
 <translation id="6303294677342628402">शील्ड्स</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
 <translation id="7509914170164691086"><ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> के लिए शील्ड चालू है</translation>

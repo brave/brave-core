@@ -185,6 +185,9 @@
 <translation id="4759608598194750161">検索すればするほど収益アップ。</translation>
 <translation id="7526443283522395161">新しいタブページ広告</translation>
 <translation id="7968650944098083708">通知広告</translation>
+<translation id="8289546216379862569">検索広告</translation>
+<translation id="4758111936363146244">Brave検索広告は、<ph name="BEGIN_LINK"/>Brave検索<ph name="END_LINK"/>上に表示されます。</translation>
+<translation id="7596536223419118193">現在、Brave検索広告からBATを得ることはできませんが、Brave検索広告の表示によりBraveをサポートすることができます。</translation>
 <translation id="6390952132783970876">Braveニュース広告</translation>
 <translation id="7516281787184495886">Braveニュースには広告表示が含まれており、個別に無効化することはできません。</translation>
 <translation id="8008378848677625233">Braveニュースは現在無効です。</translation>
@@ -461,6 +464,7 @@
 <translation id="412480955826088549">コンポーネントをダウンロード中...</translation>
 <translation id="4894106830958548828">了解しました</translation>
 <translation id="326118736933420687">WebTorrentのページを表示しています</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>プレースホルダー<ph name="PART_ONE_END"/>の文字列をテストします。<ph name="PART_TWO"/>詳細はこちら<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Braveで「Unstoppable Domains」のサポートを有効にしますか？</translation>
 <translation id="5015092481905019948">Braveは<ph name="PROVIDER_NAME"/> を使用して、<ph name="DOMAIN_PROVIDER_NAME"/>に存在する<ph name="DOMAIN_LIST"/>のドメイン名を解決します。IPアドレスは非表示になります。 これを有効にすると、<ph name="PROVIDER_NAME"/>は他のユーザーが訪問しようとしているドメインを参照できますが、他のドメインは参照できなくなります。<ph name="PROVIDER_NAME"/>の<ph name="BEGIN_PROVIDER_TOU_LINK"/>利用規約<ph name="END_PROVIDER_TOU_LINK"/>と<ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_PROVIDER_PRIVACY_LINK"/>をご覧ください。</translation>
@@ -714,6 +718,11 @@
 <translation id="5382339341735118861">リクエスト処理の一般的なエラーが発生しました</translation>
 <translation id="7123780456696055383">リクエストされたリソースが利用できません</translation>
 <translation id="1680597601664421644">インポートされたニーモニックはBraveウォレットで有効ではありません</translation>
+<translation id="372898731091371291">インポートしたいウォレットの種類はどれですか？</translation>
+<translation id="1430728084670406473">Ethereum / Solana / Filecoinウォレット</translation>
+<translation id="8659668419772278776">既存ウォレットからシードフレーズをインポート</translation>
+<translation id="8110492767853188065">ハードウェアウォレット</translation>
+<translation id="7437218084485869007">ハードウェアウォレットをBraveと接続</translation>
 <translation id="4641919696349069826">すでにリクエストを処理中です</translation>
 <translation id="872806943696014633">トランザクションデータがありません</translation>
 <translation id="7068183357903252127">トランザクションデータ 'to' または 'data' を指定する必要があります</translation>
@@ -807,19 +816,21 @@
 <translation id="1426410128494586442">はい</translation>
 <translation id="4250680216510889253">いいえ</translation>
 <translation id="1201402288615127009">Next</translation>
-<translation id="8712637175834984815">閉じる</translation>
+<translation id="3214453326297774895">リカバリーフレーズを表示</translation>
 <translation id="6896758677409633944">コピー</translation>
 <translation id="7885157704277298658">コピーしました！</translation>
 <translation id="6518133107902771759">認証する</translation>
 <translation id="6042308850641462728">もっと見る</translation>
-<translation id="768236965975208017">セキュア。マルチチェーン。そして使いやすい。Braveウォレットは、数回のクリックでご利用いただけます。</translation>
 <translation id="3157931365184549694">復元</translation>
-<translation id="2484275747844666540">新しいウォレットを作成する</translation>
-<translation id="3662348701117072366">既存のウォレットをインポートする</translation>
-<translation id="7150150391368236519">ハードウェアウォレットを接続</translation>
+<translation id="414070570958255222">ブラウザネイティブ / セルフカストディ / マルチチェーン</translation>
+<translation id="1350120992777389959">暗号通貨とNFTの管理がこの上なく快適に。Braveウォレットはイーサリアム、EVMチェーン、Solana、Filecoin、ビットコインなどをサポートしています。</translation>
+<translation id="165255193061631296">新しいウォレットが必要ですか？</translation>
+<translation id="1939235910515558387">Braveウォレットはすぐにお使いいただけます。</translation>
+<translation id="5844138175312846408">ウォレットを既にお持ちですか？</translation>
+<translation id="772643556080081594">閲覧専用ウォレットを作成</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. BraveおよびBraveロゴはBrave Software, Incの登録商標です。その他の製品名およびロゴは、各社の商標である場合があります。無断複写・転載を禁じます。</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
-<translation id="180032279811483155">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる<ph name="RECOVERY_PHRASE_LENGTH"/>語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="5024543173656851695">リカバリーワードを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="8281886186245836920">スキップ</translation>
 <translation id="6532106788206463496">変更を保存</translation>
@@ -832,7 +843,7 @@
 <translation id="2339124864228588937">リカバリーフレーズを認証</translation>
 <translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
 <translation id="802060020117206314">リカバリフレーズが一致しませんでした。もう一度お試しください。</translation>
-<translation id="8412783472871103529">リカバリーフレーズを確認する</translation>
+<translation id="7345730059518887993">ご確認ください</translation>
 <translation id="2226686084760581391">リカバリーフレーズの<ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>、<ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>、<ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/>の単語をクリックします。</translation>
 <translation id="7575574239720542222">リカバリーフレーズが一致しない</translation>
 <translation id="8692301574305033504">新しいパスワードの作成</translation>
@@ -862,7 +873,10 @@
 <translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
 <translation id="3331452756822160641">新しいパスワード</translation>
 <translation id="8624315169751085215">クリップボードにコピー</translation>
+<translation id="2598171223363459366">この手順はスキップできますが、アカウントの安全を保つためにリカバリーフレーズを必ずバックアップしてください。</translation>
+<translation id="5303015959766064022">後でバックアップ</translation>
 <translation id="6346952829206698721">クリップボードから貼り付け</translation>
+<translation id="2610561535971892504">クリックしてコピー</translation>
 <translation id="1121335910737476837">プライマリ暗号資産アカウント</translation>
 <translation id="6969147029062037757">インポート済みのアカウント</translation>
 <translation id="3926119534765499672">接続済みのハードウェアウォレット</translation>
@@ -898,16 +912,23 @@
 <translation id="6892232036314454524">Ledgerのデバイスで間違ったアプリケーションを開いている場合、このエラーが発生することがあります。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">台帳</translation>
-<translation id="4247752006222818397">Brave に Ledger デバイスへのアクセスを許可する。</translation>
+<translation id="8012452656725205792">Braveに、<ph name="HARDWARE_DEVICE"/>デバイスへのアクセスを許可してください。</translation>
 <translation id="4378551569595875038">接続しています...</translation>
 <translation id="1943188256166395881">チェック済みアカウントを追加</translation>
 <translation id="8554010658308662631">もっと読み込む</translation>
 <translation id="6998738230710304743">さらに読み込んでいます...</translation>
 <translation id="5592304751234049046">アカウントを検索</translation>
+<translation id="3168978475376026497">HDパス</translation>
 <translation id="6151024411349343484">探しているアカウントが見つからない場合は、HD パス (上記) を切り替えてみてください。</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">レガシー (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">結果が見つかりませんでした。</translation>
+<translation id="7261362517244085362">ウォレットを認証</translation>
+<translation id="7150150391368236519">ハードウェアウォレットを接続</translation>
+<translation id="5400782314657008092">現在サポートしているデバイスは<ph name="HARDWARE_DEVICE"/>および<ph name="HARDWARE_DEVICE1"/>です。</translation>
+<translation id="8144305264680648043">ハードウェアウォレットと接続して、Braveウォレットからアセットを直接管理</translation>
+<translation id="1329837291200753515">ブロックチェーンを選択してハードウェアウォレットをインポート</translation>
+<translation id="6983390509997396124"><ph name="HARDWARE_DEVICE"/>デバイスをBraveウォレットに接続</translation>
 <translation id="5149944858285555235">不明なエラーです。ハードウェアウォレットを再接続して、もう一度試してください。</translation>
 <translation id="4522570452068850558">詳細</translation>
 <translation id="9220525904950070496">アカウントを消去する</translation>
@@ -946,8 +967,6 @@
 <translation id="1613627717923045622">テストネットワーク</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">ローカルホスト</translation>
 <translation id="3792938779249970121">アカウントを選択</translation>
 <translation id="6797737193502014008">アカウントを検索</translation>
@@ -1061,6 +1080,7 @@
 <translation id="6383204195803840504">トランザクションはここに表示されます</translation>
 <translation id="6079696972035130497">無制限</translation>
 <translation id="2916401020782528840">トランザクションが見つかりません</translation>
+<translation id="1690963073120772693">このトランザクションは再試行できません。</translation>
 <translation id="2833661570529295305">未承認</translation>
 <translation id="8034530868111548216">承認済み</translation>
 <translation id="6015436276085482001">拒否されました</translation>
@@ -1155,8 +1175,8 @@
 <translation id="8523768065044261559">トランザクションの処理中にエラーが発生しました。もう一度お試しください</translation>
 <translation id="971552837551838642">メッセージの署名エラーです。もう一度お試しください</translation>
 <translation id="8273603707418703324">メッセージの署名エラーです。不明なキーリングが要求されました。もう一度お試しください</translation>
-<translation id="5265455943786954050">すでにTrezorコマンドを処理中です</translation>
-<translation id="7017116822583380542">Trezorブリッジの準備が完了していません</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/>コマンドはすでに進行中です</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/>ブリッジの準備ができていません</translation>
 <translation id="3378339846292573874">推奨トークンを追加</translation>
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="4378475168089649292">ブロックチェーン</translation>
@@ -1350,17 +1370,22 @@
 <translation id="1792917191129448067">Rainbow Bridgeアプリを開く</translation>
 <translation id="1522775706527775647">Auroraにブリッジ</translation>
 <translation id="4903322403594141291">Brave Walletについてもっと知る</translation>
-<translation id="3875185448438395303">最低:</translation>
-<translation id="2029465635925899949">8文字</translation>
-<translation id="6697810017029555732">一致！</translation>
+<translation id="4427684901715566795">パスワードは以下のように設定してください:</translation>
+<translation id="8521329076169776625">最低8文字</translation>
+<translation id="3665035348242240953">パスワード一致</translation>
 <translation id="8918368616587206671">強い！</translation>
 <translation id="574392208103952083">中</translation>
 <translation id="8297006494302853456">弱い</translation>
+<translation id="3282258437441351851">Braveウォレットがそのあと自動ロック</translation>
+<translation id="114276356113671828"><ph name="VALUE"/>分</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/>時間</translation>
 <translation id="7084181009966710506">ウォレットを作成中です...</translation>
-<translation id="6782556046178425980">ウォレットのバックアップを開始する前に</translation>
+<translation id="3259102562570606417">リカバリーフレーズを保存</translation>
 <translation id="7119749028647909394">12～24語のリカバリーフレーズは、接続されたデバイスを紛失した場合に、ウォレットへのアクセスを回復するために使用するプライベートキーです。安全な場所に、以下の順序で正確に保管します。</translation>
 <translation id="3259018319025894691">Braveは、あなたの秘密のリカバリーフレーズにアクセスすることはできません。安全に保管し、決して他の人と共有しないでください。</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/> 重要:<ph name="TAG_AFTER"/> リカバリーフレーズを決して共有しないでください。このフレーズを持っている人は、あなたのアセットを永遠に奪うことができます。</translation>
+<translation id="426648489149930289">他の人がアクセスできない安全な場所に保管し、共有は控えてください。</translation>
+<translation id="119185410022731300">リカバリーフレーズのポジション<ph name="VALUE"/>にある単語を入力してください。</translation>
+<translation id="2193954488469999829">前のページに戻って保存</translation>
 <translation id="7509948206688764960">ウォレットリカバリーのフレーズをバックアップする</translation>
 <translation id="8052898407431791827">クリップボードにコピーされる</translation>
 <translation id="4576741736874242970">クリックするとフレーズが表示されます</translation>
@@ -1379,8 +1404,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">おめでとうございます。あなたのBrave Walletの準備は完了です。</translation>
-<translation id="6828327990705355767">ウォレットにアクセスするには、Braveブラウザのウィンドウの右上にあるウォレットアイコンをクリックするだけです。</translation>
+<translation id="1148624853678088576">準備完了です！</translation>
+<translation id="1656439328205762155">Braveウォレットの設定が完了し、使用準備ができました。</translation>
+<translation id="3342494025742308764">ポートフォリオを見る</translation>
 <translation id="396152018598329740">暗号ウォレットを使うには？</translation>
 <translation id="7512061585041489067">最高の暗号ウォレットは何ですか？</translation>
 <translation id="1342755158522323177">暗号ブラウザって何？</translation>
@@ -1388,24 +1414,31 @@
 <translation id="4674552515763857735">リカバリーフレーズって何？</translation>
 <translation id="7328255859839881981">DAppsとは？</translation>
 <translation id="3852489285890032403">web3って何？</translation>
-<translation id="5448233694500869445">お使いのブラウザでMetaMask拡張機能が検出されました。</translation>
-<translation id="8436080536329710282">MetaMaskウォレットのパスワードを入力すると、簡単にBrave Walletにインポートすることができます。</translation>
+<translation id="2349224271234429946">MetaMaskウォレットをインポート</translation>
+<translation id="6715906859822319136">パスワードを入力するだけでMetaMaskウォレットをインポートできます。</translation>
 <translation id="7543512765962444927">既存のウォレットと接続</translation>
 <translation id="3551682252653406110">既にお持ちのウォレットを接続する場合、リカバリーフレーズの入力が必要な場合があります。現時点では、EthereumとSolanaのウォレットからのリストア/インポートをサポートしています。</translation>
-<translation id="346929827081904572">シードフレーズからのリストア</translation>
+<translation id="3961126209136843111">既存のウォレットをインポート</translation>
 <translation id="5645597512426471834">12～24字</translation>
-<translation id="8158505311297755780">Brave Walletの12～24語のリカバリーフレーズを入力します。</translation>
+<translation id="2321396552035646646">リカバリーフレーズ全体をどのフィールドにも貼り付けできます。</translation>
 <translation id="5419707890586509000">MetaMaskからのインポート</translation>
 <translation id="2265945811107390939">MetaMaskのパスワードを使って、シードフレーズをインポートします。</translation>
 <translation id="7060680423657442298">ご心配なく。新しいウォレットを作ります。</translation>
+<translation id="1932878136775815535"><ph name="LENGTH"/>語から成るリカバリーフレーズを保有済み</translation>
+<translation id="7877416315564177070">リカバリーフレーズを確認してもう一度お試しください。</translation>
+<translation id="6503538941917874992">リカバリーフレーズを使用してインポート</translation>
+<translation id="782167880151571109">Metamaskウォレットが検出されました！</translation>
+<translation id="3619071361843652814">レガシーウォレットが検出されました！</translation>
+<translation id="4634124774493850572">パスワードを使用</translation>
+<translation id="7697478310235189459">ワード<ph name="VALUE"/></translation>
 <translation id="5913194823092185468">MetaMaskの12～24語のリカバリーフレーズを入力します。</translation>
 <translation id="7720392926833259937">MetaMaskのパスワードを入力</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="6260144012548445299">新しいウォレットについてもっと知る</translation>
-<translation id="8746910870914151528">法的事項</translation>
-<translation id="5148123176978018397">以下をご確認ください。</translation>
-<translation id="6088314935678153800">私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私一人が責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。</translation>
-<translation id="7781090633800450517">私は、<ph name="LINK_BEFORE"/>利用規約<ph name="LINK_AFTER"/> を読み、これに同意します。</translation>
+<translation id="2502258949541727762">はじめに</translation>
+<translation id="5333225216561354793">以下の事項をご確認ください</translation>
+<translation id="4284971227128011550">私は、このウォレットが自己管理のウォレットであり、関連する資金、資産、またはアカウントに対して私が単独で責任を負い、私のウォレットを安全に保護し、バックアップするために適切な行動を取ることを理解しています。私は、Braveが私に代わって私のウォレットにアクセスしたり、取引を取り消すことはできないこと、およびパスワードの紛失、デバイスの盗難、または同様の状況の場合にアクセスを回復する唯一の方法は、私のリカバリフレーズであることを理解しています。</translation>
+<translation id="3604445540387095708">私は、<ph name="LINK_BEFORE"/>利用規約<ph name="LINK_AFTER"/> を読み、これに同意します。</translation>
 <translation id="1422451606553326863">暗号資産を購入</translation>
 <translation id="3887541341068007345">ウォレットエクステンションのチェック...</translation>
 <translation id="3567994771568272606">レガシーBrave暗号ウォレットからのインポート</translation>
@@ -1606,6 +1639,7 @@
 <translation id="5667702863609780570">損失のリスクを伴う安全でないアクションです</translation>
 <translation id="6405354572620970908">このリクエストは悪意があり、窃盗の危険にさらされる可能性があります。信頼できるアプリでない限り続行しないでください。</translation>
 <translation id="786261184916565476"><ph name="VALUE"/>件の問題が見つかりました。</translation>
+<translation id="2826600321627372011">ルートが見つかりません</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1684,6 +1718,7 @@
 <translation id="7948579849190819732">現在のタブ</translation>
 <translation id="7056969230130642253">情報はすべて最新です</translation>
 <translation id="7292242212818928219">新しいコンテンツが利用可能です。再読み込みしますか？</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">クイックコマンド</translation>
 <translation id="7481312909269577407">進む</translation>
 <translation id="302781076327338683">キャッシュをバイパスして再読み込み</translation>
@@ -1836,13 +1871,11 @@
 <translation id="831931573200952705">この組み合わせは<ph name="COMMAND"/>で使用されており、変更できません。</translation>
 <translation id="3537006124004887164">この組み合わせは<ph name="COMMAND"/>で使用されており、変更できません。システム設定の「アプリのショートカット」から変更をお試しください。</translation>
 <translation id="712598284361781729">新しいスプリットビュー</translation>
-<translation id="6655450014966273037">スプリットビューを閉じる</translation>
 <translation id="1130188644637295274">スプリットビューで開く</translation>
-<translation id="7195519370590486580">タブに分割</translation>
+<translation id="6459036216700972269">タブの分割を解除</translation>
 <translation id="3617523374417810198">新しいスプリットビュー</translation>
-<translation id="9053179124396567872">スプリットビューを閉じる</translation>
 <translation id="8571323456914890254">スプリットビューで開く</translation>
-<translation id="2397258152713354053">タブに分割</translation>
+<translation id="5329136173514538969">タブの分割を解除</translation>
 <translation id="8591883849678260674">オリジナルを見る</translation>
 <translation id="1969654232209826429">分で読めます</translation>
 <translation id="4101707289420716287">Speedreaderをオフにする</translation>
@@ -1887,23 +1920,24 @@
 <translation id="7921782882718083488">このページを要約</translation>
 <translation id="7932221068776853847">接続を解除して、Leoへのページコンテンツの送信を停止し、新しい会話をはじめます</translation>
 <translation id="1167803637855350748">Leoに接続する際にネットワーク上の問題が発生しました。接続を解除してもう一度お試しください。</translation>
-<translation id="5095201428204952524">Leoは現在ビジー状態です。しばらくしてからもう一度お試しください。</translation>
+<translation id="1996126325390835277">Leoは現在ビジー状態です。しばらくしてからもう一度お試しください。</translation>
 <translation id="7144878232160441200">再試行</translation>
-<translation id="2505565639170795978">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 13Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。</translation>
-<translation id="8030558642460377506">こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにMistral AIによって作られたモデル、Mixtral  8x7Bを搭載しています。</translation>
-<translation id="2489317965865266353">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。</translation>
+<translation id="8570488829560315702">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 13Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにMistral AIによって作られたモデル、Mixtral 8x7Bを搭載しています<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude 3 Haikuを搭載しています。</translation>
 <translation id="4147243042852964992">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude 3 Sonnetを搭載しています。</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>、作成元: <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">限定</translation>
 <translation id="6187065185557150870">チャット</translation>
 <translation id="2961040541145689181">新しいチャット</translation>
 <translation id="7557539689487606886">プレミアムプラン</translation>
 <translation id="1691256669639196606">サブスクリプションを管理</translation>
+<translation id="2304783958703511257">詳細設定</translation>
 <translation id="3037594989275592390">言語モデル</translation>
 <translation id="6637015365469044269">今すぐアップグレード</translation>
+<translation id="5543505256451301851">7日間無料でお試し</translation>
 <translation id="849535826888024304">回答速度の制限に達しました</translation>
-<translation id="6149863263423821329">プレミアムに登録することで応答率を向上させることができます。また、能力の劣るLlama2 13b無料モデルに切り替えて継続することも可能です。</translation>
+<translation id="2252128900328632803">プレミアムに登録することで応答率を向上させることができます。また、能力の劣るLlama2 13b無料モデルに切り替えて継続することも可能です。</translation>
 <translation id="4173478269537830374">さまざまなAIモデルをご覧ください</translation>
 <translation id="3245401959451976966">創造性を発揮</translation>
 <translation id="4165928407303989823">トピックに集中</translation>
@@ -1936,8 +1970,11 @@
 <translation id="8742658901413346500">この会話は長いため、Leoがすべてを記憶できない可能性があります。プレミアムモデルに変更いただくと、より長い会話を行うことができます。</translation>
 <translation id="7550152963854770123">チャットをクリア</translation>
 <translation id="7494736170250048402">Leoにメッセージを送信</translation>
+<translation id="8712637175834984815">閉じる</translation>
 <translation id="1093419424466417703">このページはLeoには長すぎるため、会話から一部のコンテキストが欠ける可能性があります。Leoはページコンテンツの<ph name="PERCENTAGE"/>を解析可能です。</translation>
 <translation id="4370698775470316661">この会話は長すぎるため、続行できません。Leoがより長い会話の精度を維持できるよう、他のモデルをご利用いただくことをおすすめします。</translation>
+<translation id="5719170755629028558">Brave検索で回答を推敲しています...</translation>
+<translation id="5794962229997281366">クエリ: <ph name="SEARCH_TERMS"/> への回答を推敲しました。</translation>
 <translation id="6291843235651817590">一般チャット</translation>
 <translation id="8193130769524604031">高度なチャットタスク</translation>
 <translation id="3185367320601718531">会話・テキスト生成</translation>
@@ -1977,6 +2014,8 @@
 <translation id="3130793786899299931">長さの変更</translation>
 <translation id="6320643499534852464">ソーシャルメディア</translation>
 <translation id="2370739752330685659">後ほど検討します</translation>
+<translation id="983013125018250242">Leoのツール</translation>
+<translation id="49269513399674318">マイクを使用</translation>
 <translation id="6303294677342628402">シールド</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
 <translation id="7509914170164691086">次のサイトでシールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/>:</translation>

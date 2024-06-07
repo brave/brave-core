@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Več kot vidite, več lahko zaslužite.</translation>
 <translation id="7526443283522395161">Oglasi na strani z novim zavihkom</translation>
 <translation id="7968650944098083708">Obvestilni oglasi</translation>
+<translation id="8289546216379862569">Iskanje oglasov</translation>
+<translation id="4758111936363146244">Oglasi Iskanja na Brave se pojavljajo v okviru <ph name="BEGIN_LINK"/>Iskanja na Brave<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Z oglasi na Iskanju z Brave še ne morete zaslužiti žetonov BAT, vendar z vključenimi oglasi pomagate podpirati Brave.</translation>
 <translation id="6390952132783970876">Oglasi Brave News</translation>
 <translation id="7516281787184495886">Brave News vsebuje oglase, ki jih ni mogoče samostojno onemogočiti.</translation>
 <translation id="8008378848677625233">Brave News je trenutno onemogočen.</translation>
@@ -461,6 +464,7 @@
 <translation id="412480955826088549">Prenos komponent ...</translation>
 <translation id="4894106830958548828">Razumem</translation>
 <translation id="326118736933420687">Ogledujete si stran WebTorrent</translation>
+<translation id="2729085694451916573">Testni niz za <ph name="PART_ONE"/>nadomestne znake<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Več o tem<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
 <translation id="4492298165410552103">Omogočim podporo neustavljivih domen v Brave-u?</translation>
 <translation id="5015092481905019948">Brave bo uporabljal <ph name="PROVIDER_NAME"/> za reševanje <ph name="DOMAIN_LIST"/> domen, ki so na <ph name="DOMAIN_PROVIDER_NAME"/>. Brave skriva vaš naslov IP naslov. Če to omogočite, bo <ph name="PROVIDER_NAME"/> videla, da nekdo poskuša obiskati te domene, vendar nič drugega. Oglejte si <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>pogoje uporabe<ph name="END_PROVIDER_TOU_LINK"/> in <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>politiko zasebnosti<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -714,6 +718,11 @@
 <translation id="5382339341735118861">Zgodila se je generična napaka pri obdelavi zahteve</translation>
 <translation id="7123780456696055383">Zahtevani vir ni na voljo</translation>
 <translation id="1680597601664421644">Mnemonika, ki se uvozi, ne velja za Brave Wallet</translation>
+<translation id="372898731091371291">Katero vrsto denarnice želite uvoziti?</translation>
+<translation id="1430728084670406473">Denarnica Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">Uvozite svoje obnovitveno geslo iz obstoječe denarnice</translation>
+<translation id="8110492767853188065">Strojna denarnica</translation>
+<translation id="7437218084485869007">Svojo strojno denarnico povežite z Brave</translation>
 <translation id="4641919696349069826">Zahteva je že v teku</translation>
 <translation id="872806943696014633">Manjkajo podatki o transakcijah</translation>
 <translation id="7068183357903252127">Transakcijski podatki 'to' ali 'data' je treba navesti</translation>
@@ -807,19 +816,21 @@
 <translation id="1426410128494586442">Da</translation>
 <translation id="4250680216510889253">Ne</translation>
 <translation id="1201402288615127009">Naprej</translation>
-<translation id="8712637175834984815">Razumem</translation>
+<translation id="3214453326297774895">Prikaz moje fraze za obnovitev</translation>
 <translation id="6896758677409633944">Kopiraj</translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="6042308850641462728">Več</translation>
-<translation id="768236965975208017">Varno. Večverižna. In oh-tako-enostavna za uporabo. Vaša Brave Wallet je oddaljena le nekaj klikov</translation>
 <translation id="3157931365184549694">Obnovi</translation>
-<translation id="2484275747844666540">Ustvari novo denarnico</translation>
-<translation id="3662348701117072366">Uvoz obstoječe denarnice</translation>
-<translation id="7150150391368236519">Poveži strojno denarnico</translation>
+<translation id="414070570958255222">Nativni brskalnik. Samostojno skrbništvo. In več verig.</translation>
+<translation id="1350120992777389959">Prevzemite nadzor nad kriptovalutami in NFT. Denarnica Brave podpira Ethereum, verige EVM, Solana, Filecoin, Bitcoin in druge.</translation>
+<translation id="165255193061631296">Potrebujete novo denarnico?</translation>
+<translation id="1939235910515558387">Že v nekaj minutah začnite uporabljati Denarnico Brave.</translation>
+<translation id="5844138175312846408">Že imate denarnico?</translation>
+<translation id="772643556080081594">Potrebujem denarnico, ki omogoča samo spremljanje stanja</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave in logotip Brave sta registrirani blagovni znamki družbe Brave Software, Inc. Imena drugih izdelkov in logotipi so lahko blagovne znamke njihovih lastnih podjetij. Vse pravice pridržane.</translation>
 <translation id="7501957181231305652">ali</translation>
 <translation id="375882617301124395">Varnostno kopirajte svojo kripto denarnico</translation>
-<translation id="180032279811483155">V naslednjem koraku boste videli obnovitveno frazo s<ph name="RECOVERY_PHRASE_LENGTH"/> besedami, ki jo lahko uporabite za obnovitev svojih primarnih kripto računov. Shrani ga na varno mesto. Vaš obnovitveni stavek je edini način za ponovno pridobitev dostopa do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
 <translation id="5024543173656851695">Zavedam se, da ne morem dostopati do svoje denarnice s kriptovalutami, če izgubim svoje ključne besede za obnovitev dostopa.</translation>
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="6532106788206463496">Shrani spremembe</translation>
@@ -832,7 +843,7 @@
 <translation id="2339124864228588937">Potrdite frazo za obnovitev</translation>
 <translation id="3747079125031086337">V frazi za obnovitev izberite besede v pravilnem vrstnem redu.</translation>
 <translation id="802060020117206314">Fraza za obnovitev se ne ujema, poskusite znova.</translation>
-<translation id="8412783472871103529">Preverite obnovitveno frazo</translation>
+<translation id="7345730059518887993">Pa preverimo</translation>
 <translation id="2226686084760581391">Kliknite <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>,<ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> in <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> besed vaše obnovitvene fraze.</translation>
 <translation id="7575574239720542222">Fraza za obnovitev se ne ujema</translation>
 <translation id="8692301574305033504">Ustvarite novo geslo</translation>
@@ -862,7 +873,10 @@
 <translation id="4359319875297001084">Uvozim iz starejših Brave kripto denarnic?</translation>
 <translation id="3331452756822160641">Novo geslo</translation>
 <translation id="8624315169751085215">Kopiraj v odložišče</translation>
+<translation id="2598171223363459366">Ta korak lahko za zdaj preskočite, vendar morate kljub temu narediti varnostno kopijo fraze za obnovitev in tako zagotoviti varnost računa.</translation>
+<translation id="5303015959766064022">Varnostno kopijo bom naredil/a pozneje</translation>
 <translation id="6346952829206698721">Prilepi iz odložišča</translation>
+<translation id="2610561535971892504">Kliknite za kopiranje</translation>
 <translation id="1121335910737476837">Primarni kripto računi</translation>
 <translation id="6969147029062037757">Uvoženi računi</translation>
 <translation id="3926119534765499672">Povezane strojne denarnice</translation>
@@ -898,16 +912,23 @@
 <translation id="6892232036314454524">Ta napaka se lahko pojavi, ko je na napravi Ledger odprta napačna aplikacija.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Knjiženje</translation>
-<translation id="4247752006222818397">Strani Brave omogočite dostop do naprave Ledger.</translation>
+<translation id="8012452656725205792">Svoji napravi <ph name="HARDWARE_DEVICE"/> omogočite dostop do Brave.</translation>
 <translation id="4378551569595875038">Povezovanje ...</translation>
 <translation id="1943188256166395881">Dodajte preverjene račune</translation>
 <translation id="8554010658308662631">Naloži več</translation>
 <translation id="6998738230710304743">Nalagam več...</translation>
 <translation id="5592304751234049046">Išči račun</translation>
+<translation id="3168978475376026497">HD pot</translation>
 <translation id="6151024411349343484">Če ne najdete računa, ki ga iščete, poskusite zamenjati pot HD (zgoraj).</translation>
 <translation id="2844691569989101734">Knjiženje v živo</translation>
 <translation id="7265732100380987017">Podpora (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Ni zadetkov.</translation>
+<translation id="7261362517244085362">Določite svojo denarnico</translation>
+<translation id="7150150391368236519">Poveži strojno denarnico</translation>
+<translation id="5400782314657008092">Trenutno podpiramo naprave<ph name="HARDWARE_DEVICE"/> in <ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">Povežite svojo strojno denarnico in s svojimi sredstvi upravljajte neposredno iz Denarnice Brave</translation>
+<translation id="1329837291200753515">Izberite verigo blokov za uvoz strojne denarnice</translation>
+<translation id="6983390509997396124">Svojo napravo<ph name="HARDWARE_DEVICE"/> povežite z denarnico Brave</translation>
 <translation id="5149944858285555235">Neznana napaka, znova povežite denarnico s strojno opremo in poskusite znova.</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="9220525904950070496">Izbriši račun</translation>
@@ -946,8 +967,6 @@
 <translation id="1613627717923045622">Testno omrežje</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Izberite račun</translation>
 <translation id="6797737193502014008">Iščite po računih</translation>
@@ -1061,6 +1080,7 @@
 <translation id="6383204195803840504">Tu bodo prikazane transakcije</translation>
 <translation id="6079696972035130497">Neomejeno</translation>
 <translation id="2916401020782528840">Transakcije ni bilo mogoče najti</translation>
+<translation id="1690963073120772693">Za to transakcijo ponovni poskus ni mogoč</translation>
 <translation id="2833661570529295305">Neodobreno</translation>
 <translation id="8034530868111548216">Potrjeno</translation>
 <translation id="6015436276085482001">Zavrnjeno</translation>
@@ -1157,8 +1177,8 @@
 <translation id="8523768065044261559">Napaka pri obdelavi transakcije, poskusite znova</translation>
 <translation id="971552837551838642">Napaka pri podpisovanju sporočila, poskusite znova</translation>
 <translation id="8273603707418703324">Sporočilo o napaki pri podpisovanju, zahtevan je neznan obesek za ključe, poskusite znova</translation>
-<translation id="5265455943786954050">Ukaz Trezor je že v teku</translation>
-<translation id="7017116822583380542">Most Trezor ni pripravljen</translation>
+<translation id="6200074323131367633">Ukaz <ph name="DEVICE_NAME"/> je že v teku</translation>
+<translation id="4213183402991860207">Most <ph name="DEVICE_NAME"/> ni pripravljen</translation>
 <translation id="3378339846292573874">Dodaj predlagani element</translation>
 <translation id="2322227405137827074">Ali želite ta element uvoziti?</translation>
 <translation id="4378475168089649292">Veriga blokov</translation>
@@ -1354,17 +1374,22 @@
 <translation id="1792917191129448067">Odpri aplikacijo Rainbow Bridge</translation>
 <translation id="1522775706527775647">Most do Aurore</translation>
 <translation id="4903322403594141291">Izvedite več o Brave Wallet</translation>
-<translation id="3875185448438395303">Vsaj:</translation>
-<translation id="2029465635925899949">8 znakov</translation>
-<translation id="6697810017029555732">Ujemanje!</translation>
+<translation id="4427684901715566795">Geslo mora imeti:</translation>
+<translation id="8521329076169776625">Vsaj 8 znakov</translation>
+<translation id="3665035348242240953">Gesli se ujemata</translation>
 <translation id="8918368616587206671">Močno!</translation>
 <translation id="574392208103952083">Srednje</translation>
 <translation id="8297006494302853456">Šibek</translation>
+<translation id="3282258437441351851">Denarnica Brave se bo kasneje samodejno zaklenila</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> minut</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> ur(a)</translation>
 <translation id="7084181009966710506">Ustvarjanje denarnice...</translation>
-<translation id="6782556046178425980">Preden začnete varnostno kopirati denarnico</translation>
+<translation id="3259102562570606417">Shranite svojo frazo za obnovitev dostopa</translation>
 <translation id="7119749028647909394">Beseda fraza z dolžino med 12 in 24 besed za obnovitev je zasebni ključ, ki ga lahko uporabite za ponovni dostop do denarnice, če izgubite povezano(-e) napravo(-e). Shranjujte ga na varnem mestu in v točno takšnem vrstnem redu, kot je prikazan spodaj.</translation>
 <translation id="3259018319025894691">Brave ne more dostopati do skrivne obnovitvene besedne zveze. Shranjujte jo na varnem in jo nikoli ne delite z nikomer drugim.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Pomembno: <ph name="TAG_AFTER"/>Nikoli ne delite svoje besedne zveze za obnovitev. Vsakdo s to besedno zvezo lahko za vedno vzame vaše premoženje.</translation>
+<translation id="426648489149930289">Hranite jo na varnem mestu, ki ni dostopno drugim, in je ne delite z drugimi.</translation>
+<translation id="119185410022731300">Na položaj<ph name="VALUE"/> vnesite besedo iz vaše fraze za obnovitev.</translation>
+<translation id="2193954488469999829">Ste pozabili shraniti vnos? Pojdite nazaj</translation>
 <translation id="7509948206688764960">Varnostno kopirajte besedno zvezo za obnovitev denarnice</translation>
 <translation id="8052898407431791827">Kopirano v odložišče</translation>
 <translation id="4576741736874242970">Kliknite, če želite videti svojo besedno zvezo</translation>
@@ -1383,8 +1408,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">Čestitke! Vaša Brave Wallet je pripravljena za uporabo!</translation>
-<translation id="6828327990705355767">Za dostop do denarnice preprosto kliknite ikono denarnice v zgornjem desnem kotu katerega koli okna brskalnika Brave.</translation>
+<translation id="1148624853678088576">Vse je nared!</translation>
+<translation id="1656439328205762155">Vaša denarnica Brave je zdaj nastavljena in pripravljena za uporabo.</translation>
+<translation id="3342494025742308764">Pojdite na portfelj</translation>
 <translation id="396152018598329740">Kako uporabljati kripto denarnico?</translation>
 <translation id="7512061585041489067">Katera je najboljša kripto denarnica?</translation>
 <translation id="1342755158522323177">Kaj je kripto brskalnik?</translation>
@@ -1392,24 +1418,31 @@
 <translation id="4674552515763857735">Kaj je besedna zveza za obnovitev?</translation>
 <translation id="7328255859839881981">Kaj so DApps?</translation>
 <translation id="3852489285890032403">Kaj je web 3?</translation>
-<translation id="5448233694500869445">V vašem brskalniku smo zaznali razširitev MetaMask</translation>
-<translation id="8436080536329710282">Vnesite geslo denarnice MetaMask za preprost uvoz v Brave Wallet.</translation>
+<translation id="2349224271234429946">Uvoz denarnice MetaMask</translation>
+<translation id="6715906859822319136">Svojo denarnico MetaMask lahko preprosto uvozite z vnosom gesla.</translation>
 <translation id="7543512765962444927">Povežite se z obstoječo denarnico</translation>
 <translation id="3551682252653406110">Če želite povezati denarnico, ki jo že imate, boste morda morali vnesti obnovitveno besedno zvezo. Trenutno podpiramo obnovitev/uvoz iz denarnic Ethereum in Solana.</translation>
-<translation id="346929827081904572">Obnovi iz semenske besedne zveze</translation>
+<translation id="3961126209136843111">Uvoz obstoječe denarnice</translation>
 <translation id="5645597512426471834">12-24 besed</translation>
-<translation id="8158505311297755780">Vnesite besedno zvezo za obnovitev denarnice Brave, ki obsega od 12 do 24 besed.</translation>
+<translation id="2321396552035646646">Celotno frazo za obnovitev lahko prilepite v poljubno polje.</translation>
 <translation id="5419707890586509000">Uvoz iz MetaMask</translation>
 <translation id="2265945811107390939">Uporabite svoje geslo MetaMask, da uvozite svojo semensko besedno zvezo</translation>
 <translation id="7060680423657442298">Nič hudega, ustvaril bom novo denarnico</translation>
+<translation id="1932878136775815535">Imam frazo za obnovitev z <ph name="LENGTH"/> besedami</translation>
+<translation id="7877416315564177070">Preverite svojo frazo za obnovitev in poskusite znova.</translation>
+<translation id="6503538941917874992">Uvoz s pomočjo vaše obnovitvene fraze</translation>
+<translation id="782167880151571109">Zaznana denarnica Metamask!</translation>
+<translation id="3619071361843652814">Zaznana denarnica Legacy!</translation>
+<translation id="4634124774493850572">Uporabi geslo</translation>
+<translation id="7697478310235189459">Beseda <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Vnesite besedno zvezo za obnovitev MetaMask dolžine med 12 in 24 besed.</translation>
 <translation id="7720392926833259937">Vnesite geslo MetaMask</translation>
 <translation id="6657585470893396449">Geslo</translation>
 <translation id="6260144012548445299">Več o moji novi denarnici</translation>
-<translation id="8746910870914151528">Pravne zadeve</translation>
-<translation id="5148123176978018397">Prosimo, potrdite naslednje:</translation>
-<translation id="6088314935678153800">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Brave NE more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
-<translation id="7781090633800450517">Prebral sem in se strinjam s <ph name="LINK_BEFORE"/>pogoji uporabe<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Preden začnemo</translation>
+<translation id="5333225216561354793">Od vas zahtevamo, da potrdite spodaj navedene elemente</translation>
+<translation id="4284971227128011550">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren/a za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Brave ne more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
+<translation id="3604445540387095708">Prebral sem in se strinjam s <ph name="LINK_BEFORE"/>Pogoji uporabe<ph name="LINK_AFTER"/></translation>
 <translation id="1422451606553326863">Kupite kripto</translation>
 <translation id="3887541341068007345">Preverjanje za razširitev denarnice ...</translation>
 <translation id="3567994771568272606">Uvoz iz podedovanih kripto denarnic Brave</translation>
@@ -1613,6 +1646,7 @@
 <translation id="5667702863609780570">Nevarno ravnanje s tveganjem izgube</translation>
 <translation id="6405354572620970908">Ta zahteva se zdi zlonamerna in vas lahko izpostavi kraji. Ne nadaljujte, če aplikaciji ne zaupate.</translation>
 <translation id="786261184916565476">Našli smo <ph name="VALUE"/> težav.</translation>
+<translation id="2826600321627372011">Ni najdenih poti</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="3745016858329272300">Splošne informacije</translation>
 <translation id="4045404575593562245">Tor nadzorni dogodki</translation>
@@ -1691,6 +1725,7 @@
 <translation id="7948579849190819732">Trenutnem zavihku</translation>
 <translation id="7056969230130642253">Ste že na tekočem</translation>
 <translation id="7292242212818928219">Na voljo je nova vsebina. Ali želite ponovno naložiti?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="7481312909269577407">Naprej</translation>
 <translation id="302781076327338683">Znova naloži mimo predpomnilnika</translation>
@@ -1843,13 +1878,11 @@
 <translation id="831931573200952705">Ta kombinacija se uporablja za <ph name="COMMAND"/> in je ni mogoče spreminjati.</translation>
 <translation id="3537006124004887164">Ta kombinacija se uporablja za <ph name="COMMAND"/> in je ni mogoče spreminjati. Poskusite jo spremeniti prek `Bližnjic aplikacije` v sistemskih nastavitvah.</translation>
 <translation id="712598284361781729">Nov razdeljeni pogled</translation>
-<translation id="6655450014966273037">Zapri razdeljeni pogled</translation>
 <translation id="1130188644637295274">Odpri v razdeljenem pogledu</translation>
-<translation id="7195519370590486580">Razdelitev na zavihke</translation>
+<translation id="6459036216700972269">Nerazdeljeni zavihki</translation>
 <translation id="3617523374417810198">Nov razdeljeni pogled</translation>
-<translation id="9053179124396567872">Bližnji razdeljeni pogled</translation>
 <translation id="8571323456914890254">Odpri v razdeljenem pogledu</translation>
-<translation id="2397258152713354053">Razdelitev na zavihke</translation>
+<translation id="5329136173514538969">Nerazdeljeni zavihki</translation>
 <translation id="8591883849678260674">Poglej original</translation>
 <translation id="1969654232209826429">min. branje</translation>
 <translation id="4101707289420716287">Izklopi Speedreader</translation>
@@ -1896,23 +1929,24 @@
 <translation id="7921782882718083488">Povzemi to stran</translation>
 <translation id="7932221068776853847">Prekinite povezavo, da prenehate pošiljati vsebino te strani za Leo, in začnite nov pogovor</translation>
 <translation id="1167803637855350748">Pri povezovanju z Leom je prišlo do težave z omrežjem, preverite povezavo in poskusite znova.</translation>
-<translation id="5095201428204952524">Leo je trenutno preveč zaposlen. Poskusite znova čez nekaj minut.</translation>
+<translation id="1996126325390835277">Leo je trenutno preveč zaposlen. Poskusite znova čez nekaj minut.</translation>
 <translation id="7144878232160441200">Poskusi znova</translation>
-<translation id="2505565639170795978">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik AI pri Brave. Poganja me Llama 13B, model, ki ga je ustvarila Meta, da je zmogljiv in uporaben v številnih primerih uporabe.</translation>
-<translation id="8030558642460377506">Živjo, sem Leo. Sem popolnoma gostujoči pomočnik z umetno inteligenco podjetja Brave. Poganja me model Mixtral 8x7B, ki ga je ustvarila družba Mistral AI za opravljanje naprednih nalog.</translation>
-<translation id="2489317965865266353">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude Instant, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
+<translation id="8570488829560315702">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Brave. Poganja me Llama 3 8B, model, ki ga je družba Meta ustvarila za zmogljivost in uporabnost v številnih primerih uporabe. <ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Živjo, jaz sem Leo. Sem v celoti gostujoči pomočnik na področju umetne inteligence pri Brave. Poganja me Mixtral 8x7B, model, ki ga je družba Mistral AI ustvarila za opravljanje naprednih nalog.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude Instant, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude 3 Haiku, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
 <translation id="4147243042852964992">Živjo, jaz sem Leo. Posreduje me Brave in poganja Claude 3 Sonnet, model, ki ga je ustvaril Anthropic za opravljanje pogovorov in obdelave besedil.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> od<ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Omejeno</translation>
 <translation id="6187065185557150870">Klepet</translation>
 <translation id="2961040541145689181">Nov klepet</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
 <translation id="1691256669639196606">Upravljajte naročnino</translation>
+<translation id="2304783958703511257">Napredne nastavitve</translation>
 <translation id="3037594989275592390">Jezikovni modeli</translation>
 <translation id="6637015365469044269">Posodobi zdaj</translation>
+<translation id="5543505256451301851">Poskusite 7 dni brezplačno</translation>
 <translation id="849535826888024304">Dosežena je omejitev stopnje odziva</translation>
-<translation id="6149863263423821329">Z naročnino na storitev Premium zagotovite višjo stopnjo odzivnosti. Če želite nadaljevati, lahko preklopite na naš manj zmogljiv brezplačni model Llama2 13b.</translation>
+<translation id="2252128900328632803">Z naročnino na storitev Premium zagotovite višjo stopnjo odzivnosti. Če želite nadaljevati, lahko preklopite na naš manj zmogljiv brezplačni model Llama2 13b.</translation>
 <translation id="4173478269537830374">Raziščite različne AI modele</translation>
 <translation id="3245401959451976966">Odkrijte svojo ustvarjalnost</translation>
 <translation id="4165928407303989823">Držite se teme</translation>
@@ -1945,8 +1979,11 @@
 <translation id="8742658901413346500">Ta pogovor je dolg in Leo lahko kmalu začne pozabljati stvari. Če preklopite na premium model, lahko zagotovite daljše pogovore ali pa počistite klepet, da ga ponastavite.</translation>
 <translation id="7550152963854770123">Počisti klepet</translation>
 <translation id="7494736170250048402">Pošlji sporočilo Leu</translation>
+<translation id="8712637175834984815">Razumem</translation>
 <translation id="1093419424466417703">Stran je predolga za Lea. V pogovoru morda manjka nekaj konteksta. Leo je lahko prebral                                       <ph name="PERCENTAGE"/>vsebino strani.</translation>
 <translation id="4370698775470316661">Ta pogovor je predolg in se ne more nadaljevati. Morda so na voljo drugi modeli, s katerimi je Leo sposoben ohraniti natančnost za daljše pogovore.</translation>
+<translation id="5719170755629028558">Izboljšanje odgovora z Iskanjem z Brave ...</translation>
+<translation id="5794962229997281366">Iskanje izboljšanih odgovorov za<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Klepet za splošne namene</translation>
 <translation id="8193130769524604031">Napredne naloge klepeta</translation>
 <translation id="3185367320601718531">Pogovor in ustvarjanje besedila</translation>
@@ -1986,6 +2023,8 @@
 <translation id="3130793786899299931">Spremeni dolžino</translation>
 <translation id="6320643499534852464">Družbeni mediji</translation>
 <translation id="2370739752330685659">Morda pozneje</translation>
+<translation id="983013125018250242">Orodja Leo</translation>
+<translation id="49269513399674318">Uporabite mikrofon</translation>
 <translation id="6303294677342628402">Ščiti</translation>
 <translation id="8458987127502506209">Omogoči zaščito Ščiti Brave</translation>
 <translation id="7509914170164691086">Ščit je VKOPLJEN <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>

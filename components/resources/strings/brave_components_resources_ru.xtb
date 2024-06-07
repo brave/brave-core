@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Больше объявлений — больше токенов.</translation>
 <translation id="7526443283522395161">Объявления на новой вкладке</translation>
 <translation id="7968650944098083708">Всплывающие объявления</translation>
+<translation id="8289546216379862569">Объявления в Поиске</translation>
+<translation id="4758111936363146244">Показываются в <ph name="BEGIN_LINK"/>Brave Поиске<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Если вы включите объявления в Поиске, то не заработаете токены BAT, но поддержите Brave.</translation>
 <translation id="6390952132783970876">Объявления в Brave Новостях</translation>
 <translation id="7516281787184495886">Рекламу в Brave Новостях нельзя отключить отдельно</translation>
 <translation id="8008378848677625233">Brave Новости отключены</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Загрузка компонента...</translation>
 <translation id="4894106830958548828">Все понятно</translation>
 <translation id="326118736933420687">Вы просматриваете страницу WebTorrent</translation>
+<translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Включить поддержку Unstoppable Domains в Brave?</translation>
 <translation id="5015092481905019948">С помощью <ph name="PROVIDER_NAME"/> Brave будет обрабатывать доменные имена <ph name="DOMAIN_LIST"/> из <ph name="DOMAIN_PROVIDER_NAME"/>, скрывая ваш IP-адрес. Если вы включите эту функцию, <ph name="PROVIDER_NAME"/> будет видеть только попытки посетить эти домены. Ознакомьтесь с <ph name="BEGIN_PROVIDER_TOU_LINK"/>Условиями использования<ph name="END_PROVIDER_TOU_LINK"/> и <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>Политикой конфиденциальности<ph name="END_PROVIDER_PRIVACY_LINK"/> <ph name="PROVIDER_NAME"/>.</translation>
@@ -713,6 +717,11 @@
 <translation id="5382339341735118861">Ошибка обработки общего запроса.</translation>
 <translation id="7123780456696055383">Запрашиваемый ресурс недоступен.</translation>
 <translation id="1680597601664421644">Мнемоническая фраза для кошелька Brave недействительна.</translation>
+<translation id="372898731091371291">Какой тип кошелька вы хотите импортировать?</translation>
+<translation id="1430728084670406473">Кошелек Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">Импортировать секретную фразу из существующего кошелька</translation>
+<translation id="8110492767853188065">Аппаратный кошелек</translation>
+<translation id="7437218084485869007">Подключение аппаратного кошелька с помощью Brave</translation>
 <translation id="4641919696349069826">Запрос уже обрабатывается.</translation>
 <translation id="872806943696014633">Отсутствуют данные о транзакции</translation>
 <translation id="7068183357903252127">Необходимо указать значение to или data.</translation>
@@ -806,19 +815,21 @@
 <translation id="1426410128494586442">Да</translation>
 <translation id="4250680216510889253">Нет</translation>
 <translation id="1201402288615127009">Следующая</translation>
-<translation id="8712637175834984815">Готово</translation>
+<translation id="3214453326297774895">Показать секретную фразу</translation>
 <translation id="6896758677409633944">Копировать</translation>
 <translation id="7885157704277298658">Copied!</translation>
 <translation id="6518133107902771759">Подтвердить</translation>
 <translation id="6042308850641462728">Подробнее...</translation>
-<translation id="768236965975208017">Безопасность. Удобство. Поддержка мультичейнов. Начните пользоваться Brave Кошельком всего в несколько кликов</translation>
 <translation id="3157931365184549694">Восстановить</translation>
-<translation id="2484275747844666540">Создать кошелек</translation>
-<translation id="3662348701117072366">Импорт существующего кошелька</translation>
-<translation id="7150150391368236519">Подключить аппаратный кошелек</translation>
+<translation id="414070570958255222">Некастодиальный мультичейн-кошелек от разработчиков Brave</translation>
+<translation id="1350120992777389959">Управляйте криптовалютными активами и NFT. Brave Кошелек поддерживает Ethereum, цепочки EVM, Solana, Filecoin, Bitcoin и не только.</translation>
+<translation id="165255193061631296">Нужен новый кошелек?</translation>
+<translation id="1939235910515558387">Создайте Brave Кошелек всего за пару минут.</translation>
+<translation id="5844138175312846408">Уже есть кошелек?</translation>
+<translation id="772643556080081594">Нужен кошелек только для просмотра</translation>
+<translation id="4878034296528175352">© Brave Software Inc., 2024. Название и логотип Brave являются зарегистрированными товарными знаками Brave Software Inc. Названия и логотипы других сервисов могут принадлежать соответствующим компаниям. Все права защищены.</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">Резервное копирование криптокошелька</translation>
-<translation id="180032279811483155">На следующем шаге вы увидите секретную фразу из <ph name="RECOVERY_PHRASE_LENGTH"/> слов, с помощью которой вы сможете восстановить доступ к основным криптовалютным аккаунтам. Храните ее в безопасном месте. Без этой фразы вы не сможете восстановить доступ к аккаунтам при потере или краже устройства, а также если забудете пароль или захотите сменить кошелек.</translation>
 <translation id="5024543173656851695">Я понимаю, что если я забуду секретную фразу, то не смогу получить доступ к своему криптокошельку.</translation>
 <translation id="8281886186245836920">Пропустить</translation>
 <translation id="6532106788206463496">Сохранить изменения</translation>
@@ -831,7 +842,7 @@
 <translation id="2339124864228588937">Подтвердите секретную фразу</translation>
 <translation id="3747079125031086337">В правильном порядке выберите слова секретной фразы.</translation>
 <translation id="802060020117206314">Фразы не совпадают. Повторите попытку.</translation>
-<translation id="8412783472871103529">Подтвердите свою секретную фразу</translation>
+<translation id="7345730059518887993">Проверка</translation>
 <translation id="2226686084760581391">Нажмите на <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> и <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> слово из вашей секретной фразы.</translation>
 <translation id="7575574239720542222">Неправильная секретная фраза</translation>
 <translation id="8692301574305033504">Создайте пароль</translation>
@@ -861,7 +872,10 @@
 <translation id="4359319875297001084">Импортировать из устаревших криптокошельков Brave?</translation>
 <translation id="3331452756822160641">Новый пароль</translation>
 <translation id="8624315169751085215">Скопировать в буфер обмена</translation>
+<translation id="2598171223363459366">Вы можете пропустить этот шаг сейчас, но позже вам все равно нужно будет сохранить секретную фразу.</translation>
+<translation id="5303015959766064022">Позже</translation>
 <translation id="6346952829206698721">Вставить из буфера обмена</translation>
+<translation id="2610561535971892504">Нажмите, чтобы скопировать</translation>
 <translation id="1121335910737476837">Основные криптовалютные счета</translation>
 <translation id="6969147029062037757">Импортированные аккаунты</translation>
 <translation id="3926119534765499672">Подключенные аппаратные криптокошельки</translation>
@@ -897,16 +911,23 @@
 <translation id="6892232036314454524">Эта ошибка может возникнуть, когда на устройстве Ledger открыто неверное приложение.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Предоставить Brave доступ к устройству Ledger</translation>
+<translation id="8012452656725205792">Предоставить Brave доступ к вашему устройству <ph name="HARDWARE_DEVICE"/></translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="1943188256166395881">Добавить проверенные аккаунты</translation>
 <translation id="8554010658308662631">Еще</translation>
 <translation id="6998738230710304743">Загрузка…</translation>
 <translation id="5592304751234049046">Поиск аккаунта</translation>
+<translation id="3168978475376026497">Путь деривации для HD-кошелька</translation>
 <translation id="6151024411349343484">Если вам не удается найти нужный аккаунт, попробуйте сменить путь в HD-кошельке (выше).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Устаревшая версия (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Ничего не найдено.</translation>
+<translation id="7261362517244085362">Авторизуйте кошелек</translation>
+<translation id="7150150391368236519">Подключить аппаратный кошелек</translation>
+<translation id="5400782314657008092">Пока поддерживаются только устройства <ph name="HARDWARE_DEVICE"/> и <ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">Чтобы управлять активами прямо из Brave Кошелька, подключите аппаратный кошелек.</translation>
+<translation id="1329837291200753515">Для импорта аппаратного кошелька укажите блокчейн</translation>
+<translation id="6983390509997396124">Подключите устройство <ph name="HARDWARE_DEVICE"/> к Brave Кошельку.</translation>
 <translation id="5149944858285555235">Неизвестная ошибка. Подключите аппаратный кошелек еще раз и повторите попытку.</translation>
 <translation id="4522570452068850558">Сведения</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -945,8 +966,6 @@
 <translation id="1613627717923045622">Тестирование сети</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Выбор аккаунта</translation>
 <translation id="6797737193502014008">Поиск аккаунтов</translation>
@@ -1060,6 +1079,7 @@
 <translation id="6383204195803840504">Здесь будут отображаться транзакции</translation>
 <translation id="6079696972035130497">Неограниченно</translation>
 <translation id="2916401020782528840">Транзакция не найдена.</translation>
+<translation id="1690963073120772693">Эту транзакцию нельзя повторить.</translation>
 <translation id="2833661570529295305">Не одобрена</translation>
 <translation id="8034530868111548216">Одобрена</translation>
 <translation id="6015436276085482001">Отклонена</translation>
@@ -1154,8 +1174,8 @@
 <translation id="8523768065044261559">Не удалось совершить транзакцию. Повторите попытку.</translation>
 <translation id="971552837551838642">Не удалось подписать сообщение. Повторите попытку.</translation>
 <translation id="8273603707418703324">Не удалось подписать сообщение: запрошен неизвестный набор ключей. Попробуйте снова.</translation>
-<translation id="5265455943786954050">Команда с кошелька Trezor уже выполняется.</translation>
-<translation id="7017116822583380542">Мост Trezor не готов.</translation>
+<translation id="6200074323131367633">Команда <ph name="DEVICE_NAME"/> уже выполняется.</translation>
+<translation id="4213183402991860207">Мост <ph name="DEVICE_NAME"/> еще не готов.</translation>
 <translation id="3378339846292573874">Добавление рекомендуемого токена</translation>
 <translation id="2322227405137827074">Вы хотите импортировать этот балл?</translation>
 <translation id="4378475168089649292">Блокчейн</translation>
@@ -1349,17 +1369,22 @@
 <translation id="1792917191129448067">Открыть Rainbow Bridge</translation>
 <translation id="1522775706527775647">Соединить с Aurora</translation>
 <translation id="4903322403594141291">Узнать больше о Brave Кошельке</translation>
-<translation id="3875185448438395303">Минимальные требования к паролю</translation>
-<translation id="2029465635925899949">Восемь символов</translation>
-<translation id="6697810017029555732">Пароли совпадают</translation>
+<translation id="4427684901715566795">Требования к паролю:</translation>
+<translation id="8521329076169776625">Как минимум 8 символов</translation>
+<translation id="3665035348242240953">Пароли совпадают</translation>
 <translation id="8918368616587206671">Сложный пароль</translation>
 <translation id="574392208103952083">Пароль средней сложности</translation>
 <translation id="8297006494302853456">Слабый</translation>
+<translation id="3282258437441351851">Кошелек Brave автоматически закроется через</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> мин.</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> ч.</translation>
 <translation id="7084181009966710506">Создается кошелек...</translation>
-<translation id="6782556046178425980">Что нужно знать перед созданием резервной копии кошелька</translation>
+<translation id="3259102562570606417">Сохраните секретную фразу</translation>
 <translation id="7119749028647909394">Секретная фраза из 12–24 слов — это закрытый ключ, с помощью которого можно восстановить доступ к кошельку, если вы потеряете устройство. Запишите слова из фразы в правильном порядке, как указано ниже, и храните ее в надежном месте.</translation>
 <translation id="3259018319025894691">Brave не может получить доступ к секретной фразе. Храните ее в безопасности и никому не показывайте.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Важно!<ph name="TAG_AFTER"/> Никому не передавайте свою секретную фразу. Если ее кто узнает, то вы можете навсегда потерять свои активы.</translation>
+<translation id="426648489149930289">Держите ее в безопасном месте, недоступном для других лиц, и никому не передавайте.</translation>
+<translation id="119185410022731300">Введите слово под номером <ph name="VALUE"/> из секретной фразы.</translation>
+<translation id="2193954488469999829">Вернуться, чтобы сохранить</translation>
 <translation id="7509948206688764960">Создайте резервную копию секретной фразы для кошелька</translation>
 <translation id="8052898407431791827">Скопировано в буфер обмена</translation>
 <translation id="4576741736874242970">Нажмите, чтобы посмотреть фразу</translation>
@@ -1378,8 +1403,9 @@
 <translation id="2781276194026093899">-е</translation>
 <translation id="7992766987062040279">-е</translation>
 <translation id="2295726992010694229">-е</translation>
-<translation id="8241405611628876973">Поздравляем! Ваш Brave Кошелек готов.</translation>
-<translation id="6828327990705355767">Чтобы получить доступ к своему кошельку, просто нажмите на его значок в правом верхнем углу любого окна браузера Brave.</translation>
+<translation id="1148624853678088576">Готово!</translation>
+<translation id="1656439328205762155">Brave Кошелек настроен.</translation>
+<translation id="3342494025742308764">Перейти к портфелю</translation>
 <translation id="396152018598329740">Как использовать криптокошелек</translation>
 <translation id="7512061585041489067">Какой криптокошелек самый лучший</translation>
 <translation id="1342755158522323177">Что такое криптовалютный браузер</translation>
@@ -1387,24 +1413,31 @@
 <translation id="4674552515763857735">Что такое секретная фраза</translation>
 <translation id="7328255859839881981">Что такое dApps</translation>
 <translation id="3852489285890032403">Что такое Web3</translation>
-<translation id="5448233694500869445">Мы обнаружили расширение MetaMask в вашем браузере</translation>
-<translation id="8436080536329710282">Введите пароль от MetaMask, чтобы легко импортировать его в Brave Кошелек.</translation>
+<translation id="2349224271234429946">Импорт кошелька MetaMask</translation>
+<translation id="6715906859822319136">Чтобы его импортировать, просто введите пароль.</translation>
 <translation id="7543512765962444927">Подключите существующий кошелек</translation>
 <translation id="3551682252653406110">Чтобы подключить кошелек, который у вас уже есть, вам может потребоваться ввести секретную фразу. Мы поддерживаем восстановление и импорт кошельков Ethereum и Solana.</translation>
-<translation id="346929827081904572">Восстановить из секретной фразы</translation>
+<translation id="3961126209136843111">Импорт существующего кошелька</translation>
 <translation id="5645597512426471834">12–24 слова</translation>
-<translation id="8158505311297755780">Введите секретную фразу из 12–24 слов для восстановления Brave Кошелька.</translation>
+<translation id="2321396552035646646">Секретную фразу можно вставить целиком в любое поле</translation>
 <translation id="5419707890586509000">Импорт из MetaMask</translation>
 <translation id="2265945811107390939">Используйте пароль от своего кошелька MetaMask, чтобы импортировать секретную фразу</translation>
 <translation id="7060680423657442298">Я создам новый кошелек</translation>
+<translation id="1932878136775815535">Вот из скольких слов состоит секретная фраза: <ph name="LENGTH"/></translation>
+<translation id="7877416315564177070">Проверьте секретную фразу и повторите попытку.</translation>
+<translation id="6503538941917874992">Импорт с помощью секретной фразы</translation>
+<translation id="782167880151571109">Обнаружен кошелек MetaMask</translation>
+<translation id="3619071361843652814">Обнаружен устаревший кошелек</translation>
+<translation id="4634124774493850572">Использовать пароль</translation>
+<translation id="7697478310235189459">Слово под номером <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Введите секретную фразу из 12–24 слов для импорта кошелька MetaMask.</translation>
 <translation id="7720392926833259937">Введите пароль от MetaMask</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="6260144012548445299">Узнать больше о новом кошельке</translation>
-<translation id="8746910870914151528">Юридическая информация</translation>
-<translation id="5148123176978018397">Подтвердите следующее:</translation>
-<translation id="6088314935678153800">Я понимаю, что это некастодиальный кошелек и я несу полную ответственность за связанные с ним средства, активы и аккаунты, а также за принятие соответствующих мер для обеспечения его безопасности, защиты и резервного копирования. Я понимаю, что Brave НЕ может получить доступ к моему кошельку или отменить транзакции от моего имени, а что моя секретная фраза — ЕДИНСТВЕННЫЙ способ восстановить доступ в случае утери пароля, кражи устройства или аналогичных обстоятельств.</translation>
-<translation id="7781090633800450517">Я соглашаюсь с <ph name="LINK_BEFORE"/>Условиями использования<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Подготовка</translation>
+<translation id="5333225216561354793">Необходимо ознакомиться с указанными ниже документами.</translation>
+<translation id="4284971227128011550">Я понимаю, что это некастодиальный кошелек и я несу полную ответственность за связанные с ним средства, активы и аккаунты, а также за принятие должных мер для обеспечения его безопасности, защиты и резервного копирования. Я понимаю, что Brave не может получить доступ к моему кошельку или отменить транзакции от моего имени, а секретная фраза — ЕДИНСТВЕННЫЙ способ восстановить доступ в случае утери пароля, кражи устройства или аналогичных обстоятельств</translation>
+<translation id="3604445540387095708">Я соглашаюсь с <ph name="LINK_BEFORE"/>Условиями использования<ph name="LINK_AFTER"/></translation>
 <translation id="1422451606553326863">Купить криптовалюту</translation>
 <translation id="3887541341068007345">Проверяем, есть ли у вас расширения для кошельков…</translation>
 <translation id="3567994771568272606">Импорт из устаревших криптокошельков Brave</translation>
@@ -1605,6 +1638,7 @@
 <translation id="5667702863609780570">Предупреждение о безопасности</translation>
 <translation id="6405354572620970908">Получен подозрительный запрос. Ваши активы и данные могут быть украдены. Не одобряйте его, если вы не уверены в надежности приложения.</translation>
 <translation id="786261184916565476">Обнаружено проблем: <ph name="VALUE"/></translation>
+<translation id="2826600321627372011">Маршруты не найдены.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -1685,6 +1719,7 @@ other {# источника}
 <translation id="7948579849190819732">Текущая вкладка</translation>
 <translation id="7056969230130642253">Вы все просмотрели</translation>
 <translation id="7292242212818928219">Есть новый контент. Перезагрузить?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Быстрые команды</translation>
 <translation id="7481312909269577407">Вперед</translation>
 <translation id="302781076327338683">Перезагрузить, не используя кеш</translation>
@@ -1837,13 +1872,11 @@ other {# источника}
 <translation id="831931573200952705">Комбинация уже используется для команды <ph name="COMMAND"/>. Это сочетание нельзя изменить.</translation>
 <translation id="3537006124004887164">Сочетание уже используется для команды <ph name="COMMAND"/>. Чтобы переназначить эту комбинацию, откройте «Сочетания клавиш приложений» в системных настройках.</translation>
 <translation id="712598284361781729">Новый режим разделенного экрана</translation>
-<translation id="6655450014966273037">Закрыть режим разделенного экрана</translation>
 <translation id="1130188644637295274">Открыть в режиме разделенного экрана</translation>
-<translation id="7195519370590486580">Разместить на отдельных вкладках</translation>
+<translation id="6459036216700972269">Выйти из режима разделенного экрана</translation>
 <translation id="3617523374417810198">Новый режим разделенного экрана</translation>
-<translation id="9053179124396567872">Закрыть режим разделенного экрана</translation>
 <translation id="8571323456914890254">Открыть в режиме разделенного экрана</translation>
-<translation id="2397258152713354053">Разместить на отдельных вкладках</translation>
+<translation id="5329136173514538969">Выйти из режима разделенного экрана</translation>
 <translation id="8591883849678260674">Посмотреть оригинал</translation>
 <translation id="1969654232209826429">мин. на чтение</translation>
 <translation id="4101707289420716287">Выключить Speedreader</translation>
@@ -1888,23 +1921,24 @@ other {# источника}
 <translation id="7921782882718083488">Получить краткий пересказ страницы</translation>
 <translation id="7932221068776853847">Чтобы больше не отправлять содержимое этой страницы Leo, отключитесь и начните новую беседу.</translation>
 <translation id="1167803637855350748">При подключении к Leo возникла проблема. Проверьте соединение и повторите попытку.</translation>
-<translation id="5095201428204952524">Превышен лимит запросов. Повторите попытку через несколько минут.</translation>
+<translation id="1996126325390835277">Превышен лимит запросов. Повторите попытку через несколько минут.</translation>
 <translation id="7144878232160441200">Повторить попытку</translation>
-<translation id="2505565639170795978">Здравствуйте! Я Leo — облачный ИИ-помощник Brave. Чтобы выполнять различные задачи, я использую языковую модель LLaMA-13B от Meta.</translation>
-<translation id="8030558642460377506">Привет, я Leo. Я являюсь полностью интегрированным ИИ-помощником от Brave и работаю при поддержке модели Mixtral 8x7B, созданной Mistral AI для решения сложных задач.</translation>
-<translation id="2489317965865266353">Здравствуйте! Я Leo — чат-бот на основе модели Claude Instant компании Anthropic. Я использую прокси-сервер Brave. Вы можете общаться со мной в чате и получать помощь с задачами, связанными с текстами.</translation>
+<translation id="8570488829560315702">Здравствуйте! Я Leo — полностью хостируемый ИИ-помощник от Brave на основе модели Llama 3 8B, созданной компанией Meta для самых разных сценариев использования. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Здравствуйте! Я Leo — полностью хостируемый ИИ-помощник от Brave на основе модели Mixtral 8x7B, созданной компанией Mistral AI для решения сложных задач. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Здравствуйте! Я Leo — чат-бот на основе модели Claude Instant компании Anthropic. Я использую прокси-сервер Brave. Вы можете общаться со мной в чате и получать помощь с задачами, связанными с текстами. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Здравствуйте! Я Leo — чат-бот на основе модели Claude 3 Haiku компании Anthropic. Я использую прокси-сервер Brave. Вы можете общаться со мной в чате и получать помощь с задачами, связанными с текстами.</translation>
 <translation id="4147243042852964992">Здравствуйте! Я Leo — чат-бот на основе модели Claude 3 Sonnet компании Anthropic. Я использую прокси-сервер Brave. Вы можете общаться со мной в чате и получать помощь с задачами, связанными с текстами.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> от компании <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Есть ограничения</translation>
 <translation id="6187065185557150870">Чат</translation>
 <translation id="2961040541145689181">Новый чат</translation>
 <translation id="7557539689487606886">Премиум-подписка</translation>
 <translation id="1691256669639196606">Управление подпиской</translation>
+<translation id="2304783958703511257">Дополнительные настройки</translation>
 <translation id="3037594989275592390">Языковые модели</translation>
 <translation id="6637015365469044269">Обновить сейчас</translation>
+<translation id="5543505256451301851">Попробовать бесплатно 7 дней</translation>
 <translation id="849535826888024304">Превышен лимит запросов</translation>
-<translation id="6149863263423821329">Увеличьте количество запросов, оформив премиум-подписку. Вы также можете перейти на менее мощную бесплатную модель Llama2 13b.</translation>
+<translation id="2252128900328632803">Увеличьте количество запросов, оформив премиум-подписку. Вы также можете перейти на менее мощную бесплатную модель Llama2 13b.</translation>
 <translation id="4173478269537830374">Попробуйте разные ИИ-модели</translation>
 <translation id="3245401959451976966">Раскройте свой творческий потенциал</translation>
 <translation id="4165928407303989823">Будьте в теме</translation>
@@ -1937,8 +1971,11 @@ other {# источника}
 <translation id="8742658901413346500">Вы отправили чат-боту Leo много сообщений. Скоро он начнет забывать начало диалога. Чтобы ИИ-помощник помнил больше, оформите премиум-подписку. Также можно начать новый диалог, очистив историю чата.</translation>
 <translation id="7550152963854770123">Очистить историю чата</translation>
 <translation id="7494736170250048402">Отправить сообщение Leo</translation>
+<translation id="8712637175834984815">Готово</translation>
 <translation id="1093419424466417703">Эта страница слишком большая для Leo, поэтому чат-бот ознакомился лишь с <ph name="PERCENTAGE"/> ее содержимого. Для точных ответов может не хватать некоторых данных.</translation>
 <translation id="4370698775470316661">Вы превысили лимит сообщений, поэтому не можете продолжить диалог. Чтобы помощник Leo поддерживал более длинные беседы, не упуская информацию, используйте другую модель.</translation>
+<translation id="5719170755629028558">Улучшаем ваш ответ с помощью Brave Поиска…</translation>
+<translation id="5794962229997281366">Улучшенный ответ на запрос «<ph name="SEARCH_TERMS"/>»</translation>
 <translation id="6291843235651817590">Чат для общих целей</translation>
 <translation id="8193130769524604031">Чат для продвинутых задач</translation>
 <translation id="3185367320601718531">Общение и генерирование текстов</translation>
@@ -1978,6 +2015,8 @@ other {# источника}
 <translation id="3130793786899299931">Изменение длины</translation>
 <translation id="6320643499534852464">Cоцсети</translation>
 <translation id="2370739752330685659">Не сейчас</translation>
+<translation id="983013125018250242">Инструменты Leo</translation>
+<translation id="49269513399674318">Использовать микрофон</translation>
 <translation id="6303294677342628402">Защита</translation>
 <translation id="8458987127502506209">Включить Brave Щит</translation>
 <translation id="7509914170164691086">Щит ВКЛЮЧЕН <ph name="LINK_BEFORE"/>для<ph name="LINK_AFTER"/></translation>

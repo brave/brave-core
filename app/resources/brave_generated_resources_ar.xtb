@@ -104,6 +104,9 @@
 <translation id="1324417023773393937">متصفح Brave</translation>
 <translation id="7276554663454265692">يمكنك تغيير <ph name="SETTING_TEXT"/> إعدادات المتصفح في أي وقت.</translation>
 <translation id="6873781976650514089">هذا الإعداد</translation>
+<translation id="4684633335323013758">طلب هذا الموقع الحصول على<ph name="PART_ONE"/>موقعك العام<ph name="PART_ONE_END"/>.<ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">طلب هذا الموقع الحصول على<ph name="PART_ONE"/>موقعك الدقيق<ph name="PART_ONE_END"/>.<ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">طلب الموقع الحصول على<ph name="PART_ONE"/>موقعك الدقيق<ph name="PART_ONE_END"/>. سيمكن لـ Brave تقديم <ph name="PART_TWO"/>بيانات موقعك العام فقط،<ph name="PART_TWO_END"/>نظرًا لأن<ph name="PART_THREE"/>خدمات الموقع<ph name="PART_THREE_END"/> تم تعطيلها.<ph name="PART_FOUR"/>معرفة المزيد<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">إغلاق الكل</translation>
 <translation id="7658239707568436148">إلغاء</translation>
 <translation id="4870911314065352661">هل تريد إغلاق جميع علامات التبويب؟</translation>
@@ -163,7 +166,8 @@
 <translation id="6959315322491671328">انقر بزر الفأرة الأيمن للإزالة</translation>
 <translation id="495046168593986294">التمرير لأعلى</translation>
 <translation id="4021716437419160885">التمرير لأسفل</translation>
-<translation id="2702801445560668637">قائمة القراءة</translation>
+<translation id="1907157509746585817">الإشارات المرجعية</translation>
+<translation id="4840597165888262798">قائمة القراءة</translation>
 <translation id="2533715613366623756">مدير الإشارات المرجعية</translation>
 <translation id="3405021928725149239">مدير الإشارات المرجعية</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
@@ -243,9 +247,11 @@
 <translation id="8025559074845816210">يتطلب Brave الوصول الكامل إلى القرص لاستيراد إشاراتك المرجعية من Safari.</translation>
 <translation id="8515328844674404333">تعلم كيفية منح الوصول الكامل إلى القرص من تفضيلات نظامك.</translation>
 <translation id="6414878884710400018">فتح تفضيلات النظام</translation>
+<translation id="4759238208242260848">التنزيلات</translation>
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 <translation id="8487693399751278191">استيراد الإشارات المرجعية الآن...</translation>
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
+<translation id="2702801445560668637">قائمة القراءة</translation>
 <translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
@@ -372,6 +378,7 @@
 <translation id="5448570825852364919">صفحة فارغة</translation>
 <translation id="8244387390464017490">تخصيص صفحة علامة تبويب جديدة</translation>
 <translation id="7461924472993315131">تثبيت</translation>
+<translation id="735832369569964359">انقر فوق Pin "تثبيت"، وقم بالتأكيد في إشعار Windows التالي</translation>
 <translation id="7506648566440714944">يتم تثبيت Brave بالفعل</translation>
 <translation id="239275665037555969">المرسى</translation>
 <translation id="4057614912106618659">منصة Brave موجودة بالفعل في المرسى</translation>
@@ -427,6 +434,10 @@
 <translation id="7889605993994647168">فشل التحديث</translation>
 <translation id="5438573563213942361">قوائم مخصصة</translation>
 <translation id="4182731739150761577">عرض القائمة بالكامل</translation>
+<translation id="2776571540844891267">تحديث القوائم</translation>
+<translation id="7424267932649051704">فشل التحديث - إعادة المحاولة</translation>
+<translation id="8426801388284487512">تم تحديث القوائم</translation>
+<translation id="3422250445565385437">تحديث القوائم</translation>
 <translation id="1340263054776016283">أدخل عنوان URL لقائمة عامل التصفية</translation>
 <translation id="8578397014396032341">عوامل تصفية المحتوى</translation>
 <translation id="3020183492814296499">الاختصارات</translation>
