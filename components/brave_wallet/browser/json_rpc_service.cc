@@ -3375,7 +3375,7 @@ void JsonRpcService::AnkrGetAccountBalances(
   std::string encoded_params =
       EncodeAnkrGetAccountBalancesParams(account_address, blockchains);
 
-  auto headers = IsEndpointUsingBraveProxy(GURL(kAnkrAdvancedAPIBaseURL))
+  auto headers = IsEndpointUsingBraveWalletProxy(GURL(kAnkrAdvancedAPIBaseURL))
                      ? MakeBraveServicesKeyHeaders()
                      : base::flat_map<std::string, std::string>();
 

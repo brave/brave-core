@@ -86,8 +86,8 @@ std::vector<std::string> CustomChainsExist(
     const std::vector<std::string>& custom_chain_ids,
     mojom::CoinType coin);
 
-bool IsEndpointUsingBraveProxy(const GURL& url);
-bool IsEndpointUsingBraveProxy(const std::string& url);
+bool IsEndpointUsingBraveWalletProxy(const GURL& url);
+bool IsEndpointUsingBraveWalletProxy(const std::string& url);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
 
 GURL GetNetworkURL(PrefService* prefs,

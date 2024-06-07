@@ -52,7 +52,7 @@ void AddKeyIfNotEmpty(base::Value::Dict* dict,
 base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
     const std::string& json_payload,
     const GURL& network_url) {
-  auto request_headers = IsEndpointUsingBraveProxy(network_url)
+  auto request_headers = IsEndpointUsingBraveWalletProxy(network_url)
                              ? MakeBraveServicesKeyHeaders()
                              : base::flat_map<std::string, std::string>();
 

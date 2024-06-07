@@ -169,7 +169,7 @@ std::string EndpointHost(const GURL& request_url) {
 
 bool ShouldThrottleEndpoint(const std::string& endpoint_host) {
   // Don't throttle requests if host matches brave proxy.
-  return !brave_wallet::IsEndpointUsingBraveProxy(endpoint_host);
+  return !brave_wallet::IsEndpointUsingBraveWalletProxy(endpoint_host);
 }
 
 std::optional<std::string> ConvertPlainStringToJsonArray(

@@ -926,18 +926,18 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
   return nullptr;
 }
 
-bool IsEndpointUsingBraveProxy(const GURL& url) {
+bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
   return url.DomainIs("wallet.brave.com") ||
          url.DomainIs("wallet.bravesoftware.com") ||
          url.DomainIs("wallet.s.brave.io");
 }
 
-bool IsEndpointUsingBraveProxy(const std::string& url) {
+bool IsEndpointUsingBraveWalletProxy(const std::string& url) {
   if (base::StartsWith(url, "http://") || base::StartsWith(url, "https://")) {
-    return IsEndpointUsingBraveProxy(GURL(url));
+    return IsEndpointUsingBraveWalletProxy(GURL(url));
   }
 
-  return IsEndpointUsingBraveProxy(GURL("https://" + url));
+  return IsEndpointUsingBraveWalletProxy(GURL("https://" + url));
 }
 
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {

@@ -1131,7 +1131,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
             EXPECT_EQ(expected_cache_header, header_value);
           }
 
-          if (IsEndpointUsingBraveProxy(request.url)) {
+          if (IsEndpointUsingBraveWalletProxy(request.url)) {
             EXPECT_TRUE(
                 request.headers.GetHeader("x-brave-key", &header_value));
             EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
@@ -1151,7 +1151,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(request.url, expected_url);
           std::string header_value;
 
-          if (IsEndpointUsingBraveProxy(request.url)) {
+          if (IsEndpointUsingBraveWalletProxy(request.url)) {
             EXPECT_TRUE(
                 request.headers.GetHeader("x-brave-key", &header_value));
             EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
