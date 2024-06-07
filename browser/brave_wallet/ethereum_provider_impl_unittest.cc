@@ -1755,15 +1755,6 @@ TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
        std::nullopt, mojom::ProviderError::kInternalError,
        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
                                  u"https://example.com")},
-      {"https://brave.com", account_0->address, "https://example.com/login",
-       "1", mojom::SignMessageErrorType::kDomainMismatched,
-       l10n_util::GetStringFUTF8(
-           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
-           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
-           u"https://example.com/login"),
-       std::nullopt, mojom::ProviderError::kInternalError,
-       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
-                                 u"https://example.com/login")},
   };
   for (const auto& invalid_case : cases) {
     const std::string& siwe_message =

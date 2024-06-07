@@ -415,13 +415,8 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
               base::ASCIIToUTF16(siwe_message->address)),
           std::move(callback));
     }
-    if (bool uri_mismatched = false;
-        delegate_->GetOrigin() != siwe_message->origin ||
-        (uri_mismatched =
-             !siwe_message->origin.IsSameOriginWith(siwe_message->uri))) {
-      const std::string& err_domain = uri_mismatched
-                                          ? siwe_message->uri.spec()
-                                          : siwe_message->origin.Serialize();
+    if (delegate_->GetOrigin() != siwe_message->origin) {
+      const std::string& err_domain = siwe_message->origin.Serialize();
       brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
           GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
           mojom::SignMessageErrorType::kDomainMismatched,
