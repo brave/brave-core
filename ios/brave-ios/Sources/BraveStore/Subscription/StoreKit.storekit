@@ -8,6 +8,8 @@
   ],
   "settings" : {
     "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
     "_storeKitErrors" : [
       {
         "current" : null,
@@ -130,8 +132,8 @@
           "codeOffers" : [
             {
               "eligibility" : [
-                "existing",
                 "expired",
+                "existing",
                 "new"
               ],
               "internalID" : "5CF353FA",
@@ -144,9 +146,9 @@
             {
               "displayPrice" : "7.99",
               "eligibility" : [
+                "expired",
                 "existing",
-                "new",
-                "expired"
+                "new"
               ],
               "internalID" : "3D43C72B",
               "isStackable" : true,

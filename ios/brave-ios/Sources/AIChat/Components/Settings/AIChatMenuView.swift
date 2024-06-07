@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import SwiftUI
 
 private struct AIChatMenuHeaderView: View {
