@@ -49,6 +49,8 @@ struct ServerConfig {
   KeyMap pub_keys;
 
   base::flat_map<std::string, SourceMapActionConfig> source_map_actions;
+
+  std::string location;
 };
 
 class ServerConfigLoader {
@@ -69,11 +71,13 @@ class ServerConfigLoader {
   ServerConfigLoader(const ServerConfigLoader&) = delete;
   ServerConfigLoader& operator=(const ServerConfigLoader&) = delete;
 
-  void Load();
-
  private:
-  void OnConfigResponse(std::optional<std::string> response_body);
-  bool ProcessConfigResponse(const std::optional<std::string>& response_body);
+  void LoadConfigs();
+  void OnConfigResponses(
+      std::vector<std::optional<std::string>> response_bodies);
+  bool ProcessConfigResponses(
+      const std::optional<std::string>& collector_response_body,
+      const std::optional<std::string>& quorum_response_body);
 
   void LoadStoredPatterns();
   void OnPatternsFileLoaded(std::optional<std::string> patterns_json);
@@ -89,7 +93,8 @@ class ServerConfigLoader {
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 
-  GURL config_url_;
+  GURL collector_config_url_;
+  GURL quorum_config_url_;
   GURL patterns_url_;
   base::FilePath patterns_path_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -97,7 +102,8 @@ class ServerConfigLoader {
   ConfigCallback config_callback_;
   PatternsCallback patterns_callback_;
 
-  std::unique_ptr<network::SimpleURLLoader> config_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> collector_config_url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> quorum_config_url_loader_;
   std::unique_ptr<network::SimpleURLLoader> patterns_url_loader_;
   net::BackoffEntry config_backoff_entry_;
   net::BackoffEntry patterns_backoff_entry_;

@@ -65,7 +65,6 @@ void WDPService::Start() {
       base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)),
       base::BindRepeating(&WDPService::OnPatternsLoaded,
                           base::Unretained(this)));
-  server_config_loader_->Load();
 }
 
 void WDPService::Stop() {
@@ -92,7 +91,8 @@ void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
 
 void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
   last_loaded_patterns_ = std::move(patterns);
-  content_scraper_ = std::make_unique<ContentScraper>(&last_loaded_patterns_);
+  content_scraper_ = std::make_unique<ContentScraper>(
+      &last_loaded_server_config_, &last_loaded_patterns_);
   double_fetcher_ = std::make_unique<DoubleFetcher>(
       profile_prefs_.get(), shared_url_loader_factory_.get(),
       base::BindRepeating(&WDPService::OnDoubleFetched,
@@ -147,7 +147,8 @@ void WDPService::OnContentScraped(bool is_strict,
     double_fetcher_->ScheduleDoubleFetch(result->url,
                                          result->SerializeToValue());
   } else {
-    auto payloads = GeneratePayloads(url_details, std::move(result));
+    auto payloads = GeneratePayloads(*last_loaded_server_config_, url_details,
+                                     std::move(result));
     for (auto& payload : payloads) {
       reporter_->ScheduleSend(std::move(payload));
     }

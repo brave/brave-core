@@ -175,22 +175,27 @@ std::optional<BasenameResult> GenerateBasename(
 
   base::Value::List key_values;
   for (const auto& key : action_config->second.keys) {
-    auto parts =
-        base::SplitString(key, "->", base::WhitespaceHandling::TRIM_WHITESPACE,
-                          base::SPLIT_WANT_ALL);
-    if (parts.empty() || parts[0].empty()) {
+    auto parts = base::SplitStringUsingSubstr(
+        key, "->", base::WhitespaceHandling::TRIM_WHITESPACE,
+        base::SPLIT_WANT_ALL);
+    if (parts.empty()) {
       continue;
     }
-    const auto* value = inner_payload->FindByDottedPath(parts[0]);
-    auto final_value = value ? value->Clone() : base::Value();
+    base::Value value;
+    if (parts[0].empty()) {
+      value = base::Value(inner_payload->Clone());
+    } else if (const auto* found_value =
+                   inner_payload->FindByDottedPath(parts[0])) {
+      value = found_value->Clone();
+    }
     if (parts.size() > 1) {
       if (parts[1] == kUrlNormalizationFunc) {
-        final_value = CleanURL(final_value);
+        value = CleanURL(value);
       } else if (parts[1] == kFlattenObjNormalizationFunc) {
-        final_value = FlattenObject(final_value);
+        value = FlattenObject(value);
       }
     }
-    key_values.Append(std::move(final_value));
+    key_values.Append(std::move(value));
   }
 
   auto period_hours = GetPeriodHoursSinceEpoch(action_config->second.period);

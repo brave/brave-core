@@ -12,6 +12,7 @@ namespace web_discovery {
 
 namespace {
 constexpr char kCollectorHostPrefix[] = "collector.wdp";
+constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kPatternsPath[] = "/patterns.gz";
 }  // namespace
@@ -23,6 +24,11 @@ std::string GetCollectorHost() {
   }
   return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
                        brave_domains::GetServicesDomain(kCollectorHostPrefix)});
+}
+
+std::string GetQuorumHost() {
+  return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                       brave_domains::GetServicesDomain(kQuorumHostPrefix)});
 }
 
 GURL GetPatternsEndpoint() {

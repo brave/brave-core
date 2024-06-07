@@ -11,6 +11,8 @@ namespace web_discovery {
 
 namespace {
 
+constexpr char kCountryCodeFieldName[] = "ctry";
+
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
   if (value_str && !value_str->empty()) {
@@ -54,10 +56,6 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
     auto attribute_values_it = scrape_result->fields.find(rule.selector);
     if (attribute_values_it == scrape_result->fields.end() ||
         attribute_values_it->second.empty()) {
-      // TODO(djandries): remove this exception and actually insert ctry
-      if (rule.selector == "ctry") {
-        continue;
-      }
       return std::nullopt;
     }
     if (rule.is_join) {
@@ -70,14 +68,16 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
         joined_data.Set(base::NumberToString(counter++), value.Clone());
       }
       if (!AggregatedDictHasContent(joined_data)) {
-        VLOG(1) << "Skipped joined clustered payload";
+        VLOG(1) << "Skipped joined clustered payload, action = "
+                << rule_group.action;
         return std::nullopt;
       }
       payload_rule_data = base::Value(std::move(joined_data));
     } else {
       const auto* value = attribute_values_it->second[0].FindString(rule.key);
       if (!value || value->empty()) {
-        VLOG(1) << "Skipped non-joined clustered payload";
+        VLOG(1) << "Skipped non-joined clustered payload, action = "
+                << rule_group.action;
         return std::nullopt;
       }
       payload_rule_data = base::Value(*value);
@@ -87,7 +87,8 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
   return CreatePayloadDict(rule_group, std::move(inner_payload));
 }
 
-void GenerateSinglePayloads(const PayloadRuleGroup& rule_group,
+void GenerateSinglePayloads(const ServerConfig& server_config,
+                            const PayloadRuleGroup& rule_group,
                             const PageScrapeResult* scrape_result,
                             std::vector<base::Value::Dict>& payloads) {
   auto attribute_values_it = scrape_result->fields.find(rule_group.key);
@@ -95,13 +96,16 @@ void GenerateSinglePayloads(const PayloadRuleGroup& rule_group,
     return;
   }
   for (const auto& attribute_value : attribute_values_it->second) {
-    payloads.push_back(CreatePayloadDict(rule_group, attribute_value.Clone()));
+    auto dict = attribute_value.Clone();
+    dict.Set(kCountryCodeFieldName, server_config.location);
+    payloads.push_back(CreatePayloadDict(rule_group, std::move(dict)));
   }
 }
 
 }  // namespace
 
 std::vector<base::Value::Dict> GeneratePayloads(
+    const ServerConfig& server_config,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result) {
   std::vector<base::Value::Dict> payloads;
@@ -114,7 +118,8 @@ std::vector<base::Value::Dict> GeneratePayloads(
       }
     } else if (rule_group.rule_type == PayloadRuleType::kSingle &&
                rule_group.result_type == PayloadResultType::kSingle) {
-      GenerateSinglePayloads(rule_group, scrape_result.get(), payloads);
+      GenerateSinglePayloads(server_config, rule_group, scrape_result.get(),
+                             payloads);
     }
   }
   return payloads;
