@@ -137,7 +137,6 @@ See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
 | Browsing history  | vector<GURL>  |  | `MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
 | URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
-| Scheduled captcha  | std::string  |  | `MockGetScheduledCaptcha(ads_client_mock_, "xyzzy");`  |
 
 See [unittest_mock_util.h](./unittest_mock_util.h) and [unittest_constants.h](./unittest_constants.h).
 

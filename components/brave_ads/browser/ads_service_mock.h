@@ -35,11 +35,6 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(int64_t, GetMaximumNotificationAdsPerHour, (), (const));
 
-  MOCK_METHOD(void,
-              ShowScheduledCaptcha,
-              (const std::string&, const std::string&));
-  MOCK_METHOD(void, SnoozeScheduledCaptcha, ());
-
   MOCK_METHOD(void, OnNotificationAdShown, (const std::string&));
   MOCK_METHOD(void, OnNotificationAdClosed, (const std::string&, bool));
   MOCK_METHOD(void, OnNotificationAdClicked, (const std::string&));

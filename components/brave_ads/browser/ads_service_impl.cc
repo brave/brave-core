@@ -1041,6 +1041,16 @@ void AdsServiceImpl::URLRequestCallback(
   std::move(callback).Run(std::move(url_response));
 }
 
+void AdsServiceImpl::ShowScheduledCaptchaCallback(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+}
+
+void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
+  adaptive_captcha_service_->SnoozeScheduledCaptcha();
+}
+
 void AdsServiceImpl::OnNotificationAdPositionChanged() {
   RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
                                      profile_->GetPrefs());
@@ -1102,15 +1112,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   }
 
   return ads_per_hour;
-}
-
-void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
-                                          const std::string& captcha_id) {
-  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
-}
-
-void AdsServiceImpl::SnoozeScheduledCaptcha() {
-  adaptive_captcha_service_->SnoozeScheduledCaptcha();
 }
 
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
@@ -1684,17 +1685,10 @@ void AdsServiceImpl::LoadDataResource(const std::string& name,
   std::move(callback).Run(data_resource);
 }
 
-void AdsServiceImpl::GetScheduledCaptcha(const std::string& payment_id,
-                                         GetScheduledCaptchaCallback callback) {
-  adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
-                                                 std::move(callback));
-}
-
-void AdsServiceImpl::ShowScheduledCaptchaNotification(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
+void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
+                                          const std::string& captcha_id) {
 #if BUILDFLAG(IS_ANDROID)
-  ShowScheduledCaptcha(payment_id, captcha_id);
+  ShowScheduledCaptchaCallback(payment_id, captcha_id);
 #else   // BUILDFLAG(IS_ANDROID)
   if (profile_->GetPrefs()->GetBoolean(
           brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
@@ -1708,8 +1702,10 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
   ads_tooltips_delegate_->ShowCaptchaTooltip(
       payment_id, captcha_id, snooze_count == 0,
-      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
-      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
+                     AsWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
+                     AsWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

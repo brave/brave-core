@@ -191,9 +191,8 @@ void UnitTestBase::MockAdsClientNotifier() {
 
 void UnitTestBase::MockAdsClient() {
   // See to `common/unittest/unittest_mock_util.h`. `MockUrlRequest`,
-  // `MockGetScheduledCaptcha`, `ShowScheduledCaptchaNotification`,
-  // `RecordP2PAdEvents`, and `Log` are not mocked here; they should be mocked
-  // as needed.
+  // `ShowScheduledCaptcha`, `RecordP2PAdEvents`, and `Log` are not mocked here;
+  // they should be mocked as needed.
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 

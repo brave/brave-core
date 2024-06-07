@@ -193,6 +193,10 @@ class AdsServiceImpl : public AdsService,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
 
+  void ShowScheduledCaptchaCallback(const std::string& payment_id,
+                                    const std::string& captcha_id);
+  void SnoozeScheduledCaptchaCallback();
+
   void OnNotificationAdPositionChanged();
 
   // KeyedService:
@@ -203,10 +207,6 @@ class AdsServiceImpl : public AdsService,
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
-
-  void ShowScheduledCaptcha(const std::string& payment_id,
-                            const std::string& captcha_id) override;
-  void SnoozeScheduledCaptcha() override;
 
   void OnNotificationAdShown(const std::string& placement_id) override;
   void OnNotificationAdClosed(const std::string& placement_id,
@@ -341,10 +341,8 @@ class AdsServiceImpl : public AdsService,
   void LoadDataResource(const std::string& name,
                         LoadDataResourceCallback callback) override;
 
-  void GetScheduledCaptcha(const std::string& payment_id,
-                           GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
+  void ShowScheduledCaptcha(const std::string& payment_id,
+                            const std::string& captcha_id) override;
 
   void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                         RunDBTransactionCallback callback) override;

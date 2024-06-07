@@ -41,9 +41,6 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
 
 void MockUrlResponses(AdsClientMock& mock, const URLResponseMap& url_responses);
 
-void MockGetScheduledCaptcha(AdsClientMock& mock,
-                             const std::string& captcha_id);
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_

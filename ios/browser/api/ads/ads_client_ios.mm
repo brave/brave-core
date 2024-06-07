@@ -120,16 +120,9 @@ std::string AdsClientIOS::LoadDataResource(const std::string& name) {
   return [bridge_ loadDataResource:name];
 }
 
-void AdsClientIOS::GetScheduledCaptcha(
-    const std::string& payment_id,
-    brave_ads::GetScheduledCaptchaCallback callback) {
-  [bridge_ getScheduledCaptcha:payment_id callback:std::move(callback)];
-}
-
-void AdsClientIOS::ShowScheduledCaptchaNotification(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
-  [bridge_ showScheduledCaptchaNotification:payment_id captchaId:captcha_id];
+void AdsClientIOS::ShowScheduledCaptcha(const std::string& payment_id,
+                                        const std::string& captcha_id) {
+  [bridge_ showScheduledCaptcha:payment_id captchaId:captcha_id];
 }
 
 void AdsClientIOS::Log(const char* file,
