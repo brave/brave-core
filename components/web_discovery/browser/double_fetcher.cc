@@ -22,10 +22,12 @@ constexpr char kUrlKey[] = "url";
 constexpr char kAssociatedDataKey[] = "assoc_data";
 
 constexpr base::TimeDelta kRequestMaxAge = base::Hours(1);
-constexpr base::TimeDelta kMinRequestInterval =
-    base::Minutes(1) - base::Seconds(5);
-constexpr base::TimeDelta kMaxRequestInterval =
-    base::Minutes(1) + base::Seconds(5);
+// constexpr base::TimeDelta kMinRequestInterval =
+//     base::Minutes(1) - base::Seconds(5);
+// constexpr base::TimeDelta kMaxRequestInterval =
+//     base::Minutes(1) + base::Seconds(5);
+constexpr base::TimeDelta kMinRequestInterval = base::Seconds(5);
+constexpr base::TimeDelta kMaxRequestInterval = base::Seconds(6);
 constexpr size_t kMaxRetries = 3;
 constexpr size_t kMaxDoubleFetchResponseSize = 2 * 1024 * 1024;
 

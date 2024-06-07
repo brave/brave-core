@@ -14,8 +14,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
+#include "brave/components/web_discovery/browser/ecdh_aes.h"
 #include "brave/components/web_discovery/browser/request_queue.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "net/http/http_response_headers.h"
 
 class PrefService;
 
@@ -25,16 +27,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace web_discovery {
-
-struct CompressEncryptResult {
-  CompressEncryptResult(std::vector<uint8_t> data, std::string encoded);
-  ~CompressEncryptResult();
-
-  CompressEncryptResult(const CompressEncryptResult&);
-
-  std::vector<uint8_t> encrypted_data;
-  std::string encoded_public_component_and_iv;
-};
 
 class Reporter {
  public:
@@ -52,12 +44,16 @@ class Reporter {
  private:
   void PrepareRequest(const base::Value& request_data);
   void OnRequestSigned(std::string final_payload_json,
+                       uint8_t count_tag_hash,
                        size_t basename_count,
                        std::optional<std::vector<const uint8_t>> signature);
-  void OnRequestCompressedAndEncrypted(
-      std::optional<CompressEncryptResult> result);
-  void OnRequestComplete(std::optional<std::string> response_body);
-  bool ValidateResponse(const std::optional<std::string>& response_body);
+  void OnRequestCompressedAndEncrypted(uint8_t count_tag_hash,
+                                       size_t basename_count,
+                                       std::optional<AESEncryptResult> result);
+  void OnRequestComplete(uint8_t count_tag_hash,
+                         size_t basename_count,
+                         scoped_refptr<net::HttpResponseHeaders> headers);
+  bool ValidateResponse(scoped_refptr<net::HttpResponseHeaders> headers);
 
   GURL submit_url_;
 

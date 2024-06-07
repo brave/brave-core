@@ -8,7 +8,10 @@
 #include <utility>
 
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "url/url_util.h"
 
 namespace web_discovery {
 
@@ -18,6 +21,44 @@ constexpr char kUrlAttrId[] = "url";
 constexpr char kFieldsValueKey[] = "fields";
 constexpr char kIdValueKey[] = "id";
 constexpr char kUrlValueKey[] = "url";
+
+constexpr char kRefineSplitFuncId[] = "splitF";
+
+std::string RefineSplit(const std::string& value,
+                        const std::string& delimiter,
+                        int index) {
+  auto split = base::SplitStringUsingSubstr(
+      value, delimiter, base::WhitespaceHandling::KEEP_WHITESPACE,
+      base::SPLIT_WANT_ALL);
+  std::string encoded_result;
+  if (index < 0 || static_cast<size_t>(index) >= split.size()) {
+    encoded_result = value;
+  } else {
+    encoded_result = split[index];
+  }
+  url::RawCanonOutputT<char16_t> result;
+  url::DecodeURLEscapeSequences(encoded_result,
+                                url::DecodeURLMode::kUTF8OrIsomorphic, &result);
+  return base::UTF16ToUTF8(result.view());
+}
+
+std::string ExecuteRefineFunctions(const RefineFunctionList& function_list,
+                                   const std::string& value) {
+  std::string result = value;
+  for (const auto& function_args : function_list) {
+    if (function_args.empty()) {
+      continue;
+    }
+    if (function_args[0] == kRefineSplitFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_int()) {
+        result = RefineSplit(result, function_args[1].GetString(),
+                             function_args[2].GetInt());
+      }
+    }
+  }
+  return result;
+}
 
 }  // namespace
 
@@ -82,26 +123,32 @@ std::unique_ptr<PageScrapeResult> PageScrapeResult::FromValue(
   return result;
 }
 
-void ContentScraper::ScrapePage(const PatternsURLDetails* url_details,
-                                const GURL& url,
+void ContentScraper::ScrapePage(const GURL& url,
+                                bool is_strict_scrape,
                                 mojom::DocumentExtractor* document_extractor,
                                 PageScrapeResultCallback callback) {
+  const auto* url_details =
+      (*patterns_)->GetMatchingURLPattern(url, is_strict_scrape);
+  if (!url_details) {
+    return;
+  }
   auto interim_result =
       std::make_unique<PageScrapeResult>(url, url_details->id);
 
   std::vector<mojom::SelectRequestPtr> select_requests;
-  for (const auto& group : url_details->scrape_rule_groups) {
+  for (const auto& [selector, group] : url_details->scrape_rule_groups) {
     auto select_request = mojom::SelectRequest::New();
-    select_request->root_selector = group.selector;
-    for (const auto& rule : group.rules) {
-      if (rule.rule_type == ScrapeRuleType::kStandard) {
-        ProcessStandardRule(rule, group.selector, url, interim_result.get());
+    select_request->root_selector = selector;
+    for (const auto& [report_key, rule] : group) {
+      if (rule->rule_type == ScrapeRuleType::kStandard) {
+        ProcessStandardRule(report_key, *rule, selector, url,
+                            interim_result.get());
         continue;
       }
       auto attribute_request = mojom::SelectAttributeRequest::New();
-      attribute_request->sub_selector = rule.sub_selector;
-      attribute_request->attribute = rule.attribute;
-      attribute_request->key = rule.report_key;
+      attribute_request->sub_selector = rule->sub_selector;
+      attribute_request->attribute = rule->attribute;
+      attribute_request->key = report_key;
 
       select_request->attribute_requests.push_back(
           std::move(attribute_request));
@@ -112,31 +159,36 @@ void ContentScraper::ScrapePage(const PatternsURLDetails* url_details,
   document_extractor->QueryElementAttributes(
       std::move(select_requests),
       base::BindOnce(&ContentScraper::OnScrapedElementAttributes,
-                     base::Unretained(this), std::move(interim_result),
-                     std::move(callback)));
+                     base::Unretained(this), is_strict_scrape,
+                     std::move(interim_result), std::move(callback)));
 }
 
 void ContentScraper::ParseAndScrapePage(
+    bool is_strict_scrape,
     std::unique_ptr<PageScrapeResult> prev_result,
-    const PatternsURLDetails* url_details,
     std::string html,
     PageScrapeResultCallback callback) {
+  const auto* url_details =
+      (*patterns_)->GetMatchingURLPattern(prev_result->url, is_strict_scrape);
+  if (!url_details) {
+    return;
+  }
   auto interim_result = std::move(prev_result);
 
   std::vector<rust_document_extractor::SelectRequest> select_requests;
-  for (const auto& group : url_details->scrape_rule_groups) {
+  for (const auto& [selector, group] : url_details->scrape_rule_groups) {
     rust_document_extractor::SelectRequest select_request;
-    select_request.root_selector = group.selector;
-    for (const auto& rule : group.rules) {
-      if (rule.rule_type == ScrapeRuleType::kStandard) {
-        ProcessStandardRule(rule, group.selector, interim_result->url,
+    select_request.root_selector = selector;
+    for (const auto& [report_key, rule] : group) {
+      if (rule->rule_type == ScrapeRuleType::kStandard) {
+        ProcessStandardRule(report_key, *rule, selector, interim_result->url,
                             interim_result.get());
         continue;
       }
       rust_document_extractor::SelectAttributeRequest attribute_request{
-          .sub_selector = rule.sub_selector.value_or(""),
-          .key = rule.report_key,
-          .attribute = rule.attribute,
+          .sub_selector = rule->sub_selector.value_or(""),
+          .key = report_key,
+          .attribute = rule->attribute,
       };
       select_request.attribute_requests.push_back(std::move(attribute_request));
     }
@@ -148,31 +200,39 @@ void ContentScraper::ParseAndScrapePage(
       base::BindOnce(&rust_document_extractor::query_element_attributes, html,
                      select_requests),
       base::BindOnce(&ContentScraper::OnRustElementAttributes,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(interim_result),
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), is_strict_scrape,
+                     std::move(interim_result), std::move(callback)));
 }
 
-void ContentScraper::ProcessStandardRule(const ScrapeRule& rule,
+void ContentScraper::ProcessStandardRule(const std::string& report_key,
+                                         const ScrapeRule& rule,
                                          const std::string& root_selector,
                                          const GURL& url,
                                          PageScrapeResult* scrape_result) {
   if (rule.attribute == kUrlAttrId) {
     base::Value::Dict dict;
-    dict.Set(rule.report_key, url.spec());
+    dict.Set(report_key, url.spec());
     scrape_result->fields[root_selector].push_back(std::move(dict));
   }
 }
 
 void ContentScraper::OnScrapedElementAttributes(
+    bool is_strict_scrape,
     std::unique_ptr<PageScrapeResult> scrape_result,
     PageScrapeResultCallback callback,
     std::vector<mojom::AttributeResultPtr> attribute_results) {
+  const auto* url_details =
+      (*patterns_)->GetMatchingURLPattern(scrape_result->url, is_strict_scrape);
+  if (!url_details) {
+    return;
+  }
   for (const auto& attribute_result : attribute_results) {
     base::Value::Dict attribute_values;
     for (const auto& [key, value_str] : attribute_result->attribute_values) {
       base::Value value;
       if (value_str) {
-        value = base::Value(*value_str);
+        value = base::Value(MaybeExecuteRefineFunctions(
+            url_details, attribute_result->root_selector, key, *value_str));
       }
       attribute_values.Set(key, std::move(value));
     }
@@ -183,15 +243,23 @@ void ContentScraper::OnScrapedElementAttributes(
 }
 
 void ContentScraper::OnRustElementAttributes(
+    bool is_strict_scrape,
     std::unique_ptr<PageScrapeResult> scrape_result,
     PageScrapeResultCallback callback,
     rust::Vec<rust_document_extractor::AttributeResult> attribute_results) {
+  const auto* url_details =
+      (*patterns_)->GetMatchingURLPattern(scrape_result->url, is_strict_scrape);
+  if (!url_details) {
+    return;
+  }
   for (const auto& attribute_result : attribute_results) {
     base::Value::Dict attribute_values;
     for (const auto& pair : attribute_result.attribute_pairs) {
       base::Value value;
       if (!pair.value.empty()) {
-        value = base::Value(std::string(pair.value));
+        value = base::Value(MaybeExecuteRefineFunctions(
+            url_details, std::string(attribute_result.root_selector),
+            std::string(pair.key), std::string(pair.value)));
       }
       attribute_values.Set(std::string(pair.key), std::move(value));
     }
@@ -199,6 +267,22 @@ void ContentScraper::OnRustElementAttributes(
         .push_back(std::move(attribute_values));
   }
   std::move(callback).Run(std::move(scrape_result));
+}
+
+std::string ContentScraper::MaybeExecuteRefineFunctions(
+    const PatternsURLDetails* url_details,
+    const std::string& root_selector,
+    const std::string& report_key,
+    std::string value) {
+  const auto rule_group = url_details->scrape_rule_groups.find(root_selector);
+  if (rule_group != url_details->scrape_rule_groups.end()) {
+    auto rule = rule_group->second.find(report_key);
+    if (rule != rule_group->second.end() &&
+        !rule->second->functions_applied.empty()) {
+      return ExecuteRefineFunctions(rule->second->functions_applied, value);
+    }
+  }
+  return value;
 }
 
 }  // namespace web_discovery

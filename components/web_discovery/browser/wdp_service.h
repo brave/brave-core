@@ -16,7 +16,6 @@
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/double_fetcher.h"
 #include "brave/components/web_discovery/browser/patterns.h"
-#include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/reporter.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"

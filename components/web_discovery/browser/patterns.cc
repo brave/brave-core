@@ -31,6 +31,7 @@ constexpr char kActionKey[] = "action";
 constexpr char kFieldsKey[] = "fields";
 constexpr char kPayloadsKey[] = "payloads";
 constexpr char kJoinFieldAction[] = "join";
+constexpr char kFunctionsAppliedKey[] = "functionsApplied";
 
 constexpr auto kScrapeRuleTypeMap =
     base::MakeFixedFlatMap<std::string_view, ScrapeRuleType>({
@@ -99,6 +100,7 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
       VLOG(1) << "Payload rule or result types unknown";
       return std::nullopt;
     }
+    rule_group_it->action = *action;
     rule_group_it->key = key;
     rule_group_it->result_type = result_type_it->second;
     rule_group_it->rule_type = rule_type_it->second;
@@ -119,21 +121,34 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
   return result;
 }
 
-std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
-    const base::Value::Dict* scrape_url_dict) {
-  std::vector<ScrapeRuleGroup> result(scrape_url_dict->size());
+RefineFunctionList ParseFunctionsApplied(const base::Value::List* list) {
+  RefineFunctionList result;
+  for (const auto& function_val : *list) {
+    const auto* function_list = function_val.GetIfList();
+    if (!function_list || function_list->size() <= 1) {
+      continue;
+    }
+    std::vector<base::Value> function_vec;
+    for (const auto& element : *function_list) {
+      function_vec.push_back(element.Clone());
+    }
+    result.push_back(std::move(function_vec));
+  }
+  return result;
+}
 
-  auto rule_group_it = result.begin();
+std::optional<base::flat_map<std::string, ScrapeRuleGroup>> ParseScrapeRules(
+    const base::Value::Dict* scrape_url_dict) {
+  base::flat_map<std::string, ScrapeRuleGroup> result;
+
   for (const auto [selector, rule_group_value] : *scrape_url_dict) {
     auto* rule_group_dict = rule_group_value.GetIfDict();
     if (!rule_group_dict) {
       VLOG(1) << "Scrape rule group is not a dict";
       return std::nullopt;
     }
-    rule_group_it->selector = selector;
-    rule_group_it->rules = std::vector<ScrapeRule>(rule_group_dict->size());
 
-    auto rule_it = rule_group_it->rules.begin();
+    auto& rule_group = result[selector];
     for (const auto [report_key, rule_value] : *rule_group_dict) {
       auto* rule_dict = rule_value.GetIfDict();
       if (!rule_dict) {
@@ -143,26 +158,28 @@ std::optional<std::vector<ScrapeRuleGroup>> ParseScrapeRules(
       auto* sub_selector = rule_dict->FindString(kSubSelectorKey);
       auto* attribute = rule_dict->FindString(kAttributeKey);
       auto* rule_type_str = rule_dict->FindString(kRuleTypeKey);
+      auto* functions_applied = rule_dict->FindList(kFunctionsAppliedKey);
       if (!attribute) {
         VLOG(1) << "Attribute missing from rule";
         return std::nullopt;
       }
-      rule_it->report_key = report_key;
-      rule_it->rule_type = ScrapeRuleType::kOther;
+      auto rule = std::make_unique<ScrapeRule>();
+      rule->rule_type = ScrapeRuleType::kOther;
       if (rule_type_str) {
         auto rule_type_it = kScrapeRuleTypeMap.find(*rule_type_str);
         if (rule_type_it != kScrapeRuleTypeMap.end()) {
-          rule_it->rule_type = rule_type_it->second;
+          rule->rule_type = rule_type_it->second;
         }
       }
-      rule_it->attribute = *attribute;
+      rule->attribute = *attribute;
       if (sub_selector) {
-        rule_it->sub_selector = *sub_selector;
+        rule->sub_selector = *sub_selector;
       }
-      rule_it = std::next(rule_it);
+      if (functions_applied) {
+        rule->functions_applied = ParseFunctionsApplied(functions_applied);
+      }
+      rule_group[report_key] = std::move(rule);
     }
-
-    rule_group_it = std::next(rule_group_it);
   }
   return result;
 }
@@ -230,9 +247,6 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
 
 ScrapeRule::ScrapeRule() = default;
 ScrapeRule::~ScrapeRule() = default;
-
-ScrapeRuleGroup::ScrapeRuleGroup() = default;
-ScrapeRuleGroup::~ScrapeRuleGroup() = default;
 
 PayloadRule::PayloadRule() = default;
 PayloadRule::~PayloadRule() = default;
