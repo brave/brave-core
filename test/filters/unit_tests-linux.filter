@@ -5,18 +5,6 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# These fail because we override IdentityManager::GetAccountsInCookieJar
--SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
-
-# These fail because we disable DIPS via features::kDIPS
--All/DIPSDatabasePopupsTest.*
--DIPSDatabaseBounceTableGarbageCollectionTest.*
-
-# These fail because we disable prefs::kSafeBrowsingScoutReportingEnabled.
--Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabled/1
--Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1
--Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledUmaOnly/1
-
 # These fail because OsIntegrationTestOverride::GetShortcutPath and
 # OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
 # into the shortcut name but our shortcut starts with "brave-".
@@ -26,10 +14,6 @@
 -InstallAppLocallyCommandTest.BasicBehavior
 -WebAppPolicyForceUnregistrationTest.*
 
--ChromeBrowsingDataRemoverDelegateTest.*
 -ChromePaths.*
--Chromium/ChannelInfoTest.*
--ExtensionServiceTest.*
--MediaFileSystemRegistryTest.*
 -ShellIntegrationTest.*
 -WebAppShortcutLinuxTest.*

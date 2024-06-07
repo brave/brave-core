@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
@@ -97,11 +98,14 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
       extensions::ExtensionRegistry::Get(context);
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       extensions::GetExtensionFileTaskRunner();
-  greaselion::GreaselionDownloadService* download_service = nullptr;
-  // Brave browser process may be null if we are being created within a unit
-  // test.
-  if (g_brave_browser_process)
-    download_service = g_brave_browser_process->greaselion_download_service();
+  auto* download_service =
+      g_brave_browser_process->greaselion_download_service();
+  // download service can be null in tests
+  if (!download_service) {
+    CHECK_IS_TEST();
+    return nullptr;
+  }
+
   std::unique_ptr<GreaselionServiceImpl> greaselion_service(
       new GreaselionServiceImpl(
           download_service, GetInstallDirectory(), extension_system,

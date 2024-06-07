@@ -300,8 +300,8 @@
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
 -SavedTabGroupBarUnitTest.*
 
-# MPArch is not supported in Brave, and therefore tests relating to it should
-# be disable.
+# Prerender is disabled
+-PrerenderManagerBasicRequirementTest.*
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
 -PrerenderManagerTest.DestroyedOnNavigateAway
@@ -363,6 +363,8 @@
 -PreconnectManagerTest.*
 
 # These tests fail because we disable DIPS via features::kDIPS
+-DIPSDatabaseConfigTest.*
+-DIPSServiceUkmTest.*
 -All/DIPSDatabaseAllColumnTest.*/*
 -All/DIPSDatabaseErrorHistogramsTest.*/*
 -All/DIPSDatabaseGarbageCollectionTest.*/*
@@ -664,6 +666,14 @@
 -StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
 -StorageAccessAPIServiceImplTest.RenewPermissionGrant
 -StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection
+
+# These fail because we override IdentityManager::GetAccountsInCookieJar
+-SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
+
+# These fail because we disable prefs::kSafeBrowsingScoutReportingEnabled.
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabled/1
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledTwoClients/1
+-Impl/TrialComparisonCertVerifierControllerTest.OfficialBuildTrialEnabledUmaOnly/1
 
 # This test fails because our badge doesn't match the upstream badge
 -IconBadgingTest.VerifyFromDisk

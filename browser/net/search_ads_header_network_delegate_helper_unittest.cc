@@ -62,8 +62,6 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    brave_rewards::RegisterProfilePrefs(prefs->registry());
-    brave_ads::RegisterProfilePrefs(prefs->registry());
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();

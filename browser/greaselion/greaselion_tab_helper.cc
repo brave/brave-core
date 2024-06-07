@@ -5,11 +5,7 @@
 
 #include "brave/browser/greaselion/greaselion_tab_helper.h"
 
-#include <string>
-#include <vector>
-
-#include "base/functional/callback_helpers.h"
-#include "base/strings/utf_string_conversions.h"
+#include "base/check_is_test.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -24,11 +20,19 @@ GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<GreaselionTabHelper>(*web_contents) {
   download_service_ = g_brave_browser_process->greaselion_download_service();
-  download_service_->AddObserver(this);
+  // download service can be null in tests
+  if (download_service_) {
+    download_service_->AddObserver(this);
+  } else {
+    CHECK_IS_TEST();
+  }
 }
 
 GreaselionTabHelper::~GreaselionTabHelper() {
-  download_service_->RemoveObserver(this);
+  // download service can be null in tests
+  if (download_service_) {
+    download_service_->RemoveObserver(this);
+  }
 }
 
 void GreaselionTabHelper::OnRulesReady(
