@@ -98,7 +98,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
+import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -1189,20 +1189,6 @@ public class BraveNewTabPageLayout
                 isTablet,
                 tabStripHeightSupplier);
 
-        assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
-
-        if (mMvTilesContainerLayout != null && !isScrollableMvtEnabled()) {
-            ViewGroup tilesLayout = mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
-
-            assert tilesLayout instanceof MostVisitedTilesGridLayout
-                    : "Something has changed in the upstream!";
-
-            if (tilesLayout instanceof MostVisitedTilesGridLayout) {
-                ((MostVisitedTilesGridLayout) tilesLayout)
-                        .setMaxRows(getMaxRowsForMostVisitedTiles());
-            }
-        }
-
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
@@ -1469,13 +1455,6 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             mNtpAdapter.setBraveNewsController(mBraveNewsController);
         }
-    }
-
-    protected boolean isScrollableMvtEnabled() {
-        return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
-                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
-                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
     private int getMaxRowsForMostVisitedTiles() {
