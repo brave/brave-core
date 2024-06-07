@@ -1027,6 +1027,22 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_TRUE(AllCoinsTested());
 }
 
+TEST(BraveWalletUtilsTest, IsEndpointUsingBraveWalletProxy) {
+  // Test with valid URLs that should match the proxy domains
+  EXPECT_TRUE(IsEndpointUsingBraveWalletProxy(
+      GURL("https://ethereum-mainnet.wallet.brave.com")));
+  EXPECT_TRUE(IsEndpointUsingBraveWalletProxy(
+      GURL("https://ethereum-mainnet.wallet.bravesoftware.com")));
+  EXPECT_TRUE(IsEndpointUsingBraveWalletProxy(
+      GURL("https://ethereum-mainnet.wallet.s.brave.io")));
+
+  // Test with invalid URLs that should not match the proxy domains
+  EXPECT_FALSE(IsEndpointUsingBraveWalletProxy(GURL("https://example.com")));
+  EXPECT_FALSE(
+      IsEndpointUsingBraveWalletProxy(GURL("https://wallet.brave.io")));
+  EXPECT_FALSE(IsEndpointUsingBraveWalletProxy(GURL("https://brave.com")));
+}
+
 TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
