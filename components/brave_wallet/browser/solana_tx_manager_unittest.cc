@@ -736,15 +736,15 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(tx_meta2->tx()->fee_estimation()->fee_per_compute_unit, 0U);
   responses.clear();
 
-  // 3. Testcase for when priority fee fetching fails
-  // (getRecentPrioritizationFees) When priority fee fetching fails
-  // (getRecentPrioritizationFees), the tx should have a fee estimation, but
-  // fee_per_compute_unit should be the default.
+  // When priority fee fetching fails (getRecentPrioritizationFees),
+  // the tx should have a fee estimation, but fee_per_compute_unit should
+  // be the default.
   std::string meta_id3;
   responses["getRecentPrioritizationFees"] = "invalid";
   SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
                  kMockGetFeeForMessageResponse, false,
                  last_valid_block_height1_, std::nullopt, responses);
+
   AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
                            from_account, &meta_id3);
   auto tx_meta3 = solana_tx_manager()->GetTxForTesting(meta_id3);
@@ -767,11 +767,6 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   auto tx_meta4 = solana_tx_manager()->GetTxForTesting(meta_id4);
   ASSERT_TRUE(tx_meta4);
   EXPECT_EQ(tx_meta4->chain_id(), mojom::kSolanaMainnet);
-  tx->message()->set_recent_blockhash(
-      latest_blockhash1_);  // Added to tx_meta4 when fetching the fee estimate
-  tx->message()->set_last_valid_block_height(
-      last_valid_block_height1_);  // Added to tx_meta4 when fetching the fee
-                                   // estimate
   tx->message()->AddPriorityFee(
       69017 + 300,
       100);  // Added priority automatically in AddUnapprovedTransaction
@@ -800,9 +795,6 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   tx->set_wired_tx(
       tx->GetSignedTransaction(keyring_service_.get(), from_account));
 
-  tx->message()->set_recent_blockhash(latest_blockhash1_);
-  tx->message()->set_last_valid_block_height(last_valid_block_height1_ +
-                                             kSolanaValidBlockHeightThreshold);
   tx_meta4 = solana_tx_manager()->GetTxForTesting(meta_id4);
   ASSERT_TRUE(tx_meta4);
   EXPECT_EQ(tx_meta4->chain_id(), mojom::kSolanaMainnet);
@@ -1245,18 +1237,16 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
                                       &system_transfer_data);
   ASSERT_TRUE(system_transfer_data);
 
-  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
-                 kMockGetFeeForMessageResponse, false,
-                 last_valid_block_height1_);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
+                 false, last_valid_block_height1_);
   std::string meta_id1;
   AddUnapprovedTransaction(mojom::kSolanaMainnet, system_transfer_data.Clone(),
                            from, &meta_id1);
   ASSERT_FALSE(meta_id1.empty());
   ApproveTransaction(meta_id1);
 
-  SetInterceptor(latest_blockhash2_, last_valid_block_height2_, tx_hash2_,
-                 kMockGetFeeForMessageResponse, false,
-                 last_valid_block_height2_, "[null, null]");
+  SetInterceptor(latest_blockhash2_, last_valid_block_height2_, tx_hash2_, "",
+                 false, last_valid_block_height1_);
   // Fast forward to have block tracker run with the new interceptor.
   task_environment_.FastForwardBy(
       base::Seconds(kSolanaBlockTrackerTimeInSeconds));
@@ -1280,14 +1270,14 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
   EXPECT_EQ(tx1->status(), mojom::TransactionStatus::Submitted);
   EXPECT_EQ(tx1->tx()->message()->recent_blockhash(), latest_blockhash1_);
   EXPECT_EQ(tx1->tx()->message()->last_valid_block_height(),
-            last_valid_block_height1_ + kSolanaValidBlockHeightThreshold);
+            last_valid_block_height1_);
 
   auto tx2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx2);
   EXPECT_EQ(tx2->status(), mojom::TransactionStatus::Submitted);
   EXPECT_EQ(tx2->tx()->message()->recent_blockhash(), latest_blockhash2_);
   EXPECT_EQ(tx2->tx()->message()->last_valid_block_height(),
-            last_valid_block_height2_ + kSolanaValidBlockHeightThreshold);
+            last_valid_block_height2_);
 
   // Set Interceptor for return null signature statuses and block height only
   // valid for blockhash2.

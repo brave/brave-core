@@ -73,6 +73,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                               const std::string& error_message)>;
   using GetEstimatedTxBaseFeeCallback =
       base::OnceCallback<void(std::unique_ptr<SolanaTxMeta> tx_meta,
+                              const std::string& unsigned_tx,
                               uint64_t tx_fee,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
@@ -206,6 +207,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& error_message);
   void OnGetFeeForMessage(GetEstimatedTxBaseFeeCallback callback,
                           std::unique_ptr<SolanaTxMeta> meta,
+                          const std::string& unsigned_tx,
                           uint64_t tx_fee,
                           mojom::SolanaProviderError error,
                           const std::string& error_message);
@@ -242,6 +244,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   void OnGetEstimatedTxBaseFee(const std::string& chain_id,
                                GetSolanaTxFeeEstimationForMetaCallback callback,
                                std::unique_ptr<SolanaTxMeta> meta,
+                               const std::string& unsigned_tx,
                                uint64_t base_fee,
                                mojom::SolanaProviderError error,
                                const std::string& error_message);

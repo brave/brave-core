@@ -202,6 +202,7 @@ void SolanaTxManager::OnGetEstimatedTxBaseFee(
     const std::string& chain_id,
     GetSolanaTxFeeEstimationForMetaCallback callback,
     std::unique_ptr<SolanaTxMeta> meta,
+    const std::string& unsigned_tx,
     uint64_t base_fee,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
@@ -219,7 +220,6 @@ void SolanaTxManager::OnGetEstimatedTxBaseFee(
     return;
   }
 
-  const auto unsigned_tx = meta->tx()->GetUnsignedTransaction();
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::OnSimulateSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), chain_id, std::move(meta),
@@ -942,11 +942,12 @@ void SolanaTxManager::GetEstimatedTxBaseFee(
   } else {
     const std::string base64_encoded_message =
         meta->tx()->GetBase64EncodedMessage();
+    const std::string unsigned_tx = meta->tx()->GetUnsignedTransaction();
     json_rpc_service_->GetSolanaFeeForMessage(
         chain_id, base64_encoded_message,
         base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(meta)));
+                       std::move(meta), unsigned_tx));
   }
 }
 
@@ -958,28 +959,40 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
-    std::move(callback).Run({}, 0, error, error_message);
+    std::move(callback).Run({}, "", 0, error, error_message);
     return;
   }
 
-  const std::string& chain_id = meta->chain_id();
+  // Temporarily set the recent blockhash and last valid block height so
+  // they are included in the base64 encoded message used in getFeeForMessage
+  // and unsigned transaction used in simulateTransaction.
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   const std::string base64_encoded_message =
       meta->tx()->GetBase64EncodedMessage();
+  const std::string unsigned_tx = meta->tx()->GetUnsignedTransaction();
+
+  // Clear recent blockhash and last valid block height. We will fetch fresh
+  // values when user approves the transaction.
+  meta->tx()->message()->set_recent_blockhash("");
+  meta->tx()->message()->set_last_valid_block_height(0);
+
+  const std::string& chain_id = meta->chain_id();
   json_rpc_service_->GetSolanaFeeForMessage(
       chain_id, base64_encoded_message,
       base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(meta)));
+                     std::move(meta), unsigned_tx));
 }
 
 void SolanaTxManager::OnGetFeeForMessage(GetEstimatedTxBaseFeeCallback callback,
                                          std::unique_ptr<SolanaTxMeta> meta,
+                                         const std::string& unsigned_tx,
                                          uint64_t tx_fee,
                                          mojom::SolanaProviderError error,
                                          const std::string& error_message) {
-  std::move(callback).Run(std::move(meta), tx_fee, error, error_message);
+  std::move(callback).Run(std::move(meta), unsigned_tx, tx_fee, error,
+                          error_message);
 }
 
 void SolanaTxManager::GetSolanaTxFeeEstimation(
