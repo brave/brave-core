@@ -7,7 +7,9 @@
 
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/base64.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
@@ -64,10 +66,19 @@ constexpr char kLimitFieldName[] = "limit";
 constexpr char kPeriodFieldName[] = "period";
 constexpr char kSourceMapFieldName[] = "sourceMap";
 constexpr char kSourceMapActionsFieldName[] = "actions";
+constexpr char kLocationFieldName[] = "location";
 
-constexpr char kConfigPathWithFields[] =
+constexpr char kCollectorConfigPathWithFields[] =
     "/config?fields=minVersion,groupPubKeys,pubKeys,sourceMap";
+constexpr char kQuorumConfigPath[] = "/config";
 constexpr char kPatternsFilename[] = "wdp_patterns.json";
+
+constexpr char kOmittedLocationValue[] = "--";
+constexpr auto kAllowedReportLocations =
+    base::MakeFixedFlatSet<std::string_view>(
+        {"de", "at", "ch", "es", "us", "fr", "nl", "gb", "it", "be",
+         "se", "dk", "fi", "cz", "gr", "hu", "ro", "no", "ca", "au",
+         "ru", "ua", "in", "pl", "jp", "br", "mx", "cn", "ar"});
 
 KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
   KeyMap map;
@@ -153,39 +164,46 @@ ServerConfigLoader::ServerConfigLoader(
       patterns_callback_(patterns_callback),
       config_backoff_entry_(&kBackoffPolicy),
       patterns_backoff_entry_(&kBackoffPolicy) {
-  config_url_ = GURL(GetCollectorHost() + kConfigPathWithFields);
+  collector_config_url_ =
+      GURL(GetCollectorHost() + kCollectorConfigPathWithFields);
+  quorum_config_url_ = GURL(GetQuorumHost() + kQuorumConfigPath);
   patterns_url_ = GetPatternsEndpoint();
 
   patterns_path_ = user_data_dir.Append(kPatternsFilename);
+  LoadConfigs();
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;
 
-void ServerConfigLoader::Load() {
-  // TODO(djandries): create a backoff url loader if one doenst exist
-  // but consider how join retries will work before you do. we might want to
-  // generate gsk beforehand... in which case it might make sense to add a
-  // repeating callback for generating state + network requests
-  if (config_url_loader_) {
+void ServerConfigLoader::LoadConfigs() {
+  if (collector_config_url_loader_ || quorum_config_url_loader_) {
     // Another request is in progress
     return;
   }
-  auto resource_request = CreateResourceRequest(config_url_);
+  auto collector_resource_request =
+      CreateResourceRequest(collector_config_url_);
+  auto quorum_resource_request = CreateResourceRequest(quorum_config_url_);
 
-  config_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), kNetworkTrafficAnnotation);
+  collector_config_url_loader_ = network::SimpleURLLoader::Create(
+      std::move(collector_resource_request), kNetworkTrafficAnnotation);
+  quorum_config_url_loader_ = network::SimpleURLLoader::Create(
+      std::move(quorum_resource_request), kNetworkTrafficAnnotation);
 
-  config_url_loader_->DownloadToString(
-      shared_url_loader_factory_.get(),
-      base::BindOnce(&ServerConfigLoader::OnConfigResponse,
-                     base::Unretained(this)),
-      kMaxResponseSize);
+  auto callback = base::BarrierCallback<std::optional<std::string>>(
+      2, base::BindOnce(&ServerConfigLoader::OnConfigResponses,
+                        base::Unretained(this)));
+
+  collector_config_url_loader_->DownloadToString(
+      shared_url_loader_factory_.get(), callback, kMaxResponseSize);
+  quorum_config_url_loader_->DownloadToString(shared_url_loader_factory_.get(),
+                                              callback, kMaxResponseSize);
 }
 
-void ServerConfigLoader::OnConfigResponse(
-    std::optional<std::string> response_body) {
+void ServerConfigLoader::OnConfigResponses(
+    std::vector<std::optional<std::string>> response_bodies) {
+  CHECK_EQ(response_bodies.size(), 2u);
   base::Time update_time = base::Time::Now();
-  bool result = ProcessConfigResponse(response_body);
+  bool result = ProcessConfigResponses(response_bodies[0], response_bodies[1]);
 
   config_backoff_entry_.InformOfRequest(result);
 
@@ -199,33 +217,40 @@ void ServerConfigLoader::OnConfigResponse(
 
   config_update_timer_.Start(
       FROM_HERE, update_time,
-      base::BindOnce(&ServerConfigLoader::Load, base::Unretained(this)));
+      base::BindOnce(&ServerConfigLoader::LoadConfigs, base::Unretained(this)));
 }
 
-bool ServerConfigLoader::ProcessConfigResponse(
-    const std::optional<std::string>& response_body) {
-  auto* response_info = config_url_loader_->ResponseInfo();
-  if (!response_body || !response_info ||
-      response_info->headers->response_code() != 200) {
+bool ServerConfigLoader::ProcessConfigResponses(
+    const std::optional<std::string>& collector_response_body,
+    const std::optional<std::string>& quorum_response_body) {
+  auto* collector_response_info = collector_config_url_loader_->ResponseInfo();
+  auto* quorum_response_info = quorum_config_url_loader_->ResponseInfo();
+  if (!collector_response_body || !collector_response_info ||
+      !quorum_response_body || !collector_response_info ||
+      collector_response_info->headers->response_code() != 200 ||
+      quorum_response_info->headers->response_code() != 200) {
     VLOG(1) << "Failed to fetch server config";
     return false;
   }
 
-  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
-      *response_body, base::JSON_PARSE_RFC);
+  auto collector_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      *collector_response_body, base::JSON_PARSE_RFC);
+  auto quorum_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      *quorum_response_body, base::JSON_PARSE_RFC);
 
-  if (!parsed_json.has_value()) {
+  if (!collector_parsed_json.has_value() || !quorum_parsed_json.has_value()) {
     VLOG(1) << "Failed to parse server config json";
     return false;
   }
 
-  const auto* root = parsed_json.value().GetIfDict();
-  if (!root) {
+  const auto* collector_root = collector_parsed_json.value().GetIfDict();
+  const auto* quorum_root = quorum_parsed_json.value().GetIfDict();
+  if (!collector_root || !quorum_root) {
     VLOG(1) << "Failed to parse server config: not a dict";
     return false;
   }
 
-  const auto min_version = root->FindInt(kMinVersionFieldName);
+  const auto min_version = collector_root->FindInt(kMinVersionFieldName);
   if (min_version && *min_version > kCurrentVersion) {
     VLOG(1) << "Server minimum version is higher than current version, failing";
     return false;
@@ -233,22 +258,29 @@ bool ServerConfigLoader::ProcessConfigResponse(
 
   auto config = std::make_unique<ServerConfig>();
 
-  const auto* group_pub_keys = root->FindDict(kGroupPubKeysFieldName);
+  const auto* group_pub_keys = collector_root->FindDict(kGroupPubKeysFieldName);
   if (!group_pub_keys) {
     VLOG(1) << "Failed to retrieve groupPubKeys from server config";
     return false;
   }
-  const auto* pub_keys = root->FindDict(kPubKeysFieldName);
+  const auto* pub_keys = collector_root->FindDict(kPubKeysFieldName);
   if (!pub_keys) {
     VLOG(1) << "Failed to retrieve pubKeys from server config";
     return false;
   }
-  const auto* source_map = root->FindDict(kSourceMapFieldName);
+  const auto* source_map = collector_root->FindDict(kSourceMapFieldName);
   const auto* source_map_actions =
       source_map ? source_map->FindDict(kSourceMapActionsFieldName) : nullptr;
   if (!source_map_actions) {
     VLOG(1) << "Failed to retrieve sourceMap from server config";
     return false;
+  }
+
+  const auto* location = quorum_root->FindString(kLocationFieldName);
+  if (location && kAllowedReportLocations.contains(*location)) {
+    config->location = *location;
+  } else {
+    config->location = kOmittedLocationValue;
   }
 
   config->group_pub_keys = ParseKeys(*group_pub_keys);
@@ -337,7 +369,7 @@ void ServerConfigLoader::HandlePatternsStatus(bool result) {
 
 void ServerConfigLoader::OnPatternsResponse(
     std::optional<std::string> response_body) {
-  auto* response_info = config_url_loader_->ResponseInfo();
+  auto* response_info = collector_config_url_loader_->ResponseInfo();
   if (!response_body || !response_info ||
       response_info->headers->response_code() != 200) {
     VLOG(1) << "Failed to retrieve patterns file";

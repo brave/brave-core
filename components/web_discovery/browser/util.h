@@ -31,6 +31,7 @@ inline constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .always_use_initial_delay = false};
 
 std::string GetCollectorHost();
+std::string GetQuorumHost();
 GURL GetPatternsEndpoint();
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url);

@@ -19,6 +19,7 @@ inline constexpr char kActionKey[] = "action";
 inline constexpr char kInnerPayloadKey[] = "payload";
 
 std::vector<base::Value::Dict> GeneratePayloads(
+    const ServerConfig& server_config,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result);
 

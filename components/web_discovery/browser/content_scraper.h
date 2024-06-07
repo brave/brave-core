@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/document_extractor/rs/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "url/gurl.h"
 
@@ -40,7 +41,8 @@ class ContentScraper {
   using PageScrapeResultCallback =
       base::OnceCallback<void(std::unique_ptr<PageScrapeResult>)>;
 
-  explicit ContentScraper(std::unique_ptr<PatternsGroup>* patterns);
+  ContentScraper(std::unique_ptr<ServerConfig>* last_loaded_server_config,
+                 std::unique_ptr<PatternsGroup>* patterns);
   ~ContentScraper();
 
   ContentScraper(const ContentScraper&) = delete;
@@ -80,6 +82,7 @@ class ContentScraper {
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 
+  raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
   raw_ptr<std::unique_ptr<PatternsGroup>> patterns_;
 
   base::WeakPtrFactory<ContentScraper> weak_ptr_factory_{this};

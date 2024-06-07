@@ -18,6 +18,7 @@ namespace web_discovery {
 namespace {
 
 constexpr char kUrlAttrId[] = "url";
+constexpr char kCountryCodeAttrId[] = "ctry";
 constexpr char kFieldsValueKey[] = "fields";
 constexpr char kIdValueKey[] = "id";
 constexpr char kUrlValueKey[] = "url";
@@ -66,9 +67,12 @@ PageScrapeResult::PageScrapeResult(GURL url, std::string id)
     : url(url), id(id) {}
 PageScrapeResult::~PageScrapeResult() = default;
 
-ContentScraper::ContentScraper(std::unique_ptr<PatternsGroup>* patterns)
+ContentScraper::ContentScraper(
+    std::unique_ptr<ServerConfig>* last_loaded_server_config,
+    std::unique_ptr<PatternsGroup>* patterns)
     : pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),
+      last_loaded_server_config_(last_loaded_server_config),
       patterns_(patterns) {}
 
 ContentScraper::~ContentScraper() = default;
@@ -209,10 +213,14 @@ void ContentScraper::ProcessStandardRule(const std::string& report_key,
                                          const std::string& root_selector,
                                          const GURL& url,
                                          PageScrapeResult* scrape_result) {
+  auto& fields = scrape_result->fields[root_selector];
+  if (fields.empty()) {
+    fields.emplace_back();
+  }
   if (rule.attribute == kUrlAttrId) {
-    base::Value::Dict dict;
-    dict.Set(report_key, url.spec());
-    scrape_result->fields[root_selector].push_back(std::move(dict));
+    fields[0].Set(report_key, url.spec());
+  } else if (rule.attribute == kCountryCodeAttrId) {
+    fields[0].Set(report_key, (*last_loaded_server_config_)->location);
   }
 }
 
