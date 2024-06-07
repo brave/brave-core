@@ -3983,6 +3983,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
       Update is downloaded.
     </message>
+    <message name="IDS_UPDATE_FILTER_LIST_SUCCESS_TEXT" desc="Text to notify users for updating filterlist successfully">
+      Filter list is updated successfully
+    </message>
+    <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
+      Filter list could not be updated. Please try again
+    </message>
   </messages>
   </release>
 </grit>
