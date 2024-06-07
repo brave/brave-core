@@ -491,6 +491,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                             case ProviderErrorUnion.Tag.FilecoinProviderError:
                                 providerError = error.getFilecoinProviderError();
                                 break;
+                            case ProviderErrorUnion.Tag.BitcoinProviderError:
+                                providerError = error.getBitcoinProviderError();
+                                break;
                             default:
                                 assert false : "unknown error " + errorMessage;
                         }
