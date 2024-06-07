@@ -10,20 +10,20 @@ public struct ServerRegion: Identifiable, Equatable {
   public let id = UUID()
   let name: String
   let servers: Int
+  let countryISOCode: String
 }
 
 public class ServerRegionDetail: ObservableObject {
   public var serverRegions: [ServerRegion] = [
-    ServerRegion(name: "Australia", servers: 5),
-    ServerRegion(name: "Brazil", servers: 4),
-    //     ServerRegion(name: "Brazil", servers: 4, isConnected: true),
-    ServerRegion(name: "Canada", servers: 2),
-    ServerRegion(name: "France", servers: 3),
-    ServerRegion(name: "Germany", servers: 5),
-    ServerRegion(name: "Italy", servers: 3),
-    ServerRegion(name: "Japan", servers: 7),
-    ServerRegion(name: "Mexico", servers: 9),
-    ServerRegion(name: "Netherlands", servers: 1),
+    ServerRegion(name: "Australia", servers: 5, countryISOCode: "AU"),
+    ServerRegion(name: "Brazil", servers: 4, countryISOCode: "BR"),
+    ServerRegion(name: "Canada", servers: 2, countryISOCode: "CA"),
+    ServerRegion(name: "France", servers: 3, countryISOCode: "FR"),
+    ServerRegion(name: "Germany", servers: 5, countryISOCode: "DE"),
+    ServerRegion(name: "Italy", servers: 3, countryISOCode: "IT"),
+    ServerRegion(name: "Japan", servers: 7, countryISOCode: "JP"),
+    ServerRegion(name: "Mexico", servers: 9, countryISOCode: "MX"),
+    ServerRegion(name: "Netherlands", servers: 1, countryISOCode: "NL"),
   ]
 
   @Published var selectedRegion: ServerRegion? = nil
@@ -35,10 +35,20 @@ public class ServerRegionDetail: ObservableObject {
 
 public struct BraveVPNRegionPickerView: View {
 
-  @State private var isAutomatic: Bool
-  @State private var isLoading = false
-  @State private var isRegionDetailsPresented = false
-  @State private var selectedIndex = 0
+  @State
+  private var isAutomatic: Bool
+
+  @State
+  private var isLoading = false
+
+  @State
+  private var isRegionDetailsPresented = false
+
+  @State
+  private var isConfirmationPresented = false
+
+  @State
+  private var selectedIndex = 0
 
   @ObservedObject private var serverRegionDetail = ServerRegionDetail()
 
@@ -59,7 +69,7 @@ public struct BraveVPNRegionPickerView: View {
               "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds."
             )
             .font(.footnote)
-            .foregroundColor(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
           ) {
             Toggle(
               isOn: Binding(
@@ -70,17 +80,17 @@ public struct BraveVPNRegionPickerView: View {
               VStack(alignment: .leading) {
                 Text("Automatic")
                   .font(.body)
-                if isAutomatic {
-                  Text("Brazil")
+                if isAutomatic, let regionAutomaticName = serverRegionDetail.selectedRegion?.name {
+                  Text(regionAutomaticName)
                     .font(.footnote)
-                    .foregroundColor(Color(braveSystemName: .textSecondary))
+                    .foregroundStyle(Color(braveSystemName: .textSecondary))
                 }
               }
             }
             .disabled(isLoading)
-            .foregroundColor(Color(braveSystemName: .textPrimary))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
             .tint(.accentColor)
-            .listRowBackground(Color(.white))
+            .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
           }
 
           if !isAutomatic {
@@ -89,20 +99,23 @@ public struct BraveVPNRegionPickerView: View {
                 index,
                 region in
                 Button {
-                  print("Index Outside \(index)")
                   selectDesignatedVPNRegion(at: index)
                 } label: {
                   HStack {
-                    regionFlag ?? Image(braveSystemName: "leo.globe")
+                    getRegionFlag(for: region.countryISOCode) ?? Image(braveSystemName: "leo.globe")
                     VStack(alignment: .leading) {
                       Text("\(region.name)")
+                        .font(.body)
+                        .foregroundStyle(Color(braveSystemName: .textPrimary))
                       Text("\(region.servers) servers")
-                        .foregroundColor(.gray)
+                        .font(.footnote)
+                        .foregroundStyle(Color(braveSystemName: .textSecondary))
                     }
                     Spacer()
                     if region == serverRegionDetail.selectedRegion {
                       Text("Connected")
-                        .foregroundColor(.green)
+                        .font(.body)
+                        .foregroundStyle(Color(braveSystemName: .textSecondary))
                     }
                     infoButtonView(index: index)
                       .hidden()
@@ -130,6 +143,13 @@ public struct BraveVPNRegionPickerView: View {
           .zIndex(1)
       }
     }
+    .background {
+      BraveVPNRegionChangedContentView(
+        isPresented: $isConfirmationPresented,
+        regionTitle: "VPN Region Changed",
+        regionSubtitle: "Rio de Janeiro"
+      )
+    }
   }
 
   private func infoButtonView(index: Int) -> some View {
@@ -143,6 +163,7 @@ public struct BraveVPNRegionPickerView: View {
       },
       label: {
         Image(systemName: "info.circle")
+          .foregroundStyle(Color(braveSystemName: .iconInteractive))
       }
     )
     .buttonStyle(.plain)
@@ -160,21 +181,26 @@ public struct BraveVPNRegionPickerView: View {
     isLoading = true
 
     // TODO: Select Region
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+    Task.delayed(bySeconds: 3) { @MainActor in
       if let selectedRegion = serverRegionDetail.serverRegions[safe: index] {
         serverRegionDetail.selectedRegion = selectedRegion
       }
-      
+
       isLoading = false
+      isConfirmationPresented = true
+
+      Task.delayed(bySeconds: 2) { @MainActor in
+        isConfirmationPresented = false
+      }
     }
   }
 
-  private var regionFlag: Image? {
+  private func getRegionFlag(for isoCode: String) -> Image? {
     // Root Unicode flags index
     let rootIndex: UInt32 = 127397
     var unicodeScalarView = ""
 
-    for scalar in "CA".unicodeScalars {
+    for scalar in isoCode.unicodeScalars {
       // Shift the letter index to the flags index
       if let appendedScalar = UnicodeScalar(rootIndex + scalar.value) {
         // Append symbol to the Unicode string
