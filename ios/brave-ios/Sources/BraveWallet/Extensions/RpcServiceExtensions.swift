@@ -293,31 +293,6 @@ extension BraveWalletJsonRpcService {
     }
   }
 
-  /// Returns the total balance for a given token for all of the given accounts
-  @MainActor func fetchTotalBalance(
-    token: BraveWallet.BlockchainToken,
-    network: BraveWallet.NetworkInfo,
-    accounts: [BraveWallet.AccountInfo]
-  ) async -> Double {
-    let balancesForAsset = await withTaskGroup(
-      of: [Double].self,
-      body: { @MainActor group in
-        for account in accounts {
-          group.addTask { @MainActor in
-            let balance = await self.balance(
-              for: token,
-              in: account,
-              network: network
-            )
-            return [balance ?? 0]
-          }
-        }
-        return await group.reduce([Double](), { $0 + $1 })
-      }
-    )
-    return balancesForAsset.reduce(0, +)
-  }
-
   /// Returns the total balance for a given account for all of the given network assets
   func fetchBalancesForTokens(
     account: BraveWallet.AccountInfo,

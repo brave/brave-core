@@ -392,12 +392,19 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         }
         self.btcBalances[selectedAccount.id] = btcBalances
       } else {
-        balance = await self.rpcService.balance(
+        if let assetBalance = self.assetManager.getBalances(
           for: selectedSendToken,
-          in: selectedAccount.address,
-          network: network,
-          decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
-        )
+          account: selectedAccount.id
+        )?.first {
+          balance = BDouble(assetBalance.balance)
+        } else {
+          balance = await self.rpcService.balance(
+            for: selectedSendToken,
+            in: selectedAccount.address,
+            network: network,
+            decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+          )
+        }
       }
 
       if selectedSendToken.isErc721 || selectedSendToken.isNft,

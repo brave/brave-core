@@ -457,7 +457,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasBalancesForChain[account.id] = availableBTCBalance
       }
     } else {
-      if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
+      if let assetBalance = assetManager.getBalances(
+        for: token,
+        account: account.id
+      )?.first(where: { $0.chainId == network.chainId }) {
+        gasBalancesForChain[account.id] = Double(assetBalance.balance) ?? 0
+      } else if let gasTokenBalance = await rpcService.balance(
+        for: token,
+        in: account,
+        network: network
+      ) {
         gasBalancesForChain[account.id] = gasTokenBalance
       }
     }

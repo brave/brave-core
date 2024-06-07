@@ -457,8 +457,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       @MainActor group -> [AccountBalance] in
       for accountAssetViewModel in accountAssetViewModels {
         group.addTask { @MainActor in
-          // TODO: cleanup with balance caching with issue
-          // https://github.com/brave/brave-browser/issues/36764
           var tokenBalance: Double?
           if accountAssetViewModel.account.coin == .btc {
             tokenBalance = await self.bitcoinWalletService.fetchBTCBalance(
@@ -466,11 +464,18 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
               type: .total
             )
           } else {
-            tokenBalance = await self.rpcService.balance(
+            if let assetBalancePerAccount = self.assetManager.getBalances(
               for: token,
-              in: accountAssetViewModel.account,
-              network: network
-            )
+              account: accountAssetViewModel.account.id
+            )?.first {
+              tokenBalance = Double(assetBalancePerAccount.balance)
+            } else {
+              tokenBalance = await self.rpcService.balance(
+                for: token,
+                in: accountAssetViewModel.account,
+                network: network
+              )
+            }
           }
           return [AccountBalance(accountAssetViewModel.account, tokenBalance)]
         }

@@ -308,55 +308,80 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       // if we're not hiding unowned or grouping by account, balance isn't needed
       if filters.isHidingUnownedNFTs || filters.groupBy == .accounts {
         let allAccounts = filters.accounts.map(\.model)
-        nftBalancesCache = await withTaskGroup(
+
+        let fetchedNFTBlances = await withTaskGroup(
           of: [String: [String: Int]].self,
-          body: { @MainActor [nftBalancesCache, rpcService] group in
-            for nft in allUserNFTs {  // for all NFTs that have not yet been fetched its balance
-              guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId })
-              else {
-                continue
-              }
-              group.addTask { @MainActor in
-                let updatedBalances = await withTaskGroup(
-                  of: [String: Int].self,
-                  body: { @MainActor group in
-                    for account in allAccounts where account.coin == nft.coin {
-                      if !forceUpdateNFTBalances,
-                        let cachedBalance = nftBalancesCache[nft.id]?[account.id]
-                      {  // cached balance
-                        return [account.id: cachedBalance]
-                      } else {  // no balance for this account
-                        group.addTask { @MainActor in
-                          let balanceForToken = await rpcService.balance(
-                            for: nft,
-                            in: account,
-                            network: networkForNFT
-                          )
-                          return [account.id: Int(balanceForToken ?? 0)]
-                        }
-                      }
-                    }
-                    return await group.reduce(
-                      into: [String: Int](),
-                      { partialResult, new in
-                        partialResult.merge(with: new)
-                      }
+          body: { @MainActor [rpcService, assetManager] group in
+            for nft in allUserNFTs {
+              if let nftBalances = assetManager.getBalances(
+                for: nft,
+                account: nil
+              ),
+                !nftBalances.isEmpty,
+                !forceUpdateNFTBalances
+              {
+                var result: [String: Int] = [:]
+                for balancePerAccount in nftBalances {
+                  result.merge(with: [
+                    balancePerAccount.accountAddress:
+                      (balancePerAccount.balance as NSString).integerValue
+                  ])
+                }
+                nftBalancesCache.merge(with: [nft.id: result])
+              } else {
+                // 1. Force to fetch NFT balance
+                // 2. Spam NFT
+                // 3. We have a user asset from CD but wallet has never
+                // fetched it's balance. Should never happen. But we will fetch its
+                // balance and cache it in CD.
+                // 4. Test Cases will come here, we will fetch balance using
+                // a mock `rpcService` and `bitcoinWalletService
+                guard let networkForNFT = allNetworks.first(where: { $0.chainId == nft.chainId })
+                else {
+                  continue
+                }
+                group.addTask { @MainActor in
+                  var nftBalances: [String: Int] = [:]
+                  for account in allAccounts where account.coin == nft.coin {
+                    var balanceForNFT: Int?
+                    let balanceInDouble = await rpcService.balance(
+                      for: nft,
+                      in: account,
+                      network: networkForNFT
+                    )
+                    balanceForNFT = Int(balanceInDouble ?? 0)
+                    nftBalances.merge(with: [account.id: balanceForNFT ?? 0])
+                    assetManager.updateBalance(
+                      for: nft,
+                      account: account.id,
+                      balance: "\(balanceForNFT ?? 0)",
+                      completion: nil
                     )
                   }
-                )
-                var tokenBalances = nftBalancesCache[nft.id] ?? [:]
-                tokenBalances.merge(with: updatedBalances)
-                return [nft.id: tokenBalances]
+                  return [nft.id: nftBalances]
+                }
               }
             }
+
             return await group.reduce(
-              into: [String: [String: Int]](),
+              into: [:],
               { partialResult, new in
                 partialResult.merge(with: new)
               }
             )
           }
         )
+        for nft in allUserNFTs {
+          if let updatedBalancesForNFT = fetchedNFTBlances[nft.id] {
+            // if balance fetch failed that we already have cached, don't overwrite existing
+            if var existing = self.nftBalancesCache[nft.id] {
+              existing.merge(with: updatedBalancesForNFT)
+              self.nftBalancesCache[nft.id] = existing
+            } else {
+              self.nftBalancesCache[nft.id] = updatedBalancesForNFT
+            }
+          }
+        }
       }
       guard !Task.isCancelled else { return }
       let (userNFTGroupsWithBalance, _) = buildNFTGroupModels(

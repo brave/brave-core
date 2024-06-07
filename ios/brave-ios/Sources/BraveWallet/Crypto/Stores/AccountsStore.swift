@@ -34,7 +34,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   private typealias TokenBalanceCache = [String: [String: Double]]
-  /// Cache of token balances for each account. [account.cacheBalanceKey: [token.id: balance]]
+  /// Cache of token balances for each account. `[account.id: [token.id: balance]]`
   private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
@@ -141,35 +141,69 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     for accounts: [BraveWallet.AccountInfo],
     networkAssets allNetworkAssets: [NetworkAssets]
   ) async {
+    // Update BTC account balance
+    if accounts.contains(where: { $0.coin == .btc }) {
+      await withTaskGroup(
+        of: [String: [String: Double]].self
+      ) { [bitcoinWalletService] group in
+        for account in accounts where account.coin == .btc {
+          group.addTask {
+            let btcBalance =
+              await bitcoinWalletService.fetchBTCBalance(
+                accountId: account.accountId,
+                type: .total
+              ) ?? 0
+            if let btcToken = allNetworkAssets.first(where: {
+              $0.network.supportedKeyrings.contains(
+                account.keyringId.rawValue as NSNumber
+              )
+            })?.tokens.first {
+              return [account.id: [btcToken.id: btcBalance]]
+            }
+            return [:]
+          }
+        }
+        for await accountBTCBalances in group {
+          tokenBalancesCache.merge(with: accountBTCBalances)
+        }
+      }
+    }
+    // Update non-BTC account balance
     let balancesForAccounts = await withTaskGroup(
       of: TokenBalanceCache.self,
       body: { group in
-        for account in accounts {
-          group.addTask {
-            // TODO: cleanup with balance caching with issue
-            // https://github.com/brave/brave-browser/issues/36764
-            var balancesForTokens: [String: Double] = [:]
-            if account.coin == .btc {
-              let networkAssets = allNetworkAssets.first {
-                $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
-              }
-              if let btc = networkAssets?.tokens.first,
-                let btcBalance = await self.bitcoinWalletService.fetchBTCBalance(
-                  accountId: account.accountId,
-                  type: .total
-                )
-              {
-                balancesForTokens = [btc.id: btcBalance]
-              }
-            } else {
+        for account in accounts where account.coin != .btc {
+          if let allTokenBalance = self.userAssetManager.getBalances(
+            for: nil,
+            account: account.id
+          ) {
+            var result: [String: Double] = [:]
+            for balancePerToken in allTokenBalance {
+              let tokenId =
+                balancePerToken.contractAddress + balancePerToken.chainId
+                + balancePerToken.symbol + balancePerToken.tokenId
+              result.merge(with: [
+                tokenId: Double(balancePerToken.balance) ?? 0
+              ])
+            }
+            self.tokenBalancesCache.merge(with: [account.id: result])
+          } else {
+            // 1. We have a user asset from CD but wallet has never
+            // fetched it's balance. Should never happen. But we will fetch its
+            // balance and cache it in CD.
+            // 2. Test Cases will come here, we will fetch balance using
+            // a mock `rpcService` and `bitcoinWalletService`
+            group.addTask {
+              var balancesForTokens: [String: Double] = [:]
               balancesForTokens = await self.rpcService.fetchBalancesForTokens(
                 account: account,
                 networkAssets: allNetworkAssets
               )
+              return [account.id: balancesForTokens]
             }
-            return [account.id: balancesForTokens]
           }
         }
+
         return await group.reduce(
           into: TokenBalanceCache(),
           { partialResult, new in
