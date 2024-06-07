@@ -13,6 +13,7 @@ import android.util.Pair;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BtcTxData;
 import org.chromium.brave_wallet.mojom.FilTxData;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
@@ -130,44 +131,69 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 : null;
     }
 
-    public static ParsedTransaction parseTransaction(TransactionInfo txInfo, NetworkInfo txNetwork,
-            AccountInfo[] accounts, HashMap<String, Double> assetPrices, long solFeeEstimatesFee,
-            BlockchainToken[] fullTokenList, HashMap<String, Double> nativeAssetsBalances,
+    public static ParsedTransaction parseTransaction(
+            TransactionInfo txInfo,
+            NetworkInfo txNetwork,
+            AccountInfo[] accounts,
+            HashMap<String, Double> assetPrices,
+            long solFeeEstimatesFee,
+            BlockchainToken[] fullTokenList,
+            HashMap<String, Double> nativeAssetsBalances,
             HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
         BlockchainToken nativeAsset = Utils.makeNetworkAsset(txNetwork);
-        Double networkSpotPrice = Utils.getOrDefault(
-                assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+        Double networkSpotPrice =
+                Utils.getOrDefault(
+                        assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
 
-        final ParsedTransactionFees feeDetails = ParsedTransactionFees.parseTransactionFees(
-                txInfo, txNetwork, networkSpotPrice, solFeeEstimatesFee);
+        final ParsedTransactionFees feeDetails =
+                ParsedTransactionFees.parseTransactionFees(
+                        txInfo, txNetwork, networkSpotPrice, solFeeEstimatesFee);
         TxDataUnion txDataUnion = txInfo.txDataUnion;
-        TxData1559 txData = txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
-                ? txDataUnion.getEthTxData1559()
-                : null;
-        SolanaTxData solTxData = txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
-                ? txDataUnion.getSolanaTxData()
-                : null;
-        FilTxData filTxData = txDataUnion.which() == TxDataUnion.Tag.FilTxData
-                ? txDataUnion.getFilTxData()
-                : null;
+        TxData1559 txData =
+                txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                        ? txDataUnion.getEthTxData1559()
+                        : null;
+        SolanaTxData solTxData =
+                txDataUnion.which() == TxDataUnion.Tag.SolanaTxData
+                        ? txDataUnion.getSolanaTxData()
+                        : null;
+        FilTxData filTxData =
+                txDataUnion.which() == TxDataUnion.Tag.FilTxData
+                        ? txDataUnion.getFilTxData()
+                        : null;
+        BtcTxData btcTxData =
+                txDataUnion.which() == TxDataUnion.Tag.BtcTxData
+                        ? txDataUnion.getBtcTxData()
+                        : null;
 
         final boolean isFilTransaction = filTxData != null;
-        final boolean isSPLTransaction = txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
-                || txInfo.txType
-                        == TransactionType
-                                   .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
+        final boolean isSPLTransaction =
+                txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
+                        || txInfo.txType
+                                == TransactionType
+                                        .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION;
         final boolean isSolTransaction = SOLANA_TRANSACTION_TYPES.contains(txInfo.txType);
+        final boolean isBtcTransaction = btcTxData != null;
 
-        final String value = isSPLTransaction
-                ? solTxData != null ? String.valueOf(solTxData.amount) : ""
-                : isSolTransaction ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
-                : isFilTransaction ? filTxData.value != null ? Utils.toHex(filTxData.value) : ""
-                : txData != null   ? txData.baseData.value
-                                   : "";
+        final String value =
+                isSPLTransaction
+                        ? solTxData != null ? String.valueOf(solTxData.amount) : ""
+                        : isSolTransaction
+                                ? solTxData != null ? String.valueOf(solTxData.lamports) : ""
+                                : isFilTransaction
+                                        ? filTxData.value != null
+                                                ? Utils.toHex(filTxData.value)
+                                                : ""
+                                        : isBtcTransaction
+                                                ? String.valueOf(btcTxData.amount)
+                                                : txData != null ? txData.baseData.value : "";
 
-        String to = isSolTransaction ? solTxData != null ? solTxData.toWalletAddress : ""
-                : isFilTransaction   ? filTxData.to
-                                     : txData.baseData.to;
+        String to =
+                isSolTransaction
+                        ? solTxData != null ? solTxData.toWalletAddress : ""
+                        : isFilTransaction
+                                ? filTxData.to
+                                : isBtcTransaction ? btcTxData.to : txData.baseData.to;
 
         final String nonce = txData != null ? txData.baseData.nonce : "";
         AccountInfo account = Utils.findAccount(accounts, txInfo.fromAccountId);
