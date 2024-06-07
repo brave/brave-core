@@ -80,8 +80,9 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 // Draw graphic over gradient background for banner type.
 class HorizontalGradientBackground : public views::Background {
  public:
-  HorizontalGradientBackground(bool use_ddg, bool draw_graphic)
-      : use_ddg_(use_ddg), draw_graphic_(draw_graphic) {}
+  explicit HorizontalGradientBackground(bool use_ddg,
+                                        std::optional<int> graphic_resource)
+      : use_ddg_(use_ddg), graphic_resource_(graphic_resource) {}
   ~HorizontalGradientBackground() override = default;
   HorizontalGradientBackground(const HorizontalGradientBackground&) = delete;
   HorizontalGradientBackground& operator=(const HorizontalGradientBackground&) =
@@ -121,23 +122,13 @@ class HorizontalGradientBackground : public views::Background {
       canvas->DrawRect(bounds, flags);
     }
 
-    if (!draw_graphic_) {
+    if (!graphic_resource_) {
       return;
     }
 
-    const bool use_dark =
-        ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
-    int graphic_resource = use_dark
-                               ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
-                               : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;
-    if (use_ddg_) {
-      graphic_resource =
-          use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK
-                   : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG;
-    }
     auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    const auto* graphic = bundle.GetImageSkiaNamed(graphic_resource);
-    int kGraphicRightPadding = use_ddg_ ? kBannerTypeRadius : 27;
+    const auto* graphic = bundle.GetImageSkiaNamed(*graphic_resource_);
+    const int graphics_right_padding = GetGraphicsRightPadding();
     const auto host_insets = view->GetInsets();
     if (use_ddg_) {
       // Scale graphic to fit banner.
@@ -145,14 +136,14 @@ class HorizontalGradientBackground : public views::Background {
       const int dst_height = bounds.height();
       const int dst_width = graphic->width() * dst_height / graphic->height();
       const int dst_x = view->size().width() - host_insets.right() -
-                        kGraphicRightPadding - dst_width;
+                        graphics_right_padding - dst_width;
       const int dst_y = host_insets.top();
       canvas->DrawImageInt(*graphic, 0, 0, graphic->width(), graphic->height(),
                            dst_x, dst_y, dst_width, dst_height, true);
     } else {
       // Just locate in center.
       const int dst_x = view->size().width() - host_insets.right() -
-                        kGraphicRightPadding - graphic->width();
+                        graphics_right_padding - graphic->width();
       const int dst_y =
           host_insets.top() + (bounds.height() - graphic->height()) / 2 + 1;
       canvas->DrawImageInt(*graphic, dst_x, dst_y);
@@ -160,9 +151,22 @@ class HorizontalGradientBackground : public views::Background {
   }
 
  private:
+  int GetGraphicsRightPadding() const {
+    if (!use_ddg_) {
+      return 27;
+    }
+
+    if (graphic_resource_ ==
+        IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING) {
+      return 0;
+    }
+
+    return 8;
+  }
+
   // true when this background is for ddg conversion promotion.
   bool use_ddg_ = false;
-  bool draw_graphic_ = false;
+  std::optional<int> graphic_resource_;
 };
 
 // For customizing label's font size.
@@ -386,7 +390,7 @@ void BraveSearchConversionPromotionView::UpdateState() {
       GetColorProvider()->GetColor(kColorOmniboxResultsBackground)));
   banner_type_container_->SetBackground(
       std::make_unique<HorizontalGradientBackground>(UseDDG(),
-                                                     ShouldDrawGraphic()));
+                                                     GetBackgroundGraphic()));
 
   SchedulePaint();
 }
@@ -674,6 +678,28 @@ bool BraveSearchConversionPromotionView::ShouldDrawGraphic() const {
   }
 
   return result_view_->GetPopupView()->GetLocationBarViewWidth() > 650;
+}
+
+std::optional<int> BraveSearchConversionPromotionView::GetBackgroundGraphic()
+    const {
+  if (!ShouldDrawGraphic()) {
+    return std::nullopt;
+  }
+
+  const bool use_dark =
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
+  if (!UseDDG()) {
+    return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
+                    : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;
+  }
+
+  if (type_ == ConversionType::kDDGBannerTypeA ||
+      type_ == ConversionType::kDDGBannerTypeB) {
+    return IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING;
+  }
+
+  return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK
+                  : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG;
 }
 
 BEGIN_METADATA(BraveSearchConversionPromotionView)

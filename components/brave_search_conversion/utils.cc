@@ -64,25 +64,41 @@ ConversionType GetConversionTypeFromBannerTypeParam(const std::string& param) {
     return ConversionType::kBannerTypeD;
   }
 
-  if (param == "type_DDG_A") {
-    return ConversionType::kDDGBannerTypeA;
-  }
-
-  if (param == "type_DDG_B") {
-    return ConversionType::kDDGBannerTypeB;
-  }
-
-  if (param == "type_DDG_C") {
-    return ConversionType::kDDGBannerTypeC;
-  }
-
-  if (param == "type_DDG_D") {
-    return ConversionType::kDDGBannerTypeD;
-  }
-
   LOG(ERROR) << __func__
              << " : Got invalid conversion type from griffin: " << param;
   return ConversionType::kNone;
+}
+
+ConversionType GetDDGConversionType(PrefService* prefs) {
+  const int ddg_banner_type_index =
+      prefs->GetInteger(prefs::kDDGBannerTypeIndex);
+  const int banner_type_index =
+      static_cast<int>(ConversionType::kDDGBannerTypeA) + ddg_banner_type_index;
+  return static_cast<ConversionType>(banner_type_index);
+}
+
+void UpdateDDGConversionType(PrefService* prefs) {
+  const base::Time last_ddg_banner_type_shown_time =
+      prefs->GetTime(prefs::kLatestDDGBannerTypeFirstShownTime);
+
+  // If it's initial state, configure now as first shown time to show
+  // type A at first.
+  if (last_ddg_banner_type_shown_time == base::Time()) {
+    prefs->SetTime(prefs::kLatestDDGBannerTypeFirstShownTime,
+                   base::Time::Now());
+    return;
+  }
+
+  // Record current type and the first time this type has been shown.
+  // Rotate when current type is used for 1 mins.
+  // If we rotate frequently, user can see different types while typing.
+  if (base::Time::Now() - last_ddg_banner_type_shown_time >= base::Minutes(1)) {
+    int ddg_banner_type_index = prefs->GetInteger(prefs::kDDGBannerTypeIndex);
+    prefs->SetInteger(prefs::kDDGBannerTypeIndex,
+                      (ddg_banner_type_index + 1) % 4);
+    prefs->SetTime(prefs::kLatestDDGBannerTypeFirstShownTime,
+                   base::Time::Now());
+  }
 }
 
 }  // namespace
@@ -138,8 +154,8 @@ ConversionType GetConversionType(PrefService* prefs,
     }
 
     if (ShouldUseDuckDuckGoBanner(template_url)) {
-      return GetConversionTypeFromBannerTypeParam(
-          features::kDDGBannerType.Get());
+      UpdateDDGConversionType(prefs);
+      return GetDDGConversionType(prefs);
     }
 
     if (base::FeatureList::IsEnabled(features::kOmniboxBanner)) {
@@ -156,6 +172,9 @@ void RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDismissed, false);
   registry->RegisterBooleanPref(prefs::kShowNTPSearchBox, true);
   registry->RegisterTimePref(prefs::kMaybeLaterClickedTime, base::Time());
+  registry->RegisterIntegerPref(prefs::kDDGBannerTypeIndex, 0);
+  registry->RegisterTimePref(prefs::kLatestDDGBannerTypeFirstShownTime,
+                             base::Time());
 }
 
 void SetDismissed(PrefService* prefs) {
