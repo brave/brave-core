@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
+import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -145,6 +146,7 @@ import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.ui.InsetObserver;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.EventOffsetHandler;
@@ -383,13 +385,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         false,
                         null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                        "isScrollableMvtEnabled",
-                        MethodModifier.REGULAR,
-                        true,
-                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
@@ -1322,11 +1317,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
                         Resources.class,
                         UiConfig.class,
-                        ViewGroup.class,
+                        MostVisitedTilesLayout.class,
                         ViewStub.class,
                         TileRenderer.class,
                         PropertyModel.class,
-                        boolean.class,
                         boolean.class,
                         Runnable.class,
                         Runnable.class));
@@ -1381,7 +1375,6 @@ public class BytecodeTest {
                         Supplier.class,
                         OmniboxActionDelegate.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
-                        Callback.class,
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
@@ -1501,7 +1494,7 @@ public class BytecodeTest {
                         ObservableSupplierImpl.class,
                         IntentRequestTracker.class,
                         int.class,
-                        Supplier.class,
+                        InsetObserver.class,
                         Function.class,
                         OneshotSupplier.class,
                         boolean.class,
