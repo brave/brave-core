@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/values.h"
 #include "url/gurl.h"
 
 namespace re2 {
@@ -23,6 +25,8 @@ enum class ScrapeRuleType { kStandard, kSearchQuery, kWidgetTitle, kOther };
 enum class PayloadRuleType { kQuery, kSingle };
 enum class PayloadResultType { kSingle, kClustered, kCustom };
 
+using RefineFunctionList = std::vector<std::vector<base::Value>>;
+
 struct ScrapeRule {
   ScrapeRule();
   ~ScrapeRule();
@@ -30,23 +34,15 @@ struct ScrapeRule {
   ScrapeRule(const ScrapeRule&) = delete;
   ScrapeRule& operator=(const ScrapeRule&) = delete;
 
-  std::string report_key;
   std::string selector;
   std::optional<std::string> sub_selector;
   ScrapeRuleType rule_type;
   std::string attribute;
+  RefineFunctionList functions_applied;
 };
 
-struct ScrapeRuleGroup {
-  ScrapeRuleGroup();
-  ~ScrapeRuleGroup();
-
-  ScrapeRuleGroup(const ScrapeRuleGroup&) = delete;
-  ScrapeRuleGroup& operator=(const ScrapeRuleGroup&) = delete;
-
-  std::string selector;
-  std::vector<ScrapeRule> rules;
-};
+using ScrapeRuleGroup =
+    base::flat_map<std::string, std::unique_ptr<ScrapeRule>>;
 
 struct PayloadRule {
   PayloadRule();
@@ -84,7 +80,7 @@ struct PatternsURLDetails {
   std::unique_ptr<re2::RE2> url_regex;
   bool is_search_engine;
   std::string id;
-  std::vector<ScrapeRuleGroup> scrape_rule_groups;
+  base::flat_map<std::string, ScrapeRuleGroup> scrape_rule_groups;
   std::vector<PayloadRuleGroup> payload_rule_groups;
 };
 

@@ -63,6 +63,7 @@ constexpr char kKeysFieldName[] = "keys";
 constexpr char kLimitFieldName[] = "limit";
 constexpr char kPeriodFieldName[] = "period";
 constexpr char kSourceMapFieldName[] = "sourceMap";
+constexpr char kSourceMapActionsFieldName[] = "actions";
 
 constexpr char kConfigPathWithFields[] =
     "/config?fields=minVersion,groupPubKeys,pubKeys,sourceMap";
@@ -101,8 +102,8 @@ base::flat_map<std::string, SourceMapActionConfig> ParseSourceMapActionConfigs(
     auto limit = config_dict->FindInt(kLimitFieldName);
     auto period = config_dict->FindInt(kPeriodFieldName);
 
-    action_config.limit = limit && limit >= 0 ? *limit : 1;
-    action_config.period = period && period >= 0 ? *period : 24;
+    action_config.limit = limit && limit > 0 ? *limit : 1;
+    action_config.period = period && period > 0 ? *period : 24;
   }
   return map;
 }
@@ -243,14 +244,16 @@ bool ServerConfigLoader::ProcessConfigResponse(
     return false;
   }
   const auto* source_map = root->FindDict(kSourceMapFieldName);
-  if (!source_map) {
+  const auto* source_map_actions =
+      source_map ? source_map->FindDict(kSourceMapActionsFieldName) : nullptr;
+  if (!source_map_actions) {
     VLOG(1) << "Failed to retrieve sourceMap from server config";
     return false;
   }
 
   config->group_pub_keys = ParseKeys(*group_pub_keys);
   config->pub_keys = ParseKeys(*pub_keys);
-  config->source_map_actions = ParseSourceMapActionConfigs(*source_map);
+  config->source_map_actions = ParseSourceMapActionConfigs(*source_map_actions);
 
   config_callback_.Run(std::move(config));
   return true;

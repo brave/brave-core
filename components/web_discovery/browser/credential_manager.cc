@@ -37,8 +37,6 @@ constexpr char kJoinRSAPublicKeyField[] = "pk";
 constexpr char kJoinRSASignatureField[] = "sig";
 constexpr char kJoinResponseField[] = "joinResponse";
 
-constexpr char kVersionHeader[] = "Version";
-
 constexpr char kGSKDictKey[] = "gsk";
 constexpr char kCredentialDictKey[] = "credential";
 

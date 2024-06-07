@@ -91,16 +91,9 @@ int GetPeriodHoursSinceEpoch(size_t period_hours) {
 }
 
 std::optional<int> GetBasenameCount(PrefService* profile_prefs,
-                                    const base::Value::List& interim_tag_list,
+                                    uint32_t count_tag_hash,
                                     const SourceMapActionConfig& action_config,
                                     size_t period_hours) {
-  std::string interim_tag_json;
-  if (!base::JSONWriter::Write(base::Value(interim_tag_list.Clone()),
-                               &interim_tag_json)) {
-    return std::nullopt;
-  }
-  auto tag_hash = base::NumberToString(base::PersistentHash(interim_tag_json));
-
   // clean up expired counts
   ScopedDictPrefUpdate update(profile_prefs, kUsedBasenameCounts);
   base::Time now = base::Time::Now();
@@ -119,7 +112,8 @@ std::optional<int> GetBasenameCount(PrefService* profile_prefs,
     it++;
   }
 
-  auto* count_dict = update->EnsureDict(tag_hash);
+  auto count_tag_hash_str = base::NumberToString(count_tag_hash);
+  auto* count_dict = update->EnsureDict(count_tag_hash_str);
   if (!count_dict->contains(kExpiresAtKey)) {
     auto expire_time =
         base::Time::FromMillisecondsSinceUnixEpoch(static_cast<int64_t>(
@@ -129,26 +123,27 @@ std::optional<int> GetBasenameCount(PrefService* profile_prefs,
 
   auto* used_counts_list = count_dict->EnsureList(kUsedCountsKey);
   if (used_counts_list->size() >= action_config.limit) {
+    VLOG(1) << "used count = " << used_counts_list
+            << ", limit = " << action_config.limit;
     return std::nullopt;
   }
 
-  while (auto count = base::RandInt(0, action_config.limit - 1)) {
+  while (true) {
+    auto count = base::RandInt(0, action_config.limit - 1);
     if (base::ranges::find(used_counts_list->begin(), used_counts_list->end(),
                            count) != used_counts_list->end()) {
       continue;
     }
-    used_counts_list->Append(count);
     return count;
   }
-  NOTREACHED();
-  return 0;
 }
 
 }  // namespace
 
 BasenameResult::BasenameResult(std::vector<const uint8_t> basename,
-                               size_t count)
-    : basename(basename), count(count) {}
+                               size_t count,
+                               uint32_t count_tag_hash)
+    : basename(basename), count(count), count_tag_hash(count_tag_hash) {}
 
 BasenameResult::~BasenameResult() = default;
 
@@ -157,15 +152,20 @@ std::optional<BasenameResult> GenerateBasename(
     ServerConfig* server_config,
     const base::Value::Dict& payload) {
   const std::string* action = payload.FindString(kActionKey);
+  std::string json;
+  base::JSONWriter::Write(payload, &json);
   if (!action || action->empty()) {
+    VLOG(1) << "No action";
     return std::nullopt;
   }
   const auto action_config = server_config->source_map_actions.find(*action);
   if (action_config == server_config->source_map_actions.end()) {
+    VLOG(1) << "No action config for " << action;
     return std::nullopt;
   }
   const auto* inner_payload = payload.FindDict(kInnerPayloadKey);
   if (!inner_payload) {
+    VLOG(1) << "No inner payload";
     return std::nullopt;
   }
   base::Value::List tag_list;
@@ -197,9 +197,16 @@ std::optional<BasenameResult> GenerateBasename(
   tag_list.Append(std::move(key_values));
   tag_list.Append(period_hours);
 
-  auto basename_count = GetBasenameCount(profile_prefs, tag_list,
+  std::string interim_tag_json;
+  if (!base::JSONWriter::Write(base::Value(tag_list.Clone()),
+                               &interim_tag_json)) {
+    return std::nullopt;
+  }
+  auto count_tag_hash = base::PersistentHash(interim_tag_json);
+  auto basename_count = GetBasenameCount(profile_prefs, count_tag_hash,
                                          action_config->second, period_hours);
   if (!basename_count) {
+    VLOG(1) << "No basename count available";
     return std::nullopt;
   }
   tag_list.Append(*basename_count);
@@ -211,7 +218,20 @@ std::optional<BasenameResult> GenerateBasename(
 
   auto tag_hash = crypto::SHA256HashString(tag_json);
   std::vector<const uint8_t> tag_hash_vector(tag_hash.begin(), tag_hash.end());
-  return std::make_optional<BasenameResult>(tag_hash_vector, *basename_count);
+  return std::make_optional<BasenameResult>(tag_hash_vector, *basename_count,
+                                            count_tag_hash);
+}
+
+void SaveBasenameCount(PrefService* profile_prefs,
+                       uint32_t count_tag_hash,
+                       size_t count) {
+  ScopedDictPrefUpdate update(profile_prefs, kUsedBasenameCounts);
+
+  auto count_tag_hash_str = base::NumberToString(count_tag_hash);
+  auto* count_dict = update->EnsureDict(count_tag_hash_str);
+
+  auto* used_counts_list = count_dict->EnsureList(kUsedCountsKey);
+  used_counts_list->Append(static_cast<int>(count));
 }
 
 }  // namespace web_discovery

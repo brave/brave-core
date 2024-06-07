@@ -50,6 +50,7 @@ void ProcessAttributeRequests(
       }
       attributes_result->attribute_values[request->key] = attribute_value;
     }
+    results.push_back(std::move(attributes_result));
   }
 }
 

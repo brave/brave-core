@@ -18,6 +18,7 @@ namespace web_discovery {
 
 inline constexpr size_t kMaxResponseSize = 16 * 1024;
 inline constexpr char kCollectorHostSwitch[] = "wdp-collector-host";
+inline constexpr char kVersionHeader[] = "Version";
 inline constexpr int kCurrentVersion = 1;
 
 inline constexpr net::BackoffEntry::Policy kBackoffPolicy = {

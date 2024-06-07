@@ -17,8 +17,7 @@ struct AESEncryptResult {
                    std::string encoded_public_component_and_iv);
   ~AESEncryptResult();
 
-  AESEncryptResult(const AESEncryptResult&) = delete;
-  AESEncryptResult& operator=(const AESEncryptResult&) = delete;
+  AESEncryptResult(const AESEncryptResult&);
 
   std::vector<uint8_t> data;
   std::string encoded_public_component_and_iv;

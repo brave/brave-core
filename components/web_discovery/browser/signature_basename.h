@@ -17,7 +17,9 @@ class PrefService;
 namespace web_discovery {
 
 struct BasenameResult {
-  BasenameResult(std::vector<const uint8_t> basename, size_t count);
+  BasenameResult(std::vector<const uint8_t> basename,
+                 size_t count,
+                 uint32_t count_tag_hash);
   ~BasenameResult();
 
   BasenameResult(const BasenameResult&) = delete;
@@ -27,12 +29,17 @@ struct BasenameResult {
   // The count index for a given "pre-tag". It should be under the limit for a
   // given action
   size_t count;
+  uint32_t count_tag_hash;
 };
 
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     ServerConfig* server_config,
     const base::Value::Dict& payload);
+
+void SaveBasenameCount(PrefService* profile_prefs,
+                       uint32_t count_tag_hash,
+                       size_t count);
 
 }  // namespace web_discovery
 

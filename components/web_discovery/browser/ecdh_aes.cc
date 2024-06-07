@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
 #include "third_party/boringssl/src/include/openssl/aead.h"
@@ -23,7 +24,7 @@ namespace web_discovery {
 namespace {
 
 constexpr size_t kAesKeySize = 16;
-constexpr size_t kAesTagLength = 128;
+constexpr size_t kAesTagLength = 16;
 constexpr size_t kIvSize = 12;
 constexpr size_t kKeyMaterialSize = 32;
 // P-256 field size * 2 + type byte
@@ -45,6 +46,7 @@ AESEncryptResult::AESEncryptResult(std::vector<uint8_t> data,
       encoded_public_component_and_iv(encoded_public_component_and_iv) {}
 
 AESEncryptResult::~AESEncryptResult() = default;
+AESEncryptResult::AESEncryptResult(const AESEncryptResult&) = default;
 
 std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
     const std::string& server_pub_key_b64,
@@ -55,12 +57,9 @@ std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
     return std::nullopt;
   }
 
-  // auto server_public_key = CreateECKey();
   auto client_private_key = CreateECKey();
-  // auto client_public_key = CreateECKey();
 
-  if (!client_private_key) {  // || !client_public_key) {// ||
-                              // !server_public_key) {
+  if (!client_private_key) {
     VLOG(1) << "Failed to init P-256 curve";
     return std::nullopt;
   }
@@ -78,22 +77,10 @@ std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
     return std::nullopt;
   }
 
-  // if (!EC_KEY_set_public_key(server_public_key.get(),
-  // server_public_point.get()) || !EC_KEY_check_key(server_public_key.get())) {
-  //   VLOG(1) << "Failed to load point into server EC public key";
-  //   return std::nullopt;
-  // }
-
   if (!EC_KEY_generate_key(client_private_key.get())) {
     VLOG(1) << "Failed to generate client EC key";
     return std::nullopt;
   }
-
-  // if (!EC_KEY_set_public_key(client_public_key.get(),
-  // EC_KEY_get0_public_key(client_private_key.get()))) {
-  //   VLOG(1) << "Failed to set client EC public key";
-  //   return std::nullopt;
-  // }
 
   uint8_t shared_key_material[kKeyMaterialSize];
   if (!ECDH_compute_key(shared_key_material, kKeyMaterialSize,
@@ -107,7 +94,6 @@ std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
 
   auto aes_key = std::vector<uint8_t>(key_material_hash.begin(),
                                       key_material_hash.begin() + kAesKeySize);
-
   auto* algo = EVP_aead_aes_128_gcm();
 
   bssl::ScopedEVP_AEAD_CTX ctx;

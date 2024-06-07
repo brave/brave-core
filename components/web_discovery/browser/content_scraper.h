@@ -47,29 +47,36 @@ class ContentScraper {
   ContentScraper& operator=(const ContentScraper&) = delete;
 
   // For initial page scrape in renderer
-  void ScrapePage(const PatternsURLDetails* url_details,
-                  const GURL& url,
+  void ScrapePage(const GURL& url,
+                  bool is_strict_scrape,
                   mojom::DocumentExtractor* document_extractor,
                   PageScrapeResultCallback callback);
   // For subsequent double fetches after initial scrape
-  void ParseAndScrapePage(std::unique_ptr<PageScrapeResult> prev_result,
-                          const PatternsURLDetails* url_details,
+  void ParseAndScrapePage(bool is_strict_scrape,
+                          std::unique_ptr<PageScrapeResult> prev_result,
                           std::string html,
                           PageScrapeResultCallback callback);
 
  private:
-  void ProcessStandardRule(const ScrapeRule& rule,
+  void ProcessStandardRule(const std::string& report_key,
+                           const ScrapeRule& rule,
                            const std::string& root_selector,
                            const GURL& url,
                            PageScrapeResult* scrape_result);
   void OnScrapedElementAttributes(
+      bool is_strict_scrape,
       std::unique_ptr<PageScrapeResult> scrape_result,
       PageScrapeResultCallback callback,
       std::vector<mojom::AttributeResultPtr> attribute_results);
   void OnRustElementAttributes(
+      bool is_strict_scrape,
       std::unique_ptr<PageScrapeResult> scrape_result,
       PageScrapeResultCallback callback,
       rust::Vec<rust_document_extractor::AttributeResult> attribute_results);
+  std::string MaybeExecuteRefineFunctions(const PatternsURLDetails* url_details,
+                                          const std::string& root_selector,
+                                          const std::string& report_key,
+                                          std::string value);
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 

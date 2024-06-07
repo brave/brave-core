@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
+#include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -110,13 +111,8 @@ void WDPService::OnDoubleFetched(const base::Value& associated_data,
   if (!prev_scrape_result) {
     return;
   }
-  auto* url_pattern = last_loaded_patterns_->GetMatchingURLPattern(
-      prev_scrape_result->url, true);
-  if (!url_pattern) {
-    return;
-  }
   content_scraper_->ParseAndScrapePage(
-      std::move(prev_scrape_result), url_pattern, *response_body,
+      true, std::move(prev_scrape_result), *response_body,
       base::BindOnce(&WDPService::OnContentScraped, base::Unretained(this),
                      true));
 }
@@ -127,15 +123,11 @@ void WDPService::OnFinishNavigation(
   if (!content_scraper_) {
     return;
   }
-  auto* url_pattern = last_loaded_patterns_->GetMatchingURLPattern(url, false);
-  if (!url_pattern) {
-    return;
-  }
   mojo::Remote<mojom::DocumentExtractor> remote;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       remote.BindNewPipeAndPassReceiver());
   auto remote_id = document_extractor_remotes_.Add(std::move(remote));
-  content_scraper_->ScrapePage(url_pattern, url,
+  content_scraper_->ScrapePage(url, false,
                                document_extractor_remotes_.Get(remote_id),
                                base::BindOnce(&WDPService::OnContentScraped,
                                               base::Unretained(this), false));
