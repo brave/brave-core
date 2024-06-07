@@ -932,14 +932,6 @@ bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
          url.DomainIs("wallet.s.brave.io");
 }
 
-bool IsEndpointUsingBraveWalletProxy(const std::string& url) {
-  if (base::StartsWith(url, "http://") || base::StartsWith(url, "https://")) {
-    return IsEndpointUsingBraveWalletProxy(GURL(url));
-  }
-
-  return IsEndpointUsingBraveWalletProxy(GURL("https://" + url));
-}
-
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
   return {
       {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},
