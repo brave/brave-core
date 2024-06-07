@@ -711,6 +711,12 @@ bool SolanaMessage::UsesPriorityFee() const {
         mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice) {
       return true;
     }
+
+    if (solana_ins_data_decoder::GetComputeBudgetInstructionType(
+            instruction.data(), instruction.GetProgramId()) ==
+        mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit) {
+      return true;
+    }
   }
 
   return false;
