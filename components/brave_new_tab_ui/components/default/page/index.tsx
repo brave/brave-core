@@ -32,7 +32,7 @@ type AppProps = {
 
 type PageProps = {
   showClock: boolean
-  // showStats: boolean
+  showStats: boolean
   showCryptoContent: boolean
   showTopSites: boolean
   showBrandedWallpaper: boolean
@@ -40,13 +40,12 @@ type PageProps = {
 
 function getItemRowCount(p: PageProps): number {
   let right = (p.showClock ? 1 : 0) + (p.showCryptoContent ? 2 : 0)
-  // let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
+  let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
   // Has space for branded logo to sit next to something on right?
-  // if (p.showBrandedWallpaper && left >= right) {
-  //   left++
-  // }
-  // return Math.max(left, right) + 1
-  return right + 1 // extra 1 for footer
+  if (p.showBrandedWallpaper && left >= right) {
+    left++
+  }
+  return Math.max(left, right) + 1 // extra 1 for footer
 }
 
 const StyledPage = styled('div') <PageProps>`
@@ -168,10 +167,10 @@ export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> =
   )
 }
 
-// export const GridItemStats = styled('section')`
-//   grid-column: 1 / span 2;
-//   ${singleColumnSmallViewport}
-// `
+export const GridItemStats = styled('section')`
+  grid-column: 1 / span 2;
+  ${singleColumnSmallViewport}
+`
 
 export const GridItemClock = styled('section')`
   grid-column: 3;

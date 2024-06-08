@@ -23,7 +23,7 @@ import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
-// import Stats from './stats'
+import Stats from './stats'
 
 // Helpers
 import { getLocale } from '$web-common/locale'
@@ -666,7 +666,7 @@ class NewTabPage extends React.Component<Props, State> {
     let cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
-    let { showTopSites, showClock } = newTabData
+    let { showTopSites, showStats, showClock } = newTabData
     // In favorites mode, add site tile is visible by default if there is no
     // item. In frecency, top sites widget is hidden with empty tiles.
     if (showTopSites && !newTabData.customLinksEnabled) {
@@ -680,7 +680,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     if (forceToHideWidget) {
       showTopSites = false
-      // showStats = false
+      showStats = false
       showClock = false
       cryptoContent = null
     }
@@ -709,14 +709,14 @@ class NewTabPage extends React.Component<Props, State> {
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
-            // showStats={showStats}
+            showStats={showStats}
             colorForBackground={colorForBackground}
             showCryptoContent={!!cryptoContent}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
           >
             {this.renderSearchPromotion()}
-            {/* <GridWidget
+             <GridWidget
               pref='showStats'
               container={Page.GridItemStats}
               paddingType={'right'}
@@ -725,7 +725,7 @@ class NewTabPage extends React.Component<Props, State> {
               menuPosition={'right'}
             >
               <Stats stats={newTabData.stats} />
-            </GridWidget> */}
+            </GridWidget> 
             <GridWidget
               pref='showClock'
               container={Page.GridItemClock}
