@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_SEARCH_CONVERSION_PROMOTION_VIEW_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -63,6 +64,7 @@ class BraveSearchConversionPromotionView : public views::View {
   std::unique_ptr<views::View> GetSecondaryButton();
   void OnPrimaryButtonPressed();
   void OnSecondaryButtonPressed();
+  std::optional<int> GetBackgroundGraphic() const;
 
   // true when this is for ddg conversion promotion.
   bool UseDDG() const;
