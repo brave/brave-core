@@ -1,33 +1,89 @@
-body{
+body {
   width: 260px;
   height: 200px;
   padding-bottom: 10%;
 }
 
-#container{
+#container {
+  min-height: 335px;
+}
+
+#signUpContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#signInContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#kidsContent {
+  display: flex;
+  flex-direction: column;
+}
+
+#container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.status{
-  margin-bottom: 10px;
+#successStatus {
+  display: block;
+  height: 10px;
+  color: rgb(2, 168, 2);
 }
 
-form{
+#errorStatus {
+  display: block;
+  height: 10px;
+  color: red;
+}
+
+.session-time-container {
   display: flex;
-    flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-input{
+#sessionTime {
+  background-color: #dddfdd;
+  /* color: white; */
+  padding: 4px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+}
+
+.timerLabel {
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 10px;
+  color: #df8a1d;
+  display: flex;
+  align-items: center;
+}
+#timerDisplay {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
   padding: 8px;
   border-radius: 5px;
   border: 2px solid #ece2d4;
-  margin-top: 10px;
   display: flex;
 }
 
-input:focus{
+input:focus {
   outline: none;
   border-color: rgb(255, 190, 51);
   box-shadow: 0 0 3px rgb(255, 190, 51);
@@ -40,19 +96,19 @@ input[type="checkbox"]:checked {
 }
 
 .checkbox-container input[type="checkbox"],
-        .checkbox-container label {
-            display: inline;
-            vertical-align: middle;
-            font-weight: bold; 
-            font-size: large;
-        }
-        .checkbox-container{
-            margin-bottom: 10px;
-        }
+.checkbox-container label {
+  display: inline;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 14px;
+}
 
-button{
+.checkbox-container {
+  margin-bottom: 10px;
+}
+
+button {
   margin-top: 25px;
-  margin-bottom: 20px;
   padding: 0.6rem;
   padding-left: .8rem;
   padding-right: .8rem;

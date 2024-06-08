@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Kids Mode extension</title>
+  <link rel="stylesheet" href="../ui/popup.css">
+</head>
+
+<body>
+  <div id="container" style="display: flex; flex-direction: column;">
+    <div id="popupContainers">
+      <div id="signUpContainer">
+        <div style="display: flex; justify-content: center;">
+          <h1 style="font-size: 18px; margin-bottom: 15px;">Kids mode</h1>
+        </div>
+        <form id="registerForm">
+          <input type="password" id="password" placeholder="Password">
+          <input style="margin-top: 10px;" type="password" id="cpassword" placeholder="Confirm password">
+          <button type="submit" id="loginBtn">Set password</button>
+        </form>
+      </div>
+      <div id="signInContainer">
+        <div style="display: flex; justify-content: center;">
+          <h1 style="font-size: 18px; margin-bottom: 15px;">Kids mode</h1>
+        </div>
+        <form id="loginForm">
+          <input type="password" id="loginPassword" placeholder="Password">
+          <div style="display: flex; justify-content: start;">
+            <span id="resetPasswordLink" style="color: #a35e15; cursor: pointer; margin-left: 3px; margin-top: 2px;">Reset
+              password</span>
+          </div>
+          <div style="display: flex; flex-direction: column; margin-bottom: 10px; margin-top: 15px;">
+            <div class="checkbox-container">
+              <input type="checkbox" id="blockGamesCheckbox" style="margin: 5px;">
+              <label class="checkbox-label" for="blockGamesCheckbox">Block games</label>
+            </div>
+            <div class="checkbox-container">
+              <input type="checkbox" id="blockSocialMediaCheckbox" style="margin: 5px;">
+              <label class="checkbox-label" for="blockSocialMediaCheckbox">Block social media</label>
+            </div>
+            <div class="session-time-container">
+              <label for="sessionTime" class="timerLabel">Set timer</label>
+              <input id="sessionTime" type="number" value="1" min="1" max="24" name="sessionTime">
+              <span id="sessionTimeSpan"
+                style="display: flex; align-items: center; margin-left: 2px; font-weight: bold;">Hr</span>
+            </div>
+          </div>
+          <button type="submit" id="loginBtn">Start kids mode</button>
+        </form>
+
+      </div>
+      <div id="kidsContent">
+        <div style="display: flex; justify-content: center;">
+          <h1 style="font-size: 18px; margin-bottom: 20px;">Exit kids mode</h1>
+        </div>
+        <form id="logoutForm">
+          <input type="password" id="logoutPassword" placeholder="Password">
+          <button type="submit" style="padding: 10px; margin-bottom: 20px;" id="logoutBtn">Logout</button>
+        </form>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <div id="timerDisplay" style="font-size: 16px;"></div>
+        </div>
+      </div>
+    </div>
+    <div id="successStatus" style="display: block;"></div>
+    <div id="errorStatus" style="display: block; height: 10px;"></div>
+  </div>
+  <script src="./popup.js" type="module"></script>
+</body>
+
+</html>
