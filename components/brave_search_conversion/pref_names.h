@@ -14,6 +14,16 @@ inline constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
 inline constexpr char kMaybeLaterClickedTime[] =
     "brave.brave_search_conversion.maybe_later_clicked_time";
 
+// Index ranges from 0 to 3 and it's matched DDGTypeA to DDGTypeD.
+// It's the type index for now.
+inline constexpr char kDDGBannerTypeIndex[] =
+    "brave.brave_search_conversion.ddg_banner_type_index";
+
+// It's the time that current index type is shown first.
+// We rotate 4 types when specific time is passed.
+inline constexpr char kLatestDDGBannerTypeFirstShownTime[] =
+    "brave.brave_search_conversion.latest_ddg_banner_type_first_shown_time";
+
 inline constexpr char kShowNTPSearchBox[] =
     "brave.brave_search.show-ntp-search";
 

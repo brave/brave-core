@@ -126,10 +126,8 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   feature_list.Reset();
 
-  feature_list.InitAndEnableFeatureWithParameters(
-      brave_search_conversion::features::kOmniboxDDGBanner,
-      {{brave_search_conversion::features::kBannerTypeParamName,
-        "type_DDG_B"}});
+  feature_list.InitAndEnableFeature(
+      brave_search_conversion::features::kOmniboxDDGBanner);
 
   ConfigureBingAsDefaultProvider();
 
@@ -139,7 +137,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   // Set DDG as a default provider and check banner type again.
   ConfigureDDGAsDefaultProvider();
-  EXPECT_EQ(ConversionType::kDDGBannerTypeB,
+  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
             GetConversionType(&pref_service_, &template_url_service_));
 
   feature_list.Reset();
@@ -149,9 +147,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
   feature_list.InitWithFeaturesAndParameters(
       {{brave_search_conversion::features::kOmniboxBanner,
         {{brave_search_conversion::features::kBannerTypeParamName, "type_B"}}},
-       {brave_search_conversion::features::kOmniboxDDGBanner,
-        {{brave_search_conversion::features::kBannerTypeParamName,
-          "type_DDG_B"}}}},
+       {brave_search_conversion::features::kOmniboxDDGBanner, {}}},
       {});
 
   // Set Brave and check no banner.
@@ -161,7 +157,23 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   // Set DDG and check ddg banner.
   ConfigureDDGAsDefaultProvider();
+  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
   EXPECT_EQ(ConversionType::kDDGBannerTypeB,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  EXPECT_EQ(ConversionType::kDDGBannerTypeC,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  EXPECT_EQ(ConversionType::kDDGBannerTypeD,
+            GetConversionType(&pref_service_, &template_url_service_));
+
+  task_environment_.AdvanceClock(base::Minutes(1));
+  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
             GetConversionType(&pref_service_, &template_url_service_));
 
   // Set bing and check non-ddg banner.
