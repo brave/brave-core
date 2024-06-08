@@ -113,7 +113,8 @@ class SolanaMessage {
       uint16_t& num_readonly_signed_accounts,
       uint16_t& num_readonly_unsigned_accounts);
 
-  // Returns true if transaction contains a set compute price instruction.
+  // Returns true if transaction contains a set compute price or set compute
+  // unit price instruction.
   bool UsesPriorityFee() const;
 
   mojom::SolanaMessageVersion version_;

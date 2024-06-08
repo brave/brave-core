@@ -706,15 +706,13 @@ bool SolanaMessage::UsesDurableNonce() const {
 
 bool SolanaMessage::UsesPriorityFee() const {
   for (const auto& instruction : instructions_) {
-    if (solana_ins_data_decoder::GetComputeBudgetInstructionType(
-            instruction.data(), instruction.GetProgramId()) ==
-        mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice) {
-      return true;
-    }
-
-    if (solana_ins_data_decoder::GetComputeBudgetInstructionType(
-            instruction.data(), instruction.GetProgramId()) ==
-        mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit) {
+    auto instruction_type =
+        solana_ins_data_decoder::GetComputeBudgetInstructionType(
+            instruction.data(), instruction.GetProgramId());
+    if (instruction_type ==
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice ||
+        instruction_type ==
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit) {
       return true;
     }
   }

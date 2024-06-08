@@ -692,8 +692,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr, nullptr);
 
-  // First add a partially signed transaction - it should not fetch add any
-  // priority fee instructions or add a fee estimate.
+  // First add a partially signed transaction - it should fetch a base fee
+  // but not a priority fee (simulateTransaction + getRecentPrioritizationFees).
   auto param = mojom::SolanaSignTransactionParam::New(
       kEncodedSerializedMessage, std::vector<mojom::SignaturePubkeyPairPtr>());
   param->signatures.emplace_back(mojom::SignaturePubkeyPair::New(

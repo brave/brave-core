@@ -67,10 +67,6 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       mojom::SolanaTxManagerProxy::MakeTokenProgramTransferTxDataCallback;
   using MakeTxDataFromBase64EncodedTransactionCallback = mojom::
       SolanaTxManagerProxy::MakeTxDataFromBase64EncodedTransactionCallback;
-  using GetEstimatedTxFeeCallback =
-      base::OnceCallback<void(uint64_t tx_fee,
-                              mojom::SolanaProviderError error,
-                              const std::string& error_message)>;
   using GetEstimatedTxBaseFeeCallback =
       base::OnceCallback<void(std::unique_ptr<SolanaTxMeta> tx_meta,
                               const std::string& unsigned_tx,

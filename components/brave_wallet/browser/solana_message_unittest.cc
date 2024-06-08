@@ -14,6 +14,7 @@
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -672,7 +673,23 @@ TEST(SolanaMessageUnitTest, UsesPriorityFee) {
   ASSERT_TRUE(message1.AddPriorityFee(0, 0));
   EXPECT_TRUE(message1.UsesPriorityFee());
 
-  // Legacy message wtih durable nonce
+  // Add a specific test for kSetComputeUnitLimit
+  SolanaMessage message1a = GetTestLegacyMessage();
+  SolanaInstruction set_compute_unit_limit_instruction =
+      solana::compute_budget_program::SetComputeUnitLimit(0);
+  std::vector<SolanaInstruction> vec1a = {set_compute_unit_limit_instruction};
+  message1a.SetInstructionsForTesting(vec1a);
+  EXPECT_TRUE(message1a.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitPrice
+  SolanaMessage message1b = GetTestLegacyMessage();
+  SolanaInstruction set_compute_unit_price_instruction =
+      solana::compute_budget_program::SetComputeUnitPrice(0);
+  std::vector<SolanaInstruction> vec1b = {set_compute_unit_price_instruction};
+  message1b.SetInstructionsForTesting(vec1b);
+  EXPECT_TRUE(message1b.UsesPriorityFee());
+
+  // Legacy message with durable nonce
   SolanaMessage message2 = GetTestLegacyMessage();
   EXPECT_FALSE(message2.UsesPriorityFee());
   SolanaInstruction instruction1 = GetAdvanceNonceAccountInstruction();
@@ -687,6 +704,18 @@ TEST(SolanaMessageUnitTest, UsesPriorityFee) {
   EXPECT_FALSE(message3.UsesPriorityFee());
   ASSERT_TRUE(message3.AddPriorityFee(0, 0));
   EXPECT_TRUE(message3.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitLimit in V0 message
+  SolanaMessage message3a = GetTestV0Message();
+  std::vector<SolanaInstruction> vec3a = {set_compute_unit_limit_instruction};
+  message3a.SetInstructionsForTesting(vec3a);
+  EXPECT_TRUE(message3a.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitPrice in V0 message
+  SolanaMessage message3b = GetTestV0Message();
+  std::vector<SolanaInstruction> vec3b = {set_compute_unit_price_instruction};
+  message3b.SetInstructionsForTesting(vec3b);
+  EXPECT_TRUE(message3b.UsesPriorityFee());
 
   // V0 message with durable nonce
   SolanaMessage message4 = GetTestV0Message();
