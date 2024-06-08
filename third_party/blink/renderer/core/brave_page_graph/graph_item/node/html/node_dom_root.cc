@@ -15,8 +15,10 @@ namespace brave_page_graph {
 
 NodeDOMRoot::NodeDOMRoot(GraphItemContext* context,
                          const DOMNodeId dom_node_id,
-                         const String& tag_name)
-    : NodeHTMLElement(context, dom_node_id, tag_name) {}
+                         const String& tag_name,
+                         const blink::DOMNodeId frame_owner_id)
+    : NodeHTMLElement(context, dom_node_id, tag_name),
+      frame_owner_id_(frame_owner_id) {}
 
 ItemName NodeDOMRoot::GetItemName() const {
   return "DOM root";
@@ -38,6 +40,8 @@ void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,
   NodeHTMLElement::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->AddValueNode(doc, parent_node, url_);
+  GraphMLAttrDefForType(kGraphMLAttrDefOwningFrameElmId)
+      ->AddValueNode(doc, parent_node, frame_owner_id_);
 }
 
 bool NodeDOMRoot::IsNodeDOMRoot() const {

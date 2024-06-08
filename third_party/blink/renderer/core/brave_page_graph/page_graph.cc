@@ -184,7 +184,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.6.3";
+constexpr char kPageGraphVersion[] = "0.6.4";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -1234,7 +1234,12 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
   }
 
   const String local_tag_name(static_cast<blink::Node*>(document)->nodeName());
-  auto* dom_root = AddNode<NodeDOMRoot>(node_id, local_tag_name);
+  const blink::DOMNodeId owning_frame_element_id =
+      document->LocalOwner()
+          ? blink::DOMNodeIds::IdForNode(document->LocalOwner())
+          : 0;
+  auto* dom_root =
+      AddNode<NodeDOMRoot>(node_id, local_tag_name, owning_frame_element_id);
   auto url = document->Url();
   dom_root->SetURL(url);
   if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {

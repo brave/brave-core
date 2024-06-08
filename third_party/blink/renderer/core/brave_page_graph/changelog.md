@@ -3,10 +3,17 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.6.4
+
+Add `owning frame element id` attribute to `NodeDOMRoot` elements,
+to annotate which `<iframe>` (or equipment) element a document / DOM root
+is contained in (this is needed because this can be very difficult to
+keep track of in the graph structure alone when frames are created
+and injected quickly in JS).
+
 ## Version 0.6.3
 
 Add `frame id` attribute to `EdgeExecute` and `EdgeExecuteAttr` edges too.
-
 
 ## Version 0.6.2
 

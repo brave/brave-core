@@ -116,6 +116,7 @@ enum GraphMLAttrDef {
   kGraphMLAttrDefNodeTag,
   kGraphMLAttrDefNodeText,
   kGraphMLAttrDefNodeType,
+  kGraphMLAttrDefOwningFrameElmId,
   kGraphMLAttrDefPageGraphEdgeId,
   kGraphMLAttrDefPageGraphNodeId,
   kGraphMLAttrDefPageGraphEdgeTimestamp,
