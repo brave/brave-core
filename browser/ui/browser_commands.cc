@@ -910,7 +910,7 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
 
 void NewSplitViewForTab(Browser* browser,
                         std::optional<tabs::TabHandle> tab,
-                        GURL url) {
+                        const GURL& url) {
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (!split_view_data) {
     return;
@@ -930,7 +930,7 @@ void NewSplitViewForTab(Browser* browser,
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
 
-  if (url.is_empty()) {
+  if (!url.is_valid()) {
     chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
                      /*foreground*/ true);
   } else {

@@ -325,11 +325,14 @@ void OnRewriteSuggestionCompleted(
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-bool CanSplitViewEnabled(base::WeakPtr<content::WebContents> web_contents) {
-  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
+bool CanOpenSplitViewForWebContents(
+    base::WeakPtr<content::WebContents> web_contents) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    return false;
+  }
 
-  return base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-         brave::CanOpenNewSplitViewForTab(browser);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
+  return browser->is_type_normal() && brave::CanOpenNewSplitViewForTab(browser);
 }
 
 void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
@@ -409,8 +412,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
 
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
-      return !IsInProgressiveWebApp() &&
-             CanSplitViewEnabled(source_web_contents_->GetWeakPtr());
+      return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
 
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
@@ -738,11 +740,10 @@ void BraveRenderViewContextMenu::InitMenu() {
   BuildAIChatMenu();
 #endif
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-      !IsInProgressiveWebApp() && !params_.link_url.is_empty()) {
-    // TODO: Need to confirm the menu placing.
-    index = menu_model_.GetIndexOfCommandId(
-        IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
+  // Add Open Link in Split View
+  if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&
+      params_.link_url.is_valid()) {
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
     DCHECK(index.has_value());
 
     menu_model_.InsertItemWithStringIdAt(
