@@ -7,9 +7,9 @@
 #include "brave/common/brave_content_client.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 
-#define ChromeContentClient BraveContentClient
-#define ChromeContentBrowserClient BraveContentBrowserClient
-#define ChromeContentRendererClient BraveContentRendererClient
+#define ChromeContentClient() BraveContentClient()
+#define ChromeContentBrowserClient() BraveContentBrowserClient()
+#define ChromeContentRendererClient() BraveContentRendererClient()
 #include "src/chrome/test/base/chrome_render_view_test.cc"
 #undef ChromeContentClient
 #undef ChromeContentBrowserClient
