@@ -410,10 +410,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       return ai_rewriter::features::IsAIRewriterEnabled();
 #endif
-
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
-
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -481,11 +479,9 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
-
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
       break;
-
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
