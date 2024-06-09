@@ -10,8 +10,11 @@
   </outputs>
   <release seq="1">
     <includes>
-      <include name="IDR_PARENTAL_CONTROL" file="extension/manifest.json"
-        resource_path="parental_control/extension/manifest.json" type="BINDATA" />
+      <include name="IDR_PARENTAL_CONTROL" file="extension/manifest.json" resource_path="parental_control/extension/manifest.json" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_HTML" file="extension/content/ui/popup.html" resource_path="parental_control/extension/content/ui/popup.html" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_WORKER" file="extension/service_worker/background.js" resource_path="parental_control/extension/service_worker/background.js" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_LOGO_ACTIVE" file="extension/assets/Logo_active.png" resource_path="parental_control/extension/assets/Logo_active.png" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_LOGO_INACTIVE" file="extension/assets/Logo_inactive.png" resource_path="parental_control/extension/assets/Logo_inactive.png" type="BINDATA" />
     </includes>
   </release>
 </grit>

@@ -42,9 +42,9 @@ namespace extensions {
   bool IsComponentExtensionAllowlisted(int manifest_resource_id) {
     switch (manifest_resource_id) {
       // Please keep the list in alphabetical order.
-      case IDR_PARENTAL_CONTROL:
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
+      case IDR_PARENTAL_CONTROL:
         return true;
     }
 

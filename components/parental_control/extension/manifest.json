@@ -12,7 +12,7 @@
     "declarativeNetRequestFeedback"
   ],
   "background": {
-    "service_worker": "./service_worker/background.js",
+    "service_worker": "extension/out/parental_control_background.bundle.js",
     "type": "module"
   },
   "action": {

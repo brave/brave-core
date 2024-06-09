@@ -9,7 +9,7 @@ transpile_web_ui("generate_parental_control") {
   entry_points = [
     [
       "parental_control",
-      rebase_path("content/ui/popup.tsx")
+      rebase_path("content/ui/popup.js")
     ],
     [
       "parental_control_background",
