@@ -38,5 +38,16 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
 
     assert(this.global.crypto === undefined)
     this.global.crypto = webcrypto
+
+    this.global.matchMedia = (query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => {}
+    })
   }
 }

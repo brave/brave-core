@@ -180,6 +180,7 @@ export const ConfirmTransactionPanel = () => {
     return (
       <StyledWrapper>
         <Skeleton
+          data-testid='confirm-transaction-panel-loading-skeleton'
           width={'100%'}
           height={'100%'}
           enableAnimation
