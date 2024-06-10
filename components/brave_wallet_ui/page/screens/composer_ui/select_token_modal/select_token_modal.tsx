@@ -41,6 +41,9 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import {
   getEntitiesListFromEntityState //
 } from '../../../../utils/entities.utils'
+import {
+  getAccountsForNetwork //
+} from '../../../../utils/account-utils'
 
 // Queries
 import {
@@ -474,11 +477,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       if (!pendingSelectedAsset) {
         return []
       }
-      return accounts
-        .filter(
-          (account) => account.accountId.coin === pendingSelectedAsset.coin
-        )
-        .sort(function (a, b) {
+      return getAccountsForNetwork(pendingSelectedAsset, accounts).sort(
+        function (a, b) {
           return new Amount(
             getBalance(b.accountId, pendingSelectedAsset, tokenBalancesRegistry)
           )
@@ -490,7 +490,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               )
             )
             .toNumber()
-        })
+        }
+      )
     }, [accounts, pendingSelectedAsset, tokenBalancesRegistry])
 
     // Methods
