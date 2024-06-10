@@ -4,11 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 
 namespace ai_chat {
 
