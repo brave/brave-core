@@ -309,3 +309,20 @@ export const getHiddenOrDeletedTokenIdsList = () => {
 export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {
   return removedIds.includes(tokenId)
 }
+
+export const getTokenLogo = (token: BraveWallet.BlockchainToken) => {
+  if (isNativeAsset(token)) {
+    return makeNativeAssetLogo(token.symbol, token.chainId)
+  }
+
+  if (
+    !token.logo ||
+    token.logo.startsWith('data:image/') ||
+    token.logo.startsWith('chrome://erc-token-images/')
+  ) {
+    // nothing to change
+    return token.logo
+  }
+
+  return `chrome://erc-token-images/${token.logo}`
+}

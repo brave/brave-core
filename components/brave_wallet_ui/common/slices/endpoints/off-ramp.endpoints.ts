@@ -11,7 +11,8 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   addLogoToToken,
   getUniqueAssets,
-  sortNativeAndAndBatAssetsToTop
+  sortNativeAndAndBatAssetsToTop,
+  getTokenLogo
 } from '../../../utils/asset-utils'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
@@ -28,8 +29,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
       queryFn: async (_arg, _store, _extraOptions, baseQuery) => {
         try {
           const {
-            data: { blockchainRegistry },
-            cache
+            data: { blockchainRegistry }
           } = baseQuery(undefined)
           const { kRamp } = BraveWallet.OffRampProvider
 
@@ -46,7 +46,7 @@ export const offRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
               rampAssets.flatMap((p) => p.tokens),
               10,
               async (token: BraveWallet.BlockchainToken) => {
-                const tokenLogo = await cache.getTokenLogo(token)
+                const tokenLogo = getTokenLogo(token)
                 return addLogoToToken(token, tokenLogo)
               }
             )

@@ -42,7 +42,6 @@ export type UpdateNFtMetadataMessage = CommandMessage & {
     displayMode: DisplayMode
     icon?: string
     nftMetadata?: NFTMetadataReturnType
-    imageCID?: string
   }
 }
 

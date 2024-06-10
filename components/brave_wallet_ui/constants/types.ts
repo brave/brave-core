@@ -201,7 +201,6 @@ export interface WalletState {
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
-  isNftPinningFeatureEnabled: boolean
   isAnkrBalancesFeatureEnabled: boolean
   isRefreshingNetworksAndTokens: boolean
 }
@@ -221,9 +220,6 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
-  enablingAutoPin: boolean
-  isAutoPinEnabled: boolean
-  pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   mnemonic?: string
   setupStillInProgress: boolean
   walletTermsAcknowledged: boolean
@@ -625,10 +621,6 @@ export enum WalletRoutes {
 
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',
-
-  // NFT Pining
-  LocalIpfsNode = '/crypto/local-ipfs-node',
-  InspectNfts = '/crypto/inspect-nfts',
 
   // Hashes
   AccountsHash = '#accounts',

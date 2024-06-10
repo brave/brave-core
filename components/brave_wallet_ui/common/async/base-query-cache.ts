@@ -50,17 +50,9 @@ import {
   GetBlockchainTokenIdArg,
   getDeletedTokenIds,
   getHiddenTokenIds,
-  isNativeAsset
+  getTokenLogo
 } from '../../utils/asset-utils'
-import {
-  makeNativeAssetLogo,
-  makeNetworkAsset
-} from '../../options/asset-options'
-import {
-  IPFS_PROTOCOL,
-  isIpfs,
-  stripERC20TokenImageURL
-} from '../../utils/string-utils'
+import { makeNetworkAsset } from '../../options/asset-options'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
@@ -84,8 +76,6 @@ export class BaseQueryCache {
   private _accountsRegistry?: AccountInfoEntityState
   private _knownTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
-  private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
-  private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
@@ -309,83 +299,6 @@ export class BaseQueryCache {
     this._userTokensRegistry = undefined
   }
 
-  /** Extracts ipfs:// url from gateway-like url */
-  getExtractedIPFSUrlFromGatewayLikeUrl = async (urlArg: string) => {
-    const trimmedURL = urlArg ? urlArg.trim() : ''
-    if (!this._extractedIPFSUrlRegistry[trimmedURL]) {
-      if (isIpfs(trimmedURL)) {
-        this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
-      } else {
-        const api = getAPIProxy()
-        const { ipfsUrl } =
-          await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
-            trimmedURL
-          )
-        this._extractedIPFSUrlRegistry[trimmedURL] = ipfsUrl || undefined
-      }
-    }
-
-    return this._extractedIPFSUrlRegistry[trimmedURL]
-  }
-
-  /** Translates ipfs:// url or gateway-like url to the NFT gateway url */
-  getIpfsGatewayTranslatedNftUrl = async (urlArg: string) => {
-    const trimmedURL = urlArg.trim()
-
-    if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
-      const { braveWalletIpfsService } = getAPIProxy()
-
-      const testUrl = isIpfs(trimmedURL)
-        ? trimmedURL
-        : await this.getExtractedIPFSUrlFromGatewayLikeUrl(trimmedURL)
-
-      const { translatedUrl } =
-        await braveWalletIpfsService.translateToNFTGatewayURL(testUrl || '')
-
-      this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
-        translatedUrl || trimmedURL
-    }
-
-    return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
-  }
-
-  /** only caches ipfs translations since saving to a registry would require a
-   * long identifier */
-  getIsImagePinnable = async (imageUrl: string) => {
-    const result = await this.getExtractedIPFSUrlFromGatewayLikeUrl(
-      stripERC20TokenImageURL(imageUrl)
-    )
-
-    if (result) {
-      return result?.startsWith(IPFS_PROTOCOL)
-    }
-
-    return false
-  }
-
-  // TODO(apaymyshev): This function should not exist. Backend should be
-  // responsible in providing correct logo.
-  /** only caches ipfs translations since saving to a registry would require a
-   * long identifier */
-  getTokenLogo = async (token: BraveWallet.BlockchainToken) => {
-    if (isNativeAsset(token)) {
-      return makeNativeAssetLogo(token.symbol, token.chainId)
-    }
-
-    if (
-      !token.logo ||
-      token.logo.startsWith('data:image/') ||
-      token.logo.startsWith('chrome://erc-token-images/')
-    ) {
-      // nothing to change
-      return token.logo
-    }
-
-    return token.logo.startsWith('ipfs://')
-      ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
-      : `chrome://erc-token-images/${token.logo}`
-  }
-
   getEnabledCoinTypes = async () => {
     if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
       // network type flags
@@ -596,7 +509,7 @@ async function fetchAssetsForNetwork({
     tokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
-      const tokenLogo = await cache.getTokenLogo(token)
+      const tokenLogo = getTokenLogo(token)
       const updatedToken = addLogoToToken(token, tokenLogo)
       return addChainIdToToken(updatedToken, network.chainId)
     }

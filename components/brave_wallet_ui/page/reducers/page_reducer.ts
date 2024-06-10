@@ -6,7 +6,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
-  BraveWallet,
   PageState,
   NFTMetadataReturnType
 } from '../../constants/types'
@@ -21,9 +20,6 @@ const defaultState: PageState = {
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
   nftMetadataError: undefined,
-  enablingAutoPin: false,
-  isAutoPinEnabled: false,
-  pinStatusOverview: undefined,
   setupStillInProgress: false,
   walletTermsAcknowledged: false
 }
@@ -77,21 +73,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
         state.setupStillInProgress = !action?.payload
         state.mnemonic = undefined
       },
-
-      updateNFTPinStatus(
-        state,
-        { payload }: PayloadAction<BraveWallet.TokenPinOverview | undefined>
-      ) {
-        state.pinStatusOverview = payload
-      },
-
-      updateEnablingAutoPin(state, { payload }: PayloadAction<boolean>) {
-        state.enablingAutoPin = payload
-      },
-
-      updateAutoPinEnabled(state, { payload }: PayloadAction<boolean>) {
-        state.isAutoPinEnabled = payload
-      }
     }
   })
 }

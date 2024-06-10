@@ -20,8 +20,6 @@ import uiReducer from '../common/slices/ui.slice'
 
 // utils
 import {
-  makeBraveWalletAutoPinServiceObserver,
-  makeBraveWalletPinServiceObserver,
   makeBraveWalletServiceObserver,
   makeBraveWalletServiceTokenObserver,
   makeJsonRpcServiceObserver,
@@ -53,10 +51,6 @@ proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
 proxy.addBraveWalletServiceTokenObserver(
   makeBraveWalletServiceTokenObserver(store)
-)
-proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
-proxy.addBraveWalletAutoPinServiceObserver(
-  makeBraveWalletAutoPinServiceObserver(store)
 )
 
 export const walletPageApiProxy = proxy

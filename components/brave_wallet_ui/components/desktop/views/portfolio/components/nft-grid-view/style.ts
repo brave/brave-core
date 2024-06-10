@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
 export const NFTWrapper = styled.div`
   display: flex;
@@ -71,20 +70,6 @@ export const NFTSymbol = styled.span`
   font-weight: 400;
   line-height: 18px;
   color: ${leo.color.text.secondary};
-`
-
-export const PinnedIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  background-image: url(${Ipfs});
-  background-repeat: no-repeat;
-  z-index: 2;
 `
 
 export const VerticalMenu = styled(WalletButton)`
