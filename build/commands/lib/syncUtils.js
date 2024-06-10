@@ -11,10 +11,19 @@ const Log = require('./logging')
 const util = require('./util')
 
 function toGClientConfigItem(name, value, pretty = true) {
-  // Convert value to json and replace "%True%" -> True, "%False%" -> False,
-  // "%None%" -> None.
-  const pythonLikeValue =
-      JSON.stringify(value, null, pretty ? 2 : 0).replace(/"%(.*?)%"/gm, '$1')
+  const valueMap = {
+    true: '%True%',
+    false: '%False%',
+    null: '%None%'
+  }
+
+  const replacer = (_, value) => valueMap[value] || value
+
+  const pythonLikeValue = JSON.stringify(
+    value,
+    replacer,
+    pretty ? 2 : 0
+  ).replace(/"%(.*?)%"/gm, '$1')
   return `${name} = ${pythonLikeValue}\n`
 }
 
@@ -22,29 +31,22 @@ function buildDefaultGClientConfig(
   targetOSList, targetArchList, onlyChromium = false) {
   const items = [
     {
-      managed: '%False%',
+      managed: false,
       name: 'src',
       url: config.chromiumRepo,
       custom_deps: {
-        'src/third_party/WebKit/LayoutTests': '%None%',
-        'src/chrome_frame/tools/test/reference_build/chrome': '%None%',
-        'src/chrome_frame/tools/test/reference_build/chrome_win': '%None%',
-        'src/chrome/tools/test/reference_build/chrome': '%None%',
-        'src/chrome/tools/test/reference_build/chrome_linux': '%None%',
-        'src/chrome/tools/test/reference_build/chrome_mac': '%None%',
-        'src/chrome/tools/test/reference_build/chrome_win': '%None%'
+        'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
+        'src/third_party/chromium-variations': null,
       },
       custom_vars: {
-        'checkout_rust': '%True%',
-        'checkout_pgo_profiles': config.isBraveReleaseBuild() ? '%True%' :
-                                                                '%False%'
+        'checkout_pgo_profiles': config.isBraveReleaseBuild()
       }
     }
   ]
 
   if (!onlyChromium) {
     items.push({
-      managed: '%False%',
+      managed: false,
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
       // actually get used.
