@@ -716,7 +716,7 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
           >
             {this.renderSearchPromotion()}
-             <GridWidget
+            <GridWidget
               pref='showStats'
               container={Page.GridItemStats}
               paddingType={'right'}
@@ -725,7 +725,7 @@ class NewTabPage extends React.Component<Props, State> {
               menuPosition={'right'}
             >
               <Stats stats={newTabData.stats} />
-            </GridWidget> 
+            </GridWidget>
             <GridWidget
               pref='showClock'
               container={Page.GridItemClock}
