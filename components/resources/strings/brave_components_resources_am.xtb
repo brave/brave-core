@@ -802,19 +802,15 @@
 <translation id="1426410128494586442">አዎ</translation>
 <translation id="4250680216510889253">አይ</translation>
 <translation id="1201402288615127009">ቀጣይ</translation>
-<translation id="8712637175834984815">ገባኝ</translation>
 <translation id="6896758677409633944">ቅዳ</translation>
 <translation id="7885157704277298658">ተቀድቷል</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="6042308850641462728">ተጨማሪ</translation>
-<translation id="768236965975208017">ደህንነቱ የተጠበቀ። ባለብዙ ሰንሰለት። እና ኦህ - ለአጠቃቀም ቀላል። የእርስዎ Brave Wallet በጥቂት ጠቅታዎች ሊገኝ ይችላል።</translation>
 <translation id="3157931365184549694">እነበረበት መልስ</translation>
-<translation id="2484275747844666540">አዲስ የኪስ ቦርሳ ይፍጠሩ</translation>
-<translation id="3662348701117072366">ያለውን የኪስ ቦርሳ አስመጣ</translation>
-<translation id="7150150391368236519">የሃርድዌር ዋሌት አገናኝ</translation>
+<translation id="165255193061631296">አዲስ የገንዘብ መያዣ ይፈልጋሉ?</translation>
+<translation id="5844138175312846408">ቀድሞውኑ የገንዘብ መያዣ አለዎት?</translation>
 <translation id="7501957181231305652">ወይም</translation>
 <translation id="375882617301124395">የ crypto walletዎን ምትኬ ወይም መጠባበቂያ ያስቀምጡ</translation>
-<translation id="180032279811483155">በቀጣዩ ደረጃ ፣ ቀዳሚ የክሪፕቶ መለያዎችዎን መመለስ የሚችሉበትን የ <ph name="RECOVERY_PHRASE_LENGTH"/> ቃል የዳግም መመለሻ ሀረግ ያያሉ። ድህንነቱ በተጠበቀ ቦታ ያስቀምጡት። የይለፍ ቃልዎ ቢረሳ፣ ቢጠፋ ወይም መሳሪያዎ ቢሰረቅ ወይም ዋሌት ለመቀየር ከፈለጉ የዳግም መመለሻ ሀረግ መለያዎን ዳግም ለመድረስ ብቸኛው መንገድ ነው።</translation>
 <translation id="5024543173656851695">የማገገሚያ ቃላቶቼ ከጠፋብኝ የእኔን የክሪብቶ ዋሌተን መድረስ እንደማልችል ተረድቻለሁ።</translation>
 <translation id="8281886186245836920">ዝለል</translation>
 <translation id="6532106788206463496">ለውጦችን ያስቀምጡ</translation>
@@ -827,7 +823,6 @@
 <translation id="2339124864228588937">የመልሶ ማግኛ ደረጃዎን ያረጋግጡ</translation>
 <translation id="3747079125031086337">በመልሶ ማግኛ ሐረግዎ ውስጥ ያሉትን ቃላት በትክክለኛው ቅደም ተከተል ይምረጡ።</translation>
 <translation id="802060020117206314">የመልሶ ማግኛ ሐረግ አልተዛመደም ፣ እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="8412783472871103529">የመልሶ ማግኛ ሐረግዎን ያረጋግጡ</translation>
 <translation id="2226686084760581391"><ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>፣ <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>፣ እና <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>) <ph name="THIRD_AFTER"/><ph name="THIRD_AFTER"/> የመልሶ ማግኛ ሐረግዎን ቃላት ጠቅ ያድርጉ።</translation>
 <translation id="7575574239720542222">የመልሶ ማግኛ ሐረግ አልተዛመደም።</translation>
 <translation id="8692301574305033504">አዲስ የይለፍ ቃል ይፍጠሩ</translation>
@@ -893,7 +888,6 @@
 <translation id="6892232036314454524">ይህ ስህተት ሊፈጠር የሚችለው የተሳሳተ መተግበሪያ በ Ledger መሳሪያ ላይ ሲከፈት።</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">የሂሳብ መዝገብ</translation>
-<translation id="4247752006222818397">ለ Brave ወደ Ledger መሳሪያዎ መዳረሻ ይስጡት።</translation>
 <translation id="4378551569595875038">በመገናኘት ላይ...</translation>
 <translation id="1943188256166395881">የተረጋገጡ መለያዎችን ያክሉ</translation>
 <translation id="8554010658308662631">ተጨማሪ ይጫኑ</translation>
@@ -903,6 +897,7 @@
 <translation id="2844691569989101734">ቀጥታ የሂሳብ መዝገብ</translation>
 <translation id="7265732100380987017">ነባር (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">ምንም ውጤቶች አልተገኙም።</translation>
+<translation id="7150150391368236519">የሃርድዌር ዋሌት አገናኝ</translation>
 <translation id="5149944858285555235">ያልታወቀ ስህተት ፣ እባክዎን የሃርድዌርዎን wallet እንደገና ያገናኙ እና እንደገና ይሞክሩ።</translation>
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="9220525904950070496">መለያ ያስወግዱ</translation>
@@ -940,8 +935,6 @@
 <translation id="1613627717923045622">አውታረ መረብ ይሞክሩ</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">ሴፖሊያ</translation>
-<translation id="1260818237399583903">Binance smart ሰንሰለት</translation>
-<translation id="9047549342128428249">ቢ.ኤስ.ሲ</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">መለያ ይምረጡ</translation>
 <translation id="6797737193502014008">መለያዎችን ይፈልጉ</translation>
@@ -1144,8 +1137,6 @@
 <translation id="8523768065044261559">ግብይቱን የማስኬድ ሂደት ላይ ስህተት ተገኘ፣ እባክዎ እንደገና ይሞክሩ</translation>
 <translation id="971552837551838642">የአገባብ ስህተት መልእክት፣ እባክዎ እንደገና ይሞክሩ</translation>
 <translation id="8273603707418703324">የአገባብ ስህተት መልእክት፣ ያልታወቀ የመግባት ሙከራ ተጠይቋል፣ እባክዎ እንደገና ይሞክሩ</translation>
-<translation id="5265455943786954050">የTrezor ትዕዛዝ ከወዲሁ በሂደት ላይ ነው</translation>
-<translation id="7017116822583380542">Trezor bridge ዝግጁ አይደለም</translation>
 <translation id="3378339846292573874">የተጠቆመ ማስመሰያ ያክሉ</translation>
 <translation id="2322227405137827074">ይህን ማስመሰያ ማስመጣት ይፈልጋሉ?</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -1338,17 +1329,12 @@
 <translation id="1792917191129448067">የ Rainbow Bridge መተግበሪያን ክፈት</translation>
 <translation id="1522775706527775647">Bridge ከ Aurora ጋር</translation>
 <translation id="4903322403594141291">ስለ Brave Wallet የበለጠ ይረዱ</translation>
-<translation id="3875185448438395303">ቢያንስ:</translation>
-<translation id="2029465635925899949">8 ቁምፊዎች</translation>
-<translation id="6697810017029555732">አዛምድ!</translation>
 <translation id="8918368616587206671">ጠንካራ!</translation>
 <translation id="574392208103952083">መካከለኛ</translation>
 <translation id="8297006494302853456">ደካማ</translation>
 <translation id="7084181009966710506">ዋሌትን በመፍጠር ላይ...</translation>
-<translation id="6782556046178425980">የኪስ ቦርሳ ምትኬን ከመጀመርዎ በፊት</translation>
 <translation id="7119749028647909394">የ 12-24 የጠፋ ቃል ማግኛ ሓረግ ማለት ከ አውታረ መረብ ጋር የተገናኙ መሳሪያ(ዎች)ን በሚጥሉበት ግዜ ዋሌትዎን የመጠቀመ ችሎታዎን መልሶ ለማግኘት የሚጠቅም የግል ቁልፍ ነው። ከስር ካለው የአጻጻፍ ቅድመ ተከተል ጋር ተመሳሳይ በሆነ አቀማመጥ ዋስትናው በተጠበቀ ቦታ ላይ ያስቀምጡት።</translation>
 <translation id="3259018319025894691">Brave የእርስዎን ሚስጥራዊ መልሶ ማግኛ ሐረግ መድረስ አይችልም። ደህንነቱ የተጠበቀ ያድርጉት፣ እና በጭራሽ ለሌላ ለማንም ሰው አያጋሩ።</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/> አስፈላጊ፡ <ph name="TAG_AFTER"/>የመልሶ ማግኛ ሐረግዎን በጭራሽ አያጋሩ። ይህ ሐረግ ያለው ማንኛውም ሰው የእርስዎን ንብረቶች እስከመጨረሻው ሊወስድ ይችላል።</translation>
 <translation id="7509948206688764960">የኪስ ቦርሳ መልሶ ማግኛ ሀረግዎን ምትኬ ያስቀምጡ</translation>
 <translation id="8052898407431791827">ወደ ክሊፕቦርድ ተቀድቷል።</translation>
 <translation id="4576741736874242970">ሐረግዎን ለማየት ጠቅ ያድርጉ</translation>
@@ -1367,8 +1353,6 @@
 <translation id="2781276194026093899">ኛ</translation>
 <translation id="7992766987062040279">ኛ</translation>
 <translation id="2295726992010694229">ኛ</translation>
-<translation id="8241405611628876973">እንኳን ደስ አልዎት! የእርስዎ Brave Wallet ጥቅም ላይ ለመዋል ዝግጁ ነው!</translation>
-<translation id="6828327990705355767">የኪስ ቦርሳዎን ለመድረስ በማንኛውም የ Brave አሳሽ መስኮት በቀኝ በኩል ያለውን የኪስ ቦርሳ ቁልፍ ጠቅ ያድርጉ።</translation>
 <translation id="396152018598329740">የ crypto wallet እንዴት መጠቀም ይቻላል?</translation>
 <translation id="7512061585041489067">በጣም ጥሩው የሆነ crypto wallet ምንድን ነው?</translation>
 <translation id="1342755158522323177">crypto ማሰሻ ምንድን ነው?</translation>
@@ -1376,24 +1360,19 @@
 <translation id="4674552515763857735">የመልሶ ማግኛ ሐረግ ምንድን ነው?</translation>
 <translation id="7328255859839881981">DApps ምንድን ናቸው?</translation>
 <translation id="3852489285890032403">ድር 3 ምንድን ነው?</translation>
-<translation id="5448233694500869445">በአሳሽህ ውስጥ የMetaMask ቅጥያውን አግኝተናል</translation>
-<translation id="8436080536329710282">በቀላሉ ወደ Brave Wallet ለማስመጣት የMetaMask ቦርሳ የ ይለፍ ቃልዎን ያስገቡ።</translation>
 <translation id="7543512765962444927">አሁን ላይ ካልዎት የኪስ ቦርሳ ጋር ይገናኙ</translation>
 <translation id="3551682252653406110">ያለዎትን የኪስ ቦርሳ ለማገናኘት የመልሶ ማግኛ ሀረግዎን ማስገባት ሊኖርብዎ ይችላል። በዚህ ጊዜ ከEthereum እና Solana wallets ወደነበረበት መመለስ/ማስመጣት እንደግፋለን።</translation>
-<translation id="346929827081904572">ከዘር ሐረግ ወደ ነበረበት መልስ</translation>
 <translation id="5645597512426471834">12-24 ቃላት</translation>
-<translation id="8158505311297755780">የ Brave Wallet የ 12-24 የጠፋ ቃል ማግኛ ሐረግዎን ይተይቡ።</translation>
 <translation id="5419707890586509000">ከMetaMask አስመጣ</translation>
 <translation id="2265945811107390939">የዘር ሐረግዎን ለማስመጣት የMetaMask የ ይለፍ ቃልዎን ይጠቀሙ</translation>
 <translation id="7060680423657442298">ችግር የለውም፣ አዲስ የኪስ ቦርሳ እፈጥራለሁ</translation>
+<translation id="4634124774493850572">የይለፍ ቃል ይጠቀሙ</translation>
 <translation id="5913194823092185468">የ MetaMask 12-24 የጠፋ ቃል ማግኛ ሐረግዎን ይተይቡ።</translation>
 <translation id="7720392926833259937">የ MetaMask የ ይለፍ ቃል ይተይቡ</translation>
 <translation id="6657585470893396449">የይለፍ ቃል፦</translation>
 <translation id="6260144012548445299">ስለ አዲሱ ቦርሳዬ የበለጠ መረጃ ማግኘት</translation>
-<translation id="8746910870914151528">ህጋዊ ነገሮች</translation>
-<translation id="5148123176978018397">እባክዎን ለሚከተሉት እውቅና ይስጡ፡</translation>
-<translation id="6088314935678153800">ይህ የ ራስ ማቆያ የኪስ ቦርሳ እንደሆነ ተረድቻለሁ፣ እና ለማንኛውም ተያያዥ ገንዘቦች፣ ንብረቶች ወይም መለያዎች እና የኪስ ቦርሳዬን ለመጠበቅ፣ ለመጠበቅ እና ለመጠባበቅ ተገቢውን እርምጃ ለመውሰድ እኔ ብቻዬን ሃላፊነት እንደምወስድ እረዳለው። Brave በእኔ ምትክ የኪስ ቦርሳዬን መድረስ ወይም ግብይቶችን መቀልበስ እንደማይችል እና የእኔ የማገገሚያ ሀረግ የጠፋ የይለፍ ቃል፣ የተሰረቀ መሳሪያ ወይም ተመሳሳይ ሁኔታ ሲያጋጥም መልሶ ማግኘት የሚቻልበት ብቸኛው መንገድ እንደሆነ ተረድቻለሁ።</translation>
-<translation id="7781090633800450517"><ph name="LINK_BEFORE"/> የአጠቃቀም ደንቦችን <ph name="LINK_AFTER"/> አንብቤ ተስማምቻለሁ</translation>
+<translation id="2502258949541727762">ከመጀመራችን በፊት</translation>
+<translation id="5333225216561354793">ከታች ላሉት ነገሮች እውቅና እንዲሰጡ እንጠይቃለን።</translation>
 <translation id="1422451606553326863">Crypto ግዛ</translation>
 <translation id="3887541341068007345">የኪስ ቦርሳ ቅጥያዎችን በመፈተሽ ላይ...</translation>
 <translation id="3567994771568272606">ከድሮው Brave crypto wallets አስመጣ</translation>
@@ -1670,6 +1649,7 @@
 <translation id="7948579849190819732">የአሁኑ ትር</translation>
 <translation id="7056969230130642253">ቡዙ ነገር ላይ ነዎት</translation>
 <translation id="7292242212818928219">አዲስ ይዘት ይገኛል። እንደገና ይጫን?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
 <translation id="7481312909269577407">ወደ ፊት</translation>
 <translation id="302781076327338683">የሚያልፍ መሸጎጫ እንደገና ያስጀምሩ</translation>
@@ -1864,26 +1844,22 @@
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>
 <translation id="7932221068776853847">የዚህን ገጽ ይዘት ለ Leo መላክ ለማቆም ግንኙነቱን ያቋርጡ እና አዲስ ውይይት ይጀምሩ</translation>
 <translation id="1167803637855350748">ከ Leo ጋር በመገናኘት የአውታረ መረብ ችግር ነበር፣ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
-<translation id="5095201428204952524">Leo አሁን በጣም ስራ በዝቶበታል። እባክዎ ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።</translation>
+<translation id="1996126325390835277">Leo አሁን በጣም ስራ በዝቶበታል። እባክዎ ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
-<translation id="2505565639170795978">ሰላም፣ እኔ Leo እባላለሁ። እኔ በBrave ያለው የAI ረዳትን ሙሉ በሙሉ አዘጋጃለሁ። እኔ በLlama 13B የጎለበትኩ ነኝ፣ ይህም በMeta የተፈጠረ ሞዴል ሲሆን ለበርካታ የአጠቃቀም ኬዞች እንዲያከናውን እና እንዲተገብር የተሰራ ነው።</translation>
-<translation id="8030558642460377506">ሰላም፣ እኔ Leo ነኝ። በBrave ሙሉ በሙሉ የተዘጋጀ AI ረዳት ነኝ። የተራቀቁ ተግባራትን ለማስተናገድ በMistral AI የተፈጠረኩ ሞዴል በ Mixtral 8x7B የተጎለበተኩኝ ነኝ።</translation>
-<translation id="2489317965865266353">ሰላም፣ እኔ Leo ነኝ። እኔ በBrave ፕሮክሲ የተደረግኩ እና በ Claude Instant የጎለበትኩ ስሆን ይህም የንግግር እና የጽሁፍ ማቀናበር ተግባራትን ለማጎልበት በAnthropic የተፈጠረ ሞዴል ነው።</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> በ <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">የተወሰነ</translation>
 <translation id="6187065185557150870">ጭውውት</translation>
 <translation id="2961040541145689181">አዲስ ጭውውት</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
 <translation id="1691256669639196606">የደንበኝነት ምዝገባን ያስተዳድሩ</translation>
+<translation id="2304783958703511257">የላቁ ቅንብሮች</translation>
 <translation id="3037594989275592390">የቋንቋ ሞዴሎች</translation>
 <translation id="6637015365469044269">አሁን አሻሽል</translation>
 <translation id="849535826888024304">የምላሽ ደረጃ ገደብ ላይ ደርሷል</translation>
-<translation id="6149863263423821329">ለPremium በመመዝገብ ከፍ ያለ የምላሽ መጠንን ይክፈቱ። በዚሁ ለመቀጠል ከፈለጉ ትንሽ ደካማ በሆነው Llama2 13b ነፃ ሞዴላችን መቀየር ይችላሉ።</translation>
+<translation id="2252128900328632803">ለPremium በመመዝገብ ከፍ ያለ የምላሽ መጠንን ይክፈቱ። በዚሁ ለመቀጠል ከፈለጉ ትንሽ ደካማ በሆነው Llama2 13b ነፃ ሞዴላችን መቀየር ይችላሉ።</translation>
 <translation id="4173478269537830374">የተለያዩ የ AI ሞዴሎችን ያስሱ</translation>
 <translation id="3245401959451976966">የእርስዎን የፈጠራ አቅምን ይክፈቱ</translation>
 <translation id="4165928407303989823">በርዕሰ ጉዳዩ ላይ ይቆዩ</translation>
 <translation id="2389665228467129817">ረዘም ላለ ጊዜ ይወያዩ</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /በወር</translation>
 <translation id="5151923271944811339">ወደ ነፃው ሞዴል ቀይር</translation>
 <translation id="5474757891469990756">የLeo ሙሉ ሃይል በPremium ያስከፍቱ፡</translation>
 <translation id="5552332211527367850">የተለያየ ችሎታ ያላቸው ኃይለኛ ሞዴሎችን አስቀድሞ ማግኘት</translation>
@@ -1911,6 +1887,7 @@
 <translation id="8742658901413346500">ይህ ውይይት ረጅም ነው እና Leo በቅርቡ ነገሮችን መርሳት ሊጀምር ይችላል። ወደ ፕሪሚየም ሞዴል በመቀየር ረጃጅም ውይይቶችን ማግኘት ይችልሉ ወይም ዳግም ለማስጀመር ጭውውቱን ማጽዳት ይችላሉ።</translation>
 <translation id="7550152963854770123">ጭውውትን አጽዳ</translation>
 <translation id="7494736170250048402">መልእክትን ወደ Leo ይላኩ</translation>
+<translation id="8712637175834984815">ገባኝ</translation>
 <translation id="4370698775470316661">ይህ ውይይት በጣም ረጅም ነው እና መቀጠል አይችልም። ለረጃጅም ውይይቶች ትክክለኛነትን ለመያዝ ብቁ የሚሆንበት Leo ጋር ሊገኙ የሚችሉ ሌሎች ሞዴሎችን ሊኖሩ ይችላሉ።</translation>
 <translation id="6291843235651817590">ጠቅላላ የአላማ ጭውውት</translation>
 <translation id="8193130769524604031">የላቁ የጭውውት ተግባራት</translation>

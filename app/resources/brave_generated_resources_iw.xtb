@@ -104,6 +104,9 @@
 <translation id="1324417023773393937">דפדפן Brave</translation>
 <translation id="7276554663454265692">ניתן לשנות  <ph name="SETTING_TEXT"/> שוב בכל עת דרך הגדרות הדפדפן.</translation>
 <translation id="6873781976650514089">הגדרה זו</translation>
+<translation id="4684633335323013758">האתר הזה ביקש את ה<ph name="PART_ONE"/>מיקום הכללי שלך<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>למד עוד<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">אתר זה ביקש שלך <ph name="PART_ONE"/>מיקום מדויק<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>למד עוד<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">אתר זה ביקש את ה<ph name="PART_ONE"/>מיקום המדויק<ph name="PART_ONE_END"/> שלך. Brave יכול לספק רק את ה<ph name="PART_TWO"/>מיקום הכללי<ph name="PART_TWO_END"/> נתונים בשל מידע המיקום הכללי שמנוטרל עקב <ph name="PART_THREE"/>שירותי מיקום<ph name="PART_THREE_END"/> שאינם פעילים. <ph name="PART_FOUR"/>למד עוד<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">סגור הכל</translation>
 <translation id="7658239707568436148">ביטול</translation>
 <translation id="4870911314065352661">לסגור את כל הכרטיסיות?</translation>
@@ -163,7 +166,8 @@
 <translation id="6959315322491671328">לחיצה ימנית כדי לזוז</translation>
 <translation id="495046168593986294">לגלול מעלה</translation>
 <translation id="4021716437419160885">גלול מטה</translation>
-<translation id="2702801445560668637">רשימת קריאה</translation>
+<translation id="1907157509746585817">סימניות</translation>
+<translation id="4840597165888262798">רשימת קריאה</translation>
 <translation id="2533715613366623756">מנהל הסימניות</translation>
 <translation id="3405021928725149239">מנהל הסימניות</translation>
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
@@ -242,9 +246,11 @@
 <translation id="8025559074845816210">Brave זקוק לגישה מלאה לדיסק כדי לייבא את הסימניות שלך מ-Safari.</translation>
 <translation id="8515328844674404333">למד/י כיצד להעניק גישה מלאה לדיסק מהעדפות המערכת שלך.</translation>
 <translation id="6414878884710400018">פתח את העדפות המערכת</translation>
+<translation id="4759238208242260848">הורדות</translation>
 <translation id="796831669370432378">כדי להוסיף סימנייה, לחצו על כפתור הסימנייה שליד שורת הכתובת</translation>
 <translation id="8487693399751278191">ייבא סימניות עכשיו...</translation>
 <translation id="2557899542277210112">לגישה מהירה, יש למקם את הסימניות שלך כאן בסרגל הסימניות.</translation>
+<translation id="2702801445560668637">רשימת קריאה</translation>
 <translation id="1968543937259008435">מוכנים לפרטיות הטובה ביותר ברשת?</translation>
 <translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
@@ -370,6 +376,7 @@
 <translation id="5448570825852364919">עמוד ריק</translation>
 <translation id="8244387390464017490">התאם אישית את דף הכרטיסייה החדשה</translation>
 <translation id="7461924472993315131">הצמד</translation>
+<translation id="735832369569964359">לחץ על הסיכה ואשר בהודעת Windows הבאה</translation>
 <translation id="7506648566440714944">Brave כבר נעוץ</translation>
 <translation id="239275665037555969">עגינה</translation>
 <translation id="4057614912106618659">Brave כבר נמצא בעגינה</translation>
@@ -425,6 +432,10 @@
 <translation id="7889605993994647168">העדכון כשל</translation>
 <translation id="5438573563213942361">רשימות מותאמות אישית</translation>
 <translation id="4182731739150761577">הצג רשימה מלאה</translation>
+<translation id="2776571540844891267">עדכן רשימות</translation>
+<translation id="7424267932649051704">העדכון נכשל - נסה שוב</translation>
+<translation id="8426801388284487512">הרשימות עודכנו</translation>
+<translation id="3422250445565385437">רשימות מתעדכנות</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="8578397014396032341">מסנני תוכן</translation>
 <translation id="3020183492814296499">קיצור דרך</translation>

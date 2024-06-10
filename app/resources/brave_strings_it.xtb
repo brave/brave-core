@@ -25,6 +25,7 @@
 <translation id="5147525139567260139">Condividi una scheda di Brave</translation>
 <translation id="1530633922026945685">Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera per creare una mappa 3D dell'ambiente circostante</translation>
 <translation id="6570689355868013775">Strumenti per la sicurezza di Brave</translation>
+<translation id="6198411733024382246">Brave deve verificare la tua identità per poter salvare alcuni dati nel tuo Account Brave e utilizzarli su tutti i tuoi dispositivi. Se esci, i dati in questione rimarranno su questo dispositivo.</translation>
 <translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
 <translation id="1640672724030957280">Download in corso...</translation>
 <translation id="5616153642055197778">È disponibile una nuova versione più sicura di Brave.</translation>
@@ -37,6 +38,7 @@
 <translation id="6797402139308059782">Lascia Brave in esecuzione in background</translation>
 <translation id="5875673934455379806">Reinstalla Brave</translation>
 <translation id="4529028207655448215">Brave sta cercando di <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="3541642064306182066">Per eliminare i dati di navigazione solo da questo dispositivo e conservarli nel tuo Account Brave, <ph name="BEGIN_LINK"/>esci da Brave<ph name="END_LINK"/>.</translation>
 <translation id="6888366668010117849">I siti possono memorizzare su Brave informazioni relative ai tuoi interessi. Ad esempio, se visiti un sito per acquistare scarpe per una maratona, il sito potrebbe definire come tuo interesse le maratone. Se in un secondo momento visiti un altro sito per registrarti a una gara, il sito può mostrarti un annuncio relativo a scarpe da corsa in base ai tuoi interessi.</translation>
 <translation id="4528406859989804913">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave sync chain, ma non potrai associare questi dati a un altro account. Se preferisci puoi creare un nuovo profilo per mantenere separati i dati di Brave esistenti. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Se disattivi questa funzione, puoi accedere ai siti Brave quali Gmail senza accedere a Brave</translation>
@@ -49,11 +51,13 @@
 <translation id="2018879682492276940">Installazione non riuscita. Riprova.</translation>
 <translation id="831418749472885028">Per controllare che le tue altre password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
 <translation id="5499149312981370855">Scegli se includere la cronologia di Brave per esperienze ancora più personalizzate nei servizi Brave</translation>
+<translation id="5860368714755652118">Accedi a Brave per salvare e usare le tue password e altri dati su tutti i tuoi dispositivi. Questa password verrà salvata nel tuo Account Brave dopo l'accesso.</translation>
 <translation id="2472891440303445472">Brave ha bloccato questo download perché il file è ingannevole e potrebbe apportare modifiche impreviste al tuo dispositivo</translation>
 <translation id="849607431499549468">Informazioni su come Brave gestisce i suoi certificati radice</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per 1 minuto. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}other{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per # minuti. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}}</translation>
 <translation id="2126108037660393668">Il file scaricato non ha superato la verifica.</translation>
 <translation id="5789330946301045610">Brave ha bloccato questo download perché il sito non utilizza una connessione sicura e il file potrebbe essere stato manomesso</translation>
+<translation id="5401976223298265794">Puoi aprire i preferiti, la modalità Lettura e altro ancora dal menu di Brave</translation>
 <translation id="142389341645668510">Personalizza Brave</translation>
 <translation id="2174917724755363426">Installazione non completata. Vuoi annullarla?</translation>
 <translation id="8745514854244955877">Brave - Accesso rete - <ph name="PAGE_TITLE"/></translation>
@@ -63,7 +67,6 @@
 <translation id="7682239218279776307">Quando questa impostazione è attiva, Brave precarica le pagine per velocizzare la navigazione e la ricerca.</translation>
 <translation id="9095263438435683933">Per inviare un numero da questo dispositivo al tuo telefono Android, accedi a Brave su entrambi i dispositivi.</translation>
 <translation id="2359808026110333948">Continua</translation>
-<translation id="1917698491051673244">Per cancellare i dati di navigazione solo da questo dispositivo e conservarli nel tuo Account Brave, <ph name="BEGIN_LINK"/>esci da Brave<ph name="END_LINK"/>.</translation>
 <translation id="8418845734693287262">Impossibile sincronizzare i dati in Chrome OS perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Una o più estensioni di Brave stavano accedendo a 1 dispositivo HID}=1{Una o più estensioni di Brave stanno accedendo a 1 dispositivo HID}other{Una o più estensioni di Brave stanno accedendo a # dispositivi HID}}</translation>
 <translation id="1248225940185478633">Brave deve avere le autorizzazioni di accesso al microfono e alla fotocamera per questo sito</translation>
@@ -85,6 +88,7 @@
 <translation id="6384359666082467439">Ti diamo il benvenuto in Brave, <ph name="ACCOUNT_FIRST_NAME"/></translation>
 <translation id="6791166902140255175">Scheda Brave</translation>
 <translation id="8372880274820509128">Per maggiore sicurezza, Brave cripterà i tuoi dati.</translation>
+<translation id="8752006915531191162">Esci per rimuovere il tuo Account Brave da Brave</translation>
 <translation id="2738871930057338499">Impossibile connettersi a internet. HTTP 403 Accesso negato. Controlla la configurazione del proxy.</translation>
 <translation id="2770231113462710648">Cambia browser predefinito con:</translation>
 <translation id="1187986649024576560">Questa estensione contiene malware e non è sicura. Rimuovila da Brave in modo che non possa più vedere e modificare i tuoi dati sui siti che visiti, incluse le tue informazioni personali.</translation>
@@ -100,6 +104,7 @@
 <translation id="2945997411976714835">Errore di installazione: impossibile avviare il processo di installazione.</translation>
 <translation id="8208853227947884571">Brave è aggiornato</translation>
 <translation id="5122472867956731189">Se un sito cerca di rubare la tua password o se scarichi un file dannoso, Brave potrebbe anche inviare gli URL, inclusi frammenti dei contenuti delle pagine, a Navigazione sicura</translation>
+<translation id="4202995875619419215">Apri <ph name="URL"/> in una nuova scheda in Brave.</translation>
 <translation id="8755404239607088219">Brave non può controllare le tue password. Riprova più tardi.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="3038232873781883849">In attesa dell'installazione…</translation>
@@ -111,7 +116,9 @@
 <translation id="8919461291440820124">Brave sta utilizzando il microfono.</translation>
 <translation id="4805806622840861220">Riavvia Brave</translation>
 <translation id="1742948938503172561">Personalizza il tuo nuovo profilo Brave</translation>
+<translation id="6045818436557054893">Puoi usare le password presenti nel tuo Account Brave in Brave dopo aver eseguito l'accesso</translation>
 <translation id="1477146545787277177">Spiacenti, si è verificato un arresto anomalo di Brave. Riavviarlo ora?</translation>
+<translation id="4805865169608137960">Per rimuovere il tuo Account Brave da Brave, esci da Brave nella pagina Impostazioni</translation>
 <translation id="2585240446624043880">Brave non è in grado di leggere e scrivere nella directory dei dati:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -121,6 +128,7 @@
 <translation id="2339258256897053758">Mancano le chiavi dell'API di Brave. Alcune funzionalità di Brave verranno disattivate.</translation>
 <translation id="8926637909431618259">Continua a eseguire applicazioni in background dopo la chiusura di Brave</translation>
 <translation id="518125528057094977">Brave ti avvisa prima di caricare qualsiasi sito che utilizza una connessione non sicura</translation>
+<translation id="8652321858775514885">Quando chiudi tutte le finestre di Brave, uscirai dalla maggior parte dei siti, ma se hai eseguito l'accesso a Brave non uscirai dal tuo Account Brave. Per consentire ai siti di memorizzare le tue informazioni, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="2711887072399498551">Esiste già un profilo Brave con questo account</translation>
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Vuoi passare a un profilo Brave esistente?</translation>
@@ -130,9 +138,9 @@
 <translation id="5853262807109651878">Verranno eliminati <ph name="ITEMS_COUNT"/> elementi da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">La scorciatoia <ph name="SHORTCUT"/> consente di passare da un profilo Brave all'altro</translation>
 <translation id="8703492925273919597">Chiudi tutte le finestre di Brave e riprova.</translation>
+<translation id="1447863765638888625"><ph name="EXISTING_USER"/> ha già eseguito l’accesso.  Per tenere separata la tua navigazione, accedi a Brave nel tuo profilo per <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="4061445349373849749">Per tutelare la tua privacy, eliminiamo automaticamente i tuoi interessi risalenti a più di 4 settimane prima della data corrente. Mentre continui a navigare, un interesse potrebbe essere nuovamente visualizzato nell'elenco. Puoi anche rimuovere gli interessi che non vuoi che Brave prenda in considerazione.</translation>
 <translation id="691208314680168371">La cronologia di navigazione, ossia un record dei siti visitati da Brave sul dispositivo in uso.</translation>
-<translation id="1073077513148817424">Un altro account ha già eseguito l'accesso. Per tenere separata la tua navigazione, Brave può creare per te il tuo profilo personale.</translation>
 <translation id="7029305463989165490">Per inviare un numero da <ph name="ORIGIN"/> al tuo telefono Android, accedi a Brave su entrambi i dispositivi.</translation>
 <translation id="3667616615096815454">Impossibile installare l'applicazione. Applicazione sconosciuta al server.</translation>
 <translation id="4304059894777924102">Brave non può controllare le tue password. Prova a controllare la connessione a Internet.</translation>
@@ -170,6 +178,7 @@
 <translation id="4222932583846282852">Annullamento…</translation>
 <translation id="1853997773668795891">Collegare i tuoi dati Brave a questo account?</translation>
 <translation id="4732930052828648898">Ricevi un avviso in caso di siti pericolosi, inclusi quelli di cui Brave non era a conoscenza, in base all'analisi di più dati provenienti dai siti rispetto al livello Protezione standard. Puoi scegliere di ignorare gli avvisi di Brave.</translation>
+<translation id="2201661640076600072">Uscita da Brave</translation>
 <translation id="3262506503470845422">Ricevi assistenza per Brave</translation>
 <translation id="4281844954008187215">Termini di servizio</translation>
 <translation id="7691786510374174420">Installazione non riuscita a causa di un errore imprecisato. Se Brave è in esecuzione, chiudilo e riprova.</translation>
@@ -182,7 +191,10 @@
 <translation id="4427306783828095590">La protezione avanzata blocca malware e tentativi di phishing con maggiore efficacia</translation>
 <translation id="6786534271003695094">Informazioni su Brave for Testing</translation>
 <translation id="4501471624619070934">Installazione non riuscita perché l'accesso in questo paese è sottoposto a limitazioni.</translation>
+<translation id="8594994021633965927">Per questa estensione non sono state pubblicate Norme di tutela della privacy, ad esempio la modalità di raccolta e utilizzo dei dati. Brave consiglia di rimuoverla.</translation>
 <translation id="7084397798469173252">Ti diamo il benvenuto in Brave; nuova finestra del browser aperta</translation>
+<translation id="137732229629632648">Brave deve avere l'autorizzazione per mappare l'ambiente circostante e monitorare le tue mani</translation>
+<translation id="5036046007335188949">Hai già eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/> in un altro profilo Brave</translation>
 <translation id="2633397153656205379">Si è verificato un errore: Brave non si è aggiornato. <ph name="BEGIN_LINK"/>Risolvi i problemi di aggiornamento e gli aggiornamenti non riusciti di Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vuoi continuare con un nuovo profilo Brave?</translation>
 <translation id="4567424176335768812">Hai eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/>. Ora puoi accedere ai tuoi Preferiti, alla tua cronologia e ad altre impostazioni su tutti i tuoi dispositivi su cui esegui l'accesso.</translation>
@@ -210,6 +222,7 @@
 <translation id="5952898964075639679">Aggiungiti a Brave</translation>
 <translation id="8112581848375017126">Brave sta esaminando nuove funzionalità che consentano ai siti di offrire la stessa esperienza di navigazione utilizzando meno informazioni personali</translation>
 <translation id="9078804073692109646">Nessuna password salvata. Brave può controllare le password quando le salvi.</translation>
+<translation id="6234515504547364178">Uscita da Brave</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> ha già eseguito l'accesso a questo profilo Brave. Questa operazione creerà un nuovo profilo Brave per <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Riavvia Brave per applicare le modifiche</translation>
 <translation id="300369155175407115">Quando sono attive le prove e se Brave ti ha inserito in modo casuale in una prova attiva, la cronologia di navigazione incide sugli annunci che ti vengono mostrati e sugli interessi stimati riportati qui sotto. Per tutelare la tua privacy, Brave elimina i tuoi interessi ogni mese.</translation>
@@ -222,6 +235,7 @@
 <translation id="1786715389543715322">Aggiornamento di Brave in corso (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Consenti l'accesso a Brave</translation>
 <translation id="5536657158619734169">È disponibile una nuova versione di Brave.</translation>
+<translation id="2572370222527505651">Quando accedi a servizi Brave come Gmail o YouTube con <ph name="USER_EMAIL"/>, puoi accedere a Brave con lo stesso account</translation>
 <translation id="5267531627648004734">Rimuovi da Brave</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave beta</translation>
@@ -252,6 +266,7 @@
 <translation id="3598551856834560515">Aggiorna Brave per avviare la sincronizzazione</translation>
 <translation id="5225261774087485064">È normale che i siti che visiti memorizzino argomenti di tuo interesse per personalizzare la tua esperienza. I siti possono anche memorizzare su Brave informazioni relative ai tuoi interessi.</translation>
 <translation id="6003112304606738118">Download in corso… Ore rimanenti: <ph name="HOURS"/></translation>
+<translation id="1663358621471164569">Puoi aprire i preferiti, la modalità Lettura e altro ancora dal menu di Brave in alto a destra</translation>
 <translation id="6040143037577758943">Chiudi</translation>
 <translation id="505042220086416644">È disponibile una nuova versione di Brave con una velocità senza precedenti.</translation>
 <translation id="700488072601322385">Per proteggere i tuoi dati, consenti a Brave di rimuovere le autorizzazioni dai siti che non hai visitato di recente. Le notifiche non vengono interrotte.</translation>
@@ -267,7 +282,6 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="991182453936521413">A breve Brave chiuderà ed eliminerà i dati</translation>
 <translation id="7006260220514217183">Navigazione sicura è disattivata. Brave consiglia di attivarla.</translation>
-<translation id="2542068854151299295">Accedi per usare al meglio Brave</translation>
 <translation id="4060970194201477024">Puoi passare da un profilo Brave all'altro qui</translation>
 <translation id="7815000350132166985">Se consenti i cookie, Brave potrebbe usarli durante il precaricamento</translation>
 <translation id="6685697979743742605">Questo file potrebbe essere pericoloso<ph name="LINE_BREAK"/>Brave può controllare il download per te se fornisci la password. Le informazioni sul file vengono inviate a Brave Navigazione sicura, ma i contenuti e la password del file rimangono sul dispositivo.</translation>
@@ -280,7 +294,6 @@
 <translation id="5019879183386042809">Imposta Brave come browser predefinito</translation>
 <translation id="428541510811554120">Brave non può controllare la disponibilità di aggiornamenti. Prova a controllare la connessione a Internet.</translation>
 <translation id="7445061995866044926">Uscire da Brave?</translation>
-<translation id="6273793429163604305">Inizializzazione in corso…</translation>
 <translation id="6806912298071949921">Personalizza il tuo profilo Brave</translation>
 <translation id="3792238845239580301">Assegna un nome al tuo profilo Brave</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
@@ -288,6 +301,7 @@
 <translation id="6327105987658262776">Nessun aggiornamento disponibile.</translation>
 <translation id="1819119299840995223">C'è un'altra operazione in corso su Brave. Riprova più tardi.</translation>
 <translation id="8616874628011103667">Ora è più facile utilizzare Brave con il tuo Account Brave e sui computer condivisi.</translation>
+<translation id="4264606872840545968">Scorciatoia Brave</translation>
 <translation id="6890616081898535725">Brave ha bloccato questo download perché il file non viene scaricato comunemente e potrebbe essere pericoloso</translation>
 <translation id="335632367599648646">Vuoi disinstallare Brave?</translation>
 <translation id="6375219077595103062">Aggiungi una scorciatoia a Gestore delle password</translation>
@@ -301,6 +315,7 @@
 <translation id="2675662665675552980">Controlla anche la pagina visualizzata all'avvio di Brave.</translation>
 <translation id="648319183876919572">Navigazione sicura avanzata fa di più per proteggerti da download e siti web pericolosi</translation>
 <translation id="5590013613412457132">Disinstalla Brave</translation>
+<translation id="7185585387858242335">Le scorciatoie si aprono in Brave</translation>
 <translation id="3617744907966785605">La tua organizzazione chiude Brave quando non viene utilizzato per <ph name="TIMEOUT_DURATION"/>. I dati di navigazione sono stati eliminati. Potrebbero essere inclusi cronologia, compilazione automatica e download.</translation>
 <translation id="8646609321956191980">Ogni profilo dispone delle proprie informazioni di Brave, come preferiti, cronologia, password e altro</translation>
 <translation id="6756656512757374876">Scopri di più su <ph name="BEGIN_LINK"/>come Brave mantiene privati i tuoi dati<ph name="END_LINK"/></translation>
@@ -339,14 +354,16 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="7011190694940573312">Installazione non riuscita perché questa versione del sistema operativo non è supportata.</translation>
 <translation id="7024536598735240744">Errore decompressione: <ph name="UNPACK_ERROR"/>.</translation>
 <translation id="7025789849649390912">Installazione interrotta.</translation>
+<translation id="280382502853897110">Personalizza Brave</translation>
 <translation id="1705567146636171298">Aggiorna Brave</translation>
 <translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave.</translation>
+<translation id="2586867548079604569">Non accedere automaticamente a Brave</translation>
 <translation id="5966368554860795750">Personalizza Brave for Testing</translation>
+<translation id="7480407433243054688">Accedi a Brave per salvare e usare le tue password e altri dati su tutti i tuoi dispositivi</translation>
 <translation id="2332301637111071062">La tua organizzazione elimina i dati di Brave quando non vengono utilizzati per <ph name="TIMEOUT_DURATION"/>. Potrebbero essere inclusi cronologia, compilazione automatica e download.</translation>
 <translation id="1008530050039597147">Brave deve avere l'autorizzazione di accesso alla fotocamera per questo sito</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
 <translation id="3405035915691517126">Brave non può controllare le tue password. Riprova tra 24 ore.</translation>
-<translation id="3074679259444363247">Brave ha bisogno delle autorizzazioni di comprensione della scena e rilevamento delle mani per avviare una sessione immersiva</translation>
 <translation id="5755581833598928580">Usa Brave ogni volta che fai clic sui link in messaggi, documenti e altre app</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="713191641919118540">I tuoi interessi stimati da Brave</translation>
@@ -400,11 +417,11 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="1755067029031059271">Brave non può verificare la provenienza dell'estensione. Potrebbe non essere sicura. Rimuovila da Brave in modo che non possa più vedere e modificare i tuoi dati sui siti che visiti, incluse le informazioni personali.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
+<translation id="7792526144795244436">Accedere a Brave in un nuovo profilo?</translation>
 <translation id="8622246347342688645">Brave non può controllare le tue password perché non hai effettuato l'accesso</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave ti avvisa<ph name="END_LINK"/> in caso di siti e download non sicuri</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="6098476632210317894">La tua organizzazione chiude Brave quando non viene utilizzato per <ph name="TIMEOUT_DURATION"/>.</translation>
-<translation id="5196445203969439095">Fai di più con Brave</translation>
 <translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="3098618823450433881">Per accedere ai tuoi contenuti del browser Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione</translation>
@@ -413,6 +430,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}other{Riavvia Brave entro # giorni}}</translation>
 <translation id="6914496861676471566">L'archivio di installazione è danneggiato o non valido. Scarica di nuovo Brave.</translation>
 <translation id="4378573854226202617">Brave richiede Windows 10 o versioni successive.</translation>
+<translation id="249771439158991002">Alcuni dati di Brave non sono ancora stati salvati nel tuo Account Brave. Prova ad attendere qualche minuto prima di uscire.</translation>
 <translation id="6431861494713261006">(Facoltativo) Contribuisci a migliorare le funzionalità e le prestazioni di Chrome OS inviando automaticamente a Brave dati diagnostici e sull'utilizzo.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
 <translation id="871233388178581868">Brave può controllare le password quando le salvi</translation>
@@ -420,7 +438,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8555465886620020932">Errore del servizio: <ph name="SERVICE_ERROR"/></translation>
 <translation id="227028348235968071">Brave può controllare le tue password quando accedi con il tuo Account Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. Tutti i diritti riservati.</translation>
-<translation id="2406041951487110350">Personalizza Brave</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Come utilizziamo questi dati:<ph name="END_BOLD"/> i siti possono memorizzare su Brave informazioni relative ai tuoi interessi. Ad esempio, se visiti un sito per acquistare scarpe per una maratona, il sito potrebbe definire come tuo interesse le maratone. Se in un secondo momento visiti un altro sito per registrarti a una gara, il sito può mostrarti un annuncio relativo a scarpe da corsa in base ai tuoi interessi.</translation>
 <translation id="3052349005266761501">Avvio di Brave...</translation>
 <translation id="6283840329609797763">Installazione non riuscita a causa di un errore imprecisato. Scarica di nuovo Brave.</translation>
@@ -430,6 +447,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1419543648228375718">Accedere a Brave?</translation>
 <translation id="878572486461146056">Errore di installazione: l'amministratore di rete ha applicato un criterio di gruppo che impedisce l'installazione: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera e al microfono</translation>
+<translation id="64216977793816291">Accedere a Brave?</translation>
 <translation id="8826492472752484139">Fai clic su "Gestore delle password"</translation>
 <translation id="6933858244219479645">Sistema Chrome OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Quali dati vengono utilizzati:<ph name="END_BOLD"/> la cronologia di navigazione, ossia un record dei siti visitati da Brave sul dispositivo in uso.</translation>
@@ -438,12 +456,12 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8285294305439559616">Brave sta cercando di visualizzare le password. Per consentire la visualizzazione, digita la tua password Windows.</translation>
 <translation id="6514033039060816211">Brave può stimare i tuoi interessi in base alla cronologia di navigazione delle ultime settimane. Queste informazioni rimangono sul dispositivo.</translation>
 <translation id="6389268239133412586">Impossibile aggiornare Brave</translation>
-<translation id="597377760569411310">Personalizza Brave</translation>
 <translation id="7731184591599776500">Logo di Brave Enterprise</translation>
 <translation id="8986207147630327271">Stai per aggiungere a questo browser un profilo di lavoro che sarà controllato dal tuo amministratore.</translation>
 <translation id="3424657754843264466">Gestisci i profili Brave</translation>
 <translation id="82609232232243542">Accedi a Brave</translation>
 <translation id="7055223246119657449">Brave ha bloccato questo download perché il file di archivio include altri file che potrebbero nascondere malware</translation>
+<translation id="9049928023195059068">Accedi a Brave quando accedi ad altri servizi Brave</translation>
 <translation id="3273774796888928550">Accedi a Brave. Se vuoi accedere con un account una sola volta, puoi <ph name="GUEST_LINK_BEGIN"/>utilizzare il dispositivo come ospite<ph name="GUEST_LINK_END"/>.</translation>
 <translation id="4561046754724442504">Brave è stato chiuso automaticamente</translation>
 <translation id="5173820533850252773">Brave non è aggiornato</translation>
@@ -455,12 +473,14 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="7902365066753170041">Riavvia per aggiornare &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="4035492331936688329">Accedi automaticamente a Brave</translation>
 <translation id="296137235951584143">Personalizza Brave</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="8180288330711585962">Certificati gestiti da Brave</translation>
 <translation id="4484434718272972655">Chi usa Brave?</translation>
 <translation id="7173394303099002355">Usa la funzionalità di sicurezza più efficace di Brave</translation>
 <translation id="983803489796659991">Installazione non riuscita perché il server di aggiornamento non dispone di dati di hashing per l'applicazione.</translation>
+<translation id="8435446479956716379">Utilizza Brave senza un account</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>

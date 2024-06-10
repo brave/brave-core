@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Com més en veieu, més podreu guanyar.</translation>
 <translation id="7526443283522395161">Anuncis de pàgina Pestanya nova</translation>
 <translation id="7968650944098083708">Anuncis de notificació</translation>
+<translation id="8289546216379862569">Anuncis de cerca</translation>
+<translation id="4758111936363146244">Els anuncis del Cercador de Brave apareixen al <ph name="BEGIN_LINK"/>Cercador de Brave<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Encara no podeu guanyar BAT amb els anuncis del Cercador de Brave, però en tenir-los activats, ajudeu Brave.</translation>
 <translation id="6390952132783970876">Anuncis de Brave News</translation>
 <translation id="7516281787184495886">Brave News conté anuncis que no es poden desactivar per separat.</translation>
 <translation id="8008378848677625233">Brave News està desactivat actualment.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Baixant component...</translation>
 <translation id="4894106830958548828">Ho entenc</translation>
 <translation id="326118736933420687">Estàs veient una pàgina de WebTorrent</translation>
+<translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Vols activar el suport d'Unstoppable Domains a Brave?</translation>
 <translation id="5015092481905019948">Brave utilitzarà <ph name="PROVIDER_NAME"/> per resoldre els noms de domini <ph name="DOMAIN_LIST"/> que estan a <ph name="DOMAIN_PROVIDER_NAME"/>. Brave amaga la teva adreça IP. Si ho actives, <ph name="PROVIDER_NAME"/> veurà que algú està provant de visitar aquests dominis, però res més. Consulta les <ph name="BEGIN_PROVIDER_TOU_LINK"/> 
@@ -712,6 +716,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5382339341735118861">Hi ha hagut un error en el processament de la petició genèrica</translation>
 <translation id="7123780456696055383">El recurs sol·licitat no està disponible</translation>
 <translation id="1680597601664421644">El mnemotècnic que s'està important no és vàlid per a la Cartera de Brave</translation>
+<translation id="372898731091371291">Quin tipus de cartera voleu importar?</translation>
+<translation id="1430728084670406473">Cartera Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">Importeu la frase de recuperació des d'una cartera existent</translation>
+<translation id="8110492767853188065">Cartera del maquinari</translation>
+<translation id="7437218084485869007">Connecteu la cartera del maquinari amb Brave</translation>
 <translation id="4641919696349069826">Ja hi ha una sol·licitud en curs</translation>
 <translation id="872806943696014633">Manquen dades de la transacció</translation>
 <translation id="7068183357903252127">S'han d'especificar les dades de transacció 'to' o 'data'</translation>
@@ -805,19 +814,21 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1426410128494586442">Sí</translation>
 <translation id="4250680216510889253">No</translation>
 <translation id="1201402288615127009">Següent</translation>
-<translation id="8712637175834984815">D'acord</translation>
+<translation id="3214453326297774895">Mostra la frase de recuperació</translation>
 <translation id="6896758677409633944">Copia</translation>
 <translation id="7885157704277298658">S'ha copiat!</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="6042308850641462728">Més</translation>
-<translation id="768236965975208017">Segur. Multicadena. I tan fàcil d'utilitzar. La teva Cartera de Brave està a uns quants clics de distància</translation>
 <translation id="3157931365184549694">Restaura</translation>
-<translation id="2484275747844666540">Creeu una cartera nova</translation>
-<translation id="3662348701117072366">Importa la cartera existent</translation>
-<translation id="7150150391368236519">Connecta una cartera física (hardware)</translation>
+<translation id="414070570958255222">Navegador natiu. Autocustòdia. I multicadena.</translation>
+<translation id="1350120992777389959">Preneu el control de les criptomonedes i els NFT. La Cartera de Brave és compatible amb Ethereum, cadenes EVM, Solana, Filecoin, Bitcoin i molts més.</translation>
+<translation id="165255193061631296">Necessites una nova cartera?</translation>
+<translation id="1939235910515558387">Comenceu amb la Cartera de Brave en qüestió de minuts.</translation>
+<translation id="5844138175312846408">Ja tens una cartera?</translation>
+<translation id="772643556080081594">Necessito una cartera només de vigilància</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave i el logotip de Brave són marques registrades de Brave Software, Inc. Altres noms de productes i logotips poden ser marques comercials de les seves respectives empreses. Tots els drets reservats.</translation>
 <translation id="7501957181231305652">o</translation>
 <translation id="375882617301124395">Fes una còpia de seguretat de la teva cartera de criptomoneda</translation>
-<translation id="180032279811483155">Al pas següent veuràs una frase de recuperació de <ph name="RECOVERY_PHRASE_LENGTH"/> paraules que pots utilitzar per recuperar els teus principals comptes de criptomoneda. Desa-la en un lloc segur. La teva frase de recuperació és l'única manera de recuperar l'accés al compte en cas que oblidis la contrasenya, perdis o et robin el dispositiu, o vulguis canviar de cartera.</translation>
 <translation id="5024543173656851695">Entenc que si perdo les meves paraules de recuperació, no podré accedir al meu criptomoneder</translation>
 <translation id="8281886186245836920">Omet</translation>
 <translation id="6532106788206463496">Desa els canvis</translation>
@@ -830,7 +841,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2339124864228588937">Comprova la frase de recuperació</translation>
 <translation id="3747079125031086337">Selecciona les paraules de la teva frase de recuperació en l'ordre correcte.</translation>
 <translation id="802060020117206314">Les frases de recuperació no coincideixen. Torna-ho a provar.</translation>
-<translation id="8412783472871103529">Verifica la teva frase de recuperació</translation>
+<translation id="7345730059518887993">Comproveu-ho</translation>
 <translation id="2226686084760581391">Clica a <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>) <ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, i <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>) <ph name="THIRD_AFTER"/> paraules de la teva frase de recuperació.</translation>
 <translation id="7575574239720542222">La frase de recuperació no coincideix</translation>
 <translation id="8692301574305033504">Crea una contrasenya nova</translation>
@@ -860,7 +871,10 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4359319875297001084">Vols importar del llegat de carteres de criptomoneda de Brave?</translation>
 <translation id="3331452756822160641">Contrasenya nova</translation>
 <translation id="8624315169751085215">Copia al porta-retalls</translation>
+<translation id="2598171223363459366">Pots ometre ara aquest pas, però encara has de fer una còpia de seguretat de la frase de recuperació per garantir la seguretat del compte.</translation>
+<translation id="5303015959766064022">Tornaré més tard</translation>
 <translation id="6346952829206698721">Enganxa des del porta-retalls</translation>
+<translation id="2610561535971892504">Feu-hi clic per copiar</translation>
 <translation id="1121335910737476837">Comptes de criptomoneda principals</translation>
 <translation id="6969147029062037757">Comptes importats</translation>
 <translation id="3926119534765499672">Carteres de maquinari connectades</translation>
@@ -896,16 +910,23 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6892232036314454524">Aquest error pot succeir quan l'aplicació equivocada està oberta en el dispositiu Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Atorga accés a Brave al dispositiu Ledger.</translation>
+<translation id="8012452656725205792">Concediu a Brave accés al vostre dispositiu <ph name="HARDWARE_DEVICE"/>.</translation>
 <translation id="4378551569595875038">S'està connectant...</translation>
 <translation id="1943188256166395881">Afegeix comptes verificats</translation>
 <translation id="8554010658308662631">Carrega'n més</translation>
 <translation id="6998738230710304743">Carregant-ne més...</translation>
 <translation id="5592304751234049046">Cerca compte</translation>
+<translation id="3168978475376026497">Ruta HD</translation>
 <translation id="6151024411349343484">Prova de canviar la ruta HD (a sobre) si no trobes el compte que estàs cercant.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Llegat (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">No s'ha trobat cap resultat.</translation>
+<translation id="7261362517244085362">Autoritzeu la vostra cartera</translation>
+<translation id="7150150391368236519">Connecta una cartera física (hardware)</translation>
+<translation id="5400782314657008092">Actualment admetem dispositius <ph name="HARDWARE_DEVICE"/> i <ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">Connecteu la vostra cartera de maquinari per gestionar els actius directament des de la cartera de Brave.</translation>
+<translation id="1329837291200753515">Seleccioneu una cadena de blocs per importar la teva vostra de maquinari</translation>
+<translation id="6983390509997396124">Connecteu el vostre dispositiu <ph name="HARDWARE_DEVICE"/> a la cartera de Brave</translation>
 <translation id="5149944858285555235">Error desconegut. Connecta novament la cartera física (hardware) i torna-ho a provar.</translation>
 <translation id="4522570452068850558">Detalls</translation>
 <translation id="9220525904950070496">Suprimeix el compte</translation>
@@ -944,8 +965,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1613627717923045622">Verifica la xarxa</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Amfitrió local</translation>
 <translation id="3792938779249970121">Selecciona un compte</translation>
 <translation id="6797737193502014008">Cerca comptes</translation>
@@ -1059,6 +1078,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6383204195803840504">Les transaccions es mostraran aquí</translation>
 <translation id="6079696972035130497">Il·limitat</translation>
 <translation id="2916401020782528840">No es troba la transacció</translation>
+<translation id="1690963073120772693">Aquesta transacció no es pot tornar a intentar.</translation>
 <translation id="2833661570529295305">Pendent d'aprovació</translation>
 <translation id="8034530868111548216">Aprovat</translation>
 <translation id="6015436276085482001">Rebutjat</translation>
@@ -1153,8 +1173,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8523768065044261559">Error en processar la transacció, torna-ho a provar</translation>
 <translation id="971552837551838642">S'ha produït un error en signar el missatge, torna-ho a provar</translation>
 <translation id="8273603707418703324">S'ha produït un error en signar el missatge, s'ha demanat un anell de claus desconegut, torna-ho a provar</translation>
-<translation id="5265455943786954050">L'ordre Trezor ja està en curs</translation>
-<translation id="7017116822583380542">El pont de Trezor no està preparat</translation>
+<translation id="6200074323131367633">L'ordre <ph name="DEVICE_NAME"/> ja està en curs</translation>
+<translation id="4213183402991860207">El pont de <ph name="DEVICE_NAME"/> no està preparat</translation>
 <translation id="3378339846292573874">Afegeix un token suggerit</translation>
 <translation id="2322227405137827074">Vols importar aquest token?</translation>
 <translation id="4378475168089649292">Cadena de blocs</translation>
@@ -1348,17 +1368,22 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1792917191129448067">Obre l'aplicació de Rainbow Bridge</translation>
 <translation id="1522775706527775647">Bridge a Aurora</translation>
 <translation id="4903322403594141291">Més informació sobre Cartera de Brave</translation>
-<translation id="3875185448438395303">Al menys:</translation>
-<translation id="2029465635925899949">8 caràcters</translation>
-<translation id="6697810017029555732">Encert!</translation>
+<translation id="4427684901715566795">La contrasenya ha de tenir:</translation>
+<translation id="8521329076169776625">Com a mínim 8 caràcters</translation>
+<translation id="3665035348242240953">Les contrasenyes coincideixen</translation>
 <translation id="8918368616587206671">Fort!</translation>
 <translation id="574392208103952083">Mitjana</translation>
 <translation id="8297006494302853456">Feble</translation>
+<translation id="3282258437441351851">La cartera de Brave es blocarà automàticament després de</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> minuts</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> hora(es)</translation>
 <translation id="7084181009966710506">S'està creant la cartera...</translation>
-<translation id="6782556046178425980">Abans de començar a fer una còpia de seguretat de la cartera</translation>
+<translation id="3259102562570606417">Deseu la frase de recuperació</translation>
 <translation id="7119749028647909394">La frase de recuperació de 12-24 paraules és una clau privada que pots utilitzar per recuperar l'accés a la teva cartera en cas que perdis un dispositiu connectat. Guarda-la en un lloc segur i en l'ordre exacte que apareix a continuació.</translation>
 <translation id="3259018319025894691">Brave no pot accedir a la teva frase secreta de recuperació. Mantén-la segura i no la comparteixis mai amb ningú més.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Important: <ph name="TAG_AFTER"/>No comparteixis mai la teva frase de recuperació. Qualsevol persona amb aquesta frase pot prendre els teus actius per sempre.</translation>
+<translation id="426648489149930289">Guardeu-la en un lloc segur al qual no tinguin accés altres persones i eviteu compartir-la amb altres usuaris.</translation>
+<translation id="119185410022731300">Introduïu la paraula en la posició <ph name="VALUE"/> de la vostra frase de recuperació.</translation>
+<translation id="2193954488469999829">Heu oblidat desar-la? Torneu enrere</translation>
 <translation id="7509948206688764960">Feu una còpia de seguretat de la frase de recuperació de la cartera</translation>
 <translation id="8052898407431791827">Copiat al porta-retalls</translation>
 <translation id="4576741736874242970">Clica per veure la teva frase</translation>
@@ -1377,8 +1402,9 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2781276194026093899">n</translation>
 <translation id="7992766987062040279">r</translation>
 <translation id="2295726992010694229">è</translation>
-<translation id="8241405611628876973">Felicitats! La teva Cartera de Brave està a punt per funcionar!</translation>
-<translation id="6828327990705355767">Per accedir a la cartera, només has de clicar a la icona de la cartera a la part superior dreta de qualsevol finestra del navegador de Brave.</translation>
+<translation id="1148624853678088576">Ja esteu llest!</translation>
+<translation id="1656439328205762155">La vostra Cartera de Brave està llesta i preparada per utilitzar-la.</translation>
+<translation id="3342494025742308764">Aneu a la carpeta</translation>
 <translation id="396152018598329740">Com utilitzar una cartera criptogràfica?</translation>
 <translation id="7512061585041489067">Quina és la millor cartera criptogràfica?</translation>
 <translation id="1342755158522323177">Què és un navegador criptogràfic?</translation>
@@ -1386,24 +1412,31 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4674552515763857735">Què és una frase de recuperació?</translation>
 <translation id="7328255859839881981">Què són les DApps?</translation>
 <translation id="3852489285890032403">Què és la web 3?</translation>
-<translation id="5448233694500869445">Hem detectat l'extensió MetaMask al teu navegador</translation>
-<translation id="8436080536329710282">Introdueix la contrasenya de la teva cartera MetaMask per importar fàcilment a Cartera de Brave.</translation>
+<translation id="2349224271234429946">Importeu la cartera MetaMask</translation>
+<translation id="6715906859822319136">Podeu importar fàcilment la cartera de MetaMask tan sols introduint-hi la contrasenya.</translation>
 <translation id="7543512765962444927">Connecta't a la teva cartera existent</translation>
 <translation id="3551682252653406110">Per connectar una cartera que ja tens, és possible que hagis d'introduir la teva frase de recuperació. En aquest moment admetem la restauració/importació de carteres Ethereum i Solana.</translation>
-<translation id="346929827081904572">Restaura a partir de la frase llavor</translation>
+<translation id="3961126209136843111">Importeu una cartera existent</translation>
 <translation id="5645597512426471834">12-24 paraules</translation>
-<translation id="8158505311297755780">Escriu la teva frase de recuperació de 12-24 paraules de Cartera de Brave.</translation>
+<translation id="2321396552035646646">Pots enganxar tota la frase de recuperació en qualsevol camp.</translation>
 <translation id="5419707890586509000">Importa des de MetaMask</translation>
 <translation id="2265945811107390939">Utilitza la teva contrasenya de MetaMask per importar la frase inicial</translation>
 <translation id="7060680423657442298">No importa, crearé una cartera nova</translation>
+<translation id="1932878136775815535">Tinc una frase de recuperació de <ph name="LENGTH"/> paraules.</translation>
+<translation id="7877416315564177070">Comproveu la vostra frase de recuperació i torneu-ho a provar.</translation>
+<translation id="6503538941917874992">Importeu amb la frase de recuperació</translation>
+<translation id="782167880151571109">S'ha detectat una cartera MetaMask!</translation>
+<translation id="3619071361843652814">S'ha detectat una cartera Legacy!</translation>
+<translation id="4634124774493850572">Fes servir la contrasenya</translation>
+<translation id="7697478310235189459">Paraula <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Escriu la teva frase de recuperació de 12-24 paraules de MetaMask.</translation>
 <translation id="7720392926833259937">Escriu la contrasenya de MetaMask</translation>
 <translation id="6657585470893396449">Contrasenya</translation>
 <translation id="6260144012548445299">Més informació sobre la meva nova cartera</translation>
-<translation id="8746910870914151528">Coses legals</translation>
-<translation id="5148123176978018397">Si us plau, reconeixes el següent:</translation>
-<translation id="6088314935678153800">Entenc que es tracta d'una cartera d'autocustòdia i que soc l'únic responsable dels fons, actius o comptes associats i de prendre les mesures adequades per garantir, protegir i fer una còpia de seguretat de la meva cartera. Entenc que Brave NO pot accedir a la meva cartera ni revertir transaccions en nom meu, i que la meva frase de recuperació és l'ÚNICA manera de recuperar l'accés en cas de pèrdua de la contrasenya, robatori del dispositiu o circumstància similar.</translation>
-<translation id="7781090633800450517">He llegit i accepto les <ph name="LINK_BEFORE"/> Condicions d'ús <ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Abans de començar</translation>
+<translation id="5333225216561354793">Et demanem que reconeguis els elements següents</translation>
+<translation id="4284971227128011550">Entenc que es tracta d'una cartera d'autocustòdia i que soc l'únic responsable dels fons, actius o comptes associats i de prendre les mesures adequades per assegurar, protegir i fer una còpia de seguretat de la meva cartera. Entenc que Brave no pot accedir a la meva cartera ni revertir transaccions en nom meu, i que la meva frase de recuperació és l'ÚNICA manera de recuperar l'accés en cas de pèrdua de la contrasenya, robatori del dispositiu o circumstància similar.</translation>
+<translation id="3604445540387095708">He llegit i accepto les <ph name="LINK_BEFORE"/>Condicions d'ús<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Compra Crypto</translation>
 <translation id="3887541341068007345">S'estan buscant extensions de cartera...</translation>
 <translation id="3567994771568272606">Importa des de les carteres de criptomonedes Brave heretades</translation>
@@ -1604,6 +1637,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5667702863609780570">Acció perillosa amb risc de pèrdua</translation>
 <translation id="6405354572620970908">Aquesta sol·licitud sembla perillosa i pot fer que sigues vulnerable a un robatori. No continuis si no és una aplicació de confiança.</translation>
 <translation id="786261184916565476">Hem detectat <ph name="VALUE"/> problemes.</translation>
+<translation id="2826600321627372011">No s'ha trobat cap ruta</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1682,6 +1716,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7948579849190819732">Pestanya actual</translation>
 <translation id="7056969230130642253">Ja estàs al dia</translation>
 <translation id="7292242212818928219">Nou contingut disponible. Vols tornar a carregar?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Ordres ràpides</translation>
 <translation id="7481312909269577407">Endavant</translation>
 <translation id="302781076327338683">Torna a carregar ometent la memòria cau</translation>
@@ -1834,13 +1869,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="831931573200952705">Aquesta combinació s'està utilitzant per a <ph name="COMMAND"/> i no es pot modificar.</translation>
 <translation id="3537006124004887164">Aquesta combinació s'està utilitzant per a <ph name="COMMAND"/> i no es pot modificar. Prova de modificar-la mitjançant les "Dreceres d'aplicació" a la configuració del sistema.</translation>
 <translation id="712598284361781729">Nova vista dividida</translation>
-<translation id="6655450014966273037">Tancar la vista dividida</translation>
 <translation id="1130188644637295274">Obrir la vista dividida</translation>
-<translation id="7195519370590486580">Desglossar en pestanyes</translation>
+<translation id="6459036216700972269">Elimineu la divisió de pestanyes</translation>
 <translation id="3617523374417810198">Nova vista dividida</translation>
-<translation id="9053179124396567872">Tancar la vista dividida</translation>
 <translation id="8571323456914890254">Obrir la vista dividida</translation>
-<translation id="2397258152713354053">Desglossar en pestanyes</translation>
+<translation id="5329136173514538969">Elimineu la divisió de pestanyes</translation>
 <translation id="8591883849678260674">Veure original</translation>
 <translation id="1969654232209826429">min. de lectura</translation>
 <translation id="4101707289420716287">Desactiva el lector de velocitat</translation>
@@ -1885,28 +1918,29 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7921782882718083488">Resumeix aquesta pàgina</translation>
 <translation id="7932221068776853847">Desconnecta per deixar d'enviar el contingut d'aquesta pàgina a Leo i inicia una nova conversa</translation>
 <translation id="1167803637855350748">Hi ha hagut un problema de xarxa en connectar amb Leo, comprova la connexió i intenta-ho de nou.</translation>
-<translation id="5095201428204952524">Leo està massa ocupat en aquests moments. Torna-ho a provar d'aquí a uns minuts.</translation>
+<translation id="1996126325390835277">Leo està massa ocupat en aquests moments. Torna-ho a provar d'aquí a uns minuts.</translation>
 <translation id="7144878232160441200">Torna-ho a intentar</translation>
-<translation id="2505565639170795978">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Brave. Funciono amb Llama 13B, un model creat per Meta per oferir rendiment i aplicabilitat a molts casos d'ús.</translation>
-<translation id="8030558642460377506">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Brave. Funciono amb Mixtral 8x7B, un model creat per Mistral AI per gestionar tasques avançades.</translation>
-<translation id="2489317965865266353">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Assistant, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
+<translation id="8570488829560315702">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Brave. Funciono amb Llama 3 8B, un model creat per Meta per oferir rendiment i aplicabilitat a molts casos d'ús. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hola, soc en Leo. Soc un assistent d'IA totalment allotjat de Brave. Funciono amb Mixtral 8x7B, un model creat per Mistral AI per gestionar tasques avançades. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Instant, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. <ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3 Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
 <translation id="4147243042852964992">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3 Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> de <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Limitat</translation>
 <translation id="6187065185557150870">Xat</translation>
 <translation id="2961040541145689181">Xat nou</translation>
 <translation id="7557539689487606886">Canvia a Premium</translation>
 <translation id="1691256669639196606">Gestiona la subscripció</translation>
+<translation id="2304783958703511257">Configuració avançada</translation>
 <translation id="3037594989275592390">Models de llenguatge</translation>
 <translation id="6637015365469044269">Millora ara la subscripció</translation>
+<translation id="5543505256451301851">Prova 7 dies gratis</translation>
 <translation id="849535826888024304">S'ha arribat al límit de la taxa de resposta</translation>
-<translation id="6149863263423821329">Desbloqueja una major taxa de resposta subscrivint-te a Premium. També pots canviar al nostre model gratuït menys potent Llama2 13b per continuar.</translation>
+<translation id="2252128900328632803">Desbloqueja una major taxa de resposta subscrivint-te a Premium. També pots canviar al nostre model gratuït menys potent Llama2 13b per continuar.</translation>
 <translation id="4173478269537830374">Explora els diferents models d'IA</translation>
 <translation id="3245401959451976966">Dona curs a la teva creativitat</translation>
 <translation id="4165928407303989823">Segueix amb el tema</translation>
 <translation id="2389665228467129817">Xateja durant més temps</translation>
-<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $/mes</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/mes</translation>
 <translation id="5151923271944811339">Canvia al model gratuït</translation>
 <translation id="5474757891469990756">Allibera tot el poder de Leo amb Premium:</translation>
 <translation id="5552332211527367850">Accés prioritari a models potents amb diferents habilitats.</translation>
@@ -1934,8 +1968,11 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8742658901413346500">Aquesta conversa és massa llarga i pot ser que Leo comenci a oblidar coses aviat. Pots obtenir converses més llargues canviant a un model premium o bé esborrar el xat per restablir-lo.</translation>
 <translation id="7550152963854770123">Esborra el xat</translation>
 <translation id="7494736170250048402">Envia un missatge a Leo</translation>
+<translation id="8712637175834984815">D'acord</translation>
 <translation id="1093419424466417703">La pàgina és massa llarga per a Leo. Podria faltar part del context de la conversa. Leo ha pogut llegir el <ph name="PERCENTAGE"/> dels continguts de la pàgina.</translation>
 <translation id="4370698775470316661">Aquesta conversa és massa llarga i no pot continuar. Pot ser que hi hagi altres models disponibles amb els quals Leo pugui mantenir la precisió en converses més llargues.</translation>
+<translation id="5719170755629028558">Millora de la teva resposta amb el cercador de Brave…</translation>
+<translation id="5794962229997281366">Millora de la cerca de respostes per a <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Xat de tipus general</translation>
 <translation id="8193130769524604031">Tasques de xat avançades</translation>
 <translation id="3185367320601718531">Conversa i generació de text</translation>
@@ -1975,6 +2012,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3130793786899299931">Canvia la llargada</translation>
 <translation id="6320643499534852464">Xarxes socials</translation>
 <translation id="2370739752330685659">Potser més tard</translation>
+<translation id="983013125018250242">Eines de Leo</translation>
+<translation id="49269513399674318">Utilitza el micròfon</translation>
 <translation id="6303294677342628402">Escuts</translation>
 <translation id="8458987127502506209">Activa els Escuts de Brave</translation>
 <translation id="7509914170164691086">Els escuts estan activats <ph name="LINK_BEFORE"/> per a <ph name="LINK_AFTER"/></translation>
