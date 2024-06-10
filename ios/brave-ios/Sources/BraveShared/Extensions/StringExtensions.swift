@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import SwiftUI
 import UIKit
 
 extension String {
@@ -64,4 +65,23 @@ extension String {
     }
   }
 
+  public var regionFlag: Image? {
+    // Root Unicode flags index
+    let rootIndex: UInt32 = 127397
+    var unicodeScalarView = ""
+
+    for scalar in self.unicodeScalars {
+      // Shift the letter index to the flags index
+      if let appendedScalar = UnicodeScalar(rootIndex + scalar.value) {
+        // Append symbol to the Unicode string
+        unicodeScalarView.unicodeScalars.append(appendedScalar)
+      }
+    }
+
+    if unicodeScalarView.isEmpty {
+      return nil
+    }
+
+    return Image(uiImage: unicodeScalarView.image())
+  }
 }

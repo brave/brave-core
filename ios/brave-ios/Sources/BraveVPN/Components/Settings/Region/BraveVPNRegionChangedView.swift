@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveUI
 import Shared
 import SwiftUI
@@ -17,36 +18,46 @@ public struct BraveVPNRegionChangedView: View {
   }
 
   public var body: some View {
-    VStack {
-      VStack {
-        Image("region-change-banner", bundle: .module)
-          .resizable()
-          .frame(width: 96, height: 96)
-        Text("example")
-          .multilineTextAlignment(.center)
-          .padding(.horizontal, 25)
-      }
-      .padding(.bottom, 25)
-      Text(regionTitle)
-        .font(.footnote)
+    VStack(spacing: 24) {
+      Image("region-change-banner", bundle: .module)
+        .resizable()
+        .frame(width: 96, height: 96)
+      Text("VPN Region Changed")
         .multilineTextAlignment(.center)
-        .foregroundColor(Color(.secondaryBraveLabel))
-        .padding(.horizontal, 25)
-        .padding(.bottom, 25)
+        .font(.headline)
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+      HStack {
+        "BR".regionFlag
+          .frame(width: 32, height: 32)
+          .padding(4)
+          .overlay(
+            RoundedRectangle(cornerRadius: 4.0, style: .continuous)
+              .strokeBorder(Color(.lightGray), lineWidth: 1.0)
+          )
+        VStack(alignment: .leading) {
+          Text(regionTitle)
+            .font(.headline)
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
+          Text(regionSubtitle)
+            .font(.subheadline)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        }
+        Spacer()
+      }
     }
-    .padding()
-    .background(Color(.secondaryBraveBackground).ignoresSafeArea())
+    .padding(48)
+    .background(Color(braveSystemName: .containerBackgroundMobile))
   }
 }
 
 struct BraveVPNRegionChangedView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionChangedView(regionTitle: "VPN Region Changed", regionSubtitle: "Rio Brazil")
+    BraveVPNRegionChangedView(regionTitle: "Brazil", regionSubtitle: "Rio de Janeiro")
   }
 }
 
 public struct BraveVPNRegionChangedContentView: UIViewControllerRepresentable {
-  @Binding 
+  @Binding
   var isPresented: Bool
 
   var regionTitle: String
@@ -73,7 +84,10 @@ public struct BraveVPNRegionChangedContentView: UIViewControllerRepresentable {
       }
 
       let controller = PopupViewController(
-        rootView: BraveVPNRegionChangedView(regionTitle: regionTitle, regionSubtitle: regionSubtitle)
+        rootView: BraveVPNRegionChangedView(
+          regionTitle: regionTitle,
+          regionSubtitle: regionSubtitle
+        )
       )
 
       context.coordinator.presentedViewController = .init(controller)

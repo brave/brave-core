@@ -13,7 +13,7 @@ struct Server: Identifiable, Equatable {
 
 class ServerDetail: ObservableObject {
   var servers = [
-    Server(name: "Automatic", isAutomatic: true),
+    Server(name: "Optimal", isAutomatic: true),
     Server(name: "São Paulo"),
     Server(name: "Rio de Janeiro"),
     Server(name: "Brasília"),
@@ -57,27 +57,35 @@ struct BraveRegionDetailsView: View {
             HStack {
               VStack(alignment: .leading) {
                 Text(server.name)
-                  .foregroundColor(serverDetail.selectedServer == server ? .blue : .black)
+                  .foregroundStyle(
+                    serverDetail.selectedServer == server
+                      ? Color(braveSystemName: .textInteractive)
+                      : Color(braveSystemName: .textPrimary)
+                  )
 
                 if server.isAutomatic == true {
                   Text("Use the best server available")
-                    .foregroundColor(serverDetail.selectedServer == server ? .blue : .black)
+                    .foregroundStyle(
+                      serverDetail.selectedServer == server
+                        ? Color(braveSystemName: .textInteractive)
+                        : Color(braveSystemName: .textPrimary)
+                    )
                 }
               }
               Spacer()
 
               if serverDetail.selectedServer == server {
                 Image(systemName: "checkmark")
-                  .foregroundColor(.blue)
+                  .foregroundStyle(Color(braveSystemName: .iconInteractive))
               }
             }
             .contentShape(Rectangle())
             .onTapGesture {
               selectDesignatedVPNServer(server)
-
             }
           }
         }
+        .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
       }
       .opacity(isLoading ? 0.5 : 1.0)
 
@@ -91,7 +99,7 @@ struct BraveRegionDetailsView: View {
     .background {
       BraveVPNRegionChangedContentView(
         isPresented: $isConfirmationPresented,
-        regionTitle: "VPN Region Changed",
+        regionTitle: "Brazil",
         regionSubtitle: "Rio de Janeiro"
       )
     }
