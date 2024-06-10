@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -87,7 +88,7 @@ void NewsMetrics::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
     disabled_histogram_name = kNonRewardsAdsViewsHistogramName;
   }
   p3a_utils::RecordToHistogramBucket(histogram_name, kBuckets, total);
-  UMA_HISTOGRAM_EXACT_LINEAR(disabled_histogram_name, INT_MAX - 1, 8);
+  base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 8);
 }
 
 void NewsMetrics::RecordDirectFeedsTotal() {
