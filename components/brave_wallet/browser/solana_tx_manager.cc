@@ -10,6 +10,7 @@
 #include <set>
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
@@ -33,6 +34,8 @@
 
 namespace brave_wallet {
 
+namespace {
+
 // The number of compute units required to modify the compute
 // units and add a priority fee.
 constexpr int kAddPriorityFeeComputeUnits = 300;
@@ -47,6 +50,125 @@ constexpr int kMininumFeePerComputeUnits = 1;
 // stuck in submitted status somehow, for example, old transactions without
 // last valid block height information.
 constexpr int kSafeDropThresholdInMinutes = 30;
+
+enum class FeeEstimationResponseType {
+  kBaseFee,
+  kSimulate,
+  kRecentPriorityFees,
+};
+
+struct FeeEstimationResponse {
+  uint64_t base_fee = 0;
+  uint64_t compute_units = 0;
+  std::vector<std::pair<uint64_t, uint64_t>> recent_fees;
+  mojom::SolanaProviderError error;
+  std::string error_message;
+  FeeEstimationResponseType type;
+
+  FeeEstimationResponse(
+      uint64_t base_fee,
+      uint64_t compute_units,
+      std::vector<std::pair<uint64_t, uint64_t>>&& recent_fees,
+      mojom::SolanaProviderError error,
+      const std::string& error_message,
+      FeeEstimationResponseType type)
+      : base_fee(base_fee),
+        compute_units(compute_units),
+        recent_fees(std::move(recent_fees)),
+        error(error),
+        error_message(error_message),
+        type(type) {}
+};
+
+void MergeGetTxFeeEstimationResponses(
+    SolanaTxManager::GetSolanaTxFeeEstimationForMetaCallback callback,
+    std::unique_ptr<SolanaTxMeta> meta,
+    std::vector<FeeEstimationResponse> responses) {
+  // Process base fee RPC response which should always present.
+  const auto base_fee_it = base::ranges::find_if(
+      responses, [](const FeeEstimationResponse& response) {
+        return response.type == FeeEstimationResponseType::kBaseFee;
+      });
+  CHECK(base_fee_it != responses.end());
+
+  // If the base fee RPC fails, we'll propagate the error to the client.
+  if (base_fee_it->error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(std::move(meta), {}, base_fee_it->error,
+                            base_fee_it->error_message);
+    return;
+  }
+
+  mojom::SolanaFeeEstimationPtr estimation =
+      mojom::SolanaFeeEstimation::New(base_fee_it->base_fee, 0, 0);
+
+  // No need to calculate priority fee if the transaction is partial signed
+  // because we cannot change the transaction.
+  if (meta->tx()->IsPartialSigned()) {
+    std::move(callback).Run(std::move(meta), std::move(estimation),
+                            mojom::SolanaProviderError::kSuccess, "");
+    return;
+  }
+
+  // Process simulate and recent priority fees RPC responses which should
+  // present when transaction is not partial signed.
+  const auto simulate_it = base::ranges::find_if(
+      responses, [](const FeeEstimationResponse& response) {
+        return response.type == FeeEstimationResponseType::kSimulate;
+      });
+  auto recent_priority_fees_it = base::ranges::find_if(
+      responses, [](const FeeEstimationResponse& response) {
+        return response.type == FeeEstimationResponseType::kRecentPriorityFees;
+      });
+  CHECK(simulate_it != responses.end() &&
+        recent_priority_fees_it != responses.end());
+
+  // If the simulation fails, we'll still propagate the base fee, the client
+  // can use it even if the priority fee fails.
+  if (simulate_it->error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(std::move(meta), std::move(estimation),
+                            mojom::SolanaProviderError::kSuccess, "");
+    return;
+  }
+  // The simulation was performed without the instructions that set a compute
+  // budget and priority fee, so we must add those as well.
+  estimation->compute_units =
+      simulate_it->compute_units + kAddPriorityFeeComputeUnits;
+
+  // If the call to fetch recent priority fees fails, we'll still propagate
+  // the base fee and compute units, but use the default fee per compute unit.
+  if (recent_priority_fees_it->error != mojom::SolanaProviderError::kSuccess) {
+    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
+    std::move(callback).Run(std::move(meta), std::move(estimation),
+                            mojom::SolanaProviderError::kSuccess, "");
+    return;
+  }
+
+  uint64_t median = 0;
+  auto& recent_fees = recent_priority_fees_it->recent_fees;
+  if (!recent_fees.empty()) {
+    base::ranges::sort(recent_fees, [](const auto& a, const auto& b) {
+      return a.second < b.second;
+    });
+
+    size_t size = recent_fees.size();
+    if (size % 2 == 0) {
+      median =
+          (recent_fees[size / 2 - 1].second + recent_fees[size / 2].second) / 2;
+    } else {
+      median = recent_fees[size / 2].second;
+    }
+  }
+
+  if (median == 0) {
+    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
+  } else {
+    estimation->fee_per_compute_unit = median;
+  }
+  std::move(callback).Run(std::move(meta), std::move(estimation),
+                          mojom::SolanaProviderError::kSuccess, "");
+}
+
+}  // namespace
 
 SolanaTxManager::SolanaTxManager(
     TxService* tx_service,
@@ -101,141 +223,8 @@ void SolanaTxManager::AddUnapprovedTransaction(
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  GetSolanaTxFeeEstimationForMeta(chain_id, std::move(meta),
+  GetSolanaTxFeeEstimationForMeta(std::move(meta),
                                   std::move(internal_callback));
-}
-
-void SolanaTxManager::OnSimulateSolanaTransaction(
-    const std::string& chain_id,
-    std::unique_ptr<SolanaTxMeta> meta,
-    uint64_t base_fee,
-    GetSolanaTxFeeEstimationForMetaCallback callback,
-    uint64_t compute_units_consumed,
-    mojom::SolanaProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::SolanaProviderError::kSuccess) {
-    // If the simulation fails, we'll still propagate the base
-    // fee - the client can use it even if the priority fee fails.
-    mojom::SolanaFeeEstimationPtr estimation =
-        mojom::SolanaFeeEstimation::New();
-    estimation->base_fee = base_fee;
-    estimation->compute_units = 0;
-    estimation->fee_per_compute_unit = 0;
-    std::move(callback).Run(std::move(meta), std::move(estimation), error,
-                            error_message);
-    return;
-  }
-
-  auto internal_callback =
-      base::BindOnce(&SolanaTxManager::OnGetRecentSolanaPrioritizationFees,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(meta), base_fee,
-                     compute_units_consumed, std::move(callback));
-  json_rpc_service_->GetRecentSolanaPrioritizationFees(
-      chain_id, std::move(internal_callback));
-}
-
-void SolanaTxManager::OnGetRecentSolanaPrioritizationFees(
-    std::unique_ptr<SolanaTxMeta> meta,
-    uint64_t base_fee,
-    uint64_t compute_units,
-    GetSolanaTxFeeEstimationForMetaCallback callback,
-    std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
-    mojom::SolanaProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::SolanaProviderError::kSuccess) {
-    // If the call to fetch recent priority fees fails, we'll still propagate
-    // the base fee and compute units, but use the default fee per compute unit.
-    mojom::SolanaFeeEstimationPtr estimation =
-        mojom::SolanaFeeEstimation::New();
-    estimation->base_fee = base_fee;
-    estimation->compute_units = compute_units;
-    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
-    std::move(callback).Run(std::move(meta), std::move(estimation), error,
-                            error_message);
-    return;
-  }
-
-  uint64_t median = 0;
-  if (!recent_fees.empty()) {
-    base::ranges::sort(recent_fees, [](const auto& a, const auto& b) {
-      return a.second < b.second;
-    });
-
-    size_t size = recent_fees.size();
-    if (size % 2 == 0) {
-      median =
-          (recent_fees[size / 2 - 1].second + recent_fees[size / 2].second) / 2;
-    } else {
-      median = recent_fees[size / 2].second;
-    }
-  }
-
-  mojom::SolanaFeeEstimationPtr estimation = mojom::SolanaFeeEstimation::New();
-  estimation->base_fee = base_fee;
-  // The simulation was performed without the instructions that set a compute
-  // budget and priority fee, so we must add those as well.
-  estimation->compute_units = compute_units + kAddPriorityFeeComputeUnits;
-
-  if (median == 0) {
-    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
-  } else {
-    estimation->fee_per_compute_unit = median;
-  }
-
-  std::move(callback).Run(std::move(meta), std::move(estimation),
-                          mojom::SolanaProviderError::kSuccess, "");
-}
-
-void SolanaTxManager::OnGetEstimatedTxBaseFee(
-    const std::string& chain_id,
-    GetSolanaTxFeeEstimationForMetaCallback callback,
-    std::unique_ptr<SolanaTxMeta> meta,
-    const std::string& unsigned_tx,
-    uint64_t base_fee,
-    mojom::SolanaProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::SolanaProviderError::kSuccess) {
-    // If the base fee fetching fails, set it to zero so
-    // ContinueAddUnapprovedTransaction can identify the failure is from base
-    // fee fetching.
-    mojom::SolanaFeeEstimationPtr estimation =
-        mojom::SolanaFeeEstimation::New();
-    estimation->base_fee = 0;
-    estimation->compute_units = 0;
-    estimation->fee_per_compute_unit = 0;
-    std::move(callback).Run(std::move(meta), std::move(estimation), error,
-                            error_message);
-    return;
-  }
-
-  // If the transaction is partially signed, we can't modify the instructions
-  // to add a priority fee. So we return just the base fee.
-  if (meta->tx()->IsPartialSigned()) {
-    mojom::SolanaFeeEstimationPtr estimation =
-        mojom::SolanaFeeEstimation::New();
-    estimation->base_fee = base_fee;
-    estimation->compute_units = 0;
-    estimation->fee_per_compute_unit = 0;
-    std::move(callback).Run(std::move(meta), std::move(estimation),
-                            mojom::SolanaProviderError::kSuccess, "");
-    return;
-  }
-
-  auto internal_callback =
-      base::BindOnce(&SolanaTxManager::OnSimulateSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), chain_id, std::move(meta),
-                     base_fee, std::move(callback));
-  json_rpc_service_->SimulateSolanaTransaction(chain_id, unsigned_tx,
-                                               std::move(internal_callback));
-}
-
-void SolanaTxManager::FinishGetSolanaTxFeeEstimation(
-    GetSolanaTxFeeEstimationCallback callback,
-    std::unique_ptr<SolanaTxMeta> meta,
-    mojom::SolanaFeeEstimationPtr estimation,
-    mojom::SolanaProviderError error,
-    const std::string& error_message) {
-  std::move(callback).Run(std::move(estimation), error, error_message);
 }
 
 void SolanaTxManager::ContinueAddUnapprovedTransaction(
@@ -244,11 +233,8 @@ void SolanaTxManager::ContinueAddUnapprovedTransaction(
     mojom::SolanaFeeEstimationPtr estimation,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
-  // If the base fee is zero (base feefetching failed), we add the transaction
-  // without adding the priority fee instruction and without setting the gas
-  // estimate.
-  if (!estimation || (error != mojom::SolanaProviderError::kSuccess &&
-                      estimation->base_fee == 0)) {
+  // Failed fetching base fee, add the transaction without fee estimation.
+  if (!estimation || error != mojom::SolanaProviderError::kSuccess) {
     if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
       std::move(callback).Run(
           false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -927,75 +913,6 @@ void SolanaTxManager::OnGetAccountInfo(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void SolanaTxManager::GetEstimatedTxBaseFee(
-    std::unique_ptr<SolanaTxMeta> meta,
-    GetEstimatedTxBaseFeeCallback callback) {
-  const std::string& chain_id = meta->chain_id();
-  const std::string& blockhash = meta->tx()->message()->recent_blockhash();
-  if (blockhash.empty()) {
-    GetSolanaBlockTracker()->GetLatestBlockhash(
-        chain_id,
-        base::BindOnce(
-            &SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee,
-            weak_ptr_factory_.GetWeakPtr(), std::move(meta),
-            std::move(callback)),
-        true);
-  } else {
-    const std::string base64_encoded_message =
-        meta->tx()->GetBase64EncodedMessage();
-    const std::string unsigned_tx = meta->tx()->GetUnsignedTransaction();
-    json_rpc_service_->GetSolanaFeeForMessage(
-        chain_id, base64_encoded_message,
-        base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(meta), unsigned_tx));
-  }
-}
-
-void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
-    std::unique_ptr<SolanaTxMeta> meta,
-    GetEstimatedTxBaseFeeCallback callback,
-    const std::string& latest_blockhash,
-    uint64_t last_valid_block_height,
-    mojom::SolanaProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::SolanaProviderError::kSuccess) {
-    std::move(callback).Run({}, "", 0, error, error_message);
-    return;
-  }
-
-  // Temporarily set the recent blockhash and last valid block height so
-  // they are included in the base64 encoded message used in getFeeForMessage
-  // and unsigned transaction used in simulateTransaction.
-  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
-  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
-  const std::string base64_encoded_message =
-      meta->tx()->GetBase64EncodedMessage();
-  const std::string unsigned_tx = meta->tx()->GetUnsignedTransaction();
-
-  // Clear recent blockhash and last valid block height. We will fetch fresh
-  // values when user approves the transaction.
-  meta->tx()->message()->set_recent_blockhash("");
-  meta->tx()->message()->set_last_valid_block_height(0);
-
-  const std::string& chain_id = meta->chain_id();
-  json_rpc_service_->GetSolanaFeeForMessage(
-      chain_id, base64_encoded_message,
-      base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(meta), unsigned_tx));
-}
-
-void SolanaTxManager::OnGetFeeForMessage(GetEstimatedTxBaseFeeCallback callback,
-                                         std::unique_ptr<SolanaTxMeta> meta,
-                                         const std::string& unsigned_tx,
-                                         uint64_t tx_fee,
-                                         mojom::SolanaProviderError error,
-                                         const std::string& error_message) {
-  std::move(callback).Run(std::move(meta), unsigned_tx, tx_fee, error,
-                          error_message);
-}
-
 void SolanaTxManager::GetSolanaTxFeeEstimation(
     const std::string& chain_id,
     const std::string& tx_meta_id,
@@ -1010,36 +927,115 @@ void SolanaTxManager::GetSolanaTxFeeEstimation(
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SolanaTxManager::FinishGetSolanaTxFeeEstimation,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  GetSolanaTxFeeEstimationForMeta(chain_id, std::move(meta),
-                                  std::move(internal_callback));
+  GetSolanaTxFeeEstimationForMeta(
+      std::move(meta), base::BindOnce(
+                           [](GetSolanaTxFeeEstimationCallback callback,
+                              std::unique_ptr<SolanaTxMeta> meta,
+                              mojom::SolanaFeeEstimationPtr estimation,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message) {
+                             std::move(callback).Run(std::move(estimation),
+                                                     error, error_message);
+                           },
+                           std::move(callback)));
 }
 
 void SolanaTxManager::GetSolanaTxFeeEstimationForMeta(
-    const std::string& chain_id,
     std::unique_ptr<SolanaTxMeta> meta,
     GetSolanaTxFeeEstimationForMetaCallback callback) {
-  // This function makes three RPC calls to create the SolanaFeeEstimation:
-  //
-  // 1. getFeeForMessage to get the base fee
-  // 2. simulateTransaction to get the compute unit estimation
-  // 3. getRecentPrioritizationFees to get the fee per compute unit
-  //
-  // If fetching the base fee fails, we set the base fee, compute units, and fee
-  // per compute unit to zero so the caller can identify the failure.
-  //
-  // If estimating the compute units fails, we set the correct base fee, but
-  // set the compute units and fee per compute unit to zero.
-  //
-  // If fetching the fee per compute unit fails, we set the correct base fee and
-  // compute units, but set the fee per compute unit to the default value.
-  auto internal_callback = base::BindOnce(
-      &SolanaTxManager::OnGetEstimatedTxBaseFee, weak_ptr_factory_.GetWeakPtr(),
-      chain_id, std::move(callback));
-  GetEstimatedTxBaseFee(std::move(meta), std::move(internal_callback));
+  if (meta->tx()->message()->recent_blockhash().empty()) {
+    const std::string chain_id = meta->chain_id();
+    GetSolanaBlockTracker()->GetLatestBlockhash(
+        chain_id,
+        base::BindOnce(&SolanaTxManager::GetSolanaTxFeeEstimationWithBlockhash,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                       true /* reset_blockhash */, std::move(callback)),
+        true);
+  } else {
+    const std::string blockhash = meta->tx()->message()->recent_blockhash();
+    const uint64_t last_valid_block_height =
+        meta->tx()->message()->last_valid_block_height();
+    GetSolanaTxFeeEstimationWithBlockhash(
+        std::move(meta), false /* reset_blockhash */, std::move(callback),
+        blockhash, last_valid_block_height,
+        mojom::SolanaProviderError::kSuccess, "");
+  }
+}
+
+void SolanaTxManager::GetSolanaTxFeeEstimationWithBlockhash(
+    std::unique_ptr<SolanaTxMeta> meta,
+    bool reset_blockhash,
+    GetSolanaTxFeeEstimationForMetaCallback callback,
+    const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(std::move(meta), {}, error, error_message);
+    return;
+  }
+
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
+  std::string base64_encoded_message = meta->tx()->GetBase64EncodedMessage();
+  std::string unsigned_tx = meta->tx()->GetUnsignedTransaction();
+  std::string chain_id = meta->chain_id();
+  bool is_partial_signed = meta->tx()->IsPartialSigned();
+
+  if (reset_blockhash) {
+    // Clear recent blockhash and last valid block height if it is retrieved
+    // during fee estimation. We will fetch fresh values when user approves the
+    // transaction.
+    meta->tx()->message()->set_recent_blockhash("");
+    meta->tx()->message()->set_last_valid_block_height(0);
+  }
+
+  auto barrier_callback = base::BarrierCallback<FeeEstimationResponse>(
+      is_partial_signed ? 1   // only base fee RPC if partial signed
+                        : 3,  // with priority fee RPCs if not partial signed
+      base::BindOnce(&MergeGetTxFeeEstimationResponses, std::move(callback),
+                     std::move(meta)));
+
+  json_rpc_service_->GetSolanaFeeForMessage(
+      chain_id, base64_encoded_message,
+      base::BindOnce(
+          [](base::OnceCallback<void(FeeEstimationResponse)> callback,
+             uint64_t base_fee, mojom::SolanaProviderError error,
+             const std::string& error_message) {
+            std::move(callback).Run(
+                FeeEstimationResponse(base_fee, 0, {}, error, error_message,
+                                      FeeEstimationResponseType::kBaseFee));
+          },
+          barrier_callback));
+
+  if (is_partial_signed) {
+    // No need to calculate priority fee because we cannot modify the tx.
+    return;
+  }
+
+  json_rpc_service_->SimulateSolanaTransaction(
+      chain_id, unsigned_tx,
+      base::BindOnce(
+          [](base::OnceCallback<void(FeeEstimationResponse)> callback,
+             uint64_t compute_units, mojom::SolanaProviderError error,
+             const std::string& error_message) {
+            std::move(callback).Run(FeeEstimationResponse(
+                0, compute_units, {}, error, error_message,
+                FeeEstimationResponseType::kSimulate));
+          },
+          barrier_callback));
+
+  json_rpc_service_->GetRecentSolanaPrioritizationFees(
+      chain_id, base::BindOnce(
+                    [](base::OnceCallback<void(FeeEstimationResponse)> callback,
+                       std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
+                       mojom::SolanaProviderError error,
+                       const std::string& error_message) {
+                      std::move(callback).Run(FeeEstimationResponse(
+                          0, 0, std::move(recent_fees), error, error_message,
+                          FeeEstimationResponseType::kRecentPriorityFees));
+                    },
+                    barrier_callback));
 }
 
 void SolanaTxManager::OnLatestBlockhashUpdated(
