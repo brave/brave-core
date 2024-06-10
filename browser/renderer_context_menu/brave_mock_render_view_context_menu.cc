@@ -224,8 +224,6 @@ void BraveMockRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
 void BraveMockRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
     bool is_checked) {}
 
-void BraveMockRenderViewContextMenu::AddPdfOcrMenuItem() {}
-
 content::RenderFrameHost* BraveMockRenderViewContextMenu::GetRenderFrameHost()
     const {
   return nullptr;
