@@ -320,7 +320,7 @@
 <translation id="2614069607859982576">既存の同期されたデバイスを使用してBrave Settingsを開き、設定と &gt; 同期に移動してください。「新しいデバイスを追加」を選択し、画面に表示されたQRコードをスキャンしてください。</translation>
 <translation id="5241263629636958324">クリップボードへコピーしました</translation>
 <translation id="5817918615728894473">ペア設定</translation>
-<translation id="3429575397891106447">オプションを同期</translation>
+<translation id="3429575397891106447">同期項目を選択</translation>
 <translation id="1680065323266179640">同期アカウントを削除</translation>
 <translation id="3792563952903751704">アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。ただし、それらのデバイスでローカルに格納されたデータは削除されません。
   これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
@@ -611,7 +611,6 @@
 <translation id="6896758677409633944">コピー</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
-<translation id="3043677904160378840">パスワードは8文字以上で入力してください</translation>
 <translation id="7396672979287122068">確認済みのパスワードが一致しませんでした</translation>
 <translation id="1566412704591731844">ウォレットを作成しています...</translation>
 <translation id="7779823116893018906">少々お待ちください...</translation>
@@ -655,8 +654,11 @@
 <translation id="5981303441790732480">既存のウォレットをインポート</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">パスワード</translation>
+<translation id="7553242001898162573">パスワードを入力</translation>
 <translation id="5619264711680220002">生体認証によるロック解除</translation>
+<translation id="9195657745688986798">ウォレットのロックを解除</translation>
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
+<translation id="3043677904160378840">パスワードは8文字以上で入力してください</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
@@ -700,7 +702,7 @@
 <translation id="6748319398471481216">毎月更新</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
-<translation id="7574007394522199115">年間更新で <ph name="PERCENTAGE_AMOUNT"/>%% オフ</translation>
+<translation id="7574007394522199115">年払いを選択すると<ph name="PERCENTAGE_AMOUNT"/>%%お得です</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
 <translation id="6053992191006521518">無料で試す</translation>
@@ -1188,4 +1190,13 @@
 <translation id="6891382640886173702">ウィンドウをマージ</translation>
 <translation id="2912247081180973411">ウィンドウを閉じる</translation>
 <translation id="4010699428656610296">他のタブを別のBraveウィンドウにマージしてください。</translation>
+<translation id="208634871997892083">VPNを常時オン</translation>
+<translation id="1599073346542156922">起動方法:</translation>
+<translation id="7001163334415463127">1. アプリのドロワーまたは下のボタンをタップして、デバイスの設定を開きます。</translation>
+<translation id="887443138775437899">2. Brave VPNの右側にある設定アイコンをタップします。</translation>
+<translation id="3776051499611941773">3. <ph name="ALWAYS_ON_TUTORIAL_START"/>VPNを常時オン<ph name="ALWAYS_ON_TUTORIAL_END"/>を選択して有効にします。</translation>
+<translation id="4776146737004271126">Android の設定を開く</translation>
+<translation id="2728518864712716830">アップデートをダウンロードしました。</translation>
+<translation id="8403338849301491865">フィルターリストを更新しました</translation>
+<translation id="4650851936784160359">フィルターリストを更新できませんでした。もう一度お試しください</translation>
 </translationbundle>

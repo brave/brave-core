@@ -611,7 +611,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6896758677409633944">Copiază</translation>
 <translation id="3726490322412361740">Introduceți parola</translation>
 <translation id="3038243139480464605">Confirmați parola</translation>
-<translation id="3043677904160378840">Parolele trebuie să conțină cel puțin 8 caractere.</translation>
 <translation id="7396672979287122068">Parola de confirmare nu este identică cu prima</translation>
 <translation id="1566412704591731844">Se creează portofelul dvs...</translation>
 <translation id="7779823116893018906">Poate dura câteva secunde...</translation>
@@ -655,8 +654,11 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5981303441790732480">Importați portofelul dvs. existent</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="6657585470893396449">Parolă</translation>
+<translation id="7553242001898162573">Introduceți parola</translation>
 <translation id="5619264711680220002">Deblocare biometrică</translation>
+<translation id="9195657745688986798">Deblocați portofelul</translation>
 <translation id="5168349973342709369">Introduceți parola pentru a debloca portofelul</translation>
+<translation id="3043677904160378840">Parolele trebuie să conțină cel puțin 8 caractere.</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="5760476995887363522">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
@@ -700,7 +702,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6748319398471481216">Se prelungește lunar</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / lună.</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="7574007394522199115">Reînnoiți anual și economisiți <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Dacă reînnoiți anual, economisiți <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / an.</translation>
 <translation id="2655185358771731232">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
 <translation id="6053992191006521518">Încercați GRATUIT</translation>
@@ -1189,4 +1191,13 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6891382640886173702">Comasați ferestrele</translation>
 <translation id="2912247081180973411">Închideți ferestrele</translation>
 <translation id="4010699428656610296">Comasați alte file într-o altă fereastră Brave.</translation>
+<translation id="208634871997892083">VPN activat permanent</translation>
+<translation id="1599073346542156922">Cum se activează:</translation>
+<translation id="7001163334415463127">1. Deschideți setările dispozitivului dvs. din sertarul aplicației sau atingeți butonul de mai jos.</translation>
+<translation id="887443138775437899">2. Găsiți VPN Brave și apăsați pe pictograma de setări din dreapta.</translation>
+<translation id="3776051499611941773">3. Comutați <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN activat permanent<ph name="ALWAYS_ON_TUTORIAL_END"/> pentru a-l activa.</translation>
+<translation id="4776146737004271126">Deschide setările Android</translation>
+<translation id="2728518864712716830">Actualizarea este descărcată.</translation>
+<translation id="8403338849301491865">Lista de filtre este actualizată cu succes</translation>
+<translation id="4650851936784160359">Lista de filtre nu a putut fi actualizată. Încercați din nou</translation>
 </translationbundle>

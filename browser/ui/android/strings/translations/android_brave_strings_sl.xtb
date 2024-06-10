@@ -618,7 +618,6 @@ je v teku.
 <translation id="6896758677409633944">Kopiraj</translation>
 <translation id="3726490322412361740">Vnesite geslo</translation>
 <translation id="3038243139480464605">Potrdi geslo</translation>
-<translation id="3043677904160378840">Gesla morajo imeti vsaj 8 znakov.</translation>
 <translation id="7396672979287122068">Preverjeno geslo se ne ujema</translation>
 <translation id="1566412704591731844">Ustvarjanje denarnice...</translation>
 <translation id="7779823116893018906">To lahko traja nekaj sekund...</translation>
@@ -662,8 +661,11 @@ je v teku.
 <translation id="5981303441790732480">Uvozite obstoječo denarnico</translation>
 <translation id="9111102763498581341">Odkleni</translation>
 <translation id="6657585470893396449">Geslo</translation>
+<translation id="7553242001898162573">Vnesite svoje geslo</translation>
 <translation id="5619264711680220002">Biometrično odklepanje</translation>
+<translation id="9195657745688986798">Odkleni denarnico</translation>
 <translation id="5168349973342709369">Vnesite geslo za odklep denarnice</translation>
+<translation id="3043677904160378840">Gesla morajo imeti vsaj 8 znakov.</translation>
 <translation id="1144810021918451336">Pred nevarnimi spletnimi mesti, prenosi in razširitvami vam ne nudi zaščite.</translation>
 <translation id="5760476995887363522">Besedne zveze se niso ujemale. Prosim poskusite ponovno.</translation>
 <translation id="2360588547830602174">Obnovitev računa ni uspela. Poskusite znova.</translation>
@@ -707,7 +709,7 @@ je v teku.
 <translation id="6748319398471481216">Obnavlja se mesečno</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/ mesec</translation>
 <translation id="1163809943099641131">Eno leto</translation>
-<translation id="7574007394522199115">Obnavljajte letno in prihranite <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Obnovite vsako leto in prihranite<ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / leto</translation>
 <translation id="2655185358771731232">Poskusite brezplačno 7 dni. Po 7 dneh vam bomo zaračunali ceno paketa. Vse naročnine se samodejno obnovijo, vendar jih je mogoče preklicati pred podaljšanjem.</translation>
 <translation id="6053992191006521518">Poskusite BREZPLAČNO</translation>
@@ -1195,4 +1197,13 @@ je v teku.
 <translation id="6891382640886173702">Združi okna</translation>
 <translation id="2912247081180973411">Zapri okna</translation>
 <translation id="4010699428656610296">Združi druge zavihke v drugo okno Brave.</translation>
+<translation id="208634871997892083">Neprekinjeno vključen VPN</translation>
+<translation id="1599073346542156922">Kako vključiti:</translation>
+<translation id="7001163334415463127">1. Odprite nastavitve svoje naprave v razdelku z aplikacijami ali tapnite spodnji gumb.</translation>
+<translation id="887443138775437899">2. Poiščite Brave VPN in tapnite ikono za nastavitev na desni.</translation>
+<translation id="3776051499611941773">3. Premaknite gumb<ph name="ALWAYS_ON_TUTORIAL_START"/>Neprekinjeno vključen VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> in ga tako omogočite.</translation>
+<translation id="4776146737004271126">Odpri nastavitve za Android</translation>
+<translation id="2728518864712716830">Posodobitev je prenesena.</translation>
+<translation id="8403338849301491865">Seznam filtrov je bil uspešno posodobljen</translation>
+<translation id="4650851936784160359">Seznama filtrov ni bilo mogoče posodobiti. Prosimo, poskusite znova</translation>
 </translationbundle>

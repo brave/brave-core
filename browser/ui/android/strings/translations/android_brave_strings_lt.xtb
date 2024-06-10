@@ -615,7 +615,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6896758677409633944">Kopijuoti</translation>
 <translation id="3726490322412361740">Įveskite slaptažodį</translation>
 <translation id="3038243139480464605">Patvirtinti slaptažodį</translation>
-<translation id="3043677904160378840">Slaptažodžius turi sudaryti bent 8 simboliai.</translation>
 <translation id="7396672979287122068">Patvirtinimo slaptažodis nesutampa</translation>
 <translation id="1566412704591731844">Kuriama jūsų piniginė...</translation>
 <translation id="7779823116893018906">Tai gali užtrukti kelias sekundes...</translation>
@@ -659,8 +658,11 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5981303441790732480">Importuokite savo esamą piniginę</translation>
 <translation id="9111102763498581341">Atrakinti</translation>
 <translation id="6657585470893396449">Slaptažodis</translation>
+<translation id="7553242001898162573">Įveskite slaptažodį</translation>
 <translation id="5619264711680220002">Biometrinis atrakinimas</translation>
+<translation id="9195657745688986798">Atrakinti piniginę</translation>
 <translation id="5168349973342709369">Įveskite slaptažodį, kad atrakintumėte piniginę</translation>
+<translation id="3043677904160378840">Slaptažodžius turi sudaryti bent 8 simboliai.</translation>
 <translation id="1144810021918451336">Neapsaugo nuo pavojingų svetainių, siuntų ir plėtinių.</translation>
 <translation id="5760476995887363522">Frazės nesutampa. Bandykite dar kartą.</translation>
 <translation id="2360588547830602174">Sąskaitos atkurti nepavyko. Bandykite dar kartą.</translation>
@@ -704,7 +706,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6748319398471481216">Atnaujinama kas mėnesį</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mėn.</translation>
 <translation id="1163809943099641131">Vieneri metai</translation>
-<translation id="7574007394522199115">Atnaujinkite kasmet, sutaupykite <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
+<translation id="7574007394522199115">Atnaujindami kasmet sutaupykite <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / m.</translation>
 <translation id="2655185358771731232">Išbandykite nemokamai 7 dienas. Vėliau būsite apmokestinti pagal atitinkamo plano kainą. Visos prenumeratos atnaujinamos automatiškai, tačiau prieš atnaujinant galima atšaukti.</translation>
 <translation id="6053992191006521518">Išbandykite NEMOKAMAI</translation>
@@ -1192,4 +1194,13 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6891382640886173702">Sujungti langus</translation>
 <translation id="2912247081180973411">Užverti langus</translation>
 <translation id="4010699428656610296">Sujunkite kitas korteles į kitą „Brave“ langą.</translation>
+<translation id="208634871997892083">Visada įjungtas VPN</translation>
+<translation id="1599073346542156922">Kaip įjungti:</translation>
+<translation id="7001163334415463127">1. Atverkite įrenginio nuostatas iš programų skydelio arba bakstelėdami toliau esantį mygtuką.</translation>
+<translation id="887443138775437899">2. Raskite „Brave“ VPN ir bakstelėkite nustatymų piktogramą dešinėje.</translation>
+<translation id="3776051499611941773">3. Perjunkite jungiklį<ph name="ALWAYS_ON_TUTORIAL_START"/>Visada įjungtas VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>, kad jį įjungtumėte.</translation>
+<translation id="4776146737004271126">Atidaryti „Android“ nustatymus</translation>
+<translation id="2728518864712716830">Naujinimas atsisiųstas.</translation>
+<translation id="8403338849301491865">Filtrų sąrašas sėkmingai atnaujintas</translation>
+<translation id="4650851936784160359">Filtrų sąrašo atnaujinti nepavyko. Bandykite dar kartą</translation>
 </translationbundle>

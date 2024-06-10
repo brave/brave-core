@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">많이 볼수록 많이 적립됩니다.</translation>
 <translation id="7526443283522395161">새 탭 페이지 광고</translation>
 <translation id="7968650944098083708">알림 광고</translation>
+<translation id="8289546216379862569">검색 광고</translation>
+<translation id="4758111936363146244">Brave 검색 광고는 <ph name="BEGIN_LINK"/>Brave 검색<ph name="END_LINK"/>에 나타납니다.</translation>
+<translation id="7596536223419118193">아직은 Brave 검색 광고로 BAT를 적립할 수 없지만 Brave를 지원하실 수 있는 방법이 있습니다.</translation>
 <translation id="6390952132783970876">Brave News 광고</translation>
 <translation id="7516281787184495886">Brave News에는 개별적으로 비활성화할 수 없는 광고가 포함됩니다.</translation>
 <translation id="8008378848677625233">Brave News가 현재 비활성화되어 있습니다.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">구성 요소를 다운로드하는 중...</translation>
 <translation id="4894106830958548828">이해했습니다</translation>
 <translation id="326118736933420687">WebTorrent 페이지 보는 중</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>자리표시자<ph name="PART_ONE_END"/>테스트 문자열. <ph name="PART_TWO"/>자세히 알아보기<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
 <translation id="5015092481905019948">Brave는 <ph name="PROVIDER_NAME"/>를 사용하여 <ph name="DOMAIN_PROVIDER_NAME"/>에 있는 <ph name="DOMAIN_LIST"/> 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 도메인을 방문하려고 한다는 사실을 <ph name="PROVIDER_NAME"/>가 볼 수 있지만 다른 정보는 볼 수 없습니다. <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>이용 약관<ph name="END_PROVIDER_TOU_LINK"/> 및 <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_PROVIDER_PRIVACY_LINK"/>을 참조하세요.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">일반 요청 처리 오류 발생</translation>
 <translation id="7123780456696055383">요청한 리소스를 사용할 수 없음</translation>
 <translation id="1680597601664421644">가져오는 중인 니모닉이 Brave 월렛에 유효하지 않습니다.</translation>
+<translation id="372898731091371291">어떤 유형의 월렛을 가져오고 싶으십니까?</translation>
+<translation id="1430728084670406473">이더리움/Solana/Filecoin 월렛</translation>
+<translation id="8659668419772278776">기존 월렛에서 시드 문구 가져오기</translation>
+<translation id="8110492767853188065">하드웨어 월렛</translation>
+<translation id="7437218084485869007">하드웨어 월렛과 Brave 연결</translation>
 <translation id="4641919696349069826">요청 이미 진행 중</translation>
 <translation id="872806943696014633">트랜잭션 데이터 누락</translation>
 <translation id="7068183357903252127">트랜잭션 데이터 'to' 또는 'data'를 지정해야 함</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">예</translation>
 <translation id="4250680216510889253">아니요</translation>
 <translation id="1201402288615127009">다음</translation>
-<translation id="8712637175834984815">확인</translation>
+<translation id="3214453326297774895">내 복구 문구 표시</translation>
 <translation id="6896758677409633944">복사하기</translation>
 <translation id="7885157704277298658">복사되었습니다!</translation>
 <translation id="6518133107902771759">확인</translation>
 <translation id="6042308850641462728">더보기</translation>
-<translation id="768236965975208017">보안. 멀티체인. 손쉬운 사용. 이런 Brave 월렛까지 클릭 몇 번만 남았습니다</translation>
 <translation id="3157931365184549694">복구</translation>
-<translation id="2484275747844666540">새 월렛 만들기</translation>
-<translation id="3662348701117072366">기존 월렛 가져오기</translation>
-<translation id="7150150391368236519">하드웨어 월렛 연결</translation>
+<translation id="414070570958255222">브라우저 네이티브. 자기 보호관리. 멀티체인.</translation>
+<translation id="1350120992777389959">보유한 암호화폐 및 NFT를 온전히 관리하세요. Brave 월렛은 이더리움, EVM 체인, Solana, Filecoin, 비트코인 등을 지원합니다.</translation>
+<translation id="165255193061631296">새 월렛이 필요하신가요?</translation>
+<translation id="1939235910515558387">Brave 월렛은 몇 분 만에 시작할 수 있습니다.</translation>
+<translation id="5844138175312846408">이미 월렛이 있으십니까?</translation>
+<translation id="772643556080081594">조회 전용 월렛</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave 및 Brave 로고는 Brave Software, Inc.의 등록 상표입니다. 기타 제품 명칭 및 로고는 해당 회사의 상표일 수 있습니다. 모든 권한 보유.</translation>
 <translation id="7501957181231305652">또는</translation>
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
-<translation id="180032279811483155">다음 단계에서는 <ph name="RECOVERY_PHRASE_LENGTH"/>단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="5024543173656851695">복구 단어를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
 <translation id="8281886186245836920">건너뛰기</translation>
 <translation id="6532106788206463496">변경사항 저장</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">복구 문구 확인</translation>
 <translation id="3747079125031086337">복구 문구 내의 단어를 올바른 순서대로 선택하세요.</translation>
 <translation id="802060020117206314">복구 문구가 일치하지 않습니다. 다시 시도하세요.</translation>
-<translation id="8412783472871103529">복구 문구 검증</translation>
+<translation id="7345730059518887993">확인해보겠습니다</translation>
 <translation id="2226686084760581391">복구 문구의 <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> 단어를 클릭하세요.</translation>
 <translation id="7575574239720542222">복구 문구가 일치하지 않음</translation>
 <translation id="8692301574305033504">새 비밀번호 만들기</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">레거시 Brave 암호화폐 월렛에서 가져오시겠습니까?</translation>
 <translation id="3331452756822160641">새 비밀번호</translation>
 <translation id="8624315169751085215">클립보드에 복사</translation>
+<translation id="2598171223363459366">이 단계를 지금 건너뛰어도 되지만 계정을 안전하게 보호하려면 꼭 복구 문구를 백업하세요.</translation>
+<translation id="5303015959766064022">나중에 백업</translation>
 <translation id="6346952829206698721">클립보드에서 붙여넣기</translation>
+<translation id="2610561535971892504">클릭하여 복사</translation>
 <translation id="1121335910737476837">주사용 암호화폐 계정</translation>
 <translation id="6969147029062037757">가져온 계정</translation>
 <translation id="3926119534765499672">연결된 하드웨어 월렛</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">이 오류는 Ledger 디바이스에서 잘못된 애플리케이션이 열렸을 때 발생할 수 있습니다.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Ledger 디바이스 액세스 권한을 Brave에 부여합니다.</translation>
+<translation id="8012452656725205792">Brave에 <ph name="HARDWARE_DEVICE"/> 디바이스 액세스 권한 부여.</translation>
 <translation id="4378551569595875038">연결 중...</translation>
 <translation id="1943188256166395881">확인된 계정 추가</translation>
 <translation id="8554010658308662631">더 로드하기</translation>
 <translation id="6998738230710304743">더 로드 중...</translation>
 <translation id="5592304751234049046">계정 검색</translation>
+<translation id="3168978475376026497">HD 경로</translation>
 <translation id="6151024411349343484">찾고자 하는 계정을 찾을 수 없으면 HD 경로(위)를 전환해보세요.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">레거시(MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">결과가 없습니다.</translation>
+<translation id="7261362517244085362">월렛 인증</translation>
+<translation id="7150150391368236519">하드웨어 월렛 연결</translation>
+<translation id="5400782314657008092">현재 <ph name="HARDWARE_DEVICE"/> 및 <ph name="HARDWARE_DEVICE1"/> 디바이스가 지원됩니다.</translation>
+<translation id="8144305264680648043">하드웨어 월렛을 연결하여 Brave 월렛에서 자산을 직접 관리</translation>
+<translation id="1329837291200753515">하드웨어 월렛으로 가져올 블록체인 선택</translation>
+<translation id="6983390509997396124"><ph name="HARDWARE_DEVICE"/> 디바이스를 Brave 월렛에 연결</translation>
 <translation id="5149944858285555235">알 수 없는 오류. 하드웨어 월렛을 재연결하고 다시 시도하세요.</translation>
 <translation id="4522570452068850558">세부 정보</translation>
 <translation id="9220525904950070496">계정 제거</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">네트워크 테스트</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">로컬호스트</translation>
 <translation id="3792938779249970121">계정 선택</translation>
 <translation id="6797737193502014008">계정 검색</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">트랜잭션이 여기에 표시됩니다.</translation>
 <translation id="6079696972035130497">무제한</translation>
 <translation id="2916401020782528840">트랜잭션을 찾을 수 없음</translation>
+<translation id="1690963073120772693">이 거래를 재시도할 수 없습니다.</translation>
 <translation id="2833661570529295305">허가 안 됨</translation>
 <translation id="8034530868111548216">수락</translation>
 <translation id="6015436276085482001">거부됨</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">트랜잭션 처리 중 오류. 다시 시도하세요.</translation>
 <translation id="971552837551838642">메시지 서명 중 오류. 다시 시도하세요.</translation>
 <translation id="8273603707418703324">메시지 서명 중 오류. 알 수 없는 키링이 요청되었습니다. 다시 시도하세요.</translation>
-<translation id="5265455943786954050">Trezor 명령 이미 진행 중</translation>
-<translation id="7017116822583380542">Trezor 브리지가 준비되지 않음</translation>
+<translation id="6200074323131367633">이미 <ph name="DEVICE_NAME"/> 명령 진행 중</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> 브릿지 준비되지 않음</translation>
 <translation id="3378339846292573874">추천 토큰 추가</translation>
 <translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
 <translation id="4378475168089649292">블록체인</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Rainbow Bridge 앱 열기</translation>
 <translation id="1522775706527775647">Aurora로 브리징</translation>
 <translation id="4903322403594141291">Brave 월렛 자세히 알아보기</translation>
-<translation id="3875185448438395303">최소:</translation>
-<translation id="2029465635925899949">8자</translation>
-<translation id="6697810017029555732">일치합니다!</translation>
+<translation id="4427684901715566795">비밀번호 요건:</translation>
+<translation id="8521329076169776625">8자 이상</translation>
+<translation id="3665035348242240953">비밀번호 일치</translation>
 <translation id="8918368616587206671">강력합니다!</translation>
 <translation id="574392208103952083">보통</translation>
 <translation id="8297006494302853456">약함</translation>
+<translation id="3282258437441351851">다음 시간 이후 Brave 월렛 자동 잠금</translation>
+<translation id="114276356113671828"><ph name="VALUE"/>분</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/>시간</translation>
 <translation id="7084181009966710506">월렛 생성 중...</translation>
-<translation id="6782556046178425980">월렛 백업을 시작하기 전에</translation>
+<translation id="3259102562570606417">복구 문구 저장</translation>
 <translation id="7119749028647909394">12~24단어 복구 문구는 연결된 디바이스를 분실했을 때 월렛에 다시 액세스하는 데 사용되는 비공개 키입니다. 아래 순서대로 정확하게 적어 안전한 곳에 보관하세요.</translation>
 <translation id="3259018319025894691">비밀 복구 문구에는 Brave도 액세스할 수 없습니다. 안전한 곳에 보관하고 그 누구에게도 공유하지 마세요.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>중요: <ph name="TAG_AFTER"/>복구 문구를 절대 공유하지 마세요. 이 문구를 아는 누군가가 회원님의 자산을 탈취하면 되찾을 수 없습니다.</translation>
+<translation id="426648489149930289">다른 사람이 접근할 수 없는 안전한 곳에 보관하고 누구와도 공유하지 마세요.</translation>
+<translation id="119185410022731300">복구 문구 <ph name="VALUE"/>번째 단어를 입력하세요.</translation>
+<translation id="2193954488469999829">저장을 잊으셨나요? 돌아가기</translation>
 <translation id="7509948206688764960">월렛 복구 문구 백업</translation>
 <translation id="8052898407431791827">클립보드에 복사됨</translation>
 <translation id="4576741736874242970">문구를 보려면 클릭</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">번째</translation>
 <translation id="7992766987062040279">번째</translation>
 <translation id="2295726992010694229">번째</translation>
-<translation id="8241405611628876973">축하합니다! 이제 Brave 월렛을 사용하실 수 있습니다!</translation>
-<translation id="6828327990705355767">월렛에 액세스하려면 Brave 브라우저 창 오른쪽 상단에 있는 지갑 아이콘을 클릭하세요.</translation>
+<translation id="1148624853678088576">다 끝났습니다!</translation>
+<translation id="1656439328205762155">Brave 월렛이 셋업되어 사용할 준비가 되었습니다.</translation>
+<translation id="3342494025742308764">포트폴리오로 이동</translation>
 <translation id="396152018598329740">암호화폐 월렛은 어떻게 사용할 수 있나요?</translation>
 <translation id="7512061585041489067">최고의 암호화폐 월렛은 무엇인가요?</translation>
 <translation id="1342755158522323177">암호화폐 브라우저란 무엇인가요?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">복구 문구란 무엇인가요?</translation>
 <translation id="7328255859839881981">DApps이란 무엇인가요?</translation>
 <translation id="3852489285890032403">Web3란 무엇인가요?</translation>
-<translation id="5448233694500869445">브라우저에서 MetaMask 확장 프로그램 감지됨</translation>
-<translation id="8436080536329710282">MetaMask 월렛 비밀번호를 입력하면 쉽게 Brave 월렛으로 가져올 수 있습니다.</translation>
+<translation id="2349224271234429946">MetaMask 가져오기</translation>
+<translation id="6715906859822319136">비밀번호를 입력하여 손쉽게 MetaMask 월렛을 가져올 수 있습니다.</translation>
 <translation id="7543512765962444927">기존 월렛에 연결</translation>
 <translation id="3551682252653406110">이미 가지고 계신 월렛을 연결하려면 복구 문구를 입력해야 할 수 있습니다. 현재 이더리움 및 Solana 월렛 복구와 가져오기를 지원합니다.</translation>
-<translation id="346929827081904572">시드 문구에서 복구</translation>
+<translation id="3961126209136843111">기존 월렛 가져오기</translation>
 <translation id="5645597512426471834">12~24단어</translation>
-<translation id="8158505311297755780">Brave 월렛 12~24단어 복구 문구를 입력하세요.</translation>
+<translation id="2321396552035646646">복구 문구 전체를 어떤 필드로든 붙여넣을 수 있습니다.</translation>
 <translation id="5419707890586509000">MetaMask에서 가져오기</translation>
 <translation id="2265945811107390939">MetaMask 비밀번호를 사용하여 시드 문구 가져오기</translation>
 <translation id="7060680423657442298">괜찮습니다. 새 월렛을 만들겠습니다.</translation>
+<translation id="1932878136775815535"><ph name="LENGTH"/>단어짜리 복구 문구가 있음</translation>
+<translation id="7877416315564177070">복구 문구를 확인하고 다시 시도하세요.</translation>
+<translation id="6503538941917874992">복구 문구를 사용하여 가져오기</translation>
+<translation id="782167880151571109">Metamask 월렛이 감지되었습니다!</translation>
+<translation id="3619071361843652814">레거시 월렛이 감지되었습니다!</translation>
+<translation id="4634124774493850572">비밀번호 사용</translation>
+<translation id="7697478310235189459">단어 <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">MetaMask 12~24단어 복구 문구를 입력하세요.</translation>
 <translation id="7720392926833259937">MetaMask 비밀번호 입력</translation>
 <translation id="6657585470893396449">비밀번호</translation>
 <translation id="6260144012548445299">새 월렛 자세히 알아보기</translation>
-<translation id="8746910870914151528">법률 문구</translation>
-<translation id="5148123176978018397">다음을 주의하여 읽고 동의해주세요.</translation>
-<translation id="6088314935678153800">나는 이것이 자기 보호관리 월렛이므로 연결된 자금, 자산, 계좌에 대한 책임은 전적으로 내게 있고, 적절한 조치를 통해 월렛의 보안을 유지하고 보호하며 백업해야 한다는 사실을 이해합니다. 나는 Brave가 내 월렛에 액세스하거나 나를 대신하여 트랜잭션을 번복할 수 없고, 비밀번호 분실, 디바이스 도난 등의 상황에서 복구 구문이 월렛에 다시 액세스할 수 있는 유일한 수단임을 이해합니다.</translation>
-<translation id="7781090633800450517"><ph name="LINK_BEFORE"/>이용 약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다.</translation>
+<translation id="2502258949541727762">시작하기 전에</translation>
+<translation id="5333225216561354793">아래 항목에 동의해주셔야 합니다.</translation>
+<translation id="4284971227128011550">나는 이것이 자기 보호관리 월렛이므로 연결된 자금, 자산, 계좌에 대한 책임은 전적으로 내게 있고, 모든 적절한 조치를 강구해 월렛의 보안을 유지하고 보호하며 백업해야 한다는 사실을 이해합니다. 나는 Brave가 내 월렛에 액세스하거나 나를 대신하여 트랜잭션을 번복할 수 없고, 비밀번호 분실, 디바이스 도난 등의 상황에서 복구 문구가 월렛에 다시 액세스할 수 있는 '유일한' 수단임을 이해합니다.</translation>
+<translation id="3604445540387095708"><ph name="LINK_BEFORE"/>이용 약관<ph name="LINK_AFTER"/>을 읽었으며 이에 동의합니다.</translation>
 <translation id="1422451606553326863">암호화폐 구입</translation>
 <translation id="3887541341068007345">월렛 확장 프로그램 확인 중...</translation>
 <translation id="3567994771568272606">레거시 Brave 암호화폐 월렛에서 가져오기</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">손실 위험이 있는 안전하지 않은 행동</translation>
 <translation id="6405354572620970908">이 요청은 도난에 취약해질 수 있는 악성으로 판단됩니다. 앱을 신뢰하지 않는 한 계속하지 마세요.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/>개의 문제를 찾았습니다.</translation>
+<translation id="2826600321627372011">찾은 경로 없음</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">현재 탭</translation>
 <translation id="7056969230130642253">다 읽으셨습니다</translation>
 <translation id="7292242212818928219">새 콘텐츠가 있습니다. 새로 고칠까요?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7481312909269577407">앞으로</translation>
 <translation id="302781076327338683">캐시를 건너뛰고 새로고침</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">이 조합은 <ph name="COMMAND"/>에 사용되고 있어 수정할 수 없습니다.</translation>
 <translation id="3537006124004887164">이 조합은 <ph name="COMMAND"/>에 사용되고 있어 수정할 수 없습니다. 수정하려면 시스템 설정의 '앱 바로가기'를 통해야 합니다.</translation>
 <translation id="712598284361781729">새 분할 보기</translation>
-<translation id="6655450014966273037">분할 보기 닫기</translation>
 <translation id="1130188644637295274">분할 보기에서 열기</translation>
-<translation id="7195519370590486580">탭으로 해체</translation>
+<translation id="6459036216700972269">탭 분할 해제</translation>
 <translation id="3617523374417810198">새 분할 보기</translation>
-<translation id="9053179124396567872">분할 보기 닫기</translation>
 <translation id="8571323456914890254">분할 보기에서 열기</translation>
-<translation id="2397258152713354053">탭으로 해체</translation>
+<translation id="5329136173514538969">탭 분할 해제</translation>
 <translation id="8591883849678260674">원본 보기</translation>
 <translation id="1969654232209826429">읽기(분)</translation>
 <translation id="4101707289420716287">스피드리더 끄기</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">이 페이지 요약하기</translation>
 <translation id="7932221068776853847">연결을 끊어 이 페이지 콘텐츠를 레오에게 보내기를 중지하고 새 대화를 시작합니다.</translation>
 <translation id="1167803637855350748">레오에 연결 중 네트워크 문제가 있습니다. 연결 상태를 확인하고 다시 시도하세요.</translation>
-<translation id="5095201428204952524">레오가 지금 너무 바쁩니다. 몇 분 후 다시 시도하세요.</translation>
+<translation id="1996126325390835277">레오가 지금 너무 바쁩니다. 몇 분 후 다시 시도하세요.</translation>
 <translation id="7144878232160441200">재시도</translation>
-<translation id="2505565639170795978">안녕하세요, 저는 레오예요. Brave가 완전히 호스팅하는 AI 어시스턴트입니다. 전 Meta가 만든 Llama 13B 기반으로 구동되어 성능이 뛰어나고 다양한 사용 사례에 적용 가능합니다.</translation>
-<translation id="8030558642460377506">안녕하세요, 저는 레오예요. Brave가 완전히 호스팅하는 AI 어시스턴트입니다. 전 Mistral AI가 만든 Mixtral 8x7B 기반으로 구동되어 복잡한 일도 처리 가능합니다.</translation>
-<translation id="2489317965865266353">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude Instant 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.</translation>
+<translation id="8570488829560315702">안녕하세요, 저는 레오예요. 전 Meta가 만든 모델인 Llama 3 8B 기반으로 구동되어 많은 사용 사례에 적용이 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">안녕하세요, 저는 레오예요. 전 Mistral AI가 만든 모델인 Mixtral 8x7B 기반으로 구동되어 고도의 작업도 처리 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude Instant 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude 3 Haiku 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.</translation>
 <translation id="4147243042852964992">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude 3 Sonnet 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">제한됨</translation>
 <translation id="6187065185557150870">채팅</translation>
 <translation id="2961040541145689181">새 채팅</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
 <translation id="1691256669639196606">구독 관리</translation>
+<translation id="2304783958703511257">고급 설정</translation>
 <translation id="3037594989275592390">언어 모델</translation>
 <translation id="6637015365469044269">지금 업그레이드</translation>
+<translation id="5543505256451301851">7일 무료 이용</translation>
 <translation id="849535826888024304">시간당 답변 한도 도달</translation>
-<translation id="6149863263423821329">프리미엄을 구독하여 더욱 높은 응답률을 경험하세요. 덜 강력한 무료 Llama2 13b 모델로 전환하여 계속하실 수도 있습니다.</translation>
+<translation id="2252128900328632803">프리미엄을 구독하여 더욱 높은 응답률을 경험하세요. 덜 강력한 무료 Llama2 13b 모델로 전환하여 계속하실 수도 있습니다.</translation>
 <translation id="4173478269537830374">다른 AI 모델 둘러보기</translation>
 <translation id="3245401959451976966">제한 없이 창의성 발휘</translation>
 <translation id="4165928407303989823">높은 주제 집중력</translation>
 <translation id="2389665228467129817">더 길게 채팅</translation>
-<translation id="8556044455877152001">USD <ph name="PRICE_VALUE"/> /월</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /월</translation>
 <translation id="5151923271944811339">무료 모델로 전환</translation>
 <translation id="5474757891469990756">레오의 능력이 온전히 발휘되는 프리미엄:</translation>
 <translation id="5552332211527367850">여러 스킬을 갖춘 강력한 모델에 우선 액세스.</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">대화가 길어져서 오래된 내용은 레오가 잊어버릴 수 있습니다. 프리미엄 모델로 전환하여 긴 대화도 기억할 수 있게 도와주시거나 채팅을 초기화해 내역을 지워주세요.</translation>
 <translation id="7550152963854770123">채팅 지우기</translation>
 <translation id="7494736170250048402">레오에게 메시지 보내기</translation>
+<translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
+<translation id="5719170755629028558">Brave 검색으로 답변 수준 높이기...</translation>
+<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>에 대한 더 나은 답변 검색.</translation>
 <translation id="6291843235651817590">일반 목적의 채팅</translation>
 <translation id="8193130769524604031">진보된 채팅 작업</translation>
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">길이 변경</translation>
 <translation id="6320643499534852464">소셜 미디어</translation>
 <translation id="2370739752330685659">나중에</translation>
+<translation id="983013125018250242">레오 도구</translation>
+<translation id="49269513399674318">마이크 사용</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>

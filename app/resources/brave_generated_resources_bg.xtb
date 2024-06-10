@@ -104,6 +104,9 @@
 <translation id="1324417023773393937">Браузър Brave</translation>
 <translation id="7276554663454265692">Можете да промените <ph name="SETTING_TEXT"/> по всяко време в настройките на браузъра.</translation>
 <translation id="6873781976650514089">тази настройка</translation>
+<translation id="4684633335323013758">Този сайт е подал заявка за вашето<ph name="PART_ONE"/>общо местоположение<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Научете повече<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">Тази сайт подаде заявка за вашето<ph name="PART_ONE"/>точно местоположение<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Научете повече<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">Тази сайт е подал заявка за вашето<ph name="PART_ONE"/>точно местоположение<ph name="PART_ONE_END"/>. Brave ще може да предостави само данни за <ph name="PART_TWO"/>общо местоположение<ph name="PART_TWO_END"/>, тъй като<ph name="PART_THREE"/>Услугите за местоположение<ph name="PART_THREE_END"/> са дезактивирани. <ph name="PART_FOUR"/>Научете повече<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Затваряне на всички</translation>
 <translation id="7658239707568436148">Отмени</translation>
 <translation id="4870911314065352661">Затваряне на всички раздели?</translation>
@@ -163,7 +166,8 @@
 <translation id="6959315322491671328">Кликнете с десния бутон, за да премахнете</translation>
 <translation id="495046168593986294">Превъртане нагоре</translation>
 <translation id="4021716437419160885">Превъртане надолу</translation>
-<translation id="2702801445560668637">Списък за четене</translation>
+<translation id="1907157509746585817">отметки</translation>
+<translation id="4840597165888262798">списък за четене</translation>
 <translation id="2533715613366623756">Мениджър на отметки</translation>
 <translation id="3405021928725149239">Мениджър на отметки</translation>
 <translation id="6284218950354553099">Автоматично изпращане на ping за ежедневното използване до Brave</translation>
@@ -243,9 +247,11 @@
 <translation id="8025559074845816210">Brave има нужда от пълен достъп до дискове, за да импортира отметките ви от Safari.</translation>
 <translation id="8515328844674404333">Научете как да предоставите пълен достъп до диска от вашите системни предпочитания.</translation>
 <translation id="6414878884710400018">Отворете Системни предпочитания</translation>
+<translation id="4759238208242260848">Изтегляния</translation>
 <translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
 <translation id="8487693399751278191">Импортиране на отметките сега...</translation>
 <translation id="2557899542277210112">За бърз достъп поставете отметките си тук на лентата с отметки.</translation>
+<translation id="2702801445560668637">Списък за четене</translation>
 <translation id="1968543937259008435">Готови ли сте за най-добрата поверителност онлайн?</translation>
 <translation id="6817415381278637662">Задайте Brave като браузър по подразбиране, за да получите защитата на поверителността на Brave на всяка уеб страница, която отваряте.</translation>
 <translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
@@ -371,6 +377,7 @@
 <translation id="5448570825852364919">Празна страница</translation>
 <translation id="8244387390464017490">Персонализиране на страницата на нов раздел</translation>
 <translation id="7461924472993315131">Фиксиране</translation>
+<translation id="735832369569964359">Щракнете върху ПИН кода и потвърдете в следното известие на Windows</translation>
 <translation id="7506648566440714944">Brave вече е закачен</translation>
 <translation id="239275665037555969">Док станция</translation>
 <translation id="4057614912106618659">Brave вече е в док станция</translation>
@@ -426,6 +433,10 @@
 <translation id="7889605993994647168">Неуспешно актуализиране</translation>
 <translation id="5438573563213942361">Потребителски списъци</translation>
 <translation id="4182731739150761577">Показване на пълния списък</translation>
+<translation id="2776571540844891267">Актуализиране на списъци</translation>
+<translation id="7424267932649051704">Актуализирането е неуспешно – повторен опит</translation>
+<translation id="8426801388284487512">Списъците са актуализирани</translation>
+<translation id="3422250445565385437">Актуализиране на списъци</translation>
 <translation id="1340263054776016283">Въвеждане на URL адрес на списък с филтри</translation>
 <translation id="8578397014396032341">Филтри за съдържание</translation>
 <translation id="3020183492814296499">Преки пътища</translation>

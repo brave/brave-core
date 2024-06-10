@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">ככל שתראה יותר, כך תוכל להרוויח יותר.</translation>
 <translation id="7526443283522395161">מודעות בדף כרטיסייה חדשה</translation>
 <translation id="7968650944098083708">מודעות התראה</translation>
+<translation id="8289546216379862569">חיפוש פרסומות</translation>
+<translation id="4758111936363146244">Brave מודעות חיפוש מופיעות ב <ph name="BEGIN_LINK"/>Brave לחפש<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">אינך יכול עדיין להרוויח BAT ממודעות חיפוש Brave, אבל אתה יכול לעזור לתמוך ב-Brave על ידי הפעלתן.</translation>
 <translation id="6390952132783970876">מודעות Brave News</translation>
 <translation id="7516281787184495886">Brave News מכיל מודעות שלא ניתן להשבית באופן עצמאי.</translation>
 <translation id="8008378848677625233">Brave News מושבת כעת.</translation>
@@ -461,6 +464,7 @@
 <translation id="412480955826088549">מוריד רכיב...</translation>
 <translation id="4894106830958548828">אני מבינ/ה</translation>
 <translation id="326118736933420687">אתה צופה בדף WebTorrent</translation>
+<translation id="2729085694451916573">מחרוזת בדיקה עבור <ph name="PART_ONE"/>אָרט האָלדערס<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>לערן מער<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
 <translation id="4492298165410552103">לאפשר תמיכה בדומיינים בלתי ניתנים לעצירה ב-Brave?</translation>
 <translation id="5015092481905019948">Brave ישתמש ב-<ph name="PROVIDER_NAME"/> כדי לפתור את שמות הדומיינים של <ph name="DOMAIN_LIST"/>שנמצאים ב-<ph name="DOMAIN_PROVIDER_NAME"/>. הנמצאים בכתובת ה-IP שלך. אם תפעיל אפשרות זאת, <ph name="PROVIDER_NAME"/> יראה שמישהו מנסה לבקר בדומיינים אלה אך לא יראה אף פרט אחר. יש לעיין <ph name="BEGIN_PROVIDER_TOU_LINK"/>בתנאי השימוש<ph name="END_PROVIDER_TOU_LINK"/> <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>ובמדיניות הפרטיות<ph name="END_PROVIDER_PRIVACY_LINK"/> של <ph name="PROVIDER_NAME"/>.</translation>
@@ -718,6 +722,11 @@
 <translation id="5382339341735118861">בעת עיבוד הבקשה אירעה שגיאה כללית</translation>
 <translation id="7123780456696055383">המשאב המבוקש אינו זמין</translation>
 <translation id="1680597601664421644">מסייע הזיכרון המיובא אינו תקף לגבי Brave Wallet</translation>
+<translation id="372898731091371291">איזה סוג ארנק תרצה לייבא?</translation>
+<translation id="1430728084670406473">ארנק Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">ייבא את ביטויים שחזור מהארנק הקיים שלך</translation>
+<translation id="8110492767853188065">ארנק חומרי</translation>
+<translation id="7437218084485869007">חבר את ארנק החומרי שלך עם Brave</translation>
 <translation id="4641919696349069826">בקשה כבר נמצאת בביצוע</translation>
 <translation id="872806943696014633">חסרים נתוני עסקאות</translation>
 <translation id="7068183357903252127">יש לציין נתוני עסקה 'אל' או 'נתונים'</translation>
@@ -811,19 +820,21 @@
 <translation id="1426410128494586442">כן</translation>
 <translation id="4250680216510889253">לא</translation>
 <translation id="1201402288615127009">הבא</translation>
-<translation id="8712637175834984815">הבנתי</translation>
+<translation id="3214453326297774895">הצג את משפט ההחלמה שלי</translation>
 <translation id="6896758677409633944">העתיקו</translation>
 <translation id="7885157704277298658">הועתק!</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="6042308850641462728">עוד</translation>
-<translation id="768236965975208017">בטוח. רב שרשרת. וקל לשימוש. ה-Brave Wallet שלך נמצא במרחק של כמה קליקים בלבד</translation>
 <translation id="3157931365184549694">שחזר</translation>
-<translation id="2484275747844666540">צור ארנק חדש</translation>
-<translation id="3662348701117072366">ייבוא ארנק קיים</translation>
-<translation id="7150150391368236519">חבר ארנק חומרה</translation>
+<translation id="414070570958255222">דפדפן אותנטי.משמורת עצמית.ורב שרשרת.</translation>
+<translation id="1350120992777389959">קח שליטה על הקריפטו וה-NFT שלך. ארנק Brave תומך ב-Ethereum, רשתות EVM, Solana, Filecoin, Bitcoin ועוד.</translation>
+<translation id="165255193061631296">זקוק לארנק חדש?</translation>
+<translation id="1939235910515558387">ארנק Brave: מוכן לשימוש תוך דקות!</translation>
+<translation id="5844138175312846408">כבר יש ברשותך ארנק?</translation>
+<translation id="772643556080081594">אני צריך ארנק צפייה בלבד</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave והלוגו של Brave הם סימנים מסחריים רשומים של Brave Software, Inc. שמות וסמלי לוגו של מוצרים אחרים עשויים להיות סימנים מסחריים של החברות בהתאמה. כל הזכויות שמורות.</translation>
 <translation id="7501957181231305652">או</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
-<translation id="180032279811483155">בצעד הבא תראה’ ביטוי שחזור בן <ph name="RECOVERY_PHRASE_LENGTH"/> מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
 <translation id="5024543173656851695">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="8281886186245836920">דלג</translation>
 <translation id="6532106788206463496">שמירת שינויים</translation>
@@ -836,7 +847,7 @@
 <translation id="2339124864228588937">אמת ביטוי שחזור</translation>
 <translation id="3747079125031086337">בחר את המילים בביטוי השחזור שלך בסדר הנכון שלהן.</translation>
 <translation id="802060020117206314">ביטוי שחזור לא תואם, יש לנסות שוב.</translation>
-<translation id="8412783472871103529">אמת את ביטוי השחזור שלך</translation>
+<translation id="7345730059518887993">בוא נבדוק</translation>
 <translation id="2226686084760581391">לחץ על <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, ו-<ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> מילים של ביטוי השחזור שלך.</translation>
 <translation id="7575574239720542222">ביטוי השחזור לא התאים</translation>
 <translation id="8692301574305033504">צור סיסמא חדשה</translation>
@@ -866,7 +877,10 @@
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
 <translation id="3331452756822160641">סיסמה חדשה</translation>
 <translation id="8624315169751085215">העתק ללוח מודעות</translation>
+<translation id="2598171223363459366">אתה יכול לדלג על שלב זה כעת, אך נא לגבות את ביטוי השחזור שלך כדי להבטיח את אבטחת החשבון.</translation>
+<translation id="5303015959766064022">אני אגבה מאוחר יותר</translation>
 <translation id="6346952829206698721">הדבק מהלוח</translation>
+<translation id="2610561535971892504">לחץ כדי להעתיק</translation>
 <translation id="1121335910737476837">חשבונות קריפטו עיקריים</translation>
 <translation id="6969147029062037757">חשבונות מיובאים</translation>
 <translation id="3926119534765499672">ארנקי חומרה מחוברים</translation>
@@ -902,16 +916,23 @@
 <translation id="6892232036314454524">שגיאה זו עשויה להתרחש בעת פתיחת אפלקציה שגויה במכשיר ה-Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">ספר חשבונות ראשי</translation>
-<translation id="4247752006222818397">אפשר ל-Brave גישה למכשיר ה-Ledger שלך.</translation>
+<translation id="8012452656725205792">הענק גישה Brave לשלך<ph name="HARDWARE_DEVICE"/> התקן.</translation>
 <translation id="4378551569595875038">מתחבר...</translation>
 <translation id="1943188256166395881">הצג חשבונות מסומנים</translation>
 <translation id="8554010658308662631">טען עוד</translation>
 <translation id="6998738230710304743">טוען עוד...</translation>
 <translation id="5592304751234049046">חפש חשבון</translation>
+<translation id="3168978475376026497">נתיב HD</translation>
 <translation id="6151024411349343484">נסה לשנות נתיב HD (למעלה) אם אינך יכול למצוא את החשבון שאתה מחפש.</translation>
 <translation id="2844691569989101734">פנקס בזמן אמת</translation>
 <translation id="7265732100380987017">דור קודם (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">לא נמצאו תוצאות</translation>
+<translation id="7261362517244085362">אשר את הארנק שלך</translation>
+<translation id="7150150391368236519">חבר ארנק חומרה</translation>
+<translation id="5400782314657008092">כרגע אנחנו תומכים <ph name="HARDWARE_DEVICE"/> ו <ph name="HARDWARE_DEVICE1"/> התקנים.</translation>
+<translation id="8144305264680648043">חבר את ארנק החומרה שלך כדי לנהל טוב יותר את הנכסים שלך ישירות מארנק Brave</translation>
+<translation id="1329837291200753515">בחר בבלוקצ'יין לייבוא את ארנק חמרה שלך.</translation>
+<translation id="6983390509997396124">חבר את ה <ph name="HARDWARE_DEVICE"/> שלך ארנק של Brave</translation>
 <translation id="5149944858285555235">שגיאה לא ידועה, חבר מחדש את חומרת הארנק ונסה שוב.</translation>
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="9220525904950070496">הסר חשבון</translation>
@@ -950,8 +971,6 @@
 <translation id="1613627717923045622">בדיקת רשת</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">מארח מקומי</translation>
 <translation id="3792938779249970121">בחר חשבון</translation>
 <translation id="6797737193502014008">חפש חשבונות</translation>
@@ -1065,6 +1084,7 @@
 <translation id="6383204195803840504">עסקאות יופיעו כאן</translation>
 <translation id="6079696972035130497">ללא הגבלה</translation>
 <translation id="2916401020782528840">עסקה לא נמצאה</translation>
+<translation id="1690963073120772693">לא ניתן לבצע עסקה זו שוב</translation>
 <translation id="2833661570529295305">לא אושר</translation>
 <translation id="8034530868111548216">אושר</translation>
 <translation id="6015436276085482001">נדחה</translation>
@@ -1159,8 +1179,8 @@
 <translation id="8523768065044261559">שגיאה בטיפול בעסקה, יש לנסות שוב</translation>
 <translation id="971552837551838642">שגיאה בחתימת ההודעה, יש לנסות שוב</translation>
 <translation id="8273603707418703324">שגיאה בחתימת ההודעה, התבקש מחזיק מפתחות לא ידוע, יש לנסות שוב</translation>
-<translation id="5265455943786954050">הפקודה של Trezor כבר נתונה בביצוע</translation>
-<translation id="7017116822583380542">גשר Trezor אינו מוכן</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> הפקודה כבר מתבצעת</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> הגשר לא מוכן</translation>
 <translation id="3378339846292573874">הוסף אסימון מוצע</translation>
 <translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
 <translation id="4378475168089649292">בלוקצ'יין</translation>
@@ -1358,17 +1378,22 @@
 <translation id="1792917191129448067">פתח את אפליקציית Rainbow Bridge</translation>
 <translation id="1522775706527775647">Bridge ל-Aurora</translation>
 <translation id="4903322403594141291">למידע נוסף על Brave Wallet</translation>
-<translation id="3875185448438395303">לפחות:</translation>
-<translation id="2029465635925899949">8 תווים</translation>
-<translation id="6697810017029555732">התאמה!</translation>
+<translation id="4427684901715566795">ססמה צריכה להיות:</translation>
+<translation id="8521329076169776625">לפחות 8 תווים</translation>
+<translation id="3665035348242240953">The passwords match</translation>
 <translation id="8918368616587206671">חָזָק!</translation>
 <translation id="574392208103952083">בינוני</translation>
 <translation id="8297006494302853456">חלש</translation>
+<translation id="3282258437441351851">ארנק של Brave ינעל אוטומטית לאחר</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> דקות</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> שעות</translation>
 <translation id="7084181009966710506">יוצר ארנק...</translation>
-<translation id="6782556046178425980">לפני שתתחיל לגבות את הארנק</translation>
+<translation id="3259102562570606417">שמור/י את משפט השחזור שלך</translation>
 <translation id="7119749028647909394">משפט השחזור באורך 12-24 מילים הוא מפתח פרטי שבו אתם יכולים להשתמש כדי לקבל חזרה גישה לארנק שלכם למקרה שתאבדו מכשיר/ים מחוברים. אחסנו אותו במקום בטוח, ובסדר המדויק שהוא מופיע למטה.</translation>
 <translation id="3259018319025894691">Brave  לא יכול לגשת לביטוי השחזור הסודי שלך. שמור עליו בצורה מאובטחת, ולעולם אל תשתף אותו עם אף אחד אחר.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>חשוב: <ph name="TAG_AFTER"/>לעולם אל תשתף את ביטוי השחזור שלך. כל אחד שהביטוי יהיה ברשותו יוכל לקחת את הנכסים שלך לנצח.</translation>
+<translation id="426648489149930289">שמור אותו במקום מאובטח שאינו נגיש לאחרים והימנע מלשתף אותו עם אף אחד.</translation>
+<translation id="119185410022731300">הזן את המילה בעמדה<ph name="VALUE"/> מתוך ביטוי ההחלמה שלך.</translation>
+<translation id="2193954488469999829">שכחת לשמור? חזור אחורה</translation>
 <translation id="7509948206688764960">גבה את ביטוי שחזור הארנק שלך</translation>
 <translation id="8052898407431791827">הועתק ללוח</translation>
 <translation id="4576741736874242970">לחץ כדי לראות את הביטוי שלך</translation>
@@ -1387,8 +1412,9 @@
 <translation id="2781276194026093899">שְׁנִיָה</translation>
 <translation id="7992766987062040279">שְׁלִישִׁי</translation>
 <translation id="2295726992010694229">ה-</translation>
-<translation id="8241405611628876973">מזל טוב! ה- Brave Walle שלך מוכן לשימוש!</translation>
-<translation id="6828327990705355767">כדי לגשת לארנק שלך, פשוט לחץ על סמל הארנק בפינה השמאלית העליונה של כל חלון דפדפן Brave.</translation>
+<translation id="1148624853678088576">אתה סיימת</translation>
+<translation id="1656439328205762155">ארנק שלך של Brave הוגדר ומוכן לשימוש כעת.</translation>
+<translation id="3342494025742308764">עבור לתיק העבודות</translation>
 <translation id="396152018598329740">כיצד להשתמש בארנק קריפטו?</translation>
 <translation id="7512061585041489067">מהו ארנק הקריפטו הטוב ביותר?</translation>
 <translation id="1342755158522323177">מהו דפדפן קריפטו?</translation>
@@ -1396,24 +1422,31 @@
 <translation id="4674552515763857735">מהו ביטוי התאוששות?</translation>
 <translation id="7328255859839881981">מה הם DApps?</translation>
 <translation id="3852489285890032403">מה זה web 3?</translation>
-<translation id="5448233694500869445">זיהינו את תוסף MetaMask בדפדפן שלך</translation>
-<translation id="8436080536329710282">הזן את סיסמת ארנק MetaMask שלך כדי לייבא בקלות לBrave- Wallet.</translation>
+<translation id="2349224271234429946">ייבוא ​​ארנק MetaMask</translation>
+<translation id="6715906859822319136">באפשרותך לייבא את ה-MetaMask שלך פשוט על ידי הזנת הסיסמה שלך.</translation>
 <translation id="7543512765962444927">התחבר לארנק הקיים שלך</translation>
 <translation id="3551682252653406110">כדי לחבר ארנק שכבר יש לך, ייתכן שתצטרך להזין את ביטוי השחזור שלך. בשלב זה אנו תומכים בשחזור/ייבוא מארנקי Ethereum ו-Solana.</translation>
-<translation id="346929827081904572">שחזר מביטוי זרע</translation>
+<translation id="3961126209136843111">ייבוא ארנק קיים</translation>
 <translation id="5645597512426471834">12-24 מילים</translation>
-<translation id="8158505311297755780">הקלידו את משפט השחזור של 12-24 מילים ב-Brave Wallet.</translation>
+<translation id="2321396552035646646">ניתן להדביק את משפט השחזור שלך במלואו לתוך כל שדה.</translation>
 <translation id="5419707890586509000">ייבוא מ- MetaMask</translation>
 <translation id="2265945811107390939">השתמש בסיסמת MetaMask שלך כדי לייבא את ביטוי הזרע שלך</translation>
 <translation id="7060680423657442298">לא משנה, אני אצור ארנק חדש</translation>
+<translation id="1932878136775815535">יש לי <ph name="LENGTH"/>-ביטוי שחזור מילים</translation>
+<translation id="7877416315564177070">בדוק את ביטוי השחזור שלך ונסה שוב.</translation>
+<translation id="6503538941917874992">ייבא באמצעות ביטוי השחזור שלך</translation>
+<translation id="782167880151571109">זוהה ארנק Metamask!</translation>
+<translation id="3619071361843652814">זוהה ארנק מדור קודם!</translation>
+<translation id="4634124774493850572">שימוש בסיסמה</translation>
+<translation id="7697478310235189459">מילה אחת <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">הקלידו את משפט השחזור MetaMask שלכם ב- 12-24 מילים.</translation>
 <translation id="7720392926833259937">הקלד את סיסמת MetaMask</translation>
 <translation id="6657585470893396449">סיסמה</translation>
 <translation id="6260144012548445299">למידע נוסף על הארנק החדש שלי</translation>
-<translation id="8746910870914151528">דברים משפטיים</translation>
-<translation id="5148123176978018397">נא לאשר את הדברים הבאים:</translation>
-<translation id="6088314935678153800">אני מבין שזהו ארנק משמורת עצמית, ושאני לבד אחראי לכל כספים, נכסים או חשבונות הקשורים, ולנקיטת פעולות מתאימות כדי לאבטח, להגן ולגיבוי הארנק שלי. אני מבין ש-Brave לא יכול לגשת לארנק שלי או להפוך עסקאות בשמי, ושביטוי השחזור שלי הוא הדרך היחידה לקבל בחזרה גישה במקרה של איבוד סיסמה, מכשיר גנוב או נסיבות דומות.</translation>
-<translation id="7781090633800450517">קראתי ואני מסכים ל<ph name="LINK_BEFORE"/>תנאי השימוש<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">לפני שנתחיל</translation>
+<translation id="5333225216561354793">אנו מבקשים שתאשר את הפריטים הבאים</translation>
+<translation id="4284971227128011550">אני מבין שזה ארנק באחריות עצמית. אני אחראי באופן בלעדי לכל הכספים, הנכסים או החשבונות הקשורים, ועל נקיטת כל הפעולות הנדרשות לאבטחת, הגנה וגיבוי הארנק שלי. אני מבין ש-Brave לא יכולה לגשת לארנק שלי או לבטל עסקאות מטעמי, וכי ביטוי השחזור הוא הדרך היחידה לשחזר את הגישה במקרה של אובדן סיסמה, גניבת מכשיר או נסיבות דומות.</translation>
+<translation id="3604445540387095708">קראתי ואני מסכים ל<ph name="LINK_BEFORE"/>תנאי שימוש<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">רכישת קריפטו</translation>
 <translation id="3887541341068007345">בודק תוספות ארנק...</translation>
 <translation id="3567994771568272606">יבוא מארנקי קריפטו של Brave מדור קודם</translation>
@@ -1618,6 +1651,7 @@ CoinGecko</translation>
 <translation id="5667702863609780570">פעולה לא בטוחה עם סיכון לאובדן</translation>
 <translation id="6405354572620970908">בקשה זאת נראית זדונית ואתה עלול להיות חשוף לגניבה. אל תמשיך אלא אם אתה סומך על היישום.</translation>
 <translation id="786261184916565476">מצאנו <ph name="VALUE"/> בעיות.</translation>
+<translation id="2826600321627372011">לא נמצאו מסלולים</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1693,6 +1727,7 @@ CoinGecko</translation>
 <translation id="7948579849190819732">הכרטיסייה הנוכחית</translation>
 <translation id="7056969230130642253">אתם מאד עסוקים</translation>
 <translation id="7292242212818928219">תוכן חדש זמין. לטעון מחדש?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="7481312909269577407">קדימה</translation>
 <translation id="302781076327338683">טען מחדש את הcache העוקף</translation>
@@ -1845,13 +1880,11 @@ CoinGecko</translation>
 <translation id="831931573200952705">שילוב זה נמצא בשימוש <ph name="COMMAND"/> ולא ניתן לשנותו.</translation>
 <translation id="3537006124004887164">שילוב זה נמצא בשימוש<ph name="COMMAND"/>ולא ניתן לשנותו. נסה לשנות אותו באמצעות 'קיצורי דרך לאפליקציה' בהגדרות המערכת.</translation>
 <translation id="712598284361781729">תצוגה מפוצלת חדשה</translation>
-<translation id="6655450014966273037">סגור תצוגה מפוצלת</translation>
 <translation id="1130188644637295274">פתח בתצוגה מפוצלת</translation>
-<translation id="7195519370590486580">פיצול ללשוניות</translation>
+<translation id="6459036216700972269">לא לפצל כרטיסיות</translation>
 <translation id="3617523374417810198">תצוגה מפוצלת חדשה</translation>
-<translation id="9053179124396567872">סגור תצוגה מפוצלת</translation>
 <translation id="8571323456914890254">פתח בתצוגה מפוצלת</translation>
-<translation id="2397258152713354053">פצל ללשוניות</translation>
+<translation id="5329136173514538969">לא לפצל כרטיסיות</translation>
 <translation id="8591883849678260674">צפה במקור</translation>
 <translation id="1969654232209826429">קריאה מינימלית</translation>
 <translation id="4101707289420716287">כבה את Speedreader</translation>
@@ -1896,28 +1929,29 @@ CoinGecko</translation>
 <translation id="7921782882718083488">לסכם את הדף הזה</translation>
 <translation id="7932221068776853847">התנתק כדי להפסיק לשלוח את תוכן הדף הזה ל-Leo, ולהתחיל שיחה חדשה</translation>
 <translation id="1167803637855350748">הייתה בעיית רשת בחיבור ל-Leo, נא לבדוק את החיבור ולנסות שוב.</translation>
-<translation id="5095201428204952524">Leo עסוק מדי עכשיו. אנא נסו שוב בעוד מספר דקות.</translation>
+<translation id="1996126325390835277">Leo עסוק מדי עכשיו. אנא נסו שוב בעוד מספר דקות.</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
-<translation id="2505565639170795978">היי, אני ליאו. אני עוזר AI מתארח במלואו על ידי Brave. אני מופעל על ידי Llama 13B, מודל שנוצר על ידי Meta כדי להיות ביצועי וישים למקרי שימוש רבים.</translation>
-<translation id="8030558642460377506">היי, שמי Leo. אני עוזר המופעל על ידי בינה מלאכותית של Brave. אני מופעל על ידי Mixtral 8x7B, מודל שנוצר על ידי Mistral AI על מנת לטפל במשימות מתקדמות.</translation>
-<translation id="2489317965865266353">היי, אני ליאו. אני נשלח על ידי Brave ומופעל על ידי קלוד אינסטנט, מודל שנוצר על ידי Anthropic כדי להפעיל משימות שיחה ועיבוד טקסט.</translation>
+<translation id="8570488829560315702">שלום, אני ליאו. אני אסיסטנט עם שירות מארח מלא של Brave. אני מופעל על ידי Llama 3 8B, דגם שנוצר על ידי Meta לשיפור ביצועים ויכול להיות שימושי במגוון תחומים.<ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">שלום, אני ליאו. אני אסיסטנט באחסון מלא של Brave. אני מופעל על ידי Mixtral 8x7B, דגם שנוצר על ידי Mistral AI לטיפול במשימות מתקדמות. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">שלום, אני ליאו. אני משתמש ב־Brave כפרוקסי ומופעל על ידי Claude Instant, דגם שנוצר על ידי Anthropic להפעלת משימות עיבוד שיחות וטקסטים. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">שלום, שמי ליאו. אני מוצג על ידי Brave ומונע על ידי Claude 3 Haiku, מודל שנוצר על ידי Anthropic להפעלת משימות שיחה ועיבוד טקסט.</translation>
 <translation id="4147243042852964992">שלום, שמי ליאו. אני מוצג על ידי Brave ומונע על ידי Claude 3 Sonnet, מודל שנוצר על ידי Anthropic להפעלת משימות שיחה ועיבוד טקסט.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>על ידי<ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">מוגבל</translation>
 <translation id="6187065185557150870">לְשׂוֹחֵחַ</translation>
 <translation id="2961040541145689181">שיחה חדשה</translation>
 <translation id="7557539689487606886">עבור לפרימיום</translation>
 <translation id="1691256669639196606">ניהול מנוי</translation>
+<translation id="2304783958703511257">הגדרות מתקדמות</translation>
 <translation id="3037594989275592390">מודלים של שפה</translation>
 <translation id="6637015365469044269">שדרג כעת</translation>
+<translation id="5543505256451301851">נסה 7 ימים בחינם</translation>
 <translation id="849535826888024304">הגעת למגבלת שיעור התגובה</translation>
-<translation id="6149863263423821329">מנוי Premium מספק קצב תגובה טוב יותר. ניתן גם לעבור למודל Llama2 13b החינמי אך פחות עוצמתי שלנו כדי להמשיך.</translation>
+<translation id="2252128900328632803">מנוי Premium מספק קצב תגובה טוב יותר. ניתן גם לעבור למודל Llama2 13b החינמי אך פחות עוצמתי שלנו כדי להמשיך.</translation>
 <translation id="4173478269537830374">בואו לגלות את מודלי הבינה המלאכותית השונים</translation>
 <translation id="3245401959451976966">בואו לגלות את היצירתיות שבכם</translation>
 <translation id="4165928407303989823">הישארו בנושאים שמעניינים אתכם</translation>
 <translation id="2389665228467129817">נהלו צ'טים ארוכים יותר</translation>
-<translation id="8556044455877152001">דולר ארה"ב<ph name="PRICE_VALUE"/>/month</translation>
+<translation id="8556044455877152001">דולר ארה"ב <ph name="PRICE_VALUE"/> /חודש</translation>
 <translation id="5151923271944811339">עבור לדגם החינמי</translation>
 <translation id="5474757891469990756">בואו לגלות את העוצמה המרבית של Leo במנוי ה-Premium:</translation>
 <translation id="5552332211527367850">גישה מועדפת למודלים העוצמתיים בעלי המיומנויות השונות</translation>
@@ -1945,8 +1979,11 @@ CoinGecko</translation>
 <translation id="8742658901413346500">השיחה הזו ארוכה וליאו עלול להתחיל לשכוח דברים בקרוב. אתה יכול לקבל שיחות ארוכות יותר על ידי מעבר לדגם פרימיום, או שאתה יכול לנקות את הצ'אט כדי לאפס אותו.</translation>
 <translation id="7550152963854770123">ניקוי צ'אט</translation>
 <translation id="7494736170250048402">שלח הודעה לליאו</translation>
+<translation id="8712637175834984815">הבנתי</translation>
 <translation id="1093419424466417703">הדף ארוך מדי עבור ליאו. ייתכן שחלק מההקשר חסר מהשיחה. ליאו הצליח לקרוא <ph name="PERCENTAGE"/> מתוכן הדף.</translation>
 <translation id="4370698775470316661">השיחה הזו ארוכה מדי ואי אפשר להמשיך. ייתכן שקיימים דגמים אחרים שבהם ליאו מסוגל לשמור על דיוק לשיחות ארוכות יותר.</translation>
+<translation id="5719170755629028558">משפר את התשובה שלך עם חיפוש Brave...</translation>
+<translation id="5794962229997281366">תשובה משופרת לחיפוש טוב יותר של<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">צ'אט למטרות כלליות</translation>
 <translation id="8193130769524604031">משימות צ'אט מתקדמות</translation>
 <translation id="3185367320601718531">יצירת שיחות וטקסט</translation>
@@ -1986,6 +2023,8 @@ CoinGecko</translation>
 <translation id="3130793786899299931">שינוי אורך</translation>
 <translation id="6320643499534852464">מדיה חברתית</translation>
 <translation id="2370739752330685659">אולי מאוחר יותר</translation>
+<translation id="983013125018250242">כלי אריה</translation>
+<translation id="49269513399674318">השתמש במיקרופון</translation>
 <translation id="6303294677342628402">מגנים</translation>
 <translation id="8458987127502506209">אפשר Brave מגנים</translation>
 <translation id="7509914170164691086">הגנות מופעלות <ph name="LINK_BEFORE"/> עבור <ph name="LINK_AFTER"/></translation>

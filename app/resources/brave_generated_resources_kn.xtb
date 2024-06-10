@@ -104,6 +104,9 @@
 <translation id="1324417023773393937">Brave ಬ್ರೌಸರ್</translation>
 <translation id="7276554663454265692">ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="SETTING_TEXT"/> ನೀವು ಬದಲಾಯಿಸಬಹುದು.</translation>
 <translation id="6873781976650514089">ಈ ಸೆಟ್ಟಿಂಗ್</translation>
+<translation id="4684633335323013758">ನಿಮ್ಮ <ph name="PART_ONE"/>ಸಾಮಾನ್ಯ ಸ್ಥಳ<ph name="PART_ONE_END"/>ಕ್ಕೆ ಈ ಸೈಟ್ ವಿನಂತಿಸಿದೆ. <ph name="PART_TWO"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">ನಿಮ್ಮ <ph name="PART_ONE"/>ನಿಖರ ಸ್ಥಳ<ph name="PART_ONE_END"/>ಕ್ಕೆ ಈ ಸೈಟ್ ವಿನಂತಿಸಿದೆ. <ph name="PART_TWO"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">ನಿಮ್ಮ <ph name="PART_ONE"/>ನಿಖರ ಸ್ಥಳ<ph name="PART_ONE_END"/>ಕ್ಕೆ ಈ ಸೈಟ್ ವಿನಂತಿಸಿದೆ. <ph name="PART_THREE"/>ಸ್ಥಳ ಸೇವೆಗಳು<ph name="PART_THREE_END"/> ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿರುವ ಕಾರಣದಿಂದ <ph name="PART_TWO"/>ಸಾಮಾನ್ಯ ಸ್ಥಳ<ph name="PART_TWO_END"/> ಡೇಟಾ ಒದಗಿಸಲು ಮಾತ್ರ Brave ಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ. <ph name="PART_FOUR"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">ಎಲ್ಲವನ್ನೂ ಮುಚ್ಚಿ</translation>
 <translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="4870911314065352661">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚುವುದೇ?</translation>
@@ -163,7 +166,8 @@
 <translation id="6959315322491671328">ತೆಗೆದುಹಾಕಲು ರೈಟ್-ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="495046168593986294">ಮೇಲಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
 <translation id="4021716437419160885">ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
-<translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
+<translation id="1907157509746585817">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
+<translation id="4840597165888262798">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="2533715613366623756">ಬುಕ್‌ಮಾರ್ಕ್ ಮ್ಯಾನೇಜರ್</translation>
 <translation id="3405021928725149239">ಬುಕ್‌ಮಾರ್ಕ್ ಮ್ಯಾನೇಜರ್</translation>
 <translation id="6284218950354553099">Brave ಗೆ ದೈನಂದಿನ ಬಳಕೆ ಪಿಂಗ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸಿ</translation>
@@ -243,9 +247,11 @@
 <translation id="8025559074845816210">ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಸಫಾರಿಯಿಂದ ಆಮದು ಮಾಡಿಕೊಳ್ಳಲು Brave ಗೆ ಪೂರ್ಣ ಡಿಸ್ಕ್ ಪ್ರವೇಶದ ಅಗತ್ಯವಿದೆ.</translation>
 <translation id="8515328844674404333">ನಿಮ್ಮ ಸಿಸ್ಟಮ್ ಪ್ರಾಶಸ್ತ್ಯಗಳಿಂದ ಪೂರ್ಣ ಡಿಸ್ಕ್ ಪ್ರವೇಶವನ್ನು ಹೇಗೆ ನೀಡಬೇಕೆಂದು ತಿಳಿಯಿರಿ.</translation>
 <translation id="6414878884710400018">ಸಿಸ್ಟಮ್ ಪ್ರಾಶಸ್ತ್ಯಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="4759238208242260848">ಡೌನ್‌ಲೋಡ್‌ಗಳು</translation>
 <translation id="796831669370432378">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಸೇರಿಸಲು, ವಿಳಾಸ ಪಟ್ಟಿಯ ಪಕ್ಕದಲ್ಲಿರುವ ಬುಕ್‌ಮಾರ್ಕ್ ಬಟನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="8487693399751278191">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಈಗ ಆಮದು ಮಾಡಿ...</translation>
 <translation id="2557899542277210112">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಇರಿಸಿ.</translation>
+<translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="1968543937259008435">ಉತ್ತಮ ಆನ್‌ಲೈನ್‌ ಗೌಪ್ಯತೆಗೆ ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?</translation>
 <translation id="6817415381278637662">ನೀವು ತೆರೆಯುವ ಪ್ರತಿ ವೆಬ್‌ ಪೇಜ್‌ನಲ್ಲಿ Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಪಡೆಯಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ Brave ಅನ್ನು ನಿಗದಿಸಿ.</translation>
 <translation id="8722651357687610395">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
@@ -371,6 +377,7 @@
 <translation id="5448570825852364919">ಖಾಲಿ ಪುಟ</translation>
 <translation id="8244387390464017490">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="7461924472993315131">ಪಿನ್</translation>
+<translation id="735832369569964359">ಪಿನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ಮುಂದಿನ Windows ಪ್ರಕಟಣೆಗಳನ್ನು ದೃಢಪಡಿಸಿ</translation>
 <translation id="7506648566440714944">Brave ಅನ್ನು ಈಗಾಗಲೇ ಪಿನ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="239275665037555969">ಡಾಕ್</translation>
 <translation id="4057614912106618659">Brave ಈಗಾಗಲೇ ಡಾಕ್‌ನಲ್ಲಿದೆ</translation>
@@ -426,6 +433,10 @@
 <translation id="7889605993994647168">ಅಪ್‌ಡೇಟ್ ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="5438573563213942361">ಕಸ್ಟಮ್ ಪಟ್ಟಿಗಳು</translation>
 <translation id="4182731739150761577">ಪೂರ್ಣ ಪಟ್ಟಿ ತೋರಿಸಿ</translation>
+<translation id="2776571540844891267">ಪಟ್ಟಿಗಳನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ</translation>
+<translation id="7424267932649051704">ಅಪ್‌ಡೇಟ್ ವಿಫಲವಾಗಿದೆ - ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="8426801388284487512">ಪಟ್ಟಿಗಳನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="3422250445565385437">ಪಟ್ಟಿಗಳು ಅಪ್‌ಡೇಟ್ ಆಗುತ್ತಿವೆ</translation>
 <translation id="1340263054776016283">ಫಿಲ್ಟರ್ ಪಟ್ಟಿ URL ನಮೂದಿಸಿ</translation>
 <translation id="8578397014396032341">ವಿಷಯದ ಫಿಲ್ಟರ್‍‍ಗಳು</translation>
 <translation id="3020183492814296499">ಶಾರ್ಟ್‌ಕಟ್‌ಗಳು</translation>
