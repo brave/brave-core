@@ -6,9 +6,24 @@
 ##
 
 # unknown time out
--AppShimMetricsTest.Basics
--PasswordAutofillAgentTest.*
--PasswordGeneration*
+# -AppShimMetricsTest.Basics
+# -PasswordAutofillAgentTest.*
+# -PasswordGeneration*
+
+# unknown safe browsing related
+#-PhishingClassifierDelegateTest.HasFlatBufferModel
+#-PhishingClassifierDelegateTest.HasVisualTfLiteModel
+#-PhishingClassifierDelegateTest.NoPhishingModel
+
+# unknown safe browsing
+# -ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
+
+# Optimization Guide is disabled
+-ChromeRenderFrameObserverTest.OptGuideGetsText
+-VisualQueryClassifierAgentTest.StartClassification_InvalidModel
+-VisualQueryClassifierAgentTest.StartClassification_NoImages
+-VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy
+-VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy_AgentEnabled
 
 # unknown web app related
 -WebAppIconHealthChecksBrowserTest.*
