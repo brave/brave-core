@@ -225,7 +225,6 @@
 
     <color name="wallet_text_color">#0D0F14</color>
     <color name="wallet_secondary_text_color">#686978</color>
-    <color name="wallet_onboarding_secondary_text_color">#3F4E55</color>
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="wallet_tertiary_layout_text_color">#62757E</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
