@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Αυτό σας επιτρέπει να τραβάτε και να ανεβάζετε φωτογραφίες.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Αυτό ελέγχει την ταυτότητά σας για πρόσβαση στο Brave";
+"NSFaceIDUsageDescription" = "Αυτό ελέγχει την ταυτότητά σας για πρόσβαση στο Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Οι ιστότοποι που επισκέπτεστε ενδέχεται να ζητήσουν την τοποθεσία σας.";
@@ -20,7 +20,7 @@
 "NSPhotoLibraryAddUsageDescription" = "Αυτό σας επιτρέπει να αποθηκεύετε φωτογραφίες.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Αυτό το δικαίωμα χρησιμοποιείται για την ενεργοποίηση της προηγμένης αναγνώρισης φωνής της Apple. Εάν δεν επιτρέπεται, θα χρησιμοποιείται αναγνώριση «στη συσκευή» και οι αναζητήσεις θα είναι εντελώς ιδιωτικές. Το Brave δεν αποθηκεύει ούτε κοινοποιεί τις φωνητικές αναζητήσεις σας.";
+"NSSpeechRecognitionUsageDescription" = "Αυτό το δικαίωμα χρησιμοποιείται για την ενεργοποίηση της προηγμένης αναγνώρισης φωνής της Apple. Εάν δεν επιτρέπεται, θα χρησιμοποιείται αναγνώριση «στη συσκευή» και οι αναζητήσεις θα είναι εντελώς ιδιωτικές. Το Ping δεν αποθηκεύει ούτε κοινοποιεί τις φωνητικές αναζητήσεις σας.";
 
 /* (No Comment) */
 "OPML File" = "Αρχείο OPML";

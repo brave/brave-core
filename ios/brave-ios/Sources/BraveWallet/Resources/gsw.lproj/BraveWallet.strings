@@ -215,21 +215,21 @@
 "wallet.biometricsSetupFaceId" = "Face-ID";
 
 /* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupSubTitle" = "Möchten Sie %@ verwenden, um Brave Wallet zu entsperren?";
+"wallet.biometricsSetupSubTitle" = "Möchten Sie %@ verwenden, um Ping Wallet zu entsperren?";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupTitle" = "Brave Wallet mit %@ entsperren";
+"wallet.biometricsSetupTitle" = "Ping Wallet mit %@ entsperren";
 
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch-ID";
 
-/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+/* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Brave-Gebühr: %@";
 
-/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
 "wallet.braveSwapFeeDisclaimer" = "Angebot enthält eine Brave-Gebühr von %@.";
 
-/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+/* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Kostenlos";
 
 /* As in buying cryptocurrency */
@@ -448,10 +448,10 @@
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Benutzerdefiniertes Asset hinzufügen";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Ping Wallet\" */
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ möchte mit der Brave-Wallet interagieren";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. */
 "wallet.dappsConnectionNotificationTitle" = "Diese Seite möchte mit der Brave-Wallet interagieren";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
@@ -518,7 +518,7 @@
 "wallet.decimalsPrecision" = "Dezimalstellen";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihrer Nachricht wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Brave empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
+"wallet.decryptMessageScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihrer Nachricht wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Ping empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
 "wallet.decryptRequestApprove" = "Erlauben";
@@ -625,7 +625,7 @@
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
 "wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ verbunden";
 
-/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+/* The navigation title of the screen for users to edit dapps site connection with users' Ping Wallet accounts. */
 "wallet.editSiteConnectionScreenTitle" = "Verbindungen";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
@@ -637,23 +637,23 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Sichtbare Assets bearbeiten";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS domain they entered. */
 "wallet.ensDomainInterstitialPageButtonProceed" = "Weiter mit Infura-Server";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave verwendet Infura zur Auflösung von .eth-Domainnamen, die sich auf Ethereum Name Service (ENS) befinden. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Infura, dass jemand versucht, diese .eth-Domains zu besuchen, aber sonst nichts. Siehe die <a href=%1$@>%2$@</a> und die <a href=%3$@>%4$@</a> von Infura.";
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Ping verwendet Infura zur Auflösung von .eth-Domainnamen, die sich auf Ethereum Name Service (ENS) befinden. Ping verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Infura, dass jemand versucht, diese .eth-Domains zu besuchen, aber sonst nichts. Siehe die <a href=%1$@>%2$@</a> und die <a href=%3$@>%4$@</a> von Infura.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
-"wallet.ensDomainInterstitialPageTitle" = "Unterstützung des Ethereum Name Service (ENS) in Brave aktivieren?";
+/* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Unterstützung des Ethereum Name Service (ENS) in Ping aktivieren?";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Mit Offchain-Suche fortfahren";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Dieser .eth-Domainname ist offchain gespeichert und wird von einem Drittanbieter-Gateway aufgelöst. Wenn Sie die ENS-Offchain-Suche aktivieren, sieht das Gateway des Drittanbieters, dass Sie versuchen, die .eth-Domain zu besuchen. <a href=%1$@>%2$@</a>.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Unterstützung der Offchain-Suche für Ethereum Name Service (ENS) in Brave aktivieren?";
+/* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Unterstützung der Offchain-Suche für Ethereum Name Service (ENS) in Ping aktivieren?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "ENS-Domain verwenden";
@@ -662,7 +662,7 @@
 "wallet.ensOffchainGatewayDesc" = "Es sieht so aus, als hätten Sie eine ENS-Adresse eingegeben. Wir müssen einen Auflöser eines Drittanbieters verwenden, um diese Anfrage aufzulösen. Dadurch wird sichergestellt, dass Ihre .eth-Domain nicht bekannt wird und dass Ihre Transaktion sicher ist.";
 
 /* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayTitle" = "Brave unterstützt die Verwendung von Offchain-Gateways zur Auflösung von .eth-Domains.";
+"wallet.ensOffchainGatewayTitle" = "Ping unterstützt die Verwendung von Offchain-Gateways zur Auflösung von .eth-Domains.";
 
 /* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
 "wallet.ensOffchainResolveMethodDescription" = "[Weitere Informationen](%@) zu den Überlegungen zum Datenschutz bei der ENS-Offchain-Suche.";
@@ -896,7 +896,7 @@
 "wallet.legalTitle" = "Bevor wir beginnen";
 
 /* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
-"wallet.legalUserResponsibility" = "Ich verstehe, dass es sich um eine eigenverwahrte Wallet handelt und dass ich allein für alle damit verbundenen Gelder, Assets oder Konten verantwortlich bin und dass ich angemessene Maßnahmen ergreifen muss, um meine Wallet zu sichern und zu schützen. Ich verstehe, dass Brave nicht auf meine Wallet zugreifen oder Transaktionen in meinem Namen rückgängig machen kann und dass meine Wiederherstellungsphrase die einzige Möglichkeit ist, um im Falle eines verlorenen Passworts, eines gestohlenen Geräts oder ähnlicher Umstände wieder Zugriff zu erhalten.";
+"wallet.legalUserResponsibility" = "Ich verstehe, dass es sich um eine eigenverwahrte Wallet handelt und dass ich allein für alle damit verbundenen Gelder, Assets oder Konten verantwortlich bin und dass ich angemessene Maßnahmen ergreifen muss, um meine Wallet zu sichern und zu schützen. Ich verstehe, dass Ping nicht auf meine Wallet zugreifen oder Transaktionen in meinem Namen rückgängig machen kann und dass meine Wiederherstellungsphrase die einzige Möglichkeit ist, um im Falle eines verlorenen Passworts, eines gestohlenen Geräts oder ähnlicher Umstände wieder Zugriff zu erhalten.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Sperren";
@@ -946,7 +946,7 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Max. Prioritätsgebühr";
 
-/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Ping Wallet in wallet settings. */
 "wallet.module" = "Brave-Wallet";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
@@ -964,7 +964,7 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "Netzwerkname";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+/* A placeholder in Buy Screen, when user switched to a network that Ping currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "Kaufen wird für das ausgewählte Netzwerk nicht unterstützt";
 
 /* The title of the section for primary networks in the network selection view. */
@@ -1043,7 +1043,7 @@
 "wallet.nftDetailTokenStandard" = "Token-Standard";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Die Brave-Wallet kann mithilfe eines Drittanbieters automatisch Ihre NFTs anzeigen. Um diesen Dienst zu erbringen, wird Brave Ihre Wallet-Adressen mit SimpleHash teilen. Erfahren Sie mehr.";
+"wallet.nftDiscoveryCalloutDescription" = "Die Brave-Wallet kann mithilfe eines Drittanbieters automatisch Ihre NFTs anzeigen. Um diesen Dienst zu erbringen, wird Ping Ihre Wallet-Adressen mit SimpleHash teilen. Erfahren Sie mehr.";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Mehr erfahren";
@@ -1130,7 +1130,7 @@
 "wallet.onboardingCompletedButtonTitle" = "Zu meinem Portfolio wechseln";
 
 /* The subtitle of the last step of creating a new wallet. */
-"wallet.onbordingCompletedSubTitle" = "Ihre Brave Wallet ist jetzt einsatzbereit.";
+"wallet.onbordingCompletedSubTitle" = "Ihre Ping Wallet ist jetzt einsatzbereit.";
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Fertig!";
@@ -1178,7 +1178,7 @@
 "wallet.portfolioPageTitle" = "Portfolio";
 
 /* The message displayed when the user takes a screenshot of their private key */
-"wallet.privateKeyScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihres privaten Schlüssels wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Brave empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
+"wallet.privateKeyScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihres privaten Schlüssels wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Ping empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
 
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Protokollgebühr: %@";
@@ -1205,7 +1205,7 @@
 "wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
-"wallet.recoveryPhraseScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihres Wiederherstellungssatzes wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Brave empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Warnung: Ein Screenshot Ihres Wiederherstellungssatzes wird möglicherweise in einem Cloud-Dateidienst gesichert und kann von jeder Anwendung mit Fotozugriff gelesen werden. Ping empfiehlt, diesen Screenshot nicht zu speichern und so schnell wie möglich zu löschen.";
 
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Marktpreis aktualisieren";
@@ -1240,7 +1240,7 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Wallet wiederherstellen";
 
-/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Ping */
 "wallet.restoreWalletButtonTitle" = "Wiederherstellen";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
@@ -1439,13 +1439,13 @@
 "wallet.setupCryptoButtonTitle" = "Loslegen";
 
 /* The subtitle displayed in the section for user that need to create a brand new wallet */
-"wallet.setupCryptoCreateNewSubTitle" = "Starten Sie mit Brave Wallet innerhalb weniger Minuten.";
+"wallet.setupCryptoCreateNewSubTitle" = "Starten Sie mit Ping Wallet innerhalb weniger Minuten.";
 
 /* The title displayed in the section for user that need to create a brand new wallet */
 "wallet.setupCryptoCreateNewTitle" = "Brauchen Sie eine neue Wallet?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave und das Brave-Logo sind eingetragene Marken von Brave. Andere Produktnamen und Logos können Marken der jeweiligen Unternehmen sein. Alle Rechte vorbehalten.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping und das Brave-Logo sind eingetragene Marken von Brave. Andere Produktnamen und Logos können Marken der jeweiligen Unternehmen sein. Alle Rechte vorbehalten.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Ihre vorhandene Wallet importieren";
@@ -1454,7 +1454,7 @@
 "wallet.setupCryptoRestoreTitle" = "Haben Sie bereits eine Wallet?";
 
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "Übernehmen Sie die Kontrolle über Ihre Kryptowährungen und NFTs. Brave Wallet unterstützt Ethereum, EVM-Ketten, Solana und mehr.";
+"wallet.setupCryptoSubtitle" = "Übernehmen Sie die Kontrolle über Ihre Kryptowährungen und NFTs. Ping Wallet unterstützt Ethereum, EVM-Ketten, Solana und mehr.";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "Browser nativ.\nSelbstverwahrend.\nUnd Multi-Chain.";
@@ -1499,7 +1499,7 @@
 "wallet.signedTransactionTitle" = "Transaktion signiert";
 
 /* The title of the view shown above a Sign In With Ethereum request. */
-"wallet.signInWithBraveWallet" = "Mit Brave Wallet anmelden";
+"wallet.signInWithBraveWallet" = "Mit Ping Wallet anmelden";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.signInWithBraveWalletMessage" = "Sie melden sich bei %1$@ an. Die Brave-Wallet wird Ihre Wallet-Adresse mit %2$@ teilen.";
@@ -1564,14 +1564,14 @@
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Überspringen";
 
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Weiter mit einem SNS-Server";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave verwendet einen Drittanbieter für die Auflösung von .sol-Domainnamen. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht der Drittanbieter, dass jemand versucht, diese .sol-Domains zu besuchen, aber sonst nichts. Weitere Informationen zu den von uns verwendeten Drittanbietern und deren Datenschutzrichtlinien finden Sie auf unserer <a href=%@>Hilfeseite</a>.";
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Ping verwendet einen Drittanbieter für die Auflösung von .sol-Domainnamen. Ping verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht der Drittanbieter, dass jemand versucht, diese .sol-Domains zu besuchen, aber sonst nichts. Weitere Informationen zu den von uns verwendeten Drittanbietern und deren Datenschutzrichtlinien finden Sie auf unserer <a href=%@>Hilfeseite</a>.";
 
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
-"wallet.snsDomainInterstitialPageTitle" = "Unterstützung des Solana Name Service (SNS) in Brave aktivieren?";
+/* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "Unterstützung des Solana Name Service (SNS) in Ping aktivieren?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
 "wallet.solAccountDescription" = "Solana + SVM-Ketten";
@@ -1678,8 +1678,8 @@
 /* The title on top of a separater, and the transaction details will be displayed below the separater. */
 "wallet.solanaSignTransactionDetails" = "Details";
 
-/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Beachten Sie, dass Brave nicht überprüfen kann, was passiert, wenn Sie signieren. Eine Signatur könnte fast jeden Vorgang in Ihrem Konto oder in Ihrem Namen autorisieren, einschließlich (aber nicht beschränkt auf) die vollständige Kontrolle über Ihr Konto und die Krypto-Assets an die Website, die die Anfrage stellt, zu geben. Signieren Sie nur, wenn Sie diese Aktion wirklich ausführen möchten und der anfragenden Website vertrauen.";
+/* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "Beachten Sie, dass Ping nicht überprüfen kann, was passiert, wenn Sie signieren. Eine Signatur könnte fast jeden Vorgang in Ihrem Konto oder in Ihrem Namen autorisieren, einschließlich (aber nicht beschränkt auf) die vollständige Kontrolle über Ihr Konto und die Krypto-Assets an die Website, die die Anfrage stellt, zu geben. Signieren Sie nur, wenn Sie diese Aktion wirklich ausführen möchten und der anfragenden Website vertrauen.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Tausch-Transaktion";
@@ -1769,7 +1769,7 @@
 "wallet.swapCryptoToTitle" = "An";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
-"wallet.swapCryptoUnsupportNetworkBody" = "Brave unterstützt derzeit keinen Tausch im %@. Bitte wechseln Sie zu einer unterstützten Blockchain.";
+"wallet.swapCryptoUnsupportNetworkBody" = "Ping unterstützt derzeit keinen Tausch im %@. Bitte wechseln Sie zu einer unterstützten Blockchain.";
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Nicht unterstützte Blockchain";
@@ -1777,11 +1777,11 @@
 /* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.swapDescription" = "Token und Assets tauschen.";
 
-/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+/* A longer disclaimer about the DEX aggrigator used by Ping for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "%1$@ verarbeitet die %2$@-Adresse und IP-Adresse, um eine Transaktion auszuführen (einschließlich der Angebotseinholung). %3$@ verwendet diese Daten NUR zum Zwecke der Verarbeitung von Transaktionen.";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Brave nutzt %@ als DEX-Aggregator.";
+"wallet.swapDexAggrigatorNote" = "Ping nutzt %@ als DEX-Aggregator.";
 
 /* The 'Limit' order type. Limit orders only execute when the price requirements are met */
 "wallet.swapLimitOrderType" = "Limit";
@@ -1945,11 +1945,11 @@
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave verwendet Infura zur Auflösung von .crypto- und %1$@-Domainnamen, die sich auf Unstoppable Domains befinden. Brave verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Infura, dass jemand versucht, diese Domains zu besuchen, aber sonst nichts. Siehe die <a href=%2$@>%3$@</a> und die <a href=%4$@>%5$@</a> von Infura.";
+/* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Ping verwendet Infura zur Auflösung von .crypto- und %1$@-Domainnamen, die sich auf Unstoppable Domains befinden. Ping verbirgt Ihre IP-Adresse. Wenn Sie dies aktivieren, sieht Infura, dass jemand versucht, diese Domains zu besuchen, aber sonst nichts. Siehe die <a href=%2$@>%3$@</a> und die <a href=%4$@>%5$@</a> von Infura.";
 
-/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "Unterstützung für unaufhaltsame Domains in Brave aktivieren?";
+/* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Unterstützung für unaufhaltsame Domains in Ping aktivieren?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[Weitere Informationen](%@) zu den Überlegungen zum Datenschutz bei Unstoppable Domains.";
@@ -1993,7 +1993,7 @@
 /* A button title when a user will tap to reveal the recovery phrases. */
 "wallet.viewRecoveryPhraseButtonTitle" = "Meine Wiederherstellungsphrase anzeigen";
 
-/* The title shown on the menu to access Brave Wallet */
+/* The title shown on the menu to access Ping Wallet */
 "wallet.wallet" = "Wallet";
 
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
@@ -2026,22 +2026,22 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+/* Title on the button that users can click to disable Ping to resolve the ENS/SNS domain they entered. */
 "wallet.web3DomainInterstitialPageButtonDisable" = "Deaktivieren";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPagePrivacyPolicy" = "Datenschutzrichtlinie";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPageTAndU" = "Nutzungsbedingungen";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Ping will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionAsk" = "Fragen";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Ping will disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionDisabled" = "Deaktiviert";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Ping will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Aktiviert";
 
 /* The header for the options to resolve Solana Name service domain names. */
@@ -2050,7 +2050,7 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "SNS-Domainnamen (Solana Name Service) auflösen";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
 "wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) ist das öffentliche Netzwerk für Peer-to-Peer-Datenspeicherung und -lieferung. Für dieses Protokoll gelten andere Überlegungen zum Datenschutz als bei HTTP(S). <a href=%1$@>%2$@</a>";
 
 /* A brief explaination of resolving IPFS scheme url using a public gateway. */
@@ -2059,7 +2059,7 @@
 /* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
 "wallet.web3IPFSInterstitialIPFSTitle" = "Legen Sie Ihre IPFS-Einstellung fest";
 
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
 "wallet.web3IPFSInterstitialProceedButton" = "Ein öffentliches Gateway nutzen";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */

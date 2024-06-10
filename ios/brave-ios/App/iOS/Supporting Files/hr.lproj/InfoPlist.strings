@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Omogućava vam snimanje i prenošenje fotografija.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Brave";
+"NSFaceIDUsageDescription" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Na mrežnim mjestima koja posjećujete može se zahtijevati vaša lokacija.";
@@ -20,7 +20,7 @@
 "NSPhotoLibraryAddUsageDescription" = "Omogućava vam spremanje fotografija.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Ovo se dopuštenje upotrebljava za omogućivanje Appleova naprednog prepoznavanja govora. Ako nije dopušteno, upotrebljava se prepoznavanje na uređaju i pretraživanja su potpuno privatna. U pregledniku Brave ne pohranjuju se ili dijele vaša glasovna pretraživanja.";
+"NSSpeechRecognitionUsageDescription" = "Ovo se dopuštenje upotrebljava za omogućivanje Appleova naprednog prepoznavanja govora. Ako nije dopušteno, upotrebljava se prepoznavanje na uređaju i pretraživanja su potpuno privatna. U pregledniku Ping ne pohranjuju se ili dijele vaša glasovna pretraživanja.";
 
 /* (No Comment) */
 "OPML File" = "Datoteka OPML";

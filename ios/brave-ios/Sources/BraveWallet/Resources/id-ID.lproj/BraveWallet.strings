@@ -158,7 +158,7 @@
 "wallet.auroraPopupDontShowAgain" = "Jangan tampilkan lagi";
 
 /* The footer beneath the auto-lock title and interval duration */
-"wallet.autoLockFooter" = "Jumlah menit untuk menunggu hingga Brave Wallet secara otomatis terkunci";
+"wallet.autoLockFooter" = "Jumlah menit untuk menunggu hingga Ping Wallet secara otomatis terkunci";
 
 /* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
 "wallet.autoLockTitle" = "Secara Otomatis Mengunci Setelah";
@@ -221,18 +221,18 @@
 "wallet.biometricsSetupSubTitle" = "Apakah Anda ingin menggunakan %@ untuk membuka kunci Dompet Brave?";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupTitle" = "Buka kunci Dompet Brave dengan %@";
+"wallet.biometricsSetupTitle" = "Buka kunci Dompet Ping dengan %@";
 
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "ID Sentuh";
 
-/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
+/* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Biaya Brave: %@";
 
-/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
 "wallet.braveSwapFeeDisclaimer" = "Penawaran mencakup %@ biaya Brave.";
 
-/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+/* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Biaya";
 
 /* As in buying cryptocurrency */
@@ -374,7 +374,7 @@
 "wallet.creatingWallet" = "Membuat Dompet...";
 
 /* The title of the crypto tab */
-"wallet.cryptoTitle" = "Dompet Brave";
+"wallet.cryptoTitle" = "Dompet Ping";
 
 /* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
 "wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Kustomisasi IPFS Gateway untuk NFT";
@@ -451,14 +451,14 @@
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Tambahkan Aset Khusus";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
-"wallet.dappsConnectionNotificationOriginTitle" = "%@ ingin berinteraksi dengan Dompet Brave";
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Ping Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ ingin berinteraksi dengan Dompet Ping";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
-"wallet.dappsConnectionNotificationTitle" = "Halaman ini ingin berinteraksi dengan Dompet Brave";
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "Halaman ini ingin berinteraksi dengan Dompet Ping";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
-"wallet.dappsSettingsConnectedSitesSectionEmpty" = "DApps yang Anda hubungkan ke Dompet Brave akan muncul di sini";
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "DApps yang Anda hubungkan ke Dompet Ping akan muncul di sini";
 
 /* The title of the section that will list all the permitted dapp connections */
 "wallet.dappsSettingsConnectedSitesSectionTitle" = "DApps yang Terhubung";
@@ -521,7 +521,7 @@
 "wallet.decimalsPrecision" = "Ketepatan dalam desimal";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Peringatan: Tangkapan layar pesan Anda mungkin dicadangkan ke layanan berkas awan, dan dapat dibaca aplikasi apa pun dengan akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
+"wallet.decryptMessageScreenshotDetectedMessage" = "Peringatan: Tangkapan layar pesan Anda mungkin dicadangkan ke layanan berkas awan, dan dapat dibaca aplikasi apa pun dengan akses foto. Ping merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
 "wallet.decryptRequestApprove" = "Izinkan";
@@ -634,7 +634,7 @@
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
 "wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ tersambung";
 
-/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+/* The navigation title of the screen for users to edit dapps site connection with users' Ping Wallet accounts. */
 "wallet.editSiteConnectionScreenTitle" = "Koneksi";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
@@ -646,22 +646,22 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Edit Aset yang Dapat Dilihat";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS domain they entered. */
 "wallet.ensDomainInterstitialPageButtonProceed" = "Lanjutkan dengan menggunakan peladen Infura";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave akan menggunakan Infura untuk menyelesaikan nama domain .eth yang berada di Layanan Nama Ethereum (ENS). Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .eth ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Infura.";
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Ping akan menggunakan Infura untuk menyelesaikan nama domain .eth yang berada di Layanan Nama Ethereum (ENS). Ping menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .eth ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Infura.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Aktifkan Dukungan dari Ethereum Name Service (ENS) di Brave?";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Lanjutkan pencarian luar rantai";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Nama domain .eth ini disimpan di luar rantai dan akan diselesaikan oleh gerbang pihak ketiga. Jika Anda mengaktifkan pencarian luar rantai ENS, gerbang pihak ketiga akan melihat bahwa Anda mencoba mengunjungi domain .eth. <a href=%1$@>%2$@</a>.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
 "wallet.ensOffchainDomainInterstitialPageTitle" = "Mengaktifkan dukungan pencarian luar rantai Layanan Nama Ethereum (ENS) di Brave?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
@@ -671,7 +671,7 @@
 "wallet.ensOffchainGatewayDesc" = "Sepertinya Anda memasukkan alamat ENS. Kami akan perlu menggunakan pemecah masalah pihak ketiga untuk menyelesaikan permintaan ini. Ini akan membantu memastikan bahwa domain .eth Anda tidak akan bocor, dan bahwa transaksi Anda aman.";
 
 /* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayTitle" = "Brave mendukung penggunaan gerbang luar rantai untuk menyelesaikan domain .eth.";
+"wallet.ensOffchainGatewayTitle" = "Ping mendukung penggunaan gerbang luar rantai untuk menyelesaikan domain .eth.";
 
 /* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
 "wallet.ensOffchainResolveMethodDescription" = "[Pelajari lebih lanjut](%@) tentang pertimbangan privasi pencarian luar rantai ENS.";
@@ -905,7 +905,7 @@
 "wallet.legalTitle" = "Sebelum Kita Memulai";
 
 /* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
-"wallet.legalUserResponsibility" = "Saya memahami bahwa ini adalah dompet penyimpanan kustodian mandiri, dan bahwa saya sendiri yang bertanggung jawab atas dana, aset, atau akun terkait, dan untuk mengambil tindakan yang tepat guna mengamankan, melindungi, dan mencadangkan dompet saya. Saya mengerti bahwa Brave tidak dapat mengakses dompet saya atau membalikkan transaksi atas nama saya, dan bahwa frasa pemulihan saya adalah SATU-SATUNYA cara untuk mendapatkan kembali akses jika kata sandi hilang, perangkat dicuri, atau situasi serupa.";
+"wallet.legalUserResponsibility" = "Saya memahami bahwa ini adalah dompet penyimpanan kustodian mandiri, dan bahwa saya sendiri yang bertanggung jawab atas dana, aset, atau akun terkait, dan untuk mengambil tindakan yang tepat guna mengamankan, melindungi, dan mencadangkan dompet saya. Saya mengerti bahwa Ping tidak dapat mengakses dompet saya atau membalikkan transaksi atas nama saya, dan bahwa frasa pemulihan saya adalah SATU-SATUNYA cara untuk mendapatkan kembali akses jika kata sandi hilang, perangkat dicuri, atau situasi serupa.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Kunci";
@@ -955,8 +955,8 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Biaya Prioritas Maksimal";
 
-/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
-"wallet.module" = "Dompet Brave";
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Ping Wallet in wallet settings. */
+"wallet.module" = "Dompet Ping";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
 "wallet.more" = "Lainnya";
@@ -973,7 +973,7 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "Nama Jaringan";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+/* A placeholder in Buy Screen, when user switched to a network that Ping currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "Pembelian tidak didukung untuk jaringan tertentu";
 
 /* The title of the section for primary networks in the network selection view. */
@@ -1004,7 +1004,7 @@
 "wallet.newSiteConnectFooter" = "Hanya terhubung dengan situs yang Anda percayai.";
 
 /* The message displayed below the dapp's origin url in new site connection screen. */
-"wallet.newSiteConnectMessage" = "Hubungkan ke Dompet Brave";
+"wallet.newSiteConnectMessage" = "Hubungkan ke Dompet Ping";
 
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Hubungkan";
@@ -1052,7 +1052,7 @@
 "wallet.nftDetailTokenStandard" = "Standar Token";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Dompet Brave dapat menggunakan jasa pihak ketiga untuk secara otomatis menampilkan NFT Anda. Brave akan membagikan alamat dompet kepada SimpleHash untuk menyediakan layanan ini. Pelajari lebih lanjut.";
+"wallet.nftDiscoveryCalloutDescription" = "Dompet Ping dapat menggunakan jasa pihak ketiga untuk secara otomatis menampilkan NFT Anda. Ping akan membagikan alamat dompet kepada SimpleHash untuk menyediakan layanan ini. Pelajari lebih lanjut.";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Pelajari lebih lanjut";
@@ -1091,7 +1091,7 @@
 "wallet.nftRemoveFromWallet" = "Jangan Tampilkan di Dompet";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "NFT akan dihapus dari Dompet Brave namun akan tetap berada di rantai blok. Jika Anda menghapusnya, dan kemudian berubah pikiran, Anda perlu mengimpornya kembali secara manual.";
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT akan dihapus dari Dompet Ping namun akan tetap berada di rantai blok. Jika Anda menghapusnya, dan kemudian berubah pikiran, Anda perlu mengimpornya kembali secara manual.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
 "wallet.nftRemoveFromWalletAlertTitle" = "Hapus dari Dompet Brave?";
@@ -1139,7 +1139,7 @@
 "wallet.onboardingCompletedButtonTitle" = "Buka portofolio saya";
 
 /* The subtitle of the last step of creating a new wallet. */
-"wallet.onbordingCompletedSubTitle" = "Dompet Brave Anda telah siap digunakan.";
+"wallet.onbordingCompletedSubTitle" = "Dompet Ping Anda telah siap digunakan.";
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Anda kini sudah siap!";
@@ -1187,7 +1187,7 @@
 "wallet.portfolioPageTitle" = "Portofolio";
 
 /* The message displayed when the user takes a screenshot of their private key */
-"wallet.privateKeyScreenshotDetectedMessage" = "Peringatan: Tangkapan layar kunci privat Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
+"wallet.privateKeyScreenshotDetectedMessage" = "Peringatan: Tangkapan layar kunci privat Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Ping merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
 
 /* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.protocolFeeLabel" = "Biaya Protokol: %@";
@@ -1214,7 +1214,7 @@
 "wallet.rampNetworkProviderShortName" = "Ramp";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
-"wallet.recoveryPhraseScreenshotDetectedMessage" = "Peringatan: Tangkapan layar frasa pemulihan Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Brave merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "Peringatan: Tangkapan layar frasa pemulihan Anda dapat dicadangkan ke layanan awan, dan dapat dibaca menggunakan aplikasi apa pun yang memiliki akses foto. Ping merekomendasikan agar Anda tidak menyimpan tangkapan layar ini, dan menghapusnya sesegera mungkin.";
 
 /* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
 "wallet.refreshMarketPriceLabel" = "Perbarui harga pasar";
@@ -1249,7 +1249,7 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Pulihkan Dompet";
 
-/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Ping */
 "wallet.restoreWalletButtonTitle" = "Pulihkan";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
@@ -1439,7 +1439,7 @@
 "wallet.settingsResetWalletAlertMessage" = "Tindakan ini tidak dapat dibalik. Frasa pemulihan Anda adalah satu-satunya cara untuk mendapat kembali akses akun ke aset kripto Anda.";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetWalletAlertTitle" = "Anda yakin ingin mengatur ulang Brave Wallet?";
+"wallet.settingsResetWalletAlertTitle" = "Anda yakin ingin mengatur ulang Ping Wallet?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "Selamat Datang";
@@ -1448,13 +1448,13 @@
 "wallet.setupCryptoButtonTitle" = "Memulai";
 
 /* The subtitle displayed in the section for user that need to create a brand new wallet */
-"wallet.setupCryptoCreateNewSubTitle" = "Mulailah dengan Dompet Brave dalam beberapa menit.";
+"wallet.setupCryptoCreateNewSubTitle" = "Mulailah dengan Dompet Ping dalam beberapa menit.";
 
 /* The title displayed in the section for user that need to create a brand new wallet */
 "wallet.setupCryptoCreateNewTitle" = "Perlu dompet baru?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave dan logo Brave adalah tanda merek terdaftar dari Brave. Nama dan logo produk lain mungkin merupakan tanda merek perusahaan mereka masing-masing. Hak cipta dilindungi undang-undang.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping dan logo Ping adalah tanda merek terdaftar dari Brave. Nama dan logo produk lain mungkin merupakan tanda merek perusahaan mereka masing-masing. Hak cipta dilindungi undang-undang.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "Impor dompet Anda yang ada.";
@@ -1463,7 +1463,7 @@
 "wallet.setupCryptoRestoreTitle" = "Sudah punya dompet?";
 
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "Ambil kendali atas kripto dan NFT Anda. Dompet Brave mendukung rantai Ethereum, EVM, Solana, dan banyak lagi.";
+"wallet.setupCryptoSubtitle" = "Ambil kendali atas kripto dan NFT Anda. Dompet Ping mendukung rantai Ethereum, EVM, Solana, dan banyak lagi.";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "Peramban asli.\nPenyimpanan mandiri.\nDan multirantai.";
@@ -1508,10 +1508,10 @@
 "wallet.signedTransactionTitle" = "Transaksi Di-sign";
 
 /* The title of the view shown above a Sign In With Ethereum request. */
-"wallet.signInWithBraveWallet" = "Masuk dengan Dompet Brave";
+"wallet.signInWithBraveWallet" = "Masuk dengan Dompet Ping";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
-"wallet.signInWithBraveWalletMessage" = "Anda mendaftar masuk ke %1$@. Dompet Brave akan membagikan alamat dompet Anda kepada %2$@.";
+"wallet.signInWithBraveWalletMessage" = "Anda mendaftar masuk ke %1$@. Dompet Ping akan membagikan alamat dompet Anda kepada %2$@.";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "Karakter baris baru yang berturut-turut telah terdeteksi!";
@@ -1573,13 +1573,13 @@
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "Lewatkan";
 
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "Lanjutkan dengan menggunakan peladen SNS";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave akan menggunakan pihak ketiga untuk menyelesaikan nama domain .sol. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, pihak ketiga akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .sol ini, namun hanya itu. Untuk informasi lebih lanjut tentang pihak ketiga yang kami gunakan and kebijakan privasi mereka, silakan lihat <a href=%@>halaman bantuan</a>.";
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "Ping akan menggunakan pihak ketiga untuk menyelesaikan nama domain .sol. Ping menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, pihak ketiga akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .sol ini, namun hanya itu. Untuk informasi lebih lanjut tentang pihak ketiga yang kami gunakan and kebijakan privasi mereka, silakan lihat <a href=%@>halaman bantuan</a>.";
 
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Aktifkan Dukungan Solana Name Service (SNS) di Brave?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
@@ -1687,8 +1687,8 @@
 /* The title on top of a separater, and the transaction details will be displayed below the separater. */
 "wallet.solanaSignTransactionDetails" = "Detail";
 
-/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Perhatikanlah bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda memberikan tanda tangan. Tanda tangan dapat mengotorisasi hampir setiap pengoperasian di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda ke situs yang mengajukan permintaan. Berikan tanda tangan hanya jika Anda yakin akan mengambil tindakan ini, dan jika Anda memercayai situs yang mengajukan permintaan ini.";
+/* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "Perhatikanlah bahwa Ping tidak dapat memverifikasi hal yang akan terjadi jika Anda memberikan tanda tangan. Tanda tangan dapat mengotorisasi hampir setiap pengoperasian di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda ke situs yang mengajukan permintaan. Berikan tanda tangan hanya jika Anda yakin akan mengambil tindakan ini, dan jika Anda memercayai situs yang mengajukan permintaan ini.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Transaksi Pertukaran";
@@ -1778,7 +1778,7 @@
 "wallet.swapCryptoToTitle" = "Untuk";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
-"wallet.swapCryptoUnsupportNetworkBody" = "Saat ini, Brave tidak mendukung pertukaran di %@. Silahkan alihkan ke rantai yang didukung.";
+"wallet.swapCryptoUnsupportNetworkBody" = "Saat ini, Ping tidak mendukung pertukaran di %@. Silahkan alihkan ke rantai yang didukung.";
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Rantai yang tidak didukung";
@@ -1786,11 +1786,11 @@
 /* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.swapDescription" = "Tukar token dan aset.";
 
-/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+/* A longer disclaimer about the DEX aggrigator used by Ping for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "%1$@ akan memprosess alamat dan alamat IP %2$@ untuk memenuhi transaksi (termasuk mendapatkan tagihan). %3$@ HANYA akan menggunakan data ini untuk keperluan pemrosesan transaksi.";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Brave menggunakan %@ sebagai agregator DEX.";
+"wallet.swapDexAggrigatorNote" = "Ping menggunakan %@ sebagai agregator DEX.";
 
 /* The 'Limit' order type. Limit orders only execute when the price requirements are met */
 "wallet.swapLimitOrderType" = "Batas";
@@ -1954,10 +1954,10 @@
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave akan menggunakan Infura untuk menyelesaikan nama domain .crypto (dan juga %1$@) yang berada di Unstoppable Domains. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain ini, namun hanya itu. Lihat <a href=%2$@>%3$@</a> dan <a href=%4$@>%5$@</a> Infura.";
+/* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Ping akan menggunakan Infura untuk menyelesaikan nama domain .crypto (dan juga %1$@) yang berada di Unstoppable Domains. Ping menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain ini, namun hanya itu. Lihat <a href=%2$@>%3$@</a> dan <a href=%4$@>%5$@</a> Infura.";
 
-/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Aktifkan dukungan Unstoppable Domains di Brave?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
@@ -2002,7 +2002,7 @@
 /* A button title when a user will tap to reveal the recovery phrases. */
 "wallet.viewRecoveryPhraseButtonTitle" = "Lihat frasa pemulihan saya";
 
-/* The title shown on the menu to access Brave Wallet */
+/* The title shown on the menu to access Ping Wallet */
 "wallet.wallet" = "Dompet";
 
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
@@ -2035,22 +2035,22 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+/* Title on the button that users can click to disable Ping to resolve the ENS/SNS domain they entered. */
 "wallet.web3DomainInterstitialPageButtonDisable" = "Non-Aktifkan";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPagePrivacyPolicy" = "kebijakan privasi";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPageTAndU" = "syarat penggunaan";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Ping will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionAsk" = "Tanya";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Ping will disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionDisabled" = "Dinonaktifkan";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Ping will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Diaktifkan";
 
 /* The header for the options to resolve Solana Name service domain names. */
@@ -2059,7 +2059,7 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Selesaikan Nama Domain Layanan Nama Solana (SNS)";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
 "wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (Sistem Berkas InterPlanetary) adalah jaringan publik untuk penyimpanan dan pengiriman data antar-rekan. Protokol ini memiliki pertimbangan privasi yang berbeda dengan HTTP(S). <a href=%1$@>%2$@</a>";
 
 /* A brief explaination of resolving IPFS scheme url using a public gateway. */
@@ -2068,7 +2068,7 @@
 /* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
 "wallet.web3IPFSInterstitialIPFSTitle" = "Atur preferensi IPFS Anda\n";
 
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
 "wallet.web3IPFSInterstitialProceedButton" = "Gunakan Gerbang Publik";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */

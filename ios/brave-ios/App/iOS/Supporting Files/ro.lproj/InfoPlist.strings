@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Asta îți permite să faci și să încărci fotografii.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Asta îți autentifică accesul la Brave";
+"NSFaceIDUsageDescription" = "Asta îți autentifică accesul la Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Site-urile pe care le vizitezi pot solicita locația ta.";
@@ -20,7 +20,7 @@
 "NSPhotoLibraryAddUsageDescription" = "Asta îți permite să salvezi fotografii.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Această permisiune este utilizată pentru a activa recunoașterea avansată a vorbirii de la Apple. Dacă nu este permisă, se va folosi recunoașterea pe dispozitiv iar căutările vor fi complet private. Brave nu stochează sau distribuie căutările tale vocale.";
+"NSSpeechRecognitionUsageDescription" = "Această permisiune este utilizată pentru a activa recunoașterea avansată a vorbirii de la Apple. Dacă nu este permisă, se va folosi recunoașterea pe dispozitiv iar căutările vor fi complet private. Ping nu stochează sau distribuie căutările tale vocale.";
 
 /* (No Comment) */
 "OPML File" = "Fișier OPML";

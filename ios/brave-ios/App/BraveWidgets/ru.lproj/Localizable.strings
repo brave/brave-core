@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Закладки";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave News";
+"widgets.braveNews" = "Ping News";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Файлы для скачивания";
@@ -19,13 +19,13 @@
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Повторите попытку позже";
 
-/* Displayed on a news widget that links into the app to read more Brave News content */
+/* Displayed on a news widget that links into the app to read more Ping News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "Узнать больше";
 
-/* Description for Brave News widgets that display the top news */
+/* Description for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetDescription" = "Узнавайте последние новости";
 
-/* Title for Brave News widgets that display the top news */
+/* Title for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Популярные новости";
 
 /* This shows when you add a widget but have no favorites added in your app */
@@ -37,13 +37,13 @@
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Поиск";
 
-/* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Информация о том, как Brave экономит ваше время и обеспечивает конфиденциальность в Интернете.";
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Информация о том, как Ping экономит ваше время и обеспечивает конфиденциальность в Интернете.";
 
-/* Title for Brave Shields widget on 'add widget' screen. */
+/* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Показатели";
 
-/* Title of Brave Shields widget shown above stat numbers. */
+/* Title of Ping Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Показатели";
 
 /* Button to the browser and enter URL or make a search query there. */
@@ -64,12 +64,12 @@
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Ярлыки";
 
-/* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Информация о том, как Brave обеспечивает вашу безопасность в Интернете.";
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Информация о том, как Ping обеспечивает вашу безопасность в Интернете.";
 
-/* Title for Brave Shields single stat widget on 'add widget' screen. */
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Конфиденциальность";
 
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave Кошелек";
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Ping Кошелек";
 

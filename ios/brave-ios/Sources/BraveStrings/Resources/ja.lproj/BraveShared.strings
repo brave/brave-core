@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "企業情報";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Brave Shieldについて";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "Ping Shieldについて";
 
-/* The body of the screen explaining Brave Shields */
+/* The body of the screen explaining Ping Shields */
 "AboutBraveShieldsBody" = "多くのサイトには、お客様とお客様のデバイスを識別するためのクッキーやスクリプトが含まれています。これによってインターネット上のいたる所であなたを特定・追跡し、行動データを収集しようとしています。\n\nBraveはそういったものをブロックするので、あなたが追跡されることなくブラウジングすることが可能になります。";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "カメラロールに画像を保存します。";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
+"AccessPhotoDeniedAlertTitle" = "Ping が写真にアクセスしようとしています";
 
 /* Button to add a bookmark */
 "AddBookmark" = "ブックマークに追加";
@@ -52,7 +52,7 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "オン";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "これによりBraveへのアクセスを認証します";
 
 /* Label for Cancel button */
@@ -158,7 +158,7 @@
 "BookmarkUrlPlaceholderText" = "住所";
 
 /* Button to show the brave panel */
-"BravePanel" = "Brave パネル";
+"BravePanel" = "Ping パネル";
 
 /* No comment provided by engineer. */
 "BraveRewardsAdNotificationTitle" = "Braveリワード";
@@ -166,35 +166,35 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "開く";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "リワード";
 
-/* Brave Rewards title */
+/* Ping Rewards title */
 "BraveRewardsTitle" = "Braveリワード";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
+/* Ping Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Brave検索はあなたの個人情報、クエリ、クリックした内容を追跡しません。";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "あとで";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "独立型検索でより良いプライバシーを確保";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Brave検索を試す";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "あとで";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "表示しない";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "詳細設定";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields & プライバシー";
+"BraveShieldsAndPrivacy" = "Ping Shields & プライバシー";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields & プライバシー";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "サイトの表示が崩れている場合は、Shieldをオフにしてみてください";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+"BraveShieldsStatusTitle" = "Ping Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "オフ";
@@ -227,7 +227,7 @@
 "BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
 
 /* Sync page title */
-"BraveSync" = "Brave Sync";
+"BraveSync" = "Ping Sync";
 
 /* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
 "BraveSyncInternalsTitle" = "内部同期";
@@ -236,7 +236,7 @@
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
+"bravetalk.braveTalkTitle" = "Ping Talk";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "ブラウザのロック";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "組織内部署";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "組織";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "同じ名前の検索エンジンが既に存在します。";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "カスタム検索テンプレートが安全ではありません:";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "カスタム検索候補テンプレートが安全ではありません:";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "検索エンジンを追加する";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "検索テンプレート";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "検索候補テンプレート:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -614,15 +614,15 @@
 "defaultBrowserCallout.introPrimaryText" = "プライバシーを保護するためすべてのリンクをBraveで開く";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shieldはすべてのサイトでトラッカーと広告をブロックし、データ通信量と時間を節約します。";
+"defaultBrowserCallout.introSecondaryText" = "Ping Shieldはすべてのサイトでトラッカーと広告をブロックし、データ通信量と時間を節約します。";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Brave をデフォルト ブラウザに設定する";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Ping をデフォルト ブラウザに設定する";
 
-/* Notification title to promote setting Brave app as default browser */
+/* Notification title to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Braveですべてのリンクを保護しましょう";
 
 /* No comment provided by engineer. */
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "デフォルトフィルターリスト";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave デフォルト";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Ping デフォルト";
 
 /* No comment provided by engineer. */
 "Delete" = "削除する";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "アプリを切り替えるリンクを許可しますか？";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "許可する";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "許可しない";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,10 +890,10 @@
 "HideLinkPreviewsActionTitle" = "リンクプレビューを非表示にする";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Brave Rewardsのアイコンを非表示にする";
+"HideRewardsIcon" = "Ping Rewardsのアイコンを非表示にする";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Brave Rewardsに参加していないページではBrave Rewardsのアイコンを非表示にする";
+"HideRewardsIconSubtitle" = "Ping Rewardsに参加していないページではBrave Rewardsのアイコンを非表示にする";
 
 /* Title for history menu item */
 "HistortMenuItem" = "履歴";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "詳しく";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1099,7 +1099,7 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
 
-/* Bookmark title for Brave Support */
+/* Bookmark title for Ping Support */
 "ntp.braveSupportFavoriteTitle" = "サポート";
 
 /* No comment provided by engineer. */
@@ -1118,7 +1118,7 @@
 "ntp.imageTypeSelectionDescription" = "「スポンサー付き」は、Brave Rewardsを有効にすると入手できる追加のブランド背景です。";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Brave Rewardsについて詳しく知る";
+"ntp.learnMoreAboutRewards" = "Ping Rewardsについて詳しく知る";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "スポンサーイメージについて詳しく知る";
@@ -1157,7 +1157,7 @@
 "OBAdsOptInMessageJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Adsが有効になりました！";
+"OBAdsOptInTitle" = "Ping Adsが有効になりました！";
 
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "この後、初めての広告を表示します";
@@ -1180,7 +1180,7 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "ブラウジングを開始する";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "参加する";
 
 /* No comment provided by engineer. */
@@ -1235,22 +1235,22 @@
 "OBShieldsDetail" = "プライバシーを侵害するトラッカーをブロックすることで、インターネット上でつきまとわれずにブラウジングすることができます。";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
+"OBShieldsTitle" = "Ping Shields";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "表示する";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "開始する";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ほか%2$lld個の広告およびトラッカーをブロック";
 
-/* The footnote indicating what Brave shields is blocking */
+/* The footnote indicating what Ping shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "BraveのShieldによりあらゆるページでブロックされたすべての不要なアイテムを確認。";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Brave Shieldを表示するにはタップ";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Ping Shieldを表示するにはタップ";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個の広告およびトラッカーをブロック";
@@ -1259,10 +1259,10 @@
 "onboarding.linkReceiptButton" = "VPNサブスクリプションにリンク";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。App StoreのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。";
+"onboarding.linkReceiptDescription" = "Ping VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。App StoreのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "Brave Firewall + VPNの保護を拡張";
+"onboarding.linkReceiptTitle" = "Ping Firewall + VPNの保護を拡張";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "「デフォルトのブラウザアプリ」を検索";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Brave Rewardsの設定を開く";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Ping Rewardsの設定を開く";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "「ファイル」アプリの「ダウンロード」フォルダを開く際に不明なエラーが発生しました。";
@@ -1411,34 +1411,34 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "ウェブサイトを開く";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "プライバシーが保護されたニュースフィードで今日のトップニュースを。";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "News";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生可能なプレイリストに追加しよう。";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Playlist";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "プライバシーが保護されたビデオ通話を、あなたのブラウザで。";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Talk";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "デバイス全体でインターネット接続を保護";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "安全な暗号資産ウォレット。拡張機能は必要ありません";
 
 /* Privacy Features Section title */
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "この動画をPlaylistに追加しますか？";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Brave Playlistに追加する";
+"playList.addToPlayListAlertTitle" = "Ping Playlistに追加する";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "再生オプション";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "設定";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Brave Playlist";
+"playlist.carplayTitle" = "Ping Playlist";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "プレイリストを変更";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "システムの共有メニューから、現在のアイテムを新タブで開いたり、シェアすることができます。";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Brave Playlist Menu";
+"playlist.sharePlaylistActionTitle" = "Ping Playlist Menu";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "プライベートタブで開く";
@@ -1760,16 +1760,16 @@
 "playList.sorryAlertTitle" = "申し訳ありません";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Brave Playlistに追加されました";
+"playList.toastAddedToPlaylistTitle" = "Ping Playlistに追加されました";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "開く";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Brave Playlistに追加する";
+"playList.toastAddToPlaylistTitle" = "Ping Playlistに追加する";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Brave Playlistで見る";
+"playList.toastExitingItemPlaylistTitle" = "Ping Playlistで見る";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "元に戻す";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移動";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ほか1件のアイテム";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1件のアイテム";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ほか%2$lld件のアイテム";
 
 /* The title of the button to create a new folder */
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "全期間";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "トラッカー&広告";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "ウェブサイト";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "すべてのアラート";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "ブロック:";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "先週";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "Brave Shieldsにより、**%1$@** が **%2$lld** 件のサイトでブロックされました";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Ping Shieldsにより、**%1$@** が **%2$lld** 件のサイトでブロックされました";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "最もよく検出されたトラッカー&広告";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "最もトラッカーの多いサイト";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "プライバシーハブには、Shieldsによりブロックされた数が表示されます。設定は、新しいタブページのShieldsカウントに影響しません。プライベートウィンドウではShieldsのデータはカウントされません。";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Shieldsデータを表示";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "設定は、VPNサブスクリプションをご利用の場合のみ適用されます。";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "VPNアラートを表示";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Shieldsによりブロックされたすべてのカウント数をリセットします。";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Shieldsデータをクリア";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2044,13 +2044,13 @@
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
 "privacyHub.vpnAlertsHeader" = "Braveファイアウォール + VPNアラート";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "ファイアウォール + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "総数";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "プライバシーポリシー";
 
 /* Private button title */
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "フォントの種類を変更します。";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "コンテンツの読み込み中…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "元のページを読み込む";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "ページをリーダービューで表示できませんでした。";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2278,28 +2278,28 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Braveが予期せず終了しました。";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Brave Rewardsにより、あなたはBrave Adsネットワークから提供される、プライバシーを保護した形の広告を閲覧することができます。トラッキングも、読み込み遅延もありません。あなたのデータが外部に漏れることもありません。";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Ping Rewardsにより、あなたはBrave Adsネットワークから提供される、プライバシーを保護した形の広告を閲覧することができます。トラッキングも、読み込み遅延もありません。あなたのデータが外部に漏れることもありません。";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Rewardsをオンにする";
 
-/* Body for successful Brave Talk rewards opt-in */
+/* Body for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessBody" = "続いてBrave Talkに移動するにはスクリーンのどこかをタップしてください";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "無料の通話を開始することができます";
 
-/* Title for Brave Talk rewards opt-in screen */
+/* Title for Ping Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "無料の通話を開始するには、Brave Rewardsをオンにしてください";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "有効にしてコンテンツクリエイターを支援";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Brave Rewardsを使うと、ブラウジングすることででクリエイターを支援";
+"rewards.disabledStatusBody" = "Ping Rewardsを使うと、ブラウジングすることででクリエイターを支援";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "あなたはコンテンツクリエイターを支援中です";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2312,7 +2312,7 @@
 "rewards.settingsToggleMessage" = "Braveのプライバシー重視型の広告を有効にすることで、コンテンツクリエイターやパブリッシャーを自動的にサポートすることができます。Brave Ads広告はプライバシーを尊重しつつコンテンツクリエイターに還元することを目指した新しい広告の仕組みです。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Brave Rewardsを有効にする";
+"rewards.settingsToggleTitle" = "Ping Rewardsを有効にする";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "あなたはコンテンツクリエイターを支援中です";
@@ -2620,7 +2620,7 @@
 /* No comment provided by engineer. */
 "setDefaultBrowserCalloutTitle" = "Braveをデフォルトのブラウザに設定できるようになりました。こちらをタップして設定を開始しましょう。";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "デフォルトブラウザに設定する";
 
 /* No comment provided by engineer. */
@@ -2656,7 +2656,7 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "メディア";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
+/* A toggle label which lets the user always open YouTube urls in Ping */
 "settings.openYouTubeInBrave" = "BraveでYouTubeリンクを開く";
 
 /* No comment provided by engineer. */
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "お知らせをシェアする";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shieldsがあなたのオンラインでのプライバシーを保護しました。";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping Shieldsがあなたのオンラインでのプライバシーを保護しました。";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
@@ -2747,7 +2747,7 @@
 "shieldEducation.videoAdBlockTitle" = "このサイトで動画を見ているとき広告はブロックされています。";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shieldsの全体のデフォルト設定";
+"ShieldsDefaults" = "Ping Shieldsの全体のデフォルト設定";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "今後アクセスするサイトに適用されるデフォルトのShield設定です。こちらを変更しても個別サイトの設定には影響しません。";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "QRコードをスキャン";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Brave Newsを開いて今日のトップストーリーズをチェックする";
+"shortcuts.activityTypeBraveNewsDescription" = "Ping Newsを開いて今日のトップストーリーズをチェックする";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "新しいタブでブラウザを立ち上げ、プライベートブラウジングの履歴を全て消去する";
@@ -2813,10 +2813,10 @@
 "shortcuts.activityTypeOpenBookmarksTitle" = "Braveブラウザのブックマークを開く";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Brave Newsを開く";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Ping Newsを開く";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave Newsを開く";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Ping Newsを開く";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "ブラウザの履歴画面を開く";
@@ -2857,7 +2857,7 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "ウェブサイトを開く";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
+/* Description for opening Ping Settings for altering Siri shortcut. */
 "shortcuts.shortcutOpenApplicationSettingsDescription" = "この項目は、Braveの設定を開きます。様々なSiriオプションを変更するには、「Siriと検索」メニューを選択し、設定をカスタマイズしてください。";
 
 /* Button title that open application settings */
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "ブックマークを開く";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri 音声アシスタントで、新しいタブを開きBrave Newsのフィードを表示するショートカットを利用";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave Newsを開く";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ping Newsを開く";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Siri 音声アシスタントで、ブラウザ履歴を開くショートカットを利用";
@@ -2956,13 +2956,13 @@
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "ありがとうございます";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Shield (保護機能)";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
 
-/* Text used for social sharing together with Brave Shield values */
+/* Text used for social sharing together with Ping Shield values */
 "socialSharing.shareDescriptionTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
 
 /* Open search section of settings */
@@ -2978,7 +2978,7 @@
 "SuppressAlertsActionTitle" = "アラートを抑える";
 
 /* Sync settings section title */
-"Sync" = "Brave Sync";
+"Sync" = "Ping Sync";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "ブックマークをエクスポートしました";
@@ -3277,7 +3277,7 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "利用規約";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "利用規約";
 
 /* Text for button to share referral's QR code. */
@@ -3326,7 +3326,7 @@
 "today.addSourceNoFeedsFoundMessage" = "すみません、そのフィードアドレスにはコンテンツがありません。";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Brave Newsにソースを追加する";
+"today.addSourceShareTitle" = "Ping Newsにソースを追加する";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "利用可能なRSSフィード";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "お得な情報";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave Newsで %@ からのコンテンツは表示されなくなります";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Ping Newsで %@ からのコンテンツは表示されなくなります";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "無効";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "%@からのコンテンツを非表示にする";
 
 /* No comment provided by engineer. */
@@ -3370,11 +3370,11 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "表示する記事はありません";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "%@からのコンテンツを許可する";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave Newsに問題が発生しています。もう一度お試しください。";
+"today.errorGeneralBody" = "Ping Newsに問題が発生しています。もう一度お試しください。";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "うーん...";
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "安全でないソースです - ユーザー自身の責任で追加してください";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！\nBrave Newsは、匿名化されたプライベート広告で広告サポートされています。";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Braveニュースをオンにして、最新情報を見逃さないようにしましょう";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Brave Newsを表示する";
+"today.isEnabledToggleLabel" = "Ping Newsを表示する";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "あなたのデータについて詳しく";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Brave Offersをもっと見る";
+"today.moreBraveOffers" = "Ping Offersをもっと見る";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "インターネット接続がありません";
@@ -3436,16 +3436,16 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "プロモーション";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "隠す";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
 "today.rateBraveCardRateActionTitle" = "Braveを評価する";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "ご意見をお聞かせください！";
 
-/* Title shown on the Rate Brave Card */
+/* Title shown on the Rate Ping Card */
 "today.rateBraveCardTitle" = "Braveを気に入っていますか？";
 
 /* No comment provided by engineer. */
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "提案";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Brave Newsを使う";
+"today.turnOnBraveToday" = "Ping Newsを使う";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "フォローを解除";
@@ -3523,7 +3523,7 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "すみません。問題が発生しました";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "自動更新を有効にする";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Brave VPNのサブスクリプションを今すぐ自動更新すると、次の3か月を20%オフでご利用いただけます。";
+"vpn.autoRenewDiscountPopOverTitle" = "Ping VPNのサブスクリプションを今すぐ自動更新すると、次の3か月を20%オフでご利用いただけます。";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Brave VPNのサブスクリプションを自動更新して、1か月の無料特典を獲得しましょう！";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Ping VPNのサブスクリプションを自動更新して、1か月の無料特典を獲得しましょう！";
 
 /* Pop up description for VPN subscription is about expire */
 "vpn.autoRenewSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリに対するBraveの特別な保護が失われます。";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Brave VPNサブスクリプションの終了日が近付いています。";
+"vpn.autoRenewSoonExpireTitle" = "Ping VPNサブスクリプションの終了日が近付いています。";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "購入する";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave ファイアーウォール+VPN";
+"vpn.buyVPNTitle" = "Ping ファイアーウォール+VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "あなたの位置/国を選択する";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxNoIPLog" = "Braveはブラウザ上のアクティビティを記録しません";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "各アプリとデバイス全体を保護";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "ご自宅や公共Wi-Fiでの安全確保に";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "最高100 Mbps、超高速のパフォーマンス";
 
 /* App Version field for customer support contact form. */
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave ファイアーウォール+VPNに関わる問題";
+"vpn.contactFormTitle" = "Ping ファイアーウォール+VPNに関わる問題";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "有効にする";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "VPNをインストール";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "無料で試してみる";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "期限切れ";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "不要な通信をブロック";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "すべてのアプリで広告とトラッカーをブロック";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "最大100Mbpsの速度をサポート";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "最大 100 Mbps の速度が無制限";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "24時間365日のサポート";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "すべての接続を保護";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "今すぐ申し込む";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Brave VPNサブスクリプションは最大5台のデバイスでご利用いただけます。iOS、Mac、Windows、さらにはAndroidまで、お好きなデバイスでのご利用をお楽しみください。";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Ping VPNサブスクリプションは最大5台のデバイスでご利用いただけます。iOS、Mac、Windows、さらにはAndroidまで、お好きなデバイスでのご利用をお楽しみください。";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
 "vpn.subscribeVPNAllDevicesPopOverTitle" = "追加料金なしで、複数のデバイスでBrave VPNをご利用いただけるようになりました。";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPNのサブスクリプションを更新いただくと、今なら3か月間20%オフ。";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Ping VPNのサブスクリプションを更新いただくと、今なら3か月間20%オフ。";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
 "vpn.subscribeVPNPopOverSubDescription" = "端末上のすべてのアプリを保護しませんか？Brave VPNは今後3か月間20%オフでご利用いただけます。";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPNは常に、Braveブラウザ以外でもすべてのアプリでトラッカーをブロックしてきました。Braveプライバシーハブでこれらのトラッカーの詳細を確認できます。";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPNは常に、Braveブラウザ以外でもすべてのアプリでトラッカーをブロックしてきました。Braveプライバシーハブでこれらのトラッカーの詳細を確認できます。";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPNはBraveブラウザ以外でも有効です";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Ping VPNはBraveブラウザ以外でも有効です";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "更新";
@@ -3881,7 +3881,7 @@
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave ファイアウォール+VPNは有効です";
+"vpn.vpnBackgroundNotificationTitle" = "Ping ファイアウォール+VPNは有効です";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "VPNの初期化に問題がありました。再度お試しいただくか、VPN設定画面で設定をリセットしてみてください。";
@@ -3890,7 +3890,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "エラー";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave ファイアウォール+VPNは、動作するためには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping ファイアウォール+VPNは、動作するためには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";

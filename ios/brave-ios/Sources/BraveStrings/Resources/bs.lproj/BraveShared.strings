@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "O opcijama";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "O značajci Brave Shields";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "O značajci Ping Shields";
 
-/* The body of the screen explaining Brave Shields */
-"AboutBraveShieldsBody" = "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj. Njima se želi doznati tko ste i pratiti što radite na svakom mrežnom mjestu.\n\nU pregledniku Brave blokiraju se navedene stavke kako biste mogli pregledavati mrežu bez praćenja.";
+/* The body of the screen explaining Ping Shields */
+"AboutBraveShieldsBody" = "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj. Njima se želi doznati tko ste i pratiti što radite na svakom mrežnom mjestu.\n\nU pregledniku Ping blokiraju se navedene stavke kako biste mogli pregledavati mrežu bez praćenja.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ovim se omogućava spremanje slike u album kamere.";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave želi pristupiti vašim fotografijama";
+"AccessPhotoDeniedAlertTitle" = "Ping želi pristupiti vašim fotografijama";
 
 /* Button to add a bookmark */
 "AddBookmark" = "Dodaj oznaku";
@@ -52,8 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Uključi";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Brave";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Ovim se potvrđuje autentičnost vašeg pristupa pregledniku Ping";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Otkaži";
@@ -158,43 +158,43 @@
 "BookmarkUrlPlaceholderText" = "Adresa";
 
 /* Button to show the brave panel */
-"BravePanel" = "Ploča Brave";
+"BravePanel" = "Ploča Ping";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Nagrade Brave";
+"BraveRewardsAdNotificationTitle" = "Nagrade Ping";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Otvori";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Rewards";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Nagrade Brave";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Nagrade Ping";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Pretraživanjem preglednika Brave ne prati se vas, vaše upite ili klikove.";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Pretraživanjem preglednika Ping ne prati se vas, vaše upite ili klikove.";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možda kasnije";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "Podržite neovisno pretraživanje uz bolju privatnost. ";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "Isprobajte pretraživanje preglednika Brave";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Isprobajte pretraživanje preglednika Ping";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Možda kasnije";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Odbaci";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Napredne kontrole";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Štitovi Brave i privatnost";
+"BraveShieldsAndPrivacy" = "Štitovi Ping i privatnost";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Štitovi i privatnost";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "Ako se čini da je mrežno mjesto neispravno, pokušajte isključiti štitove";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Štitnici Brave";
+"BraveShieldsStatusTitle" = "Štitnici Ping";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Dolje";
@@ -224,7 +224,7 @@
 "BraveShieldsStatusValueUp" = "Podignuti";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Dvaput dodirnite za uključivanje/isključivanje Štitova Brave";
+"BraveShieldsToggleHint" = "Dvaput dodirnite za uključivanje/isključivanje Štitova Ping";
 
 /* Sync page title */
 "BraveSync" = "Sinkroniziraj";
@@ -233,16 +233,16 @@
 "BraveSyncInternalsTitle" = "Unutarnja sinkronizacija";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Za početak preglednik Brave treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.";
+"BraveSyncWelcome" = "Za početak preglednik Ping treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Usluga Razgovor Brave";
+"bravetalk.braveTalkTitle" = "Usluga Razgovor Ping";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Zaključavanje preglednika";
 
 /* Description for setting to enable the browser lock privacy feature */
-"BrowserLockDescription" = "Otključajte preglednik Brave identifikacijom s pomoću dodira, identifikacijom s pomoću očitavanja lica ili šifrom sustava.";
+"BrowserLockDescription" = "Otključajte preglednik Ping identifikacijom s pomoću dodira, identifikacijom s pomoću očitavanja lica ili šifrom sustava.";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Povijest pregledavanja";
@@ -257,13 +257,13 @@
 "callout.bottomBarCalloutDescription" = "Pomaknite adresnu traku, kartice, knjižne oznake i druge alate na dno preglednika.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Prilagođavanje trake kartica preglednika Brave";
+"callout.bottomBarCalloutTitle" = "Prilagođavanje trake kartica preglednika Ping";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Postaviti preglednik Brave kao zadani preglednik?";
+"callout.defaultBrowserCalloutButtonDescription" = "Postaviti preglednik Ping kao zadani preglednik?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.";
+"callout.defaultBrowserCalloutDescription" = "Kad je Ping postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Postavi kao zadano";
@@ -278,7 +278,7 @@
 "callout.defaultBrowserTitle" = "Pojednostavljena zaštita privatnosti.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Na taj način doznajemo koje se značajke preglednika Brave najčešće upotrebljavaju. Promijenite u bilo kojem trenutku u postavkama preglednika Brave pod stavkom Štitovi Brave i druge postavke privatnosti.";
+"callout.p3aCalloutDescription" = "Na taj način doznajemo koje se značajke preglednika Ping najčešće upotrebljavaju. Promijenite u bilo kojem trenutku u postavkama preglednika Ping pod stavkom Štitovi Ping i druge postavke privatnosti.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Doznajte više o našoj analitici proizvoda kojom se čuva privatnost (P3A).";
@@ -290,7 +290,7 @@
 "callout.p3aCalloutToggleTitle" = "Podijelite potpuno privatne i anonimne uvide u proizvode.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Dobijte privatnost preglednika Brave na svom računalu ili tabletnom uređaju te sinkronizirajte knjižne oznake i proširenja između uređaja.";
+"callout.privacyEverywhereCalloutDescription" = "Dobijte privatnost preglednika Ping na svom računalu ili tabletnom uređaju te sinkronizirajte knjižne oznake i proširenja između uređaja.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Sinkroniziraj sada";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "Organizacijska jedinica";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "Organizacija";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Tražilica s jednakim imenom već postoji.";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nesiguran predložak prilagođenog pretraživanja za:";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Nesiguran predložak prilagođenog prijedloga za:";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Dodavanje tražilice";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "Predložak za pretraživanje:";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "Predložak prijedloga:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -611,19 +611,19 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Otvorite Postavke";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Otvori sve poveznice preglednikom Brave radi zaštite privatnosti";
+"defaultBrowserCallout.introPrimaryText" = "Otvori sve poveznice preglednikom Ping radi zaštite privatnosti";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Značajkom Štitovi Brave blokiraju se elementi za praćenje i oglasi te štede podatci i vrijeme na svakom mrežnom mjestu koje posjetite.";
+"defaultBrowserCallout.introSecondaryText" = "Značajkom Štitovi Ping blokiraju se elementi za praćenje i oglasi te štede podatci i vrijeme na svakom mrežnom mjestu koje posjetite.";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "Otvorite Postavke, dodirnite Zadana aplikacija preglednika i odaberite Brave.";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Postavite Brave kao zadani preglednik";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Postavite Ping kao zadani preglednik";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Dobijte zaštitu preglednika Brave na svakoj poveznici";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Dobijte zaštitu preglednika Ping na svakoj poveznici";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zatvori zadani element za privlačenje pažnje preglednika";
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "Zadani popisi filtara";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Zadani Brave";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Zadani Ping";
 
 /* No comment provided by engineer. */
 "Delete" = "Izbriši";
@@ -737,7 +737,7 @@
 "ErrorPageReloadButtonTitle" = "Ponovno učitaj";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obično upotrebljava šifriranje za zaštitu vaših informacija. Kada se u pregledniku Brave pokušavate povezati sa sljedećim: %2$@, mrežnim mjestom vraćaju se neobične i netočne vjerodajnice. To se može dogoditi kada se napadač pretvara da je %3$@ ili kad se zaslonom za prijavu mreže Wi-Fi prekine veza. Vaše informacije i dalje su sigurne jer se preglednikom Brave zaustavila veza prije razmjene podataka.<br />Trenutačno ne možete posjetiti %4$@ jer se na mrežnom mjestu upotrebljava prikvačivanje certifikata. Mrežne pogreške i napadi obično su privremeni, pa će stranica vjerojatno raditi poslije.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obično upotrebljava šifriranje za zaštitu vaših informacija. Kada se u pregledniku Ping pokušavate povezati sa sljedećim: %2$@, mrežnim mjestom vraćaju se neobične i netočne vjerodajnice. To se može dogoditi kada se napadač pretvara da je %3$@ ili kad se zaslonom za prijavu mreže Wi-Fi prekine veza. Vaše informacije i dalje su sigurne jer se preglednikom Ping zaustavila veza prije razmjene podataka.<br />Trenutačno ne možete posjetiti %4$@ jer se na mrežnom mjestu upotrebljava prikvačivanje certifikata. Mrežne pogreške i napadi obično su privremeni, pa će stranica vjerojatno raditi poslije.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Ovaj poslužitelj nije dokazao da je %@. Operativni sustav vašeg uređaja odbacuje njegov sigurnosni certifikat. To se možda događa zbog pogrešne konfiguracije ili zato što napadač pokušava prekinuti vašu vezu.";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "Dopustiti poveznici mijenjanje aplikacije?";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "Dopusti";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "Ne dopusti";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,10 +890,10 @@
 "HideLinkPreviewsActionTitle" = "Sakrij pretpregled veza";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Sakrij ikonu nagrada Brave";
+"HideRewardsIcon" = "Sakrij ikonu nagrada Ping";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Skriva se ikona Nagrade Brave kada značajka Nagrade Brave nije omogućena";
+"HideRewardsIconSubtitle" = "Skriva se ikona Nagrade Ping kada značajka Nagrade Ping nije omogućena";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Povijest";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "Saznaj više";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "Dodirnite ovdje za više informacija.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Ovo je vaš prvi oglas Brave";
+"MyFirstAdTitle" = "Ovo je vaš prvi oglas Ping";
 
 /* Bookmark title / Device name */
 "Name" = "Naziv";
@@ -1099,14 +1099,14 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automatski preusmjerava poveznice NPR na njihovu tekstnu inačicu (na text.npr.org).";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Podrška preglednika Brave";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Podrška preglednika Ping";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Zatraži tokene";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Pregledavajući preglednikom Brave zaradili ste %@.";
+"ntp.earningsReport" = "Pregledavajući preglednikom Ping zaradili ste %@.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Tako treba!";
@@ -1118,7 +1118,7 @@
 "ntp.imageTypeSelectionDescription" = "„Sponzorirano” označava dodatne markirane pozadine koje može zaraditi kada su omogućene Nagrade Brave.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Doznajte više o značajki Nagrade Brave";
+"ntp.learnMoreAboutRewards" = "Doznajte više o značajki Nagrade Ping";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Saznajte više o sponzoriranim slikama";
@@ -1160,7 +1160,7 @@
 "OBAdsOptInTitle" = "Stigli su Oglasi Brave!";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "U pregledniku se Brave prvi vaš oglas prikazuje za";
+"OBAdsTitle" = "U pregledniku se Ping prvi vaš oglas prikazuje za";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "Sada ste spremni za polazak.";
@@ -1180,14 +1180,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Započni pretraživanje";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "Pridruži se";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Dopusti pregledniku Brave provjeravanje međuspremnika za otkrivanje podudarajuće šifre preporuke";
+"OBPrivacyConsentClipboardPermission" = "Dopusti pregledniku Ping provjeravanje međuspremnika za otkrivanje podudarajuće šifre preporuke";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Možda ste preuzeli preglednik Brave za davanje podrške svom preporučitelju. Kako bi se otkrio vaš preporučitelj, preglednikom Brave jednokratno se provjerava vaš međuspremnik za odgovarajuću šifru preporuke. Provjera je ograničena samo na šifru i ne prenose se nikakvi drugi osobni podatci. Ako povučete svoju privolu, vaš preporučitelj ne prima nagrade preglednika Brave.";
+"OBPrivacyConsentDetail" = "Možda ste preuzeli preglednik Ping za davanje podrške svom preporučitelju. Kako bi se otkrio vaš preporučitelj, preglednikom Ping jednokratno se provjerava vaš međuspremnik za odgovarajuću šifru preporuke. Provjera je ograničena samo na šifru i ne prenose se nikakvi drugi osobni podatci. Ako povučete svoju privolu, vaš preporučitelj ne prima nagrade preglednika Brave.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Ne dopusti ovu provjeru";
@@ -1208,10 +1208,10 @@
 "OBRewardsAgreementDetailsAnd" = "i";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Nagrade Brave";
+"OBRewardsAgreementTitle" = "Nagrade Ping";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Uključivanjem u Privatne oglase Brave podržavate izdavače i stvaratelje sadržaja svakim prikazanim oglasom.";
+"OBRewardsDetail" = "Uključivanjem u Privatne oglase Ping podržavate izdavače i stvaratelje sadržaja svakim prikazanim oglasom.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Zaradite tokene i nagradite stvaratelje za odličan sadržaj tijekom pregledavanja.";
@@ -1220,7 +1220,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Pravilnik o privatnosti";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Nagrade Brave";
+"OBRewardsTitle" = "Nagrade Ping";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Spremi";
@@ -1229,28 +1229,28 @@
 "OBSearchEngineDetail" = "Odaberite svoju zadanu tražilicu";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Dobro došli u preglednik Brave";
+"OBSearchEngineTitle" = "Dobro došli u preglednik Ping";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Blokirajte elemente za praćenje kojima se narušava privatnost kako biste mogli pregledavati mrežu bez praćenja ";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Štitnici Brave";
+"OBShieldsTitle" = "Štitnici Ping";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "Pokaži mi";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "Početak";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "Blokirani su %1$@ i sljedeći broj: %2$lld drugih oglasa i elemenata za praćenje";
 
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Pogledajte sve loše stvari koje je Brave blokirao štitovima na svakoj stranici.";
+/* The footnote indicating what Ping shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Pogledajte sve loše stvari koje je Ping blokirao štitovima na svakoj stranici.";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Dodirnite za prikaz štitova Brave";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Dodirnite za prikaz štitova Ping";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Blokirani su oglasi i elementi za praćenje";
@@ -1259,10 +1259,10 @@
 "onboarding.linkReceiptButton" = "Povežite svoju pretplatu na VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Vašom pretplatom na mrežu VPN preglednika Brave može se zaštititi do pet (5) uređaja diljem sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu iz trgovine App Store s računom Brave.";
+"onboarding.linkReceiptDescription" = "Vašom pretplatom na mrežu VPN preglednika Ping može se zaštititi do pet (5) uređaja diljem sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu iz trgovine App Store s računom Brave.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "Proširite svoj vatrozid Brave + zaštitu mreže VPN";
+"onboarding.linkReceiptTitle" = "Proširite svoj vatrozid Ping + zaštitu mreže VPN";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Tražite „Zadana aplikacija preglednika”";
@@ -1274,13 +1274,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Kada se blokiraju elementi za praćenje i oglasi, na mrežnim mjestima upotrebljava se manje podataka i ona se učitavaju mnogo brže.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "Pogledajte kako se preglednik Brave razlikuje: \nNema oglasa. Nema elemenata za praćenje. Mnogo brže učitavanje stranice.";
+"onboarding.omniboxOnboardingPopOverDescription" = "Pogledajte kako se preglednik Ping razlikuje: \nNema oglasa. Nema elemenata za praćenje. Mnogo brže učitavanje stranice.";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Upišite naziv ili URL mrežnog mjesta";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Dobro došli u preglednik Brave";
+"onboarding.welcomeScreenTitle" = "Dobro došli u preglednik Ping";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Nastavi";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Otvori sve (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Otvori postavke za Nagrade Brave";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Otvori postavke za Nagrade Ping";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Nastala je nepoznata pogreška pri otvaranju mape Preuzimanja u aplikaciji Datoteke.";
@@ -1352,13 +1352,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Za početak postavite lanac sinkronizacije i uključite/isključite „Otvori kartice” u postavkama sinkronizacije.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Upravljajte onime što se sinkronizira preglednikom Brave u Postavkama.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Upravljajte onime što se sinkronizira preglednikom Ping u Postavkama.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Nema aktivnih sesija za pokazivanje s vaših drugih uređaja.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "U ovom prostoru prikazuju se kartice preglednika Brave otvorene na drugim uređajima";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "U ovom prostoru prikazuju se kartice preglednika Ping otvorene na drugim uređajima";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Sakrij za sad";
@@ -1411,38 +1411,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Otvori mrežno mjesto";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) ugrađen izravno u preglednik";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "Današnje najvažnije novosti u privatnom sažetku sadržaja vijesti";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Vijesti";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "Držite izvanmrežni popis za reprodukciju bilo kojeg videozapisa/strujanja";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Popis za reprodukciju";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "Privatni videopozivi, izravno u vašem pregledniku";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Razgovor";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "Zaštitite cijeli uređaj na mreži";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "Siguran kriptonovčanik, ne trebaju vam proširenja";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Značajke preglednika Brave";
+"optionsMenu.menuSectionTitle" = "Značajke preglednika Ping";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Druge postavke privatnosti";
@@ -1454,7 +1454,7 @@
 "p3a.continue" = "Nastavi";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Ovim privatnim odgovorima omogućava se u pregledniku Brave procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.";
+"p3a.settingSubtitle" = "Ovim privatnim odgovorima omogućava se u pregledniku Ping procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)";
@@ -1508,7 +1508,7 @@
 "PersistentPrivateBrowsing" = "Stalno privatno pregledavanje";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Omogućava pregledniku Brave vraćanje kartica privatnog pregledavanja čak kada zatvorite / ponovno otvorite aplikaciju";
+"PersistentPrivateBrowsingAlertMessage" = "Omogućava pregledniku Ping vraćanje kartica privatnog pregledavanja čak kada zatvorite / ponovno otvorite aplikaciju";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "Vrati privatne kartice";
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "Želite li dodati ovaj videozapis svom popisu za reprodukciju?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Dodavanje na popis za reprodukciju preglednika Brave";
+"playList.addToPlayListAlertTitle" = "Dodavanje na popis za reprodukciju preglednika Ping";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Mogućnosti reprodukcije";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "Postavke";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Popis za reprodukciju Brave";
+"playlist.carplayTitle" = "Popis za reprodukciju Ping";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Promjena popisa za reprodukciju";
@@ -1580,7 +1580,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Pomakni...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Možete dodati stavke na svoj popis za reprodukciju preglednika Brave u pregledniku";
+"playList.noItemLabelDetailLabel" = "Možete dodati stavke na svoj popis za reprodukciju preglednika Ping u pregledniku";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Nema dostupnih stavki";
@@ -1670,7 +1670,7 @@
 "playList.playListSettingTitle" = "Popis za reprodukciju";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Ova mapa već postoji na vašem popisu za reprodukciju preglednika Brave";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Ova mapa već postoji na vašem popisu za reprodukciju preglednika Ping";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Žao nam je";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "Trenutačnu stavku možete otvoriti u novoj kartici ili je podijeliti putem izbornika za dijeljenje sustava";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Izbornik popisa za reprodukciju preglednika Brave";
+"playlist.sharePlaylistActionTitle" = "Izbornik popisa za reprodukciju preglednika Ping";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Otvori u privatnoj kartici";
@@ -1760,16 +1760,16 @@
 "playList.sorryAlertTitle" = "Žao nam je";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Dodano na popis za reprodukciju preglednika Brave";
+"playList.toastAddedToPlaylistTitle" = "Dodano na popis za reprodukciju preglednika Ping";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Otvori";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Dodavanje na popis za reprodukciju preglednika Brave";
+"playList.toastAddToPlaylistTitle" = "Dodavanje na popis za reprodukciju preglednika Ping";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Prikaz na popisu za reprodukciju preglednika Brave";
+"playList.toastExitingItemPlaylistTitle" = "Prikaz na popisu za reprodukciju preglednika Ping";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Poništi";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Pomakni";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ i još 1 stavka";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 stavka";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ i još sljedeći broj stavki: %2$lld";
 
 /* The title of the button to create a new folder */
@@ -1853,7 +1853,7 @@
 "playlistFolders.untitledFolderTitle" = "Popis za reprodukciju bez naslova";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Gumb Dodaj na popis za reprodukciju preglednika Brave";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Gumb Dodaj na popis za reprodukciju preglednika Ping";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Spremi";
@@ -1892,7 +1892,7 @@
 "playlistFolderSharing.syncNowMenuTitle" = "Sinkronizacija sada";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
-"PopoverShieldsMenuClose" = "Zatvorite izbornik Štitova Brave";
+"PopoverShieldsMenuClose" = "Zatvorite izbornik Štitova Ping";
 
 /* Settings privacy section title */
 "Privacy" = "Privatnost";
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "Cijelo vrijeme";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "Elementi za praćenje i oglasi";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Web-lokacija";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Sva upozorenja";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Blokira:";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Prošli tjedan";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "Element **%1$@** za praćenje blokiran je značajkom Štitovi Brave na sljedećem broju mrežnih mjesta: **%2$lld**";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Element **%1$@** za praćenje blokiran je značajkom Štitovi Ping na sljedećem broju mrežnih mjesta: **%2$lld**";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Najčešći element za praćenje i oglas";
@@ -1976,7 +1976,7 @@
 "privacyHub.notificationCalloutButtonText" = "Uključi obavijesti";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Rekapitulacija pružene zaštite preglednikom Brave na mreži ovog tjedna.";
+"privacyHub.notificationMessage" = "Rekapitulacija pružene zaštite preglednikom Ping na mreži ovog tjedna.";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Tjedno izvješće o privatnosti";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Mrežno mjesto s najviše elemenata za praćenje";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Čvorište za privatnost prikazuje broj stavki blokiranih značajkom Štitovi. Postavkom se ne utječe na brojač značajke Štitovi na stranici nove kartice. Podatci značajke Štitovi ne broje se u privatnim prozorima.";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Pokaži podatke značajke Štitovi";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "Postavka se primjenjuje samo ako ste kupili pretplatu za mrežu VPN.";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "Pokaži upozorenja mreže VPN";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Ponovno se postavlja broj svega blokiranog značajkom Štitovi.";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Očisti podatke značajke Štitovi";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2042,15 +2042,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Element za praćenje ili oglas";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Vatrozid preglednika Brave + upozorenja mreže VPN";
+"privacyHub.vpnAlertsHeader" = "Vatrozid preglednika Ping + upozorenja mreže VPN";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Vatrozid + mreža VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "Ukupan broj";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Pravilnik o privatnosti";
 
 /* Private button title */
@@ -2066,10 +2066,10 @@
 "PrivateBrowsingOnlyWarning" = "U načinu „Samo privatno pregledavanje” zatvaraju se sve vaše trenutačne kartice i odjavljujete se iz svih mrežnih mjesta.";
 
 /* Private tab details */
-"PrivateTabBody" = "Privatne kartice ne spremaju se u pregledniku Brave, ali njihovom upotrebom niste anonimni na mreži. Mrežna mjesta koja posjećujete u privatnoj kartici ne pojavljuju se u vašoj povijesti i njihovi kolačići uvijek nestaju kada ih zatvorite – u pregledniku Brave ne ostaje nikakav njihov trag. Međutim, preuzimanja se spremaju.\nVaš mobilni operater (ili vlasnik mreže Wi-Fi mreže ili mreže VPN s kojom ste povezani) može vidjeti koja mrežna mjesta posjećujete i ta mrežna mjesta znaju vašu javnu adresu IP čak u privatnim karticama.";
+"PrivateTabBody" = "Privatne kartice ne spremaju se u pregledniku Brave, ali njihovom upotrebom niste anonimni na mreži. Mrežna mjesta koja posjećujete u privatnoj kartici ne pojavljuju se u vašoj povijesti i njihovi kolačići uvijek nestaju kada ih zatvorite – u pregledniku Ping ne ostaje nikakav njihov trag. Međutim, preuzimanja se spremaju.\nVaš mobilni operater (ili vlasnik mreže Wi-Fi mreže ili mreže VPN s kojom ste povezani) može vidjeti koja mrežna mjesta posjećujete i ta mrežna mjesta znaju vašu javnu adresu IP čak u privatnim karticama.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Upotrebom privatnih kartica mijenja se samo ono što preglednik Brave radi na vašem uređaju, a ne mijenja se ponašanje drugih.\n\nMrežna mjesta uvijek znaju vašu adresu IP kada ih posjetite. Na osnovi toga često mogu približno pogoditi gdje se nalazite – obično vaš grad. Ponekad ta pretpostavka o lokaciji može biti mnogo preciznija. Mrežna mjesta također znaju sve što im izravno navedete kao što su pojmovi za pretraživanje. Ako se prijavite u mrežno mjesto, ono zna da ste vlasnik tog računa. No, i dalje ste odjavljeni kada zatvorite privatne kartice jer se preglednikom Brave odbacuje kolačić kojim se održava prijava.\n\nSvatko putem koga se povezujete s internetom (vaš pružatelj internetskih usluga (ISP)) može vidjeti sve vaše mrežne aktivnosti. Često je to vaš mobilni operater. Ako ste povezani s mrežom Wi-Fi, to je vlasnik te mreže, a ako upotrebljavate mrežu VPN, onda je to pružatelj te mreže VPN. Vaš ISP može vidjeti koja mrežna mjesta posjećujete dok ih posjećujete. Ako se na tim mrežnim mjestima upotrebljava HTTPS, ne može napraviti ništa više od pretpostavljanja onoga što radite na tim mrežnim mjestima. No, ako se na mrežnom mjestu upotrebljava samo HTTP, vaš ISP može vidjeti sve: pojmove za pretraživanje, stranice koje čitate i poveznice na koje ste kliknuli.\n\nAko poslodavac upravlja vašim uređajem, mogao bi pratiti i što radite na njemu. Korištenjem privatnih kartica vjerojatno ga ne možete spriječiti da dozna koja ste mrežna mjesta posjetili. Netko drugi s pristupom vašem uređaju također može instalirati softver kojim se prati vaša aktivnost, a u privatnim karticama nemate zaštitu ni od toga.";
+"PrivateTabDetails" = "Upotrebom privatnih kartica mijenja se samo ono što preglednik Ping radi na vašem uređaju, a ne mijenja se ponašanje drugih.\n\nMrežna mjesta uvijek znaju vašu adresu IP kada ih posjetite. Na osnovi toga često mogu približno pogoditi gdje se nalazite – obično vaš grad. Ponekad ta pretpostavka o lokaciji može biti mnogo preciznija. Mrežna mjesta također znaju sve što im izravno navedete kao što su pojmovi za pretraživanje. Ako se prijavite u mrežno mjesto, ono zna da ste vlasnik tog računa. No, i dalje ste odjavljeni kada zatvorite privatne kartice jer se preglednikom Ping odbacuje kolačić kojim se održava prijava.\n\nSvatko putem koga se povezujete s internetom (vaš pružatelj internetskih usluga (ISP)) može vidjeti sve vaše mrežne aktivnosti. Često je to vaš mobilni operater. Ako ste povezani s mrežom Wi-Fi, to je vlasnik te mreže, a ako upotrebljavate mrežu VPN, onda je to pružatelj te mreže VPN. Vaš ISP može vidjeti koja mrežna mjesta posjećujete dok ih posjećujete. Ako se na tim mrežnim mjestima upotrebljava HTTPS, ne može napraviti ništa više od pretpostavljanja onoga što radite na tim mrežnim mjestima. No, ako se na mrežnom mjestu upotrebljava samo HTTP, vaš ISP može vidjeti sve: pojmove za pretraživanje, stranice koje čitate i poveznice na koje ste kliknuli.\n\nAko poslodavac upravlja vašim uređajem, mogao bi pratiti i što radite na njemu. Korištenjem privatnih kartica vjerojatno ga ne možete spriječiti da dozna koja ste mrežna mjesta posjetili. Netko drugi s pristupom vašem uređaju također može instalirati softver kojim se prati vaša aktivnost, a u privatnim karticama nemate zaštitu ni od toga.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Doznajte više o privatnim karticama.";
@@ -2084,7 +2084,7 @@
 "QuickSearchEngines" = "Brze tražilice";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "Ocijenite preglednik Brave";
+"RateBrave" = "Ocijenite preglednik Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Povećaj veličinu teksta";
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Mijenja se vrsta fonta.";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "Učitavanje sadržaja…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Učitaj originalnu stranicu";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Stranica se ne može prikazati u prikazu čitača.";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2237,10 +2237,10 @@
 "ReportBrokenContactMeSuggestions" = "E-pošta, Twitter itd.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:";
+"ReportBrokenSiteBody1" = "Javite razvojnim inženjerima preglednika Ping da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Napomena: izvješćem koje se šalje poslužiteljima Brave uključuje se: adresa mrežnog mjesta, broj inačice preglednika Brave, postavke štitova, status mreže VPN i postavke jezika.";
+"ReportBrokenSiteBody2" = "Napomena: izvješćem koje se šalje poslužiteljima Ping uključuje se: adresa mrežnog mjesta, broj inačice preglednika Brave, postavke štitova, status mreže VPN i postavke jezika.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Pošalji";
@@ -2273,33 +2273,33 @@
 "RestoreTabNegativeButtonTitle" = "Ne";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Nažalost, preglednik Brave srušio se ili se nije dobro zatvorio.\nŽelite li vratiti svoje kartice?";
+"RestoreTabOnCrashAlertMessage" = "Nažalost, preglednik Ping srušio se ili se nije dobro zatvorio.\nŽelite li vratiti svoje kartice?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Preglednik Brave neočekivano se zatvorio.";
+"RestoreTabOnCrashAlertTitle" = "Preglednik Ping neočekivano se zatvorio.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Upotrebom značajke Nagrade Brave možete vidjeti oglase kojima se čuva privatnost iz mreže značajke Oglasi Brave. Nema elemenata za praćenje. Nema usporavanja, a vaši podatci ostaju potpuno sigurni.";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Upotrebom značajke Nagrade Ping možete vidjeti oglase kojima se čuva privatnost iz mreže značajke Oglasi Brave. Nema elemenata za praćenje. Nema usporavanja, a vaši podatci ostaju potpuno sigurni.";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Uključi Nagrade";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknite bilo gdje na zaslonu za nastavak do usluge Brave Talk.";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknite bilo gdje na zaslonu za nastavak do usluge Ping Talk.";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Sada možeš obaviti besplatan poziv";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Za besplatan poziv uključite uslugu Nagrade Brave";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Za besplatan poziv uključite uslugu Nagrade Ping";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "Uključite kako biste podržavali stvaratelje sadržaja";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Upotrebom značajke Nagrade Brave podržavaju se stvaratelji sadržaja tijekom pregledavanja.";
+"rewards.disabledStatusBody" = "Upotrebom značajke Nagrade Ping podržavaju se stvaratelji sadržaja tijekom pregledavanja.";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Pomažete u podržavanju stvaratelja sadržaja";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2309,10 +2309,10 @@
 "rewards.optInDisclaimer" = "Klikom pristajete na dokumente %1$@ i %2$@. Onemogućite u bilo kojem trenutku u postavkama.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Automatski podržite stvaratelje sadržaja i izdavače omogućivanjem značajke Privatni oglasi Brave. Privatni oglasi Brave oglasi su kojima se čuva privatnost i daje doprinos stvarateljima sadržaja.";
+"rewards.settingsToggleMessage" = "Automatski podržite stvaratelje sadržaja i izdavače omogućivanjem značajke Privatni oglasi Brave. Privatni oglasi Ping oglasi su kojima se čuva privatnost i daje doprinos stvarateljima sadržaja.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Omogući uslugu Nagrade Brave";
+"rewards.settingsToggleTitle" = "Omogući uslugu Nagrade Ping";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Podržavate stvaratelje sadržaja kao što je ovaj.";
@@ -2342,7 +2342,7 @@
 "RewardsInternalsContributionAmount" = "Iznos doprinosa";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Tokeni preglednika Brave";
+"RewardsInternalsContributionProcessorBraveTokens" = "Tokeni preglednika Ping";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Nema";
@@ -2600,7 +2600,7 @@
 "SearchSuggestionsSectionHeader" = "Prijedlozi za pretraživanje";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Pretražujte preglednikom Brave";
+"SearchWithBrave" = "Pretražujte preglednikom Ping";
 
 /* Settings security section title */
 "Security" = "Sigurnost";
@@ -2612,15 +2612,15 @@
 "SendCrashReportAlertMessage" = "Poslati izvještaj o padu kako bi se mogao riješiti problem u pregledniku Brave?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Ups! Preglednik Brave srušio se";
+"SendCrashReportAlertTitle" = "Ups! Preglednik Ping srušio se";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Pošalji izvještaj";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Preglednik Brave sada možete postaviti kao zadani preglednik u sustavu iOS. Dodirnite ovdje za otvaranje postavki.";
+"setDefaultBrowserCalloutTitle" = "Preglednik Ping sada možete postaviti kao zadani preglednik u sustavu iOS. Dodirnite ovdje za otvaranje postavki.";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Postavi kao zadani preglednik";
 
 /* No comment provided by engineer. */
@@ -2642,7 +2642,7 @@
 "settings.autocloseTabsSetting" = "Zatvori kartice";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Dopustite pregledniku Brave automatsko zatvaranje kartica koje se nisu nedavno prikazivale.";
+"settings.autocloseTabsSettingFooter" = "Dopustite pregledniku Ping automatsko zatvaranje kartica koje se nisu nedavno prikazivale.";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Reprodukcija najviše kvalitete";
@@ -2656,8 +2656,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Mediji";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "Otvorite poveznice YouTube u pregledniku Brave";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "Otvorite poveznice YouTube u pregledniku Ping";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Omogući vrijeme upotrebe zaslona";
@@ -2669,7 +2669,7 @@
 "settings.qualitySettings" = "Postavke kvalitete";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Ovim privatnim pingom u pregledniku Brave omogućava se procjenjivanje broja aktivnih korisnika.";
+"settings.sendUsagePingDescription" = "Ovim privatnim pingom u pregledniku Ping omogućava se procjenjivanje broja aktivnih korisnika.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatski šalji ping dnevne uporabe Braveu";
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "Podijeli vijest";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Značajkom Štitovi Brave upravo se zaštitila vaša privatnost na mreži.";
+"shieldEducation.trackerAdWarningSubTitle" = "Značajkom Štitovi Ping upravo se zaštitila vaša privatnost na mreži.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Čestitamo. Veoma ste posebni.";
@@ -2747,10 +2747,10 @@
 "shieldEducation.videoAdBlockTitle" = "Oglasi su blokirani tijekom gledanja videozapisa na ovom mrežnom mjestu.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Globalne zadane postavke Štitova Brave";
+"ShieldsDefaults" = "Globalne zadane postavke Štitova Ping";
 
 /* Section footer for global shields defaults */
-"ShieldsDefaultsFooter" = "Ovo su zadane postavke značajke Brave Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.";
+"ShieldsDefaultsFooter" = "Ovo su zadane postavke značajke Ping Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.";
 
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "Skeniraj kôd QR";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Otvorite Novosti Brave i pogledajte najvažnije današnje vijesti";
+"shortcuts.activityTypeBraveNewsDescription" = "Otvorite Novosti Ping i pogledajte najvažnije današnje vijesti";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Otvorite preglednik u novoj kartici i izbrišite sve podatke o povijesti privatnog preglednika";
@@ -2780,7 +2780,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "Čišćenje povijesti preglednika";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Čišćenje povijesti pregledavanja preglednika Brave";
+"shortcuts.activityTypeClearHistoryTitle" = "Čišćenje povijesti pregledavanja preglednika Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "Otvorite preglednik u novoj kartici i omogućite mrežu VPN";
@@ -2789,7 +2789,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Omogućivanje mreže VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Otvorite preglednik Brave i omogućite mrežu VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "Otvorite preglednik Ping i omogućite mrežu VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Otvaranje nove privatne kartice";
@@ -2810,13 +2810,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Otvaranje knjižnih oznaka";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "Otvaranje knjižnih oznaka preglednika Brave";
+"shortcuts.activityTypeOpenBookmarksTitle" = "Otvaranje knjižnih oznaka preglednika Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Otvaranje značajke Novosti Brave";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Otvaranje značajke Novosti Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otvaranje značajke Novosti Brave";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otvaranje značajke Novosti Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "Otvaranje zaslona povijesti preglednika";
@@ -2825,7 +2825,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Otvaranje povijesti preglednika";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "Otvaranje povijesti preglednika Brave";
+"shortcuts.activityTypeOpenHistoryListTitle" = "Otvaranje povijesti preglednika Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Pokretanje reprodukcije videozapisa na popisu za reprodukciju";
@@ -2837,7 +2837,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Otvori popis za reporukciju";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otvaranje kartica preglednika Brave na drugim uređajima";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otvaranje kartica preglednika Ping na drugim uređajima";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Otvaranje kartica s drugih uređaja";
@@ -2846,7 +2846,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "Otvaranje kartica s drugih uređaja";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "Počnite sigurno pretraživati ​​mrežu upotrebom preglednika Brave";
+"shortcuts.activityTypeTabDescription" = "Počnite sigurno pretraživati ​​mrežu upotrebom preglednika Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Otvaranje mrežnog mjesta knjižne oznake";
@@ -2857,7 +2857,7 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otvaranje mrežnog mjesta";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
+/* Description for opening Ping Settings for altering Siri shortcut. */
 "shortcuts.shortcutOpenApplicationSettingsDescription" = "Ovom se mogućnosti otvaraju postavke preglednika Brave. Kako biste promijenili razne mogućnosti pomoćnika Siri, odaberite stavku „Siri i pretraživanje” u izborniku te prilagodite svoje odabire.";
 
 /* Button title that open application settings */
@@ -2870,7 +2870,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Čišćenje povijesti preglednika";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Upotrijebite prečace za omogućivanje mreže VPN preglednika Brave putem glasovnog pomoćnika – Siri";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Upotrijebite prečace za omogućivanje mreže VPN preglednika Ping putem glasovnog pomoćnika – Siri";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Omogućivanje mreže VPN";
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Otvaranje knjižnih oznaka";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Upotrijebite prečace za otvaranje nove kartice i pokazivanje sažetka sadržaja značajke Novosti Brave putem glasovnog pomoćnika – Siri";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Upotrijebite prečace za otvaranje nove kartice i pokazivanje sažetka sadržaja značajke Novosti Ping putem glasovnog pomoćnika – Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otvaranje značajke Novosti Brave";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otvaranje značajke Novosti Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Upotrijebite prečace za otvaranje zaslona s povijest preglednika putem glasovnog pomoćnika – Siri";
@@ -2951,18 +2951,18 @@
 "ShowTabsBar" = "Traka s karticama";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!";
+"SiteReportedBody" = "Hvala vam što se javili razvojnim inženjerima preglednika Ping da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Hvala vam";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Štitovi";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
 
-/* Text used for social sharing together with Brave Shield values */
+/* Text used for social sharing together with Ping Shield values */
 "socialSharing.shareDescriptionTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
 
 /* Open search section of settings */
@@ -3113,7 +3113,7 @@
 "SyncRemoveDeviceDefaultName" = "Uređaj";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Trenutačno sinkronizirani podatci zadržavaju se, ali se svi podatci u predmemoriji sinkronizacije preglednika Brave brišu. Morate pokrenuti novi lanac sinkronizacije za ponovno sinkroniziranje podataka uređaja.";
+"SyncRemoveLastDeviceMessage" = "Trenutačno sinkronizirani podatci zadržavaju se, ali se svi podatci u predmemoriji sinkronizacije preglednika Ping brišu. Morate pokrenuti novi lanac sinkronizacije za ponovno sinkroniziranje podataka uređaja.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Izbriši lanac sinkronizacije";
@@ -3152,7 +3152,7 @@
 "SyncToDevice" = "Sinkroniziraj s uređajem";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "Upotrebom postojećeg sinkroniziranog uređaja otvorite postavke preglednika Brave i idite na Postavke -> Sinkronizacija. Odaberite „Dodaj uređaj ” i očitajte kôd prikazan na zaslonu.";
+"SyncToDeviceDescription" = "Upotrebom postojećeg sinkroniziranog uređaja otvorite postavke preglednika Ping i idite na Postavke -> Sinkronizacija. Odaberite „Dodaj uređaj ” i očitajte kôd prikazan na zaslonu.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Nije moguće sinkronizirati ovaj uređaj";
@@ -3277,14 +3277,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "Odredbe pružanja usluge";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Odredbe uporabe";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "Podijeli...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Podijelite Brave sa svojim prijateljima!";
+"themeQRCodeShareTitle" = "Podijelite Ping sa svojim prijateljima!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automatski";
@@ -3326,13 +3326,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Žao nam je, ali ta adresa sažetka sadržaja nema nikakav sadržaj.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Dodavanje izvora značajki Novosti Brave";
+"today.addSourceShareTitle" = "Dodavanje izvora značajki Novosti Ping";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Dostupni sažetci sadržaja RSS";
 
 /* The name of the feature */
-"today.braveToday" = "Novosti Brave";
+"today.braveToday" = "Novosti Ping";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "Vijesti";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "Ponude";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Značajkom Novosti Brave prestaje se prikazivati sadržaj izdavača %@";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Značajkom Novosti Ping prestaje se prikazivati sadržaj izdavača %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Onemogućeno";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "Sakrij sadržaj od izdavača %@";
 
 /* No comment provided by engineer. */
@@ -3370,7 +3370,7 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Nema članaka za prikaz";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "Dopusti sadržaj izdavača %@";
 
 /* No comment provided by engineer. */
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Nesigurni izvori – dodavanje na vlastitu odgovornost";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Pratite svoje omiljene izvore u jednom sažetku sadržaja. Jednostavno otvorite karticu u pregledniku Brave, pomaknite prema dolje i... voila!\nZnačajka Novosti Brave podržana je privatnim anonimiziranim oglasima.";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Pratite svoje omiljene izvore u jednom sažetku sadržaja. Jednostavno otvorite karticu u pregledniku Brave, pomaknite prema dolje i... voila!\nZnačajka Novosti Ping podržana je privatnim anonimiziranim oglasima.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "Uključi značajku Novosti Brave i nikada ne propusti priču";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "Uključi značajku Novosti Ping i nikada ne propusti priču";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Prikaži uslugu Brave News";
+"today.isEnabledToggleLabel" = "Prikaži uslugu Ping News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Doznaj više o svojim podatcima";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Više ponuda Brave";
+"today.moreBraveOffers" = "Više ponuda Ping";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Nema interneta";
@@ -3436,16 +3436,16 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Promovirano";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sakrij";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Ocijenite preglednik Brave";
+"today.rateBraveCardRateActionTitle" = "Ocijenite preglednik Ping";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Recite nam svoje mišljenje!";
 
-/* Title shown on the Rate Brave Card */
+/* Title shown on the Rate Ping Card */
 "today.rateBraveCardTitle" = "Sviđa vam se preglednik Brave?";
 
 /* No comment provided by engineer. */
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "Predloženo";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Uključi Novosti Brave";
+"today.turnOnBraveToday" = "Uključi Novosti Ping";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "Prestani pratiti";
@@ -3523,20 +3523,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Žao nam je, ali nešto nije u redu";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "Inačica %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Prikaži putem usluge %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Omogućite pristup mikrofonu u postavkama sustava iOS kako bi se putem preglednika Brave upotrebljavalo anonimno glasovno pretraživanje.";
+"voice.search.microphone.description.required" = "Omogućite pristup mikrofonu u postavkama sustava iOS kako bi se putem preglednika Ping upotrebljavalo anonimno glasovno pretraživanje.";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Potreban je pristup mikrofonu";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "U pregledniku Brave ne pohranjuju se niti dijele vaša glasovna pretraživanja.";
+"voice.search.screen.disclaimer" = "U pregledniku Ping ne pohranjuju se niti dijele vaša glasovna pretraživanja.";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "aktiviraj";
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "Omogući automatsko obnavljanje";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Brave sada i dobijte 20 % na 3 mjeseca!";
+"vpn.autoRenewDiscountPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Ping sada i dobijte 20 % na 3 mjeseca!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Brave sada i dobijte 1 mjesec besplatno!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Automatski obnovite svoju pretplatu na mrežu VPN preglednika Ping sada i dobijte 1 mjesec besplatno!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "To znači da gubite dodatne zaštite preglednika Brave za svaku aplikaciju na svom telefonu.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "To znači da gubite dodatne zaštite preglednika Ping za svaku aplikaciju na svom telefonu.";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "O, ne! Vaša pretplata na mrežu VPN preglednika Brave uskoro istječe.";
+"vpn.autoRenewSoonExpireTitle" = "O, ne! Vaša pretplata na mrežu VPN preglednika Ping uskoro istječe.";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Kupi";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Vatrozid preglednika Brave + mreža VPN";
+"vpn.buyVPNTitle" = "Vatrozid preglednika Ping + mreža VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Zaštitite 5 uređaja uz 1 pretplatu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Odaberi svoju geolokaciju/državu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave nikada ne bilježi Vašu aktivnost";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping nikada ne bilježi Vašu aktivnost";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Zaštitite aplikacije i cijeli uređaj";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Sigurnije za kućni ili javni Wi-Fi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Munjevito brzo, do 100 Mbps";
 
 /* App Version field for customer support contact form. */
@@ -3590,7 +3590,7 @@
 "vpn.contactFormCarrier" = "Mobilni operater";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Društvo Brave vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
+"vpn.contactFormDoNotEditText" = "Društvo Ping vas ne prati niti zna kako upotrebljavate aplikaciju, pa ne znamo kako ste postavili mrežu VPN. Podijelite informacije o problemu koji imate, a mi ćemo se potruditi da ga riješimo što je prije moguće.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Nije moguće poslati poruku e-pošte. Provjerite konfiguraciju svoje e-pošte.";
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "Vremenska zona sustava iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Vatrozid preglednika Brave + problem mreže VPN";
+"vpn.contactFormTitle" = "Vatrozid preglednika Ping + problem mreže VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Omogući";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3674,7 +3674,7 @@
 "vpn.installProfileButtonText" = "Instaliraj profil za mrežu VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Preglednikom Brave sada se instalira profil za mrežu VPN.";
+"vpn.installProfileTitle" = "Preglednikom Ping sada se instalira profil za mrežu VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Mreža VPN sada omogućena";
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Instaliraj mrežu VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Isprobaj BESPLATNO";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Istekao";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blokiraju se neželjene mrežne veze";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Blokiraj oglase i elemente za praćenje u svim aplikacijama ";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "Podržavaju se brzine do 100 Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "Brzo i neograničeno do 100 Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "Podrška 24/7 ";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "Štite se sve veze";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "Vrati";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Prijavite se u svoj račun preglednika Brave kako biste osvježili sesiju mreže VPN.";
+"vpn.sessionExpiredDescription" = "Prijavite se u svoj račun preglednika Ping kako biste osvježili sesiju mreže VPN.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Odbaci";
@@ -3791,10 +3791,10 @@
 "vpn.settingsFAQ" = "Podrška za mrežu VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Povežite kupnju sa svojim računom Brave";
+"vpn.settingsLinkReceipt" = "Povežite kupnju sa svojim računom Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Povežite svoju kupnju iz trgovine App Store sa svojim računom Brave kako biste upotrijebili mrežu VPN preglednika Brave na drugim uređajima.";
+"vpn.settingsLinkReceiptFooter" = "Povežite svoju kupnju iz trgovine App Store sa svojim računom Ping kako biste upotrijebili mrežu VPN preglednika Ping na drugim uređajima.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Upravljaj pretplatom";
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "Pretplati se sada";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tako je. Vaša pretplata na mrežu VPN preglednika Brave sada vrijedi na do 5 uređaja. Dakle, možete se pretplatiti u sustavu iOS i besplatno ga upotrebljavati na svojim uređajima Mac, Windows i Android.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tako je. Vaša pretplata na mrežu VPN preglednika Ping sada vrijedi na do 5 uređaja. Dakle, možete se pretplatiti u sustavu iOS i besplatno ga upotrebljavati na svojim uređajima Mac, Windows i Android.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Sada upotrebljavate mrežu VPN preglednika Brave na svim svojim uređajima za istu cijenu!";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Sada upotrebljavate mrežu VPN preglednika Ping na svim svojim uređajima za istu cijenu!";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Vratite se na mrežu VPN preglednika Brave i dobijte 20 % na 3 mjeseca!";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Vratite se na mrežu VPN preglednika Ping i dobijte 20 % na 3 mjeseca!";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Jeste li spremni zaštititi svaku aplikaciju na svom telefonu? Vratite se mreži VPN preglednika Brave i ostvarite 20 % popusta tijekom sljedeća 3 mjeseca.";
+"vpn.subscribeVPNPopOverSubDescription" = "Jeste li spremni zaštititi svaku aplikaciju na svom telefonu? Vratite se mreži VPN preglednika Ping i ostvarite 20 % popusta tijekom sljedeća 3 mjeseca.";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Mrežom VPN preglednika Brave uvijek su se blokirali elementi za praćenje u svakoj aplikaciji, čak izvan preglednika Brave. Sada možete vidjeti tko vas je pokušao pratiti uz čvorište privatnosti preglednika Brave.";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Mrežom VPN preglednika Ping uvijek su se blokirali elementi za praćenje u svakoj aplikaciji, čak izvan preglednika Brave. Sada možete vidjeti tko vas je pokušao pratiti uz čvorište privatnosti preglednika Brave.";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Jeste li znali da imate zaštitu mreže VPN preglednika Brave i izvan samog preglednika Brave?";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Jeste li znali da imate zaštitu mreže VPN preglednika Ping i izvan samog preglednika Brave?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Ažuriraj";
@@ -3869,7 +3869,7 @@
 "vpn.updateBillingSoonExpirePopOverDescription" = "Želite li nastaviti štititi svaku aplikaciju na svom telefonu? Samo ažurirajte pojedinosti o plaćanju.";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Postoji problem s plaćanjem za vaš račun, a to znači da vaša pretplata na mrežu VPN preglednika Brave uskoro istječe.";
+"vpn.updateBillingSoonExpirePopOverTitle" = "Postoji problem s plaćanjem za vaš račun, a to znači da vaša pretplata na mrežu VPN preglednika Ping uskoro istječe.";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Ažuriraj plaćanje";
@@ -3878,10 +3878,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ažurirajte način plaćanja";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Preglednikom Brave pruža se zaštita čak u pozadini.";
+"vpn.vpnBackgroundNotificationBody" = "Preglednikom Ping pruža se zaštita čak u pozadini.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "UKLJUČENI su vatrozid preglednika Brave + mreža VPN";
+"vpn.vpnBackgroundNotificationTitle" = "UKLJUČENI su vatrozid preglednika Ping + mreža VPN";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "Nastao je problem pri inicijaliziranju mreže VPN. Pokušajte ponovno ili pokušajte ponovno postaviti konfiguraciju na stranici postavki mreže VPN.";
@@ -3890,7 +3890,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Pogreška";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Za vatrozid preglednika Brave + mrežu VPN treba instalirati profil mreže VPN na uređaj kako bi radili. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Za vatrozid preglednika Ping + mrežu VPN treba instalirati profil mreže VPN na uređaj kako bi radili. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Dopuštenje odbijeno";
@@ -3905,7 +3905,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Pogreška";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Brave slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
+"vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Ping slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Iskoristi kôd";
@@ -3917,7 +3917,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "Regija mreže VPN";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Brave Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";
+"vpn.vpnResetAlertBody" = "Ovim se ponovno postavlja vaša konfiguracija vatrozida preglednika Ping Firewall + mreže VPN i ispravljaju sve pogreške. Taj postupak može trajati minutu.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Ponovno postavljanje konfiguracije";

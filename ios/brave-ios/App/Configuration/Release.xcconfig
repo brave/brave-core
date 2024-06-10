@@ -4,7 +4,7 @@
 
 #include "Base.xcconfig"
 
-MOZ_BUNDLE_DISPLAY_NAME = Brave
+MOZ_BUNDLE_DISPLAY_NAME = Ping
 
 // Bundle Identifier
 MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser

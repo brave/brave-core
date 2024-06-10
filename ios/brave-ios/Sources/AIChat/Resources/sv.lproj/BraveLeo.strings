@@ -10,7 +10,7 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo är en AI-driven smart assistent som är inbyggd i webbläsaren.";
 
-/* The title for the button which links purchase to Brave Account */
+/* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Länka köp till ditt Brave-konto";
 
 /* The title for the label showing the date which subscription expires */
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Svaret gillades";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Ge feedback på Brave AI";
+"aichat.feedbackViewMainTitle" = "Ge feedback på Ping AI";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Välj Premium";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Klicka vidare för att fråga om denna sida. Sidans innehåll kommer att skickas till Brave Leo tillsammans med dina meddelanden.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Klicka vidare för att fråga om denna sida. Sidans innehåll kommer att skickas till Ping Leo tillsammans med dina meddelanden.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Sidkontextinformation";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Hantera prenumerationer";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Tillåt mikrofonåtkomst i iOS-systeminställningarna så att Brave kan använda anonym röstinmatning.";
+"aichat.microphonePermissionAlertDescription" = "Tillåt mikrofonåtkomst i iOS-systeminställningarna så att Ping kan använda anonym röstinmatning.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Mikrofonåtkomst krävs";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Försök igen";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave lagrar eller delar inte dina röstsökningar.";
+"aichat.speechRecognizerDisclaimer" = "Ping lagrar eller delar inte dina röstsökningar.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Föreslå frågor ...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Sammanfatta den här sidan";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Jag förstår";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo är en privat, smart AI-assistent som förbättrar din användning av internet. Leo är gratis att använda med begränsad åtkomst. Brave Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidig åtkomst till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se **[Brave wiki](%1$@)** för mer information.\n\nom standard, när du frågar Leo en fråga kan innehållet på webbsidan du tittar på eller valfri text du markerar på en sida skickas och användas för att ge ett svar. Exaktheten i svaren är inte garanterad och kan innehålla felaktig, vilseledande eller falsk information. Leo använder data från Brave Search för att förbättra svarskvaliteten. Skicka inte känslig eller privat information och var försiktig med svar relaterade till hälsa, ekonomi, personlig säkerhet eller liknande. Du kan justera Leos inställningar när som helst. Gå till Inställningar Leo.\n\nLeo samlar inte in identifierare som din IP-adress som kan kopplas till dig. Ingen data används för att träna AI-modellerna och inga personliga data sparas av AI-modellerna (förutom Anthropic som behåller data i 30 dagar innan den raderas). Se **[integritetspolicyn](%2$@)** för mer information.";
+"aichat.termsConditionsDescription" = "Ping Leo är en privat, smart AI-assistent som förbättrar din användning av internet. Leo är gratis att använda med begränsad åtkomst. Ping Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidig åtkomst till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se **[Brave wiki](%1$@)** för mer information.\n\nom standard, när du frågar Leo en fråga kan innehållet på webbsidan du tittar på eller valfri text du markerar på en sida skickas och användas för att ge ett svar. Exaktheten i svaren är inte garanterad och kan innehålla felaktig, vilseledande eller falsk information. Leo använder data från Ping Search för att förbättra svarskvaliteten. Skicka inte känslig eller privat information och var försiktig med svar relaterade till hälsa, ekonomi, personlig säkerhet eller liknande. Du kan justera Leos inställningar när som helst. Gå till Inställningar Leo.\n\nLeo samlar inte in identifierare som din IP-adress som kan kopplas till dig. Ingen data används för att träna AI-modellerna och inga personliga data sparas av AI-modellerna (förutom Anthropic som behåller data i 30 dagar innan den raderas). Se **[integritetspolicyn](%2$@)** för mer information.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Chatta privat med Brave Leo";
+"aichat.termsConditionsTitle" = "Chatta privat med Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Röstinmatning";

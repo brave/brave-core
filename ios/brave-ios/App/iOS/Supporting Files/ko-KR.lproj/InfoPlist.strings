@@ -8,13 +8,13 @@
 "NSCameraUsageDescription" = "이렇게 하면 사진을 촬영하고 업로드할 수 있습니다.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "이 방법으로 Brave 액세스를 인증합니다.";
+"NSFaceIDUsageDescription" = "이 방법으로 Ping 액세스를 인증합니다.";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "방문한 웹사이트에서 귀하의 위치 정보를 요청할 수 있습니다.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Brave 사용 시 마이크 사용을 허용합니다.";
+"NSMicrophoneUsageDescription" = "Ping 사용 시 마이크 사용을 허용합니다.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "이렇게 하면 사진을 저장할 수 있습니다.";

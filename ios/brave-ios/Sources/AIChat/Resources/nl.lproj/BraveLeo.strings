@@ -10,7 +10,7 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo is een slimme AI-gestuurde assistent, ingebouwd in de browser.";
 
-/* The title for the button which links purchase to Brave Account */
+/* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Koppel aankoop aan Brave-account";
 
 /* The title for the label showing the date which subscription expires */
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Antwoord leuk gevonden";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Geef feedback over Brave AI";
+"aichat.feedbackViewMainTitle" = "Geef feedback over Ping AI";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Koop Premium";
@@ -92,7 +92,7 @@
 "aichat.infoAboutPageContext" = "Baseer antwoorden op de content van de pagina";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben mogelijk gemaakt door Claude Instant, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ik ben Leo. Ik werk via een proxy van Ping en ben mogelijk gemaakt door Claude Instant, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant van Anthropic";
@@ -101,13 +101,13 @@
 "aichat.introMessageGenericMessageDescription" = "Hallo, ik ben Leo. Ik ben de AI-assistent van Brave, mogelijk gemaakt door %@. Je kunt me alles vragen en ik doe mijn best om je een antwoord te geven.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben mogelijk gemaakt door Llama 13B, een model dat door Meta is ontworpen om functioneel en veelzijdig te zijn.";
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Ping wordt gehost. Ik ben mogelijk gemaakt door Llama 13B, een model dat door Meta is ontworpen om functioneel en veelzijdig te zijn.";
 
 /* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 2 13b van Meta";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik ben mogelijk gemaakt door Mixtral 8x7B, een model dat Mistral AI heeft ontworpen voor het uitvoeren van geavanceerde taken.";
+"aichat.introMessageMixtralMessageDescription" = "Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Ping wordt gehost. Ik ben mogelijk gemaakt door Mixtral 8x7B, een model dat Mistral AI heeft ontworpen voor het uitvoeren van geavanceerde taken.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral van Mistral AI";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Zet aan om vragen over deze pagina te stellen. De content van de site en je berichten worden naar Brave Leo gestuurd.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Zet aan om vragen over deze pagina te stellen. De content van de site en je berichten worden naar Ping Leo gestuurd.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informatie over paginacontext";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Beheer abonnementen";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Geef in de iOS-instellingen toegang tot de microfoon zodat Brave anonieme gesproken invoer kan gebruiken.";
+"aichat.microphonePermissionAlertDescription" = "Geef in de iOS-instellingen toegang tot de microfoon zodat Ping anonieme gesproken invoer kan gebruiken.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Toegang tot microfoon vereist";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Probeer opnieuw";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave bewaart en deelt geen gesproken invoer.";
+"aichat.speechRecognizerDisclaimer" = "Ping bewaart en deelt geen gesproken invoer.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Stel vragen voor...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Vat deze pagina samen";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Begrepen";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo is een slimme, AI-gestuurde, persoonlijke assistent waarmee je het internet efficiënter gebruikt. Leo is gratis, maar beperkt. Brave Leo Premium biedt meer modellen en hogere limieten en geeft abonnees als eerste toegang tot nieuwe functies. Het standaardmodel voor alle gebruikers is momenteel Mixtral 8x7B. Lees de **[Brave-wiki](%1$@)** voor meer informatie.\n\nWanneer je Leo een vraag stelt, kun je een antwoord krijgen op basis van de context van de door jou bezochte webpagina of de door jou gemarkeerde tekst. De antwoorden zijn mogelijk niet altijd even nauwkeurig en kunnen misleidende of onjuiste informatie bevatten. Leo gebruikt gegevens van Brave Search om de kwaliteit van antwoorden te verbeteren. Stuur geen gevoelige of privégegevens en wees altijd voorzichtig bij het gebruik van informatie over gezondheid, financiën, persoonlijke veiligheid en dergelijke. Je kunt de opties van Leo altijd aanpassen in Instellingen.\n\nLeo verzamelt geen ID's die aan jou kunnen worden gelinkt, zoals je IP-adres. Er worden geen persoonsgegevens bewaard door het AI-model of externe providers van modellen. Lees het **[Privacybeleid](%2$@)** voor meer informatie.";
+"aichat.termsConditionsDescription" = "Ping Leo is een slimme, AI-gestuurde, persoonlijke assistent waarmee je het internet efficiënter gebruikt. Leo is gratis, maar beperkt. Ping Leo Premium biedt meer modellen en hogere limieten en geeft abonnees als eerste toegang tot nieuwe functies. Het standaardmodel voor alle gebruikers is momenteel Mixtral 8x7B. Lees de **[Brave-wiki](%1$@)** voor meer informatie.\n\nWanneer je Leo een vraag stelt, kun je een antwoord krijgen op basis van de context van de door jou bezochte webpagina of de door jou gemarkeerde tekst. De antwoorden zijn mogelijk niet altijd even nauwkeurig en kunnen misleidende of onjuiste informatie bevatten. Leo gebruikt gegevens van Ping Search om de kwaliteit van antwoorden te verbeteren. Stuur geen gevoelige of privégegevens en wees altijd voorzichtig bij het gebruik van informatie over gezondheid, financiën, persoonlijke veiligheid en dergelijke. Je kunt de opties van Leo altijd aanpassen in Instellingen.\n\nLeo verzamelt geen ID's die aan jou kunnen worden gelinkt, zoals je IP-adres. Er worden geen persoonsgegevens bewaard door het AI-model of externe providers van modellen. Lees het **[Privacybeleid](%2$@)** voor meer informatie.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Chat privé met Brave Leo";
+"aichat.termsConditionsTitle" = "Chat privé met Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Gesproken invoer";

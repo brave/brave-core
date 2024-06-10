@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Az adatok érvénytelenek";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Kérjük, engedélyezze a Brave számára, hogy hozzáférjen az eszköz kamerájához a „Beállítások” -> „Adatvédelem” -> „Kamera” menüpontban.";
+"ScanQRCodePermissionErrorMessage" = "Kérjük, engedélyezze a Ping számára, hogy hozzáférjen az eszköz kamerájához a „Beállítások” -> „Adatvédelem” -> „Kamera” menüpontban.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "QR-kód beolvasása";
@@ -119,7 +119,7 @@
 "UnableToAddPassErrorTitle" = "Nem sikerült hozzáadni a belépőt";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
-"UnableToOpenURLError" = "A Brave nem tudja megnyitni az oldalt, mert a cím érvénytelen.";
+"UnableToOpenURLError" = "A Ping nem tudja megnyitni az oldalt, mert a cím érvénytelen.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "Az oldal nem nyitható meg";

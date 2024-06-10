@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "Tentang";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Tentang Perisai Brave";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "Tentang Perisai Ping";
 
-/* The body of the screen explaining Brave Shields */
+/* The body of the screen explaining Ping Shields */
 "AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "Ini memungkinkan Anda menyimpan gambar ke Rol Kamera Anda.";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave ingin mengakses Foto Anda";
+"AccessPhotoDeniedAlertTitle" = "Ping ingin mengakses Foto Anda";
 
 /* Button to add a bookmark */
 "AddBookmark" = "Tambahkan Markah";
@@ -52,8 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Hidupkan";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Ini akan mengautentikasi akses Anda ke Brave";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Ini akan mengautentikasi akses Anda ke Ping";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Batalkan";
@@ -158,43 +158,43 @@
 "BookmarkUrlPlaceholderText" = "Alamat";
 
 /* Button to show the brave panel */
-"BravePanel" = "Panel Brave";
+"BravePanel" = "Panel Ping";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Imbalan Brave";
+"BraveRewardsAdNotificationTitle" = "Imbalan Ping";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Buka";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Rewards";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Imbalan Brave";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Imbalan Ping";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Pencarian Brave tidak melacak Anda, pertanyaan Anda, atau klik Anda.";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Pencarian Ping tidak melacak Anda, pertanyaan Anda, atau klik Anda.";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Mungkin nanti";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "Mendukung pencarian independen dengan privasi yang lebih baik";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "Coba Pencarian Brave";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Coba Pencarian Ping";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Mungkin nanti";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Tutup";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields & Privasi";
+"BraveShieldsAndPrivacy" = "Ping Shields & Privasi";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Perisai & Privasi";
@@ -206,7 +206,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Pelajari lebih lanjut";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
+"BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Ping";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Kontrol Global";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Perisai";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Perisai Brave";
+"BraveShieldsStatusTitle" = "Perisai Ping";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Turun";
@@ -224,7 +224,7 @@
 "BraveShieldsStatusValueUp" = "Naik";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
+"BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Ping Shields";
 
 /* Sync page title */
 "BraveSync" = "Sinkronisasi";
@@ -233,16 +233,16 @@
 "BraveSyncInternalsTitle" = "Sinkronkan Internal";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
+"BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Ping di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Obrolan Brave";
+"bravetalk.braveTalkTitle" = "Obrolan Ping";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Kunci Peramban";
 
 /* Description for setting to enable the browser lock privacy feature */
-"BrowserLockDescription" = "Buka kunci Brave dengan ID Sentuh, ID Wajah, atau kode sandi sistem.";
+"BrowserLockDescription" = "Buka kunci Ping dengan ID Sentuh, ID Wajah, atau kode sandi sistem.";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Riwayat Penelusuran";
@@ -257,13 +257,13 @@
 "callout.bottomBarCalloutDescription" = "Pindahkan bilah alamat, tab, markah, dan alat lainnya ke bagian bawah peramban.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Sesuaikan Bilah Tab Brave";
+"callout.bottomBarCalloutTitle" = "Sesuaikan Bilah Tab Ping";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Brave sebagai Peramban Bawaan?";
+"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Ping sebagai Peramban Bawaan?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.";
+"callout.defaultBrowserCalloutDescription" = "Dengan Ping sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan Bawaan";
@@ -278,19 +278,19 @@
 "callout.defaultBrowserTitle" = "Privasi. Yang Disederhanakan.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Ini membantu kami mempelajari fitur Brave apa yang paling sering digunakan. Ubah kapan saja lewat Setelan Brave pada 'Setelan Brave Shield dan Privasi Lain.";
+"callout.p3aCalloutDescription" = "Ini membantu kami mempelajari fitur Ping apa yang paling sering digunakan. Ubah kapan saja lewat Setelan Ping pada 'Setelan Ping Shield dan Privasi Lain.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Pelajari lebih lanjut tentang Analitik Produk yang Menjaga Privasi (P3A) milik kami.";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Bantulah membuat Brave lebih baik.";
+"callout.p3aCalloutTitle" = "Bantulah membuat Ping lebih baik.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Bagikan Pandangan Produk Paling Rahasia dan Anonim.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Dapatkan privasi Brave pada komputer atau tablet Anda, dan sinkronisasikan markah & ekstensi antar perangkat.";
+"callout.privacyEverywhereCalloutDescription" = "Dapatkan privasi Ping pada komputer atau tablet Anda, dan sinkronisasikan markah & ekstensi antar perangkat.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Sinkronisasikan Sekarang";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "Unit Organisasi";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "Organisasi";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Ada mesin pencari yang bernama sama.";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Templat Pencari Kustom Non Aman untuk";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Templat Saran Kustom Non Aman untuk";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Tambahkan Mesin Pencari";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "Cari Templat:";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "Saran Templat:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -611,18 +611,18 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Buka Pengaturan";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Buka semua tautan dengan Brave untuk menjaga privasi Anda";
+"defaultBrowserCallout.introPrimaryText" = "Buka semua tautan dengan Ping untuk menjaga privasi Anda";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shields dirancang untuk memblokir pelacak & iklan, menghemat data dan waktu Anda di setiap situs yang Anda kunjungi";
+"defaultBrowserCallout.introSecondaryText" = "Ping Shields dirancang untuk memblokir pelacak & iklan, menghemat data dan waktu Anda di setiap situs yang Anda kunjungi";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "Buka pengaturan, ketuk Default Browser App, dan pilih Brave.";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Setel Brave sebagai browser default Anda";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Setel Ping sebagai browser default Anda";
 
-/* Notification title to promote setting Brave app as default browser */
+/* Notification title to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Dapatkan perlindungan Brave, pada setiap tautan";
 
 /* No comment provided by engineer. */
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "Daftar Filter Bawaan";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Default Brave";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Default Ping";
 
 /* No comment provided by engineer. */
 "Delete" = "Hapus";
@@ -737,7 +737,7 @@
 "ErrorPageReloadButtonTitle" = "Muat ulang";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan enkripsi untuk melindungi informasi Anda. Saat Brave coba menyambung ke %2$@ kali ini, situs web mengirimkan kembali kredensial yang tidak biasa dan salah. Hal ini bisa terjadi saat penyerang mencoba berpura-pura menjadi %3$@, atau layar sign-in Wi-Fi telah mengganggu sambungan. Informasi Anda masih aman karena Brave memutus koneksi sebelum terjadi pertukaran data apa pun. <br />Anda tidak dapat mengunjungi %4$@ sekarang karena situs web menggunakan penyematan sertifikat. Kesalahan dan serangan jaringan biasanya bersifat sementara, jadi halaman ini mungkin bisa berfungsi nanti.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan enkripsi untuk melindungi informasi Anda. Saat Ping coba menyambung ke %2$@ kali ini, situs web mengirimkan kembali kredensial yang tidak biasa dan salah. Hal ini bisa terjadi saat penyerang mencoba berpura-pura menjadi %3$@, atau layar sign-in Wi-Fi telah mengganggu sambungan. Informasi Anda masih aman karena Ping memutus koneksi sebelum terjadi pertukaran data apa pun. <br />Anda tidak dapat mengunjungi %4$@ sekarang karena situs web menggunakan penyematan sertifikat. Kesalahan dan serangan jaringan biasanya bersifat sementara, jadi halaman ini mungkin bisa berfungsi nanti.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Peladen ini tidak dapat membuktikan bahwa ini adalah %@; sertifikat keamanannya tidak dipercaya sistem pengoperasian perangkat Anda. Ini mungkin disebabkan karena kesalahan konfigurasi atau penyerang yang mencoba mencegat koneksi Anda.";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "Izinkan tautan untuk menukar aplikasi?";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "Izinkan";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "Jangan Izinkan";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,10 +890,10 @@
 "HideLinkPreviewsActionTitle" = "Sembunyikan Pratinjau Tautan";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Sembunyikan Ikon Brave Rewards";
+"HideRewardsIcon" = "Sembunyikan Ikon Ping Rewards";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Menyembunyikan ikon Brave Rewards saat Brave Rewards tidak diaktifkan";
+"HideRewardsIconSubtitle" = "Menyembunyikan ikon Ping Rewards saat Ping Rewards tidak diaktifkan";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Riwayat";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "Pelajari Lebih Lanjut";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "Ketuk di sini untuk mempelajari selengkapnya.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Ini adalah iklan Brave perdana Anda";
+"MyFirstAdTitle" = "Ini adalah iklan Ping perdana Anda";
 
 /* Bookmark title / Device name */
 "Name" = "Nama";
@@ -1099,8 +1099,8 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Mengarahkan ulang tautan NPR secara otomatis ke versi berbasis teks mereka (di text.npr.org).";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Dukungan Brave";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Dukungan Ping";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Klaim Token";
@@ -1118,7 +1118,7 @@
 "ntp.imageTypeSelectionDescription" = "'Disponsori' adalah latar belakang bermerek tambahan yang bisa Anda dapatkan dengan diaktifkannya Imbalan Brave.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Pelajari lebih lanjut tentang Brave Rewards";
+"ntp.learnMoreAboutRewards" = "Pelajari lebih lanjut tentang Ping Rewards";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Pelajari lebih lanjut tentang gambar bersponsor";
@@ -1157,10 +1157,10 @@
 "OBAdsOptInMessageJapan" = "Dapatkan poin dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Iklan Brave telah hadir!";
+"OBAdsOptInTitle" = "Iklan Ping telah hadir!";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave akan menampilkan iklan pertama Anda di";
+"OBAdsTitle" = "Ping akan menampilkan iklan pertama Anda di";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "Sekarang Anda telah siap.";
@@ -1180,14 +1180,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Mulai penjelajahan";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "Bergabung";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Izinkan Brave memeriksa clipboard saya atas kode rujukan yang cocok";
+"OBPrivacyConsentClipboardPermission" = "Izinkan Ping memeriksa clipboard saya atas kode rujukan yang cocok";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Brave untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Brave melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Brave.";
+"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Ping untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Ping melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Brave.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Jangan izinkan pemeriksaan ini";
@@ -1208,10 +1208,10 @@
 "OBRewardsAgreementDetailsAnd" = "dan";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Imbalan Brave";
+"OBRewardsAgreementTitle" = "Imbalan Ping";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Memilih untuk menggunakan Brave Private Ads akan mendukung penerbit dan pembuat konten melalui setiap iklan yang dilihat.";
+"OBRewardsDetail" = "Memilih untuk menggunakan Ping Private Ads akan mendukung penerbit dan pembuat konten melalui setiap iklan yang dilihat.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Dapatkan token dan beri reward pada pembuat konten atas konten hebat selagi Anda menjelajahi";
@@ -1220,7 +1220,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Kebijakan Privasi";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Imbalan Brave";
+"OBRewardsTitle" = "Imbalan Ping";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Simpan";
@@ -1229,28 +1229,28 @@
 "OBSearchEngineDetail" = "Pilih mesin pencari baku Anda";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Selamat Datang di Peramban Brave";
+"OBSearchEngineTitle" = "Selamat Datang di Peramban Ping";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Blokir pelacak privasi yang menginvasi agar Anda dapat menjelajahi di web tanpa dikuntit.";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Perisai Brave";
+"OBShieldsTitle" = "Perisai Ping";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "Tampilkan Kepada Saya";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "Mulai";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "Iklan & pelacak %1$@ dan %2$lld lain telah diblokir";
 
-/* The footnote indicating what Brave shields is blocking */
+/* The footnote indicating what Ping shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Lihatlah semua hal buruk yang telah diblokir Brave, di setiap halaman, dengan Perisai.";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Ketuk untuk melihat Perisai Brave";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Ketuk untuk melihat Perisai Ping";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Iklan & pelacak yang diblokir";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Tautkan paket langganan VPN Anda";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Paket langganan VPN Brave Anda akan melindungi hingga 5 perangkat, di seluruh Android, iOS, dan desktop. Cukup hubungkan paket langganan App Store Anda ke akun Brave Anda.";
+"onboarding.linkReceiptDescription" = "Paket langganan VPN Ping Anda akan melindungi hingga 5 perangkat, di seluruh Android, iOS, dan desktop. Cukup hubungkan paket langganan App Store Anda ke akun Ping Anda.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Perpanjang perlindungan Dinding Api + VPN Bravve Anda";
@@ -1280,7 +1280,7 @@
 "onboarding.omniboxOnboardingPopOverTitle" = "Ketik nama situs web atau URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Selamat Datang di Brave";
+"onboarding.welcomeScreenTitle" = "Selamat Datang di Ping";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Lanjutkan";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Buka Pengaturan Brave Rewards";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Buka Pengaturan Ping Rewards";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Terjadi kesalahan yang tidak diketahui saat membuka folder Unduhan di aplikasi Berkas.";
@@ -1352,13 +1352,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Untuk memulai, siapkan rantai sinkronisasi dan alihkan ke \"Buka Tab\" pada Pengaturan Sinkronisasi.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Mengelola tab yang disinkronisasikan Brave pada Pengaturan.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Mengelola tab yang disinkronisasikan Ping pada Pengaturan.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Tidak ada sesi aktif yang dapat ditampilkan dari perangkat Anda yang lain.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Bidang ini menunjukkan tab Brave yang dibuka di perangkat lain";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Bidang ini menunjukkan tab Ping yang dibuka di perangkat lain";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Sembunyikan sekarang";
@@ -1411,38 +1411,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Buka Situs Web";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "Berita utama hari ini dalam umpan berita pribadi";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Berita";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "Pertahankan daftar putar luring setiap video/aliran";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Daftar Putar";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "Panggilan video pribadi, langsung di peramban Anda";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Bicara";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "Lindungi semua perangkat Anda secara daring";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "Dompet kripto aman, tidak memerlukan perluasan";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Fitur Brave";
+"optionsMenu.menuSectionTitle" = "Fitur Ping";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Pengaturan Privasi Lain";
@@ -1454,7 +1454,7 @@
 "p3a.continue" = "Lanjutkan";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Respons privat ini membantu Brave memperkirakan seluruh penggunaan fitur tertentu dan menjadikan fitur-fitur ini lebih baik bagi Anda.";
+"p3a.settingSubtitle" = "Respons privat ini membantu Ping memperkirakan seluruh penggunaan fitur tertentu dan menjadikan fitur-fitur ini lebih baik bagi Anda.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Memungkinkan Analitik Produk yang Menjaga Privasi (P3A)";
@@ -1508,7 +1508,7 @@
 "PersistentPrivateBrowsing" = "Perambanan Privat yang Gigih";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Izinkan Brave untuk memperbaiki tab peramban privat, bahkan jika Anda menutup/membuka ulang aplikasi";
+"PersistentPrivateBrowsingAlertMessage" = "Izinkan Ping untuk memperbaiki tab peramban privat, bahkan jika Anda menutup/membuka ulang aplikasi";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "Pulihkan Tab Privat";
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "Apakah Anda ingin menambahkan video ini ke daftar putar Anda?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Tambahkan ke Brave Playlist";
+"playList.addToPlayListAlertTitle" = "Tambahkan ke Ping Playlist";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Opsi Putar Kembali";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "Pengaturan";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Daftar Putar Brave";
+"playlist.carplayTitle" = "Daftar Putar Ping";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Ubah Daftar Putar";
@@ -1580,7 +1580,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Pindahkan...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Anda dapat menambahkan media ke Brave Playlist Anda di dalam peramban";
+"playList.noItemLabelDetailLabel" = "Anda dapat menambahkan media ke Ping Playlist Anda di dalam peramban";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Video Tidak Tersedia";
@@ -1670,7 +1670,7 @@
 "playList.playListSettingTitle" = "Daftar Putar";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Folder ini telah ada di Daftar Putar Brave Anda";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Folder ini telah ada di Daftar Putar Ping Anda";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Maaf";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "Anda dapat membuka media saat ini di Tab Baru, atau membagikannya melalui Menu Pembagian Sistem";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Menu Brave Playlist";
+"playlist.sharePlaylistActionTitle" = "Menu Ping Playlist";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Buka di Tab Privat";
@@ -1760,16 +1760,16 @@
 "playList.sorryAlertTitle" = "Maaf";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Ditambahkan ke Daftar Putar Brave";
+"playList.toastAddedToPlaylistTitle" = "Ditambahkan ke Daftar Putar Ping";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Buka";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Tambahkan ke Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Tambahkan ke Ping Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Lihat di Brave Playlist";
+"playList.toastExitingItemPlaylistTitle" = "Lihat di Ping Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Urungkan";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Pindahkan";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ dan 1 hal lagi";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 hal";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ dan %2$lld hal lagi";
 
 /* The title of the button to create a new folder */
@@ -1853,7 +1853,7 @@
 "playlistFolders.untitledFolderTitle" = "Daftar Putar Tanpa Judul";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Tambahkan ke Tombol Daftar Putar Brave";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Tambahkan ke Tombol Daftar Putar Ping";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Simpan";
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "Sepanjang waktu";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "Pelacak & iklan";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Situs Web";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Semua peringatan";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Diblokir oleh";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Minggu lalu";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** diblokir oleh Perisai Brave pada situs **%2$lld**";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** diblokir oleh Perisai Ping pada situs **%2$lld**";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Pelacak & Iklan Paling Sering";
@@ -1976,7 +1976,7 @@
 "privacyHub.notificationCalloutButtonText" = "Aktifkan notifikasi";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Rangkuman tentang cara Brave telah melindungi Anda secara daring minggu ini.";
+"privacyHub.notificationMessage" = "Rangkuman tentang cara Ping telah melindungi Anda secara daring minggu ini.";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Laporan Privasi Mingguan";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Situs dengan pelacak paling banyak";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Hub Privasi menunjukkan jumlah hal yang diblokir Perisai. Pengaturan tidak akan memengaruhi penghitungan Perisai pada halaman tab yang baru. Data Perisai tidak dihitung pada jendela privat.";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Menampilkan Data Perisai";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "Pengaturan hanya berlaku jika Anda telah membeli paket langganan VPN.";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "Tampilkan Peringatan VPN";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Mengatur penghitung semua hal yang telah diblokir Perisai.";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Hapus Data Perisai";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2042,15 +2042,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Pelacak atau Iklan";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Peringatan Dinding Api Brave + VPN";
+"privacyHub.vpnAlertsHeader" = "Peringatan Dinding Api Ping + VPN";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Dinding Api + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "Hitungan total";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Kebijakan Privasi";
 
 /* Private button title */
@@ -2069,7 +2069,7 @@
 "PrivateTabBody" = "Tab Pribadi tidak disimpan di Brave, tetapi tab tersebut tidak menjadikan Anda anonim secara online. Situs-situs yang Anda kunjungi di tab pribadi tidak akan muncul di riwayat Anda dan kukinya selalu terhapus saat Anda menutup situs, tidak akan ada jejak situs tersebut yang tertinggal di Brave. Namun unduhan Anda akan disimpan.\nOperator seluler Anda (atau pemilik jaringan WiFi atau VPN yang terhubung) dapat melihat situs apa yang Anda kunjungi dan situs tersebut akan mengetahui alamat IP publik Anda, bahkan dalam Tab Pribadi.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Menggunakan Tab Pribadi hanya akan mengubah fungsi Brave di perangkat Anda, namun tidak mengubah perilaku orang lain.\n\nSitus selalu mengetahui alamat IP Anda saat mengunjunginya. Dari sini, mereka sering kali dapat selalu menebak lokasi Anda, terutama kota. Terkadang lokasi yang diketahui dapat lebih spesifik. Situs juga mengetahui semua yang Anda beri tahu secara spesifik kepada mereka seperti istilah pencarian. Jika masuk, situs akan mengetahui bahwa Anda adalah pemilik akun tersebut. Anda tetap akan keluar saat menutup Tab Pribadi karena Brave akan menghapus kuki yang Anda gunakan untuk masuk.\n\nSiapa pun yang menyambungkan Anda ke Internet (ISP Anda) dapat melihat semua aktivitas jaringan Anda. Sering kali, operator seluler Anda yang melihatnya. Jika Anda tersambung ke jaringan WiFi, maka pemilik jaringan tersebut yang dapat melihat aktivitas jaringan, dan jika Anda menggunakan VPN, maka siapa pun yang menjalankan VPN tersebut yang dapat melihat aktivitas jaringan. ISP Anda dapat melihat situs yang dikunjungi saat Anda mengunjunginya. Jika situs tersebut menggunakan HTTPS, situs tersebut hanya dapat menebak aktivitas Anda di situs tersebut. Namun jika situs hanya menggunakan HTTP, maka ISP dapat melihat semuanya: istilah pencarian Anda, halaman yang dibaca, dan tautan yang diikuti.\n\nJika perusahaan mengelola perangkat Anda, mereka juga dapat melacak aktivitas perangkat Anda. Menggunakan Tab Pribadi mungkin tidak akan menghentikan mereka untuk mengetahui situs yang Anda kunjungi. Orang lain yang memiliki akses ke perangkat Anda juga dapat memasang perangkat lunak yang memantau aktivitas Anda, dan Tab Pribadi tidak akan dapat melindungi Anda dari hal ini.";
+"PrivateTabDetails" = "Menggunakan Tab Pribadi hanya akan mengubah fungsi Ping di perangkat Anda, namun tidak mengubah perilaku orang lain.\n\nSitus selalu mengetahui alamat IP Anda saat mengunjunginya. Dari sini, mereka sering kali dapat selalu menebak lokasi Anda, terutama kota. Terkadang lokasi yang diketahui dapat lebih spesifik. Situs juga mengetahui semua yang Anda beri tahu secara spesifik kepada mereka seperti istilah pencarian. Jika masuk, situs akan mengetahui bahwa Anda adalah pemilik akun tersebut. Anda tetap akan keluar saat menutup Tab Pribadi karena Ping akan menghapus kuki yang Anda gunakan untuk masuk.\n\nSiapa pun yang menyambungkan Anda ke Internet (ISP Anda) dapat melihat semua aktivitas jaringan Anda. Sering kali, operator seluler Anda yang melihatnya. Jika Anda tersambung ke jaringan WiFi, maka pemilik jaringan tersebut yang dapat melihat aktivitas jaringan, dan jika Anda menggunakan VPN, maka siapa pun yang menjalankan VPN tersebut yang dapat melihat aktivitas jaringan. ISP Anda dapat melihat situs yang dikunjungi saat Anda mengunjunginya. Jika situs tersebut menggunakan HTTPS, situs tersebut hanya dapat menebak aktivitas Anda di situs tersebut. Namun jika situs hanya menggunakan HTTP, maka ISP dapat melihat semuanya: istilah pencarian Anda, halaman yang dibaca, dan tautan yang diikuti.\n\nJika perusahaan mengelola perangkat Anda, mereka juga dapat melacak aktivitas perangkat Anda. Menggunakan Tab Pribadi mungkin tidak akan menghentikan mereka untuk mengetahui situs yang Anda kunjungi. Orang lain yang memiliki akses ke perangkat Anda juga dapat memasang perangkat lunak yang memantau aktivitas Anda, dan Tab Pribadi tidak akan dapat melindungi Anda dari hal ini.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Pelajari tentang Tab Pribadi.";
@@ -2084,7 +2084,7 @@
 "QuickSearchEngines" = "Mesin Pencari Cepat";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "Beri Rating pada Brave";
+"RateBrave" = "Beri Rating pada Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Perbesar ukuran teks";
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Ubah jenis fon.";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "Memuat konten...";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Muat laman asli";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Laman tidak dapat ditampilkan pada Tampilan Baca";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2237,10 +2237,10 @@
 "ReportBrokenContactMeSuggestions" = "Surel, Twitter, dsb.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Memungkinkan pengembang Brave mengetahui bahwa situs ini tidak bekerja dengan benar dengan Shields:";
+"ReportBrokenSiteBody1" = "Memungkinkan pengembang Ping mengetahui bahwa situs ini tidak bekerja dengan benar dengan Shields:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Catatan: Laporan yang dikirim ke peladen Brave akan mencakup alamat situs, nomor versi Brave, pengaturan Perisai, status VPN, serta pengaturan bahasa.";
+"ReportBrokenSiteBody2" = "Catatan: Laporan yang dikirim ke peladen Ping akan mencakup alamat situs, nomor versi Brave, pengaturan Perisai, status VPN, serta pengaturan bahasa.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Kirim";
@@ -2273,33 +2273,33 @@
 "RestoreTabNegativeButtonTitle" = "Tidak";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Sayangnya, Brave mengalami kerusakan dan tidak ditutup dengan benar.\nPulihkan tab Anda?";
+"RestoreTabOnCrashAlertMessage" = "Sayangnya, Ping mengalami kerusakan dan tidak ditutup dengan benar.\nPulihkan tab Anda?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave Ditutup Mendadak.";
+"RestoreTabOnCrashAlertTitle" = "Ping Ditutup Mendadak.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, Anda dapat melihat iklan yang menghormati privasi dari jaringan Brave Ads. Tanpa pelacak. Tanpa hambatan. Dan data Anda akan tetap aman sepenuhnya.";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Dengan Ping Rewards, Anda dapat melihat iklan yang menghormati privasi dari jaringan Ping Ads. Tanpa pelacak. Tanpa hambatan. Dan data Anda akan tetap aman sepenuhnya.";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Aktifkan Imbalan";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana saja pada layar untuk melanjutkan ke Brave Talk.";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana saja pada layar untuk melanjutkan ke Ping Talk.";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Kini, Anda dapat mulai melakukan panggilan gratis";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Untuk memulai panggilan gratis, aktifkan Brave Rewards";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Untuk memulai panggilan gratis, aktifkan Ping Rewards";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "Aktifkan untuk membantu mendukung para kreator konten";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Menggunakan Brave Rewards akan membantu mendukung kreator konten sembari Anda meramban.";
+"rewards.disabledStatusBody" = "Menggunakan Ping Rewards akan membantu mendukung kreator konten sembari Anda meramban.";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Anda membantu mendukung para kreator konten";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2309,10 +2309,10 @@
 "rewards.optInDisclaimer" = "Dengan mengklik, Anda menyetujui %1$@ dan %2$@. Nonaktifkan kapan saja di Pengaturan.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Dukung para kreator dan penerbit konten secara otomatis dengan mengaktifkan Brave Private Ads. Brave Private Ads adalah iklan yang menjaga privasi dan yang memberi imbalan kepada kreator konten. ";
+"rewards.settingsToggleMessage" = "Dukung para kreator dan penerbit konten secara otomatis dengan mengaktifkan Ping Private Ads. Ping Private Ads adalah iklan yang menjaga privasi dan yang memberi imbalan kepada kreator konten. ";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Aktifkan Brave Rewards";
+"rewards.settingsToggleTitle" = "Aktifkan Ping Rewards";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Anda membantu mendukung para kreator konten seperti yang satu ini.";
@@ -2342,7 +2342,7 @@
 "RewardsInternalsContributionAmount" = "Jumlah kontribusi";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Token Brave";
+"RewardsInternalsContributionProcessorBraveTokens" = "Token Ping";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Tidak ada";
@@ -2600,7 +2600,7 @@
 "SearchSuggestionsSectionHeader" = "Saran Pencarian";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Cari dengan Brave";
+"SearchWithBrave" = "Cari dengan Ping";
 
 /* Settings security section title */
 "Security" = "Keamanan";
@@ -2609,18 +2609,18 @@
 "sendButtonTitle" = "Kirim";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Kirim laporan mogok agar Brave dapat memperbaikinya?";
+"SendCrashReportAlertMessage" = "Kirim laporan mogok agar Ping dapat memperbaikinya?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Duh! Brave mogok";
+"SendCrashReportAlertTitle" = "Duh! Ping mogok";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Kirim Laporan";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Kini, Brave dapat diatur sebagai peramban bawaan Anda di iOS. Ketuk di sini untuk membuka pengaturan.";
+"setDefaultBrowserCalloutTitle" = "Kini, Ping dapat diatur sebagai peramban bawaan Anda di iOS. Ketuk di sini untuk membuka pengaturan.";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Atur sebagai Peramban Bawaan";
 
 /* No comment provided by engineer. */
@@ -2642,7 +2642,7 @@
 "settings.autocloseTabsSetting" = "Tutup Tab";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Izinkan Brave untuk secara otomatis menutup tab yang belum ditonton baru-baru ini.";
+"settings.autocloseTabsSettingFooter" = "Izinkan Ping untuk secara otomatis menutup tab yang belum ditonton baru-baru ini.";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Kualitas Tayang Tertinggi";
@@ -2656,8 +2656,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Media";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "Buka tautan YouTube di Brave";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "Buka tautan YouTube di Ping";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Aktifkan Waktu Melihat Layar";
@@ -2669,10 +2669,10 @@
 "settings.qualitySettings" = "Pengaturan Kualitas";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Pesan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.";
+"settings.sendUsagePingDescription" = "Pesan privat ini memungkinkan Ping memperkirakan pengguna aktifnya.";
 
 /* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Kirimkan ping penggunaan harian secara otomatis ke Brave";
+"settings.sendUsagePingTitle" = "Kirimkan ping penggunaan harian secara otomatis ke Ping";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "Bagikan berita";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shield telah menjaga privasi online Anda.";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping Shield telah menjaga privasi online Anda.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Selamat. Anda cukup spesial.";
@@ -2747,7 +2747,7 @@
 "shieldEducation.videoAdBlockTitle" = "Iklan diblok selagi melihat video pada situs ini.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Default Global Perisai Brave";
+"ShieldsDefaults" = "Default Global Perisai Ping";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Ini adalah pengaturan Shields default untuk situs baru. Mengubah nilai ini tidak akan memengaruhi pengaturan masing-masing situs yang telah ada.";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "Pindai Kode QR";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Buka Brave News dan Dapatkan Kabar Terpopuler Hari Ini";
+"shortcuts.activityTypeBraveNewsDescription" = "Buka Ping News dan Dapatkan Kabar Terpopuler Hari Ini";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Buka Peramban di Tab Baru dan Hapus Semua Data Riwayat Peramban Privat";
@@ -2780,7 +2780,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "Hapus Riwayat Perambanan";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Hapus Riwayat Peramban Brave";
+"shortcuts.activityTypeClearHistoryTitle" = "Hapus Riwayat Peramban Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "Buka Peramban di Tab Baru dan Aktfkan VPN";
@@ -2789,7 +2789,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Aktifkan VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Buka Peramban Brave dan Aktifkan VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "Buka Peramban Ping dan Aktifkan VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Buka Tab Privat Baru";
@@ -2810,13 +2810,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Buka Markah";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "Buka Markah Peramban Brave";
+"shortcuts.activityTypeOpenBookmarksTitle" = "Buka Markah Peramban Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Buka Brave News";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Buka Ping News";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Buka Brave News";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Buka Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "Buka Layar Riwayat Peramban";
@@ -2825,7 +2825,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Buka Riwayat Peramban";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "Buka Riwayat Peramban Brave";
+"shortcuts.activityTypeOpenHistoryListTitle" = "Buka Riwayat Peramban Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Mulai Memutar Video Anda di Daftar Putar";
@@ -2837,7 +2837,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Buka Daftar Putar";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Buka Tab Brave Buka di Perangkat Lain";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Buka Tab Ping Buka di Perangkat Lain";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Buka Tab dari Perangkat Lain";
@@ -2846,7 +2846,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "Buka Tab dari Perangkat Lain";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "Mulai Mencari di Web Dengan Aman Bersama Brave";
+"shortcuts.activityTypeTabDescription" = "Mulai Mencari di Web Dengan Aman Bersama Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Buka Situs Web Markah";
@@ -2857,7 +2857,7 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Buka Situs Web";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
+/* Description for opening Ping Settings for altering Siri shortcut. */
 "shortcuts.shortcutOpenApplicationSettingsDescription" = "Pilihan ini akan membuka Pengaturan Brave. Untuk mengubah berbagai pilihan Siri, silakan pilih menu 'Siri & Cari' dan sesuaikan pilihan Anda.";
 
 /* Button title that open application settings */
@@ -2870,7 +2870,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Hapus Riwayat Perambanan";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Gunakan Jalan Pintas untuk mengaktifkan VPN Brave melalui Siri - Bantuan Suara";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Gunakan Jalan Pintas untuk mengaktifkan VPN Ping melalui Siri - Bantuan Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Aktifkan VPN";
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Buka Markah";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Jalan Pintas untuk membuka tab baru & menampilkan Umpan Berita Brave melalui Siri - Bantuan Suara";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Jalan Pintas untuk membuka tab baru & menampilkan Umpan Berita Ping melalui Siri - Bantuan Suara";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Buka Brave News";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Buka Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Gunakan Jalan Pintas untuk membuka layar riwayat peramban melalui Siri - Asisten Suara";
@@ -2951,18 +2951,18 @@
 "ShowTabsBar" = "Bilah Tab";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Terima kasih telah memberi tahu pengembang Brave bahwa ada yang tidak berfungsi dengan benar di situs ini. Kami akan membetulkannya sejauh yang kami bisa!";
+"SiteReportedBody" = "Terima kasih telah memberi tahu pengembang Ping bahwa ada yang tidak berfungsi dengan benar di situs ini. Kami akan membetulkannya sejauh yang kami bisa!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Terima Kasih";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Perisai";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
 
-/* Text used for social sharing together with Brave Shield values */
+/* Text used for social sharing together with Ping Shield values */
 "socialSharing.shareDescriptionTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
 
 /* Open search section of settings */
@@ -3113,7 +3113,7 @@
 "SyncRemoveDeviceDefaultName" = "Perangkat";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Brave akan dihapus. Anda harus memulai rantai sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
+"SyncRemoveLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Ping akan dihapus. Anda harus memulai rantai sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Hapus Rantai Sinkronisasi";
@@ -3152,7 +3152,7 @@
 "SyncToDevice" = "Sinkronisasikan dengan perangkat";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "Dengan menggunakan perangkat sinkronisasi yang telah ada, buka Pengaturan Brave dan navigasilah ke Pengaturan > Sinkronisasi. Pilih \"Tambahkan Perangkat\" dan pindai kode yang ditampilkan di layar.";
+"SyncToDeviceDescription" = "Dengan menggunakan perangkat sinkronisasi yang telah ada, buka Pengaturan Ping dan navigasilah ke Pengaturan > Sinkronisasi. Pilih \"Tambahkan Perangkat\" dan pindai kode yang ditampilkan di layar.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Tidak dapat mensinkronkan perangkat ini";
@@ -3277,14 +3277,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "Persyaratan Layanan";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Persyaratan Penggunaan";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "Bagikan...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Bagikan Brave dengan teman Anda!";
+"themeQRCodeShareTitle" = "Bagikan Ping dengan teman Anda!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Otomatis";
@@ -3326,13 +3326,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Maaf, alamat umpan tersebut tidak memiliki konten.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Tambahkan Sumber ke Berita Brave";
+"today.addSourceShareTitle" = "Tambahkan Sumber ke Berita Ping";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Umpan RSS yang Tersedia";
 
 /* The name of the feature */
-"today.braveToday" = "Berita Brave";
+"today.braveToday" = "Berita Ping";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "Berita";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "Penawaran Khusus";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Berita Brave akan berhenti menampilkan konten dari %@";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Berita Ping akan berhenti menampilkan konten dari %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Dinonaktifkan";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "Sembunyikan konten dari %@";
 
 /* No comment provided by engineer. */
@@ -3370,11 +3370,11 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Tidak ada artikel yang dapat ditampilkan";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "Izinkan konten dari %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Berita Brave mengalami beberapa masalah. Coba lagi.";
+"today.errorGeneralBody" = "Berita Ping mengalami beberapa masalah. Coba lagi.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Aduh...";
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Sumber Tidak Aman - Risiko Tanggung Sendiri";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan... tara!\nBerita Brave didukung iklan dengan iklan privat yang anonim.";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan... tara!\nBerita Ping didukung iklan dengan iklan privat yang anonim.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
 "today.introCardTitle" = "Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Tampilkan Berita Brave";
+"today.isEnabledToggleLabel" = "Tampilkan Berita Ping";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Pelajari lebih lanjut tentang data Anda";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Lebih Banyak Tawaran dari Brave";
+"today.moreBraveOffers" = "Lebih Banyak Tawaran dari Ping";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Tidak ada internet";
@@ -3436,16 +3436,16 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosikan";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Sembunyikan";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Beri Rating pada Brave";
+"today.rateBraveCardRateActionTitle" = "Beri Rating pada Ping";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Beri tahu kami pendapat Anda!";
 
-/* Title shown on the Rate Brave Card */
+/* Title shown on the Rate Ping Card */
 "today.rateBraveCardTitle" = "Suka Brave?";
 
 /* No comment provided by engineer. */
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "Diusulkan";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Aktifkan Berita Brave";
+"today.turnOnBraveToday" = "Aktifkan Berita Ping";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "Batal ikuti";
@@ -3523,20 +3523,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Maaf, telah terjadi kesalahan";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "Versi %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Lihat di %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Harap izinkan Akses Mikrofon di Pengaturan Sistem iOS agar Brave bisa menggunakan pencarian suara anonim.";
+"voice.search.microphone.description.required" = "Harap izinkan Akses Mikrofon di Pengaturan Sistem iOS agar Ping bisa menggunakan pencarian suara anonim.";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Diperlukan Akses Mikrofon";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave tidak menyimpan atau membagikan pencarian suara Anda.";
+"voice.search.screen.disclaimer" = "Ping tidak menyimpan atau membagikan pencarian suara Anda.";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "aktifkan";
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "Aktifkan Pembaruan Otomatis";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan potongan  20% selama 3 bulan!";
+"vpn.autoRenewDiscountPopOverTitle" = "Perbarui otomatis Langganan VPN Ping Anda sekarang dan dapatkan potongan  20% selama 3 bulan!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan 1 bulan gratis!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Perbarui otomatis Langganan VPN Ping Anda sekarang dan dapatkan 1 bulan gratis!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "ini berarti Anda akan kehilangan perlindungan ekstra dari Brave untuk semua app di ponsel Anda.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "ini berarti Anda akan kehilangan perlindungan ekstra dari Ping untuk semua app di ponsel Anda.";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Oh tidak! Langganan VPN Brave Anda sebentar lagi berakhir.";
+"vpn.autoRenewSoonExpireTitle" = "Oh tidak! Langganan VPN Ping Anda sebentar lagi berakhir.";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Beli";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Firewall Brave + VPN";
+"vpn.buyVPNTitle" = "Firewall Ping + VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Lindungi 5 perangkat dengan 1 paket berlangganan";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Pilih lokasi geo/negara Anda";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave tidak pernah mencatat aktivitas Anda";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping tidak pernah mencatat aktivitas Anda";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Lindungi setiap aplikasi & seluruh perangkat Anda";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Lebih aman untuk rumah atau Wi-Fi umum";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Secepat kilat, hingga 100 Mbps";
 
 /* App Version field for customer support contact form. */
@@ -3590,7 +3590,7 @@
 "vpn.contactFormCarrier" = "Operator Telepon Seluler";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda memasang VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik untuk memecahkannya secepat mungkin.";
+"vpn.contactFormDoNotEditText" = "Ping tidak melacak Anda atau mengetahui cara Anda menggunakan aplikasi kami, sehingga kami tidak tahu cara Anda memasang VPN. Silakan bagikan info tentang masalah yang Anda alami dan kami akan melakukan yang terbaik untuk memecahkannya secepat mungkin.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Tidak dapat mengirim surel. Silakan periksa kembali konfigurasi surel Anda.";
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "Timezone iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Masalah Firewall + VPN Brave";
+"vpn.contactFormTitle" = "Masalah Firewall + VPN Ping";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Aktifkan";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3668,13 +3668,13 @@
 "vpn.iapDisclaimer" = "Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan sebelum diperbarui.";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Profil ini memungkinkan VPN untuk secara otomatis tersambung dan mengamankan lalu-lintas di semua perangkat Anda setiap waktu. VPN ini akan terenkripsi dan diarahkan melalui firewall cerdas Brave untuk memblokir koneksi yang berpotensi menyerang dan merusak.";
+"vpn.installProfileBody" = "Profil ini memungkinkan VPN untuk secara otomatis tersambung dan mengamankan lalu-lintas di semua perangkat Anda setiap waktu. VPN ini akan terenkripsi dan diarahkan melalui firewall cerdas Ping untuk memblokir koneksi yang berpotensi menyerang dan merusak.";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "Pasang Profil VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave kini akan memasang profil VPN.";
+"vpn.installProfileTitle" = "Ping kini akan memasang profil VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN kini telah diaktifkan";
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Pasang VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Cobalah secara GRATIS";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Telah Kedaluwarsa";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Memblokir koneksi jaringan yang tak diinginkan";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Blokir iklan dan pelacak di semua app";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "Mendukung kecepatan hingga 100 Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "Cepat dan tak terbatas hinggan 100Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "Dukungan 24/7";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "Mengamankan semua koneksi";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "Pulihkan";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Harap login ke Akun Brave untuk me-refresh sesi VPN Anda.";
+"vpn.sessionExpiredDescription" = "Harap login ke Akun Ping untuk me-refresh sesi VPN Anda.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Tutup";
@@ -3791,10 +3791,10 @@
 "vpn.settingsFAQ" = "Dukungan VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Tautkan pembelian ke akun Brave Anda";
+"vpn.settingsLinkReceipt" = "Tautkan pembelian ke akun Ping Anda";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Tautkan pembelian Toko Aplikasi Anda ke akun Brave Anda untuk menggunakan VPN Brave pada perangkat lain.";
+"vpn.settingsLinkReceiptFooter" = "Tautkan pembelian Toko Aplikasi Anda ke akun Ping Anda untuk menggunakan VPN Ping pada perangkat lain.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Kelola Langganan";
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "Berlangganan Sekarang";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tepat sekali. Langganan Brave VPN Anda kini bisa digunakan hingga 5 perangkat. Jadi, Anda bisa berlangganan di iOS dan menggunakannya di perangkat Mac, Windows, dan Android secara gratis.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tepat sekali. Langganan Ping VPN Anda kini bisa digunakan hingga 5 perangkat. Jadi, Anda bisa berlangganan di iOS dan menggunakannya di perangkat Mac, Windows, dan Android secara gratis.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Kini, gunakan VPN Brave di semua perangkat milik Anda dengan harga yang sama!";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Kini, gunakan VPN Ping di semua perangkat milik Anda dengan harga yang sama!";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Coba lagi VPN Brave dan dapatkan potongan 20% selama 3 bulan!";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Coba lagi VPN Ping dan dapatkan potongan 20% selama 3 bulan!";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Siap untuk melindungi setiap app dalam ponsel Anda? Kembalilah ke VPN Brave dan dapatkan potongan 20% selama 3 bulan ke depan.";
+"vpn.subscribeVPNPopOverSubDescription" = "Siap untuk melindungi setiap app dalam ponsel Anda? Kembalilah ke VPN Ping dan dapatkan potongan 20% selama 3 bulan ke depan.";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Brave.";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Brave.";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Apakah Anda tahu bahwa VPN Brave melindungi Anda di luar Peramban Brave?";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Apakah Anda tahu bahwa VPN Ping melindungi Anda di luar Peramban Brave?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Perbarui";
@@ -3869,7 +3869,7 @@
 "vpn.updateBillingSoonExpirePopOverDescription" = "Ingin tetap melindungi semua app dalam ponsel Anda? Perbaruilah detail pembayaran Anda.";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Ada masalah penagihan dengan akun Anda, yang artinya langganan VPN Brave Anda sebentar lagi berakhir.";
+"vpn.updateBillingSoonExpirePopOverTitle" = "Ada masalah penagihan dengan akun Anda, yang artinya langganan VPN Ping Anda sebentar lagi berakhir.";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Perbarui Pembayaran";
@@ -3878,10 +3878,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Perbarui Metode Pembayaran";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Bahkan di belakang layar, Brave akan tetap melindungi Anda.";
+"vpn.vpnBackgroundNotificationBody" = "Bahkan di belakang layar, Ping akan tetap melindungi Anda.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave telah AKTIF";
+"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Ping telah AKTIF";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "Terjadi masalah saat mulai mengaktifkan VPN. Silakan coba lagi atau cobalah untuk mengatur ulang konfigurasi di halaman pengaturan VPN.";
@@ -3890,7 +3890,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Kesalahan";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN Brave memerlukan pemasangan profil VPN di perangkat Anda agar dapat bekerja.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN Ping memerlukan pemasangan profil VPN di perangkat Anda agar dapat bekerja.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Izin tidak diberikan";
@@ -3917,7 +3917,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "Wilayah VPN";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Firewall + VPN Brave Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
+"vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Firewall + VPN Ping Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Atur ulang konfigurasi";

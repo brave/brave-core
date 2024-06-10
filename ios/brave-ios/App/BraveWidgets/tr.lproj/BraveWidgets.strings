@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Sadece onaylamak için soruyorum, \"Brave Oynatma Listesi\" bölümünü mü istediniz?";
+"e13lS3-FGO5qW" = "Sadece onaylamak için soruyorum, \"Ping Oynatma Listesi\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Sadece onaylamak için soruyorum, \"Brave Cüzdanı\" bölümünü mü istediniz?";
+"e13lS3-jXiFQY" = "Sadece onaylamak için soruyorum, \"Ping Cüzdanı\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Sadece onaylamak için soruyorum, \"Yeni Gizli Sekme\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Sadece onaylamak için soruyorum, \"Brave News\" bölümünü mü istediniz?";
+"e13lS3-XCyA8c" = "Sadece onaylamak için soruyorum, \"Ping News\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Sadece onaylamak için soruyorum, \"Arama\" bölümünü mü istediniz?";
@@ -74,7 +74,7 @@
 "EUS9FL" = "Pencere Öğesi Kısayolu";
 
 /* (No Comment) */
-"FGO5qW" = "Brave Oynatma Listesi";
+"FGO5qW" = "Ping Oynatma Listesi";
 
 /* (No Comment) */
 "gpCwrM" = "İstatistik Yapılandırması";
@@ -89,7 +89,7 @@
 "joEZJM" = "#2";
 
 /* (No Comment) */
-"jXiFQY" = "Brave Cüzdanı";
+"jXiFQY" = "Ping Cüzdanı";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "\"Brave Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
+"L1fziM-FGO5qW" = "\"Ping Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "\"Brave Cüzdanı\" ile eşleşen ${count} seçenek var.";
+"L1fziM-jXiFQY" = "\"Ping Cüzdanı\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "\"Yeni Gizli Sekme\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "\"Brave News\" ile eşleşen ${count} seçenek var.";
+"L1fziM-XCyA8c" = "\"Ping News\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "\"Arama\" ile eşleşen ${count} seçenek var.";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Sadece onaylamak için soruyorum, \"Brave Oynatma Listesi\" bölümünü mü istediniz?";
+"r2EI05-FGO5qW" = "Sadece onaylamak için soruyorum, \"Ping Oynatma Listesi\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Sadece onaylamak için soruyorum, \"Brave Cüzdanı\" bölümünü mü istediniz?";
+"r2EI05-jXiFQY" = "Sadece onaylamak için soruyorum, \"Ping Cüzdanı\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Sadece onaylamak için soruyorum, \"Yeni Gizli Sekme\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Sadece onaylamak için soruyorum, \"Brave News\" bölümünü mü istediniz?";
+"r2EI05-XCyA8c" = "Sadece onaylamak için soruyorum, \"Ping News\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Sadece onaylamak için soruyorum, \"Arama\" bölümünü mü istediniz?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "\"Brave Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
+"tNCrcE-FGO5qW" = "\"Ping Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "\"Brave Cüzdanı\" ile eşleşen ${count} seçenek var.";
+"tNCrcE-jXiFQY" = "\"Ping Cüzdanı\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "\"Yeni Gizli Sekme\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "\"Brave News\" ile eşleşen ${count} seçenek var.";
+"tNCrcE-XCyA8c" = "\"Ping News\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "\"Arama\" ile eşleşen ${count} seçenek var.";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "\"Brave Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
+"TxuMja-FGO5qW" = "\"Ping Oynatma Listesi\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "\"Brave Cüzdanı\" ile eşleşen ${count} seçenek var.";
+"TxuMja-jXiFQY" = "\"Ping Cüzdanı\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "\"İndirilenler\" ile eşleşen ${count} seçenek var.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "\"Yeni Gizli Sekme\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "\"Brave News\" ile eşleşen ${count} seçenek var.";
+"TxuMja-XCyA8c" = "\"Ping News\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "\"Arama\" ile eşleşen ${count} seçenek var.";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Engellenen Reklamlar";
 
 /* (No Comment) */
-"XCyA8c" = "Brave News";
+"XCyA8c" = "Ping News";
 
 /* (No Comment) */
 "XkwBGY" = "Kilit Ekranı Kısayol Yapılandırması";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Sadece onaylamak için soruyorum, \"Brave Oynatma Listesi\" bölümünü mü istediniz?";
+"YQiQuz-FGO5qW" = "Sadece onaylamak için soruyorum, \"Ping Oynatma Listesi\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Sadece onaylamak için soruyorum, \"Brave Cüzdanı\" bölümünü mü istediniz?";
+"YQiQuz-jXiFQY" = "Sadece onaylamak için soruyorum, \"Ping Cüzdanı\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Sadece onaylamak için soruyorum, \"İndirilenler\" bölümünü mü istediniz?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Sadece onaylamak için soruyorum, \"Yeni Gizli Sekme\" bölümünü mü istediniz?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Sadece onaylamak için soruyorum, \"Brave News\" bölümünü mü istediniz?";
+"YQiQuz-XCyA8c" = "Sadece onaylamak için soruyorum, \"Ping News\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Sadece onaylamak için soruyorum, \"Arama\" bölümünü mü istediniz?";

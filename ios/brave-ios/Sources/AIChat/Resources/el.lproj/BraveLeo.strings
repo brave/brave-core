@@ -10,8 +10,8 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Το Leo είναι ένας έξυπνος βοηθός που υποστηρίζεται από AI. Ενσωματωμένος απευθείας στο πρόγραμμα περιήγησης.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Συνδέστε την αγορά στον λογαριασμό σας Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Συνδέστε την αγορά στον λογαριασμό σας Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Λήγει";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Η απάντηση επισημάνθηκε ως «Μου αρέσει»";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Παροχή σχολίων για το Brave AI";
+"aichat.feedbackViewMainTitle" = "Παροχή σχολίων για το Ping AI";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Επιλογή Premium";
@@ -92,7 +92,7 @@
 "aichat.infoAboutPageContext" = "Διαμόρφωση απαντήσεων με βάση τα περιεχόμενα της σελίδας";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Γεια σας, είμαι το Leo. Παρέχομαι μέσω της Brave και με την υποστήριξη του Claude Instant, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Γεια σας, είμαι το Leo. Παρέχομαι μέσω της Ping και με την υποστήριξη του Claude Instant, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου.";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant από την Anthropic";
@@ -118,7 +118,7 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Κάντε εναλλαγή για να ρωτήσετε για αυτή τη σελίδα. Το περιεχόμενό της θα σταλθεί στον Leo του Brave, μαζί με τα μηνύματά σας.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Διαχείριση συνδρομών";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Επιτρέψτε την πρόσβαση μικροφώνου στις ρυθμίσεις συστήματος iOS, προκειμένου το Brave να χρησιμοποιεί ανώνυμη φωνητική καταχώρηση.";
+"aichat.microphonePermissionAlertDescription" = "Επιτρέψτε την πρόσβαση μικροφώνου στις ρυθμίσεις συστήματος iOS, προκειμένου το Ping να χρησιμοποιεί ανώνυμη φωνητική καταχώρηση.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Απαιτείται πρόσβαση στο μικρόφωνο";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Προσπαθήστε ξανά";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Η Brave δεν αποθηκεύει ούτε κοινοποιεί τα φωνητικά δεδομένα που εισάγετε.";
+"aichat.speechRecognizerDisclaimer" = "Η Ping δεν αποθηκεύει ούτε κοινοποιεί τα φωνητικά δεδομένα που εισάγετε.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Πρόταση ερωτήσεων...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Σύνοψη αυτής της σελίδας";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Καταλαβαίνω";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Το Brave Leo είναι ένας ιδιωτικός έξυπνος βοηθός AI που εμπλουτίζει τη χρήση του Internet. Το Leo είναι δωρεάν για χρήση με περιορισμένη πρόσβαση. Το Brave Leo Premium προσφέρει περισσότερα μοντέλα, υψηλότερα όρια και παρέχει στους συνδρομητές πρόσβαση πριν από τους υπόλοιπους χρήστες σε νέες δυνατότητες. Το προεπιλεγμένο μοντέλο για όλους τους χρήστες είναι αυτήν τη στιγμή το Mixtral 8x7B. Ανατρέξτε στο **[Brave wiki](%1$@)** για περισσότερες λεπτομέρειες.\n\nΌταν κάνετε μια ερώτηση στο Leo, μπορεί να χρησιμοποιεί το περιβάλλον της ιστοσελίδας που βλέπετε ή το κείμενο που επισημαίνετε για να σας δώσει μια απάντηση. Η ακρίβεια των απαντήσεων δεν είναι εγγυημένη και μπορεί να περιλαμβάνουν ανακριβείς, παραπλανητικές ή ψευδείς πληροφορίες. Το Leo χρησιμοποιεί δεδομένα από την Αναζήτηση Brave για να βελτιώνει την ποιότητα των απαντήσεων. Μην υποβάλλετε ευαίσθητες ή ιδιωτικές πληροφορίες και να είστε προσεκτικοί με τυχόν απαντήσεις που σχετίζονται με την υγεία, τα οικονομικά, την προσωπική ασφάλεια ή παρόμοια θέματα. Μπορείτε να προσαρμόσετε τις επιλογές του Leo στις Ρυθμίσεις ανά πάσα στιγμή.\n\nΤο Leo δεν συλλέγει αναγνωριστικά, όπως τη διεύθυνση IP σας, που μπορούν να συνδεθούν με εσάς. Δεν διατηρούνται προσωπικά δεδομένα από το μοντέλο AI ή τρίτους παρόχους μοντέλων. Ανατρέξτε στην **[πολιτική απορρήτου](%2$@)** για περισσότερες πληροφορίες.";
+"aichat.termsConditionsDescription" = "Το Ping Leo είναι ένας ιδιωτικός έξυπνος βοηθός AI που εμπλουτίζει τη χρήση του Internet. Το Leo είναι δωρεάν για χρήση με περιορισμένη πρόσβαση. Το Ping Leo Premium προσφέρει περισσότερα μοντέλα, υψηλότερα όρια και παρέχει στους συνδρομητές πρόσβαση πριν από τους υπόλοιπους χρήστες σε νέες δυνατότητες. Το προεπιλεγμένο μοντέλο για όλους τους χρήστες είναι αυτήν τη στιγμή το Mixtral 8x7B. Ανατρέξτε στο **[Brave wiki](%1$@)** για περισσότερες λεπτομέρειες.\n\nΌταν κάνετε μια ερώτηση στο Leo, μπορεί να χρησιμοποιεί το περιβάλλον της ιστοσελίδας που βλέπετε ή το κείμενο που επισημαίνετε για να σας δώσει μια απάντηση. Η ακρίβεια των απαντήσεων δεν είναι εγγυημένη και μπορεί να περιλαμβάνουν ανακριβείς, παραπλανητικές ή ψευδείς πληροφορίες. Το Leo χρησιμοποιεί δεδομένα από την Αναζήτηση Ping για να βελτιώνει την ποιότητα των απαντήσεων. Μην υποβάλλετε ευαίσθητες ή ιδιωτικές πληροφορίες και να είστε προσεκτικοί με τυχόν απαντήσεις που σχετίζονται με την υγεία, τα οικονομικά, την προσωπική ασφάλεια ή παρόμοια θέματα. Μπορείτε να προσαρμόσετε τις επιλογές του Leo στις Ρυθμίσεις ανά πάσα στιγμή.\n\nΤο Leo δεν συλλέγει αναγνωριστικά, όπως τη διεύθυνση IP σας, που μπορούν να συνδεθούν με εσάς. Δεν διατηρούνται προσωπικά δεδομένα από το μοντέλο AI ή τρίτους παρόχους μοντέλων. Ανατρέξτε στην **[πολιτική απορρήτου](%2$@)** για περισσότερες πληροφορίες.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Συνομιλήστε ιδιωτικά με το Brave Leo";
+"aichat.termsConditionsTitle" = "Συνομιλήστε ιδιωτικά με το Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Φωνητικά δεδομένα εισόδου";

@@ -43,8 +43,8 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Εμφάνιση προηγούμενης καρτέλας";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Άνοιγμα Ασπίδων Brave";
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Ping Shields */
+"showShieldsTitle" = "Άνοιγμα Ασπίδων Ping";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Εμφάνιση όλων των καρτελών";

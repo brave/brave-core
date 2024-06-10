@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Markah";
 
 /* The name of the feature */
-"widgets.braveNews" = "Berita Brave";
+"widgets.braveNews" = "Berita Ping";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Unduhan";
@@ -19,17 +19,17 @@
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Coba lagi nanti";
 
-/* Displayed on a news widget that links into the app to read more Brave News content */
+/* Displayed on a news widget that links into the app to read more Ping News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "Baca Lebih Lanjut";
 
-/* Description for Brave News widgets that display the top news */
+/* Description for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetDescription" = "Dapatkan berita terkini";
 
-/* Title for Brave News widgets that display the top news */
+/* Title for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Berita Terpopuler";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Silakan buka Brave untuk melihat favorit Anda di sini";
+"widgets.noFavoritesFound" = "Silakan buka Ping untuk melihat favorit Anda di sini";
 
 /* QR Code section title */
 "widgets.QRCode" = "Kode QR";
@@ -37,13 +37,13 @@
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Cari";
 
-/* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Rangkuman cara Brave menghemat waktu Anda dan melindungi Anda secara daring.";
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Rangkuman cara Ping menghemat waktu Anda dan melindungi Anda secara daring.";
 
-/* Title for Brave Shields widget on 'add widget' screen. */
+/* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Statistik Kerahasiaan";
 
-/* Title of Brave Shields widget shown above stat numbers. */
+/* Title of Ping Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Statistik Kerahasiaan";
 
 /* Button to the browser and enter URL or make a search query there. */
@@ -64,12 +64,12 @@
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Jalan Pintas";
 
-/* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Rangkuman cara Brave telah melindungi Anda secara daring.";
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Rangkuman cara Ping telah melindungi Anda secara daring.";
 
-/* Title for Brave Shields single stat widget on 'add widget' screen. */
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistik Kerahasiaan";
 
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Dompet Brave";
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Dompet Ping";
 

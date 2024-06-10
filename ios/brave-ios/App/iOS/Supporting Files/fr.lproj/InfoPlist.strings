@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Cette option vous permet de prendre des photos et de les importer.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Authentifie votre accès à Brave";
+"NSFaceIDUsageDescription" = "Authentifie votre accès à Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Les sites Web que vous consultez peuvent demander votre position.";
@@ -20,7 +20,7 @@
 "NSPhotoLibraryAddUsageDescription" = "Cette option vous permet d'enregistrer des photos.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Cette autorisation sert à activer la reconnaissance vocale avancée d'Apple. En cas de refus, la reconnaissance intégrée à l'appareil sera utilisée et les recherches seront entièrement privée. Brave n'enregistre pas et ne partage pas vos recherches vocales.";
+"NSSpeechRecognitionUsageDescription" = "Cette autorisation sert à activer la reconnaissance vocale avancée d'Apple. En cas de refus, la reconnaissance intégrée à l'appareil sera utilisée et les recherches seront entièrement privée. Ping n'enregistre pas et ne partage pas vos recherches vocales.";
 
 /* (No Comment) */
 "OPML File" = "Fichier OPML";

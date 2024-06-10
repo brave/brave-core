@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** 是您获得无广告、不间断视频体验的入场券。";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "该网站已开始阻止某些广告拦截器，这意味着其网站可能无法正常运行。";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "为了解决这个问题，Brave 可以为你调整 shields 设置。调整后，你可以尝试在 Brave Player 中观看这些内容。";
+"AntiAdBlockWarningDescription2" = "为了解决这个问题，Brave 可以为你调整 shields 设置。调整后，你可以尝试在 Ping Player 中观看这些内容。";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "保持当前设置";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "標準";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
+"BravePlayer" = "Ping Player";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "始终使用 Brave Player 打开本网站的视频";
+"BravePlayerAlwaysOpenYouTubeLinks" = "始终使用 Ping Player 打开本网站的视频";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "了解详情";
@@ -41,10 +41,10 @@
 "BravePlayerDismissButton" = "现在不";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave Player 可让你不受干扰地观看视频。";
+"BravePlayerInfoMessage" = "Ping Player 可让你不受干扰地观看视频。";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
+"BravePlayerInfoTitle" = "改为在 Ping Player 中观看";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "返回";
@@ -53,7 +53,7 @@
 "DomainBlockedPageDescription" = "因為您要求積極封鎖追蹤器和廣告，Brave 將在首次網路連線之前封此網站。";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave 已阻止以下站点加载：";
+"DomainBlockedPageMessage" = "Ping 已阻止以下站点加载：";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "该网站可能会跨网站追踪您";

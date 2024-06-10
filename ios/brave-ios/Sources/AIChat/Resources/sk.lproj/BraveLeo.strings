@@ -10,8 +10,8 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo je inteligentný asistent poháňaný AI. Zabudované priamo do prehliadača.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Prepojenie nákupu s účtom Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Prepojenie nákupu s účtom Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Koniec platnosti";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Odpovedané Páči sa mi";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Poskytnúť spätnú väzbu k umelej inteligencii prehliadača Brave";
+"aichat.feedbackViewMainTitle" = "Poskytnúť spätnú väzbu k umelej inteligencii prehliadača Ping";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Prejsť na Premium";
@@ -92,7 +92,7 @@
 "aichat.infoAboutPageContext" = "Tvarujte odpovede na základe obsahu stránky";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňa ma model Claude Instant vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Ping a poháňa ma model Claude Instant vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant od Anthropic";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Prepnutím do polohy „Povolené“ sa opýtate na túto stránku. Jej obsah bude odoslaný spoločnosti Brave Leo spolu s vašimi správami.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Prepnutím do polohy „Povolené“ sa opýtate na túto stránku. Jej obsah bude odoslaný spoločnosti Ping Leo spolu s vašimi správami.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informácie o kontexte stránky";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Spravovať odbery";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Povoľte prístup k mikrofónu v systémových nastaveniach systému iOS, aby Brave mohol používať anonymné hlasové zadávanie.";
+"aichat.microphonePermissionAlertDescription" = "Povoľte prístup k mikrofónu v systémových nastaveniach systému iOS, aby Ping mohol používať anonymné hlasové zadávanie.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Vyžaduje sa prístup k mikrofónu";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Skúsiť znova";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave neukladá ani nezdieľa vaše hlasové vstupy.";
+"aichat.speechRecognizerDisclaimer" = "Ping neukladá ani nezdieľa vaše hlasové vstupy.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Navrhnite otázky...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Zosumarizovať túto stránku";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Rozumiem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo je súkromný inteligentný asistent AI, ktorý zlepšuje vaše používanie internetu. Leo je zadarmo na použitie s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Predvolený model pre všetkých používateľov je momentálne Mixtral 8x7B. Pozrite si **[Brave wiki](%1$ @)** pre viac detailov.\n\nKeď Leovi položíte otázku, môže na poskytnutie odpovede použiť kontext webovej stránky, ktorú si prezeráte, alebo text, ktorý zvýrazníte. Presnosť odpovedí nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Leo používa údaje z Brave Search na zlepšenie kvality odozvy. Neodosielajte citlivé ani súkromné ​​informácie a buďte opatrní pri akýchkoľvek odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach.\n\nLeo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré môžu byť s vami spojené. Model AI ani žiadni poskytovatelia modelov tretích strán neuchovávajú žiadne osobné údaje. Pozrite si **[zásady ochrany osobných údajov ](%2$ @)** pre viac informácií.";
+"aichat.termsConditionsDescription" = "Ping Leo je súkromný inteligentný asistent AI, ktorý zlepšuje vaše používanie internetu. Leo je zadarmo na použitie s obmedzeným prístupom. Ping Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Predvolený model pre všetkých používateľov je momentálne Mixtral 8x7B. Pozrite si **[Brave wiki](%1$ @)** pre viac detailov.\n\nKeď Leovi položíte otázku, môže na poskytnutie odpovede použiť kontext webovej stránky, ktorú si prezeráte, alebo text, ktorý zvýrazníte. Presnosť odpovedí nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Leo používa údaje z Ping Search na zlepšenie kvality odozvy. Neodosielajte citlivé ani súkromné ​​informácie a buďte opatrní pri akýchkoľvek odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach.\n\nLeo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré môžu byť s vami spojené. Model AI ani žiadni poskytovatelia modelov tretích strán neuchovávajú žiadne osobné údaje. Pozrite si **[zásady ochrany osobných údajov ](%2$ @)** pre viac informácií.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Chatovať súkromne s Brave Leo";
+"aichat.termsConditionsTitle" = "Chatovať súkromne s Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Hlasový vstup";

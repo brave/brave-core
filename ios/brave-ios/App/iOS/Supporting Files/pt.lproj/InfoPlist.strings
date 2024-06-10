@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Isso permite que você tire e carregue fotos.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Isso autentica seu acesso ao Brave";
+"NSFaceIDUsageDescription" = "Isso autentica seu acesso ao Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Os sites que você visitar poderão solicitar sua localização.";

@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Reproduktor Brave** vaša je ulaznica za iskustvo prikazivanja videozapisa bez oglasa i prekida.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ovim su se mrežnim mjestom počeli blokirati neki programi za blokiranje oglasa, a to znači da mrežno mjesto možda neće raditi prema očekivanome.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Brave mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
+"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Ping mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zadrži trenutačne postavke";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Standardno";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Reproduktor Brave";
+"BravePlayer" = "Reproduktor Ping";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Uvijek otvarajte videozapise s ovog mrežnog mjesta Reproduktorom Brave";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Uvijek otvarajte videozapise s ovog mrežnog mjesta Reproduktorom Ping";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Isprobaj";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Ne sada";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Uz Reproduktor Brave možete gledati videozapise bez prekida.";
+"BravePlayerInfoMessage" = "Uz Reproduktor Ping možete gledati videozapise bez prekida.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Umjesto toga gledajte u Reproduktoru Brave";
+"BravePlayerInfoTitle" = "Umjesto toga gledajte u Reproduktoru Ping";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Idi natrag";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Budući da ste zahtijevali strogo blokiranje sustava za praćenje i oglasa, preglednik Brave blokira to mrežno mjesto prije prvog povezivanja na mrežu.";
+"DomainBlockedPageDescription" = "Budući da ste zahtijevali strogo blokiranje sustava za praćenje i oglasa, preglednik Ping blokira to mrežno mjesto prije prvog povezivanja na mrežu.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Preglednikom Brave spriječilo se učitavanje sljedećeg mrežnog mjesta:";
+"DomainBlockedPageMessage" = "Preglednikom Ping spriječilo se učitavanje sljedećeg mrežnog mjesta:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Ovo mrežno mjesto može vas pratiti na drugim mrežnim mjestima";

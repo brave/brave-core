@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Bladwijzers";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave News";
+"widgets.braveNews" = "Ping News";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Downloads";
@@ -19,17 +19,17 @@
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Probeer het later opnieuw";
 
-/* Displayed on a news widget that links into the app to read more Brave News content */
+/* Displayed on a news widget that links into the app to read more Ping News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "Lees meer";
 
-/* Description for Brave News widgets that display the top news */
+/* Description for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetDescription" = "Krijg het laatste nieuws";
 
-/* Title for Brave News widgets that display the top news */
+/* Title for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Belangrijk nieuws";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Open Brave om je favorieten hier te bekijken";
+"widgets.noFavoritesFound" = "Open Ping om je favorieten hier te bekijken";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR-code";
@@ -37,13 +37,13 @@
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Zoek";
 
-/* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Een overzicht van hoe Brave je tijd bespaart en je online beschermt.";
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Een overzicht van hoe Ping je tijd bespaart en je online beschermt.";
 
-/* Title for Brave Shields widget on 'add widget' screen. */
+/* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Privacystatistieken";
 
-/* Title of Brave Shields widget shown above stat numbers. */
+/* Title of Ping Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Privacystatistieken";
 
 /* Button to the browser and enter URL or make a search query there. */
@@ -64,12 +64,12 @@
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Opdrachten";
 
-/* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Een overzicht van hoe Brave je online heeft beschermd.";
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Een overzicht van hoe Ping je online heeft beschermd.";
 
-/* Title for Brave Shields single stat widget on 'add widget' screen. */
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Privacystatistiek";
 
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave Wallet";
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Ping Wallet";
 
