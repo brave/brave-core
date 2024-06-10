@@ -30,11 +30,13 @@ TabManager& TabManager::GetInstance() {
 
 void TabManager::AddObserver(TabManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void TabManager::RemoveObserver(TabManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

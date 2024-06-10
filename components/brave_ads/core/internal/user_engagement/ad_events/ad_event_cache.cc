@@ -58,8 +58,9 @@ std::vector<base::Time> AdEventCache::Get(
 
   std::vector<base::Time> timestamps;
 
-  for (const auto& [uuid, ad_events] : ad_event_cache_) {
-    for (const auto& [ad_event_type_id, ad_event_timestamps] : ad_events) {
+  for (const auto& [_, ad_event_history] : ad_event_cache_) {
+    for (const auto& [ad_event_type_id, ad_event_timestamps] :
+         ad_event_history) {
       if (ad_event_type_id == type_id) {
         base::Extend(timestamps, ad_event_timestamps);
       }
@@ -70,7 +71,7 @@ std::vector<base::Time> AdEventCache::Get(
 }
 
 void AdEventCache::ResetForInstanceId(const std::string& id) {
-  ad_event_cache_[id] = {};
+  ad_event_cache_[id].clear();
 }
 
 }  // namespace brave_ads

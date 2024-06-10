@@ -59,8 +59,9 @@ SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   std::transform(segment_probabilities.cbegin(), segment_probabilities.cend(),
                  std::back_inserter(segments),
                  [](const auto& segment_probability) {
-                   CHECK(!segment_probability.first.empty());
-                   return segment_probability.first;
+                   const auto& [segment, _] = segment_probability;
+                   CHECK(!segment.empty());
+                   return segment;
                  });
 
   return segments;

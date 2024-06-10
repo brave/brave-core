@@ -27,10 +27,6 @@ bool HasPreviouslyRedeemedTokens() {
   return !NextTokenRedemptionAt().is_null();
 }
 
-base::TimeDelta DelayBeforeRedeemingTokens() {
-  return NextTokenRedemptionAt() - base::Time::Now();
-}
-
 bool ShouldHaveRedeemedTokensInThePast() {
   return NextTokenRedemptionAt() < base::Time::Now();
 }
@@ -56,7 +52,7 @@ base::TimeDelta CalculateDelayBeforeRedeemingTokens() {
     return kMinimumDelayBeforeRedeemingTokens;
   }
 
-  const base::TimeDelta delay = DelayBeforeRedeemingTokens();
+  const base::TimeDelta delay = NextTokenRedemptionAt() - base::Time::Now();
   if (delay < kMinimumDelayBeforeRedeemingTokens) {
     return kMinimumDelayBeforeRedeemingTokens;
   }

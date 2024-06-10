@@ -235,13 +235,7 @@ uint64_t GetProfileUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileUint64Pref: " << path;
 
   uint64_t integer;
-  const bool success = base::StringToUint64(value->GetString(), &integer);
-  DCHECK(success) << "GetProfileUint64Pref failed: " << path;
-  if (!success) {
-    return 0;
-  }
-
-  return integer;
+  return base::StringToUint64(value->GetString(), &integer) ? integer : 0;
 }
 
 base::Time GetProfileTimePref(const std::string& path) {
@@ -414,13 +408,7 @@ uint64_t GetLocalStateUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileBooleanPref: " << path;
 
   uint64_t integer;
-  const bool success = base::StringToUint64(value->GetString(), &integer);
-  DCHECK(success) << "GetLocalStateUint64Pref failed: " << path;
-  if (!success) {
-    return 0;
-  }
-
-  return integer;
+  return base::StringToUint64(value->GetString(), &integer) ? integer : 0;
 }
 
 base::Time GetLocalStateTimePref(const std::string& path) {

@@ -41,11 +41,13 @@ Conversions::~Conversions() {
 
 void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

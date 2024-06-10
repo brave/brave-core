@@ -66,8 +66,7 @@ void TextClassificationResource::MaybeLoadOrUnload() {
 
 void TextClassificationResource::Load() {
   LoadComponentResource(
-      kTextClassificationResourceId,
-      kFlatBuffersTextClassificationResourceVersion.Get(),
+      kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassificationResource::LoadComponentResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
@@ -102,7 +101,7 @@ void TextClassificationResource::LoadCallback(
               << kTextClassificationResourceId << " "
               << (/*is_neural*/ result.value() ? "neural" : "linear")
               << " text classification resource version "
-              << kFlatBuffersTextClassificationResourceVersion.Get());
+              << kTextClassificationResourceVersion.Get());
 }
 
 void TextClassificationResource::MaybeUnload() {

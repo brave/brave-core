@@ -55,11 +55,13 @@ Catalog::~Catalog() {
 
 void Catalog::AddObserver(CatalogObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void Catalog::RemoveObserver(CatalogObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

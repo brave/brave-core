@@ -45,11 +45,13 @@ Account::~Account() {
 
 void Account::AddObserver(AccountObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void Account::RemoveObserver(AccountObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

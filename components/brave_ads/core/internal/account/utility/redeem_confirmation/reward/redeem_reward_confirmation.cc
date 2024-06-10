@@ -61,6 +61,7 @@ void RedeemRewardConfirmation::CreateAndRedeem(
 RedeemRewardConfirmation::RedeemRewardConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate) {
   CHECK(delegate);
+
   delegate_ = std::move(delegate);
 }
 

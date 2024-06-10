@@ -35,11 +35,13 @@ SiteVisit::~SiteVisit() {
 
 void SiteVisit::AddObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
 void SiteVisit::RemoveObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

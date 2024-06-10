@@ -30,6 +30,9 @@ namespace brave_ads {
 
 namespace {
 
+constexpr int kHtmlClientErrorResponseCodeClass = 4;
+constexpr int kHtmlServerErrorResponseCodeClass = 5;
+
 constexpr char16_t kSerializeDocumentToStringJavaScript[] =
     u"new XMLSerializer().serializeToString(document)";
 
@@ -45,7 +48,7 @@ std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
 }  // namespace
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents),
+    : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid()) {
@@ -76,14 +79,13 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
-PrefService* AdsTabHelper::GetPrefs() const {
-  return Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-      ->GetPrefs();
-}
-
 bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
-  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
+  const PrefService* const prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+
+  return prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         prefs->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
 bool AdsTabHelper::IsVisible() const {
@@ -135,12 +137,11 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
     return true;
   }
 
-  const net::HttpResponseHeaders* const response_headers =
-      navigation_handle->GetResponseHeaders();
-  if (response_headers) {
+  if (const net::HttpResponseHeaders* const response_headers =
+          navigation_handle->GetResponseHeaders()) {
     const int response_code_class = response_headers->response_code() / 100;
-    return response_code_class == 4 /*client error*/ ||
-           response_code_class == 5 /*server error*/;
+    return response_code_class == kHtmlClientErrorResponseCodeClass ||
+           response_code_class == kHtmlServerErrorResponseCodeClass;
   }
 
   return false;
@@ -149,9 +150,18 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabContentDidChange();
 
-  // Set `is_restoring_` to `false` so that listeners are notified of tab
+  // Set `was_restored_` to `false` so that listeners are notified of tab
   // changes after the tab is restored.
-  is_restoring_ = false;
+  was_restored_ = false;
+}
+
+void AdsTabHelper::ResetNavigationState() {
+  redirect_chain_.clear();
+  redirect_chain_.shrink_to_fit();
+
+  is_error_page_ = false;
+
+  is_playing_media_.clear();
 }
 
 void AdsTabHelper::MaybeNotifyBrowserDidBecomeActive() {
@@ -174,7 +184,7 @@ void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
     return;
   }
 
-  if (is_restoring_) {
+  if (was_restored_) {
     // Don't notify user gesture events for restored tabs.
     return;
   }
@@ -203,12 +213,12 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
   }
 
   ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
-                                   is_new_navigation_, is_restoring_,
+                                   is_new_navigation_, was_restored_,
                                    is_error_page_, IsVisible());
 }
 
 void AdsTabHelper::MaybeNotifyTabContentDidChange() {
-  if (is_restoring_ || !is_new_navigation_ || redirect_chain_.empty() ||
+  if (was_restored_ || !is_new_navigation_ || redirect_chain_.empty() ||
       is_error_page_) {
     // Don't notify content changes if the tab was restored, was a previously
     // committed navigation, the web contents are still loading, or an error
@@ -221,6 +231,7 @@ void AdsTabHelper::MaybeNotifyTabContentDidChange() {
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
+  CHECK(ads_service_);
   CHECK(!redirect_chain_.empty());
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
@@ -286,16 +297,12 @@ void AdsTabHelper::DidStartNavigation(
     return;
   }
 
-  is_restoring_ =
+  was_restored_ =
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
 
   is_new_navigation_ = IsNewNavigation(navigation_handle);
 
-  redirect_chain_.clear();
-
-  is_error_page_ = false;
-
-  is_playing_media_.clear();
+  ResetNavigationState();
 }
 
 void AdsTabHelper::DidFinishNavigation(

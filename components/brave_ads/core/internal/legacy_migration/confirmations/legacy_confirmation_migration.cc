@@ -130,11 +130,12 @@ void MigrateConfirmationState(InitializeCallback callback) {
                                     // `DumpWithoutCrashing`.
                                     SCOPED_CRASH_KEY_STRING64(
                                         "Issue32066", "failure_reason",
-                                        "Failed to save confirmation state");
+                                        "Failed to migrate confirmation state");
                                     base::debug::DumpWithoutCrashing();
 
-                                    BLOG(0,
-                                         "Failed to save confirmation state");
+                                    BLOG(
+                                        0,
+                                        "Failed to migrate confirmation state");
 
                                     return FailedToMigrate(std::move(callback));
                                   }

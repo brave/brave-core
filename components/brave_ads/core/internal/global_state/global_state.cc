@@ -45,6 +45,7 @@ GlobalState::~GlobalState() {
 // static
 GlobalState* GlobalState::GetInstance() {
   CHECK(GlobalStateHolder::GetGlobalState());
+
   return GlobalStateHolder::GetGlobalState();
 }
 

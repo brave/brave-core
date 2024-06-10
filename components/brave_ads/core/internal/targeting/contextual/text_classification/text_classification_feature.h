@@ -13,9 +13,8 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kTextClassificationFeature);
 
-inline constexpr base::FeatureParam<int>
-    kFlatBuffersTextClassificationResourceVersion{
-        &kTextClassificationFeature, "flatbuffers_resource_version", 1};
+inline constexpr base::FeatureParam<int> kTextClassificationResourceVersion{
+    &kTextClassificationFeature, "flatbuffers_resource_version", 1};
 
 inline constexpr base::FeatureParam<int>
     kTextClassificationPageProbabilitiesHistorySize{
