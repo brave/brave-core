@@ -65,10 +65,10 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
  private:
   void OnShouldBlockDomain(std::pair<bool, std::string> should_block_domain);
-  void ShowInterstitial();
-  void Enable1PESAndResume();
-  void On1PESState(bool is_1pes_enabled);
-  void RestartNavigation(const GURL& url);
+  void ShowInterstitial(bool proceed_with_resume_cancel);
+  void Enable1PESAndResume(bool proceed_with_resume_cancel);
+  void On1PESState(bool proceed_with_resume_cancel, bool is_1pes_enabled);
+  void RestartNavigation(const GURL& url, bool proceed_with_resume_cancel);
 
   const raw_ptr<AdBlockService> ad_block_service_ = nullptr;
   const raw_ptr<AdBlockCustomFiltersProvider>
