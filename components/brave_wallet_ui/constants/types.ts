@@ -790,6 +790,16 @@ export const DAppSupportedPrimaryChains = [
   BraveWallet.SOLANA_MAINNET
 ]
 
+export const BitcoinMainnetKeyringIds = [
+  BraveWallet.KeyringId.kBitcoin84,
+  BraveWallet.KeyringId.kBitcoinImport
+]
+
+export const BitcoinTestnetKeyringIds = [
+  BraveWallet.KeyringId.kBitcoin84Testnet,
+  BraveWallet.KeyringId.kBitcoinImportTestnet
+]
+
 /**
  * Should match BraveWallet.CoinType defined with "as const" to allow for use
  * as a type-guard.
