@@ -28,7 +28,10 @@ function toGClientConfigItem(name, value, pretty = true) {
 }
 
 function buildDefaultGClientConfig(
-  targetOSList, targetArchList, onlyChromium = false) {
+  targetOSList,
+  targetArchList,
+  onlyChromium = false
+) {
   const items = [
     {
       managed: false,
@@ -36,7 +39,7 @@ function buildDefaultGClientConfig(
       url: config.chromiumRepo,
       custom_deps: {
         'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
-        'src/third_party/chromium-variations': null,
+        'src/third_party/chromium-variations': null
       },
       custom_vars: {
         'checkout_pgo_profiles': config.isBraveReleaseBuild()
@@ -54,7 +57,7 @@ function buildDefaultGClientConfig(
     })
   }
 
-  let out = toGClientConfigItem('solutions', items);
+  let out = toGClientConfigItem('solutions', items)
 
   if (process.env.GIT_CACHE_PATH) {
     out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)
@@ -73,21 +76,35 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   const chromiumRef = expectedSyncInfo.chromiumRef
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
-  const needsUpdate = targetSHA !== headSHA || (!headSHA && !targetSHA) ||
-      JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
+  const needsUpdate =
+    targetSHA !== headSHA ||
+    (!headSHA && !targetSHA) ||
+    JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
-    console.log(`Chromium repo ${chalk.blue.bold('needs sync')}.\n  target is ${
-        chalk.italic(chromiumRef)} at commit ${
-        targetSHA || '[missing]'}\n  current commit is ${
-        chalk.italic(currentRef || '[unknown]')} at commit ${
-        chalk.inverse(headSHA || '[missing]')}\n  latest successful sync is ${
-        JSON.stringify(latestSyncInfo, null, 4)}`)
-  }
-  else {
     console.log(
-        chalk.green.bold(`Chromium repo does not need sync as it is already ${
-            chalk.italic(chromiumRef)} at commit ${targetSHA || '[missing]'}.`))
+      `Chromium repo ${chalk.blue.bold(
+        'needs sync'
+      )}.\n  target is ${chalk.italic(chromiumRef)} at commit ${
+        targetSHA || '[missing]'
+      }\n  current commit is ${chalk.italic(
+        currentRef || '[unknown]'
+      )} at commit ${chalk.inverse(
+        headSHA || '[missing]'
+      )}\n  latest successful sync is ${JSON.stringify(
+        latestSyncInfo,
+        null,
+        4
+      )}`
+    )
+  } else {
+    console.log(
+      chalk.green.bold(
+        `Chromium repo does not need sync as it is already ${chalk.italic(
+          chromiumRef
+        )} at commit ${targetSHA || '[missing]'}.`
+      )
+    )
   }
   return needsUpdate
 }
@@ -99,9 +116,13 @@ function syncChromium(program) {
 
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = [
-    'sync', '--nohooks', '--revision', 'src@' + requiredChromiumRef, '--reset',
+    'sync',
+    '--nohooks',
+    '--revision',
+    'src@' + requiredChromiumRef,
+    '--reset',
     '--upstream'
-  ];
+  ]
 
   if (program.fetch_all) {
     args.push('--with_tags')
@@ -112,22 +133,27 @@ function syncChromium(program) {
     args.push('--force')
   }
 
-  const latestSyncInfoFilePath =
-      path.join(config.rootDir, '.brave_latest_successful_sync.json')
+  const latestSyncInfoFilePath = path.join(
+    config.rootDir,
+    '.brave_latest_successful_sync.json'
+  )
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
-    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString(),
+    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString()
   }
 
-  const chromiumNeedsUpdate =
-      shouldUpdateChromium(latestSyncInfo, expectedSyncInfo)
+  const chromiumNeedsUpdate = shouldUpdateChromium(
+    latestSyncInfo,
+    expectedSyncInfo
+  )
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !syncChromiumValue) {
     if (deleteUnusedDeps && !config.isCI) {
       Log.warn(
         '--delete_unused_deps is ignored for src/ dir because Chromium sync ' +
-        'is required. Pass --sync_chromium to force it.')
+          'is required. Pass --sync_chromium to force it.'
+      )
     }
     return false
   }
@@ -137,21 +163,24 @@ function syncChromium(program) {
       args.push('-D')
     } else if (!config.isCI) {
       Log.warn(
-          '--delete_unused_deps is ignored because sync has not yet added ' +
+        '--delete_unused_deps is ignored because sync has not yet added ' +
           'the exclusion for the src/brave/ directory, likely because sync ' +
-          'has not previously successfully run before.')
+          'has not previously successfully run before.'
+      )
     }
   }
 
   if (syncChromiumValue !== undefined) {
     if (!syncChromiumValue) {
       Log.warn(
-          'Chromium needed sync but received the flag to skip performing the ' +
-          'update. Working directory may not compile correctly.')
+        'Chromium needed sync but received the flag to skip performing the ' +
+          'update. Working directory may not compile correctly.'
+      )
       return false
     } else if (!shouldSyncChromium) {
       Log.warn(
-          'Chromium doesn\'t need sync but received the flag to do it anyway.')
+        "Chromium doesn't need sync but received the flag to do it anyway."
+      )
     }
   }
 
