@@ -9,7 +9,6 @@
 #include <map>
 #include <memory>
 #include <optional>
-#include <tuple>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -51,14 +50,20 @@ namespace brave_wallet {
 namespace {
 
 using ByteArray = std::vector<uint8_t>;
-
-// DecoderResult is a tuple that contains the decoded value, the remaining
-// calldata, and the number of bytes consumed.
-template <typename T>
-using DecoderResult = std::tuple<T, ByteArray, size_t>;
-
 constexpr size_t kWordSize = 32;
 constexpr size_t kAddressSize = 20;
+
+template <typename T>
+struct DecoderResult {
+  T result;             // decoded value
+  ByteArray remaining;  // remaining calldata
+  size_t consumed;      // number of bytes consumed
+
+  DecoderResult(T result, ByteArray remaining, size_t consumed)
+      : result(std::move(result)),
+        remaining(std::move(remaining)),
+        consumed(consumed) {}
+};
 
 // GetSubByteArray returns a subarray of the input stas rting from the specified
 // offset. If the offset is out of bounds, an empty ByteArray is returned.
@@ -86,7 +91,7 @@ std::optional<DecoderResult<base::Value>> GetAddressFromData(
     return std::nullopt;
   }
 
-  return std::make_tuple(
+  return DecoderResult<base::Value>(
       base::Value("0x" + HexEncodeLower(input.data() + kWordSize - kAddressSize,
                                         kAddressSize)),
       GetSubByteArray(input, kWordSize), kWordSize);
@@ -118,8 +123,8 @@ std::optional<DecoderResult<M>> GetUintFromData(const ByteArray& input) {
     return std::nullopt;
   }
 
-  return std::make_tuple(static_cast<M>(value),
-                         GetSubByteArray(input, kWordSize), kWordSize);
+  return DecoderResult<M>(static_cast<M>(value),
+                          GetSubByteArray(input, kWordSize), kWordSize);
 }
 
 // GetUintHexFromData encodes the return value of GetUintFromData as a compact
@@ -134,8 +139,8 @@ std::optional<DecoderResult<base::Value>> GetUintHexFromData(
 
   auto [value, remaining, consumed] = *result;
 
-  return std::make_tuple(base::Value(Uint256ValueToHex(value)), remaining,
-                         consumed);
+  return DecoderResult<base::Value>(base::Value(Uint256ValueToHex(value)),
+                                    remaining, consumed);
 }
 
 // GetBoolFromData extracts a 32-byte wide boolean value from the
@@ -150,9 +155,9 @@ std::optional<DecoderResult<base::Value>> GetBoolFromData(
   auto [value, remaining, consumed] = *result;
 
   if (value == static_cast<uint8_t>(0)) {
-    return std::make_tuple(base::Value(false), remaining, consumed);
+    return DecoderResult<base::Value>(base::Value(false), remaining, consumed);
   } else if (value == static_cast<uint8_t>(1)) {
-    return std::make_tuple(base::Value(true), remaining, consumed);
+    return DecoderResult<base::Value>(base::Value(true), remaining, consumed);
   }
 
   return std::nullopt;
@@ -187,10 +192,9 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
       return std::nullopt;
     }
 
-    size = std::get<0>(*length_result);
-
-    remaining = std::get<1>(*length_result);
-    consumed += std::get<2>(*length_result);
+    size = length_result->result;
+    remaining = length_result->remaining;
+    consumed += length_result->consumed;
     parts_count = std::ceil(static_cast<double>(size) / kWordSize);
   }
 
@@ -199,7 +203,7 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
   }
 
   size_t parts_size = parts_count * kWordSize;
-  return std::make_tuple(
+  return DecoderResult<base::Value>(
       base::Value("0x" + HexEncodeLower(remaining.data(), size)),
       GetSubByteArray(remaining, parts_size), consumed + parts_size);
 }
@@ -215,15 +219,15 @@ std::optional<DecoderResult<base::Value>> GetStringFromData(
     return std::nullopt;
   }
 
-  auto& bytes_value = std::get<0>(*bytes_result);
+  auto& bytes_value = bytes_result->result;
   if (!bytes_value.is_string()) {
     return std::nullopt;
   }
 
   std::string result;
   if (base::HexStringToString(bytes_value.GetString().substr(2), &result)) {
-    return std::make_tuple(base::Value(result), std::get<1>(*bytes_result),
-                           std::get<2>(*bytes_result));
+    return DecoderResult<base::Value>(
+        base::Value(result), bytes_result->remaining, bytes_result->consumed);
   }
 
   return std::nullopt;
@@ -345,14 +349,14 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
       }
 
       auto decoded_result = DecodeParam(
-          child_type, GetSubByteArray(input, std::get<0>(*offset_result)));
+          child_type, GetSubByteArray(input, offset_result->result));
       if (!decoded_result) {
         return std::nullopt;
       }
 
-      consumed += std::get<2>(*offset_result);
-      dynamic_consumed += std::get<2>(*decoded_result);
-      result.Append(std::move(std::get<0>(*decoded_result)));
+      consumed += offset_result->consumed;
+      dynamic_consumed += decoded_result->consumed;
+      result.Append(std::move(decoded_result->result));
     } else {
       // static type
       auto decoded_result =
@@ -361,14 +365,15 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
         return std::nullopt;
       }
 
-      consumed += std::get<2>(*decoded_result);
-      result.Append(std::move(std::get<0>(*decoded_result)));
+      consumed += decoded_result->consumed;
+      result.Append(std::move(decoded_result->result));
     }
   }
 
-  return std::make_tuple(base::Value(std::move(result)),
-                         GetSubByteArray(input, consumed + dynamic_consumed),
-                         consumed + dynamic_consumed);
+  return DecoderResult<base::Value>(
+      base::Value(std::move(result)),
+      GetSubByteArray(input, consumed + dynamic_consumed),
+      consumed + dynamic_consumed);
 }
 
 // GetArrayFromData parses a calldata segment to iterate over an array of
@@ -396,9 +401,9 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
       return std::nullopt;
     }
 
-    size = std::get<0>(*length_result);
-    remaining = std::get<1>(*length_result);
-    consumed = std::get<2>(*length_result);
+    size = length_result->result;
+    remaining = length_result->remaining;
+    consumed = length_result->consumed;
   }
 
   auto has_dynamic_child = IsDynamicType(*type.array_type);
@@ -412,21 +417,21 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
         return std::nullopt;
       }
 
-      consumed += std::get<2>(*offset_result);
+      consumed += offset_result->consumed;
 
-      auto decoded_child_result =
-          DecodeParam(type.array_type,
-                      GetSubByteArray(remaining, std::get<0>(*offset_result)));
+      auto decoded_child_result = DecodeParam(
+          type.array_type, GetSubByteArray(remaining, offset_result->result));
       if (!decoded_child_result) {
         return std::nullopt;
       }
 
-      result.Append(std::move(std::get<0>(*decoded_child_result)));
-      consumed += std::get<2>(*decoded_child_result);
+      result.Append(std::move(decoded_child_result->result));
+      consumed += decoded_child_result->consumed;
     }
 
-    return std::make_tuple(base::Value(std::move(result)),
-                           GetSubByteArray(remaining, consumed), consumed);
+    return DecoderResult<base::Value>(base::Value(std::move(result)),
+                                      GetSubByteArray(remaining, consumed),
+                                      consumed);
   }
 
   for (size_t i = 0; i < size; i++) {
@@ -436,12 +441,12 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
       return std::nullopt;
     }
 
-    result.Append(std::move(std::get<0>(*decoded_child_result)));
-    consumed += std::get<2>(*decoded_child_result);
+    result.Append(std::move(decoded_child_result->result));
+    consumed += decoded_child_result->consumed;
   }
 
-  return std::make_tuple(base::Value(std::move(result)),
-                         GetSubByteArray(input, consumed), consumed);
+  return DecoderResult<base::Value>(base::Value(std::move(result)),
+                                    GetSubByteArray(input, consumed), consumed);
 }
 
 }  // namespace
@@ -509,13 +514,13 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
 std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
                                            const ByteArray& data) {
-  auto result = DecodeParam(type, data);
-  if (!result) {
+  auto decoded = DecodeParam(type, data);
+  if (!decoded) {
     return std::nullopt;
   }
 
-  if (std::get<0>(*result).is_list()) {
-    return std::move(std::get<0>(*result).GetList());
+  if (decoded->result.is_list()) {
+    return std::move(decoded->result.GetList());
   }
 
   return std::nullopt;
