@@ -1,6 +1,7 @@
 {
   "//chrome/app/vector_icons/battery_saver.icon": "leo_energy_saver",
   "//chrome/app/vector_icons/browser_tools.icon": "leo_hamburger_menu",
+  "//chrome/app/vector_icons/browser_tools_chrome_refresh.icon": "leo_hamburger_menu",
   "//chrome/app/vector_icons/copy.icon": "leo_copy",
   "//chrome/app/vector_icons/download_in_progress.icon": "leo_download",
   "//chrome/app/vector_icons/download_toolbar_button.icon": "leo_download",
