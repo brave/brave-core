@@ -195,7 +195,7 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
     size = length_result->result;
     remaining = length_result->remaining;
     consumed += length_result->consumed;
-    parts_count = std::ceil(static_cast<double>(size) / kWordSize);
+    parts_count = (size + kWordSize - 1) / kWordSize;
   }
 
   if (size > remaining.size()) {
