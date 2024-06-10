@@ -291,6 +291,17 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   }
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+  if (sidebar::CanUseSidebar(browser())) {
+    sub_menus().push_back(std::make_unique<SidebarMenuModel>(browser()));
+    const int index = GetNextIndexOfBraveProductsSection();
+    InsertSubMenuWithStringIdAt(index, IDC_SIDEBAR_SHOW_OPTION_MENU,
+                                IDS_SIDEBAR_SHOW_OPTION_TITLE,
+                                sub_menus().back().get());
+    need_separator = true;
+  }
+#endif
+
   if (need_separator) {
     InsertSeparatorAt(GetNextIndexOfBraveProductsSection(),
                       ui::NORMAL_SEPARATOR);
@@ -368,17 +379,6 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
                                              ui::NORMAL_SEPARATOR);
     need_separator = false;
   }
-
-#if defined(TOOLKIT_VIEWS)
-  if (sidebar::CanUseSidebar(browser())) {
-    sub_menus().push_back(std::make_unique<SidebarMenuModel>(browser()));
-    more_tools_menu_model->InsertSubMenuWithStringIdAt(
-        next_target_index++, IDC_SIDEBAR_SHOW_OPTION_MENU,
-        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus().back().get());
-    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
-                                             ui::NORMAL_SEPARATOR);
-  }
-#endif
 
   if (media_router::MediaRouterEnabled(browser()->profile())) {
     more_tools_menu_model->InsertItemWithStringIdAt(
@@ -629,13 +629,11 @@ int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
 #endif
 
 size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
-  std::vector<int> commands_to_check = {IDC_APP_MENU_IPFS,
-                                        IDC_SHOW_BRAVE_VPN_PANEL,
-                                        IDC_BRAVE_VPN_MENU,
-                                        IDC_SHOW_BRAVE_WALLET,
-                                        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-                                        IDC_NEW_INCOGNITO_WINDOW,
-                                        IDC_NEW_WINDOW};
+  std::vector<int> commands_to_check = {
+      IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_APP_MENU_IPFS,
+      IDC_SHOW_BRAVE_VPN_PANEL,     IDC_BRAVE_VPN_MENU,
+      IDC_SHOW_BRAVE_WALLET,        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_NEW_INCOGNITO_WINDOW,     IDC_NEW_WINDOW};
   const auto last_index_of_second_section =
       GetProperItemIndex(commands_to_check, false).value();
   const auto last_cmd_id_of_second_section =
