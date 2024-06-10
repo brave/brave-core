@@ -29,7 +29,7 @@ std::string GetWebServiceBaseUrl(const char* web_service_base_url_for_tests) {
     return stt::kSttUrl.Get();
   }
   // Fallback to for-tests URL.
-  return web_service_base_url_for_tests;
+  return web_service_base_url_for_tests ? web_service_base_url_for_tests : "";
 }
 
 void AddBraveHeaders(network::ResourceRequest* request,
