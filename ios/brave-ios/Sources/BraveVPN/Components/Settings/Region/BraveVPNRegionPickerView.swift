@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import GuardianConnect
 import SwiftUI
 
@@ -50,7 +51,8 @@ public struct BraveVPNRegionPickerView: View {
   @State
   private var selectedIndex = 0
 
-  @ObservedObject private var serverRegionDetail = ServerRegionDetail()
+  @ObservedObject
+  private var serverRegionDetail = ServerRegionDetail()
 
   public init(isAutomatic: Bool, serverRegionDetail: ServerRegionDetail? = nil) {
     self.isAutomatic = isAutomatic
@@ -66,7 +68,7 @@ public struct BraveVPNRegionPickerView: View {
         List {
           Section(
             footer: Text(
-              "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds."
+              "Auto-select the VPN server region closest to you based on your timezone. This option is recommended to maximize Internet speeds."
             )
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -102,14 +104,22 @@ public struct BraveVPNRegionPickerView: View {
                   selectDesignatedVPNRegion(at: index)
                 } label: {
                   HStack {
-                    getRegionFlag(for: region.countryISOCode) ?? Image(braveSystemName: "leo.globe")
+                    region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
                     VStack(alignment: .leading) {
                       Text("\(region.name)")
                         .font(.body)
-                        .foregroundStyle(Color(braveSystemName: .textPrimary))
+                        .foregroundStyle(
+                          region == serverRegionDetail.selectedRegion
+                            ? Color(braveSystemName: .iconInteractive)
+                            : Color(braveSystemName: .textPrimary)
+                        )
                       Text("\(region.servers) servers")
                         .font(.footnote)
-                        .foregroundStyle(Color(braveSystemName: .textSecondary))
+                        .foregroundStyle(
+                          region == serverRegionDetail.selectedRegion
+                            ? Color(braveSystemName: .iconInteractive)
+                            : Color(braveSystemName: .textSecondary)
+                        )
                     }
                     Spacer()
                     if region == serverRegionDetail.selectedRegion {
@@ -126,7 +136,7 @@ public struct BraveVPNRegionPickerView: View {
                 }
               }
             }
-            .listRowBackground(Color(.white))
+            .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
           }
         }
       }
@@ -146,7 +156,7 @@ public struct BraveVPNRegionPickerView: View {
     .background {
       BraveVPNRegionChangedContentView(
         isPresented: $isConfirmationPresented,
-        regionTitle: "VPN Region Changed",
+        regionTitle: "Brazil",
         regionSubtitle: "Rio de Janeiro"
       )
     }
@@ -158,7 +168,7 @@ public struct BraveVPNRegionPickerView: View {
         guard !isLoading else {
           return
         }
-
+        
         isRegionDetailsPresented = true
       },
       label: {
@@ -174,7 +184,9 @@ public struct BraveVPNRegionPickerView: View {
   }
 
   private func selectDesignatedVPNRegion(at index: Int) {
-    guard !isLoading else {
+    guard !isLoading, let desiredRegion = serverRegionDetail.serverRegions[safe: index],
+      desiredRegion.id != serverRegionDetail.selectedRegion?.id
+    else {
       return
     }
 
@@ -182,9 +194,7 @@ public struct BraveVPNRegionPickerView: View {
 
     // TODO: Select Region
     Task.delayed(bySeconds: 3) { @MainActor in
-      if let selectedRegion = serverRegionDetail.serverRegions[safe: index] {
-        serverRegionDetail.selectedRegion = selectedRegion
-      }
+      serverRegionDetail.selectedRegion = desiredRegion
 
       isLoading = false
       isConfirmationPresented = true
@@ -195,25 +205,6 @@ public struct BraveVPNRegionPickerView: View {
     }
   }
 
-  private func getRegionFlag(for isoCode: String) -> Image? {
-    // Root Unicode flags index
-    let rootIndex: UInt32 = 127397
-    var unicodeScalarView = ""
-
-    for scalar in isoCode.unicodeScalars {
-      // Shift the letter index to the flags index
-      if let appendedScalar = UnicodeScalar(rootIndex + scalar.value) {
-        // Append symbol to the Unicode string
-        unicodeScalarView.unicodeScalars.append(appendedScalar)
-      }
-    }
-
-    if unicodeScalarView.isEmpty {
-      return nil
-    }
-
-    return Image(uiImage: unicodeScalarView.image())
-  }
 }
 
 struct ServerRegionView_Previews: PreviewProvider {
