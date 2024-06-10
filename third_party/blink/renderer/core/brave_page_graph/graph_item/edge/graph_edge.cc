@@ -71,6 +71,10 @@ bool GraphEdge::IsEdgeCrossDOM() const {
   return false;
 }
 
+bool GraphEdge::IsEdgeDocument() const {
+  return false;
+}
+
 bool GraphEdge::IsEdgeEventListener() const {
   return false;
 }

@@ -109,6 +109,7 @@ enum GraphMLAttrDef {
   kGraphMLAttrDefHost,
   kGraphMLAttrDefIncognito,
   kGraphMLAttrDefIsDeleted,
+  kGraphMLAttrDefIsFrameAttached,
   kGraphMLAttrDefIsStyle,
   kGraphMLAttrDefKey,
   kGraphMLAttrDefMethodName,
