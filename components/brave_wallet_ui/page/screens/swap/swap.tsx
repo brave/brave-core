@@ -75,7 +75,8 @@ export const Swap = () => {
     isLoadingBalances,
     swapFees,
     isBridge,
-    toAccount
+    toAccount,
+    timeUntilNextQuote
   } = swap
 
   // State
@@ -170,6 +171,7 @@ export const Swap = () => {
           selectedSendOption='#token'
           isFetchingQuote={isFetchingQuote}
           buttonDisabled={!fromToken}
+          timeUntilNextQuote={timeUntilNextQuote}
         >
           <Column
             fullWidth={true}
@@ -220,6 +222,7 @@ export const Swap = () => {
                 onClick={onSubmit}
                 size='large'
                 isDisabled={isSubmitButtonDisabled}
+                isLoading={isFetchingQuote}
               >
                 {submitButtonText}
               </LeoSquaredButton>
