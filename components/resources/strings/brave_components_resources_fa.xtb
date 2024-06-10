@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">هر چه بیشتر ببینید، بیشتر درآمد کسب می‌کنید.</translation>
 <translation id="7526443283522395161">آگهی‌های صفحه تب جدید</translation>
 <translation id="7968650944098083708">آگهی‌های اطلاع‌رسانی</translation>
+<translation id="8289546216379862569">تبلیغات جستجو</translation>
+<translation id="4758111936363146244">تبلیغات جستجوی  Brave در <ph name="BEGIN_LINK"/> جستجوی Brave <ph name="END_LINK"/> قابل مشاهده است.</translation>
+<translation id="7596536223419118193">هنوز نمی‌توانید از طریق تبلیغات جستجوی Brave،‏ BAT کسب کنید، اما با فعال بودن آنها به پشتیبانی از Brave کمک می‌کنید.</translation>
 <translation id="6390952132783970876">آگهی‌های اخبار Brave</translation>
 <translation id="7516281787184495886">اخبار Brave شامل آگهی‌هایی است که نمی‌توان به طور مستقل آنها را غیرفعال کرد.</translation>
 <translation id="8008378848677625233">اخبار Brave در حال حاضر غیرفعال است.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">در حال بارگیری مؤلفه...</translation>
 <translation id="4894106830958548828">متوجه هستم</translation>
 <translation id="326118736933420687">در حال مشاهده صفحه WebTorrent هستید</translation>
+<translation id="2729085694451916573">رشته آزمایشی برای <ph name="PART_ONE"/> مکان‌نماها <ph name="PART_ONE_END"/>. <ph name="PART_TWO"/> بیشتر بدانید <ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
 <translation id="4492298165410552103">پشتیبانی از «دامنه‌های توقف‌ناپذیر» در Brave فعال شود؟</translation>
 <translation id="5015092481905019948">Brave از <ph name="PROVIDER_NAME"/> برای حل <ph name="DOMAIN_LIST"/> از نام دامنه‌ای که در <ph name="DOMAIN_PROVIDER_NAME"/> هستند استفاده می‌کند. Brave آدرس IP شما را پنهان می کند. فعال کردن این ویژگی به <ph name="PROVIDER_NAME"/> اجازه می‌دهد فقط تلاش‌ها برای دسترسی به این دامنه‌ها را بدون دسترسی به اطلاعات اضافی مشاهده کند. به <ph name="BEGIN_PROVIDER_TOU_LINK"/>شرایط استفاده<ph name="END_PROVIDER_TOU_LINK"/> و <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_PROVIDER_PRIVACY_LINK"/> <ph name="PROVIDER_NAME"/> مراجعه کنید.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">خطای عمومی پردازش درخواست رخ داده است</translation>
 <translation id="7123780456696055383">منابع درخواستی موجود نیست</translation>
 <translation id="1680597601664421644">یادیار واردشده برای کیف پول Brave معتبر نیست</translation>
+<translation id="372898731091371291">کدام نوع کیف پول را می‌خواهید وارد کنید؟</translation>
+<translation id="1430728084670406473">کیف پول Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">عبارت بازیابی خود را از کیف پول موجود وارد کنید</translation>
+<translation id="8110492767853188065">کیف پول سخت‌افزاری</translation>
+<translation id="7437218084485869007">کیف پول سخت‌افزاری خود را به Brave وصل کنید</translation>
 <translation id="4641919696349069826">درخواستی در حال حاضر در جریان است</translation>
 <translation id="872806943696014633">داده‌های تراکنش موجود نیست</translation>
 <translation id="7068183357903252127">«to» یا «data» داده‌های تراکنش باید مشخص شود</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">بله</translation>
 <translation id="4250680216510889253">خیر</translation>
 <translation id="1201402288615127009">بعدی</translation>
-<translation id="8712637175834984815">متوجه شدم</translation>
+<translation id="3214453326297774895">عبارت بازیابی من نشان داده شود</translation>
 <translation id="6896758677409633944">کپی</translation>
 <translation id="7885157704277298658">کپی شد!</translation>
 <translation id="6518133107902771759">تأیید</translation>
 <translation id="6042308850641462728">بیشتر</translation>
-<translation id="768236965975208017">امن است. چند زنجیره ای. و آه بسیار آسان برای استفاده. کیف پول شجاع شما فقط چند کلیک فاصله دارد</translation>
 <translation id="3157931365184549694">بازیابی</translation>
-<translation id="2484275747844666540">کیف پول جدید ایجاد کنید</translation>
-<translation id="3662348701117072366">کیف پول موجود را وارد کنید</translation>
-<translation id="7150150391368236519">متصل کردن کیف پول سخت‌افزاری</translation>
+<translation id="414070570958255222">بومی مرورگر. خودامانی. و چند‌زنجیره‌ای.</translation>
+<translation id="1350120992777389959">کنترل رمزارزها و NFT‌های خود را در دست بگیرید. کیف پول Brave از Ethereum، زنجیره‌های EVM،‏ Solana،‏ Filecoin،‏ Bitcoin و غیره پشتیبانی می‌کند.</translation>
+<translation id="165255193061631296">به یک کیف پول جدید نیاز دارید؟</translation>
+<translation id="1939235910515558387">در عرض چند دقیقه با کیف پول Brave شروع کنید.</translation>
+<translation id="5844138175312846408">از قبل کیف پول دارید؟</translation>
+<translation id="772643556080081594">به یک کیف پول «فقط مشاهده‌ای» نیاز دارم</translation>
+<translation id="4878034296528175352">.‎©2024 Brave Software Inc.‏ Brave و لوگوی Brave علائم تجاری ثبت‌شده‌ شرکت نرم‌افزاری Brave هستند. سایر اسامی و لوگوهای محصولات ممکن است علائم تجاری شرکت‌های مربوطه باشند. کلیه حقوق محفوظ است.</translation>
 <translation id="7501957181231305652">یا</translation>
 <translation id="375882617301124395">از کیف پول رمزارزتان پشتیبان‌گیری کنید</translation>
-<translation id="180032279811483155">در مرحله بعد، یک عبارت بازیابی <ph name="RECOVERY_PHRASE_LENGTH"/>-کلمه‌ای مشاهده خواهید کرد که می‌توانید از آن برای بازیابی حساب‌های رمزارز اصلی خود استفاده کنید. آن را در جایی امن ذخیره کنید. در صورت فراموش شدن گذرواژه، گم شدن یا به سرقت رفتن دستگاه، یا موقع جابجا شدن بین کیف پول‌ها، عبارت بازیابی شما تنها راه برای دسترسی مجدد به حساب است.</translation>
 <translation id="5024543173656851695">متوجه هستم که اگر کلمات بازیابی را گم کنم، قادر به دسترسی به کیف پول رمزارز خود نخواهم بود.</translation>
 <translation id="8281886186245836920">رد شدن</translation>
 <translation id="6532106788206463496">ذخیره تغییرات</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">عبارت بازیابی را تأیید کنید</translation>
 <translation id="3747079125031086337">کلمات موجود در عبارت بازیابی خود را به ترتیب صحیح انتخاب کنید.</translation>
 <translation id="802060020117206314">عبارت بازیابی مطابقت نداشت، لطفاً دوباره امتحان کنید.</translation>
-<translation id="8412783472871103529">عبارت بازیابی خود را تأیید کنید</translation>
+<translation id="7345730059518887993">بیایید بررسی کنیم</translation>
 <translation id="2226686084760581391">کلیک کنید روی <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>، <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> و <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> کلمه عبارت بازیابی شما.</translation>
 <translation id="7575574239720542222">عبارت بازیابی مطابقت نداشت</translation>
 <translation id="8692301574305033504">یک رمز عبور جدید ایجاد کنید</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">از کیف پول‌های رمزارز Brave قدیمی وارد شود؟</translation>
 <translation id="3331452756822160641">گذرواژه جدید</translation>
 <translation id="8624315169751085215">کپی در کلیپ‌بورد</translation>
+<translation id="2598171223363459366">اکنون می‌توانید از این مرحله رد شوید، اما برای اطمینان از امنیت حساب، همچنان باید از عبارت بازیابی خود نسخه پشتیبان تهیه کنید.</translation>
+<translation id="5303015959766064022">بعداً نسخه پشتیبان تهیه می‌کنم</translation>
 <translation id="6346952829206698721">چسباندن از کلیپ بورد</translation>
+<translation id="2610561535971892504">برای کپی کلیک کنید</translation>
 <translation id="1121335910737476837">حساب‌های رمز ارز اولیه</translation>
 <translation id="6969147029062037757">حساب‌های واردشده</translation>
 <translation id="3926119534765499672">کیف پول‌های سخت افزاری متصل شده</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">این خطا زمانی ممکن است رخ دهد که برنامه اشتباهی در دستگاه Ledger باز باشد.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">دسترسی Brave به دستگاه «دفتر کل» شما مجاز شود.</translation>
+<translation id="8012452656725205792">به Brave اجازه دسترسی به دستگاه <ph name="HARDWARE_DEVICE"/> خود را بدهید.</translation>
 <translation id="4378551569595875038">در حال اتصال...</translation>
 <translation id="1943188256166395881">افزودن حساب‌های بررسی‌شده</translation>
 <translation id="8554010658308662631">بارگیری بیشتر</translation>
 <translation id="6998738230710304743">درحال بارگیری موارد بیشتر…</translation>
 <translation id="5592304751234049046">جستجوی حساب</translation>
+<translation id="3168978475376026497">مسیر HD</translation>
 <translation id="6151024411349343484">اگر حساب مورد نظر خود را پیدا نکردید، سعی کنید به مسیر HD (در بالا) تغییر دهید.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">موروثی (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">هیچ نتیجه‌ای یافت نشد.</translation>
+<translation id="7261362517244085362">کیف پول خود را مجاز کنید</translation>
+<translation id="7150150391368236519">متصل کردن کیف پول سخت‌افزاری</translation>
+<translation id="5400782314657008092">در حال حاضر از دستگاه‌های<ph name="HARDWARE_DEVICE"/> و <ph name="HARDWARE_DEVICE1"/> پشتیبانی می‌کنیم.</translation>
+<translation id="8144305264680648043">کیف پول سخت‌افزاری خود را وصل کنید تا دارایی‌هایتان را مستقیماً از کیف پول Brave مدیریت کنید</translation>
+<translation id="1329837291200753515">یک بلاک‌چین را برای وارد کردن کیف پول سخت افزاری خود انتخاب کنید</translation>
+<translation id="6983390509997396124">دستگاه <ph name="HARDWARE_DEVICE"/> خود را به کیف پول Brave وصل کنید</translation>
 <translation id="5149944858285555235">خطای نامشخص، لطفاً با وصل کردن دوباره کیف پول سخت‌افزاری خود، دوباره امتحان کنید.</translation>
 <translation id="4522570452068850558">جزئیات</translation>
 <translation id="9220525904950070496">حذف حساب</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">تست شبکه</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">زنجیره هوشمند Binance</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">انتخاب حساب</translation>
 <translation id="6797737193502014008">جستجوی حساب‌ها</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">تراکنش‌ها اینجا ظاهر خواهند شد</translation>
 <translation id="6079696972035130497">نامحدود</translation>
 <translation id="2916401020782528840">تراکنش پیدا نشد</translation>
+<translation id="1690963073120772693">این تراکنش قابل تکرار نیست.</translation>
 <translation id="2833661570529295305">تصدیق ناشده</translation>
 <translation id="8034530868111548216">تصدیق شد</translation>
 <translation id="6015436276085482001">رد شد</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">خطایی در پردازش تراکنش رخ داد، لطفاً دوباره تلاش کنید</translation>
 <translation id="971552837551838642">خطایی در امضای پیام رخ داد، لطفاً دوباره تلاش کنید</translation>
 <translation id="8273603707418703324">خطایی در امضای پیام رخ داد، حلقه کلید نامشخصی درخواست شد، لطفاً دوباره تلاش کنید</translation>
-<translation id="5265455943786954050">فرمان Trezor از قبل در حال انجام است</translation>
-<translation id="7017116822583380542">Trezor bridge آماده نیست</translation>
+<translation id="6200074323131367633">فرمان <ph name="DEVICE_NAME"/> در حال انجام است</translation>
+<translation id="4213183402991860207">پل <ph name="DEVICE_NAME"/> آماده نیست</translation>
 <translation id="3378339846292573874">افزودن توکن پیشنهادی</translation>
 <translation id="2322227405137827074">آیا می‌خواهید این توکن را وارد کنید؟</translation>
 <translation id="4378475168089649292">بلاکچین</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">باز کردن برنامه Rainbow Bridge</translation>
 <translation id="1522775706527775647">پل زدن به Aurora</translation>
 <translation id="4903322403594141291">درباره کیف پول شجاع بیشتر بدانید</translation>
-<translation id="3875185448438395303">حداقل:</translation>
-<translation id="2029465635925899949">8 کاراکتر</translation>
-<translation id="6697810017029555732">همخوانی داشتن!</translation>
+<translation id="4427684901715566795">گذر واژه باید حاوی این موارد باشد:</translation>
+<translation id="8521329076169776625">حداقل ۸ نویسه</translation>
+<translation id="3665035348242240953">گذر واژه‌ها همخوانی دارند</translation>
 <translation id="8918368616587206671">قوی!</translation>
 <translation id="574392208103952083">متوسط</translation>
 <translation id="8297006494302853456">ضعیف</translation>
+<translation id="3282258437441351851">کیف پول Brave  به‌طور خودکار قفل می‌شود پس از</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> دقیقه</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> ساعت</translation>
 <translation id="7084181009966710506">ایجاد کیف پول...</translation>
-<translation id="6782556046178425980">قبل از شروع پشتیبان گیری کیف پول</translation>
+<translation id="3259102562570606417">عبارت بازیابی خود را ذخیره کنید</translation>
 <translation id="7119749028647909394">عبارت بازیابی ‎12-24 کلمه‌ای در واقع رمز خصوصی‌ای است که در صورت گم کردن دستگاه(های) متصل، به شما اجازه بازیابی دسترسی به کیف پولتان را می‌دهد. این کد را در جایی ایمن و دقیقاً به ترتیبی که در زیر آورده شده ذخیره کنید.</translation>
 <translation id="3259018319025894691">Brave نمی تواند به عبارت بازیابی مخفی شما دسترسی پیدا کند. آن را ایمن نگه دارید و هرگز آن را با دیگران به اشتراک نگذارید.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>مهم: <ph name="TAG_AFTER"/>هرگز عبارت بازیابی خود را به اشتراک نگذارید. هر کسی با این عبارت می تواند دارایی های شما را برای همیشه بگیرد.</translation>
+<translation id="426648489149930289">آن را در مکانی امن که برای دیگران قابل دسترس نیست نگهداری کنید و از اشتراک‌گذاری آن با دیگران خودداری کنید.</translation>
+<translation id="119185410022731300">کلمه‌ی واقع در موقعیت <ph name="VALUE"/> از عبارت بازیابی خود را وارد کنید.</translation>
+<translation id="2193954488469999829">فراموش کردید ذخیره کنید؟ بازگردید</translation>
 <translation id="7509948206688764960">عبارت بازیابی کیف پول خود را پشتیبان بگیرید</translation>
 <translation id="8052898407431791827">در کلیپ بورد کپی شد</translation>
 <translation id="4576741736874242970">برای مشاهده عبارت خود کلیک کنید</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">دومین</translation>
 <translation id="7992766987062040279">سوم</translation>
 <translation id="2295726992010694229">هفتم</translation>
-<translation id="8241405611628876973">تبریک می گویم! کیف پول شجاع شما آماده است!</translation>
-<translation id="6828327990705355767">برای دسترسی به کیف پول خود، فقط روی نماد کیف پول در سمت راست بالای هر پنجره مرورگر Brave کلیک کنید.</translation>
+<translation id="1148624853678088576">کار تمام شد!</translation>
+<translation id="1656439328205762155">کیف پول Brave شما اکنون راه‌اندازی شده و آماده استفاده است.</translation>
+<translation id="3342494025742308764">به پوشه کار بروید</translation>
 <translation id="396152018598329740">چگونه از کیف پول کریپتو استفاده کنیم؟</translation>
 <translation id="7512061585041489067">بهترین کیف پول کریپتو چیست؟</translation>
 <translation id="1342755158522323177">مرورگر کریپتو چیست؟</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">عبارت بازیابی چیست؟</translation>
 <translation id="7328255859839881981">DApps چیست؟</translation>
 <translation id="3852489285890032403">وب 3 چیست؟</translation>
-<translation id="5448233694500869445">ما افزونه MetaMask را در مرورگر شما شناسایی کردیم</translation>
-<translation id="8436080536329710282">رمز کیف پول MetaMask خود را وارد کنید تا به راحتی آن را به Brave Wallet وارد کنید.</translation>
+<translation id="2349224271234429946">کیف پول MetaMask را وارد کنید</translation>
+<translation id="6715906859822319136">به راحتی می‌توانید کیف پول MetaMask خود را فقط با وارد کردن گذر واژه‌تان وارد کنید.</translation>
 <translation id="7543512765962444927">به کیف پول موجود خود وصل شوید</translation>
 <translation id="3551682252653406110">برای اتصال کیف پولی که از قبل دارید، ممکن است لازم باشد عبارت بازیابی خود را وارد کنید. در حال حاضر ما از بازیابی/وارد کردن کیف پول های اتریوم و سولانا پشتیبانی می کنیم.</translation>
-<translation id="346929827081904572">بازیابی از عبارت seed</translation>
+<translation id="3961126209136843111">یک کیف پول موجود را وارد کنید</translation>
 <translation id="5645597512426471834">12-24 کلمه</translation>
-<translation id="8158505311297755780">عبارت بازیابی ‎12-24‏ کلمه‌ای مربوط به Brave Wallet خود را بنویسید.</translation>
+<translation id="2321396552035646646">می‌توانید کل عبارت بازیابی خود را در هر فیلدی جایگذاری کنید.</translation>
 <translation id="5419707890586509000">واردات از MetaMask</translation>
 <translation id="2265945811107390939">از رمز عبور MetaMask خود برای وارد کردن عبارت seed خود استفاده کنید</translation>
 <translation id="7060680423657442298">مهم نیست، من یک کیف پول جدید خواهم ساخت</translation>
+<translation id="1932878136775815535">یک عبارت بازیابی <ph name="LENGTH"/> کلمه‌ای دارم</translation>
+<translation id="7877416315564177070">عبارت بازیابی خود را بررسی و دوباره امتحان کنید.</translation>
+<translation id="6503538941917874992">با استفاده از عبارت بازیابی خود وارد کنید</translation>
+<translation id="782167880151571109">کیف پول Metamask شناسایی شد!</translation>
+<translation id="3619071361843652814">کیف پول Legacy شناسایی شد!</translation>
+<translation id="4634124774493850572">استفاده از گذرواژه</translation>
+<translation id="7697478310235189459">کلمه <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">عبارت بازیابی ‎12-24‏ کلمه‌ای مربوط به MetaMask خود را بنویسید.</translation>
 <translation id="7720392926833259937">رمز عبور MetaMask را تایپ کنید</translation>
 <translation id="6657585470893396449">گذرواژه</translation>
 <translation id="6260144012548445299">درباره کیف پول جدید من بیشتر بدانید</translation>
-<translation id="8746910870914151528">مطالب قانونی</translation>
-<translation id="5148123176978018397">لطفا موارد زیر را تصدیق کنید:</translation>
-<translation id="6088314935678153800">من می دانم که این یک کیف پول شخصی است و من به تنهایی مسئول هرگونه وجوه، دارایی یا حساب مرتبط و انجام اقدامات مناسب برای ایمن سازی، محافظت و پشتیبان گیری از کیف پول خود هستم. می‌دانم که Brave نمی‌تواند از طرف من به کیف پول من دسترسی داشته باشد یا تراکنش‌های من را معکوس کند، و عبارت بازیابی من تنها راه بازیابی دسترسی در صورت گم شدن رمز عبور، دستگاه دزدیده شده یا شرایط مشابه است.</translation>
-<translation id="7781090633800450517">من <ph name="LINK_BEFORE"/>شرایط استفاده<ph name="LINK_AFTER"/> را خوانده ام و با آن موافقم</translation>
+<translation id="2502258949541727762">قبل از شروع</translation>
+<translation id="5333225216561354793">از شما می‌خواهیم که موارد زیر را تأیید کنید</translation>
+<translation id="4284971227128011550">درک می‌کنم که این یک کیف پول خودامانی است و من به‌طور کامل مسئول هرگونه وجوه، دارایی‌ها یا حساب‌های مرتبط با آن هستم. همچنین، مسئولیت انجام هر اقدام مناسب برای ایمن‌سازی، محافظت و تهیه نسخه پشتیبان از کیف پول خود را برعهده می‌گیرم. می‌فهمم که Brave نمی‌تواند به کیف پول من دسترسی پیدا کند یا تراکنش‌هایم را از طرف من لغو کند. عبارت بازیابی من «تنها» راه برای بازیابی دسترسی در صورت گم شدن گذر واژه، سرقت دستگاه یا شرایط مشابه است.</translation>
+<translation id="3604445540387095708">من <ph name="LINK_BEFORE"/>شرایط استفاده<ph name="LINK_AFTER"/> را خوانده‌ام و با آن موافقم.</translation>
 <translation id="1422451606553326863">خرید ارز دیجیتال</translation>
 <translation id="3887541341068007345">در حال بررسی برنامه های افزودنی کیف پول...</translation>
 <translation id="3567994771568272606">واردات از کیف پول های کریپتو قدیمی Brave</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">اقدامی ناایمن با خطر آسیب</translation>
 <translation id="6405354572620970908">این درخواست مخرب به نظر می‌رسد و ممکن است شما را در معرض سرقت قرار دهد. فقط در صورتی ادامه دهید که به برنامه اعتماد دارید.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/>مشکل یافتیم.</translation>
+<translation id="2826600321627372011">هیچ مسیری پیدا نشد</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">زبانه فعلی</translation>
 <translation id="7056969230130642253">شما همه اطلاعات را کسب کرده‌اید</translation>
 <translation id="7292242212818928219">محتوای جدید در دسترس است. مجدداً بارگیری شود؟</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">دستورات سریع</translation>
 <translation id="7481312909269577407">ارسال کردن</translation>
 <translation id="302781076327338683">بارگیری مجدد حافظه پنهان</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">این ترکیب برای <ph name="COMMAND"/>  استفاده می‌شود و قابل تغییر نیست.</translation>
 <translation id="3537006124004887164">این ترکیب برای <ph name="COMMAND"/> استفاده می‌شود و قابل تغییر نیست. سعی کنید آن را در تنظیمات سیستم، از طریق «میانبرهای برنامه» تغییر دهید.</translation>
 <translation id="712598284361781729">نمای تقسیم جدید</translation>
-<translation id="6655450014966273037">بستن نمای تقسیم</translation>
 <translation id="1130188644637295274">باز کردن در نمای تقسیم</translation>
-<translation id="7195519370590486580">رفتن به زبانه‌ها</translation>
+<translation id="6459036216700972269">لغو جداسازی زبانه‌ها</translation>
 <translation id="3617523374417810198">نمای تقسیم جدید</translation>
-<translation id="9053179124396567872">بستن نمای تقسیم</translation>
 <translation id="8571323456914890254">باز کردن در نمای تقسیم</translation>
-<translation id="2397258152713354053">رفتن به زبانه‌ها</translation>
+<translation id="5329136173514538969">لغو جداسازی زبانه‌ها</translation>
 <translation id="8591883849678260674">مشاهده اصلی</translation>
 <translation id="1969654232209826429">حداقل بخوانید</translation>
 <translation id="4101707289420716287">خاموش کردن تندخوان</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">این صفحه را خلاصه کن</translation>
 <translation id="7932221068776853847">برای توقف ارسال محتوای این صفحه به Leo و شروع مکالمه‌ای جدید، اتصال را قطع کنید</translation>
 <translation id="1167803637855350748">هنگام اتصال به Leo خطای شبکه رخ داد، اتصالتان را بررسی کنید و دوباره امتحان کنید.</translation>
-<translation id="5095201428204952524">Leo در حال حاضر خیلی مشغول است. لطفاً چند دقیقه دیگر دوباره امتحان کنید.</translation>
+<translation id="1996126325390835277">Leo در حال حاضر خیلی مشغول است. لطفاً چند دقیقه دیگر دوباره امتحان کنید.</translation>
 <translation id="7144878232160441200">سعی مجدد</translation>
-<translation id="2505565639170795978">سلام، من Leo هستم. من یک دستیار هوش مصنوعی‌ام که کاملاً توسط Brave میزبانی می‌شوم. من تحت پشتیبانی Llama 13B قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Meta است و به‌صورت مؤثر و کاربردی در بسیاری از موارد استفاده می‌شود.</translation>
-<translation id="8030558642460377506">سلام، من Leo هستم. من یک دستیار هوش مصنوعی‌ام که کاملاً توسط Brave میزبانی می‌شوم. من تحت پشتیبانی Mixtral 8x7B قرار دارم که نوعی مدل ساخته‌شده توسط Mistral AI است و برای رسیدگی به وظایف پیشرفته‌تر کاربرد دارد.</translation>
-<translation id="2489317965865266353">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude Instant قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
+<translation id="8570488829560315702">سلام، من Leo هستم؛ یک دستیار هوش مصنوعی که به‌طور کامل تحت میزبانی Brave است من با Llama 3 8B که یک مدل ساخته‌شده توسط Meta برای عملکرد بالا و کاربردهای متنوع است، کار می‌کنم.<ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">سلام من Leo هستم؛ یک دستیار هوش مصنوعی که به‌طور کامل تحت میزبانی Brave است. من با Mixtral 8x7b که یک مدل ساخته‌شده توسط هوش مصنوعی Mistral برای انجام کارهای پیشرفته است، کار می‌کنم. <ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">سلام، من Leo هستم. Brave واسطه‌ی ارتباطی من با شماست و با  Claude Instant که مدل ساخته‌شده توسط Anthropic که وظیفه‌ آن انجام امور مرتبط با پردازش متن و گفتگو است،‌ کار می‌کنم. <ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude 3 Haiku قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
 <translation id="4147243042852964992">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude 3 Sonnet قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> توسط <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">محدود</translation>
 <translation id="6187065185557150870">چت</translation>
 <translation id="2961040541145689181">چت جدید</translation>
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
 <translation id="1691256669639196606">مدیریت اشتراک</translation>
+<translation id="2304783958703511257">تنظیمات پیشرفته</translation>
 <translation id="3037594989275592390">مدل‌های زبانی</translation>
 <translation id="6637015365469044269">اکنون ارتقاء داده شود</translation>
+<translation id="5543505256451301851">۷ روز رایگان امتحان کنید</translation>
 <translation id="849535826888024304">به محدودیت تعداد پاسخ‌ها رسیدید</translation>
-<translation id="6149863263423821329">تعداد پاسخ بیشتری را از طریق ثبت‌نام در نسخه پرمیوم قفل‌گشایی کنید. برای ادامه، می‌توانید به مدل رایگان با قدرت کمتر Llama2 13b ما نیز بروید.</translation>
+<translation id="2252128900328632803">تعداد پاسخ بیشتری را از طریق ثبت‌نام در نسخه پرمیوم قفل‌گشایی کنید. برای ادامه، می‌توانید به مدل رایگان با قدرت کمتر Llama2 13b ما نیز بروید.</translation>
 <translation id="4173478269537830374">مدل‌های مختلف هوش مصنوعی را کاوش کنید</translation>
 <translation id="3245401959451976966">قفل خلاقیت خود را باز کنید</translation>
 <translation id="4165928407303989823">در همین موضوع بمان</translation>
 <translation id="2389665228467129817">برای مدت طولانی‌تری چت کنید</translation>
-<translation id="8556044455877152001">‎USD $ <ph name="PRICE_VALUE"/>‎ /ماه</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> دلار در ماه</translation>
 <translation id="5151923271944811339">به مدل رایگان تغییر دهید</translation>
 <translation id="5474757891469990756">بازگشایی قفل توانایی‌های کامل Leo با نسخه پرمیوم:</translation>
 <translation id="5552332211527367850">اولویت دسترسی به مدل‌های قدرتمند با مهارت‌های مختلف</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">این مکالمه طولانی است و Leo ممکن است به زودی برخی چیز‌ها را از حافظه پاک کند. شما با تبدیل حساب خود به نسخه پریمیوم می‌توانید مکالمه طولانی‌تری داشته باشید یا برای بازنشانی مجدد آن، چت را پاک کنید.</translation>
 <translation id="7550152963854770123">پاک کردن چت</translation>
 <translation id="7494736170250048402">ارسال پیام به Leo</translation>
+<translation id="8712637175834984815">متوجه شدم</translation>
 <translation id="1093419424466417703">این صفحه برای Leo خیلی طولانی است. ممکن است برخی از مطالب از مکالمه حذف شده باشد. Leo توانست <ph name="PERCENTAGE"/> از محتوای صفحه را بخواند.</translation>
 <translation id="4370698775470316661">این مکالمه طولانی است و قادر به ادامه دادن نیستید. ممکن است مدل‌های دیگری موجود باشد که Leo قادر است با آن‌ها دقت خود را در مکالمه‌های بلند حفظ کند.</translation>
+<translation id="5719170755629028558">در حال بهبود پاسخ شما با جستجوی Brave…</translation>
+<translation id="5794962229997281366">جستجوی پاسخ بهبودیافته برای <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">چت عمومی</translation>
 <translation id="8193130769524604031">وظایف چت پیشرفته</translation>
 <translation id="3185367320601718531">مکالمه و تولید متن</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">تغییر طول</translation>
 <translation id="6320643499534852464">رسانه اجتماعی</translation>
 <translation id="2370739752330685659">شاید بعداً</translation>
+<translation id="983013125018250242">ابزارهای Leo</translation>
+<translation id="49269513399674318">از میکروفون استفاده کنید</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
 <translation id="8458987127502506209">فعال کردن Brave سپرها</translation>
 <translation id="7509914170164691086">سپرهای <ph name="LINK_BEFORE"/>برای<ph name="LINK_AFTER"/> روشن است</translation>

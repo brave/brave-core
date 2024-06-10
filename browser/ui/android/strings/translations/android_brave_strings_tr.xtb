@@ -612,7 +612,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6896758677409633944">Kopyala</translation>
 <translation id="3726490322412361740">Şifre Girin</translation>
 <translation id="3038243139480464605">Şifreyi doğrula</translation>
-<translation id="3043677904160378840">Şifreler en az 8 karakterden oluşmalıdır.</translation>
 <translation id="7396672979287122068">Doğrulanmış şifre eşleşmedi</translation>
 <translation id="1566412704591731844">Cüzdanınız oluşturuluyor...</translation>
 <translation id="7779823116893018906">Birkaç saniye sürebilir...</translation>
@@ -656,8 +655,11 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5981303441790732480">Mevcut cüzdanınızı içe aktarın</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Şifre</translation>
+<translation id="7553242001898162573">Parolanızı girin</translation>
 <translation id="5619264711680220002">Biyometrik kilit açma</translation>
+<translation id="9195657745688986798">Cüzdan Kilidini Aç</translation>
 <translation id="5168349973342709369">Cüzdan kilidini açmak için şifreyi girin</translation>
+<translation id="3043677904160378840">Şifreler en az 8 karakterden oluşmalıdır.</translation>
 <translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
 <translation id="5760476995887363522">Tümceler eşleşmedi. Lütfen tekrar deneyin.</translation>
 <translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
@@ -701,7 +703,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6748319398471481216">Aylık olarak yenilenir</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ay</translation>
 <translation id="1163809943099641131">Bir Yıl</translation>
-<translation id="7574007394522199115">Yıllık olarak yenileyerek %%<ph name="PERCENTAGE_AMOUNT"/> tasarruf edin</translation>
+<translation id="7574007394522199115">Yıllık olarak yenileyin, %%<ph name="PERCENTAGE_AMOUNT"/> tasarruf edin</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yıl</translation>
 <translation id="2655185358771731232">7 günlüğüne ücretsiz deneyin. 7 gün sonra plan ücreti hesabınıza yansıtılır. Tüm abonelikler otomatik olarak yenilenir fakat yenilemeden önce iptal edilebilir.</translation>
 <translation id="6053992191006521518">ÜCRETSİZ olarak deneyin</translation>
@@ -1189,4 +1191,13 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6891382640886173702">Pencereleri birleştir</translation>
 <translation id="2912247081180973411">Pencereleri kapat</translation>
 <translation id="4010699428656610296">Lütfen sekmeleri başka bir Brave penceresinde birleştirin.</translation>
+<translation id="208634871997892083">Her zaman açık VPN</translation>
+<translation id="1599073346542156922">Açmak için:</translation>
+<translation id="7001163334415463127">1. Uygulama çekmecenizden veya aşağıdaki butona dokunarak cihazınızın ayarlarını açın.</translation>
+<translation id="887443138775437899">2. Brave VPN'i bulun ve sağdaki ayarlar simgesine dokunun.</translation>
+<translation id="3776051499611941773">3. Etkinleştirmek için <ph name="ALWAYS_ON_TUTORIAL_START"/>Her zaman açık VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> seçeneğini etkinleştirin.</translation>
+<translation id="4776146737004271126">Android ayarlarını aç</translation>
+<translation id="2728518864712716830">Güncelleme indirildi.</translation>
+<translation id="8403338849301491865">Filtre listesi başarıyla güncellendi</translation>
+<translation id="4650851936784160359">Filtre listesi güncellenemedi. Lütfen tekrar deneyin</translation>
 </translationbundle>

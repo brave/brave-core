@@ -145,7 +145,7 @@
 <translation id="6252490671914511928">As principais histórias de hoje, num feed absolutamente privado, apenas para si.</translation>
 <translation id="8300751939969131609">Ative o Brave News e nunca perca uma história</translation>
 <translation id="7266075701303521777">As Notícias Brave são suportadas por anúncios completamente privados e anonimizados, selecionados no seu dispositivo.</translation>
-<translation id="7699565323725789472">Siga suas fontes preferidas num único feed. Basta abrir um separador no Brave, deslocar para baixo e… pronto!\nO Brave News apresenta anúncios totalmente anónimos.</translation>
+<translation id="7699565323725789472">Acompanhe as suas fontes favoritas, num único feed. Basta abrir um separador no Brave, deslizar para baixo e... já está!\nBrave News é suportado por anúncios privados e anónimos.</translation>
 <translation id="1765217911817124376">Ativar as Notícias Brave</translation>
 <translation id="8981973962043893066">Pesquisar site, tópico ou feed RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
@@ -611,7 +611,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="6896758677409633944">Copiar</translation>
 <translation id="3726490322412361740">Introduzir palavra-passe</translation>
 <translation id="3038243139480464605">Verificar palavra-passe</translation>
-<translation id="3043677904160378840">As palavras-passe têm de ter, pelo menos, 8 carateres.</translation>
 <translation id="7396672979287122068">A palavra-passe verificada não corresponde</translation>
 <translation id="1566412704591731844">A criar a sua carteira...</translation>
 <translation id="7779823116893018906">Pode demorar alguns segundos...</translation>
@@ -655,8 +654,11 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="5981303441790732480">Importe a sua carteira existente</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="6657585470893396449">Palavra-passe</translation>
+<translation id="7553242001898162573">Introduza a palavra-passe</translation>
 <translation id="5619264711680220002">Desbloqueio biométrico</translation>
+<translation id="9195657745688986798">Desbloquear Wallet</translation>
 <translation id="5168349973342709369">Introduza a palavra-passe para desbloquear a carteira</translation>
+<translation id="3043677904160378840">As palavras-passe têm de ter, pelo menos, 8 carateres.</translation>
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
 <translation id="5760476995887363522">As frases não correspondem. Tente novamente.</translation>
 <translation id="2360588547830602174">Falha na recuperação da conta. Tente de novo, por favor.</translation>
@@ -700,7 +702,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="6748319398471481216">Renova mensalmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mês.</translation>
 <translation id="1163809943099641131">Um ano</translation>
-<translation id="7574007394522199115">Renovar anualmente poupa <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Renove anualmente e poupe <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ano.</translation>
 <translation id="2655185358771731232">Experimente grátis durante 7 dias. Após este período, ser-lhe-á cobrado o preço do plano. Todas as assinaturas são renovadas automaticamente, contudo, podem ser canceladas antes da data de renovação.</translation>
 <translation id="6053992191006521518">Experimentar GRATUITAMENTE</translation>
@@ -1124,7 +1126,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="7765158879357617694">Mover</translation>
 <translation id="3803384303807438047">Eliminar dados offline do item</translation>
 <translation id="4195643157523330669">Abrir num novo separador</translation>
-<translation id="4243710787042215766">Abrir em aba privada</translation>
+<translation id="4243710787042215766">Abrir num separador privado</translation>
 <translation id="8261506727792406068">Eliminar</translation>
 <translation id="377872456482681602">Selecione primeiro os itens</translation>
 <translation id="286472539388773794">Introduza um nome de lista de reprodução válido</translation>
@@ -1188,4 +1190,13 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6891382640886173702">Combinar janelas</translation>
 <translation id="2912247081180973411">Fechar janelas</translation>
 <translation id="4010699428656610296">Combine outros separadores noutra janela do Brave.</translation>
+<translation id="208634871997892083">VPN sempre ativa</translation>
+<translation id="1599073346542156922">Como ativar</translation>
+<translation id="7001163334415463127">1. Abra as definições do dispositivo a partir da gaveta de aplicações ou tocando no botão abaixo.</translation>
+<translation id="887443138775437899">2. Encontre a VPN Brave e toque no ícone de definições à direita.</translation>
+<translation id="3776051499611941773">3. Ative a opção <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sempre ativa<ph name="ALWAYS_ON_TUTORIAL_END"/>.</translation>
+<translation id="4776146737004271126">Abrir definições do Android</translation>
+<translation id="2728518864712716830">A atualização foi transferida.</translation>
+<translation id="8403338849301491865">A lista de filtros foi atualizada com êxito</translation>
+<translation id="4650851936784160359">Não foi possível atualizar a lista de filtros. Tente novamente</translation>
 </translationbundle>

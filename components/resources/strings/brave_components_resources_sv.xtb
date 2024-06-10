@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Ju fler du ser, desto mer kan du tjäna.</translation>
 <translation id="7526443283522395161">Nya annonser på fliksidor</translation>
 <translation id="7968650944098083708">Aviseringsannonser</translation>
+<translation id="8289546216379862569">Sök-annonser</translation>
+<translation id="4758111936363146244">Brave Sök-annonser visas i <ph name="BEGIN_LINK"/>Brave Sök<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Du kan inte tjäna BAT från Brave Sök-annonser ännu, men du hjälper till att stödja Brave genom att ha dem aktiverade.</translation>
 <translation id="6390952132783970876">Brave News-annonser</translation>
 <translation id="7516281787184495886">Brave News innehåller annonser som inte kan inaktiveras oberoende av varandra.</translation>
 <translation id="8008378848677625233">Brave News är inaktiverat för närvarande.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Laddar ned komponent ...</translation>
 <translation id="4894106830958548828">Jag förstår</translation>
 <translation id="326118736933420687">Du visar en WebTorrent-sida</translation>
+<translation id="2729085694451916573">Teststräng för <ph name="PART_ONE"/>platshållare<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Läs mer<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="4492298165410552103">Aktivera stöd för ostoppbara domäner i Brave?</translation>
 <translation id="5015092481905019948">Brave kommer att använda <ph name="PROVIDER_NAME"/> för att matcha <ph name="DOMAIN_LIST"/>-domännamn som finns på <ph name="DOMAIN_PROVIDER_NAME"/>. Brave döljer din IP-adress. Om du aktiverar detta kommer <ph name="PROVIDER_NAME"/> att se att någon försöker besöka dessa domäner men inget annat. Se <ph name="PROVIDER_NAME"/>s <ph name="BEGIN_PROVIDER_TOU_LINK"/>användarvillkor<ph name="END_PROVIDER_TOU_LINK"/> och <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>sekretesspolicy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Ett allmänt behandlingsfel har inträffat för en begäran</translation>
 <translation id="7123780456696055383">Den begärda resursen är inte tillgänglig</translation>
 <translation id="1680597601664421644">Snabbtangenten som importeras är inte giltig för Brave Wallet</translation>
+<translation id="372898731091371291">Vilken sorts plånbok vill du importera?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin-plånbok</translation>
+<translation id="8659668419772278776">Importera din seedfras från en befintlig plånbok</translation>
+<translation id="8110492767853188065">Hårdvaruplånbok</translation>
+<translation id="7437218084485869007">Anslut din hårdvaruplånbok till Brave</translation>
 <translation id="4641919696349069826">En begäran pågår redan</translation>
 <translation id="872806943696014633">Transaktionsdata saknas</translation>
 <translation id="7068183357903252127">Transaktionsdata "till" eller "data" måste anges</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nej</translation>
 <translation id="1201402288615127009">Nästa</translation>
-<translation id="8712637175834984815">Uppfattat</translation>
+<translation id="3214453326297774895">Visa min återställningsfras</translation>
 <translation id="6896758677409633944">Kopiera</translation>
 <translation id="7885157704277298658">Kopierades!</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="6042308850641462728">Mer</translation>
-<translation id="768236965975208017">Säkra. Flerkedja. Och ack så lätt att använda. Din Brave Wallet är bara några klick bort</translation>
 <translation id="3157931365184549694">Återställ</translation>
-<translation id="2484275747844666540">Skapa ny plånbok</translation>
-<translation id="3662348701117072366">Importera befintlig plånbok</translation>
-<translation id="7150150391368236519">Anslut hårdvaruplånbok</translation>
+<translation id="414070570958255222">För webbläsare. Egen förvaring. Och flera kedjor.</translation>
+<translation id="1350120992777389959">Ta kontroll över din krypto och NFT:er. Brave Wallet stöder Ethereum, EVM-kedjor, Solana, Filecoin, Bitcoin med flera.</translation>
+<translation id="165255193061631296">Behöver du en ny plånbok?</translation>
+<translation id="1939235910515558387">Kom igång med Brave Wallet på några minuter.</translation>
+<translation id="5844138175312846408">Har du redan en plånbok?</translation>
+<translation id="772643556080081594">Jag behöver en plånbok för endast visning</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave och Brave-logotypen är registrerade varumärken som tillhör Brave Software, Inc. Andra produktnamn och logotyper kan vara varumärken som tillhör respektive företag. Med ensamrätt.</translation>
 <translation id="7501957181231305652">eller</translation>
 <translation id="375882617301124395">Säkerhetskopiera din kryptoplånbok</translation>
-<translation id="180032279811483155">I nästa steg kommer du att se en återställningsfras på <ph name="RECOVERY_PHRASE_LENGTH"/> ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
 <translation id="5024543173656851695">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsnyckel.</translation>
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="6532106788206463496">Spara ändringar</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Bekräfta återställningsfras</translation>
 <translation id="3747079125031086337">Välj orden i din återställningsfras i rätt ordning.</translation>
 <translation id="802060020117206314">Återställningsfrasen matchade inte. Vänligen försök igen.</translation>
-<translation id="8412783472871103529">Verifiera din återställningsfras</translation>
+<translation id="7345730059518887993">Låt oss kontrollera</translation>
 <translation id="2226686084760581391">Klicka på <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> och <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> ord av din återställningsfras.</translation>
 <translation id="7575574239720542222">Återställningsfrasen matchade inte</translation>
 <translation id="8692301574305033504">Skapa ett nytt lösenord</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Importera från äldre Brave krypto-plånböcker?</translation>
 <translation id="3331452756822160641">Nytt lösenord</translation>
 <translation id="8624315169751085215">Kopiera till Urklipp</translation>
+<translation id="2598171223363459366">Du kan hoppa över det här steget nu, men du måste fortfarande säkerhetskopiera återställningsfrasen för att säkerställa kontosäkerheten.</translation>
+<translation id="5303015959766064022">Jag säkerhetskopierar senare</translation>
 <translation id="6346952829206698721">Klistra in från urklipp</translation>
+<translation id="2610561535971892504">Klicka för att kopiera</translation>
 <translation id="1121335910737476837">Primära kryptokonton</translation>
 <translation id="6969147029062037757">Importerade konton</translation>
 <translation id="3926119534765499672">Anslutna hårdvaruplånböcker</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Detta fel kan uppstå när fel program är öppet i Ledger-enheten.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Ge Brave åtkomst till din Ledger-enhet.</translation>
+<translation id="8012452656725205792">Ge Brave tillgång till din <ph name="HARDWARE_DEVICE"/> enhet .</translation>
 <translation id="4378551569595875038">Ansluter ...</translation>
 <translation id="1943188256166395881">Lägg till kontrollerade konton</translation>
 <translation id="8554010658308662631">Ladda mer</translation>
 <translation id="6998738230710304743">Laddar fler...</translation>
 <translation id="5592304751234049046">Sök konto</translation>
+<translation id="3168978475376026497">HD-sökväg</translation>
 <translation id="6151024411349343484">Testa att byta HD-sökväg (ovan) om du inte hittar det konto du letar efter.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Inga resultat hittades.</translation>
+<translation id="7261362517244085362">Auktorisera din plånbok</translation>
+<translation id="7150150391368236519">Anslut hårdvaruplånbok</translation>
+<translation id="5400782314657008092">Vi stöder för närvarande <ph name="HARDWARE_DEVICE"/> och <ph name="HARDWARE_DEVICE1"/> enheter.</translation>
+<translation id="8144305264680648043">Anslut din hårdvaruplånbok för att hantera dina tillgångar direkt från Brave Plånbok</translation>
+<translation id="1329837291200753515">Välj en blockkedja för att importera din hårdvaruplånbok</translation>
+<translation id="6983390509997396124">Anslut din <ph name="HARDWARE_DEVICE"/> enhet till Brave Plånbok</translation>
 <translation id="5149944858285555235">Okänt fel, anslut din maskinvaruplånbok igen och försök igen.</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="9220525904950070496">Ta bort konto</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Testnätverk</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Välj konto</translation>
 <translation id="6797737193502014008">Sök konton</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">Transaktioner visas här</translation>
 <translation id="6079696972035130497">Obegränsat</translation>
 <translation id="2916401020782528840">Transaktionen hittades inte</translation>
+<translation id="1690963073120772693">Denna transaktion kan inte göras om.</translation>
 <translation id="2833661570529295305">Inte godkänd</translation>
 <translation id="8034530868111548216">Godkänt</translation>
 <translation id="6015436276085482001">Nekad</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Ett fel inträffade när transaktionen bearbetades, försök igen</translation>
 <translation id="971552837551838642">Fel vid signering av meddelande, försök igen</translation>
 <translation id="8273603707418703324">Fel vid signering av meddelande, okänd nyckelring begärd, försök igen</translation>
-<translation id="5265455943786954050">Trezor-kommandot körs redan</translation>
-<translation id="7017116822583380542">Trezor-bryggan är inte redo</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> kommandot är redan påbörjat</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> bron är inte klar</translation>
 <translation id="3378339846292573874">Lägg till föreslagen token</translation>
 <translation id="2322227405137827074">Vill du importera denna token?</translation>
 <translation id="4378475168089649292">Blockkedja</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Öppna Rainbow Bridge-appen</translation>
 <translation id="1522775706527775647">Överbrygga till Aurora</translation>
 <translation id="4903322403594141291">Läs mer om Brave Wallet</translation>
-<translation id="3875185448438395303">Minst:</translation>
-<translation id="2029465635925899949">8 tecken</translation>
-<translation id="6697810017029555732">Match!</translation>
+<translation id="4427684901715566795">Lösenord måste ha:</translation>
+<translation id="8521329076169776625">Minst 8 tecken</translation>
+<translation id="3665035348242240953">Lösenorden stämmer överens</translation>
 <translation id="8918368616587206671">Stark!</translation>
 <translation id="574392208103952083">Medium</translation>
 <translation id="8297006494302853456">Svag</translation>
+<translation id="3282258437441351851">Brave Plånbok låses automatiskt efter</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> minuter</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> timmar</translation>
 <translation id="7084181009966710506">Skapar plånbok ...</translation>
-<translation id="6782556046178425980">Innan du börjar säkerhetskopiera plånboken</translation>
+<translation id="3259102562570606417">Spara din återställningsfras</translation>
 <translation id="7119749028647909394">Återställningsfrasen på 12–24 ord är en privat nyckel som du kan använda för att återfå åtkomst till din plånbok om du skulle förlora en eller flera anslutna enheter. Förvara den på ett säkert ställe och i exakt den ordning som den visas nedan.</translation>
 <translation id="3259018319025894691">Brave kan inte komma åt din hemliga återställningsfras. Håll det säkert och dela det aldrig med någon annan.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Viktigt: <ph name="TAG_AFTER"/>Dela aldrig din återställningsfras. Alla med den här frasen kan ta dina tillgångar för alltid.</translation>
+<translation id="426648489149930289">Förvara den på en säker plats som inte är tillgänglig för andra och undvik att dela den med någon.</translation>
+<translation id="119185410022731300">Ange ordet i position <ph name="VALUE"/> från din återställningsfras.</translation>
+<translation id="2193954488469999829">Glömde du spara? Gå tillbaka</translation>
 <translation id="7509948206688764960">Säkerhetskopiera din plånboksåterställningsfras</translation>
 <translation id="8052898407431791827">Kopierade till urklipp</translation>
 <translation id="4576741736874242970">Klicka för att se din fras</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">:a</translation>
 <translation id="7992766987062040279">:e</translation>
 <translation id="2295726992010694229">:e</translation>
-<translation id="8241405611628876973">Grattis! Din Brave Wallet är redo att användas!</translation>
-<translation id="6828327990705355767">För att komma åt din plånbok, klicka bara på plånboksikonen uppe till höger i valfritt Brave webbläsarfönster.</translation>
+<translation id="1148624853678088576">Du är klar!</translation>
+<translation id="1656439328205762155">Din Brave Plånbok är nu konfigurerad och klar att användas.</translation>
+<translation id="3342494025742308764">Gå till portföljen</translation>
 <translation id="396152018598329740">Hur använder man en kryptoplånbok?</translation>
 <translation id="7512061585041489067">Vilken är den bästa kryptoplånboken?</translation>
 <translation id="1342755158522323177">Vad är en kryptowebbläsare?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Vad är en återställningsfras?</translation>
 <translation id="7328255859839881981">Vad är DApps?</translation>
 <translation id="3852489285890032403">Vad är webb 3?</translation>
-<translation id="5448233694500869445">Vi upptäckte MetaMask-tillägget i din webbläsare</translation>
-<translation id="8436080536329710282">Ange ditt MetaMask-plånbokslösenord för att enkelt importera till Brave Wallet.</translation>
+<translation id="2349224271234429946">Importera MetaMask-plånbok</translation>
+<translation id="6715906859822319136">Du kan enkelt importera din MetaMask-plånbok genom att mata in ditt lösenord.</translation>
 <translation id="7543512765962444927">Anslut till din befintliga plånbok</translation>
 <translation id="3551682252653406110">För att ansluta en plånbok du redan har kan du behöva ange din återställningsfras. För närvarande stöder vi återställning/import från Ethereum och Solana plånböcker.</translation>
-<translation id="346929827081904572">Återställ från fröfras</translation>
+<translation id="3961126209136843111">Importera befintlig plånbok</translation>
 <translation id="5645597512426471834">12 – 24 ord</translation>
-<translation id="8158505311297755780">Skriv din Brave Wallet 12–24 ords återställningsfras.</translation>
+<translation id="2321396552035646646">Du kan klistra in hela återställningsfrasen i valfritt fält.</translation>
 <translation id="5419707890586509000">Importera från MetaMask</translation>
 <translation id="2265945811107390939">Använd ditt MetaMask-lösenord för att importera din fröfras</translation>
 <translation id="7060680423657442298">Strunt i det, jag skapar en ny plånbok</translation>
+<translation id="1932878136775815535">Jag har en återställningsfras med <ph name="LENGTH"/> ord</translation>
+<translation id="7877416315564177070">Kontrollera återställningsfrasen och försök igen.</translation>
+<translation id="6503538941917874992">Importera med din återställningsfras</translation>
+<translation id="782167880151571109">MetaMask-plånbok upptäckt!</translation>
+<translation id="3619071361843652814">Äldre plånbok upptäckt!</translation>
+<translation id="4634124774493850572">Använd lösenordet</translation>
+<translation id="7697478310235189459">Ord <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Skriv din MetaMask 12–24 ords återställningsfras.</translation>
 <translation id="7720392926833259937">Skriv MetaMask-lösenord</translation>
 <translation id="6657585470893396449">Lösenord</translation>
 <translation id="6260144012548445299">Lär dig mer om min nya plånbok</translation>
-<translation id="8746910870914151528">Juridiska grejer</translation>
-<translation id="5148123176978018397">Vänligen bekräfta följande:</translation>
-<translation id="6088314935678153800">Jag förstår att detta är en plånbok för självförvar och att jag ensam är ansvarig för alla associerade medel, tillgångar eller konton, och för att vidta lämpliga åtgärder för att säkra, skydda och säkerhetskopiera min plånbok. Jag förstår att Brave INTE kan komma åt min plånbok eller vända transaktioner för mina räkningar, och att min återställningsfras är det ENDA sättet att återfå åtkomst i händelse av ett förlorat lösenord, stulen enhet eller liknande omständigheter.</translation>
-<translation id="7781090633800450517">Jag har läst och godkänner <ph name="LINK_BEFORE"/>användningsvillkoren<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Innan vi börjar</translation>
+<translation id="5333225216561354793">Vi kräver att du bekräftar posterna nedan</translation>
+<translation id="4284971227128011550">Jag förstår att detta är en plånbok för självförvar och att jag ensam är ansvarig för alla associerade medel, tillgångar eller konton, och för att vidta lämpliga åtgärder för att säkra, skydda och säkerhetskopiera min plånbok. Jag förstår att Brave inte kan komma åt min plånbok eller vända transaktioner för mina räkningar, och att min återställningsfras är det ENDA sättet att återfå åtkomst i händelse av ett förlorat lösenord, stulen enhet eller liknande omständigheter.</translation>
+<translation id="3604445540387095708">Jag har läst och godkänner <ph name="LINK_BEFORE"/>användarvillkoren<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Köp krypto</translation>
 <translation id="3887541341068007345">Söker efter plånbokstillägg ...</translation>
 <translation id="3567994771568272606">Importera från äldre Brave kryptoplånböcker</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Osäker åtgärd med risk för förlust</translation>
 <translation id="6405354572620970908">Denna begäran verkar vara skadlig och kan göra dig sårbar för stöld. Fortsätt inte om du inte litar på appen.</translation>
 <translation id="786261184916565476">Vi hittade <ph name="VALUE"/> problem.</translation>
+<translation id="2826600321627372011">Inga rutter hittades</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Aktuell flik</translation>
 <translation id="7056969230130642253">Du har kommit ikapp</translation>
 <translation id="7292242212818928219">Nytt innehåll tillgängligt. Ladda om?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Snabbkommandon</translation>
 <translation id="7481312909269577407">Framåt</translation>
 <translation id="302781076327338683">Läs in sidan på nytt utan att använda cache</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Den här kombinationen används för <ph name="COMMAND"/> och kan inte ändras.</translation>
 <translation id="3537006124004887164">Den här kombinationen används för <ph name="COMMAND"/> och kan inte ändras. Testa att ändra den via Appgenvägar i systeminställningarna.</translation>
 <translation id="712598284361781729">Ny delad vy</translation>
-<translation id="6655450014966273037">Stäng delad vy</translation>
 <translation id="1130188644637295274">Öppna i delad vy</translation>
-<translation id="7195519370590486580">Dela upp i flikar</translation>
+<translation id="6459036216700972269">Sluta dela upp flikar</translation>
 <translation id="3617523374417810198">Ny delad vy</translation>
-<translation id="9053179124396567872">Stäng delad vy</translation>
 <translation id="8571323456914890254">Öppna i delad vy</translation>
-<translation id="2397258152713354053">Dela upp i flikar</translation>
+<translation id="5329136173514538969">Sluta dela upp flikar</translation>
 <translation id="8591883849678260674">Se original</translation>
 <translation id="1969654232209826429">min. läsning</translation>
 <translation id="4101707289420716287">Inaktivera Speedreader</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">Sammanfatta den här sidan</translation>
 <translation id="7932221068776853847">Koppla från för att sluta skicka sidinnehåll till Leo och starta en ny konversation</translation>
 <translation id="1167803637855350748">Det uppstod ett nätverksproblem vid anslutning till Leo, kontrollera anslutningen och försök igen.</translation>
-<translation id="5095201428204952524">Leo är för upptagen just nu. Försök igen om några minuter.</translation>
+<translation id="1996126325390835277">Leo är för upptagen just nu. Försök igen om några minuter.</translation>
 <translation id="7144878232160441200">Försök igen</translation>
-<translation id="2505565639170795978">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Llama 13B, en modell som skapats av Meta för att vara högpresterande och kunna användas på många olika sätt.</translation>
-<translation id="8030558642460377506">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Mixtral 8x7B, en modell som skapats av Mistral AI för att hantera avancerade uppgifter.</translation>
-<translation id="2489317965865266353">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
+<translation id="8570488829560315702">Hej, jag heter Leo. Jag är en AI-assistent som hostas helt av Brave. Jag drivs av Llama 3 8B, en modell skapad av Meta för att vara effektiv och mångsidig. <ph name="LINK_BEFORE"/>Läs mer om Leo<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hej, jag heter Leo. Jag är enAI-assistent som hostas helt av Brave. Jag drivs av Mixtral 8x7B, en modell som skapats av Mistral AI för att hantera avancerade uppgifter. <ph name="LINK_BEFORE"/>Läs mer om Leo<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hej! Jag heter Leo. Jag är en proxybaserad assistent från Brave. Jag drivs av Claude 3 Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
 <translation id="4147243042852964992">Hej! Jag heter Leo. Jag är en proxybaserad assistent från Brave. Jag drivs av Claude 3 Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> av <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Begränsad</translation>
 <translation id="6187065185557150870">Chatt</translation>
 <translation id="2961040541145689181">Ny chatt</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
 <translation id="1691256669639196606">Hantera prenumeration</translation>
+<translation id="2304783958703511257">Avancerade inställningar</translation>
 <translation id="3037594989275592390">Språkmodeller</translation>
 <translation id="6637015365469044269">Uppgradera nu</translation>
+<translation id="5543505256451301851">Prova gratis i 7 dagar</translation>
 <translation id="849535826888024304">Gränsen för svarsfrekvens har nåtts</translation>
-<translation id="6149863263423821329">Få tillgång till en högre svarsfrekvens genom att prenumerera på Premium. Du kan också byta till vår mindre kraftfulla gratismodell Llama2 13b och fortsätta.</translation>
+<translation id="2252128900328632803">Få tillgång till en högre svarsfrekvens genom att prenumerera på Premium. Du kan också byta till vår mindre kraftfulla gratismodell Llama2 13b och fortsätta.</translation>
 <translation id="4173478269537830374">Utforska olika AI-modeller</translation>
 <translation id="3245401959451976966">Frigör din kreativitet</translation>
 <translation id="4165928407303989823">Håll dig till ämnet</translation>
 <translation id="2389665228467129817">Chatta längre</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /månad</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/månad</translation>
 <translation id="5151923271944811339">Byt till gratismodellen</translation>
 <translation id="5474757891469990756">Släpp fri Leos fullständiga kraft med Premium:</translation>
 <translation id="5552332211527367850">Prioriterad åtkomst till kraftfulla modeller med olika färdigheter</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Den här konversationen är lång och det finns en risk att Leo börjar glömma saker snart. Du kan få längre konversationer genom att byta till en premiummodell, eller så kan du rensa chatten och börja om.</translation>
 <translation id="7550152963854770123">Rensa chatten</translation>
 <translation id="7494736170250048402">Skicka meddelande till Leo</translation>
+<translation id="8712637175834984815">Uppfattat</translation>
 <translation id="1093419424466417703">Sidan är för lång för Leo. Viss kontext kan saknas i konversationen. Leo kunde läsa <ph name="PERCENTAGE"/> av sidans innehåll.</translation>
 <translation id="4370698775470316661">Den här konversationen är för lång och kan inte fortsätta. Det kan finnas andra modeller som Leo kan använda för att klara längre konversationer.</translation>
+<translation id="5719170755629028558">Förbättra ditt svar med Brave Sök ...</translation>
+<translation id="5794962229997281366">Förbättrat svar söker efter <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Allmän chatt</translation>
 <translation id="8193130769524604031">Avancerade chattuppgifter</translation>
 <translation id="3185367320601718531">Konversation och textgenerering</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Ändra längd</translation>
 <translation id="6320643499534852464">Sociala medier</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
+<translation id="983013125018250242">Leo-verktyg</translation>
+<translation id="49269513399674318">Använd mikrofonen</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
 <translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>

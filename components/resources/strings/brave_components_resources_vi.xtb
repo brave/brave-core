@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Bạn càng xem nhiều, bạn càng kiếm được nhiều hơn.</translation>
 <translation id="7526443283522395161">Quảng cáo trang tab mới</translation>
 <translation id="7968650944098083708">Quảng cáo thông báo</translation>
+<translation id="8289546216379862569">Quảng cáo tìm kiếm</translation>
+<translation id="4758111936363146244">Quảng cáo Tìm kiếm Brave xuất hiện trên <ph name="BEGIN_LINK"/>Tìm kiếm Brave<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Bạn chưa thể kiếm được BAT từ Quảng cáo Tìm kiếm Brave, nhưng bạn có thể giúp ủng hộ Brave bằng cách bật quảng cáo.</translation>
 <translation id="6390952132783970876">Quảng cáo Brave tin tức</translation>
 <translation id="7516281787184495886">Brave Tin tức chứa quảng cáo không thể bị vô hiệu hóa riêng lẻ.</translation>
 <translation id="8008378848677625233">Brave Tin tức hiện đang bị vô hiệu hóa.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Đang tải xuống Thành phần...</translation>
 <translation id="4894106830958548828">Tôi hiểu</translation>
 <translation id="326118736933420687">Bạn đang xem trang WebTorrent</translation>
+<translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
 <translation id="5015092481905019948">Brave sẽ sử dụng <ph name="PROVIDER_NAME"/> để giải quyết tên miền <ph name="DOMAIN_LIST"/> trên <ph name="DOMAIN_PROVIDER_NAME"/>. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này thì <ph name="PROVIDER_NAME"/> sẽ thấy ai đó đang cố truy cập những miền này chứ không phải gì khác. Xem<ph name="BEGIN_PROVIDER_TOU_LINK"/>điều khoản sử dụng<ph name="END_PROVIDER_TOU_LINK"/> và <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_PROVIDER_PRIVACY_LINK"/> của <ph name="PROVIDER_NAME"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Đã xảy ra lỗi xử lý yêu cầu chung</translation>
 <translation id="7123780456696055383">Không có tài nguyên được yêu cầu</translation>
 <translation id="1680597601664421644">Cụm từ ghi nhớ được nhập không hợp lệ cho Ví Brave</translation>
+<translation id="372898731091371291">Bạn muốn nhập loại ví nào?</translation>
+<translation id="1430728084670406473">Ví Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">Nhập cụm từ hạt giống từ một ví hiện hành</translation>
+<translation id="8110492767853188065">Ví phần cứng</translation>
+<translation id="7437218084485869007">Kết nối ví phần cứng của bạn với Brave</translation>
 <translation id="4641919696349069826">Một yêu cầu đang được thực hiện</translation>
 <translation id="872806943696014633">Dữ liệu giao dịch bị thiếu</translation>
 <translation id="7068183357903252127">Dữ liệu giao dịch 'to' hoặc 'data' phải được chỉ rõ</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Có</translation>
 <translation id="4250680216510889253">Không</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
-<translation id="8712637175834984815">Bỏ qua</translation>
+<translation id="3214453326297774895">Hiển thị cụm từ khôi phục của tôi</translation>
 <translation id="6896758677409633944">Sao chép</translation>
 <translation id="7885157704277298658">Đã sao chép!</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="6042308850641462728">Xem thêm</translation>
-<translation id="768236965975208017">An toàn. Đa chuỗi. Và rất dễ sử dụng. Ví Brave của bạn chỉ cách một vài cú nhấp chuột</translation>
 <translation id="3157931365184549694">Restore</translation>
-<translation id="2484275747844666540">Tạo ví mới</translation>
-<translation id="3662348701117072366">Nhập khẩu ví hiện có</translation>
-<translation id="7150150391368236519">Kết nối ví phần cứng</translation>
+<translation id="414070570958255222">Trình duyệt gốc. Tự lưu ký. Và đa chuỗi.</translation>
+<translation id="1350120992777389959">Kiểm soát tiền điện tử và NFT của bạn. Ví Brave hỗ trợ Ethereum, chuỗi EVM, Solana, Filecoin, Bitcoin và nhiều hơn nữa.</translation>
+<translation id="165255193061631296">Cần ví mới?</translation>
+<translation id="1939235910515558387">Bắt đầu với Ví Brave trong một vài phút.</translation>
+<translation id="5844138175312846408">Đã có ví?</translation>
+<translation id="772643556080081594">Tôi cần một chiếc ví chỉ xem</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave và logo Brave là các thương hiệu đã đăng ký của Brave Software, Inc. Các tên sản phẩm và logo khác có thể là thương hiệu của các công ty tương ứng. Mọi quyền được bảo lưu.</translation>
 <translation id="7501957181231305652">hoặc</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
-<translation id="180032279811483155">Trong bước tiếp theo, bạn sẽ thấy <ph name="RECOVERY_PHRASE_LENGTH"/>cụm từ khôi phục mà bạn có thể sử dụng để khôi phục tài khoản tiền điện tử chính của mình. Lưu cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị mất hoặc bị đánh cắp hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="5024543173656851695">Tôi hiểu rằng nếu tôi mất các từ khôi phục, tôi sẽ không thể truy cập vào ví tiền điện tử của mình.</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="6532106788206463496">Lưu thay đổi</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Xác minh cụm từ khôi phục</translation>
 <translation id="3747079125031086337">Chọn các từ trong cụm từ khôi phục của bạn theo đúng thứ tự.</translation>
 <translation id="802060020117206314">Cụm từ khôi phục không khớp, hãy thử lại.</translation>
-<translation id="8412783472871103529">Xác minh cụm từ khôi phục của bạn</translation>
+<translation id="7345730059518887993">Hãy cùng kiểm tra</translation>
 <translation id="2226686084760581391">Nhấp vào <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, và <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> từ của cụm từ khôi phục của bạn.</translation>
 <translation id="7575574239720542222">Cụm từ khôi phục không khớp</translation>
 <translation id="8692301574305033504">Tạo mật khẩu mới</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Nhập từ ví tiền mã hóa Brave cũ?</translation>
 <translation id="3331452756822160641">Mật khẩu mới</translation>
 <translation id="8624315169751085215">Sao chép vào Bộ nhớ đệm</translation>
+<translation id="2598171223363459366">Hiện tại bạn có thể bỏ qua bước này, nhưng bạn vẫn cần phải sao lưu cụm từ khôi phục của mình để bảo đảm tính bảo mật của tài khoản.</translation>
+<translation id="5303015959766064022">Tôi sẽ sao lưu sau</translation>
 <translation id="6346952829206698721">Dán từ khay nhớ tạm</translation>
+<translation id="2610561535971892504">Nhấp để sao chép</translation>
 <translation id="1121335910737476837">Tài khoản tiền mã hóa chính</translation>
 <translation id="6969147029062037757">Các tài khoản đã nhập khẩu</translation>
 <translation id="3926119534765499672">Ví cứng đã kết nối</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Lỗi này có thể xảy ra khi mở sai ứng dụng trên thiết bị Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Cấp cho Brave quyền truy cập vào thiết bị Ledger của bạn.</translation>
+<translation id="8012452656725205792">Cấp cho Brave quyền truy cập thiết bị <ph name="HARDWARE_DEVICE"/> của bạn.</translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="1943188256166395881">Thêm tài khoản đã đánh dấu</translation>
 <translation id="8554010658308662631">Tải thêm</translation>
 <translation id="6998738230710304743">Đang tải thêm...</translation>
 <translation id="5592304751234049046">Tìm tài khoản</translation>
+<translation id="3168978475376026497">Đường dẫn HD</translation>
 <translation id="6151024411349343484">Hãy thử chuyển đường dẫn HD (ở trên) nếu bạn không tìm được tài khoản mà bạn đang tìm kiếm.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Cũ (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Không tìm thấy kết quả nào.</translation>
+<translation id="7261362517244085362">Cấp phép ví của bạn</translation>
+<translation id="7150150391368236519">Kết nối ví phần cứng</translation>
+<translation id="5400782314657008092">Chúng tôi hiện hỗ trợ các thiết bị <ph name="HARDWARE_DEVICE"/> và <ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">Kết nối ví phần cứng của bạn để trực tiếp quản lý tài sản của bạn từ Ví Brave</translation>
+<translation id="1329837291200753515">Chọn một chuỗi khối để nhập ví phần cứng của bạn</translation>
+<translation id="6983390509997396124">Kết nối thiết bị <ph name="HARDWARE_DEVICE"/> của bạn với Ví Brave</translation>
 <translation id="5149944858285555235">Lỗi không xác định, vui lòng kết nối lại ví phần cứng của bạn và thử lại.</translation>
 <translation id="4522570452068850558">Thông tin chi tiết</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Kiểm trang mạng</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Máy chủ cục bộ</translation>
 <translation id="3792938779249970121">Chọn tài khoản</translation>
 <translation id="6797737193502014008">Tìm kiếm tài khoản</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">Các giao dịch sẽ xuất hiện ở đây</translation>
 <translation id="6079696972035130497">Không giới hạn</translation>
 <translation id="2916401020782528840">Không tìm thấy giao dịch</translation>
+<translation id="1690963073120772693">Không thể thử lại giao dịch này.</translation>
 <translation id="2833661570529295305">Unapproved</translation>
 <translation id="8034530868111548216">Approved</translation>
 <translation id="6015436276085482001">Không chấp thuận/Bị từ chối</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Lỗi khi xử lý giao dịch, hãy thử lại</translation>
 <translation id="971552837551838642">Lỗi khi ký tin nhắn, hãy thử lại</translation>
 <translation id="8273603707418703324">Lỗi khi ký tin nhắn, đã yêu cầu móc khóa không xác định, hãy thử lại</translation>
-<translation id="5265455943786954050">Lệnh Trezor đang được thực hiện</translation>
-<translation id="7017116822583380542">Cầu Trezor chưa sẵn sàng</translation>
+<translation id="6200074323131367633">Lệnh <ph name="DEVICE_NAME"/> đang được thực hiện rồi</translation>
+<translation id="4213183402991860207">Cầu <ph name="DEVICE_NAME"/> chưa sẵn sàng</translation>
 <translation id="3378339846292573874">Thêm token được đề xuất</translation>
 <translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Mở ứng dụng Rainbow Bridge</translation>
 <translation id="1522775706527775647">Bridge sang Aurora</translation>
 <translation id="4903322403594141291">Tìm hiểu thêm về Ví Brave</translation>
-<translation id="3875185448438395303">Ít nhất:</translation>
-<translation id="2029465635925899949">8 ký tự</translation>
-<translation id="6697810017029555732">Khớp!</translation>
+<translation id="4427684901715566795">Mật khẩu phải chứa:</translation>
+<translation id="8521329076169776625">Ít nhất 8 ký tự</translation>
+<translation id="3665035348242240953">Mật khẩu khớp</translation>
 <translation id="8918368616587206671">Mạnh!</translation>
 <translation id="574392208103952083">Vừa phải</translation>
 <translation id="8297006494302853456">Yếu</translation>
+<translation id="3282258437441351851">Ví Brave sẽ tự động khóa sau</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> phút</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> giờ</translation>
 <translation id="7084181009966710506">Đang tạo Ví...</translation>
-<translation id="6782556046178425980">Trước khi bạn bắt đầu sao lưu ví</translation>
+<translation id="3259102562570606417">Lưu cụm từ khôi phục của bạn</translation>
 <translation id="7119749028647909394">Cụm từ khôi phục gồm 12-24 từ là khóa riêng tư bạn có thể sử dụng để lấy lại quyền truy cập vào ví của mình trong trường hợp bạn bị mất (các) thiết bị đã kết nối. Cất cụm này ở nơi an toàn và theo thứ tự chính xác xuất hiện dưới đây.</translation>
 <translation id="3259018319025894691">Brave không thể truy cập cụm từ khôi phục bí mật của bạn. Giữ cụm từ khôi phục an toàn và không bao giờ chia sẻ nó với bất kỳ ai khác.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Quan trọng: <ph name="TAG_AFTER"/>Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất kỳ ai có cụm từ này đều có thể lấy tài sản của bạn mãi mãi.</translation>
+<translation id="426648489149930289">Giữ nó ở một nơi an toàn mà người khác không thể truy cập và tránh chia sẻ với bất kỳ ai.</translation>
+<translation id="119185410022731300">Nhập từ ở vị trí <ph name="VALUE"/> từ cụm từ khôi phục của bạn.</translation>
+<translation id="2193954488469999829">Quên không lưu? Quay lại</translation>
 <translation id="7509948206688764960">Sao lưu cụm từ khôi phục ví của bạn</translation>
 <translation id="8052898407431791827">Đã sao chép vào khay nhớ tạm</translation>
 <translation id="4576741736874242970">Bấm để xem cụm từ của bạn</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">U+200B</translation>
 <translation id="7992766987062040279">U+200B</translation>
 <translation id="2295726992010694229">U+200B</translation>
-<translation id="8241405611628876973">Xin chúc mừng! Ví Brave của bạn đã sẵn sàng hoạt động!</translation>
-<translation id="6828327990705355767">Để truy cập ví của bạn, chỉ cần nhấp vào biểu tượng ví ở trên cùng bên phải của bất kỳ cửa sổ trình duyệt Brave nào.</translation>
+<translation id="1148624853678088576">Bạn đã hoàn thành!</translation>
+<translation id="1656439328205762155">Ví Brave của bạn giờ đã được thiết lập và sẵn sàng sử dụng.</translation>
+<translation id="3342494025742308764">Đi đến danh mục</translation>
 <translation id="396152018598329740">Cách sử dụng ví tiền điện tử?</translation>
 <translation id="7512061585041489067">Ví tiền điện tử tốt nhất là gì?</translation>
 <translation id="1342755158522323177">Trình duyệt tiền điện tử là gì?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Cụm từ khôi phục là gì?</translation>
 <translation id="7328255859839881981">DApps là gì?</translation>
 <translation id="3852489285890032403">Web 3 là gì?</translation>
-<translation id="5448233694500869445">Chúng tôi đã phát hiện thấy tiện ích mở rộng MetaMask trong trình duyệt của bạn</translation>
-<translation id="8436080536329710282">Nhập mật khẩu ví MetaMask của bạn để dễ dàng nhập vào Ví Brave.</translation>
+<translation id="2349224271234429946">Nhập ví MetaMask</translation>
+<translation id="6715906859822319136">Bạn có thể dễ dàng nhập ví MetaMask của mình chỉ bằng cách nhập mật khẩu.</translation>
 <translation id="7543512765962444927">Kết nối với ví hiện có của bạn</translation>
 <translation id="3551682252653406110">Để kết nối ví bạn đã có, bạn có thể cần nhập cụm từ khôi phục của mình. Tại thời điểm này, chúng tôi hỗ trợ khôi phục / nhập từ ví Ethereum và Solana.</translation>
-<translation id="346929827081904572">Khôi phục từ cụm từ hạt giống</translation>
+<translation id="3961126209136843111">Nhập một ví hiện hành</translation>
 <translation id="5645597512426471834">12-24 từ</translation>
-<translation id="8158505311297755780">Nhập cụm từ khôi phục Ví Brave 12-24 từ của bạn.</translation>
+<translation id="2321396552035646646">Bạn có thể dán toàn bộ cụm từ khôi phục của mình vào bất kỳ trường nào.</translation>
 <translation id="5419707890586509000">Nhập khẩu từ MetaMask</translation>
 <translation id="2265945811107390939">Sử dụng mật khẩu MetaMask của bạn để nhập cụm từ hạt giống của bạn</translation>
 <translation id="7060680423657442298">Đừng bận tâm, tôi sẽ tạo ví mới</translation>
+<translation id="1932878136775815535">Tôi có một cụm từ khôi phục gồm <ph name="LENGTH"/> từ</translation>
+<translation id="7877416315564177070">Hãy kiểm tra cụm từ khôi phục của bạn và thử lại.</translation>
+<translation id="6503538941917874992">Nhập bằng cách sử dụng cụm từ khôi phục của bạn</translation>
+<translation id="782167880151571109">Đã phát hiện thấy ví MetaMask!</translation>
+<translation id="3619071361843652814">Đã phát hiện thấy ví Legacy</translation>
+<translation id="4634124774493850572">Sử dụng mật khẩu</translation>
+<translation id="7697478310235189459">Từ <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Nhập cụm từ khôi phục MetaMask 12-24 từ của bạn.</translation>
 <translation id="7720392926833259937">Nhập mật khẩu MetaMask</translation>
 <translation id="6657585470893396449">Mật khẩu</translation>
 <translation id="6260144012548445299">Tìm hiểu thêm về ví mới của tôi</translation>
-<translation id="8746910870914151528">Thủ tục pháp lí</translation>
-<translation id="5148123176978018397">Vui lòng xác nhận nội dung sau:</translation>
-<translation id="6088314935678153800">Tôi hiểu đây là ví tự lưu ký và chỉ mình tôi chịu trách nhiệm về mọi khoản tiền, tài sản hoặc tài khoản liên quan và thực hiện hành động thích hợp để bảo mật, bảo vệ và sao lưu ví của mình. Tôi hiểu rằng Brave KHÔNG thể thay mặt tôi truy cập vào ví của tôi hoặc đảo ngược các giao dịch và cụm từ khôi phục của tôi là cách DUY NHẤT để lấy lại quyền truy cập trong trường hợp mất mật khẩu, thiết bị bị đánh cắp hoặc trường hợp tương tự.</translation>
-<translation id="7781090633800450517">Tôi đã đọc và đồng ý với <ph name="LINK_BEFORE"/>Điều khoản sử dụng<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Trước khi chúng tôi bắt đầu</translation>
+<translation id="5333225216561354793">Chúng tôi yêu cầu bạn công nhận các mục dưới đây</translation>
+<translation id="4284971227128011550">Tôi hiểu rằng đây là một chiếc ví tự lưu ký, và rằng tôi là người duy nhất chịu trách nhiệm đối với các quỹ, tài sản hoặc tài khoản liên kết, và đối với việc thực hiện bất kỳ hành động phù hợp nào để bảo mật, bảo vệ và sao lưu ví của mình. Tôi hiểu rằng Brave không thể truy cập ví của tôi hoặc đảo ngược các giao dịch thay mặt tôi, và rằng cụm từ khôi phục của tôi là cách DUY NHẤT để lấy lại quyền truy cập trong trường hợp mất mật khẩu, mất cắp thiết bị hoặc tình huống tương tự.</translation>
+<translation id="3604445540387095708">Tôi đã đọc và đồng ý với <ph name="LINK_BEFORE"/>Điều khoản sử dụng<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Mua tiền điện tử</translation>
 <translation id="3887541341068007345">Đang kiểm tra các tiện ích mở rộng ví...</translation>
 <translation id="3567994771568272606">Nhập khẩu từ ví tiền điện tử Brave cũ</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Hành động không an toàn có nguy cơ mất mát</translation>
 <translation id="6405354572620970908">Yêu cầu này có vẻ độc hại và có thể khiến bạn dễ bị đánh cắp. Không tiếp tục trừ khi bạn tin tưởng vào ứng dụng.</translation>
 <translation id="786261184916565476">Chúng tôi đã tìm thấy vấn đề về <ph name="VALUE"/>.</translation>
+<translation id="2826600321627372011">Không tìm thấy tuyến đường nào</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Tab hiện tại</translation>
 <translation id="7056969230130642253">Bạn đã xem hết rồi</translation>
 <translation id="7292242212818928219">Nội dung mới có sẵn. Tải lại?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Lệnh nhanh</translation>
 <translation id="7481312909269577407">Chuyển tiếp</translation>
 <translation id="302781076327338683">Tải lại bỏ qua bộ nhớ đệm</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Tổ hợp này đang được sử dụng cho <ph name="COMMAND"/> và không thể sửa đổi.</translation>
 <translation id="3537006124004887164">Tổ hợp này đang được sử dụng cho <ph name="COMMAND"/> và không thể sửa đổi. Hãy thử sửa đổi thông qua `Phím tắt ứng dụng` trong Cài đặt hệ thống.</translation>
 <translation id="712598284361781729">Chia đôi màn hình mới</translation>
-<translation id="6655450014966273037">Đóng Chia đôi màn hình</translation>
 <translation id="1130188644637295274">Mở trong Chia đôi màn hình</translation>
-<translation id="7195519370590486580">Tách thành các tab</translation>
+<translation id="6459036216700972269">Hủy tách tab</translation>
 <translation id="3617523374417810198">Chia đôi màn hình mới</translation>
-<translation id="9053179124396567872">Đóng chia đôi màn hình</translation>
 <translation id="8571323456914890254">Mở trong chia đôi màn hình</translation>
-<translation id="2397258152713354053">Tách thành các tab</translation>
+<translation id="5329136173514538969">Hủy tách tab</translation>
 <translation id="8591883849678260674">Xem bản gốc</translation>
 <translation id="1969654232209826429">phút đọc</translation>
 <translation id="4101707289420716287">Tắt Speedreader</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">Tóm tắt trang này</translation>
 <translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
 <translation id="1167803637855350748">Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.</translation>
-<translation id="5095201428204952524">Leo hiện đang rất bận. Vui lòng thử lại trong vài phút.</translation>
+<translation id="1996126325390835277">Leo hiện đang rất bận. Vui lòng thử lại trong vài phút.</translation>
 <translation id="7144878232160441200">Thử lại</translation>
-<translation id="2505565639170795978">Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 13B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng.</translation>
-<translation id="8030558642460377506">Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để xử lý các tác vụ nâng cao.</translation>
-<translation id="2489317965865266353">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.</translation>
+<translation id="8570488829560315702">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để xử lý các tác vụ nâng cao. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3 Haiku, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.</translation>
 <translation id="4147243042852964992">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3 Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> bởi <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Hạn chế</translation>
 <translation id="6187065185557150870">Trò chuyện</translation>
 <translation id="2961040541145689181">Trò chuyện mới</translation>
 <translation id="7557539689487606886">Lên Premium</translation>
 <translation id="1691256669639196606">Quản lý đăng ký</translation>
+<translation id="2304783958703511257">Cài đặt nâng cao</translation>
 <translation id="3037594989275592390">Mô hình ngôn ngữ</translation>
 <translation id="6637015365469044269">Nâng cấp ngay</translation>
+<translation id="5543505256451301851">Dùng thử 7 ngày miễn phí</translation>
 <translation id="849535826888024304">Đã đạt đến giới hạn tốc độ phản hồi</translation>
-<translation id="6149863263423821329">Mở khóa tỷ lệ phản hồi cao hơn bằng cách đăng ký Premium. Bạn cũng có thể chuyển sang mô hình miễn phí Llama2 13b kém mạnh mẽ hơn của chúng tôi để tiếp tục.</translation>
+<translation id="2252128900328632803">Mở khóa tỷ lệ phản hồi cao hơn bằng cách đăng ký Premium. Bạn cũng có thể chuyển sang mô hình miễn phí Llama2 13b kém mạnh mẽ hơn của chúng tôi để tiếp tục.</translation>
 <translation id="4173478269537830374">Khám phá các mô hình AI khác nhau</translation>
 <translation id="3245401959451976966">Mở khóa sự sáng tạo của bạn</translation>
 <translation id="4165928407303989823">Tập trung vào chủ đề</translation>
 <translation id="2389665228467129817">Trò chuyện lâu hơn</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /tháng</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $/tháng</translation>
 <translation id="5151923271944811339">Chuyển sang mô hình miễn phí</translation>
 <translation id="5474757891469990756">Giải phóng toàn bộ sức mạnh của Leo với Premium:</translation>
 <translation id="5552332211527367850">Ưu tiên truy cập vào các mô hình mạnh mẽ với các kỹ năng khác nhau</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Cuộc trò chuyện này kéo dài và Leo có thể sẽ sớm quên đi mọi thứ. Bạn có thể có được cuộc trò chuyện dài hơn bằng cách chuyển sang mô hình premium hoặc bạn có thể xóa cuộc trò chuyện để thiết lập lại cuộc trò chuyện đó.</translation>
 <translation id="7550152963854770123">Xóa trò chuyện</translation>
 <translation id="7494736170250048402">Gửi tin nhắn cho Leo</translation>
+<translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="1093419424466417703">Trang này quá dài đối với Leo. Một số bối cảnh có thể bị thiếu trong cuộc trò chuyện. Leo đã có thể đọc <ph name="PERCENTAGE"/> nội dung của trang.</translation>
 <translation id="4370698775470316661">Cuộc trò chuyện này quá dài và không thể tiếp tục. Có thể có sẵn các mô hình khác mà Leo có khả năng duy trì độ chính xác cho các cuộc trò chuyện dài hơn.</translation>
+<translation id="5719170755629028558">Đang cải thiện câu trả lời của bạn với Tìm kiếm Brave…</translation>
+<translation id="5794962229997281366">Câu trả lời được cải thiện đang tìm kiếm <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Trò chuyện cho mục đích chung</translation>
 <translation id="8193130769524604031">Tác vụ trò chuyện nâng cao</translation>
 <translation id="3185367320601718531">Cuộc trò chuyện và tạo văn bản</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Đổi độ dài</translation>
 <translation id="6320643499534852464">Truyền thông xã hội</translation>
 <translation id="2370739752330685659">Có lẽ để sau</translation>
+<translation id="983013125018250242">Công cụ Leo</translation>
+<translation id="49269513399674318">Sử dụng micrô</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
 <translation id="7509914170164691086">Khiên đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>

@@ -611,7 +611,6 @@ Segur que vols continuar?</translation>
 <translation id="6896758677409633944">Còpiar</translation>
 <translation id="3726490322412361740">Introdueix la contrasenya</translation>
 <translation id="3038243139480464605">Verifica la contrasenya</translation>
-<translation id="3043677904160378840">Les contrasenyes han de tenir com a mínim 8 caràcters.</translation>
 <translation id="7396672979287122068">La contrasenya verificada no coincideix</translation>
 <translation id="1566412704591731844">S'està creant la teva cartera...</translation>
 <translation id="7779823116893018906">Pot trigar uns segons...</translation>
@@ -655,8 +654,11 @@ Segur que vols continuar?</translation>
 <translation id="5981303441790732480">Importeu la vostra cartera existent</translation>
 <translation id="9111102763498581341">Desbloqueja</translation>
 <translation id="6657585470893396449">Contrasenya</translation>
+<translation id="7553242001898162573">Introdueix la contrasenya</translation>
 <translation id="5619264711680220002">Desbloqueig biomètric</translation>
+<translation id="9195657745688986798">Desbloqueja la cartera</translation>
 <translation id="5168349973342709369">Introdueix la contrasenya per desbloquejar la cartera</translation>
+<translation id="3043677904160378840">Les contrasenyes han de tenir com a mínim 8 caràcters.</translation>
 <translation id="1144810021918451336">No et protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="5760476995887363522">Les frases no coincideixen. Si us plau, torna-ho a provar.</translation>
 <translation id="2360588547830602174">S'ha produït un error en la recuperació del compte. Torna-ho a intentar.</translation>
@@ -700,7 +702,7 @@ Segur que vols continuar?</translation>
 <translation id="6748319398471481216">Es renova mensualment</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mes.</translation>
 <translation id="1163809943099641131">Un any</translation>
-<translation id="7574007394522199115">Renova-la anualment per estalviar-te un <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Si renoveu anualment, us estalviareu <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
 <translation id="2655185358771731232">Prova-ho de franc durant 7 dies. Passats aquests 7 dies, se't cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
 <translation id="6053992191006521518">Proveu-lo GRATIS</translation>
@@ -1188,4 +1190,13 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6891382640886173702">Fusiona les finestres</translation>
 <translation id="2912247081180973411">Tanca la finestra</translation>
 <translation id="4010699428656610296">Mou les altres pestanyes a una altra finestra de Brave</translation>
+<translation id="208634871997892083">VPN sempre activada</translation>
+<translation id="1599073346542156922">Com s'activa:</translation>
+<translation id="7001163334415463127">1. Obriu la configuració del vostre dispositiu des del calaix d'aplicacions o premeu el botó de sota.</translation>
+<translation id="887443138775437899">2. Cerqueu la VPN de Brave i premeu la icona de configuració de la dreta.</translation>
+<translation id="3776051499611941773">3. Activeu <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sempre activada<ph name="ALWAYS_ON_TUTORIAL_END"/> per habilitar-la.</translation>
+<translation id="4776146737004271126">Obre la configuració d'Android</translation>
+<translation id="2728518864712716830">S'ha descarregat l'actualització.</translation>
+<translation id="8403338849301491865">La llista de filtres s'ha actualitzat correctament</translation>
+<translation id="4650851936784160359">La llista de filtres no s'ha pogut actualitzar. Torneu-ho a provar</translation>
 </translationbundle>

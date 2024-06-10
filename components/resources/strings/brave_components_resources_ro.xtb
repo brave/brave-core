@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Cu cât vizionați mai mult, cu atât câștigați mai mult.</translation>
 <translation id="7526443283522395161">Anunțuri pentru Pagini File noi</translation>
 <translation id="7968650944098083708">Anunțuri de notificare</translation>
+<translation id="8289546216379862569">Search ads</translation>
+<translation id="4758111936363146244">Brave Search Ads apar în <ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Deocamdată nu puteți câștiga BAT din Brave Search Ads, dar puteți contribui la susținerea Brave dacă le activați.</translation>
 <translation id="6390952132783970876">Anunțuri Brave News</translation>
 <translation id="7516281787184495886">Brave News conține anunțuri care nu pot fi dezactivate în mod independent.</translation>
 <translation id="8008378848677625233">Brave News este momentan dezactivat.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Se descarcă componenta...</translation>
 <translation id="4894106830958548828">Înțeleg</translation>
 <translation id="326118736933420687">Se afișează o pagine WebTorrent</translation>
+<translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Domenii Unstoppable</translation>
 <translation id="4492298165410552103">Activați Unstoppable Domains în Brave?</translation>
 <translation id="5015092481905019948">Brave va folosi <ph name="PROVIDER_NAME"/> pentru a rezolva denumirile de domenii <ph name="DOMAIN_LIST"/> care sunt în <ph name="DOMAIN_PROVIDER_NAME"/>. Brave ascunde adresa dvs. IP. Dacă activați această opțiune, <ph name="PROVIDER_NAME"/> va vedea că cineva încearcă să acceseze aceste domenii, însă nu va obține nicio informație în plus. Consultați condițiile de utilizare ale <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>și politica de confidențialitate <ph name="END_PROVIDER_TOU_LINK"/> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/><ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -712,6 +716,11 @@
 <translation id="5382339341735118861">A apărut o eroare generală de procesare a cererii</translation>
 <translation id="7123780456696055383">Resursa solicitată nu este disponibilă</translation>
 <translation id="1680597601664421644">Codul mnemonic importat nu este valid pentru portofelul Brave</translation>
+<translation id="372898731091371291">Ce tip de portofel doriți să importați?</translation>
+<translation id="1430728084670406473">Portofel Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">Importați expresia sursă dintr-un portofel existent</translation>
+<translation id="8110492767853188065">Portofel hardware</translation>
+<translation id="7437218084485869007">Conectați-vă portofelul hardware cu Brave</translation>
 <translation id="4641919696349069826">Există deja o solicitare în desfășurare</translation>
 <translation id="872806943696014633">Datele privind tranzacția lipsesc</translation>
 <translation id="7068183357903252127">Trebuie specificate datele 'to' sau 'data' privind tranzacția</translation>
@@ -805,19 +814,21 @@
 <translation id="1426410128494586442">Da</translation>
 <translation id="4250680216510889253">Nu</translation>
 <translation id="1201402288615127009">Următorul</translation>
-<translation id="8712637175834984815">Am înțeles</translation>
+<translation id="3214453326297774895">Afișați expresia mea pentru recuperare</translation>
 <translation id="6896758677409633944">Copiază</translation>
 <translation id="7885157704277298658">Copiat!</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="6042308850641462728">Mai multe</translation>
-<translation id="768236965975208017">Sigur. Multilanț. Și atât de ușor de utilizat. Portofelul dvs. Brave este la doar câteva clicuri distanță</translation>
 <translation id="3157931365184549694">Restabilește</translation>
-<translation id="2484275747844666540">Creați un portofel nou</translation>
-<translation id="3662348701117072366">Importați portofelul existent</translation>
-<translation id="7150150391368236519">Conectați un portofel hardware</translation>
+<translation id="414070570958255222">Nativ în browser. Auto-custodie. Multi-chain.</translation>
+<translation id="1350120992777389959">Preluați controlul criptomonedelor și al NFT-urilor dvs. Portofelul Brave acceptă Ethereum, lanțuri EVM, Solana, Filecoin, Bitcoin și altele.</translation>
+<translation id="165255193061631296">Aveți nevoie de un portofel nou?</translation>
+<translation id="1939235910515558387">Începeți să folosiți Portofelul Brave în câteva minute.</translation>
+<translation id="5844138175312846408">Aveți deja un portofel?</translation>
+<translation id="772643556080081594">Am nevoie de un portofel doar pentru vizualizare</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave și logoul Brave sunt mărci comerciale înregistrate ale Brave Software, Inc. Alte nume de produse și logouri pot fi mărci comerciale ale companiilor respective. Toate drepturile sunt rezervate.</translation>
 <translation id="7501957181231305652">sau</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
-<translation id="180032279811483155">La pasul următor, veți vedea o expresie de recuperare din <ph name="RECOVERY_PHRASE_LENGTH"/> cuvinte, pe care o puteți folosi pentru a recupera principalele dvs. conturi de criptomonede. Salvați expresia într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="5024543173656851695">Înțeleg faptul că, dacă pierd cuvintele pentru recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
 <translation id="8281886186245836920">Omite</translation>
 <translation id="6532106788206463496">Salvează modificările</translation>
@@ -830,7 +841,7 @@
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
 <translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="802060020117206314">Expresiile de recuperare nu corespund. Încercați din nou!</translation>
-<translation id="8412783472871103529">Verificați fraza de recuperare</translation>
+<translation id="7345730059518887993">Să verificăm</translation>
 <translation id="2226686084760581391">Faceți clic pe <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, și <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>) <ph name="THIRD_AFTER"/> cuvinte din fraza de recuperare.</translation>
 <translation id="7575574239720542222">Fraza de recuperare nu s-a potrivit</translation>
 <translation id="8692301574305033504">Creați o nouă parolă</translation>
@@ -860,7 +871,10 @@
 <translation id="4359319875297001084">Importați din vechile portofele de criptomonede Brave?</translation>
 <translation id="3331452756822160641">Parolă nouă</translation>
 <translation id="8624315169751085215">Copiază în Clipboard</translation>
+<translation id="2598171223363459366">Poți sări peste acest pas acum însă tot este nevoie să faci un backup frazei de recuperare pentru a asigura securitatea contului.</translation>
+<translation id="5303015959766064022">Voi face backup mai târziu</translation>
 <translation id="6346952829206698721">Lipire din clipboard</translation>
+<translation id="2610561535971892504">Faceți clic pentru a copia</translation>
 <translation id="1121335910737476837">Principalele conturi de criptomonede</translation>
 <translation id="6969147029062037757">Conturi importate</translation>
 <translation id="3926119534765499672">Portofele hardware conectate</translation>
@@ -896,16 +910,23 @@
 <translation id="6892232036314454524">Această eroare poate surveni când se deschide aplicația greșită pe dispozitivul Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Acordați acces Brave dispozitivului dvs. Ledger.</translation>
+<translation id="8012452656725205792">Acordați Brave acces la dispozitivul dvs.<ph name="HARDWARE_DEVICE"/>.</translation>
 <translation id="4378551569595875038">Se stabilește conexiunea...</translation>
 <translation id="1943188256166395881">Adăugați conturile bifate</translation>
 <translation id="8554010658308662631">Încărcați mai multe</translation>
 <translation id="6998738230710304743">Se încarcă mai multe...</translation>
 <translation id="5592304751234049046">Căutați contul</translation>
+<translation id="3168978475376026497">Cale HD</translation>
 <translation id="6151024411349343484">Încercați să schimbați calea HD (mai sus) dacă nu găsiți contul pe care-l căutați.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Vechi (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Nu au fost găsite rezultate.</translation>
+<translation id="7261362517244085362">Autorizați portofelul dvs.</translation>
+<translation id="7150150391368236519">Conectați un portofel hardware</translation>
+<translation id="5400782314657008092">În prezent, acceptăm dispozitivele <ph name="HARDWARE_DEVICE"/> și<ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">Conectați portofelul hardware pentru a gestiona activele dvs. direct din Portofelul Brave</translation>
+<translation id="1329837291200753515">Selectați un blockchain pentru a importa portofelul dvs. hardware</translation>
+<translation id="6983390509997396124">Conectați dispozitivul dvs. <ph name="HARDWARE_DEVICE"/> la Portofelul Brave</translation>
 <translation id="5149944858285555235">Eroare necunoscută. Reconectați portofelul hardware și încercați din nou.</translation>
 <translation id="4522570452068850558">Detalii</translation>
 <translation id="9220525904950070496">Eliminați contul</translation>
@@ -944,8 +965,6 @@
 <translation id="1613627717923045622">Testați rețeaua</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Selectați contul</translation>
 <translation id="6797737193502014008">Căutați conturile</translation>
@@ -1059,6 +1078,7 @@
 <translation id="6383204195803840504">Tranzacțiile vor apărea aici</translation>
 <translation id="6079696972035130497">Nelimitat</translation>
 <translation id="2916401020782528840">Tranzacția nu a fost găsită</translation>
+<translation id="1690963073120772693">Nu se poate reîncerca această tranzacție.</translation>
 <translation id="2833661570529295305">Neaprobat</translation>
 <translation id="8034530868111548216">Aprobat</translation>
 <translation id="6015436276085482001">Respins</translation>
@@ -1153,8 +1173,8 @@
 <translation id="8523768065044261559">Eroare la procesarea tranzacției. Încercați din nou</translation>
 <translation id="971552837551838642">Eroare la semnarea mesajului. Încercați din nou</translation>
 <translation id="8273603707418703324">Eroare la semnarea mesajului. S-a solicitat un fișier necunoscut cu chei și certificate. Încercați din nou</translation>
-<translation id="5265455943786954050">Comanda Trezor este deja în curs</translation>
-<translation id="7017116822583380542">Aplicația Trezor Bridge nu este pregătită</translation>
+<translation id="6200074323131367633">Comanda <ph name="DEVICE_NAME"/>este deja în desfășurare</translation>
+<translation id="4213183402991860207">Puntea <ph name="DEVICE_NAME"/> nu este pregătită</translation>
 <translation id="3378339846292573874">Adăugați token sugerat</translation>
 <translation id="2322227405137827074">Doriți să importați acest token?</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -1348,17 +1368,22 @@
 <translation id="1792917191129448067">Deschideți aplicația Rainbow Bridge</translation>
 <translation id="1522775706527775647">Corelați cu Aurora</translation>
 <translation id="4903322403594141291">Aflați mai multe despre Brave Wallet</translation>
-<translation id="3875185448438395303">Cel puțin:</translation>
-<translation id="2029465635925899949">8 caractere</translation>
-<translation id="6697810017029555732">Potrivire!</translation>
+<translation id="4427684901715566795">Parola trebuie să conțină:</translation>
+<translation id="8521329076169776625">Cel puțin 8 caractere</translation>
+<translation id="3665035348242240953">Parolele sunt identice</translation>
 <translation id="8918368616587206671">Puternică!</translation>
 <translation id="574392208103952083">Medie</translation>
 <translation id="8297006494302853456">Slab</translation>
+<translation id="3282258437441351851">Portofelul Brave se va bloca automat după</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> (de) minute</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> oră ((de) ore)</translation>
 <translation id="7084181009966710506">Se creează portofelul...</translation>
-<translation id="6782556046178425980">Înainte de a începe copierea de rezervă a portofelului</translation>
+<translation id="3259102562570606417">Salvați expresia de recuperare</translation>
 <translation id="7119749028647909394">Expresia de recuperare de 12-24 de cuvinte este o cheie privată pe care o puteți utiliza pentru a recupera accesul la portofel în cazul în care pierdeți unul sau mai multe dispozitive conectate. Păstrați-o într-un loc sigur și în ordinea exactă în care apare mai jos.</translation>
 <translation id="3259018319025894691">Brave nu poate accesa fraza dvs. secretă de recuperare. Păstrați-o în siguranță și nu o partajați niciodată cu nimeni altcineva.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Important: <ph name="TAG_AFTER"/>niciodată nu partajați fraza dvs. de recuperare. Oricine cu această frază vă poate lua activele pentru totdeauna.</translation>
+<translation id="426648489149930289">Păstrați-o într-un loc sigur, care nu este accesibil altora și evitați să o partajați cu alte persoane.</translation>
+<translation id="119185410022731300">Introduceți cuvântul în poziția <ph name="VALUE"/> din expresia dvs. de recuperare.</translation>
+<translation id="2193954488469999829">Ați uitat să salvați? Înapoi</translation>
 <translation id="7509948206688764960">Copiere de rezervă a frazei de recuperare a portofelului</translation>
 <translation id="8052898407431791827">Copiat în clipboard</translation>
 <translation id="4576741736874242970">Faceți clic pentru a vedea fraza dvs.</translation>
@@ -1377,8 +1402,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">Felicitări! Portofelul dvs. Brave este gata de utilizare!</translation>
-<translation id="6828327990705355767">Pentru a vă accesa portofelul, trebuie doar să faceți clic pe pictograma portofelului din partea dreaptă sus a oricărei ferestre de browser Brave.</translation>
+<translation id="1148624853678088576">Totul este gata!</translation>
+<translation id="1656439328205762155">Portofelul dvs. Brave este acum configurat și gata de utilizare.</translation>
+<translation id="3342494025742308764">Accesați portofoliul</translation>
 <translation id="396152018598329740">Cum se utilizează un portofel crypto?</translation>
 <translation id="7512061585041489067">Care este cel mai bun portofel crypto?</translation>
 <translation id="1342755158522323177">Ce este un browser crypto?</translation>
@@ -1386,24 +1412,31 @@
 <translation id="4674552515763857735">Ce este o frază de recuperare?</translation>
 <translation id="7328255859839881981">Ce sunt DApps?</translation>
 <translation id="3852489285890032403">Ce este web 3?</translation>
-<translation id="5448233694500869445">Am detectat extensia MetaMask în browserul dvs.</translation>
-<translation id="8436080536329710282">Introduceți parola portofelului MetaMask pentru a importa cu ușurință în Portofel Brave.</translation>
+<translation id="2349224271234429946">Importați portofelul MetaMask</translation>
+<translation id="6715906859822319136">Puteți importa cu ușurință portofelul MetaMask doar prin introducerea parolei dvs.</translation>
 <translation id="7543512765962444927">Conectați-vă la portofelul existent</translation>
 <translation id="3551682252653406110">Pentru a conecta un portofel pe care îl aveți deja, poate fi necesar să introduceți fraza de recuperare. În acest moment, susținem restaurarea/importul din portofelele Ethereum și Solana.</translation>
-<translation id="346929827081904572">Restaurare din fraza inițială</translation>
+<translation id="3961126209136843111">Importați un portofel existent</translation>
 <translation id="5645597512426471834">12-24 cuvinte</translation>
-<translation id="8158505311297755780">Tastați expresia de recuperare a Portofelului Brave de 12-24 de cuvinte.</translation>
+<translation id="2321396552035646646">Poți lipi întreaga frază de recuperare în orice câmp.</translation>
 <translation id="5419707890586509000">Import din MetaMask</translation>
 <translation id="2265945811107390939">Utilizați parola MetaMask pentru a importa fraza inițială</translation>
 <translation id="7060680423657442298">Nu contează, voi crea un portofel nou</translation>
+<translation id="1932878136775815535">Am o expresie de recuperare de <ph name="LENGTH"/> (de) cuvinte</translation>
+<translation id="7877416315564177070">Verificați expresia de recuperare și încercați din nou.</translation>
+<translation id="6503538941917874992">Importați folosind expresia dvs. de recuperare</translation>
+<translation id="782167880151571109">Portofel Metamask detectat!</translation>
+<translation id="3619071361843652814">Portofel Legacy detectat!</translation>
+<translation id="4634124774493850572">Folosește parola</translation>
+<translation id="7697478310235189459">Cuvântul <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Tastați expresia de recuperare MetaMask de 12 -24 de cuvinte.</translation>
 <translation id="7720392926833259937">Tastați parola MetaMask</translation>
 <translation id="6657585470893396449">Parolă</translation>
 <translation id="6260144012548445299">Aflați mai multe despre noul meu portofel</translation>
-<translation id="8746910870914151528">Chestiuni juridice</translation>
-<translation id="5148123176978018397">Confirmați următoarele:</translation>
-<translation id="6088314935678153800">Înțeleg că acesta este un portofel cu custodie proprie și că eu singur sunt responsabil pentru orice fonduri, active sau conturi asociate și pentru luarea măsurilor adecvate pentru a-mi securiza, proteja și a face o copie de rezervă portofelului. Înțeleg că Brave NU îmi poate accesa portofelul sau inversa tranzacțiile în numele meu și că fraza mea de recuperare este SINGURA modalitate de a recâștiga accesul în cazul unei parole pierdute, al unui dispozitiv furat sau al unei circumstanțe similare.</translation>
-<translation id="7781090633800450517">Am citit și sunt de acord cu <ph name="LINK_BEFORE"/>Termenii de utilizare<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Înainte să începem</translation>
+<translation id="5333225216561354793">Este necesar să confirmați elementele de mai jos</translation>
+<translation id="4284971227128011550">Înțeleg că acesta este un portofel de auto-custodie și că sunt singurul responsabil pentru orice fonduri, active sau conturi asociate și pentru luarea oricăror măsuri adecvate pentru a-mi securiza, proteja și a face o copie de rezervă a portofelului. Înțeleg că Brave nu îmi poate accesa portofelul sau inversa tranzacțiile în numele meu și că expresia mea de recuperare este SINGURA modalitate de a recâștiga accesul în cazul pierderii parolei, al furtului dispozitivului sau al unei circumstanțe similare.</translation>
+<translation id="3604445540387095708">Am citit și sunt de acord cu<ph name="LINK_BEFORE"/> Termenii de utilizare<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Cumpărați cripto</translation>
 <translation id="3887541341068007345">Verificarea extensiilor de portofel...</translation>
 <translation id="3567994771568272606">Importați din portofelele cripto Brave anterioare</translation>
@@ -1604,6 +1637,7 @@
 <translation id="5667702863609780570">Acțiune nesigură cu risc de pierdere</translation>
 <translation id="6405354572620970908">Această solicitare pare rău intenționată și vă poate expune furtului. Nu continuați decât dacă aveți încredere în aplicație.</translation>
 <translation id="786261184916565476">Am găsit <ph name="VALUE"/> (de) probleme.</translation>
+<translation id="2826600321627372011">Nu a fost găsit nicio rută</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -1682,6 +1716,7 @@ other {# surse}
 <translation id="7948579849190819732">Fila curentă</translation>
 <translation id="7056969230130642253">Sunteți la zi</translation>
 <translation id="7292242212818928219">Conținut nou disponibil. Reîncărcați?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Comenzi rapide</translation>
 <translation id="7481312909269577407">Înainte</translation>
 <translation id="302781076327338683">Reîncărcați prin omiterea memoriei cache</translation>
@@ -1834,13 +1869,11 @@ other {# surse}
 <translation id="831931573200952705">Această combinație este utilizată penrtu <ph name="COMMAND"/> și nu poate fi modificată.</translation>
 <translation id="3537006124004887164">Această combinație este folosită pentru <ph name="COMMAND"/> și nu poate fi modificată. Încercați să o modificați prin „Comenzile rapide din aplicație" din Setările sistemului.</translation>
 <translation id="712598284361781729">Vizualizare divizată nouă</translation>
-<translation id="6655450014966273037">Închideți vizualizarea divizată</translation>
 <translation id="1130188644637295274">Deschideți în vizualizare divizată</translation>
-<translation id="7195519370590486580">Despărțiți în file</translation>
+<translation id="6459036216700972269">Anulați divizarea filelor</translation>
 <translation id="3617523374417810198">Vizualizare divizată nouă</translation>
-<translation id="9053179124396567872">Închideți vizualizarea divizată</translation>
 <translation id="8571323456914890254">Deschideți în vizualizare divizată</translation>
-<translation id="2397258152713354053">Despărțiți în file</translation>
+<translation id="5329136173514538969">Anulați divizarea filelor</translation>
 <translation id="8591883849678260674">Vedeți originalul</translation>
 <translation id="1969654232209826429">min. de citire</translation>
 <translation id="4101707289420716287">Dezactivați Speedreader</translation>
@@ -1885,23 +1918,24 @@ other {# surse}
 <translation id="7921782882718083488">Rezumați această pagină</translation>
 <translation id="7932221068776853847">Deconectați pentru a întrerupe transmiterea conținutul acestei pagini la Leo și începeți o conversație nouă</translation>
 <translation id="1167803637855350748">A apărut o problemă de rețea în timpul conectării la Leo. Verificați-vă conexiunea și încercați din nou.</translation>
-<translation id="5095201428204952524">Leo e prea ocupat momentan. Încercați din nou în câteva minute.</translation>
+<translation id="1996126325390835277">Leo e prea ocupat momentan. Încercați din nou în câteva minute.</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
-<translation id="2505565639170795978">Bună, sunt Leo. Sunt un asistent IA găzduit de Brave și structurat pe Llama 13B, un model creat de Meta pentru o varietate largă de utilizări.</translation>
-<translation id="8030558642460377506">Bună, sunt Leo. Sunt un asistent IA oferit de Brave și structurat pe Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini complexe.</translation>
-<translation id="2489317965865266353">Bună, sunt Leo. Sunt un model oferit prin proxy de Brave și structurat pe Claude Instant, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text.</translation>
+<translation id="8570488829560315702">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Brave, structurat pe baza Llama 3 8B, un model performant creat de Meta pentru o varietate largă de utilizări.<ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Brave, structurat pe baza Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini complexe.<ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și structurat pe baza Claude Instant, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Salut, eu sunt Leo. Sunt oferit de către Brave și furnizat de Claude 3 Haiku, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
 <translation id="4147243042852964992">Salut, eu sunt Leo. Sunt oferit de către Brave și furnizat de Claude 3 Sonnet, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> oferit de <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Limitat</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">Chat nou</translation>
 <translation id="7557539689487606886">Alegeți Premium</translation>
 <translation id="1691256669639196606">Gestionați abonamentul</translation>
+<translation id="2304783958703511257">Setări avansate</translation>
 <translation id="3037594989275592390">Modele de limbaj</translation>
 <translation id="6637015365469044269">Faceți upgrade acum</translation>
+<translation id="5543505256451301851">Încercați gratuit pentru 7 zile</translation>
 <translation id="849535826888024304">Limita ratei de răspunsuri a fost atinsă</translation>
-<translation id="6149863263423821329">Beneficiați de o rată de răspuns mai ridicată abonându-vă la Premium. Puteți de asemenea opta pentru modelul gratuit mai puțin puternic Llama2 13b pentru a continua.</translation>
+<translation id="2252128900328632803">Beneficiați de o rată de răspuns mai ridicată abonându-vă la Premium. Puteți de asemenea opta pentru modelul gratuit mai puțin puternic Llama2 13b pentru a continua.</translation>
 <translation id="4173478269537830374">Explorați diverse modele de IA</translation>
 <translation id="3245401959451976966">Stimulați-vă creativitatea</translation>
 <translation id="4165928407303989823">Rămâneți mereu la subiect</translation>
@@ -1934,8 +1968,11 @@ other {# surse}
 <translation id="8742658901413346500">Această conversație e lungă și Leo ar putea începe să uite în curând. Puteți obține conversații mai lungi comutând la un model premium sau puteți șterge conversația pentru a o reseta.</translation>
 <translation id="7550152963854770123">Ștergeți conversația</translation>
 <translation id="7494736170250048402">Trimiteți-i un mesaj lui Leo</translation>
+<translation id="8712637175834984815">Am înțeles</translation>
 <translation id="1093419424466417703">Această pagină este prea lungă pentru Leo. E posibil să lipsească context din conversație. Leo a putut citi <ph name="PERCENTAGE"/> din conținutul paginii.</translation>
 <translation id="4370698775470316661">Această conversație este prea lungă și nu mai poate continua. Ar putea exista alte modele disponibile cu care Leo poate menține acuratețea pentru conversații mai lungi.</translation>
+<translation id="5719170755629028558">Se îmbunătățește răspunsul dvs. cu Brave Search...</translation>
+<translation id="5794962229997281366">Se caută un răspuns îmbunătățit pentru <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Chat de interes general</translation>
 <translation id="8193130769524604031">Sarcini de chat avansate</translation>
 <translation id="3185367320601718531">Conversație și generare de text</translation>
@@ -1975,6 +2012,8 @@ other {# surse}
 <translation id="3130793786899299931">Modificați lungimea</translation>
 <translation id="6320643499534852464">Social media</translation>
 <translation id="2370739752330685659">Poate mai târziu</translation>
+<translation id="983013125018250242">Instrumente Leo</translation>
+<translation id="49269513399674318">Utilizați microfonul</translation>
 <translation id="6303294677342628402">Scuturi</translation>
 <translation id="8458987127502506209">Activați scuturile Brave</translation>
 <translation id="7509914170164691086">Scuturile sunt ACTIVE <ph name="LINK_BEFORE"/>pentru<ph name="LINK_AFTER"/></translation>

@@ -611,7 +611,6 @@
 <translation id="6896758677409633944">복사</translation>
 <translation id="3726490322412361740">비밀번호 입력</translation>
 <translation id="3038243139480464605">검증 비밀번호</translation>
-<translation id="3043677904160378840">비밀번호는 8자 이상이어야 합니다.</translation>
 <translation id="7396672979287122068">검증 비밀번호가 일치하지 않음</translation>
 <translation id="1566412704591731844">월렛 만드는 중...</translation>
 <translation id="7779823116893018906">몇 초가 소요됩니다...</translation>
@@ -655,8 +654,11 @@
 <translation id="5981303441790732480">기존 월렛 가져오기</translation>
 <translation id="9111102763498581341">잠금 해제</translation>
 <translation id="6657585470893396449">비밀번호</translation>
+<translation id="7553242001898162573">비밀번호 입력</translation>
 <translation id="5619264711680220002">생체인식 잠금 해제</translation>
+<translation id="9195657745688986798">월렛 잠금 해제</translation>
 <translation id="5168349973342709369">월렛을 잠금 해제하려면 비밀번호 입력</translation>
+<translation id="3043677904160378840">비밀번호는 8자 이상이어야 합니다.</translation>
 <translation id="1144810021918451336">위험한 웹사이트, 다운로드 및 확장 프로그램으로부터 사용자를 보호하지 않습니다.</translation>
 <translation id="5760476995887363522">문구가 일치하지 않습니다. 다시 시도하세요.</translation>
 <translation id="2360588547830602174">계정 복구에 실패했습니다. 다시 시도하세요.</translation>
@@ -700,7 +702,7 @@
 <translation id="6748319398471481216">매달 갱신</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 월</translation>
 <translation id="1163809943099641131">1년</translation>
-<translation id="7574007394522199115">연간 갱신 시 <ph name="PERCENTAGE_AMOUNT"/>%% 할인</translation>
+<translation id="7574007394522199115">연간 갱신하여 <ph name="PERCENTAGE_AMOUNT"/>%% 절약</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 년</translation>
 <translation id="2655185358771731232">7일간 무료로 체험하세요. 7일 후에는 플랜 가격이 청구됩니다. 모든 구독은 자동 갱신되지만 갱신 전 언제든 취소할 수 있습니다.</translation>
 <translation id="6053992191006521518">무료 평가판 이용</translation>
@@ -1188,4 +1190,13 @@
 <translation id="6891382640886173702">창 병합</translation>
 <translation id="2912247081180973411">창 닫기</translation>
 <translation id="4010699428656610296">다른 탭을 다른 Brave 창으로 병합하세요.</translation>
+<translation id="208634871997892083">올웨이즈온 VPN</translation>
+<translation id="1599073346542156922">켜는 방법:</translation>
+<translation id="7001163334415463127">1. 앱 서랍에서 디바이스 설정을 열거나 아래 버튼을 탭합니다.</translation>
+<translation id="887443138775437899">2. Brave VPN을 찾아 오른쪽 설정 아이콘을 탭합니다.</translation>
+<translation id="3776051499611941773">3. <ph name="ALWAYS_ON_TUTORIAL_START"/>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>(올웨이즈온 VPN)을 토글하여 활성화합니다.</translation>
+<translation id="4776146737004271126">Android 설정 열기</translation>
+<translation id="2728518864712716830">업데이트가 다운로드되었습니다.</translation>
+<translation id="8403338849301491865">필터 목록 업데이트 성공</translation>
+<translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
 </translationbundle>

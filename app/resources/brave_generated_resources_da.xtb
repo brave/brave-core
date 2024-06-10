@@ -105,6 +105,9 @@ vindue med Tor</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="7276554663454265692">Du kan når som helst ændre <ph name="SETTING_TEXT"/> i browserindstillingerne.</translation>
 <translation id="6873781976650514089">denne indstilling</translation>
+<translation id="4684633335323013758">Dette websted har anmodet om din <ph name="PART_ONE"/>generelle placering<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Få mere at vide<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">Dette websted har anmodet om din <ph name="PART_ONE"/>præcise placering<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Få mere at vide<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">Dette websted har anmodet om din <ph name="PART_ONE"/>præcise placering<ph name="PART_ONE_END"/>. Brave vil kun kunne oplyse <ph name="PART_TWO"/>generelle placeringsdata<ph name="PART_TWO_END"/>, fordi<ph name="PART_THREE"/>placeringstjenester<ph name="PART_THREE_END"/> er deaktiveret. <ph name="PART_FOUR"/>Få mere at vide<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">Luk alle</translation>
 <translation id="7658239707568436148">Annuller</translation>
 <translation id="4870911314065352661">Luk alle faner?</translation>
@@ -164,7 +167,8 @@ vindue med Tor</translation>
 <translation id="6959315322491671328">Højreklik for at fjerne</translation>
 <translation id="495046168593986294">Scroll op</translation>
 <translation id="4021716437419160885">Scroll ned</translation>
-<translation id="2702801445560668637">Læseliste</translation>
+<translation id="1907157509746585817">bogmærker</translation>
+<translation id="4840597165888262798">læseliste</translation>
 <translation id="2533715613366623756">Bogmærkeadministrator</translation>
 <translation id="3405021928725149239">Bogmærkeadministrator</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
@@ -244,9 +248,11 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8025559074845816210">Brave behøver Fuld Diskadgang for at importere dine bogmærker fra Safari.</translation>
 <translation id="8515328844674404333">Lær hvordan du giver Fuld Diskadgang fra dine Systempræferencer.</translation>
 <translation id="6414878884710400018">Åbn Systempræferencer</translation>
+<translation id="4759238208242260848">Downloads</translation>
 <translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>
 <translation id="8487693399751278191">Importér bogmærker nu...</translation>
 <translation id="2557899542277210112">For hurtig adgang skal du placere dine bogmærker her på bogmærkelinien.</translation>
+<translation id="2702801445560668637">Læseliste</translation>
 <translation id="1968543937259008435">Klar til mere privatliv online?</translation>
 <translation id="6817415381278637662">Vælg Brave som din standardbrowser for at få Braves privatlivsbeskyttelse på alle websider, du åbner.</translation>
 <translation id="8722651357687610395">Indstil Brave som standard</translation>
@@ -372,6 +378,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5448570825852364919">Blank side</translation>
 <translation id="8244387390464017490">Tilpas nyt faneblad</translation>
 <translation id="7461924472993315131">Fastgør</translation>
+<translation id="735832369569964359">Klik på PIN, og bekræft i den følgende meddelelse i Windows</translation>
 <translation id="7506648566440714944">Brave er allerede fastgjort</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Brave er allerede i din Dock</translation>
@@ -427,6 +434,10 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7889605993994647168">Opdatering mislykkedes</translation>
 <translation id="5438573563213942361">Tilpassede lister</translation>
 <translation id="4182731739150761577">Vis hele listen</translation>
+<translation id="2776571540844891267">Opdatér lister</translation>
+<translation id="7424267932649051704">Opdatering mislykkedes – prøv igen</translation>
+<translation id="8426801388284487512">Lister opdateret</translation>
+<translation id="3422250445565385437">Opdatering af lister er i gang</translation>
 <translation id="1340263054776016283">Indtast filterliste-URL</translation>
 <translation id="8578397014396032341">Indholdssortering</translation>
 <translation id="3020183492814296499">Genveje</translation>

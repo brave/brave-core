@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Minél többet lát, annál többet kereshet.</translation>
 <translation id="7526443283522395161">Új lap oldal hirdetései</translation>
 <translation id="7968650944098083708">Értesítés hirdetései</translation>
+<translation id="8289546216379862569">Keresési hirdetések</translation>
+<translation id="4758111936363146244">A Brave keresési hirdetések a <ph name="BEGIN_LINK"/>Brave-keresésben<ph name="END_LINK"/> jelennek meg.</translation>
+<translation id="7596536223419118193">A Brave keresési hirdetésekkel még nem szerezhet BAT-t, de a bekapcsolásukkal segít támogatni a Brave-et.</translation>
 <translation id="6390952132783970876">Brave hírek hirdetései</translation>
 <translation id="7516281787184495886">A Brave hírek olyan hirdetéseket tartalmaznak, amelyeket nem lehet külön letiltani.</translation>
 <translation id="8008378848677625233">A Brave hírek jelenleg le vannak tiltva.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Komponens letöltése...</translation>
 <translation id="4894106830958548828">Megértettem</translation>
 <translation id="326118736933420687">Jelenleg egy WebTorrent-oldalt tekint meg</translation>
+<translation id="2729085694451916573">Tesztkarakterlánc <ph name="PART_ONE"/>helyőrzőkhöz<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>További tudnivalók<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Engedélyezed az Unstoppable Domains támogatását a Brave-ben?</translation>
 <translation id="5015092481905019948">A Brave a(z) <ph name="PROVIDER_NAME"/> használatával fogja feloldani a <ph name="DOMAIN_LIST"/> doménneveket, amelyek az <ph name="DOMAIN_PROVIDER_NAME"/> doménen vannak. A Brave elrejti az Ön IP-címét. Ha ezt engedélyezi, az <ph name="PROVIDER_NAME"/> látni fogja, hogy valaki megpróbál ezekre a doménekre látogatni, de mást nem. A tudnivalókért tekintse meg az <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>használati feltételeit<ph name="END_PROVIDER_TOU_LINK"/> és <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>adatvédelmi nyilatkozatát<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Hiba történt a kérés feldolgozása közben</translation>
 <translation id="7123780456696055383">A kért forrás nem elérhető</translation>
 <translation id="1680597601664421644">Az éppen importált mnemonika nem érvényes a Brave pénztárca esetén</translation>
+<translation id="372898731091371291">Milyen típusú pénztárcát szeretne importálni?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin-pénztárca</translation>
+<translation id="8659668419772278776">Kulcsszólánc importálása meglévő pénztárcából</translation>
+<translation id="8110492767853188065">Hardveres tárca</translation>
+<translation id="7437218084485869007">Hardveres tárca csatlakoztatása a Brave-hez</translation>
 <translation id="4641919696349069826">A kérelem már folyamatban van</translation>
 <translation id="872806943696014633">Hiányoznak a tranzakciós adatok</translation>
 <translation id="7068183357903252127">A 'to' vagy a 'data' tranzakciós adatot meg kell adni</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Igen</translation>
 <translation id="4250680216510889253">Nem</translation>
 <translation id="1201402288615127009">Tovább</translation>
-<translation id="8712637175834984815">Sikerült</translation>
+<translation id="3214453326297774895">Saját helyreállítási kifejezés megjelenítése</translation>
 <translation id="6896758677409633944">Másolás</translation>
 <translation id="7885157704277298658">Kimásolva!</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="6042308850641462728">Továbbiak</translation>
-<translation id="768236965975208017">Biztonságos, többláncos, és nagyon könnyű használni. A saját Brave pénztárcája csak néhány kattintásnyira van</translation>
 <translation id="3157931365184549694">Visszaállítás</translation>
-<translation id="2484275747844666540">Új pénztárca létrehozása</translation>
-<translation id="3662348701117072366">Meglévő pénztárca importálása</translation>
-<translation id="7150150391368236519">Hardveres tárca csatlakoztatása</translation>
+<translation id="414070570958255222">Böngészőnatív. Önálló letétkezelés. Többláncos.</translation>
+<translation id="1350120992777389959">Vegye kezébe az irányítást kriptovalutái és NFT-i felett. A Brave-pénztárca támogatja az Ethereumot, az EVM-láncokat, a Solanát, a Filecoint, a Bitcoint és továbbiakat.</translation>
+<translation id="165255193061631296">Új pénztárcára van szüksége?</translation>
+<translation id="1939235910515558387">Kezdje meg a Brave-pénztárca használatát perceken belül.</translation>
+<translation id="5844138175312846408">Már rendelkezik pénztárcával?</translation>
+<translation id="772643556080081594">Csak figyelési pénztárcára van szükségem</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. A Brave és a Brave embléma a Brave Software, Inc. bejegyzett védjegyei. Más terméknevek és emblémák a megfelelő vállalatok védjegyei lehetnek. Minden jog fenntartva.</translation>
 <translation id="7501957181231305652">vagy</translation>
 <translation id="375882617301124395">Végezzen biztonsági mentést a kriptotárcájáról</translation>
-<translation id="180032279811483155">A következő lépésben egy <ph name="RECOVERY_PHRASE_LENGTH"/> szavas helyreállítási kifejezést fog látni, amelyet arra használhat, hogy helyreállítsa az elsődleges kriptoszámláit. Mentse el biztonságos helyre. A helyreállítási kifejezés az egyetlen módja annak, hogy újra hozzáférjen a számláihoz, amennyiben elfelejti a jelszavát, elveszti vagy ellopják a készülékét, vagy tárcát akar váltani.</translation>
 <translation id="5024543173656851695">Megértettem, hogy ha elvesztem a helyreállításhoz szükséges szavakat, akkor nem fogok tudni hozzáférni a kriptopénztárcámhoz.</translation>
 <translation id="8281886186245836920">Kihagyás</translation>
 <translation id="6532106788206463496">Módosítások mentése</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Igazold vissza a helyreállítási kifejezést</translation>
 <translation id="3747079125031086337">Válassza ki a helyreállítási kifejezés szavait a megfelelő sorrendben.</translation>
 <translation id="802060020117206314">A helyreállítás kifejezés nem egyezik. Próbálja meg újra.</translation>
-<translation id="8412783472871103529">Erősítse meg a helyreállítási kifejezést</translation>
+<translation id="7345730059518887993">Ellenőrizzük</translation>
 <translation id="2226686084760581391">Kattintson a(z) <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> és <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> szóra a helyreállítási kifejezésben.</translation>
 <translation id="7575574239720542222">A helyreállítási kifejezés nem egyezik</translation>
 <translation id="8692301574305033504">Új jelszó létrehozása</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Importál régebbi Brave kriptotárcákból?</translation>
 <translation id="3331452756822160641">Új jelszó</translation>
 <translation id="8624315169751085215">Másolás vágólapra</translation>
+<translation id="2598171223363459366">Ezt a lépést most kihagyhatja, de a fiók biztonsága érdekében továbbra is biztonsági másolatot kell készítenie a helyreállítási kifejezésről.</translation>
+<translation id="5303015959766064022">Később végzem el a biztonsági mentést</translation>
 <translation id="6346952829206698721">Beillesztés a vágólapról</translation>
+<translation id="2610561535971892504">Kattintson a másoláshoz</translation>
 <translation id="1121335910737476837">Elsődleges kriptoszámlák</translation>
 <translation id="6969147029062037757">Importált fiókok</translation>
 <translation id="3926119534765499672">Csatlakoztatott hardverpénztárcák</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Ez a hiba akkor fordulhat elő, ha nem a megfelelő alkalmazás van nyitva a Ledger eszközön.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Hozzáférés engedélyezése a Brave számára a Ledger eszközhöz.</translation>
+<translation id="8012452656725205792">A(z) <ph name="HARDWARE_DEVICE"/> eszköz hozzáférhetővé tétele a Brave számára.</translation>
 <translation id="4378551569595875038">Csatlakozás…</translation>
 <translation id="1943188256166395881">Adja hozzá a kijelölt számlákat</translation>
 <translation id="8554010658308662631">Továbbiak betöltése</translation>
 <translation id="6998738230710304743">Továbbiak betöltése…</translation>
 <translation id="5592304751234049046">Fiók keresése</translation>
+<translation id="3168978475376026497">Hardvereszköz elérési útvonala</translation>
 <translation id="6151024411349343484">Próbáljon HD sávot váltani (fent), ha nem találja a keresett számlát.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Korábbi (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Nincs találat.</translation>
+<translation id="7261362517244085362">Tárca engedélyezése</translation>
+<translation id="7150150391368236519">Hardveres tárca csatlakoztatása</translation>
+<translation id="5400782314657008092">Jelenleg a(z) <ph name="HARDWARE_DEVICE"/> és <ph name="HARDWARE_DEVICE1"/> eszközöket támogatjuk.</translation>
+<translation id="8144305264680648043">Hardveres tárcája csatlakoztatásával eszközeit közvetlenül a Brave-pénztárcából kezelheti</translation>
+<translation id="1329837291200753515">Blokklánc kiválasztása a hardveres tárca importálásához</translation>
+<translation id="6983390509997396124">A(z) <ph name="HARDWARE_DEVICE"/> eszköz összekapcsolása a Brave-pénztárcával</translation>
 <translation id="5149944858285555235">Ismeretlen hiba, csatlakoztassa újra a hardvertárcáját és próbálja újra.</translation>
 <translation id="4522570452068850558">Részletek</translation>
 <translation id="9220525904950070496">Fiók eltávolítása</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Hálózat tesztelése</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Számla kiválasztása</translation>
 <translation id="6797737193502014008">Számlák keresése</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">A tranzakciók itt jelennek majd meg</translation>
 <translation id="6079696972035130497">Korlátlan</translation>
 <translation id="2916401020782528840">A tranzakció nem található</translation>
+<translation id="1690963073120772693">Ezt a tranzakciót nem lehet újra megpróbálni.</translation>
 <translation id="2833661570529295305">Jóvá nem hagyott</translation>
 <translation id="8034530868111548216">Jóváhagyva</translation>
 <translation id="6015436276085482001">Elutasítva</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Hiba történt a tranzakció feldolgozásakor, próbálja újra</translation>
 <translation id="971552837551838642">Hiba történt az üzenet aláírásakor, próbálja újra</translation>
 <translation id="8273603707418703324">Hiba történt az üzenet aláírásakor, ismeretlen kulcstár igényelve; próbálja újra</translation>
-<translation id="5265455943786954050">A Trezor parancs már folyamatban van</translation>
-<translation id="7017116822583380542">A Trezor-híd nem áll készen</translation>
+<translation id="6200074323131367633">A(z) <ph name="DEVICE_NAME"/> parancs már folyamatban van</translation>
+<translation id="4213183402991860207">A(z) <ph name="DEVICE_NAME"/> híd nem áll készen</translation>
 <translation id="3378339846292573874">Javasolt token hozzáadása</translation>
 <translation id="2322227405137827074">Szeretné importálni ezt a tokent?</translation>
 <translation id="4378475168089649292">Blokklánc</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">A Rainbow Bridge alkalmazás megnyitása</translation>
 <translation id="1522775706527775647">Áthidalás Aurorához</translation>
 <translation id="4903322403594141291">További információ a Brave-pénztárcáról</translation>
-<translation id="3875185448438395303">Legalább:</translation>
-<translation id="2029465635925899949">8 karakter</translation>
-<translation id="6697810017029555732">Egyezés!</translation>
+<translation id="4427684901715566795">A jelszónak a következőket kell tartalmaznia:</translation>
+<translation id="8521329076169776625">Legalább 8 karakter</translation>
+<translation id="3665035348242240953">A jelszavak egyeznek</translation>
 <translation id="8918368616587206671">Erős!</translation>
 <translation id="574392208103952083">Közepes</translation>
 <translation id="8297006494302853456">Gyenge</translation>
+<translation id="3282258437441351851">A Brave-pénztárca automatikusan lezárul ennyi idő elteltével:</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> perc</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> óra</translation>
 <translation id="7084181009966710506">Pénztárca létrehozása...</translation>
-<translation id="6782556046178425980">Mielőtt elkezdené a pénztárca biztonsági mentését</translation>
+<translation id="3259102562570606417">Helyreállítási kifejezés mentése</translation>
 <translation id="7119749028647909394">A 12-24 szavas helyreállítási kifejezés egy privát kulcs, amellyel visszaszerezheti a hozzáférést a pénztárcájához, ha elveszítené a csatlakoztatott eszköz(öke)t. Tárolja biztonságos helyen, az alábbiakban látható pontos sorrendben.</translation>
 <translation id="3259018319025894691">A Brave-nek nincs hozzáférése az Ön titkos helyreállítási kifejezéséhez. Tartsa biztonságban, és soha ne ossza meg másokkal.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Fontos: <ph name="TAG_AFTER"/>Soha ne ossza meg helyreállítási kifejezését. Bárki, aki ismeri a kifejezést, örökre elveheti az Ön eszközeit.</translation>
+<translation id="426648489149930289">Tárolja biztonságos, mások számára nem hozzáférhető helyen, és ne ossza meg senkivel.</translation>
+<translation id="119185410022731300">Adja meg a helyreállítása kifejezése <ph name="VALUE"/>. szavát.</translation>
+<translation id="2193954488469999829">Elfelejtette menteni? Lépjen vissza</translation>
 <translation id="7509948206688764960">Biztonsági másolat készítése a pénztárca helyreállítási kifejezéséről</translation>
 <translation id="8052898407431791827">Vágólapra másolva</translation>
 <translation id="4576741736874242970">Kattintson a kifejezés megtekintéséhez</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">.</translation>
 <translation id="7992766987062040279">.</translation>
 <translation id="2295726992010694229">.</translation>
-<translation id="8241405611628876973">Gratulálunk! Brave-pénztárcája használatra kész!</translation>
-<translation id="6828327990705355767">A pénztárca megnyitásához egyszerűen kattintson a pénztárca ikonra a Brave-böngészőablak jobb felső sarkában.</translation>
+<translation id="1148624853678088576">Minden készen áll!</translation>
+<translation id="1656439328205762155">Az Ön Brave-pénztárcája be lett állítva, és használatra kész.</translation>
+<translation id="3342494025742308764">Ugrás a portfólióra</translation>
 <translation id="396152018598329740">Hogyan lehet használni a kriptotárcákat?</translation>
 <translation id="7512061585041489067">Melyik a legjobb kriptotárca?</translation>
 <translation id="1342755158522323177">Mi az a kriptoböngésző?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Mi a helyreállítási kifejezés?</translation>
 <translation id="7328255859839881981">Mik azok a DAppok?</translation>
 <translation id="3852489285890032403">Mi az a web 3?</translation>
-<translation id="5448233694500869445">A MetaMask bővítményt észleltük a böngészőjében</translation>
-<translation id="8436080536329710282">Adja meg a MetaMask-pénztárcája jelszavát, hogy egyszerűen importálhassa a Brave-pénztárcába.</translation>
+<translation id="2349224271234429946">MetaMask-pénztárca importálása</translation>
+<translation id="6715906859822319136">Egyszerűen importálhatja MetaMask-pénztárcáját a jelszava megadásával.</translation>
 <translation id="7543512765962444927">Csatlakozás meglévő pénztárcához</translation>
 <translation id="3551682252653406110">Lehetséges, hogy egy meglévő pénztárca csatlakoztatásához meg kell adnia a helyreállítási kifejezést. Jelenleg az Ethereum és a Solana pénztárcák visszaállítását/importálását támogatjuk.</translation>
-<translation id="346929827081904572">Visszaállítás kulcsszóláncból</translation>
+<translation id="3961126209136843111">Meglévő pénztárca importálása</translation>
 <translation id="5645597512426471834">12-24 szó</translation>
-<translation id="8158505311297755780">Írja be a Brave pénztárca 12-24 szavas helyreállítási kifejezését.</translation>
+<translation id="2321396552035646646">A teljes helyreállítási kifejezést bármely mezőbe beillesztheti.</translation>
 <translation id="5419707890586509000">Importálás a MetaMaskból</translation>
 <translation id="2265945811107390939">MetaMask-jelszó használata a kulcsszólánc importálásához</translation>
 <translation id="7060680423657442298">Inkább létrehozok egy új pénztárcát</translation>
+<translation id="1932878136775815535"><ph name="LENGTH"/> szavas helyreállítási kifejezéssel rendelkezem</translation>
+<translation id="7877416315564177070">Ellenőrizze a helyreállítási kifejezést, és próbálja újra.</translation>
+<translation id="6503538941917874992">Importálás a helyreállítási kifejezése használatával</translation>
+<translation id="782167880151571109">MetaMask-pénztárca észlelve!</translation>
+<translation id="3619071361843652814">Régebbi pénztárca észlelve!</translation>
+<translation id="4634124774493850572">Jelszó használata</translation>
+<translation id="7697478310235189459"><ph name="VALUE"/>. szó</translation>
 <translation id="5913194823092185468">Írja be a MetaMask 12-24 szavas helyreállítási kifejezését.</translation>
 <translation id="7720392926833259937">Írja be a MetaMask-jelszót</translation>
 <translation id="6657585470893396449">Jelszó</translation>
 <translation id="6260144012548445299">További tudnivalój az új pénztárcámról</translation>
-<translation id="8746910870914151528">Jogi tudnivalók</translation>
-<translation id="5148123176978018397">Kérjük, fogadja el a következőket:</translation>
-<translation id="6088314935678153800">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave NEM férhet hozzá a pénztárcámhoz, és NEM fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
-<translation id="7781090633800450517">Elolvastam és elfogadom a <ph name="LINK_BEFORE"/>Használati feltételeket<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Mielőtt belevágunk</translation>
+<translation id="5333225216561354793">Szükségünk van rá, hogy elfogadja a lenti elemeket</translation>
+<translation id="4284971227128011550">Tudomásul veszem, hogy ez egy önálló letétkezelésű pénztárca, és egyedül én vagyok felelős a kapcsolódó pénzösszegekért, eszközökért vagy számlákért, valamint a pénztárcám biztonsága, védelme és biztonsági mentése érdekében szükséges intézkedések megtételéért. Tudomásul veszem, hogy a Brave nem férhet hozzá a pénztárcámhoz, és nem fordíthatja vissza a tranzakciókat a nevemben, továbbá, hogy a helyreállítási kifejezésem az EGYETLEN módja annak, hogy visszaszerezzem a hozzáférést elvesztett jelszó, ellopott eszköz vagy hasonló körülmény esetén.</translation>
+<translation id="3604445540387095708">Elolvastam és elfogadom a <ph name="LINK_BEFORE"/>Használati feltételeket<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Kriptó vásárlása</translation>
 <translation id="3887541341068007345">Pénztárcabővítmények keresése...</translation>
 <translation id="3567994771568272606">Importálás régi Brave-kriptopénztárcákból</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Nem biztonságos művelet adatvesztés kockázatával</translation>
 <translation id="6405354572620970908">Ez a kérés ártalmasnak tűnik, és kiteheti Önt az adatlopás veszélyének. Ne folytassa, ha csak nem bízik meg ebben az alkalmazásban.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/> problémát találtunk.</translation>
+<translation id="2826600321627372011">Nem található útvonal</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Aktuális lap</translation>
 <translation id="7056969230130642253">Mindennel naprakész</translation>
 <translation id="7292242212818928219">Új tartalom érhető el. Újratölti az oldalt?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Gyorsparancsok</translation>
 <translation id="7481312909269577407">Előre</translation>
 <translation id="302781076327338683">Újratöltés a gyorsítótár megkerülésével</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Ezt a kombinációt a következőre használja a rendszer:<ph name="COMMAND"/>, és nem módosítható.</translation>
 <translation id="3537006124004887164">Ezt a kombinációt a következőre használja a rendszer:<ph name="COMMAND"/>, és nem módosítható. a módosítást próbálja a rendszerbeállítások `Alkalmazások gyorsparancs'-nál.</translation>
 <translation id="712598284361781729">Új osztott nézet</translation>
-<translation id="6655450014966273037">Osztott nézet bezárása</translation>
 <translation id="1130188644637295274">Megnyitás osztott nézetben</translation>
-<translation id="7195519370590486580">Bontás fülekre</translation>
+<translation id="6459036216700972269">Lapok felosztásának visszavonása</translation>
 <translation id="3617523374417810198">Új osztott nézet</translation>
-<translation id="9053179124396567872">Osztott nézet bezárása</translation>
 <translation id="8571323456914890254">Megnyitás osztott nézetben</translation>
-<translation id="2397258152713354053">Bontás fülekre</translation>
+<translation id="5329136173514538969">Lapok felosztásának visszavonása</translation>
 <translation id="8591883849678260674">Eredeti megtekintése</translation>
 <translation id="1969654232209826429">perces olvasmány</translation>
 <translation id="4101707289420716287">Speedreader kikapcsolása</translation>
@@ -1884,23 +1917,24 @@
 <translation id="7921782882718083488">Lap összefoglalása</translation>
 <translation id="7932221068776853847">Ha szeretné leállítani a tartalmak küldését a Leo számára, és új beszélgetést indítani, bontsa a kapcsolatot.</translation>
 <translation id="1167803637855350748">Hálózati probléma lépett fel a Leo rendszeréhez való kapcsolódás során. Ellenőrizze a hálózati kapcsolatot, és próbálja újra.</translation>
-<translation id="5095201428204952524">A Leo jelenleg túlságosan foglalt. Néhány perc múlva próbálja újra.</translation>
+<translation id="1996126325390835277">A Leo jelenleg túlságosan foglalt. Néhány perc múlva próbálja újra.</translation>
 <translation id="7144878232160441200">Újra</translation>
-<translation id="2505565639170795978">Üdv, Leo vagyok, egy teljes körűen a Brave által üzemeltetett MI-segéd. A működésem alapja a Llama 13B, egy nagy teljesítményű, számos használati esetben alkalmazható modell, amelyet a Meta fejlesztett ki.</translation>
-<translation id="8030558642460377506">Üdvözlöm, Leo vagyok! A Brave MI-asszisztense vagyok. Mixtral 8x7B motorral működöm, ami egy, a Mistral AI által kifejezetten az összetett feladatok végrehajtására kifejlesztett modell.</translation>
-<translation id="2489317965865266353">Üdv, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
+<translation id="8570488829560315702">Üdvözlöm, Leo vagyok, a Brave MI-asszisztense. Llama 3 8B motorral működöm, amely egy, a Meta által kifejlesztett nagy teljesítményű modell számos használati eset kezelésére. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Üdvözlöm, Leo vagyok, a Brave MI-asszisztense. Mixtral 8x7B motorral működöm, amely egy, a Mistral AI által az összetett feladatok végrehajtására kifejlesztett modell. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Üdvözlöm, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
 <translation id="4147243042852964992">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, a(z) <ph name="COMPANY_NAME"/> által</translation>
-<translation id="8944485226638699751">Korlátozott</translation>
 <translation id="6187065185557150870">Csevegés</translation>
 <translation id="2961040541145689181">Új csevegés</translation>
 <translation id="7557539689487606886">Váltás Premiumra</translation>
 <translation id="1691256669639196606">Előfizetés kezelése</translation>
+<translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="3037594989275592390">Nyelvmodellek</translation>
 <translation id="6637015365469044269">Fejlesztés most</translation>
+<translation id="5543505256451301851">Ingyenes kipróbálás 7 napig</translation>
 <translation id="849535826888024304">Elérte a válaszgyakorisági korlátot</translation>
-<translation id="6149863263423821329">Oldja fel a magasabb válaszadási arányt a Prémium-előfizetéssel! A folytatáshoz válthat a kevésbé hatékony, Llama2 13b ingyenes modellünkre is.</translation>
+<translation id="2252128900328632803">Oldja fel a magasabb válaszadási arányt a Prémium-előfizetéssel! A folytatáshoz válthat a kevésbé hatékony, Llama2 13b ingyenes modellünkre is.</translation>
 <translation id="4173478269537830374">Különböző MI-modellek felfedezése</translation>
 <translation id="3245401959451976966">Engedje szabadon kreativitását</translation>
 <translation id="4165928407303989823">Maradjon a témánál</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Ez a beszélgetés hosszúra nyúlt, és előfordulhat, hogy a Leo nemsokára elfelejt információkat. A hosszabb beszélgetések folytatásához prémium modellre válthat, vagy pedig törölheti a csevegést az alaphelyzetbe állításhoz.</translation>
 <translation id="7550152963854770123">Csevegés törlése</translation>
 <translation id="7494736170250048402">Üzenet küldése a Leónak</translation>
+<translation id="8712637175834984815">Sikerült</translation>
 <translation id="1093419424466417703">Ez az oldal túl hosszú Leo számára. A kontextus egy része hiányozni fog a beszélgetésből. Leo ennyit tudott elolvasni az oldal tartalmából: <ph name="PERCENTAGE"/>.</translation>
 <translation id="4370698775470316661">Ez a beszélgetés túl hosszúra nyúlt, és nem folytatható. Más modellek alkalmazásával a Leo képes lehet megőrizni a pontosságát a hosszabb beszélgetések esetében.</translation>
+<translation id="5719170755629028558">Válasz kibővítése a Brave-kereséssel...</translation>
+<translation id="5794962229997281366">Továbbfejlesztett válaszkeresés a következőhöz: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Általános célú csevegés</translation>
 <translation id="8193130769524604031">Speciális csevegési feladatok</translation>
 <translation id="3185367320601718531">Beszélgetés és szöveg generálása</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Hossz módosítása</translation>
 <translation id="6320643499534852464">Közösségi média</translation>
 <translation id="2370739752330685659">Talán később</translation>
+<translation id="983013125018250242">Leo-eszközök</translation>
+<translation id="49269513399674318">Mikrofon használata</translation>
 <translation id="6303294677342628402">Védelmek</translation>
 <translation id="8458987127502506209">Brave pajzsok engedélyezése</translation>
 <translation id="7509914170164691086">Pajzsok ENGEDÉLYEZVE <ph name="LINK_BEFORE"/> a(z) <ph name="LINK_AFTER"/> webhelyen</translation>
