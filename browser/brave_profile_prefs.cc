@@ -361,7 +361,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
-  registry->RegisterBooleanPref(kNewTabPageShowStats, true);
+  registry->RegisterBooleanPref(kNewTabPageShowStats, false);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
