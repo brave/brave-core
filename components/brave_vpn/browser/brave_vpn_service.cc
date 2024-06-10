@@ -440,6 +440,11 @@ void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
 
 void BraveVpnService::LoadPurchasedState(const std::string& domain) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!skus::DomainIsForProduct(domain, "vpn")) {
+    VLOG(2) << __func__ << ": LoadPurchasedState called for non-vpn product";
+    return;
+  }
+
   auto requested_env = skus::GetEnvironmentForDomain(domain);
   if (GetCurrentEnvironment() == requested_env &&
       GetPurchasedInfoSync().state == PurchasedState::LOADING) {
@@ -506,6 +511,11 @@ void BraveVpnService::RequestCredentialSummary(const std::string& domain) {
 
 void BraveVpnService::OnCredentialSummary(const std::string& domain,
                                           const std::string& summary_string) {
+  if (!skus::DomainIsForProduct(domain, "vpn")) {
+    VLOG(2) << __func__ << ": CredentialSummary called for non-vpn product";
+    return;
+  }
+
   auto env = skus::GetEnvironmentForDomain(domain);
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
@@ -642,8 +652,10 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     const bool token_no_longer_valid =
         subscriber_credential == kTokenNoLongerValid;
 
-    // If current skus-credential is from retried, don't retry to get newer
-    // skus-credential again.
+    // If we get an error "token no longer valid", this means the credential
+    // has been consumed and is no good.
+    //
+    // We can try one more time to get a fresh credential (total of two tries).
     if (token_no_longer_valid && !IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Re-trying to fetch subscriber-credential by fetching "
@@ -653,13 +665,23 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
       return;
     }
 
-    // If we got same error with another skus-credential, give up as we can't
-    // issue another skus-credential. It's limited resource.
+    // If we get here, we've already tried two credentials (the retry failed).
     if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Got TokenNoLongerValid again with retried skus credential";
     }
 
+    // When this path is reached:
+    // - The cached credential is considered good but vendor side has an error.
+    //   That could be a network outage or a server side error on vendor side.
+    // OR
+    // - The cached credential is consumed and we've now tried two different
+    //   credentials.
+    //
+    // We set the state as FAILED and do not attempt to get another credential.
+    // Cached credential will eventually expire and user will fetch a new one.
+    //
+    // This logic can be updated if we issue more than two credentials per day.
     auto message_id = token_no_longer_valid
                           ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
                           : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;

@@ -48,6 +48,12 @@ TEST(SkusUtilsUnittest, GetDomain) {
             kEnvProduction);
 }
 
+TEST(SkusUtilsUnittest, DomainIsForProduct) {
+  EXPECT_EQ(DomainIsForProduct("vpn.brave.com", "vpn"), true);
+  EXPECT_EQ(DomainIsForProduct("leo.brave.com", "vpn"), false);
+  EXPECT_EQ(DomainIsForProduct("leon.brave.com", "leo"), false);
+}
+
 TEST(SkusUtilsUnittest, Migrate) {
   TestingPrefServiceSimple profile_pref_service;
   skus::RegisterProfilePrefsForMigration(profile_pref_service.registry());

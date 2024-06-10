@@ -62,6 +62,11 @@ std::string GetEnvironmentForDomain(const std::string& domain) {
   return "";
 }
 
+bool DomainIsForProduct(const std::string& domain, const std::string& product) {
+  std::string::size_type index = domain.find(product + ".", 0);
+  return index == 0;
+}
+
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusState);
   registry->RegisterBooleanPref(prefs::kSkusStateMigratedToLocalState, false);
