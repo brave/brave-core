@@ -18,6 +18,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -110,18 +111,6 @@ std::optional<std::string> ChainIdToStripeChainId(const std::string& chain_id) {
   }
 
   return chain_id_lookup->at(chain_id);
-}
-
-base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
-  base::flat_map<std::string, std::string> request_headers;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers["x-brave-key"] = std::move(brave_key);
-
-  return request_headers;
 }
 
 }  // namespace
@@ -389,7 +378,7 @@ void AssetRatioService::GetPrice(const std::vector<std::string>& from_assets,
 
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      std::move(internal_callback), MakeBraveServicesKeyHeader(),
+      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -452,7 +441,7 @@ void AssetRatioService::GetStripeBuyURL(
 
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
-      std::move(internal_callback), MakeBraveServicesKeyHeader(),
+      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = false});
 }
 
@@ -501,7 +490,7 @@ void AssetRatioService::GetPriceHistory(const std::string& asset,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
-      std::move(internal_callback), MakeBraveServicesKeyHeader(),
+      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
@@ -541,7 +530,7 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetCoinMarketsURL(vs_asset_lower, limit), "", "",
-      std::move(internal_callback), MakeBraveServicesKeyHeader(),
+      std::move(internal_callback), MakeBraveServicesKeyHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true});
 }
 
