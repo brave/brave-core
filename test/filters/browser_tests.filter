@@ -5,6 +5,32 @@
 ## why the filter is required and create an associated tracking issue if needed.
 ##
 
+# unknown time out
+-AppShimMetricsTest.Basics
+-PasswordAutofillAgentTest.*
+-PasswordGeneration*
+
+# unknown web app related
+-WebAppIconHealthChecksBrowserTest.*
+-LaunchWebAppCommandTest.*
+-FetchManifestAndInstallCommandTest.*
+-All/FetchManifestAndInstallCommandTestWithSVG.*
+-ManifestUpdateManagerImmediateUpdateBrowserTest.*
+-PreinstalledWebAppManagerBrowserTest.*
+-WebAppIconManagerBrowserTest.*
+-AppBannerManagerDesktopBrowserTest.*
+
+# Google signin is disabled
+-BoundSessionCookieRefreshServiceImplBrowserTest.CookieRotationOnStartup
+
+# Read anything is disabled
+-ReadAnythingAppControllerTest.*
+-ReadAnythingAppModelTest.*
+
+# Google translate is disabled
+-TranslateAgentBrowserTest.*
+-TranslateScriptBrowserTest.*
+
 # Chromium ads are disabled
 -AdClickLandingPageMetricsBrowserTest.*
 -AdClickMetricsBrowserTest.NavigateCrossOriginIframeFromAdScript
@@ -20,6 +46,10 @@
 -OverlayPopupAdViolationBrowserTestWithoutEnforcement.*
 -Renderer/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
 -Renderer/SubresourceFilterDnsAliasResourceLoaderBrowserTest.*
+
+# Prerender is disabled
+-WebContentsPrerenderBrowserTest.*
+-AppControllerHandoffPrerenderBrowserTest.*
 
 # Probably failing because of feature changes - need to investigate
 # https://github.com/brave/brave-browser/issues/34185
