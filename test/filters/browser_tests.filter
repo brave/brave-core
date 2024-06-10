@@ -11,7 +11,7 @@
 -PhishingClassifierDelegateTest.NoPhishingModel
 
 # This is only enabled for safe_browsing_mode == 2
-# -ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
+-ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
 
 # Optimization Guide is disabled
 -ChromeRenderFrameObserverTest.OptGuideGetsText
@@ -40,6 +40,10 @@
 # Google translate is disabled
 -TranslateAgentBrowserTest.*
 -TranslateScriptBrowserTest.*
+-OverrideLanguagePrefsForAutoHrefTranslateBrowserTest.*
+-OverrideSitePrefsForAutoHrefTranslateBrowserTest.*
+-TranslateManagerBrowserTest.*
+-TranslateModelServiceBrowserTest.*
 
 # Chromium ads are disabled
 -AdClickLandingPageMetricsBrowserTest.*
@@ -56,10 +60,6 @@
 -OverlayPopupAdViolationBrowserTestWithoutEnforcement.*
 -Renderer/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
 -Renderer/SubresourceFilterDnsAliasResourceLoaderBrowserTest.*
-
-# Prerender is disabled
--WebContentsPrerenderBrowserTest.*
--AppControllerHandoffPrerenderBrowserTest.*
 
 # Probably failing because of feature changes - need to investigate
 # https://github.com/brave/brave-browser/issues/34185
@@ -225,6 +225,7 @@
 
 # These tests fail because kPrerender2 feature is disabled.
 -All/HostedAppTestWithPrerendering.*
+-AppControllerHandoffPrerenderBrowserTest.*
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageIframeSetsCookie
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageSetsCookie
 -EventPageAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
@@ -248,6 +249,7 @@
 -ServiceWorkerAndFalse/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -ServiceWorkerAndTrue/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -WebAppLinkCapturingBrowserTest.NoLinkCapturePrerenderNavigation/*
+-WebContentsPrerenderBrowserTest.*
 -WebNavigationApiPrerenderTestWithServiceWorker.Prerendering
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
@@ -1962,8 +1964,6 @@
 -OriginAgentClusterDisabledBrowserTest.*
 -OutOfProcessPPAPITest.HostResolverCrash_Basic
 -OutOfProcessPPAPITest.TCPSocketPrivateCrash_Resolve
--OverrideLanguagePrefsForAutoHrefTranslateBrowserTest.*
--OverrideSitePrefsForAutoHrefTranslateBrowserTest.*
 -PageContentAnnotationsServiceBatchVisit*Test.*
 -PageInfoBubbleViewAboutThisSiteBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
@@ -2249,8 +2249,6 @@
 -ThirdPartyNTPBrowserTest.*
 -ThirdPartyPartitionedCookiesOriginTrialBrowserTest.*
 -ThirdPartyUaReducedOriginTrialBrowserTest.*
--TranslateManagerBrowserTest.*
--TranslateModelServiceBrowserTest.*
 -TrustSafetySentimentServiceBrowserTest.*
 -TrustTokenExtensionBrowserTest.*
 -UkmBrowserTest.*
