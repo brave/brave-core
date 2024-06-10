@@ -219,8 +219,8 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                   ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
               content_setting);
     EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                  GURL(kAccountsGoogleUrl), embedding_url_,
-                  net::CookieSettingOverrides(), nullptr),
+                  GURL(kAccountsGoogleUrl), net::SiteForCookies(),
+                  embedding_url_, net::CookieSettingOverrides(), nullptr),
               cookie_setting);
   }
 
