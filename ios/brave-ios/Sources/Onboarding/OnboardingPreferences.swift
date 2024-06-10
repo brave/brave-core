@@ -12,7 +12,7 @@ extension Preferences {
     /// If user kills the app before completing onboarding, it should be treated as unfinished.
     public static let basicOnboardingCompleted = Option<Int>(
       key: "general.basic-onboarding-completed",
-      default: OnboardingState.undetermined.rawValue
+      default: OnboardingState.completed.rawValue
     )
 
     /// The time until the next on-boarding shows
@@ -55,7 +55,7 @@ extension Preferences {
     /// The Bool determining onboarding finished fully
     public static let focusOnboardingFinished = Option<Bool>(
       key: "focus.onboarding.onboarding-finished",
-      default: false
+      default: true
     )
   }
 }
@@ -66,37 +66,37 @@ extension Preferences {
     /// Whether the bottom bar callout is shown.
     public static let bottomBarCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-bottom-bar-callout-completed",
-      default: false
+      default: true
     )
 
     /// Whether the vpn promotion callout is shown.
     public static let vpnPromotionCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-vpn-callout-completed",
-      default: false
+      default: true
     )
 
     /// Whether the rewards callout is shown.
     public static let rewardsCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-rewards-callout-completed",
-      default: false
+      default: true
     )
 
     /// Whether the ntp callout is shown.
     public static let ntpCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-ntp-callout-completed",
-      default: false
+      default: true
     )
 
     /// Whether the omnibox callout is shown.
     public static let omniboxCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-omnibox-callout-completed",
-      default: false
+      default: true
     )
 
     /// Whether the vpn promotion callout is shown.
     public static let vpnUpdateBillingCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-vpn-billing-callout-completed",
-      default: false
+      default: true
     )
   }
 }
@@ -107,7 +107,7 @@ extension Preferences {
     /// dismissed the intro screen enough amount of times.
     public static let completed = Option<Bool>(
       key: "defaultBrowserIntro.intro-completed",
-      default: false
+      default: true
     )
 
     /// Whether system notification scheduled or not
