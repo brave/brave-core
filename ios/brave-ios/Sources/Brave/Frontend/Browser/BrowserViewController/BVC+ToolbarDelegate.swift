@@ -12,6 +12,7 @@ import BraveUI
 import BraveWallet
 import CertificateUtilities
 import Data
+import Lottie
 import Playlist
 import Preferences
 import Shared
@@ -502,8 +503,7 @@ extension BrowserViewController: TopToolbarDelegate {
           isPersistent: !tab.isPrivate,
           presentingView: self.topToolbar.shieldsButton
         ) { [weak self] in
-          // TODO: Animate
-          self?.tabManager.shredData(for: url, in: tab)
+          self?.shredData(for: url, in: tab)
           self?.dismiss(animated: true)
         }
 
@@ -584,6 +584,12 @@ extension BrowserViewController: TopToolbarDelegate {
       contentSizeBehavior: .preferredContentSize
     )
     popover.present(from: topToolbar.shieldsButton, on: self)
+  }
+
+  func shredData(for url: URL, in tab: Tab) {
+    AnimationView.showShredAnimation(on: view) {
+      self.tabManager.shredData(for: url, in: tab)
+    }
   }
 
   func showSubmitReportView(for url: URL) {

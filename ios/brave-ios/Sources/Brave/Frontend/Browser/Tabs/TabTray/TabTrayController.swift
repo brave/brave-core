@@ -10,6 +10,7 @@ import BraveUI
 import Combine
 import Data
 import LocalAuthentication
+import Lottie
 import Preferences
 import Shared
 import SnapKit
@@ -706,10 +707,11 @@ class TabTrayController: AuthenticationController {
     let alert = UIAlertController.shredDataAlert { _ in
       guard let tab = self.tabManager.selectedTab else { return }
       guard let url = tab.url else { return }
-      // TODO: Animate
-      self.tabManager.shredData(for: url, in: tab)
-      self.refreshDataSource()
-      self.tabTrayView.collectionView.reloadData()
+      AnimationView.showShredAnimation(on: self.view) { [weak self] in
+        self?.tabManager.shredData(for: url, in: tab)
+        self?.refreshDataSource()
+        self?.tabTrayView.collectionView.reloadData()
+      }
     }
     present(alert, animated: true)
   }

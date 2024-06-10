@@ -441,8 +441,7 @@ extension BrowserViewController: TabManagerDelegate {
           let alert = UIAlertController.shredDataAlert { _ in
             guard let tab = self?.tabManager.selectedTab else { return }
             guard let url = tab.url else { return }
-            // TODO: Animate
-            self?.tabManager.shredData(for: url, in: tab)
+            self?.shredData(for: url, in: tab)
           }
 
           self?.present(alert, animated: true)
