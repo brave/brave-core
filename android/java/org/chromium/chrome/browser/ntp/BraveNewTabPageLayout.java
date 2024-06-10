@@ -243,6 +243,7 @@ public class BraveNewTabPageLayout
 
         mMvTilesContainerLayout = (ViewGroup) LayoutInflater.from(mMainLayout.getContext())
                                           .inflate(R.layout.mv_tiles_container, mMainLayout, false);
+        mMvTilesContainerLayout.setPadding(0, 0, 0, 0);
         mMvTilesContainerLayout.setVisibility(View.VISIBLE);
 
         mMvTilesContainerLayout.post(new Runnable() {
