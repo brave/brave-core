@@ -49,32 +49,43 @@ namespace brave_wallet {
 
 namespace {
 
-using ByteArray = std::vector<uint8_t>;
 constexpr size_t kWordSize = 32;
 constexpr size_t kAddressSize = 20;
 
+using ByteArray = std::vector<uint8_t>;
+
+// ByteView is a simple wrapper around a pointer to a byte array to represent
+// a view into a segment of calldata. It is used to avoid copying the data
+// around when extracting values.
+struct ByteView {
+  ByteView(const uint8_t* data_, size_t size_) : data_(data_), size_(size_) {}
+  ByteView() : data_(nullptr), size_(0) {}
+
+  const uint8_t* data() const { return data_; }
+  size_t size() const { return size_; }
+
+  const uint8_t* data_;
+  size_t size_;
+};
+
 template <typename T>
 struct DecoderResult {
-  T result;             // decoded value
-  ByteArray remaining;  // remaining calldata
-  size_t consumed;      // number of bytes consumed
-
-  DecoderResult(T result, ByteArray remaining, size_t consumed)
+  DecoderResult(T result, ByteView remaining, size_t consumed)
       : result(std::move(result)),
         remaining(std::move(remaining)),
         consumed(consumed) {}
+
+  T result;            // decoded value
+  ByteView remaining;  // remaining calldata
+  size_t consumed;     // number of bytes consumed
 };
 
-// GetSubByteArray returns a subarray of the input stas rting from the specified
-// offset. If the offset is out of bounds, an empty ByteArray is returned.
-//
-// It mimics the behavior of JavaScript's Uint8Array.prototype.subarray.
-ByteArray GetSubByteArray(const ByteArray& input, size_t offset) {
+ByteView GetSubByteView(const ByteView& input, size_t offset) {
   if (offset >= input.size()) {
-    return ByteArray();
+    return ByteView();
   }
 
-  return ByteArray(input.begin() + offset, input.end());
+  return ByteView(input.data() + offset, input.size() - offset);
 }
 
 // GetAddressFromData extracts an Ethereum address from the calldata segment.
@@ -86,7 +97,7 @@ ByteArray GetSubByteArray(const ByteArray& input, size_t offset) {
 // In the future, addresses in Ethereum may become 32 bytes long:
 // https://ethereum-magicians.org/t/increasing-address-size-from-20-to-32-bytes
 std::optional<DecoderResult<base::Value>> GetAddressFromData(
-    const ByteArray& input) {
+    const ByteView& input) {
   if (input.size() < kWordSize) {
     return std::nullopt;
   }
@@ -94,7 +105,7 @@ std::optional<DecoderResult<base::Value>> GetAddressFromData(
   return DecoderResult<base::Value>(
       base::Value("0x" + HexEncodeLower(input.data() + kWordSize - kAddressSize,
                                         kAddressSize)),
-      GetSubByteArray(input, kWordSize), kWordSize);
+      GetSubByteView(input, kWordSize), kWordSize);
 }
 
 // GetUintFromData extracts a 32-byte wide integral value of type M from the
@@ -103,7 +114,7 @@ std::optional<DecoderResult<base::Value>> GetAddressFromData(
 // Using this function to extract an integer outside the range of M is
 // considered an error.
 template <typename M>
-std::optional<DecoderResult<M>> GetUintFromData(const ByteArray& input) {
+std::optional<DecoderResult<M>> GetUintFromData(const ByteView& input) {
   static_assert(std::is_integral<M>::value, "M must be an integer type");
 
   if (input.size() < kWordSize) {
@@ -124,14 +135,14 @@ std::optional<DecoderResult<M>> GetUintFromData(const ByteArray& input) {
   }
 
   return DecoderResult<M>(static_cast<M>(value),
-                          GetSubByteArray(input, kWordSize), kWordSize);
+                          GetSubByteView(input, kWordSize), kWordSize);
 }
 
 // GetUintHexFromData encodes the return value of GetUintFromData as a compact
 // hex string (without leading 0s), and prefixed by "0x".
 template <typename M>
 std::optional<DecoderResult<base::Value>> GetUintHexFromData(
-    const ByteArray& input) {
+    const ByteView& input) {
   auto result = GetUintFromData<M>(input);
   if (!result) {
     return std::nullopt;
@@ -146,7 +157,7 @@ std::optional<DecoderResult<base::Value>> GetUintHexFromData(
 // GetBoolFromData extracts a 32-byte wide boolean value from the
 // calldata segment.
 std::optional<DecoderResult<base::Value>> GetBoolFromData(
-    const ByteArray& input) {
+    const ByteView& input) {
   auto result = GetUintFromData<uint8_t>(input);
   if (!result) {
     return std::nullopt;
@@ -174,13 +185,13 @@ std::optional<DecoderResult<base::Value>> GetBoolFromData(
 // The result is serialized as a hex string prefixed by "0x".
 std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
     const eth_abi::Type& type,
-    const ByteArray& input) {
+    const ByteView& input) {
   size_t size = type.m.value_or(0);
   if (size > kWordSize) {
     return std::nullopt;
   }
 
-  ByteArray remaining(input.begin(), input.end());
+  ByteView remaining = input;
   size_t parts_count = 1;
   size_t consumed = 0;
 
@@ -205,14 +216,14 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
   size_t parts_size = parts_count * kWordSize;
   return DecoderResult<base::Value>(
       base::Value("0x" + HexEncodeLower(remaining.data(), size)),
-      GetSubByteArray(remaining, parts_size), consumed + parts_size);
+      GetSubByteView(remaining, parts_size), consumed + parts_size);
 }
 
 // GetStringFromData extracts a string value from the calldata segment using
 // head-tail encoding mechanism. Strings in calldata are represented as bytes,
 // with the first 32 bytes encoding the length, followed by the actual content.
 std::optional<DecoderResult<base::Value>> GetStringFromData(
-    const ByteArray& input) {
+    const ByteView& input) {
   // Extract the string value from the calldata as dynamic bytes
   auto bytes_result = GetBytesHexFromData(eth_abi::Bytes(), input);
   if (!bytes_result) {
@@ -236,13 +247,13 @@ std::optional<DecoderResult<base::Value>> GetStringFromData(
 // Forward declarations for recursive functions.
 std::optional<DecoderResult<base::Value>> GetTupleFromData(
     const eth_abi::Type& type,
-    const ByteArray& input);
+    const ByteView& input);
 std::optional<DecoderResult<base::Value>> GetArrayFromData(
     const eth_abi::Type& type,
-    const ByteArray& input);
+    const ByteView& input);
 
 std::optional<DecoderResult<base::Value>> DecodeParam(const eth_abi::Type& type,
-                                                      const ByteArray& input) {
+                                                      const ByteView& input) {
   if (type.kind == eth_abi::TypeKind::kAddress) {
     return GetAddressFromData(input);
   }
@@ -297,7 +308,7 @@ std::optional<DecoderResult<base::Value>> DecodeParam(const eth_abi::Type& type,
 
 std::optional<DecoderResult<base::Value>> DecodeParam(
     const std::unique_ptr<eth_abi::Type>& type_ptr,
-    const ByteArray& input) {
+    const ByteView& input) {
   return DecodeParam(*type_ptr, input);
 }
 
@@ -336,20 +347,20 @@ bool IsDynamicType(const eth_abi::Type& type) {
 // values.
 std::optional<DecoderResult<base::Value>> GetTupleFromData(
     const eth_abi::Type& type,
-    const ByteArray& input) {
+    const ByteView& input) {
   base::Value::List result;
   size_t consumed = 0;
   size_t dynamic_consumed = 0;
   for (const auto& child_type : type.tuple_types) {
     if (IsDynamicType(child_type)) {
       auto offset_result =
-          GetUintFromData<size_t>(GetSubByteArray(input, consumed));
+          GetUintFromData<size_t>(GetSubByteView(input, consumed));
       if (!offset_result) {
         return std::nullopt;
       }
 
-      auto decoded_result = DecodeParam(
-          child_type, GetSubByteArray(input, offset_result->result));
+      auto decoded_result =
+          DecodeParam(child_type, GetSubByteView(input, offset_result->result));
       if (!decoded_result) {
         return std::nullopt;
       }
@@ -360,7 +371,7 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
     } else {
       // static type
       auto decoded_result =
-          DecodeParam(child_type, GetSubByteArray(input, consumed));
+          DecodeParam(child_type, GetSubByteView(input, consumed));
       if (!decoded_result) {
         return std::nullopt;
       }
@@ -372,7 +383,7 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
 
   return DecoderResult<base::Value>(
       base::Value(std::move(result)),
-      GetSubByteArray(input, consumed + dynamic_consumed),
+      GetSubByteView(input, consumed + dynamic_consumed),
       consumed + dynamic_consumed);
 }
 
@@ -386,12 +397,12 @@ std::optional<DecoderResult<base::Value>> GetTupleFromData(
 // is encoded as a contiguous sequence of elements.
 std::optional<DecoderResult<base::Value>> GetArrayFromData(
     const eth_abi::Type& type,
-    const ByteArray& input) {
+    const ByteView& input) {
   // Extract the array length. If the array is dynamic, the length is
   // temporarily set to 0, which is later overwritten by the actual length.
   size_t size = type.m.value_or(0);
   size_t consumed = 0;
-  ByteArray remaining(input.begin(), input.end());
+  ByteView remaining = input;
 
   // dynamic array
   if (!type.m.has_value()) {
@@ -412,7 +423,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
   if (has_dynamic_child) {
     for (size_t i = 0; i < size; i++) {
       auto offset_result =
-          GetUintFromData<size_t>(GetSubByteArray(remaining, i * kWordSize));
+          GetUintFromData<size_t>(GetSubByteView(remaining, i * kWordSize));
       if (!offset_result) {
         return std::nullopt;
       }
@@ -420,7 +431,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
       consumed += offset_result->consumed;
 
       auto decoded_child_result = DecodeParam(
-          type.array_type, GetSubByteArray(remaining, offset_result->result));
+          type.array_type, GetSubByteView(remaining, offset_result->result));
       if (!decoded_child_result) {
         return std::nullopt;
       }
@@ -430,13 +441,13 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
     }
 
     return DecoderResult<base::Value>(base::Value(std::move(result)),
-                                      GetSubByteArray(remaining, consumed),
+                                      GetSubByteView(remaining, consumed),
                                       consumed);
   }
 
   for (size_t i = 0; i < size; i++) {
     auto decoded_child_result =
-        DecodeParam(type.array_type, GetSubByteArray(input, consumed));
+        DecodeParam(type.array_type, GetSubByteView(input, consumed));
     if (!decoded_child_result) {
       return std::nullopt;
     }
@@ -446,7 +457,7 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
   }
 
   return DecoderResult<base::Value>(base::Value(std::move(result)),
-                                    GetSubByteArray(input, consumed), consumed);
+                                    GetSubByteView(input, consumed), consumed);
 }
 
 }  // namespace
@@ -514,7 +525,9 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
 std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
                                            const ByteArray& data) {
-  auto decoded = DecodeParam(type, data);
+  ByteView input(data.data(), data.size());
+
+  auto decoded = DecodeParam(type, input);
   if (!decoded) {
     return std::nullopt;
   }
