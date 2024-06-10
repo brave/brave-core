@@ -7,19 +7,20 @@ import SwiftUI
 
 struct BraveVPNRegionLoadingIndicatorView: View {
 
-  @State private var isAnimating = false
+  @State
+  private var isAnimating = false
 
   var body: some View {
     ZStack {
       Circle()
         .stroke(lineWidth: 7)
         .opacity(0.3)
-        .foregroundColor(Color.blue)
+        .foregroundStyle(Color(braveSystemName: .iconInteractive))
         .frame(width: 48, height: 48)
       Circle()
         .trim(from: 0.75, to: 1.0)
         .stroke(style: StrokeStyle(lineWidth: 7, lineCap: .round))
-        .foregroundColor(Color.blue)
+        .foregroundColor(Color(braveSystemName: .iconInteractive))
         .frame(width: 48, height: 48)
         .rotationEffect(Angle(degrees: isAnimating ? 360 : 0))
         .onAppear {
