@@ -303,14 +303,14 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   void RegisterDocumentNodeCreated(blink::Document* node);
   void RegisterHTMLTextNodeCreated(blink::CharacterData* node);
   void RegisterHTMLElementNodeCreated(blink::Node* node);
-  void RegisterHTMLTextNodeInserted(blink::Node* node,
+  void RegisterHTMLTextNodeInserted(blink::CharacterData* node,
                                     blink::Node* parent_node,
                                     const blink::DOMNodeId before_sibling_id);
   void RegisterHTMLElementNodeInserted(
       blink::Node* node,
       blink::Node* parent_node,
       const blink::DOMNodeId before_sibling_id);
-  void RegisterHTMLTextNodeRemoved(blink::Node* node);
+  void RegisterHTMLTextNodeRemoved(blink::CharacterData* node);
   void RegisterHTMLElementNodeRemoved(blink::Node* node);
 
   void RegisterEventListenerAdd(blink::Node* node,
@@ -322,16 +322,19 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                    const EventListenerId listener_id,
                                    ScriptId listener_script_id);
 
-  void RegisterInlineStyleSet(blink::Node* node,
+  void RegisterInlineStyleSet(blink::Element* element,
                               const String& attr_name,
                               const String& attr_value);
-  void RegisterInlineStyleDelete(blink::Node* node, const String& attr_name);
-  void RegisterAttributeSet(blink::Node* node,
+  void RegisterInlineStyleDelete(blink::Element* element,
+                                 const String& attr_name);
+  void RegisterAttributeSet(blink::Element* element,
                             const String& attr_name,
                             const String& attr_value);
-  void RegisterAttributeDelete(blink::Node* node, const String& attr_name);
+  void RegisterAttributeDelete(blink::Element* element,
+                               const String& attr_name);
 
-  void RegisterTextNodeChange(blink::Node* node, const String& new_text);
+  void RegisterTextNodeChange(blink::CharacterData* node,
+                              const String& new_text);
 
   void DoRegisterRequestStart(const InspectorId request_id,
                               GraphNode* requesting_node,

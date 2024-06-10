@@ -3,6 +3,13 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.1
+
+Add `EdgeAttributeSet` instances to capture attributes that were created
+by the parser as well.
+
+Minor type tightening in method signatures.
+
 ## Version 0.7.0
 
 Add new `EdgeDocument` type, for recording the final state of the elements
@@ -12,7 +19,7 @@ graph (e.g., tying a parser to a dom root.)
 
 Change how `EdgeCrossDOM` instances are structured. Previously they were
 tied from an iframe-like-element (i.e., `NodeFrameOwner`) to the parser
-for the execution context, whi ch is confusing and was implemented
+for the execution context, which is confusing and was implemented
 incorrectly anyway. Now we use `EdgeCrossDOM` edges tie each `NodeDOMRoot`
 node directly to its "containing" node (i.e.,
 `NodeFrameOwner` -> `EdgeCrossDOM` -> `NodeDOMRoot`).
