@@ -1390,7 +1390,6 @@ public class BraveRewardsPanel
         mWalletBalanceProgress.setVisibility(View.VISIBLE);
         mBraveRewardsNativeWorker.fetchBalance();
         mBraveRewardsNativeWorker.getRecurringDonations();
-        mBraveRewardsNativeWorker.getAutoContributeProperties();
         mBraveRewardsNativeWorker.getAdsAccountStatement();
 
         mBraveRewardsNativeWorker.getCurrentBalanceReport();
@@ -2072,13 +2071,15 @@ public class BraveRewardsPanel
             mSwitchAutoContribute.setOnCheckedChangeListener(mAutoContributeSwitchListener);
         }
         updatePublisherStatus(mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId));
+        mBraveRewardsNativeWorker.getAutoContributeProperties();
     }
 
     @Override
     public void onGetAutoContributeProperties() {
         if (mBraveRewardsNativeWorker != null) {
+            int publisherStatus = mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId);
             int shouldShow =
-                    mBraveRewardsNativeWorker.isAutoContributeEnabled() ? View.VISIBLE : View.GONE;
+                    (mBraveRewardsNativeWorker.isAutoContributeEnabled() && publisherStatus != PublisherStatus.WEB3_ENABLED) ? View.VISIBLE : View.GONE;
             mPopupView.findViewById(R.id.attention_layout).setVisibility(shouldShow);
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(shouldShow);
             mPopupView
