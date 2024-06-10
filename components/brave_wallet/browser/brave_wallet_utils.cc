@@ -73,51 +73,6 @@ bool IsValidEntropySize(size_t entropy_size) {
   return true;
 }
 
-std::string GetInfuraProjectID() {
-  std::string project_id(BUILDFLAG(BRAVE_INFURA_PROJECT_ID));
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
-    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
-  }
-  return project_id;
-}
-
-std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id) {
-  const auto& endpoints = GetInfuraChainEndpoints();
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (endpoints.contains(chain_id_lower)) {
-    return endpoints.at(chain_id_lower);
-  }
-  return std::string();
-}
-
-const base::flat_map<std::string, std::string> kInfuraSubdomains = {
-    {brave_wallet::mojom::kMainnetChainId, "mainnet"},
-    {brave_wallet::mojom::kGoerliChainId, "goerli"},
-    {brave_wallet::mojom::kSepoliaChainId, "sepolia"}};
-
-std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  if (kInfuraSubdomains.contains(chain_id_lower)) {
-    return kInfuraSubdomains.at(chain_id_lower);
-  }
-  return std::string();
-}
-
-GURL GetInfuraURLForKnownChainId(const std::string& chain_id) {
-  auto endpoint = brave_wallet::GetInfuraEndpointForKnownChainId(chain_id);
-  if (!endpoint.empty()) {
-    return GURL(endpoint);
-  }
-
-  auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
-  if (subdomain.empty()) {
-    return GURL();
-  }
-  return GURL(
-      base::StringPrintf("https://%s-infura.brave.com/", subdomain.c_str()));
-}
-
 std::optional<bool> GetEip1559ForKnownChain(const std::string& chain_id_lwr) {
   static base::NoDestructor<base::flat_map<std::string_view, bool>> values([] {
     base::flat_map<std::string_view, bool> values({
@@ -880,26 +835,6 @@ bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token) {
 }
 
 }  // namespace
-
-GURL AddInfuraProjectId(const GURL& url) {
-  DCHECK(url.is_valid()) << url.possibly_invalid_spec();
-  GURL::Replacements replacements;
-  auto path = GetInfuraProjectID();
-  replacements.SetPathStr(path);
-  return url.ReplaceComponents(replacements);
-}
-
-GURL MaybeAddInfuraProjectId(const GURL& url) {
-  if (!url.is_valid()) {
-    return GURL();
-  }
-  for (const auto& infura_chain_id : kInfuraChains) {
-    if (GetInfuraURLForKnownChainId(infura_chain_id) == url) {
-      return AddInfuraProjectId(url);
-    }
-  }
-  return url;
-}
 
 mojom::NetworkInfoPtr GetKnownChain(const std::string& chain_id,
                                     mojom::CoinType coin) {
@@ -1751,72 +1686,6 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
 
 GURL GetSnsRpcUrl() {
   return GetURLForKnownChainId(mojom::kSolanaMainnet).value();
-}
-
-std::optional<bool> IsEip1559Chain(PrefService* prefs,
-                                   const std::string& chain_id) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  if (auto is_eip_1559 = prefs->GetDict(kBraveWalletEip1559CustomChains)
-                             .FindBool(chain_id_lwr)) {
-    return is_eip_1559.value();
-  }
-  return GetEip1559ForKnownChain(chain_id_lwr);
-}
-
-void SetEip1559ForCustomChain(PrefService* prefs,
-                              const std::string& chain_id,
-                              std::optional<bool> is_eip1559) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  ScopedDictPrefUpdate update(prefs, kBraveWalletEip1559CustomChains);
-  if (is_eip1559.has_value()) {
-    update->Set(chain_id_lwr, is_eip1559.value());
-  } else {
-    update->Remove(chain_id_lwr);
-  }
-}
-
-std::optional<bool> IsEip1559Chain(PrefService* prefs,
-                                   const std::string& chain_id) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  if (auto is_eip_1559 = prefs->GetDict(kBraveWalletEip1559CustomChains)
-                             .FindBool(chain_id_lwr)) {
-    return is_eip_1559.value();
-  }
-  return GetEip1559ForKnownChain(chain_id_lwr);
-}
-
-void SetEip1559ForCustomChain(PrefService* prefs,
-                              const std::string& chain_id,
-                              std::optional<bool> is_eip1559) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  ScopedDictPrefUpdate update(prefs, kBraveWalletEip1559CustomChains);
-  if (is_eip1559.has_value()) {
-    update->Set(chain_id_lwr, is_eip1559.value());
-  } else {
-    update->Remove(chain_id_lwr);
-  }
-}
-
-std::optional<bool> IsEip1559Chain(PrefService* prefs,
-                                   const std::string& chain_id) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  if (auto is_eip_1559 = prefs->GetDict(kBraveWalletEip1559CustomChains)
-                             .FindBool(chain_id_lwr)) {
-    return is_eip_1559.value();
-  }
-  return GetEip1559ForKnownChain(chain_id_lwr);
-}
-
-void SetEip1559ForCustomChain(PrefService* prefs,
-                              const std::string& chain_id,
-                              std::optional<bool> is_eip1559) {
-  auto chain_id_lwr = base::ToLowerASCII(chain_id);
-  ScopedDictPrefUpdate update(prefs, kBraveWalletEip1559CustomChains);
-  if (is_eip1559.has_value()) {
-    update->Set(chain_id_lwr, is_eip1559.value());
-  } else {
-    update->Remove(chain_id_lwr);
-  }
 }
 
 std::optional<bool> IsEip1559Chain(PrefService* prefs,

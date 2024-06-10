@@ -1971,15 +1971,17 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_a), mojom::kSolanaTestnet);
   EXPECT_EQ(GetChainId(mojom::CoinType::SOL, origin_b), mojom::kSolanaMainnet);
 
-  EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
-                mojom::CoinType::SOL, std::nullopt))),
-            url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
+  EXPECT_EQ(
+      url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
+          mojom::CoinType::SOL, std::nullopt))),
+      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
   EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
                 mojom::CoinType::SOL, origin_a))),
             url::Origin::Create(GURL("https://api.testnet.solana.com")));
-  EXPECT_EQ(url::Origin::Create(GURL(json_rpc_service_->GetNetworkUrl(
-                mojom::CoinType::SOL, origin_b))),
-            url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
+  EXPECT_EQ(
+      url::Origin::Create(GURL(
+          json_rpc_service_->GetNetworkUrl(mojom::CoinType::SOL, origin_b))),
+      url::Origin::Create(GURL("https://solana-mainnet.wallet.brave.com")));
 }
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
