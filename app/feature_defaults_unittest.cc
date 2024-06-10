@@ -149,7 +149,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDigitalGoodsApi,
       &features::kDIPS,
       &features::kFedCm,
-      &features::kFedCmWithoutThirdPartyCookies,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
