@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Колкото повече виждате, толкова повече можете да спечелите.</translation>
 <translation id="7526443283522395161">Нов раздел със страница с реклами</translation>
 <translation id="7968650944098083708">Известия за реклами</translation>
+<translation id="8289546216379862569">Търсене на реклами</translation>
+<translation id="4758111936363146244">Реклами на Brave Търсене се показват на<ph name="BEGIN_LINK"/>Brave Търсене<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Все все още не можете да печелите BAT от рекламите на Brave Търсене, но помагате на Brave, като ги включвате</translation>
 <translation id="6390952132783970876">Реклами в новините в Brave</translation>
 <translation id="7516281787184495886">Новините в Brave съдържат реклами, които не могат да бъдат деактивирани самостоятелно.</translation>
 <translation id="8008378848677625233">Новините в Brave в момента са деактивирани.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Изтегля се компонент...</translation>
 <translation id="4894106830958548828">Разбирам</translation>
 <translation id="326118736933420687">Вие разглеждате страница WebTorrent</translation>
+<translation id="2729085694451916573">Тестов низ за <ph name="PART_ONE"/>заместващи символи<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Научете повече<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Активиране на поддръжката на Unstoppable Domains в Brave?</translation>
 <translation id="5015092481905019948">Brave ще използва <ph name="PROVIDER_NAME"/> за установяване <ph name="DOMAIN_LIST"/> на имена на домейни, които се намират на <ph name="DOMAIN_PROVIDER_NAME"/>. Brave скрива вашия IP адрес. Ако активирате това,<ph name="PROVIDER_NAME"/> ще види, че някой се опитва да посети тези домейни, но нищо друго. Вижте <ph name="BEGIN_PROVIDER_TOU_LINK"/>условията за ползване <ph name="END_PROVIDER_TOU_LINK"/> и <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/> политиката за поверителност <ph name="END_PROVIDER_PRIVACY_LINK"/> на <ph name="PROVIDER_NAME"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Възникна обща грешка при обработка на заявка</translation>
 <translation id="7123780456696055383">Заявеният ресурс не е наличен</translation>
 <translation id="1680597601664421644">Импортираната мнемоника не е валидна за портфейл в Brave</translation>
+<translation id="372898731091371291">Кой тип портфейл бихте искали да импортирате?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin портфейл</translation>
+<translation id="8659668419772278776">Импортирайте своята сийд фраза от съществуващ портфейл</translation>
+<translation id="8110492767853188065">Хардуерен портфейл</translation>
+<translation id="7437218084485869007">Свържете своя хардуерен портфейл с Brave</translation>
 <translation id="4641919696349069826">Заявката вече се обработва</translation>
 <translation id="872806943696014633">Липсват данни за трансакцията</translation>
 <translation id="7068183357903252127">Данните за трансакция в полетата „to“ или „data“ трябва да бъдат посочени</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Да</translation>
 <translation id="4250680216510889253">Не</translation>
 <translation id="1201402288615127009">Напред</translation>
-<translation id="8712637175834984815">Разбрах</translation>
+<translation id="3214453326297774895">Показване на моята фраза за възстановяване</translation>
 <translation id="6896758677409633944">Копиране</translation>
 <translation id="7885157704277298658">Копирано!</translation>
 <translation id="6518133107902771759">Потвърждаване</translation>
 <translation id="6042308850641462728">Още</translation>
-<translation id="768236965975208017">Сигурен. Многоверижен. И толкова лесен за използване. Вашият Brave Wallet е само на няколко кликвания разстояние</translation>
 <translation id="3157931365184549694">Възстановяване</translation>
-<translation id="2484275747844666540">Създайте нов портфейл</translation>
-<translation id="3662348701117072366">Импортирайте съществуващ портфейл</translation>
-<translation id="7150150391368236519">Свързване на хардуерен портфейл</translation>
+<translation id="414070570958255222">Стандартно за браузър. Самопопечителство. И многоверижен.</translation>
+<translation id="1350120992777389959">Поемете контрол върху своята криптовалута и NFT. Brave Портфейл поддържа Ethereum, EVM вериги, Solana, Filecoin, Bitcoin и много повече.</translation>
+<translation id="165255193061631296">Имате нужда от нов портфейл?</translation>
+<translation id="1939235910515558387">Започнете с Brave Портфейл за минути.</translation>
+<translation id="5844138175312846408">Вече имате портфейл?</translation>
+<translation id="772643556080081594">Имам нужда от портфейл само за следене</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave и логото на Brave са регистрирани търговски марки на Brave Software, Inc. Други имена на продукти и лога може да са търговски марки на съответните компании. Всички права запазени.</translation>
 <translation id="7501957181231305652">или</translation>
 <translation id="375882617301124395">Архивирайте своя портфейл с криптовалути</translation>
-<translation id="180032279811483155">В следващата стъпка ще видите фраза за възстановяване от <ph name="RECOVERY_PHRASE_LENGTH"/> думи, която можете да използвате, за да възстановите основните си криптоакаунти. Запазете я на сигурно място. Фразата за възстановяване е единственият начин отново да получите достъп до акаунта си в случай на забравена парола, загубено или откраднато устройство или ако искате да превключите между портфейли.</translation>
 <translation id="5024543173656851695">Разбирам, че ако загубя думите за възстановяване, няма да имам достъп до портфейла си с криптовалути.</translation>
 <translation id="8281886186245836920">Пропускане</translation>
 <translation id="6532106788206463496">Запазване на промените</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Потвърждаване на фразата за възстановяване</translation>
 <translation id="3747079125031086337">Избeрете думите във фразата за възстановяване в правилния им ред.</translation>
 <translation id="802060020117206314">Фразата за възстановяване не съвпада, опитайте отново.</translation>
-<translation id="8412783472871103529">Потвърдете фразата си за възстановяване</translation>
+<translation id="7345730059518887993">Да проверим</translation>
 <translation id="2226686084760581391">Кликнете върху <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> и <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>) <ph name="THIRD_AFTER"/> думи от вашата фраза за възстановяване.</translation>
 <translation id="7575574239720542222">Фразата за възстановяване не съвпадна</translation>
 <translation id="8692301574305033504">Създайте нова парола</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Искате ли да импортирате от наследени криптопортфейли в Brave?</translation>
 <translation id="3331452756822160641">Нова парола</translation>
 <translation id="8624315169751085215">Копиране в клипборда</translation>
+<translation id="2598171223363459366">Можете да пропуснете тази стъпка сега, но ще трябва да архивирате своята фаза за възстановяване, за да гарантирате сигурността на акаунта си.</translation>
+<translation id="5303015959766064022">Ще архивирам по-късно</translation>
 <translation id="6346952829206698721">Поставяне от клипборда</translation>
+<translation id="2610561535971892504">Щракнете за копиране</translation>
 <translation id="1121335910737476837">Основни криптоакаунти</translation>
 <translation id="6969147029062037757">Импортирани акаунти</translation>
 <translation id="3926119534765499672">Свързани хардуерни портфейли</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Тази грешка може да възникне, когато на устройството Ledger е отворено грешното приложение.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Предоставете достъп на Brave до вашето Ledger устройство.</translation>
+<translation id="8012452656725205792">Предоставете на Brave достъп до вашето<ph name="HARDWARE_DEVICE"/> устройство.</translation>
 <translation id="4378551569595875038">Установява се връзка...</translation>
 <translation id="1943188256166395881">Добавяне на проверени акаунти</translation>
 <translation id="8554010658308662631">Зареждане на повече</translation>
 <translation id="6998738230710304743">Зареждане на повече...</translation>
 <translation id="5592304751234049046">Търсене на акаунт</translation>
+<translation id="3168978475376026497">HD пътека</translation>
 <translation id="6151024411349343484">Опитайте да превключите HD path (по-горе), ако не можете да намерите акаунта, който търсите.</translation>
 <translation id="2844691569989101734">Ledger на живо</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Няма намерени резултати.</translation>
+<translation id="7261362517244085362">Упълномощете своя портфейл</translation>
+<translation id="7150150391368236519">Свързване на хардуерен портфейл</translation>
+<translation id="5400782314657008092">Към момента поддържаме устройствата<ph name="HARDWARE_DEVICE"/> и<ph name="HARDWARE_DEVICE1"/> .</translation>
+<translation id="8144305264680648043">Свържете своя хардуерен портфейл, за да управлявате своите активи директно от Brave Портфейл</translation>
+<translation id="1329837291200753515">Изберете блокчейн, за да импортирате своя хардуерен портфейл.</translation>
+<translation id="6983390509997396124">Свържете своето<ph name="HARDWARE_DEVICE"/> устройство към Brave Портфейл</translation>
 <translation id="5149944858285555235">Възникна неизвестна грешка, свържете отново хардуерния си портфейл и опитайте отново.</translation>
 <translation id="4522570452068850558">Подробности</translation>
 <translation id="9220525904950070496">Премахване на профила</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Тестване на мрежа</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Сеполия</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Избиране на акаунт</translation>
 <translation id="6797737193502014008">Търсене на акаунти</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">Трансакциите ще се появят тук</translation>
 <translation id="6079696972035130497">Без ограничение</translation>
 <translation id="2916401020782528840">Трансакцията не е намерена</translation>
+<translation id="1690963073120772693">Тази трансакция не може да бъде повторно изпълнена.</translation>
 <translation id="2833661570529295305">Неодобрено</translation>
 <translation id="8034530868111548216">Одобрено</translation>
 <translation id="6015436276085482001">Отказан</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Грешка при обработването на трансакцията, моля, опитайте отново</translation>
 <translation id="971552837551838642">Съобщение за грешка при влизане, моля, опитайте отново</translation>
 <translation id="8273603707418703324">Съобщение за грешка при влизането, поискан е неизвестен ключодържател, моля, опитайте отново</translation>
-<translation id="5265455943786954050">Командата Trezor вече се обработва</translation>
-<translation id="7017116822583380542">Мостът на Trezor не е готов</translation>
+<translation id="6200074323131367633">Командата на<ph name="DEVICE_NAME"/> вече се изпълнява</translation>
+<translation id="4213183402991860207">Мостът на<ph name="DEVICE_NAME"/> не е готов</translation>
 <translation id="3378339846292573874">Добавяне на препоръчан маркер</translation>
 <translation id="2322227405137827074">Искате ли да импортирате този маркер?</translation>
 <translation id="4378475168089649292">Блокчейн</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Отваряне на приложението Rainbow Bridge</translation>
 <translation id="1522775706527775647">Създаване на мост с Aurora</translation>
 <translation id="4903322403594141291">Научете повече за Brave Wallet</translation>
-<translation id="3875185448438395303">Поне:</translation>
-<translation id="2029465635925899949">8 знака</translation>
-<translation id="6697810017029555732">Съвпадение!</translation>
+<translation id="4427684901715566795">Паролата трябва да има:</translation>
+<translation id="8521329076169776625">Поне 8 знака</translation>
+<translation id="3665035348242240953">Съвпадение на парола</translation>
 <translation id="8918368616587206671">Силно!</translation>
 <translation id="574392208103952083">Средно</translation>
 <translation id="8297006494302853456">Слаб</translation>
+<translation id="3282258437441351851">Brave Портфейл ще се заключи автоматично след</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> минути</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> час(а)</translation>
 <translation id="7084181009966710506">Създаване на портфейл...</translation>
-<translation id="6782556046178425980">Преди да започнете да създавате резервно копие на портфейла</translation>
+<translation id="3259102562570606417">Запазете своята  фраза за възстановяване</translation>
 <translation id="7119749028647909394">Фразата за възстановяване между 12 и 24 думи  е частен ключ, който можете да използвате, за да възстановите достъпа до портфейла си, в случай че загубите свързано(и) устройство(а). Съхранявайте го на сигурно място и в точния ред, в който е показан по-долу.</translation>
 <translation id="3259018319025894691">Brave няма достъп до вашата тайна фраза за възстановяване. Пазете я на сигурно място и никога не я споделяйте с други хора.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Важно: <ph name="TAG_AFTER"/>Никога не споделяйте фразата си за възстановяване. Всеки, който разполага с тази фраза, може да отнеме активите ви завинаги.</translation>
+<translation id="426648489149930289">Съхранявайте я на сигурно място, до което други хора нямат достъп, и избягвайте да я споделяте с други.</translation>
+<translation id="119185410022731300">Въведете думата на позиция<ph name="VALUE"/> от фразата си за възстановяване.</translation>
+<translation id="2193954488469999829">Забравихте да я запазите? Върнете се</translation>
 <translation id="7509948206688764960">Направете резервно копие на фразата за възстановяване на портфейла си</translation>
 <translation id="8052898407431791827">Копирано в клипборда</translation>
 <translation id="4576741736874242970">Кликнете, за да видите вашата фраза</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">​</translation>
 <translation id="7992766987062040279">​</translation>
 <translation id="2295726992010694229">​</translation>
-<translation id="8241405611628876973">Поздравления! Вашият Brave Wallet е готов за работа!</translation>
-<translation id="6828327990705355767">За да получите достъп до вашия портфейл, просто кликнете върху иконата на портфейла в горния десен ъгъл на всеки прозорец на браузъра Brave.</translation>
+<translation id="1148624853678088576">Готови сте</translation>
+<translation id="1656439328205762155">Вашият Brave Портфейл е вече конфигуриран и готов за използване.</translation>
+<translation id="3342494025742308764">Отидете на портфолиото</translation>
 <translation id="396152018598329740">Как се използва крипто портфейл?</translation>
 <translation id="7512061585041489067">Кой е най-добрият крипто портфейл?</translation>
 <translation id="1342755158522323177">Какво е крипто браузър?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Какво е фраза за възстановяване?</translation>
 <translation id="7328255859839881981">Какво представляват DApps?</translation>
 <translation id="3852489285890032403">Какво е web 3?</translation>
-<translation id="5448233694500869445">Открихме разширението MetaMask във вашия браузър</translation>
-<translation id="8436080536329710282">Въведете паролата си за портфейл в MetaMask, за да импортирате лесно в Brave Wallet.</translation>
+<translation id="2349224271234429946">Импортиране на портфейл MetaMask</translation>
+<translation id="6715906859822319136">Можете лесно да импортирате своя портфейл MetaMask просто като въведете паролата си.</translation>
 <translation id="7543512765962444927">Свързване към съществуващия ви портфейл</translation>
 <translation id="3551682252653406110">За да свържете портфейл, с който вече разполагате, може да се наложи да въведете фраза за възстановяване. Понастоящем поддържаме възстановяване/импортиране от портфейли в Ethereum и Solana.</translation>
-<translation id="346929827081904572">Възстановяване от сийд фраза</translation>
+<translation id="3961126209136843111">Импортиране на съществуващ портфейл</translation>
 <translation id="5645597512426471834">12-24 думи</translation>
-<translation id="8158505311297755780">Въведете вашата фраза за възстановяване на Brave Wallet между 12 и 24 думи.</translation>
+<translation id="2321396552035646646">Можете да поставите цялата си фраза за възстановяване във всяко поле.</translation>
 <translation id="5419707890586509000">Импортиране от MetaMask</translation>
 <translation id="2265945811107390939">Използвайте паролата си за MetaMask, за да импортирате своята сийд фраза</translation>
 <translation id="7060680423657442298">Няма значение, ще създам нов портфейл</translation>
+<translation id="1932878136775815535">Имам фраза за възстановяване с <ph name="LENGTH"/> думи</translation>
+<translation id="7877416315564177070">Проверете своята фраза за възстановяване и опитайте отново.</translation>
+<translation id="6503538941917874992">Импортирайте чрез своята фраза за възстановяване</translation>
+<translation id="782167880151571109">Открит е портфейл Metamask!</translation>
+<translation id="3619071361843652814">Открит е остарял портфейл!</translation>
+<translation id="4634124774493850572">Използване на паролата</translation>
+<translation id="7697478310235189459">Дума<ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Въведете вашата фраза за възстановяване на MetaMask между 12 и 24 думи .</translation>
 <translation id="7720392926833259937">Въведете паролата си за MetaMask</translation>
 <translation id="6657585470893396449">Парола</translation>
 <translation id="6260144012548445299">Повече за новия ми портфейл</translation>
-<translation id="8746910870914151528">Правни неща</translation>
-<translation id="5148123176978018397">Моля, потвърдете следното:</translation>
-<translation id="6088314935678153800">Наясно съм, че това е собствен портфейл и че само аз съм отговорен за всички свързани с него средства, активи или сметки и за предприемането на подходящи мерки за сигурността, защитата и изготвянето на резервно копие на моя портфейл. Наясно съм, че Brave НЕ може да получи достъп до моя портфейл или да сторнира транзакции от мое име и че моята фраза за възстановяване е ЕДИНСТВЕНИЯТ начин за възстановяване на достъпа в случай на изгубена парола, откраднато устройство или подобно обстоятелство.</translation>
-<translation id="7781090633800450517">Прочетох и съм съгласен с <ph name="LINK_BEFORE"/>Условията за ползване<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Преди да започнем</translation>
+<translation id="5333225216561354793">Изискваме да потвърдите следните неща по-долу:</translation>
+<translation id="4284971227128011550">Наясно съм, че това е портфейл със самопопечителство и само аз съм отговорен за всички свързани с него средства, активи или сметки и за предприемането на подходящи мерки за сигурността, защитата и изготвянето на резервно копие на моя портфейл. Наясно съм, че Brave не може да получи достъп до моя портфейл или да сторнира трансакции от мое име и че моята фраза за възстановяване е ЕДИНСТВЕНИЯТ начин за възстановяване на достъпа в случай на изгубена парола, откраднато устройство или подобно обстоятелство.</translation>
+<translation id="3604445540387095708">Прочетох и съм съгласен с<ph name="LINK_BEFORE"/>Условията за ползване<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Купуване на криптовалута</translation>
 <translation id="3887541341068007345">Проверка за разширения за портфейл...</translation>
 <translation id="3567994771568272606">Импортиране от предишни крипто портфейли на Brave</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Опасно действие с риск от загуба</translation>
 <translation id="6405354572620970908">Тази заявка изглежда злонамерена и може да ви направи уязвими на кражба. Не продължавайте, освен ако нямате доверие на приложението.</translation>
 <translation id="786261184916565476">Открихме <ph name="VALUE"/> проблема.</translation>
+<translation id="2826600321627372011">Няма намерени маршрути</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Текущия раздел</translation>
 <translation id="7056969230130642253">Вече сте в крак</translation>
 <translation id="7292242212818928219">Налично е ново съдържание. Презареждане?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Бързи команди</translation>
 <translation id="7481312909269577407">Препращане</translation>
 <translation id="302781076327338683">Презареждане и заобикаляне на кеша</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Тази комбинация се използва за<ph name="COMMAND"/> и не може да се променя.</translation>
 <translation id="3537006124004887164">Тази комбинация се използва за <ph name="COMMAND"/> и не може да се променя. Опитайте да го промените чрез `App Shortcuts` в системните настройки.</translation>
 <translation id="712598284361781729">Нов разделен изглед</translation>
-<translation id="6655450014966273037">Затваряне на разделен изглед</translation>
 <translation id="1130188644637295274">Отваряне в разделен изглед</translation>
-<translation id="7195519370590486580">Разбиване на раздели</translation>
+<translation id="6459036216700972269">Освобождаване на разделите</translation>
 <translation id="3617523374417810198">Нов разделен изглед</translation>
-<translation id="9053179124396567872">Затваряне на разделен изглед</translation>
 <translation id="8571323456914890254">Отваряне в разделен изглед</translation>
-<translation id="2397258152713354053">Разбиване на раздели</translation>
+<translation id="5329136173514538969">Освобождаване на разделите</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
 <translation id="4101707289420716287">Изключване на Speedreader</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">Обобщете тази страница</translation>
 <translation id="7932221068776853847">Прекъснете връзката, за да спрете да изпращате на Leo съдържанието на тази страница, и започнете нов разговор</translation>
 <translation id="1167803637855350748">Имаше мрежов проблем при свързването с Leo, проверете връзката си и опитайте отново.</translation>
-<translation id="5095201428204952524">Лео е твърде зает в момента. Моля, опитайте отново след няколко минути.</translation>
+<translation id="1996126325390835277">Лео е твърде зает в момента. Моля, опитайте отново след няколко минути.</translation>
 <translation id="7144878232160441200">Нов опит</translation>
-<translation id="2505565639170795978">Здравейте, аз съм Лео. Аз съм напълно хостван асистент с изкуствен интелект от Brave. Задвижван съм от Llama 13B - модел, създаден от Meta, за да бъде производителен и приложим в много случаи на употреба.</translation>
-<translation id="8030558642460377506">Здравейте, аз съм Leo. Аз съм напълно хостван асистент с изкуствен интелект от Brave. Задвижван съм от Mixtral 8x7B — модел, създаден от Mistral AI, за да се справя със сложни задачи.</translation>
-<translation id="2489317965865266353">Здравейте, аз съм Лео. Аз съм проксиран от Brave и задвижван от Claude Instant - модел, създаден от Anthropic, за да захранва задачи за обработка на разговори и текст.</translation>
+<translation id="8570488829560315702">Здравейте, аз съм Лео. Аз съм напълно хостван асистент с изкуствен интелект от Brave. Управлявам се от Llama 3 8B, модел, създаден от Meta, който трябва да бъде ефективен и приложим за много случаи на употреба.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Здравейте, аз съм Лео. Аз съм напълно хостван асистент с изкуствен интелект от Brave. Управлявам се от Mixtral 8x7B, модел, създаден от Mistral AI, за управление на сложни задачи.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Здравейте, аз съм Лео. Аз съм прокси от Brave и се управлявам от Claude Instant, модел, създаден от Anthropic, за обработка на задачи за разговор и обработка на текст.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Здравейте, аз съм Лео. Аз съм проксиран от Brave и задвижван от Claude 3 Haiku – модел, създаден от Anthropic, за да подпомага задачи за обработка на разговори и текст.</translation>
 <translation id="4147243042852964992">Здравейте, аз съм Лео. Аз съм проксиран от Brave и задвижван от Claude 3 Sonnet – модел, създаден от Anthropic, за да подпомага задачи за обработка на разговори и текст.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> от <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Ограничен</translation>
 <translation id="6187065185557150870">Чат</translation>
 <translation id="2961040541145689181">Нов чат</translation>
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
 <translation id="1691256669639196606">Управление на абонамент</translation>
+<translation id="2304783958703511257">Разширени настройки</translation>
 <translation id="3037594989275592390">Езикови модели</translation>
 <translation id="6637015365469044269">Надстройте сега</translation>
+<translation id="5543505256451301851">Опитайте 7 дни безплатно</translation>
 <translation id="849535826888024304">Достигнат лимит за скорост на реакциите</translation>
-<translation id="6149863263423821329">Отключете по-голяма скорост на реакциите чрез абониране за Premium. Можете също да преминете към нашия не толкова мощен безплатен модел Llama2 13b, за да продължите.</translation>
+<translation id="2252128900328632803">Отключете по-голяма скорост на реакциите чрез абониране за Premium. Можете също да преминете към нашия не толкова мощен безплатен модел Llama2 13b, за да продължите.</translation>
 <translation id="4173478269537830374">Изпробвайте различни модели на изкуствен интелект.</translation>
 <translation id="3245401959451976966">Отключете креативността си</translation>
 <translation id="4165928407303989823">Придържайте се към темата.</translation>
 <translation id="2389665228467129817">Чат за по-дълго време</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /на месец</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /месец</translation>
 <translation id="5151923271944811339">Превключване към безплатния модел</translation>
 <translation id="5474757891469990756">Отключете пълната мощ на Leo с Premium:</translation>
 <translation id="5552332211527367850">Приоритетен достъп до мощни модели с различни умения.</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Този разговор е дълъг и Leo може да започне да забравя неща скоро. Можете да получите по-дълги разговори, като преминете към модел от абонамент Premium, или можете да изчистите чата, за да го нулирате.</translation>
 <translation id="7550152963854770123">Изчистване на чата</translation>
 <translation id="7494736170250048402">Изпращане на съобщение на Leo</translation>
+<translation id="8712637175834984815">Разбрах</translation>
 <translation id="1093419424466417703">Страницата е прекалено дълга за Лео. Възможно е в разговора да липсва част от контекста. Лео успя да прочете<ph name="PERCENTAGE"/> от съдържанието на страницата.</translation>
 <translation id="4370698775470316661">Този разговор е твърде дълъг и не може да продължи. Възможно е да има и други модели, с които Leo да може да поддържа точност при по-дълги разговори.</translation>
+<translation id="5719170755629028558">Подобряване на вашия отговор с Brave Search…</translation>
+<translation id="5794962229997281366">Подобрено търсене на отговори за<ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Чат с общо предназначение</translation>
 <translation id="8193130769524604031">Разширени задачи за чат</translation>
 <translation id="3185367320601718531">Генериране на разговор и текст</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Промeнете на дължината на текста</translation>
 <translation id="6320643499534852464">Социална мрежа</translation>
 <translation id="2370739752330685659">Може би по-късно</translation>
+<translation id="983013125018250242">Инструменти на Leo</translation>
+<translation id="49269513399674318">Използване на микрофон</translation>
 <translation id="6303294677342628402">Щитове</translation>
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
 <translation id="7509914170164691086">Щитовете са ВДИГНАТИ <ph name="LINK_BEFORE"/>за<ph name="LINK_AFTER"/></translation>

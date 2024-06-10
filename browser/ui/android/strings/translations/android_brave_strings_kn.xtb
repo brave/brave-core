@@ -611,7 +611,6 @@
 <translation id="6896758677409633944">ನಕಲಿಸಿ</translation>
 <translation id="3726490322412361740">ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ನಮೂದಿಸಿ</translation>
 <translation id="3038243139480464605">ಪಾಸ್‌ವರ್ಡ್ ಪರಿಶೀಲಿಸಿ</translation>
-<translation id="3043677904160378840">ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಕನಿಷ್ಠ 8 ಅಕ್ಷರಗಳಾಗಿರಬೇಕು.</translation>
 <translation id="7396672979287122068">ಮರು-ಟೈಪ್ ಮಾಡಿದ ಪಾಸ್‌ವರ್ಡ್ ಹೊಂದಾಣಿಕೆಯಾಗಲಿಲ್ಲ</translation>
 <translation id="1566412704591731844">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ…</translation>
 <translation id="7779823116893018906">ಅದಕ್ಕೆ ಕೆಲವು ಸೆಕೆಂಡುಗಳ ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಬಹುದು…</translation>
@@ -655,8 +654,11 @@
 <translation id="5981303441790732480">ನಿಮ್ಮ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಿ</translation>
 <translation id="9111102763498581341">ಅನ್‌ಲಾಕ್</translation>
 <translation id="6657585470893396449">ಪಾಸ್‌ವರ್ಡ್</translation>
+<translation id="7553242001898162573">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
 <translation id="5619264711680220002">ಬಯೋಮೆಟ್ರಿಕ್ ಅನ್‌ಲಾಕ್</translation>
+<translation id="9195657745688986798">ವ್ಯಾಲೆಟ್ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</translation>
 <translation id="5168349973342709369">ವ್ಯಾಲೆಟ್ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
+<translation id="3043677904160378840">ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಕನಿಷ್ಠ 8 ಅಕ್ಷರಗಳಾಗಿರಬೇಕು.</translation>
 <translation id="1144810021918451336">ಅಪಾಯಕಾರಿ ವೆಬ್‌ಸೈಟ್‌ಗಳು, ಡೌನ್‌ಲೋಡ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳ ವಿರುದ್ಧ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="5760476995887363522">ಫ್ರೇಸ್‌ಗಳು ಹೊಂದಾಣಿಕೆಯಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2360588547830602174">ಖಾತೆ ರಿಕವರಿ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -700,7 +702,7 @@
 <translation id="6748319398471481216">ಮಾಸಿಕವಾಗಿ ನವೀಕರಿಸುತ್ತದೆ</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ತಿಂ.</translation>
 <translation id="1163809943099641131">ಒಂದು ವರ್ಷ</translation>
-<translation id="7574007394522199115">ವಾರ್ಷಿಕವಾಗಿ ನವೀಕರಿಸುವ ಮೂಲಕ <ph name="PERCENTAGE_AMOUNT"/>%% ಉಳಿಸಿ</translation>
+<translation id="7574007394522199115">ವಾರ್ಷಿಕವಾಗಿ ನವೀಕರಿಸಿ ಮತ್ತು ಉಳಿಸಿ <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ವರ್ಷಕ್ಕೆ.</translation>
 <translation id="2655185358771731232">7 ದಿನಗಳವರೆಗೆ ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ. 7 ದಿನಗಳ ನಂತರ, ನಿಮಗೆ ಯೋಜನೆಯ ದರವನ್ನು ವಿಧಿಸಲಾಗುತ್ತದೆ. ಎಲ್ಲಾ ಚಂದಾದಾರಿಕೆಗಳನ್ನು ಸ್ವಯಂ-ನವೀಕರಿಸಲಾಗುತ್ತದೆ ಆದರೆ ಅವುಗಳನ್ನು ನವೀಕರಣಕ್ಕೂ ಮೊದಲು ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
 <translation id="6053992191006521518">ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ</translation>
@@ -1188,4 +1190,13 @@
 <translation id="6891382640886173702">ವಿಂಡೋಗಳನ್ನು ವಿಲೀನಗೊಳಿಸಿ</translation>
 <translation id="2912247081180973411">ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ</translation>
 <translation id="4010699428656610296">ಇತರ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮತ್ತೊಂದು Brave ವಿಂಡೋಗೆ ದಯವಿಟ್ಟು ವಿಲೀನಗೊಳಿಸಿ.</translation>
+<translation id="208634871997892083">ಯಾವಾಗಲೂ-ಆನ್ VPN</translation>
+<translation id="1599073346542156922">ಹೇಗೆ ಆನ್ ಮಾಡುವುದು:</translation>
+<translation id="7001163334415463127">1. ನಿಮ್ಮ ಆ್ಯಪ್ ಡ್ರಾವರ್‌ನಿಂದ ಅಥವಾ ಕೆಳಗಿನ ಬಟನ್ ತಟ್ಟುವ ಮೂಲಕ ನಿಮ್ಮ ಸಾಧನದ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ.</translation>
+<translation id="887443138775437899">2. Brave VPN ಹುಡುಕಿ ಮತ್ತು ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಐಕಾನ್‌ನಲ್ಲಿ ಬಲಕ್ಕೆ ತಟ್ಟಿ.</translation>
+<translation id="3776051499611941773">3. <ph name="ALWAYS_ON_TUTORIAL_START"/>ಯಾವಾಗಲೂ-ಆನ್ VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅದನ್ನು ಟಾಗಲ್ ಮಾಡಿ.</translation>
+<translation id="4776146737004271126">Android ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="2728518864712716830">ಅಪ್‌ಡೇಟ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.</translation>
+<translation id="8403338849301491865">ಫಿಲ್ಟರ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="4650851936784160359">ಫಿಲ್ಟರ್ ಪಟ್ಟಿಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 </translationbundle>

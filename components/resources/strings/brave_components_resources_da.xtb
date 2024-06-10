@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Jo flere du ser, jo mere kan du indtjene.</translation>
 <translation id="7526443283522395161">Ny fane-side annoncer</translation>
 <translation id="7968650944098083708">Notifikationsannoncer</translation>
+<translation id="8289546216379862569">Reklamer på Search</translation>
+<translation id="4758111936363146244">Brave Search-reklamer vises på <ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">Du optjener ikke BAT fra Brave Search-reklamer endnu, men du hjælper med at støtte Brave ved at have dem der.</translation>
 <translation id="6390952132783970876">Brave News-annoncer</translation>
 <translation id="7516281787184495886">Brave News indeholder annoncer, der ikke uafhængigt kan deaktiveres.</translation>
 <translation id="8008378848677625233">Brave News er p.t. deaktiveret.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Downloader komponent...</translation>
 <translation id="4894106830958548828">Jeg forstår</translation>
 <translation id="326118736933420687">Du ser på en WebTorrent-side</translation>
+<translation id="2729085694451916573">Teststreng til <ph name="PART_ONE"/>pladsholdere<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Få mere at vide<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable-domæner</translation>
 <translation id="4492298165410552103">Aktivér understøttelse af Unstoppable-domæner i Brave?</translation>
 <translation id="5015092481905019948">Brave vil bruge <ph name="PROVIDER_NAME"/> til at løse <ph name="DOMAIN_LIST"/> domænenavne, der er på <ph name="DOMAIN_PROVIDER_NAME"/>. Brave skjuler din IP-adresse. Hvis du aktiverer dette, vil <ph name="PROVIDER_NAME"/> se, at nogen forsøger at besøge disse domæner, men intet andet. Se <ph name="PROVIDER_NAME"/>s <ph name="BEGIN_PROVIDER_TOU_LINK"/>brugsbetingelser<ph name="END_PROVIDER_TOU_LINK"/> og <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privatlivspolitik<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Der opstod en general anmodningsbehandlingsfejl</translation>
 <translation id="7123780456696055383">Den anmodede ressource er ikke tilgængelig</translation>
 <translation id="1680597601664421644">Den mnemoteknik, der importeres, er ikke gyldig i Brave Wallet</translation>
+<translation id="372898731091371291">Hvilken type wallet vil du importere?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin-wallet</translation>
+<translation id="8659668419772278776">Importér din frøsætning fra en eksisterende wallet</translation>
+<translation id="8110492767853188065">Hardware-wallet</translation>
+<translation id="7437218084485869007">Forbind din hardware-wallet til Brave</translation>
 <translation id="4641919696349069826">En anmodning er allerede under behandling</translation>
 <translation id="872806943696014633">Transaktionsdata mangler</translation>
 <translation id="7068183357903252127">Transaktionsdata 'to' eller 'data' skal udspecificeres</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nej</translation>
 <translation id="1201402288615127009">Næste</translation>
-<translation id="8712637175834984815">Forstået</translation>
+<translation id="3214453326297774895">Vis min gendannelsessætning</translation>
 <translation id="6896758677409633944">Kopier</translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="6042308850641462728">Mere</translation>
-<translation id="768236965975208017">Sikker. Multikæde. Og åh-så-let at bruge. Din Brave Wallet er kun et par klik væk</translation>
 <translation id="3157931365184549694">Gendan</translation>
-<translation id="2484275747844666540">Opret ny pung</translation>
-<translation id="3662348701117072366">Importer eksisterende pung</translation>
-<translation id="7150150391368236519">Forbind hardware-wallet</translation>
+<translation id="414070570958255222">Browser-baseret. Egenopbevaring. Og multikæde.</translation>
+<translation id="1350120992777389959">Tag kontrol over din krypto og NFT'er. Brave Wallet understøtter Ethereum, EVM-kæder, Solana, Filecoin, Bitcoin og mere.</translation>
+<translation id="165255193061631296">Har du brug for en ny wallet?</translation>
+<translation id="1939235910515558387">Kom i gang med Brave Wallet på få minutter.</translation>
+<translation id="5844138175312846408">Har du allerede en wallet?</translation>
+<translation id="772643556080081594">Jeg har kun brug for en observationswallet</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave og Brave-logoet er registrerede varemærker tilhørende Brave Software, Inc. Andre produktnavne og -logoer kan være varemærker tilhørende de respektive virksomheder. Alle rettigheder forbeholdes.</translation>
 <translation id="7501957181231305652">eller</translation>
 <translation id="375882617301124395">Backup din crypto-wallet</translation>
-<translation id="180032279811483155">På det næste trin vil du se en gendannelsessætning på <ph name="RECOVERY_PHRASE_LENGTH"/> ord, som du kan bruge til at gendanne dine primære crypto-konti. Opbevar den et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang på, hvis du har glemt din adgangskode, du mister din enhed, eller hvis du vil skifte wallet.</translation>
 <translation id="5024543173656851695">Jeg er indforstået med, at hvis jeg mister mine gendannelsesord, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
 <translation id="8281886186245836920">Spring over</translation>
 <translation id="6532106788206463496">Gem ændringer</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Bekræft gendannelsessætning</translation>
 <translation id="3747079125031086337">Vælg ordene i din gendannelsessætning i den rigtige rækkefølge.</translation>
 <translation id="802060020117206314">Gendannelsessætning matchede ikke. Prøv igen.</translation>
-<translation id="8412783472871103529">Bekræft din gendannelsessætning</translation>
+<translation id="7345730059518887993">Lad os se efter</translation>
 <translation id="2226686084760581391">Klik på <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> og <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> ord i din gendannelsessætning.</translation>
 <translation id="7575574239720542222">Gendannelsessætningen matchede ikke</translation>
 <translation id="8692301574305033504">Opret en ny adgangskode</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Importér fra legacy Brave crypto-wallets?</translation>
 <translation id="3331452756822160641">Ny adgangskode</translation>
 <translation id="8624315169751085215">Kopier til udklipsholder</translation>
+<translation id="2598171223363459366">Du kan springe dette trin over nu, men du skal stadig sikkerhedskopiere din gendannelsessætning for at sikre kontosikkerhed.</translation>
+<translation id="5303015959766064022">Jeg tager backup senere</translation>
 <translation id="6346952829206698721">Indsæt fra udklipsholder</translation>
+<translation id="2610561535971892504">Klik her for at kopiere</translation>
 <translation id="1121335910737476837">Primære crypto-konti</translation>
 <translation id="6969147029062037757">Importerede konti</translation>
 <translation id="3926119534765499672">Tilknyttede hardware wallets</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Denne fejl kan opstå, når den forkerte applikation er åben på Ledger-enheden.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Giv Brave adgang til din Ledger-enhed.</translation>
+<translation id="8012452656725205792">Giv Brave adgang til din<ph name="HARDWARE_DEVICE"/>-enhed.</translation>
 <translation id="4378551569595875038">Opretter forbindelse...</translation>
 <translation id="1943188256166395881">Tilføj markerede konti</translation>
 <translation id="8554010658308662631">Indlæs mere</translation>
 <translation id="6998738230710304743">Indlæser flere ...</translation>
 <translation id="5592304751234049046">Søg konto</translation>
+<translation id="3168978475376026497">HD-sti</translation>
 <translation id="6151024411349343484">Prøv at skifte HD path (ovenstående), hvis du ikke kan finde den konto, du leder efter.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Ingen resultater fundet.</translation>
+<translation id="7261362517244085362">Godkend din wallet</translation>
+<translation id="7150150391368236519">Forbind hardware-wallet</translation>
+<translation id="5400782314657008092">Vi understøtter i øjeblikket <ph name="HARDWARE_DEVICE"/>- og<ph name="HARDWARE_DEVICE1"/>-enheder.</translation>
+<translation id="8144305264680648043">Forbind din hardware-wallet for at administrere dine aktiver direkte fra Brave Wallet</translation>
+<translation id="1329837291200753515">Vælg en blockchain for at importere din hardware-wallet</translation>
+<translation id="6983390509997396124">Forbind din <ph name="HARDWARE_DEVICE"/>-enhed til Brave Wallet</translation>
 <translation id="5149944858285555235">Ukendt fejl. Forbind din hardware-wallet, og prøv igen.</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="9220525904950070496">Fjern konto</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Test netværk</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Lokalvært</translation>
 <translation id="3792938779249970121">Vælg konto</translation>
 <translation id="6797737193502014008">Søg konti</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">Transaktioner vil blive vist her</translation>
 <translation id="6079696972035130497">Ubegrænset</translation>
 <translation id="2916401020782528840">Transaktion ikke fundet</translation>
+<translation id="1690963073120772693">Denne transaktion kan ikke prøves igen.</translation>
 <translation id="2833661570529295305">Ikke godkendt</translation>
 <translation id="8034530868111548216">Godkendt</translation>
 <translation id="6015436276085482001">Afvist</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Fejl i behandlingen af transaktionen, prøv venligst igen</translation>
 <translation id="971552837551838642">Beskeden kunne ikke signeres på grund af en fejl. Prøv venligst igen</translation>
 <translation id="8273603707418703324">Beskeden kunne ikke signeres på grund af en fejl. Anmodning om ukendt nøglering, prøv venligst igen.</translation>
-<translation id="5265455943786954050">Trezor-kommando er allerede under behandling</translation>
-<translation id="7017116822583380542">Trezor-bro er ikke klar</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/>-kommandoen er allerede i gang</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/>-broen er ikke klar</translation>
 <translation id="3378339846292573874">Tilføj foreslået token</translation>
 <translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Åbn rainbowbridge-app</translation>
 <translation id="1522775706527775647">Bro  til Aurora</translation>
 <translation id="4903322403594141291">Få mere at vide om Brave Wallet</translation>
-<translation id="3875185448438395303">Mindst:</translation>
-<translation id="2029465635925899949">8 tegn</translation>
-<translation id="6697810017029555732">Match!</translation>
+<translation id="4427684901715566795">Adgangskoden skal indeholde:</translation>
+<translation id="8521329076169776625">Mindst 8 tegn</translation>
+<translation id="3665035348242240953">Adgangskoderne er ens</translation>
 <translation id="8918368616587206671">Stærk!</translation>
 <translation id="574392208103952083">Medium</translation>
 <translation id="8297006494302853456">Svag</translation>
+<translation id="3282258437441351851">Brave Wallet låser automatisk efter</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> minutter</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> time(r)</translation>
 <translation id="7084181009966710506">Opretter tegnebog...</translation>
-<translation id="6782556046178425980">Før du begynder at sikkerhedskopiere pungen</translation>
+<translation id="3259102562570606417">Gem din gendannelsessætning</translation>
 <translation id="7119749028647909394">Gendannelsessætningen på 12-24 ord er en privat nøgle, du kan bruge til at genvinde adgang til din tegnebog, hvis du mister en eller flere tilsluttede enheder. Opbevar den et sikkert sted, og i den nøjagtige rækkefølge, som den vises nedenfor.</translation>
 <translation id="3259018319025894691">Brave kan ikke få adgang til din hemmelige gendannelsessætning. Opbevar den sikkert, og del den aldrig med andre.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Vigtigt: <ph name="TAG_AFTER"/>Del aldrig din gendannelsessætning. Enhver med denne sætning kan tage dine aktiver for evigt.</translation>
+<translation id="426648489149930289">Opbevar den et sikkert sted, der ikke kan tilgås af andre, og undgå at dele den med nogen.</translation>
+<translation id="119185410022731300">Indtast ordet på <ph name="VALUE"/>. position i din sikkerhedssætning.</translation>
+<translation id="2193954488469999829">Glemte du at gemme? Gå tilbage</translation>
 <translation id="7509948206688764960">Sikkerhedskopier din punggendannelsessætning</translation>
 <translation id="8052898407431791827">Kopieret til udklipsholder</translation>
 <translation id="4576741736874242970">Klik for at se din sætning</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">Tillykke! Din Brave Wallet er klar til brug!</translation>
-<translation id="6828327990705355767">For at få adgang til din pung skal du blot klikke på tegnebogsikonet øverst til højre i et af Brave-browservinduerne.</translation>
+<translation id="1148624853678088576">Du er klar!</translation>
+<translation id="1656439328205762155">Din Brave Wallet er nu konfigureret og klar til brug.</translation>
+<translation id="3342494025742308764">Gå til portefølje</translation>
 <translation id="396152018598329740">Hvordan bruger man en kryptopung?</translation>
 <translation id="7512061585041489067">Hvad er den bedste kryptopung?</translation>
 <translation id="1342755158522323177">Hvad er en kryptobrowser?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Hvad er en gendannelsessætning?</translation>
 <translation id="7328255859839881981">Hvad er DApps?</translation>
 <translation id="3852489285890032403">Hvad er web 3?</translation>
-<translation id="5448233694500869445">Vi har registreret MetaMask-udvidelsen i din browser</translation>
-<translation id="8436080536329710282">Indtast din MetaMask wallet-adgangskode for nemt at importere til Brave Wallet.</translation>
+<translation id="2349224271234429946">Importér MetaMask-wallet</translation>
+<translation id="6715906859822319136">Du kan nemt importere din MetaMask-wallet ved blot at indtaste din adgangskode.</translation>
 <translation id="7543512765962444927">Opret forbindelse til din eksisterende pung</translation>
 <translation id="3551682252653406110">For at tilslutte en pung, du allerede har, skal du muligvis indtaste din gendannelsessætning. På nuværende tidspunkt understøtter vi gendannelse/import fra Ethereum- og Solana-punge.</translation>
-<translation id="346929827081904572">Gendan fra seed-sætning</translation>
+<translation id="3961126209136843111">Importér en eksisterende wallet</translation>
 <translation id="5645597512426471834">12–24 ord</translation>
-<translation id="8158505311297755780">Indtast din Brave Wallet 12-24-ords gendannelsessætning.</translation>
+<translation id="2321396552035646646">Du kan indsætte hele din gendannelsessætning i ethvert felt.</translation>
 <translation id="5419707890586509000">Importer fra MetaMask</translation>
 <translation id="2265945811107390939">Brug din MetaMask-adgangskode til at importere din seed-sætning</translation>
 <translation id="7060680423657442298">Pyt, jeg opretter en ny pung</translation>
+<translation id="1932878136775815535">Jeg har en gendannelsessætning på <ph name="LENGTH"/> ord</translation>
+<translation id="7877416315564177070">Kontrollér din gendannelsessætning, og prøv igen</translation>
+<translation id="6503538941917874992">Importér ved hjælp af din gendannelsessætning</translation>
+<translation id="782167880151571109">MetaMask-wallet registreret!</translation>
+<translation id="3619071361843652814">Forældet wallet registreret!</translation>
+<translation id="4634124774493850572">Brug adgangskode</translation>
+<translation id="7697478310235189459">Ord <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Indtast din MetaMask 12-24-ords gendannelsessætning.</translation>
 <translation id="7720392926833259937">Indtast MetaMask-adgangskoden</translation>
 <translation id="6657585470893396449">Adgangskode</translation>
 <translation id="6260144012548445299">Find ud af mere om min nye pung</translation>
-<translation id="8746910870914151528">Juridiske ting</translation>
-<translation id="5148123176978018397">Anerkend følgende:</translation>
-<translation id="6088314935678153800">Jeg forstår, at dette er en pung til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Brave IKKE kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
-<translation id="7781090633800450517">Jeg har læst og accepterer <ph name="LINK_BEFORE"/>Brugervilkårene<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Inden vi begynder</translation>
+<translation id="5333225216561354793">Vi kræver, at du bekræfter nedenstående</translation>
+<translation id="4284971227128011550">Jeg forstår, at dette en en wallet til egenopbevaring, og at jeg er eneansvarlig for alle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min wallet. Jeg forstår, at Brave ikke kan få adgang til min wallet eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning er den ENESTE måde at genoprette adgang på, hvis jeg mister min adgangskode, får stjålet min enhed eller lignende omstændigheder.</translation>
+<translation id="3604445540387095708">Jeg har læst og accepterer <ph name="LINK_BEFORE"/>vilkårene for brug<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Køb krypto</translation>
 <translation id="3887541341068007345">Kontrollerer for pungudvidelser ...</translation>
 <translation id="3567994771568272606">Importer fra ældre Brave-kryptopunge</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Usikker handling med risiko for tab</translation>
 <translation id="6405354572620970908">Denne anmodning virker ondsindet og kan gøre dig sårbar over for tyveri. Fortsæt ikke, med mindre du stoler på appen.</translation>
 <translation id="786261184916565476">Vi fandt <ph name="VALUE"/> problemer.</translation>
+<translation id="2826600321627372011">Ingen ruter fundet</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
 <translation id="4045404575593562245">Tor kontrolhændelser</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Nuværende fane</translation>
 <translation id="7056969230130642253">Du er helt opdateret</translation>
 <translation id="7292242212818928219">Nyt indhold tilgængeligt. Genindlæs?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Lynkommandoer</translation>
 <translation id="7481312909269577407">Frem</translation>
 <translation id="302781076327338683">Genindlæs uden cache</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Denne kombination bliver brugt til <ph name="COMMAND"/> og kan ikke ændres.</translation>
 <translation id="3537006124004887164">Denne kombination bliver brugt til <ph name="COMMAND"/> og kan ikke ændres. Prøv at ændre den gennem 'App genveje' i Systemindstillinger.</translation>
 <translation id="712598284361781729">Ny Split View</translation>
-<translation id="6655450014966273037">Luk Split View</translation>
 <translation id="1130188644637295274">Åbn i Split View</translation>
-<translation id="7195519370590486580">Bryd op i faner</translation>
+<translation id="6459036216700972269">Opdel faner</translation>
 <translation id="3617523374417810198">Ny split view</translation>
-<translation id="9053179124396567872">Luk split view</translation>
 <translation id="8571323456914890254">Åbn i split view</translation>
-<translation id="2397258152713354053">Bryd op i faner</translation>
+<translation id="5329136173514538969">Opdel faner</translation>
 <translation id="8591883849678260674">Se originalen</translation>
 <translation id="1969654232209826429">min. læsning</translation>
 <translation id="4101707289420716287">Sluk for speedreader</translation>
@@ -1884,28 +1917,29 @@
 <translation id="7921782882718083488">Sammenfat denne side</translation>
 <translation id="7932221068776853847">Afbryd for at holde op med at sende denne sides indhold til Leo, og start en ny samtale</translation>
 <translation id="1167803637855350748">Kunne ikke forbinde til Leo på grund af netværksproblemer. Tjek din forbindelse, og prøv igen.</translation>
-<translation id="5095201428204952524">Leo har for travlt lige nu. Prøv igen om et par minutter.</translation>
+<translation id="1996126325390835277">Leo har for travlt lige nu. Prøv igen om et par minutter.</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
-<translation id="2505565639170795978">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave, der er fuldt hostet. Jeg er udviklet af Llama 13B, en model skabt af Meta til at være effektiv og anvendelig i mange tilfælde.</translation>
-<translation id="8030558642460377506">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave, der er fuldt hostet. Jeg er udviklet af Mixtral 8x7B, en model skabt af Mistral AI til at håndtere avancerede opgaver.</translation>
-<translation id="2489317965865266353">Hej, jeg hedder Leo. Jeg er en proxy fra Brave og udviklet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver.</translation>
+<translation id="8570488829560315702">Hej, jeg hedder Leo. Jeg er en fuldt ud hostet AI-assistent fra Brave. Jeg er udviklet af Llama 3 8B, en model skabt af Meta til at være effektiv og anvendelig i mange use cases. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hej, jeg hedder Leo. Jeg er en fuldt ud hostet AI-assistent fra Brave. Jeg er udviklet af Mixtral 8x7B, en model skabt af Mistral AI til at håndtere avancerede opgaver. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hej, jeg hedder Leo. Jeg er en proxy fra Brave og udviklet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hej, jeg er Leo. Jeg er fuldmægtig hos Brave og drevet af Claude 3 Haiku, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.</translation>
 <translation id="4147243042852964992">Hej, jeg er Leo. Jeg er fuldmægtig hos Brave og drevet af Claude 3 Sonnet, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> fra <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Begrænset</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">Ny chat</translation>
 <translation id="7557539689487606886">Vælg Premium</translation>
 <translation id="1691256669639196606">Administrér abonnement</translation>
+<translation id="2304783958703511257">Avancerede indstillinger</translation>
 <translation id="3037594989275592390">Sprogmodeller</translation>
 <translation id="6637015365469044269">Opgradér nu</translation>
+<translation id="5543505256451301851">Prøv 7 dage gratis</translation>
 <translation id="849535826888024304">Grænsen for svarprocent er nået</translation>
-<translation id="6149863263423821329">Lås op for en hurtigere svartid ved at abonnere på Premium. Du kan også skifte til vores mindre magtfulde Llama2 13b gratis model for at fortsætte.</translation>
+<translation id="2252128900328632803">Lås op for en hurtigere svartid ved at abonnere på Premium. Du kan også skifte til vores mindre magtfulde Llama2 13b gratis model for at fortsætte.</translation>
 <translation id="4173478269537830374">Udforsk forskellige AI-modeller</translation>
 <translation id="3245401959451976966">Lås op for din kreativitet</translation>
 <translation id="4165928407303989823">Bliv indenfor emnet</translation>
 <translation id="2389665228467129817">Snak i længere tid</translation>
-<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /måned</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/month</translation>
 <translation id="5151923271944811339">Skift til den gratis model</translation>
 <translation id="5474757891469990756">Lås op for Leos fulde potentiale med Premium:</translation>
 <translation id="5552332211527367850">Prioritetsadgang til kraftige modeller med forskellige kompetencer</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Denne samtale er lang, og Leo begynder muligvis snart at glemme ting. Du kan få længere samtaler ved at skifte til en premium-model, eller du kan rydde chatten for at nulstille den.</translation>
 <translation id="7550152963854770123">Ryd chat</translation>
 <translation id="7494736170250048402">Send en besked til Leo</translation>
+<translation id="8712637175834984815">Forstået</translation>
 <translation id="1093419424466417703">Siden er for lang til Leo. Der kan mangle en sammenhæng i samtalen. Leo kunne læse <ph name="PERCENTAGE"/> af sidens indhold.</translation>
 <translation id="4370698775470316661">Denne samtale er for lang og kan ikke fortsættes. Der findes muligvis andre modeller, som Leo kan bruge til at bibeholde nøjagtigheden i længere samtaler.</translation>
+<translation id="5719170755629028558">Forbedrer dit svar med Brave Search …</translation>
+<translation id="5794962229997281366">Søger efter forbedret svar på <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">Chat til generelle formål</translation>
 <translation id="8193130769524604031">Avancerede chatopgaver</translation>
 <translation id="3185367320601718531">Generering af samtale og tekst</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Skift længde</translation>
 <translation id="6320643499534852464">Sociale medier</translation>
 <translation id="2370739752330685659">Måske senere</translation>
+<translation id="983013125018250242">Leo-værktøjer</translation>
+<translation id="49269513399674318">Brug mikrofon</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="8458987127502506209">Aktivér Brave-skjolde</translation>
 <translation id="7509914170164691086">Skjolde er OPPE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>

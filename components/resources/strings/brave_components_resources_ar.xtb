@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">كلما شاهدت المزيد، تمكنت من ربح المزيد من المال.</translation>
 <translation id="7526443283522395161">إعلانات صفحة علامة التبويب الجديدة</translation>
 <translation id="7968650944098083708">إعلانات الإشعارات</translation>
+<translation id="8289546216379862569">البحث في الإعلانات</translation>
+<translation id="4758111936363146244">تظهر إعلانات بحث Brave على <ph name="BEGIN_LINK"/>بحث Brave<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">لا يمكنك كسب عملات BAT من إعلانات بحث Brave بعد، ولكنك تساعد في دعم Brave بتشغيلها.</translation>
 <translation id="6390952132783970876">إعلانات Brave News</translation>
 <translation id="7516281787184495886">يحتوي Brave News على إعلانات لا يمكن تعطيلها بشكل مستقل.</translation>
 <translation id="8008378848677625233">Brave News معطل حاليًا.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">جاري تحميل المكون ...</translation>
 <translation id="4894106830958548828">أفهم</translation>
 <translation id="326118736933420687">إنك الآن تقوم بعرض صفحة WebTorrent</translation>
+<translation id="2729085694451916573">سلسلة اختبار لـ <ph name="PART_ONE"/>العناصر النائبة<ph name="PART_ONE_END"/><ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
 <translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/>  <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">حدث خطأ عام في معالجة الطلب</translation>
 <translation id="7123780456696055383">المورد المطلوب غير متاح</translation>
 <translation id="1680597601664421644">استيراد مساعد الذاكرة غير صالح لمحفظة Brave</translation>
+<translation id="372898731091371291">ما نوع المحفظة الذي ترغب في استيراده؟</translation>
+<translation id="1430728084670406473">محفظة Ethereum/Solana/Filecoin</translation>
+<translation id="8659668419772278776">استيراد عبارة الاسترجاع الخاصة بك من محفظة حالية</translation>
+<translation id="8110492767853188065">محفظة الأجهزة</translation>
+<translation id="7437218084485869007">توصيل محفظة الأجهزة لديك بـ Brave</translation>
 <translation id="4641919696349069826">هناك طلب قيد التقدم بالفعل</translation>
 <translation id="872806943696014633">بيانات المعاملة مفقودة</translation>
 <translation id="7068183357903252127">يجب تحديد بيانات المعاملة "الجهة المرسل إليها" أو "البيانات"</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">نعم</translation>
 <translation id="4250680216510889253">لا</translation>
 <translation id="1201402288615127009">التالي</translation>
-<translation id="8712637175834984815">تم</translation>
+<translation id="3214453326297774895">عرض رسالة الاسترداد الخاصة بي</translation>
 <translation id="6896758677409633944">نسخ</translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="6518133107902771759">تحقق</translation>
 <translation id="6042308850641462728">المزيد</translation>
-<translation id="768236965975208017">آمنة، ومتعددة السلاسل، وسهلة الاستخدام. محفظة Brave الخاصة بك على بعد بضع نقرات</translation>
 <translation id="3157931365184549694">استعادة</translation>
-<translation id="2484275747844666540">إنشاء محفظة جديدة</translation>
-<translation id="3662348701117072366">استيراد المحفظة الحالية</translation>
-<translation id="7150150391368236519">ربط محفظة الأجهزة</translation>
+<translation id="414070570958255222">متصفح أصلي. بحماية ذاتية. متعدد السلاسل</translation>
+<translation id="1350120992777389959">تحكم في العملات المشفرة والرموز المميزة غير القابلة للاستبدال (NFT) الخاصة بك. تدعم محفظة Brave سلاسل Ethereum وEVM وSolana وFilecoin وBitcoin وغيرها.</translation>
+<translation id="165255193061631296">هل تحتاج إلى إنشاء محفظة جديدة؟</translation>
+<translation id="1939235910515558387">ابدأ مع محفظة Brave في غضون دقائق</translation>
+<translation id="5844138175312846408">هل لديك محفظة بالفعل؟</translation>
+<translation id="772643556080081594">أريد محفظة للعرض فقط</translation>
+<translation id="4878034296528175352">الحقوق محفوظة ©لشركة Brave Software Inc لعام 2024، إن Brave وشعار Brave علامتان تجاريتان لشركة Brave Software, Inc. قد تكون أسماء المنتجات والشعارات الأخرى علامات تجارية لشركاتها المعنية. جميع الحقوق محفوظة.</translation>
 <translation id="7501957181231305652">أو</translation>
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
-<translation id="180032279811483155">في الخطوة التالية، سترى’<ph name="RECOVERY_PHRASE_LENGTH"/>العبارة الاستردادية، والتي يمكنك استخدامها لاستعادة حسابات عملات التشفير الأساسية الخاصة بك. احفظها في مكان آمن، لأن العبارة الاستردادية الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور، أو فقدان الجهاز أو سرقته، أو إذا كنت تريد تبديل المحافظ.</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="6532106788206463496">حفظ التغييرات</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
 <translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
 <translation id="802060020117206314">لم تتطابق عبارة الاسترداد يرجى المحاولة مرة أخرى.</translation>
-<translation id="8412783472871103529">التحقق من عبارة الاسترداد الخاصة بك</translation>
+<translation id="7345730059518887993">لنتحقق</translation>
 <translation id="2226686084760581391">انقر فوق <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>، و<ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> كلمات من عبارة الاسترداد الخاصة بك.</translation>
 <translation id="7575574239720542222">عبارة الاسترداد غير متطابقة</translation>
 <translation id="8692301574305033504">إنشاء كلمة مرور جديدة</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="8624315169751085215">نسخ إلى الحافظة</translation>
+<translation id="2598171223363459366">يمكنك تخطي هذه الخطوة الآن، ولكن ستظل بحاجة لعمل نسخة احتياطية من عبارة الاسترداد الخاصة بك لضمان أمان الحساب.</translation>
+<translation id="5303015959766064022">سأعد نسخة احتياطية لاحقًا</translation>
 <translation id="6346952829206698721">لصق من الحافظة</translation>
+<translation id="2610561535971892504">انقر للنسخ</translation>
 <translation id="1121335910737476837">حسابات التفشير الأساسية</translation>
 <translation id="6969147029062037757">الحسابات المستوردة</translation>
 <translation id="3926119534765499672">محافظ الأجهزة المتصلة</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">قد يحدث هذا الخطأ عند فتح التطبيق الخاطئ على جهاز Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">‏‏دفتر الأستاذ</translation>
-<translation id="4247752006222818397">امنح متصفح Brave الإذن بالوصول لجهاز دفتر الأستاذ الخاص بك.</translation>
+<translation id="8012452656725205792">اسمح لـ Brave بالوصول إلى الجهاز <ph name="HARDWARE_DEVICE"/>الخاص بك.</translation>
 <translation id="4378551569595875038">جارٍ الاتصال...</translation>
 <translation id="1943188256166395881">إضافة حسابات محددة</translation>
 <translation id="8554010658308662631">تحميل المزيد</translation>
 <translation id="6998738230710304743">تحميل المزيد...</translation>
 <translation id="5592304751234049046">البحث في الحساب</translation>
+<translation id="3168978475376026497">مسار HD</translation>
 <translation id="6151024411349343484">حاول تبديل مسار HD (أعلاه) إذا لم تتمكن من العثور على الحساب الذي تبحث عنه.</translation>
 <translation id="2844691569989101734">دفتر الأستاذ العام المباشر</translation>
 <translation id="7265732100380987017">قديم (MEW / MyCrypto)</translation>
 <translation id="4549853322523631092">لم يتم العثور على نتائج.</translation>
+<translation id="7261362517244085362">تفويض محفظتك</translation>
+<translation id="7150150391368236519">ربط محفظة الأجهزة</translation>
+<translation id="5400782314657008092">ندعم، حاليَا أجهزة <ph name="HARDWARE_DEVICE"/>و<ph name="HARDWARE_DEVICE1"/>.</translation>
+<translation id="8144305264680648043">صِل محفظة الأجهزة لديك، لتتمكن من إدارة أصولك مباشرة من محفظة Brave</translation>
+<translation id="1329837291200753515">حدد سلسلة كتل"Blockchain" لاستيراد محفظة الأجهزة الخاصة بك</translation>
+<translation id="6983390509997396124">صِل جهاز<ph name="HARDWARE_DEVICE"/>الخاص بك بمحفظة Brave</translation>
 <translation id="5149944858285555235">خطأ غير معروف، يرجى إعادة توصيل محفظة جهازك والمحاولة مرة أخرى.</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
 <translation id="9220525904950070496">إزالة الحساب</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">اختبار الشبكة</translation>
 <translation id="4022672158058543834">جويرلي</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">سلسلة Binance الذكية (BSC)</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">تحديد حساب</translation>
 <translation id="6797737193502014008">البحث عن كلمة مرور</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">ستظهر المعاملات هنا</translation>
 <translation id="6079696972035130497">بلا حدود</translation>
 <translation id="2916401020782528840">المعاملة غير موجودة</translation>
+<translation id="1690963073120772693">لا يمكن إعادة محاولة إجراء هذه المعاملة.</translation>
 <translation id="2833661570529295305">تم الرفض</translation>
 <translation id="8034530868111548216">تمت الموافقة</translation>
 <translation id="6015436276085482001">مرفوض</translation>
@@ -1153,8 +1173,8 @@
 <translation id="8523768065044261559">حدث خطأ أثناء معالجة المعاملة، يرجى المحاولة مرة أخرى</translation>
 <translation id="971552837551838642">رسالة خطأ في التسجيل، يرجى المحاولة مجددًا</translation>
 <translation id="8273603707418703324">رسالة خطأ في التسجيل، تم طلب رموز وصول غير معروفة، يرجى المحاولة مجددًا</translation>
-<translation id="5265455943786954050">أمر Trezor قيد التقدم بالفعل</translation>
-<translation id="7017116822583380542">تطبيق Trezor bridge غير جاهز</translation>
+<translation id="6200074323131367633">أمر <ph name="DEVICE_NAME"/>قيد التقدم بالفعل</translation>
+<translation id="4213183402991860207">جسر <ph name="DEVICE_NAME"/>غير جاهز</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="4378475168089649292">تقنية سلسة الكتل</translation>
@@ -1348,17 +1368,22 @@
 <translation id="1792917191129448067">قتح تطبيق Rainbow Bridge</translation>
 <translation id="1522775706527775647">الاتصال بـ Aurora</translation>
 <translation id="4903322403594141291">تعرف على المزيد حول محفظة Brave</translation>
-<translation id="3875185448438395303">على الأقل:</translation>
-<translation id="2029465635925899949">8 أحرف</translation>
-<translation id="6697810017029555732">متطابق!</translation>
+<translation id="4427684901715566795">يجب أن تتضمن كلمة المرور:</translation>
+<translation id="8521329076169776625">8 أحرف على الأقل</translation>
+<translation id="3665035348242240953">تطابق كلمات المرور</translation>
 <translation id="8918368616587206671">قوي!</translation>
 <translation id="574392208103952083">متوسط</translation>
 <translation id="8297006494302853456">ضعيفة</translation>
+<translation id="3282258437441351851">سيتم قفل محفظة Brave تلقائيًا بعد</translation>
+<translation id="114276356113671828"><ph name="VALUE"/>من الدقائق</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/>ساعة (ساعات)</translation>
 <translation id="7084181009966710506">جارِ إنشاء محفظة...</translation>
-<translation id="6782556046178425980">قبل البدء في النسخ الاحتياطي للمحفظة</translation>
+<translation id="3259102562570606417">احفظ عبارة الاسترداد الخاصة بك</translation>
 <translation id="7119749028647909394">تُعد عبارة الاسترداد المكونة من 12 إلى 24 كلمة مفتاحًا خاصًا يمكنك استخدامه لاستعادة الوصول إلى محفظتك في حالة فقدان جهاز (أجهزة) متصل. قم بتخزينها في مكان آمن، وبالترتيب الدقيق الموضح أدناه.</translation>
 <translation id="3259018319025894691">لا يمكن لـBrave الوصول إلى عبارة الاسترداد السرية الخاصة بك. احتفظ بها في مكان آمن، ولا تشاركها مع أي شخص آخر.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>مهم: <ph name="TAG_AFTER"/>لا تشارك عبارة الاسترداد أبدًا. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك للأبد.</translation>
+<translation id="426648489149930289">احفظها في مكان آمن يتعذر على الآخرين الوصول إليه، وتجنب مشاركتها مع أي شخص.</translation>
+<translation id="119185410022731300">أدخِل الكلمة في موضع <ph name="VALUE"/>من عبارة الاسترداد لديك.</translation>
+<translation id="2193954488469999829">هل نسيت حفظها؟ قم بالرجوع</translation>
 <translation id="7509948206688764960">قم بعمل نسخة احتياطية من عبارة استرداد محفظتك</translation>
 <translation id="8052898407431791827">تم النسخ إلى الحافظة</translation>
 <translation id="4576741736874242970">انقر لرؤية عبارتك</translation>
@@ -1377,8 +1402,9 @@
 <translation id="2781276194026093899">ثاني</translation>
 <translation id="7992766987062040279">ثالث</translation>
 <translation id="2295726992010694229">-</translation>
-<translation id="8241405611628876973">مبارك! محفظة Brave الخاصة بك أصبحت جاهزة!</translation>
-<translation id="6828327990705355767">للوصول إلى محفظتك، انقر فقط فوق رمز المحفظة في أعلى يمين أي نافذة من نوافذ متصفح Brave.</translation>
+<translation id="1148624853678088576">أنت جاهز تمامًا!</translation>
+<translation id="1656439328205762155">تم إعداد محفظة Brave الخاصة بك وهي جاهزة للاستخدام الآن.</translation>
+<translation id="3342494025742308764">الانتقال إلى المحفظة</translation>
 <translation id="396152018598329740">كيفية استخدام محفظة العملات المشفرة؟</translation>
 <translation id="7512061585041489067">ما أفضل محفظة عملات مشفرة؟</translation>
 <translation id="1342755158522323177">ما متصفح العملات المشفرة؟</translation>
@@ -1386,24 +1412,31 @@
 <translation id="4674552515763857735">ما المقصود بعبارة الاسترداد؟</translation>
 <translation id="7328255859839881981">ما المقصود بـDApps؟</translation>
 <translation id="3852489285890032403">ما المقصود بالويب 3؟</translation>
-<translation id="5448233694500869445">اكتشفنا ملحق MetaMask في متصفحك</translation>
-<translation id="8436080536329710282">أدخل كلمة مرور محفظة MetaMask الخاصة بك لاستيرادها بسهولة إلى محفظة Brave.</translation>
+<translation id="2349224271234429946">استيراد محفظة MetaMask</translation>
+<translation id="6715906859822319136">يمكنك بسهولة استيراد محفظة MetaMask الخاصة بك بإدخال كلمة المرور الخاصة بك فقط.</translation>
 <translation id="7543512765962444927">اتصل بمحفظتك الحالية</translation>
 <translation id="3551682252653406110">للاتصال بمحفظة لديك بالفعل، قد تحتاج إلى إدخال عبارة الاسترداد الخاصة بك. في هذا الوقت ندعم الاستعادة/الاستيراد من محافظ Ethereum وSolana.</translation>
-<translation id="346929827081904572">استعادة من عبارة البذور</translation>
+<translation id="3961126209136843111">استيراد محفظة حالية</translation>
 <translation id="5645597512426471834">12-24 كلمة</translation>
-<translation id="8158505311297755780">اكتب عبارة استرداد Brave Wallet المكوّنة من 12 إلى 24 كلمة.</translation>
+<translation id="2321396552035646646">يمكنك لصق عبارة الاسترداد بأكملها في أي حقل.</translation>
 <translation id="5419707890586509000">استيراد من MetaMask</translation>
 <translation id="2265945811107390939">استخدم كلمة مرور MetaMask الخاصة بك لاستيراد عبارة البذور الخاصة بك</translation>
 <translation id="7060680423657442298">لا عليك، سأقوم بإنشاء محفظة جديدة</translation>
+<translation id="1932878136775815535">لدي عبارة استرداد مكونة من <ph name="LENGTH"/>كلمة</translation>
+<translation id="7877416315564177070">تحقق من عبارة الاسترداد وحاول مجددًا.</translation>
+<translation id="6503538941917874992">الاستيراد باستخدام عبارة استرداد</translation>
+<translation id="782167880151571109">تم اكتشاف محفظة Metamask!</translation>
+<translation id="3619071361843652814">اكتشاف محفظة قديمة!</translation>
+<translation id="4634124774493850572">استخدام كلمة المرور</translation>
+<translation id="7697478310235189459">كلمة <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">اكتب عبارة استرداد MetaMask المكوّنة من 12 إلى 24 كلمة.</translation>
 <translation id="7720392926833259937">اكتب كلمة مرور MetaMask</translation>
 <translation id="6657585470893396449">كلمة المرور</translation>
 <translation id="6260144012548445299">تعرف على المزيد حول محفظتي الجديدة</translation>
-<translation id="8746910870914151528">الشروط القانونية</translation>
-<translation id="5148123176978018397">يرجى الإقرار بما يلي:</translation>
-<translation id="6088314935678153800">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
-<translation id="7781090633800450517">لقد قرأت وأوافق على <ph name="LINK_BEFORE"/>شروط الاستخدام <ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">قبل أن نبدأ</translation>
+<translation id="5333225216561354793">نطلب منك الإقرار بالبنود الواردة أدناه</translation>
+<translation id="4284971227128011550">أفهم أن هذه محفظة ذاتية الحفظ، وأنني وحدي المسؤول عن أي أموال أو أصول أو حسابات مرتبطة بها، وعن اتخاذ الإجراء المناسب لتأمين محفظتي وحمايتها وإجراء النسخ الاحتياطي لها. أفهم أن Brave لا يمكنها الوصول إلى محفظتي أو عكس المعاملات نيابة عني، وأن عبارة الاسترداد الخاصة بي هي الطريقة الوحيدة لاستعادة الوصول في حالة فقدان كلمة المرور أو سرقة الجهاز أو حدوث ظرف مماثل.</translation>
+<translation id="3604445540387095708">قرأت شروط الاستخدام <ph name="LINK_BEFORE"/>وأوافق عليها<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">شراء العملات المشفرة</translation>
 <translation id="3887541341068007345">جارٍ التحقق من ملحقات المحفظة...</translation>
 <translation id="3567994771568272606">استيراد من محافظ Brave القديمة للعملات المشفرة</translation>
@@ -1604,6 +1637,7 @@
 <translation id="5667702863609780570">إجراء غير آمن يهدد بفقدان البيانات</translation>
 <translation id="6405354572620970908">يبدو هذا الطلب ضارًا، وقد يجعلك عرضة للسرقة. يُرجى عدم المتابعة إلا إذا كنت تثق بالتطبيق.</translation>
 <translation id="786261184916565476">لقد عثرنا على مشكلات <ph name="VALUE"/>.</translation>
+<translation id="2826600321627372011">لم يُعثر على مسارات</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1682,6 +1716,7 @@
 <translation id="7948579849190819732">علامة التبويب الحالية</translation>
 <translation id="7056969230130642253">أنت متابع لأحدث المستجدات</translation>
 <translation id="7292242212818928219">ثمَّة محتوى جديد متاح. هل تريد إعادة التحميل؟</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
 <translation id="302781076327338683">إعادة تحميل تجاوز ذاكرة التخزين المؤقت</translation>
@@ -1834,13 +1869,11 @@
 <translation id="831931573200952705">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها.</translation>
 <translation id="3537006124004887164">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها. جرّب تعديلها من خلال "اختصارات التطبيقات" الموجودة بإعدادات النظام.</translation>
 <translation id="712598284361781729">عرض في مقسم جديد</translation>
-<translation id="6655450014966273037">إغلاق العرض المقسم</translation>
 <translation id="1130188644637295274">فتح في عرض مقسم</translation>
-<translation id="7195519370590486580">تقسيم إلى عدة علامات تبويب</translation>
+<translation id="6459036216700972269">علامات تبويب غير منفصلة</translation>
 <translation id="3617523374417810198">عرض في مقسم جديد</translation>
-<translation id="9053179124396567872">إغلاق العرض المقسم</translation>
 <translation id="8571323456914890254">فتح في عرض مقسم</translation>
-<translation id="2397258152713354053">تقسيم إلى عدة علامات تبويب</translation>
+<translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
 <translation id="4101707289420716287">إيقاف تشغيل قارئ السرعة</translation>
@@ -1885,28 +1918,29 @@
 <translation id="7921782882718083488">تلخيص هذه الصفحة</translation>
 <translation id="7932221068776853847">قم بإيقاف الاتصال لإيقاف إرسال محتوى هذه الصفحة إلى Leo، وابدأ محادثة جديدة</translation>
 <translation id="1167803637855350748">حدثت مشكلة في الشبكة أثناء الاتصال بـ Leo، تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</translation>
-<translation id="5095201428204952524">Leo مشغول جدًا الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.</translation>
+<translation id="1996126325390835277">Leo مشغول جدًا الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
-<translation id="2505565639170795978">مرحبًا، أنا Leo. أنا مساعد يعمل بالذكاء الاصطناعي مملوك ومعزز بالكامل من قبل Brave. أنا مدعوم من Llama 13B، وهو نموذج تم إنشاؤه بواسطة Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام.</translation>
-<translation id="8030558642460377506">مرحبًا، أنا Leo. أنا مساعد الذكاء الاصطناعي المستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.</translation>
-<translation id="2489317965865266353">مرحبًا، أنا Leo. أنا موكل من قبل Brave ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.</translation>
+<translation id="8570488829560315702">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave، ومدعوم بواسطة Llama 3 8B، وهو نموذج تم إنشاؤه بواسطة Meta لتقديم أداء قوي وقابل للتطبيق في العديد من حالات الاستخدام. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
 <translation id="4147243042852964992">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> بواسطة <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">محدود</translation>
 <translation id="6187065185557150870">الدردشة</translation>
 <translation id="2961040541145689181">دردشة جديدة</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
 <translation id="1691256669639196606">إدارة الاشتراك</translation>
+<translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="3037594989275592390">نماذج اللغة</translation>
 <translation id="6637015365469044269">تحديث الآن</translation>
+<translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="849535826888024304">تم بلوغ الحد الأقصى من معدل الاستجابة</translation>
-<translation id="6149863263423821329">احصل على معدل استجابة أعلى من خلال الاشتراك في Premium. يمكنك أيضًا التبديل إلى نموذج Llama2 13b المجاني الأقل قوة للمتابعة.</translation>
+<translation id="2252128900328632803">احصل على معدل استجابة أعلى من خلال الاشتراك في Premium. يمكنك أيضًا التبديل إلى نموذج Llama2 13b المجاني الأقل قوة للمتابعة.</translation>
 <translation id="4173478269537830374">اكتشف نماذج الذكاء الاصطناعي المختلفة</translation>
 <translation id="3245401959451976966">أطلق العنان لإبداعك</translation>
 <translation id="4165928407303989823">البقاء على الموضوع</translation>
 <translation id="2389665228467129817">الدردشة لفترة أطول</translation>
-<translation id="8556044455877152001"><ph name="PRICE_VALUE"/>دولار أمريكي /شهريًا</translation>
+<translation id="8556044455877152001">دولار أمريكي<ph name="PRICE_VALUE"/>/الشهر</translation>
 <translation id="5151923271944811339">التبديل إلى النموذج المجاني</translation>
 <translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
 <translation id="5552332211527367850">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة</translation>
@@ -1934,8 +1968,11 @@
 <translation id="8742658901413346500">إن هذه المحادثة طويلة وLeo قد ينسى بعض الأشياء قريبًا. بإمكانك الحصول على محادثات أطول عن طريق التبديل للنموذج الحصري (Premium)، أو يمكنك محو سجل الدردشة لإعادة ضبطه.</translation>
 <translation id="7550152963854770123">محو سجل الدردشة</translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
+<translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
 <translation id="4370698775470316661">هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.  قد تكون هناك نماذج أخرى متوفرة يستطيع Leo من خلالها الحفاظ على الدقة المطلوبة لإجراء محادثات أطول.</translation>
+<translation id="5719170755629028558">تحسين إجابتك بواسطة بحث Brave...</translation>
+<translation id="5794962229997281366">بحث مُحسن عن الإجابات لـ <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">دردشة حول أغراض عامة</translation>
 <translation id="8193130769524604031">مهام الدردشة المتقدمة</translation>
 <translation id="3185367320601718531">إنشاء المحادثات والنصوص</translation>
@@ -1975,6 +2012,8 @@
 <translation id="3130793786899299931">تغيير الطول</translation>
 <translation id="6320643499534852464">وسائل التواصل الاجتماعي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
+<translation id="983013125018250242">أدوات Leo</translation>
+<translation id="49269513399674318">استخدام الميكروفون</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
 <translation id="7509914170164691086">دروع حماية حتى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>

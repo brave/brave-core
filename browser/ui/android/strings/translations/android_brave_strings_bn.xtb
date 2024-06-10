@@ -610,7 +610,6 @@
 <translation id="6896758677409633944">অনুলিপি</translation>
 <translation id="3726490322412361740">পাসওয়ার্ড লিখুন</translation>
 <translation id="3038243139480464605">পাসওয়ার্ড যাচাই করুন</translation>
-<translation id="3043677904160378840">পাসওয়ার্ড কমপক্ষে 8 অক্ষরের হতে হবে।</translation>
 <translation id="7396672979287122068">পুনরায়-টাইপ করা পাসওয়ার্ড মেলেনি</translation>
 <translation id="1566412704591731844">আপনার ওয়ালেট তৈরি করা হচ্ছে…</translation>
 <translation id="7779823116893018906">কয়েক সেকেন্ড সময় লাগতে পারে…</translation>
@@ -654,8 +653,11 @@
 <translation id="5981303441790732480">আপনার বিদ্যমান ওয়ালেট আমদানি করুন</translation>
 <translation id="9111102763498581341">আনলক</translation>
 <translation id="6657585470893396449">পাসওয়ার্ড</translation>
+<translation id="7553242001898162573">আপনার পাসওয়ার্ড দিন</translation>
 <translation id="5619264711680220002">বায়োমেট্রিক আনলক</translation>
+<translation id="9195657745688986798">ওয়ালেট আনলক করুন</translation>
 <translation id="5168349973342709369">ওয়ালেট আনলক করতে পাসওয়ার্ড লিখুন</translation>
+<translation id="3043677904160378840">পাসওয়ার্ড কমপক্ষে 8 অক্ষরের হতে হবে।</translation>
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="5760476995887363522">শব্দগুচ্ছগুলো মেলেনি। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2360588547830602174">অ্যাকাউন্ট পুনরুদ্ধার ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
@@ -699,7 +701,7 @@
 <translation id="6748319398471481216">মাসিক রিনিউ হয়</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / মাস।</translation>
 <translation id="1163809943099641131">এক বছর</translation>
-<translation id="7574007394522199115">বার্ষিক পুনর্নবীকরণ <ph name="PERCENTAGE_AMOUNT"/>%% সংরক্ষণ করুন</translation>
+<translation id="7574007394522199115">পুনর্নবীকরণ করান আর বার্ষিক <ph name="PERCENTAGE_AMOUNT"/>%% বাঁচান</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / বছর</translation>
 <translation id="2655185358771731232">7 দিনের জন্য বিনামূল্যে ব্যবহার করুন। 7 দিন পরে, আপনার থেকে প্ল্যানের দাম নেওয়া হবে। সব সাবস্ক্রিপশন স্বয়ংক্রিয়ভাবে পুনর্নবীকরণ হয় তবে পুনর্নবীকরণের আগে তা বাতিল করা যেতে পারে।</translation>
 <translation id="6053992191006521518">বিনামূল্যে ব্যবহার করে দেখুন</translation>
@@ -1187,4 +1189,13 @@
 <translation id="6891382640886173702">উইন্ডো মার্জ করুন</translation>
 <translation id="2912247081180973411">উইন্ডো বন্ধ করুন</translation>
 <translation id="4010699428656610296">অনুগ্রহ করে অন্যান্য ট্যাবকে আর একটি Brave উইন্ডোতে মার্জ করুন।</translation>
+<translation id="208634871997892083">VPN সর্বদা-চালু</translation>
+<translation id="1599073346542156922">কীভাবে চালু করবেন:</translation>
+<translation id="7001163334415463127">1. আপনার অ্যাপ ড্রয়ার থেকে আপনার ডিভাইসের সেটিংস খুলুন বা নিচের বোতামটিতে ট্যাপ করুন।</translation>
+<translation id="887443138775437899">2. Brave VPN খুঁজুন এবং ডানদিকে সেটিংস আইকনে ট্যাপ করুন।</translation>
+<translation id="3776051499611941773">3. এটি সক্রিয় করতে <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN সর্বদা-চালু<ph name="ALWAYS_ON_TUTORIAL_END"/> টগল করুন।</translation>
+<translation id="4776146737004271126">Android সেটিংস খুলুন</translation>
+<translation id="2728518864712716830">আপডেট ডাউনলোড করা হয়েছে।</translation>
+<translation id="8403338849301491865">ফিল্টারের তালিকা সফলভাবে আপডেট করা হয়েছে</translation>
+<translation id="4650851936784160359">ফিল্টারের তালিকা আপডেট করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন</translation>
 </translationbundle>

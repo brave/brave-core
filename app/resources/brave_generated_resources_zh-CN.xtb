@@ -103,6 +103,9 @@
 <translation id="1324417023773393937">Brave 浏览器</translation>
 <translation id="7276554663454265692">您可以随时在浏览器设置中更改 <ph name="SETTING_TEXT"/>。</translation>
 <translation id="6873781976650514089">此设置</translation>
+<translation id="4684633335323013758">此网站已要求您提供<ph name="PART_ONE"/>一般所在位置<ph name="PART_ONE_END"/>。<ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
+<translation id="8117247596084706514">此网站已要求您提供<ph name="PART_ONE"/>精确的所在位置<ph name="PART_ONE_END"/>。<ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
+<translation id="5486652646100591203">此网站已要求您提供<ph name="PART_ONE"/>精确的所在位置<ph name="PART_ONE_END"/>。Brave 将只能提供<ph name="PART_TWO"/>一般所在位置<ph name="PART_TWO_END"/>资料，因为<ph name="PART_THREE"/>定位服务<ph name="PART_THREE_END"/> 已停用。<ph name="PART_FOUR"/>了解更多<ph name="PART_FOUR_END"/></translation>
 <translation id="8915916167043355778">全部关闭</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="4870911314065352661">关闭所有标签页？</translation>
@@ -162,7 +165,8 @@
 <translation id="6959315322491671328">右键单击以删除</translation>
 <translation id="495046168593986294">向上滚动</translation>
 <translation id="4021716437419160885">向下滚动</translation>
-<translation id="2702801445560668637">读取列表</translation>
+<translation id="1907157509746585817">书签</translation>
+<translation id="4840597165888262798">阅读清单</translation>
 <translation id="2533715613366623756">书签管理器</translation>
 <translation id="3405021928725149239">书签管理器</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
@@ -242,9 +246,11 @@
 <translation id="8025559074845816210">Brave  需要完全的磁盘访问权限才能从 Safari 导入书签。</translation>
 <translation id="8515328844674404333">了解如何从系统偏好设置中授予完全的磁盘访问权限。</translation>
 <translation id="6414878884710400018">打开系统偏好设置</translation>
+<translation id="4759238208242260848">下载内容</translation>
 <translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
 <translation id="8487693399751278191">立即导入书签...</translation>
 <translation id="2557899542277210112">要快速访问，请将书签放在书签栏的此处。</translation>
+<translation id="2702801445560668637">读取列表</translation>
 <translation id="1968543937259008435">准备好在线获得最佳隐私了吗？</translation>
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
@@ -370,6 +376,7 @@
 <translation id="5448570825852364919">空白页面</translation>
 <translation id="8244387390464017490">自定义新标签页面</translation>
 <translation id="7461924472993315131">固定</translation>
+<translation id="735832369569964359">点击大头针并在以下 Windows 通知中确认</translation>
 <translation id="7506648566440714944">Brave 已被固定</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Brave 已位于 Dock 中</translation>
@@ -425,6 +432,10 @@
 <translation id="7889605993994647168">更新失败</translation>
 <translation id="5438573563213942361">自定义列单</translation>
 <translation id="4182731739150761577">显示完整列表</translation>
+<translation id="2776571540844891267">更新清单</translation>
+<translation id="7424267932649051704">更新失败 - 重试</translation>
+<translation id="8426801388284487512">清单已更新</translation>
+<translation id="3422250445565385437">正在更新清单</translation>
 <translation id="1340263054776016283">输入过滤器列表 URL</translation>
 <translation id="8578397014396032341">内容过滤</translation>
 <translation id="3020183492814296499">快捷方式</translation>

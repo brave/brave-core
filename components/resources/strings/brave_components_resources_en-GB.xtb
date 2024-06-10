@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">The more you see, the more you can earn.</translation>
 <translation id="7526443283522395161">New tab page ads</translation>
 <translation id="7968650944098083708">Notification ads</translation>
+<translation id="8289546216379862569">Search ads</translation>
+<translation id="4758111936363146244">Brave Search Ads appear on <ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/>.</translation>
+<translation id="7596536223419118193">You cannot earn BATs from Brave Search Ads yet, but you help support Brave by having them on.</translation>
 <translation id="6390952132783970876">Brave News ads</translation>
 <translation id="7516281787184495886">Brave News contains ads that cannot be independently disabled.</translation>
 <translation id="8008378848677625233">Brave News is currently disabled.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Downloading Component...</translation>
 <translation id="4894106830958548828">I understand</translation>
 <translation id="326118736933420687">You're viewing a WebTorrent page</translation>
+<translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Enable support of Unstoppable Domains in Brave?</translation>
 <translation id="5015092481905019948">Brave will be using <ph name="PROVIDER_NAME"/> to resolve <ph name="DOMAIN_LIST"/> domain names that are on <ph name="DOMAIN_PROVIDER_NAME"/>. Brave hides your IP address. If you enable this, <ph name="PROVIDER_NAME"/> will see that someone is trying to visit these domains but nothing else. See <ph name="PROVIDER_NAME"/>'s <ph name="BEGIN_PROVIDER_TOU_LINK"/>terms of use<ph name="END_PROVIDER_TOU_LINK"/> and <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privacy policy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">A generic request processing error has occurred</translation>
 <translation id="7123780456696055383">Requested resource not available</translation>
 <translation id="1680597601664421644">The mnemonic being imported is not valid for Brave Wallet</translation>
+<translation id="372898731091371291">Which type of wallet would you like to import?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin wallet</translation>
+<translation id="8659668419772278776">Import your seed phrase from an existing wallet</translation>
+<translation id="8110492767853188065">Hardware wallet</translation>
+<translation id="7437218084485869007">Connect your hardware wallet with Brave</translation>
 <translation id="4641919696349069826">A request is already in progress</translation>
 <translation id="872806943696014633">Transaction data is missing</translation>
 <translation id="7068183357903252127">Transaction data 'to' or 'data' must be specified</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Yes</translation>
 <translation id="4250680216510889253">No</translation>
 <translation id="1201402288615127009">Next</translation>
-<translation id="8712637175834984815">Got it</translation>
+<translation id="3214453326297774895">Show my recovery phrase</translation>
 <translation id="6896758677409633944">Copy</translation>
 <translation id="7885157704277298658">Copied!</translation>
 <translation id="6518133107902771759">Verify</translation>
 <translation id="6042308850641462728">More</translation>
-<translation id="768236965975208017">Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away</translation>
 <translation id="3157931365184549694">Restore</translation>
-<translation id="2484275747844666540">Create new wallet</translation>
-<translation id="3662348701117072366">Import existing wallet</translation>
-<translation id="7150150391368236519">Connect hardware wallet</translation>
+<translation id="414070570958255222">Browser-native. Self-custody. And multi-chain.</translation>
+<translation id="1350120992777389959">Take control of your crypto and NFTs. Brave Wallet supports Ethereum, EVM chains, Solana, Filecoin, Bitcoin and more.</translation>
+<translation id="165255193061631296">Need a new wallet?</translation>
+<translation id="1939235910515558387">Get started with Brave Wallet in minutes.</translation>
+<translation id="5844138175312846408">Already have a wallet?</translation>
+<translation id="772643556080081594">I need a watch-only wallet</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave and the Brave logo are registered trademarks of Brave Software, Inc. Other product names and logos may be trademarks of their respective companies. All rights reserved.</translation>
 <translation id="7501957181231305652">or</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
-<translation id="180032279811483155">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH"/>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</translation>
 <translation id="5024543173656851695">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</translation>
 <translation id="8281886186245836920">Skip</translation>
 <translation id="6532106788206463496">Save changes</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Verify recovery phrase</translation>
 <translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
 <translation id="802060020117206314">Recovery phrase did not match, please try again.</translation>
-<translation id="8412783472871103529">Verify your recovery phrase</translation>
+<translation id="7345730059518887993">Let's check</translation>
 <translation id="2226686084760581391">Click the <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, and <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> words of your recovery phrase.</translation>
 <translation id="7575574239720542222">Recovery phrase didn't match</translation>
 <translation id="8692301574305033504">Create a new password</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
 <translation id="3331452756822160641">New password</translation>
 <translation id="8624315169751085215">Copy to clipboard</translation>
+<translation id="2598171223363459366">You can skip this step now, but you still need to back up your recovery phrase to ensure account security.</translation>
+<translation id="5303015959766064022">I'll back up later</translation>
 <translation id="6346952829206698721">Paste from clipboard</translation>
+<translation id="2610561535971892504">Click to copy</translation>
 <translation id="1121335910737476837">Primary crypto accounts</translation>
 <translation id="6969147029062037757">Imported accounts</translation>
 <translation id="3926119534765499672">Connected hardware wallets</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">This error may occur when the wrong application is open on the Ledger device.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Grant Brave access to your Ledger device.</translation>
+<translation id="8012452656725205792">Grant Brave access to your <ph name="HARDWARE_DEVICE"/> device.</translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="1943188256166395881">Add checked accounts</translation>
 <translation id="8554010658308662631">Load more</translation>
 <translation id="6998738230710304743">Loading more ...</translation>
 <translation id="5592304751234049046">Search account</translation>
+<translation id="3168978475376026497">HD path</translation>
 <translation id="6151024411349343484">Try switching HD path (above) if you cannot find the account you are looking for.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">No results found.</translation>
+<translation id="7261362517244085362">Authorise your wallet</translation>
+<translation id="7150150391368236519">Connect hardware wallet</translation>
+<translation id="5400782314657008092">We currently support <ph name="HARDWARE_DEVICE"/> and <ph name="HARDWARE_DEVICE1"/> devices.</translation>
+<translation id="8144305264680648043">Connect your hardware wallet to manage your assets directly from Brave Wallet</translation>
+<translation id="1329837291200753515">Select a blockchain to import your hardware wallet</translation>
+<translation id="6983390509997396124">Connect your <ph name="HARDWARE_DEVICE"/> device to Brave Wallet</translation>
 <translation id="5149944858285555235">Unknown error, please reconnect your hardware wallet and try again.</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Test network</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Select account</translation>
 <translation id="6797737193502014008">Search accounts</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">Transactions will appear here</translation>
 <translation id="6079696972035130497">Unlimited</translation>
 <translation id="2916401020782528840">Transaction not found</translation>
+<translation id="1690963073120772693">This transaction cannot be retried.</translation>
 <translation id="2833661570529295305">Unapproved</translation>
 <translation id="8034530868111548216">Approved</translation>
 <translation id="6015436276085482001">Rejected</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">Error processing the transaction, please try again</translation>
 <translation id="971552837551838642">Error signing message, please try again</translation>
 <translation id="8273603707418703324">Error signing message, unknown keyring requested, please try again</translation>
-<translation id="5265455943786954050">Trezor command is already in progress</translation>
-<translation id="7017116822583380542">Trezor bridge is not ready</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> command is already in progress</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> bridge is not ready</translation>
 <translation id="3378339846292573874">Add suggested token</translation>
 <translation id="2322227405137827074">Would you like to import this token?</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Open Rainbow Bridge app</translation>
 <translation id="1522775706527775647">Bridge to Aurora</translation>
 <translation id="4903322403594141291">Learn more about Brave Wallet</translation>
-<translation id="3875185448438395303">At least:</translation>
-<translation id="2029465635925899949">8 characters</translation>
-<translation id="6697810017029555732">Match!</translation>
+<translation id="4427684901715566795">Password should have:</translation>
+<translation id="8521329076169776625">At least 8 characters</translation>
+<translation id="3665035348242240953">Passwords match</translation>
 <translation id="8918368616587206671">Strong!</translation>
 <translation id="574392208103952083">Medium</translation>
 <translation id="8297006494302853456">Weak</translation>
+<translation id="3282258437441351851">Brave Wallet will auto-lock after</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> minutes</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> hour(s)</translation>
 <translation id="7084181009966710506">Creating Wallet ...</translation>
-<translation id="6782556046178425980">Before you start backing up wallet</translation>
+<translation id="3259102562570606417">Save your recovery phrase</translation>
 <translation id="7119749028647909394">The 12 to 24-word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it somewhere safe and in the exact order it appears below.</translation>
 <translation id="3259018319025894691">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Important: <ph name="TAG_AFTER"/>Never share your recovery phrase. Anyone with this phrase can take your assets forever.</translation>
+<translation id="426648489149930289">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.</translation>
+<translation id="119185410022731300">Enter the word in position <ph name="VALUE"/> from your recovery phrase.</translation>
+<translation id="2193954488469999829">Forgot to save? Go back</translation>
 <translation id="7509948206688764960">Back up your wallet recovery phrase</translation>
 <translation id="8052898407431791827">Copied to clipboard</translation>
 <translation id="4576741736874242970">Click to see your phrase</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">nd</translation>
 <translation id="7992766987062040279">rd</translation>
 <translation id="2295726992010694229">th</translation>
-<translation id="8241405611628876973">Congratulations! Your Brave Wallet is ready to go!</translation>
-<translation id="6828327990705355767">To access your wallet, just click the wallet icon at the top right of any Brave browser window.</translation>
+<translation id="1148624853678088576">You’re all set!</translation>
+<translation id="1656439328205762155">Your Brave Wallet is now set up and ready for use.</translation>
+<translation id="3342494025742308764">Go to portfolio</translation>
 <translation id="396152018598329740">How to use a crypto wallet?</translation>
 <translation id="7512061585041489067">What’s the best crypto wallet?</translation>
 <translation id="1342755158522323177">What’s a crypto browser?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">What’s a recovery phrase?</translation>
 <translation id="7328255859839881981">What are DApps?</translation>
 <translation id="3852489285890032403">What’s web 3?</translation>
-<translation id="5448233694500869445">We detected the MetaMask extension in your browser</translation>
-<translation id="8436080536329710282">Enter your MetaMask wallet password to easily import to Brave Wallet.</translation>
+<translation id="2349224271234429946">Import MetaMask wallet</translation>
+<translation id="6715906859822319136">You can easily import your MetaMask wallet just by inputting your password.</translation>
 <translation id="7543512765962444927">Connect to your existing wallet</translation>
 <translation id="3551682252653406110">To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.</translation>
-<translation id="346929827081904572">Restore from seed phrase</translation>
+<translation id="3961126209136843111">Import an existing wallet</translation>
 <translation id="5645597512426471834">12-24 words</translation>
-<translation id="8158505311297755780">Type your Brave Wallet 12 to 24-word recovery phrase.</translation>
+<translation id="2321396552035646646">You can paste your entire recovery phrase into any field.</translation>
 <translation id="5419707890586509000">Import from MetaMask</translation>
 <translation id="2265945811107390939">Use your MetaMask password to import your seed phrase</translation>
 <translation id="7060680423657442298">Never mind, I’ll create a new wallet</translation>
+<translation id="1932878136775815535">I have a <ph name="LENGTH"/>-word recovery phrase</translation>
+<translation id="7877416315564177070">Check your recovery phrase and try again.</translation>
+<translation id="6503538941917874992">Import using your recovery phrase</translation>
+<translation id="782167880151571109">Metamask wallet detected!</translation>
+<translation id="3619071361843652814">Legacy wallet detected!</translation>
+<translation id="4634124774493850572">Use password</translation>
+<translation id="7697478310235189459">Word <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">Type your MetaMask 12 to 24-word recovery phrase.</translation>
 <translation id="7720392926833259937">Type MetaMask password</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="6260144012548445299">Learn more about my new wallet</translation>
-<translation id="8746910870914151528">Legal stuff</translation>
-<translation id="5148123176978018397">Please acknowledge the following:</translation>
-<translation id="6088314935678153800">I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and back up my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</translation>
-<translation id="7781090633800450517">I have read and agree to the <ph name="LINK_BEFORE"/>Terms of use<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">Before we begin</translation>
+<translation id="5333225216561354793">We require that you acknowledge the items below</translation>
+<translation id="4284971227128011550">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets or accounts, and for taking any appropriate action to secure, protect and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device or similar circumstance.</translation>
+<translation id="3604445540387095708">I have read and agree to the <ph name="LINK_BEFORE"/>Terms of use<ph name="LINK_AFTER"/>.</translation>
 <translation id="1422451606553326863">Buy crypto</translation>
 <translation id="3887541341068007345">Checking for wallet extensions...</translation>
 <translation id="3567994771568272606">Import from legacy Brave crypto wallets</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Unsafe action with risk of loss</translation>
 <translation id="6405354572620970908">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</translation>
 <translation id="786261184916565476">We found <ph name="VALUE"/> issues.</translation>
+<translation id="2826600321627372011">No routes found</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Current tab</translation>
 <translation id="7056969230130642253">You're all caught up</translation>
 <translation id="7292242212818928219">New content available. Reload?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Quick commands</translation>
 <translation id="7481312909269577407">Forward</translation>
 <translation id="302781076327338683">Reload bypassing cache</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">This combination is being used for <ph name="COMMAND"/> and cannot be modified.</translation>
 <translation id="3537006124004887164">This combination is being used for <ph name="COMMAND"/> and cannot be modified. Try modifying it through the 'App Shortcuts' in System Settings.</translation>
 <translation id="712598284361781729">New split view</translation>
-<translation id="6655450014966273037">Close split view</translation>
 <translation id="1130188644637295274">Open in split view</translation>
-<translation id="7195519370590486580">Break into tabs</translation>
+<translation id="6459036216700972269">Unsplit tabs</translation>
 <translation id="3617523374417810198">New split view</translation>
-<translation id="9053179124396567872">Close split view</translation>
 <translation id="8571323456914890254">Open in split view</translation>
-<translation id="2397258152713354053">Break into tabs</translation>
+<translation id="5329136173514538969">Unsplit tabs</translation>
 <translation id="8591883849678260674">View original</translation>
 <translation id="1969654232209826429">min. read</translation>
 <translation id="4101707289420716287">Turn off Speedreader</translation>
@@ -1884,23 +1917,24 @@
 <translation id="7921782882718083488">Summarise this page</translation>
 <translation id="7932221068776853847">Disconnect to stop sending this page content to Leo, and start a new conversation</translation>
 <translation id="1167803637855350748">There was a network issue connecting to Leo. Check your connection and try again.</translation>
-<translation id="5095201428204952524">Leo is too busy right now. Please try again in a few minutes.</translation>
+<translation id="1996126325390835277">Leo is too busy right now. Please try again in a few minutes.</translation>
 <translation id="7144878232160441200">Retry</translation>
-<translation id="2505565639170795978">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.</translation>
-<translation id="8030558642460377506">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.</translation>
-<translation id="2489317965865266353">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.</translation>
+<translation id="8570488829560315702">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3 8B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.</translation>
 <translation id="4147243042852964992">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">Limited</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">New chat</translation>
 <translation id="7557539689487606886">Go Premium</translation>
 <translation id="1691256669639196606">Manage subscription</translation>
+<translation id="2304783958703511257">Advanced settings</translation>
 <translation id="3037594989275592390">Language models</translation>
 <translation id="6637015365469044269">Upgrade now</translation>
+<translation id="5543505256451301851">Try 7 days free</translation>
 <translation id="849535826888024304">Response rate limit reached</translation>
-<translation id="6149863263423821329">Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.</translation>
+<translation id="2252128900328632803">Unlock a higher response rate by subscribing to Premium. You can also switch to our less powerful Llama2 13b free model to continue.</translation>
 <translation id="4173478269537830374">Explore different AI models</translation>
 <translation id="3245401959451976966">Unlock your creativity</translation>
 <translation id="4165928407303989823">Stay on topic</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.</translation>
 <translation id="7550152963854770123">Clear chat</translation>
 <translation id="7494736170250048402">Send message to Leo</translation>
+<translation id="8712637175834984815">Got it</translation>
 <translation id="1093419424466417703">The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read <ph name="PERCENTAGE"/> of the page's contents.</translation>
 <translation id="4370698775470316661">This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.</translation>
+<translation id="5719170755629028558">Improving your answer with Brave Search …</translation>
+<translation id="5794962229997281366">Improved answer searching for <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="6291843235651817590">General purpose chat</translation>
 <translation id="8193130769524604031">Advanced chat tasks</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Change length</translation>
 <translation id="6320643499534852464">Social media</translation>
 <translation id="2370739752330685659">Maybe later</translation>
+<translation id="983013125018250242">Leo tools</translation>
+<translation id="49269513399674318">Use microphone</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="7509914170164691086">Shields are UP <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>

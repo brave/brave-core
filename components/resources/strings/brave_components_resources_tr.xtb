@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">Ne kadar çok reklam görürseniz, o kadar çok kazanırsınız.</translation>
 <translation id="7526443283522395161">Yeni sekme sayfası reklamları</translation>
 <translation id="7968650944098083708">Bildirim reklamları</translation>
+<translation id="8289546216379862569">Reklamları ara</translation>
+<translation id="4758111936363146244">Brave Arama Reklamları <ph name="BEGIN_LINK"/>Brave Arama<ph name="END_LINK"/>'da görünür.</translation>
+<translation id="7596536223419118193">Brave Arama Reklamlarından henüz BAT kazanamazsınız ama reklamları etkinleştirerek Brave'i destekleyebilirsiniz.</translation>
 <translation id="6390952132783970876">Brave Haberleri reklamları</translation>
 <translation id="7516281787184495886">Brave Haberleri, bağımsız olarak devre dışı bırakılamayan reklamlar içerir.</translation>
 <translation id="8008378848677625233">Brave Haberleri şu anda devre dışı.</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">Bileşen İndiriliyor...</translation>
 <translation id="4894106830958548828">Anladım</translation>
 <translation id="326118736933420687">Bir WebTorrent sayfasını görüntülüyorsunuz</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>Yer tutucular<ph name="PART_ONE_END"/> için test satırları.<ph name="PART_TWO"/>Daha fazla bilgi edinin<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave'de Unstoppable Domains desteği etkinleştirilsin mi?</translation>
 <translation id="5015092481905019948">Brave, <ph name="DOMAIN_PROVIDER_NAME"/> kaynağında bulunan <ph name="DOMAIN_LIST"/> alan adlarını çözmek için <ph name="PROVIDER_NAME"/> hizmetini kullanacaktır. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz <ph name="PROVIDER_NAME"/> birilerinin bu alanları ziyaret etmeye çalıştığını görür ancak başka bir şey görmez. <ph name="PROVIDER_NAME"/> hizmetinin <ph name="BEGIN_PROVIDER_TOU_LINK"/>kullanım şartlarına<ph name="END_PROVIDER_TOU_LINK"/> ve <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>gizlilik politikasına<ph name="END_PROVIDER_PRIVACY_LINK"/> göz atın.</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">Genel bir istek işleme hatası oluştu</translation>
 <translation id="7123780456696055383">İstenen kaynak kullanılamıyor</translation>
 <translation id="1680597601664421644">İçe aktarılmakta olan hatırlatıcı, Brave Cüzdan için geçerli değil</translation>
+<translation id="372898731091371291">Ne tür bir cüzdanı içe aktarmak istersiniz?</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin cüzdanı</translation>
+<translation id="8659668419772278776">Mevcut bir cüzdandan anahtar cümlenizi içe aktarın</translation>
+<translation id="8110492767853188065">Donanım cüzdanı</translation>
+<translation id="7437218084485869007">Donanım cüzdanınızı Brave ile bağlayın</translation>
 <translation id="4641919696349069826">Bir istek zaten işleniyor</translation>
 <translation id="872806943696014633">İşlem verisi eksik</translation>
 <translation id="7068183357903252127">'to' veya 'data' işlem verileri belirtilmelidir</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">Evet</translation>
 <translation id="4250680216510889253">Hayır</translation>
 <translation id="1201402288615127009">İleri</translation>
-<translation id="8712637175834984815">Anlaşıldı</translation>
+<translation id="3214453326297774895">Kurtarma ifademi göster</translation>
 <translation id="6896758677409633944">Kopyala</translation>
 <translation id="7885157704277298658">Kopyalandı!</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="6042308850641462728">Daha fazla</translation>
-<translation id="768236965975208017">Güvenli. Çok zincirli. Ve kullanımı çok kolay. Brave Wallet sadece birkaç tık uzağınızda</translation>
 <translation id="3157931365184549694">Geri yükle</translation>
-<translation id="2484275747844666540">Yeni cüzdan oluştur</translation>
-<translation id="3662348701117072366">Mevcut cüzdanı içe aktarın</translation>
-<translation id="7150150391368236519">Donanım cüzdanı bağla</translation>
+<translation id="414070570958255222">Tarayıcıya özgü. Kendi kendini koruyan. Ve çok zincirli.</translation>
+<translation id="1350120992777389959">Kripto ve NFT'lerinizin kontrolünü elinize alın. Brave Cüzdanı Ethereum, EVM zincirleri, Solana, Filecoin, Bitcoin ve daha fazlasını destekler.</translation>
+<translation id="165255193061631296">Yeni bir cüzdana mı ihtiyacınız var?</translation>
+<translation id="1939235910515558387">Brave Cüzdanı'nı kullanmaya dakikalar içinde başlayın.</translation>
+<translation id="5844138175312846408">Zaten bir cüzdanınız var mı?</translation>
+<translation id="772643556080081594">Sadece izleme cüzdanına ihtiyacım var</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave ve Brave logosu, Brave Software, Inc.'in tescilli markalarıdır. Diğer ürün isimleri ve logoları, ilgili şirketlerin tescilli markaları olabilir. Tüm hakları saklıdır.</translation>
 <translation id="7501957181231305652">veya</translation>
 <translation id="375882617301124395">Kripto cüzdanınızı yedekleyin</translation>
-<translation id="180032279811483155">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz <ph name="RECOVERY_PHRASE_LENGTH"/> kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="5024543173656851695">Kurtarma sözcüklerimi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
 <translation id="8281886186245836920">Atla</translation>
 <translation id="6532106788206463496">Değişiklikleri kaydet</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">Kurtarma ifadesini doğrulayın</translation>
 <translation id="3747079125031086337">Kurtarma cümlenizdeki kelimeleri doğru sırada seçin.</translation>
 <translation id="802060020117206314">Kurtarma cümlesi eşleşmedi, lütfen tekrar deneyin.</translation>
-<translation id="8412783472871103529">Kurtarma cümlenizi doğrulayın</translation>
+<translation id="7345730059518887993">Hadi kontrol edelim</translation>
 <translation id="2226686084760581391">Kurtarma cümlenizin <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, and <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> sözcüklerine tıklayın.</translation>
 <translation id="7575574239720542222">Kurtarma cümlesi eşleşmedi</translation>
 <translation id="8692301574305033504">Yeni parola oluşturun</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">Eski Brave kripto cüzdanlarından içe aktarılsın mı?</translation>
 <translation id="3331452756822160641">Yeni Şifre</translation>
 <translation id="8624315169751085215">Panoya Kopyala</translation>
+<translation id="2598171223363459366">Bu adımı şimdilik atlayabilirsiniz ancak hesap güvenliğinizi sağlamak için kurtarma ifadenizi yine de yedeklemeniz gerekir.</translation>
+<translation id="5303015959766064022">Daha sonra yedekleyeceğim</translation>
 <translation id="6346952829206698721">Panodan yapıştır</translation>
+<translation id="2610561535971892504">Kopyalamak için tıkla</translation>
 <translation id="1121335910737476837">Ana kripto hesapları</translation>
 <translation id="6969147029062037757">İçe aktarılan hesaplar</translation>
 <translation id="3926119534765499672">Bağlı donanım cüzdanları</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">Bu hata, Ledger cihazında yanlış uygulama açıkken yaşanabilir.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">Ledger cihazınıza Brave erişimi verin.</translation>
+<translation id="8012452656725205792">Brave'in, <ph name="HARDWARE_DEVICE"/> cihazınıza erişmesine izin verin.</translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="1943188256166395881">İşaretli hesapları ekle</translation>
 <translation id="8554010658308662631">Daha fazla yükle</translation>
 <translation id="6998738230710304743">Daha fazlası yükleniyor...</translation>
 <translation id="5592304751234049046">Hesabı ara</translation>
+<translation id="3168978475376026497">HD Yolu</translation>
 <translation id="6151024411349343484">Aradığınız hesabı bulamıyorsanız HD yolunu (yukarıda) değiştirmeyi deneyin.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Eski (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">Sonuç bulunamadı.</translation>
+<translation id="7261362517244085362">Cüzdanınızı yetkilendirin</translation>
+<translation id="7150150391368236519">Donanım cüzdanı bağla</translation>
+<translation id="5400782314657008092">Şu anda <ph name="HARDWARE_DEVICE"/> ve <ph name="HARDWARE_DEVICE1"/> cihazlarını destekliyoruz.</translation>
+<translation id="8144305264680648043">Varlıklarınızı doğrudan Brave Cüzdan'dan yönetmek için donanım cüzdanınızı bağlayın</translation>
+<translation id="1329837291200753515">Donanım cüzdanınızı içe aktarmak için bir blok zinciri seçin</translation>
+<translation id="6983390509997396124"><ph name="HARDWARE_DEVICE"/> cihazınızı Brave Cüzdan'a bağlayın</translation>
 <translation id="5149944858285555235">Bilinmeyen hata, lütfen donanım cüzdanınıza tekrar bağlanın ve tekrar deneyin.</translation>
 <translation id="4522570452068850558">Detaylar</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">Ağı Test Et</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Hesabı seç</translation>
 <translation id="6797737193502014008">Hesapları ara</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">İşlemler burada görünür</translation>
 <translation id="6079696972035130497">Limitsiz</translation>
 <translation id="2916401020782528840">İşlem bulunamadı</translation>
+<translation id="1690963073120772693">Bu işlem tekrar denenemez.</translation>
 <translation id="2833661570529295305">Onaylanmadı</translation>
 <translation id="8034530868111548216">Onaylandı</translation>
 <translation id="6015436276085482001">Rededildi</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">İşlemin gerçekleştirilmesinde hata, lütfen tekrar deneyin</translation>
 <translation id="971552837551838642">Mesaj imzalanırken hata oluştu, lütfen tekrar deneyin</translation>
 <translation id="8273603707418703324">Mesaj imzalanırken hata oluştu, bilinmeyen anahtarlık istendi, lütfen tekrar deneyin</translation>
-<translation id="5265455943786954050">Trezor komutu zaten devam ediyor</translation>
-<translation id="7017116822583380542">Trezor köprüsü hazır değil</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> komutu zaten çalışıyor</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> köprüsü hazır değil</translation>
 <translation id="3378339846292573874">Önerilen token'ı ekle</translation>
 <translation id="2322227405137827074">Bu token'ı içe aktarmak ister misiniz?</translation>
 <translation id="4378475168089649292">Blok zinciri</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">Rainbow Bridge app'i aç</translation>
 <translation id="1522775706527775647">Aurora Köprüsü</translation>
 <translation id="4903322403594141291">Brave Wallet hakkında daha fazla bilgi edinin</translation>
-<translation id="3875185448438395303">En az:</translation>
-<translation id="2029465635925899949">8 karakter</translation>
-<translation id="6697810017029555732">Eşleşti!</translation>
+<translation id="4427684901715566795">Parolada şunlar olmalıdır:</translation>
+<translation id="8521329076169776625">En az 8 karakter</translation>
+<translation id="3665035348242240953">Parolalar eşleşiyor</translation>
 <translation id="8918368616587206671">Kuvvetli!</translation>
 <translation id="574392208103952083">Orta</translation>
 <translation id="8297006494302853456">Zayıf</translation>
+<translation id="3282258437441351851">Brave Cüzdan şu süre sonrasında otomatik olarak kilitlenecektir:</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> Dakika</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> Saat</translation>
 <translation id="7084181009966710506">Cüzdan Oluşturuluyor...</translation>
-<translation id="6782556046178425980">Cüzdanı yedeklemeye başlamadan önce</translation>
+<translation id="3259102562570606417">Kurtarma ifadenizi kaydedin</translation>
 <translation id="7119749028647909394">12-24 kelimelik kurtarma cümlesi, bağlı bir cihazı (veya cihazları) kaybetmeniz durumunda cüzdanınıza yeniden erişmek için kullanabileceğiniz özel bir anahtardır. Onu güvenli bir yerde ve tam olarak aşağıda göründüğü sırayla saklayın.</translation>
 <translation id="3259018319025894691">Brave, gizli kurtarma cümlenize erişemez. Güvende tutun ve asla başkalarıyla paylaşmayın.</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>Önemli: <ph name="TAG_AFTER"/>Kurtarma cümlenizi asla paylaşmayın. Bu cümleye sahip herkes varlıklarınızı sonsuza dek alabilir.</translation>
+<translation id="426648489149930289">Kurtarma ifadenizi başkalarının erişemeyeceği güvenli bir yerde tutun ve insanlarla paylaşmaktan kaçının.</translation>
+<translation id="119185410022731300">Kurtarma ifadenizdeki <ph name="VALUE"/>. sıradaki kelimeyi girin</translation>
+<translation id="2193954488469999829">Kaydetmeyi unuttunuz mu? Geri dönün</translation>
 <translation id="7509948206688764960">Cüzdan kurtarma cümlenizi yedekleyin</translation>
 <translation id="8052898407431791827">Panoya kopyalandı</translation>
 <translation id="4576741736874242970">Cümlenizi görmek için tıklayın</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">.</translation>
 <translation id="7992766987062040279">.</translation>
 <translation id="2295726992010694229">.</translation>
-<translation id="8241405611628876973">Tebrikler! Brave Wallet'ınız kullanıma hazır!</translation>
-<translation id="6828327990705355767">Cüzdanınıza erişmek için, herhangi bir Brave tarayıcı penceresinin sağ üst köşesindeki cüzdan simgesine tıklamanız yeterlidir.</translation>
+<translation id="1148624853678088576">Artık hazırsınız!</translation>
+<translation id="1656439328205762155">Brave Cüzdanınız şimdi kuruldu ve kullanılmaya hazır.</translation>
+<translation id="3342494025742308764">Portföye gidin</translation>
 <translation id="396152018598329740">Kripto cüzdanı nasıl kullanılır?</translation>
 <translation id="7512061585041489067">En iyi kripto cüzdanı nedir?</translation>
 <translation id="1342755158522323177">Kripto tarayıcısı nedir?</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">Kurtarma cümlesi nedir?</translation>
 <translation id="7328255859839881981">DApps nedir?</translation>
 <translation id="3852489285890032403">Web 3 nedir?</translation>
-<translation id="5448233694500869445">MetaMask uzantısını tarayıcınızda algıladık</translation>
-<translation id="8436080536329710282">Brave Wallet'a kolayca aktarmak için MetaMask cüzdan parolanızı girin.</translation>
+<translation id="2349224271234429946">MetaMask cüzdanını içe aktarın</translation>
+<translation id="6715906859822319136">Sadece parolanızı girerek MetaMask cüzdanınızı kolaylıkla içe aktarabilirsiniz.</translation>
 <translation id="7543512765962444927">Mevcut cüzdanınıza bağlanın</translation>
 <translation id="3551682252653406110">Zaten sahip olduğunuz bir cüzdanı bağlamak için kurtarma cümlenizi girmeniz gerekebilir. Şu anda Ethereum ve Solana cüzdanlarından geri yüklemeyi / içe aktarmayı destekliyoruz.</translation>
-<translation id="346929827081904572">Anahtar cümleyi geri yükle</translation>
+<translation id="3961126209136843111">Mevcut bir cüzdanı içe aktarın</translation>
 <translation id="5645597512426471834">12-24 kelime</translation>
-<translation id="8158505311297755780">Brave Wallet 12-24 kelimelik kurtarma cümlenizi yazın.</translation>
+<translation id="2321396552035646646">Kurtarma ifadenizi bütün olarak herhangi bir alana yapıştırabilirsiniz.</translation>
 <translation id="5419707890586509000">MetaMask'tan içe aktar</translation>
 <translation id="2265945811107390939">Anahtar cümlenizi içe aktarmak için MetaMask parolanızı kullanın</translation>
 <translation id="7060680423657442298">Önemli değil, yeni bir cüzdan oluşturacağım</translation>
+<translation id="1932878136775815535"><ph name="LENGTH"/> kelimelik bir kurtarma ifadem var</translation>
+<translation id="7877416315564177070">Kurtarma ifadenizi kontrol edin ve tekrar deneyin.</translation>
+<translation id="6503538941917874992">Kurtarma ifadenizle içe aktarın</translation>
+<translation id="782167880151571109">MetaMask cüzdanı tespit edildi!</translation>
+<translation id="3619071361843652814">Eski cüzdan tespit edildi!</translation>
+<translation id="4634124774493850572">Şifre kullan</translation>
+<translation id="7697478310235189459"><ph name="VALUE"/>. kelime</translation>
 <translation id="5913194823092185468">MetaMask 12-24 kelimelik kurtarma cümlenizi yazın.</translation>
 <translation id="7720392926833259937">MetaMask parolanızı yazın</translation>
 <translation id="6657585470893396449">Şifre</translation>
 <translation id="6260144012548445299">Yeni cüzdanım hakkında daha fazla bilgi edinin</translation>
-<translation id="8746910870914151528">Yasal konular</translation>
-<translation id="5148123176978018397">Lütfen aşağıdakileri kabul edin:</translation>
-<translation id="6088314935678153800">Bunun bir kendi kendini koruma cüzdanı olduğunu ve ilişkili fonlardan, varlıklardan veya hesaplardan ve cüzdanımı güvence altına almak, korumak ve yedeklemek için uygun önlemleri almaktan yalnızca benim sorumlu olduğumu anlıyorum. Brave cüzdanıma erişemeyeceğini veya benim adıma işlemleri tersine çeviremeyeceğini ve kurtarma cümlemin kayıp bir parola, çalıntı cihaz veya benzeri bir durum durumunda yeniden erişim kazanmanın TEK yolu olduğunu anlıyorum.</translation>
-<translation id="7781090633800450517"><ph name="LINK_BEFORE"/>Kullanım şartları<ph name="LINK_AFTER"/> bölümünü okudum ve kabul ediyorum</translation>
+<translation id="2502258949541727762">Başlamadan önce</translation>
+<translation id="5333225216561354793">Aşağıdaki öğeleri kabul etmeniz gerekmektedir</translation>
+<translation id="4284971227128011550">Bunun bir kendi kendini koruma cüzdanı olduğunu ve ilişkili fonlardan, varlıklardan veya hesaplardan ve cüzdanımı güvence altına almak, korumak ve yedeklemek için uygun önlemleri almaktan yalnızca benim sorumlu olduğumu anlıyorum. Brave cüzdanıma erişemeyeceğini veya benim adıma işlemleri tersine çeviremeyeceğini ve kurtarma cümlemin kayıp bir parola, çalıntı cihaz veya benzeri bir durum durumunda yeniden erişim kazanmanın TEK yolu olduğunu anlıyorum.</translation>
+<translation id="3604445540387095708"><ph name="LINK_BEFORE"/>Kullanım şartları<ph name="LINK_AFTER"/> bölümünü okudum ve kabul ediyorum.</translation>
 <translation id="1422451606553326863">Kripto satın al</translation>
 <translation id="3887541341068007345">Cüzdan uzantıları kontrol ediliyor...</translation>
 <translation id="3567994771568272606">Eski Brave kripto cüzdanlarından içe aktar</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">Kayıp riski içeren güvenliksiz eylem</translation>
 <translation id="6405354572620970908">Bu talep kötü niyetli gibi görünüyor, sizi hırsızlığa açık hale getirebilir. Uygulamaya güvenmiyorsanız devam etmeyin.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/> sorun bulduk.</translation>
+<translation id="2826600321627372011">Yönlendirme bulunamadı</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1681,6 +1715,7 @@
 <translation id="7948579849190819732">Mevcut sekme</translation>
 <translation id="7056969230130642253">Tamamen güncelsiniz</translation>
 <translation id="7292242212818928219">Yeni içerik mevcut. Yeniden yüklensin mi?</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Hızlı komutlar</translation>
 <translation id="7481312909269577407">İleri</translation>
 <translation id="302781076327338683">Önbellek kullanmadan yeniden yükle</translation>
@@ -1833,13 +1868,11 @@
 <translation id="831931573200952705">Bu kombinasyon <ph name="COMMAND"/> için kullanılıyor ve değiştirilemez.</translation>
 <translation id="3537006124004887164">Bu kombinasyon <ph name="COMMAND"/> için kullanılıyor ve değiştirilemez. Sistem Ayarlarına girip "Uygulama Kısayolları" üzerinden değiştirmeyi deneyin.</translation>
 <translation id="712598284361781729">Yeni Ayrık Görünüm</translation>
-<translation id="6655450014966273037">Ayrık Görünümü Kapat</translation>
 <translation id="1130188644637295274">Ayrık Görünümde Aç</translation>
-<translation id="7195519370590486580">Sekmelere Böl</translation>
+<translation id="6459036216700972269">Sekmelerin Ayrılmasını Kaldır</translation>
 <translation id="3617523374417810198">Yeni ayrık görünüm</translation>
-<translation id="9053179124396567872">Ayrık görünümü kapat</translation>
 <translation id="8571323456914890254">Ayrık görünümde aç</translation>
-<translation id="2397258152713354053">Sekmelere böl</translation>
+<translation id="5329136173514538969">Sekmelerin ayrılmasını kaldır</translation>
 <translation id="8591883849678260674">Orijinal sayfayı görüntüleyin</translation>
 <translation id="1969654232209826429">dk. okundu</translation>
 <translation id="4101707289420716287">Speedreader'ı kapat</translation>
@@ -1884,23 +1917,24 @@
 <translation id="7921782882718083488">Bu sayfayı özetle</translation>
 <translation id="7932221068776853847">Bu sayfanın içeriğini Leo'ya göndermeyi durdurmak için bağlantıyı kesin ve yeni bir konuşma başlatın</translation>
 <translation id="1167803637855350748">Leo'ya bağlanırken bir ağ sorunu yaşandı, bağlantınızı kontrol edip tekrar deneyin.</translation>
-<translation id="5095201428204952524">Leo şu anda çok meşgul. Lütfen birkaç dakika içinde tekrar deneyin.</translation>
+<translation id="1996126325390835277">Leo şu anda çok meşgul. Lütfen birkaç dakika içinde tekrar deneyin.</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
-<translation id="2505565639170795978">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Meta tarafından pek çok kullanım alanında iyi performans vermesi ve uygulanabilir olması için geliştirilen bir model olan Llama 13B ile destekleniyorum.</translation>
-<translation id="8030558642460377506">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Mistral AI tarafından gelişmiş görevleri yerine getirmek üzere tasarlanan Mixtral 8x7B modeli ile destekleniyorum.</translation>
-<translation id="2489317965865266353">Merhaba, ben Leo. Brave tarafından vekaleten kullanılıyorum ve Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude Instant ile destekleniyorum.</translation>
+<translation id="8570488829560315702">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Meta tarafından pek çok kullanım alanında iyi performans vermesi ve uygulanabilir olması için geliştirilen Llama 3 8B modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Mistral AI tarafından gelişmiş görevleri yerine getirmek üzere tasarlanan Mixtral 8x7B modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude Instant modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">Merhaba, ben Leo. Brave tarafından vekaleten kullanılıyorum ve Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude 3 Haiku ile destekleniyorum.</translation>
 <translation id="4147243042852964992">Merhaba, ben Leo. Brave tarafından vekaleten kullanılıyorum ve Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude 3 Sonnet ile destekleniyorum.</translation>
 <translation id="6206029817087805290"><ph name="COMPANY_NAME"/> tarafından geliştirilen <ph name="MODEL_NAME"/></translation>
-<translation id="8944485226638699751">Sınırlı</translation>
 <translation id="6187065185557150870">Sohbet</translation>
 <translation id="2961040541145689181">Yeni sohbet</translation>
 <translation id="7557539689487606886">Premium'a Geçin</translation>
 <translation id="1691256669639196606">Aboneliği yönet</translation>
+<translation id="2304783958703511257">Gelişmiş Ayarlar</translation>
 <translation id="3037594989275592390">Dil modelleri</translation>
 <translation id="6637015365469044269">Şimdi yükselt</translation>
+<translation id="5543505256451301851">7 gün ücretsiz deneyin</translation>
 <translation id="849535826888024304">Yanıt hızı sınırına erişildi</translation>
-<translation id="6149863263423821329">Premium'a abone olarak daha yüksek yanıt oranının kilidini açın. İsterseniz devam etmek için daha az güçlü olan Llama2 13b ücretsiz modeline de geçebilirsiniz.</translation>
+<translation id="2252128900328632803">Premium'a abone olarak daha yüksek yanıt oranının kilidini açın. İsterseniz devam etmek için daha az güçlü olan Llama2 13b ücretsiz modeline de geçebilirsiniz.</translation>
 <translation id="4173478269537830374">Farklı YZ modellerini keşfedin</translation>
 <translation id="3245401959451976966">Yaratıcılığınızı serbest bırakın</translation>
 <translation id="4165928407303989823">Konudan kopmayın</translation>
@@ -1933,8 +1967,11 @@
 <translation id="8742658901413346500">Bu konuşma uzun, Leo yakında bir şeyleri unutmaya başlayabilir. Premium modele geçerek daha uzun konuşmalar yapabilir veya sıfırlamak için sohbeti temizleyebilirsiniz.</translation>
 <translation id="7550152963854770123">Sohbeti Temizle</translation>
 <translation id="7494736170250048402">Leo'ya mesaj gönder</translation>
+<translation id="8712637175834984815">Anlaşıldı</translation>
 <translation id="1093419424466417703">Sayfa Leo için çok uzun. Konuşmada bazı bağlam ögeleri eksik olabilir. Leo, sayfa içeriklerinin <ph name="PERCENTAGE"/> oranındaki bir kısmını okuyabildi.</translation>
 <translation id="4370698775470316661">Bu konuşma çok uzun ve devam edemiyor. Leo'nun daha uzun konuşmalarda tutarlılığı sürdürebileceği başka modeller mevcut olabilir.</translation>
+<translation id="5719170755629028558">Brave Search ile yanıtınız geliştiriliyor...</translation>
+<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/> araması için gelişmiş yanıt.</translation>
 <translation id="6291843235651817590">Genel kullanım amaçlı sohbet</translation>
 <translation id="8193130769524604031">Gelişmiş sohbet görevleri</translation>
 <translation id="3185367320601718531">Konuşma ve metin oluşturma</translation>
@@ -1974,6 +2011,8 @@
 <translation id="3130793786899299931">Uzunluğu değiştir</translation>
 <translation id="6320643499534852464">Sosyal medya</translation>
 <translation id="2370739752330685659">Belki daha sonra</translation>
+<translation id="983013125018250242">Leo araçları</translation>
+<translation id="49269513399674318">Mikrofonu kullan</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
 <translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
