@@ -139,7 +139,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private ScrollView mScrollViewAddLaptop;
     private ScrollView mScrollViewEnterCodeWords;
     private ScrollView mScrollViewSyncDone;
-    private ScrollView mAddDeviceTab;
+    private ViewGroup mAddDeviceTab;
     private LayoutInflater mInflater;
     private ImageView mQRCodeImage;
     private LinearLayout mQRContainer;
