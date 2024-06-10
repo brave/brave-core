@@ -148,7 +148,7 @@ class SimpleHashClientUnitTest : public testing::Test {
     base::RunLoop run_loop;
     simple_hash_client_->GetNftBalances(
         wallet_address, std::move(nft_identifiers), coin,
-        base::BindLambdaForTesting([&](std::vector<uint64_t> balances) {
+        base::BindLambdaForTesting([&](const std::vector<uint64_t>& balances) {
           ASSERT_EQ(balances.size(), expected_balances.size());
           EXPECT_EQ(balances, expected_balances);
           run_loop.Quit();

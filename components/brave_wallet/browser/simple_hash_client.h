@@ -64,7 +64,7 @@ class SimpleHashClient {
       base::OnceCallback<void(std::optional<SolCompressedNftProofData>)>;
 
   using GetNftBalancesCallback =
-      base::OnceCallback<void(std::vector<uint64_t> balances)>;
+      base::OnceCallback<void(const std::vector<uint64_t>& balances)>;
 
   using GetNftMetadatasCallback =
       base::OnceCallback<void(std::vector<mojom::NftMetadataPtr> metadatas)>;

@@ -2933,7 +2933,7 @@ void JsonRpcService::GetNftBalances(
 }
 
 void JsonRpcService::OnGetNftBalances(GetNftBalancesCallback callback,
-                                      std::vector<uint64_t> balances) {
+                                      const std::vector<uint64_t>& balances) {
   std::move(callback).Run(balances, "");
 }
 

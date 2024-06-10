@@ -746,7 +746,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                         const std::string& error_message);
 
   void OnGetNftBalances(GetNftBalancesCallback callback,
-                        std::vector<uint64_t> balances);
+                        const std::vector<uint64_t>& balances);
   // Solana
   void OnGetSolanaBalance(GetSolanaBalanceCallback callback,
                           APIRequestResult api_request_result);
