@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/time/time.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/split_view/split_view_menu_bubble.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -18,6 +19,11 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
+#include "ui/gfx/animation/slide_animation.h"
+#include "ui/gfx/animation/tween.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/transform.h"
+#include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -28,7 +34,8 @@
 #include "ui/views/widget/widget_delegate.h"
 
 namespace {
-class MenuButtonDelegate : public views::WidgetDelegateView {
+class MenuButtonDelegate : public views::WidgetDelegateView,
+                           public gfx::AnimationDelegate {
   METADATA_HEADER(MenuButtonDelegate, views::WidgetDelegateView)
 
  public:
@@ -58,14 +65,61 @@ class MenuButtonDelegate : public views::WidgetDelegateView {
 
     image_button->SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     image_button->SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
+
+    background_animation_.SetSlideDuration(base::Milliseconds(150));
+
+    SetNotifyEnterExitOnChild(true);
   }
 
   ~MenuButtonDelegate() override = default;
+
+  // views::WidgetDelegateView:
+  void OnMouseEntered(const ui::MouseEvent& event) override {
+    background_animation_.Show();
+  }
+
+  void OnMouseExited(const ui::MouseEvent& event) override {
+    background_animation_.Hide();
+  }
+
+  void OnPaintBackground(gfx::Canvas* canvas) override {
+    auto scoped_canvas = TransformCanvasForBackground(canvas);
+    views::WidgetDelegateView::OnPaintBackground(canvas);
+  }
+
+  void OnPaintBorder(gfx::Canvas* canvas) override {
+    auto scoped_canvas = TransformCanvasForBackground(canvas);
+    views::WidgetDelegateView::OnPaintBorder(canvas);
+  }
+
+  // gfx::AnimationDelegate:
+  void AnimationEnded(const gfx::Animation* animation) override {
+    SchedulePaint();
+  }
+
+  void AnimationProgressed(const gfx::Animation* animation) override {
+    SchedulePaint();
+  }
 
  private:
   void OnMenuPressed(Browser* browser, const ui::Event& event) {
     SplitViewMenuBubble::Show(browser, this);
   }
+
+  std::unique_ptr<gfx::ScopedCanvas> TransformCanvasForBackground(
+      gfx::Canvas* canvas) {
+    auto scoped_canvas = std::make_unique<gfx::ScopedCanvas>(canvas);
+    gfx::Transform transform;
+    transform.Translate(width() / 2, height() / 2);
+    transform.Scale(gfx::Tween::DoubleValueBetween(
+                        background_animation_.GetCurrentValue(), 0.4, 1),
+                    1);
+    transform.Translate(-width() / 2, -height() / 2);
+    canvas->Transform(transform);
+    return scoped_canvas;
+  }
+
+  gfx::SlideAnimation background_animation_{this};
 };
 
 BEGIN_METADATA(MenuButtonDelegate)
