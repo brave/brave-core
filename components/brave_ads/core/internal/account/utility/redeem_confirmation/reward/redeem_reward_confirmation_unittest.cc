@@ -273,7 +273,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
-       RetryRedeemingIfInvalidJsonResponseBody) {
+       RetryRedeemingIfInvalidResponseBody) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -299,7 +299,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(::testing::_,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/true));
 
   RedeemRewardConfirmation::CreateAndRedeem(

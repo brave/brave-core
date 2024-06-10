@@ -13,7 +13,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 

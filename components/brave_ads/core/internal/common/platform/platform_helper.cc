@@ -33,7 +33,8 @@ PlatformHelper::PlatformHelper() = default;
 PlatformHelper::~PlatformHelper() = default;
 
 // static
-void PlatformHelper::SetForTesting(const PlatformHelper* platform_helper) {
+void PlatformHelper::SetForTesting(
+    const PlatformHelper* const platform_helper) {
   g_platform_helper_for_testing = platform_helper;
 }
 

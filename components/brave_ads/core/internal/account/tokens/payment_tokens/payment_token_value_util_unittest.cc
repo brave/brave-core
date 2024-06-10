@@ -65,11 +65,8 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
 
-  // Act
-  const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);
-
-  // Assert
-  EXPECT_TRUE(payment_tokens.empty());
+  // Act & Assert
+  EXPECT_THAT(PaymentTokensFromValue(list), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

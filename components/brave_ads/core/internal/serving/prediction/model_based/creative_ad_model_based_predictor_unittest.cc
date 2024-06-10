@@ -35,10 +35,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
       InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kViewedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*created_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -71,10 +71,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
       InterestUserModelInfo{SegmentList{"parent-child"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event =
-      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
-                         ConfirmationType::kViewedImpression, Now(),
-                         /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event = test::BuildAdEvent(
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*created_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert

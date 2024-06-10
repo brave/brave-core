@@ -17,6 +17,7 @@ void InitializeCommandLineSwitches();
 void ShutdownCommandLineSwitches();
 
 std::optional<bool>& DidAppendCommandLineSwitches();
+
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
 

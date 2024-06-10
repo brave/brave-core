@@ -25,13 +25,15 @@ BrowserManager& BrowserManager::GetInstance() {
   return GlobalState::GetInstance()->GetBrowserManager();
 }
 
-void BrowserManager::AddObserver(BrowserManagerObserver* observer) {
+void BrowserManager::AddObserver(BrowserManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
+void BrowserManager::RemoveObserver(BrowserManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

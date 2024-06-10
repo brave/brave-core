@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_brave_news_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_brave_news_ads_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
@@ -22,7 +22,7 @@ TEST_F(BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest, IsOptedIn) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToBraveNewsAds,
             diagnostic_entry.GetType());
-  EXPECT_EQ("Opted-in to Brave News ads", diagnostic_entry.GetName());
+  EXPECT_EQ("Opted into Brave News ads", diagnostic_entry.GetName());
   EXPECT_EQ("true", diagnostic_entry.GetValue());
 }
 
@@ -35,7 +35,7 @@ TEST_F(BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest, IsOptedOut) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToBraveNewsAds,
             diagnostic_entry.GetType());
-  EXPECT_EQ("Opted-in to Brave News ads", diagnostic_entry.GetName());
+  EXPECT_EQ("Opted into Brave News ads", diagnostic_entry.GetName());
   EXPECT_EQ("false", diagnostic_entry.GetValue());
 }
 

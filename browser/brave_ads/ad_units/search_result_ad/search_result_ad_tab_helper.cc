@@ -5,10 +5,7 @@
 
 #include "brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h"
 
-#include <utility>
-
 #include "base/containers/contains.h"
-#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"

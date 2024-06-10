@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_unittest_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -24,11 +25,8 @@ TEST(BraveAdsBlindedTokenUtilTest, BlindTokens) {
 }
 
 TEST(BraveAdsBlindedTokenUtilTToUnblindedTokensest, BlindEmptyTokens) {
-  // Act
-  const std::vector<BlindedToken> blinded_tokens = BlindTokens({});
-
-  // Assert
-  EXPECT_TRUE(blinded_tokens.empty());
+  // Act & Assert
+  EXPECT_THAT(BlindTokens(/*tokens=*/{}), ::testing::IsEmpty());
 }
 
 TEST(BraveAdsBlindedTokenUtilTest, TokensToRawTokens) {
@@ -45,12 +43,8 @@ TEST(BraveAdsBlindedTokenUtilTest, TokensToRawTokens) {
 }
 
 TEST(BraveAdsBlindedTokenUtilTest, EmptyTokensToRawTokens) {
-  // Act
-  const std::vector<challenge_bypass_ristretto::BlindedToken> raw_tokens =
-      ToRawBlindedTokens({});
-
-  // Assert
-  EXPECT_TRUE(raw_tokens.empty());
+  // Act & Assert
+  EXPECT_THAT(ToRawBlindedTokens(/*tokens=*/{}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

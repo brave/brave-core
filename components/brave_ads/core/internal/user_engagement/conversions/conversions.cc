@@ -39,13 +39,15 @@ Conversions::~Conversions() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void Conversions::AddObserver(ConversionsObserver* observer) {
+void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void Conversions::RemoveObserver(ConversionsObserver* observer) {
+void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
@@ -204,8 +206,8 @@ void Conversions::CheckForConversions(
     }
 
     if (did_convert) {
-      // Remove the bucket for this creative set so that we debounce conversions
-      // for the remainder of the ad events.
+      // Remove the bucket for this creative set so that we deduplicate
+      // conversions for the remainder of the ad events.
       creative_set_conversion_buckets.erase(creative_set_id);
     }
   }

@@ -30,7 +30,7 @@ namespace {
 
 constexpr char kTableName[] = "transactions";
 
-void BindRecords(mojom::DBCommandInfo* command) {
+void BindRecords(mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   command->record_bindings = {
@@ -86,7 +86,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-TransactionInfo GetFromRecord(mojom::DBRecordInfo* record) {
+TransactionInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   CHECK(record);
 
   TransactionInfo transaction;
@@ -145,7 +145,7 @@ void GetCallback(GetTransactionsCallback callback,
   std::move(callback).Run(/*success=*/true, transactions);
 }
 
-void MigrateToV18(mojom::DBTransactionInfo* transaction) {
+void MigrateToV18(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -164,7 +164,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void MigrateToV26(mojom::DBTransactionInfo* transaction) {
+void MigrateToV26(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Create a temporary table:
@@ -197,7 +197,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   RenameTable(transaction, "transactions_temp", "transactions");
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   {
@@ -235,7 +235,7 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   }
 }
 
-void MigrateToV32(mojom::DBTransactionInfo* transaction) {
+void MigrateToV32(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Migrate `confirmation_type` from 'saved' to 'bookmark'.
@@ -252,7 +252,7 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Optimize database query for `GetForDateRange`.
@@ -382,7 +382,7 @@ std::string Transactions::GetTableName() const {
   return kTableName;
 }
 
-void Transactions::Create(mojom::DBTransactionInfo* transaction) {
+void Transactions::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();

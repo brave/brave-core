@@ -62,7 +62,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"  // IWYU pragma: keep
+#include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -270,7 +270,10 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
 
 void AdsServiceImpl::RegisterResourceComponents() const {
   RegisterResourceComponentsForCurrentCountryCode();
+
   if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 }
@@ -703,10 +706,11 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
     return Shutdown();
   }
 
-  // Register language resource components if the user has just opted-in to
-  // notification ads and Bat Ads Service was already started
   if (IsBatAdsServiceBound() && UserHasOptedInToNotificationAds() &&
       path == prefs::kOptedInToNotificationAds) {
+    // Register language resource components if the user has joined Brave
+    // Rewards, opted into notification ads, and the Bat Ads Service has
+    // already started.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 

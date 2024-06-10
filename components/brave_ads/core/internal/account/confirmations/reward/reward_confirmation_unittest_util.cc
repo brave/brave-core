@@ -19,7 +19,7 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* token_generator,
+    TokenGeneratorInterface* const token_generator,
     const bool should_use_random_uuids) {
   CHECK(token_generator);
   CHECK(UserHasJoinedBraveRewards());

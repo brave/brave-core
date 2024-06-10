@@ -46,7 +46,7 @@ class TextProcessing final {
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::File file);
 
-  std::optional<PredictionMap> Predict(VectorData* vector_data) const;
+  std::optional<PredictionMap> Predict(const VectorData* vector_data) const;
 
   std::optional<PredictionMap> Apply(
       std::unique_ptr<Data> mutable_input_data) const;

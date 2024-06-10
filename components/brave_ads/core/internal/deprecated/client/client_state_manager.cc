@@ -30,7 +30,7 @@ constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,
-    FilteredAdvertiserList* filtered_advertisers) {
+    FilteredAdvertiserList* const filtered_advertisers) {
   CHECK(!advertiser_id.empty());
   CHECK(filtered_advertisers);
 
@@ -40,7 +40,7 @@ FilteredAdvertiserList::iterator FindFilteredAdvertiser(
 
 FilteredCategoryList::iterator FindFilteredCategory(
     const std::string& category,
-    FilteredCategoryList* filtered_categories) {
+    FilteredCategoryList* const filtered_categories) {
   CHECK(!category.empty());
   CHECK(filtered_categories);
 

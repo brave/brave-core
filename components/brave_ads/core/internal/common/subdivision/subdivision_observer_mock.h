@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_SUBDIVISION_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_SUBDIVISION_OBSERVER_MOCK_H_
 
-#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer.h"
-
 #include <string>
 
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 

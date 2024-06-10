@@ -150,7 +150,7 @@ TEST_F(BraveAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   ss << verification_signature;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

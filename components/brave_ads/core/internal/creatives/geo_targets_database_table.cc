@@ -67,7 +67,7 @@ std::string GeoTargets::GetTableName() const {
   return kTableName;
 }
 
-void GeoTargets::Create(mojom::DBTransactionInfo* transaction) {
+void GeoTargets::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -99,7 +99,7 @@ void GeoTargets::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void GeoTargets::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+void GeoTargets::MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // We can safely recreate the table because it will be repopulated after

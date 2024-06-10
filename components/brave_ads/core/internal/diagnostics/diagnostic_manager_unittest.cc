@@ -41,7 +41,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   SetLastUnIdleTimeDiagnosticEntry(Now());
 
   // Act & Assert
-  const base::Value::List expected_list = base::test::ParseJsonList(
+  const base::Value::List expected_diagnostics = base::test::ParseJsonList(
       R"(
           [
             {
@@ -49,19 +49,19 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
             },
             {
-              "name": "Opted-in to Brave News ads",
+              "name": "Opted into Brave News ads",
               "value": "true"
             },
             {
-              "name": "Opted-in to new tab page ads",
+              "name": "Opted into new tab page ads",
               "value": "true"
             },
             {
-              "name": "Opted-in to notification ads",
+              "name": "Opted into notification ads",
               "value": "true"
             },
             {
-              "name": "Opted-in to search result ads",
+              "name": "Opted into search result ads",
               "value": "true"
             },
             {
@@ -83,7 +83,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
           ])");
 
   base::MockCallback<GetDiagnosticsCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_list))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_diagnostics))));
   DiagnosticManager::GetInstance().GetDiagnostics(callback.Get());
 }
 

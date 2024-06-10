@@ -33,13 +33,15 @@ HistoryManager& HistoryManager::GetInstance() {
   return GlobalState::GetInstance()->GetHistoryManager();
 }
 
-void HistoryManager::AddObserver(HistoryManagerObserver* observer) {
+void HistoryManager::AddObserver(HistoryManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
+void HistoryManager::RemoveObserver(HistoryManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 

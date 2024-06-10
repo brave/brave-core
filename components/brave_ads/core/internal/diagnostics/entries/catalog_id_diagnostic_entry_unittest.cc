@@ -35,7 +35,7 @@ TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
-  EXPECT_EQ("", diagnostic_entry.GetValue());
+  EXPECT_THAT(diagnostic_entry.GetValue(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

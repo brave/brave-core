@@ -53,10 +53,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJoS1BFbHdTaXMwMjR1bnRTRm8wQVB6T3pGM09mM0dKYlQ5NnYvWHVtcWhrUUlkL3g3OHBWWVpKWk51OXRpNVYzeFRhQUFmYXg5VzVEblp5UkRVOERzdz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};
@@ -84,10 +85,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJ6b1dwRkhxZ2pkWjkyUmdYSFMvZnJ4OU1FaUVkVjRKaUtlNjF2dEV0VkhRWTFhVGRGQ3hDWG1VM2NEUFFzbDIxRENoQU16QUFwZ3IvdnhQc2c1V21xUT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};
@@ -115,10 +117,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJ3eGNrTStYK2gySXFxUHdTNTdMQUZ2a3lyaCs1dXJUS0x5Zlc3a0RGY2NGSFpJWkpvSDdMVmo3ZEJEVk01Tzk4bnNCanJyc2tsZVNINlViMzgwQTVPZz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};
@@ -146,10 +149,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJaTERTZnJHSUczQm93VjF2ODFnQzlTMVhBeElMWWI5UkpwaHlDNjNBSXE4RnkzeVE4dkJoRkxLT2FlYUdWT2pFdjZFTUkwekZ0UEVtakdtRk5xanRKQT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};
@@ -179,10 +183,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJaTERTZnJHSUczQm93VjF2ODFnQzlTMVhBeElMWWI5UkpwaHlDNjNBSXE4RnkzeVE4dkJoRkxLT2FlYUdWT2pFdjZFTUkwekZ0UEVtakdtRk5xanRKQT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};
@@ -212,10 +217,11 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJaTERTZnJHSUczQm93VjF2ODFnQzlTMVhBeElMWWI5UkpwaHlDNjNBSXE4RnkzeVE4dkJoRkxLT2FlYUdWT2pFdjZFTUkwekZ0UEVtakdtRk5xanRKQT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)");
   expected_url_request->headers = {"accept: application/json"};

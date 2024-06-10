@@ -70,7 +70,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
                                     AdType::kNewTabPageAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)));
+  EXPECT_CALL(callback, Run(/*statement=*/::testing::Ne(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -102,7 +102,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 
@@ -118,7 +118,7 @@ TEST_F(
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::nullopt)));
+  EXPECT_CALL(callback, Run(/*statement=*/::testing::Eq(std::nullopt)));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
 }
 

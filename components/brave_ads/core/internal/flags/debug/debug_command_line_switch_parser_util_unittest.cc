@@ -41,6 +41,7 @@ class BraveAdsDebugCommandLineSwitchParserUtilTest
 TEST_P(BraveAdsDebugCommandLineSwitchParserUtilTest,
        ParseDebugCommandLineSwitch) {
   // Act & Assert
+  ASSERT_TRUE(GlobalState::HasInstance());
   EXPECT_EQ(GetParam().expected_should_debug,
             GlobalState::GetInstance()->Flags().should_debug);
 }

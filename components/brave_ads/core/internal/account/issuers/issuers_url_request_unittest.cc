@@ -48,8 +48,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   issuers_url_request_->PeriodicallyFetch();
 }
 
-TEST_F(BraveAdsIssuersUrlRequestTest,
-       DoNotFetchIssuersIfInvalidJsonResponseBody) {
+TEST_F(BraveAdsIssuersUrlRequestTest, DoNotFetchIssuersIfInvalidResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};

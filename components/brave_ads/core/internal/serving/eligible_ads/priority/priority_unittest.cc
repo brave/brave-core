@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 
@@ -17,11 +18,8 @@ class BraveAdsPriorityTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPriorityTest,
        SortCreativeAdsIntoBucketsByPriorityForNoCreativeAds) {
-  // Arrange
-  const CreativeNotificationAdList creative_ads;
-
   // Act & Assert
-  EXPECT_THAT(SortCreativeAdsIntoBucketsByPriority(creative_ads),
+  EXPECT_THAT(SortCreativeAdsIntoBucketsByPriority(CreativeAdList{}),
               ::testing::IsEmpty());
 }
 

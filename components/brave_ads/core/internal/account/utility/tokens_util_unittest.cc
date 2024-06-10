@@ -40,16 +40,14 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParsePublicKey) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("publicKey", cbr::kInvalidBase64);
+  const base::Value::Dict dict =
+      BuildUrlResponseBody().Set("publicKey", cbr::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(ParsePublicKey(dict));
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
-  // Arrange
-
   // Act
   const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
       ParseSignedTokens(BuildUrlResponseBody());
@@ -71,8 +69,8 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidSignedTokens) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("signedTokens", cbr::kInvalidBase64);
+  const base::Value::Dict dict =
+      BuildUrlResponseBody().Set("signedTokens", cbr::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
@@ -124,8 +122,8 @@ TEST_F(BraveAdsSignedTokensUtilTest,
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNoParseVerifyAndUnblindMalformedSignedTokens) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("signedTokens", base::Value::List().Append(/*invalid*/ 0));
+  const base::Value::Dict dict = BuildUrlResponseBody().Set(
+      "signedTokens", base::Value::List().Append(/*invalid*/ 0));
 
   // Act
   const auto result = ParseVerifyAndUnblindTokens(dict, cbr::test::GetTokens(),
@@ -139,8 +137,8 @@ TEST_F(BraveAdsSignedTokensUtilTest,
 TEST_F(BraveAdsSignedTokensUtilTest,
        DoNotParseVerifyAndUnblindInvalidSignedTokens) {
   // Arrange
-  base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("signedTokens", base::Value::List().Append(cbr::kInvalidBase64));
+  const base::Value::Dict dict = BuildUrlResponseBody().Set(
+      "signedTokens", base::Value::List().Append(cbr::kInvalidBase64));
 
   // Act
   const auto result = ParseVerifyAndUnblindTokens(dict, cbr::test::GetTokens(),

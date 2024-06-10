@@ -68,7 +68,8 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             TransactionList{transaction_2, transaction_3}));
-  GetTransactionsForDateRange(Now(), DistantFuture(), callback.Get());
+  GetTransactionsForDateRange(/*from_time=*/Now(), /*to_time=*/DistantFuture(),
+                              callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsTest, RemoveAll) {

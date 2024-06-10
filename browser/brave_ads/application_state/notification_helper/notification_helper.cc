@@ -8,13 +8,11 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_platform_bridge.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_android.h"
@@ -22,6 +20,8 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl_linux.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_MAC)

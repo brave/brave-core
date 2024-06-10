@@ -19,7 +19,7 @@ constexpr char kTrialName[] = "AdvertiserSplitTestStudy";
 
 std::optional<std::string> GetSplitTestGroupName(
     const std::string& trial_name) {
-  base::FieldTrial* field_trial = base::FieldTrialList::Find(trial_name);
+  base::FieldTrial* const field_trial = base::FieldTrialList::Find(trial_name);
   if (!field_trial) {
     return std::nullopt;
   }

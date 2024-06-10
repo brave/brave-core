@@ -17,6 +17,7 @@ class BraveAdsUrlHostUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
@@ -26,6 +27,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
 
 TEST_F(BraveAdsUrlHostUtilTest, GetGeoUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
@@ -35,6 +37,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetGeoUrlHost) {
 
 TEST_F(BraveAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
@@ -44,6 +47,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
 
 TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
@@ -53,6 +57,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousUrlHost) {
 
 TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 

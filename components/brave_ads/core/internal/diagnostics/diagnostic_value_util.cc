@@ -19,7 +19,7 @@ constexpr char kValueKey[] = "value";
 base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
   base::Value::List list;
 
-  for (const auto& [entry_type, entry] : diagnostics) {
+  for (const auto& [_, entry] : diagnostics) {
     CHECK(entry);
 
     list.Append(base::Value::Dict()

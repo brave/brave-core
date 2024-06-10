@@ -8,9 +8,7 @@
 namespace brave_ads {
 
 base::Value::Dict FilteredCategoryInfo::ToValue() const {
-  base::Value::Dict dict;
-  dict.Set("name", name);
-  return dict;
+  return base::Value::Dict().Set("name", name);
 }
 
 void FilteredCategoryInfo::FromValue(const base::Value::Dict& dict) {

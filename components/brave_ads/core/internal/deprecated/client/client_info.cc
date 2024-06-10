@@ -35,11 +35,10 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 ClientInfo::~ClientInfo() = default;
 
 base::Value::Dict ClientInfo::ToValue() const {
-  base::Value::Dict dict;
-
-  dict.Set("adPreferences", ad_preferences.ToValue());
-
-  dict.Set("adsShownHistory", HistoryItemsToValue(history_items));
+  base::Value::Dict dict =
+      base::Value::Dict()
+          .Set("adPreferences", ad_preferences.ToValue())
+          .Set("adsShownHistory", HistoryItemsToValue(history_items));
 
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
@@ -62,12 +61,12 @@ base::Value::Dict ClientInfo::ToValue() const {
   for (const auto& item : text_classification_probabilities) {
     base::Value::List probabilities_list;
 
-    for (const auto& [segmemt, page_score] : item) {
-      CHECK(!segmemt.empty());
+    for (const auto& [segment, page_score] : item) {
+      CHECK(!segment.empty());
 
       probabilities_list.Append(
           base::Value::Dict()
-              .Set("segment", segmemt)
+              .Set("segment", segment)
               .Set("pageScore", base::NumberToString(page_score)));
     }
 
@@ -96,7 +95,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
-      const auto* items = history.GetIfList();
+      const auto* const items = history.GetIfList();
       if (!items) {
         continue;
       }

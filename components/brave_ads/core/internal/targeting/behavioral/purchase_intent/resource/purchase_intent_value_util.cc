@@ -72,7 +72,7 @@ std::optional<SegmentList> ParseSegments(const base::Value::Dict& dict) {
   segments.reserve(segment_list->size());
 
   for (const auto& segment_value : *segment_list) {
-    const std::string* segment = segment_value.GetIfString();
+    const std::string* const segment = segment_value.GetIfString();
     if (!segment || segment->empty()) {
       return std::nullopt;
     }
@@ -161,7 +161,7 @@ std::optional<PurchaseIntentFunnelSiteMap> ParseFunnelSites(
   PurchaseIntentFunnelSiteMap funnel_sites;
 
   for (const auto& funnel_value : *funnel_list) {
-    const base::Value::Dict* funnel_dict = funnel_value.GetIfDict();
+    const auto* const funnel_dict = funnel_value.GetIfDict();
     if (!funnel_dict) {
       return std::nullopt;
     }
@@ -178,7 +178,7 @@ std::optional<PurchaseIntentFunnelSiteMap> ParseFunnelSites(
     }
 
     for (const auto& funnel_site_value : *funnel_site_list) {
-      const std::string* funnel_site = funnel_site_value.GetIfString();
+      const std::string* const funnel_site = funnel_site_value.GetIfString();
       if (!funnel_site) {
         return std::nullopt;
       }

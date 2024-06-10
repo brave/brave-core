@@ -44,9 +44,10 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, Save) {
   // Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true, SegmentList{"architecture", "arts & entertainment"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -63,10 +64,11 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, SaveInBatches) {
   // Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            SegmentList{"architecture", "arts & entertainment",
-                                        "automotive"},
-                            testing::UnorderedElementsAreArray(creative_ads)));
+  EXPECT_CALL(
+      callback,
+      Run(/*success=*/true,
+          SegmentList{"architecture", "arts & entertainment", "automotive"},
+          ::testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetForActiveCampaigns(callback.Get());
 }
 
@@ -182,7 +184,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   EXPECT_CALL(
       callback,
       Run(/*success=*/true, SegmentList{"technology & computing", "automotive"},
-          testing::UnorderedElementsAreArray(
+          ::testing::UnorderedElementsAreArray(
               CreativeInlineContentAdList{creative_ad_1, creative_ad_3})));
   database_table_.GetForSegmentsAndDimensions(
       /*segments=*/{"technology & computing", "automotive"},

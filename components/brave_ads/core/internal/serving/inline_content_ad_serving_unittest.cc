@@ -82,8 +82,8 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   EXPECT_CALL(delegate_mock_, OnDidServeInlineContentAd);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*dimensions=*/"200x100", ::testing::Ne(std::nullopt)));
+  EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
+                            /*ad=*/::testing::Ne(std::nullopt)));
   MaybeServeAd("200x100", callback.Get());
 }
 

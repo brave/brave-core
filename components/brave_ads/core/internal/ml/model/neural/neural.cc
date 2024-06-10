@@ -24,7 +24,8 @@ constexpr char kPostMatrixFunctionTypeSoftmax[] = "softmax";
 
 }  // namespace
 
-NeuralModel::NeuralModel(const neural_text_classification::flat::Model* model)
+NeuralModel::NeuralModel(
+    const neural_text_classification::flat::Model* const model)
     : model_(model) {
   CHECK(model_);
 }
@@ -43,12 +44,12 @@ std::optional<PredictionMap> NeuralModel::Predict(
     return std::nullopt;
   }
 
-  const auto* matrices = classifier->matrices();
+  const auto* const matrices = classifier->matrices();
   if (!matrices) {
     return std::nullopt;
   }
 
-  const auto* activation_functions = classifier->activation_functions();
+  const auto* const activation_functions = classifier->activation_functions();
   if (!activation_functions ||
       matrices->size() != activation_functions->size()) {
     return std::nullopt;
@@ -57,12 +58,12 @@ std::optional<PredictionMap> NeuralModel::Predict(
   VectorData layer_input = data;
   for (size_t i = 0; i < matrices->size(); i++) {
     std::vector<float> next_layer_input;
-    const auto* matrix = matrices->Get(i);
+    const auto* const matrix = matrices->Get(i);
     if (!matrix || !matrix->weights_rows()) {
       return std::nullopt;
     }
 
-    for (const auto* matrix_row : *matrix->weights_rows()) {
+    for (const auto* const matrix_row : *matrix->weights_rows()) {
       if (!matrix_row || !matrix_row->row()) {
         return std::nullopt;
       }
@@ -76,7 +77,7 @@ std::optional<PredictionMap> NeuralModel::Predict(
     }
     layer_input = VectorData(std::move(next_layer_input));
 
-    const auto* activation_function = activation_functions->Get(i);
+    const auto* const activation_function = activation_functions->Get(i);
     if (!activation_function) {
       return std::nullopt;
     }
@@ -88,13 +89,13 @@ std::optional<PredictionMap> NeuralModel::Predict(
   }
 
   const std::vector<float> output_layer = layer_input.GetDenseData();
-  const auto* segments = classifier->segments();
+  const auto* const segments = classifier->segments();
   if (!segments || segments->size() != output_layer.size()) {
     return std::nullopt;
   }
 
   for (size_t i = 0; i < segments->size(); i++) {
-    const auto* segment = segments->Get(i);
+    const auto* const segment = segments->Get(i);
     if (!segment) {
       return std::nullopt;
     }

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_handler.h"
+
 #include <memory>
 #include <string_view>
 #include <utility>
@@ -13,10 +15,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_converting_util.h"
-#include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/test_web_page_util.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

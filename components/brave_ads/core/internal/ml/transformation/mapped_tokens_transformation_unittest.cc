@@ -27,10 +27,12 @@ class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
       const std::map<std::string, std::vector<uint16_t>>&
           token_categories_mapping) {
     buffer_ = pipeline::NeuralPipelineBufferBuilder()
-                  .CreateClassifier({}, {}, {})
+                  .CreateClassifier(/*raw_matrices=*/{},
+                                    /*raw_activation_functions=*/{},
+                                    /*raw_segments=*/{})
                   .AddMappedTokensTransformation(vector_dimension,
                                                  token_categories_mapping)
-                  .Build("en");
+                  .Build(/*language=*/"en");
 
     flatbuffers::Verifier verifier(
         reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
@@ -38,13 +40,14 @@ class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
       return std::nullopt;
     }
 
-    const auto* raw_model =
+    const auto* const raw_model =
         neural_text_classification::flat::GetModel(buffer_.data());
     if (!raw_model || !raw_model->transformations()) {
       return std::nullopt;
     }
 
-    const auto* transformation_entry = raw_model->transformations()->Get(0);
+    const auto* const transformation_entry =
+        raw_model->transformations()->Get(0);
     if (!transformation_entry) {
       return std::nullopt;
     }
@@ -90,12 +93,12 @@ TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
               static_cast<size_t>(vector_dimension));
 
   // Assert
-  EXPECT_TRUE(std::fabs(1.0 - transformed_vector_values.at(0)) < kTolerance &&
-              std::fabs(2.0 - transformed_vector_values.at(1)) < kTolerance &&
-              std::fabs(0.0 - transformed_vector_values.at(2)) < kTolerance &&
-              std::fabs(1.0 - transformed_vector_values.at(3)) < kTolerance &&
-              std::fabs(1.0 - transformed_vector_values.at(4)) < kTolerance &&
-              std::fabs(1.0 - transformed_vector_values.at(5)) < kTolerance);
+  EXPECT_LT(std::fabs(1.0 - transformed_vector_values.at(0)), kTolerance);
+  EXPECT_LT(std::fabs(2.0 - transformed_vector_values.at(1)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(2)), kTolerance);
+  EXPECT_LT(std::fabs(1.0 - transformed_vector_values.at(3)), kTolerance);
+  EXPECT_LT(std::fabs(1.0 - transformed_vector_values.at(4)), kTolerance);
+  EXPECT_LT(std::fabs(1.0 - transformed_vector_values.at(5)), kTolerance);
 }
 
 TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
@@ -126,12 +129,12 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
               static_cast<size_t>(vector_dimension));
 
   // Assert
-  EXPECT_TRUE(std::fabs(0 - transformed_vector_values.at(0)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(1)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(2)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(3)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(4)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(5)) < kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(0)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(1)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(2)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(3)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(4)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(5)), kTolerance);
 }
 
 TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
@@ -142,7 +145,7 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   int vector_dimension = 6;
-  std::map<std::string, std::vector<uint16_t>> token_categories_mapping = {};
+  std::map<std::string, std::vector<uint16_t>> token_categories_mapping;
 
   std::optional<MappedTokensTransformation> to_mapped_tokens =
       BuildMappedTokensTransformation(vector_dimension,
@@ -161,12 +164,12 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
               static_cast<size_t>(vector_dimension));
 
   // Assert
-  EXPECT_TRUE(std::fabs(0 - transformed_vector_values.at(0)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(1)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(2)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(3)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(4)) < kTolerance &&
-              std::fabs(0 - transformed_vector_values.at(5)) < kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(0)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(1)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(2)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(3)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(4)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(5)), kTolerance);
 }
 
 TEST_F(BraveAdsMappedTokensTransformationTest, NonTextData) {

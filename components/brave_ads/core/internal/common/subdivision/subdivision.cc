@@ -114,6 +114,7 @@ void Subdivision::OnNotifyPrefDidChange(const std::string& path) {
 
 void Subdivision::OnDidFetchSubdivision(const std::string& subdivision) {
   CHECK(!subdivision.empty());
+
   const std::optional<std::string> country_code =
       GetSubdivisionCountryCode(subdivision);
   const std::optional<std::string> subdivision_code =

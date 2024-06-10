@@ -76,7 +76,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   EXPECT_CALL(delegate_mock_, OnDidServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Ne(std::nullopt)));
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)));
   MaybeServeAd(callback.Get());
 }
 

@@ -161,12 +161,9 @@ TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
-  // Act
-  const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value=*/"INVALID");
-
-  // Assert
-  EXPECT_TRUE(triggers.empty());
+  // Act & Assert
+  EXPECT_THAT(ToUserActivityTriggers(/*param_value=*/"INVALID"),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -183,12 +180,8 @@ TEST_F(BraveAdsUserActivityUtilTest,
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
-  // Act
-  const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value=*/{});
-
-  // Assert
-  EXPECT_TRUE(triggers.empty());
+  // Act & Assert
+  EXPECT_THAT(ToUserActivityTriggers(/*param_value=*/{}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

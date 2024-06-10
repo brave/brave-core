@@ -23,7 +23,7 @@ std::unique_ptr<Data> DistributionTransformation::Apply(
     return {};
   }
 
-  auto* vector_data = static_cast<VectorData*>(input_data.get());
+  const auto* const vector_data = static_cast<VectorData*>(input_data.get());
 
   VectorData vector_data_copy = *vector_data;
   vector_data_copy.ToDistribution();

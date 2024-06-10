@@ -26,8 +26,7 @@ bool IsPaymentsIssuerValid(const IssuersInfo& issuers) {
   const int maximum_issuer_public_keys = kMaximumIssuerPublicKeys.Get();
 
   base::flat_map<double, int> buckets;
-  for (const auto& [public_key, associated_value] :
-       payments_issuer->public_keys) {
+  for (const auto& [_, associated_value] : payments_issuer->public_keys) {
     ++buckets[associated_value];
     if (buckets[associated_value] > maximum_issuer_public_keys) {
       return false;

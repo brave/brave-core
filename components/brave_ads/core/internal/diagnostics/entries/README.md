@@ -9,8 +9,9 @@ Diagnostic information to help identify the root cause of issues that users may 
 | device id  |
 | last unidle at  |
 | locale  |
-| opted-in to brave news ads  |
-| opted-in to new tab page ads  |
-| opted-in to notification ads  |
+| opted into Brave News ads  |
+| opted into new tab page ads  |
+| opted into notification ads  |
+| opted into search result ads  |
 
 Please add to it!

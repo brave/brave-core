@@ -36,16 +36,16 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "conversion": [
-              {
-                "action": "view"
-              }
-            ]
-          })");
-  EXPECT_EQ(expected_user_data, BuildConversionUserData(conversion));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "conversion": [
+                        {
+                          "action": "view"
+                        }
+                      ]
+                    })"),
+            BuildConversionUserData(conversion));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,
@@ -82,16 +82,16 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "conversion": [
-              {
-                "action": "view"
-              }
-            ]
-          })");
-  EXPECT_EQ(expected_user_data, BuildConversionUserData(conversion));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "conversion": [
+                        {
+                          "action": "view"
+                        }
+                      ]
+                    })"),
+            BuildConversionUserData(conversion));
 }
 
 TEST_F(BraveAdsConversionUserDataBuilderTest,

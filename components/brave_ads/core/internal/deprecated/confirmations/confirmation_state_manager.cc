@@ -100,15 +100,12 @@ void ConfirmationStateManager::SaveState() {
 }
 
 std::string ConfirmationStateManager::ToJson() {
-  base::Value::Dict dict;
-
-  // Unblinded tokens
-  dict.Set("unblinded_tokens",
-           ConfirmationTokensToValue(confirmation_tokens_.GetAll()));
-
-  // Payment tokens
-  dict.Set("unblinded_payment_tokens",
-           PaymentTokensToValue(payment_tokens_.GetAllTokens()));
+  const base::Value::Dict dict =
+      base::Value::Dict()
+          .Set("unblinded_tokens",
+               ConfirmationTokensToValue(confirmation_tokens_.GetAll()))
+          .Set("unblinded_payment_tokens",
+               PaymentTokensToValue(payment_tokens_.GetAllTokens()));
 
   // Write to JSON
   std::string json;

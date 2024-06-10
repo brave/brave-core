@@ -97,6 +97,7 @@ void NotificationAdManager::RemoveAll(bool should_close) {
   }
 
   ads_.clear();
+  ads_.shrink_to_fit();
 
   SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
 }

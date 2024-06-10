@@ -13,6 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
@@ -20,12 +21,11 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"  // IWYU pragma: keep
+#include "chrome/browser/ui/browser_list_observer.h"
 #endif
 
 class Browser;
 class GURL;
-class PrefService;
 
 namespace brave_ads {
 
@@ -46,8 +46,6 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  PrefService* GetPrefs() const;
-
   bool UserHasOptedInToNotificationAds() const;
 
   bool IsVisible() const;
@@ -60,6 +58,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool IsErrorPage(content::NavigationHandle* navigation_handle);
 
   void ProcessNavigation();
+  void ResetNavigationState();
 
   void MaybeNotifyBrowserDidBecomeActive();
   void MaybeNotifyBrowserDidResignActive();
@@ -112,7 +111,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   bool is_web_contents_visible_ = false;
 
-  bool is_restoring_ = false;
+  bool was_restored_ = false;
   bool is_new_navigation_ = false;
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
