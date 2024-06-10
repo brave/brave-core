@@ -270,7 +270,10 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
 
 void AdsServiceImpl::RegisterResourceComponents() const {
   RegisterResourceComponentsForCurrentCountryCode();
+
   if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 }
@@ -703,10 +706,11 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
     return Shutdown();
   }
 
-  // Register language resource components if the user has just opted-in to
-  // notification ads and Bat Ads Service was already started
   if (IsBatAdsServiceBound() && UserHasOptedInToNotificationAds() &&
       path == prefs::kOptedInToNotificationAds) {
+    // Register language resource components if the user has joined Brave
+    // Rewards, opted into notification ads, and the Bat Ads Service has
+    // already started.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 

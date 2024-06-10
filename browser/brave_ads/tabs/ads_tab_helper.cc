@@ -49,7 +49,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid()) {
-    // `WebContents` is null or has no `SessionTabHelper`.
+    // Invalid session id instance.
     return;
   }
 
@@ -100,7 +100,7 @@ void AdsTabHelper::MaybeSetBrowserIsActive() {
 
   MaybeNotifyBrowserDidBecomeActive();
 
-  // Maybe notify tab change after the browser active state changes because
+  // Maybe notify of tab change after the browser's active state changes because
   // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
   MaybeNotifyTabDidChange();
 }
@@ -115,8 +115,8 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
 
   MaybeNotifyBrowserDidResignActive();
 
-  // Maybe notify tab change after the browser active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  // Maybe notify of tab change after the browser's active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
   MaybeNotifyTabDidChange();
 }
 
@@ -197,7 +197,8 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
   }
 
   if (redirect_chain_.empty()) {
-    // Don't notify content changes if the tab redirect chain is empty.
+    // Don't notify content changes if the tab redirect chain is empty, i.e.,
+    // the web contents are still loading.
     return;
   }
 
@@ -315,11 +316,13 @@ void AdsTabHelper::DidFinishNavigation(
   // For navigations that lead to a document change, `ProcessNavigation` is
   // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
   if (navigation_handle->IsSameDocument()) {
+    // Single-page application.
     ProcessNavigation();
   }
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  // Multi-page application.
   ProcessNavigation();
 }
 

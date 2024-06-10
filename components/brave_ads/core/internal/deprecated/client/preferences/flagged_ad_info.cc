@@ -8,9 +8,7 @@
 namespace brave_ads {
 
 base::Value::Dict FlaggedAdInfo::ToValue() const {
-  base::Value::Dict dict;
-  dict.Set("creative_set_id", creative_set_id);
-  return dict;
+  return base::Value::Dict().Set("creative_set_id", creative_set_id);
 }
 
 void FlaggedAdInfo::FromValue(const base::Value::Dict& dict) {
