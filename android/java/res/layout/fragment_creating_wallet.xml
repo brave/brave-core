@@ -41,6 +41,6 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
             android:text="@string/creating_wallet_subtitle_text"
-            android:textColor="@color/wallet_onboarding_secondary_text_color" />
+            android:textColor="@color/text_secondary" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

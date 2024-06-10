@@ -37,7 +37,7 @@
             android:layout_below="@+id/supported_networks"
             android:layout_alignParentStart="true"
             android:text="@string/choose_blockchains"
-            android:textColor="@color/wallet_onboarding_secondary_text_color" />
+            android:textColor="@color/text_secondary" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/BraveWalletInputLayout"

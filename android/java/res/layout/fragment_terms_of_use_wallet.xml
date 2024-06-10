@@ -43,7 +43,7 @@
             android:layout_below="@+id/before_we_begin"
             android:layout_alignParentStart="true"
             android:text="@string/wallet_accept_items"
-            android:textColor="@color/wallet_onboarding_secondary_text_color" />
+            android:textColor="@color/text_secondary" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/self_custody_check_box"
