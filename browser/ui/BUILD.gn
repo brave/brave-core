@@ -777,6 +777,7 @@ source_set("ui") {
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/media/router:media_router_feature",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/webui",

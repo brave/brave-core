@@ -917,6 +917,7 @@ test("brave_browser_tests") {
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/media/router:media_router_feature",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
