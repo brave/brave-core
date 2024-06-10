@@ -5,17 +5,12 @@
 ## why the filter is required and create an associated tracking issue if needed.
 ##
 
-# unknown time out
-# -AppShimMetricsTest.Basics
-# -PasswordAutofillAgentTest.*
-# -PasswordGeneration*
+# Client side phishing detection is disabled in Brave
+-PhishingClassifierDelegateTest.HasFlatBufferModel
+-PhishingClassifierDelegateTest.HasVisualTfLiteModel
+-PhishingClassifierDelegateTest.NoPhishingModel
 
-# unknown safe browsing related
-#-PhishingClassifierDelegateTest.HasFlatBufferModel
-#-PhishingClassifierDelegateTest.HasVisualTfLiteModel
-#-PhishingClassifierDelegateTest.NoPhishingModel
-
-# unknown safe browsing
+# This is only enabled for safe_browsing_mode == 2
 # -ThreatDOMDetailsTest.CheckTagAndAttributeListIsSorted
 
 # Optimization Guide is disabled
@@ -25,7 +20,7 @@
 -VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy
 -VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy_AgentEnabled
 
-# unknown web app related
+# kWebAppUniversalInstall is disabled
 -WebAppIconHealthChecksBrowserTest.*
 -LaunchWebAppCommandTest.*
 -FetchManifestAndInstallCommandTest.*
@@ -72,6 +67,7 @@
 -All/PrefersColorSchemeTest.*
 -All/WebBluetoothPermissionsPolicyTest.*
 -AlternativeErrorPageOverrideInfoBrowserTest.*
+-AppShimMetricsTest.Basics
 -AudioLifetimeEnforcerBrowserTest.DocumentActiveWhilePlayingAudio
 -AudioLifetimeEnforcerBrowserTest.DocumentInactiveIfNeverPlayedAudio
 -ChromeWebPlatformSecurityMetricsBrowserTest.*
@@ -120,6 +116,8 @@
 -OpenChannelToExtensionExploitTest.*
 -OpenChannelToNativeAppExploitTest.*
 -OpenChannelToTabExploitTest.*
+-PasswordAutofillAgentTest.*
+-PasswordGeneration*
 -PersistentBackground/ContentScriptApiPrerenderingTest.Prerendering/0
 -PersistentBackground/ContentScriptApiTestWithContextType.CannotScriptTheNewTabPage/0
 -PersistentBackground/ContentScriptApiTestWithContextType.Messaging/0
