@@ -134,9 +134,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
-#if BUILDFLAG(IS_WIN)
-      &features::kAppBoundEncryptionMetrics,
-#endif
       &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,

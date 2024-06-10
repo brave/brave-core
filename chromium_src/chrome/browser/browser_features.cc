@@ -13,9 +13,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCertificateTransparencyAskBeforeEnabling,
      base::FEATURE_ENABLED_BY_DEFAULT},
 
-#if BUILDFLAG(IS_WIN)
-    {kAppBoundEncryptionMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
     {kBookmarkTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
     // Google has asked embedders not to enforce these pins:
