@@ -38,14 +38,13 @@ module.exports = {
   preset: 'ts-jest/presets/default',
   testEnvironment: '<rootDir>/components/test/testEnvironment.js',
   moduleFileExtensions: ['js', 'tsx', 'ts', 'json'],
-  globals: {
-    'ts-jest': {
-      'tsconfig': 'tsconfig-jest.json',
-      'isolatedModules': true
-    }
-  },
   transform: {
-    '\\.(jsx|js|ts|tsx)$': 'ts-jest'
+    '\\.(jsx|js|ts|tsx)$': [
+      'ts-jest',
+      {
+        'tsconfig': './tsconfig-jest.json'
+      }
+    ]
   },
   reporters: getReporters(),
   clearMocks: true,

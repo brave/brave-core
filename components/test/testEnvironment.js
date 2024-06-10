@@ -7,7 +7,9 @@ const assert = require('assert')
 const JSDOMEnvironment = require('jest-environment-jsdom')
 const webcrypto = require('crypto').webcrypto
 
-module.exports = class CustomEnvironment extends JSDOMEnvironment {
+module.exports = class CustomEnvironment extends (
+  JSDOMEnvironment.TestEnvironment
+) {
   async setup() {
     await super.setup()
 
@@ -40,14 +42,15 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
 
     // We're adding features missing in JSDOM. If assertions fail, JSDOM has
     // these features now and we can remove our additions.
-    assert(this.global.TextEncoder === undefined)
     this.global.TextEncoder = TextEncoder
 
-    assert(this.global.TextDecoder === undefined)
     this.global.TextDecoder = TextDecoder
 
-    assert(this.global.crypto === undefined)
-    this.global.crypto = webcrypto
+    Object.defineProperty(this.global, 'crypto', {
+      get() {
+        return require('crypto').webcrypto
+      }
+    })
 
     this.global.matchMedia = (query) => ({
       matches: false,
