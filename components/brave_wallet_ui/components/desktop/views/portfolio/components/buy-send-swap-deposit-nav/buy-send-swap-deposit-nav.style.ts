@@ -54,3 +54,7 @@ export const ButtonText = styled.span`
   line-height: 20px;
   color: ${leo.color.text.primary};
 `
+
+export const MoreMenuWrapper = styled(ButtonWrapper)`
+  position: relative;
+`
