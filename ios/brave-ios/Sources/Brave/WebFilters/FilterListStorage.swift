@@ -68,6 +68,10 @@ import Preferences
     var filterLists = regionalFilterLists.enumerated().compactMap {
       index,
       entry -> FilterList? in
+      guard entry.componentId != "eaokkjgnlhceblfhbhpeoebmfldocmnc" else {
+        ContentBlockerManager.log.debug("Skipped \(entry.componentId)")
+        return nil
+      }
       let setting = allFilterListSettings.first(where: {
         $0.componentId == entry.componentId
       })
