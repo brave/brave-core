@@ -20,14 +20,21 @@
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
+#include "brave/components/brave_ads/core/internal/database/database_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
@@ -48,15 +55,27 @@ AdEventMap& AdEventCache() {
 }  // namespace
 
 void MockFlags() {
+  CHECK(GlobalState::HasInstance());
+
   GlobalState::GetInstance()->Flags() = *BuildFlags();
 
-  // Use the staging environment for tests if we did not append command line
-  // switches in `SetUpMocks()`.
   if (!DidAppendCommandLineSwitches()) {
-    CHECK(GlobalState::HasInstance());
+    // Force the test environment to staging if we did not include command-line
+    // switches in `SetUpMocks`, or if the test environment does not support
+    // passing command-line switches.
     GlobalState::GetInstance()->Flags().environment_type =
         mojom::EnvironmentType::kStaging;
   }
+}
+
+void MockAdsClientNotifierAddObserver(AdsClientMock& mock,
+                                      UnitTestBase& unit_test_base) {
+  ON_CALL(mock, AddObserver)
+      .WillByDefault(::testing::Invoke(
+          [&unit_test_base](AdsClientNotifierObserver* const observer) {
+            CHECK(observer);
+            unit_test_base.AddObserver(observer);
+          }));
 }
 
 void MockShowNotificationAd(AdsClientMock& mock) {
@@ -110,15 +129,18 @@ void MockGetCachedAdEvents(const AdsClientMock& mock) {
 
             std::vector<base::Time> cached_ad_events;
 
-            for (const auto& [uuid, history] : AdEventCache()) {
-              if (!uuid.ends_with(base::StrCat({":", uuid_for_current_test}))) {
+            for (const auto& [ad_event_uuid, ad_event_history] :
+                 AdEventCache()) {
+              if (!ad_event_uuid.ends_with(
+                      base::StrCat({":", uuid_for_current_test}))) {
                 // Only get ad events for current test.
                 continue;
               }
 
-              for (const auto& [ad_event_type_id, timestamps] : history) {
+              for (const auto& [ad_event_type_id, ad_event_timestamps] :
+                   ad_event_history) {
                 if (ad_event_type_id == type_id) {
-                  base::Extend(cached_ad_events, timestamps);
+                  base::Extend(cached_ad_events, ad_event_timestamps);
                 }
               }
             }
@@ -133,7 +155,7 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
         CHECK(!id.empty());
 
         const std::string uuid = GetUuidForCurrentTestAndValue(id);
-        AdEventCache()[uuid] = {};
+        AdEventCache()[uuid].clear();
       }));
 }
 
@@ -158,7 +180,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              return std::move(callback).Run(std::nullopt);
+              return std::move(callback).Run(/*value=*/std::nullopt);
             }
 
             std::move(callback).Run(value);
@@ -214,6 +236,16 @@ void MockGetProfilePref(const AdsClientMock& mock) {
           }));
 }
 
+void MockSetProfilePref(const AdsClientMock& mock,
+                        UnitTestBase& unit_test_base) {
+  ON_CALL(mock, SetProfilePref)
+      .WillByDefault(::testing::Invoke(
+          [&unit_test_base](const std::string& path, base::Value value) {
+            SetProfilePrefValue(path, std::move(value));
+            unit_test_base.NotifyPrefDidChange(path);
+          }));
+}
+
 void MockClearProfilePref(AdsClientMock& mock) {
   ON_CALL(mock, ClearProfilePref)
       .WillByDefault(::testing::Invoke(
@@ -235,6 +267,16 @@ void MockGetLocalStatePref(const AdsClientMock& mock) {
           }));
 }
 
+void MockSetLocalStatePref(const AdsClientMock& mock,
+                           UnitTestBase& unit_test_base) {
+  ON_CALL(mock, SetLocalStatePref)
+      .WillByDefault(::testing::Invoke(
+          [&unit_test_base](const std::string& path, base::Value value) {
+            SetLocalStatePrefValue(path, std::move(value));
+            unit_test_base.NotifyPrefDidChange(path);
+          }));
+}
+
 void MockClearLocalStatePref(AdsClientMock& mock) {
   ON_CALL(mock, ClearLocalStatePref)
       .WillByDefault(::testing::Invoke(
@@ -245,6 +287,25 @@ void MockHasLocalStatePrefPath(const AdsClientMock& mock) {
   ON_CALL(mock, HasLocalStatePrefPath)
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasLocalStatePrefPathValue(path);
+      }));
+}
+
+void LoadState() {
+  CHECK(GlobalState::HasInstance());
+
+  GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
+      base::BindOnce([](const bool success) {
+        CHECK(success) << "Failed to create or open database";
+      }));
+
+  GlobalState::GetInstance()->GetClientStateManager().LoadState(
+      base::BindOnce([](const bool success) {
+        CHECK(success) << "Failed to load client state";
+      }));
+
+  GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
+      test::GetWallet(), base::BindOnce([](const bool success) {
+        CHECK(success) << "Failed to load confirmation state";
       }));
 }
 

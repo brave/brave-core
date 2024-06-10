@@ -175,9 +175,17 @@ void Conversions::CheckForConversions(
     for (const auto& creative_set_conversion :
          GetCreativeSetConversionsWithinObservationWindow(
              creative_set_conversion_bucket, ad_event)) {
-      Convert(ad_event, MaybeBuildVerifiableConversion(
-                            redirect_chain, html, resource_.get().id_patterns,
-                            creative_set_conversion));
+      std::optional<VerifiableConversionInfo> verifiable_conversion;
+      if (const std::optional<ConversionResourceInfo>& conversion_resource =
+              resource_.get()) {
+        // Attempt to build a verifiable conversion only if the conversion
+        // resource is available.
+        verifiable_conversion = MaybeBuildVerifiableConversion(
+            redirect_chain, html, conversion_resource->id_patterns,
+            creative_set_conversion);
+      }
+
+      Convert(ad_event, verifiable_conversion);
 
       did_convert = true;
 

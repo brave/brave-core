@@ -11,20 +11,36 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_util_impl.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_constants.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
 namespace {
 
+bool DoesRequireResourceForNewTabPageAds() {
+  // Require resource only if:
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
+}
+
 bool DoesRequireResource() {
-  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
+  // Require resource only if:
+  // - The user has opted into Brave News ads.
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  // - The user has joined Brave Rewards and opted into notification ads.
+  return UserHasOptedInToBraveNewsAds() ||
+         DoesRequireResourceForNewTabPageAds() ||
+         UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -39,12 +55,12 @@ AntiTargetingResource::~AntiTargetingResource() {
 
 AntiTargetingSiteList AntiTargetingResource::GetSites(
     const std::string& creative_set_id) const {
-  if (!anti_targeting_) {
+  if (!resource_) {
     return {};
   }
 
-  const auto iter = anti_targeting_->creative_sets.find(creative_set_id);
-  if (iter == anti_targeting_->creative_sets.cend()) {
+  const auto iter = resource_->creative_sets.find(creative_set_id);
+  if (iter == resource_->creative_sets.cend()) {
     return {};
   }
 
@@ -61,52 +77,49 @@ void AntiTargetingResource::MaybeLoad() {
   }
 }
 
-void AntiTargetingResource::MaybeLoadOrReset() {
-  DidLoad() ? MaybeReset() : MaybeLoad();
+void AntiTargetingResource::MaybeLoadOrUnload() {
+  IsLoaded() ? MaybeUnload() : MaybeLoad();
 }
 
 void AntiTargetingResource::Load() {
-  did_load_ = true;
-
-  LoadAndParseResource(kAntiTargetingResourceId,
-                       kAntiTargetingResourceVersion.Get(),
-                       base::BindOnce(&AntiTargetingResource::LoadCallback,
-                                      weak_factory_.GetWeakPtr()));
+  LoadAndParseResourceComponent(
+      kAntiTargetingResourceId, kAntiTargetingResourceVersion.Get(),
+      base::BindOnce(&AntiTargetingResource::LoadCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void AntiTargetingResource::LoadCallback(
-    ResourceParsingErrorOr<AntiTargetingInfo> result) {
+    ResourceComponentParsingErrorOr<AntiTargetingResourceInfo> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kAntiTargetingResourceId
-                                           << " anti-targeting resource ("
-                                           << result.error() << ")");
+    return BLOG(0, "Failed to load and parse " << kAntiTargetingResourceId
+                                               << " anti-targeting resource ("
+                                               << result.error() << ")");
   }
+  AntiTargetingResourceInfo& resource = result.value();
 
-  if (result.value().version == 0) {
+  if (!resource.version) {
     return BLOG(1, kAntiTargetingResourceId
-                       << " anti-targeting resource is not available");
+                       << " anti-targeting resource is unavailable");
   }
 
-  BLOG(1, "Successfully loaded " << kAntiTargetingResourceId
-                                 << " anti-targeting resource");
+  resource_ = std::move(resource);
 
-  anti_targeting_ = std::move(result).value();
-
-  BLOG(1, "Successfully initialized " << kAntiTargetingResourceId
-                                      << " anti-targeting resource version "
-                                      << kAntiTargetingResourceVersion.Get());
+  BLOG(1, "Successfully loaded and parsed "
+              << kAntiTargetingResourceId << " anti-targeting resource version "
+              << kAntiTargetingResourceVersion.Get());
 }
 
-void AntiTargetingResource::MaybeReset() {
-  if (DidLoad() && !DoesRequireResource()) {
-    Reset();
+void AntiTargetingResource::MaybeUnload() {
+  if (!DoesRequireResource()) {
+    Unload();
   }
 }
 
-void AntiTargetingResource::Reset() {
-  BLOG(1, "Reset anti-targeting resource");
-  anti_targeting_.reset();
-  did_load_ = false;
+void AntiTargetingResource::Unload() {
+  BLOG(1,
+       "Unloaded " << kAntiTargetingResourceId << " anti-targeting resource");
+
+  resource_.reset();
 }
 
 void AntiTargetingResource::OnNotifyLocaleDidChange(
@@ -115,11 +128,13 @@ void AntiTargetingResource::OnNotifyLocaleDidChange(
 }
 
 void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == prefs::kOptedInToNotificationAds ||
-      path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday) {
-    MaybeLoadOrReset();
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
+    MaybeLoadOrUnload();
   }
 }
 
@@ -131,7 +146,21 @@ void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
   }
 
   if (manifest_version == manifest_version_) {
+    // No need to load the resource if the manifest version is the same.
     return;
+  }
+
+  if (!manifest_version_) {
+    BLOG(
+        1,
+        "Registering " << id
+                       << " anti-targeting resource component manifest version "
+                       << manifest_version);
+  } else {
+    BLOG(1,
+         "Updating " << id
+                     << " anti-targeting resource component manifest version "
+                     << *manifest_version_ << " to " << manifest_version);
   }
 
   manifest_version_ = manifest_version;
@@ -145,9 +174,11 @@ void AntiTargetingResource::OnNotifyDidUnregisterResourceComponent(
     return;
   }
 
+  BLOG(1, "Unregistering " << id << " anti-targeting resource component");
+
   manifest_version_.reset();
 
-  Reset();
+  Unload();
 }
 
 }  // namespace brave_ads

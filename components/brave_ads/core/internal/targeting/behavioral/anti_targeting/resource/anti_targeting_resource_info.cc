@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_info.h"
-
-#include <optional>
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "url/gurl.h"
@@ -19,27 +17,27 @@ constexpr char kSitesKey[] = "sites";
 
 }  // namespace
 
-AntiTargetingInfo::AntiTargetingInfo() = default;
+AntiTargetingResourceInfo::AntiTargetingResourceInfo() = default;
 
-AntiTargetingInfo::AntiTargetingInfo(AntiTargetingInfo&& other) noexcept =
-    default;
+AntiTargetingResourceInfo::AntiTargetingResourceInfo(
+    AntiTargetingResourceInfo&& other) noexcept = default;
 
-AntiTargetingInfo& AntiTargetingInfo::operator=(
-    AntiTargetingInfo&& other) noexcept = default;
+AntiTargetingResourceInfo& AntiTargetingResourceInfo::operator=(
+    AntiTargetingResourceInfo&& other) noexcept = default;
 
-AntiTargetingInfo::~AntiTargetingInfo() = default;
+AntiTargetingResourceInfo::~AntiTargetingResourceInfo() = default;
 
 // static
-base::expected<AntiTargetingInfo, std::string>
-AntiTargetingInfo::CreateFromValue(const base::Value::Dict dict) {
-  AntiTargetingInfo anti_targeting;
+base::expected<AntiTargetingResourceInfo, std::string>
+AntiTargetingResourceInfo::CreateFromValue(const base::Value::Dict dict) {
+  AntiTargetingResourceInfo anti_targeting;
 
   if (const std::optional<int> version = dict.FindInt(kVersionKey)) {
     if (kAntiTargetingResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }
 
-    anti_targeting.version = *version;
+    anti_targeting.version = version;
   }
 
   const auto* const sites_dict = dict.FindDict(kSitesKey);

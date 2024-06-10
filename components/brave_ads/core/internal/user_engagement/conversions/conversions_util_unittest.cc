@@ -242,7 +242,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertSearchResultAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       CanConvertSearchResultAdEventIfOptedOutOfAds) {
+       CanConvertSearchResultAdEventIfOptedOutOfAllAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
   test::OptOutOfNotificationAds();

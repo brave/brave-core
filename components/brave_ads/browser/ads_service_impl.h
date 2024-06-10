@@ -151,6 +151,7 @@ class AdsServiceImpl : public AdsService,
   void InitializeBraveNewsAdsPrefChangeRegistrar();
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
+  void InitializeSearchResultAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
   void OnCountryCodePrefChanged(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;

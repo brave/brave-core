@@ -11,7 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
@@ -28,22 +28,26 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsInitialized() const { return !!purchase_intent_; }
+  bool IsLoaded() const { return !!resource_; }
 
-  const std::optional<PurchaseIntentInfo>& get() const {
-    return purchase_intent_;
+  std::optional<std::string> GetManifestVersion() const {
+    return manifest_version_;
+  }
+
+  const std::optional<PurchaseIntentResourceInfo>& get() const {
+    return resource_;
   }
 
  private:
   void MaybeLoad();
-  void MaybeLoadOrReset();
+  void MaybeLoadOrUnload();
 
-  bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadCallback(ResourceParsingErrorOr<PurchaseIntentInfo> result);
+  void LoadCallback(
+      ResourceComponentParsingErrorOr<PurchaseIntentResourceInfo> result);
 
-  void MaybeReset();
-  void Reset();
+  void MaybeUnload();
+  void Unload();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
@@ -52,10 +56,9 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  std::optional<PurchaseIntentInfo> purchase_intent_;
-
-  bool did_load_ = false;
   std::optional<std::string> manifest_version_;
+
+  std::optional<PurchaseIntentResourceInfo> resource_;
 
   base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };

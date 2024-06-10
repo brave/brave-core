@@ -23,10 +23,10 @@
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
@@ -282,7 +282,7 @@ void Account::OnNotifyDidInitializeAds() {
 }
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled) {
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path)) {
     Initialize();
   }
 }

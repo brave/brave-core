@@ -48,7 +48,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   PrefService* GetPrefs() const;
 
-  bool UserHasJoinedBraveRewards() const;
+  bool UserHasOptedInToNotificationAds() const;
 
   bool IsVisible() const;
 

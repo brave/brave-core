@@ -25,13 +25,6 @@ class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
     resource_ = std::make_unique<TextClassificationResource>();
   }
 
-  bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
-    task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
-  }
-
   std::unique_ptr<TextClassificationResource> resource_;
 };
 
@@ -45,43 +38,46 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
   task_environment_.RunUntilIdle();
 
   // Assert
-  const TextClassificationProbabilityList& text_classification_probabilities =
-      ClientStateManager::GetInstance()
-          .GetTextClassificationProbabilitiesHistory();
-  EXPECT_TRUE(text_classification_probabilities.empty());
+  EXPECT_THAT(ClientStateManager::GetInstance()
+                  .GetTextClassificationProbabilitiesHistory(),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                   kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
 
   // Act
-  processor.Process(/*text=*/{});
+  processor.Process(/*text=*/"");
   task_environment_.RunUntilIdle();
 
   // Assert
-  const TextClassificationProbabilityList& text_classification_probabilities =
-      ClientStateManager::GetInstance()
-          .GetTextClassificationProbabilitiesHistory();
-  EXPECT_TRUE(text_classification_probabilities.empty());
+  EXPECT_THAT(ClientStateManager::GetInstance()
+                  .GetTextClassificationProbabilitiesHistory(),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                   kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
-  const TextClassificationProbabilityList& text_classification_probabilities =
-      ClientStateManager::GetInstance()
-          .GetTextClassificationProbabilitiesHistory();
-  EXPECT_TRUE(text_classification_probabilities.empty());
+  EXPECT_THAT(ClientStateManager::GetInstance()
+                  .GetTextClassificationProbabilitiesHistory(),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                   kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
 
@@ -93,12 +89,14 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   const TextClassificationProbabilityList& text_classification_probabilities =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
-  EXPECT_EQ(1U, text_classification_probabilities.size());
+  EXPECT_THAT(text_classification_probabilities, ::testing::SizeIs(1));
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                   kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
 
@@ -112,7 +110,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   const TextClassificationProbabilityList& text_classification_probabilities =
       ClientStateManager::GetInstance()
           .GetTextClassificationProbabilitiesHistory();
-  EXPECT_EQ(3U, text_classification_probabilities.size());
+  EXPECT_THAT(text_classification_probabilities, ::testing::SizeIs(3));
 }
 
 }  // namespace brave_ads

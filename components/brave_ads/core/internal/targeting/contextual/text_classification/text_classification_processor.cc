@@ -45,13 +45,11 @@ TextClassificationProcessor::~TextClassificationProcessor() {
 }
 
 void TextClassificationProcessor::Process(const std::string& text) {
-  if (!resource_->IsInitialized()) {
-    return;
+  if (resource_->IsLoaded()) {
+    resource_->ClassifyPage(
+        text, base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
+                             weak_factory_.GetWeakPtr()));
   }
-
-  resource_->ClassifyPage(
-      text, base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
-                           weak_factory_.GetWeakPtr()));
 }
 
 void TextClassificationProcessor::ClassifyPageCallback(

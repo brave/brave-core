@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_RESOURCE_CONVERSION_RESOURCE_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_RESOURCE_CONVERSION_RESOURCE_INFO_H_
 
+#include <optional>
 #include <string>
 
 #include "base/types/expected.h"
@@ -28,7 +29,7 @@ struct ConversionResourceInfo final {
   static base::expected<ConversionResourceInfo, std::string> CreateFromValue(
       base::Value::Dict dict);
 
-  int version = 0;
+  std::optional<int> version;
   ConversionResourceIdPatternMap id_patterns;
 };
 

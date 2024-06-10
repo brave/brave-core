@@ -43,4 +43,11 @@ void OptOutOfSearchResultAds() {
   SetProfileBooleanPrefValue(prefs::kOptedInToSearchResultAds, false);
 }
 
+void OptOutOfAllAds() {
+  OptOutOfBraveNewsAds();
+  OptOutOfNewTabPageAds();
+  OptOutOfNotificationAds();
+  OptOutOfSearchResultAds();
+}
+
 }  // namespace brave_ads::test

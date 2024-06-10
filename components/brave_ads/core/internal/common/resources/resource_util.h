@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_H_
 
 #include <string>
 
@@ -14,14 +14,15 @@
 namespace brave_ads {
 
 template <typename T>
-using LoadAndParseResourceCallback =
-    base::OnceCallback<void(ResourceParsingErrorOr<T>)>;
+using LoadAndParseResourceComponentCallback =
+    base::OnceCallback<void(ResourceComponentParsingErrorOr<T>)>;
 
 template <typename T>
-void LoadAndParseResource(const std::string& id,
-                          int version,
-                          LoadAndParseResourceCallback<T> callback);
+void LoadAndParseResourceComponent(
+    const std::string& id,
+    int version,
+    LoadAndParseResourceComponentCallback<T> callback);
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_H_

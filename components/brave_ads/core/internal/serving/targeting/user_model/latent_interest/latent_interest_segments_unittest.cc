@@ -21,17 +21,16 @@ class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<test::TargetingHelper>();
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
   }
 
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
-  NotifyDidInitializeAds();
-
-  targeting_->MockLatentInterest();
+  targeting_helper_->MockLatentInterest();
 
   // Act & Assert
   const SegmentList expected_latent_interest_segments =
@@ -41,28 +40,17 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        BuildLatentInterestSegmentsIfNoTargeting) {
-  // Arrange
-  NotifyDidInitializeAds();
-
-  // Act
-  const SegmentList segments = BuildLatentInterestSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildLatentInterestSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        DoNotBuildLatentInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
-  NotifyDidInitializeAds();
+  targeting_helper_->MockLatentInterest();
 
-  targeting_->MockLatentInterest();
-
-  // Act
-  const SegmentList segments = BuildLatentInterestSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildLatentInterestSegments(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

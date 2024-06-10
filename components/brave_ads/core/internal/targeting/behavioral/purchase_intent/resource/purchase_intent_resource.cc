@@ -10,20 +10,20 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_util_impl.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRequireResource() {
-  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
+  // Require resource only if:
+  // - The user has joined Brave Rewards and opted into notification ads.
+  return UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -44,52 +44,50 @@ void PurchaseIntentResource::MaybeLoad() {
   }
 }
 
-void PurchaseIntentResource::MaybeLoadOrReset() {
-  DidLoad() ? MaybeReset() : MaybeLoad();
+void PurchaseIntentResource::MaybeLoadOrUnload() {
+  IsLoaded() ? MaybeUnload() : MaybeLoad();
 }
 
 void PurchaseIntentResource::Load() {
-  did_load_ = true;
-
-  LoadAndParseResource(kPurchaseIntentResourceId,
-                       kPurchaseIntentResourceVersion.Get(),
-                       base::BindOnce(&PurchaseIntentResource::LoadCallback,
-                                      weak_factory_.GetWeakPtr()));
+  LoadAndParseResourceComponent(
+      kPurchaseIntentResourceId, kPurchaseIntentResourceVersion.Get(),
+      base::BindOnce(&PurchaseIntentResource::LoadCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void PurchaseIntentResource::LoadCallback(
-    ResourceParsingErrorOr<PurchaseIntentInfo> result) {
+    ResourceComponentParsingErrorOr<PurchaseIntentResourceInfo> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kPurchaseIntentResourceId
-                                           << " purchase intent resource ("
-                                           << result.error() << ")");
+    return BLOG(0, "Failed to load and parse " << kPurchaseIntentResourceId
+                                               << " purchase intent resource ("
+                                               << result.error() << ")");
   }
+  PurchaseIntentResourceInfo& resource = result.value();
 
-  if (result.value().version == 0) {
+  if (!resource.version) {
     return BLOG(1, kPurchaseIntentResourceId
-                       << " purchase intent resource is not available");
+                       << " purchase intent resource is unavailable");
   }
 
-  BLOG(1, "Successfully loaded " << kPurchaseIntentResourceId
-                                 << " purchase intent resource");
+  resource_ = std::move(resource);
 
-  purchase_intent_ = std::move(result).value();
-
-  BLOG(1, "Successfully initialized " << kPurchaseIntentResourceId
-                                      << " purchase intent resource version "
-                                      << kPurchaseIntentResourceVersion.Get());
+  BLOG(1, "Successfully loaded and parsed "
+              << kPurchaseIntentResourceId
+              << " purchase intent resource version "
+              << kPurchaseIntentResourceVersion.Get());
 }
 
-void PurchaseIntentResource::MaybeReset() {
-  if (DidLoad() && !DoesRequireResource()) {
-    Reset();
+void PurchaseIntentResource::MaybeUnload() {
+  if (manifest_version_ && !DoesRequireResource()) {
+    Unload();
   }
 }
 
-void PurchaseIntentResource::Reset() {
-  BLOG(1, "Reset " << kPurchaseIntentResourceId << " purchase intent resource");
-  purchase_intent_.reset();
-  did_load_ = false;
+void PurchaseIntentResource::Unload() {
+  BLOG(1,
+       "Unloaded " << kPurchaseIntentResourceId << " purchase intent resource");
+
+  resource_.reset();
 }
 
 void PurchaseIntentResource::OnNotifyLocaleDidChange(
@@ -98,11 +96,11 @@ void PurchaseIntentResource::OnNotifyLocaleDidChange(
 }
 
 void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == prefs::kOptedInToNotificationAds ||
-      path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday) {
-    MaybeLoadOrReset();
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
+    MaybeLoadOrUnload();
   }
 }
 
@@ -114,7 +112,19 @@ void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
   }
 
   if (manifest_version == manifest_version_) {
+    // No need to load the resource if the manifest version is the same.
     return;
+  }
+
+  if (!manifest_version_) {
+    BLOG(1, "Registering "
+                << id << " purchase intent resource component manifest version "
+                << manifest_version);
+  } else {
+    BLOG(1,
+         "Updating " << id
+                     << " purchase intent resource component manifest version "
+                     << *manifest_version_ << " to " << manifest_version);
   }
 
   manifest_version_ = manifest_version;
@@ -128,9 +138,11 @@ void PurchaseIntentResource::OnNotifyDidUnregisterResourceComponent(
     return;
   }
 
+  BLOG(1, "Unregistering " << id << " purchase intent resource component");
+
   manifest_version_.reset();
 
-  Reset();
+  Unload();
 }
 
 }  // namespace brave_ads

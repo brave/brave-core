@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_INFO_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_INFO_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_INFO_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_INFO_H_
 
+#include <optional>
 #include <string>
 
 #include "base/types/expected.h"
@@ -16,21 +17,22 @@
 
 namespace brave_ads {
 
-struct PurchaseIntentInfo final {
-  PurchaseIntentInfo();
+struct PurchaseIntentResourceInfo final {
+  PurchaseIntentResourceInfo();
 
-  PurchaseIntentInfo(const PurchaseIntentInfo&) = delete;
-  PurchaseIntentInfo& operator=(const PurchaseIntentInfo&) = delete;
+  PurchaseIntentResourceInfo(const PurchaseIntentResourceInfo&) = delete;
+  PurchaseIntentResourceInfo& operator=(const PurchaseIntentResourceInfo&) =
+      delete;
 
-  PurchaseIntentInfo(PurchaseIntentInfo&&) noexcept;
-  PurchaseIntentInfo& operator=(PurchaseIntentInfo&&) noexcept;
+  PurchaseIntentResourceInfo(PurchaseIntentResourceInfo&&) noexcept;
+  PurchaseIntentResourceInfo& operator=(PurchaseIntentResourceInfo&&) noexcept;
 
-  ~PurchaseIntentInfo();
+  ~PurchaseIntentResourceInfo();
 
-  static base::expected<PurchaseIntentInfo, std::string> CreateFromValue(
-      base::Value::Dict dict);
+  static base::expected<PurchaseIntentResourceInfo, std::string>
+  CreateFromValue(base::Value::Dict dict);
 
-  int version = 0;
+  std::optional<int> version;
   PurchaseIntentSegmentKeyphraseList segment_keyphrases;
   PurchaseIntentFunnelKeyphraseList funnel_keyphrases;
   PurchaseIntentFunnelSiteMap funnel_sites;
@@ -38,4 +40,4 @@ struct PurchaseIntentInfo final {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_INFO_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_RESOURCE_PURCHASE_INTENT_RESOURCE_INFO_H_
