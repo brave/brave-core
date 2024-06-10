@@ -73,6 +73,10 @@ import {
   selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
+import {
+  getLastPageNumber,
+  getListPageItems
+} from '../../../../../utils/pagination_utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -104,10 +108,6 @@ import {
   ControlBarWrapper,
   ContentWrapper
 } from '../../portfolio/style'
-import {
-  getLastPageNumber,
-  getListPageItems
-} from '../../../../../utils/pagination_utils'
 
 interface Props {
   onShowPortfolioSettings?: () => void

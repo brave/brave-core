@@ -8,6 +8,9 @@ import * as React from 'react'
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
+// Utils
+import { getAssetIdKey } from '../../../../../../utils/asset-utils'
+
 // Styled Components
 import { NFTWrapper, NFTText, DIVForClickableArea } from './style'
 import { Row } from '../../../../../shared/style'
@@ -17,7 +20,6 @@ import {
   EmptyCollectionGridItem,
   NftIconStyles
 } from './nft-collection-grid-view-item.styles'
-import { getAssetIdKey } from '../../../../../../utils/asset-utils'
 
 interface Props {
   collectionToken: BraveWallet.BlockchainToken
