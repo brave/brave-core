@@ -246,6 +246,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="toolkit_views">
         </if>
 
+      <if expr="enable_extensions">
+        </if>
+
       <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         </if>
 
@@ -418,6 +421,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <if expr="not use_titlecase">
           </if>
       </if>
+
+      <if expr="not is_android">
+        </if>
 
       <if expr="not is_android and not is_chromeos">
         </if>
