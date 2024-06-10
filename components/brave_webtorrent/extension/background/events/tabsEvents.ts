@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import tabActions from '../actions/tabActions'
 
@@ -9,6 +10,11 @@ import tabActions from '../actions/tabActions'
 // links (as the background page would not be running on that first load).
 // Note: Empty query for {} returns all tabs this extension is interested in.
 chrome.tabs.query({}, tabs => {
+  if (chrome.runtime.lastError) {
+    console.error('Error querying tabs: ', chrome.runtime.lastError);
+    return;
+  }
+
   for (const tab of tabs) {
     tabActions.tabUpdated(tab.id!, { url: tab.url ?? '' })
   }
