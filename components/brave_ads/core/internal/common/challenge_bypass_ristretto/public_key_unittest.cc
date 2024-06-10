@@ -142,7 +142,7 @@ TEST_F(BraveAdsPublicKeyTest, OutputStreamWhenUninitialized) {
   ss << public_key;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

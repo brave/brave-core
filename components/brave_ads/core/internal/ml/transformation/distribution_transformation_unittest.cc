@@ -26,22 +26,25 @@ TEST_F(BraveAdsDistributionTransformationTest, ToDistribution) {
 
   const DistributionTransformation to_distribution;
 
-  // // Act
+  // Act
   data = to_distribution.Apply(data);
   ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
   const std::vector<float> transformed_vector_values =
       transformed_vector_data->GetData();
-  ASSERT_EQ(transformed_vector_values.size(), 5U);
 
   // Assert
-  EXPECT_TRUE(
-      (std::fabs(0.14224751 - transformed_vector_values.at(0)) < kTolerance) &&
-      (std::fabs(0.28449502 - transformed_vector_values.at(1)) < kTolerance) &&
-      (std::fabs(0.56899004 - transformed_vector_values.at(2)) < kTolerance) &&
-      (std::fabs(0.00426743 - transformed_vector_values.at(3)) < kTolerance) &&
-      (std::fabs(0.0 - transformed_vector_values.at(4)) < kTolerance));
+  EXPECT_THAT(transformed_vector_values, ::testing::SizeIs(5));
+  EXPECT_LT(std::fabs(0.14224751 - transformed_vector_values.at(0)),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.28449502 - transformed_vector_values.at(1)),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.56899004 - transformed_vector_values.at(2)),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.00426743 - transformed_vector_values.at(3)),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(4)), kTolerance);
 }
 
 TEST_F(BraveAdsDistributionTransformationTest, ZeroVector) {
@@ -53,21 +56,21 @@ TEST_F(BraveAdsDistributionTransformationTest, ZeroVector) {
 
   const DistributionTransformation to_distribution;
 
-  // // Act
+  // Act
   data = to_distribution.Apply(data);
   ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
   const std::vector<float> transformed_vector_values =
       transformed_vector_data->GetData();
-  ASSERT_EQ(transformed_vector_values.size(), 5U);
+  ASSERT_THAT(transformed_vector_values, ::testing::SizeIs(5));
 
   // Assert
-  EXPECT_TRUE((std::fabs(0 - transformed_vector_values.at(0)) < kTolerance) &&
-              (std::fabs(0 - transformed_vector_values.at(1)) < kTolerance) &&
-              (std::fabs(0 - transformed_vector_values.at(2)) < kTolerance) &&
-              (std::fabs(0 - transformed_vector_values.at(3)) < kTolerance) &&
-              (std::fabs(0 - transformed_vector_values.at(4)) < kTolerance));
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(0)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(1)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(2)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(3)), kTolerance);
+  EXPECT_LT(std::fabs(0.0 - transformed_vector_values.at(4)), kTolerance);
 }
 
 TEST_F(BraveAdsDistributionTransformationTest, EmptyVector) {
@@ -77,7 +80,7 @@ TEST_F(BraveAdsDistributionTransformationTest, EmptyVector) {
 
   const DistributionTransformation to_distribution;
 
-  // // Act
+  // Act
   data = to_distribution.Apply(data);
   ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
@@ -86,7 +89,7 @@ TEST_F(BraveAdsDistributionTransformationTest, EmptyVector) {
       transformed_vector_data->GetData();
 
   // Assert
-  EXPECT_TRUE(transformed_vector_values.empty());
+  EXPECT_THAT(transformed_vector_values, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDistributionTransformationTest, NonVectorData) {
@@ -96,7 +99,7 @@ TEST_F(BraveAdsDistributionTransformationTest, NonVectorData) {
 
   const DistributionTransformation to_distribution;
 
-  // // Act
+  // Act
   data = to_distribution.Apply(data);
 
   // Assert

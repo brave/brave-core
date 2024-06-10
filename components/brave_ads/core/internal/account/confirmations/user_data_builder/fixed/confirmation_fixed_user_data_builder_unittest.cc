@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"
 
 #include "base/test/values_test_util.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -37,25 +36,25 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"(
-          {
-            "buildChannel": "release",
-            "catalog": [
-              {
-                "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
-              }
-            ],
-            "countryCode": "US",
-            "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
-            "platform": "windows",
-            "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
-            "segment": "untargeted",
-            "studies": [],
-            "topSegment": [],
-            "versionNumber": "1.2.3.4"
-          })");
-  EXPECT_EQ(expected_user_data, BuildFixedUserData(transaction));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "buildChannel": "release",
+                      "catalog": [
+                        {
+                          "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                        }
+                      ],
+                      "countryCode": "US",
+                      "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                      "platform": "windows",
+                      "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                      "segment": "untargeted",
+                      "studies": [],
+                      "topSegment": [],
+                      "versionNumber": "1.2.3.4"
+                    })"),
+            BuildFixedUserData(transaction));
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
@@ -66,11 +65,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict user_data = BuildFixedUserData(transaction);
-
-  // Assert
-  EXPECT_TRUE(user_data.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildFixedUserData(transaction), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

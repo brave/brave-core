@@ -18,7 +18,7 @@ TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCountryCode) {
 
 TEST(BraveAdsSubdivisionUtilTest, DoNotGetSubdivisionCountryCode) {
   // Act & Assert
-  EXPECT_FALSE(GetSubdivisionCountryCode({}));
+  EXPECT_FALSE(GetSubdivisionCountryCode(/*subdivision=*/""));
 }
 
 TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCode) {
@@ -28,7 +28,7 @@ TEST(BraveAdsSubdivisionUtilTest, GetSubdivisionCode) {
 
 TEST(BraveAdsSubdivisionUtilTest, DoNotGetSubdivisionCode) {
   // Act & Assert
-  EXPECT_FALSE(GetSubdivisionCode({}));
+  EXPECT_FALSE(GetSubdivisionCode(/*subdivision=*/""));
 }
 
 }  // namespace brave_ads

@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,11 +15,8 @@
 namespace brave_ads {
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoPaymentTokens) {
-  // Act
-  const AdTypeBucketMap buckets = BuildAdTypeBuckets(/*payment_tokens=*/{});
-
-  // Assert
-  EXPECT_TRUE(buckets.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildAdTypeBuckets(/*payment_tokens=*/{}), ::testing::IsEmpty());
 }
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {

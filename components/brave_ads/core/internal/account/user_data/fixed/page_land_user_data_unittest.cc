@@ -35,13 +35,13 @@ TEST_F(BraveAdsPageLandUserDataTest,
 TEST_F(BraveAdsPageLandUserDataTest,
        DoNotBuildPageLandUserDataForHttpResponseStatusNonErrorPage) {
   // Act & Assert
-  EXPECT_TRUE(BuildPageLandUserData(
+  EXPECT_THAT(BuildPageLandUserData(
                   TabInfo{/*id=*/1,
                           /*is_visible=*/true,
                           /*redirect_chain=*/{GURL("https://brave.com")},
                           /*is_error_page=*/false,
-                          /*is_playing_media=*/false})
-                  .empty());
+                          /*is_playing_media=*/false}),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

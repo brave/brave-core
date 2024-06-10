@@ -128,15 +128,16 @@ See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
 | mock  | type  | default  | example  |
 |---|---|---|---|
 | Device identifier  |  |  | `MockDeviceId();`  |
-| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kNightly);`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
+| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kNightly);`  |
 | Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
 | Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
 | Browsing history  | vector<GURL>  |  | `MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
-| Mock URL responses  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
+| URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
+| Scheduled captcha  | std::string  |  | `MockGetScheduledCaptcha(ads_client_mock_, "xyzzy");`  |
 
 See [unittest_mock_util.h](./unittest_mock_util.h) and [unittest_constants.h](./unittest_constants.h).
 

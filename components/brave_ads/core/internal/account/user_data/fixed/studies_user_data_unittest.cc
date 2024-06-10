@@ -70,7 +70,7 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
   // Act & Assert
-  EXPECT_TRUE(BuildStudiesUserData().empty());
+  EXPECT_THAT(BuildStudiesUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {

@@ -145,7 +145,7 @@ TEST_F(BraveAdsUnblindedTokenTest, OutputStreamWhenUninitialized) {
   ss << unblinded_token;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsUnblindedTokenTest, DeriveVerificationKey) {

@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/test_web_page_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "components/schema_org/common/metadata.mojom.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -59,7 +60,7 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
       CreateTestWebPageEntities(/*attributes_to_skip*/ {});
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
-  EXPECT_EQ(search_result_ads.size(), 1U);
+  ASSERT_THAT(search_result_ads, ::testing::SizeIs(1));
   const mojom::SearchResultAdInfoPtr& search_result_ad =
       search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
@@ -85,8 +86,8 @@ TEST(SearchResultAdConvertingTest, EmptyConversionAdvertiserPublicKeyValue) {
 
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
+  ASSERT_THAT(search_result_ads, ::testing::SizeIs(1));
 
-  EXPECT_EQ(search_result_ads.size(), 1U);
   const mojom::SearchResultAdInfoPtr& search_result_ad =
       search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
@@ -105,7 +106,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     std::vector<::schema_org::mojom::EntityPtr> entities;
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -114,7 +115,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     entities[0]->type = "Not-Product";
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -123,7 +124,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     entities[0]->properties.clear();
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -133,7 +134,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     property->name = "not-creatives";
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -143,7 +144,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     property->values = schema_org::mojom::Values::NewEntityValues({});
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -153,7 +154,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 }
 
@@ -172,7 +173,8 @@ TEST(SearchResultAdConvertingTest, AdEntityExtraProperty) {
 
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
-  ASSERT_EQ(search_result_ads.size(), 1U);
+  ASSERT_THAT(search_result_ads, ::testing::SizeIs(1));
+
   const mojom::SearchResultAdInfoPtr& search_result_ad =
       search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
@@ -188,7 +190,7 @@ TEST(SearchResultAdConvertingTest, AdEntityRequiredPropertySkipped) {
         CreateTestWebPageEntities({attribute});
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   for (const char* attribute : kRequiredConversionAttributes) {
@@ -196,7 +198,8 @@ TEST(SearchResultAdConvertingTest, AdEntityRequiredPropertySkipped) {
         CreateTestWebPageEntities({attribute});
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_EQ(search_result_ads.size(), 1U);
+    ASSERT_THAT(search_result_ads, ::testing::SizeIs(1));
+
     const mojom::SearchResultAdInfoPtr& search_result_ad =
         search_result_ads.at(kTestWebPagePlacementId);
     ASSERT_TRUE(search_result_ad.get());
@@ -212,7 +215,8 @@ TEST(SearchResultAdConvertingTest, AdEntityOptionalConversionPropertySkipped) {
         CreateTestWebPageEntities({attribute});
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_EQ(search_result_ads.size(), 1U);
+    ASSERT_THAT(search_result_ads, ::testing::SizeIs(1));
+
     const mojom::SearchResultAdInfoPtr& search_result_ad =
         search_result_ads.at(kTestWebPagePlacementId);
     ASSERT_TRUE(search_result_ad.get());
@@ -231,7 +235,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     ad_entity->type = "Not-SearchResultAd";
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -251,7 +255,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
 
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -270,7 +274,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
 
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -288,7 +292,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
 
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 
   {
@@ -306,7 +310,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
 
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(search_result_ads.empty());
+    EXPECT_THAT(search_result_ads, ::testing::IsEmpty());
   }
 }
 

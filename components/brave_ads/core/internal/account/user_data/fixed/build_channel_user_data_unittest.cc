@@ -32,7 +32,7 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(BuildBuildChannelUserData().empty());
+  EXPECT_THAT(BuildBuildChannelUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

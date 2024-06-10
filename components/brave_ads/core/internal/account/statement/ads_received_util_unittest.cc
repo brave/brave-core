@@ -85,8 +85,8 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsSummaryForDateRange) {
   AdvanceClockTo(TimeFromString("1 January 2021"));
 
   // Act & Assert
-  EXPECT_EQ(0U,
-            GetAdsReceivedForDateRange(transactions, Now(), DistantFuture()));
+  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, /*from_time=*/Now(),
+                                           /*to_time=*/DistantFuture()));
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsSummaryForNoTransactions) {

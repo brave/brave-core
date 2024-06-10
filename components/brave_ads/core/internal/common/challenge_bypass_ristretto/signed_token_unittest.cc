@@ -143,7 +143,7 @@ TEST_F(BraveAdsSignedTokenTest, OutputStreamWhenUninitialized) {
   ss << signed_token;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

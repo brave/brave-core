@@ -97,10 +97,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, ChainingTest) {
 
   // Assert
   EXPECT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
-  EXPECT_EQ(
-      10U,
-      vector_data->GetData().size());  // Hashes for [t, i, n, y, ti, in, ny,
-                                       // tin, iny, tiny] -- 10 in total
+  EXPECT_THAT(vector_data->GetData(), ::testing::SizeIs(10));
 }
 
 }  // namespace brave_ads::ml

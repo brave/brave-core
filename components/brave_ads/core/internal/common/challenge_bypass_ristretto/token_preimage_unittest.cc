@@ -144,7 +144,7 @@ TEST_F(BraveAdsTokenPreimageTest, OutputStreamWhenUninitialized) {
   ss << token_preimage;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

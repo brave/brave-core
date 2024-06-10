@@ -44,12 +44,10 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopSegments) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
-
-  // Assert
-  EXPECT_TRUE(top_segments.empty());
+  // Act & Assert
+  EXPECT_THAT(GetTopSegments(
+                  /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

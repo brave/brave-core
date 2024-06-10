@@ -88,24 +88,18 @@ TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
 
   AdvanceClockTo(TimeFromString("1 January 2021"));
 
-  // Act
-  const base::flat_map<std::string, int32_t> ads_summary =
-      GetAdsSummaryForDateRange(transactions, Now(), DistantFuture());
-
-  // Assert
-  EXPECT_TRUE(ads_summary.empty());
+  // Act & Assert
+  EXPECT_THAT(GetAdsSummaryForDateRange(transactions, /*from_time=*/Now(),
+                                        /*to_time=*/DistantFuture()),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForNoTransactions) {
-  // Arrange
-  const TransactionList transactions;
-
-  // Act
-  const base::flat_map<std::string, int32_t> ads_summary =
-      GetAdsSummaryForDateRange(transactions, DistantPast(), DistantFuture());
-
-  // Assert
-  EXPECT_TRUE(ads_summary.empty());
+  // Act & Assert
+  EXPECT_THAT(GetAdsSummaryForDateRange(/*transactions=*/{},
+                                        /*from_time=*/DistantPast(),
+                                        /*to_time=*/DistantFuture()),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

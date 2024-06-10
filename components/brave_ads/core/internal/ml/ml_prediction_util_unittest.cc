@@ -29,7 +29,7 @@ TEST_F(BraveAdsMLPredictionUtilTest, SoftmaxTest) {
 
   // Assert
   double sum = 0.0;
-  for (auto const& prediction : predictions) {
+  for (const auto& prediction : predictions) {
     sum += prediction.second;
   }
   ASSERT_GT(predictions.at("c3"), predictions.at("c1"));
@@ -57,15 +57,15 @@ TEST_F(BraveAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
   // Assert
   EXPECT_LT(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")),
             kTolerance);
-  EXPECT_TRUE(std::fabs(predictions_1.at("c1") - 0.09003057) < kTolerance);
+  EXPECT_LT(std::fabs(predictions_1.at("c1") - 0.09003057), kTolerance);
 
   EXPECT_LT(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")),
             kTolerance);
-  EXPECT_TRUE(std::fabs(predictions_1.at("c2") - 0.24472847) < kTolerance);
+  EXPECT_LT(std::fabs(predictions_1.at("c2") - 0.24472847), kTolerance);
 
   EXPECT_LT(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")),
             kTolerance);
-  EXPECT_TRUE(std::fabs(predictions_1.at("c3") - 0.66524095) < kTolerance);
+  EXPECT_LT(std::fabs(predictions_1.at("c3") - 0.66524095), kTolerance);
 }
 
 }  // namespace brave_ads::ml

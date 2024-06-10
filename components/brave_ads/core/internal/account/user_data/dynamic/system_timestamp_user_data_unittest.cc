@@ -36,7 +36,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(BuildSystemTimestampUserData().empty());
+  EXPECT_THAT(BuildSystemTimestampUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

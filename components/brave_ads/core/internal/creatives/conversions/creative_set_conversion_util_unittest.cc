@@ -72,21 +72,21 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest, GetCreativeSetConversionCounts) {
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression, Now());
+  const AdEventInfo ad_event_1 = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
   ad_events.push_back(ad_event_1);
 
   AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kConversion, Now());
+      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
   ad_event_2.creative_set_id = "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8";
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression, Now());
+  const AdEventInfo ad_event_3 = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 =
-      BuildAdEvent(ad, ConfirmationType::kConversion, Now());
+      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
   ad_events.push_back(ad_event_4);
   ad_events.push_back(ad_event_4);
 
@@ -135,12 +135,10 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        SortEmptyCreativeSetConversionsIntoBuckets) {
-  // Act
-  const CreativeSetConversionBucketMap buckets =
-      SortCreativeSetConversionsIntoBuckets({});
-
-  // Assert
-  EXPECT_TRUE(buckets.empty());
+  // Act & Assert
+  EXPECT_THAT(
+      SortCreativeSetConversionsIntoBuckets(/*creative_set_conversions=*/{}),
+      ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
@@ -248,16 +246,12 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
-  // Act
-  const CreativeSetConversionList unexpired_creative_set_conversions =
-      GetCreativeSetConversionsWithinObservationWindow(creative_set_conversions,
-                                                       ad_event);
-
-  // Assert
+  // Act & Assert
   const CreativeSetConversionList expected_unexpired_creative_set_conversions =
       {creative_set_conversion_1};
   EXPECT_EQ(expected_unexpired_creative_set_conversions,
-            unexpired_creative_set_conversions);
+            GetCreativeSetConversionsWithinObservationWindow(
+                creative_set_conversions, ad_event));
 }
 
 }  // namespace brave_ads

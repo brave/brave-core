@@ -344,7 +344,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
   EXPECT_CALL(
       callback,
       Run(/*success=*/true,
-          testing::UnorderedElementsAreArray(AdEventList{
+          ::testing::UnorderedElementsAreArray(AdEventList{
               ad_event_1_served, ad_event_1_viewed, ad_event_2_served})));
   database_table_.GetAll(callback.Get());
 }
@@ -393,7 +393,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
   EXPECT_CALL(
       callback,
       Run(/*success=*/true,
-          testing::UnorderedElementsAreArray(AdEventList{
+          ::testing::UnorderedElementsAreArray(AdEventList{
               ad_event_1_served, ad_event_1_viewed, ad_event_3_served})));
   database_table_.GetAll(callback.Get());
 }
@@ -438,7 +438,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            testing::UnorderedElementsAreArray(AdEventList{
+                            ::testing::UnorderedElementsAreArray(AdEventList{
                                 ad_event_1_served, ad_event_1_viewed})));
   database_table_.GetAll(callback.Get());
 }

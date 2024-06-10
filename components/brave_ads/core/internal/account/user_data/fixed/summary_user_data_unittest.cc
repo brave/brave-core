@@ -63,7 +63,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/3);
 
   // Act & Assert
-  EXPECT_TRUE(BuildSummaryUserData(payment_tokens).empty());
+  EXPECT_THAT(BuildSummaryUserData(payment_tokens), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {

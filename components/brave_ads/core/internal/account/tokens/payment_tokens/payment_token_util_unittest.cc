@@ -32,7 +32,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, DoNotGetPaymentToken) {
 TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
   // Arrange
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/2);
-  ASSERT_EQ(2U, payment_tokens.size());
+  ASSERT_THAT(payment_tokens, ::testing::SizeIs(2));
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
   const PaymentTokenInfo& token_2 = payment_tokens.at(1);
@@ -50,7 +50,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
 TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
   // Arrange
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/3);
-  ASSERT_EQ(3U, payment_tokens.size());
+  ASSERT_THAT(payment_tokens, ::testing::SizeIs(3));
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
   const PaymentTokenInfo& token_2 = payment_tokens.at(1);

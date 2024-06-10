@@ -133,7 +133,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionWithinDateRange(
-      transaction, Now() + base::Milliseconds(1), DistantFuture()));
+      transaction, /*from_time=*/Now() + base::Milliseconds(1),
+      /*to_time=*/DistantFuture()));
 }
 
 }  // namespace brave_ads

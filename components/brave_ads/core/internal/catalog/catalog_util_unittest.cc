@@ -28,7 +28,7 @@ TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   ResetCatalog();
 
   // Assert
-  EXPECT_TRUE(GetProfileStringPref(prefs::kCatalogId).empty());
+  EXPECT_THAT(GetProfileStringPref(prefs::kCatalogId), ::testing::IsEmpty());
   EXPECT_EQ(0, GetProfileIntegerPref(prefs::kCatalogVersion));
   EXPECT_EQ(7'200'000, GetProfileInt64Pref(prefs::kCatalogPing));
   EXPECT_TRUE(GetProfileTimePref(prefs::kCatalogLastUpdated).is_null());

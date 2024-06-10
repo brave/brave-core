@@ -51,7 +51,7 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
   ASSERT_EQ(kDefaultBucketCount, hashed_vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(10U, hashed_vector_data->GetData().size());
+  EXPECT_THAT(hashed_vector_data->GetData(), ::testing::SizeIs(10));
 }
 
 TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
@@ -74,7 +74,8 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
 
   // Assert
   EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
-  EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetData().size());
+  EXPECT_THAT(hashed_vector_data->GetData(),
+              ::testing::SizeIs(kHashBucketCount));
 }
 
 }  // namespace brave_ads::ml

@@ -20,7 +20,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, GetConfirmationToken) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
       test::RefillConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, confirmation_tokens.size());
+  ASSERT_THAT(confirmation_tokens, ::testing::SizeIs(2));
 
   // Act & Assert
   EXPECT_EQ(confirmation_tokens.front(), MaybeGetConfirmationToken());
@@ -35,7 +35,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, AddConfirmationTokens) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, confirmation_tokens.size());
+  ASSERT_THAT(confirmation_tokens, ::testing::SizeIs(2));
 
   const ConfirmationTokenInfo& token_1 = confirmation_tokens.at(0);
   const ConfirmationTokenInfo& token_2 = confirmation_tokens.at(1);
@@ -54,7 +54,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, RemoveConfirmationToken) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
       test::BuildConfirmationTokens(/*count=*/3);
-  ASSERT_EQ(3U, confirmation_tokens.size());
+  ASSERT_THAT(confirmation_tokens, ::testing::SizeIs(3));
 
   const ConfirmationTokenInfo& token_1 = confirmation_tokens.at(0);
   const ConfirmationTokenInfo& token_2 = confirmation_tokens.at(1);

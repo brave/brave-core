@@ -68,8 +68,9 @@ TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-  EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Minutes(5)));
+  EXPECT_CALL(delegate_mock_,
+              OnWillProcessConfirmationQueue(
+                  *confirmation, /*process_at=*/Now() + base::Minutes(5)));
 
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(5));
@@ -108,8 +109,9 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-  EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Minutes(21)));
+  EXPECT_CALL(delegate_mock_,
+              OnWillProcessConfirmationQueue(
+                  *confirmation, /*process_at=*/Now() + base::Minutes(21)));
 
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
@@ -130,8 +132,9 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
   ASSERT_TRUE(confirmation_1);
   {
     EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_1));
-    EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                    *confirmation_1, Now() + base::Minutes(7)));
+    EXPECT_CALL(delegate_mock_,
+                OnWillProcessConfirmationQueue(
+                    *confirmation_1, /*process_at=*/Now() + base::Minutes(7)));
 
     const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
         scoped_delay_before_processing_confirmation_queue_item(
@@ -166,9 +169,10 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_1));
 
-  EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation_2, Now() + base::Minutes(7) +
-                                                       base::Minutes(21)));
+  EXPECT_CALL(delegate_mock_,
+              OnWillProcessConfirmationQueue(
+                  *confirmation_2,
+                  /*process_at=*/Now() + base::Minutes(7) + base::Minutes(21)));
 
   FastForwardClockToNextPendingTask();
 

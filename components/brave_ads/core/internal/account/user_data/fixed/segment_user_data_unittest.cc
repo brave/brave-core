@@ -39,11 +39,8 @@ TEST_F(BraveAdsSegmentUserDataTest,
       /*value=*/0.01, AdType::kSearchResultAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict segment_user_data = BuildSegmentUserData(transaction);
-
-  // Assert
-  EXPECT_TRUE(segment_user_data.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSegmentUserDataTest,
@@ -55,22 +52,13 @@ TEST_F(BraveAdsSegmentUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act
-  const base::Value::Dict segment_user_data = BuildSegmentUserData(transaction);
-
-  // Assert
-  EXPECT_TRUE(segment_user_data.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoTargeting) {
-  // Arrange
-  const TransactionInfo transaction;
-
-  // Act
-  const base::Value::Dict segment_user_data = BuildSegmentUserData(transaction);
-
   // Act & Assert
-  EXPECT_TRUE(segment_user_data.empty());
+  EXPECT_THAT(BuildSegmentUserData(/*transaction=*/{}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads
