@@ -62,7 +62,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"  // IWYU pragma: keep
+#include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"

@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
-
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -79,7 +78,7 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   sort->Apply(history);
 
   // Assert
-  EXPECT_TRUE(history.empty());
+  EXPECT_THAT(history, ::testing::IsEmpty());
 }
 
 TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
@@ -117,7 +116,7 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   sort->Apply(history);
 
   // Assert
-  EXPECT_TRUE(history.empty());
+  EXPECT_THAT(history, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

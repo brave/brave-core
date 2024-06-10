@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 

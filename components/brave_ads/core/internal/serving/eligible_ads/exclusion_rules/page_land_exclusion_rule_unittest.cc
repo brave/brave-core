@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/page_land_exclusion_rule.h"
 
+#include <vector>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"

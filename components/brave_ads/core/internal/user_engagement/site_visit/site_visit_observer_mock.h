@@ -6,12 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_SITE_VISIT_SITE_VISIT_OBSERVER_MOCK_H_
 
-#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
-
 #include <cstdint>
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 

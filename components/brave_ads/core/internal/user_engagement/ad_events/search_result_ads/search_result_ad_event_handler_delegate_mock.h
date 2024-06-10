@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_DELEGATE_MOCK_H_
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 

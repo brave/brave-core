@@ -23,8 +23,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"  // IWYU pragma: keep
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/browser_list.h"
 #endif
 
 namespace brave_ads {

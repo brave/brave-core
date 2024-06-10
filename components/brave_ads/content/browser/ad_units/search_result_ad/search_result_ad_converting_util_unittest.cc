@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/test_web_page_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "components/schema_org/common/metadata.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
