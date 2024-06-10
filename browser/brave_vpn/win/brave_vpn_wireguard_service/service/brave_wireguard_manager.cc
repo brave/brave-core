@@ -6,9 +6,11 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/brave_wireguard_manager.h"
 
 #include <string>
+
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
 namespace brave_vpn {
 
@@ -18,6 +20,13 @@ HRESULT BraveWireguardManager::EnableVpn(const wchar_t* config,
     VLOG(1) << "Invalid parameters";
     return E_FAIL;
   }
+
+  // Ensure config is matching our expected format and has good values.
+  // Checks DNS and Endpoints.
+  if (!wireguard::IsValidConfig(config)) {
+    return E_FAIL;
+  }
+
   *last_error = !brave_vpn::wireguard::LaunchWireguardService(config);
   return S_OK;
 }

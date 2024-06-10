@@ -11,10 +11,13 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "crypto/openssl_util.h"
 #include "third_party/boringssl/src/include/openssl/base64.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace brave_vpn {
 
@@ -48,6 +51,64 @@ constexpr char kWireguardConfigTemplate[] = R"(
   Endpoint = {vpn_server_hostname}:51821
 )";
 
+bool IsValidConfigDNS(const std::string& config_str) {
+  int match_count = 0, any_match_count = 0;
+
+  // Match our expected `DNS` field.
+  absl::string_view input(config_str);
+  while (match_count < 2 &&
+         re2::RE2::FindAndConsume(&input, R"((?m)^\s*DNS = 1\.1\.1\.1$)")) {
+    match_count++;
+  }
+
+  // Match any `DNS` field.
+  absl::string_view input_any(config_str);
+  while (any_match_count < 2 &&
+         re2::RE2::FindAndConsume(&input_any, R"((?mi)^\s*DNS\s*=\s*.*$)")) {
+    any_match_count++;
+  }
+
+  if (any_match_count == 1 && match_count == 1) {
+    return true;
+  }
+
+  VLOG(1) << "Invalid configuration: " << any_match_count
+          << " (or more) `DNS` fields found, " << match_count
+          << " matching our expected `DNS` pattern.";
+  return false;
+}
+
+bool IsValidConfigEndpoint(const std::string& config_str) {
+  int match_count = 0, any_match_count = 0;
+
+  // Match our expected `Endpoint` field.
+  absl::string_view input(config_str);
+  while (
+      match_count < 2 &&
+      re2::RE2::FindAndConsume(
+          &input,
+          R"((?m)^\s*Endpoint = [0-9A-z-_]{1,63}\.(guardianapp\.com|sudosecuritygroup\.com):51821$)")) {
+    match_count++;
+  }
+
+  // Match any `Endpoint` field.
+  absl::string_view input_any(config_str);
+  while (
+      any_match_count < 2 &&
+      re2::RE2::FindAndConsume(&input_any, R"((?mi)^\s*Endpoint\s*=\s*.*$)")) {
+    any_match_count++;
+  }
+
+  if (any_match_count == 1 && match_count == 1) {
+    return true;
+  }
+
+  VLOG(1) << "Invalid configuration: " << any_match_count
+          << " (or more) `Endpoint` fields found, " << match_count
+          << " matching our expected `Endpoint` pattern.";
+  return false;
+}
+
 }  // namespace
 
 std::optional<std::string> CreateWireguardConfig(
@@ -80,6 +141,30 @@ WireguardKeyPair GenerateNewX25519Keypair() {
   return std::make_tuple(
       EncodeBase64(std::vector<uint8_t>(pubkey, pubkey + 32)),
       EncodeBase64(std::vector<uint8_t>(privkey, privkey + 32)));
+}
+
+// See https://github.com/google/re2/wiki/Syntax for RE2 syntax
+bool IsValidConfig(const wchar_t* config) {
+  if (!config) {
+    return false;
+  }
+
+  std::string config_str;
+  if (!base::WideToUTF8(config, wcslen(config), &config_str)) {
+    VLOG(1) << "Unable to convert config to std::string. Is config valid?";
+    return false;
+  }
+
+  // Check for invalid characters
+  // low ascii (excluding CR/LF), #, high ascii
+  if (re2::RE2::PartialMatch(
+          config_str,
+          R"([\x00-\x09]|[\x0b-\x0c]|[\x0d-\x1f]|[\x23]|[\x7f-\xFF])")) {
+    VLOG(1) << "Config contains invalid characters.";
+    return false;
+  }
+
+  return IsValidConfigEndpoint(config_str) && IsValidConfigDNS(config_str);
 }
 
 }  // namespace wireguard
