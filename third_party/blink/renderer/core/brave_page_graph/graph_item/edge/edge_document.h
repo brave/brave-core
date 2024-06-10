@@ -3,28 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
-#define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_DOCUMENT_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_DOCUMENT_H_
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace brave_page_graph {
 
-class NodeDOMRoot;
-class NodeFrameOwner;
-
-class EdgeCrossDOM final : public GraphEdge {
+class EdgeDocument : public GraphEdge {
  public:
-  EdgeCrossDOM(GraphItemContext* context,
-               NodeFrameOwner* out_node,
-               NodeDOMRoot* in_node);
-
-  ~EdgeCrossDOM() override;
+  EdgeDocument(GraphItemContext* context,
+               GraphNode* out_node,
+               GraphNode* in_node);
+  ~EdgeDocument() override;
 
   ItemName GetItemName() const override;
 
-  bool IsEdgeCrossDOM() const override;
+  bool IsEdgeDocument() const override;
 };
 
 }  // namespace brave_page_graph
@@ -32,16 +28,16 @@ class EdgeCrossDOM final : public GraphEdge {
 namespace blink {
 
 template <>
-struct DowncastTraits<brave_page_graph::EdgeCrossDOM> {
+struct DowncastTraits<brave_page_graph::EdgeDocument> {
   static bool AllowFrom(const brave_page_graph::GraphEdge& edge) {
-    return edge.IsEdgeCrossDOM();
+    return edge.IsEdgeDocument();
   }
   static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
-    return IsA<brave_page_graph::EdgeCrossDOM>(
+    return IsA<brave_page_graph::EdgeDocument>(
         DynamicTo<brave_page_graph::GraphEdge>(graph_item));
   }
 };
 
 }  // namespace blink
 
-#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_DOCUMENT_H_

@@ -33,6 +33,7 @@ class GraphEdge : public GraphItem {
   virtual bool IsEdgeBinding() const;
   virtual bool IsEdgeBindingEvent() const;
   virtual bool IsEdgeCrossDOM() const;
+  virtual bool IsEdgeDocument() const;
   virtual bool IsEdgeEventListener() const;
   virtual bool IsEdgeEventListenerAction() const;
   virtual bool IsEdgeExecute() const;

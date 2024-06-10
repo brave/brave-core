@@ -39,7 +39,6 @@ class GraphNode : public GraphItem {
   virtual bool IsNodeFilter() const;
   virtual bool IsNodeHTML() const;
   virtual bool IsNodeJS() const;
-  virtual bool IsNodeRemoteFrame() const;
   virtual bool IsNodeResource() const;
   virtual bool IsNodeShield() const;
   virtual bool IsNodeShields() const;

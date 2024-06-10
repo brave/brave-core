@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/dcheck_is_on.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
@@ -34,6 +35,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/binding/edge_binding.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/binding/edge_binding_event.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_cross_dom.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_document.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_filter.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_shield.h"
@@ -71,7 +73,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js_builtin.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js_webapi.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_extensions.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_remote_frame.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/shield/node_shield.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/shield/node_shields.h"
@@ -184,7 +185,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.6.3";
+constexpr char kPageGraphVersion[] = "0.7.0";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -1224,8 +1225,18 @@ bool PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {
 void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
   const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(document);
   blink::ExecutionContext* execution_context = document->GetExecutionContext();
+  bool is_frame_attached = document->GetFrame() != nullptr;
+
+  blink::HTMLFrameOwnerElement* owner = document->LocalOwner();
+  FrameId frame_id = GetFrameId(document);
+  if (blink::Document* parent_document = document->ParentDocument()) {
+    frame_id = GetFrameId(parent_document->GetExecutionContext());
+  }
+
   VLOG(1) << "RegisterDocumentNodeCreated) document id: " << node_id
-          << " execution context: " << execution_context;
+          << ", execution context: " << execution_context
+          << ", is frame attached: " << is_frame_attached
+          << ", frame id: " << frame_id;
 
   v8::Isolate* const isolate = execution_context->GetIsolate();
   if (isolate) {
@@ -1234,7 +1245,8 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
   }
 
   const String local_tag_name(static_cast<blink::Node*>(document)->nodeName());
-  auto* dom_root = AddNode<NodeDOMRoot>(node_id, local_tag_name);
+  auto* dom_root =
+      AddNode<NodeDOMRoot>(node_id, local_tag_name, is_frame_attached);
   auto url = document->Url();
   dom_root->SetURL(url);
   if (!source_url_ && url.IsValid() && url.ProtocolIsInHTTPFamily()) {
@@ -1248,22 +1260,16 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
         .parser_node = AddNode<NodeParser>(),
         .extensions_node = AddNode<NodeExtensions>(),
     };
-    AddEdge<EdgeStructure>(nodes.parser_node, nodes.extensions_node);
     execution_context_nodes_.insert(execution_context, std::move(nodes));
-
-    if (blink::HTMLFrameOwnerElement* owner = document->LocalOwner()) {
-      NodeHTMLElement* owner_graph_node = GetHTMLElementNode(owner);
-      AddEdge<EdgeCrossDOM>(To<NodeFrameOwner>(owner_graph_node),
-                            nodes.parser_node);
-    } else if (blink::Document* parent_document = document->ParentDocument()) {
-      AddEdge<EdgeCrossDOM>(
-          GetCurrentActingNode(parent_document->GetExecutionContext()),
-          nodes.parser_node);
-    }
+    AddEdge<EdgeStructure>(nodes.parser_node, nodes.extensions_node);
     AddEdge<EdgeStructure>(nodes.parser_node, dom_root);
   }
 
-  FrameId frame_id = GetFrameId(execution_context);
+  if (owner) {
+    NodeHTMLElement* owner_graph_node = GetHTMLElementNode(owner);
+    AddEdge<EdgeCrossDOM>(To<NodeFrameOwner>(owner_graph_node), dom_root);
+  }
+
   AddEdge<EdgeNodeCreate>(GetCurrentActingNode(execution_context), dom_root,
                           frame_id);
 }

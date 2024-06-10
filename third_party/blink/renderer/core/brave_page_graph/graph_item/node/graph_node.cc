@@ -78,10 +78,6 @@ bool GraphNode::IsNodeJS() const {
   return false;
 }
 
-bool GraphNode::IsNodeRemoteFrame() const {
-  return false;
-}
-
 bool GraphNode::IsNodeResource() const {
   return false;
 }

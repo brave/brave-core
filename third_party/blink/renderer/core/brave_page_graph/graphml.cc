@@ -129,6 +129,9 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc,
 
 const GraphMLAttrs& GetGraphMLAttrs() {
   static base::NoDestructor<GraphMLAttrs> attrs({
+      {kGraphMLAttrDefIsFrameAttached,
+       new GraphMLAttr(kGraphMLAttrForTypeNode, "is attached",
+                       kGraphMLAttrTypeBoolean)},
       {kGraphMLAttrDefAttrName,
        new GraphMLAttr(kGraphMLAttrForTypeEdge, "attr name")},
       {kGraphMLAttrDefBeforeNodeId,
