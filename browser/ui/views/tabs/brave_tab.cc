@@ -132,6 +132,16 @@ void BraveTab::Layout(PassKey) {
   }
 }
 
+gfx::Insets BraveTab::GetInsets() const {
+  // As close button has more padding, it seems favicon is too close to the left
+  // edge of the tab left border comppared with close button. Give additional
+  // left padding to make both visible with same space from tab border.
+  // See https://www.github.com/brave/brave-browser/issues/30469.
+  auto insets = Tab::GetInsets();
+  insets.set_left(insets.left() + kExtraLeftPadding);
+  return insets;
+}
+
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
   if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
