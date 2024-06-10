@@ -27,6 +27,9 @@ const cmdDirStyle = chalk.blue
 const cmdCmdStyle = chalk.green
 const cmdArrowStyle = chalk.magenta
 
+// Track Teamcity progress scopes and finish them on unexpected exit.
+const progressScopes = []
+
 if (tsm) {
   tsm.autoFlowId = false
   // Ensure that the output is not buffered when using Teamcity Service
@@ -39,11 +42,18 @@ if (tsm) {
   // "drain" event.
   process.stdout._handle.setBlocking(true)
   process.stderr._handle.setBlocking(true)
+
+  process.on('exit', () => {
+    while (progressScopes.length) {
+      tsm.blockClosed({ name: progressScopes.pop() })
+    }
+  })
 }
 
 function progressStart(message) {
   if (tsm) {
     tsm.blockOpened({ name: message })
+    progressScopes.push(message)
   } else {
     console.log(progressStyle(`${message}...`))
   }
@@ -51,6 +61,7 @@ function progressStart(message) {
 
 function progressFinish(message) {
   if (tsm) {
+    progressScopes.pop()
     tsm.blockClosed({ name: message })
   } else {
     console.log(progressStyle(`...${message} done`))
