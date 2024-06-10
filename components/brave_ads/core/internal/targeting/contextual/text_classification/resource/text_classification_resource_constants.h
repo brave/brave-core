@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-inline constexpr char kFlatBuffersTextClassificationResourceId[] =
+inline constexpr char kTextClassificationResourceId[] =
     "awdrtoxdlcdyjmckgmtqptnhdtlxgblp";
 
 }  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_notifier_observer_mock.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -22,160 +22,192 @@ constexpr char kManifestVersion[] = "ManifestVersion";
 constexpr char kResourceId[] = "ResourceId";
 constexpr char kPaymentId[] = "PaymentId";
 constexpr char kRecoverySeed[] = "RecoverySeed";
-constexpr char kRedirectChainUrl[] = "https://example.com";
-constexpr char kText[] = "Text content";
-constexpr char kHtml[] = "HTML content";
+constexpr char kRedirectChainUrl[] = "https://brave.com";
+constexpr char kText[] = "Text";
+constexpr char kHtml[] = "HTML";
 
 constexpr int32_t kTabId = 1;
+constexpr bool kIsNewNavigation = true;
+constexpr bool kIsRestoring = false;
+constexpr bool kIsErrorPage = false;
+constexpr bool kIsVisible = true;
+
 constexpr int32_t kPageTransitionType = 2;
 
-constexpr bool kIsVisible = true;
-constexpr bool kScreenWasLocked = true;
-
 constexpr base::TimeDelta kIdleTime = base::Minutes(1);
-
-void Notify(const AdsClientNotifier& queued_notifier) {
-  queued_notifier.NotifyDidInitializeAds();
-  queued_notifier.NotifyLocaleDidChange(kLocale);
-  queued_notifier.NotifyPrefDidChange(kPrefPath);
-  queued_notifier.NotifyDidUpdateResourceComponent(kManifestVersion,
-                                                   kResourceId);
-  queued_notifier.NotifyDidUnregisterResourceComponent(kResourceId);
-  queued_notifier.NotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed);
-  queued_notifier.NotifyTabTextContentDidChange(
-      kTabId, {GURL(kRedirectChainUrl)}, kText);
-  queued_notifier.NotifyTabHtmlContentDidChange(
-      kTabId, {GURL(kRedirectChainUrl)}, kHtml);
-  queued_notifier.NotifyTabDidStartPlayingMedia(kTabId);
-  queued_notifier.NotifyTabDidStopPlayingMedia(kTabId);
-  queued_notifier.NotifyTabDidChange(
-      kTabId, {GURL(kRedirectChainUrl)}, /*is_new_navigation=*/true,
-      /*is_restoring=*/false, /*is_error_page=*/false, kIsVisible);
-  queued_notifier.NotifyDidCloseTab(kTabId);
-  queued_notifier.NotifyUserGestureEventTriggered(kPageTransitionType);
-  queued_notifier.NotifyUserDidBecomeIdle();
-  queued_notifier.NotifyUserDidBecomeActive(kIdleTime, kScreenWasLocked);
-  queued_notifier.NotifyBrowserDidEnterForeground();
-  queued_notifier.NotifyBrowserDidEnterBackground();
-  queued_notifier.NotifyBrowserDidBecomeActive();
-  queued_notifier.NotifyBrowserDidResignActive();
-  queued_notifier.NotifyDidSolveAdaptiveCaptcha();
-}
-
-void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
-                         int expected_calls_count) {
-  EXPECT_CALL(observer, OnNotifyDidInitializeAds()).Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyLocaleDidChange(kLocale))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyPrefDidChange(kPrefPath))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer,
-              OnNotifyDidUpdateResourceComponent(kManifestVersion, kResourceId))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyDidUnregisterResourceComponent(kResourceId))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer,
-              OnNotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed))
-      .Times(expected_calls_count);
-  EXPECT_CALL(
-      observer,
-      OnNotifyTabTextContentDidChange(
-          kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kText))
-      .Times(expected_calls_count);
-  EXPECT_CALL(
-      observer,
-      OnNotifyTabHtmlContentDidChange(
-          kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kHtml))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyTabDidStartPlayingMedia(kTabId))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyTabDidStopPlayingMedia(kTabId))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer,
-              OnNotifyTabDidChange(
-                  kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)),
-                  /*is_new_navigation=*/true, /*is_restoring=*/false,
-                  /*is_error_page=*/false, kIsVisible))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyDidCloseTab(kTabId))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyUserGestureEventTriggered(kPageTransitionType))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyUserDidBecomeIdle())
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer,
-              OnNotifyUserDidBecomeActive(kIdleTime, kScreenWasLocked))
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyBrowserDidEnterForeground())
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyBrowserDidEnterBackground())
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyBrowserDidBecomeActive())
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyBrowserDidResignActive())
-      .Times(expected_calls_count);
-  EXPECT_CALL(observer, OnNotifyDidSolveAdaptiveCaptcha())
-      .Times(expected_calls_count);
-}
+constexpr bool kScreenWasLocked = true;
 
 }  // namespace
 
-TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
+class BraveAdsAdsClientNotifierTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    ads_client_notifier_.AddObserver(&ads_client_notifier_observer_mock_);
+  }
+
+  void TearDown() override {
+    ads_client_notifier_.RemoveObserver(&ads_client_notifier_observer_mock_);
+  }
+
+  void FireAdsClientNotifiers() {
+    ads_client_notifier_.NotifyDidInitializeAds();
+
+    ads_client_notifier_.NotifyLocaleDidChange(kLocale);
+
+    ads_client_notifier_.NotifyPrefDidChange(kPrefPath);
+
+    ads_client_notifier_.NotifyDidUpdateResourceComponent(kManifestVersion,
+                                                          kResourceId);
+    ads_client_notifier_.NotifyDidUnregisterResourceComponent(kResourceId);
+
+    ads_client_notifier_.NotifyRewardsWalletDidUpdate(kPaymentId,
+                                                      kRecoverySeed);
+
+    ads_client_notifier_.NotifyTabTextContentDidChange(
+        kTabId, {GURL(kRedirectChainUrl)}, kText);
+    ads_client_notifier_.NotifyTabHtmlContentDidChange(
+        kTabId, {GURL(kRedirectChainUrl)}, kHtml);
+    ads_client_notifier_.NotifyTabDidStartPlayingMedia(kTabId);
+    ads_client_notifier_.NotifyTabDidStopPlayingMedia(kTabId);
+    ads_client_notifier_.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
+                                            kIsNewNavigation, kIsRestoring,
+                                            kIsErrorPage, kIsVisible);
+    ads_client_notifier_.NotifyDidCloseTab(kTabId);
+
+    ads_client_notifier_.NotifyUserGestureEventTriggered(kPageTransitionType);
+    ads_client_notifier_.NotifyUserDidBecomeIdle();
+    ads_client_notifier_.NotifyUserDidBecomeActive(kIdleTime, kScreenWasLocked);
+
+    ads_client_notifier_.NotifyBrowserDidEnterForeground();
+    ads_client_notifier_.NotifyBrowserDidEnterBackground();
+    ads_client_notifier_.NotifyBrowserDidBecomeActive();
+    ads_client_notifier_.NotifyBrowserDidResignActive();
+
+    ads_client_notifier_.NotifyDidSolveAdaptiveCaptcha();
+  }
+
+  void ExpectAdsClientNotifierCallCount(const int expected_call_count) {
+    EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyDidInitializeAds())
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyLocaleDidChange(kLocale))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyPrefDidChange(kPrefPath))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(
+        ads_client_notifier_observer_mock_,
+        OnNotifyDidUpdateResourceComponent(kManifestVersion, kResourceId))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyDidUnregisterResourceComponent(kResourceId))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(
+        ads_client_notifier_observer_mock_,
+        OnNotifyTabTextContentDidChange(
+            kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kText))
+        .Times(expected_call_count);
+    EXPECT_CALL(
+        ads_client_notifier_observer_mock_,
+        OnNotifyTabHtmlContentDidChange(
+            kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kHtml))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyTabDidStartPlayingMedia(kTabId))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyTabDidStopPlayingMedia(kTabId))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyTabDidChange(
+                    kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)),
+                    kIsNewNavigation, kIsRestoring, kIsErrorPage, kIsVisible))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyDidCloseTab(kTabId))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyUserGestureEventTriggered(kPageTransitionType))
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyUserDidBecomeIdle())
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyUserDidBecomeActive(kIdleTime, kScreenWasLocked))
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyBrowserDidEnterForeground())
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyBrowserDidEnterBackground())
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyBrowserDidBecomeActive())
+        .Times(expected_call_count);
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyBrowserDidResignActive())
+        .Times(expected_call_count);
+
+    EXPECT_CALL(ads_client_notifier_observer_mock_,
+                OnNotifyDidSolveAdaptiveCaptcha())
+        .Times(expected_call_count);
+  }
+
+  AdsClientNotifier ads_client_notifier_;
+
+  ::testing::StrictMock<AdsClientNotifierObserverMock>
+      ads_client_notifier_observer_mock_;
+};
+
+TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {
   // Arrange
-  AdsClientNotifier queued_notifier;
-  queued_notifier.set_should_queue_notifications_for_testing(
+  ads_client_notifier_.set_should_queue_notifications_for_testing(
       /*should_queue_notifications=*/true);
 
-  ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
-  queued_notifier.AddObserver(&observer);
-
   // Act & Assert
-  ExpectNotifierCalls(observer, /*expected_calls_count=*/0);
-  Notify(queued_notifier);
-  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
+  ExpectAdsClientNotifierCallCount(0);
+  FireAdsClientNotifiers();  // Queue notifications.
 
-  // Act & Assert
-  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
-  queued_notifier.NotifyPendingObservers();
-  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
+  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(
+      &ads_client_notifier_observer_mock_));
+  ExpectAdsClientNotifierCallCount(1);  // Fire queued notifications.
+  ads_client_notifier_.NotifyPendingObservers();
 
-  // Act & Assert
-  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
-  Notify(queued_notifier);
-  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
-
-  queued_notifier.RemoveObserver(&observer);
+  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(
+      &ads_client_notifier_observer_mock_));
+  ExpectAdsClientNotifierCallCount(0);  // Already fired queued notifications.
+  ads_client_notifier_.NotifyPendingObservers();
 }
 
-TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
+TEST_F(
+    BraveAdsAdsClientNotifierTest,
+    DoNotFireQueuedAdsClientNotificationsIfNotifyPendingObserversIsNotCalled) {
   // Arrange
-  ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
-  ExpectNotifierCalls(observer, /*expected_calls_count=*/0);
-
-  AdsClientNotifier queued_notifier;
-  queued_notifier.set_should_queue_notifications_for_testing(
+  ads_client_notifier_.set_should_queue_notifications_for_testing(
       /*should_queue_notifications=*/true);
 
-  queued_notifier.AddObserver(&observer);
-
   // Act & Assert
-  Notify(queued_notifier);
-  queued_notifier.RemoveObserver(&observer);
+  ExpectAdsClientNotifierCallCount(0);
+  FireAdsClientNotifiers();
 }
 
-TEST(BraveAdsAdsClientNotifierTest, ShouldNotQueueNotifications) {
+TEST_F(BraveAdsAdsClientNotifierTest,
+       FireAdsClientNotificationsImmediatelyIfNotQueued) {
   // Arrange
-  ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
-  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
-
-  AdsClientNotifier queued_notifier;
-  queued_notifier.set_should_queue_notifications_for_testing(
+  ads_client_notifier_.set_should_queue_notifications_for_testing(
       /*should_queue_notifications=*/false);
-  queued_notifier.AddObserver(&observer);
 
   // Act & Assert
-  Notify(queued_notifier);
-  queued_notifier.RemoveObserver(&observer);
+  ExpectAdsClientNotifierCallCount(1);
+  FireAdsClientNotifiers();
 }
 
 }  // namespace brave_ads

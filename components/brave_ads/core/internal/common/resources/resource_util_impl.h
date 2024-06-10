@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_IMPL_H_
 
 #include <optional>
 #include <string>
@@ -16,7 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/common/resources/resources_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_util.h"
 
 namespace base {
 class File;
@@ -25,7 +25,7 @@ class File;
 namespace brave_ads {
 
 template <typename T>
-base::expected<T, std::string> LoadAndParseComponentResourceOnBackgroundThread(
+base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
     base::File file) {
   if (!file.IsValid()) {
     return base::ok(T{});
@@ -52,19 +52,21 @@ base::expected<T, std::string> LoadAndParseComponentResourceOnBackgroundThread(
 }
 
 template <typename T>
-void LoadComponentResourceCallback(LoadAndParseResourceCallback<T> callback,
-                                   base::File file) {
+void LoadComponentResourceCallback(
+    LoadAndParseResourceComponentCallback<T> callback,
+    base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&LoadAndParseComponentResourceOnBackgroundThread<T>,
+      base::BindOnce(&LoadAndParseResourceComponentOnBackgroundThread<T>,
                      std::move(file)),
       std::move(callback));
 }
 
 template <typename T>
-void LoadAndParseResource(const std::string& id,
-                          const int version,
-                          LoadAndParseResourceCallback<T> callback) {
+void LoadAndParseResourceComponent(
+    const std::string& id,
+    const int version,
+    LoadAndParseResourceComponentCallback<T> callback) {
   LoadComponentResource(
       id, version,
       base::BindOnce(&LoadComponentResourceCallback<T>, std::move(callback)));
@@ -72,4 +74,4 @@ void LoadAndParseResource(const std::string& id,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCES_UTIL_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_UTIL_IMPL_H_

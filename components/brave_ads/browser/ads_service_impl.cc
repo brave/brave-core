@@ -310,7 +310,8 @@ bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
 }
 
 bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
+  return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
@@ -618,6 +619,7 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
   InitializeBraveNewsAdsPrefChangeRegistrar();
   InitializeNewTabPageAdsPrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
+  InitializeSearchResultAdsPrefChangeRegistrar();
 }
 
 void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
@@ -687,6 +689,13 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
       &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
   pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
                              notification_ad_position_callback);
+}
+
+void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
+  pref_change_registrar_.Add(
+      prefs::kOptedInToSearchResultAds,
+      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+                          base::Unretained(this)));
 }
 
 void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {

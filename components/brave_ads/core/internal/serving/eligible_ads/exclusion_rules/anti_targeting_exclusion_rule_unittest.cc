@@ -30,13 +30,6 @@ class BraveAdsAntiTargetingExclusionRuleTest : public UnitTestBase {
     resource_ = std::make_unique<AntiTargetingResource>();
   }
 
-  bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
-  }
-
   std::unique_ptr<AntiTargetingResource> resource_;
 };
 
@@ -56,7 +49,9 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldIncludeIfNotVisitedAntiTargetedSiteForCreativeSet) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*browsing_history=*/{GURL(kAntiTargetedSite)});
@@ -71,7 +66,9 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldIncludeIfNotVisitedAntiTargetedSite) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*browsing_history=*/{GURL("https://www.foo.com")});
@@ -86,7 +83,9 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldExcludeIfVisitedAntiTargetedSite) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*browsing_history=*/{GURL(kAntiTargetedSite)});

@@ -52,19 +52,13 @@ class BraveAdsConversionsTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     conversions_ = std::make_unique<Conversions>();
-    conversions_->AddObserver(&observer_mock_);
+    conversions_->AddObserver(&conversions_observer_mock_);
   }
 
   void TearDown() override {
-    conversions_->RemoveObserver(&observer_mock_);
+    conversions_->RemoveObserver(&conversions_observer_mock_);
 
     UnitTestBase::TearDown();
-  }
-
-  void LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
   }
 
   void RecordAdEventsAdvancingTheClockAfterEach(
@@ -81,7 +75,7 @@ class BraveAdsConversionsTest : public UnitTestBase {
 
   std::unique_ptr<Conversions> conversions_;
 
-  ::testing::StrictMock<ConversionsObserverMock> observer_mock_;
+  ::testing::StrictMock<ConversionsObserverMock> conversions_observer_mock_;
 };
 
 TEST_F(BraveAdsConversionsTest,
@@ -124,7 +118,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -168,7 +162,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -212,7 +206,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -256,7 +250,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -300,7 +294,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -344,7 +338,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -388,7 +382,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -432,11 +426,11 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedOutOfAds) {
+TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedOutOfAllAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
   test::OptOutOfNotificationAds();
@@ -459,7 +453,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedOutOfAds) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -482,11 +476,12 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedInToAds) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
-TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfOptedOutOfAds) {
+TEST_F(BraveAdsConversionsTest,
+       ConvertClickedSearchResultAdIfOptedOutOfAllAds) {
   // Arrange
   test::OptOutOfBraveNewsAds();
   test::OptOutOfNotificationAds();
@@ -509,7 +504,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfOptedOutOfAds) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -532,7 +527,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfOptedInToAds) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -568,8 +563,8 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion_1));
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion_2));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion_1));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion_2));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -594,7 +589,7 @@ TEST_F(BraveAdsConversionsTest, DoNotCapAdConversionsWithinTheSameCreativeSet) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion)).Times(2);
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion)).Times(2);
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
@@ -620,7 +615,7 @@ TEST_F(BraveAdsConversionsTest, CapAdConversionsWithinTheSameCreativeSet) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion)).Times(2);
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion)).Times(2);
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
@@ -645,7 +640,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -718,7 +713,7 @@ TEST_F(BraveAdsConversionsTest,
                                    /*created_at=*/Now()),
                       /*verifiable_conversion=*/std::nullopt);
 
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion_1));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion_1));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 
   AdInfo ad_2 = ad_1;
@@ -770,7 +765,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -797,7 +792,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableAdvertiserPublicKeyIsEmpty) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -817,7 +813,7 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml);
 }
@@ -826,7 +822,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfResourceIdPatternDoesNotMatchRedirectChain) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -847,7 +844,7 @@ TEST_F(
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://grault.com/garply"),
                           GURL("https://www.baz.com/bar"),
@@ -858,7 +855,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableUrlConversionIdDoesNotExist) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -878,14 +876,15 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux=quux")}, kHtml);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -906,7 +905,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
                                kVerifiableConversionAdvertiserPublicKey});
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml);
 }
@@ -914,7 +913,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableHtmlConversionIdDoesNotExist) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -934,14 +934,15 @@ TEST_F(BraveAdsConversionsTest,
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml);
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -962,7 +963,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
                                kVerifiableConversionAdvertiserPublicKey});
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       BuildRedirectChain(),
       /*html=*/R"(<html><div id="xyzzy-id">waldo</div></html>)");
@@ -972,7 +973,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfVerifiableHtmlMetaTagConversionIdDoesNotExist) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -992,7 +994,7 @@ TEST_F(
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://qux.com/quux/corge")}, kHtml);
 }
@@ -1000,7 +1002,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfVerifiableHtmlMetaTagConversionIdExists) {
   // Arrange
-  LoadResource();
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
@@ -1021,7 +1024,7 @@ TEST_F(BraveAdsConversionsTest,
                                kVerifiableConversionAdvertiserPublicKey});
 
   // Act & Assert
-  EXPECT_CALL(observer_mock_, OnDidConvertAd(conversion));
+  EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://qux.com/quux/corge")},
       /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");

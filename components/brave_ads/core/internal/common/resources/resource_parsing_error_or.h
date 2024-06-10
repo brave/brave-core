@@ -15,7 +15,7 @@ namespace brave_ads {
 // Helper for methods which perform file read operations to parse a json file,
 // and initiate a given type.
 template <class ValueType>
-using ResourceParsingErrorOr = base::expected<ValueType, std::string>;
+using ResourceComponentParsingErrorOr = base::expected<ValueType, std::string>;
 
 }  // namespace brave_ads
 

@@ -27,40 +27,29 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    SetUpFeatures();
-
-    targeting_ = std::make_unique<test::TargetingHelper>();
-
-    LoadResources();
-
-    NotifyDidInitializeAds();
-  }
-
-  void LoadResources() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
-    task_environment_.RunUntilIdle();
-  }
-
-  void SetUpFeatures() {
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{kPurchaseIntentFeature,
                               kTextClassificationFeature},
         /*disabled_features=*/{});
+
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
+
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
+
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
 
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
-  targeting_->Mock();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->Mock();
 
   // Act & Assert
   EXPECT_EQ(test::TargetingHelper::Expectation(), BuildUserModel());

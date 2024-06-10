@@ -16,42 +16,30 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char kNightlyBuildChannelName[] = "nightly";
+constexpr char kBetaBuildChannelName[] = "beta";
+constexpr char kReleaseBuildChannelName[] = "release";
+
+constexpr char kUnknownPlatformType[] = "unknown";
+constexpr char kAndroidPlatformType[] = "android";
+constexpr char kIOSPlatformType[] = "ios";
+constexpr char kLinuxPlatformType[] = "linux";
+constexpr char kMacOSPlatformType[] = "macos";
+constexpr char kWindowsPlatformType[] = "windows";
+
+}  // namespace
 
 void MockDeviceId() {
   CHECK(GlobalState::HasInstance());
 
   GlobalState::GetInstance()->SysInfo().device_id = kDeviceId;
-}
-
-void MockBuildChannel(const BuildChannelType type) {
-  CHECK(GlobalState::HasInstance());
-
-  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
-  switch (type) {
-    case BuildChannelType::kNightly: {
-      build_channel.is_release = false;
-      build_channel.name = "nightly";
-      return;
-    }
-
-    case BuildChannelType::kBeta: {
-      build_channel.is_release = false;
-      build_channel.name = "beta";
-      return;
-    }
-
-    case BuildChannelType::kRelease: {
-      build_channel.is_release = true;
-      build_channel.name = "release";
-      return;
-    }
-  }
-
-  NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
-                        << base::to_underlying(type);
 }
 
 void MockPlatformHelper(const PlatformHelperMock& mock,
@@ -63,34 +51,34 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
 
   switch (type) {
     case PlatformType::kUnknown: {
-      name = "unknown";
+      name = kUnknownPlatformType;
       break;
     }
 
     case PlatformType::kAndroid: {
       is_mobile = true;
-      name = "android";
+      name = kAndroidPlatformType;
       break;
     }
 
     case PlatformType::kIOS: {
       is_mobile = true;
-      name = "ios";
+      name = kIOSPlatformType;
       break;
     }
 
     case PlatformType::kLinux: {
-      name = "linux";
+      name = kLinuxPlatformType;
       break;
     }
 
     case PlatformType::kMacOS: {
-      name = "macos";
+      name = kMacOSPlatformType;
       break;
     }
 
     case PlatformType::kWindows: {
-      name = "windows";
+      name = kWindowsPlatformType;
       break;
     }
   }
@@ -98,6 +86,34 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
   ON_CALL(mock, IsMobile()).WillByDefault(::testing::Return(is_mobile));
   ON_CALL(mock, GetName()).WillByDefault(::testing::Return(name));
   ON_CALL(mock, GetType()).WillByDefault(::testing::Return(type));
+}
+
+void MockBuildChannel(const BuildChannelType type) {
+  CHECK(GlobalState::HasInstance());
+
+  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  switch (type) {
+    case BuildChannelType::kNightly: {
+      build_channel.is_release = false;
+      build_channel.name = kNightlyBuildChannelName;
+      return;
+    }
+
+    case BuildChannelType::kBeta: {
+      build_channel.is_release = false;
+      build_channel.name = kBetaBuildChannelName;
+      return;
+    }
+
+    case BuildChannelType::kRelease: {
+      build_channel.is_release = true;
+      build_channel.name = kReleaseBuildChannelName;
+      return;
+    }
+  }
+
+  NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
+                        << base::to_underlying(type);
 }
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
@@ -154,6 +170,16 @@ void MockUrlResponses(AdsClientMock& mock,
             }
 
             std::move(callback).Run(*url_response);
+          }));
+}
+
+void MockGetScheduledCaptcha(AdsClientMock& mock,
+                             const std::string& captcha_id) {
+  ON_CALL(mock, GetScheduledCaptcha)
+      .WillByDefault(
+          ::testing::Invoke([captcha_id](const std::string& /*payment_id*/,
+                                         GetScheduledCaptchaCallback callback) {
+            std::move(callback).Run(captcha_id);
           }));
 }
 

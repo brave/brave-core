@@ -8,6 +8,7 @@
 #include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -81,8 +82,9 @@ PrefService* AdsTabHelper::GetPrefs() const {
       ->GetPrefs();
 }
 
-bool AdsTabHelper::UserHasJoinedBraveRewards() const {
-  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
+  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
 bool AdsTabHelper::IsVisible() const {
@@ -240,15 +242,15 @@ void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
   CHECK(!redirect_chain_.empty());
 
-  if (!UserHasJoinedBraveRewards()) {
-    return;
+  if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
+    web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+        kDocumentBodyInnerTextJavaScript,
+        base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
+                       weak_factory_.GetWeakPtr(), redirect_chain_),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
-
-  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      kDocumentBodyInnerTextJavaScript,
-      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
-                     weak_factory_.GetWeakPtr(), redirect_chain_),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(

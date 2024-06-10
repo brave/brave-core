@@ -23,26 +23,19 @@ class BraveAdsInterestSegmentsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<test::TargetingHelper>();
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
 
-    LoadResource();
-
-    NotifyDidInitializeAds();
-  }
-
-  void LoadResource() {
     NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
                                      kLanguageComponentId);
-    task_environment_.RunUntilIdle();
   }
 
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
-  targeting_->MockInterest();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->MockInterest();
 
   // Act & Assert
   const SegmentList expected_interest_segments =
@@ -51,12 +44,8 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
 }
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
-  // Arrange
-  // Act
-  const SegmentList segments = BuildInterestSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildInterestSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsInterestSegmentsTest,
@@ -65,14 +54,10 @@ TEST_F(BraveAdsInterestSegmentsTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  targeting_->MockInterest();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->MockInterest();
 
-  // Act
-  const SegmentList segments = BuildInterestSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildInterestSegments(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

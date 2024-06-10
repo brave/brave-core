@@ -13,24 +13,29 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
+  // Require resource only if:
+  // - The user has opted into new tab page ads and either joined Brave Rewards
+  //   or new tab page ad events should always be triggered.
   return UserHasOptedInToNewTabPageAds() &&
          (UserHasJoinedBraveRewards() ||
           ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
 bool DoesRequireResource() {
+  // Require resource only if:
+  // - The user has opted into Brave News ads.
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  // - The user has joined Brave Rewards and opted into notification ads.
   return UserHasOptedInToBraveNewsAds() ||
          DoesRequireResourceForNewTabPageAds() ||
          UserHasOptedInToNotificationAds();
@@ -48,12 +53,12 @@ Catalog::~Catalog() {
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
-void Catalog::AddObserver(CatalogObserver* observer) {
+void Catalog::AddObserver(CatalogObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Catalog::RemoveObserver(CatalogObserver* observer) {
+void Catalog::RemoveObserver(CatalogObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }
@@ -111,13 +116,12 @@ void Catalog::OnNotifyDidInitializeAds() {
 }
 
 void Catalog::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == prefs::kOptedInToNotificationAds ||
-      path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday ||
-      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
-      path == ntp_background_images::prefs::
-                  kNewTabPageShowSponsoredImagesBackgroundImage) {
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
     Initialize();
   }
 }
