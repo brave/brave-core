@@ -58,7 +58,8 @@ import {
 import {
   UnverifiedTokenIndicator,
   StateChangeText,
-  ArrowRightIcon
+  ArrowRightIcon,
+  TooltipContent
 } from './state_changes.styles'
 
 type EVMApprovalData =
@@ -137,7 +138,10 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <Tooltip text={transfer.counterparty.address}>
+          <Tooltip>
+            <TooltipContent slot='content'>
+              {transfer.counterparty.address}
+            </TooltipContent>
             <CopyLabel textToCopy={transfer.counterparty.address}>
               {getLocale('braveWalletSwapTo')}{' '}
               <strong>
@@ -272,7 +276,10 @@ export const NonFungibleErcTokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty?.address && (
-          <Tooltip text={transfer.counterparty.address}>
+          <Tooltip>
+            <TooltipContent slot='content'>
+              {transfer.counterparty.address}
+            </TooltipContent>
             <CopyLabel textToCopy={transfer.counterparty.address}>
               {getLocale('braveWalletSwapTo')}{' '}
               <strong>{reduceAddress(transfer.counterparty.address)}</strong>

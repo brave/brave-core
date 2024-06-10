@@ -49,7 +49,8 @@ import {
 import {
   ArrowRightIcon,
   UnverifiedTokenIndicator,
-  StateChangeText
+  StateChangeText,
+  TooltipContent
 } from './state_changes.styles'
 import { ParsedTransaction } from '../../../../utils/tx-utils'
 
@@ -128,7 +129,10 @@ export const SOLTransfer = ({
         {transactionDetails?.txType ===
           BraveWallet.TransactionType.SolanaSystemTransfer &&
           transactionDetails?.recipient && (
-            <Tooltip text={transactionDetails.recipient}>
+            <Tooltip>
+              <TooltipContent slot='content'>
+                {transactionDetails.recipient}
+              </TooltipContent>
               <CopyLabel textToCopy={transactionDetails.recipient}>
                 {getLocale('braveWalletSwapTo')}{' '}
                 <strong>{transactionDetails.recipientLabel}</strong>
@@ -237,7 +241,10 @@ export const SPLTokenTransfer = ({
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
         {transfer.counterparty && (
-          <Tooltip text={transfer.counterparty}>
+          <Tooltip>
+            <TooltipContent slot='content'>
+              {transfer.counterparty}
+            </TooltipContent>
             <CopyLabel textToCopy={transfer.counterparty}>
               {getLocale('braveWalletSwapTo')}{' '}
               <strong>{reduceAddress(transfer.counterparty)}</strong>
