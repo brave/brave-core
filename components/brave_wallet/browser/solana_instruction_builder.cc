@@ -286,6 +286,9 @@ std::optional<SolanaInstruction> Transfer(
   });
 
   // Add on the slice of our proof
+  if (proof.proof.size() < canopy_depth) {
+    return std::nullopt;
+  }
   size_t end = proof.proof.size() - proof.canopy_depth;
   for (size_t i = 0; i < end; ++i) {
     account_metas.push_back(

@@ -354,8 +354,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
   } else {
     token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   }
-  std::optional<bool> is_compressed = value.FindBool("is_compressed");
-  token_ptr->is_compressed = is_compressed.value_or(false);
+  token_ptr->is_compressed = value.FindBool("is_compressed").value_or(false);
 
   return token_ptr;
 }

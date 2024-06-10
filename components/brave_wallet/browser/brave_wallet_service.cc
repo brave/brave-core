@@ -297,6 +297,7 @@ void BraveWalletService::OnGetNfts(
     std::move(callback).Run(false);
     return;
   }
+  DCHECK_EQ(nfts.size(), 1U);
   std::move(callback).Run(AddUserAssetInternal(std::move(nfts[0])));
 }
 

@@ -167,8 +167,8 @@ class SimpleHashClient {
   std::optional<base::flat_map<std::string, std::string>> ParseTokenUrls(
       const base::Value& json_value);
 
-  std::optional<
-      base::flat_map<std::string, base::flat_map<std::string, uint64_t>>>
+  std::optional<base::flat_map<mojom::NftIdentifierPtr,
+                               base::flat_map<std::string, uint64_t>>>
   ParseBalances(const base::Value& json_value);
 
   std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>>
