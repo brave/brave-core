@@ -517,6 +517,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
+    CHECK_EQ(6u, decoded.value().size());
+
     auto min_amount_out = decoded.value()[4].GetString();
 
     // The swapData field is an array of tuples, each representing a swap fill
