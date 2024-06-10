@@ -20,7 +20,7 @@ GlobalState*& GetGlobalStateInstance() {
 
 }  // namespace
 
-GlobalStateHolder::GlobalStateHolder(GlobalState* global_state) {
+GlobalStateHolder::GlobalStateHolder(GlobalState* const global_state) {
   GlobalState*& global_state_instance = GetGlobalStateInstance();
   CHECK(!global_state_instance);
   global_state_instance = global_state;

@@ -12,7 +12,7 @@
 namespace brave_ads::database {
 
 mojom::DBRecordInfoPtr CreateRecord(
-    sql::Statement* statement,
+    sql::Statement* const statement,
     const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings) {
   CHECK(statement);
 

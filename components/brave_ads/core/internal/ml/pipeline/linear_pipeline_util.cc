@@ -45,16 +45,16 @@ std::optional<TransformationPtr> LoadHashedNGramsTransformation(
 }
 
 std::optional<TransformationVector> LoadTransformations(
-    const linear_text_classification::flat::Model* text_classification) {
+    const linear_text_classification::flat::Model* const text_classification) {
   CHECK(text_classification);
 
-  const auto* transformations = text_classification->transformations();
+  const auto* const transformations = text_classification->transformations();
   if (!transformations) {
     return std::nullopt;
   }
 
   TransformationVector transformations_vec;
-  for (const auto* transformation_entry : *transformations) {
+  for (const auto* const transformation_entry : *transformations) {
     if (!transformation_entry) {
       return std::nullopt;
     }
@@ -93,14 +93,14 @@ std::optional<TransformationVector> LoadTransformations(
 
 }  // namespace
 
-std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
+std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* const data,
                                                const size_t length) {
   flatbuffers::Verifier verifier(data, length);
   if (!linear_text_classification::flat::VerifyModelBuffer(verifier)) {
     return std::nullopt;
   }
 
-  const linear_text_classification::flat::Model* model =
+  const linear_text_classification::flat::Model* const model =
       linear_text_classification::flat::GetModel(data);
   if (!model) {
     return std::nullopt;
@@ -108,7 +108,7 @@ std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* data,
 
   const std::string default_language_code =
       brave_l10n::GetISOLanguageCode(brave_l10n::GetDefaultLocaleString());
-  const auto* locale = model->locale();
+  const auto* const locale = model->locale();
   if (locale == nullptr ||
       !base::EqualsCaseInsensitiveASCII(locale->str(), default_language_code)) {
     return std::nullopt;

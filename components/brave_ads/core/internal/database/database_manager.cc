@@ -28,12 +28,12 @@ DatabaseManager& DatabaseManager::GetInstance() {
   return GlobalState::GetInstance()->GetDatabaseManager();
 }
 
-void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::AddObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }

@@ -61,7 +61,7 @@ mojom::DBCommandResponseInfoPtr Database::RunTransaction(
 
 void Database::RunTransactionImpl(
     mojom::DBTransactionInfoPtr transaction,
-    mojom::DBCommandResponseInfo* command_response) {
+    mojom::DBCommandResponseInfo* const command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   CHECK(transaction);
@@ -127,7 +127,7 @@ void Database::RunTransactionImpl(
 mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     const int32_t version,
     const int32_t compatible_version,
-    mojom::DBCommandResponseInfo* command_response) {
+    mojom::DBCommandResponseInfo* const command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   CHECK(command_response);
@@ -161,7 +161,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
 }
 
 mojom::DBCommandResponseInfo::StatusType Database::Execute(
-    mojom::DBCommandInfo* command) {
+    const mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   if (!is_initialized_) {
@@ -177,7 +177,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Execute(
 }
 
 mojom::DBCommandResponseInfo::StatusType Database::Run(
-    mojom::DBCommandInfo* command) {
+    const mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   if (!is_initialized_) {
@@ -203,8 +203,8 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
 }
 
 mojom::DBCommandResponseInfo::StatusType Database::Read(
-    mojom::DBCommandInfo* command,
-    mojom::DBCommandResponseInfo* command_response) {
+    const mojom::DBCommandInfo* const command,
+    mojom::DBCommandResponseInfo* const command_response) {
   CHECK(command);
   CHECK(command_response);
 
@@ -269,7 +269,7 @@ int Database::GetTablesCount() {
 }
 
 void Database::ErrorCallback(const int extended_error,
-                             sql::Statement* statement) {
+                             sql::Statement* const statement) {
   // Attempt to recover a corrupt database, if it is eligible to be recovered.
   if (sql::Recovery::RecoverIfPossible(
           &db_, extended_error,

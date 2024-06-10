@@ -33,12 +33,12 @@ SiteVisit::~SiteVisit() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void SiteVisit::AddObserver(SiteVisitObserver* observer) {
+void SiteVisit::AddObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void SiteVisit::RemoveObserver(SiteVisitObserver* observer) {
+void SiteVisit::RemoveObserver(SiteVisitObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }

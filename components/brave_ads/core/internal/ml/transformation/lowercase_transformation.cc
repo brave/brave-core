@@ -28,7 +28,7 @@ std::unique_ptr<Data> LowercaseTransformation::Apply(
     return {};
   }
 
-  auto* text_data = static_cast<TextData*>(input_data.get());
+  const auto* const text_data = static_cast<TextData*>(input_data.get());
 
   std::string lowercase_text = base::ToLowerASCII(text_data->GetText());
 

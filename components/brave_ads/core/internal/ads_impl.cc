@@ -44,7 +44,7 @@ void FailedToInitialize(InitializeCallback callback) {
 
 }  // namespace
 
-AdsImpl::AdsImpl(AdsClient* ads_client)
+AdsImpl::AdsImpl(AdsClient* const ads_client)
     : global_state_(ads_client),
       account_(&token_generator_),
       ad_handler_(account_),

@@ -24,7 +24,7 @@
 
 namespace brave_ads {
 
-UserRewards::UserRewards(TokenGeneratorInterface* token_generator,
+UserRewards::UserRewards(TokenGeneratorInterface* const token_generator,
                          WalletInfo wallet)
     : refill_confirmation_tokens_(token_generator), wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());

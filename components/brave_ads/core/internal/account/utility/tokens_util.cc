@@ -36,7 +36,7 @@ std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict) {
 
 std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
     const base::Value::Dict& dict) {
-  const base::Value::List* list = dict.FindList(kSignedTokensKey);
+  const base::Value::List* const list = dict.FindList(kSignedTokensKey);
   if (!list) {
     return std::nullopt;
   }

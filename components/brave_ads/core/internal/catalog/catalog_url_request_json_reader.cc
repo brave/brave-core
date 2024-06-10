@@ -117,7 +117,7 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
 
       creative_set.total_max = creative_set_node["totalMax"].GetInt();
 
-      const char* value = creative_set_node["value"].GetString();
+      const char* const value = creative_set_node["value"].GetString();
       if (!base::StringToDouble(value, &creative_set.value)) {
         BLOG(1, "Failed to parse creative set value " << value);
         continue;

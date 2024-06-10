@@ -94,7 +94,7 @@ bool TextProcessing::SetPipeline(base::File file) {
 }
 
 std::optional<PredictionMap> TextProcessing::Predict(
-    VectorData* vector_data) const {
+    const VectorData* const vector_data) const {
   if (linear_model_) {
     return linear_model_->GetTopPredictions(*vector_data);
   }

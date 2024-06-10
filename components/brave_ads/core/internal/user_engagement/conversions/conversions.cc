@@ -39,12 +39,12 @@ Conversions::~Conversions() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void Conversions::AddObserver(ConversionsObserver* observer) {
+void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Conversions::RemoveObserver(ConversionsObserver* observer) {
+void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }

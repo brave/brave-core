@@ -25,7 +25,7 @@ bool HasInstance() {
 AdsClient* GetInstance() {
   CHECK(HasInstance());
 
-  AdsClient* ads_client = GlobalState::GetInstance()->GetAdsClient();
+  AdsClient* const ads_client = GlobalState::GetInstance()->GetAdsClient();
   CHECK(ads_client);
 
   return ads_client;
@@ -33,11 +33,12 @@ AdsClient* GetInstance() {
 
 }  // namespace
 
-void AddAdsClientNotifierObserver(AdsClientNotifierObserver* observer) {
+void AddAdsClientNotifierObserver(AdsClientNotifierObserver* const observer) {
   GetInstance()->AddObserver(observer);
 }
 
-void RemoveAdsClientNotifierObserver(AdsClientNotifierObserver* observer) {
+void RemoveAdsClientNotifierObserver(
+    AdsClientNotifierObserver* const observer) {
   GetInstance()->RemoveObserver(observer);
 }
 
@@ -502,7 +503,7 @@ bool HasLocalStatePrefPath(const std::string& path) {
   return GetInstance()->HasLocalStatePrefPath(path);
 }
 
-void Log(const char* file,
+void Log(const char* const file,
          int line,
          int verbose_level,
          const std::string& message) {

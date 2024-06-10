@@ -41,7 +41,7 @@ constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 }  // namespace
 
 RefillConfirmationTokens::RefillConfirmationTokens(
-    TokenGeneratorInterface* token_generator)
+    TokenGeneratorInterface* const token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 }

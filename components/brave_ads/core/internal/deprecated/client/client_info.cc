@@ -96,7 +96,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
-      const auto* items = history.GetIfList();
+      const auto* const items = history.GetIfList();
       if (!items) {
         continue;
       }

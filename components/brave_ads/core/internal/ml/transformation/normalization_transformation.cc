@@ -25,7 +25,7 @@ std::unique_ptr<Data> NormalizationTransformation::Apply(
     return {};
   }
 
-  auto* vector_data = static_cast<VectorData*>(input_data.get());
+  const auto* const vector_data = static_cast<VectorData*>(input_data.get());
 
   VectorData vector_data_copy = *vector_data;
   vector_data_copy.Normalize();

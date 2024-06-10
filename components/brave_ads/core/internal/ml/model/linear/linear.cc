@@ -18,7 +18,8 @@ namespace brave_ads::ml {
 
 LinearModel::LinearModel() = default;
 
-LinearModel::LinearModel(const linear_text_classification::flat::Model* model)
+LinearModel::LinearModel(
+    const linear_text_classification::flat::Model* const model)
     : model_(model) {
   CHECK(model_);
 }
@@ -30,13 +31,14 @@ LinearModel& LinearModel::operator=(LinearModel&& other) noexcept = default;
 std::optional<PredictionMap> LinearModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;
-  const auto* classifier = model_->classifier();
+  const auto* const classifier = model_->classifier();
   if (!classifier || !classifier->biases() ||
       !classifier->segment_weight_vectors()) {
     return std::nullopt;
   }
 
-  for (const auto* segment_weight : *classifier->segment_weight_vectors()) {
+  for (const auto* const segment_weight :
+       *classifier->segment_weight_vectors()) {
     if (!segment_weight || !segment_weight->segment() ||
         !segment_weight->weights()) {
       return std::nullopt;
@@ -50,7 +52,7 @@ std::optional<PredictionMap> LinearModel::Predict(
     base::ranges::copy(*segment_weight->weights(), std::back_inserter(weights));
     VectorData weight_vector(std::move(weights));
     double prediction = weight_vector * data;
-    const auto* iter = classifier->biases()->LookupByKey(segment.c_str());
+    const auto* const iter = classifier->biases()->LookupByKey(segment.c_str());
     if (iter) {
       prediction += iter->bias();
     }

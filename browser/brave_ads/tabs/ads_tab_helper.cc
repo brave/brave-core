@@ -363,7 +363,7 @@ void AdsTabHelper::MediaStoppedPlaying(
   }
 }
 
-void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
+void AdsTabHelper::OnVisibilityChanged(const content::Visibility visibility) {
   const bool last_is_web_contents_visible = is_web_contents_visible_;
   is_web_contents_visible_ = visibility == content::Visibility::VISIBLE;
   if (last_is_web_contents_visible != is_web_contents_visible_) {

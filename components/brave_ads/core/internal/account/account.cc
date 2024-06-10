@@ -30,7 +30,7 @@
 
 namespace brave_ads {
 
-Account::Account(TokenGeneratorInterface* token_generator)
+Account::Account(TokenGeneratorInterface* const token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 
@@ -43,12 +43,12 @@ Account::~Account() {
   RemoveAdsClientNotifierObserver(this);
 }
 
-void Account::AddObserver(AccountObserver* observer) {
+void Account::AddObserver(AccountObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void Account::RemoveObserver(AccountObserver* observer) {
+void Account::RemoveObserver(AccountObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }

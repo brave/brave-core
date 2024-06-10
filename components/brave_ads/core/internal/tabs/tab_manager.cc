@@ -28,12 +28,12 @@ TabManager& TabManager::GetInstance() {
   return GlobalState::GetInstance()->GetTabManager();
 }
 
-void TabManager::AddObserver(TabManagerObserver* observer) {
+void TabManager::AddObserver(TabManagerObserver* const observer) {
   CHECK(observer);
   observers_.AddObserver(observer);
 }
 
-void TabManager::RemoveObserver(TabManagerObserver* observer) {
+void TabManager::RemoveObserver(TabManagerObserver* const observer) {
   CHECK(observer);
   observers_.RemoveObserver(observer);
 }
