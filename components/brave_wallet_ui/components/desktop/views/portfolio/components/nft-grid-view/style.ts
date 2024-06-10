@@ -40,7 +40,6 @@ export const IconWrapper = styled.div`
 export const DIVForClickableArea = styled.div`
   display: block;
   position: absolute;
-  z-index: 4;
   top: 0;
   left: 0;
   bottom: 0;

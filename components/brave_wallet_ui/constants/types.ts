@@ -609,6 +609,7 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
+  PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionId',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
 
@@ -687,6 +688,10 @@ export interface NFTMetadataReturnType {
     logo: string
   }
   attributes?: NFTAttribute[]
+  collection?: {
+    name?: string
+    family?: string
+  }
 }
 
 export interface TransactionProviderError {
@@ -944,6 +949,11 @@ export interface CommonNftMetadata {
   image?: string
   image_url?: string
   name?: string
+  /** common in Solana NFTs */
+  collection?: {
+    name?: string
+    family?: string
+  }
 }
 
 export enum AddressMessageInfoIds {

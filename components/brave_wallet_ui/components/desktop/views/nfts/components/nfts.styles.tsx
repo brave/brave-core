@@ -25,6 +25,9 @@ export const NftGrid = styled.div<{
     grid-gap: 8px;
     padding: ${(p) => p.padding ?? '8px'};
   }
+  & > * {
+    min-height: 250px;
+  }
 `
 
 export const EmptyStateText = styled.div`

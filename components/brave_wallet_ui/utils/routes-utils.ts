@@ -277,13 +277,32 @@ export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
   ).replace(':assetId', assetId)
 }
 
+export const makePortfolioNftCollectionRoute = (
+  collectionId: string,
+  page?: number
+) => {
+  if (page) {
+    const params = new URLSearchParams({
+      page: page.toString()
+    })
+    return `${WalletRoutes.PortfolioNFTCollection.replace(
+      ':collectionId',
+      collectionId
+    )}?${params.toString()}`
+  }
+  return WalletRoutes.PortfolioNFTCollection.replace(
+    ':collectionId',
+    collectionId
+  )
+}
+
 export const makePortfolioNftsRoute = (
   tab: NftDropdownOptionId,
   page?: number
 ) => {
   const params = new URLSearchParams({
     tab: tab,
-    page: page?.toString() || '0'
+    page: page?.toString() || '1'
   })
   return `${WalletRoutes.PortfolioNFTs}?${params.toString()}`
 }

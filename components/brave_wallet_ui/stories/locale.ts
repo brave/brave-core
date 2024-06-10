@@ -1029,6 +1029,7 @@ provideStrings({
   braveWalletNone: 'None',
   braveWalletNetworks: 'Networks',
   braveWalletPortfolioGroupByTitle: 'Group by',
+  braveWalletGroupByCollection: 'Group by collection',
   braveWalletPortfolioGroupByDescription: 'Group assets by',
 
   // Portfolio Filters

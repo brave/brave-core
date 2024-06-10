@@ -23,6 +23,7 @@ import {
   useBalancesFetcher //
 } from '../../../../../common/hooks/use-balances-fetcher'
 import {
+  useLocalStorage,
   useSyncedLocalStorage //
 } from '../../../../../common/hooks/use_local_storage'
 
@@ -39,28 +40,43 @@ import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
 import { getLocale } from '$web-common/locale'
-import Amount from '../../../../../utils/amount'
 import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../../common/constants/local-storage-keys'
 import {
+  useGetNftCollectionNameRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
-import { getAssetIdKey } from '../../../../../utils/asset-utils'
+import {
+  compareTokensByName,
+  filterTokensByNetworks,
+  getAllSpamNftsAndIds,
+  getAssetCollectionIdKey,
+  getAssetIdKey,
+  getTokensWithBalanceForAccounts,
+  groupSpamAndNonSpamNfts,
+  searchNftCollectionsAndGetTotalNftsFound,
+  searchNfts,
+  tokenNameToNftCollectionName
+} from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
   makePortfolioAssetRoute,
+  makePortfolioNftCollectionRoute,
   makePortfolioNftsRoute
 } from '../../../../../utils/routes-utils'
 import {
   selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
-import { getBalance } from '../../../../../utils/balance-utils'
+import {
+  getLastPageNumber,
+  getListPageItems
+} from '../../../../../utils/pagination_utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -76,6 +92,9 @@ import {
   NftDropdown,
   NftDropdownOption
 } from './nft-group-selector/nft-group-selector'
+import {
+  NftCollectionGridViewItem //
+} from '../../portfolio/components/nft-grid-view/nft-collection-grid-view-item'
 
 // styles
 import { BannerWrapper, NFTListWrapper, NftGrid } from './nfts.styles'
@@ -95,30 +114,6 @@ interface Props {
   accounts: BraveWallet.AccountInfo[]
   tokenBalancesRegistry: TokenBalancesRegistry | null | undefined
   networks: BraveWallet.NetworkInfo[]
-}
-
-const compareFn = (
-  a: BraveWallet.BlockchainToken,
-  b: BraveWallet.BlockchainToken
-) => a.name.localeCompare(b.name)
-
-const searchNfts = (
-  searchValue: string,
-  items: BraveWallet.BlockchainToken[]
-) => {
-  if (searchValue === '') {
-    return items
-  }
-
-  return items.filter((item) => {
-    const tokenId = new Amount(item.tokenId).toNumber().toString()
-    const searchValueLower = searchValue.toLowerCase()
-    return (
-      item.name.toLocaleLowerCase().includes(searchValueLower) ||
-      item.symbol.toLocaleLowerCase().includes(searchValueLower) ||
-      tokenId.includes(searchValueLower)
-    )
-  })
 }
 
 const LIST_PAGE_ITEM_COUNT = 15
@@ -162,6 +157,10 @@ export const Nfts = ({
     LOCAL_STORAGE_KEYS.HIDE_UNOWNED_NFTS,
     false
   )
+  const [groupNftsByCollection] = useLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_NFTS_BY_COLLECTION,
+    false
+  )
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -194,11 +193,15 @@ export const Nfts = ({
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
     })
+  const hiddenNftsIds =
+    userTokensRegistry?.nonFungibleHiddenTokenIds ?? emptyTokenIdsList
+  const userNonSpamNftIds =
+    userTokensRegistry?.nonSpamTokenIds ?? emptyTokenIdsList
 
   const shouldFetchSpamNftBalances =
     selectedTab === 'hidden' &&
     !isLoadingSpamNfts &&
-    !hideUnownedNfts &&
+    hideUnownedNfts &&
     accounts.length > 0 &&
     networks.length > 0
 
@@ -218,50 +221,17 @@ export const Nfts = ({
   // memos & computed
   const { visibleUserNonSpamNfts, visibleUserMarkedSpamNfts } =
     React.useMemo(() => {
-      const results: {
-        visibleUserNonSpamNfts: BraveWallet.BlockchainToken[]
-        visibleUserMarkedSpamNfts: BraveWallet.BlockchainToken[]
-      } = {
-        visibleUserNonSpamNfts: [],
-        visibleUserMarkedSpamNfts: []
-      }
-      for (const nft of visibleNfts) {
-        if (nft.isSpam) {
-          results.visibleUserMarkedSpamNfts.push(nft)
-        } else {
-          if (nft.visible) {
-            results.visibleUserNonSpamNfts.push(nft)
-          }
-        }
-      }
-      return results
+      return groupSpamAndNonSpamNfts(visibleNfts)
     }, [visibleNfts])
 
-  const hiddenNftsIds =
-    userTokensRegistry?.nonFungibleHiddenTokenIds ?? emptyTokenIdsList
-  const userNonSpamNftIds =
-    userTokensRegistry?.nonSpamTokenIds ?? emptyTokenIdsList
-
   const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
-    // filter out NFTs user has marked not spam
-    // hidden NFTs, and deleted NFTs
-    const excludedNftIds = userNonSpamNftIds
-      .concat(hiddenNftsIds)
-      .concat(userTokensRegistry?.deletedTokenIds || [])
-    const simpleHashList = simpleHashSpamNfts.filter(
-      (nft) => !excludedNftIds.includes(getAssetIdKey(nft))
+    return getAllSpamNftsAndIds(
+      userNonSpamNftIds,
+      hiddenNftsIds,
+      userTokensRegistry?.deletedTokenIds || [],
+      simpleHashSpamNfts,
+      visibleUserMarkedSpamNfts
     )
-    const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
-    // add NFTs user has marked as NFT if they are not in the list
-    // to avoid duplicates
-    const fullSpamList = [
-      ...simpleHashList,
-      ...visibleUserMarkedSpamNfts.filter(
-        (nft) => !simpleHashListIds.includes(getAssetIdKey(nft))
-      )
-    ]
-
-    return [fullSpamList, fullSpamList.map((nft) => getAssetIdKey(nft))]
   }, [
     visibleUserMarkedSpamNfts,
     simpleHashSpamNfts,
@@ -278,81 +248,25 @@ export const Nfts = ({
     selectedTab === 'collected' ? visibleUserNonSpamNfts : hiddenAndSpamNfts
 
   const sortedSelectedNftList = React.useMemo(() => {
-    return selectedNftList.slice().sort(compareFn)
+    return selectedNftList.slice().sort(compareTokensByName)
   }, [selectedNftList])
 
   // Filters the user's tokens based on the users
   // filteredOutPortfolioNetworkKeys pref and visible networks.
   const sortedSelectedNftListForChains = React.useMemo(() => {
-    return sortedSelectedNftList.filter((token) =>
-      networks.some(
-        (net) => net.chainId === token.chainId && net.coin === token.coin
-      )
-    )
+    return filterTokensByNetworks(sortedSelectedNftList, networks)
   }, [sortedSelectedNftList, networks])
 
   // apply accounts filter to selected nfts list
   const sortedSelectedNftListForChainsAndAccounts = React.useMemo(() => {
-    if (hideUnownedNfts) {
-      return sortedSelectedNftListForChains.filter((token) => {
-        return accounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        })
-      })
-    }
-
-    // skip balance checks if all accounts are selected
-    if (accounts.length === allAccounts.length) {
-      return sortedSelectedNftListForChains
-    }
-
-    return sortedSelectedNftListForChains.filter((token) => {
-      return (
-        accounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        }) ||
-        // not owned by any account
-        !allAccounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        })
-      )
-    })
+    return getTokensWithBalanceForAccounts(
+      sortedSelectedNftListForChains,
+      accounts,
+      allAccounts,
+      tokenBalancesRegistry,
+      spamTokenBalancesRegistry,
+      hideUnownedNfts
+    )
   }, [
     accounts,
     allAccounts,
@@ -362,7 +276,78 @@ export const Nfts = ({
     tokenBalancesRegistry
   ])
 
+  // differed queries
+  const {
+    data: tokenCollectionNameRegistryInfo,
+    isFetching: isFetchingTokenCollectionNameRegistryInfo
+  } = useGetNftCollectionNameRegistryQuery(
+    sortedSelectedNftListForChainsAndAccounts.length && groupNftsByCollection
+      ? sortedSelectedNftListForChainsAndAccounts
+      : skipToken
+  )
+
+  const tokenCollectionNameRegistry = tokenCollectionNameRegistryInfo?.registry
+  const isFetchingLatestTokenCollectionNameRegistry =
+    tokenCollectionNameRegistryInfo?.isStreaming ??
+    isFetchingTokenCollectionNameRegistryInfo ??
+    false
+
+  const { nftCollectionAssets, assetsByCollectionId } = React.useMemo(() => {
+    const nftCollectionAssets: BraveWallet.BlockchainToken[] = []
+    const assetsByCollectionId: Record<string, BraveWallet.BlockchainToken[]> =
+      {}
+
+    // skip if not in "group by collection" mode
+    if (!groupNftsByCollection) {
+      return { nftCollectionAssets, assetsByCollectionId }
+    }
+
+    for (const token of sortedSelectedNftListForChainsAndAccounts) {
+      const collectionId = getAssetCollectionIdKey(token)
+      const nameFromRegistry = tokenCollectionNameRegistry?.[collectionId]
+
+      // create collection and collection token if it doesn't exist
+      if (!assetsByCollectionId[collectionId]) {
+        // add collection asset to the list
+        const collectionToken = {
+          ...token,
+          tokenId: '',
+          name: nameFromRegistry || tokenNameToNftCollectionName(token)
+        }
+        nftCollectionAssets.push(collectionToken)
+
+        // create collection in assets map
+        assetsByCollectionId[collectionId] = []
+      }
+
+      // add token to the collection
+      assetsByCollectionId[collectionId].push(token)
+    }
+
+    // sort collections by name
+    nftCollectionAssets.sort(compareTokensByName)
+
+    return { nftCollectionAssets, assetsByCollectionId }
+  }, [
+    groupNftsByCollection,
+    sortedSelectedNftListForChainsAndAccounts,
+    tokenCollectionNameRegistry
+  ])
+
   const { searchResults, totalNftsFound } = React.useMemo(() => {
+    if (groupNftsByCollection) {
+      const { foundCollections, totalNftsFound } =
+        searchNftCollectionsAndGetTotalNftsFound(
+          searchValue,
+          nftCollectionAssets,
+          assetsByCollectionId
+        )
+      return {
+        searchResults: foundCollections,
+        totalNftsFound
+      }
+    }
+
     const searchResults = searchNfts(
       searchValue,
       sortedSelectedNftListForChainsAndAccounts
@@ -371,10 +356,15 @@ export const Nfts = ({
       searchResults,
       totalNftsFound: searchResults.length
     }
-  }, [searchValue, sortedSelectedNftListForChainsAndAccounts])
+  }, [
+    assetsByCollectionId,
+    groupNftsByCollection,
+    nftCollectionAssets,
+    searchValue,
+    sortedSelectedNftListForChainsAndAccounts
+  ])
 
-  const lastPageNumber =
-    Math.floor(searchResults.length / LIST_PAGE_ITEM_COUNT) + 1
+  const lastPageNumber = getLastPageNumber(searchResults, LIST_PAGE_ITEM_COUNT)
 
   /** label summary is shown only on the selected tab */
   const dropDownOptions: NftDropdownOption[] = React.useMemo(() => {
@@ -393,16 +383,16 @@ export const Nfts = ({
   }, [totalNftsFound])
 
   const renderedListPage = React.useMemo(() => {
-    const pageStartItemIndex =
-      currentPageNumber * LIST_PAGE_ITEM_COUNT - LIST_PAGE_ITEM_COUNT
-    return searchResults.slice(
-      pageStartItemIndex,
-      pageStartItemIndex + LIST_PAGE_ITEM_COUNT
+    return getListPageItems(
+      searchResults,
+      currentPageNumber,
+      LIST_PAGE_ITEM_COUNT
     )
   }, [searchResults, currentPageNumber])
 
   const isLoadingAssets =
     !assetAutoDiscoveryCompleted ||
+    (groupNftsByCollection && isFetchingLatestTokenCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
       (isLoadingSpamNfts ||
         (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)))
@@ -425,6 +415,15 @@ export const Nfts = ({
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
     [dispatch, history]
+  )
+
+  const onSelectCollection = React.useCallback(
+    (asset: BraveWallet.BlockchainToken) => {
+      history.push(
+        makePortfolioNftCollectionRoute(getAssetCollectionIdKey(asset))
+      )
+    },
+    [history]
   )
 
   const onClickIpfsButton = React.useCallback(() => {
@@ -479,6 +478,7 @@ export const Nfts = ({
     braveWalletP3A.recordNFTGalleryView(visibleNfts.length)
   }, [braveWalletP3A, visibleNfts.length])
 
+  // render
   return (
     <ContentWrapper
       fullWidth={true}
@@ -571,27 +571,41 @@ export const Nfts = ({
         ) : (
           <>
             <NftGrid padding='0px'>
-              {renderedListPage.map((nft) => {
-                const assetId = getAssetIdKey(nft)
-                const isSpam = allSpamNftsIds.includes(assetId)
-
-                return (
-                  <NFTGridViewItem
-                    key={assetId}
-                    token={nft}
-                    onSelectAsset={onSelectAsset}
-                    isTokenHidden={
+              {groupNftsByCollection
+                ? renderedListPage.map((collectionToken) => {
+                    const collectionIdKey =
+                      getAssetCollectionIdKey(collectionToken)
+                    return (
+                      <NftCollectionGridViewItem
+                        key={collectionIdKey}
+                        collectionToken={collectionToken}
+                        tokensInCollection={
+                          assetsByCollectionId[collectionIdKey]
+                        }
+                        onSelectAsset={onSelectCollection}
+                      />
+                    )
+                  })
+                : renderedListPage.map((nft) => {
+                    const assetId = getAssetIdKey(nft)
+                    const isSpam = allSpamNftsIds.includes(assetId)
+                    const isHidden =
                       isSpam ||
                       Boolean(
                         userTokensRegistry?.nonFungibleHiddenTokenIds.includes(
                           assetId
                         )
                       )
-                    }
-                    isTokenSpam={isSpam}
-                  />
-                )
-              })}
+                    return (
+                      <NFTGridViewItem
+                        key={assetId}
+                        token={nft}
+                        onSelectAsset={onSelectAsset}
+                        isTokenHidden={isHidden}
+                        isTokenSpam={isSpam}
+                      />
+                    )
+                  })}
               {isLoadingAssets && <NftGridViewItemSkeleton />}
             </NftGrid>
 
