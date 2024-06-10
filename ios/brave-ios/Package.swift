@@ -563,7 +563,7 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
     .copy("WebFilters/ContentBlocker/Lists/mixed-content-upgrade.json"),
-    .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
+    .copy("WebFilters/Resources/debug-rules.txt"),
   ],
   plugins: ["LoggerPlugin"]
 )

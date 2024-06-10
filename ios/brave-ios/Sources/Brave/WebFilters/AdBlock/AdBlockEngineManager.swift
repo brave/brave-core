@@ -82,12 +82,36 @@ import os
   func compilableFiles(
     for enabledSources: [GroupedAdBlockEngine.Source]
   ) -> [FileInfo] {
-    return enabledSources.compactMap { source in
+    var files = enabledSources.compactMap { source in
       return availableFiles.first(where: {
         FileManager.default.fileExists(atPath: $0.localFileURL.path)
           && $0.filterListInfo.source == source
       })
     }
+
+    #if DEBUG
+    // Add the debug rules
+    if let debugRulesURL = Bundle.module.url(forResource: "debug-rules", withExtension: "txt"),
+      engineType == .standard
+    {
+      let attributes = try? FileManager.default.attributesOfItem(atPath: debugRulesURL.path)
+      let date =
+        (attributes?[.modificationDate] as? Date) ?? (attributes?[.creationDate] as? Date) ?? Date()
+      let version = ContentBlockerManager.versionDateFormatter.string(from: date)
+
+      files.append(
+        FileInfo(
+          filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+            source: .filterListDebug,
+            version: version
+          ),
+          localFileURL: debugRulesURL
+        )
+      )
+    }
+    #endif
+
+    return files
   }
 
   /// Add the info to the available list
@@ -360,7 +384,7 @@ import os
     guard
       let folderURL = FileManager.default.getOrCreateFolder(
         name: [Self.parentCacheFolderName, cacheFolderName].joined(separator: "/"),
-        location: Self.cacheFolderDirectory
+        location: .cachesDirectory
       )
     else {
       throw ResourceFileError.failedToCreateCacheFolder
@@ -436,7 +460,7 @@ extension GroupedAdBlockEngine.Source {
       return !AdblockFilterListCatalogEntry.disabledContentBlockersComponentIDs.contains(
         componentId
       )
-    case .filterListURL, .filterListText:
+    case .filterListURL, .filterListText, .filterListDebug:
       return true
     }
   }

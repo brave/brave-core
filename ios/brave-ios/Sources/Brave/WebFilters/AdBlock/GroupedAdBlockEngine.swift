@@ -16,12 +16,14 @@ public actor GroupedAdBlockEngine {
     case filterList(componentId: String)
     case filterListURL(uuid: String)
     case filterListText
+    case filterListDebug
 
     public var debugDescription: String {
       switch self {
       case .filterList(let componentId): return componentId
       case .filterListURL(let uuid): return uuid
       case .filterListText: return "filter-list-text"
+      case .filterListDebug: return "filter-list-debug"
       }
     }
   }

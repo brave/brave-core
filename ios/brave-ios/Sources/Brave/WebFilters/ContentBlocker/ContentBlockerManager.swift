@@ -114,6 +114,8 @@ import os.log
           return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
         case .filterListText:
           return [Self.filterListPrefix, "text"].joined(separator: "-")
+        case .filterListDebug:
+          return [Self.filterListPrefix, "debug"].joined(separator: "-")
         }
       case .engineGroup(let id, _):
         return [Self.filterListPrefix, "group", id].joined(separator: "-")
@@ -623,7 +625,7 @@ extension ShieldLevel {
 }
 
 extension ContentBlockerManager {
-  fileprivate static var versionDateFormatter: ISO8601DateFormatter {
+  static var versionDateFormatter: ISO8601DateFormatter {
     return ISO8601DateFormatter()
   }
 }
