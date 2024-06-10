@@ -154,14 +154,14 @@ extension Strings {
     "SendCrashReportAlertTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Oops! Brave crashed",
+    value: "Oops! Ping crashed",
     comment: "Title for prompt displayed to user after the app crashes"
   )
   public static let sendCrashReportAlertMessage = NSLocalizedString(
     "SendCrashReportAlertMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Send a crash report so Brave can fix the problem?",
+    value: "Send a crash report so Ping can fix the problem?",
     comment:
       "Message displayed in the crash dialog above the buttons used to select when sending reports"
   )
@@ -190,14 +190,14 @@ extension Strings {
     "RestoreTabOnCrashAlertTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Closed Unexpectedly.",
+    value: "Ping Closed Unexpectedly.",
     comment: "Restore Tabs Prompt Title"
   )
   public static let restoreTabOnCrashAlertMessage = NSLocalizedString(
     "RestoreTabOnCrashAlertMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Unfortunately, Brave crashed or did not close properly.\nRestore your tabs?",
+    value: "Unfortunately, Ping crashed or did not close properly.\nRestore your tabs?",
     comment: "Restore Tabs Prompt Description"
   )
   public static let restoreTabNegativeButtonTitle = NSLocalizedString(
@@ -424,9 +424,9 @@ extension Strings {
     "AuthenticationLoginsTouchReason",
     tableName: "BraveShared",
     bundle: .module,
-    value: "This authenticates your access to Brave",
+    value: "This authenticates your access to Ping",
     comment:
-      "Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled"
+      "Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled"
   )
 }
 
@@ -458,7 +458,7 @@ extension Strings {
     "AccessPhotoDeniedAlertTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave would like to access your Photos",
+    value: "Ping would like to access your Photos",
     comment: "See http://mzl.la/1G7uHo7"
   )
   public static let accessPhotoDeniedAlertMessage = NSLocalizedString(
@@ -581,7 +581,7 @@ extension Strings {
         "defaultBrowserCallout.introPrimaryText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open all links with Brave to protect your privacy",
+        value: "Open all links with Ping to protect your privacy",
         comment: "Primary text on default browser popup screen"
       )
     public static let introSecondaryText =
@@ -590,7 +590,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Brave Shields block trackers & ads, saves data, and saves you time on every site you visit",
+          "Ping Shields block trackers & ads, saves data, and saves you time on every site you visit",
         comment: "Secondary text on default browser popup."
       )
     public static let introTertiaryText =
@@ -598,7 +598,7 @@ extension Strings {
         "defaultBrowserCallout.introTertiaryText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Settings, tap Default Browser App, and select Brave.",
+        value: "Open Settings, tap Default Browser App, and select Ping.",
         comment: "Tertiary text on default browser popup screen"
       )
     public static let introOpenSettingsButtonText =
@@ -622,8 +622,8 @@ extension Strings {
         "defaultBrowserCallout.notificationTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Get Brave protection, on every link",
-        comment: "Notification title to promote setting Brave app as default browser"
+        value: "Get Ping protection, on every link",
+        comment: "Notification title to promote setting Ping app as default browser"
       )
 
     public static let notificationBody =
@@ -631,8 +631,8 @@ extension Strings {
         "defaultBrowserCallout.notificationBody",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Set Brave as your default browser",
-        comment: "Notification body to promote setting Brave app as default browser"
+        value: "Set Ping as your default browser",
+        comment: "Notification body to promote setting Ping app as default browser"
       )
   }
 }
@@ -654,7 +654,7 @@ extension Strings {
         "callout.defaultBrowserCalloutDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "With Brave as default, every link you tap opens with Brave's privacy protections.",
+        value: "With Ping as default, every link you tap opens with Ping's privacy protections.",
         comment: "Subtitle - Description for Default Browser Full Screen Callout"
       )
     public static let defaultBrowserCalloutButtonDescription =
@@ -662,7 +662,7 @@ extension Strings {
         "callout.defaultBrowserCalloutButtonDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Set Brave as Default Browser?",
+        value: "Set Ping as Default Browser?",
         comment:
           "Description - Description used for main button in Default Browser Full Screen Callout"
       )
@@ -704,7 +704,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Get Brave privacy on your computer or tablet, and sync bookmarks & extensions between devices.",
+          "Get Ping privacy on your computer or tablet, and sync bookmarks & extensions between devices.",
         comment: "Subtitle - Description for Privacy Everywhere Full Screen Callout"
       )
     public static let privacyEverywhereCalloutPrimaryButtonTitle =
@@ -729,7 +729,7 @@ extension Strings {
         "callout.p3aCalloutTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Help make Brave better.",
+        value: "Help make Ping better.",
         comment: "Title for p3a (Privacy Preserving Analytics) Full Screen Callout"
       )
     public static let p3aCalloutDescription =
@@ -738,7 +738,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This helps us learn what Brave features are used most often. Change at any time in Brave Settings under ‘Brave Shields and Other Privacy Settings.",
+          "This helps us learn what Ping features are used most often. Change at any time in Ping Settings under ‘Brave Shields and Other Privacy Settings.",
         comment: "Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout"
       )
     public static let p3aCalloutToggleTitle =
@@ -764,7 +764,7 @@ extension Strings {
         "callout.bottomBarCalloutTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Customize Brave Tabs Bar",
+        value: "Customize Ping Tabs Bar",
         comment: "Title for Bottom Bar Callout View"
       )
     public static let bottomBarCalloutDescription =
@@ -803,7 +803,7 @@ extension Strings {
         "onboarding.welcomeScreenTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Welcome to Brave",
+        value: "Welcome to Ping",
         comment: "Title for Welcome Screen in Onboarding"
       )
     public static let ntpOnboardingPopOverTrackerDescription =
@@ -819,7 +819,7 @@ extension Strings {
         "onboarding.blockedAdsOnboardingInstructionsText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Tap to view Brave Shields",
+        value: "Tap to view Ping Shields",
         comment: "The text describing user where they should press in order to open Shield panel"
       )
     public static let blockedAdsOnboardingFootnoteText =
@@ -827,8 +827,8 @@ extension Strings {
         "onboarding.blockedAdsOnboardingFootnoteText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "See all the bad stuff Brave blocked, on every page, with Shields.",
-        comment: "The footnote indicating what Brave shields is blocking"
+        value: "See all the bad stuff Ping blocked, on every page, with Shields.",
+        comment: "The footnote indicating what Ping shields is blocking"
       )
     public static let blockedAdsOnboardingNoBigTechInformationText =
       NSLocalizedString(
@@ -878,7 +878,7 @@ extension Strings {
         "onboarding.omniboxOnboardingPopOverDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "See the Brave difference:\nNo ads. No trackers. Way faster page load.",
+        value: "See the Ping difference:\nNo ads. No trackers. Way faster page load.",
         comment: "Description for the Omnibox (URL Bar) pop-over that describes faster load times."
       )
 
@@ -887,7 +887,7 @@ extension Strings {
         "onboarding.linkReceiptTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Extend your Brave Firewall + VPN protection",
+        value: "Extend your Ping Firewall + VPN protection",
         comment: "Popup title to let users know they can use the vpn on all their devices"
       )
 
@@ -897,7 +897,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your App Store subscription to your Brave account.",
+          "Your Ping VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your App Store subscription to your Ping account.",
         comment: "Popup description to let users know they can use the vpn on all their devices"
       )
 
@@ -1384,7 +1384,7 @@ extension Strings {
     bundle: .module,
     value: "Loading content…",
     comment:
-      "Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app."
+      "Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app."
   )
   public static let readerModePageCantShowDisplayText = NSLocalizedString(
     "ReaderModePageCantShowDisplayText",
@@ -1392,7 +1392,7 @@ extension Strings {
     bundle: .module,
     value: "The page could not be displayed in Reader View.",
     comment:
-      "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app."
+      "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app."
   )
   public static let readerModeLoadOriginalLinkText = NSLocalizedString(
     "ReaderModeLoadOriginalLinkText",
@@ -1400,7 +1400,7 @@ extension Strings {
     bundle: .module,
     value: "Load original page",
     comment:
-      "Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app."
+      "Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app."
   )
   public static let readerModeErrorConvertDisplayText = NSLocalizedString(
     "ReaderModeErrorConvertDisplayText",
@@ -1701,7 +1701,7 @@ extension Strings {
       bundle: .module,
       value: "Insecure Custom Search Template for",
       comment:
-        "A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line"
+        "A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line"
     )
 
     public static let insecureSuggestionTemplateURLErrorDescription = NSLocalizedString(
@@ -1710,7 +1710,7 @@ extension Strings {
       bundle: .module,
       value: "Insecure Custom Suggestion Template for",
       comment:
-        "A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line"
+        "A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line"
     )
 
     public static let searchTemplateTitle = NSLocalizedString(
@@ -1719,7 +1719,7 @@ extension Strings {
       bundle: .module,
       value: "Search Template:",
       comment:
-        "Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line"
+        "Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line"
     )
 
     public static let suggestionTemplateTitle = NSLocalizedString(
@@ -1728,7 +1728,7 @@ extension Strings {
       bundle: .module,
       value: "Suggestion Template:",
       comment:
-        "Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line"
+        "Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line"
     )
 
     public static let engineExistsAlertDescription = NSLocalizedString(
@@ -1749,7 +1749,7 @@ extension Strings {
       "optionsMenu.menuSectionTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Features",
+      value: "Ping Features",
       comment: "Privacy Features Section title"
     )
     public static let braveVPNItemTitle = NSLocalizedString(
@@ -1757,28 +1757,28 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "VPN",
-      comment: "Brave VPN Item Menu title"
+      comment: "Ping VPN Item Menu title"
     )
     public static let braveVPNItemDescription = NSLocalizedString(
       "optionsMenu.braveVPNItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "Protect your entire device online",
-      comment: "The subtitle description of menu item Brave VPN"
+      comment: "The subtitle description of menu item Ping VPN"
     )
     public static let braveTalkItemTitle = NSLocalizedString(
       "optionsMenu.braveTalkItemTitle",
       tableName: "BraveShared",
       bundle: .module,
       value: "Talk",
-      comment: "Brave Talk Item Menu title"
+      comment: "Ping Talk Item Menu title"
     )
     public static let braveTalkItemDescription = NSLocalizedString(
       "optionsMenu.braveTalkItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "Private video calls, right in your browser",
-      comment: "The subtitle description of menu item Brave Talk"
+      comment: "The subtitle description of menu item Ping Talk"
     )
     public static let braveLeoItemDescription = NSLocalizedString(
       "optionsMenu.braveLeoItemDescription",
@@ -1786,42 +1786,42 @@ extension Strings {
       bundle: .module,
       value: "Leo is an AI-powered smart assistant, built right into the browser",
       comment:
-        "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated."
+        "The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated."
     )
     public static let braveNewsItemTitle = NSLocalizedString(
       "optionsMenu.braveNewsItemTitle",
       tableName: "BraveShared",
       bundle: .module,
       value: "News",
-      comment: "Brave News Item Menu title"
+      comment: "Ping News Item Menu title"
     )
     public static let braveNewsItemDescription = NSLocalizedString(
       "optionsMenu.braveNewsItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "Today's top stories in a private news feed",
-      comment: "The subtitle description of menu item Brave News"
+      comment: "The subtitle description of menu item Ping News"
     )
     public static let bravePlaylistItemTitle = NSLocalizedString(
       "optionsMenu.bravePlaylistItemTitle",
       tableName: "BraveShared",
       bundle: .module,
       value: "Playlist",
-      comment: "Brave News Item Menu title"
+      comment: "Ping News Item Menu title"
     )
     public static let bravePlaylistItemDescription = NSLocalizedString(
       "optionsMenu.bravePlaylistItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "Keep an offline playlist of any video/stream",
-      comment: "The subtitle description of menu item Brave Playlist"
+      comment: "The subtitle description of menu item Ping Playlist"
     )
     public static let braveWalletItemDescription = NSLocalizedString(
       "optionsMenu.braveWalletItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "The secure crypto wallet, no extension required",
-      comment: "The subtitle description of menu item Brave Wallet"
+      comment: "The subtitle description of menu item Ping Wallet"
     )
   }
 }
@@ -1835,21 +1835,21 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Support independent search with better privacy",
-      comment: "Brave Search Banner Promotion title in Search Suggestions"
+      comment: "Ping Search Banner Promotion title in Search Suggestions"
     )
     public static let braveSearchPromotionBannerDescription = NSLocalizedString(
       "braveSearchPromotion.bannerDescription",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Search doesn't track you, your queries, or your clicks.",
-      comment: "Brave Search Banner Promotion description content in Search Suggestions"
+      value: "Ping Search doesn't track you, your queries, or your clicks.",
+      comment: "Ping Search Banner Promotion description content in Search Suggestions"
     )
     public static let braveSearchPromotionBannerTryButtonTitle = NSLocalizedString(
       "braveSearchPromotion.bannerTryButtonTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Try Brave Search",
-      comment: "Brave Search Banner Promotion title for try button in Search Suggestions"
+      value: "Try Ping Search",
+      comment: "Ping Search Banner Promotion title for try button in Search Suggestions"
     )
     public static let braveSearchPromotionBannerMaybeLaterButtonTitle = NSLocalizedString(
       "braveSearchPromotion.bannerMaybeLaterButtonTitle",
@@ -1857,7 +1857,7 @@ extension Strings {
       bundle: .module,
       value: "Maybe later",
       comment:
-        "Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions"
+        "Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions"
     )
     public static let braveSearchPromotionBannerDismissButtonTitle = NSLocalizedString(
       "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle",
@@ -1865,7 +1865,7 @@ extension Strings {
       bundle: .module,
       value: "Dismiss",
       comment:
-        "Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions"
+        "Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions"
     )
   }
 }
@@ -2031,28 +2031,28 @@ extension Strings {
     "BraveRewardsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Rewards",
-    comment: "Brave Rewards title"
+    value: "Ping Rewards",
+    comment: "Ping Rewards title"
   )
   public static let braveRewardsSettingsTitle = NSLocalizedString(
     "BraveRewardsSettingsTitle",
     tableName: "BraveShared",
     bundle: .module,
     value: "Rewards",
-    comment: "Brave Rewards title in settings"
+    comment: "Ping Rewards title in settings"
   )
   public static let hideRewardsIcon = NSLocalizedString(
     "HideRewardsIcon",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Hide Brave Rewards Icon",
+    value: "Hide Ping Rewards Icon",
     comment: "Hides the rewards icon"
   )
   public static let hideRewardsIconSubtitle = NSLocalizedString(
     "HideRewardsIconSubtitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Hides the Brave Rewards icon when Brave Rewards is not enabled",
+    value: "Hides the Ping Rewards icon when Ping Rewards is not enabled",
     comment: "Hide the rewards icon explination."
   )
   public static let walletCreationDate = NSLocalizedString(
@@ -2080,8 +2080,8 @@ extension Strings {
     "OpenBraveRewardsSettings",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Open Brave Rewards Settings",
-    comment: "Button title for opening the Brave Rewards panel to settings"
+    value: "Open Ping Rewards Settings",
+    comment: "Button title for opening the Ping Rewards panel to settings"
   )
   public static let setDefaultBrowserSettingsCell =
     NSLocalizedString(
@@ -2089,14 +2089,14 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Set as Default Browser",
-      comment: "Settings item to set the Brave as a default browser on the iOS device."
+      comment: "Settings item to set the Ping as a default browser on the iOS device."
     )
   public static let setDefaultBrowserCalloutTitle =
     NSLocalizedString(
       "setDefaultBrowserCalloutTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave can now be set as your default browser in iOS. Tap here to open settings.",
+      value: "Ping can now be set as your default browser in iOS. Tap here to open settings.",
       comment: ""
     )
   public static let defaultBrowserCalloutCloseAccesabilityLabel =
@@ -2133,7 +2133,7 @@ extension Strings {
         "settings.autocloseTabsSettingFooter",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Allow Brave to automatically close tabs that haven't recently been viewed.",
+        value: "Allow Ping to automatically close tabs that haven't recently been viewed.",
         comment: "Description of autoclose tabs feature."
       )
     public static let autocloseTabsManualOption =
@@ -2202,8 +2202,8 @@ extension Strings {
         "settings.openYouTubeInBrave",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open YouTube links in Brave",
-        comment: "A toggle label which lets the user always open YouTube urls in Brave"
+        value: "Open YouTube links in Ping",
+        comment: "A toggle label which lets the user always open YouTube urls in Ping"
       )
 
     public static let highestQualityPlayback =
@@ -2238,7 +2238,7 @@ extension Strings {
         "settings.sendUsagePingTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Automatically send daily usage ping to Brave",
+        value: "Automatically send daily usage ping to Ping",
         comment: "Title to explain the daily usage ping toggle"
       )
 
@@ -2247,7 +2247,7 @@ extension Strings {
         "settings.sendUsagePingDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This private ping lets Brave estimate active users.",
+        value: "This private ping lets Ping estimate active users.",
         comment: "Description to explain the daily usage ping toggle"
       )
   }
@@ -2366,7 +2366,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "%@ normally uses encryption to protect your information. When Brave tried to connect to %@ this time, the website sent back unusual and incorrect credentials. This may happen when an attacker is trying to pretend to be %@, or a Wi-Fi sign-in screen has interrupted the connection. Your information is still secure because Brave stopped the connection before any data was exchanged.<br />You cannot visit %@ right now because the website uses certificate pinning. Network errors and attacks are usually temporary, so this page will probably work later.",
+      "%@ normally uses encryption to protect your information. When Ping tried to connect to %@ this time, the website sent back unusual and incorrect credentials. This may happen when an attacker is trying to pretend to be %@, or a Wi-Fi sign-in screen has interrupted the connection. Your information is still secure because Ping stopped the connection before any data was exchanged.<br />You cannot visit %@ right now because the website uses certificate pinning. Network errors and attacks are usually temporary, so this page will probably work later.",
     comment:
       "Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />."
   )
@@ -2429,7 +2429,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.",
+      "To start, you will need Ping installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.",
     comment: "Sync settings welcome"
   )
   public static let newSyncCode = NSLocalizedString(
@@ -2493,7 +2493,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Using existing synced device open Brave Settings and navigate to Settings -> Sync. Choose \"Add Device\" and scan the code displayed on the screen.",
+      "Using existing synced device open Ping Settings and navigate to Settings -> Sync. Choose \"Add Device\" and scan the code displayed on the screen.",
     comment: "Sync to existing device description"
   )
 
@@ -2829,7 +2829,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "It looks like this code was created on a device running an older version of Brave. Please update to the latest version of Brave on your other device, and then create a new sync code.",
+      "It looks like this code was created on a device running an older version of Ping. Please update to the latest version of Ping on your other device, and then create a new sync code.",
     comment: "Sync Error Description"
   )
   public static let syncExpiredError = NSLocalizedString(
@@ -3162,7 +3162,7 @@ extension Strings {
     "SearchWithBrave",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Search with Brave",
+    value: "Search with Ping",
     comment:
       "Title of an action that allows user to perform a one-click web search for selected text"
   )
@@ -3312,14 +3312,14 @@ extension Strings {
     "BraveShieldsAndPrivacy",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Shields & Privacy",
+    value: "Privacy & Security",
     comment: ""
   )
   public static let braveShieldsAndPrivacySettingsTitle = NSLocalizedString(
     "BraveShieldsAndPrivacyTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Shields & Privacy",
+    value: "Privacy & Security",
     comment: ""
   )
   public static let bookmarksImportAction = NSLocalizedString(
@@ -3428,7 +3428,7 @@ extension Strings {
     "PersistentPrivateBrowsingAlertMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Allows Brave to restore private browsing tabs, even if you close / re-open the app",
+    value: "Allows Ping to restore private browsing tabs, even if you close / re-open the app",
     comment: "Persistent private browsing alert message to existing users"
   )
   public static let persistentPrivateBrowsing = NSLocalizedString(
@@ -3442,7 +3442,7 @@ extension Strings {
     "ShieldsDefaults",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Shields Global Defaults",
+    value: "Ping Shields Global Defaults",
     comment: "Section title for adbblock, tracking protection, HTTPS-E, and cookies"
   )
   public static let shieldsDefaultsFooter = NSLocalizedString(
@@ -3584,7 +3584,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Version %@ (%@)",
-    comment: "Version number of Brave shown in settings"
+    comment: "Version number of Ping shown in settings"
   )
   public static let deviceTemplate = NSLocalizedString(
     "DeviceTemplate",
@@ -3690,8 +3690,8 @@ extension Strings {
     "RateBrave",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Rate Brave",
-    comment: "Open the App Store to rate Brave."
+    value: "Rate Ping",
+    comment: "Open the App Store to rate Ping."
   )
   public static let reportABug = NSLocalizedString(
     "ReportABug",
@@ -3705,21 +3705,21 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Privacy Policy",
-    comment: "Show Brave Browser Privacy Policy page from the Privacy section in the settings."
+    comment: "Show Ping Browser Privacy Policy page from the Privacy section in the settings."
   )
   public static let termsOfUse = NSLocalizedString(
     "TermsOfUse",
     tableName: "BraveShared",
     bundle: .module,
     value: "Terms of Use",
-    comment: "Show Brave Browser TOS page from the Privacy section in the settings."
+    comment: "Show Ping Browser TOS page from the Privacy section in the settings."
   )
   public static let privateTabBody = NSLocalizedString(
     "PrivateTabBody",
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Private Tabs aren’t saved in Brave, but they don’t make you anonymous online. Sites you visit in a private tab won’t show up in your history and their cookies always vanish when you close them — there won’t be any trace of them left in Brave. However, downloads will be saved.\nYour mobile carrier (or the owner of the Wi-Fi network or VPN you’re connected to) can see which sites you visit and those sites will learn your public IP address, even in Private Tabs.",
+      "Private Tabs aren’t saved in Ping, but they don’t make you anonymous online. Sites you visit in a private tab won’t show up in your history and their cookies always vanish when you close them — there won’t be any trace of them left in Ping. However, downloads will be saved.\nYour mobile carrier (or the owner of the Wi-Fi network or VPN you’re connected to) can see which sites you visit and those sites will learn your public IP address, even in Private Tabs.",
     comment: "Private tab details"
   )
   public static let privateTabDetails = NSLocalizedString(
@@ -3727,7 +3727,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Using Private Tabs only changes what Brave does on your device, it doesn't change anyone else's behavior.\n\nSites always learn your IP address when you visit them. From this, they can often guess roughly where you are — typically your city. Sometimes that location guess can be much more specific. Sites also know everything you specifically tell them, such as search terms. If you log into a site, they'll know you're the owner of that account. You'll still be logged out when you close the Private Tabs because Brave will throw away the cookie which keeps you logged in.\n\nWhoever connects you to the Internet (your ISP) can see all of your network activity. Often, this is your mobile carrier. If you're connected to a Wi-Fi network, this is the owner of that network, and if you're using a VPN, then it's whoever runs that VPN. Your ISP can see which sites you visit as you visit them. If those sites use HTTPS, they can't make much more than an educated guess about what you do on those sites. But if a site only uses HTTP then your ISP can see everything: your search terms, which pages you read, and which links you follow.\n\nIf an employer manages your device, they might also keep track of what you do with it. Using Private Tabs probably won't stop them from knowing which sites you've visited. Someone else with access to your device could also have installed software which monitors your activity, and Private Tabs won't protect you from this either.",
+      "Using Private Tabs only changes what Ping does on your device, it doesn't change anyone else's behavior.\n\nSites always learn your IP address when you visit them. From this, they can often guess roughly where you are — typically your city. Sometimes that location guess can be much more specific. Sites also know everything you specifically tell them, such as search terms. If you log into a site, they'll know you're the owner of that account. You'll still be logged out when you close the Private Tabs because Ping will throw away the cookie which keeps you logged in.\n\nWhoever connects you to the Internet (your ISP) can see all of your network activity. Often, this is your mobile carrier. If you're connected to a Wi-Fi network, this is the owner of that network, and if you're using a VPN, then it's whoever runs that VPN. Your ISP can see which sites you visit as you visit them. If those sites use HTTPS, they can't make much more than an educated guess about what you do on those sites. But if a site only uses HTTP then your ISP can see everything: your search terms, which pages you read, and which links you follow.\n\nIf an employer manages your device, they might also keep track of what you do with it. Using Private Tabs probably won't stop them from knowing which sites you've visited. Someone else with access to your device could also have installed software which monitors your activity, and Private Tabs won't protect you from this either.",
     comment: "Private tab detail text"
   )
   public static let privateTabLink = NSLocalizedString(
@@ -3750,7 +3750,7 @@ extension Strings {
     "BravePanel",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Panel",
+    value: "Ping Panel",
     comment: "Button to show the brave panel"
   )
   public static let rewardsPanel = NSLocalizedString(
@@ -3779,7 +3779,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Shields",
-    comment: "Brave panel topmost title"
+    comment: "Ping panel topmost title"
   )
   public static let adsAndTrackers = NSLocalizedString(
     "AdsAndTrackers",
@@ -3966,7 +3966,7 @@ extension Strings {
     bundle: .module,
     value: "Leo",
     comment:
-      "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated"
+      "Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated"
   )
   public static let passwordsMenuItem = NSLocalizedString(
     "PasswordsMenuItem",
@@ -4031,14 +4031,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Allow",
-    comment: "Allow Brave to open the external app URL"
+    comment: "Allow Ping to open the external app URL"
   )
   public static let openExternalAppURLDontAllow = NSLocalizedString(
     "ExternalAppURLDontAllow",
     tableName: "BraveShared",
     bundle: .module,
     value: "Don't Allow",
-    comment: "Don't allow Brave to open the external app URL"
+    comment: "Don't allow Ping to open the external app URL"
   )
   public static let requestCameraPermissionPrompt = NSLocalizedString(
     "requestCameraPermissionPrompt",
@@ -4148,15 +4148,15 @@ extension Strings {
       "defaultThemeName",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave default",
-      comment: "Name for default Brave theme."
+      value: "Ping default",
+      comment: "Name for default Ping theme."
     )
   public static let themeQRCodeShareTitle =
     NSLocalizedString(
       "themeQRCodeShareTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Share Brave with your friends!",
+      value: "Share Ping with your friends!",
       comment: "Title for QR popup encouraging users to share the code with their friends."
     )
   public static let themeQRCodeShareButton =
@@ -4229,21 +4229,21 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Join",
-    comment: "Button to join Brave Rewards."
+    comment: "Button to join Ping Rewards."
   )
   public static let OBTurnOnButton = NSLocalizedString(
     "OBTurnOnButton",
     tableName: "BraveShared",
     bundle: .module,
     value: "Start",
-    comment: "Button to show Brave Rewards."
+    comment: "Button to show Ping Rewards."
   )
   public static let OBShowMeButton = NSLocalizedString(
     "OBShowMeButton",
     tableName: "BraveShared",
     bundle: .module,
     value: "Show Me",
-    comment: "Button to show the Brave Rewards Ads."
+    comment: "Button to show the Ping Rewards Ads."
   )
   public static let OBDidntSeeAdButton = NSLocalizedString(
     "OBDidntSeeAdButton",
@@ -4256,7 +4256,7 @@ extension Strings {
     "OBSearchEngineTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Welcome to Brave Browser",
+    value: "Welcome to Ping Browser",
     comment: "Title for search engine onboarding screen"
   )
   public static let OBSearchEngineDetail = NSLocalizedString(
@@ -4270,7 +4270,7 @@ extension Strings {
     "OBShieldsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Shields",
+    value: "Ping Shields",
     comment: "Title for shields onboarding screen"
   )
   public static let OBShieldsDetail = NSLocalizedString(
@@ -4285,14 +4285,14 @@ extension Strings {
     "OBRewardsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Rewards",
+    value: "Ping Rewards",
     comment: "Title for rewards onboarding screen"
   )
   public static let OBAdsOptInTitle = NSLocalizedString(
     "OBAdsOptInTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Ads is here!",
+    value: "Ping Ads is here!",
     comment: "Title when opting into brave Ads when region becomes available"
   )
   public static let OBAdsOptInMessage = NSLocalizedString(
@@ -4321,14 +4321,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Opting into Brave Private Ads supports publishers and content creators with every ad viewed.",
+      "Opting into Ping Private Ads supports publishers and content creators with every ad viewed.",
     comment: "Detail text for rewards onboarding screen"
   )
   public static let OBRewardsAgreementTitle = NSLocalizedString(
     "OBRewardsAgreementTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave Rewards",
+    value: "Ping Rewards",
     comment: "Title for rewards agreement onboarding screen"
   )
   public static let OBRewardsAgreementDetail = NSLocalizedString(
@@ -4363,7 +4363,7 @@ extension Strings {
     "OBAdsTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Brave will show your first ad in",
+    value: "Ping will show your first ad in",
     comment: "Title for ads onboarding screen"
   )
   public static let OBCompleteTitle = NSLocalizedString(
@@ -4406,14 +4406,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "You may have downloaded Brave in support of your referrer. To detect your referrer, Brave performs a one-time check of your clipboard for the matching referral code. This check is limited to the code only and no other personal data will be transmitted.  If you opt out, your referrer won’t receive rewards from Brave.",
+      "You may have downloaded Ping in support of your referrer. To detect your referrer, Ping performs a one-time check of your clipboard for the matching referral code. This check is limited to the code only and no other personal data will be transmitted.  If you opt out, your referrer won’t receive rewards from Ping.",
     comment: ""
   )
   public static let OBPrivacyConsentClipboardPermission = NSLocalizedString(
     "OBPrivacyConsentClipboardPermission",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Allow Brave to check my clipboard for a matching referral code",
+    value: "Allow Ping to check my clipboard for a matching referral code",
     comment: ""
   )
   public static let OBPrivacyConsentYesButton = NSLocalizedString(
@@ -4517,8 +4517,8 @@ extension Strings {
         "ntp.earningsReport",
         tableName: "BraveShared",
         bundle: .module,
-        value: "You earned %@ by browsing with Brave.",
-        comment: "Placeholder example: 'You earned 42 BAT by browsing with Brave.'"
+        value: "You earned %@ by browsing with Ping.",
+        comment: "Placeholder example: 'You earned 42 BAT by browsing with Ping.'"
       )
     public static let claimRewards =
       NSLocalizedString(
@@ -4534,7 +4534,7 @@ extension Strings {
         "ntp.learnMoreAboutRewards",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Learn more about Brave Rewards",
+        value: "Learn more about Ping Rewards",
         comment: ""
       )
 
@@ -4552,8 +4552,8 @@ extension Strings {
         "ntp.braveSupportFavoriteTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Support",
-        comment: "Bookmark title for Brave Support"
+        value: "Ping Support",
+        comment: "Bookmark title for Ping Support"
       )
 
     public static let imageTypeSelectionDescription =
@@ -4562,7 +4562,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "'Sponsored' are additional branded backgrounds you can earn from with Brave Rewards enabled.",
+          "'Sponsored' are additional branded backgrounds you can earn from with Ping Rewards enabled.",
         comment: "The text description of image type which is being used NTP"
       )
 
@@ -4632,7 +4632,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Close Shields Menu",
-      comment: "Description for closing the `Brave Shields` popover menu that is displayed."
+      comment: "Description for closing the `Ping Shields` popover menu that is displayed."
     )
   }
 }
@@ -4644,29 +4644,29 @@ extension Strings {
       "BraveShieldsToggleHint",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Double-tap to toggle Brave Shields",
+      value: "Double-tap to toggle Ping Shields",
       comment: "The accessibility hint spoken when focused on the main shields toggle"
     )
     public static let statusTitle = NSLocalizedString(
       "BraveShieldsStatusTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Shields",
-      comment: "Context: 'Brave Shields Up' or 'Brave Shields Down'"
+      value: "Ping Shields",
+      comment: "Context: 'Ping Shields Up' or 'Ping Shields Down'"
     )
     public static let statusValueUp = NSLocalizedString(
       "BraveShieldsStatusValueUp",
       tableName: "BraveShared",
       bundle: .module,
       value: "Up",
-      comment: "Context: The 'Up' in 'Brave Shields Up'"
+      comment: "Context: The 'Up' in 'Ping Shields Up'"
     )
     public static let statusValueDown = NSLocalizedString(
       "BraveShieldsStatusValueDown",
       tableName: "BraveShared",
       bundle: .module,
       value: "Down",
-      comment: "Context: The 'Down' in 'Brave Shields Down'"
+      comment: "Context: The 'Down' in 'Ping Shields Down'"
     )
     public static let blockedCountLabel = NSLocalizedString(
       "BraveShieldsBlockedCountLabel",
@@ -4701,8 +4701,8 @@ extension Strings {
       "AboutBraveShields",
       tableName: "BraveShared",
       bundle: .module,
-      value: "About Brave Shields",
-      comment: "The title of the screen explaining Brave Shields"
+      value: "About Ping Shields",
+      comment: "The title of the screen explaining Ping Shields"
     )
     public static let aboutBraveShieldsBody = NSLocalizedString(
       "AboutBraveShieldsBody",
@@ -4710,14 +4710,14 @@ extension Strings {
       bundle: .module,
       value:
         "Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web — tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.",
-      comment: "The body of the screen explaining Brave Shields"
+      comment: "The body of the screen explaining Ping Shields"
     )
     public static let shieldsDownDisclaimer = NSLocalizedString(
       "ShieldsDownDisclaimer",
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?",
+        "You're browsing this site without Ping's privacy protections. Does it not work right with Shields up?",
       comment: ""
     )
     public static let globalControls = NSLocalizedString(
@@ -4746,7 +4746,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!",
+        "Thanks for letting Ping's developers know that there's something wrong with this site. We'll do our best to fix it!",
       comment: ""
     )
 
@@ -4762,7 +4762,7 @@ extension Strings {
       "ReportBrokenSiteBody1",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Let Brave's developers know that this site doesn't work properly with Shields:",
+      value: "Let Ping's developers know that this site doesn't work properly with Shields:",
       comment:
         "First part of the report a broken site copy. After the colon is a new line and then a website address"
     )
@@ -4771,7 +4771,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Note: The report sent to Brave servers will include the site address, Brave version number, Shields settings, VPN status, and language settings.",
+        "Note: The report sent to Ping servers will include the site address, Ping version number, Shields settings, VPN status, and language settings.",
       comment:
         "This is the info text that is presented when a user is submitting a web-compatibility report."
     )
@@ -4850,7 +4850,7 @@ extension Strings {
         "shieldEducation.trackerAdWarningSubTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Shields just protected your online privacy.",
+        value: "Ping Shields just protected your online privacy.",
         comment: "Subtitle for Shield Education Tracker Ad Warning"
       )
 
@@ -4940,8 +4940,8 @@ extension Strings {
         "socialSharing.shareDescriptionTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Every day I save data by browsing the web with Brave.",
-        comment: "Text used for social sharing together with Brave Shield values"
+        value: "Every day I save data by browsing the web with Ping.",
+        comment: "Text used for social sharing together with Ping Shield values"
       )
 
     public static let domainSpecificDataSavedTitle =
@@ -4949,7 +4949,7 @@ extension Strings {
         "socialSharing.domainSpecificDataSavedTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Every day I save data by browsing the web with Brave.",
+        value: "Every day I save data by browsing the web with Ping.",
         comment: "Title used when in warning pop-over when domain specific data save appears "
       )
 
@@ -5112,7 +5112,7 @@ extension Strings {
         "playList.addToPlayListAlertTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Add to Brave Playlist",
+        value: "Add to Ping Playlist",
         comment: "Alert Title for adding videos to playlist"
       )
 
@@ -5158,7 +5158,7 @@ extension Strings {
         "playList.noItemLabelDetailLabel",
         tableName: "BraveShared",
         bundle: .module,
-        value: "You can add items to your Brave Playlist within the browser",
+        value: "You can add items to your Ping Playlist within the browser",
         comment: "Detail Text when there are no items in the playlist"
       )
 
@@ -5204,7 +5204,7 @@ extension Strings {
         "playList.toastAddToPlaylistTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Add to Brave Playlist",
+        value: "Add to Ping Playlist",
         comment: "The title for the toast that shows up on a page containing a playlist item"
       )
 
@@ -5213,7 +5213,7 @@ extension Strings {
         "playList.toastAddedToPlaylistTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Added to Brave Playlist",
+        value: "Added to Ping Playlist",
         comment:
           "The title for the toast that shows up on a page containing a playlist item that was added to playlist"
       )
@@ -5232,7 +5232,7 @@ extension Strings {
         "playList.toastExitingItemPlaylistTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "View in Brave Playlist",
+        value: "View in Ping Playlist",
         comment:
           "The title for the toast that shows up on a page when an item that has already been added, was updated."
       )
@@ -5291,7 +5291,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Adds a playlist button (it looks like 4 lines with a + symbol) beside the address bar in the Brave browser. This button gives you quick access to open Playlist, or add or remove media.",
+          "Adds a playlist button (it looks like 4 lines with a + symbol) beside the address bar in the Ping browser. This button gives you quick access to open Playlist, or add or remove media.",
         comment: "Footer for option to disable URL-Bar button"
       )
 
@@ -5300,7 +5300,7 @@ extension Strings {
         "playlist.sharePlaylistActionTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Playlist Menu",
+        value: "Ping Playlist Menu",
         comment: "Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action"
       )
 
@@ -5369,7 +5369,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "When enabled, a badge will be displayed on the main menu icon, indicating media on the page may be added to Brave Playlist.",
+          "When enabled, a badge will be displayed on the main menu icon, indicating media on the page may be added to Ping Playlist.",
         comment: "Description footer for playlist menu badge option"
       )
 
@@ -5645,7 +5645,7 @@ extension Strings {
         "playlist.carplayTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Playlist",
+        value: "Ping Playlist",
         comment: "The title of the playlist when in Carplay mode"
       )
 
@@ -5933,7 +5933,7 @@ extension Strings {
         bundle: .module,
         value: "%@ and 1 more item",
         comment:
-          "%@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item."
+          "%@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item."
       )
 
     public static let playlistFolderMoveMultipleItemDescription =
@@ -5943,7 +5943,7 @@ extension Strings {
         bundle: .module,
         value: "%@ and %lld more items",
         comment:
-          "%@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items."
+          "%@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items."
       )
 
     public static let playlistFolderMoveItemWithNoNameTitle =
@@ -6011,7 +6011,7 @@ extension Strings {
         "playlistFolderSharing.addButtonAccessibilityTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Add to Brave Playlist Button",
+        value: "Add to Ping Playlist Button",
         comment: "Accessibility Title for the button that adds the playlist to the database."
       )
 
@@ -6138,7 +6138,7 @@ extension Strings {
         "playList.playlistSharedFolderAlreadyExistsBody",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This folder already exists in your Brave Playlist",
+        value: "This folder already exists in your Ping Playlist",
         comment: "Body for the error message that shows when a playlist folder already exists"
       )
 
@@ -6345,7 +6345,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Organization",
-        comment: "Title of the section for Name of the Company. Example: Brave Inc."
+        comment: "Title of the section for Name of the Company. Example: Ping Inc."
       )
 
     public static let organizationalUnitTitle =
@@ -6564,7 +6564,7 @@ extension Strings {
         "shortcuts.activityTypeOpenBookmarksTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave Browser Bookmarks",
+        value: "Open Ping Browser Bookmarks",
         comment: ""
       )
 
@@ -6573,7 +6573,7 @@ extension Strings {
         "shortcuts.activityTypeOpenHistoryListTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave Browser History",
+        value: "Open Ping Browser History",
         comment: ""
       )
 
@@ -6582,7 +6582,7 @@ extension Strings {
         "shortcuts.activityTypeClearHistoryTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Clear Brave Browsing History",
+        value: "Clear Ping Browsing History",
         comment: ""
       )
 
@@ -6591,7 +6591,7 @@ extension Strings {
         "shortcuts.activityTypeEnableVPNTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave Browser and Enable VPN",
+        value: "Open Ping Browser and Enable VPN",
         comment: ""
       )
 
@@ -6600,7 +6600,7 @@ extension Strings {
         "shortcuts.activityTypeOpenBraveNewsTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave News",
+        value: "Open Ping News",
         comment: ""
       )
 
@@ -6627,7 +6627,7 @@ extension Strings {
         "shortcuts.activityTypeTabDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Start Searching the Web Securely with Brave",
+        value: "Start Searching the Web Securely with Ping",
         comment: ""
       )
 
@@ -6672,7 +6672,7 @@ extension Strings {
         "shortcuts.activityTypeBraveNewsDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave News and Check Today's Top Stories",
+        value: "Open Ping News and Check Today's Top Stories",
         comment: ""
       )
 
@@ -6690,7 +6690,7 @@ extension Strings {
         "shortcuts.activityTypeOpenSyncedTabsDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave Tabs Open in Other Devices",
+        value: "Open Ping Tabs Open in Other Devices",
         comment: ""
       )
 
@@ -6753,7 +6753,7 @@ extension Strings {
         "shortcuts.activityTypeOpenBraveTodaySuggestedPhrase",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave News",
+        value: "Open Ping News",
         comment: ""
       )
 
@@ -6915,7 +6915,7 @@ extension Strings {
         "shortcuts.shortcutSettingsEnableVPNDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Use Shortcuts to enable Brave VPN via Siri - Voice Assistant",
+        value: "Use Shortcuts to enable Ping VPN via Siri - Voice Assistant",
         comment: ""
       )
 
@@ -6924,7 +6924,7 @@ extension Strings {
         "shortcuts.shortcutSettingsOpenBraveNewsTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Open Brave News",
+        value: "Open Ping News",
         comment: ""
       )
 
@@ -6933,8 +6933,8 @@ extension Strings {
         "shortcuts.shortcutSettingsOpenBraveNewsDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Use Shortcuts to open a new tab & show Brave News Feed via Siri - Voice Assistant",
-        comment: "Description of Open Brave News Siri Shortcut in Settings Screen"
+        value: "Use Shortcuts to open a new tab & show Ping News Feed via Siri - Voice Assistant",
+        comment: "Description of Open Ping News Siri Shortcut in Settings Screen"
       )
 
     public static let shortcutSettingsOpenPlaylistTitle =
@@ -6988,8 +6988,8 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This option will open Brave Settings. In order to change various Siri options, please select 'Siri & Search' menu item and customize your choices.",
-        comment: "Description for opening Brave Settings for altering Siri shortcut."
+          "This option will open Ping Settings. In order to change various Siri options, please select 'Siri & Search' menu item and customize your choices.",
+        comment: "Description for opening Ping Settings for altering Siri shortcut."
       )
   }
 }
@@ -7002,7 +7002,7 @@ extension Strings {
         "vpn.buyVPNTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Firewall + VPN",
+        value: "Ping Firewall + VPN",
         comment: "Title for screen to buy the VPN."
       )
 
@@ -7117,7 +7117,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Protect every app & your whole device",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let checkboxSaferWifi =
@@ -7126,7 +7126,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Safer for home or public Wi-Fi",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let checkboxSpeedFast =
@@ -7135,7 +7135,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Lightning-fast, up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let checkboxGeoLocation =
@@ -7144,7 +7144,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Choose your geo/country location",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let checkboxNoIPLog =
@@ -7152,8 +7152,8 @@ extension Strings {
         "vpn.checkboxNoIPLog",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave never logs your activity",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        value: "Ping never logs your activity",
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let checkboxDevicesProtect =
@@ -7162,7 +7162,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Protect 5 devices on 1 subscription",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let installTitle =
@@ -7179,7 +7179,7 @@ extension Strings {
         "vpn.installProfileTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave will now install a VPN profile.",
+        value: "Ping will now install a VPN profile.",
         comment: ""
       )
 
@@ -7189,7 +7189,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Secures all connections",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let popupCheckmark247Support =
@@ -7198,7 +7198,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "24/7 support",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let popupCheckboxBlockAds =
@@ -7207,7 +7207,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Blocks unwanted network connections",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let popupCheckboxBlockAdsAlternate =
@@ -7216,7 +7216,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Block ads & trackers across all apps ",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let popupCheckboxFast =
@@ -7225,7 +7225,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Supports speeds of up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let popupCheckboxFastAlternate =
@@ -7234,7 +7234,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Fast and unlimited up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN"
+        comment: "Text for a checkbox to present the user benefits for using Ping VPN"
       )
 
     public static let installProfileBody =
@@ -7243,7 +7243,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block potentially harmful and invasive connections.",
+          "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Ping's intelligent firewall to block potentially harmful and invasive connections.",
         comment: "Text explaining how the VPN works."
       )
 
@@ -7342,7 +7342,7 @@ extension Strings {
         "vpn.settingsLinkReceipt",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Link purchase to your Brave account",
+        value: "Link purchase to your Ping account",
         comment: "Button to link your VPN receipt to other devices."
       )
 
@@ -7352,7 +7352,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Link your App Store purchase to your Brave account to use Brave VPN on other devices.",
+          "Link your App Store purchase to your Ping account to use Ping VPN on other devices.",
         comment: "Footer text to link your VPN receipt to other devices."
       )
 
@@ -7417,7 +7417,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Enable",
-        comment: "Button text to enable Brave VPN"
+        comment: "Button text to enable Ping VPN"
       )
 
     public static let buyButton =
@@ -7426,7 +7426,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Buy",
-        comment: "Button text to buy Brave VPN"
+        comment: "Button text to buy Ping VPN"
       )
 
     public static let tryForFreeButton =
@@ -7435,7 +7435,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Try for FREE",
-        comment: "Button text to try free Brave VPN"
+        comment: "Button text to try free Ping VPN"
       )
 
     public static let settingHeaderBody =
@@ -7509,7 +7509,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "The Brave Firewall + VPN requires a VPN profile to be installed on your device to work. ",
+          "The Ping Firewall + VPN requires a VPN profile to be installed on your device to work. ",
         comment: "Title for an alert when the user didn't allow to install VPN profile"
       )
 
@@ -7575,7 +7575,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This will reset your Brave Firewall + VPN configuration and fix any errors. This process may take a minute.",
+          "This will reset your Ping Firewall + VPN configuration and fix any errors. This process may take a minute.",
         comment: "Message for alert to reset vpn configuration"
       )
 
@@ -7830,7 +7830,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Brave doesn’t track you or know how you use our app, so we don’t know how you've set up VPN. Please share info about the issue you're experiencing and we'll do our best to resolve it as soon as we can.",
+          "Ping doesn’t track you or know how you use our app, so we don’t know how you've set up VPN. Please share info about the issue you're experiencing and we'll do our best to resolve it as soon as we can.",
         comment: "Text to tell user to not modify support info below email's body."
       )
 
@@ -7839,7 +7839,7 @@ extension Strings {
         "vpn.contactFormTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Firewall + VPN Issue",
+        value: "Ping Firewall + VPN Issue",
         comment: "Title for contact form email."
       )
 
@@ -7866,7 +7866,7 @@ extension Strings {
         "vpn.vpnBackgroundNotificationTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave Firewall + VPN is ON",
+        value: "Ping Firewall + VPN is ON",
         comment: "Notification title to tell user that the vpn is turned on even in background"
       )
 
@@ -7875,7 +7875,7 @@ extension Strings {
         "vpn.vpnBackgroundNotificationBody",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Even in the background, Brave will continue to protect you.",
+        value: "Even in the background, Ping will continue to protect you.",
         comment: "Notification title to tell user that the vpn is turned on even in background"
       )
 
@@ -7885,7 +7885,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
+          "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Ping, you agree to the Terms of Use and Privacy Policy.",
         comment: "Disclaimer for user purchasing the VPN plan."
       )
 
@@ -8022,7 +8022,7 @@ extension Strings {
         "vpn.sessionExpiredDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Please login to your Brave Account to refresh your VPN session.",
+        value: "Please login to your Ping Account to refresh your VPN session.",
         comment: "Alert description to show when the VPN session has expired"
       )
 
@@ -8068,7 +8068,7 @@ extension Strings {
         "vpn.autoRenewSoonExpireTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Oh no! Your Brave VPN subscription is about to expire.",
+        value: "Oh no! Your Ping VPN subscription is about to expire.",
         comment: "Pop up title for VPN subscription is about expire"
       )
 
@@ -8077,7 +8077,7 @@ extension Strings {
         "vpn.autoRenewDiscountPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Auto-renew your Brave VPN Subscription now and get 20% off for 3 months!",
+        value: "Auto-renew your Ping VPN Subscription now and get 20% off for 3 months!",
         comment: "Pop up title for renewing VPN subscription with discount"
       )
 
@@ -8086,7 +8086,7 @@ extension Strings {
         "vpn.autoRenewFreeMonthPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Auto-renew your Brave VPN Subscription now and get 1 month free!",
+        value: "Auto-renew your Ping VPN Subscription now and get 1 month free!",
         comment: "Pop up title for renewing VPN subscription with month free"
       )
 
@@ -8096,7 +8096,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "There's a billing issue with your account, which means your Brave VPN subscription is about to expire.",
+          "There's a billing issue with your account, which means your Ping VPN subscription is about to expire.",
         comment: "Pop up title for billing issue for subcription VPN about to expire"
       )
 
@@ -8105,7 +8105,7 @@ extension Strings {
         "vpn.updateBillingExpiredPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Update your payment info to stay protected with Brave VPN.",
+        value: "Update your payment info to stay protected with Ping VPN.",
         comment: "Pop up title for billing issue for subcription VPN already expired"
       )
 
@@ -8114,7 +8114,7 @@ extension Strings {
         "vpn.autoRenewSoonExpirePopOverDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "That means you'll lose Brave's extra protections for every app on your phone.",
+        value: "That means you'll lose Ping's extra protections for every app on your phone.",
         comment: "Pop up description for VPN subscription is about expire"
       )
 
@@ -8188,7 +8188,7 @@ extension Strings {
         "vpn.subscribeVPNDiscountPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Give Brave VPN another try and get 20% off for 3 months!",
+        value: "Give Ping VPN another try and get 20% off for 3 months!",
         comment: "Pop up title for subscribing VPN with discount"
       )
 
@@ -8197,8 +8197,8 @@ extension Strings {
         "vpn.subscribeVPNProtectionPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Did you know that Brave VPN protects you outside of Brave Browser?",
-        comment: "Pop up title for subscribing VPN explaning VPN protects user outside the Brave"
+        value: "Did you know that Ping VPN protects you outside of Ping Browser?",
+        comment: "Pop up title for subscribing VPN explaning VPN protects user outside the Ping"
       )
 
     public static let subscribeVPNAllDevicesPopOverTitle =
@@ -8206,7 +8206,7 @@ extension Strings {
         "vpn.subscribeVPNAllDevicesPopOverTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Now, use Brave VPN on all your devices for the same price!",
+        value: "Now, use Ping VPN on all your devices for the same price!",
         comment: "Pop up title the subscription for VPN can be used for all platforms"
       )
 
@@ -8216,9 +8216,9 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Brave VPN has always blocked trackers on every app, even outside the Brave browser. Now you can see who tried to track you, with the Brave Privacy Hub.",
+          "Ping VPN has always blocked trackers on every app, even outside the Ping browser. Now you can see who tried to track you, with the Ping Privacy Hub.",
         comment:
-          "Pop up description for subscribing VPN explaning VPN protects user outside the Brave"
+          "Pop up description for subscribing VPN explaning VPN protects user outside the Ping"
       )
 
     public static let subscribeVPNAllDevicesPopOverDescription =
@@ -8227,7 +8227,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "That’s right. Your Brave VPN subscription is now good on up to 5 devices. So you can subscribe on iOS and use it on your Mac, Windows and Android devices for free.",
+          "That’s right. Your Ping VPN subscription is now good on up to 5 devices. So you can subscribe on iOS and use it on your Mac, Windows and Android devices for free.",
         comment: "Pop up description the subscription for VPN can be used for all platforms"
       )
 
@@ -8237,7 +8237,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Ready to safeguard every app on your phone? Come back to Brave VPN and get 20% off for the next 3 months.",
+          "Ready to safeguard every app on your phone? Come back to Ping VPN and get 20% off for the next 3 months.",
         comment: "Pop up sub description the subscription for VPN can be used for all platforms"
       )
 
@@ -8348,7 +8348,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.",
+          "Deleting your account will remove your encrypted data from Ping servers and disable Sync on all of your connected devices.",
         comment: "Part 1 Description for Alert used action Delete Sync Account."
       )
     public static let syncDeleteAccountAlertDescriptionPart2 =
@@ -8543,7 +8543,7 @@ extension Strings {
         "BrowserLockDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Unlock Brave with Touch ID, Face ID or system passcode.",
+        value: "Unlock Ping with Touch ID, Face ID or system passcode.",
         comment: "Description for setting to enable the browser lock privacy feature"
       )
     public static let tabTraySetPasscodeAlertDescription =
@@ -8828,7 +8828,7 @@ extension Strings {
         "opentabs.noSyncSessionPlaceHolderViewTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This space shows Brave tabs open in other devices",
+        value: "This space shows Ping tabs open in other devices",
         comment: "The title of the view showing no synced sessions"
       )
     public static let noSyncChainPlaceHolderViewDescription =
@@ -8885,7 +8885,7 @@ extension Strings {
         "opentabs.noSyncSessionPlaceHolderViewAdditionalDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Manage what Brave syncs in Settings.",
+        value: "Manage what Ping syncs in Settings.",
         comment: "The additional description of the view describing tab syncing should be enabled."
       )
     public static let noDevicesSyncChainPlaceholderViewTitle =
@@ -8953,7 +8953,7 @@ extension Strings {
       "today.braveToday",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave News",
+      value: "Ping News",
       comment: "The name of the feature"
     )
     public static let braveNewsTitle = NSLocalizedString(
@@ -8974,7 +8974,7 @@ extension Strings {
       "today.turnOnBraveToday",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Turn on Brave News",
+      value: "Turn on Ping News",
       comment: ""
     )
     public static let learnMoreTitle = NSLocalizedString(
@@ -8988,17 +8988,17 @@ extension Strings {
       "today.introCardTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Turn on Brave News, and never miss a story",
-      comment: "Shown above a button that turns on the \"Brave News\" product in the app."
+      value: "Turn on Ping News, and never miss a story",
+      comment: "Shown above a button that turns on the \"Ping News\" product in the app."
     )
     public static let introCardBody = NSLocalizedString(
       "today.introCardBody",
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and… voila!\nBrave News is ad-supported with private, anonymized ads.",
+        "Follow your favorite sources, in a single feed. Just open a tab in Ping, scroll down, and… voila!\nBrave News is ad-supported with private, anonymized ads.",
       comment:
-        "Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs."
+        "Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs."
     )
     public static let refresh = NSLocalizedString(
       "today.refresh",
@@ -9053,7 +9053,7 @@ extension Strings {
       "today.errorGeneralBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave News is experiencing some issues. Try again.",
+      value: "Ping News is experiencing some issues. Try again.",
       comment: ""
     )
     public static let disablePublisherContent = NSLocalizedString(
@@ -9061,14 +9061,14 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Hide content from %@",
-      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Ping Blog"
     )
     public static let enablePublisherContent = NSLocalizedString(
       "today.enablePublisherContent",
       tableName: "BraveShared",
       bundle: .module,
       value: "Allow content from %@",
-      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Ping Blog"
     )
     public static let disabledAlertTitle = NSLocalizedString(
       "today.disabledAlertTitle",
@@ -9081,14 +9081,14 @@ extension Strings {
       "today.disabledAlertBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave News will stop showing content from %@",
-      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+      value: "Ping News will stop showing content from %@",
+      comment: "'%@' will turn into the name of a publisher (verbatim), for example: Ping Blog"
     )
     public static let isEnabledToggleLabel = NSLocalizedString(
       "today.isEnabledToggleLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Show Brave News",
+      value: "Show Ping News",
       comment: ""
     )
     public static let contentAvailableButtonTitle = NSLocalizedString(
@@ -9102,8 +9102,8 @@ extension Strings {
       "today.moreBraveOffers",
       tableName: "BraveShared",
       bundle: .module,
-      value: "More Brave Offers",
-      comment: "'Brave Offers' is a product name"
+      value: "More Ping Offers",
+      comment: "'Ping Offers' is a product name"
     )
     public static let promoted = NSLocalizedString(
       "today.promoted",
@@ -9116,7 +9116,7 @@ extension Strings {
       "today.addSourceShareTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Add Source to Brave News",
+      value: "Add Source to Ping News",
       comment: "The action title displayed in the iOS share menu"
     )
     public static let addSourceFailureTitle = NSLocalizedString(
@@ -9340,7 +9340,7 @@ extension Strings {
       "today.rateBraveCardRateActionTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Rate Brave",
+      value: "Rate Ping",
       comment:
         "Button title / Title for long press action that will perform an action which open AppStore Rate screen"
     )
@@ -9349,28 +9349,28 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Hide",
-      comment: "Title for long press action that will hide Brave Rate Card"
+      comment: "Title for long press action that will hide Ping Rate Card"
     )
     public static let rateBraveCardActionSheetTitle = NSLocalizedString(
       "today.rateBraveCardActionSheetTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Rate Brave in App Store",
+      value: "Rate Ping in App Store",
       comment: "Title for long press action sheet list which has item for rate / hide"
     )
     public static let rateBraveCardTitle = NSLocalizedString(
       "today.rateBraveCardTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Liking Brave?",
-      comment: "Title shown on the Rate Brave Card "
+      value: "Liking Ping?",
+      comment: "Title shown on the Rate Ping Card "
     )
     public static let rateBraveCardSubtitle = NSLocalizedString(
       "today.rateBraveCardSubtitle",
       tableName: "BraveShared",
       bundle: .module,
       value: "Tell us what you think!",
-      comment: "Subtitle shown on the Rate Brave Card"
+      comment: "Subtitle shown on the Rate Ping Card"
     )
   }
 }
@@ -9383,7 +9383,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Rewards Internals",
-      comment: "'Rewards' as in 'Brave Rewards'"
+      comment: "'Rewards' as in 'Ping Rewards'"
     )
     public static let walletInfoHeader = NSLocalizedString(
       "RewardsInternalsWalletInfoHeader",
@@ -9662,7 +9662,7 @@ extension Strings {
       "RewardsInternalsContributionProcessorBraveTokens",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Tokens",
+      value: "Ping Tokens",
       comment: ""
     )
     public static let contributionProcessorUserFunds = NSLocalizedString(
@@ -9747,7 +9747,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Share Rewards Internals",
-      comment: "'Rewards' as in 'Brave Rewards'"
+      comment: "'Rewards' as in 'Ping Rewards'"
     )
     public static let share = NSLocalizedString(
       "RewardsInternalsShare",
@@ -9823,14 +9823,14 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "You are helping support content creators",
-      comment: "Displayed when Brave Rewards is enabled"
+      comment: "Displayed when Ping Rewards is enabled"
     )
     public static let disabledBody = NSLocalizedString(
       "rewards.disabledBody",
       tableName: "BraveShared",
       bundle: .module,
       value: "Turn on to help support content creators",
-      comment: "Displayed when Brave Rewards is disabled"
+      comment: "Displayed when Ping Rewards is disabled"
     )
     public static let supportingPublisher = NSLocalizedString(
       "rewards.supportingPublisher",
@@ -9858,7 +9858,7 @@ extension Strings {
       "rewards.disabledStatusBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Using Brave Rewards helps support content creators as you browse.",
+      value: "Using Ping Rewards helps support content creators as you browse.",
       comment: "Displayed in the status container when rewards is disabled"
     )
     public static let totalSupportedCount = NSLocalizedString(
@@ -9872,7 +9872,7 @@ extension Strings {
       "rewards.settingsToggleTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Enable Brave Rewards",
+      value: "Enable Ping Rewards",
       comment: ""
     )
     public static let settingsToggleMessage = NSLocalizedString(
@@ -9880,7 +9880,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Support content creators and publishers automatically by enabling Brave Private Ads. Brave Private Ads are privacy-respecting ads that give back to content creators.",
+        "Support content creators and publishers automatically by enabling Ping Private Ads. Ping Private Ads are privacy-respecting ads that give back to content creators.",
       comment: ""
     )
     public static let onProviderText = NSLocalizedString(
@@ -9895,8 +9895,8 @@ extension Strings {
         "rewards.braveTalkRewardsOptInTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "To start a free call, turn on Brave Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen"
+        value: "To start a free call, turn on Ping Rewards",
+        comment: "Title for Ping Talk rewards opt-in screen"
       )
 
     public static let braveTalkRewardsOptInBody =
@@ -9905,8 +9905,8 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "With Brave Rewards, you can view privacy-preserving ads from the Brave Ads network. No trackers. No slowdowns. And your data stays totally safe.",
-        comment: "Body for Brave Talk rewards opt-in screen"
+          "With Ping Rewards, you can view privacy-preserving ads from the Ping Ads network. No trackers. No slowdowns. And your data stays totally safe.",
+        comment: "Body for Ping Talk rewards opt-in screen"
       )
 
     public static let braveTalkRewardsOptInButtonTitle =
@@ -9915,7 +9915,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Turn on Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen button"
+        comment: "Title for Ping Talk rewards opt-in screen button"
       )
 
     public static let braveTalkRewardsOptInDisclaimer =
@@ -9934,7 +9934,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "You can now start a free call",
-        comment: "Title for successful Brave Talk rewards opt-in"
+        comment: "Title for successful Ping Talk rewards opt-in"
       )
 
     public static let braveTalkRewardsOptInSuccessBody =
@@ -9942,8 +9942,8 @@ extension Strings {
         "rewards.braveTalkRewardsOptInSuccessBody",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Click anywhere on the screen to continue to Brave Talk.",
-        comment: "Body for successful Brave Talk rewards opt-in"
+        value: "Click anywhere on the screen to continue to Ping Talk.",
+        comment: "Body for successful Ping Talk rewards opt-in"
       )
   }
 }
@@ -9955,7 +9955,7 @@ extension Strings {
       "bravetalk.braveTalkTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Talk",
+      value: "Ping Talk",
       comment: "The name of the feature"
     )
   }
@@ -9968,7 +9968,7 @@ extension Strings {
       "MyFirstAdTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "This is your first Brave ad",
+      value: "This is your first Ping ad",
       comment: ""
     )
     public static let myFirstAdBody = NSLocalizedString(
@@ -9989,7 +9989,7 @@ extension Strings {
       "BraveRewardsAdNotificationTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Rewards",
+      value: "Ping Rewards",
       comment: ""
     )
   }
@@ -10285,7 +10285,7 @@ extension Strings {
       bundle: .module,
       value: "Privacy Hub",
       comment:
-        "Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers."
+        "Title of main privacy hub screen. This screen shows various stats caught by Ping's ad blockers."
     )
 
     public static let notificationCalloutBody = NSLocalizedString(
@@ -10343,9 +10343,9 @@ extension Strings {
       "privacyHub.mostFrequentTrackerAndAdBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "**%@** was blocked by Brave Shields on **%lld** sites",
+      value: "**%@** was blocked by Ping Shields on **%lld** sites",
       comment:
-        "Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites'"
+        "Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites'"
     )
 
     public static let noDataToShow = NSLocalizedString(
@@ -10378,7 +10378,7 @@ extension Strings {
       "privacyHub.vpnAlertsHeader",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Firewall + VPN Alerts",
+      value: "Ping Firewall + VPN Alerts",
       comment:
         "Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf."
     )
@@ -10389,7 +10389,7 @@ extension Strings {
       bundle: .module,
       value: "All alerts",
       comment:
-        "Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker"
+        "Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker"
     )
 
     public static let allTimeListsHeader = NSLocalizedString(
@@ -10450,7 +10450,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Trackers & ads",
-      comment: "Title of a section to show total count of trackers blocked by Brave"
+      comment: "Title of a section to show total count of trackers blocked by Ping"
     )
 
     public static let allTimeListsWebsitesView = NSLocalizedString(
@@ -10467,7 +10467,7 @@ extension Strings {
       bundle: .module,
       value: "Blocked by",
       comment:
-        "Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN"
+        "Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN"
     )
 
     public static let allTimeListTrackersHeaderTitle = NSLocalizedString(
@@ -10509,7 +10509,7 @@ extension Strings {
       bundle: .module,
       value: "Firewall + VPN",
       comment:
-        "This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN'"
+        "This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN'"
     )
 
     public static let blockedLabel = NSLocalizedString(
@@ -10582,7 +10582,7 @@ extension Strings {
       "privacyHub.notificationMessage",
       tableName: "BraveShared",
       bundle: .module,
-      value: "A recap of how Brave protected you online this week.",
+      value: "A recap of how Ping protected you online this week.",
       comment:
         "Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open."
     )
@@ -10592,7 +10592,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Show Shields Data",
-      comment: "Title of a setting that lets Brave monitor blocked network requests"
+      comment: "Title of a setting that lets Ping monitor blocked network requests"
     )
 
     public static let settingsEnableShieldsFooter = NSLocalizedString(
@@ -10601,7 +10601,7 @@ extension Strings {
       bundle: .module,
       value:
         "Privacy Hub shows a count of what Shields blocked. Setting will not affect Shields counter on new tab page. Shields data is not counted in private windows.",
-      comment: "This text explains a setting that lets Brave monitor blocked network requests"
+      comment: "This text explains a setting that lets Ping monitor blocked network requests"
     )
 
     public static let settingsEnableVPNAlertsTitle = NSLocalizedString(
@@ -10610,7 +10610,7 @@ extension Strings {
       bundle: .module,
       value: "Show VPN Alerts",
       comment:
-        "Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN"
+        "Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN"
     )
 
     public static let settingsEnableVPNAlertsFooter = NSLocalizedString(
@@ -10619,7 +10619,7 @@ extension Strings {
       bundle: .module,
       value: "Setting only applies if you've purchased VPN subscription.",
       comment:
-        "This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN"
+        "This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN"
     )
 
     public static let settingsSlearDataTitle = NSLocalizedString(
@@ -10628,7 +10628,7 @@ extension Strings {
       bundle: .module,
       value: "Clear Shields Data",
       comment:
-        "Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them."
+        "Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them."
     )
 
     public static let settingsSlearDataFooter = NSLocalizedString(
@@ -10717,7 +10717,7 @@ extension Strings {
       bundle: .module,
       value: "Allow Privacy-Preserving Product Analytics (P3A)",
       comment:
-        "The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave."
+        "The title for the setting that will allow a user to toggle sending privacy preserving analytics to Ping."
     )
 
     public static let settingSubtitle = NSLocalizedString(
@@ -10725,8 +10725,8 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "These private responses help Brave estimate the overall usage of certain features and make them better for you.",
-      comment: "A subtitle shown on the setting that toggles analytics on Brave."
+        "These private responses help Ping estimate the overall usage of certain features and make them better for you.",
+      comment: "A subtitle shown on the setting that toggles analytics on Ping."
     )
 
     public static let continueButton = NSLocalizedString(
@@ -10903,7 +10903,7 @@ extension Strings {
         "voice.search.screen.disclaimer",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Brave does not store or share your voice searches.",
+        value: "Ping does not store or share your voice searches.",
         comment: "Disclaimer for screen to search using voice."
       )
 
@@ -10922,7 +10922,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Please allow Microphone Access in iOS System Settings for Brave to use anonymous voice search.",
+          "Please allow Microphone Access in iOS System Settings for Ping to use anonymous voice search.",
         comment: "Explanation for warning alert why the microphone access required."
       )
   }
@@ -11076,9 +11076,9 @@ extension Strings {
     public static let showShieldsTitle = NSLocalizedString(
       "showShieldsTitle",
       bundle: .module,
-      value: "Open Brave Shields",
+      value: "Open Ping Shields",
       comment:
-        "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields"
+        "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Ping Shields"
     )
     public static let showHistoryTitle = NSLocalizedString(
       "showHistoryTitle",

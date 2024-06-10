@@ -236,7 +236,7 @@ class NewTabPageViewController: UIViewController {
       sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
     }
 
-    if !privateBrowsingManager.isPrivateBrowsing {
+    if false && !privateBrowsingManager.isPrivateBrowsing {
       sections.append(
         BraveNewsSectionProvider(
           dataSource: feedDataSource,

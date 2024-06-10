@@ -90,16 +90,16 @@ struct OtherPrivacySettingsSectionView: View {
         ),
         option: Preferences.Privacy.screenTimeEnabled
       )
-      ToggleView(
-        title: Strings.P3A.settingTitle,
-        subtitle: Strings.P3A.settingSubtitle,
-        toggle: $settings.isP3AEnabled
-      )
-      OptionToggleView(
-        title: Strings.Settings.sendUsagePingTitle,
-        subtitle: Strings.Settings.sendUsagePingDescription,
-        option: Preferences.DAU.sendUsagePing
-      )
+      // ToggleView(
+      //   title: Strings.P3A.settingTitle,
+      //   subtitle: Strings.P3A.settingSubtitle,
+      //   toggle: $settings.isP3AEnabled
+      // )
+      // OptionToggleView(
+      //   title: Strings.Settings.sendUsagePingTitle,
+      //   subtitle: Strings.Settings.sendUsagePingDescription,
+      //   option: Preferences.DAU.sendUsagePing
+      // )
     } header: {
       Text(Strings.otherPrivacySettingsSection)
     }
