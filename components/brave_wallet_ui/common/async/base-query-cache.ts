@@ -50,12 +50,9 @@ import {
   GetBlockchainTokenIdArg,
   getDeletedTokenIds,
   getHiddenTokenIds,
-  isNativeAsset
+  getTokenLogo
 } from '../../utils/asset-utils'
-import {
-  makeNativeAssetLogo,
-  makeNetworkAsset
-} from '../../options/asset-options'
+import { makeNetworkAsset } from '../../options/asset-options'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
@@ -302,27 +299,6 @@ export class BaseQueryCache {
     this._userTokensRegistry = undefined
   }
 
-  // TODO(apaymyshev): This function should not exist. Backend should be
-  // responsible in providing correct logo.
-  /** only caches ipfs translations since saving to a registry would require a
-   * long identifier */
-  getTokenLogo = async (token: BraveWallet.BlockchainToken) => {
-    if (isNativeAsset(token)) {
-      return makeNativeAssetLogo(token.symbol, token.chainId)
-    }
-
-    if (
-      !token.logo ||
-      token.logo.startsWith('data:image/') ||
-      token.logo.startsWith('chrome://erc-token-images/')
-    ) {
-      // nothing to change
-      return token.logo
-    }
-
-    return `chrome://erc-token-images/${token.logo}`
-  }
-
   getEnabledCoinTypes = async () => {
     if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
       // network type flags
@@ -533,7 +509,7 @@ async function fetchAssetsForNetwork({
     tokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
-      const tokenLogo = await cache.getTokenLogo(token)
+      const tokenLogo = getTokenLogo(token)
       const updatedToken = addLogoToToken(token, tokenLogo)
       return addChainIdToToken(updatedToken, network.chainId)
     }

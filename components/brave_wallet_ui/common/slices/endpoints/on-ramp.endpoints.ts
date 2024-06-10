@@ -10,6 +10,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // Utils
 import {
   addLogoToToken,
+  getTokenLogo,
   getUniqueAssets,
   sortNativeAndAndBatAssetsToTop
 } from '../../../utils/asset-utils'
@@ -32,8 +33,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
       queryFn: async (_arg, _store, _extraOptions, baseQuery) => {
         try {
           const {
-            data: { blockchainRegistry },
-            cache
+            data: { blockchainRegistry }
           } = baseQuery(undefined)
           const { kRamp, kSardine, kTransak, kStripe, kCoinbase } =
             BraveWallet.OnRampProvider
@@ -73,7 +73,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           )
 
           const updateLogo = async (token: BraveWallet.BlockchainToken) => {
-            const tokenLogo = await cache.getTokenLogo(token)
+            const tokenLogo = getTokenLogo(token)
             return addLogoToToken(token, tokenLogo)
           }
 
