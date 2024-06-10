@@ -38,6 +38,7 @@ source_set("unit_tests") {
   sources = [
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
+    "brave_tab_unittest.cc",
   ]
 
   deps = [
